@@ -22,7 +22,7 @@ import MeshComponent from "../../../services/engine/ecs/components/MeshComponent
 import TransformComponent from "../../../services/engine/ecs/components/TransformComponent";
 import Mesh from "../../../services/engine/renderer/elements/Mesh";
 import {SHADING_MODELS} from "../../editor/hook/useSettings";
-
+import skybox from '../../../static/default_skybox.jpg'
 export default function useVisualizer(initializePlane, initializeSphere) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
@@ -115,7 +115,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 function initializeSkybox(dispatch, gpu) {
     const newEntity = new Entity(undefined, 'sky')
     const sky = new SkyboxComponent(undefined, gpu)
-    sky.hdrTexture = {blob: '/default_skybox.jpg', imageID: undefined, type: 'jpg'}
+    sky.hdrTexture = {blob: skybox, imageID: undefined, type: 'jpg'}
     dispatch({
         type: ENTITY_ACTIONS.ADD,
         payload: newEntity

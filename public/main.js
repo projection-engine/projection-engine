@@ -8,6 +8,7 @@ require('@electron/remote/main').initialize()
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
+
         width: 800,
         height: 600,
         title: "Projection Engine",
@@ -18,7 +19,8 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false
         },
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+
     })
     win.openDevTools();
     win.loadURL(
