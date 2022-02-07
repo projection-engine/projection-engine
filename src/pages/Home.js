@@ -13,7 +13,6 @@ import logo from '../static/LOGO.png'
 import gitDark from '../static/github/dark.svg'
 import gitLight from '../static/github/light.svg'
 import Database from "../components/db/Database";
-// import Database from "../components/db/Database";
 
 
 export default function Home(props) {

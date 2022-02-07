@@ -8,6 +8,7 @@ import useLoading from "./components/loader/useLoading";
 import ThemeProvider from "./views/editor/hook/ThemeProvider";
 import {useState} from "react";
 import Home from "./pages/Home";
+import Project from "./pages/Project";
 
 export default function App( ) {
 
@@ -30,8 +31,7 @@ export default function App( ) {
                             setCurrentTab(id)
                         }}/>
                         :
-                        null
-                        // <Project id={currentTab} redirect={() => setCurrentTab(0)}/>
+                        <Project id={currentTab} redirect={() => setCurrentTab(0)}/>
                     }
 
                 </LoadProvider.Provider>

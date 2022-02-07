@@ -11,6 +11,7 @@ import CubeMapComponent from "../forms/CubeMapComponent";
 import {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 import ColliderComponent from "../../../services/engine/ecs/components/ColliderComponent";
 import MaterialInstance from "../../../services/engine/renderer/elements/MaterialInstance";
+import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
 
 export default function useForm(
     engine,

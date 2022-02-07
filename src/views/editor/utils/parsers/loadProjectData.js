@@ -25,7 +25,9 @@ export default function loadProject(database, engine, settings, setAlert, id, re
                 if(s !== undefined && typeof s === 'object' && Object.keys(s).length > 0)
                     settings = s
                 callback()
-            }catch (e){}
+            }catch (e){
+                callback()
+            }
 
         }).catch(e => {
         redirect()

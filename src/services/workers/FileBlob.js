@@ -3,7 +3,9 @@ import {WebWorker} from "./WebWorker";
 export default class FileBlob {
     static loadAsString(file, binary, dataURL) {
         const worker = new WebWorker()
-        return worker.createExecution({file, binary: binary, dataURL}, () => {
+        return worker.createExecution(
+            {file, binary: binary, dataURL},
+            `() => {
             self.addEventListener('message', e => {
                 let reader = new FileReader();
                 reader.addEventListener('load', event => {
@@ -17,12 +19,13 @@ export default class FileBlob {
                     reader.readAsDataURL(e.data.file)
                 }
             })
-        })
+        }`)
     }
 
     static loadAsJSON(file) {
         const worker = new WebWorker()
-        return worker.createExecution(file, () => {
+        return worker.createExecution(file, `
+        () => {
             self.addEventListener('message', event => {
                 let reader = new FileReader();
                 reader.addEventListener('load', event => {
@@ -30,6 +33,7 @@ export default class FileBlob {
                 });
                 reader.readAsText(event.data)
             })
-        })
+        }
+        `)
     }
 }

@@ -56,10 +56,10 @@ export default function Project(props) {
                     load.finishEvent(EVENTS.PROJECT_SETTINGS)
                 })
         }
-    }, [database, id])
+    }, [database, props.id])
     useEffect(() => {
         if (engine.gpu && database)
-            loadEntities(database, engine, id, () => {
+            loadEntities(database, engine, props.id, () => {
                 load.finishEvent(EVENTS.PROJECT_DATA)
             })
     }, [engine.gpu])

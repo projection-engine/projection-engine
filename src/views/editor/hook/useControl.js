@@ -4,6 +4,7 @@ import MaterialComponent from "../../../services/engine/ecs/components/MaterialC
 import PickComponent from "../../../services/engine/ecs/components/PickComponent";
 import TransformComponent from "../../../services/engine/ecs/components/TransformComponent";
 import {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
+import Entity from "../../../services/engine/ecs/basic/Entity";
 
 export default function useControl(engine, save, settings) {
     const [toClone, setToClone] = useState()
