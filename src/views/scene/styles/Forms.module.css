@@ -1,0 +1,152 @@
+.wrapper {
+    display: flex;
+    align-items: flex-start;
+
+    width: 100%;
+    align-self: stretch;
+    overflow: hidden;
+
+    position: relative;
+}
+
+.tabs {
+    display: grid;
+    align-items: flex-start;
+    align-content: flex-start;
+    border-radius: 5px;
+    gap: 4px;
+    justify-content: center;
+    width: 35px;
+    background-color: var(--background-2);
+    height: 100%;
+
+    position: sticky;
+    top: 0;
+}
+
+.fieldset {
+    display: grid;
+    gap: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: var(--background-1);
+    user-select: none;
+
+
+}
+
+.inputs {
+
+    padding: 4px;
+    display: flex;
+    gap: 4px;
+    max-width: 100%;
+    overflow: hidden;
+
+}
+
+.button:disabled {
+    border: var(--fabric-border-primary) 1px solid !important;
+}
+
+.button {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.formWrapper {
+    padding: 4px;
+
+}
+
+.label {
+    width: 100%;
+    text-align: left;
+    color: var(--fabric-color-tertiary);
+    vertical-align: middle;
+    height: 35px;
+    line-height: 35px;
+    max-width: 100%;
+
+
+    font-size: .7rem;
+    font-weight: 600;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+
+.skyboxWrapper{
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    height: 96px;
+    border-radius: 5px;
+    /*background-color: var(--background-2);*/
+    background-color: red;
+}
+
+
+
+.wrapper {
+
+    gap: 8px;
+    display: flex;
+    border-radius: 5px;
+    transition: 150ms linear;
+    outline: transparent 2px dashed;
+}
+
+.textureImage {
+
+    min-height: 60px !important;
+    max-height: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+
+    border-radius: 5px;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+
+    justify-content: center;
+}
+
+.dropdown {
+    width: 100%;
+    background-color: var(--background-1) !important;;
+}
+
+.hovered > * {
+    opacity: .5;
+}
+
+.image{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+}
+.label{
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.summary{
+    background-color: var(--background-2) !important;
+    font-size: .75rem;
+    font-weight: 550;
+}

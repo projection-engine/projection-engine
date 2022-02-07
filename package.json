@@ -1,0 +1,73 @@
+{
+  "name": "electron-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@electron/remote": "latest",
+    "@f-ui/charts": "latest",
+    "@f-ui/core": "0.1.3-alpha",
+    "@fontsource/roboto": "^4.5.1",
+    "dexie": "^3.2.0",
+    "electron-is-dev": "latest",
+
+    "gl-matrix": "^3.4.3",
+    "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
+    "jszip": "^3.7.1",
+    "pj-math": "^0.0.6-alpha",
+    "prop-types": "^15.7.2",
+    "react": "latest",
+    "react-colorful": "^5.5.1",
+    "react-dom": "latest",
+    "react-scripts": "latest",
+    "web-vitals": "^0.2.4"
+  },
+  "main": "public/main.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron:serve": "concurrently -k  \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
+    "electron:start": "wait-on tcp:3000 && electron ."
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.example.electron-cra",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "latest",
+    "cross-env": "latest",
+    "electron": "^11.2.1",
+    "electron-builder": "^22.9.1",
+    "wait-on": "^5.2.1"
+  }
+}

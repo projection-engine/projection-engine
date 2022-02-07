@@ -1,0 +1,159 @@
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+    width: clamp(250px, 20vw, 325px);
+
+    overflow: hidden;
+}
+
+.wrapperContent {
+    height: 100%;
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
+    background-color: var(--background-1);
+
+    width: 100%;
+
+    border-radius: 5px;
+    border: var(--fabric-border-primary) 1px solid;
+
+    overflow-y: auto;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    font-size: .9rem;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+
+    color: var(--fabric-color-primary);
+    padding: 4px 4px 8px;
+    border-bottom: var(--fabric-border-primary) 1px solid;
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+    gap: 12px;
+    background-color: var(--background-1);
+    z-index: 999;
+
+}
+
+.row {
+    background-color: var(--background-2);
+    border-radius: 5px;
+}
+
+.row > summary {
+    list-style: none;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+
+    font-size: .9rem;
+    text-align: center;
+    color: var(--fabric-color-primary);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 4px;
+    padding: 4px;
+
+}
+
+.circle {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+.position {
+    max-width: 100%;
+    display: grid;
+}
+
+.form {
+    background-color: var(--background-2);
+    padding: 24px;
+
+    text-align: left;
+    border-radius: 5px;
+    display: grid;
+    gap: 8px;
+    border: var(--fabric-border-primary) 1px solid;
+}
+
+.form > legend {
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.formsWrapper {
+    display: grid;
+    /*flex-direction: column;*/
+    align-content: flex-start;
+
+    gap: 4px;
+    height: 100%;
+
+}
+
+.backgroundStripes {
+    background: linear-gradient(
+            to bottom,
+            var(--background-2),
+            var(--background-2) 50%,
+            var(--background-2a) 50%,
+            var(--background-2a)
+    );
+    background-size: 100% 50px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 6px;
+    background-color: var(--background-3);
+    padding: 2px;
+    border-radius: 5px;
+
+    overflow-x: auto;
+    user-select: none;
+    min-height: 25px;
+}
+
+.tabButton {
+    min-width: 25px;
+    width: 25px !important;
+    padding: 2px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.tabButton[data-highlight = 'true'] {
+    background-color: var(--background-1) !important;
+}
+
+.refreshButton{
+    padding: 4px !important;
+    display: flex;
+    align-items: center
+
+}
