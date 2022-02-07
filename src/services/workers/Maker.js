@@ -3,80 +3,66 @@ import JSZip from 'jszip'
 import EVENTS from "../../views/editor/utils/misc/EVENTS";
 
 export default class Maker {
-    _canDownload = true
-
-    make(id, settings, database, setAlert, load) {
-        if (this._canDownload) {
-            this._canDownload = false
-            load.pushEvent(EVENTS.PACKAGING_DATA)
-            let zip = new JSZip();
-            let assetsFolder = zip.folder("assets")
-            let promises = []
-            promises.push(new Promise(r => {
-                database.listFiles({project: id}).then(data => {
-                    let withBlobs = data.map(d => {
-                        return new Promise(resolve => database.getBlob(d.id).then(b => resolve({
-                            ...d,
-                            blob: b
-                        })).catch(() => resolve()))
-                    })
-
-                    Promise.all(withBlobs).then(res => {
-                        r({
-                            data: res,
-                            type: 'file'
-                        })
-                    })
+    static make(id, settings, database, setAlert, load) {
+        load.pushEvent(EVENTS.PACKAGING_DATA)
+        let zip = new JSZip();
+        let assetsFolder = zip.folder("assets")
+        let promises = []
+        promises.push(new Promise(r => {
+            database.listFiles({project: id}).then(data => {
+                let withBlobs = data.map(d => {
+                    return new Promise(resolve => database.getBlob(d.id).then(b => resolve({
+                        ...d,
+                        blob: b
+                    })).catch(() => resolve()))
                 })
-            }))
-            promises.push(new Promise(r => {
-                database.listEntities(id).then(data => {
+
+                Promise.all(withBlobs).then(res => {
                     r({
-                        data: data,
-                        type: 'entity'
+                        data: res,
+                        type: 'file'
                     })
                 })
-            }))
+            })
+        }))
+        promises.push(new Promise(r => {
+            database.listEntities(id).then(data => {
+                r({
+                    data: data,
+                    type: 'entity'
+                })
+            })
+        }))
 
-            Promise.all(promises).then(r => {
-                r.forEach(data => {
-                    switch (data.type) {
-                        case 'file': {
-                            data.data.forEach(d => {
-                                assetsFolder.file(d.id + '.file', JSON.stringify(d))
-                            })
+        Promise.all(promises).then(r => {
+            r.forEach(data => {
+                switch (data.type) {
+                    case 'file': {
+                        data.data.forEach(d => {
+                            assetsFolder.file(d.id + '.file', JSON.stringify(d))
+                        })
 
-                            break
-                        }
-                        case 'entity': {
-                            data.data.forEach(d => {
-                                assetsFolder.file(d.id + '.entity', JSON.stringify(d))
-                            })
-                            break
-                        }
-                        default:
-                            break
+                        break
                     }
-                })
-                database.getProject(id).then(pj => {
-                    zip.file(settings.projectName + '.project', JSON.stringify(pj))
-                    zip.generateAsync({type: "blob"}).then(function (content) {
-                        load.finishEvent(EVENTS.PACKAGING_DATA)
-                        // saveAs(content, settings.projectName + ".projection")
-
-                    })
-                    this._canDownload = true
-                })
-
-
+                    case 'entity': {
+                        data.data.forEach(d => {
+                            assetsFolder.file(d.id + '.entity', JSON.stringify(d))
+                        })
+                        break
+                    }
+                    default:
+                        break
+                }
             })
-        } else {
-            load.finishEvent(EVENTS.PACKAGING_DATA)
-            setAlert({
-                type: 'error',
-                message: 'Saving process in execution.'
+            database.getProject(id).then(pj => {
+                zip.file(settings.projectName + '.project', JSON.stringify(pj))
+                zip.generateAsync({type: "blob"}).then(function (content) {
+                    load.finishEvent(EVENTS.PACKAGING_DATA)
+                    // saveAs(content, settings.projectName + ".projection")
+
+                })
             })
-        }
+        })
     }
 
     static parse(file) {

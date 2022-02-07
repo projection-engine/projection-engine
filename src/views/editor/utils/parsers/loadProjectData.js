@@ -40,7 +40,7 @@ export function loadEntities(database, engine, id, callback) {
     database
         .listEntities(id)
         .then(entities => {
-            console.log(entities)
+
             loadData(
                 entities,
                 (skyboxImages,

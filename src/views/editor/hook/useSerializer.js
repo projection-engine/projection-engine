@@ -2,12 +2,13 @@ import {useCallback, useContext, useEffect, useState} from "react";
 
 import LoadProvider from "./LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
+import FileSystem from "../../../components/db/FileSystem";
 
-export default function useSerializer(engine, database, setAlert, settings, id) {
+export default function useSerializer(engine, setAlert, settings, id) {
     const [savingAlert, setSavingAlert] = useState(false)
     const load = useContext(LoadProvider)
+    const fileSystem = new FileSystem()
     let interval
-
 
     const saveEntities = () => {
         let promises = []
@@ -23,11 +24,11 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
                     }
                 const blobData = JSON.stringify({...e, components: blob})
 
-                database
+                fileSystem
                     .updateEntity(e.id, {linkedTo: e.linkedTo, blob: blobData})
                     .then(res => {
                         if (res === 0)
-                            database.table('entity').add({
+                            fileSystem.table('entity').add({
                                 id: e.id, linkedTo: e.linkedTo, project: id, blob: blobData
                             }).then(() => resolve()).catch(() => resolve())
                         else
@@ -44,7 +45,7 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
     const saveSettings = useCallback((isLast) => {
         let promise = []
 
-        if (database && id) {
+        if (id) {
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
                 setSavingAlert(false)
@@ -55,7 +56,7 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
 
                 const canvas = document.getElementById(id + '-canvas')
 
-                database.updateProject(id, {
+                fileSystem.updateProject(id, {
                     id,
                     meta: JSON.stringify({
                         preview: canvas.toDataURL(),
@@ -80,12 +81,12 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
         }
 
         return Promise.all(promise)
-    }, [settings, database, id])
+    }, [settings, id])
 
     const save = useCallback(() => {
         let promise = []
 
-        if (database && id)
+        if (id)
             promise = [new Promise(resolve => {
                 saveSettings(false).then(() => {
                     saveEntities().then(r => {
@@ -100,7 +101,7 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
             })]
 
         return Promise.all(promise)
-    }, [engine.entities, settings, database, id])
+    }, [engine.entities, settings, id])
 
     useEffect(() => {
         interval = setInterval(save, 300000)
@@ -108,6 +109,7 @@ export default function useSerializer(engine, database, setAlert, settings, id) 
             clearInterval(interval)
         }
     }, [settings.timestamp, engine.entities])
+
     return {
         saveSettings,
         savingAlert,

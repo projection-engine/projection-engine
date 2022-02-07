@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import logo from '../static/LOGO.png'
 import gitDark from '../static/github/dark.svg'
 import gitLight from '../static/github/light.svg'
-import Database from "../components/db/Database";
+import FileSystem from "../components/db/FileSystem";
 
 
 export default function Home(props) {
@@ -45,7 +45,7 @@ export default function Home(props) {
         load.pushEvent(EVENTS.PROJECT_LIST)
         load.finishEvent(EVENTS.PROJECT_SETTINGS)
 
-        const db = new Database('FS')
+        const db = new FileSystem('FS')
         setDatabase(db)
         refresh(db)
     }, [])
