@@ -10,7 +10,6 @@ import PickSystem from "../../../services/engine/ecs/systems/PickSystem";
 import Entity from "../../../services/engine/ecs/basic/Entity";
 import Engine from "../../../services/engine/Engine";
 import GridComponent from "../../../services/engine/ecs/components/GridComponent";
-import parseEngineEntities from "../../../services/engine/utils/parseEngineEntities";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings) {
@@ -96,7 +95,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
                 }
             })
 
-            parseEngineEntities(renderingProps, entities, renderingProps.materials, renderingProps.meshes, renderer.current)
+            renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
         } else if (gpu && id) {
             resizeObserver = new ResizeObserver(() => {
                 if (gpu && initialized)
@@ -104,7 +103,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
             })
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
-            parseEngineEntities(renderingProps, entities, renderingProps.materials, renderingProps.meshes, renderer.current)
+            renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
             if (!canRender)
                 renderer.current?.stop()
             if (canRender && !renderer.current?.keep)

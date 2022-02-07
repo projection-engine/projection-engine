@@ -6,7 +6,7 @@ import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../components/db/QuickAccessProvider";
-import DatabaseProvider from "../../components/db/DatabaseProvider";
+
 import ContextMenu from "../../components/context/ContextMenu";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
@@ -16,7 +16,7 @@ import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function SceneView(props) {
-    const database = useContext(DatabaseProvider)
+
     const quickAccess = useContext(QuickAccessProvider)
 
     const [searchString, setSearchString] = useState('')
@@ -43,8 +43,7 @@ export default function SceneView(props) {
         props.setAlert,
         props.executingAnimation,
 
-        quickAccess,
-        database
+        quickAccess
     )
 
     return (

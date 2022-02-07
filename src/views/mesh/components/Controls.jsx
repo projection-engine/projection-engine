@@ -3,12 +3,12 @@ import styles from '../styles/Mesh.module.css'
 import {Accordion, AccordionSummary} from "@f-ui/core";
 
 import {useContext} from "react";
-import DatabaseProvider from "../../../components/db/DatabaseProvider";
+
 import QuickAccessProvider from "../../../components/db/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
 
 export default function Controls(props) {
-    const database = useContext(DatabaseProvider)
+
     const quickAccess = useContext(QuickAccessProvider)
 
     if (props.engine.initialized)
@@ -19,7 +19,7 @@ export default function Controls(props) {
                     setAlert={() => null}
                     selected={props.engine.entities[1]}
                     gpu={props.engine.gpu}
-                    database={database}
+
                     submit={() => null}
                     quickAccess={quickAccess}
                 />

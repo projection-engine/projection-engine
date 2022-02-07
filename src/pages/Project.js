@@ -1,15 +1,14 @@
 import {useContext, useEffect, useMemo, useRef, useState} from "react";
 
-import {Alert, ThemeContext} from "@f-ui/core";
+import {Alert} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import useSettings from "../views/editor/hook/useSettings";
 import useEngine from "../views/editor/hook/useEngine";
 import LoadProvider from "../views/editor/hook/LoadProvider";
 import useSerializer from "../views/editor/hook/useSerializer";
-import FileSystem from "../components/db/FileSystem";
 import EVENTS from "../views/editor/utils/misc/EVENTS";
 import Maker from "../services/workers/Maker";
-import loadProject, {loadEntities} from "../views/editor/utils/parsers/loadProjectData";
+import loadProject from "../views/editor/utils/parsers/loadProjectData";
 import SettingsProvider from "../views/editor/hook/SettingsProvider";
 import useQuickAccess from "../components/db/useQuickAccess";
 import QuickAccessProvider from "../components/db/QuickAccessProvider";

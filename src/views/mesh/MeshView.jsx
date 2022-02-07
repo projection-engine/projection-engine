@@ -5,27 +5,27 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useVisualizer, {initializeMesh} from "./hook/useVisualizer";
+import useVisualizer from "./hook/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect} from "react";
-import DatabaseProvider from "../../components/db/DatabaseProvider";
+
 import LoadProvider from "../editor/hook/LoadProvider";
 import EVENTS from "../editor/utils/misc/EVENTS";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 
 export default function MeshView(props) {
     const engine = useVisualizer(false, false)
-    const database = useContext(DatabaseProvider)
+
     const load = useContext(LoadProvider)
     useEffect(() => {
         if (engine.initialized) {
             load.pushEvent(EVENTS.LOADING_VIEWPORT)
-            database.getFileWithBlob(props.file.fileID)
-                .then(res => {
-
-                    load.finishEvent(EVENTS.LOADING_VIEWPORT)
-                    initializeMesh(JSON.parse(res.blob), engine.gpu, engine.id, res.name, engine.dispatchEntities, engine.setMeshes, true)
-                })
+            // database.getFileWithBlob(props.file.fileID)
+            //     .then(res => {
+            //
+            //         load.finishEvent(EVENTS.LOADING_VIEWPORT)
+            //         initializeMesh(JSON.parse(res.blob), engine.gpu, engine.id, res.name, engine.dispatchEntities, engine.setMeshes, true)
+            //     })
         }
     }, [engine.initialized])
 

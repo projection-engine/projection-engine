@@ -4,7 +4,6 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 
 import LoadProvider from "../views/editor/hook/LoadProvider";
 import EVENTS from "../views/editor/utils/misc/EVENTS";
-import randomID from "../views/editor/utils/misc/randomID";
 import Maker from "../services/workers/Maker";
 import Projects from "../components/projects/Projects";
 import ThemeProvider from "../views/editor/hook/ThemeProvider";
@@ -14,40 +13,63 @@ import gitDark from '../static/github/dark.svg'
 import gitLight from '../static/github/light.svg'
 import FileSystem from "../components/db/FileSystem";
 
+const fs = window.require('fs')
+const path = window.require('path')
+const {app} = window.require('@electron/remote')
 
+const startPath = 'projects'
 export default function Home(props) {
     const [projects, setProjects] = useState([])
     const [openModal, setOpenModal] = useState(false)
     const [projectName, setProjectName] = useState('')
     const [alert, setAlert] = useState({})
 
-    const [database, setDatabase] = useState()
     const load = useContext(LoadProvider)
     const uploadRef = useRef()
     const theme = useContext(ThemeProvider)
-    const refresh = (db) => {
-        db?.listProject()
-            .then(res => {
-                window.alert(res)
-                setProjects(res.map(re => {
-                    return {
-                        ...re,
-                        meta: JSON.parse(re.meta),
-                        settings: JSON.parse(re.settings)
-                    }
+
+    const refresh = () => {
+        load.pushEvent(EVENTS.PROJECT_LIST)
+        fs.readdir(startPath, (e, res) => {
+            let promises = []
+
+            res.forEach(f => {
+                promises.push(new Promise((resolve, discard) => {
+                    let filename = path.join(startPath, f);
+                    fs.lstat(filename, (e, stat) => {
+                        if (stat.isDirectory()) {
+                            const meta = new Promise(r => fs.readFile(filename + '/.meta', (e, rs) => r(rs)))
+                            const settings = new Promise(r => fs.readFile(filename + '/.settings', (e, rs) => r(rs)))
+                            const parts = filename.split('\\')
+
+                            Promise.all([meta, settings])
+                                .then(r => {
+                                    resolve({
+                                        id: parts.pop(),
+                                        meta: r[0] ? JSON.parse(r[0].toString()) : undefined,
+                                        settings: r[1] ? JSON.parse(r[1].toString()) : undefined
+                                    })
+                                })
+
+                        } else
+                            discard()
+                    })
+
                 }))
-                load.finishEvent(EVENTS.PROJECT_LIST)
             })
+
+            Promise.all(promises)
+                .then(data => {
+                    console.log(data)
+                    setProjects(data)
+                    load.finishEvent(EVENTS.PROJECT_LIST)
+                })
+        })
     }
 
     useEffect(() => {
-
-        load.pushEvent(EVENTS.PROJECT_LIST)
         load.finishEvent(EVENTS.PROJECT_SETTINGS)
-
-        const db = new FileSystem('FS')
-        setDatabase(db)
-        refresh(db)
+        refresh()
     }, [])
 
 
@@ -73,37 +95,18 @@ export default function Home(props) {
                     disabled={projectName === ''}
                     className={styles.submitButton}
                     onClick={() => {
-                        const now = (new Date()).toDateString()
-                        const newData = {
-                            id: randomID(),
-                            meta: JSON.stringify({
-                                lastModification: now,
-                                entities: 0,
-                                meshes: 0,
-                                materials: 0
-                            }),
-                            settings: JSON.stringify({
-                                projectName: projectName
-                            })
-                        }
-
-                        database?.postProject(newData)
-                            .then(r => {
-
-                                setAlert({
-                                    type: 'success',
-                                    message: 'Project created.'
-                                })
+                        FileSystem.createProject(projectName)
+                            .then(res => {
                                 setProjects(prev => {
                                     return [...prev, {
-                                        ...newData,
-                                        settings: JSON.parse(newData.settings),
-                                        meta: JSON.parse(newData.meta)
+                                        id: res,
+                                        meta: {
+                                            name: projectName
+                                        }
                                     }]
                                 })
-                                setProjectName('')
-                                setOpenModal(false)
                             })
+
                     }}>
                     Create project
                 </Button>
@@ -119,7 +122,8 @@ export default function Home(props) {
                 </div>
 
                 <div style={{display: 'flex', gap: '4px'}}>
-                    <Button onClick={() => theme.setDark(!theme.dark)} className={styles.button} variant={'outlined'}>
+                    <Button onClick={() => theme.setDark(!theme.dark)} className={styles.button}
+                            variant={'outlined'}>
                         <span className={'material-icons-round'}>{theme.dark ? 'dark_mode' : 'light_mode'}</span>
                     </Button>
 
@@ -138,42 +142,42 @@ export default function Home(props) {
                    accept={['.projection']}
                    onChange={f => {
                        load.pushEvent(EVENTS.PROJECT_IMPORT)
-                       Maker.parse(f.target.files[0], database)
+                       Maker.parse(f.target.files[0])
                            .then((res) => {
-                               let promises = []
-                               const pj = res.find(data => data.type === 0)
-
-                               if (!projects.find(p => p.id === JSON.parse(pj.data).id)) {
-                                   res.forEach(data => {
-                                       const parsed = JSON.parse(data.data)
-
-                                       if (data.type === 0)
-                                           promises.push(new Promise(resolve => {
-                                               database?.postProject({
-                                                   id: parsed.id,
-                                                   settings: parsed.settings,
-                                                   meta: parsed.meta
-                                               }).then(() => resolve()).catch(() => resolve())
-                                           }))
-                                       else if (data.type === 1)
-                                           promises.push(new Promise(resolve => {
-                                               database?.postFileWithBlob(parsed, parsed.blob).then(() => resolve()).catch(() => resolve())
-                                           }))
-                                       else if (data.type === 2) {
-                                           promises.push(new Promise(resolve => database?.postEntity(parsed).then(() => resolve()).catch(() => resolve())))
-                                       }
-                                   })
-                                   Promise.all(promises).then(() => {
-                                       load.finishEvent(EVENTS.PROJECT_IMPORT)
-                                       refresh(database)
-                                   })
-                               } else {
-                                   load.finishEvent(EVENTS.PROJECT_IMPORT)
-                                   setAlert({
-                                       type: 'error',
-                                       message: 'Project already exists.'
-                                   })
-                               }
+                               // let promises = []
+                               // const pj = res.find(data => data.type === 0)
+                               //
+                               // if (!projects.find(p => p.id === JSON.parse(pj.data).id)) {
+                               //     res.forEach(data => {
+                               //         const parsed = JSON.parse(data.data)
+                               //
+                               //         if (data.type === 0)
+                               //             promises.push(new Promise(resolve => {
+                               //                 database?.postProject({
+                               //                     id: parsed.id,
+                               //                     settings: parsed.settings,
+                               //                     meta: parsed.meta
+                               //                 }).then(() => resolve()).catch(() => resolve())
+                               //             }))
+                               //         else if (data.type === 1)
+                               //             promises.push(new Promise(resolve => {
+                               //                 database?.postFileWithBlob(parsed, parsed.blob).then(() => resolve()).catch(() => resolve())
+                               //             }))
+                               //         else if (data.type === 2) {
+                               //             promises.push(new Promise(resolve => database?.postEntity(parsed).then(() => resolve()).catch(() => resolve())))
+                               //         }
+                               //     })
+                               //     Promise.all(promises).then(() => {
+                               //         load.finishEvent(EVENTS.PROJECT_IMPORT)
+                               //         refresh(database)
+                               //     })
+                               // } else {
+                               //     load.finishEvent(EVENTS.PROJECT_IMPORT)
+                               //     setAlert({
+                               //         type: 'error',
+                               //         message: 'Project already exists.'
+                               //     })
+                               // }
 
                            })
                        f.target.value = ''
@@ -183,9 +187,18 @@ export default function Home(props) {
             <Projects
                 onNew={() => setOpenModal(true)}
                 onLoad={() => uploadRef.current.click()}
-                database={database}
-
-                refresh={() => refresh(database)} load={load} projects={projects}
+                deleteProject={pjID => {
+                    load.pushEvent(EVENTS.PROJECT_DELETE)
+                    fs.rm('projects/'+pjID, { recursive: true, force: true }, (e) => {
+                        console.log(e)
+                        load.finishEvent(EVENTS.PROJECT_DELETE)
+                        setProjects(prev => {
+                            return prev.filter(e => e.id !== pjID)
+                        })
+                    })
+                }}
+                renameProject={newName => null}
+                refresh={() => refresh()} load={load} projects={projects}
                 redirect={id => {
                     props.redirect(id)
                 }}

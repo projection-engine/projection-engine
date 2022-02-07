@@ -10,10 +10,7 @@ export default function importMesh(file, engine, setAlert) {
 
     try {
         if (file.type === 'mesh') {
-            console.trace(file.blob)
             const objLoaded = JSON.parse(file.blob)
-            console.log(objLoaded)
-
             let mesh = engine.meshes.find(m => m.id === file.id)
             if (!mesh) {
                 const newMesh = new Mesh({

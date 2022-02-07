@@ -14,7 +14,6 @@ import TransformSystem from "../../../services/engine/ecs/systems/TransformSyste
 import ShadowMapSystem from "../../../services/engine/ecs/systems/ShadowMapSystem";
 import DeferredSystem from "../../../services/engine/ecs/systems/DeferredSystem";
 import PostProcessingSystem from "../../../services/engine/ecs/systems/PostProcessingSystem";
-import parseEngineEntities from "../../../services/engine/utils/parseEngineEntities";
 import SkyboxComponent from "../../../services/engine/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../../../services/engine/ecs/components/DirectionalLightComponent";
 import MaterialComponent from "../../../services/engine/ecs/components/MaterialComponent";
@@ -23,6 +22,8 @@ import TransformComponent from "../../../services/engine/ecs/components/Transfor
 import Mesh from "../../../services/engine/renderer/elements/Mesh";
 import {SHADING_MODELS} from "../../editor/hook/useSettings";
 import skybox from '../../../static/default_skybox.jpg'
+
+
 export default function useVisualizer(initializePlane, initializeSphere) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
@@ -81,7 +82,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 
             setInitialized(true)
 
-            parseEngineEntities({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes, renderer.current)
+            renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
         } else if (gpu && id) {
 
             resizeObserver = new ResizeObserver(() => {
@@ -91,7 +92,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
             renderer.current?.stop()
-            parseEngineEntities({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes, renderer.current)
+            renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
 
 
             renderer.current?.start(entities)

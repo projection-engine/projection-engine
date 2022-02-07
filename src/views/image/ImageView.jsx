@@ -1,8 +1,5 @@
 import PropTypes from "prop-types";
 import {useContext, useEffect, useRef, useState} from "react";
-import DatabaseProvider from "../../components/db/DatabaseProvider";
-import LoadProvider from "../editor/hook/LoadProvider";
-import QuickAccessProvider from "../../components/db/QuickAccessProvider";
 import styles from './styles/ImageView.module.css'
 import ResizableBar from "../../components/resizable/ResizableBar";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
@@ -10,9 +7,7 @@ import handleBoardScroll from "../material/utils/handleBoardScroll";
 import ControlBar from "./components/ControlBar";
 
 export default function ImageView(props) {
-    const database = useContext(DatabaseProvider)
-    const load = useContext(LoadProvider)
-    const quickAccess = useContext(QuickAccessProvider)
+
     const ref = useRef()
     const [scale, setScale] = useState(1)
     const toolBarContext = useContext(ControlProvider)
