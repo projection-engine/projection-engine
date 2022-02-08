@@ -1,6 +1,5 @@
 import {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from "react";
-import randomID from "../../editor/utils/misc/randomID";
-import LoadProvider from "../../editor/hook/LoadProvider";
+
 import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 import {enableBasics} from "../../../services/engine/utils/utils";
 import Entity from "../../../services/engine/ecs/basic/Entity";
@@ -20,8 +19,11 @@ import MaterialComponent from "../../../services/engine/ecs/components/MaterialC
 import MeshComponent from "../../../services/engine/ecs/components/MeshComponent";
 import TransformComponent from "../../../services/engine/ecs/components/TransformComponent";
 import Mesh from "../../../services/engine/renderer/elements/Mesh";
-import {SHADING_MODELS} from "../../editor/hook/useSettings";
+
 import skybox from '../../../static/default_skybox.jpg'
+import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import randomID from "../../../pages/project/utils/misc/randomID";
+import {SHADING_MODELS} from "../../../pages/project/hook/useSettings";
 
 
 export default function useVisualizer(initializePlane, initializeSphere) {
@@ -29,7 +31,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-    const [entities, dispatchEntities] = useReducer(entityReducer, [])
+    const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
     const [initialized, setInitialized] = useState(false)
     const load = useContext(LoadProvider)
     const renderer = useRef()

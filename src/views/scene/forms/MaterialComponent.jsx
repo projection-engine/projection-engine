@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
-import EVENTS from "../../editor/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+
 
 export default function MaterialComponent(props) {
     const [texture, setTexture] = useState('')

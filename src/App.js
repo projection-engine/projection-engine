@@ -1,13 +1,16 @@
-import './pages/styles/globals.css'
+import './globals.css'
 import {Fabric} from "@f-ui/core";
-import styles from './pages/styles/App.module.css'
-import useGlobalOptions from "./views/editor/hook/useGlobalOptions";
+import styles from './App.module.css'
+
 import useLoading from "./components/loader/useLoading";
-import ThemeProvider from "./views/editor/hook/ThemeProvider";
+
 import {useLayoutEffect, useState} from "react";
-import LoadProvider from "./views/editor/hook/LoadProvider";
-import Home from "./pages/Home";
-import Project from "./pages/Project";
+
+import Home from "./pages/home/Home";
+import Project from "./pages/project/Project";
+import ThemeProvider from "./pages/project/hook/ThemeProvider";
+import LoadProvider from "./pages/project/hook/LoadProvider";
+import useGlobalOptions from "./pages/project/hook/useGlobalOptions";
 
 const fs = window.require('fs')
 export default function App( ) {

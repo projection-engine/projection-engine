@@ -1,4 +1,4 @@
-import EVENTS from "../../views/editor/utils/misc/EVENTS";
+
 
 const fs = window.require('fs');
 export default class Maker {

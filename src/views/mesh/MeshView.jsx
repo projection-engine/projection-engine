@@ -9,9 +9,10 @@ import useVisualizer from "./hook/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect} from "react";
 
-import LoadProvider from "../editor/hook/LoadProvider";
-import EVENTS from "../editor/utils/misc/EVENTS";
+
 import ControlProvider from "../../components/tabs/components/ControlProvider";
+import LoadProvider from "../../pages/project/hook/LoadProvider";
+import EVENTS from "../../pages/project/utils/misc/EVENTS";
 
 export default function MeshView(props) {
     const engine = useVisualizer(false, false)

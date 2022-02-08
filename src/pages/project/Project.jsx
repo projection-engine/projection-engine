@@ -2,30 +2,34 @@ import {useContext, useEffect, useMemo, useRef, useState} from "react";
 
 import {Alert} from "@f-ui/core";
 import styles from './styles/Project.module.css'
-import useSettings from "../views/editor/hook/useSettings";
-import useEngine from "../views/editor/hook/useEngine";
-import LoadProvider from "../views/editor/hook/LoadProvider";
-import useSerializer from "../views/editor/hook/useSerializer";
-import EVENTS from "../views/editor/utils/misc/EVENTS";
-import Maker from "../services/workers/Maker";
-import SettingsProvider from "../views/editor/hook/SettingsProvider";
-import useQuickAccess from "../components/db/useQuickAccess";
-import QuickAccessProvider from "../components/db/QuickAccessProvider";
-import PropTypes from "prop-types";
-import Preferences from "../components/preferences/Preferences";
-import GlobalOptions from "../components/options/GlobalOptions";
-import Tabs from "../components/tabs/Tabs";
-import ViewportOptions from "../components/viewport/ViewportOptions";
-import Viewport from "../components/viewport/Viewport";
-import handleDrop from "../views/editor/utils/handleDrop";
-import ResizableBar from "../components/resizable/ResizableBar";
-import SceneView from "../views/scene/SceneView";
 
-import useControl from "../views/editor/hook/useControl";
-import getOptions from "../views/editor/utils/getOptions";
-import useTabs from "../views/editor/hook/useTabs";
-import ProjectLoader from "../services/workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../services/engine/ecs/utils/entityReducer";
+import Maker from "../../services/workers/Maker";
+
+import useQuickAccess from "../../components/db/useQuickAccess";
+import QuickAccessProvider from "../../components/db/QuickAccessProvider";
+import PropTypes from "prop-types";
+import Preferences from "../../components/preferences/Preferences";
+import GlobalOptions from "../../components/options/GlobalOptions";
+import Tabs from "../../components/tabs/Tabs";
+import ViewportOptions from "../../components/viewport/ViewportOptions";
+import Viewport from "../../components/viewport/Viewport";
+
+import ResizableBar from "../../components/resizable/ResizableBar";
+import SceneView from "../../views/scene/SceneView";
+
+import ProjectLoader from "../../services/workers/ProjectLoader";
+import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
+import useControl from "./hook/useControl";
+import getOptions from "./utils/getOptions";
+import useSerializer from "./hook/useSerializer";
+import LoadProvider from "./hook/LoadProvider";
+import useEngine from "./hook/useEngine";
+import useSettings from "./hook/useSettings";
+import EVENTS from "./utils/misc/EVENTS";
+import useTabs from "./hook/useTabs";
+import SettingsProvider from "./hook/SettingsProvider";
+import handleDrop from "./utils/handleDrop";
+import FilesView from "../../views/files/FilesView";
 
 
 export default function Project(props) {
@@ -82,12 +86,10 @@ export default function Project(props) {
                     load.finishEvent(EVENTS.PROJECT_DATA)
                 })
                 .catch(e => {
-                    console.trace(e)
                     load.finishEvent(EVENTS.PROJECT_DATA)
                 })
         }
     }, [engine.gpu])
-
 
     return (
 
@@ -183,28 +185,29 @@ export default function Project(props) {
                         ]}
                     />
 
-                    {/*{settings.filesVisibility ?*/}
-                    {/*    <FilesView*/}
-                    {/*        setAlert={setAlert}*/}
-                    {/*        currentTab={currentTab}*/}
-                    {/*        label={'FilesView'} id={props.id}*/}
-                    {/*        openEngineFile={(fileID, fileName) => {*/}
-                    {/*            if (!filesLoaded.find(file => file.fileID === fileID)) {*/}
-                    {/*                load.pushEvent(EVENTS.LOAD_FILE)*/}
-                    {/*                // database.getFileWithBlob(fileID).then(res => {*/}
-                    {/*                //     setFilesLoaded(prev => [...prev, {*/}
-                    {/*                //         blob: res.blob,*/}
-                    {/*                //         name: fileName,*/}
-                    {/*                //         fileID: fileID,*/}
-                    {/*                //         type: res.type*/}
-                    {/*                //     }])*/}
-                    {/*                //     props.load.finishEvent(EVENTS.LOAD_FILE)*/}
-                    {/*                // })*/}
-                    {/*            }*/}
-                    {/*        }}*/}
-                    {/*    />*/}
-                    {/*    :*/}
-                    {/*    null}*/}
+                    {settings.filesVisibility ?
+                        <FilesView
+                            setAlert={setAlert}
+                            currentTab={currentTab}
+                            label={'FilesView'} id={props.id}
+                            openEngineFile={(fileID, fileName) => {
+                                // TODO - OPEN FILE
+                                // if (!filesLoaded.find(file => file.fileID === fileID)) {
+                                //     load.pushEvent(EVENTS.LOAD_FILE)
+                                //     // database.getFileWithBlob(fileID).then(res => {
+                                //     //     setFilesLoaded(prev => [...prev, {
+                                //     //         blob: res.blob,
+                                //     //         name: fileName,
+                                //     //         fileID: fileID,
+                                //     //         type: res.type
+                                //     //     }])
+                                //     //     props.load.finishEvent(EVENTS.LOAD_FILE)
+                                //     // })
+                                // }
+                            }}
+                        />
+                        :
+                        null}
                 </div>
             </QuickAccessProvider.Provider>
         </SettingsProvider.Provider>
