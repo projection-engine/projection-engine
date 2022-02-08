@@ -7,12 +7,12 @@
     "@f-ui/charts": "latest",
     "@f-ui/core": "latest",
     "@fontsource/roboto": "latest",
+
     "dexie": "^3.2.0",
     "electron-is-dev": "latest",
     "fs-extra": "^10.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "jszip": "^3.7.1",
     "pj-math": "^0.0.6-alpha",
     "prop-types": "latest",
     "react": "latest",

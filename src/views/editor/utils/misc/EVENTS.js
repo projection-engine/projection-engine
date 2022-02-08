@@ -1,8 +1,8 @@
 export default {
-    PROJECT_SETTINGS: 'Project settings',
-    PROJECT_DATA: "Scene data",
+
+    PROJECT_DATA: "Loading project data",
     PROJECT_DELETE: "Deleting project",
-    PROJECT_LIST: "Projects",
+    PROJECT_LIST: "Loading projects",
     PROJECT_SAVE: "Saving project",
     PROJECT_FILES: "Project files",
     PROJECT_IMPORT: "Importing project",

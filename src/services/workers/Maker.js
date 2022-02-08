@@ -1,118 +1,38 @@
-import JSZip from 'jszip'
-
 import EVENTS from "../../views/editor/utils/misc/EVENTS";
 
+const fs = window.require('fs');
 export default class Maker {
-    static make(id, settings, database, setAlert, load) {
-        load.pushEvent(EVENTS.PACKAGING_DATA)
-        let zip = new JSZip();
-        let assetsFolder = zip.folder("assets")
-        let promises = []
-        promises.push(new Promise(r => {
-            database.listFiles({project: id}).then(data => {
-                let withBlobs = data.map(d => {
-                    return new Promise(resolve => database.getBlob(d.id).then(b => resolve({
-                        ...d,
-                        blob: b
-                    })).catch(() => resolve()))
-                })
-
-                Promise.all(withBlobs).then(res => {
-                    r({
-                        data: res,
-                        type: 'file'
-                    })
-                })
-            })
-        }))
-        promises.push(new Promise(r => {
-            database.listEntities(id).then(data => {
-                r({
-                    data: data,
-                    type: 'entity'
-                })
-            })
-        }))
-
-        Promise.all(promises).then(r => {
-            r.forEach(data => {
-                switch (data.type) {
-                    case 'file': {
-                        data.data.forEach(d => {
-                            assetsFolder.file(d.id + '.file', JSON.stringify(d))
-                        })
-
-                        break
-                    }
-                    case 'entity': {
-                        data.data.forEach(d => {
-                            assetsFolder.file(d.id + '.entity', JSON.stringify(d))
-                        })
-                        break
-                    }
-                    default:
-                        break
-                }
-            })
-            database.getProject(id).then(pj => {
-                zip.file(settings.projectName + '.project', JSON.stringify(pj))
-                zip.generateAsync({type: "blob"}).then(function (content) {
-                    load.finishEvent(EVENTS.PACKAGING_DATA)
-                    // saveAs(content, settings.projectName + ".projection")
-
-                })
-            })
-        })
+    static make(id, load, setAlert) {
+        //
+        // load.pushEvent(EVENTS.PACKAGING_DATA)
+        //
+        // let output = fs.createWriteStream('packages/' + id + '.zip');
+        // let archive = archiver('zip', {
+        //     zlib: {level: 9}
+        // });
+        //
+        // output.on('close', function () {
+        //     load.finishEvent(EVENTS.PACKAGING_DATA)
+        //     setAlert({type: 'success', message: 'Compression was successful.'})
+        //
+        //
+        // });
+        //
+        // archive.on('error', function (err) {
+        //     load.finishEvent(EVENTS.PACKAGING_DATA)
+        //     setAlert({type: 'error', message: 'Error during packaging process.'})
+        //
+        //
+        // });
+        //
+        // archive.pipe(output);
+        // archive.directory('projects/' + id, true);
+        // archive.finalize().then(r => {
+        //     load.finishEvent(EVENTS.PACKAGING_DATA)
+        // })
     }
 
     static parse(file) {
-        let promise
-        let zip = new JSZip();
 
-        try {
-            promise = new Promise(resolve => {
-                zip.loadAsync(file).then(decompressed => {
-                    const files = Object.values(decompressed.files)
-                    const foundEntities = files.filter(f => f.name.includes('.entity'))
-                    const foundFiles = files.filter(f => f.name.includes('.file'))
-                    let promises = [
-                        new Promise(r => {
-                            const pj = files.find(f => f.name.includes('.project'))
-                            if (pj)
-                                pj.async('string').then(res => r({
-                                    data: res,
-                                    type: 0
-                                })).catch(() => r())
-                            else
-                                r()
-                        })
-                    ]
-
-
-                    foundFiles.forEach(f => {
-                        promises.push(new Promise(r => {
-                            f.async('string').then(res => r({data: res, type: 1})).catch(() => r({}))
-                        }))
-                    })
-                    foundEntities.forEach(f => {
-                        promises.push(new Promise(r => {
-                            f.async('string').then(res => r({data: res, type: 2})).catch(() => r({}))
-
-                        }))
-                    })
-
-                    Promise.all(promises).then(res => {
-                        resolve(res)
-                    })
-                })
-            })
-        } catch (r) {
-
-            promise = new Promise(r => {
-                r([])
-            })
-        }
-
-        return promise
     }
 }

@@ -24,14 +24,7 @@ export default function useSettings() {
         sceneVisibility: true,
         viewportOptionsVisibility: true
     })
-    const setData = ({key, data}) => {
-        setSettings(prev => {
-            return {
-                ...prev,
-                [key]: data
-            }
-        })
-    }
+ 
     return useMemo(() => {
         return new Proxy(settings, {
                 get(obj, key) {

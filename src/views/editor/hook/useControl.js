@@ -6,7 +6,7 @@ import TransformComponent from "../../../services/engine/ecs/components/Transfor
 import {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 import Entity from "../../../services/engine/ecs/basic/Entity";
 
-export default function useControl(engine, save, settings) {
+export default function useControl(engine, save, settings, fullscreenRef) {
     const [toClone, setToClone] = useState()
     let isCtrl = false, isShift = false, isAlt = false
     const handleKey = (e) => {
@@ -76,6 +76,22 @@ export default function useControl(engine, save, settings) {
                 isAlt = false
         }
     }
+
+    const handleFullscreen = () => {
+        if (!document.fullscreenElement)
+            settings.fullscreen = false
+    }
+    useEffect(() => {
+        if (settings.fullscreen) {
+            fullscreenRef.current?.requestFullscreen()
+            document.addEventListener('fullscreenchange', handleFullscreen)
+        } else if (document.fullscreenElement)
+            document.exitFullscreen().catch()
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreen)
+        }
+    }, [settings.fullscreen, fullscreenRef])
+
 
     useEffect(() => {
         setToClone(undefined)

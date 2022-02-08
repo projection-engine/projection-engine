@@ -1,13 +1,21 @@
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 
 import MeshView from "../../mesh/MeshView";
 import MaterialView from "../../material/MaterialView";
 import ImageView from "../../image/ImageView";
 
 
-export default function useTabs(filesLoaded, currentTab, setCurrentTab, setFilesLoaded, database, setAlert) {
+export default function useTabs(    setAlert, quickAccess) {
+    const fileSystem = quickAccess.fileSystem
+    const [filesLoaded, setFilesLoaded] = useState([])
+    const [currentTab, setCurrentTab] = useState(0)
+    useEffect(() => {
+        if (filesLoaded.length > 0)
+            setCurrentTab(filesLoaded.length)
+    }, [filesLoaded])
+
     const mapFile = (file, index, children, i) => {
-        console.log(i)
+
         return {
             canClose: true,
             icon: <span style={{fontSize: '1.2rem'}}
@@ -30,24 +38,16 @@ export default function useTabs(filesLoaded, currentTab, setCurrentTab, setFiles
     const materials = useMemo(() => {
         return filesLoaded.filter(f => f.type === 'material').map((file, index) => mapFile(file, index, (
             <MaterialView
-                workflow={'PBRMaterial'}
                 setAlert={setAlert}
                 submitPackage={(previewImage, pack, close) => {
-                    database.updateFile(file.fileID, {previewImage: previewImage})
-                    database
-                        .updateBlob(file.fileID, JSON.stringify(pack))
+                    fileSystem
+                        .updateAsset(file.fileID + '.material', JSON.stringify(pack), previewImage)
                         .then(() => {
                             setAlert({
                                 type: 'success',
                                 message: 'Saved'
                             })
-                        }).catch(e => {
-                        setAlert({
-                            type: 'error',
-                            message: 'Error during saving process'
                         })
-                    })
-
                     if (close) {
                         if ((currentTab) === index)
                             setCurrentTab(filesLoaded.length - 1)
@@ -68,7 +68,7 @@ export default function useTabs(filesLoaded, currentTab, setCurrentTab, setFiles
         ), 'view_in_ar'))
     }, [filesLoaded])
 
-    const images =  useMemo(() => {
+    const images = useMemo(() => {
         return filesLoaded.filter(f => f.type === 'image').map((file, index) => mapFile(file, index, (
             <ImageView file={file}/>
         ), 'image'))
@@ -76,7 +76,9 @@ export default function useTabs(filesLoaded, currentTab, setCurrentTab, setFiles
     return {
         meshes,
         materials,
-        images
+        images,
+          setFilesLoaded,
+        currentTab, setCurrentTab
     }
 
 }

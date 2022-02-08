@@ -122,12 +122,22 @@ export default function useForm(
                         quickAccess={quickAccess}
                         database={database}
                         selected={selected.components.MaterialComponent}
-                        submit={(mat, textures) => {
+                        submit={(mat) => {
 
                             let found = engine.materials.find(m => m.id === mat.id)
                             if (!found)
                                 engine.setMaterials(prev => {
-                                    return [...prev, new MaterialInstance(engine.gpu, mat.id, textures[0], textures[1], textures[2], textures[3], textures[4], textures[5])]
+                                    return [...prev,
+                                        new MaterialInstance(
+                                            engine.gpu,
+                                            mat.id,
+                                            mat.albedo,
+                                            mat.metallic,
+                                            mat.roughness,
+                                            mat.normal,
+                                            mat.height,
+                                            mat.ao,
+                                        )]
                                 })
 
                             selected.components.MaterialComponent.materialID = mat.id

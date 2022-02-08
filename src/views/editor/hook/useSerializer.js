@@ -2,12 +2,11 @@ import {useCallback, useContext, useEffect, useState} from "react";
 
 import LoadProvider from "./LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
-import FileSystem from "../../../components/db/FileSystem";
 
-export default function useSerializer(engine, setAlert, settings, id) {
+export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
     const [savingAlert, setSavingAlert] = useState(false)
     const load = useContext(LoadProvider)
-    const fileSystem = new FileSystem()
+    const fileSystem = quickAccess.fileSystem
     let interval
 
     const saveEntities = () => {
@@ -16,33 +15,26 @@ export default function useSerializer(engine, setAlert, settings, id) {
             promises.push(new Promise((resolve) => {
                 let blob = {...e.components}
 
+
                 if (e.components.TransformComponent)
                     blob.TransformComponent = {
                         scaling: e.components.TransformComponent.scaling,
                         rotation: e.components.TransformComponent.rotation,
                         translation: e.components.TransformComponent.translation
                     }
-                const blobData = JSON.stringify({...e, components: blob})
-
                 fileSystem
-                    .updateEntity(e.id, {linkedTo: e.linkedTo, blob: blobData})
-                    .then(res => {
-                        if (res === 0)
-                            fileSystem.table('entity').add({
-                                id: e.id, linkedTo: e.linkedTo, project: id, blob: blobData
-                            }).then(() => resolve()).catch(() => resolve())
-                        else
-                            resolve()
+                    .updateEntity({
+                        ...e,
+                        components: blob
                     })
+                    .then(() => resolve())
             }))
         })
 
-        if (promises.length === 0)
-            load.finishEvent(EVENTS.PROJECT_SAVE)
         return Promise.all(promises)
     }
 
-    const saveSettings = useCallback((isLast) => {
+    const saveSettings = useCallback(() => {
         let promise = []
 
         if (id) {
@@ -56,27 +48,23 @@ export default function useSerializer(engine, setAlert, settings, id) {
 
                 const canvas = document.getElementById(id + '-canvas')
 
-                fileSystem.updateProject(id, {
-                    id,
-                    meta: JSON.stringify({
-                        preview: canvas.toDataURL(),
-                        entities: engine.entities.length,
-                        meshes: engine.meshes.length,
-                        materials: engine.materials.length,
-                        lastModification: (new Date()).toDateString(),
-                        creation: settings.creationDate
-                    }),
-                    settings: JSON.stringify(settings)
-                }).then(() => {
-                    if (isLast) {
-                        setAlert({
-                            type: 'success',
-                            message: 'Project saved.'
-                        })
-                        load.finishEvent(EVENTS.PROJECT_SAVE)
-                    }
-                    resolve()
-                }).catch(() => resolve())
+                fileSystem
+                    .updateProject(
+                        {
+                            preview: canvas.toDataURL(),
+                            entities: engine.entities.length,
+                            meshes: engine.meshes.length,
+                            materials: engine.materials.length,
+                            lastModification: (new Date()).toDateString(),
+                            creation: settings.creationDate
+                        },
+                        settings)
+                    .then(() => {
+
+
+
+                        resolve()
+                    })
             }))
         }
 
@@ -85,19 +73,21 @@ export default function useSerializer(engine, setAlert, settings, id) {
 
     const save = useCallback(() => {
         let promise = []
-
+        load.pushEvent(EVENTS.PROJECT_SAVE)
         if (id)
             promise = [new Promise(resolve => {
-                saveSettings(false).then(() => {
-                    saveEntities().then(r => {
-                        setAlert({
-                            type: 'success',
-                            message: 'Project saved.'
-                        })
-                        load.finishEvent(EVENTS.PROJECT_SAVE)
-                        resolve()
+                saveSettings()
+                    .then(() => {
+                        saveEntities()
+                            .then(r => {
+                            setAlert({
+                                type: 'success',
+                                message: 'Project saved.'
+                            })
+                            load.finishEvent(EVENTS.PROJECT_SAVE)
+                            resolve()
+                        }).catch(() => resolve())
                     }).catch(() => resolve())
-                }).catch(() => resolve())
             })]
 
         return Promise.all(promise)

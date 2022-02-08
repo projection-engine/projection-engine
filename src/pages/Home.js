@@ -15,7 +15,6 @@ import FileSystem from "../components/db/FileSystem";
 
 const fs = window.require('fs')
 const path = window.require('path')
-const {app} = window.require('@electron/remote')
 
 const startPath = 'projects'
 export default function Home(props) {
@@ -190,7 +189,7 @@ export default function Home(props) {
                 deleteProject={pjID => {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
                     fs.rm('projects/'+pjID, { recursive: true, force: true }, (e) => {
-                        console.log(e)
+
                         load.finishEvent(EVENTS.PROJECT_DELETE)
                         setProjects(prev => {
                             return prev.filter(e => e.id !== pjID)

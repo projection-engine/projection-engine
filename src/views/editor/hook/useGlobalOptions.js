@@ -8,7 +8,7 @@ export default function useGlobalOptions() {
 
         setDark( localStorage.getItem('dark') === '0')
         const c = localStorage.getItem('color')
-        console.log(c)
+
         if (c)
             setAccentColor(c)
 
