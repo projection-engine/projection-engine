@@ -3,6 +3,8 @@ import {useCallback, useContext, useEffect} from "react";
 import LoadProvider from "./LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
+import cloneClass from "../utils/misc/cloneClass";
+import {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
 
@@ -42,6 +44,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
     const save = useCallback(() => {
         let promise = []
+        const fs = window.require('fs')
         load.pushEvent(EVENTS.PROJECT_SAVE)
         if (id)
             promise = [new Promise(resolve => {
@@ -51,20 +54,32 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                             .then(all => {
                                 const cleanUp = all.map(a => {
                                     return new Promise(((resolve1, reject) => {
-                                        if (!engine.entities.find(e => e.id === a.data.id)){
-                                            console.log('/logic/' + a.data.id + '.entity')
+                                        if (!engine.entities.find(e => e.id === a.data.id)) {
+
                                             fileSystem.deleteFile('/logic/' + a.data.id + '.entity', false)
                                                 .then((er) => resolve1(er))
-                                        }
-                                        else
+                                        } else
                                             resolve1()
                                     }))
                                 })
-                                console.trace(cleanUp)
+                                const newEntities = engine.entities.map(e => {
+                                    const foundExisting = all.find(a => a.data.id === e.id)
+                                    const clone = cloneClass(e)
+                                    if (foundExisting) {
+                                        if (clone.components.MeshComponent && !fs.existsSync(clone.components.MeshComponent.meshID))
+                                            clone.components.MeshComponent.meshID = foundExisting.data.components.MeshComponent.meshID
+                                        if (clone.components.SkyboxComponent && clone.components.SkyboxComponent.imageID && !fs.existsSync(clone.components.SkyboxComponent.imageID))
+                                            clone.components.SkyboxComponent.imageID = foundExisting.data.components.SkyboxComponent._imageID
+                                        if (clone.components.MaterialComponent && clone.components.MaterialComponent.materialID && !fs.existsSync(clone.components.MaterialComponent.materialID))
+                                            clone.components.MaterialComponent.materialID = foundExisting.data.components.MaterialComponent.materialID
+                                    }
+
+                                    return clone
+                                })
                                 Promise.all(cleanUp)
                                     .then((er) => {
                                         console.trace(er)
-                                        saveEntities(engine.entities, fileSystem)
+                                        saveEntities(newEntities, fileSystem)
                                             .then(r => {
                                                 setAlert({
                                                     type: 'success',
@@ -72,8 +87,10 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                                 })
                                                 load.finishEvent(EVENTS.PROJECT_SAVE)
                                                 resolve()
+                                                engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
                                             }).catch(() => resolve())
                                     })
+
 
                             })
 

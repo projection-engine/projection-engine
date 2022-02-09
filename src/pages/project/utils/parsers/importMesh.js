@@ -29,39 +29,16 @@ export default function importMesh(objLoaded, engine, setAlert, id) {
         transformation.rotation = objLoaded.rotation
         transformation.translation = objLoaded.translation
 
+        newEntity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
+        newEntity.components.TransformComponent = transformation
+        newEntity.components.PickComponent = new PickComponent(undefined, engine.entities.length)
+        newEntity.components.MaterialComponent = new MaterialComponent()
+
+
         engine.dispatchEntities({
             type: ENTITY_ACTIONS.ADD,
             payload: newEntity
         })
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                data: new MeshComponent(undefined, mesh.id),
-                entityID: newEntity.id
-            }
-        })
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                data: new MaterialComponent(),
-                entityID: newEntity.id
-            }
-        })
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                data: new PickComponent(undefined, engine.entities.length),
-                entityID: newEntity.id
-            }
-        })
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                data: transformation,
-                entityID: newEntity.id
-            }
-        })
-
         setAlert({
             type: 'success',
             message: 'Loaded successfully.'

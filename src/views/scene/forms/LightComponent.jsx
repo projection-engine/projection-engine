@@ -2,9 +2,8 @@ import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
-
-import {RgbColorPicker} from 'react-colorful'
 import Range from "../../../components/range/Range";
+import ColorPicker from "../../../components/color/ColorPicker";
 
 export default function LightComponent(props) {
     const getNewState = () => {
@@ -139,15 +138,18 @@ export default function LightComponent(props) {
 
             <div className={styles.inputs} style={{justifyContent: 'space-between'}}>
                 <div className={styles.label} style={{width: 'fit-content'}}>Color</div>
-                <RgbColorPicker color={state.color}
-                                onChange={c => {
+                <ColorPicker
+                    value={state.color} submit={color => {
+                    const split = color.match(/[\d.]+/g)
+                    const [r, g, b] = split.map(v => parseFloat(v))
                     setState(prev => {
                         return {
                             ...prev,
-                            color: c
+                            color: {r: r, g: g, b: b}
                         }
                     })
-                    props.submitColor([c.r, c.g, c.b])
+                    props.submitColor([r, g, b])
+
                 }}/>
             </div>
         </Accordion>
