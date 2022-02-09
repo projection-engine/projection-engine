@@ -189,16 +189,38 @@ export default function Home(props) {
                 onLoad={() => uploadRef.current.click()}
                 deleteProject={pjID => {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
-                    fs.rm('projects/'+pjID, { recursive: true, force: true }, (e) => {
-
+                    fs.rm('projects/' + pjID, {recursive: true, force: true}, (e) => {
                         load.finishEvent(EVENTS.PROJECT_DELETE)
                         setProjects(prev => {
                             return prev.filter(e => e.id !== pjID)
                         })
                     })
                 }}
-                renameProject={newName => null}
-                refresh={() => refresh()} load={load} projects={projects}
+                renameProject={(newName, projectID) => {
+                    // TODO - RENAME PROJECT
+                    const pathName = 'projects/' + projectID + '/.meta'
+                    fs.readFile(pathName, (e, res) => {
+                        if (res && !e) {
+                            fs.writeFile(pathName, JSON.stringify({
+                                ...JSON.parse(res.toString()),
+                                name: newName
+                            }), (e) => {
+                                if (!e)
+                                    setAlert({
+                                        type: 'success',
+                                        message: 'Project renamed'
+                                    })
+                                else
+                                    setAlert({
+                                        type: 'error',
+                                        message: 'Error renaming project.'
+                                    })
+                            })
+                        }
+                    })
+                }}
+                refresh={() => refresh()}
+                load={load} projects={projects}
                 redirect={id => {
                     props.redirect(id)
                 }}

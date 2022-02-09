@@ -68,14 +68,13 @@ export default function TransformComponent(props) {
                     }}
                 />
             </div>
-
-
             <div className={styles.inputs}>
                 <div className={styles.label}>Scale</div>
                 <Range
                     accentColor={'red'}
                     label={'x'}
                     value={state.xS}
+                    minValue={0.1}
                     onFinish={() => props.submitScaling('x', state.xS)}
                     handleChange={e => {
                         if (parseFloat(e) > 0.1) {
@@ -88,6 +87,7 @@ export default function TransformComponent(props) {
                     accentColor={'#00ff00'}
                     label={'y'}
                     value={state.yS}
+                    minValue={0.1}
                     onFinish={() => props.submitScaling('y', state.yS)}
                     handleChange={e => {
                         if (parseFloat(e) > 0.1) {
@@ -99,6 +99,7 @@ export default function TransformComponent(props) {
                     accentColor={'#0095ff'}
                     label={'z'}
                     value={state.zS}
+                    minValue={0.1}
                     onFinish={() => props.submitScaling('z', state.zS)}
                     handleChange={e => {
                         if (parseFloat(e) > 0.1) {

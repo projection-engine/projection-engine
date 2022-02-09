@@ -3,8 +3,8 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import LoadProvider from "./LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
 
-export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
-    const [savingAlert, setSavingAlert] = useState(false)
+export default function useSerializer(engine,  setAlert, settings, id, quickAccess) {
+
     const load = useContext(LoadProvider)
     const fileSystem = quickAccess.fileSystem
     let interval
@@ -40,17 +40,12 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         if (id) {
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
-                setSavingAlert(false)
-                setAlert({
-                    type: 'info',
-                    message: 'Saving project.'
-                })
-
                 const canvas = document.getElementById(id + '-canvas')
 
                 fileSystem
                     .updateProject(
                         {
+                            name: settings.projectName,
                             preview: canvas.toDataURL(),
                             entities: engine.entities.length,
                             meshes: engine.meshes.length,
@@ -60,9 +55,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                         },
                         settings)
                     .then(() => {
-
-
-
                         resolve()
                     })
             }))
@@ -102,8 +94,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
     return {
         saveSettings,
-        savingAlert,
-        setSavingAlert,
+
         save,
     }
 }

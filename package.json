@@ -7,18 +7,19 @@
     "@f-ui/charts": "latest",
     "@f-ui/core": "latest",
     "@fontsource/roboto": "latest",
-
     "dexie": "^3.2.0",
     "electron-is-dev": "latest",
-    "fs-extra": "^10.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
+
+
     "pj-math": "^0.0.6-alpha",
     "prop-types": "latest",
     "react": "latest",
     "react-colorful": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
+    "rimraf": "^3.0.2",
     "web-vitals": "latest",
     "webpack": "^5.68.0"
   },

@@ -39,7 +39,7 @@ export default function Project(props) {
     const engine = useEngine(props.id, executingAnimation, settings)
     const load = useContext(LoadProvider)
     const quickAccess = useQuickAccess(props.id, load)
-    const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
+    const serializer = useSerializer(engine,setAlert, settings, props.id, quickAccess)
     const fullscreenRef = useRef()
 
     useControl(engine, serializer.save, settings, fullscreenRef)
@@ -114,14 +114,6 @@ export default function Project(props) {
                         redirect={props.redirect}
                         save={serializer.save}
                     />
-                    <Alert
-                        open={serializer.savingAlert}
-
-                        handleClose={() => serializer.setSavingAlert(false)}
-                        onClick={() => props.save()} variant={'info'}
-                        delay={5000}>
-                        Saving project (2 min).
-                    </Alert>
 
                     <Tabs
                         fallbackOptions={fallbackOptions}
