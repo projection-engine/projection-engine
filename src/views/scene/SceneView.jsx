@@ -22,7 +22,7 @@ export default function SceneView(props) {
     const [searchString, setSearchString] = useState('')
 
     const data = useMemo(() => {
-        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.GridComponent && (searchString.length > 0 ?  d.name.toLowerCase().includes(searchString) : true))
+        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.GridComponent && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
         return [{
             id: 0,
             label: 'Scene',
@@ -76,14 +76,10 @@ export default function SceneView(props) {
                         label: 'Remove entity',
                         icon: <span className={'material-icons-round'}>delete</span>,
                         onClick: (node) => {
-                            database.deleteEntity(node.getAttribute('data-node'))
-                                .then(() => {
-                                    props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.REMOVE,
-                                        payload: {entityID: node.getAttribute('data-node')}
-                                    })
-                                })
-
+                            props.engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.REMOVE,
+                                payload: {entityID: node.getAttribute('data-node')}
+                            })
                         }
                     }
                 ]}
@@ -104,7 +100,7 @@ export default function SceneView(props) {
                         const current = props.engine.entities.find(f => f.id === target)
                         const dropTarget = props.engine.entities.find(f => f.id === event.dataTransfer.getData('text'))
 
-                        if(!current){
+                        if (!current) {
                             props.engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE,
                                 payload: {
@@ -113,8 +109,7 @@ export default function SceneView(props) {
                                     data: undefined
                                 }
                             })
-                        }
-                        else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+                        } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
                             props.engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE,
                                 payload: {
