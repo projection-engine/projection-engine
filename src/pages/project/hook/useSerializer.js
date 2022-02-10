@@ -44,7 +44,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
     const save = useCallback(() => {
         let promise = []
-        const fs = window.require('fs')
+
         load.pushEvent(EVENTS.PROJECT_SAVE)
         if (id)
             promise = [new Promise(resolve => {
@@ -53,33 +53,18 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                         ProjectLoader.getEntities(fileSystem)
                             .then(all => {
                                 const cleanUp = all.map(a => {
-                                    return new Promise(((resolve1, reject) => {
+                                    return new Promise(((resolve1) => {
                                         if (!engine.entities.find(e => e.id === a.data.id)) {
-
-                                            fileSystem.deleteFile('/logic/' + a.data.id + '.entity', false)
+                                            fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true)
                                                 .then((er) => resolve1(er))
                                         } else
                                             resolve1()
                                     }))
                                 })
-                                const newEntities = engine.entities.map(e => {
-                                    const foundExisting = all.find(a => a.data.id === e.id)
-                                    const clone = cloneClass(e)
-                                    if (foundExisting) {
-                                        if (clone.components.MeshComponent && !fs.existsSync(clone.components.MeshComponent.meshID))
-                                            clone.components.MeshComponent.meshID = foundExisting.data.components.MeshComponent.meshID
-                                        if (clone.components.SkyboxComponent && clone.components.SkyboxComponent.imageID && !fs.existsSync(clone.components.SkyboxComponent.imageID))
-                                            clone.components.SkyboxComponent.imageID = foundExisting.data.components.SkyboxComponent._imageID
-                                        if (clone.components.MaterialComponent && clone.components.MaterialComponent.materialID && !fs.existsSync(clone.components.MaterialComponent.materialID))
-                                            clone.components.MaterialComponent.materialID = foundExisting.data.components.MaterialComponent.materialID
-                                    }
 
-                                    return clone
-                                })
                                 Promise.all(cleanUp)
                                     .then((er) => {
-                                        console.trace(er)
-                                        saveEntities(newEntities, fileSystem)
+                                        saveEntities(engine.entities, fileSystem)
                                             .then(r => {
                                                 setAlert({
                                                     type: 'success',
@@ -87,7 +72,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                                 })
                                                 load.finishEvent(EVENTS.PROJECT_SAVE)
                                                 resolve()
-                                                engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
                                             }).catch(() => resolve())
                                     })
 

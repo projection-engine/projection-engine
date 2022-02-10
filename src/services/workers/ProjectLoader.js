@@ -17,7 +17,7 @@ import Mesh from "../engine/renderer/elements/Mesh";
 export default class ProjectLoader {
     static async getEntities(fileSystem) {
         let settings = new Promise(resolve => {
-                fileSystem.readFile(fileSystem.path + '/.settings', 'json')
+                fileSystem.readFile(fileSystem.path + '\\.settings', 'json')
                     .then(res => {
                         resolve({
                             type: 'settings',
@@ -26,7 +26,7 @@ export default class ProjectLoader {
                     })
             }),
             meta = new Promise(resolve => {
-                fileSystem.readFile(fileSystem.path + '/.meta', 'json')
+                fileSystem.readFile(fileSystem.path + '\\.meta', 'json')
                     .then(res => {
                         resolve({
                             type: 'meta',
@@ -34,12 +34,12 @@ export default class ProjectLoader {
                         })
                     })
             }),
-            entities = fileSystem.fromDirectory(fileSystem.path + '/logic', '.entity')
+            entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
         return Promise
             .all([settings, meta, ...entities.map(e => {
                 return new Promise(resolve => {
-                    fileSystem.readFile(fileSystem.path + '/logic/' + e)
+                    fileSystem.readFile(fileSystem.path + '\\logic\\' + e)
                         .then(res => {
                             resolve({
                                 type: 'entity',
@@ -50,94 +50,134 @@ export default class ProjectLoader {
             })])
     }
 
-    static async loadProject(gpu, fileSystem) {
-        return new Promise(rootResolve => {
-            ProjectLoader
-                .getEntities(fileSystem)
-                .then(res => {
-                    let settings = res[0]
-                    let meta = res[1]
-                    let entities = res.filter(e => e.type === 'entity')
+    static async readFromRegistry(fileID, fileSystem) {
+        return new Promise(resolve => {
+            const fs = window.require('fs')
 
-                    let meshes = entities
-                            .filter(e => {
+            fileSystem.readFile(fileSystem.path + '\\assetsRegistry\\' + fileID + '.reg', 'json')
+                .then(lookUpTable => {
 
-                                return e.data.components?.MeshComponent
+                    if (lookUpTable !== null) {
+                        fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
+                            .then(fileData => {
+                                resolve(fileData)
                             })
-                            .map(e => new Promise(r => {
+                    }
+                })
+        })
+    }
 
-                                fileSystem.readFile(e.data.components.MeshComponent?.meshID, 'json')
-                                    .then(d => {
-                                        r({
-                                            type: 'mesh',
-                                            data: d,
-                                            id: e.data.components.MeshComponent?.meshID
-                                        })
+    static async cleanUpRegistry(fileSystem) {
+        const fs = window.require('fs')
+        new Promise(resolve => {
+            fileSystem.readRegistry()
+                .then(files => {
+                    let deletePromises = []
+                    files
+                        .forEach(f => {
+                            const path = fileSystem.path + '\\assets\\' + f.path
+
+                            if (!fs.existsSync(path))
+                                deletePromises.push(new Promise(resolve2 => {
+                                    fs.rm(f.registryPath, () => {
+                                        resolve2()
                                     })
-                            })),
-                        skyboxes = entities
-                            .filter(e => e.data.components?.SkyboxComponent)
-                            .map(e => new Promise(r => {
-                                fileSystem.readFile(e.data.components.SkyboxComponent._imageID)
-                                    .then(d => r({
-                                        type: 'skybox',
-                                        data: d,
-                                        id: e.data.components.SkyboxComponent._imageID
-                                    }))
-                            })),
-                        materials = entities
-                            .filter(e => e.data.components?.MaterialComponent && e.data.components.MaterialComponent.materialID !== undefined)
-                            .map(e => new Promise((r, discard) => {
-
-                                fileSystem.readFile(e.data.components.MaterialComponent.materialID, 'json')
-                                    .then((d) => {
-
-                                        if (d !== null)
-                                            r({
-                                                type: 'material',
-                                                data: d,
-                                                id: e.data.components.MaterialComponent.materialID
-                                            })
-                                        else
-                                            discard()
-                                    })
-                            }))
-
-                    Promise.all([...meshes, ...skyboxes, ...materials])
-                        .then(loaded => {
-
-                            let meshData = loaded.filter(e => e.type === 'mesh' && e.data !== null),
-                                skyboxData = loaded.filter(e => e.type === 'skybox').map(e => e.data),
-                                materialData = loaded.filter(e => e.type === 'material').map(e => e.data)
-
-                            entities = entities.map((entity, index) => {
-                                return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, materialData, gpu)
-                            })
-                            materials = materials.map((mat) => {
-                                return ProjectLoader.mapMaterial(mat.data, gpu)
-                            })
-
-                            rootResolve({
-                                meta,
-                                settings,
-                                entities,
-                                materials,
-                                meshes: meshData.map(m => {
-                                    return new Mesh({
-                                        vertices: m.data.vertices,
-                                        indices: m.data.indices,
-                                        normals: m.data.normals,
-                                        uvs: m.data.uvs,
-                                        id: m.id,
-                                        maxBoundingBox: m.data.maxBoundingBox,
-                                        minBoundingBox: m.data.minBoundingBox,
-                                        gpu: gpu,
-                                        tangents: m.data.tangents
-                                    })
-                                })
-                            })
+                                }))
+                        })
+                    Promise.all(deletePromises)
+                        .then(() => {
+                            resolve()
                         })
                 })
+        })
+    }
+
+    static async loadProject(gpu, fileSystem) {
+        return new Promise(rootResolve => {
+            ProjectLoader.cleanUpRegistry(fileSystem)
+                .then(() => {
+                    ProjectLoader
+                        .getEntities(fileSystem)
+                        .then(res => {
+                            let settings = res[0]
+                            let meta = res[1]
+                            let entities = res.filter(e => e.type === 'entity')
+
+                            let meshes = entities
+                                    .filter(e => e.data.components?.MeshComponent)
+                                    .map(e => new Promise(r => {
+
+                                        ProjectLoader.readFromRegistry(e.data.components.MeshComponent?.meshID, fileSystem)
+                                            .then(fileData => {
+                                                r({
+                                                    type: 'mesh',
+                                                    data: JSON.parse(fileData),
+                                                    id: e.data.components.MeshComponent?.meshID
+                                                })
+                                            })
+                                    })),
+                                skyboxes = entities
+                                    .filter(e => e.data.components?.SkyboxComponent)
+                                    .map(e => new Promise(r => {
+                                        ProjectLoader.readFromRegistry(e.data.components.SkyboxComponent?._imageID, fileSystem)
+                                            .then(fileData => {
+                                                r({
+                                                    type: 'skybox',
+                                                    data: fileData,
+                                                    id: e.data.components.SkyboxComponent?._imageID
+                                                })
+                                            })
+                                    })),
+                                materials = entities
+                                    .filter(e => e.data.components?.MaterialComponent && e.data.components.MaterialComponent.materialID !== undefined)
+                                    .map(e => new Promise(r => {
+                                        ProjectLoader.readFromRegistry(e.data.components.MaterialComponent.materialID, fileSystem)
+                                            .then(fileData => {
+                                                r({
+                                                    type: 'material',
+                                                    data: fileData,
+                                                    id: e.data.components.MaterialComponent.materialID
+                                                })
+                                            })
+                                    }))
+
+                            Promise.all([...meshes, ...skyboxes, ...materials])
+                                .then(loaded => {
+
+                                    let meshData = loaded.filter(e => e.type === 'mesh' && e.data !== null),
+                                        skyboxData = loaded.filter(e => e.type === 'skybox').map(e => e.data),
+                                        materialData = loaded.filter(e => e.type === 'material').map(e => e.data)
+
+                                    entities = entities.map((entity, index) => {
+                                        return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, materialData, gpu)
+                                    })
+                                    materials = materials.map((mat) => {
+                                        return ProjectLoader.mapMaterial(mat.data, gpu)
+                                    })
+
+                                    rootResolve({
+                                        meta,
+                                        settings,
+                                        entities,
+                                        materials,
+                                        meshes: meshData.map(m => {
+                                            return new Mesh({
+                                                vertices: m.data.vertices,
+                                                indices: m.data.indices,
+                                                normals: m.data.normals,
+                                                uvs: m.data.uvs,
+                                                id: m.id,
+                                                maxBoundingBox: m.data.maxBoundingBox,
+                                                minBoundingBox: m.data.minBoundingBox,
+                                                gpu: gpu,
+                                                tangents: m.data.tangents
+                                            })
+                                        })
+                                    })
+                                })
+                        })
+                })
+
         })
     }
 

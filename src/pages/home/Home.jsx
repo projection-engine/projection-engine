@@ -17,7 +17,7 @@ import EVENTS from "../project/utils/misc/EVENTS";
 const fs = window.require('fs')
 const path = window.require('path')
 
-const startPath = 'projects'
+const startPath = localStorage.getItem('basePath') + '\\projects\\'
 export default function Home(props) {
     const [projects, setProjects] = useState([])
     const [openModal, setOpenModal] = useState(false)
@@ -34,16 +34,19 @@ export default function Home(props) {
             let promises = []
 
             res.forEach(f => {
-                promises.push(new Promise((resolve, discard) => {
-                    let filename = path.join(startPath, f);
+                promises.push(new Promise((resolve,) => {
+                    let filename = startPath + f;
+
                     fs.lstat(filename, (e, stat) => {
-                        if (stat.isDirectory()) {
+
+                        if (stat && stat.isDirectory()) {
                             const meta = new Promise(r => fs.readFile(filename + '/.meta', (e, rs) => r(rs)))
                             const settings = new Promise(r => fs.readFile(filename + '/.settings', (e, rs) => r(rs)))
                             const parts = filename.split('\\')
 
                             Promise.all([meta, settings])
                                 .then(r => {
+
                                     resolve({
                                         id: parts.pop(),
                                         meta: r[0] ? JSON.parse(r[0].toString()) : undefined,
@@ -52,7 +55,7 @@ export default function Home(props) {
                                 })
 
                         } else
-                            discard()
+                            resolve()
                     })
 
                 }))
@@ -60,18 +63,16 @@ export default function Home(props) {
 
             Promise.all(promises)
                 .then(data => {
-                    console.log(data)
-                    setProjects(data)
+
+                    setProjects(data.filter(e => e !== undefined))
                     load.finishEvent(EVENTS.PROJECT_LIST)
                 })
         })
     }
 
     useEffect(() => {
-        load.finishEvent(EVENTS.PROJECT_SETTINGS)
         refresh()
     }, [])
-
 
     return (
         <div className={styles.wrapper}>
@@ -81,10 +82,12 @@ export default function Home(props) {
                     {alert.message}
                 </div>
             </Alert>
-            <Modal open={openModal} handleClose={() => {
-                setProjectName('')
-                setOpenModal(false)
-            }} className={styles.modal}>
+            <Modal
+                open={openModal}
+                handleClose={() => {
+                    setProjectName('')
+                    setOpenModal(false)
+                }} className={styles.modal}>
                 <TextField
                     handleChange={e => setProjectName(e.target.value)}
                     label={'Project name'}
@@ -106,6 +109,9 @@ export default function Home(props) {
                                     }]
                                 })
                             })
+
+                        setProjectName('')
+                        setOpenModal(false)
 
                     }}>
                     Create project
@@ -131,7 +137,7 @@ export default function Home(props) {
                             className={styles.button}
                             variant={'outlined'}>
                         <img style={{width: '30px'}} alt={'github'}
-                             src={theme.dark ? gitDark : gitLight}/>
+                             src={!theme.dark ? gitDark : gitLight}/>
                     </Button>
 
                 </div>
@@ -189,16 +195,20 @@ export default function Home(props) {
                 onLoad={() => uploadRef.current.click()}
                 deleteProject={pjID => {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
-                    fs.rm('projects/' + pjID, {recursive: true, force: true}, (e) => {
-                        load.finishEvent(EVENTS.PROJECT_DELETE)
-                        setProjects(prev => {
-                            return prev.filter(e => e.id !== pjID)
+
+                    fs.rm(
+                        localStorage.getItem('basePath') +'\\projects\\' +  pjID,
+                        {recursive: true, force: true},
+                        (e) => {
+                            console.log(e)
+                            load.finishEvent(EVENTS.PROJECT_DELETE)
+                            setProjects(prev => {
+                                return prev.filter(e => e.id !== pjID)
+                            })
                         })
-                    })
                 }}
                 renameProject={(newName, projectID) => {
-                    // TODO - RENAME PROJECT
-                    const pathName = 'projects/' + projectID + '/.meta'
+                    const pathName = localStorage.getItem('basePath') + projectID + '/.meta'
                     fs.readFile(pathName, (e, res) => {
                         if (res && !e) {
                             fs.writeFile(pathName, JSON.stringify({

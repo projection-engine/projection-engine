@@ -55,7 +55,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
 
 
     const updateSystems = () => {
-        console.log(settings)
+
         renderer.current.systems = [
             new PhysicsSystem(),
             new TransformSystem(),

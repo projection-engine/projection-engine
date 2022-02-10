@@ -7,7 +7,7 @@ import React from "react";
 
 
 export default function getTabIcon(key) {
-    console.log(key)
+
     switch (key) {
         case 'TransformComponent':
             return 'transform'

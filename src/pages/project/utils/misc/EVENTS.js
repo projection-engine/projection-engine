@@ -24,5 +24,5 @@ export default {
     LOADING_VIEWPORT: 'Loading viewport',
     PACKAGING_DATA: 'Packaging data for download.',
     LOADING_MATERIAL: 'Loading material',
-    LOAD_FILES: 'Loading files'
+    LOAD_FILES: 'Loading assets'
 }

@@ -12,17 +12,12 @@ import ThemeProvider from "./pages/project/hook/ThemeProvider";
 import LoadProvider from "./pages/project/hook/LoadProvider";
 import useGlobalOptions from "./pages/project/hook/useGlobalOptions";
 
-const fs = window.require('fs')
 export default function App( ) {
 
     const global = useGlobalOptions()
     const load = useLoading(global.dark, global.accentColor)
     const [currentTab, setCurrentTab] = useState(0)
 
-    useLayoutEffect(() => {
-        if(!fs.existsSync('projects'))
-            fs.mkdir('projects', () => null)
-    }, [])
     return (
         <Fabric
             language={"en"}
@@ -32,7 +27,6 @@ export default function App( ) {
         >
             <ThemeProvider.Provider value={global}>
                 <LoadProvider.Provider value={load}>
-
                     {currentTab === 0 ?
                         <Home redirect={(id) => {
 
