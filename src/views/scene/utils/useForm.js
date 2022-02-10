@@ -255,8 +255,7 @@ export default function useForm(
                         submit={data => {
                             selected.components.SkyboxComponent.hdrTexture = {
                                 blob: data.blob,
-                                imageID: data.id,
-                                type: data.type
+                                imageID: data.id
                             }
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,

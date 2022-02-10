@@ -17,7 +17,8 @@ export default function importMesh(objLoaded, engine, setAlert, id) {
                 id: id,
                 gpu: engine.gpu,
                 maxBoundingBox: objLoaded.maxBoundingBox,
-                minBoundingBox: objLoaded.minBoundingBox
+                minBoundingBox: objLoaded.minBoundingBox,
+                wireframeBuffer: true
             })
             engine.setMeshes(prev => [...prev, newMesh])
             mesh = newMesh

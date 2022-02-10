@@ -5,8 +5,8 @@ import styles from './styles/Project.module.css'
 
 import Maker from "../../services/workers/Maker";
 
-import useQuickAccess from "../../components/db/useQuickAccess";
-import QuickAccessProvider from "../../components/db/QuickAccessProvider";
+import useQuickAccess from "./hook/useQuickAccess";
+import QuickAccessProvider from "./hook/QuickAccessProvider";
 import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
@@ -39,7 +39,7 @@ export default function Project(props) {
     const engine = useEngine(props.id, executingAnimation, settings)
     const load = useContext(LoadProvider)
     const quickAccess = useQuickAccess(props.id, load)
-    const serializer = useSerializer(engine,setAlert, settings, props.id, quickAccess)
+    const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
     const fullscreenRef = useRef()
 
     useControl(engine, serializer.save, settings, fullscreenRef)
@@ -55,7 +55,7 @@ export default function Project(props) {
     const {
         meshes,
         images,
-        materials,
+        materials, setFilesLoaded,
         currentTab, setCurrentTab
     } = useTabs(
         setAlert,
@@ -75,8 +75,9 @@ export default function Project(props) {
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
                     })
                     if (res.settings)
-                        Object.keys(res.settings).forEach(key => {
-                            settings[key] = res.settings[key]
+                        Object.keys(res.settings.data).forEach(key => {
+                            settings[key] = res.settings.data[key]
+                            console.log(key, res.settings.data[key])
                         })
                     if (res.meta)
                         Object.keys(res.meta).forEach(key => {
@@ -183,19 +184,31 @@ export default function Project(props) {
                             currentTab={currentTab}
                             label={'FilesView'} id={props.id}
                             openEngineFile={(fileID, fileName) => {
-                                // TODO - OPEN FILE
-                                // if (!filesLoaded.find(file => file.fileID === fileID)) {
-                                //     load.pushEvent(EVENTS.LOAD_FILE)
-                                //     // database.getFileWithBlob(fileID).then(res => {
-                                //     //     setFilesLoaded(prev => [...prev, {
-                                //     //         blob: res.blob,
-                                //     //         name: fileName,
-                                //     //         fileID: fileID,
-                                //     //         type: res.type
-                                //     //     }])
-                                //     //     props.load.finishEvent(EVENTS.LOAD_FILE)
-                                //     // })
-                                // }
+                                load.pushEvent(EVENTS.LOAD_FILE)
+                                quickAccess.fileSystem.readRegistryFile(fileID)
+                                    .then(res => {
+                                        if (res) {
+
+                                            load.finishEvent(EVENTS.LOAD_FILE)
+                                            setFilesLoaded(prev => {
+                                                return [
+                                                    ...prev,
+                                                    {
+                                                        registryID: fileID,
+                                                        type: res.path.split('.').pop(),
+                                                        name: fileName
+                                                    }
+                                                ]
+                                            })
+
+                                        } else {
+                                            load.finishEvent(EVENTS.LOAD_FILE)
+                                            setAlert({
+                                                type: 'error',
+                                                message: 'Could not load file.'
+                                            })
+                                        }
+                                    })
                             }}
                         />
                         :

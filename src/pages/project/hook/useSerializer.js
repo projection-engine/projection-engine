@@ -3,8 +3,6 @@ import {useCallback, useContext, useEffect} from "react";
 import LoadProvider from "./LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
-import cloneClass from "../utils/misc/cloneClass";
-import {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
 
@@ -46,14 +44,17 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         let promise = []
 
         load.pushEvent(EVENTS.PROJECT_SAVE)
+
+
         if (id)
-            promise = [new Promise(resolve => {
+            return new Promise(resolve => {
                 saveSettings()
                     .then(() => {
                         ProjectLoader.getEntities(fileSystem)
                             .then(all => {
-                                const cleanUp = all.map(a => {
+                                let cleanUp = all.map(a => {
                                     return new Promise(((resolve1) => {
+
                                         if (!engine.entities.find(e => e.id === a.data.id)) {
                                             fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true)
                                                 .then((er) => resolve1(er))
@@ -79,9 +80,8 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                             })
 
                     }).catch(() => resolve())
-            })]
-
-        return Promise.all(promise)
+            })
+        else return new Promise(resolve => resolve())
     }, [engine.entities, settings, id])
 
     useEffect(() => {

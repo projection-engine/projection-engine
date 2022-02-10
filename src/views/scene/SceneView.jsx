@@ -5,7 +5,7 @@ import React, {useContext, useMemo, useState} from "react";
 import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
-import QuickAccessProvider from "../../components/db/QuickAccessProvider";
+import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
 
 import ContextMenu from "../../components/context/ContextMenu";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";

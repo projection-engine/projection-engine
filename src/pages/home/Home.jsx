@@ -15,9 +15,8 @@ import LoadProvider from "../project/hook/LoadProvider";
 import EVENTS from "../project/utils/misc/EVENTS";
 
 const fs = window.require('fs')
-const path = window.require('path')
 
-const startPath = localStorage.getItem('basePath') + '\\projects\\'
+let startPath = localStorage.getItem('basePath') + '\\projects\\'
 export default function Home(props) {
     const [projects, setProjects] = useState([])
     const [openModal, setOpenModal] = useState(false)
@@ -31,35 +30,38 @@ export default function Home(props) {
     const refresh = () => {
         load.pushEvent(EVENTS.PROJECT_LIST)
         fs.readdir(startPath, (e, res) => {
+
             let promises = []
+            if(!fs.existsSync(startPath))
+                fs.mkdirSync(startPath)
+            if (!e)
+                res.forEach(f => {
+                    promises.push(new Promise((resolve,) => {
+                        let filename = startPath + f;
 
-            res.forEach(f => {
-                promises.push(new Promise((resolve,) => {
-                    let filename = startPath + f;
+                        fs.lstat(filename, (e, stat) => {
 
-                    fs.lstat(filename, (e, stat) => {
+                            if (stat && stat.isDirectory()) {
+                                const meta = new Promise(r => fs.readFile(filename + '/.meta', (e, rs) => r(rs)))
+                                const settings = new Promise(r => fs.readFile(filename + '/.settings', (e, rs) => r(rs)))
+                                const parts = filename.split('\\')
 
-                        if (stat && stat.isDirectory()) {
-                            const meta = new Promise(r => fs.readFile(filename + '/.meta', (e, rs) => r(rs)))
-                            const settings = new Promise(r => fs.readFile(filename + '/.settings', (e, rs) => r(rs)))
-                            const parts = filename.split('\\')
+                                Promise.all([meta, settings])
+                                    .then(r => {
 
-                            Promise.all([meta, settings])
-                                .then(r => {
-
-                                    resolve({
-                                        id: parts.pop(),
-                                        meta: r[0] ? JSON.parse(r[0].toString()) : undefined,
-                                        settings: r[1] ? JSON.parse(r[1].toString()) : undefined
+                                        resolve({
+                                            id: parts.pop(),
+                                            meta: r[0] ? JSON.parse(r[0].toString()) : undefined,
+                                            settings: r[1] ? JSON.parse(r[1].toString()) : undefined
+                                        })
                                     })
-                                })
 
-                        } else
-                            resolve()
-                    })
+                            } else
+                                resolve()
+                        })
 
-                }))
-            })
+                    }))
+                })
 
             Promise.all(promises)
                 .then(data => {
@@ -71,7 +73,8 @@ export default function Home(props) {
     }
 
     useEffect(() => {
-        refresh()
+        if (localStorage.getItem('basePath') !== null)
+            refresh()
     }, [])
 
     return (
@@ -193,11 +196,12 @@ export default function Home(props) {
             <Projects
                 onNew={() => setOpenModal(true)}
                 onLoad={() => uploadRef.current.click()}
+
                 deleteProject={pjID => {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
 
                     fs.rm(
-                        localStorage.getItem('basePath') +'\\projects\\' +  pjID,
+                        localStorage.getItem('basePath') + '\\projects\\' + pjID,
                         {recursive: true, force: true},
                         (e) => {
                             console.log(e)

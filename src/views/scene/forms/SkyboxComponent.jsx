@@ -2,37 +2,46 @@ import styles from '../styles/Forms.module.css'
 import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
+import {Accordion, AccordionSummary} from "@f-ui/core";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)
-
+    const fileSystem = props.quickAccess.fileSystem
     useEffect(() => {
         if (props.selected.imageID)
-            props.database
-                .getFile(props.selected.imageID)
-                .then(res => {
-                    setCurrentImage({
-                        name: res.name,
-                        id: res.id,
-                        blob: res.previewImage,
-                        creationDate: res.creationDate
-                    })
-                })
+            setCurrentImage(props.quickAccess.images.find(i => i.registryID === props.selected.imageID))
+
     }, [])
 
     return (
 
-        <div className={styles.formWrapper}>
-            <Selector
-                type={'image'}
-                availableTextures={props.quickAccess.images}
-                selected={currentImage}
-                handleChange={(src) => {
-                    props.database.getFileWithBlob(src.id)
-                        .then(props.submit)
-                }}
-            />
-        </div>
+        <Accordion>
+            <AccordionSummary>
+                Environment map
+            </AccordionSummary>
+            <div className={styles.formWrapper} >
+                <Selector
+                    type={'image'}
+                    selected={currentImage}
+                    handleChange={(src) => {
+                        fileSystem.readRegistryFile(src.registryID)
+                            .then(rs => {
+                                if (rs)
+                                    fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path)
+                                        .then(file => {
+                                            if (file) {
+                                                props.submit({
+                                                    blob: file,
+                                                    id: src.registryID
+                                                })
+                                                setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
+                                            }
+                                        })
+                            })
+                    }}
+                />
+            </div>
+        </Accordion>
     )
 }
 
