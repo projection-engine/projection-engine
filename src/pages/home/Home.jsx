@@ -1,9 +1,7 @@
 import {Alert, Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
 import React, {useContext, useEffect, useRef, useState} from "react";
-
-import Maker from "../../services/workers/Maker";
-import Projects from "../../components/projects/Projects";
+import Projects from "./components/projects/Projects";
 
 import PropTypes from "prop-types";
 import logo from '../../static/LOGO.png'
@@ -13,69 +11,20 @@ import FileSystem from "../../components/db/FileSystem";
 import ThemeProvider from "../project/hook/ThemeProvider";
 import LoadProvider from "../project/hook/LoadProvider";
 import EVENTS from "../project/utils/misc/EVENTS";
+import useProjects from "./hooks/useProjects";
+import SideBar from "./components/sidebar/SideBar";
 
 const fs = window.require('fs')
-
-let startPath = localStorage.getItem('basePath') + '\\projects\\'
 export default function Home(props) {
-    const [projects, setProjects] = useState([])
-    const [openModal, setOpenModal] = useState(false)
-    const [projectName, setProjectName] = useState('')
-    const [alert, setAlert] = useState({})
-
-    const load = useContext(LoadProvider)
-    const uploadRef = useRef()
-    const theme = useContext(ThemeProvider)
-
-    const refresh = () => {
-        load.pushEvent(EVENTS.PROJECT_LIST)
-        fs.readdir(startPath, (e, res) => {
-
-            let promises = []
-            if(!fs.existsSync(startPath))
-                fs.mkdirSync(startPath)
-            if (!e)
-                res.forEach(f => {
-                    promises.push(new Promise((resolve,) => {
-                        let filename = startPath + f;
-
-                        fs.lstat(filename, (e, stat) => {
-
-                            if (stat && stat.isDirectory()) {
-                                const meta = new Promise(r => fs.readFile(filename + '/.meta', (e, rs) => r(rs)))
-                                const settings = new Promise(r => fs.readFile(filename + '/.settings', (e, rs) => r(rs)))
-                                const parts = filename.split('\\')
-
-                                Promise.all([meta, settings])
-                                    .then(r => {
-
-                                        resolve({
-                                            id: parts.pop(),
-                                            meta: r[0] ? JSON.parse(r[0].toString()) : undefined,
-                                            settings: r[1] ? JSON.parse(r[1].toString()) : undefined
-                                        })
-                                    })
-
-                            } else
-                                resolve()
-                        })
-
-                    }))
-                })
-
-            Promise.all(promises)
-                .then(data => {
-
-                    setProjects(data.filter(e => e !== undefined))
-                    load.finishEvent(EVENTS.PROJECT_LIST)
-                })
-        })
-    }
-
-    useEffect(() => {
-        if (localStorage.getItem('basePath') !== null)
-            refresh()
-    }, [])
+    const {
+        projects,
+        openModal, setOpenModal,
+        projectName, setProjectName,
+        alert, setAlert,
+        load, uploadRef,
+          setProjects,
+        startPath, setStartPath
+    } = useProjects(fs)
 
     return (
         <div className={styles.wrapper}>
@@ -116,79 +65,18 @@ export default function Home(props) {
                         setProjectName('')
                         setOpenModal(false)
 
-                    }}>
+                    }}
+                >
                     Create project
                 </Button>
             </Modal>
-            <div className={styles.options}>
-                <div className={styles.logoWrapper}>
-                    <div className={styles.logo}>
-                        <img src={logo} alt={'logo'}/>
-                    </div>
-                    <div className={styles.logoTitle}>
-                        Projection Engine
-                    </div>
-                </div>
-
-                <div style={{display: 'flex', gap: '4px'}}>
-                    <Button onClick={() => theme.setDark(!theme.dark)} className={styles.button}
-                            variant={'outlined'}>
-                        <span className={'material-icons-round'}>{theme.dark ? 'dark_mode' : 'light_mode'}</span>
-                    </Button>
-
-                    <Button onClick={() => window.open('https://github.com/projection-engine')}
-                            className={styles.button}
-                            variant={'outlined'}>
-                        <img style={{width: '30px'}} alt={'github'}
-                             src={!theme.dark ? gitDark : gitLight}/>
-                    </Button>
-
-                </div>
-            </div>
-
+            <SideBar  />
             <input style={{display: 'none'}}
                    type={'file'}
                    accept={['.projection']}
                    onChange={f => {
                        load.pushEvent(EVENTS.PROJECT_IMPORT)
-                       Maker.parse(f.target.files[0])
-                           .then((res) => {
-                               // let promises = []
-                               // const pj = res.find(data => data.type === 0)
-                               //
-                               // if (!projects.find(p => p.id === JSON.parse(pj.data).id)) {
-                               //     res.forEach(data => {
-                               //         const parsed = JSON.parse(data.data)
-                               //
-                               //         if (data.type === 0)
-                               //             promises.push(new Promise(resolve => {
-                               //                 database?.postProject({
-                               //                     id: parsed.id,
-                               //                     settings: parsed.settings,
-                               //                     meta: parsed.meta
-                               //                 }).then(() => resolve()).catch(() => resolve())
-                               //             }))
-                               //         else if (data.type === 1)
-                               //             promises.push(new Promise(resolve => {
-                               //                 database?.postFileWithBlob(parsed, parsed.blob).then(() => resolve()).catch(() => resolve())
-                               //             }))
-                               //         else if (data.type === 2) {
-                               //             promises.push(new Promise(resolve => database?.postEntity(parsed).then(() => resolve()).catch(() => resolve())))
-                               //         }
-                               //     })
-                               //     Promise.all(promises).then(() => {
-                               //         load.finishEvent(EVENTS.PROJECT_IMPORT)
-                               //         refresh(database)
-                               //     })
-                               // } else {
-                               //     load.finishEvent(EVENTS.PROJECT_IMPORT)
-                               //     setAlert({
-                               //         type: 'error',
-                               //         message: 'Project already exists.'
-                               //     })
-                               // }
-
-                           })
+                       // TODO - IMPORT
                        f.target.value = ''
                    }}
                    ref={uploadRef}/>
