@@ -36,3 +36,14 @@
     /*--background-6: #575757;*/
     /*--background-7: #6A6A6A;*/
 }
+
+.backgroundStripes{
+    background: linear-gradient(
+            to bottom,
+            var(--background-2),
+            var(--background-2) 50%,
+            var(--background-2a) 50%,
+            var(--background-2a)
+    );
+    background-size: 100% 50px;
+}

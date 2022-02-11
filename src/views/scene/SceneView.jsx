@@ -14,13 +14,12 @@ import Entity from "../../services/engine/ecs/basic/Entity";
 import {Button} from "@f-ui/core";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
+import ThemeProvider from "../../pages/project/hook/ThemeProvider";
 
 export default function SceneView(props) {
-
     const quickAccess = useContext(QuickAccessProvider)
-
     const [searchString, setSearchString] = useState('')
-
+    const theme = useContext(ThemeProvider)
     const data = useMemo(() => {
         let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.GridComponent && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
         return [{
@@ -85,7 +84,7 @@ export default function SceneView(props) {
                 ]}
 
                 triggers={['data-self', 'data-node']}
-                className={[styles.wrapperContent, styles.backgroundStripes].join(' ')}>
+                className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
                 <div style={{display: 'flex', width: '100%'}}>
                     <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
                     <Button onClick={() => quickAccess.refresh()} className={styles.refreshButton}>
