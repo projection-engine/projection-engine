@@ -12,6 +12,7 @@ import ColliderComponent from "../engine/ecs/components/ColliderComponent";
 import Entity from "../engine/ecs/basic/Entity";
 import MaterialInstance from "../engine/renderer/elements/MaterialInstance";
 import Mesh from "../engine/renderer/elements/Mesh";
+import Texture from "../engine/renderer/elements/Texture";
 
 
 export default class ProjectLoader {
@@ -52,10 +53,10 @@ export default class ProjectLoader {
 
     static async readFromRegistry(fileID, fileSystem) {
         return new Promise(resolve => {
-            fileSystem.readFile(fileSystem.path + '\\assetsRegistry\\' + fileID + '.reg', 'json')
+            fileSystem.readRegistryFile(fileID)
                 .then(lookUpTable => {
 
-                    if (lookUpTable !== null) {
+                    if (lookUpTable ) {
                         fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
                             .then(fileData => {
                                 resolve(fileData)
@@ -103,6 +104,7 @@ export default class ProjectLoader {
                             let meta = res[1]
                             let entitiesFound = res.filter(e => e.type === 'entity')
                             let entities = []
+
                             let meshes = entitiesFound
                                     .filter(e => e.data.components?.MeshComponent)
                                     .map(e => new Promise(r => {
@@ -110,15 +112,16 @@ export default class ProjectLoader {
                                         ProjectLoader.readFromRegistry(e.data.components.MeshComponent?.meshID, fileSystem)
                                             .then(fileData => {
 
-                                                if (fileData !== null) {
-                                                    entities.push(e)
+                                                if (fileData) {
+
                                                     r({
                                                         type: 'mesh',
                                                         data: JSON.parse(fileData),
                                                         id: e.data.components.MeshComponent?.meshID
                                                     })
                                                 }
-                                                r()
+                                                else
+                                                    r(undefined)
                                             })
                                     })),
                                 skyboxes = entitiesFound
@@ -126,54 +129,58 @@ export default class ProjectLoader {
                                     .map(e => new Promise(r => {
                                         ProjectLoader.readFromRegistry(e.data.components.SkyboxComponent?._imageID, fileSystem)
                                             .then(fileData => {
-                                                if (fileData !== null) {
-                                                    entities.push(e)
+                                                if (fileData) {
+
                                                     r({
                                                         type: 'skybox',
                                                         data: fileData,
                                                         id: e.data.components.SkyboxComponent?._imageID
                                                     })
                                                 }
-                                                r()
+                                                else
+                                                    r(undefined)
                                             })
                                     })),
+
                                 materials = entitiesFound
                                     .filter(e => e.data.components?.MaterialComponent && e.data.components.MaterialComponent.materialID !== undefined)
                                     .map(e => new Promise(r => {
                                         ProjectLoader.readFromRegistry(e.data.components.MaterialComponent.materialID, fileSystem)
                                             .then(fileData => {
-                                                if (fileData !== null) {
-                                                    entities.push(e)
+                                                if (fileData) {
+
                                                     r({
                                                         type: 'material',
-                                                        data: fileData,
+                                                        data: JSON.parse(fileData),
                                                         id: e.data.components.MaterialComponent.materialID
                                                     })
                                                 }
-                                                r()
+                                                else
+                                                    r(undefined)
                                             })
                                     }))
 
-                            entities.push(...entitiesFound.filter(e =>  !e.data.components?.MaterialComponent &&  !e.data.components?.MeshComponent &&  !e.data.components?.SkyboxComponent))
+
+
                             Promise.all([...meshes, ...skyboxes, ...materials])
                                 .then(loaded => {
 
                                     let meshData = loaded.filter(e =>e &&  e.type === 'mesh' && e.data !== null),
                                         skyboxData = loaded.filter(e => e && e.type === 'skybox').map(e => e),
-                                        materialData = loaded.filter(e => e && e.type === 'material').map(e => e.data)
-
-                                    entities = entities.map((entity, index) => {
-                                        return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, materialData, gpu)
+                                        materialData = loaded.filter(e => e && e.type === 'material')
+                                    entities = entitiesFound.map((entity, index) => {
+                                        return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData,  gpu)
                                     })
-                                    materials = materials.map((mat) => {
-                                        return ProjectLoader.mapMaterial(mat.data, gpu)
+                                    materialData = materialData.map((mat) => {
+
+                                        return ProjectLoader.mapMaterial(mat.data.response, gpu, mat.id)
                                     })
 
                                     rootResolve({
                                         meta,
                                         settings,
                                         entities,
-                                        materials,
+                                        materials: materialData,
                                         meshes: meshData.map(m => {
                                             return new Mesh({
                                                 vertices: m.data.vertices,
@@ -196,18 +203,21 @@ export default class ProjectLoader {
         })
     }
 
-    static mapMaterial(material, gpu) {
+    static mapMaterial(material, gpu, id) {
+
         return new MaterialInstance(
             gpu,
-            material.id,
+            id,
             material.albedo,
             material.metallic,
             material.roughness,
+            material.normal,
             material.height,
-            material.ao)
+            material.ao
+        )
     }
 
-    static mapEntity(entity, index, meshes, skyboxes, materials, gpu) {
+    static mapEntity(entity, index, meshes, skyboxes, gpu) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
             let component

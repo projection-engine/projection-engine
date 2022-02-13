@@ -24,7 +24,7 @@ export default function Editor(props) {
             props.engine,
             props.serializer.save
         )
-    }, [props.executingAnimation])
+    }, [props.executingAnimation, props.engine])
     const controlProvider = useContext(ControlProvider)
     useEffect(() => {
 

@@ -1,7 +1,8 @@
 export const COLOR_BLEND_OPERATIONS = {
     ADD: 0,
     MULTIPLY: 1,
-    POWER: 2
+    POWER: 2,
+    LERP: 3 // TODO
 }
 export default class ImageProcessor {
     static colorToImage(color) {

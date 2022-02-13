@@ -43,7 +43,7 @@ export default function useQuickAccess(projectID, load) {
                             .then(preview => {
                                 resolve({
                                     type: 'mesh',
-                                    registryID: i,
+                                    registryID: i.id,
                                     name: split[split.length  -1],
                                      preview
                                 })
@@ -57,7 +57,7 @@ export default function useQuickAccess(projectID, load) {
                             .then(preview => {
                                 resolve({
                                     type: 'material',
-                                    registryID: i,
+                                    registryID: i.id,
                                     name: split[split.length  -1],
                                      preview
                                 })

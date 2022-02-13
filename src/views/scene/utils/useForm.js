@@ -131,12 +131,12 @@ export default function useForm(
                                         new MaterialInstance(
                                             engine.gpu,
                                             mat.id,
-                                            mat.albedo,
-                                            mat.metallic,
-                                            mat.roughness,
-                                            mat.normal,
-                                            mat.height,
-                                            mat.ao,
+                                            mat.blob.albedo,
+                                            mat.blob.metallic,
+                                            mat.blob.roughness,
+                                            mat.blob.normal,
+                                            mat.blob.height,
+                                            mat.blob.ao,
                                         )]
                                 })
 

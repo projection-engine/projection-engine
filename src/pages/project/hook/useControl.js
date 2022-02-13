@@ -19,10 +19,11 @@ export default function useControl(engine, save, settings, fullscreenRef) {
                 isShift = true
             if (e.key === 'Alt')
                 isAlt = true
-
+            if (engine.selectedElement && e.key === 'Delete')
+                engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: engine.selectedElement}})
             if (e.key === 's' && isCtrl && !isAlt && !isShift) {
                 e.preventDefault()
-                save()
+                // save()
             }
 
             if (e.key === 'c' && isCtrl && !isAlt && !isShift) {
