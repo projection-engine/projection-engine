@@ -106,7 +106,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
             renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
             if (!canRender)
                 renderer.current?.stop()
-            if (canRender && !renderer.current?.keep)
+            else
                 renderer.current?.start(entities)
         }
 

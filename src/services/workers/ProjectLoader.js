@@ -106,7 +106,7 @@ export default class ProjectLoader {
                             let meshes = entitiesFound
                                     .filter(e => e.data.components?.MeshComponent)
                                     .map(e => new Promise(r => {
-                                        console.trace(e)
+
                                         ProjectLoader.readFromRegistry(e.data.components.MeshComponent?.meshID, fileSystem)
                                             .then(fileData => {
 

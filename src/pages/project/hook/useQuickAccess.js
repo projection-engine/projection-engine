@@ -24,7 +24,6 @@ export default function useQuickAccess(projectID, load) {
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        console.log(split)
                         fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
                             .then(preview => {
                                 resolve({

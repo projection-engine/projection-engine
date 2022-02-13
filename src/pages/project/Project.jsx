@@ -1,35 +1,26 @@
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
-
+import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {Alert} from "@f-ui/core";
 import styles from './styles/Project.module.css'
-
 import Maker from "../../services/workers/Maker";
-
 import useQuickAccess from "./hook/useQuickAccess";
 import QuickAccessProvider from "./hook/QuickAccessProvider";
 import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
-import ViewportOptions from "../../components/viewport/ViewportOptions";
-import Viewport from "../../components/viewport/Viewport";
-
-import ResizableBar from "../../components/resizable/ResizableBar";
-import SceneView from "../../views/scene/SceneView";
-
 import ProjectLoader from "../../services/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
-import useControl from "./hook/useControl";
-import getOptions from "./utils/getOptions";
 import useSerializer from "./hook/useSerializer";
 import LoadProvider from "./hook/LoadProvider";
 import useEngine from "./hook/useEngine";
 import useSettings from "./hook/useSettings";
 import EVENTS from "./utils/misc/EVENTS";
-import useTabs from "./hook/useTabs";
 import SettingsProvider from "./hook/SettingsProvider";
-import handleDrop from "./utils/handleDrop";
 import FilesView from "../../views/files/FilesView";
+import Editor from "../../views/editor/Editor";
+import MeshView from "../../views/mesh/MeshView";
+import MaterialView from "../../views/material/MaterialView";
+import ImageView from "../../views/image/ImageView";
 
 
 export default function Project(props) {
@@ -40,30 +31,14 @@ export default function Project(props) {
     const load = useContext(LoadProvider)
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
-    const fullscreenRef = useRef()
+    const [filesLoaded, setFilesLoaded] = useState([])
+    const [currentTab, setCurrentTab] = useState(0)
+    const [initialized, setInitialized] = useState(false)
 
-    useControl(engine, serializer.save, settings, fullscreenRef)
-
-    const fallbackOptions = useMemo(() => {
-        return getOptions(
-            executingAnimation,
-            setExecutingAnimation,
-            engine,
-            serializer.save)
-    }, [executingAnimation, engine])
-
-    const {
-        meshes,
-        images,
-        materials, setFilesLoaded,
-        currentTab, setCurrentTab
-    } = useTabs(
-        setAlert,
-        quickAccess.fileSystem
-    )
 
     useEffect(() => {
-        if (engine.gpu) {
+        if (engine.gpu && !initialized) {
+
             load.pushEvent(EVENTS.PROJECT_DATA)
             ProjectLoader
                 .loadProject(engine.gpu, quickAccess.fileSystem)
@@ -77,7 +52,6 @@ export default function Project(props) {
                     if (res.settings)
                         Object.keys(res.settings.data).forEach(key => {
                             settings[key] = res.settings.data[key]
-                            console.log(key, res.settings.data[key])
                         })
                     if (res.meta)
                         Object.keys(res.meta).forEach(key => {
@@ -85,13 +59,86 @@ export default function Project(props) {
                         })
 
                     load.finishEvent(EVENTS.PROJECT_DATA)
+                    setInitialized(true)
                 })
                 .catch(e => {
                     load.finishEvent(EVENTS.PROJECT_DATA)
+                    setInitialized(true)
                 })
         }
     }, [engine.gpu])
 
+    const getTab = (file, index) => {
+        switch (file.type) {
+            case 'mesh':
+                return <MeshView file={file} setAlert={setAlert} index={index}/>
+            case 'material':
+                return (
+                    <MaterialView
+                        index={index}
+                        setAlert={setAlert}
+                        submitPackage={(previewImage, pack, close) => {
+                            quickAccess.fileSystem
+                                .updateAsset(file.registryID, pack, previewImage)
+                                .then(() => {
+                                    setAlert({
+                                        type: 'success',
+                                        message: 'Saved'
+                                    })
+                                    if (close) {
+                                        if ((currentTab) === index)
+                                            setCurrentTab(filesLoaded.length - 1)
+                                        setFilesLoaded(prev => {
+                                            const newD = [...prev]
+                                            newD.splice(index, 1)
+                                            return newD
+                                        })
+                                    }
+                                })
+
+                        }}
+                        file={file}
+                    />
+                )
+            case 'image':
+                return <ImageView file={file}/>
+            default:
+                return null
+        }
+    }
+    const openTab = useCallback((fileID, fileName) => {
+        const found = filesLoaded.find(f => {
+            return f.registryID === fileID
+        })
+
+        if (!found) {
+            load.pushEvent(EVENTS.LOAD_FILE)
+            quickAccess.fileSystem.readRegistryFile(fileID)
+                .then(res => {
+                    if (res) {
+                        load.finishEvent(EVENTS.LOAD_FILE)
+                        setFilesLoaded(prev => {
+                            return [
+                                ...prev,
+                                {
+                                    registryID: fileID,
+                                    type: res.path.split('.').pop(),
+                                    name: fileName
+                                }
+                            ]
+                        })
+                        setCurrentTab(filesLoaded.length + 1)
+                    } else {
+                        load.finishEvent(EVENTS.LOAD_FILE)
+                        setAlert({
+                            type: 'error',
+                            message: 'Could not load file.'
+                        })
+                    }
+                })
+        } else
+            setCurrentTab(filesLoaded.indexOf(found) + 1)
+    }, [currentTab, filesLoaded])
     return (
 
         <SettingsProvider.Provider value={settings}>
@@ -115,101 +162,37 @@ export default function Project(props) {
                         redirect={props.redirect}
                         save={serializer.save}
                     />
-
                     <Tabs
-                        fallbackOptions={fallbackOptions}
-                        onBeforeSwitch={(newTab) => {
-                            if (newTab === 0)
-                                props.engine.setCanRender(true)
-                            else
-                                props.engine.setCanRender(false)
+                        handleTabClose={(tabIndex) => {
+                            setFilesLoaded(prev => {
+                                const newD = [...prev]
+                                newD.splice(tabIndex - 1, 1)
+                                return newD
+                            })
                         }}
-                        tab={currentTab} setTab={setCurrentTab}
-                        tabs={[
-                            {
-                                open: true,
-                                icon: <span
-                                    style={{fontSize: '1.2rem'}}
-                                    className={`material-icons-round`}>video_settings</span>,
-                                label: 'Viewport',
-                                children: (
-                                    <div className={styles.viewportWrapper}>
-
-                                        <div
-                                            ref={fullscreenRef}
-                                            style={{
-                                                position: 'relative',
-                                                width: '100%',
-                                                height: '100%',
-                                                overflow: 'hidden'
-                                            }}>
-                                            {settings.viewportOptionsVisibility ?
-                                                <ViewportOptions
-                                                    engine={engine}
-                                                    id={props.id}
-                                                />
-                                                :
-                                                null}
-
-                                            <Viewport
-                                                id={props.id}
-                                                engine={engine}
-                                                allowDrop={true}
-                                                handleDrop={event => handleDrop(event, quickAccess.fileSystem, engine, setAlert)}
-                                            />
-                                        </div>
-                                        {settings.sceneVisibility ?
-                                            <>
-                                                <ResizableBar type={'width'}/>
-                                                <SceneView
-                                                    executingAnimation={executingAnimation}
-                                                    hierarchy={engine.hierarchy}
-                                                    setAlert={setAlert}
-                                                    engine={engine}
-                                                />
-                                            </> : null}
-
-                                    </div>
-                                )
-                            },
-                            ...materials,
-                            ...meshes,
-                            ...images
-                        ]}
-                    />
-
+                        tab={currentTab}
+                        setTab={setCurrentTab}>
+                        <Editor
+                            setExecutingAnimation={setExecutingAnimation}
+                            executingAnimation={executingAnimation}
+                            engine={engine}
+                            id={props.id}
+                            setAlert={setAlert}
+                            settings={settings}
+                            serializer={serializer}
+                        />
+                        {filesLoaded.map((file, index) => (
+                            <React.Fragment key={index + '-tab-wrapper'}>
+                                {getTab(file, index + 1)}
+                            </React.Fragment>
+                        ))}
+                    </Tabs>
                     {settings.filesVisibility ?
                         <FilesView
                             setAlert={setAlert}
                             currentTab={currentTab}
-                            label={'FilesView'} id={props.id}
-                            openEngineFile={(fileID, fileName) => {
-                                load.pushEvent(EVENTS.LOAD_FILE)
-                                quickAccess.fileSystem.readRegistryFile(fileID)
-                                    .then(res => {
-                                        if (res) {
-
-                                            load.finishEvent(EVENTS.LOAD_FILE)
-                                            setFilesLoaded(prev => {
-                                                return [
-                                                    ...prev,
-                                                    {
-                                                        registryID: fileID,
-                                                        type: res.path.split('.').pop(),
-                                                        name: fileName
-                                                    }
-                                                ]
-                                            })
-
-                                        } else {
-                                            load.finishEvent(EVENTS.LOAD_FILE)
-                                            setAlert({
-                                                type: 'error',
-                                                message: 'Could not load file.'
-                                            })
-                                        }
-                                    })
-                            }}
+                            id={props.id}
+                            openEngineFile={openTab}
                         />
                         :
                         null}

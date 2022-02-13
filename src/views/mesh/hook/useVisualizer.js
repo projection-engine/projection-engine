@@ -33,6 +33,8 @@ export default function useVisualizer(initializePlane, initializeSphere) {
     const [materials, setMaterials] = useState([])
     const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
     const [initialized, setInitialized] = useState(false)
+    const [canRender, setCanRender] = useState(true)
+
     const load = useContext(LoadProvider)
     const renderer = useRef()
     let resizeObserver
@@ -52,16 +54,6 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             setGpu(newGPU)
         } else if (gpu && !initialized && id) {
 
-            const gridEntity = new Entity(undefined, 'Grid')
-
-            dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: gridEntity})
-            dispatchEntities({
-                type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                    entityID: gridEntity.id,
-                    data: new GridComponent(gpu)
-                }
-            })
-
             initializeSkybox(dispatchEntities, gpu)
             initializeLight(dispatchEntities)
 
@@ -72,8 +64,6 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 
             renderer.current = new Engine(id, gpu)
 
-            if (initializeSphere)
-                renderer.current.camera.centerLookAt = sphereMesh.translation
 
             renderer.current.systems = [
                 new TransformSystem(),
@@ -83,6 +73,8 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             ]
 
             setInitialized(true)
+            renderer.current.camera.radius = 2
+
 
             renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
         } else if (gpu && id) {
@@ -96,14 +88,16 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             renderer.current?.stop()
             renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
 
-
-            renderer.current?.start(entities)
+            if (!canRender)
+                renderer.current?.stop()
+            else
+                renderer.current?.start(entities)
         }
 
         return () => {
             renderer.current?.stop()
         }
-    }, [meshes, materials, entities, gpu, id])
+    }, [meshes, materials, entities, gpu, id, canRender])
 
 
     return {
@@ -111,7 +105,8 @@ export default function useVisualizer(initializePlane, initializeSphere) {
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
         materials, setMaterials,
-        initialized
+        initialized,
+        canRender, setCanRender
     }
 }
 

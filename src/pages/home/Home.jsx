@@ -92,7 +92,7 @@ export default function Home(props) {
                         localStorage.getItem('basePath') + '\\projects\\' + pjID,
                         {recursive: true, force: true},
                         (e) => {
-                            console.log(e)
+
                             load.finishEvent(EVENTS.PROJECT_DELETE)
                             setProjects(prev => {
                                 return prev.filter(e => e.id !== pjID)

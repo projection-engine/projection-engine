@@ -1,12 +1,12 @@
-cd components
-git checkout v0.1.x
+cd src/components
+git checkout electron
 
 cd ../services/engine
-git checkout v0.x
+git checkout electron
 
 cd ../../views/material
-git checkout v0.x
+git checkout electron
 
 cd ../files
-git checkout v0.x
+git checkout electron
 

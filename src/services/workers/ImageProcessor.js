@@ -1,3 +1,8 @@
+export const COLOR_BLEND_OPERATIONS = {
+    ADD: 0,
+    MULTIPLY: 1,
+    POWER: 2
+}
 export default class ImageProcessor {
     static colorToImage(color) {
         const c = document.createElement("canvas");
@@ -26,14 +31,15 @@ export default class ImageProcessor {
     }
 
 
-    static blendWithColor(widthR, heightR, src, [r, g, b, a]) {
+    static blendWithColor(widthR, heightR, src, color, operation) {
         const c = document.createElement("canvas");
+        const split = color.match(/[\d.]+/g)
+        const [r, g, b] = split.map(v => parseFloat(v))
         c.width = widthR
         c.height = heightR
 
         const imageToLoad = new Image()
         imageToLoad.src = src
-
 
 
         return new Promise(resolve => {
@@ -45,21 +51,33 @@ export default class ImageProcessor {
                 const data = imgData.data;
                 let newImage = new Array(data.length)
                 for (let i = 0; i < data.length; i += 4) {
-                    const red = data[i] * r;
-                    const green = data[i + 1] * g;
-                    const blue = data[i + 2] * b;
-                    const alpha = data[i + 3] * a;
-
-                    newImage[i] = red
-                    newImage[i + 1] = green
-                    newImage[i + 2] = blue
-                    newImage[i + 3] = alpha
+                    switch (operation) {
+                        case COLOR_BLEND_OPERATIONS.POWER:
+                            newImage[i] = data[i] ** r
+                            newImage[i + 1] =  data[i + 1] ** g
+                            newImage[i + 2] =data[i + 2] ** b
+                            newImage[i + 3] = data[i + 3]
+                            break
+                        case COLOR_BLEND_OPERATIONS.ADD:
+                            newImage[i] = data[i] + r
+                            newImage[i + 1] = data[i + 1] + g
+                            newImage[i + 2] = data[i + 2] + b
+                            newImage[i + 3] = data[i + 3]
+                            break
+                        default:
+                            newImage[i] = data[i] * r
+                            newImage[i + 1] = data[i + 1] * g
+                            newImage[i + 2] = data[i + 2] * b
+                            newImage[i + 3] = data[i + 3]
+                            break
+                    }
                 }
-                imgData.data.set( newImage)
+                imgData.data.set(newImage)
                 ctx.putImageData(imgData, 0, 0)
 
                 resolve(c.toDataURL())
             }
         })
     }
+
 }

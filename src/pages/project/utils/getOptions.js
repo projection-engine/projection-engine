@@ -22,7 +22,7 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             label: executingAnimation ? 'Stop simulation' : 'Play simulation',
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>{executingAnimation ? 'pause' : 'play_arrow'}</span>,
-            onClick: () => setExecutingAnimation(!executingAnimation)
+            onClick: () => setExecutingAnimation(prev => !prev)
         },
         {
             group: 'b',
