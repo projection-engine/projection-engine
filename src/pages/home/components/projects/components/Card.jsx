@@ -4,6 +4,7 @@ import {Button, Modal, TextField, ToolTip} from "@f-ui/core";
 import {useState} from "react";
 import logo from '../../../../../static/LOGO.png'
 import shared from "../../../styles/Home.module.css";
+import {DataRow} from '../../../../../fabric/src/index'
 
 export default function Card(props) {
     const [open, setOpen] = useState({
@@ -17,16 +18,15 @@ export default function Card(props) {
         <div className={styles.wrapper} data-card={props.data.id} style={{animationDelay: props.index * 100 + 'ms'}}>
             <Modal
                 className={shared.modal}
-                styles={{width: open.image ? '50%' : undefined, height: open.image ? 'fit-content' : undefined}} open={open.edit || open.image} handleClose={() => setOpen({})}  >
+                styles={{width: open.image ? 'fit-content' : undefined, height: open.image ? 'fit-content' : undefined}}
+                open={open.edit || open.image} handleClose={() => setOpen({})}>
                 {open.image ?
 
-                        <img
-                            alt={'Preview'}
-                            src={props.data.meta?.preview ? props.data.meta?.preview : logo}
-                            className={styles.image}
-
-                            draggable={false}
-                        />
+                    <img
+                        alt={'Preview'}
+                        src={props.data.meta?.preview ? props.data.meta?.preview : logo}
+                        draggable={false}
+                    />
 
                     :
                     <>
@@ -47,60 +47,73 @@ export default function Card(props) {
                     </>
                 }
             </Modal>
-            <Button variant={'minimal'} className={styles.imageWrapper} onClick={() => setOpen({image: true})}>
-                <img
+            <div className={styles.section}>
+                <Button
+                    variant={'minimal'}
+                    className={styles.imageWrapper}
+                    onClick={() => setOpen({image: true})}>
+                    <img
+                        alt={''}
+                        src={props.data.meta?.preview ? props.data.meta?.preview : logo}
+                        className={styles.image}
+                        draggable={false}/>
+                </Button>
+                <DataRow
+                    className={styles.dataRow}
+                    selfContained={true}
+                    object={{...props.data.meta, name}}
+                    keys={[{label: 'Name', key: 'name', type: 'string'}, {
+                        label: 'Last modification',
+                        key: 'lastModification',
+                        type: 'string'
+                    }]}/>
+            </div>
 
-                    alt={'Preview'}
-                    src={props.data.meta?.preview ? props.data.meta?.preview : logo}
-                    className={styles.image}
-                    draggable={false}/>
-            </Button>
-            <div className={styles.label}>
-                <div className={styles.labels}>
-                    <div className={styles.overflow}>
-                        {name}
-                    </div>
-                    <div className={[styles.overflow, styles.date].join(' ')}>
-                        {props.data.meta.lastModification}
-                    </div>
-                </div>
-                <div className={styles.options}>
-                    <Button
-                        variant={'outlined'}
-                        className={styles.button}
-                        onClick={() => {
-                            setOpen({
-                                edit: true
-                            })
-                        }}
-                        styles={{width: 'fit-content', position: 'absolute', left: 0}}>
-                        <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
+            <div className={styles.section} style={{justifyContent: 'flex-end'}}>
+                <Button
+                    variant={'outlined'}
+                    className={styles.button}
+                    onClick={() => {
+                        setOpen({
+                            edit: true
+                        })
+                    }}
+                >
+                    <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
 
-                    </Button>
-
-                    <Button onClick={() => props.onClick()} variant={'filled'} className={styles.button}>
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
-                        Load project
-                    </Button>
-                    <Button variant={'outlined'} className={styles.button} onClick={() => setOpen({
+                </Button>
+                <Button
+                    variant={'outlined'}
+                    className={styles.button}
+                    onClick={() => setOpen({
                         delete: true
                     })}>
-                        <span className={'material-icons-round'}>delete</span>
-                        <Modal
-
-                            className={styles.onDelete} variant={'fit'}
-                            handleClose={() => setOpen({})} open={open.delete}>
-                            Are you sure ?
-                            <Button onClick={() => props.onDelete()} variant={'filled'}
-                                    styles={{'--fabric-accent-color': '#ff5555'}} className={styles.button}>
-                                <span className={'material-icons-round'}>delete</span>
-                                Delete permanently
-                            </Button>
-                        </Modal>
-                    </Button>
-                </div>
-
+                    <span className={'material-icons-round'}>delete</span>
+                    <Modal
+                        className={styles.onDelete} variant={'fit'}
+                        handleClose={() => setOpen({})} open={open.delete}>
+                        Are you sure ?
+                        <Button
+                            onClick={() => props.onDelete()}
+                            variant={'filled'}
+                            styles={{'--fabric-accent-color': '#ff5555'}}
+                            className={styles.button}
+                        >
+                            <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete</span>
+                            Delete permanently
+                        </Button>
+                    </Modal>
+                </Button>
+                <Button
+                    onClick={() => props.onClick()}
+                    variant={'filled'}
+                    className={styles.button}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
+                    Load project
+                </Button>
             </div>
+
+
             <ToolTip>
                 <div className={styles.data}>
                     id:
@@ -116,8 +129,6 @@ export default function Card(props) {
                     <div className={styles.overflow}
                          style={{fontWeight: 'normal'}}>{props.data.meta?.creationDate}</div>
                 </div>
-
-
             </ToolTip>
         </div>
     )

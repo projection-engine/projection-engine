@@ -3,7 +3,7 @@ import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useContext, useEffect, useState} from "react";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import Selector from "../../../components/selector/Selector";
 
 

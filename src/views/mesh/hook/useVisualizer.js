@@ -21,7 +21,7 @@ import TransformComponent from "../../../services/engine/ecs/components/Transfor
 import Mesh from "../../../services/engine/renderer/elements/Mesh";
 
 import skybox from '../../../static/default_skybox.jpg'
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import randomID from "../../../pages/project/utils/misc/randomID";
 import {SHADING_MODELS} from "../../../pages/project/hook/useSettings";
 

@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
 import {Accordion, AccordionSummary} from "@f-ui/core";
-import LoadProvider from "../../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 export default function SkyboxComponent(props) {

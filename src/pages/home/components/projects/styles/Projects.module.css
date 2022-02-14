@@ -25,40 +25,12 @@
 }
 
 
-.empty {
-    user-select: none;
-
-    top: 50%;
-    left: 50%;
-    font-size: .9rem;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    display: grid;
-    justify-items: center;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 4px;
-    color: var(--fabric-color-tertiary);
-
-}
-
-
-.preview {
-    max-height: 100%;
-    overflow: hidden;
-
-    width: 100%;
-
-    display: flex;
-    place-content: center;
-    border-radius: 5px;
-
-}
 
 .content {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 4px;
+    display: grid;
+    height: fit-content;
+
+    gap: 3px;
     align-items: flex-start;
 
 }

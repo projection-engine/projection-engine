@@ -11,7 +11,7 @@ import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "../../services/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
 import useSerializer from "./hook/useSerializer";
-import LoadProvider from "./hook/LoadProvider";
+import LoadProvider from "../../components/loader/LoadProvider";
 import useEngine from "./hook/useEngine";
 import useSettings from "./hook/useSettings";
 import EVENTS from "./utils/misc/EVENTS";

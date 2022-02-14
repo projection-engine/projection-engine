@@ -2,30 +2,33 @@
 
 MESSAGE="$1"
 
-cd views/files
+cd src/components
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.x
-
-cd ../material
-git add --all
-git commit -m "$MESSAGE"
-git push origin v0.x
-
-cd ../../components
-git add --all
-git commit -m "$MESSAGE"
-git push origin v0.x
+git push origin electron
 
 cd ../services/engine
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.x
+git push origin electron
 
-cd ../../
+
+cd ../../views/material
+git add --all
+git commit -m "$MESSAGE"
+git push origin electron
+
+
+cd ../files
+git add --all
+git commit -m "$MESSAGE"
+git push origin electron
+
+cd ../../../
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.x
+
 
 
 

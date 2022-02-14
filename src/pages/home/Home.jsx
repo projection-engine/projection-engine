@@ -9,7 +9,7 @@ import gitDark from '../../static/github/dark.svg'
 import gitLight from '../../static/github/light.svg'
 import FileSystem from "../../components/db/FileSystem";
 import ThemeProvider from "../project/hook/ThemeProvider";
-import LoadProvider from "../project/hook/LoadProvider";
+import LoadProvider from "../../components/loader/LoadProvider";
 import EVENTS from "../project/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";

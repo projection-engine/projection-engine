@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect} from "react";
 
-import LoadProvider from "./LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 

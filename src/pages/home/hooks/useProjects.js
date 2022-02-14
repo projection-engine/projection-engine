@@ -1,4 +1,4 @@
-import LoadProvider from "../../project/hook/LoadProvider";
+import LoadProvider from "../../../components/loader/LoadProvider";
 import ThemeProvider from "../../project/hook/ThemeProvider";
 import EVENTS from "../../project/utils/misc/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";

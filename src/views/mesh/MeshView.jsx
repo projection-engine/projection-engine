@@ -11,7 +11,7 @@ import {useContext, useEffect, useMemo} from "react";
 
 
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import LoadProvider from "../../pages/project/hook/LoadProvider";
+import LoadProvider from "../../components/loader/LoadProvider";
 import EVENTS from "../../pages/project/utils/misc/EVENTS";
 
 import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
