@@ -1,16 +1,16 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
-import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useEffect, useState} from "react";
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
-import LoadProvider from "../../../components/loader/LoadProvider";
+
 import Selector from "../../../components/selector/Selector";
 
 
 export default function MaterialComponent(props) {
     const [currentMaterial, setCurrentMaterial] = useState(undefined)
     const fileSystem = props.quickAccess.fileSystem
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
 
     useEffect(() => {
         if (props.selected.materialID)

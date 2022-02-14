@@ -19,7 +19,7 @@
     "react-colorful": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
-    "rimraf": "^3.0.2",
+
     "web-vitals": "latest",
     "webpack": "^5.68.0"
   },

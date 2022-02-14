@@ -12,7 +12,6 @@ import ColliderComponent from "../engine/ecs/components/ColliderComponent";
 import Entity from "../engine/ecs/basic/Entity";
 import MaterialInstance from "../engine/renderer/elements/MaterialInstance";
 import Mesh from "../engine/renderer/elements/Mesh";
-import Texture from "../engine/renderer/elements/Texture";
 
 
 export default class ProjectLoader {

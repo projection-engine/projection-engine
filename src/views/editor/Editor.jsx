@@ -7,8 +7,8 @@ import SceneView from "../scene/SceneView";
 
 import getOptions from "../../pages/project/utils/getOptions";
 import {useContext, useEffect, useMemo, useRef} from "react";
-import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
-import useControl from "../../pages/project/hook/useControl";
+import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
+import useControl from "../../services/hooks/useControl";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 

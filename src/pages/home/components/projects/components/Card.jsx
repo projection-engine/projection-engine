@@ -1,10 +1,9 @@
 import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
-import {Button, Modal, TextField, ToolTip} from "@f-ui/core";
+import {Button, Modal,DataRow, TextField, ToolTip} from "@f-ui/core";
 import {useState} from "react";
 import logo from '../../../../../static/LOGO.png'
 import shared from "../../../styles/Home.module.css";
-import {DataRow} from '../../../../../fabric/src/index'
 
 export default function Card(props) {
     const [open, setOpen] = useState({

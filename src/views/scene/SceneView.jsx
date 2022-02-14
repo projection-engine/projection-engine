@@ -5,16 +5,15 @@ import React, {useContext, useMemo, useState} from "react";
 import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
-import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
+import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import ContextMenu from "../../components/context/ContextMenu";
+import {Button, ContextMenu} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
-import {Button} from "@f-ui/core";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import ThemeProvider from "../../pages/project/hook/ThemeProvider";
+import ThemeProvider from "../../services/hooks/ThemeProvider";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)

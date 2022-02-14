@@ -1,9 +1,9 @@
-import React, {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
-import {Alert} from "@f-ui/core";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {Alert, LoaderProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import Maker from "../../services/workers/Maker";
 import useQuickAccess from "./hook/useQuickAccess";
-import QuickAccessProvider from "./hook/QuickAccessProvider";
+import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
@@ -11,11 +11,11 @@ import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "../../services/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
 import useSerializer from "./hook/useSerializer";
-import LoadProvider from "../../components/loader/LoadProvider";
+
 import useEngine from "./hook/useEngine";
 import useSettings from "./hook/useSettings";
 import EVENTS from "./utils/misc/EVENTS";
-import SettingsProvider from "./hook/SettingsProvider";
+import SettingsProvider from "../../services/hooks/SettingsProvider";
 import FilesView from "../../views/files/FilesView";
 import Editor from "../../views/editor/Editor";
 import MeshView from "../../views/mesh/MeshView";
@@ -28,7 +28,7 @@ export default function Project(props) {
     const [alert, setAlert] = useState({})
     const settings = useSettings()
     const engine = useEngine(props.id, executingAnimation, settings)
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
     const [filesLoaded, setFilesLoaded] = useState([])

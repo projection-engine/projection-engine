@@ -1,5 +1,4 @@
-import LoadProvider from "../../../components/loader/LoadProvider";
-import ThemeProvider from "../../project/hook/ThemeProvider";
+import {LoaderProvider} from "@f-ui/core";
 import EVENTS from "../../project/utils/misc/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
 
@@ -9,7 +8,7 @@ export default function useProjects(fs){
     const [projectName, setProjectName] = useState('')
     const [alert, setAlert] = useState({})
     const [startPath, setStartPath] = useState( localStorage.getItem('basePath') + '\\projects\\')
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const uploadRef = useRef()
 
     const refresh = () => {

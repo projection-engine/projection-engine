@@ -3,7 +3,6 @@ import {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} fr
 import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
 import {enableBasics} from "../../../services/engine/utils/utils";
 import Entity from "../../../services/engine/ecs/basic/Entity";
-import GridComponent from "../../../services/engine/ecs/components/GridComponent";
 
 import planeMesh from '../../../static/meshes/plane.json'
 import sphereMesh from '../../../static/meshes/sphere.json'
@@ -21,7 +20,8 @@ import TransformComponent from "../../../services/engine/ecs/components/Transfor
 import Mesh from "../../../services/engine/renderer/elements/Mesh";
 
 import skybox from '../../../static/default_skybox.jpg'
-import LoadProvider from "../../../components/loader/LoadProvider";
+import {LoaderProvider} from "@f-ui/core";
+
 import randomID from "../../../pages/project/utils/misc/randomID";
 import {SHADING_MODELS} from "../../../pages/project/hook/useSettings";
 
@@ -35,7 +35,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
     const [initialized, setInitialized] = useState(false)
     const [canRender, setCanRender] = useState(true)
 
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const renderer = useRef()
     let resizeObserver
 

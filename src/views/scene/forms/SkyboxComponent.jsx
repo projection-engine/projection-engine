@@ -2,14 +2,14 @@ import styles from '../styles/Forms.module.css'
 import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
-import {Accordion, AccordionSummary} from "@f-ui/core";
-import LoadProvider from "../../../components/loader/LoadProvider";
+import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
+
 import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)
     const fileSystem = props.quickAccess.fileSystem
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     useEffect(() => {
         if (props.selected.imageID)
             setCurrentImage(props.quickAccess.images.find(i => i.registryID === props.selected.imageID))

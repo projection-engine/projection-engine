@@ -4,7 +4,7 @@ import {Button} from "@f-ui/core";
 import gitDark from "../../../../static/github/dark.svg";
 import gitLight from "../../../../static/github/light.svg";
 import PropTypes from "prop-types";
-import ThemeProvider from "../../../project/hook/ThemeProvider";
+import ThemeProvider from "../../../../services/hooks/ThemeProvider";
 import {useContext, useState} from "react";
 
 export default function SideBar(props) {

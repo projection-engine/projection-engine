@@ -1,12 +1,12 @@
 import {useCallback, useContext, useEffect} from "react";
+import {LoaderProvider} from "@f-ui/core";
 
-import LoadProvider from "../../../components/loader/LoadProvider";
 import EVENTS from "../utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
 
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const fileSystem = quickAccess.fileSystem
     let interval
 

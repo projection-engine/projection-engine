@@ -4,7 +4,7 @@ import {Accordion, AccordionSummary} from "@f-ui/core";
 
 import {useContext} from "react";
 
-import QuickAccessProvider from "../../../pages/project/hook/QuickAccessProvider";
+import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
 
 export default function Controls(props) {

@@ -1,15 +1,11 @@
 import {Alert, Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React from "react";
 import Projects from "./components/projects/Projects";
 
 import PropTypes from "prop-types";
-import logo from '../../static/LOGO.png'
-import gitDark from '../../static/github/dark.svg'
-import gitLight from '../../static/github/light.svg'
 import FileSystem from "../../components/db/FileSystem";
-import ThemeProvider from "../project/hook/ThemeProvider";
-import LoadProvider from "../../components/loader/LoadProvider";
+
 import EVENTS from "../project/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";

@@ -11,14 +11,15 @@ import {useContext, useEffect, useMemo} from "react";
 
 
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import LoadProvider from "../../components/loader/LoadProvider";
+import {LoaderProvider} from "@f-ui/core";
+
 import EVENTS from "../../pages/project/utils/misc/EVENTS";
 
-import QuickAccessProvider from "../../pages/project/hook/QuickAccessProvider";
+import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
 export default function MeshView(props) {
     const engine = useVisualizer(false, false)
-    const load = useContext(LoadProvider)
+    const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
     useEffect(() => {
         if (engine.initialized) {
