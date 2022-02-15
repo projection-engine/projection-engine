@@ -9,7 +9,7 @@ import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "../../services/workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 import useSerializer from "./hook/useSerializer";
 
 import useEngine from "./hook/useEngine";

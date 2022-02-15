@@ -1,6 +1,6 @@
 import {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from "react";
 
-import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
+import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
 import {enableBasics} from "../../../services/engine/utils/utils";
 import Entity from "../../../services/engine/ecs/basic/Entity";
 

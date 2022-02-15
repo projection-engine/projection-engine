@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import cloneClass from "../../pages/project/utils/misc/cloneClass";
 import randomID from "../../pages/project/utils/misc/randomID";
-import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -131,12 +131,7 @@ export default function Editor(props) {
         <div className={styles.viewportWrapper}>
             <div
                 id={'fullscreen-element-' + props.id}
-                style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'hidden'
-                }}>
+              className={styles.container}>
                 {props.settings.viewportOptionsVisibility ?
                     <ViewportOptions
                         engine={props.engine}

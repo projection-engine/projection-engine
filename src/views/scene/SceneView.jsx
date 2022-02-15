@@ -9,7 +9,7 @@ import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
 import {Button, ContextMenu} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
-import {ENTITY_ACTIONS} from "../../services/engine/ecs/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";

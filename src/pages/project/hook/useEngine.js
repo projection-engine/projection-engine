@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useReducer, useRef, useState} from "react";
 import {enableBasics} from "../../../services/engine/utils/utils";
-import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/ecs/utils/entityReducer";
+import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
 import PostProcessingSystem from "../../../services/engine/ecs/systems/PostProcessingSystem";
 import DeferredSystem from "../../../services/engine/ecs/systems/DeferredSystem";
 import TransformSystem from "../../../services/engine/ecs/systems/TransformSystem";

@@ -37,6 +37,7 @@ export default function TransformComponent(props) {
             <div className={styles.inputs}>
                 <div className={styles.label}>Translation</div>
                 <Range
+                    metric={'m'}
                     accentColor={'red'}
                     label={'x'}
                     value={state.xT}
@@ -47,6 +48,7 @@ export default function TransformComponent(props) {
                     }}
                 />
                 <Range
+                    metric={'m'}
                     accentColor={'#00ff00'}
                     label={'y'}
                     value={state.yT}
@@ -58,6 +60,7 @@ export default function TransformComponent(props) {
                     }}
                 />
                 <Range
+                    metric={'m'}
                     accentColor={'#0095ff'}
                     label={'z'}
                     value={state.zT}
@@ -71,6 +74,8 @@ export default function TransformComponent(props) {
             <div className={styles.inputs}>
                 <div className={styles.label}>Scale</div>
                 <Range
+
+
                     accentColor={'red'}
                     label={'x'}
                     value={state.xS}
@@ -114,6 +119,7 @@ export default function TransformComponent(props) {
                 <Range
                     accentColor={'red'}
                     label={'x'}
+                    metric={'angle'}
                     value={state.xR}
                     onFinish={() => props.submitRotation('x', state.xR* Math.PI / 180)}
                     handleChange={e => {
@@ -122,7 +128,7 @@ export default function TransformComponent(props) {
                         setState({...state, xR: parseFloat(e)})
                     }}/>
                 <Range
-
+                    metric={'angle'}
                     accentColor={'#00ff00'}
                     label={'y'}
                     value={state.yR}
@@ -133,7 +139,7 @@ export default function TransformComponent(props) {
                     }}/>
                 <Range
                     accentColor={'#0095ff'}
-
+                    metric={'angle'}
                     label={'z'}
                     value={state.zR}
                     onFinish={() => props.submitRotation('z', state.zR* Math.PI / 180)}
