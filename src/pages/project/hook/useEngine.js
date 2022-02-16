@@ -123,5 +123,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
         gpu, materials, setMaterials,
         selectedElement, setSelectedElement,
         canRender, setCanRender,
+        renderer: renderer.current
     }
 }

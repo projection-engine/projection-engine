@@ -105,7 +105,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
         materials, setMaterials,
-        initialized,
+        initialized, renderer: renderer.current,
         canRender, setCanRender
     }
 }

@@ -141,10 +141,10 @@ export default function Editor(props) {
                     :
                     null
                 }
-
                 <Viewport
                     id={props.id}
                     engine={props.engine}
+                    showPosition={props.settings.cameraCoordsVisibility}
                     allowDrop={true}
                     handleDrop={event => handleDrop(event, quickAccess.fileSystem, props.engine, props.setAlert)}
                 />

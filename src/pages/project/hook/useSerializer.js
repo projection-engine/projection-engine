@@ -18,12 +18,13 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
                 const canvas = document.getElementById(id + '-canvas')
+                const preview = canvas.toDataURL()
 
                 fileSystem
                     .updateProject(
                         {
                             name: settings.projectName,
-                            preview: canvas.toDataURL(),
+                            preview,
                             entities: engine.entities.length,
                             meshes: engine.meshes.length,
                             materials: engine.materials.length,
@@ -31,9 +32,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                             creation: settings.creationDate
                         },
                         settings)
-                    .then(() => {
-                        resolve()
-                    })
+                    .then(() => resolve())
             }))
         }
 
@@ -41,11 +40,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
     }, [settings, id])
 
     const save = useCallback(() => {
-        let promise = []
-
         load.pushEvent(EVENTS.PROJECT_SAVE)
-
-
         if (id)
             return new Promise(resolve => {
                 saveSettings()
@@ -78,7 +73,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
 
                             })
-
                     }).catch(() => resolve())
             })
         else return new Promise(resolve => resolve())

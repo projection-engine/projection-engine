@@ -77,7 +77,8 @@ export default function MeshView(props) {
 
     return (
         <div className={styles.wrapper}>
-            <div style={{width: '100%', height: '100%'}}><Viewport allowDrop={false} id={engine.id} engine={engine}/>
+            <div style={{width: '100%', height: '100%'}}>
+                <Viewport allowDrop={false} id={engine.id} engine={engine} renderer={engine.renderer}/>
             </div>
             <ResizableBar type={'width'}/>
             <Controls engine={engine}/>
