@@ -1,4 +1,4 @@
-import {WebWorker} from "./WebWorker";
+import {WebWorker} from "../workers/WebWorker";
 
 export function nodeParser(node, allNodes) {
     let res = []

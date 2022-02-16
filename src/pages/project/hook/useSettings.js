@@ -13,6 +13,8 @@ export default function useSettings() {
         projectName: 'New Project',
         timestamp: 30000,
         fxaa: true,
+        iconsVisibility: true,
+        gridVisibility: true,
         shadingModel: SHADING_MODELS.FLAT,
         fov: Math.PI / 2,
         fpsVisibility: true,

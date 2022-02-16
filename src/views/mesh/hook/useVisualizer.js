@@ -76,7 +76,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             renderer.current.camera.radius = 2
 
 
-            renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
+            renderer.current?.prepareData({ fxaa: true, meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
         } else if (gpu && id) {
 
             resizeObserver = new ResizeObserver(() => {
@@ -86,7 +86,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
             renderer.current?.stop()
-            renderer.current?.prepareData({meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
+            renderer.current?.prepareData({  fxaa: true, meshes, materials, shadingModel: SHADING_MODELS.DETAIL}, entities, materials, meshes)
 
             if (!canRender)
                 renderer.current?.stop()

@@ -23,7 +23,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
         if (id) {
             const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
                 antialias: false,
-                preserveDrawingBuffer: true
+                preserveDrawingBuffer: true,
+                premultipliedAlpha: false
             })
             enableBasics(newGPU)
             setGpu(newGPU)
@@ -43,14 +44,20 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
             canExecutePhysicsAnimation, meshes,
             selectedElement, setSelectedElement,
             materials, cameraType: settings.cameraType,
-            shadingModel: settings.shadingModel
+            shadingModel: settings.shadingModel,
+            fxaa: settings.fxaa,
+            iconsVisibility: settings.iconsVisibility,
+            gridVisibility: settings.gridVisibility
         }
     }, [
         canExecutePhysicsAnimation,
         meshes, selectedElement,
         setSelectedElement, materials,
         settings.cameraType,
-        settings.shadingModel
+        settings.shadingModel,
+        settings.fxaa,
+        settings.iconsVisibility,
+        settings.gridVisibility
     ])
 
 

@@ -1,9 +1,9 @@
 import {vec2, vec3} from "gl-matrix";
 import groupInto from "../engine/utils/groupInto";
 import FileBlob from "./FileBlob";
-import {getBufferData, getPrimitives, nodeParser, unpackBufferViewData} from "./glTFUtils";
+import {getBufferData, getPrimitives, nodeParser, unpackBufferViewData} from "../utils/glTFUtils";
+import PrimitiveProcessor from "./PrimitiveProcessor";
 
-const fs = window.require('fs')
 
 export default class MeshParser {
     static parseObj(data) {
@@ -91,52 +91,13 @@ export default class MeshParser {
             posB = txt.indexOf("\n", posA);
         }
 
-        try {
-            const faces = groupInto(3, fIndex)
-            const vertices = groupInto(3, fVert)
-            const uvs = groupInto(2, fVert)
 
-            const mappedUVS = groupedUVS.map(face => {
-                return [uvs[face[0]], uvs[face[1]], uvs[face[2]]]
-            })
+        const faces = groupInto(3, fIndex)
+        const vertices = groupInto(3, fVert)
+        const uvs = groupInto(2, fVert)
 
-            const mappedPositions = faces.map(face => {
-                return [vertices[face[0]], vertices[face[1]], vertices[face[2]]]
-            })
+        PrimitiveProcessor.computeTangents(faces, vertices, uvs, groupedUVS)
 
-            for (let f = 0; f < mappedPositions.length; f++) {
-                const currentFace = mappedPositions[f]
-                const currentUV = mappedUVS[f]
-
-                let deltaPositionOne = [],
-                    deltaPositionTwo = [],
-                    deltaUVOne = [],
-                    deltaUVTwo = []
-
-                vec3.sub(deltaPositionOne, currentFace[1], currentFace[0])
-                vec3.sub(deltaPositionTwo, currentFace[2], currentFace[0])
-
-                vec2.sub(deltaUVOne, currentUV[1], currentUV[0])
-                vec2.sub(deltaUVTwo, currentUV[2], currentUV[0])
-
-                let r = 1 / (deltaUVOne[0] * deltaUVTwo[1] - deltaUVOne[1] * deltaUVTwo[0]),
-                    tangent = [],
-                    tangentP1 = [],
-                    tangentP2 = []
-
-                // TANGENT
-                vec3.scale(tangentP1, deltaPositionOne, deltaUVTwo[1])
-                vec3.scale(tangentP2, deltaPositionTwo, deltaUVOne[1])
-                vec3.sub(tangent, tangentP1, tangentP2)
-                vec3.scale(tangent, tangent, r)
-
-                fTangents.push(tangent)
-
-            }
-
-            fTangents = fTangents.flat()
-        } catch (e) {
-        }
 
         const [min, max] = MeshParser.computeBoundingBox(fVert)
         return {
@@ -150,7 +111,7 @@ export default class MeshParser {
         }
     }
 
-    static async parseGLTF(data, files=[]) {
+    static async parseGLTF(data, files = []) {
 
         return new Promise(rootResolve => {
 
@@ -160,8 +121,8 @@ export default class MeshParser {
                     return new Promise(resolve => {
                         getBufferData(b.uri).then(res => resolve(res))
                     })
-                else if(files && files.length > 0){
-                    const found =  files.find(f => f.name === b.uri)
+                else if (files && files.length > 0) {
+                    const found = files.find(f => f.name === b.uri)
                     console.log(files, b.uri)
                     if (found)
                         return new Promise(resolve => {
