@@ -6,7 +6,7 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
 import getOptions from "../../pages/project/utils/getOptions";
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
 import PropTypes from "prop-types";
@@ -14,6 +14,8 @@ import ControlProvider from "../../components/tabs/components/ControlProvider";
 import cloneClass from "../../pages/project/utils/misc/cloneClass";
 import randomID from "../../pages/project/utils/misc/randomID";
 import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
+import PickComponent from "../../services/engine/ecs/components/PickComponent";
+import generateNextID from "../../services/utils/generateNextID";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -73,9 +75,9 @@ export default function Editor(props) {
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyF],
                 callback: () => {
                     const el = document.getElementById('fullscreen-element-' + props.id)
-                    if(el) {
-                        if(!document.fullscreenElement)
-                        el.requestFullscreen()
+                    if (el) {
+                        if (!document.fullscreenElement)
+                            el.requestFullscreen()
                         else
                             document.exitFullscreen()
                     }
@@ -90,7 +92,10 @@ export default function Editor(props) {
                 require: [KEYS.Delete],
                 callback: () => {
                     if (props.engine.selectedElement) {
-                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: props.engine.selectedElement}})
+                        props.engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.REMOVE,
+                            payload: {entityID: props.engine.selectedElement}
+                        })
                         props.setAlert({
                             type: 'success',
                             message: 'Entity deleted.'
@@ -112,6 +117,8 @@ export default function Editor(props) {
                         Object.keys(clone.components).forEach(c => {
                             const cClone = cloneClass(clone.components[c])
                             cClone.id = randomID()
+                            if (cClone instanceof PickComponent)
+                                cClone.pickID = generateNextID(props.engine.entities.length + 1)
                             newComponents[c] = cClone
                         })
                         clone.components = newComponents
@@ -131,7 +138,7 @@ export default function Editor(props) {
         <div className={styles.viewportWrapper}>
             <div
                 id={'fullscreen-element-' + props.id}
-              className={styles.container}>
+                className={styles.container}>
                 {props.settings.viewportOptionsVisibility ?
                     <ViewportOptions
                         engine={props.engine}

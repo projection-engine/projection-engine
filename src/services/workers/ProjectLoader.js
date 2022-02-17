@@ -55,7 +55,7 @@ export default class ProjectLoader {
             fileSystem.readRegistryFile(fileID)
                 .then(lookUpTable => {
 
-                    if (lookUpTable ) {
+                    if (lookUpTable) {
                         fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
                             .then(fileData => {
                                 resolve(fileData)
@@ -118,8 +118,7 @@ export default class ProjectLoader {
                                                         data: JSON.parse(fileData),
                                                         id: e.data.components.MeshComponent?.meshID
                                                     })
-                                                }
-                                                else
+                                                } else
                                                     r(undefined)
                                             })
                                     })),
@@ -135,8 +134,7 @@ export default class ProjectLoader {
                                                         data: fileData,
                                                         id: e.data.components.SkyboxComponent?._imageID
                                                     })
-                                                }
-                                                else
+                                                } else
                                                     r(undefined)
                                             })
                                     })),
@@ -153,48 +151,48 @@ export default class ProjectLoader {
                                                         data: JSON.parse(fileData),
                                                         id: e.data.components.MaterialComponent.materialID
                                                     })
-                                                }
-                                                else
+                                                } else
                                                     r(undefined)
                                             })
                                     }))
 
 
-
                             Promise.all([...meshes, ...skyboxes, ...materials])
                                 .then(loaded => {
 
-                                    let meshData = loaded.filter(e =>e &&  e.type === 'mesh' && e.data !== null),
+                                    let meshData = loaded.filter(e => e && e.type === 'mesh' && e.data !== null),
                                         skyboxData = loaded.filter(e => e && e.type === 'skybox').map(e => e),
                                         materialData = loaded.filter(e => e && e.type === 'material')
                                     entities = entitiesFound.map((entity, index) => {
-                                        return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData,  gpu)
+                                        return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
                                     })
                                     materialData = materialData.map((mat) => {
-
                                         return ProjectLoader.mapMaterial(mat.data.response, gpu, mat.id)
                                     })
-
-                                    rootResolve({
-                                        meta,
-                                        settings,
-                                        entities,
-                                        materials: materialData,
-                                        meshes: meshData.map(m => {
-                                            return new Mesh({
-                                                vertices: m.data.vertices,
-                                                indices: m.data.indices,
-                                                normals: m.data.normals,
-                                                uvs: m.data.uvs,
-                                                id: m.id,
-                                                maxBoundingBox: m.data.maxBoundingBox,
-                                                minBoundingBox: m.data.minBoundingBox,
-                                                gpu: gpu,
-                                                tangents: m.data.tangents,
-                                                wireframeBuffer: true
+                                    Promise.all(materialData)
+                                        .then(initializedMaterials => {
+                                            rootResolve({
+                                                meta,
+                                                settings,
+                                                entities,
+                                                materials: initializedMaterials,
+                                                meshes: meshData.map(m => {
+                                                    return new Mesh({
+                                                        vertices: m.data.vertices,
+                                                        indices: m.data.indices,
+                                                        normals: m.data.normals,
+                                                        uvs: m.data.uvs,
+                                                        id: m.id,
+                                                        maxBoundingBox: m.data.maxBoundingBox,
+                                                        minBoundingBox: m.data.minBoundingBox,
+                                                        gpu: gpu,
+                                                        tangents: m.data.tangents,
+                                                        wireframeBuffer: true
+                                                    })
+                                                })
                                             })
                                         })
-                                    })
+
                                 })
                         })
                 })
@@ -202,11 +200,13 @@ export default class ProjectLoader {
         })
     }
 
-    static mapMaterial(material, gpu, id) {
+    static async mapMaterial(material, gpu, id) {
 
-        return new MaterialInstance(
+        const newMat = new MaterialInstance(
             gpu,
-            id,
+            id
+        )
+        await newMat.initializeTextures(
             material.albedo,
             material.metallic,
             material.roughness,
@@ -214,6 +214,7 @@ export default class ProjectLoader {
             material.height,
             material.ao
         )
+        return newMat
     }
 
     static mapEntity(entity, index, meshes, skyboxes, gpu) {
@@ -227,7 +228,6 @@ export default class ProjectLoader {
                 case 'MaterialComponent':
                     component = new MaterialComponent(entity.components[k].id)
                     break
-
                 case 'MeshComponent':
                     component = new MeshComponent(entity.components[k].id)
                     break

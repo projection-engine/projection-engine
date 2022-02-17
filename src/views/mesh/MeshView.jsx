@@ -5,7 +5,7 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useVisualizer, {initializeMesh} from "./hook/useVisualizer";
+import useVisualizer, {initializeMesh} from "../../services/hooks/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useMemo} from "react";
 

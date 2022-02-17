@@ -1,18 +1,19 @@
 import {useEffect, useMemo, useReducer, useRef, useState} from "react";
-import {enableBasics} from "../../../services/engine/utils/utils";
-import entityReducer, {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
-import PostProcessingSystem from "../../../services/engine/ecs/systems/PostProcessingSystem";
-import DeferredSystem from "../../../services/engine/ecs/systems/DeferredSystem";
-import TransformSystem from "../../../services/engine/ecs/systems/TransformSystem";
-import PhysicsSystem from "../../../services/engine/ecs/systems/PhysicsSystem";
-import ShadowMapSystem from "../../../services/engine/ecs/systems/ShadowMapSystem";
-import PickSystem from "../../../services/engine/ecs/systems/PickSystem";
-import Entity from "../../../services/engine/ecs/basic/Entity";
-import Engine from "../../../services/engine/Engine";
-import GridComponent from "../../../services/engine/ecs/components/GridComponent";
+import {enableBasics} from "../engine/utils/utils";
+import entityReducer, {ENTITY_ACTIONS} from "../engine/utils/entityReducer";
+import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
+import DeferredSystem from "../engine/ecs/systems/DeferredSystem";
+import TransformSystem from "../engine/ecs/systems/TransformSystem";
+import PhysicsSystem from "../engine/ecs/systems/PhysicsSystem";
+import ShadowMapSystem from "../engine/ecs/systems/ShadowMapSystem";
+import PickSystem from "../engine/ecs/systems/PickSystem";
+import Entity from "../engine/ecs/basic/Entity";
+import Engine from "../engine/Engine";
+import GridComponent from "../engine/ecs/components/GridComponent";
+import EVENTS from "../../pages/project/utils/misc/EVENTS";
 
 
-export default function useEngine(id, canExecutePhysicsAnimation, settings) {
+export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
     const [selectedElement, setSelectedElement] = useState(null)
@@ -61,16 +62,24 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
     ])
 
 
-    const updateSystems = () => {
+    const updateSystems = (callback) => {
+        load.pushEvent(EVENTS.UPDATING_SYSTEMS)
+        const postProcessing = new PostProcessingSystem(gpu, settings.resolutionMultiplier)
+        const deferred = new DeferredSystem(gpu, settings.resolutionMultiplier)
 
-        renderer.current.systems = [
-            new PhysicsSystem(),
-            new TransformSystem(),
-            new ShadowMapSystem(gpu),
-            new PickSystem(gpu),
-            new DeferredSystem(gpu, settings.resolutionMultiplier),
-            new PostProcessingSystem(gpu, settings.resolutionMultiplier)
-        ]
+        Promise.all([postProcessing.initializeTextures(),deferred.initializeTextures()])
+            .then(() => {
+                renderer.current.systems = [
+                    new PhysicsSystem(),
+                    new TransformSystem(),
+                    new ShadowMapSystem(gpu),
+                    new PickSystem(gpu),
+                    deferred,
+                    postProcessing
+                ]
+                load.finishEvent(EVENTS.UPDATING_SYSTEMS)
+                callback()
+            })
     }
 
     useEffect(() => {
@@ -81,8 +90,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
     useEffect(() => {
         if (initialized) {
             renderer.current?.stop()
-            updateSystems()
-            renderer.current?.start(entities)
+            updateSystems(() =>     renderer.current?.start(entities))
+
         }
     }, [settings.resolutionMultiplier])
 
@@ -91,18 +100,21 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings) {
             const gridEntity = new Entity(undefined, 'Grid')
 
             renderer.current = new Engine(id, gpu)
-            updateSystems()
             setInitialized(true)
+            updateSystems(() => {
 
-            dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: gridEntity})
-            dispatchEntities({
-                type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                    entityID: gridEntity.id,
-                    data: new GridComponent(gpu)
-                }
+
+                dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: gridEntity})
+                dispatchEntities({
+                    type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
+                        entityID: gridEntity.id,
+                        data: new GridComponent(gpu)
+                    }
+                })
+
+                renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
             })
 
-            renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
         } else if (gpu && id) {
             resizeObserver = new ResizeObserver(() => {
                 if (gpu && initialized)

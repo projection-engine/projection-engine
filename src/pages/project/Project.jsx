@@ -12,7 +12,7 @@ import ProjectLoader from "../../services/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 import useSerializer from "./hook/useSerializer";
 
-import useEngine from "./hook/useEngine";
+import useEngine from "../../services/hooks/useEngine";
 import useSettings from "./hook/useSettings";
 import EVENTS from "./utils/misc/EVENTS";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
@@ -27,8 +27,9 @@ export default function Project(props) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const [alert, setAlert] = useState({})
     const settings = useSettings()
-    const engine = useEngine(props.id, executingAnimation, settings)
     const load = useContext(LoaderProvider)
+    const engine = useEngine(props.id, executingAnimation, settings, load)
+
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
     const [filesLoaded, setFilesLoaded] = useState([])

@@ -25,5 +25,6 @@ export default {
     PACKAGING_DATA: 'Packaging data for download.',
     LOADING_MATERIAL: 'Loading material',
     LOAD_FILES: 'Loading assets',
-    COMPILING: 'Compiling'
+    COMPILING: 'Compiling',
+    UPDATING_SYSTEMS: 'Compiling systems'
 }
