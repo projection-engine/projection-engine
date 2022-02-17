@@ -69,6 +69,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             const postProcessing = new PostProcessingSystem(gpu, 1)
             const deferred = new DeferredSystem(gpu, 1)
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
+            setInitialized(true)
             Promise.all([postProcessing.initializeTextures(),deferred.initializeTextures()])
                 .then(() => {
                     renderer.current.systems = [
@@ -77,7 +78,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
                         deferred,
                         postProcessing
                     ]
-                    setInitialized(true)
+
                     renderer.current.camera.radius = 2
                     renderer.current?.prepareData({
                         fxaa: true,
