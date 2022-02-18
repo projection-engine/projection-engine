@@ -13,7 +13,7 @@
 
     border: var(--fabric-border-primary) 1px solid;
     color: var(--fabric-color-secondary);
-    background: var(--background-1);
+    background: var(--fabric-background-primary);
 
 
     transition: 150ms linear;

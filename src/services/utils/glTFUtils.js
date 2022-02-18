@@ -1,6 +1,8 @@
 import {WebWorker} from "../workers/WebWorker";
+import {mat4} from "gl-matrix";
+import Transformation from "../engine/utils/Transformation";
 
-export function nodeParser(node, allNodes) {
+export function nodeParser(node, allNodes, parentTransform) {
     let res = []
     let children = node.children && node.children.length > 0 ? allNodes
             .map((n, index) => {
@@ -11,11 +13,8 @@ export function nodeParser(node, allNodes) {
             }).filter(e => e !== undefined)
         :
         []
-    children = children
-        .map(child => {
-            return nodeParser(child, allNodes, true)
-        })
-        .flat()
+
+
     let parsedNode = {
         name: node.name,
         meshIndex: node.mesh,
@@ -62,6 +61,27 @@ export function nodeParser(node, allNodes) {
         parsedNode.translation = translation
 
     }
+    let transformationMatrix = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling)
+    if (parentTransform) {
+        mat4.multiply(
+            transformationMatrix,
+            parentTransform,
+            transformationMatrix
+        )
+        console.log(parsedNode)
+        parsedNode = {
+            ...parsedNode,
+            ...extractTransformations(transformationMatrix)
+        }
+        console.log(parsedNode)
+    }
+
+
+    children = children
+        .map(child => {
+            return nodeParser(child, allNodes, transformationMatrix)
+        })
+        .flat()
 
     res.push(...children)
     if (node.mesh !== undefined)
@@ -87,9 +107,9 @@ function extractTransformations(mat) {
     r = rotationToEulerAngles(r)
 
     return {
-        translation: t,
+        translation: [t.xT, t.yT, t.zT],
         rotation: r,
-        scaling: s
+        scaling: [s.xS, s.yS, s.zS]
     }
 }
 

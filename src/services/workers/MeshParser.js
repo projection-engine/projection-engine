@@ -216,6 +216,8 @@ export default class MeshParser {
                             return undefined
                     }).filter(e => e !== undefined)
 
+                console.log(sceneNodes)
+
                 sceneNodes = sceneNodes
                     .map(n => nodeParser(n, parsed.nodes)).flat()
                 parsed = {materials: parsed.materials, meshes: parsed.meshes}

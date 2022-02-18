@@ -1,16 +1,21 @@
 import importMesh from "./parsers/importMesh";
 
 export default function handleDrop(event, fileSystem, engine, setAlert) {
-    let data = event.dataTransfer.getData("text")
+    let entities = []
 
-    if (data) {
+    try {
+        entities = JSON.parse(event.dataTransfer.getData("text"))
+    } catch (e) {
+    }
+
+    for (let i = 0; i < entities.length; i++) {
+        const data = entities[i]
         fileSystem.readRegistryFile(data)
             .then(res => {
                 if (res && res.path.includes('.mesh'))
                     fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                         .then(mesh => {
-
-                            importMesh(mesh, engine, setAlert, data)
+                            importMesh(mesh, engine, setAlert, data, i)
                         })
                 else
                     setAlert({
@@ -18,12 +23,6 @@ export default function handleDrop(event, fileSystem, engine, setAlert) {
                         message: 'Not a mesh file.'
                     })
             })
-
-    } else
-        setAlert({
-            type: 'error',
-            message: 'Error loading file.'
-        })
-
+    }
 
 }

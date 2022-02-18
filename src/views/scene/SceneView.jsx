@@ -14,6 +14,7 @@ import Entity from "../../services/engine/ecs/basic/Entity";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import ThemeProvider from "../../services/hooks/ThemeProvider";
+import SelectBox from "../../components/selectbox/SelectBox";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -74,24 +75,26 @@ export default function SceneView(props) {
                         label: 'Remove entity',
                         icon: <span className={'material-icons-round'}>delete</span>,
                         onClick: (node) => {
+                            props.engine.setSelectedElement(undefined)
                             props.engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.REMOVE,
-                                payload: {entityID: node.getAttribute('data-node')}
+                                payload: {
+                                    entityID: node.getAttribute('data-node')
+                                }
                             })
                         }
                     }
                 ]}
-
                 triggers={['data-self', 'data-node']}
                 className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
 
+                <SelectBox nodes={props.engine.entities} selected={props.selected} setSelected={e => console.log(e)}/>
                 <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
 
                 <TreeView
                     draggable={true}
                     onDrop={(event, target) => {
                         event.preventDefault()
-
                         const current = props.engine.entities.find(f => f.id === target)
                         const dropTarget = props.engine.entities.find(f => f.id === event.dataTransfer.getData('text'))
 

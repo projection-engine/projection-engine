@@ -6,7 +6,7 @@
     overflow: auto;
     height: fit-content;
     max-height: 100%;
-    background: var(--background-3) radial-gradient(var(--background-1) 1px, transparent 0);
+    background: var(--fabric-background-quaternary) radial-gradient(var(--fabric-background-primary) 1px, transparent 0);
     background-size: 20px 20px;
 }
 

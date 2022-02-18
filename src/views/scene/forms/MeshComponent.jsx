@@ -115,7 +115,7 @@ export default function MeshComponent(props) {
                                 })
                             }}
                             className={styles.button}
-                            styles={{background: 'var(--background-2)'}}
+                            styles={{background: 'var(--fabric-background-secondary)'}}
                             variant={"outlined"}>
                             <span style={{fontSize: '1.2rem'}} className={'material-icons-round'}>add</span>
                             Attach physics body
@@ -166,7 +166,7 @@ export default function MeshComponent(props) {
                                 })
                             }}
                             className={styles.button}
-                            styles={{background: 'var(--background-2)'}}
+                            styles={{background: 'var(--fabric-background-secondary)'}}
                             variant={"outlined"}>
                             <span style={{fontSize: '1.2rem'}} className={'material-icons-round'}>add</span>
                             Attach physics collider

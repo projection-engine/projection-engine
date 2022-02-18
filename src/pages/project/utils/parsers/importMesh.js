@@ -6,7 +6,7 @@ import MaterialComponent from "../../../../services/engine/ecs/components/Materi
 import MeshComponent from "../../../../services/engine/ecs/components/MeshComponent";
 import PickComponent from "../../../../services/engine/ecs/components/PickComponent";
 
-export default function importMesh(objLoaded, engine, setAlert, id) {
+export default function importMesh(objLoaded, engine, setAlert, id, index) {
 
     try {
 
@@ -32,7 +32,7 @@ export default function importMesh(objLoaded, engine, setAlert, id) {
 
         newEntity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
         newEntity.components.TransformComponent = transformation
-        newEntity.components.PickComponent = new PickComponent(undefined, engine.entities.length)
+        newEntity.components.PickComponent = new PickComponent(undefined, engine.entities.length + index)
         newEntity.components.MaterialComponent = new MaterialComponent()
 
 

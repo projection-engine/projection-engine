@@ -1,6 +1,6 @@
 .wrapper {
     width: 35%;
-    background-color: var(--background-1);
+    background-color: var(--fabric-background-primary);
     height: 100%;
 
     display: flex;

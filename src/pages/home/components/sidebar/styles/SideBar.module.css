@@ -61,7 +61,7 @@
     gap: 8px;
 
     padding: 4px !important;
-    background: var(--background-2a);
+    background: var(--fabric-background-tertiary);
 }
 
 .logoTitle {
