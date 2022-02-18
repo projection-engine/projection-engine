@@ -128,12 +128,16 @@ export default class ProjectLoader {
                                         ProjectLoader.readFromRegistry(e.data.components.SkyboxComponent?._imageID, fileSystem)
                                             .then(fileData => {
                                                 if (fileData) {
+                                                    const img = new Image()
+                                                    img.src = fileData
+                                                    img.onload = () => {
+                                                        r({
+                                                            type: 'skybox',
+                                                            data: img,
+                                                            id: e.data.components.SkyboxComponent?._imageID
+                                                        })
+                                                    }
 
-                                                    r({
-                                                        type: 'skybox',
-                                                        data: fileData,
-                                                        id: e.data.components.SkyboxComponent?._imageID
-                                                    })
                                                 } else
                                                     r(undefined)
                                             })

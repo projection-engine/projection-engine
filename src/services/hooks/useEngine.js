@@ -11,6 +11,7 @@ import Entity from "../engine/ecs/basic/Entity";
 import Engine from "../engine/Engine";
 import GridComponent from "../engine/ecs/components/GridComponent";
 import EVENTS from "../../pages/project/utils/misc/EVENTS";
+import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
@@ -48,7 +49,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
             shadingModel: settings.shadingModel,
             fxaa: settings.fxaa,
             iconsVisibility: settings.iconsVisibility,
-            gridVisibility: settings.gridVisibility
+            gridVisibility: settings.gridVisibility,
+            performanceMetrics: settings.performanceMetrics
         }
     }, [
         canExecutePhysicsAnimation,
@@ -58,7 +60,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         settings.shadingModel,
         settings.fxaa,
         settings.iconsVisibility,
-        settings.gridVisibility
+        settings.gridVisibility,
+        settings.performanceMetrics
     ])
 
 
@@ -70,6 +73,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         Promise.all([postProcessing.initializeTextures(),deferred.initializeTextures()])
             .then(() => {
                 renderer.current.systems = [
+                    new PerformanceSystem(gpu),
                     new PhysicsSystem(),
                     new TransformSystem(),
                     new ShadowMapSystem(gpu),

@@ -84,12 +84,9 @@ export default function SceneView(props) {
 
                 triggers={['data-self', 'data-node']}
                 className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
-                <div style={{display: 'flex', width: '100%'}}>
-                    <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
-                    <Button onClick={() => quickAccess.refresh()} className={styles.refreshButton}>
-                        <span style={{fontSize: '1rem'}} className={'material-icons-round'}>refresh</span>
-                    </Button>
-                </div>
+
+                <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
+
                 <TreeView
                     draggable={true}
                     onDrop={(event, target) => {

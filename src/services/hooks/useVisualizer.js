@@ -129,18 +129,25 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 function initializeSkybox(dispatch, gpu) {
     const newEntity = new Entity(undefined, 'sky')
     const sky = new SkyboxComponent(undefined, gpu)
-    sky.hdrTexture = {blob: skybox, imageID: undefined, type: 'jpg'}
-    dispatch({
-        type: ENTITY_ACTIONS.ADD,
-        payload: newEntity
-    })
-    dispatch({
-        type: ENTITY_ACTIONS.ADD_COMPONENT,
-        payload: {
-            entityID: newEntity.id,
-            data: sky
-        }
-    })
+    const img = new Image()
+    img.src = skybox
+
+    img.onload = () => {
+        sky.hdrTexture = {blob: img, imageID: undefined, type: 'jpg'}
+        dispatch({
+            type: ENTITY_ACTIONS.ADD,
+            payload: newEntity
+        })
+        dispatch({
+            type: ENTITY_ACTIONS.ADD_COMPONENT,
+            payload: {
+                entityID: newEntity.id,
+                data: sky
+            }
+        })
+    }
+
+
 }
 
 function initializeLight(dispatch) {

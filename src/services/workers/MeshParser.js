@@ -123,7 +123,7 @@ export default class MeshParser {
                     })
                 else if (files && files.length > 0) {
                     const found = files.find(f => f.name === b.uri)
-                    console.log(files, b.uri)
+
                     if (found)
                         return new Promise(resolve => {
 
@@ -140,8 +140,8 @@ export default class MeshParser {
 
             Promise.all(bufferPromises).then(parsedBuffers => {
                 parsed.buffers = null
-
-                let accessorPromises = parsed.accessors.map(a => {
+                let parsedAccessors = []
+                parsed.accessors.forEach(a => {
                     let items = 0
                     switch (a.type) {
                         case 'SCALAR':
@@ -160,78 +160,98 @@ export default class MeshParser {
                             break
                     }
 
-                    let elementBytesLength = (a.componentType === 5123 ? Uint16Array : Float32Array).BYTES_PER_ELEMENT;
-                    let typedGetter = a.componentType === 5123 ? 'getUint16' : 'getFloat32'
+                    let elementBytesLength, typedGetter
+                    // 'getFloat32' : 'getUint16'
+                    switch (a.componentType) {
+                        case 5120: // SIGNED BYTE 8
+                            elementBytesLength = Int8Array
+                            typedGetter = 'getInt8'
+                            break
+                        case 5121: // UNSIGNED BYTE 8
+                            elementBytesLength = Uint8Array
+                            typedGetter = 'getUint8'
+                            break
+                        case 5122: // SIGNED SHORT 16
+                            elementBytesLength = Int16Array
+                            typedGetter = 'getInt16'
+                            break
+                        case 5123: // UNSIGNED SHORT 16
+                            elementBytesLength = Uint16Array
+                            typedGetter = 'getUint16'
+                            break
+                        case 5125: // UNSIGNED INT 32
+                            elementBytesLength = Uint32Array
+                            typedGetter = 'getUint32'
+                            break
+                        default: // FLOAT
+                            elementBytesLength = Float32Array
+                            typedGetter = 'getFloat32'
+                            break
+                    }
+                    elementBytesLength = elementBytesLength.BYTES_PER_ELEMENT
+
                     const length = items * a.count;
+                    const res = unpackBufferViewData(
+                        parsedBuffers,
+                        parsed.bufferViews,
+                        length,
+                        elementBytesLength,
+                        typedGetter,
+                        a.bufferView
+                    )
+                    const result = {
+                        ...a,
+                        data: res
+                    }
 
-                    return new Promise(resolve => {
-                        unpackBufferViewData(
-                            parsedBuffers,
-                            parsed.bufferViews,
-                            length,
-                            elementBytesLength,
-                            typedGetter,
-                            a.bufferView
-                        ).then(res => resolve({
-                            ...a,
-                            data: res
-                        }))
-
-                    })
-
+                    parsedAccessors.push(result)
                 })
 
-                Promise.all(accessorPromises).then(parsedAccessors => {
-                    const mainScene = parsed.scenes[0]
-                    let sceneNodes = parsed.nodes
-                        .map((n, index) => {
-                            if (mainScene.nodes.includes(index))
-                                return {...parsed.nodes[index], index}
-                            else
-                                return undefined
-                        }).filter(e => e !== undefined)
+                const mainScene = parsed.scenes[0]
+                let sceneNodes = parsed.nodes
+                    .map((n, index) => {
+                        if (mainScene.nodes.includes(index))
+                            return {...parsed.nodes[index], index}
+                        else
+                            return undefined
+                    }).filter(e => e !== undefined)
 
-                    sceneNodes = sceneNodes.map(n => nodeParser(n, parsed.nodes)).flat()
-                    parsed = {materials: parsed.materials, meshes: parsed.meshes}
+                sceneNodes = sceneNodes
+                    .map(n => nodeParser(n, parsed.nodes)).flat()
+                parsed = {materials: parsed.materials, meshes: parsed.meshes}
 
-                    let meshes = parsed.meshes.filter((_, index) => {
-                        return sceneNodes.find(n => n.meshIndex === index) !== undefined
-                    }).map(m => {
-                        return getPrimitives(m, parsedAccessors, parsed.materials)[0]
-                    })
-                    parsedAccessors = null
+                let meshes = parsed.meshes.filter((_, index) => {
+                    return sceneNodes.find(n => n.meshIndex === index) !== undefined
+                }).map(m => {
+                    return getPrimitives(m, parsed.materials)[0]
+                })
 
-                    let files = []
-                    sceneNodes.forEach(m => {
-                        const [min, max] = MeshParser.computeBoundingBox(meshes[m.meshIndex]?.vertices)
+                let files = []
+                sceneNodes.forEach(m => {
+                    const [min, max] = MeshParser.computeBoundingBox(parsedAccessors[meshes[m.meshIndex]?.vertices])
+                    files.push(
+                        {
+                            name: m.name,
+                            data: {
+                                ...m,
+                                indices: parsedAccessors[meshes[m.meshIndex].indices]?.data,
+                                vertices: parsedAccessors[meshes[m.meshIndex].vertices]?.data,
+                                tangents: parsedAccessors[meshes[m.meshIndex].tangents]?.data,
+                                normals: parsedAccessors[meshes[m.meshIndex].normals]?.data,
+                                uvs: parsedAccessors[meshes[m.meshIndex].uvs]?.data,
 
-                        files.push(
-                            {
-                                name: m.name,
-                                data: {
-                                    ...m,
-                                    indices: meshes[m.meshIndex].indices,
-                                    vertices: meshes[m.meshIndex].vertices,
-                                    tangents: meshes[m.meshIndex].tangents,
-                                    normals: meshes[m.meshIndex].normals,
-                                    uvs: meshes[m.meshIndex].uvs,
-
-                                    maxBoundingBox: max,
-                                    minBoundingBox: min,
-                                }
+                                maxBoundingBox: max,
+                                minBoundingBox: min,
                             }
-                        )
-                    })
-
-                    rootResolve(files)
-                }).catch((error) => {
-                    rootResolve(null)
+                        }
+                    )
                 })
+
+                rootResolve(files)
             }).catch((error) => {
                 rootResolve(null)
             })
         })
-
     }
 
     static computeBoundingBox(vertices) {

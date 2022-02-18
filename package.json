@@ -5,11 +5,10 @@
   "dependencies": {
     "@electron/remote": "latest",
     "@f-ui/charts": "latest",
-    "@f-ui/core": "latest",
+    "@f-ui/core": "^0.1.6-alpha",
     "@fontsource/roboto": "latest",
     "dexie": "^3.2.0",
     "electron-is-dev": "latest",
-
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",
@@ -19,6 +18,7 @@
     "react-colorful": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
+    "systeminformation": "^5.11.3",
     "web-vitals": "latest",
     "webpack": "^5.68.0"
   },

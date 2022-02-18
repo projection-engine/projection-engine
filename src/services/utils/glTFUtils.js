@@ -99,7 +99,7 @@ function rotationToEulerAngles(mat) {
 }
 
 
-export function getPrimitives(mesh, accessors, materials = []) {
+export function getPrimitives(mesh, materials = []) {
     const primitives = mesh.primitives;
 
     primitives.forEach(primitive => {
@@ -118,13 +118,12 @@ export function getPrimitives(mesh, accessors, materials = []) {
         const tang = p.attributes.find(d => d.name === 'TANGENT')
         const uv = p.attributes.find(d => d.name === 'TEXCOORD_0')
 
-
         return {
-            indices: accessors[p.indices]?.data,
-            vertices: vert ? accessors[vert.index]?.data : [],
-            tangents: tang ? accessors[tang.index]?.data : [],
-            normals: norm ? accessors[norm.index]?.data : [],
-            uvs: uv ? accessors[uv.index]?.data : []
+            indices: p.indices,
+            vertices: vert ? vert.index : -1,
+            tangents: tang ? tang.index : -1,
+            normals: norm ? norm.index : -1,
+            uvs: uv ? uv.index : -1
         }
     })
 }
@@ -137,40 +136,17 @@ export function unpackBufferViewData(
     typedGetter,
     bufferView
 ) {
-    const worker = new WebWorker()
-    return worker.createExecution({
-        buffers,
-        bufferViews,
-        length,
-        elementBytesLength,
-        typedGetter,
-        bufferView
-    },
 
-    `
-    () => {
-        self.addEventListener('message', event => {
-            const {
-                buffers,
-                bufferViews,
-                length,
-                elementBytesLength,
-                typedGetter,
-                bufferView
-            } = event.data
-            let bufferId = bufferViews[bufferView].buffer;
-            let offset = bufferViews[bufferView].byteOffset;
+    let bufferId = bufferViews[bufferView].buffer;
+    let offset = bufferViews[bufferView].byteOffset;
 
-            let dv = buffers[bufferId];
-            self.postMessage(Array.from({
-                length
-            }).map((el, i) => {
-                let loopOffset = offset + Math.max(0, elementBytesLength * i);
-                return dv[typedGetter](loopOffset, true);
-            }))
-        })
-    }
-    `)
+    let dv = buffers[bufferId];
+    return Array.from({
+        length
+    }).map((el, i) => {
+        let loopOffset = offset + Math.max(0, elementBytesLength * i);
+        return dv[typedGetter](loopOffset, true);
+    })
 }
 
 

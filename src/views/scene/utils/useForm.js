@@ -253,6 +253,7 @@ export default function useForm(
                         database={database}
                         selected={selected.components.SkyboxComponent}
                         submit={data => {
+
                             selected.components.SkyboxComponent.hdrTexture = {
                                 blob: data.blob,
                                 imageID: data.id

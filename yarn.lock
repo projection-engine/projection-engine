@@ -1167,10 +1167,10 @@
   resolved "https://registry.yarnpkg.com/@f-ui/charts/-/charts-0.0.1-alpha.tgz#7188d07309f0ab5d944266bb0278fc7008f8c1a9"
   integrity sha512-Jp7sjouwgGub5Fc1W2JxOLSt5/uew4fkxolFoCMUrx9FYqt02W9HgxI4j7oQdRUfinQD7h4bVF/5uV42rcTsRA==
 
-"@f-ui/core@latest":
-  version "0.1.4-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.4-alpha.tgz#b56868a78f5072c13e7f1803c8a65e5c33dc8225"
-  integrity sha512-fUYny2mVouNr5Lxd9jBxDuE5IvPzZ+iBUd1ud/L0Fc0c5tSNKXbF/qMYPnMz4X6p5Gfa3gBdeROfZfWBiGrzfg==
+"@f-ui/core@^0.1.6-alpha":
+  version "0.1.6-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.6-alpha.tgz#d02a67106904e8c2aa0761fba386ce9ec53b8687"
+  integrity sha512-OdjYYGOxkWCpgkLGF0D2wXzsqRGZ/lVHeEPRo5tBPY9DeRD0w1KsJSVJEE+3iQfF8+7tl65p/dioRNJkd6paCA==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"
@@ -8903,6 +8903,11 @@ symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
+
+systeminformation@^5.11.3:
+  version "5.11.3"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.11.3.tgz#8d14a444d398eadce5cb973a3d3d0ebb454ffcd9"
+  integrity sha512-sjvlk4SUefhwrONUeLijXt+NQyptAiqShd5v6bFJFNr9EVJUr3YSnNxDqCz0gp5EJBUj88pL1ssc8ZHPtngBOw==
 
 tailwindcss@^3.0.2:
   version "3.0.18"

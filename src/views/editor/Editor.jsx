@@ -85,7 +85,7 @@ export default function Editor(props) {
             },
             {
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
-                callback: () => props.settings.fpsVisibility = !props.settings.fpsVisibility
+                callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics
 
             },
             {
