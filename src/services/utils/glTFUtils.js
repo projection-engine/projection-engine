@@ -1,5 +1,5 @@
 import {WebWorker} from "../workers/WebWorker";
-import {mat4} from "gl-matrix";
+import {mat4, quat} from "gl-matrix";
 import Transformation from "../engine/utils/Transformation";
 
 export function nodeParser(node, allNodes, parentTransform) {
@@ -41,26 +41,12 @@ export function nodeParser(node, allNodes, parentTransform) {
             rotation = [0, 0, 0, 1]
 
 
-        let rotationMatrix = new Array(16).fill(0)
-        rotationMatrix[0] *= 1 - 2 * (rotation[1] ** 2) - 2 * (rotation[2] ** 2) // times
-        rotationMatrix[1] = 2 * rotation[0] * rotation[1] - 2 * rotation[3] * rotation[2] // 2xy - 2sz
-        rotationMatrix[2] = 2 * rotation[0] * rotation[2] + 2 * rotation[3] * rotation[1] // 2xz + 2sy
-
-        rotationMatrix[4] = 2 * rotation[0] * rotation[1] + 2 * rotation[3] * rotation[2] // 2xy + 2sz
-        rotationMatrix[5] *= 1 - 2 * (rotation[0] ** 2) - 2 * (rotation[2] ** 2) // 1 - 2x^2 - 2z^2
-        rotationMatrix[6] = 2 * rotation[1] * rotation[2] - 2 * rotation[3] * rotation[0] // 2yz - 2sx
-
-        rotationMatrix[8] = 2 * rotation[0] * rotation[2] - 2 * rotation[3] * rotation[1] // 2xz - 2sy
-        rotationMatrix[9] = 2 * rotation[1] * rotation[2] + 2 * rotation[3] * rotation[0] // 2yz + 2sx
-        rotationMatrix[10] *= 1 - 2 * (rotation[0] ** 2) - 2 * (rotation[1] ** 2) // 1 - 2x^2 - 2y^2
-        rotationMatrix[15] = 1
-
-
         parsedNode.scaling = scale
-        parsedNode.rotation = rotationToEulerAngles(rotationMatrix)
+        parsedNode.rotation = quaternionToRotation(rotation)
         parsedNode.translation = translation
 
     }
+
     let transformationMatrix = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling)
     if (parentTransform) {
         mat4.multiply(
@@ -68,13 +54,12 @@ export function nodeParser(node, allNodes, parentTransform) {
             parentTransform,
             transformationMatrix
         )
-        console.log(parsedNode)
         parsedNode = {
             ...parsedNode,
             ...extractTransformations(transformationMatrix)
         }
-        console.log(parsedNode)
     }
+    console.log(transformationMatrix)
 
 
     children = children
@@ -91,31 +76,28 @@ export function nodeParser(node, allNodes, parentTransform) {
 
 
 function extractTransformations(mat) {
-    let s, r, t
-    t = {xT: mat[12], yT: mat[13], zT: mat[14]}
-    let sX = Math.sqrt((mat[0] ** 2 + mat[4] ** 2 + mat[8] ** 2)),
-        sY = Math.sqrt((mat[1] ** 2 + mat[5] ** 2 + mat[9] ** 2)),
-        sZ = Math.sqrt((mat[2] ** 2 + mat[6] ** 2 + mat[10] ** 2))
-    s = {xS: sX, yS: sY, zS: sZ}
+    let translation = [0, 0, 0],
+        rotation = [0, 0, 0, 1],
+        scaling = [1, 1, 1]
 
-    r = [
-        mat[0] / sX, mat[1] / sY, mat[2] / sZ, 0,
-        mat[4] / sX, mat[5] / sY, mat[6] / sZ, 0,
-        mat[8] / sX, mat[9] / sY, mat[10] / sZ, 0,
-        0, 0, 0, 1
-    ]
-    r = rotationToEulerAngles(r)
+    mat4.getTranslation(translation, mat)
+    mat4.getRotation(rotation, mat)
+    mat4.getScaling(scaling, mat)
 
     return {
-        translation: [t.xT, t.yT, t.zT],
-        rotation: r,
-        scaling: [s.xS, s.yS, s.zS]
+        translation,
+        rotation: quaternionToRotation(rotation),
+        scaling
     }
 }
 
-function rotationToEulerAngles(mat) {
-    return [Math.atan2(mat[9], mat[10]), Math.atan2(-mat[8], Math.sqrt(mat[9] ** 2 + mat[10] ** 2)), Math.atan2(mat[4], mat[0])]
+function quaternionToRotation(rotation) {
+    let x, y, z
+    x = quat.getAxisAngle([1, 0, 0], rotation)
+    y = quat.getAxisAngle([0, 1, 0], rotation)
+    z = quat.getAxisAngle([0, 0, 1], rotation)
 
+    return [x, y, z]
 }
 
 
