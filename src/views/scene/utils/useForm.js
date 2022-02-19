@@ -12,6 +12,7 @@ import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
 import ColliderComponent from "../../../services/engine/ecs/components/ColliderComponent";
 import MaterialInstance from "../../../services/engine/renderer/elements/MaterialInstance";
 import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
+import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 export default function useForm(
     engine,
@@ -19,7 +20,8 @@ export default function useForm(
     setAlert,
     executingAnimation,
     quickAccess,
-    database
+
+    load
 ) {
 
     const [currentKey, setCurrentKey] = useState()
@@ -62,7 +64,6 @@ export default function useForm(
                 return (
                     <MeshComponent
                         quickAccess={quickAccess}
-                        database={database}
                         meshes={engine.meshes}
                         submitPhysics={(add) => {
                             if (add) {
@@ -120,35 +121,52 @@ export default function useForm(
                 return (
                     <MaterialComponent
                         quickAccess={quickAccess}
-                        database={database}
                         selected={selected.components.MaterialComponent}
                         submit={(mat) => {
+                            const newMat = new MaterialInstance(
+                                engine.gpu,
+                                mat.id
+                            )
 
                             let found = engine.materials.find(m => m.id === mat.id)
-                            if (!found)
-                                engine.setMaterials(prev => {
-                                    return [...prev,
-                                        new MaterialInstance(
-                                            engine.gpu,
-                                            mat.id,
-                                            mat.blob.albedo,
-                                            mat.blob.metallic,
-                                            mat.blob.roughness,
-                                            mat.blob.normal,
-                                            mat.blob.height,
-                                            mat.blob.ao,
-                                        )]
+                            if (!found) {
+                                load.pushEvent(EVENTS.LOADING_MATERIAL)
+                                newMat.initializeTextures(
+                                    mat.blob.albedo,
+                                    mat.blob.metallic,
+                                    mat.blob.roughness,
+                                    mat.blob.normal,
+                                    mat.blob.height,
+                                    mat.blob.ao,
+                                ).then(() => {
+                                    engine.setMaterials(prev => {
+                                        return [...prev, newMat]
+                                    })
+                                    selected.components.MaterialComponent.materialID = mat.id
+                                    selected.components.MaterialComponent.name = mat.name
+                                    engine.dispatchEntities({
+                                        type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                            entityID: selectedElement,
+                                            data: selected.components.MaterialComponent,
+                                            key: 'MaterialComponent'
+                                        }
+                                    })
+                                    load.finishEvent(EVENTS.LOADING_MATERIAL)
                                 })
+                            }
+                            else {
+                                selected.components.MaterialComponent.materialID = mat.id
+                                selected.components.MaterialComponent.name = mat.name
+                                engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                        entityID: selectedElement,
+                                        data: selected.components.MaterialComponent,
+                                        key: 'MaterialComponent'
+                                    }
+                                })
+                            }
 
-                            selected.components.MaterialComponent.materialID = mat.id
-                            selected.components.MaterialComponent.name = mat.name
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
-                                    data: selected.components.MaterialComponent,
-                                    key: 'MaterialComponent'
-                                }
-                            })
+
                         }}
                         setAlert={setAlert}
 
@@ -174,7 +192,6 @@ export default function useForm(
                         }}
 
                         quickAccess={quickAccess}
-                        database={database}
                         submitPlacement={(axis, data) => {
                             const k = key === 'DirectionalLightComponent' ? 'direction' : 'position'
                             const component = selected.components[key]
@@ -213,7 +230,6 @@ export default function useForm(
                         type={key}
                         selected={selected.components[key]}
                         quickAccess={quickAccess}
-                        database={database}
                         submitPlacement={(axis, data) => {
                             const k = 'position'
                             const component = selected.components[key]
@@ -250,7 +266,6 @@ export default function useForm(
                 return (
                     <SkyboxComponent
                         quickAccess={quickAccess}
-                        database={database}
                         selected={selected.components.SkyboxComponent}
                         submit={data => {
 
@@ -304,9 +319,9 @@ export default function useForm(
             return (
                 <div className={styles.formsWrapper}>
                     {data.map((d, i) => (
-                       <React.Fragment key={'component-field-' + i}>
-                           {d}
-                       </React.Fragment>
+                        <React.Fragment key={'component-field-' + i}>
+                            {d}
+                        </React.Fragment>
                     ))}
                 </div>
             )

@@ -1,10 +1,10 @@
 import {vec2, vec3} from "gl-matrix";
 import groupInto from "../engine/utils/groupInto";
 import FileBlob from "./FileBlob";
-import {getBufferData, getPrimitives, nodeParser, unpackBufferViewData} from "../utils/glTFUtils";
+import {getBufferData, getPrimitives, materialParser, nodeParser, unpackBufferViewData} from "../utils/glTFUtils";
 import PrimitiveProcessor from "./PrimitiveProcessor";
 
-
+const fs = window.require('fs')
 export default class MeshParser {
     static parseObj(data) {
         let txt = data.trim() + "\n";
@@ -111,7 +111,7 @@ export default class MeshParser {
         }
     }
 
-    static async parseGLTF(data, files = []) {
+    static async parseGLTF(data, basePath) {
 
         return new Promise(rootResolve => {
 
@@ -121,20 +121,16 @@ export default class MeshParser {
                     return new Promise(resolve => {
                         getBufferData(b.uri).then(res => resolve(res))
                     })
-                else if (files && files.length > 0) {
-                    const found = files.find(f => f.name === b.uri)
-
-                    if (found)
-                        return new Promise(resolve => {
-
-                            FileBlob.loadAsString(found, true)
-                                .then(r => {
-                                    getBufferData(r, true)
-                                        .then(res => resolve(res))
+                else {
+                    return new Promise(resolve => {
+                        fs.readFile(basePath + '\\' + b.uri, 'base64', (e, r) => {
+                            getBufferData(r)
+                                .then(res => {
+                                    console.log(res)
+                                    resolve(res)
                                 })
                         })
-                    else
-                        return new Promise((_, reject) => reject())
+                    })
                 }
             })
 
@@ -161,7 +157,7 @@ export default class MeshParser {
                     }
 
                     let elementBytesLength, typedGetter
-                    // 'getFloat32' : 'getUint16'
+
                     switch (a.componentType) {
                         case 5120: // SIGNED BYTE 8
                             elementBytesLength = Int8Array
@@ -216,42 +212,54 @@ export default class MeshParser {
                             return undefined
                     }).filter(e => e !== undefined)
 
-                console.log(sceneNodes)
 
                 sceneNodes = sceneNodes
                     .map(n => nodeParser(n, parsed.nodes)).flat()
-                parsed = {materials: parsed.materials, meshes: parsed.meshes}
+                parsed = {
+                    materials: parsed.materials,
+                    meshes: parsed.meshes,
+                    textures: parsed.textures,
+                    images: parsed.images
+                }
+                const materials = parsed.materials ? parsed.materials.map(m => {
+                    return materialParser(basePath, m, parsed.textures, parsed.images)
+                }) : []
 
-                let meshes = parsed.meshes.filter((_, index) => {
-                    return sceneNodes.find(n => n.meshIndex === index) !== undefined
-                }).map(m => {
-                    return getPrimitives(m, parsed.materials)[0]
-                })
+                Promise.all(materials)
+                    .then(parsedMaterials => {
 
-                let files = []
-                sceneNodes.forEach(m => {
-                    const [min, max] = MeshParser.computeBoundingBox(parsedAccessors[meshes[m.meshIndex]?.vertices])
-                    files.push(
-                        {
-                            name: m.name,
-                            data: {
-                                ...m,
-                                indices: parsedAccessors[meshes[m.meshIndex].indices]?.data,
-                                vertices: parsedAccessors[meshes[m.meshIndex].vertices]?.data,
-                                tangents: parsedAccessors[meshes[m.meshIndex].tangents]?.data,
-                                normals: parsedAccessors[meshes[m.meshIndex].normals]?.data,
-                                uvs: parsedAccessors[meshes[m.meshIndex].uvs]?.data,
+                        let meshes = parsed.meshes.filter((_, index) => {
+                            return sceneNodes.find(n => n.meshIndex === index) !== undefined
+                        }).map(m => {
+                            return getPrimitives(m, parsed.materials)[0]
+                        })
+                        let files = []
+                        sceneNodes.forEach(m => {
+                            const [min, max] = MeshParser.computeBoundingBox(parsedAccessors[meshes[m.meshIndex]?.vertices])
+                            files.push(
+                                {
 
-                                maxBoundingBox: max,
-                                minBoundingBox: min,
-                            }
-                        }
-                    )
-                })
+                                    name: m.name,
+                                    data: {
+                                        ...m,
+                                        material: meshes[m.meshIndex].material ? materials[meshes[m.meshIndex].material].id : undefined,
+                                        indices: parsedAccessors[meshes[m.meshIndex].indices]?.data,
+                                        vertices: parsedAccessors[meshes[m.meshIndex].vertices]?.data,
+                                        tangents: parsedAccessors[meshes[m.meshIndex].tangents]?.data,
+                                        normals: parsedAccessors[meshes[m.meshIndex].normals]?.data,
+                                        uvs: parsedAccessors[meshes[m.meshIndex].uvs]?.data,
 
-                rootResolve(files)
+                                        maxBoundingBox: max,
+                                        minBoundingBox: min,
+                                    }
+                                }
+                            )
+                        })
+
+                        rootResolve({nodes: files, materials: parsedMaterials})
+                    })
             }).catch((error) => {
-                rootResolve(null)
+                rootResolve({})
             })
         })
     }

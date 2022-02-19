@@ -5,6 +5,50 @@ export const COLOR_BLEND_OPERATIONS = {
     LERP: 3 // TODO
 }
 export default class ImageProcessor {
+    static extractChannel([r, g, b, a], img) {
+        const c = document.createElement("canvas");
+        const imageToLoad = new Image()
+
+        return new Promise(resolve => {
+
+            if(imageToLoad) {
+                console.log(img)
+                imageToLoad.onerror = () => resolve('')
+                imageToLoad.onload = () => {
+                    c.width = imageToLoad.width
+                    c.height = imageToLoad.height
+
+                    let ctx = c.getContext("2d");
+                    ctx.drawImage(imageToLoad, 0, 0)
+
+                    const imgData = ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height);
+                    const data = imgData.data;
+                    let newImage = new Array(data.length)
+                    let accent = r ? 'iR' : g ? 'iG' : b ? 'iB' : 'iA'
+                    for (let i = 0; i < data.length; i += 4) {
+                        let col = {
+                            iR: data[i] * r,
+                            iG: data[i + 1] * g,
+                            iB: data[i + 2] * b,
+                            iA: data[i + 3] * a
+                        }
+
+                        newImage[i] = col[accent]
+                        newImage[i + 1] = col[accent]
+                        newImage[i + 2] = col[accent]
+                        newImage[i + 3] = data[i + 3] * a
+                    }
+                    imgData.data.set(newImage)
+                    ctx.putImageData(imgData, 0, 0)
+                    resolve(c.toDataURL())
+                }
+                imageToLoad.src = img
+            }
+            else
+                resolve(img)
+        })
+    }
+
     static colorToImage(color) {
         const c = document.createElement("canvas");
         c.width = 1024
@@ -32,12 +76,10 @@ export default class ImageProcessor {
     }
 
 
-    static blendWithColor(widthR, heightR, src, color, operation) {
+    static blendWithColor(src, color, operation) {
         const c = document.createElement("canvas");
         const split = color.match(/[\d.]+/g)
         const [r, g, b] = split.map(v => parseFloat(v))
-        c.width = widthR
-        c.height = heightR
 
         const imageToLoad = new Image()
         imageToLoad.src = src
@@ -45,18 +87,20 @@ export default class ImageProcessor {
 
         return new Promise(resolve => {
             imageToLoad.onload = () => {
+                c.width = imageToLoad.width
+                c.height = imageToLoad.height
                 let ctx = c.getContext("2d");
                 ctx.drawImage(imageToLoad, 0, 0)
 
-                const imgData = ctx.getImageData(0, 0, widthR, heightR);
+                const imgData = ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height);
                 const data = imgData.data;
                 let newImage = new Array(data.length)
                 for (let i = 0; i < data.length; i += 4) {
                     switch (operation) {
                         case COLOR_BLEND_OPERATIONS.POWER:
                             newImage[i] = data[i] ** r
-                            newImage[i + 1] =  data[i + 1] ** g
-                            newImage[i + 2] =data[i + 2] ** b
+                            newImage[i + 1] = data[i + 1] ** g
+                            newImage[i + 2] = data[i + 2] ** b
                             newImage[i + 3] = data[i + 3]
                             break
                         case COLOR_BLEND_OPERATIONS.ADD:

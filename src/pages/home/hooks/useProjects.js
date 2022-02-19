@@ -49,8 +49,15 @@ export default function useProjects(fs){
 
             Promise.all(promises)
                 .then(data => {
-
-                    setProjects(data.filter(e => e !== undefined))
+                    console.log(data.filter(e => e !== undefined))
+                    setProjects(data.filter(e => e !== undefined).map(e => {
+                        let res = {...e}
+                        if(!e.meta)
+                            res.meta = {name: 'New project'}
+                        if(!e.settings)
+                            res.settings = {}
+                        return res
+                    }))
                     load.finishEvent(EVENTS.PROJECT_LIST)
                 })
         })
