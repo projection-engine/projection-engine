@@ -17,7 +17,7 @@ import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
-    const [selectedElement, setSelectedElement] = useState(null)
+    const [selected, setSelected] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
 
@@ -44,7 +44,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         return {
 
             canExecutePhysicsAnimation, meshes,
-            selectedElement, setSelectedElement,
+            selected, setSelected,
             materials, cameraType: settings.cameraType,
             shadingModel: settings.shadingModel,
             fxaa: settings.fxaa,
@@ -54,8 +54,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         }
     }, [
         canExecutePhysicsAnimation,
-        meshes, selectedElement,
-        setSelectedElement, materials,
+        meshes, selected,
+        setSelected, materials,
         settings.cameraType,
         settings.shadingModel,
         settings.fxaa,
@@ -144,7 +144,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         entities, dispatchEntities,
         meshes, setMeshes,
         gpu, materials, setMaterials,
-        selectedElement, setSelectedElement,
+        selected, setSelected,
         canRender, setCanRender,
         renderer: renderer.current
     }

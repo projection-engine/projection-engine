@@ -4,7 +4,7 @@ import React from "react";
 import Projects from "./components/projects/Projects";
 
 import PropTypes from "prop-types";
-import FileSystem from "../../components/db/FileSystem";
+import FileSystem from "../../services/workers/FileSystem";
 
 import EVENTS from "../project/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";

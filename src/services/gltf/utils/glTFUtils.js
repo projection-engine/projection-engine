@@ -1,10 +1,10 @@
-import {WebWorker} from "../workers/WebWorker";
+import {WebWorker} from "../../workers/WebWorker";
 import {mat4, quat} from "gl-matrix";
-import Transformation from "../engine/utils/Transformation";
-import emptyMaterial from '../utils/emptyMaterial.json'
-import ImageProcessor from "../workers/ImageProcessor";
-import MATERIAL_TYPES from "../../views/material/templates/MATERIAL_TYPES";
-import randomID from "../../pages/project/utils/misc/randomID";
+import Transformation from "../../engine/utils/Transformation";
+import emptyMaterial from '../../utils/emptyMaterial.json'
+import ImageProcessor from "../../workers/ImageProcessor";
+import MATERIAL_TYPES from "../../../views/material/templates/MATERIAL_TYPES";
+import randomID from "../../../pages/project/utils/misc/randomID";
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -17,16 +17,35 @@ export function materialParser(basePath, material, textures, images) {
         //
         //     emissiveFactor: material.emissiveFactor,
         // }
+        // TODO - EMISSIVE
         let promises = []
 
 
         if (material.pbrMetallicRoughness) {
             if (material.pbrMetallicRoughness.baseColorTexture)
                 promises.push(loadTexture('albedo', basePath, material.pbrMetallicRoughness.baseColorTexture, textures, images))
+            else if (material.pbrMetallicRoughness.baseColorFactor)
+                promises.push(new Promise(resolve => resolve({
+                    key: 'albedo',
+                    data: ImageProcessor.colorToImage(material.pbrMetallicRoughness.baseColorFactor)
+                })))
 
-            if(material.pbrMetallicRoughness.metallicRoughnessTexture) {
-                promises.push(loadTexture('metallic', basePath, material.pbrMetallicRoughness.metallicRoughnessTexture, textures, images, [0, 0,  1, 1]))
+            if (material.pbrMetallicRoughness.metallicRoughnessTexture) {
+                promises.push(loadTexture('metallic', basePath, material.pbrMetallicRoughness.metallicRoughnessTexture, textures, images, [0, 0, 1, 1]))
                 promises.push(loadTexture('roughness', basePath, material.pbrMetallicRoughness.metallicRoughnessTexture, textures, images, [0, 1, 0, 1]))
+            } else {
+                const m = material.pbrMetallicRoughness.metallicFactor,
+                    r = material.pbrMetallicRoughness.roughnessFactor
+                if (m)
+                    promises.push(new Promise(resolve => resolve({
+                        key: 'metallic',
+                        data: ImageProcessor.colorToImage([m, m, m, 1])
+                    })))
+                if (r)
+                    promises.push(new Promise(resolve => resolve({
+                        key: 'roughness',
+                        data: ImageProcessor.colorToImage([r, r, r, 1])
+                    })))
             }
         }
 
@@ -34,7 +53,7 @@ export function materialParser(basePath, material, textures, images) {
             promises.push(loadTexture('normal', basePath, material.normalTexture, textures, images))
 
         if (material.occlusionTexture)
-            promises.push(loadTexture( 'ao',basePath, material.occlusionTexture, textures, images, material.pbrMetallicRoughness.metallicRoughnessTexture?.index === material.occlusionTexture?.index ? [1, 0, 0, 1] : undefined))
+            promises.push(loadTexture('ao', basePath, material.occlusionTexture, textures, images, material.pbrMetallicRoughness.metallicRoughnessTexture?.index === material.occlusionTexture?.index ? [1, 0, 0, 1] : undefined))
 
         if (material.heightTexture)
             promises.push(loadTexture('height', basePath, material.heightTexture, textures, images))
@@ -44,30 +63,30 @@ export function materialParser(basePath, material, textures, images) {
             .then(result => {
                 let res = {}
                 result.forEach(r => {
-
-                    switch (r.key){
-                        case 'albedo':
-                            res.albedo = r.data
-                            break
-                        case 'metallic':
-                            res.metallic = r.data
-                            break
-                        case 'roughness':
-                            res.roughness = r.data
-                            break
-                        case 'normal':
-                            res.normal = r.data
-                            break
-                        case 'ao':
-                            res.ao = r.data
-                            break
-                        case 'height':
-                            res.height = r.data
-                            break
-                        case 'emissive':
-                            res.emissive = r.data
-                            break
-                    }
+                    if (r.data)
+                        switch (r.key) {
+                            case 'albedo':
+                                res.albedo = r.data
+                                break
+                            case 'metallic':
+                                res.metallic = r.data
+                                break
+                            case 'roughness':
+                                res.roughness = r.data
+                                break
+                            case 'normal':
+                                res.normal = r.data
+                                break
+                            case 'ao':
+                                res.ao = r.data
+                                break
+                            case 'height':
+                                res.height = r.data
+                                break
+                            case 'emissive':
+                                res.emissive = r.data
+                                break
+                        }
                 })
 
                 resolve({
@@ -89,8 +108,17 @@ function loadTexture(key, basePath, texture, textures, images, channels) {
         const imgURI = source !== undefined ? images[source.source] : undefined
 
         if (imgURI !== undefined) {
-            const resolved = path.resolve(basePath + '\\' + imgURI.uri)
-            let file = fs.readFileSync(resolved, {encoding: 'base64'})
+            let file
+            console.log(imgURI.uri)
+            if (typeof imgURI.uri === 'string' && imgURI.uri.includes('data:image'))
+                file = imgURI.uri
+            else {
+                const resolved = path.resolve(basePath + '\\' + imgURI.uri)
+                try {
+                    file = fs.readFileSync(resolved, {encoding: 'base64'})
+                } catch (e) {
+                }
+            }
 
             if (file) {
                 file = `data:image/${imgURI.uri.split('.').pop()};base64, ` + file
@@ -102,8 +130,7 @@ function loadTexture(key, basePath, texture, textures, images, channels) {
                         .catch(() => resolve({key}))
                 else
                     resolve({key, data: file})
-            }
-            else
+            } else
                 resolve({key})
         } else
             resolve({key})
@@ -234,40 +261,4 @@ export function getPrimitives(mesh, materials = []) {
             uvs: uv ? uv.index : -1
         }
     })
-}
-
-export function unpackBufferViewData(
-    buffers,
-    bufferViews,
-    length,
-    elementBytesLength,
-    typedGetter,
-    bufferView
-) {
-
-    let bufferId = bufferViews[bufferView].buffer;
-    let offset = bufferViews[bufferView].byteOffset;
-    if (!offset)
-        offset = 0
-
-    let dv = buffers[bufferId];
-    return Array.from({
-        length
-    }).map((el, i) => {
-        let loopOffset = offset + Math.max(0, elementBytesLength * i)
-        return dv[typedGetter](loopOffset, true);
-    })
-}
-
-
-export async function getBufferData(str, asBinary) {
-    let byteCharacters = asBinary ? str : window.atob(str.replace('data:application/octet-stream;base64,', ''));
-
-    let dv = new DataView(new ArrayBuffer(byteCharacters.length));
-
-    Array.from(byteCharacters).forEach((char, i) => {
-        dv.setUint8(i, char.charCodeAt(0));
-    });
-
-    return dv;
 }

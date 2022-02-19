@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import FileSystem from "../../../components/db/FileSystem";
+import FileSystem from "../../../services/workers/FileSystem";
 import EVENTS from "../utils/misc/EVENTS";
 
 const fs = window.require('fs')

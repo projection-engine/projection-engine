@@ -16,19 +16,19 @@ import EVENTS from "../../../pages/project/utils/misc/EVENTS";
 
 export default function useForm(
     engine,
-    selectedElement,
+    allSelected,
     setAlert,
     executingAnimation,
     quickAccess,
 
     load
 ) {
-
+    const selectedElement = allSelected.length > 0 ? undefined : allSelected[0]
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
         return engine.entities.find(e => e.id === selectedElement)
-    }, [selectedElement])
+    }, [allSelected])
 
     const updateTransform = (axis, data, key) => {
         const component = selected.components.TransformComponent
@@ -339,5 +339,5 @@ export default function useForm(
             )
         }
 
-    }, [selected, selectedElement, currentKey, executingAnimation])
+    }, [selected, allSelected, currentKey, executingAnimation])
 }

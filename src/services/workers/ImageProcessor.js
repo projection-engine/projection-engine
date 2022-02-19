@@ -54,7 +54,7 @@ export default class ImageProcessor {
         c.width = 1024
         c.height = 1024
         let ctx = c.getContext("2d");
-        ctx.fillStyle = color
+        ctx.fillStyle = typeof color === 'string' ? color : `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
         ctx.fillRect(0, 0, 1024, 1024)
         return c.toDataURL()
     }

@@ -27,8 +27,16 @@ export default function SceneView(props) {
             id: 0,
             label: 'Scene',
             children: toFilter.map(f => {
-                return mapToView(f, props.engine.entities, (el) => {
-                    props.engine.setSelectedElement(el)
+                return mapToView(f, props.engine.entities, (el, e) => {
+                    if(e.ctrlKey)
+                        props.engine.setSelected(prev => {
+                            if(!prev.includes(el))
+                                return [...prev, el]
+                            else
+                                return  prev
+                        })
+                    else
+                        props.engine.setSelected([el])
                 })
             }),
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
@@ -39,7 +47,7 @@ export default function SceneView(props) {
 
     const currentForm = useForm(
         props.engine,
-        props.engine.selectedElement,
+        props.engine.selected,
         props.setAlert,
         props.executingAnimation,
 
@@ -77,7 +85,7 @@ export default function SceneView(props) {
                         label: 'Remove entity',
                         icon: <span className={'material-icons-round'}>delete</span>,
                         onClick: (node) => {
-                            props.engine.setSelectedElement(undefined)
+                            props.engine.setSelected([])
                             props.engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.REMOVE,
                                 payload: {
@@ -90,7 +98,7 @@ export default function SceneView(props) {
                 triggers={['data-self', 'data-node']}
                 className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
 
-                <SelectBox nodes={props.engine.entities} selected={props.selected} setSelected={e => console.log(e)}/>
+                <SelectBox nodes={props.engine.entities} selected={props.engine.selected} setSelected={props.engine.setSelected}/>
                 <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
 
                 <TreeView
@@ -123,7 +131,7 @@ export default function SceneView(props) {
                     onDragOver={e => {
                         e.preventDefault()
                     }}
-                    selected={props.engine.selectedElement}
+                    selected={props.engine.selected}
                     nodes={data}
 
                     handleRename={(treeNode, newName) => props.engine.dispatchEntities({
