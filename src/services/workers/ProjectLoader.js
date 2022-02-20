@@ -153,19 +153,23 @@ export default class ProjectLoader {
                                                 ProjectLoader.readFromRegistry(m, fileSystem)
                                                     .then(fileData => {
                                                         if (fileData) {
-                                                            ProjectLoader.mapMaterial(JSON.parse(fileData)?.response, gpu, m)
-                                                                .then(parsedMat => {
-                                                                    r(parsedMat)
-                                                                })
+                                                            let fileParsed
+                                                            try {
+                                                                fileParsed = JSON.parse(fileData)
+                                                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                                                            } catch (e) {
+                                                                r()
+                                                            }
                                                         } else
                                                             r()
-                                                    })
+                                                    }).catch(e => r())
                                             }))
                                     Promise.all(materialsToLoad)
                                         .then(materialData => {
                                             entities = entitiesFound.map((entity, index) => {
                                                 return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
                                             })
+
                                             rootResolve({
                                                 meta,
                                                 settings,
@@ -195,20 +199,20 @@ export default class ProjectLoader {
         })
     }
 
-    static async mapMaterial(material, gpu, id) {
+    static mapMaterial(material, gpu, id) {
 
         const newMat = new MaterialInstance(
             gpu,
             id
         )
-        await newMat.initializeTextures(
+        newMat.initializeTextures(
             material.albedo,
             material.metallic,
             material.roughness,
             material.normal,
             material.height,
             material.ao
-        )
+        ).catch()
         return newMat
     }
 

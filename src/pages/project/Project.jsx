@@ -47,10 +47,7 @@ export default function Project(props) {
                 .then(res => {
                     engine.setMeshes(res.meshes)
                     engine.setMaterials(res.materials)
-
-                    res.entities.forEach(entity => {
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-                    })
+                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: res.entities})
                     if (res.settings)
                         Object.keys(res.settings.data).forEach(key => {
                             settings[key] = res.settings.data[key]

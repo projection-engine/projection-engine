@@ -28,20 +28,31 @@ export default function SceneView(props) {
             label: 'Scene',
             children: toFilter.map(f => {
                 return mapToView(f, props.engine.entities, (el, e) => {
-                    if (e.ctrlKey)
+                    if (e && e.ctrlKey) {
                         props.engine.setSelected(prev => {
-                            if (!prev.includes(el))
+                            const indexFound = prev.findIndex(f => f === el)
+                            if (indexFound === -1)
                                 return [...prev, el]
-                            else
-                                return prev
+                            else {
+                                let n = [...prev]
+                                n.splice(indexFound, 1)
+                                return n
+                            }
                         })
+                    }
                     else
                         props.engine.setSelected([el])
-                })
+                }, props.engine)
             }),
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
             type: 'Scene',
-            phantomNode: true
+            phantomNode: true,
+            controlOption: {
+                icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>visibility</span>,
+                onClick: () => {
+
+                }
+            }
         }]
     }, [props.engine.entities, searchString])
 
@@ -97,44 +108,50 @@ export default function SceneView(props) {
                 ]}
                 triggers={['data-self', 'data-node']}
                 className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
-
-                <SelectBox nodes={props.engine.entities} selected={props.engine.selected}
-                           setSelected={props.engine.setSelected}/>
-                <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
-
+                <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/>
                 <TreeView
                     draggable={true}
                     onDrop={(event, target) => {
                         event.preventDefault()
-                        const current = props.engine.entities.find(f => f.id === target)
-                        const dropTarget = props.engine.entities.find(f => f.id === event.dataTransfer.getData('text'))
+                        try {
+                            const entities = JSON.parse(event.dataTransfer.getData('text'))
+                            entities.forEach(entity => {
+                                const current = props.engine.entities.find(f => f.id === target)
+                                const dropTarget = props.engine.entities.find(f => f.id === entity)
 
-                        if (!current) {
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE,
-                                payload: {
-                                    entityID: dropTarget.id,
-                                    key: 'linkedTo',
-                                    data: undefined
+                                if (!current) {
+                                    props.engine.dispatchEntities({
+                                        type: ENTITY_ACTIONS.UPDATE,
+                                        payload: {
+                                            entityID: dropTarget.id,
+                                            key: 'linkedTo',
+                                            data: undefined
+                                        }
+                                    })
+                                } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+                                    props.engine.dispatchEntities({
+                                        type: ENTITY_ACTIONS.UPDATE,
+                                        payload: {
+                                            entityID: dropTarget.id,
+                                            key: 'linkedTo',
+                                            data: current.id
+                                        }
+                                    })
                                 }
                             })
-                        } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE,
-                                payload: {
-                                    entityID: dropTarget.id,
-                                    key: 'linkedTo',
-                                    data: current.id
-                                }
-                            })
-                        }
+                        } catch (e) {}
+                    }}
+                    onDragStart={e => {
+                        if (e.ctrlKey)
+                            e.dataTransfer.setData('text', JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
+                        else
+                            e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
                     }}
                     onDragOver={e => {
                         e.preventDefault()
                     }}
                     selected={props.engine.selected}
                     nodes={data}
-
                     handleRename={(treeNode, newName) => props.engine.dispatchEntities({
                         type: ENTITY_ACTIONS.UPDATE,
                         payload: {entityID: treeNode.id, key: 'name', data: newName}
