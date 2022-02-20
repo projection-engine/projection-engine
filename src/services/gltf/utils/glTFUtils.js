@@ -258,7 +258,8 @@ export function getPrimitives(mesh, materials = []) {
             vertices: vert ? vert.index : -1,
             tangents: tang ? tang.index : -1,
             normals: norm ? norm.index : -1,
-            uvs: uv ? uv.index : -1
+            uvs: uv ? uv.index : -1,
+            material: p.material
         }
     })
 }

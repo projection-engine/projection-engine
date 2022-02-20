@@ -23,7 +23,10 @@ export default function useForm(
 
     load
 ) {
-    const selectedElement = allSelected.length > 0 ? undefined : allSelected[0]
+    const selectedElement = useMemo(() => {
+        console.log(allSelected.length )
+        return allSelected.length > 1 ? undefined : allSelected[0]
+    }, [allSelected])
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
@@ -304,6 +307,7 @@ export default function useForm(
                         <div
                             style={{
                                 height: '100%',
+                                width: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: '4px'
@@ -329,9 +333,8 @@ export default function useForm(
             if (currentKey)
                 setCurrentKey(undefined)
             return (
-                <div className={styles.formsWrapper}
-                     style={{justifyContent: 'center', fontWeight: '550', padding: '0 16px'}}>
-                    <span style={{fontSize: executingAnimation ? '150px' : '100px'}}
+                <div className={styles.emptyWrapper}>
+                    <span style={{fontSize: executingAnimation ? '140px' : '90px'}}
                           className={'material-icons-round'}>{executingAnimation ? 'play_arrow' : 'category'}</span>
                     {executingAnimation ? 'Stop the simulation to change attributes.' : 'Select an entity to edit it.'}
 

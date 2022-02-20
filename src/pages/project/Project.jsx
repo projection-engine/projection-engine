@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {Alert, LoaderProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import Maker from "../../services/workers/Maker";
@@ -21,6 +21,7 @@ import Editor from "../../views/editor/Editor";
 import MeshView from "../../views/mesh/MeshView";
 import MaterialView from "../../views/material/MaterialView";
 import ImageView from "../../views/image/ImageView";
+import EntitiesProvider from "../../services/hooks/EntitiesProvider";
 
 
 export default function Project(props) {
@@ -140,67 +141,93 @@ export default function Project(props) {
         } else
             setCurrentTab(filesLoaded.indexOf(found) + 1)
     }, [currentTab, filesLoaded])
+
+    const entitiesWithMeshes = useMemo(() => {
+        return engine.entities.filter(e => {
+            return (e.components.MeshComponent)
+        }).map(e => {
+            return {
+                name: e.name,
+                entity: e.id,
+                mesh: e.components.MeshComponent.meshID,
+                material: engine.meshes.find(m => m.id === e.components.MeshComponent.meshID)?.materialID
+            }
+        })
+    }, [engine.entities])
     return (
+        <EntitiesProvider.Provider value={{
+            entities: entitiesWithMeshes,
+            removeEntity: (entity) => {
+                engine.setSelected([])
+                engine.dispatchEntities({
+                    type: ENTITY_ACTIONS.REMOVE,
+                    payload: {
+                        entityID: entity
+                    }
+                })
+                quickAccess.fileSystem.deleteEntity(entity)
 
-        <SettingsProvider.Provider value={settings}>
-            <QuickAccessProvider.Provider value={quickAccess}>
-                <Alert
-                    open={alert.type !== undefined}
-                    handleClose={() => setAlert({})} variant={alert.type}
-                    delay={3500}>
-                    <div className={styles.alertContent} title={alert.message}>
-                        {alert.message}
+            }
+        }}>
+            <SettingsProvider.Provider value={settings}>
+                <QuickAccessProvider.Provider value={quickAccess}>
+                    <Alert
+                        open={alert.type !== undefined}
+                        handleClose={() => setAlert({})} variant={alert.type}
+                        delay={3500}>
+                        <div className={styles.alertContent} title={alert.message}>
+                            {alert.message}
+                        </div>
+                    </Alert>
+                    <div className={styles.wrapper}>
+                        <Preferences serializer={serializer}/>
+                        <GlobalOptions
+                            downloadProject={() => {
+                                Maker.make(props.id, load, setAlert)
+
+                            }}
+
+                            redirect={props.redirect}
+                            save={serializer.save}
+                        />
+                        <Tabs
+                            handleTabClose={(tabIndex) => {
+                                setFilesLoaded(prev => {
+                                    const newD = [...prev]
+                                    newD.splice(tabIndex - 1, 1)
+                                    return newD
+                                })
+                            }}
+                            tab={currentTab}
+                            setTab={setCurrentTab}>
+                            <Editor
+                                setExecutingAnimation={setExecutingAnimation}
+                                executingAnimation={executingAnimation}
+                                engine={engine}
+                                id={props.id} load={load}
+                                setAlert={setAlert}
+                                settings={settings}
+                                serializer={serializer}
+                            />
+                            {filesLoaded.map((file, index) => (
+                                <React.Fragment key={index + '-tab-wrapper'}>
+                                    {getTab(file, index + 1)}
+                                </React.Fragment>
+                            ))}
+                        </Tabs>
+                        {settings.filesVisibility ?
+                            <FilesView
+                                setAlert={setAlert}
+                                currentTab={currentTab}
+                                id={props.id}
+                                openEngineFile={openTab}
+                            />
+                            :
+                            null}
                     </div>
-                </Alert>
-                <div className={styles.wrapper}>
-                    <Preferences serializer={serializer}/>
-                    <GlobalOptions
-                        downloadProject={() => {
-                            Maker.make(props.id, load, setAlert)
-
-                        }}
-
-                        redirect={props.redirect}
-                        save={serializer.save}
-                    />
-                    <Tabs
-                        handleTabClose={(tabIndex) => {
-                            setFilesLoaded(prev => {
-                                const newD = [...prev]
-                                newD.splice(tabIndex - 1, 1)
-                                return newD
-                            })
-                        }}
-                        tab={currentTab}
-                        setTab={setCurrentTab}>
-                        <Editor
-                            setExecutingAnimation={setExecutingAnimation}
-                            executingAnimation={executingAnimation}
-                            engine={engine}
-                            id={props.id}
-                            setAlert={setAlert}
-                            settings={settings}
-                            serializer={serializer}
-                        />
-                        {filesLoaded.map((file, index) => (
-                            <React.Fragment key={index + '-tab-wrapper'}>
-                                {getTab(file, index + 1)}
-                            </React.Fragment>
-                        ))}
-                    </Tabs>
-                    {settings.filesVisibility ?
-                        <FilesView
-                            setAlert={setAlert}
-                            currentTab={currentTab}
-                            id={props.id}
-                            openEngineFile={openTab}
-                        />
-                        :
-                        null}
-                </div>
-            </QuickAccessProvider.Provider>
-        </SettingsProvider.Provider>
-
+                </QuickAccessProvider.Provider>
+            </SettingsProvider.Provider>
+        </EntitiesProvider.Provider>
     )
 }
 

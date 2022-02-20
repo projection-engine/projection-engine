@@ -26,5 +26,6 @@ export default {
     LOADING_MATERIAL: 'Loading material',
     LOAD_FILES: 'Loading assets',
     COMPILING: 'Compiling',
-    UPDATING_SYSTEMS: 'Compiling systems'
+    UPDATING_SYSTEMS: 'Compiling systems',
+    LOADING_MESHES: 'Loading meshes'
 }

@@ -89,8 +89,9 @@ export default class FileSystem {
             })
         })
     }
-    importImage(newRoot, res, fileID){
-        if(res)
+
+    importImage(newRoot, res, fileID) {
+        if (res)
             return [
                 new Promise(r => {
                     fs.writeFile(
@@ -114,8 +115,9 @@ export default class FileSystem {
                 }),
                 this.createRegistryEntry(fileID, newRoot.replace(this.path + '\\assets\\', '') + `.pimg`)
             ]
-        else return  []
+        else return []
     }
+
     async importFile(file, filePath) {
         return new Promise(resolve => {
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
@@ -160,67 +162,68 @@ export default class FileSystem {
                                                 }))
                                             }
 
-                                            if (materials)
-                                                promises.push(...materials.map(d => {
+                                            if (materials) {
+                                                fs.mkdir(newRoot + `\\Materials`, () => {
+                                                    fs.mkdir(newRoot + `\\Materials\\Resources`, () => {
+                                                        promises.push(...materials.map(d => {
+                                                            let parsedData = {...emptyMaterial}
+                                                            const keysOnRes = Object.keys(d.response)
+                                                            parsedData.nodes = parsedData.nodes.filter(n => {
+                                                                const willContinue = keysOnRes.includes(n.id) || n.id === 'material'
+                                                                parsedData.links = parsedData.links.filter(l => {
+                                                                    return keysOnRes.includes(l.source.id) && (keysOnRes.includes(l.target.id) || l.target.id === 'material')
+                                                                })
+                                                                return willContinue
+                                                            }).map(n => {
+                                                                const newID = randomID()
+                                                                parsedData.links = parsedData.links.map(l => {
+                                                                    if (l.source.id === n.id || l.target.id === n.id) {
+                                                                        const newLink = {...l}
+                                                                        if (l.target.id === n.id)
+                                                                            newLink.target.id = newID
+                                                                        else
+                                                                            newLink.source.id = newID
+                                                                        return newLink
+                                                                    } else
+                                                                        return l
+                                                                })
+                                                                const newNode = {...n}
+                                                                newNode.id = newID
+                                                                newNode.sample = {
+                                                                    type: n.id,
+                                                                    registryID: randomID()
+                                                                }
+                                                                return newNode
+                                                            })
 
-                                                    let parsedData = {...emptyMaterial}
-                                                    const keysOnRes = Object.keys(d.response)
-                                                    parsedData.nodes = parsedData.nodes.filter(n => {
-                                                        const willContinue  = keysOnRes.includes(n.id) || n.id === 'material'
-                                                        parsedData.links= parsedData.links.filter(l => {
-                                                            return keysOnRes.includes(l.source.id)  && (keysOnRes.includes(l.target.id) || l.target.id === 'material')
-                                                        })
-                                                        return willContinue
-                                                    }).map(n => {
-                                                        const newID = randomID()
-                                                        parsedData.links = parsedData.links .map(l => {
-                                                            if( l.source.id === n.id || l.target.id === n.id) {
-                                                                const newLink = {...l}
-                                                                if (l.target.id === n.id)
-                                                                    newLink.target.id = newID
-                                                                else
-                                                                    newLink.source.id = newID
-                                                                return newLink
+
+                                                            console.log(parsedData.links)
+                                                            parsedData.response = {
+                                                                ...d.response,
+                                                                name: d.name
                                                             }
-                                                            else
-                                                                return  l
-                                                        })
-                                                        const newNode = {...n}
-                                                        newNode.id = newID
-                                                        newNode.sample = {
-                                                            type: n.id,
-                                                            registryID: randomID()
-                                                        }
-                                                        return newNode
+
+                                                            let localPromises = [
+                                                                new Promise(r => {
+                                                                    fs.writeFile(
+                                                                        newRoot + `\\Materials\\${d.name}.material`,
+                                                                        JSON.stringify(parsedData),
+                                                                        () => {
+                                                                            r()
+                                                                        });
+                                                                }),
+                                                                this.createRegistryEntry(d.id, newRoot.replace(this.path + '\\assets\\', '') + `\\Materials\\${d.name}.material`)
+                                                            ]
+
+                                                            parsedData.nodes.forEach((n, i) => {
+                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + n.name, d.response[n.sample.type], n.sample.registryID))
+                                                            })
+
+                                                            return localPromises
+                                                        }))
                                                     })
-
-
-                                                    console.log(parsedData.links)
-                                                    parsedData.response = {
-                                                        ...d.response,
-                                                        name: d.name
-                                                    }
-
-                                                    let localPromises = [
-                                                        new Promise(r => {
-                                                            fs.writeFile(
-                                                                newRoot  + `\\${d.name}.material`,
-                                                                JSON.stringify(parsedData),
-                                                                () => {
-                                                                    r()
-                                                                });
-                                                        }),
-                                                        this.createRegistryEntry(d.id, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.material`)
-                                                    ]
-
-                                                    parsedData.nodes.forEach((n, i) => {
-                                                        const imgPromises = this.importImage(newRoot + '\\' + n.name, d.response[n.sample.type], n.sample.registryID)
-                                                        localPromises.push(...imgPromises)
-                                                    })
-
-                                                    return localPromises
-                                                }))
-
+                                                })
+                                            }
                                             Promise.all(promises)
                                                 .then(() => {
                                                     resolve()
@@ -326,7 +329,13 @@ export default class FileSystem {
 
         })
     }
-
+    deleteEntity(entityID){
+        return new Promise(resolve => {
+            this.deleteFile(this.path + '\\logic\\' + entityID + '.entity', true)
+                .then(() => resolve())
+                .catch(() => resolve())
+        })
+    }
     async updateEntity(entity) {
 
         return new Promise(resolve => {

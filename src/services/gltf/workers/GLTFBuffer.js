@@ -14,14 +14,15 @@ export default class GLTFBuffer {
         else {
             return new Promise(resolve => {
                 fs.readFile(this.basePath + '\\' + this.data.uri, 'base64', (e, r) => {
-                    this.data = this._getBufferData(this.data.uri)
+                    this.data = this._getBufferData(r)
                     resolve()
                 })
             })
         }
     }
-    _getBufferData(str, asBinary) {
-        let byteCharacters = asBinary ? str : window.atob(str.replace('data:application/octet-stream;base64,', ''));
+    _getBufferData(str) {
+        console.log(this.data.uri)
+        let byteCharacters = window.atob(str.replace('data:application/octet-stream;base64,', ''));
 
         let dv = new DataView(new ArrayBuffer(byteCharacters.length));
 

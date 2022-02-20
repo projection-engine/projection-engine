@@ -28,12 +28,12 @@ export default function SceneView(props) {
             label: 'Scene',
             children: toFilter.map(f => {
                 return mapToView(f, props.engine.entities, (el, e) => {
-                    if(e.ctrlKey)
+                    if (e.ctrlKey)
                         props.engine.setSelected(prev => {
-                            if(!prev.includes(el))
+                            if (!prev.includes(el))
                                 return [...prev, el]
                             else
-                                return  prev
+                                return prev
                         })
                     else
                         props.engine.setSelected([el])
@@ -98,7 +98,8 @@ export default function SceneView(props) {
                 triggers={['data-self', 'data-node']}
                 className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
 
-                <SelectBox nodes={props.engine.entities} selected={props.engine.selected} setSelected={props.engine.setSelected}/>
+                <SelectBox nodes={props.engine.entities} selected={props.engine.selected}
+                           setSelected={props.engine.setSelected}/>
                 <Search width={'100%'} searchString={searchString} setSearchString={setSearchString}/>
 
                 <TreeView
@@ -142,9 +143,7 @@ export default function SceneView(props) {
             </ContextMenu>
             <ResizableBar type={'height'}/>
             <div className={styles.wrapperContent}>
-                <div className={styles.content}>
-                    {currentForm}
-                </div>
+                {currentForm}
             </div>
         </div>
     )

@@ -51,22 +51,26 @@ export default class GLTF {
                         let meshes = parsed.meshes.filter((_, index) => {
                             return sceneNodes.find(n => n.meshIndex === index) !== undefined
                         }).map(m => {
-                            return getPrimitives(m, parsed.materials)[0]
+
+                            return {
+                                ...getPrimitives(m, parsed.materials)[0]
+                            }
                         })
                         let files = []
                         sceneNodes.forEach(m => {
                             const [min, max] = GLTF.computeBoundingBox(accessors[meshes[m.meshIndex]?.vertices].data)
-                            files.push(
-                                {
+                            const currentMesh = meshes[m.meshIndex]
+
+                            files.push({
                                     name: m.name,
                                     data: {
                                         ...m,
-                                        material: meshes[m.meshIndex].material ? materials[meshes[m.meshIndex].material].id : undefined,
-                                        indices: accessors[meshes[m.meshIndex].indices]?.data,
-                                        vertices: accessors[meshes[m.meshIndex].vertices]?.data,
-                                        tangents: accessors[meshes[m.meshIndex].tangents]?.data,
-                                        normals: accessors[meshes[m.meshIndex].normals]?.data,
-                                        uvs: accessors[meshes[m.meshIndex].uvs].data,
+                                        material: currentMesh.material ? parsedMaterials.find(p => p.name === currentMesh.material.name)?.id : undefined,
+                                        indices: accessors[currentMesh.indices]?.data,
+                                        vertices: accessors[currentMesh.vertices]?.data,
+                                        tangents: accessors[currentMesh.tangents]?.data,
+                                        normals: accessors[currentMesh.normals]?.data,
+                                        uvs: accessors[currentMesh.uvs].data,
 
                                         maxBoundingBox: max,
                                         minBoundingBox: min,

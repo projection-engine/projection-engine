@@ -153,7 +153,7 @@ export default function Editor(props) {
                     engine={props.engine}
                     showPosition={props.settings.cameraCoordsVisibility}
                     allowDrop={true}
-                    handleDrop={event => handleDrop(event, quickAccess.fileSystem, props.engine, props.setAlert)}
+                    handleDrop={event => handleDrop(event, quickAccess.fileSystem, props.engine, props.setAlert,props.load)}
                 />
             </div>
             {props.settings.sceneVisibility ?
@@ -171,7 +171,7 @@ export default function Editor(props) {
 }
 
 Editor.propTypes = {
-
+    load: PropTypes.object,
     setExecutingAnimation: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     executingAnimation: PropTypes.bool,
