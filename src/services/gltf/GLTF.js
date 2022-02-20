@@ -1,8 +1,5 @@
-import {vec2, vec3} from "gl-matrix";
 import groupInto from "../engine/utils/groupInto";
-import FileBlob from "../workers/FileBlob";
-import { getPrimitives, materialParser, nodeParser} from "./utils/glTFUtils";
-import PrimitiveProcessor from "./workers/PrimitiveProcessor";
+import {getPrimitives, materialParser, nodeParser} from "./utils/glTFUtils";
 import GLTFBuffer from "./workers/GLTFBuffer";
 import Accessor from "./workers/Accessor";
 

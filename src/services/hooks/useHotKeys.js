@@ -1,10 +1,4 @@
-import {useEffect, useState} from "react";
-import MeshComponent from "../engine/ecs/components/MeshComponent";
-import MaterialComponent from "../engine/ecs/components/MaterialComponent";
-import PickComponent from "../engine/ecs/components/PickComponent";
-import TransformComponent from "../engine/ecs/components/TransformComponent";
-import {ENTITY_ACTIONS} from "../engine/utils/entityReducer";
-import Entity from "../engine/ecs/basic/Entity";
+import {useEffect} from "react";
 import PropTypes from "prop-types";
 
 export const KEYS = {

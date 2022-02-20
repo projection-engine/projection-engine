@@ -21,7 +21,6 @@ export default class GLTFBuffer {
         }
     }
     _getBufferData(str) {
-        console.log(this.data.uri)
         let byteCharacters = window.atob(str.replace('data:application/octet-stream;base64,', ''));
 
         let dv = new DataView(new ArrayBuffer(byteCharacters.length));

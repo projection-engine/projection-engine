@@ -1,10 +1,7 @@
-import {WebWorker} from "../../workers/WebWorker";
 import {mat4, quat} from "gl-matrix";
 import Transformation from "../../engine/utils/Transformation";
-import emptyMaterial from '../../utils/emptyMaterial.json'
 import ImageProcessor from "../../workers/ImageProcessor";
-import MATERIAL_TYPES from "../../../views/material/templates/MATERIAL_TYPES";
-import randomID from "../../../pages/project/utils/misc/randomID";
+import randomID from "../../utils/misc/randomID";
 
 const fs = window.require('fs')
 const path = window.require('path')

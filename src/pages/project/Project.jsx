@@ -14,7 +14,7 @@ import useSerializer from "./hook/useSerializer";
 
 import useEngine from "../../services/hooks/useEngine";
 import useSettings from "./hook/useSettings";
-import EVENTS from "./utils/misc/EVENTS";
+import EVENTS from "../../services/utils/misc/EVENTS";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
 import FilesView from "../../views/files/FilesView";
 import Editor from "../../views/editor/Editor";

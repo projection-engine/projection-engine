@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import Card from "./components/Card";
 import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
-import randomID from "../../../project/utils/misc/randomID";
+import randomID from "../../../../services/utils/misc/randomID";
 import shared from '../../styles/Home.module.css'
 import Search from "../../../../components/search/Search";
 

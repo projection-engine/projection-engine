@@ -10,9 +10,8 @@ import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
 import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
 import ColliderComponent from "../../../services/engine/ecs/components/ColliderComponent";
-import MaterialInstance from "../../../services/engine/renderer/elements/MaterialInstance";
 import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import importMaterial from "../../../services/utils/importMaterial";
 
 export default function useForm(
     engine,
@@ -20,11 +19,10 @@ export default function useForm(
     setAlert,
     executingAnimation,
     quickAccess,
-
     load
 ) {
     const selectedElement = useMemo(() => {
-        console.log(allSelected.length )
+        console.log(allSelected.length)
         return allSelected.length > 1 ? undefined : allSelected[0]
     }, [allSelected])
     const [currentKey, setCurrentKey] = useState()
@@ -126,50 +124,7 @@ export default function useForm(
                         quickAccess={quickAccess}
                         selected={selected.components.MaterialComponent}
                         submit={(mat) => {
-                            const newMat = new MaterialInstance(
-                                engine.gpu,
-                                mat.id
-                            )
-
-                            let found = engine.materials.find(m => m.id === mat.id)
-                            if (!found) {
-                                load.pushEvent(EVENTS.LOADING_MATERIAL)
-                                newMat.initializeTextures(
-                                    mat.blob.albedo,
-                                    mat.blob.metallic,
-                                    mat.blob.roughness,
-                                    mat.blob.normal,
-                                    mat.blob.height,
-                                    mat.blob.ao,
-                                ).then(() => {
-                                    engine.setMaterials(prev => {
-                                        return [...prev, newMat]
-                                    })
-                                    selected.components.MaterialComponent.materialID = mat.id
-                                    selected.components.MaterialComponent.name = mat.name
-                                    engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                            entityID: selectedElement,
-                                            data: selected.components.MaterialComponent,
-                                            key: 'MaterialComponent'
-                                        }
-                                    })
-                                    load.finishEvent(EVENTS.LOADING_MATERIAL)
-                                })
-                            }
-                            else {
-                                selected.components.MaterialComponent.materialID = mat.id
-                                selected.components.MaterialComponent.name = mat.name
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        data: selected.components.MaterialComponent,
-                                        key: 'MaterialComponent'
-                                    }
-                                })
-                            }
-
-
+                            importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
                         }}
                         setAlert={setAlert}
 

@@ -1,5 +1,5 @@
 import './globals.css'
-import {Fabric, LoaderProvider, useLoader} from "@f-ui/core";
+import {Fabric} from "@f-ui/core";
 import styles from './App.module.css'
 import ThemeProvider from "./services/hooks/ThemeProvider";
 

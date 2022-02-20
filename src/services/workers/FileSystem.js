@@ -1,6 +1,6 @@
 import FileBlob from "./FileBlob";
 import GLTF from "../gltf/GLTF";
-import randomID from "../../pages/project/utils/misc/randomID";
+import randomID from "../utils/misc/randomID";
 import ImageProcessor from "./ImageProcessor";
 import emptyMaterial from '../utils/emptyMaterial.json'
 
@@ -197,7 +197,6 @@ export default class FileSystem {
                                                             })
 
 
-                                                            console.log(parsedData.links)
                                                             parsedData.response = {
                                                                 ...d.response,
                                                                 name: d.name
@@ -216,7 +215,9 @@ export default class FileSystem {
                                                             ]
 
                                                             parsedData.nodes.forEach((n, i) => {
-                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + n.name, d.response[n.sample.type], n.sample.registryID))
+                                                                let nameSplit = n.sample.registryID
+                                                                nameSplit = nameSplit.substr(0, nameSplit.length/2)
+                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + nameSplit, d.response[n.sample.type], n.sample.registryID))
                                                             })
 
                                                             return localPromises

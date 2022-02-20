@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import FileSystem from "../../../services/workers/FileSystem";
-import EVENTS from "../utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 
 const fs = window.require('fs')
 export default function useQuickAccess(projectID, load) {

@@ -13,7 +13,7 @@ import {useContext, useEffect, useMemo} from "react";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import {LoaderProvider} from "@f-ui/core";
 
-import EVENTS from "../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../services/utils/misc/EVENTS";
 
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 

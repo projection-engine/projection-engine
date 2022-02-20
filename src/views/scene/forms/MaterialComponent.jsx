@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useEffect, useState} from "react";
-import EVENTS from "../../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
 

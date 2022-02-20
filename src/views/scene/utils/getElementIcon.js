@@ -21,7 +21,7 @@ export default function getElementIcon(components) {
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>light_mode</span>
             )
-        case components.GridComponent !== undefined:
+        case components.Grid !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>grid_4x4</span>
             )

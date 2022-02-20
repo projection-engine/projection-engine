@@ -1,4 +1,3 @@
-import groupInto from "../../engine/utils/groupInto";
 import {vec2, vec3} from "gl-matrix";
 
 export default class PrimitiveProcessor{

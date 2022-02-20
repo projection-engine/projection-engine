@@ -7,7 +7,7 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import {Button, ContextMenu, LoaderProvider} from "@f-ui/core";
+import {ContextMenu, LoaderProvider} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
@@ -22,7 +22,7 @@ export default function SceneView(props) {
     const theme = useContext(ThemeProvider)
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
-        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.GridComponent && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
+        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.Grid && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
         return [{
             id: 0,
             label: 'Scene',

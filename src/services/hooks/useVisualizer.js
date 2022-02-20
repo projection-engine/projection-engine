@@ -10,7 +10,7 @@ import sphereMesh from '../../static/meshes/sphere.json'
 import Engine from "../engine/Engine";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
 import ShadowMapSystem from "../engine/ecs/systems/ShadowMapSystem";
-import DeferredSystem from "../engine/ecs/systems/DeferredSystem";
+import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import SkyboxComponent from "../engine/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../engine/ecs/components/DirectionalLightComponent";
@@ -22,19 +22,21 @@ import Mesh from "../engine/renderer/elements/Mesh";
 import skybox from '../../static/default_skybox.jpg'
 import {LoaderProvider} from "@f-ui/core";
 
-import randomID from "../../pages/project/utils/misc/randomID";
+import randomID from "../utils/misc/randomID";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
-import EVENTS from "../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../utils/misc/EVENTS";
+import CAMERA_TYPES from "../engine/utils/CAMERA_TYPES";
 
 
 export default function useVisualizer(initializePlane, initializeSphere) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])
-    const [materials, setMaterials] = useState([])
+    const [material, setMaterial] = useState()
     const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
     const [initialized, setInitialized] = useState(false)
     const [canRender, setCanRender] = useState(true)
+    const [finished, setFinished] = useState(false)
 
     const load = useContext(LoaderProvider)
     const renderer = useRef()
@@ -46,14 +48,16 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 
 
     useEffect(() => {
-        if (id && !gpu) {
+        if (id && !gpu && !initialized) {
             const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
                 antialias: false,
                 preserveDrawingBuffer: true
             })
             enableBasics(newGPU)
             setGpu(newGPU)
-        } else if (gpu && !initialized && id) {
+        }
+
+        if (gpu && !initialized && id) {
 
             initializeSkybox(dispatchEntities, gpu)
             initializeLight(dispatchEntities)
@@ -66,29 +70,23 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             renderer.current = new Engine(id, gpu)
 
 
-            const postProcessing = new PostProcessingSystem(gpu, 1)
-            const deferred = new DeferredSystem(gpu, 1)
+            const deferred = new MeshSystem(gpu, 1)
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
             setInitialized(true)
-            Promise.all([postProcessing.initializeTextures(),deferred.initializeTextures()])
+            deferred.initializeTextures()
                 .then(() => {
                     renderer.current.systems = [
                         new TransformSystem(),
                         new ShadowMapSystem(gpu),
                         deferred,
-                        postProcessing
+                        new PostProcessingSystem(gpu, 1)
                     ]
-
                     renderer.current.camera.radius = 2
-                    renderer.current?.prepareData({
-                        fxaa: true,
-                        meshes,
-                        materials,
-                        shadingModel: SHADING_MODELS.DETAIL
-                    }, entities, materials, meshes)
                     load.finishEvent(EVENTS.UPDATING_SYSTEMS)
+
+                    setFinished(true)
                 })
-        } else if (gpu && id) {
+        } else if (gpu && id && initialized && finished) {
 
             resizeObserver = new ResizeObserver(() => {
                 if (initialized)
@@ -96,13 +94,15 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             })
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
-            renderer.current?.stop()
+
             renderer.current?.prepareData({
                 fxaa: true,
                 meshes,
-                materials,
-                shadingModel: SHADING_MODELS.DETAIL
-            }, entities, materials, meshes)
+                materials: [],
+                shadingModel: SHADING_MODELS.DETAIL,
+                cameraType: CAMERA_TYPES.SPHERICAL,
+                injectMaterial: material
+            }, entities, [], meshes)
 
             if (!canRender)
                 renderer.current?.stop()
@@ -113,14 +113,23 @@ export default function useVisualizer(initializePlane, initializeSphere) {
         return () => {
             renderer.current?.stop()
         }
-    }, [meshes, materials, entities, gpu, id, canRender])
+    }, [
+        meshes,
+        material,
+        finished,
+        initialized,
+        entities,
+        gpu,
+        id,
+        canRender
+    ])
 
 
     return {
         id, load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
-        materials, setMaterials,
+        material, setMaterial,
         initialized, renderer: renderer.current,
         canRender, setCanRender
     }

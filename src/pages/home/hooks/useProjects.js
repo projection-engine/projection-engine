@@ -1,5 +1,5 @@
 import {LoaderProvider} from "@f-ui/core";
-import EVENTS from "../../project/utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
 
 export default function useProjects(fs){

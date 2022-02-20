@@ -6,7 +6,7 @@ import Projects from "./components/projects/Projects";
 import PropTypes from "prop-types";
 import FileSystem from "../../services/workers/FileSystem";
 
-import EVENTS from "../project/utils/misc/EVENTS";
+import EVENTS from "../../services/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";
 

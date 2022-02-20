@@ -1,7 +1,7 @@
 import {useCallback, useContext, useEffect} from "react";
 import {LoaderProvider} from "@f-ui/core";
 
-import EVENTS from "../utils/misc/EVENTS";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
@@ -94,7 +94,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
 export const saveEntities = (entities, fileSystem) => {
     let promises = []
-    entities.filter(e => !e.components.GridComponent).forEach(e => {
+    entities.filter(e => !e.components.Grid).forEach(e => {
         promises.push(new Promise((resolve) => {
             let blob = {...e.components}
 

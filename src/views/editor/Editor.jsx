@@ -1,7 +1,7 @@
 import styles from "../../pages/project/styles/Project.module.css";
 import ViewportOptions from "../../components/viewport/ViewportOptions";
 import Viewport from "../../components/viewport/Viewport";
-import handleDrop from "../../pages/project/utils/handleDrop";
+import handleDrop from "../../services/utils/handleDrop";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
@@ -11,8 +11,8 @@ import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import cloneClass from "../../pages/project/utils/misc/cloneClass";
-import randomID from "../../pages/project/utils/misc/randomID";
+import cloneClass from "../../services/utils/misc/cloneClass";
+import randomID from "../../services/utils/misc/randomID";
 import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";

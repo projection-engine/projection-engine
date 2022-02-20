@@ -1,16 +1,14 @@
 import {useEffect, useMemo, useReducer, useRef, useState} from "react";
 import {enableBasics} from "../engine/utils/utils";
-import entityReducer, {ENTITY_ACTIONS} from "../engine/utils/entityReducer";
+import entityReducer from "../engine/utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
-import DeferredSystem from "../engine/ecs/systems/DeferredSystem";
+import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
 import PhysicsSystem from "../engine/ecs/systems/PhysicsSystem";
 import ShadowMapSystem from "../engine/ecs/systems/ShadowMapSystem";
 import PickSystem from "../engine/ecs/systems/PickSystem";
-import Entity from "../engine/ecs/basic/Entity";
 import Engine from "../engine/Engine";
-import GridComponent from "../engine/ecs/components/GridComponent";
-import EVENTS from "../../pages/project/utils/misc/EVENTS";
+import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 
 
@@ -20,6 +18,9 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [selected, setSelected] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
+    const [finished, setFinished] = useState(false)
+    const [entities, dispatchEntities] = useReducer(entityReducer, [])
+    const [initialized, setInitialized] = useState(false)
 
     useEffect(() => {
         if (id) {
@@ -33,8 +34,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         }
     }, [id])
 
-    const [entities, dispatchEntities] = useReducer(entityReducer, [])
-    const [initialized, setInitialized] = useState(false)
 
     const renderer = useRef()
     let resizeObserver
@@ -45,32 +44,21 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
 
             canExecutePhysicsAnimation, meshes,
             selected, setSelected,
-            materials, cameraType: settings.cameraType,
-            shadingModel: settings.shadingModel,
-            fxaa: settings.fxaa,
-            iconsVisibility: settings.iconsVisibility,
-            gridVisibility: settings.gridVisibility,
-            performanceMetrics: settings.performanceMetrics
+            materials,
+
         }
     }, [
         canExecutePhysicsAnimation,
         meshes, selected,
         setSelected, materials,
-        settings.cameraType,
-        settings.shadingModel,
-        settings.fxaa,
-        settings.iconsVisibility,
-        settings.gridVisibility,
-        settings.performanceMetrics
+
     ])
 
 
     const updateSystems = (callback) => {
         load.pushEvent(EVENTS.UPDATING_SYSTEMS)
-        const postProcessing = new PostProcessingSystem(gpu, settings.resolutionMultiplier)
-        const deferred = new DeferredSystem(gpu, settings.resolutionMultiplier)
-
-        Promise.all([postProcessing.initializeTextures(),deferred.initializeTextures()])
+        const deferred = new MeshSystem(gpu, settings.resolutionMultiplier)
+        deferred.initializeTextures()
             .then(() => {
                 renderer.current.systems = [
                     new PerformanceSystem(gpu),
@@ -79,7 +67,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                     new ShadowMapSystem(gpu),
                     new PickSystem(gpu),
                     deferred,
-                    postProcessing
+                    new PostProcessingSystem(gpu, settings.resolutionMultiplier)
                 ]
                 load.finishEvent(EVENTS.UPDATING_SYSTEMS)
                 callback()
@@ -94,50 +82,53 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     useEffect(() => {
         if (initialized) {
             renderer.current?.stop()
-            updateSystems(() =>     renderer.current?.start(entities))
+            updateSystems(() => renderer.current?.start(entities))
 
         }
-    }, [settings.resolutionMultiplier])
+    }, [settings.resolutionMultiplier, initialized])
 
     useEffect(() => {
         if (gpu && !initialized && id) {
-            const gridEntity = new Entity(undefined, 'Grid')
 
             renderer.current = new Engine(id, gpu)
+
             setInitialized(true)
             updateSystems(() => {
-
-
-                dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: gridEntity})
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                        entityID: gridEntity.id,
-                        data: new GridComponent(gpu)
-                    }
-                })
-
-                renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
+                setFinished(true)
             })
 
-        } else if (gpu && id) {
+        } else if (gpu && id && initialized && finished) {
+
             resizeObserver = new ResizeObserver(() => {
                 if (gpu && initialized)
                     renderer.current.camera.aspectRatio = gpu.canvas.width / gpu.canvas.height
             })
             resizeObserver.observe(document.getElementById(id + '-canvas'))
+            renderer.current?.prepareData({
+                ...renderingProps,
+                cameraType: settings.cameraType,
+                shadingModel: settings.shadingModel,
+                fxaa: settings.fxaa,
+                iconsVisibility: settings.iconsVisibility,
+                gridVisibility: settings.gridVisibility,
+                performanceMetrics: settings.performanceMetrics
+            }, entities, renderingProps.materials, renderingProps.meshes)
 
-            renderer.current?.prepareData(renderingProps, entities, renderingProps.materials, renderingProps.meshes)
             if (!canRender)
                 renderer.current?.stop()
             else
                 renderer.current?.start(entities)
         }
 
-
         return () => {
             renderer.current?.stop()
         }
-    }, [renderingProps, entities, gpu, id, canRender])
+    }, [
+        renderingProps,
+        materials, meshes,
+        initialized, entities, gpu, id, canRender,
+        settings, finished
+    ])
 
 
     return {
