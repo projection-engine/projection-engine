@@ -12,7 +12,6 @@ export default class ImageProcessor {
         return new Promise(resolve => {
 
             if(imageToLoad) {
-                console.log(img)
                 imageToLoad.onerror = () => resolve('')
                 imageToLoad.onload = () => {
                     c.width = imageToLoad.width
