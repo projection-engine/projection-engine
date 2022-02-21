@@ -12,7 +12,9 @@ export default function Projects(props) {
     const [pathLinkModal, setPathLinkModal] = useState(false)
     const [searchString, setSearchString] = useState('')
     const projectsToShow = useMemo(() => {
-        return props.projects.filter(p => p.meta.name.toLowerCase().includes(searchString.toLowerCase()))
+
+        return props.projects
+            .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
     useEffect(() => {
         if (localStorage.getItem('basePath') === null) {

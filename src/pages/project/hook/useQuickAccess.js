@@ -58,7 +58,7 @@ export default function useQuickAccess(projectID, load) {
                                 resolve({
                                     type: 'material',
                                     registryID: i.id,
-                                    name: split[split.length  -1],
+                                    name: split[split.length  -1].split('.')[0],
                                      preview
                                 })
                             })

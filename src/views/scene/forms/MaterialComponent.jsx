@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
@@ -12,13 +12,14 @@ export default function MaterialComponent(props) {
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
 
+
     useEffect(() => {
-        if (props.selected.materialID)
-            setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === props.selected.materialID))
+        const mesh = props.meshes.find(m => m.id === props.meshID)
+
+            setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === mesh.material))
     }, [])
 
     return (
-
         <Accordion>
             <AccordionSummary className={styles.summary}>
                 Material
@@ -63,7 +64,9 @@ MaterialComponent.propTypes = {
     quickAccess: PropTypes.object,
     loadedMaterials: PropTypes.array,
     setAlert: PropTypes.func.isRequired,
-    selected: PropTypes.object,
+    meshID: PropTypes.string,
+    meshes: PropTypes.array,
+
     submit: PropTypes.func,
     gpu: PropTypes.object
 }

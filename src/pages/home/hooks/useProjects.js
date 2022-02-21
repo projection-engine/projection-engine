@@ -54,6 +54,9 @@ export default function useProjects(fs){
                             res.meta = {name: 'New project'}
                         if(!res.settings)
                             res.settings = {}
+
+                        if(!res.meta.name)
+                            res.meta.name = 'New project'
                         return res
                     }))
                     load.finishEvent(EVENTS.PROJECT_LIST)

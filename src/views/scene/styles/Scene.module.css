@@ -24,7 +24,7 @@
 
     border-radius: 5px;
     overflow-y: auto;
-    padding: 0 4px 4px;
+
 }
 
 .header {
@@ -96,10 +96,8 @@
     height: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    padding-bottom: 32px;
-
+    padding: 4px 4px 32px;
 }
-
 
 
 .tabs {

@@ -122,7 +122,8 @@ export default function useForm(
                 return (
                     <MaterialComponent
                         quickAccess={quickAccess}
-                        selected={selected.components.MaterialComponent}
+                        meshes={engine.meshes}
+                        meshID={selected.components.MeshComponent.meshID}
                         submit={(mat) => {
                             importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
                         }}
