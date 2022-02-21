@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
-import {Alert, LoaderProvider} from "@f-ui/core";
+import {AlertProvider, LoaderProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import Maker from "../../services/workers/Maker";
 import useQuickAccess from "./hook/useQuickAccess";
@@ -26,7 +26,10 @@ import EntitiesProvider from "../../services/hooks/EntitiesProvider";
 
 export default function Project(props) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
-    const [alert, setAlert] = useState({})
+    const alert = useContext(AlertProvider)
+    const setAlert = ({type, message}) => {
+        alert.pushAlert(message, type)
+    }
     const settings = useSettings()
     const load = useContext(LoaderProvider)
     const engine = useEngine(props.id, executingAnimation, settings, load)
@@ -53,10 +56,8 @@ export default function Project(props) {
                             settings[key] = res.settings.data[key]
                         })
                     if (res.meta)
-                        Object.keys(res.meta).forEach(key => {
-                            settings[key] = res.meta[key]
-                        })
-
+                        settings.name = res.meta.data.name
+                    console.log( res.meta.data.name)
                     load.finishEvent(EVENTS.PROJECT_DATA)
                     setInitialized(true)
                 })
@@ -154,28 +155,19 @@ export default function Project(props) {
     return (
         <EntitiesProvider.Provider value={{
             entities: entitiesWithMeshes,
-            removeEntity: (entity) => {
+            removeEntities: (entities) => {
+
                 engine.setSelected([])
                 engine.dispatchEntities({
-                    type: ENTITY_ACTIONS.REMOVE,
-                    payload: {
-                        entityID: entity
-                    }
+                    type: ENTITY_ACTIONS.REMOVE_BLOCK,
+                    payload: entities
                 })
-                quickAccess.fileSystem.deleteEntity(entity)
+                entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
 
             }
         }}>
             <SettingsProvider.Provider value={settings}>
                 <QuickAccessProvider.Provider value={quickAccess}>
-                    <Alert
-                        open={alert.type !== undefined}
-                        handleClose={() => setAlert({})} variant={alert.type}
-                        delay={3500}>
-                        <div className={styles.alertContent} title={alert.message}>
-                            {alert.message}
-                        </div>
-                    </Alert>
                     <div className={styles.wrapper}>
                         <Preferences serializer={serializer}/>
                         <GlobalOptions

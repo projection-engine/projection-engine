@@ -4,10 +4,13 @@ import styles from './App.module.css'
 import ThemeProvider from "./services/hooks/ThemeProvider";
 
 import useGlobalOptions from "./pages/project/hook/useGlobalOptions";
-import Wrapper from "./Wrapper";
+
+import Home from "./pages/home/Home";
+import Project from "./pages/project/Project";
+import {useState} from "react";
 
 export default function App( ) {
-
+    const [currentTab, setCurrentTab] = useState(0)
     const global = useGlobalOptions()
 
 
@@ -23,7 +26,13 @@ export default function App( ) {
                 themeClass: global.dark ? styles.dark : styles.light,
                 backgroundStripesClass: styles.backgroundStripes
             }}>
-                <Wrapper/>
+                {currentTab === 0 ?
+                    <Home redirect={(id) => {
+                        setCurrentTab(id)
+                    }}/>
+                    :
+                    <Project id={currentTab} redirect={() => setCurrentTab(0)}/>
+                }
             </ThemeProvider.Provider>
         </Fabric>
     )

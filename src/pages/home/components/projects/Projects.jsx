@@ -12,14 +12,11 @@ export default function Projects(props) {
     const [pathLinkModal, setPathLinkModal] = useState(false)
     const [searchString, setSearchString] = useState('')
     const projectsToShow = useMemo(() => {
-
         return props.projects.filter(p => p.meta.name.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
     useEffect(() => {
-
         if (localStorage.getItem('basePath') === null) {
             setPathLinkModal(true)
-
         }
     }, [])
 
@@ -93,11 +90,7 @@ export default function Projects(props) {
                         variant={'outlined'}
                         styles={{backgroundColor: 'var(--fabric-background-primary)', padding: '2px 5px 0px 10px'}}
                     >
-                        <div style={{display: 'flex', gap: '4px', alignItems: 'center', width: '100%'}}>
-                            Load project
-                            <span className={'material-icons-round'}>arrow_drop_down</span>
-                        </div>
-
+                        Load project
                         <DropdownOptions>
                             <DropdownOption option={{
                                 label: 'Import from package.',

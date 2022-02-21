@@ -10,7 +10,6 @@ export default function useSettings() {
 
     const [settings, setSettings] = useState({
         projectCreationDate: (new Date()).toDateString(),
-        projectName: 'New Project',
         timestamp: 30000,
         fxaa: true,
         iconsVisibility: true,

@@ -1,4 +1,4 @@
-import {Alert, Button, Modal, TextField,} from "@f-ui/core";
+import {Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
 import React from "react";
 import Projects from "./components/projects/Projects";
@@ -11,25 +11,20 @@ import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";
 
 const fs = window.require('fs')
+const pathResolve = window.require('path')
+
 export default function Home(props) {
     const {
         projects,
         openModal, setOpenModal,
         projectName, setProjectName,
-        alert, setAlert,
+        setAlert, refresh,
         load, uploadRef,
-          setProjects,
-        startPath, setStartPath
+          setProjects
     } = useProjects(fs)
 
     return (
         <div className={styles.wrapper}>
-
-            <Alert open={alert.type !== undefined} variant={alert.type} handleClose={() => setAlert({})}>
-                <div style={{color: 'var(--fabric-color-primary)'}}>
-                    {alert.message}
-                </div>
-            </Alert>
             <Modal
                 open={openModal}
                 handleClose={() => {
@@ -85,10 +80,10 @@ export default function Home(props) {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
 
                     fs.rm(
-                        localStorage.getItem('basePath') + '\\projects\\' + pjID,
+                        pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + pjID),
                         {recursive: true, force: true},
                         (e) => {
-
+                            console.log(e)
                             load.finishEvent(EVENTS.PROJECT_DELETE)
                             setProjects(prev => {
                                 return prev.filter(e => e.id !== pjID)
@@ -96,13 +91,17 @@ export default function Home(props) {
                         })
                 }}
                 renameProject={(newName, projectID) => {
-                    const pathName = localStorage.getItem('basePath') + projectID + '/.meta'
-                    fs.readFile(pathName, (e, res) => {
-                        if (res && !e) {
+
+                    const pathName = pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + projectID + '\\.meta')
+
+                    fs.readFile(pathName, (error, res) => {
+                        console.log(error)
+                        if (res && !error) {
                             fs.writeFile(pathName, JSON.stringify({
                                 ...JSON.parse(res.toString()),
                                 name: newName
                             }), (e) => {
+                                console.log(e)
                                 if (!e)
                                     setAlert({
                                         type: 'success',

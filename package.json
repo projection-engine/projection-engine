@@ -5,7 +5,7 @@
   "dependencies": {
     "@electron/remote": "latest",
     "@f-ui/charts": "latest",
-    "@f-ui/core": "^0.1.6-alpha",
+    "@f-ui/core": "^0.1.7-alpha",
     "@fontsource/roboto": "latest",
     "dexie": "^3.2.0",
     "electron-is-dev": "latest",

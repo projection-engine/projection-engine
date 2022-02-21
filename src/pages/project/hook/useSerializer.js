@@ -23,7 +23,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 fileSystem
                     .updateProject(
                         {
-                            name: settings.projectName,
+                            name: settings.name,
                             preview,
                             entities: engine.entities.length,
                             meshes: engine.meshes.length,

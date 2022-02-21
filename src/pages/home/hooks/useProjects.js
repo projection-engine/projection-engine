@@ -1,4 +1,4 @@
-import {LoaderProvider} from "@f-ui/core";
+import {AlertProvider, LoaderProvider} from "@f-ui/core";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
 
@@ -6,19 +6,18 @@ export default function useProjects(fs){
     const [projects, setProjects] = useState([])
     const [openModal, setOpenModal] = useState(false)
     const [projectName, setProjectName] = useState('')
-    const [alert, setAlert] = useState({})
     const [startPath, setStartPath] = useState( localStorage.getItem('basePath') + '\\projects\\')
     const load = useContext(LoaderProvider)
+    const alert = useContext(AlertProvider)
+
     const uploadRef = useRef()
 
     const refresh = () => {
         load.pushEvent(EVENTS.PROJECT_LIST)
         fs.readdir(startPath, (e, res) => {
-
             let promises = []
             if(!fs.existsSync(startPath))
                 fs.mkdirSync(startPath)
-
             if (!e)
                 res.forEach(f => {
                     promises.push(new Promise((resolve,) => {
@@ -49,12 +48,11 @@ export default function useProjects(fs){
 
             Promise.all(promises)
                 .then(data => {
-                    console.log(data.filter(e => e !== undefined))
                     setProjects(data.filter(e => e !== undefined).map(e => {
                         let res = {...e}
-                        if(!e.meta)
+                        if(!res.meta)
                             res.meta = {name: 'New project'}
-                        if(!e.settings)
+                        if(!res.settings)
                             res.settings = {}
                         return res
                     }))
@@ -72,9 +70,9 @@ export default function useProjects(fs){
         projects,setProjects,
         openModal, setOpenModal,
         projectName, setProjectName,
-        alert, setAlert,
+        setAlert: ({type, message}) => alert.pushAlert(message, type),
         load, uploadRef,
-
+        refresh,
         startPath, setStartPath
     }
 }

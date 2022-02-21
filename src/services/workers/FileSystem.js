@@ -169,12 +169,13 @@ export default class FileSystem {
                                                             let parsedData = {...emptyMaterial}
                                                             const keysOnRes = Object.keys(d.response)
                                                             parsedData.nodes = parsedData.nodes.filter(n => {
-                                                                const willContinue = keysOnRes.includes(n.id) || n.id === 'material'
-                                                                parsedData.links = parsedData.links.filter(l => {
-                                                                    return keysOnRes.includes(l.source.id) && (keysOnRes.includes(l.target.id) || l.target.id === 'material')
-                                                                })
-                                                                return willContinue
-                                                            }).map(n => {
+                                                                return keysOnRes.includes(n.id) || n.id === 'material'
+                                                            })
+                                                            parsedData.links = parsedData.links.filter(e => {
+                                                                return keysOnRes.includes(e.target.attribute.key)
+                                                            })
+
+                                                            parsedData.nodes = parsedData.nodes.map(n => {
                                                                 const newID = randomID()
                                                                 parsedData.links = parsedData.links.map(l => {
                                                                     if (l.source.id === n.id || l.target.id === n.id) {
@@ -195,7 +196,6 @@ export default class FileSystem {
                                                                 }
                                                                 return newNode
                                                             })
-
 
                                                             parsedData.response = {
                                                                 ...d.response,
@@ -351,9 +351,10 @@ export default class FileSystem {
     async updateProject(meta, settings) {
         return Promise.all([
             new Promise(resolve => {
+
                 if (meta)
 
-                    fs.writeFile(this.path + '/.meta', JSON.stringify(meta), () => {
+                    fs.writeFile(this.path + '\\.meta', JSON.stringify(meta), () => {
                         resolve()
                     })
 
@@ -367,7 +368,7 @@ export default class FileSystem {
                     delete sett.type
                     delete sett.data
 
-                    fs.writeFile(this.path + '/.settings', JSON.stringify(sett), () => {
+                    fs.writeFile(this.path + '\\.settings', JSON.stringify(sett), () => {
                         resolve()
                     })
                 } else

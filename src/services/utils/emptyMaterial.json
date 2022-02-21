@@ -113,7 +113,7 @@
     },
     {
       "source": {
-        "id": "height",
+        "id": "roughness",
         "type": "output",
         "attribute": {
           "label": "Texture",
@@ -133,8 +133,9 @@
       }
     },
     {
+
       "source": {
-        "id": "roughness",
+        "id": "height",
         "type": "output",
         "attribute": {
           "label": "Texture",
