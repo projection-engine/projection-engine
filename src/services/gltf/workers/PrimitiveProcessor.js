@@ -2,7 +2,7 @@ import {vec2, vec3} from "gl-matrix";
 import groupInto from "../../engine/utils/groupInto";
 
 export default class PrimitiveProcessor {
-    static computeNormals(faces, vertices) {
+    static computeNormals(indices, vertices, uvs) {
 
     }
 
@@ -12,16 +12,17 @@ export default class PrimitiveProcessor {
 
         let groupedVertices = groupInto(3, vertices), groupedUVs = groupInto(2, uvs)
 
-        console.log(indices.length / 3)
         for (let i = 0; i < indices.length / 3; i += 3) {
-            let i0 = indices[i], i1 = indices[i + 1], i2 = indices[i + 2]
+            let i0 = indices[i],
+                i1 = indices[i + 1],
+                i2 = indices[i + 2]
 
             let v0 = groupedVertices[i0],
                 v1 = groupedVertices[i1],
                 v2 = groupedVertices[i2],
-                uv0 = groupedUVs[i],
-                uv1 = groupedUVs[i + 1],
-                uv2 = groupedUVs[i + 2]
+                uv0 = groupedUVs[i0],
+                uv1 = groupedUVs[i1],
+                uv2 = groupedUVs[i2]
 
             let deltaPositionOne = [],
                 deltaPositionTwo = [],
@@ -33,7 +34,7 @@ export default class PrimitiveProcessor {
 
             vec2.sub(deltaUVOne, uv1, uv0)
             vec2.sub(deltaUVTwo, uv2, uv0)
-            console.log(deltaUVOne, deltaUVTwo)
+
 
             let r = 1 / Math.max(.1, (deltaUVOne[0] * deltaUVTwo[1] - deltaUVOne[1] * deltaUVTwo[0])),
                 tangent = [],
@@ -49,7 +50,7 @@ export default class PrimitiveProcessor {
 
             tangents.push(...tangent)
         }
-        console.log(tangents)
+
         return tangents
     }
 
