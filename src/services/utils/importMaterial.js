@@ -1,6 +1,5 @@
 import MaterialInstance from "../engine/renderer/elements/MaterialInstance";
 import EVENTS from "./misc/EVENTS";
-import {ENTITY_ACTIONS} from "../engine/utils/entityReducer";
 import cloneClass from "./misc/cloneClass";
 
 export default function importMaterial(mat, engine, load, meshID) {

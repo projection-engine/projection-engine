@@ -1,7 +1,7 @@
 import Mesh from "../engine/renderer/elements/Mesh";
 import Entity from "../engine/ecs/basic/Entity";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
-import MaterialComponent from "../engine/ecs/components/MaterialComponent";
+
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import PickComponent from "../engine/ecs/components/PickComponent";
 
@@ -51,7 +51,6 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         entity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
         entity.components.TransformComponent = transformation
         entity.components.PickComponent = new PickComponent(undefined, engine.entities.length + index + 1)
-        entity.components.MaterialComponent = new MaterialComponent()
 
     } catch (e) {
     }

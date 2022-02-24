@@ -14,7 +14,7 @@ import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import SkyboxComponent from "../engine/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../engine/ecs/components/DirectionalLightComponent";
-import MaterialComponent from "../engine/ecs/components/MaterialComponent";
+
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
 import Mesh from "../engine/renderer/elements/Mesh";
@@ -69,7 +69,6 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 
             renderer.current = new Engine(id, gpu)
 
-
             const deferred = new MeshSystem(gpu, 1)
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
             setInitialized(true)
@@ -95,19 +94,17 @@ export default function useVisualizer(initializePlane, initializeSphere) {
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
 
-            renderer.current?.prepareData({
-                fxaa: true,
-                meshes,
-                materials: [],
-                shadingModel: SHADING_MODELS.DETAIL,
-                cameraType: CAMERA_TYPES.SPHERICAL,
-                injectMaterial: material
-            }, entities, [], meshes)
-
             if (!canRender)
                 renderer.current?.stop()
             else
-                renderer.current?.start(entities)
+                renderer.current?.start(entities, [], meshes, {
+                    fxaa: true,
+                    meshes,
+                    materials: [],
+                    shadingModel: SHADING_MODELS.DETAIL,
+                    cameraType: CAMERA_TYPES.SPHERICAL,
+                    injectMaterial: material
+                })
         }
 
         return () => {
@@ -193,37 +190,19 @@ export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTrans
     transformation.rotation = data.rotation
     if (!noTranslation)
         transformation.translation = data.translation
+    newEntity.components.MeshComponent =  new MeshComponent(undefined, mesh.id)
+    newEntity.components.TransformComponent =  transformation
 
+
+    console.log(mesh, newEntity)
     dispatch({
         type: ENTITY_ACTIONS.ADD,
         payload: newEntity
     })
-    dispatch({
-        type: ENTITY_ACTIONS.ADD_COMPONENT,
-        payload: {
-            data: new MeshComponent(undefined, mesh.id),
-            entityID: newEntity.id
-        }
-    })
-    dispatch({
-        type: ENTITY_ACTIONS.ADD_COMPONENT,
-        payload: {
-            data: new MaterialComponent(),
-            entityID: newEntity.id
-        }
-    })
-    dispatch({
-        type: ENTITY_ACTIONS.ADD_COMPONENT,
-        payload: {
-            data: transformation,
-            entityID: newEntity.id
-        }
-    })
-
-
 }
 
 export const IDS = {
     SPHERE: 'SPHERE-0',
-    PLANE: 'PLANE-0'
+    PLANE: 'PLANE-0',
+    TARGET: 'TARGET'
 }

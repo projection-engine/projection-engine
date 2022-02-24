@@ -40,18 +40,10 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
 
     const renderingProps = useMemo(() => {
 
-        return {
-
-            canExecutePhysicsAnimation, meshes,
-            selected, setSelected,
-            materials,
-
-        }
+        return {}
     }, [
         canExecutePhysicsAnimation,
-        meshes, selected,
-        setSelected, materials,
-
+        selected, setSelected,
     ])
 
 
@@ -82,7 +74,13 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     useEffect(() => {
         if (initialized) {
             renderer.current?.stop()
-            updateSystems(() => renderer.current?.start(entities))
+            updateSystems(() => {
+                renderer.current?.start(entities, materials, meshes, {
+                    canExecutePhysicsAnimation,
+                    selected, setSelected,
+                    ...settings
+                })
+            })
 
         }
     }, [settings.resolutionMultiplier, initialized])
@@ -104,27 +102,24 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                     renderer.current.camera.aspectRatio = gpu.canvas.width / gpu.canvas.height
             })
             resizeObserver.observe(document.getElementById(id + '-canvas'))
-            renderer.current?.prepareData({
-                ...renderingProps,
-                cameraType: settings.cameraType,
-                shadingModel: settings.shadingModel,
-                fxaa: settings.fxaa,
-                iconsVisibility: settings.iconsVisibility,
-                gridVisibility: settings.gridVisibility,
-                performanceMetrics: settings.performanceMetrics
-            }, entities, renderingProps.materials, renderingProps.meshes)
+            renderer.current?.updateCamera(settings.cameraType)
 
             if (!canRender)
                 renderer.current?.stop()
             else
-                renderer.current?.start(entities)
+                renderer.current?.start(entities, materials, meshes, {
+                    canExecutePhysicsAnimation,
+                    selected, setSelected,
+                    ...settings
+                })
         }
 
         return () => {
             renderer.current?.stop()
         }
     }, [
-        renderingProps,
+        canExecutePhysicsAnimation,
+        selected, setSelected,
         materials, meshes,
         initialized, entities, gpu, id, canRender,
         settings, finished

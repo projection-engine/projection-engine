@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useEffect, useMemo, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
@@ -15,7 +15,7 @@ export default function MaterialComponent(props) {
 
     useEffect(() => {
         const mesh = props.meshes.find(m => m.id === props.meshID)
-
+        if (mesh)
             setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === mesh.material))
     }, [])
 
@@ -43,8 +43,7 @@ export default function MaterialComponent(props) {
                                                     name: src.name
                                                 })
                                                 setCurrentMaterial(src)
-                                            }
-                                            else
+                                            } else
                                                 props.setAlert({
                                                     type: 'error',
                                                     message: 'Error loading material.'

@@ -20,21 +20,15 @@ import generateNextID from "../../services/utils/generateNextID";
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
 
-
-    const options = useMemo(() => {
-
-        return getOptions(
-            props.executingAnimation,
-            props.setExecutingAnimation,
-            props.engine,
-            props.serializer.save
-        )
-    }, [props.executingAnimation, props.engine])
     const controlProvider = useContext(ControlProvider)
     useEffect(() => {
-
         controlProvider.setTabAttributes(
-            options,
+            getOptions(
+                props.executingAnimation,
+                props.setExecutingAnimation,
+                props.engine,
+                props.serializer.save
+            ),
             'Editor',
             <span
                 style={{fontSize: '1.2rem'}}
@@ -49,7 +43,7 @@ export default function Editor(props) {
             0
         )
 
-    }, [options])
+    }, [props.executingAnimation, props.engine])
     const [toCopy, setToCopy] = useState()
     useHotKeys({
         disabled: controlProvider.tab !== 0,

@@ -5,6 +5,13 @@ const isDev = require('electron-is-dev')
 
 require('@electron/remote/main').initialize()
 
+app.commandLine.appendSwitch('enable-unsafe-webgpu') // WEB GPU
+
+// function createWindow () {
+//     const mainWindow = new BrowserWindow()
+//
+//     mainWindow.loadURL('https://austineng.github.io/webgpu-samples/?wgsl=0#rotatingCube')
+// }
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
@@ -30,7 +37,7 @@ function createWindow() {
     )
 }
 
-app.on('ready', createWindow)
+app.whenReady().then(createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

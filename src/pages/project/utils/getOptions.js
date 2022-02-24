@@ -5,6 +5,7 @@ import SkyboxComponent from "../../../services/engine/ecs/components/SkyboxCompo
 import DirectionalLightComponent from "../../../services/engine/ecs/components/DirectionalLightComponent";
 import CubeMapComponent from "../../../services/engine/ecs/components/CubeMapComponent";
 import SpotLightComponent from "../../../services/engine/ecs/components/SpotLightComponent";
+import TerrainComponent from "../../../services/engine/ecs/components/TerrainComponent";
 
 
 export default function getOptions(executingAnimation, setExecutingAnimation, engine, save) {
@@ -37,15 +38,9 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                     icon: <span className={'material-icons-round'}
                                 style={{fontSize: '1.2rem'}}>lightbulb</span>,
                     onClick: () => {
-                        const lightActor = new Entity(undefined, 'Point light entity')
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: lightActor})
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                entityID: lightActor.id,
-                                data: new PointLightComponent()
-                            }
-                        })
-
+                        const actor = new Entity(undefined, 'Point light')
+                        actor.components.PointLightComponent = new PointLightComponent()
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 },
 
@@ -55,14 +50,9 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                     icon: <span className={'material-icons-round'}
                                 style={{fontSize: '1.2rem'}}>flashlight_on</span>,
                     onClick: () => {
-                        const lightActor = new Entity(undefined, 'Point light entity')
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: lightActor})
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                entityID: lightActor.id,
-                                data: new SpotLightComponent()
-                            }
-                        })
+                        const actor = new Entity(undefined, 'Point light')
+                        actor.components.DirectionalLightComponent = new PointLightComponent()
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 },
                 {
@@ -71,14 +61,9 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                     icon: <span className={'material-icons-round'}
                                 style={{fontSize: '1.2rem'}}>light_mode</span>,
                     onClick: () => {
-                        const lightActor = new Entity(undefined, 'Directional light entity')
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: lightActor})
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                entityID: lightActor.id,
-                                data: new DirectionalLightComponent()
-                            }
-                        })
+                        const actor = new Entity(undefined, 'Directional light')
+                        actor.components.DirectionalLightComponent = new DirectionalLightComponent()
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 },
                 {
@@ -88,13 +73,9 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                                 style={{fontSize: '1.2rem'}}>cloud</span>,
                     onClick: () => {
                         const actor = new Entity(undefined, 'Skybox')
+                        actor.components.SkyboxComponent = new SkyboxComponent(undefined, engine.gpu)
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                entityID: actor.id,
-                                data: new SkyboxComponent(undefined, engine.gpu)
-                            }
-                        })
+
                     }
                 },
                 {
@@ -103,14 +84,20 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                     icon: <span className={'material-icons-round'}
                                 style={{fontSize: '1.2rem'}}>panorama_photosphere</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'New Cubemap')
+                        const actor = new Entity(undefined, 'Cubemap')
+                        actor.components.CubeMapComponent = new CubeMapComponent()
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                entityID: actor.id,
-                                data: new CubeMapComponent()
-                            }
-                        })
+                    }
+                },
+                {
+                    group: 'Lights',
+                    label: 'New Terrain',
+                    icon: <span className={'material-icons-round'}
+                                style={{fontSize: '1.2rem'}}>terrain</span>,
+                    onClick: () => {
+                        const actor = new Entity(undefined, 'terrain')
+                        actor.components.TerrainComponent = new TerrainComponent()
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 },
             ],

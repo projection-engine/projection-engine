@@ -5,7 +5,7 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useVisualizer, {initializeMesh} from "../../services/hooks/useVisualizer";
+import useVisualizer, {IDS, initializeMesh} from "../../services/hooks/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useMemo} from "react";
 
@@ -16,20 +16,24 @@ import {LoaderProvider} from "@f-ui/core";
 import EVENTS from "../../services/utils/misc/EVENTS";
 
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
+import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 
 export default function MeshView(props) {
     const engine = useVisualizer(false, false)
     const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
+    const type = props.file.type
+
     useEffect(() => {
-        if (engine.initialized) {
+        console.log(type)
+        if (engine.initialized && type !== VIEWER_TYPES.TERRAIN) {
             load.pushEvent(EVENTS.LOADING_VIEWPORT)
             quickAccess.fileSystem.readRegistryFile(props.file.registryID)
                 .then(res => {
                     quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + '\\assets\\' + res.path, 'json')
                         .then(fileData => {
                             load.finishEvent(EVENTS.LOADING_VIEWPORT)
-                            initializeMesh(fileData, engine.gpu, engine.id, props.file.name, engine.dispatchEntities, engine.setMeshes, true)
+                            initializeMesh(fileData, engine.gpu, IDS.TARGET, props.file.name, engine.dispatchEntities, engine.setMeshes, true)
                         })
                 })
         }
@@ -81,7 +85,7 @@ export default function MeshView(props) {
                 <Viewport allowDrop={false} id={engine.id} engine={engine} renderer={engine.renderer}/>
             </div>
             <ResizableBar type={'width'}/>
-            <Controls engine={engine}/>
+            <Controls engine={engine} load={load}/>
         </div>
     )
 }
@@ -91,7 +95,7 @@ MeshView.propTypes = {
         fileID: PropTypes.string,
         name: PropTypes.string,
         blob: PropTypes.any,
-        type: PropTypes.string,
+        type: PropTypes.oneOf(['mesh', 'terrain']),
     }),
     setAlert: PropTypes.func
 }

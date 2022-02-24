@@ -14,7 +14,6 @@ import Entity from "../../services/engine/ecs/basic/Entity";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import ThemeProvider from "../../services/hooks/ThemeProvider";
-import SelectBox from "../../components/selectbox/SelectBox";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)

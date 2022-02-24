@@ -12,6 +12,7 @@ import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
 import ColliderComponent from "../../../services/engine/ecs/components/ColliderComponent";
 import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
 import importMaterial from "../../../services/utils/importMaterial";
+import Transformation from "../../../services/engine/utils/Transformation";
 
 export default function useForm(
     engine,
@@ -21,32 +22,15 @@ export default function useForm(
     quickAccess,
     load
 ) {
-    const selectedElement = useMemo(() => {
-        console.log(allSelected.length)
-        return allSelected.length > 1 ? undefined : allSelected[0]
-    }, [allSelected])
+    const selectedElement =   allSelected.length > 1 ? undefined : allSelected[0]
+
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
         return engine.entities.find(e => e.id === selectedElement)
     }, [allSelected])
 
-    const updateTransform = (axis, data, key) => {
-        const component = selected.components.TransformComponent
-        const prev = component[key]
-        component[key] = [
-            axis === 'x' ? data : prev[0],
-            axis === 'y' ? data : prev[1],
-            axis === 'z' ? data : prev[2]
-        ]
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                entityID: selectedElement,
-                key: 'TransformComponent',
-                data: component
-            }
-        })
-    }
+
 
     const getField = (key) => {
 
@@ -55,81 +39,42 @@ export default function useForm(
                 return (
                     <TransformComponent
                         selected={selected.components.TransformComponent}
-                        submitRotation={(axis, data) => updateTransform(axis, data, 'rotation')}
-                        submitScaling={(axis, data) => updateTransform(axis, data, 'scaling')}
-                        submitTranslation={(axis, data) => updateTransform(axis, data, 'translation')}
+                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation',  engine, selectedElement)}
+                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling',  engine, selectedElement)}
+                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation',  engine, selectedElement)}
                     />
                 )
             }
             case 'MeshComponent': {
                 return (
-                    <MeshComponent
-                        quickAccess={quickAccess}
-                        meshes={engine.meshes}
-                        submitPhysics={(add) => {
-                            if (add) {
-                                const physicsComponent = new PhysicsBodyComponent()
+                    <>
+                        <MeshComponent
+                            quickAccess={quickAccess}
+                            load={load} setAlert={setAlert}
+                            submit={(mesh) => {
+                                selected.components.MeshComponent.meshID = mesh
                                 engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                         entityID: selectedElement,
-                                        data: physicsComponent
+                                        data: selected.components.MeshComponent,
+                                        key: 'MeshComponent'
                                     }
                                 })
-                            } else
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.REMOVE_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        key: 'PhysicsComponent'
-                                    }
-                                })
-                        }}
-                        submitPhysicsCollider={(add) => {
-                            if (add) {
-                                const mesh = engine.meshes.find(m => m.id === selected.components.MeshComponent.meshID)
+                            }}
+                            engine={engine}
+                            selected={selected.components.MeshComponent.meshID}
+                        />
+                        <MaterialComponent
+                            quickAccess={quickAccess}
+                            meshes={engine.meshes}
+                            meshID={selected.components.MeshComponent.meshID}
+                            submit={(mat) => {
+                                importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
+                            }}
+                            setAlert={setAlert}
 
-                                const physicsComponent = new ColliderComponent(undefined, mesh)
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.ADD_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        data: physicsComponent
-                                    }
-                                })
-                            } else
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.REMOVE_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        key: 'SphereCollider'
-                                    }
-                                })
-                        }}
-                        submit={(mesh) => {
-                            selected.components.MeshComponent.meshID = mesh
-
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
-                                    data: selected.components.MeshComponent,
-                                    key: 'MeshComponent'
-                                }
-                            })
-                        }}
-                        engine={engine}
-                        selected={selected}
-                    />
-                )
-            }
-            case 'MaterialComponent': {
-                return (
-                    <MaterialComponent
-                        quickAccess={quickAccess}
-                        meshes={engine.meshes}
-                        meshID={selected.components.MeshComponent.meshID}
-                        submit={(mat) => {
-                            importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
-                        }}
-                        setAlert={setAlert}
-
-                    />
+                        />
+                    </>
                 )
             }
             case 'DirectionalLightComponent':

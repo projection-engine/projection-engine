@@ -3,6 +3,7 @@ import GLTF from "../gltf/GLTF";
 import randomID from "../utils/misc/randomID";
 import ImageProcessor from "./ImageProcessor";
 import emptyMaterial from '../utils/emptyMaterial.json'
+import TerrainWorker from "./TerrainWorker";
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -118,7 +119,7 @@ export default class FileSystem {
         else return []
     }
 
-    async importFile(file, filePath) {
+    async importFile(file, filePath, asHeightMap) {
         return new Promise(resolve => {
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
@@ -129,10 +130,26 @@ export default class FileSystem {
                     FileBlob
                         .loadAsString(file, false, true)
                         .then(res => {
-                            Promise.all(this.importImage(newRoot, res, fileID))
-                                .then(() => {
-                                    resolve()
-                                })
+                            if (asHeightMap)
+                                TerrainWorker.loadHeightMap(res)
+                                    .then(data => {
+                                        Promise.all( [
+                                            new Promise(r => {
+                                                fs.writeFile(
+                                                    newRoot + `.terrain`,
+                                                    JSON.stringify(data),
+                                                    () => {
+                                                        r()
+                                                    });
+                                            }),
+                                            this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `.terrain`)
+                                        ]).then(() => resolve())
+                                    })
+                            else
+                                Promise.all(this.importImage(newRoot, res, fileID))
+                                    .then(() => {
+                                        resolve()
+                                    })
                         })
                     break
                 }
@@ -198,10 +215,10 @@ export default class FileSystem {
                                                             })
 
                                                             parsedData.response = {
-                                                                ...d.response,
+                                                                ...d.materialResponse,
                                                                 name: d.name
                                                             }
-
+                                                            console.log(parsedData)
                                                             let localPromises = [
                                                                 new Promise(r => {
                                                                     fs.writeFile(
@@ -216,7 +233,7 @@ export default class FileSystem {
 
                                                             parsedData.nodes.forEach((n, i) => {
                                                                 let nameSplit = n.sample.registryID
-                                                                nameSplit = nameSplit.substr(0, nameSplit.length/2)
+                                                                nameSplit = nameSplit.substr(0, nameSplit.length / 2)
                                                                 localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + nameSplit, d.response[n.sample.type], n.sample.registryID))
                                                             })
 
@@ -316,6 +333,21 @@ export default class FileSystem {
         })
     }
 
+    readAsset(registryID) {
+        return new Promise(resolve => {
+            this.readRegistryFile(registryID)
+                .then(reg => {
+                    this.readFile(this.path + '\\assets\\' + reg.path, !reg.path.includes('.pimg') ? 'json' : 'base64')
+                        .then(res => {
+                            if (res)
+                                resolve(res)
+                            else
+                                resolve()
+                        })
+                })
+        })
+    }
+
     async updateAsset(registryID, fileData, previewImage) {
         return new Promise(resolve => {
             if (!fs.existsSync(this.path + '\\assets'))
@@ -330,13 +362,15 @@ export default class FileSystem {
 
         })
     }
-    deleteEntity(entityID){
+
+    deleteEntity(entityID) {
         return new Promise(resolve => {
             this.deleteFile(this.path + '\\logic\\' + entityID + '.entity', true)
                 .then(() => resolve())
                 .catch(() => resolve())
         })
     }
+
     async updateEntity(entity) {
 
         return new Promise(resolve => {
@@ -448,10 +482,14 @@ export default class FileSystem {
                             const registryPath = this.path + '\\assetsRegistry\\' + f
                             fs.readFile(registryPath, (e, registryFile) => {
                                 if (!e)
-                                    resolve1({
-                                        ...JSON.parse(registryFile.toString()),
-                                        registryPath
-                                    })
+                                    try {
+                                        resolve1({
+                                            ...JSON.parse(registryFile.toString()),
+                                            registryPath
+                                        })
+                                    } catch (e) {
+                                        resolve1()
+                                    }
                                 else
                                     resolve1()
                             })
@@ -472,7 +510,7 @@ export default class FileSystem {
         const fromResolved = path.resolve(from)
 
         let newRegistry = await this.readRegistry()
-        console.log(fromResolved, to)
+
         return new Promise(rootResolve => {
             fs.lstat(fromResolved, (er, stat) => {
                 if (stat !== undefined && stat.isDirectory())
@@ -578,6 +616,5 @@ export default class FileSystem {
 
     }
 }
-
 
 

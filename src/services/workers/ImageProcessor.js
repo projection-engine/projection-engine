@@ -5,6 +5,20 @@ export const COLOR_BLEND_OPERATIONS = {
     LERP: 3 // TODO
 }
 export default class ImageProcessor {
+    static getPixel(ctx,x ,y ){
+        const imgData = ctx.getImageData(x, y, 1, 1);
+        return imgData.data;
+    }
+    static getContext(image){
+        const c = document.createElement("canvas");
+        c.width = image.naturalWidth
+        c.height = image.naturalHeight
+
+        let ctx = c.getContext("2d");
+        ctx.drawImage(image, 0, 0)
+
+        return ctx
+    }
     static extractChannel([r, g, b, a], img) {
         const c = document.createElement("canvas");
         const imageToLoad = new Image()

@@ -1,5 +1,5 @@
 import DirectionalLightComponent from "../engine/ecs/components/DirectionalLightComponent";
-import MaterialComponent from "../engine/ecs/components/MaterialComponent";
+
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import PickComponent from "../engine/ecs/components/PickComponent";
 import PointLightComponent from "../engine/ecs/components/PointLightComponent";
@@ -223,9 +223,6 @@ export default class ProjectLoader {
             switch (k) {
                 case 'DirectionalLightComponent':
                     component = new DirectionalLightComponent(entity.components[k].id)
-                    break
-                case 'MaterialComponent':
-                    component = new MaterialComponent(entity.components[k].id)
                     break
                 case 'MeshComponent':
                     component = new MeshComponent(entity.components[k].id)

@@ -58,7 +58,6 @@ export default function LightComponent(props) {
     }
 
     return (
-
         <Accordion className={styles.fieldset}>
             <AccordionSummary className={styles.summary}>
                 {props.type === 'PointLightComponent' ? 'Point light' : 'Directional light'}
