@@ -2,6 +2,7 @@ import groupInto from "../engine/utils/groupInto";
 import {getPrimitives, materialParser, nodeParser} from "./utils/glTFUtils";
 import GLTFBuffer from "./workers/GLTFBuffer";
 import Accessor from "./workers/Accessor";
+import PrimitiveProcessor from "./workers/PrimitiveProcessor";
 
 const fs = window.require('fs')
 export default class GLTF {
@@ -16,69 +17,71 @@ export default class GLTF {
 
             Promise.all(buffers.map(b => b.initialize()))
                 .then(() => {
-                parsed.buffers = null
-                const accessors = parsed.accessors.map(a => {
-                    return new Accessor(a, buffers, parsed.bufferViews)
-                })
-                const mainScene = parsed.scenes[0]
-                let sceneNodes = parsed.nodes
-                    .map((n, index) => {
-                        if (mainScene.nodes.includes(index))
-                            return {...parsed.nodes[index], index}
-                        else
-                            return undefined
-                    }).filter(e => e !== undefined)
-
-
-                sceneNodes = sceneNodes
-                    .map(n => nodeParser(n, parsed.nodes)).flat()
-                parsed = {
-                    materials: parsed.materials,
-                    meshes: parsed.meshes,
-                    textures: parsed.textures,
-                    images: parsed.images
-                }
-                const materials = parsed.materials ? parsed.materials.map(m => {
-                    return materialParser(basePath, m, parsed.textures, parsed.images)
-                }) : []
-
-                Promise.all(materials)
-                    .then(parsedMaterials => {
-
-                        let meshes = parsed.meshes.filter((_, index) => {
-                            return sceneNodes.find(n => n.meshIndex === index) !== undefined
-                        }).map(m => {
-
-                            return {
-                                ...getPrimitives(m, parsed.materials)[0]
-                            }
-                        })
-                        let files = []
-                        sceneNodes.forEach(m => {
-                            const [min, max] = GLTF.computeBoundingBox(accessors[meshes[m.meshIndex]?.vertices].data)
-                            const currentMesh = meshes[m.meshIndex]
-
-                            files.push({
-                                    name: m.name,
-                                    data: {
-                                        ...m,
-                                        material: currentMesh.material ? parsedMaterials.find(p => p.name === currentMesh.material.name)?.id : undefined,
-                                        indices: accessors[currentMesh.indices]?.data,
-                                        vertices: accessors[currentMesh.vertices]?.data,
-                                        tangents: accessors[currentMesh.tangents]?.data,
-                                        normals: accessors[currentMesh.normals]?.data,
-                                        uvs: accessors[currentMesh.uvs].data,
-
-                                        maxBoundingBox: max,
-                                        minBoundingBox: min,
-                                    }
-                                }
-                            )
-                        })
-
-                        rootResolve({nodes: files, materials: parsedMaterials})
+                    parsed.buffers = null
+                    const accessors = parsed.accessors.map(a => {
+                        return new Accessor(a, buffers, parsed.bufferViews)
                     })
-            }).catch((error) => {
+                    const mainScene = parsed.scenes[0]
+                    let sceneNodes = parsed.nodes
+                        .map((n, index) => {
+                            if (mainScene.nodes.includes(index))
+                                return {...parsed.nodes[index], index}
+                            else
+                                return undefined
+                        }).filter(e => e !== undefined)
+
+
+                    sceneNodes = sceneNodes
+                        .map(n => nodeParser(n, parsed.nodes)).flat()
+                    parsed = {
+                        materials: parsed.materials,
+                        meshes: parsed.meshes,
+                        textures: parsed.textures,
+                        images: parsed.images
+                    }
+                    const materials = parsed.materials ? parsed.materials.map(m => {
+                        return materialParser(basePath, m, parsed.textures, parsed.images)
+                    }) : []
+
+                    Promise.all(materials)
+                        .then(parsedMaterials => {
+
+                            let meshes = parsed.meshes.filter((_, index) => {
+                                return sceneNodes.find(n => n.meshIndex === index) !== undefined
+                            }).map(m => {
+
+                                return {
+                                    ...getPrimitives(m, parsed.materials)[0]
+                                }
+                            })
+                            let files = []
+                            sceneNodes.forEach(m => {
+                                const [min, max] = GLTF.computeBoundingBox(accessors[meshes[m.meshIndex]?.vertices].data)
+                                const currentMesh = meshes[m.meshIndex]
+                                console.log(currentMesh)
+                                const normals = currentMesh.normals === -1 ||  currentMesh.normals === undefined ? PrimitiveProcessor.computeNormals(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data) : accessors[currentMesh.normals].data
+                                const tangents = currentMesh.tangents === -1 ||  currentMesh.tangents === undefined? PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals) : accessors[currentMesh.tangents].data
+
+                                files.push({
+                                        name: m.name,
+                                        data: {
+                                            ...m,
+                                            material: currentMesh.material ? parsedMaterials.find(p => p.name === currentMesh.material.name)?.id : undefined,
+                                            indices: accessors[currentMesh.indices]?.data,
+                                            vertices: accessors[currentMesh.vertices]?.data,
+                                            tangents: tangents,
+                                            normals: normals,
+                                            uvs: accessors[currentMesh.uvs].data,
+                                            maxBoundingBox: max,
+                                            minBoundingBox: min,
+                                        }
+                                    }
+                                )
+                            })
+
+                            rootResolve({nodes: files, materials: parsedMaterials})
+                        })
+                }).catch((error) => {
                 rootResolve({})
             })
         })

@@ -13,6 +13,7 @@ import ColliderComponent from "../../../services/engine/ecs/components/ColliderC
 import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/Transformation";
+import EVENTS from "../../../services/utils/misc/EVENTS";
 
 export default function useForm(
     engine,
@@ -70,6 +71,15 @@ export default function useForm(
                             meshID={selected.components.MeshComponent.meshID}
                             submit={(mat) => {
                                 importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
+                                load.pushEvent(EVENTS.SAVING_MESH)
+                                quickAccess.fileSystem.readAsset(selected.components.MeshComponent.meshID)
+                                    .then(res => {
+                                        quickAccess.fileSystem.updateAsset(selected.components.MeshComponent.meshID, JSON.stringify({
+                                            ...res,
+                                            material: mat.id
+                                        }))
+                                            .then(() => load.finishEvent(EVENTS.SAVING_MESH))
+                                    })
                             }}
                             setAlert={setAlert}
 

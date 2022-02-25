@@ -137,5 +137,7 @@ export default class ImageProcessor {
             }
         })
     }
+    static specularToMetallic(img){
 
+    }
 }

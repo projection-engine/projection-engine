@@ -81,18 +81,19 @@ export default function Projects(props) {
                 directory={''}
                 style={{display: 'none'}}
             />
-            <div className={styles.title}>
-                <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+            <div className={styles.titleWrapper}>
+                <label className={styles.title}>
                     Your projects
-                    <Search size={'big'} setSearchString={setSearchString} searchString={searchString}/>
-                </div>
-                <div style={{display: 'flex', gap: '4px'}}>
+                </label>
+                <div className={styles.optionsWrapper}>
                     <Dropdown
                         className={styles.button}
                         variant={'outlined'}
                         styles={{backgroundColor: 'var(--fabric-background-primary)', padding: '2px 5px 0px 10px'}}
                     >
-                        Load project
+                        <label>
+                            More
+                        </label>
                         <DropdownOptions>
                             <DropdownOption option={{
                                 label: 'Import from package.',
@@ -111,7 +112,10 @@ export default function Projects(props) {
                         className={styles.button}
                         variant={'filled'}
                         onClick={() => props.onNew()}>
-                        New project
+
+                        <label>
+                            New project
+                        </label>
                     </Button>
                 </div>
             </div>

@@ -108,7 +108,9 @@ export default function Card(props) {
                     variant={'filled'}
                     className={styles.button}>
                     <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
-                    Load project
+                    <label>
+                        Load project
+                    </label>
                 </Button>
             </div>
 

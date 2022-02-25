@@ -27,5 +27,6 @@ export default {
     LOAD_FILES: 'Loading assets',
     COMPILING: 'Compiling',
     UPDATING_SYSTEMS: 'Compiling systems',
-    LOADING_MESHES: 'Loading meshes'
+    LOADING_MESHES: 'Loading meshes',
+    SAVING_MESH: 'Saving mesh'
 }

@@ -17,7 +17,7 @@ export default class TerrainWorker {
                 const count = vertexCount ** 2
 
                 let vertices = new Array(count * 3),
-                    normals = new Array(count * 3),
+                    // normals = new Array(count * 3),
                     uvs = new Array(count * 2),
                     indices = new Array(6 * (vertexCount - 1) * vertexCount),
                     vertexPointer = 0
@@ -28,11 +28,11 @@ export default class TerrainWorker {
                         vertices[vertexPointer * 3] = (j / (vertexCount - 1)) * vertexCount
                         vertices[vertexPointer * 3 + 1] = TerrainWorker.sampleTexture(j, i, ctx)
                         vertices[vertexPointer * 3 + 2] = (i / (vertexCount - 1)) * vertexCount
-
-                        const normal = TerrainWorker.computeVertexNormal(j, i, ctx)
-                        normals[vertexPointer * 3] = normal[0]
-                        normals[vertexPointer * 3 + 1] = normal[1]
-                        normals[vertexPointer * 3 + 2] = normal[2]
+                        //
+                        // const normal = TerrainWorker.computeVertexNormal(j, i, ctx)
+                        // normals[vertexPointer * 3] = normal[0]
+                        // normals[vertexPointer * 3 + 1] = normal[1]
+                        // normals[vertexPointer * 3 + 2] = normal[2]
 
                         uvs[vertexPointer * 2] = j / (vertexCount - 1)
                         uvs[vertexPointer * 2 + 1] = i / (vertexCount - 1)
@@ -58,7 +58,9 @@ export default class TerrainWorker {
                     }
                 }
 
-                let tangents = PrimitiveProcessor.computeTangents(indices, vertices, uvs)
+                const normals = PrimitiveProcessor.computeNormals(indices, vertices)
+                const tangents = PrimitiveProcessor.computeTangents(indices, vertices, uvs, normals)
+
                 resolve({
                     vertices,
                     uvs,

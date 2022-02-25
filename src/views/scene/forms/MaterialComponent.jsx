@@ -36,7 +36,6 @@ export default function MaterialComponent(props) {
                                     fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
                                         .then(file => {
                                             if (file && file.response) {
-
                                                 props.submit({
                                                     blob: file.response,
                                                     id: src.registryID,

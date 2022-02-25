@@ -1167,15 +1167,16 @@
   resolved "https://registry.yarnpkg.com/@f-ui/charts/-/charts-0.0.1-alpha.tgz#7188d07309f0ab5d944266bb0278fc7008f8c1a9"
   integrity sha512-Jp7sjouwgGub5Fc1W2JxOLSt5/uew4fkxolFoCMUrx9FYqt02W9HgxI4j7oQdRUfinQD7h4bVF/5uV42rcTsRA==
 
-"@f-ui/core@^0.1.7-alpha":
-  version "0.1.7-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.7-alpha.tgz#ab7425ab7a533a6a854e319b9d74dd1c6ad8e73d"
-  integrity sha512-kCyI8y/6CJe818tMxrWHoWrboS8nPLTnL7CGCsvOOHhCJG8o59OSO+4wnpssJ4cyWfN1i1G9ESwDHwKSz7jSwg==
+"@f-ui/core@^0.1.8-alpha":
+  version "0.1.8-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.8-alpha.tgz#5be1a6469ab98a9732f2aac863cf2ed469136049"
+  integrity sha512-zbDAR/XevDCxOhYzp2bifgzAafcf9EbXemEC36DClxHq4VNDXxWFEuCBpTFe5PUadcBdfpKW2Bj0uinmcRKY7g==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"
     react-dom "17.0.2"
     react-input-mask "^2.0.4"
+    uuid "^8.3.2"
 
 "@fontsource/roboto@latest":
   version "4.5.3"

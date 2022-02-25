@@ -41,3 +41,11 @@ a {
   background-color: #555;
   border-radius: 5px;
 }
+
+
+button > label{
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
