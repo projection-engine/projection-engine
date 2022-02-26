@@ -58,9 +58,9 @@ export default class GLTF {
                             sceneNodes.forEach(m => {
                                 const [min, max] = GLTF.computeBoundingBox(accessors[meshes[m.meshIndex]?.vertices].data)
                                 const currentMesh = meshes[m.meshIndex]
-                                console.log(currentMesh)
+
                                 const normals = currentMesh.normals === -1 ||  currentMesh.normals === undefined ? PrimitiveProcessor.computeNormals(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data) : accessors[currentMesh.normals].data
-                                const tangents = currentMesh.tangents === -1 ||  currentMesh.tangents === undefined? PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals) : accessors[currentMesh.tangents].data
+                                const tangents = PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals)
 
                                 files.push({
                                         name: m.name,
