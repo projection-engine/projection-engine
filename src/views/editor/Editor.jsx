@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import cloneClass from "../../services/utils/misc/cloneClass";
 import randomID from "../../services/utils/misc/randomID";
-import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";
 

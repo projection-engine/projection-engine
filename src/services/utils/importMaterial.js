@@ -1,4 +1,4 @@
-import MaterialInstance from "../engine/renderer/elements/MaterialInstance";
+import MaterialInstance from "../engine/elements/instances/MaterialInstance";
 import EVENTS from "./misc/EVENTS";
 import cloneClass from "./misc/cloneClass";
 

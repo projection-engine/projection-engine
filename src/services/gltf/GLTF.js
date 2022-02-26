@@ -1,4 +1,4 @@
-import groupInto from "../engine/utils/groupInto";
+import groupInto from "../utils/groupInto";
 import {getPrimitives, materialParser, nodeParser} from "./utils/glTFUtils";
 import GLTFBuffer from "./workers/GLTFBuffer";
 import Accessor from "./workers/Accessor";
@@ -62,7 +62,7 @@ export default class GLTF {
                                 const normals = currentMesh.normals === -1 ||  currentMesh.normals === undefined ? PrimitiveProcessor.computeNormals(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data) : accessors[currentMesh.normals].data
                                 const tangents =  PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals)
 
-                                console.log(tangents)
+
                                 files.push({
                                         name: m.name,
                                         data: {

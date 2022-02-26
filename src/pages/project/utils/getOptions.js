@@ -1,4 +1,4 @@
-import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import PointLightComponent from "../../../services/engine/ecs/components/PointLightComponent";
 import Entity from "../../../services/engine/ecs/basic/Entity";
 import SkyboxComponent from "../../../services/engine/ecs/components/SkyboxComponent";

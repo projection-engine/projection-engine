@@ -1,4 +1,4 @@
-import Mesh from "../engine/renderer/elements/Mesh";
+import MeshInstance from "../engine/elements/instances/MeshInstance";
 import Entity from "../engine/ecs/basic/Entity";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
 
@@ -14,7 +14,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
     try {
         mesh = engine.meshes.find(m => m.id === objLoaded.id)
         if (!mesh) {
-            mesh = new Mesh({
+            mesh = new MeshInstance({
                 ...objLoaded,
                 id: id,
                 gpu: engine.gpu,

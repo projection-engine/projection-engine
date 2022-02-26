@@ -1,5 +1,5 @@
 import {mat4, quat} from "gl-matrix";
-import Transformation from "../../engine/utils/Transformation";
+import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
 import randomID from "../../utils/misc/randomID";
 

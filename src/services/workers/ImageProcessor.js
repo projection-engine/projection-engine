@@ -5,11 +5,29 @@ export const COLOR_BLEND_OPERATIONS = {
     LERP: 3 // TODO
 }
 export default class ImageProcessor {
-    static getPixel(ctx,x ,y ){
+    static noise(size) {
+        let canvas = document.createElement("canvas");
+        let w = canvas.width = size;
+        let h = canvas.height = size;
+        let context = canvas.getContext("2d");
+
+        for (let i = 0; i < w; i++) {
+            for (let j = 0; j < h; j++) {
+                let num = Math.floor(Math.random() * 2)
+                context.fillStyle = "rgb(" + num + "," + num + "," + num + ")";
+                context.fillRect(i, j, 1, 1);
+            }
+        }
+
+        return canvas.toDataURL()
+    }
+
+    static getPixel(ctx, x, y) {
         const imgData = ctx.getImageData(x, y, 1, 1);
         return imgData.data;
     }
-    static getContext(image){
+
+    static getContext(image) {
         const c = document.createElement("canvas");
         c.width = image.naturalWidth
         c.height = image.naturalHeight
@@ -19,13 +37,14 @@ export default class ImageProcessor {
 
         return ctx
     }
+
     static extractChannel([r, g, b, a], img) {
         const c = document.createElement("canvas");
         const imageToLoad = new Image()
 
         return new Promise(resolve => {
 
-            if(imageToLoad) {
+            if (imageToLoad) {
                 imageToLoad.onerror = () => resolve('')
                 imageToLoad.onload = () => {
                     c.width = imageToLoad.width
@@ -56,8 +75,7 @@ export default class ImageProcessor {
                     resolve(c.toDataURL())
                 }
                 imageToLoad.src = img
-            }
-            else
+            } else
                 resolve(img)
         })
     }
@@ -137,7 +155,8 @@ export default class ImageProcessor {
             }
         })
     }
-    static specularToMetallic(img){
+
+    static specularToMetallic(img) {
 
     }
 }

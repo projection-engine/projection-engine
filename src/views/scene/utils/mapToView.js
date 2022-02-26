@@ -1,7 +1,7 @@
 import getElementIcon from "./getElementIcon";
 import getElementType from "./getElementType";
 import React from "react";
-import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 
 export default function mapToView(current, entities, setSelected, engine) {
     const children = entities.filter(f => f.linkedTo === current.id)

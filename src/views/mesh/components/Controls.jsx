@@ -9,9 +9,9 @@ import MaterialComponent from "../../scene/forms/MaterialComponent";
 import importMaterial from "../../../services/utils/importMaterial";
 import {IDS} from "../../../services/hooks/useVisualizer";
 import MeshComponent from "../../scene/forms/MeshComponent";
-import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import TransformComponent from "../../scene/forms/TransformComponent";
-import Transformation from "../../../services/engine/utils/Transformation";
+import Transformation from "../../../services/engine/utils/workers/Transformation";
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)

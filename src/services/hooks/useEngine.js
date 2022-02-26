@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useReducer, useRef, useState} from "react";
-import {enableBasics} from "../engine/utils/utils";
-import entityReducer from "../engine/utils/entityReducer";
+import {enableBasics} from "../engine/utils/misc/utils";
+import entityReducer from "../utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
@@ -10,6 +10,7 @@ import PickSystem from "../engine/ecs/systems/PickSystem";
 import Engine from "../engine/Engine";
 import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
+import AOSystem from "../engine/ecs/systems/AOSystem";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
@@ -38,13 +39,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const renderer = useRef()
     let resizeObserver
 
-    const renderingProps = useMemo(() => {
 
-        return {}
-    }, [
-        canExecutePhysicsAnimation,
-        selected, setSelected,
-    ])
 
 
     const updateSystems = (callback) => {
@@ -59,6 +54,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                     new ShadowMapSystem(gpu),
                     new PickSystem(gpu),
                     deferred,
+                    // new AOSystem(gpu),
                     new PostProcessingSystem(gpu, settings.resolutionMultiplier)
                 ]
                 load.finishEvent(EVENTS.UPDATING_SYSTEMS)

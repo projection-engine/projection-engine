@@ -1,7 +1,7 @@
 import {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from "react";
 
-import entityReducer, {ENTITY_ACTIONS} from "../engine/utils/entityReducer";
-import {enableBasics} from "../engine/utils/utils";
+import entityReducer, {ENTITY_ACTIONS} from "../utils/entityReducer";
+import {enableBasics} from "../engine/utils/misc/utils";
 import Entity from "../engine/ecs/basic/Entity";
 
 import planeMesh from '../../static/meshes/plane.json'
@@ -17,7 +17,7 @@ import DirectionalLightComponent from "../engine/ecs/components/DirectionalLight
 
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
-import Mesh from "../engine/renderer/elements/Mesh";
+import MeshInstance from "../engine/elements/instances/MeshInstance";
 
 import skybox from '../../static/default_skybox.jpg'
 import {LoaderProvider} from "@f-ui/core";
@@ -25,7 +25,8 @@ import {LoaderProvider} from "@f-ui/core";
 import randomID from "../utils/misc/randomID";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
-import CAMERA_TYPES from "../engine/utils/CAMERA_TYPES";
+import CAMERA_TYPES from "../engine/utils/misc/CAMERA_TYPES";
+import AOSystem from "../engine/ecs/systems/AOSystem";
 
 
 export default function useVisualizer(initializePlane, initializeSphere) {
@@ -78,6 +79,7 @@ export default function useVisualizer(initializePlane, initializeSphere) {
                         new TransformSystem(),
                         new ShadowMapSystem(gpu),
                         deferred,
+                        // new AOSystem(gpu),
                         new PostProcessingSystem(gpu, 1)
                     ]
                     renderer.current.camera.radius = 2
@@ -174,7 +176,7 @@ function initializeLight(dispatch) {
 }
 
 export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTranslation) {
-    let mesh = new Mesh({
+    let mesh = new MeshInstance({
         ...data,
         id: randomID(),
         gpu: gpu,

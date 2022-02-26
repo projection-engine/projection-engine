@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import styles from "../styles/Forms.module.css";
-import Mesh from "../../../services/engine/renderer/elements/Mesh";
+import MeshInstance from "../../../services/engine/elements/instances/MeshInstance";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import handleDrop from "../../../services/utils/handleDrop";
 import Selector from "../../../components/selector/Selector";

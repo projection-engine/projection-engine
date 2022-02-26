@@ -10,8 +10,8 @@ import FolderComponent from "../engine/ecs/components/FolderComponent";
 import PhysicsBodyComponent from "../engine/ecs/components/PhysicsBodyComponent";
 import ColliderComponent from "../engine/ecs/components/ColliderComponent";
 import Entity from "../engine/ecs/basic/Entity";
-import MaterialInstance from "../engine/renderer/elements/MaterialInstance";
-import Mesh from "../engine/renderer/elements/Mesh";
+import MaterialInstance from "../engine/elements/instances/MaterialInstance";
+import MeshInstance from "../engine/elements/instances/MeshInstance";
 
 
 export default class ProjectLoader {
@@ -176,7 +176,7 @@ export default class ProjectLoader {
                                                 entities,
                                                 materials: materialData,
                                                 meshes: meshData.map(m => {
-                                                    return new Mesh({
+                                                    return new MeshInstance({
                                                         vertices: m.data.vertices,
                                                         indices: m.data.indices,
                                                         normals: m.data.normals,
