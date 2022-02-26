@@ -106,7 +106,7 @@ function loadTexture(key, basePath, texture, textures, images, channels) {
 
         if (imgURI !== undefined) {
             let file
-            console.log(imgURI.uri)
+
             if (typeof imgURI.uri === 'string' && imgURI.uri.includes('data:image'))
                 file = imgURI.uri
             else {

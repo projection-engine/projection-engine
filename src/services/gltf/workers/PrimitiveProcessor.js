@@ -8,7 +8,6 @@ export default class PrimitiveProcessor {
         let quantity = positions.length;
         let normals = (new Array(quantity));
 
-        // FILL NÃO FUNCIONA DESGRETA
         for (let i = 0; i < quantity; ++i) {
             normals[i] = [0, 0, 0];
         }
@@ -49,16 +48,20 @@ export default class PrimitiveProcessor {
     }
 
     static computeTangents(indices, vertices, uvs, normals) {
-        let tangents = new Array(vertices.length / 3).fill([0, 0, 0])
-        let biTangents = new Array(vertices.length / 3).fill([0, 0, 0])
         const norm = groupInto(3, normals)
+        let groupedVertices = groupInto(3, vertices),
+            groupedUVs = groupInto(2, uvs),
+            tangents = [],
+            tangentArray = [],
+            triangles = groupInto(3, indices)
 
-        let groupedVertices = groupInto(3, vertices), groupedUVs = groupInto(2, uvs)
-
-        for (let i = 0; i < indices.length / 3; i += 3) {
-            let i0 = indices[i],
-                i1 = indices[i + 1],
-                i2 = indices[i + 2]
+        for (let i = 0; i < vertices.length / 3; ++i) {
+            tangents[i] = [0, 0, 0];
+        }
+        for (let i = 0; i < triangles.length; i++) {
+            let i0 = triangles[i][0],
+                i1 = triangles[i][1],
+                i2 = triangles[i][2]
 
             let v0 = groupedVertices[i0],
                 v1 = groupedVertices[i1],
@@ -76,14 +79,13 @@ export default class PrimitiveProcessor {
                 y1 = uv1[1] - uv0[1],
                 y2 = uv2[1] - uv0[1]
 
-            const r = 1 / (x1 * y2 - x2 * y1)
+            const div = x1 * y2 - x2 * y1
+
+            const r = div === 0 ? 1 : 1 / div
+
             let tangent = [],
                 tangentP1 = [],
                 tangentP2 = []
-            let biTangent = [],
-                biTangentP1 = [],
-                biTangentP2 = []
-
             // TANGENT
             vec3.scale(tangentP1, e1, y2)
             vec3.scale(tangentP2, e2, y1)
@@ -93,39 +95,19 @@ export default class PrimitiveProcessor {
             vec3.add(tangents[i0], tangents[i0], tangent)
             vec3.add(tangents[i1], tangents[i1], tangent)
             vec3.add(tangents[i2], tangents[i2], tangent)
-
-            // BI TANGENT
-            vec3.scale(biTangentP1, e2, x1)
-            vec3.scale(biTangentP2, e1, x2)
-            vec3.sub(biTangent, biTangentP1, biTangentP2)
-            vec3.scale(biTangent, biTangent, r)
-
-            vec3.add(biTangents[i0], biTangents[i0], biTangent)
-            vec3.add(biTangents[i1], biTangents[i1], biTangent)
-            vec3.add(biTangents[i2], biTangents[i2], biTangent)
-
-
         }
-        let tangentArray = new Array(vertices.length).fill([0, 0, 0, 0])
-        for (let i = 0; i < vertices.length; i++) {
+
+        for (let i = 0; i < vertices.length/3; i++) {
             let t0 = tangents[i],
-                t1 = biTangents[i],
                 n = norm[i]
 
-            if (n !== undefined) {
                 let t = [0, 0, 0]
                 const nCop = [0, 0, 0]
                 vec3.scale(nCop, n, vec3.dot(n, t0))
                 vec3.sub(t, t0, nCop)
                 vec3.normalize(t, t)
 
-                let c = [0, 0, 0]
-                vec3.cross(c, n, t0)
-                const w = vec3.dot(c, t1) < 0 ? -1 : 1
-
-                tangentArray[i] = [t[0], t[1], t[2], w]
-            }
-
+                tangentArray[i] = [t[0], t[1], t[2]]
         }
 
         return tangentArray.flat()

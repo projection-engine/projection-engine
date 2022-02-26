@@ -193,20 +193,7 @@ export default class FileSystem {
                                                             })
 
                                                             parsedData.nodes = parsedData.nodes.map(n => {
-                                                                const newID = randomID()
-                                                                parsedData.links = parsedData.links.map(l => {
-                                                                    if (l.source.id === n.id || l.target.id === n.id) {
-                                                                        const newLink = {...l}
-                                                                        if (l.target.id === n.id)
-                                                                            newLink.target.id = newID
-                                                                        else
-                                                                            newLink.source.id = newID
-                                                                        return newLink
-                                                                    } else
-                                                                        return l
-                                                                })
                                                                 const newNode = {...n}
-                                                                newNode.id = newID
                                                                 newNode.sample = {
                                                                     type: n.id,
                                                                     registryID: randomID()
@@ -215,10 +202,10 @@ export default class FileSystem {
                                                             })
 
                                                             parsedData.response = {
-                                                                ...d.materialResponse,
+                                                                ...d.response,
                                                                 name: d.name
                                                             }
-                                                            console.log(parsedData)
+
                                                             let localPromises = [
                                                                 new Promise(r => {
                                                                     fs.writeFile(

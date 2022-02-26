@@ -64,11 +64,11 @@ export default class ImageProcessor {
 
     static colorToImage(color) {
         const c = document.createElement("canvas");
-        c.width = 1024
-        c.height = 1024
+        c.width = 2048
+        c.height = 2048
         let ctx = c.getContext("2d");
         ctx.fillStyle = typeof color === 'string' ? color : `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
-        ctx.fillRect(0, 0, 1024, 1024)
+        ctx.fillRect(0, 0, 2048, 2048)
         return c.toDataURL()
     }
 
