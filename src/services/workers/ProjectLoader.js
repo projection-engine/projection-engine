@@ -104,26 +104,33 @@ export default class ProjectLoader {
                             let entitiesFound = res.filter(e => e.type === 'entity')
                             let entities = []
 
-                            let meshes = entitiesFound
-                                    .filter(e => e.data.components?.MeshComponent)
-                                    .map(e => new Promise(r => {
-                                        ProjectLoader.readFromRegistry(e.data.components.MeshComponent?.meshID, fileSystem)
-                                            .then(fileData => {
-                                                if (fileData) {
 
-                                                    r({
-                                                        type: 'mesh',
-                                                        data: JSON.parse(fileData),
-                                                        id: e.data.components.MeshComponent?.meshID
-                                                    })
-                                                } else
-                                                    r(undefined)
-                                            })
-                                    })),
-                                skyboxes = entitiesFound
-                                    .filter(e => e.data.components?.SkyboxComponent)
-                                    .map(e => new Promise(r => {
-                                        ProjectLoader.readFromRegistry(e.data.components.SkyboxComponent?._imageID, fileSystem)
+                            let meshes = [...new Set(
+                                    entitiesFound
+                                        .filter(e => e.data.components?.MeshComponent)
+                                        .map(e => e.data.components.MeshComponent?.meshID)
+                                    )
+                                ].map(e => new Promise(r => {
+                                    ProjectLoader.readFromRegistry(e, fileSystem)
+                                        .then(fileData => {
+                                            if (fileData) {
+
+                                                r({
+                                                    type: 'mesh',
+                                                    data: JSON.parse(fileData),
+                                                    id: e
+                                                })
+                                            } else
+                                                r(undefined)
+                                        })
+                                })),
+                                skyboxes =  [...new Set(
+                                                entitiesFound
+                                                    .filter(e => e.data.components?.SkyboxComponent)
+                                                    .map(e => e.data.components.SkyboxComponent?._imageID)
+                                                )
+                                ].map(e => new Promise(r => {
+                                        ProjectLoader.readFromRegistry(e, fileSystem)
                                             .then(fileData => {
                                                 if (fileData) {
                                                     const img = new Image()
@@ -132,7 +139,7 @@ export default class ProjectLoader {
                                                         r({
                                                             type: 'skybox',
                                                             data: img,
-                                                            id: e.data.components.SkyboxComponent?._imageID
+                                                            id: e
                                                         })
                                                     }
 
@@ -147,23 +154,22 @@ export default class ProjectLoader {
 
                                     let meshData = loaded.filter(e => e && e.type === 'mesh' && e.data !== null),
                                         skyboxData = loaded.filter(e => e && e.type === 'skybox').map(e => e),
-                                        materialsToLoad = meshData.map(m => m.data.material)
-                                            .filter(m => m)
-                                            .map(m => new Promise(r => {
-                                                ProjectLoader.readFromRegistry(m, fileSystem)
-                                                    .then(fileData => {
-                                                        if (fileData) {
-                                                            let fileParsed
-                                                            try {
-                                                                fileParsed = JSON.parse(fileData)
-                                                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                                                            } catch (e) {
-                                                                r()
-                                                            }
-                                                        } else
+                                        materialsToLoad = [...new Set(meshData.map(m => m.data.material)
+                                            .filter(m => m))].map(m => new Promise(r => {
+                                            ProjectLoader.readFromRegistry(m, fileSystem)
+                                                .then(fileData => {
+                                                    if (fileData) {
+                                                        let fileParsed
+                                                        try {
+                                                            fileParsed = JSON.parse(fileData)
+                                                            r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                                                        } catch (e) {
                                                             r()
-                                                    }).catch(e => r())
-                                            }))
+                                                        }
+                                                    } else
+                                                        r()
+                                                }).catch(e => r())
+                                        }))
                                     Promise.all(materialsToLoad)
                                         .then(materialData => {
                                             entities = entitiesFound.map((entity, index) => {

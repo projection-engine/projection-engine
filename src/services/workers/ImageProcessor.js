@@ -42,7 +42,6 @@ export default class ImageProcessor {
         let parsed = data
         if(zeroToOne)
             parsed = data.map(d => {
-                console.log(d < 0)
                 return d * 255 * (d < 0 ? -1 : 1)
             })
 
@@ -53,14 +52,11 @@ export default class ImageProcessor {
 
         for (let i = 0; i < w; i++) {
             for (let j = 0; j < h; j++) {
-                console.log(`rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`)
                 context.fillStyle =  `rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`
                 context.fillRect(i, j, 1, 1);
             }
         }
-
         return canvas.toDataURL()
-
     }
     static extractChannel([r, g, b, a], img) {
         const c = document.createElement("canvas");

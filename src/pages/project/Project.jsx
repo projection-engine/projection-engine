@@ -39,11 +39,11 @@ export default function Project(props) {
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)
     const [initialized, setInitialized] = useState(false)
-
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (engine.gpu && !initialized) {
-
+        if (engine.gpu && !initialized && !loading) {
+            setLoading(true)
             load.pushEvent(EVENTS.PROJECT_DATA)
             ProjectLoader
                 .loadProject(engine.gpu, quickAccess.fileSystem)
