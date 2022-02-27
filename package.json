@@ -18,6 +18,7 @@
     "react-colorful": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
+    "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
     "web-vitals": "latest",
     "webpack": "^5.68.0"

@@ -38,6 +38,30 @@ export default class ImageProcessor {
         return ctx
     }
 
+    static dataToImage(data, width, height, zeroToOne){
+        let parsed = data
+        if(zeroToOne)
+            parsed = data.map(d => {
+                console.log(d < 0)
+                return d * 255 * (d < 0 ? -1 : 1)
+            })
+
+        let canvas = document.createElement("canvas");
+        let w = canvas.width = width;
+        let h = canvas.height = height;
+        let context = canvas.getContext("2d");
+
+        for (let i = 0; i < w; i++) {
+            for (let j = 0; j < h; j++) {
+                console.log(`rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`)
+                context.fillStyle =  `rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`
+                context.fillRect(i, j, 1, 1);
+            }
+        }
+
+        return canvas.toDataURL()
+
+    }
     static extractChannel([r, g, b, a], img) {
         const c = document.createElement("canvas");
         const imageToLoad = new Image()

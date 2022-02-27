@@ -25,7 +25,7 @@ import {LoaderProvider} from "@f-ui/core";
 import randomID from "../utils/misc/randomID";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
-import CAMERA_TYPES from "../engine/utils/misc/CAMERA_TYPES";
+import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
 import AOSystem from "../engine/ecs/systems/AOSystem";
 
 
