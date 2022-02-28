@@ -9,8 +9,6 @@ import MeshComponent from "../forms/MeshComponent";
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
 import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
-import ColliderComponent from "../../../services/engine/ecs/components/ColliderComponent";
-import PhysicsBodyComponent from "../../../services/engine/ecs/components/PhysicsBodyComponent";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import EVENTS from "../../../services/utils/misc/EVENTS";

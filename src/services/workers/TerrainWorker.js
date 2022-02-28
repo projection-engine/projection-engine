@@ -1,6 +1,5 @@
 import ImageProcessor from "./ImageProcessor";
 import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
-import {vec3} from "gl-matrix";
 
 const MAX_HEIGHT = 500
 export default class TerrainWorker {

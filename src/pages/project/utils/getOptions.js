@@ -4,7 +4,6 @@ import Entity from "../../../services/engine/ecs/basic/Entity";
 import SkyboxComponent from "../../../services/engine/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../../../services/engine/ecs/components/DirectionalLightComponent";
 import CubeMapComponent from "../../../services/engine/ecs/components/CubeMapComponent";
-import SpotLightComponent from "../../../services/engine/ecs/components/SpotLightComponent";
 import TerrainComponent from "../../../services/engine/ecs/components/TerrainComponent";
 
 

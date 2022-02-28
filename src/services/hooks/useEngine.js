@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useReducer, useRef, useState} from "react";
+import {useEffect, useReducer, useRef, useState} from "react";
 import {enableBasics} from "../engine/utils/misc/utils";
 import entityReducer from "../utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
@@ -10,7 +10,7 @@ import PickSystem from "../engine/ecs/systems/PickSystem";
 import Engine from "../engine/Engine";
 import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
-import AOSystem from "../engine/ecs/systems/AOSystem";
+import SYSTEMS from "../engine/utils/misc/SYSTEMS";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
@@ -40,19 +40,23 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     let resizeObserver
 
 
-
-
     const updateSystems = (callback) => {
         load.pushEvent(EVENTS.UPDATING_SYSTEMS)
         const deferred = new MeshSystem(gpu, settings.resolutionMultiplier)
         deferred.initializeTextures()
             .then(() => {
+                const shadows = renderer.current.systems[SYSTEMS.SHADOWS],
+                    transformation = renderer.current.systems[SYSTEMS.TRANSFORMATION],
+                    physics = renderer.current.systems[SYSTEMS.PHYSICS],
+                    perf = renderer.current.systems[SYSTEMS.PERF],
+                    pick = renderer.current.systems[SYSTEMS.PICK]
+
                 renderer.current.systems = [
-                    new PerformanceSystem(gpu),
-                    new PhysicsSystem(),
-                    new TransformSystem(),
-                    new ShadowMapSystem(gpu),
-                    new PickSystem(gpu),
+                    perf ? perf : new PerformanceSystem(gpu),
+                    physics ? physics : new PhysicsSystem(),
+                    transformation ? transformation : new TransformSystem(),
+                    shadows ? shadows : new ShadowMapSystem(gpu),
+                    pick ? pick : new PickSystem(gpu),
                     deferred,
                     // new AOSystem(gpu),
                     new PostProcessingSystem(gpu, settings.resolutionMultiplier)

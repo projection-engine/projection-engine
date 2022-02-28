@@ -6,7 +6,7 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
 import getOptions from "../../pages/project/utils/getOptions";
-import {useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
 import PropTypes from "prop-types";

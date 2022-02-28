@@ -5,7 +5,6 @@ import Card from "./components/Card";
 import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
 import randomID from "../../../../services/utils/misc/randomID";
 import shared from '../../styles/Home.module.css'
-import Search from "../../../../components/search/Search";
 
 export default function Projects(props) {
     const ref = useRef()
