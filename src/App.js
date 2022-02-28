@@ -23,8 +23,7 @@ export default function App( ) {
         >
             <ThemeProvider.Provider value={{
                 ...global,
-                themeClass: global.dark ? styles.dark : styles.light,
-                backgroundStripesClass: styles.backgroundStripes
+                themeClass: global.dark ? styles.dark : styles.light
             }}>
                 {currentTab === 0 ?
                     <Home redirect={(id) => {

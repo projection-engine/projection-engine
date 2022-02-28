@@ -46,6 +46,7 @@ export default function Editor(props) {
     }, [props.executingAnimation, props.engine])
     const [toCopy, setToCopy] = useState()
     useHotKeys({
+        focusTarget: props.id + '-canvas',
         disabled: controlProvider.tab !== 0,
         actions: [
             {

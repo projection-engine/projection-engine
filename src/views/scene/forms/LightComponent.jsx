@@ -23,7 +23,8 @@ export default function LightComponent(props) {
                 r: props.selected.color[0],
                 g: props.selected.color[1],
                 b: props.selected.color[2]
-            }
+            },
+            size: props.selected.size
         }
     }
     const [state, setState] = useState(getNewState())
@@ -97,6 +98,23 @@ export default function LightComponent(props) {
                     ['x', 'y', 'z']
                 )}
             </div>
+            {props.type === 'DirectionalLightComponent' ?
+                <div className={styles.inputs}>
+                    <div className={styles.label}>Size</div>
+                    <Range
+                        accentColor={'yellow'}
+                        value={state.size}
+                        onFinish={() => props.submit(state.size, 'size')}
+                        handleChange={e => setState(prev => {
+                            return {
+                                ...prev,
+                                size: parseFloat(e)
+                            }
+                        })}/>
+                </div>
+                :
+                null
+            }
             {props.type === 'PointLightComponent' ?
                 <div className={styles.inputs}>
                     <div className={styles.label}>Attenuation</div>

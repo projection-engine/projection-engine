@@ -55,7 +55,7 @@ export default class PrimitiveProcessor {
             tangentArray = [],
             triangles = groupInto(3, indices)
 
-        for (let i = 0; i < vertices.length / 3; ++i) {
+        for (let i = 0; i < groupedVertices.length; ++i) {
             tangents[i] = [0, 0, 0];
         }
         for (let i = 0; i < triangles.length; i++) {
@@ -69,35 +69,37 @@ export default class PrimitiveProcessor {
                 uv0 = groupedUVs[i0],
                 uv1 = groupedUVs[i1],
                 uv2 = groupedUVs[i2]
-
             let e1 = [], e2 = []
-            vec3.sub(e1, v1, v0)
-            vec3.sub(e2, v2, v0)
 
-            let x1 = uv1[0] - uv0[0],
-                x2 = uv2[0] - uv0[0],
-                y1 = uv1[1] - uv0[1],
-                y2 = uv2[1] - uv0[1]
+            if(v1 && v0 && v2) {
+                vec3.sub(e1, v1, v0)
+                vec3.sub(e2, v2, v0)
 
-            const div = x1 * y2 - x2 * y1
+                let x1 = uv1[0] - uv0[0],
+                    x2 = uv2[0] - uv0[0],
+                    y1 = uv1[1] - uv0[1],
+                    y2 = uv2[1] - uv0[1]
 
-            const r = div === 0 ? 1 : 1 / div
+                const div = x1 * y2 - x2 * y1
 
-            let tangent = [],
-                tangentP1 = [],
-                tangentP2 = []
-            // TANGENT
-            vec3.scale(tangentP1, e1, y2)
-            vec3.scale(tangentP2, e2, y1)
-            vec3.sub(tangent, tangentP1, tangentP2)
-            vec3.scale(tangent, tangent, r)
+                const r = div === 0 ? 1 : 1 / div
 
-            vec3.add(tangents[i0], tangents[i0], tangent)
-            vec3.add(tangents[i1], tangents[i1], tangent)
-            vec3.add(tangents[i2], tangents[i2], tangent)
+                let tangent = [],
+                    tangentP1 = [],
+                    tangentP2 = []
+                // TANGENT
+                vec3.scale(tangentP1, e1, y2)
+                vec3.scale(tangentP2, e2, y1)
+                vec3.sub(tangent, tangentP1, tangentP2)
+                vec3.scale(tangent, tangent, r)
+
+                vec3.add(tangents[i0], tangents[i0], tangent)
+                vec3.add(tangents[i1], tangents[i1], tangent)
+                vec3.add(tangents[i2], tangents[i2], tangent)
+            }
         }
 
-        for (let i = 0; i < vertices.length/3; i++) {
+        for (let i = 0; i < groupedVertices.length; i++) {
             let t0 = tangents[i],
                 n = norm[i]
 

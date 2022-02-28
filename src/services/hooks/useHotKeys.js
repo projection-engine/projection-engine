@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 export const KEYS = {
@@ -115,39 +115,53 @@ export const KEYS = {
 
 export default function useHotKeys(props) {
     let clicked = {}
+    const [focused, setFocused] = useState(false)
     const handleKey = (e) => {
-        if (e.type === 'keydown') {
-            clicked[e.code] = true
+      if(focused){
+          if (e.type === 'keydown') {
+              clicked[e.code] = true
 
-            props.actions.forEach(a => {
+              props.actions.forEach(a => {
 
-                let trigger = true
-                a.require.forEach(r => {
-                    trigger = trigger && clicked[r]
-                })
+                  let trigger = true
+                  a.require.forEach(r => {
+                      trigger = trigger && clicked[r]
+                  })
 
-                if(trigger)
-                    a.callback()
-            })
-        } else {
+                  if (trigger)
+                      a.callback()
+              })
+          } else {
 
-            delete clicked[e.code]
-        }
+              delete clicked[e.code]
+          }
+      }
+    }
+    const handleMouseDown = (event) => {
+        const target = typeof props.focusTarget === 'string' ? document.getElementById(props.focusTarget) : props.focusTarget
+
+        if (target && document.elementsFromPoint(event.clientX, event.clientY).includes(target))
+            setFocused(true)
+        else
+            setFocused(false)
     }
 
-
     useEffect(() => {
-        if(!props.disabled) {
+
+        if (!props.disabled) {
+            document.addEventListener('mousedown', handleMouseDown)
             document.addEventListener('keydown', handleKey)
             document.addEventListener('keyup', handleKey)
         }
         return () => {
+            document.removeEventListener('mousedown', handleMouseDown)
             document.removeEventListener('keyup', handleKey)
             document.removeEventListener('keydown', handleKey)
         }
-    }, [props.actions, props.disabled])
+    }, [props.actions, props.disabled, props.focusTarget, focused])
 }
-useHotKeys.propTypes={
+useHotKeys.propTypes = {
+    focusTarget: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     actions: PropTypes.arrayOf(PropTypes.shape({
         require: PropTypes.arrayOf(PropTypes.oneOf(Object.keys(KEYS))),
         callback: PropTypes.func

@@ -13,12 +13,12 @@ import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import ThemeProvider from "../../services/hooks/ThemeProvider";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [searchString, setSearchString] = useState('')
-    const theme = useContext(ThemeProvider)
+    const [allHidden, setAllHidden] = useState(false)
+
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
         let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.Grid && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
@@ -38,22 +38,38 @@ export default function SceneView(props) {
                                 return n
                             }
                         })
-                    }
-                    else
+                    } else
                         props.engine.setSelected([el])
-                }, props.engine)
+                }, props.engine, setAllHidden)
             }),
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
             type: 'Scene',
             phantomNode: true,
-            controlOption: {
-                icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>visibility</span>,
-                onClick: () => {
+            onHide: () => {
+                let newEntities
+                if (allHidden) {
+                    setAllHidden(false)
+                    newEntities = props.engine.entities.map(e => {
+                        e.active = true
+                        return e
+                    })
+                } else {
+
+                    setAllHidden(true)
+                    newEntities = props.engine.entities.map(e => {
+                        e.active = false
+                        return e
+                    })
 
                 }
-            }
+
+                props.engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
+            },
+            canBeHidden: true,
+            hidden: allHidden
         }]
     }, [props.engine.entities, searchString])
+
 
     const currentForm = useForm(
         props.engine,
@@ -67,49 +83,54 @@ export default function SceneView(props) {
 
     return (
         <div className={styles.wrapper}>
-            <ContextMenu
-                options={[
-                    {
-                        requiredTrigger: 'data-self',
-                        label: 'Create folder',
-                        icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                        onClick: () => {
-                            const newEntity = new Entity()
-                            newEntity.name = 'New folder'
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.ADD,
-                                payload: newEntity
-                            })
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.ADD_COMPONENT,
-                                payload: {
-                                    entityID: newEntity.id,
-                                    data: new FolderComponent()
-                                }
-                            })
-                        }
-                    },
 
-                    {
-                        requiredTrigger: 'data-node',
-                        label: 'Remove entity',
-                        icon: <span className={'material-icons-round'}>delete</span>,
-                        onClick: (node) => {
-                            props.engine.setSelected([])
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.REMOVE,
-                                payload: {
-                                    entityID: node.getAttribute('data-node')
-                                }
-                            })
-                        }
-                    }
-                ]}
-                triggers={['data-self', 'data-node']}
-                className={[styles.wrapperContent, theme.backgroundStripesClass].join(' ')}>
-                <Search width={'100%'} size={'default'} searchString={searchString} setSearchString={setSearchString}/>
+            <div className={styles.wrapperContent} style={{overflow: 'hidden'}}>
                 <TreeView
+                    contextTriggers={[
+                        'data-node',
+                        'data-self'
+                    ]}
+                    onMultiSelect={(items) => props.engine.setSelected(items)}
+                    multiSelect={true}
+                    searchable={true}
                     draggable={true}
+                    options={[
+                        {
+                            requiredTrigger: 'data-self',
+                            label: 'Create folder',
+                            icon: <span className={'material-icons-round'}>create_new_folder</span>,
+                            onClick: () => {
+                                const newEntity = new Entity()
+                                newEntity.name = 'New folder'
+                                props.engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.ADD,
+                                    payload: newEntity
+                                })
+                                props.engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.ADD_COMPONENT,
+                                    payload: {
+                                        entityID: newEntity.id,
+                                        data: new FolderComponent()
+                                    }
+                                })
+                            }
+                        },
+
+                        {
+                            requiredTrigger: 'data-node',
+                            label: 'Remove entity',
+                            icon: <span className={'material-icons-round'}>delete</span>,
+                            onClick: (node) => {
+                                props.engine.setSelected([])
+                                props.engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.REMOVE,
+                                    payload: {
+                                        entityID: node.getAttribute('data-node')
+                                    }
+                                })
+                            }
+                        }
+                    ]}
                     onDrop={(event, target) => {
                         event.preventDefault()
                         try {
@@ -138,7 +159,8 @@ export default function SceneView(props) {
                                     })
                                 }
                             })
-                        } catch (e) {}
+                        } catch (e) {
+                        }
                     }}
                     onDragStart={e => {
                         if (e.ctrlKey)
@@ -146,17 +168,16 @@ export default function SceneView(props) {
                         else
                             e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
                     }}
-                    onDragOver={e => {
-                        e.preventDefault()
-                    }}
+
+                    ids={props.engine.entities}
                     selected={props.engine.selected}
                     nodes={data}
                     handleRename={(treeNode, newName) => props.engine.dispatchEntities({
                         type: ENTITY_ACTIONS.UPDATE,
                         payload: {entityID: treeNode.id, key: 'name', data: newName}
-                    })}/>
-
-            </ContextMenu>
+                    })}
+                />
+            </div>
             <ResizableBar type={'height'}/>
             <div className={styles.wrapperContent}>
                 {currentForm}

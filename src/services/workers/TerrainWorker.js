@@ -1,7 +1,7 @@
 import ImageProcessor from "./ImageProcessor";
 import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
 
-const MAX_HEIGHT = 500
+const MAX_HEIGHT = 100
 export default class TerrainWorker {
     static loadHeightMap(imgBlob) {
         const img = new Image(imgBlob)

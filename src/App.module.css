@@ -14,13 +14,3 @@
     --background-input: #E7E7E7;
 }
 
-.backgroundStripes{
-    background: linear-gradient(
-            to bottom,
-            var(--fabric-background-secondary),
-            var(--fabric-background-secondary) 50%,
-            var(--fabric-background-tertiary) 50%,
-            var(--fabric-background-tertiary)
-    );
-    background-size: 100% 50px;
-}

@@ -6,7 +6,7 @@ import MeshComponent from "../engine/ecs/components/MeshComponent";
 import PickComponent from "../engine/ecs/components/PickComponent";
 
 export default async function importMesh(objLoaded, engine, id, index, fileSystem) {
-    console.log(index)
+
     let mesh,
         entity,
         existsMesh = false,
