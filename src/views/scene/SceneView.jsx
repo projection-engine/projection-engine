@@ -7,11 +7,10 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import {ContextMenu, LoaderProvider} from "@f-ui/core";
+import {LoaderProvider} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
-import Search from "../../components/search/Search";
 import ResizableBar from "../../components/resizable/ResizableBar";
 
 export default function SceneView(props) {

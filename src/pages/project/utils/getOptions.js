@@ -1,12 +1,3 @@
-import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
-import PointLightComponent from "../../../services/engine/ecs/components/PointLightComponent";
-import Entity from "../../../services/engine/ecs/basic/Entity";
-import SkyboxComponent from "../../../services/engine/ecs/components/SkyboxComponent";
-import DirectionalLightComponent from "../../../services/engine/ecs/components/DirectionalLightComponent";
-import CubeMapComponent from "../../../services/engine/ecs/components/CubeMapComponent";
-import TerrainComponent from "../../../services/engine/ecs/components/TerrainComponent";
-
-
 export default function getOptions(executingAnimation, setExecutingAnimation, engine, save) {
     return [
         {
