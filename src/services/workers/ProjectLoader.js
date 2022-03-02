@@ -12,6 +12,7 @@ import ColliderComponent from "../engine/ecs/components/ColliderComponent";
 import Entity from "../engine/ecs/basic/Entity";
 import MaterialInstance from "../engine/elements/instances/MaterialInstance";
 import MeshInstance from "../engine/elements/instances/MeshInstance";
+import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 
 export default class ProjectLoader {
@@ -109,7 +110,7 @@ export default class ProjectLoader {
                                     entitiesFound
                                         .filter(e => e.data.components?.MeshComponent)
                                         .map(e => e.data.components.MeshComponent?.meshID)
-                                    )
+                                )
                                 ].map(e => new Promise(r => {
                                     ProjectLoader.readFromRegistry(e, fileSystem)
                                         .then(fileData => {
@@ -124,52 +125,54 @@ export default class ProjectLoader {
                                                 r(undefined)
                                         })
                                 })),
-                                skyboxes =  [...new Set(
-                                                entitiesFound
-                                                    .filter(e => e.data.components?.SkyboxComponent)
-                                                    .map(e => e.data.components.SkyboxComponent?._imageID)
-                                                )
+                                skyboxes = [...new Set(
+                                    entitiesFound
+                                        .filter(e => e.data.components?.SkyboxComponent)
+                                        .map(e => e.data.components.SkyboxComponent?._imageID)
+                                )
                                 ].map(e => new Promise(r => {
-                                        ProjectLoader.readFromRegistry(e, fileSystem)
-                                            .then(fileData => {
-                                                if (fileData) {
-                                                    const img = new Image()
-                                                    img.src = fileData
-                                                    img.onload = () => {
-                                                        r({
-                                                            type: 'skybox',
-                                                            data: img,
-                                                            id: e
-                                                        })
-                                                    }
+                                    ProjectLoader.readFromRegistry(e, fileSystem)
+                                        .then(fileData => {
+                                            if (fileData) {
+                                                const img = new Image()
+                                                img.src = fileData
+                                                img.onload = () => {
+                                                    r({
+                                                        type: 'skybox',
+                                                        data: img,
+                                                        id: e
+                                                    })
+                                                }
 
-                                                } else
-                                                    r(undefined)
-                                            })
-                                    }))
+                                            } else
+                                                r(undefined)
+                                        })
+                                }))
 
 
                             Promise.all([...meshes, ...skyboxes])
                                 .then(loaded => {
+                                    const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
 
                                     let meshData = loaded.filter(e => e && e.type === 'mesh' && e.data !== null),
                                         skyboxData = loaded.filter(e => e && e.type === 'skybox').map(e => e),
-                                        materialsToLoad = [...new Set(meshData.map(m => m.data.material)
-                                            .filter(m => m))].map(m => new Promise(r => {
-                                            ProjectLoader.readFromRegistry(m, fileSystem)
-                                                .then(fileData => {
-                                                    if (fileData) {
-                                                        let fileParsed
-                                                        try {
-                                                            fileParsed = JSON.parse(fileData)
-                                                            r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                                                        } catch (e) {
+                                        materialsToLoad = [...new Set(entitiesWithMaterials)]
+                                            .map(m => new Promise(r => {
+                                                ProjectLoader.readFromRegistry(m, fileSystem)
+                                                    .then(fileData => {
+                                                        if (fileData) {
+                                                            let fileParsed
+                                                            try {
+                                                                fileParsed = JSON.parse(fileData)
+                                                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                                                            } catch (e) {
+                                                                r()
+                                                            }
+                                                        } else
                                                             r()
-                                                        }
-                                                    } else
-                                                        r()
-                                                }).catch(e => r())
-                                        }))
+                                                    }).catch(e => r())
+                                            }))
+
                                     Promise.all(materialsToLoad)
                                         .then(materialData => {
                                             entities = entitiesFound.map((entity, index) => {
@@ -247,6 +250,9 @@ export default class ProjectLoader {
                     break
                 case 'SpotLightComponent':
                     component = new SpotLightComponent(entity.components[k].id)
+                    break
+                case 'MaterialComponent':
+                    component = new MaterialComponent(entity.components[k].id)
                     break
                 case 'TransformComponent':
                     component = new TransformComponent(entity.components[k].id)

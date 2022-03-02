@@ -4,6 +4,7 @@ import TransformComponent from "../engine/ecs/components/TransformComponent";
 
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import PickComponent from "../engine/ecs/components/PickComponent";
+import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 export default async function importMesh(objLoaded, engine, id, index, fileSystem) {
 
@@ -48,6 +49,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         transformation.rotation = objLoaded.rotation
         transformation.translation = objLoaded.translation
 
+        entity.components.MaterialComponent = new MaterialComponent(undefined, mesh.material)
         entity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
         entity.components.TransformComponent = transformation
         entity.components.PickComponent = new PickComponent(undefined, engine.entities.length + index + 1)

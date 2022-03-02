@@ -2,7 +2,7 @@ import MaterialInstance from "../engine/elements/instances/MaterialInstance";
 import EVENTS from "./misc/EVENTS";
 import cloneClass from "./misc/cloneClass";
 
-export default function importMaterial(mat, engine, load, meshID) {
+export default function importMaterial(mat, engine, load) {
     const newMat = new MaterialInstance(
         engine.gpu,
         mat.id
@@ -22,30 +22,8 @@ export default function importMaterial(mat, engine, load, meshID) {
             engine.setMaterials(prev => {
                 return [...prev, newMat]
             })
-            engine.setMeshes(prev => {
-                return prev.map(p => {
-                    if (p.id === meshID) {
-                        const clone = cloneClass(p)
-                        clone.material = mat.id
 
-                        return clone
-                    } else
-                        return p
-                })
-            })
             load.finishEvent(EVENTS.LOADING_MATERIAL)
-        })
-    } else {
-        engine.setMeshes(prev => {
-            return prev.map(p => {
-                if (p.id === meshID) {
-                    const clone = cloneClass(p)
-                    clone.material = mat.id
-
-                    return clone
-                } else
-                    return p
-            })
         })
     }
 

@@ -12,6 +12,7 @@ import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import EVENTS from "../../../services/utils/misc/EVENTS";
+import cloneClass from "../../../services/utils/misc/cloneClass";
 
 export default function useForm(
     engine,
@@ -21,14 +22,13 @@ export default function useForm(
     quickAccess,
     load
 ) {
-    const selectedElement =   allSelected.length > 1 ? undefined : allSelected[0]
+    const selectedElement = allSelected.length > 1 ? undefined : allSelected[0]
 
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
         return engine.entities.find(e => e.id === selectedElement)
     }, [allSelected])
-
 
 
     const getField = (key) => {
@@ -38,9 +38,9 @@ export default function useForm(
                 return (
                     <TransformComponent
                         selected={selected.components.TransformComponent}
-                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation',  engine, selectedElement)}
-                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling',  engine, selectedElement)}
-                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation',  engine, selectedElement)}
+                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, selectedElement)}
+                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, selectedElement)}
+                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, selectedElement)}
                     />
                 )
             }
@@ -63,26 +63,31 @@ export default function useForm(
                             engine={engine}
                             selected={selected.components.MeshComponent.meshID}
                         />
-                        <MaterialComponent
-                            quickAccess={quickAccess}
-                            meshes={engine.meshes}
-                            meshID={selected.components.MeshComponent.meshID}
-                            submit={(mat) => {
-                                importMaterial(mat, engine, load, selected.components.MeshComponent.meshID)
-                                load.pushEvent(EVENTS.SAVING_MESH)
-                                quickAccess.fileSystem.readAsset(selected.components.MeshComponent.meshID)
-                                    .then(res => {
-                                        quickAccess.fileSystem.updateAsset(selected.components.MeshComponent.meshID, JSON.stringify({
-                                            ...res,
-                                            material: mat.id
-                                        }))
-                                            .then(() => load.finishEvent(EVENTS.SAVING_MESH))
-                                    })
-                            }}
-                            setAlert={setAlert}
 
-                        />
                     </>
+                )
+            }
+            case 'MaterialComponent': {
+                return (
+                    <MaterialComponent
+                        quickAccess={quickAccess}
+                        materialID={selected.components.MaterialComponent.materialID}
+                        submit={(mat) => {
+                            importMaterial(mat, engine, load)
+
+                            const clone = cloneClass(selected.components.MaterialComponent)
+                            clone.materialID = mat.id
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selectedElement,
+                                    data: clone,
+                                    key: 'MaterialComponent'
+                                }
+                            })
+                        }}
+                        setAlert={setAlert}
+
+                    />
                 )
             }
             case 'DirectionalLightComponent':

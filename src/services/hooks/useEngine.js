@@ -11,6 +11,7 @@ import Engine from "../engine/Engine";
 import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/utils/misc/SYSTEMS";
+import ROTATION_TYPES from "../engine/utils/misc/ROTATION_TYPES";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
@@ -22,6 +23,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [finished, setFinished] = useState(false)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [initialized, setInitialized] = useState(false)
+
 
     useEffect(() => {
         if (id) {
@@ -110,6 +112,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                 renderer.current?.start(entities, materials, meshes, {
                     canExecutePhysicsAnimation,
                     selected, setSelected,
+
                     ...settings
                 })
         }

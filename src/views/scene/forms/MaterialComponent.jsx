@@ -14,9 +14,7 @@ export default function MaterialComponent(props) {
 
 
     useEffect(() => {
-        const mesh = props.meshes.find(m => m.id === props.meshID)
-        if (mesh)
-            setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === mesh.material))
+        setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === props.materialID))
     }, [])
 
     return (
@@ -62,8 +60,8 @@ MaterialComponent.propTypes = {
     quickAccess: PropTypes.object,
     loadedMaterials: PropTypes.array,
     setAlert: PropTypes.func.isRequired,
-    meshID: PropTypes.string,
-    meshes: PropTypes.array,
+    materialID: PropTypes.string,
+
 
     submit: PropTypes.func,
     gpu: PropTypes.object
