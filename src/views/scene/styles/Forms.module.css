@@ -35,7 +35,14 @@
 
 
 }
+.inputsColumn{
+    padding: 4px;
+    display: grid;
 
+    max-width: 100%;
+    overflow: hidden;
+
+}
 .inputs {
 
     padding: 4px;
@@ -69,11 +76,7 @@
     width: 100%;
     text-align: left;
     color: var(--fabric-color-tertiary);
-    vertical-align: middle;
-    height: 35px;
-    line-height: 35px;
     max-width: 100%;
-
 
     font-size: .7rem;
     font-weight: 600;
@@ -81,7 +84,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
 }
 
 

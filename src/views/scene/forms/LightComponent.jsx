@@ -6,6 +6,11 @@ import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
 
 export default function LightComponent(props) {
+    console.log({
+        r: props.selected.color[0] * 255,
+        g: props.selected.color[1] * 255,
+        b: props.selected.color[2] * 255
+    })
     const getNewState = () => {
         return {
             placement: {
@@ -20,9 +25,9 @@ export default function LightComponent(props) {
                 z: props.selected.attenuation[2]
             } : {},
             color: {
-                r: props.selected.color[0],
-                g: props.selected.color[1],
-                b: props.selected.color[2]
+                r: props.selected.color[0] * 255,
+                g: props.selected.color[1] * 255,
+                b: props.selected.color[2] * 255
             },
             size: props.selected.size
         }
@@ -59,119 +64,132 @@ export default function LightComponent(props) {
     }
 
     return (
-        <Accordion className={styles.fieldset}>
-            <AccordionSummary className={styles.summary}>
-                {props.type === 'PointLightComponent' ? 'Point light' : 'Directional light'}
-
-            </AccordionSummary>
-            <div className={styles.inputs}>
-                <div className={styles.label}>{props.type === 'PointLightComponent' ? 'Position' : 'Direction'}</div>
-                {getInputs(
-                    'placement',
-                    ['x', 'y', 'z'],
-                    (e, field, finalSubmit) => {
-                        const k = props.type === 'PointLightComponent' ? 'position' : 'direction'
-                        if (!finalSubmit) {
-                            switch (field) {
-                                case 'x':
-                                    props.selected[k] = [e, props.selected[k][1], props.selected[k][2]]
-                                    break
-                                case 'y':
-                                    props.selected[k] = [props.selected[k][0], e, props.selected[k][2]]
-                                    break
-                                case 'z':
-                                    props.selected[k] = [props.selected[k][0], props.selected[k][1], e]
-                                    break
-                            }
-                            setState(prev => {
-
-                                return {
-                                    ...prev, placement: {
-                                        ...prev.placement,
-                                        [field]: e
+        <>
+            <Accordion className={styles.fieldset}>
+                <AccordionSummary className={styles.summary}>
+                    {props.type === 'PointLightComponent' ? 'Position' : 'Direction'}
+                </AccordionSummary>
+                <div className={styles.inputsColumn}>
+                    <div className={styles.inputs}>
+                        {getInputs(
+                            'placement',
+                            ['x', 'y', 'z'],
+                            (e, field, finalSubmit) => {
+                                const k = props.type === 'PointLightComponent' ? 'position' : 'direction'
+                                if (!finalSubmit) {
+                                    switch (field) {
+                                        case 'x':
+                                            props.selected[k] = [e, props.selected[k][1], props.selected[k][2]]
+                                            break
+                                        case 'y':
+                                            props.selected[k] = [props.selected[k][0], e, props.selected[k][2]]
+                                            break
+                                        case 'z':
+                                            props.selected[k] = [props.selected[k][0], props.selected[k][1], e]
+                                            break
                                     }
-                                }
-                            })
-                        } else
-                            props.submit([state.placement.x, state.placement.y, state.placement.z], k)
-                    },
-                    ['x', 'y', 'z']
-                )}
-            </div>
-            {props.type === 'DirectionalLightComponent' ?
-                <div className={styles.inputs}>
-                    <div className={styles.label}>Size</div>
-                    <Range
-                        accentColor={'yellow'}
-                        value={state.size}
-                        onFinish={() => props.submit(state.size, 'size')}
-                        handleChange={e => setState(prev => {
-                            return {
-                                ...prev,
-                                size: parseFloat(e)
-                            }
-                        })}/>
+                                    setState(prev => {
+
+                                        return {
+                                            ...prev, placement: {
+                                                ...prev.placement,
+                                                [field]: e
+                                            }
+                                        }
+                                    })
+                                } else
+                                    props.submit([state.placement.x, state.placement.y, state.placement.z], k)
+                            },
+                            ['x', 'y', 'z']
+                        )}
+                    </div>
                 </div>
+
+            </Accordion>
+            {props.type === 'DirectionalLightComponent' ?
+                <Accordion className={styles.fieldset}>
+                    <AccordionSummary className={styles.summary}>
+                        Size
+                    </AccordionSummary>
+                    <div className={styles.inputsColumn}>
+                        <Range
+                            accentColor={'yellow'}
+                            value={state.size}
+                            onFinish={() => props.submit(state.size, 'size')}
+                            handleChange={e => setState(prev => {
+                                return {
+                                    ...prev,
+                                    size: parseFloat(e)
+                                }
+                            })}/>
+                    </div>
+                </Accordion>
                 :
                 null
             }
             {props.type === 'PointLightComponent' ?
-                <div className={styles.inputs}>
-                    <div className={styles.label}>Attenuation</div>
-                    {getInputs(
-                        'attenuation',
-                        ['x', 'y', 'z'],
-                        (e, field, finalSubmit) => {
-                            if (!finalSubmit) {
-                                switch (field) {
-                                    case 'x':
-                                        props.selected.attenuation[0] = e
-                                        break
-                                    case 'y':
-                                        props.selected.attenuation[1] = e
-                                        break
-                                    case 'z':
-                                        props.selected.attenuation[2] = e
-                                        break
-                                }
-                                setState(prev => {
-                                    return {
-                                        ...prev, attenuation: {
-                                            ...prev.attenuation,
-                                            [field]: e
-                                        }
+                <Accordion>
+                    <AccordionSummary className={styles.summary}>
+                        Light attenuation
+                    </AccordionSummary>
+                    <div className={styles.inputs}>
+                        <div className={styles.label}>Attenuation</div>
+                        {getInputs(
+                            'attenuation',
+                            ['x', 'y', 'z'],
+                            (e, field, finalSubmit) => {
+                                if (!finalSubmit) {
+                                    switch (field) {
+                                        case 'x':
+                                            props.selected.attenuation[0] = e
+                                            break
+                                        case 'y':
+                                            props.selected.attenuation[1] = e
+                                            break
+                                        case 'z':
+                                            props.selected.attenuation[2] = e
+                                            break
                                     }
-                                })
-                            } else
-                                props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
+                                    setState(prev => {
+                                        return {
+                                            ...prev, attenuation: {
+                                                ...prev.attenuation,
+                                                [field]: e
+                                            }
+                                        }
+                                    })
+                                } else
+                                    props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
 
-                        },
-                        ['Constant', 'Linear', 'Quadratic']
-                    )}
-                </div>
+                            },
+                            ['Constant', 'Linear', 'Quadratic']
+                        )}
+                    </div>
+                </Accordion>
                 :
                 null
             }
+            <Accordion>
+                <AccordionSummary className={styles.summary}>
+                    Light color
+                </AccordionSummary>
+                <div className={styles.inputs} style={{justifyContent: 'space-between'}}>
 
-            <div className={styles.inputs} style={{justifyContent: 'space-between'}}>
-                <div className={styles.label} style={{width: 'fit-content'}}>Color</div>
-                <ColorPicker
-                    value={state.color} submit={color => {
-                    const split = color.match(/[\d.]+/g)
-                    const [r, g, b] = split.map(v => parseFloat(v))
-                    setState(prev => {
-                        return {
-                            ...prev,
-                            color: {r: r, g: g, b: b}
-                        }
-                    })
-
-                    props.submit([r, g, b], 'color')
-
-
-                }}/>
-            </div>
-        </Accordion>
+                    <ColorPicker
+                        value={state.color} submit={color => {
+                        const split = color.match(/[\d.]+/g)
+                        const [r, g, b] = split.map(v => parseFloat(v))
+                        setState(prev => {
+                            return {
+                                ...prev,
+                                color: {r: r, g: g, b: b}
+                            }
+                        })
+                        props.submit([r, g, b], 'color')
+                    }}/>
+                </div>
+            </Accordion>
+        </>
 
     )
 }
