@@ -1,6 +1,5 @@
 import MaterialInstance from "../engine/elements/instances/MaterialInstance";
 import EVENTS from "./misc/EVENTS";
-import cloneClass from "./misc/cloneClass";
 
 export default function importMaterial(mat, engine, load) {
     const newMat = new MaterialInstance(

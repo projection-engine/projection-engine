@@ -11,7 +11,6 @@ import CubeMapComponent from "../forms/CubeMapComponent";
 import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
-import EVENTS from "../../../services/utils/misc/EVENTS";
 import cloneClass from "../../../services/utils/misc/cloneClass";
 
 export default function useForm(
@@ -90,6 +89,7 @@ export default function useForm(
                     />
                 )
             }
+            case 'SkylightComponent':
             case 'DirectionalLightComponent':
             case 'PointLightComponent': {
                 return (
@@ -141,6 +141,7 @@ export default function useForm(
                     />
                 )
             }
+
             case 'CubeMapComponent': {
                 return (
                     <CubeMapComponent

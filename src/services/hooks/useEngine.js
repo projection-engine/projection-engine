@@ -11,7 +11,6 @@ import Engine from "../engine/Engine";
 import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/utils/misc/SYSTEMS";
-import ROTATION_TYPES from "../engine/utils/misc/ROTATION_TYPES";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {

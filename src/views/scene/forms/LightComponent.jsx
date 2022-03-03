@@ -165,7 +165,9 @@ export default function LightComponent(props) {
                             color: {r: r, g: g, b: b}
                         }
                     })
-                    props.submitColor([r, g, b])
+
+                    props.submit([r, g, b], 'color')
+
 
                 }}/>
             </div>

@@ -13,6 +13,7 @@ import Entity from "../engine/ecs/basic/Entity";
 import MaterialInstance from "../engine/elements/instances/MaterialInstance";
 import MeshInstance from "../engine/elements/instances/MeshInstance";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
+import SkylightComponent from "../engine/ecs/components/SkyLightComponent";
 
 
 export default class ProjectLoader {
@@ -228,47 +229,47 @@ export default class ProjectLoader {
     static mapEntity(entity, index, meshes, skyboxes, gpu) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
-            let component
-            switch (k) {
-                case 'DirectionalLightComponent':
-                    component = new DirectionalLightComponent(entity.components[k].id)
-                    break
-                case 'MeshComponent':
-                    component = new MeshComponent(entity.components[k].id)
-                    break
-                case 'PickComponent':
-                    component = new PickComponent(entity.components[k].id, index)
-                    break
-                case 'PointLightComponent':
-                    component = new PointLightComponent(entity.components[k].id)
-                    break
-                case 'SkyboxComponent':
-                    component = new SkyboxComponent(entity.components[k].id, gpu)
-                    const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
-                    if (foundImage)
-                        component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
-                    break
-                case 'SpotLightComponent':
-                    component = new SpotLightComponent(entity.components[k].id)
-                    break
-                case 'MaterialComponent':
-                    component = new MaterialComponent(entity.components[k].id)
-                    break
-                case 'TransformComponent':
-                    component = new TransformComponent(entity.components[k].id)
-                    break
-                case 'FolderComponent':
-                    component = new FolderComponent(entity.components[k].id)
-                    break
-                case 'PhysicsComponent':
-                    component = new PhysicsBodyComponent(entity.components[k].id)
-                    break
-                case 'SphereCollider':
-                    component = new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID))
-                    break
-                default:
-                    break
-            }
+            let component = ENTITIES[k](entity,  k, meshes, skyboxes, gpu)
+            // switch (k) {
+            //     case 'DirectionalLightComponent':
+            //         component = new DirectionalLightComponent(entity.components[k].id)
+            //         break
+            //     case 'MeshComponent':
+            //         component = new MeshComponent(entity.components[k].id)
+            //         break
+            //     case 'PickComponent':
+            //         component = new PickComponent(entity.components[k].id, index)
+            //         break
+            //     case 'PointLightComponent':
+            //         component = new PointLightComponent(entity.components[k].id)
+            //         break
+            //     case 'SkyboxComponent':
+            //         component = new SkyboxComponent(entity.components[k].id, gpu)
+            //         const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
+            //         if (foundImage)
+            //             component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
+            //         break
+            //     case 'SpotLightComponent':
+            //         component = new SpotLightComponent(entity.components[k].id)
+            //         break
+            //     case 'MaterialComponent':
+            //         component = new MaterialComponent(entity.components[k].id)
+            //         break
+            //     case 'TransformComponent':
+            //         component = new TransformComponent(entity.components[k].id)
+            //         break
+            //     case 'FolderComponent':
+            //         component = new FolderComponent(entity.components[k].id)
+            //         break
+            //     case 'PhysicsComponent':
+            //         component = new PhysicsBodyComponent(entity.components[k].id)
+            //         break
+            //     case 'SphereCollider':
+            //         component = new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID))
+            //         break
+            //     default:
+            //         break
+            // }
 
             if (k === 'SpotLightComponent' || k === 'PointLightComponent')
                 component.position = entity.components[k]._position
@@ -286,4 +287,27 @@ export default class ProjectLoader {
         })
         return parsedEntity
     }
+}
+
+const ENTITIES = {
+    'DirectionalLightComponent': (entity,  k) => new DirectionalLightComponent(entity.components[k].id),
+    'SkylightComponent': (entity,  k) => new SkylightComponent(entity.components[k].id),
+    'MeshComponent': (entity,  k) => new MeshComponent(entity.components[k].id),
+    'PickComponent': (entity,  k, index) => new PickComponent(entity.components[k].id, index),
+    'PointLightComponent': (entity,  k) => new PointLightComponent(entity.components[k].id),
+    'SkyboxComponent': (entity,  k, _, skyboxes, gpu) => {
+        const component = new SkyboxComponent(entity.components[k].id, gpu)
+        const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
+        if (foundImage)
+            component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
+
+        return component
+    },
+    'SpotLightComponent': (entity,  k) => new SpotLightComponent(entity.components[k].id),
+    'MaterialComponent': (entity,  k) => new MaterialComponent(entity.components[k].id),
+    'TransformComponent': (entity,  k) => new TransformComponent(entity.components[k].id),
+    'FolderComponent': (entity,  k) => new FolderComponent(entity.components[k].id),
+    'PhysicsComponent': (entity,  k) => new PhysicsBodyComponent(entity.components[k].id),
+    'SphereCollider': (entity,  k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+
 }
