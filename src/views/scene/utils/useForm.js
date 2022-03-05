@@ -72,17 +72,30 @@ export default function useForm(
                         quickAccess={quickAccess}
                         materialID={selected.components.MaterialComponent.materialID}
                         submit={(mat) => {
-                            importMaterial(mat, engine, load)
+                            if(mat){
+                                importMaterial(mat, engine, load)
 
-                            const clone = cloneClass(selected.components.MaterialComponent)
-                            clone.materialID = mat.id
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
-                                    data: clone,
-                                    key: 'MaterialComponent'
-                                }
-                            })
+                                const clone = cloneClass(selected.components.MaterialComponent)
+                                clone.materialID = mat.id
+                                engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                        entityID: selectedElement,
+                                        data: clone,
+                                        key: 'MaterialComponent'
+                                    }
+                                })
+                            }
+                            else{
+                                const clone = cloneClass(selected.components.MaterialComponent)
+                                clone.materialID = undefined
+                                engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                        entityID: selectedElement,
+                                        data: clone,
+                                        key: 'MaterialComponent'
+                                    }
+                                })
+                            }
                         }}
                         setAlert={setAlert}
 

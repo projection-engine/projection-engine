@@ -27,29 +27,33 @@ export default function MaterialComponent(props) {
                     selected={currentMaterial}
                     type={'material'}
                     handleChange={src => {
-                        load.pushEvent(EVENTS.LOAD_FILE)
-                        fileSystem.readRegistryFile(src.registryID)
-                            .then(rs => {
-                                if (rs)
-                                    fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
-                                        .then(file => {
-                                            if (file && file.response) {
-                                                props.submit({
-                                                    blob: file.response,
-                                                    id: src.registryID,
-                                                    name: src.name
-                                                })
-                                                setCurrentMaterial(src)
-                                            } else
-                                                props.setAlert({
-                                                    type: 'error',
-                                                    message: 'Error loading material.'
-                                                })
-                                            load.finishEvent(EVENTS.LOAD_FILE)
-                                        })
-                                else
-                                    load.finishEvent(EVENTS.LOAD_FILE)
-                            })
+                        if(src) {
+                            load.pushEvent(EVENTS.LOAD_FILE)
+                            fileSystem.readRegistryFile(src.registryID)
+                                .then(rs => {
+                                    if (rs)
+                                        fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
+                                            .then(file => {
+                                                if (file && file.response) {
+                                                    props.submit({
+                                                        blob: file.response,
+                                                        id: src.registryID,
+                                                        name: src.name
+                                                    })
+                                                    setCurrentMaterial(src)
+                                                } else
+                                                    props.setAlert({
+                                                        type: 'error',
+                                                        message: 'Error loading material.'
+                                                    })
+                                                load.finishEvent(EVENTS.LOAD_FILE)
+                                            })
+                                    else
+                                        load.finishEvent(EVENTS.LOAD_FILE)
+                                })
+                        }
+                        else
+                            props.submit()
                     }}/>
             </div>
         </Accordion>
