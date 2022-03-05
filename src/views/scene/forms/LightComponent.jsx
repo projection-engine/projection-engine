@@ -29,7 +29,9 @@ export default function LightComponent(props) {
                 g: props.selected.color[1] * 255,
                 b: props.selected.color[2] * 255
             },
-            size: props.selected.size
+            size: props.selected.size,
+            indirectAttenuation: props.selected.attenuation,
+            lpvSamples: props.selected.lpvSamples
         }
     }
     const [state, setState] = useState(getNewState())
@@ -124,6 +126,50 @@ export default function LightComponent(props) {
                             })}/>
                     </div>
                 </Accordion>
+                :
+                null
+            }
+            {props.type === 'SkylightComponent'?
+                <>
+                    <Accordion className={styles.fieldset}>
+                        <AccordionSummary className={styles.summary}>
+                            Indirect light attenuation
+                        </AccordionSummary>
+                        <div className={styles.inputsColumn}>
+                            <Range
+                                accentColor={'yellow'}
+                                value={state.indirectAttenuation}
+                                minValue={0}
+                                onFinish={() => props.submit(state.indirectAttenuation, 'attenuation')}
+                                handleChange={e => setState(prev => {
+                                    return {
+                                        ...prev,
+                                        indirectAttenuation: parseFloat(e)
+                                    }
+                                })}/>
+                        </div>
+                    </Accordion>
+                <Accordion className={styles.fieldset}>
+                    <AccordionSummary className={styles.summary}>
+                        Propagation samples
+                    </AccordionSummary>
+                    <div className={styles.inputsColumn}>
+                        <Range
+                            integer={true}
+                            accentColor={'yellow'}
+                            value={state.lpvSamples}
+                            minValue={1}
+                            maxValue={128}
+                            onFinish={() => props.submit(state.lpvSamples, 'lpvSamples')}
+                            handleChange={e => setState(prev => {
+                                return {
+                                    ...prev,
+                                    lpvSamples: parseInt(e)
+                                }
+                            })}/>
+                    </div>
+                </Accordion>
+                </>
                 :
                 null
             }

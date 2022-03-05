@@ -19,7 +19,7 @@ export default function SkyboxComponent(props) {
     return (
 
         <Accordion>
-            <AccordionSummary>
+            <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
                 Environment map
             </AccordionSummary>
             <div className={styles.formWrapper} >

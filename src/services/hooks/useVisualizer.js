@@ -26,6 +26,7 @@ import randomID from "../utils/misc/randomID";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
 import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
+import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 
 export default function useVisualizer(initializePlane, initializeSphere) {
@@ -198,6 +199,7 @@ export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTrans
         transformation.translation = [0, 1, 0]
     newEntity.components.MeshComponent =  new MeshComponent(undefined, mesh.id)
     newEntity.components.TransformComponent =  transformation
+    newEntity.components.MaterialComponent =  new MaterialComponent(undefined, undefined, id === IDS.PLANE)
 
 
     console.log(mesh, newEntity)

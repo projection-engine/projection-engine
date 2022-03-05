@@ -69,7 +69,8 @@
 .formWrapper {
     padding: 4px;
 
-
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .label {
