@@ -185,12 +185,9 @@ export default function useForm(
                     <SkyboxComponent
                         quickAccess={quickAccess}
                         selected={selected.components.SkyboxComponent}
-                        submit={data => {
+                        submit={(data, key) => {
 
-                            selected.components.SkyboxComponent.hdrTexture = {
-                                blob: data.blob,
-                                imageID: data.id
-                            }
+                            selected.components.SkyboxComponent[key] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
@@ -214,27 +211,8 @@ export default function useForm(
             if (!currentKey) {
                 setCurrentKey(Object.keys(selected.components)[0])
             }
-            const data = Object.keys(selected.components).map((k, i) => {
-                const field = getField(k)
-
-                if (field)
-                    return (
-                        <div
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '4px'
-                            }}
-                        >
-                            {field}
-                        </div>
-                    )
-                else
-                    return <></>
-            })
-
+            const data = Object.keys(selected.components)
+                .map((k) => getField(k))
             return (
                 <div className={styles.formsWrapper}>
                     {data.map((d, i) => (

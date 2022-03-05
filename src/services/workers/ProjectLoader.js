@@ -230,50 +230,9 @@ export default class ProjectLoader {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
             let component = ENTITIES[k](entity,  k, meshes, skyboxes, gpu)
-            // switch (k) {
-            //     case 'DirectionalLightComponent':
-            //         component = new DirectionalLightComponent(entity.components[k].id)
-            //         break
-            //     case 'MeshComponent':
-            //         component = new MeshComponent(entity.components[k].id)
-            //         break
-            //     case 'PickComponent':
-            //         component = new PickComponent(entity.components[k].id, index)
-            //         break
-            //     case 'PointLightComponent':
-            //         component = new PointLightComponent(entity.components[k].id)
-            //         break
-            //     case 'SkyboxComponent':
-            //         component = new SkyboxComponent(entity.components[k].id, gpu)
-            //         const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
-            //         if (foundImage)
-            //             component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
-            //         break
-            //     case 'SpotLightComponent':
-            //         component = new SpotLightComponent(entity.components[k].id)
-            //         break
-            //     case 'MaterialComponent':
-            //         component = new MaterialComponent(entity.components[k].id)
-            //         break
-            //     case 'TransformComponent':
-            //         component = new TransformComponent(entity.components[k].id)
-            //         break
-            //     case 'FolderComponent':
-            //         component = new FolderComponent(entity.components[k].id)
-            //         break
-            //     case 'PhysicsComponent':
-            //         component = new PhysicsBodyComponent(entity.components[k].id)
-            //         break
-            //     case 'SphereCollider':
-            //         component = new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID))
-            //         break
-            //     default:
-            //         break
-            // }
-
             if (k === 'SpotLightComponent' || k === 'PointLightComponent')
                 component.position = entity.components[k]._position
-            if (k === 'SpotLightComponent' || k === 'DirectionalLightComponent')
+            if (k === 'SpotLightComponent' || k === 'DirectionalLightComponent'|| k === 'SkylightComponent')
                 component.direction = entity.components[k]._direction
 
             if (component) {

@@ -23,7 +23,9 @@ export default function useSettings() {
         viewPreferences: false,
         filesVisibility: true,
         sceneVisibility: true,
-        viewportOptionsVisibility: true
+        viewportOptionsVisibility: true,
+        gamma: 2.2,
+        exposure: 1.5
     })
  
     return useMemo(() => {

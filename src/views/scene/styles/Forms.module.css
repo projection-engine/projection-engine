@@ -130,7 +130,8 @@
 
 .dropdown {
     width: 100%;
-    background-color: var(--fabric-background-primary) !important;;
+    background-color: var(--fabric-background-secondary) !important;;
+    border: var(--fabric-border-primary) 1px solid;
 }
 
 .hovered > * {
