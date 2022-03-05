@@ -104,9 +104,8 @@ export default function LightComponent(props) {
                         )}
                     </div>
                 </div>
-
             </Accordion>
-            {props.type === 'DirectionalLightComponent' ?
+            {props.type === 'DirectionalLightComponent'  || props.type === 'SkylightComponent'?
                 <Accordion className={styles.fieldset}>
                     <AccordionSummary className={styles.summary}>
                         Size
@@ -115,6 +114,7 @@ export default function LightComponent(props) {
                         <Range
                             accentColor={'yellow'}
                             value={state.size}
+                            minValue={1}
                             onFinish={() => props.submit(state.size, 'size')}
                             handleChange={e => setState(prev => {
                                 return {
