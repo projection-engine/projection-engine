@@ -39,7 +39,7 @@ export default function useQuickAccess(projectID, load) {
                 promises.push(...meshesReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i + '.preview')
+                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
                             .then(preview => {
                                 resolve({
                                     type: 'mesh',
@@ -53,7 +53,7 @@ export default function useQuickAccess(projectID, load) {
                 promises.push(...materialsReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i + '.preview')
+                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
                             .then(preview => {
                                 resolve({
                                     type: 'material',

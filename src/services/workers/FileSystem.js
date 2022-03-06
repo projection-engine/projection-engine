@@ -292,7 +292,7 @@ export default class FileSystem {
                         else {
                             if (!fs.existsSync(this.path + '\\previews'))
                                 fs.mkdirSync(this.path + '\\previews')
-                            fs.writeFile(this.path + '\\previews\\' + path + '.preview', previewImage, () => {
+                            fs.writeFile(this.path + '\\previews\\' + registryID + '.preview', previewImage, () => {
                                 resolve1()
                             })
                         }
@@ -339,8 +339,6 @@ export default class FileSystem {
         return new Promise(resolve => {
             if (!fs.existsSync(this.path + '\\assets'))
                 fs.mkdir(this.path + '\\assets', () => null)
-            if (!fs.existsSync(this.path + '\\preview'))
-                fs.mkdir(this.path + '\\preview', () => null)
             this.readRegistryFile(registryID)
                 .then(res => {
                     this.writeAsset(res.path, fileData, previewImage, registryID)

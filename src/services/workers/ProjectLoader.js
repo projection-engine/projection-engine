@@ -94,119 +94,106 @@ export default class ProjectLoader {
     }
 
     static async loadProject(gpu, fileSystem) {
-        return new Promise(rootResolve => {
-            ProjectLoader.cleanUpRegistry(fileSystem)
-                .then(() => {
-                    ProjectLoader
-                        .getEntities(fileSystem)
-                        .then(res => {
-                            let settings = res[0]
+        await ProjectLoader.cleanUpRegistry(fileSystem)
+        const projectData = await ProjectLoader.getEntities(fileSystem)
 
-                            let meta = res[1]
-                            let entitiesFound = res.filter(e => e.type === 'entity')
-                            let entities = []
-
-
-                            let meshes = [...new Set(
-                                    entitiesFound
-                                        .filter(e => e.data.components?.MeshComponent)
-                                        .map(e => e.data.components.MeshComponent?.meshID)
-                                )
-                                ].map(e => new Promise(r => {
-                                    ProjectLoader.readFromRegistry(e, fileSystem)
-                                        .then(fileData => {
-                                            if (fileData) {
-
-                                                r({
-                                                    type: 'mesh',
-                                                    data: JSON.parse(fileData),
-                                                    id: e
-                                                })
-                                            } else
-                                                r(undefined)
-                                        })
-                                })),
-                                skyboxes = [...new Set(
-                                    entitiesFound
-                                        .filter(e => e.data.components?.SkyboxComponent)
-                                        .map(e => e.data.components.SkyboxComponent?._imageID)
-                                )
-                                ].map(e => new Promise(r => {
-                                    ProjectLoader.readFromRegistry(e, fileSystem)
-                                        .then(fileData => {
-                                            if (fileData) {
-                                                const img = new Image()
-                                                img.src = fileData
-                                                img.onload = () => {
-                                                    r({
-                                                        type: 'skybox',
-                                                        data: img,
-                                                        id: e
-                                                    })
-                                                }
-
-                                            } else
-                                                r(undefined)
-                                        })
-                                }))
-
-
-                            Promise.all([...meshes, ...skyboxes])
-                                .then(loaded => {
-                                    const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
-
-                                    let meshData = loaded.filter(e => e && e.type === 'mesh' && e.data !== null),
-                                        skyboxData = loaded.filter(e => e && e.type === 'skybox').map(e => e),
-                                        materialsToLoad = [...new Set(entitiesWithMaterials)]
-                                            .map(m => new Promise(r => {
-                                                ProjectLoader.readFromRegistry(m, fileSystem)
-                                                    .then(fileData => {
-                                                        if (fileData) {
-                                                            let fileParsed
-                                                            try {
-                                                                fileParsed = JSON.parse(fileData)
-                                                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                                                            } catch (e) {
-                                                                r()
-                                                            }
-                                                        } else
-                                                            r()
-                                                    }).catch(e => r())
-                                            }))
-
-                                    Promise.all(materialsToLoad)
-                                        .then(materialData => {
-                                            entities = entitiesFound.map((entity, index) => {
-                                                return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
-                                            })
-
-                                            rootResolve({
-                                                meta,
-                                                settings,
-                                                entities,
-                                                materials: materialData,
-                                                meshes: meshData.map(m => {
-                                                    return new MeshInstance({
-                                                        vertices: m.data.vertices,
-                                                        indices: m.data.indices,
-                                                        normals: m.data.normals,
-                                                        uvs: m.data.uvs,
-                                                        id: m.id,
-                                                        maxBoundingBox: m.data.maxBoundingBox,
-                                                        minBoundingBox: m.data.minBoundingBox,
-                                                        gpu: gpu,
-                                                        tangents: m.data.tangents,
-                                                        wireframeBuffer: true,
-                                                        material: m.data.material
-                                                    })
-                                                })
-                                            })
-                                        })
+        let settings = projectData[0]
+        let meta = projectData[1]
+        let entitiesFound = projectData.filter(e => e.type === 'entity')
+        let entities
+        let meshes = [...new Set(entitiesFound.filter(e => e.data.components?.MeshComponent).map(e => e.data.components.MeshComponent?.meshID))],
+            skyboxes = [...new Set(
+                entitiesFound
+                    .filter(e => e.data.components?.SkyboxComponent)
+                    .map(e => e.data.components.SkyboxComponent?.imageID)
+            )
+            ].map(e => new Promise(r => {
+                ProjectLoader.readFromRegistry(e, fileSystem)
+                    .then(fileData => {
+                        if (fileData) {
+                            const img = new Image()
+                            img.src = fileData
+                            img.onload = () => {
+                                r({
+                                    type: 'skybox',
+                                    data: img,
+                                    id: e
                                 })
-                        })
-                })
+                            }
 
+                        } else
+                            r(undefined)
+                    })
+            }))
+
+        const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
+        let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
+            skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e),
+            materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
+
+        entities = entitiesFound.map((entity, index) => {
+            return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
         })
+
+        return {
+            meta,
+            settings,
+            entities,
+            materials: materialsToLoad,
+            meshes: meshData
+        }
+    }
+
+    static async loadMeshes(toLoad, fileSystem, gpu) {
+        const promises = toLoad.map(m => {
+            return new Promise(r => {
+                ProjectLoader.readFromRegistry(m, fileSystem)
+                    .then(fileData => {
+                        if (fileData) {
+                            const parsed = JSON.parse(fileData)
+                            r(new MeshInstance({
+                                    vertices: parsed.vertices,
+                                    indices: parsed.indices,
+                                    normals: parsed.normals,
+                                    uvs: parsed.uvs,
+                                    id: m,
+                                    maxBoundingBox: parsed.maxBoundingBox,
+                                    minBoundingBox: parsed.minBoundingBox,
+                                    gpu: gpu,
+                                    tangents: parsed.tangents,
+                                    wireframeBuffer: true,
+                                    material: parsed.material
+                                })
+                            )
+                        } else
+                            r(undefined)
+                    })
+            })
+        })
+
+        return await Promise.all(promises)
+    }
+
+    static async loadMaterials(toLoad, fileSystem, gpu) {
+        const promises = toLoad.map(m => {
+            return new Promise(r => {
+                ProjectLoader.readFromRegistry(m, fileSystem)
+                    .then(fileData => {
+                        if (fileData) {
+                            let fileParsed
+                            try {
+                                fileParsed = JSON.parse(fileData)
+                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                            } catch (e) {
+                                r()
+                            }
+                        } else
+                            r()
+                    }).catch(() => r())
+            })
+        })
+
+        return await Promise.all(promises)
     }
 
     static mapMaterial(material, gpu, id) {
@@ -229,10 +216,10 @@ export default class ProjectLoader {
     static mapEntity(entity, index, meshes, skyboxes, gpu) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
-            let component = ENTITIES[k](entity,  k, meshes, skyboxes, gpu)
+            let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu)
             if (k === 'SpotLightComponent' || k === 'PointLightComponent')
                 component.position = entity.components[k]._position
-            if (k === 'SpotLightComponent' || k === 'DirectionalLightComponent'|| k === 'SkylightComponent')
+            if (k === 'SpotLightComponent' || k === 'DirectionalLightComponent' || k === 'SkylightComponent')
                 component.direction = entity.components[k]._direction
 
             if (component) {
@@ -249,12 +236,12 @@ export default class ProjectLoader {
 }
 
 const ENTITIES = {
-    'DirectionalLightComponent': (entity,  k) => new DirectionalLightComponent(entity.components[k].id),
-    'SkylightComponent': (entity,  k) => new SkylightComponent(entity.components[k].id),
-    'MeshComponent': (entity,  k) => new MeshComponent(entity.components[k].id),
-    'PickComponent': (entity,  k, index) => new PickComponent(entity.components[k].id, index),
-    'PointLightComponent': (entity,  k) => new PointLightComponent(entity.components[k].id),
-    'SkyboxComponent': (entity,  k, _, skyboxes, gpu) => {
+    'DirectionalLightComponent': (entity, k) => new DirectionalLightComponent(entity.components[k].id),
+    'SkylightComponent': (entity, k) => new SkylightComponent(entity.components[k].id),
+    'MeshComponent': (entity, k) => new MeshComponent(entity.components[k].id),
+    'PickComponent': (entity, k, index) => new PickComponent(entity.components[k].id, index),
+    'PointLightComponent': (entity, k) => new PointLightComponent(entity.components[k].id),
+    'SkyboxComponent': (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
         const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
         if (foundImage)
@@ -262,11 +249,11 @@ const ENTITIES = {
 
         return component
     },
-    'SpotLightComponent': (entity,  k) => new SpotLightComponent(entity.components[k].id),
-    'MaterialComponent': (entity,  k) => new MaterialComponent(entity.components[k].id),
-    'TransformComponent': (entity,  k) => new TransformComponent(entity.components[k].id),
-    'FolderComponent': (entity,  k) => new FolderComponent(entity.components[k].id),
-    'PhysicsComponent': (entity,  k) => new PhysicsBodyComponent(entity.components[k].id),
-    'SphereCollider': (entity,  k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    'SpotLightComponent': (entity, k) => new SpotLightComponent(entity.components[k].id),
+    'MaterialComponent': (entity, k) => new MaterialComponent(entity.components[k].id),
+    'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id),
+    'FolderComponent': (entity, k) => new FolderComponent(entity.components[k].id),
+    'PhysicsComponent': (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
+    'SphereCollider': (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
 
 }

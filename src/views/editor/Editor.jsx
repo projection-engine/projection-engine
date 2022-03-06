@@ -27,7 +27,9 @@ export default function Editor(props) {
                 props.executingAnimation,
                 props.setExecutingAnimation,
                 props.engine,
-                props.serializer.save
+                props.serializer.save,
+                quickAccess.fileSystem,
+                props.load
             ),
             'Editor',
             <span

@@ -27,9 +27,10 @@ import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
 import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
+import {render} from "react-dom";
 
 
-export default function useVisualizer(initializePlane, initializeSphere) {
+export default function useVisualizer(initializePlane, initializeSphere,  centerOnSphere) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])
@@ -98,16 +99,23 @@ export default function useVisualizer(initializePlane, initializeSphere) {
 
             if (!canRender)
                 renderer.current?.stop()
-            else
+            else {
+                if(centerOnSphere) {
+                    renderer.current.camera.centerOn = [0, 1, 0]
+                    renderer.current.camera.updateViewMatrix()
+                }
                 renderer.current?.start(entities, [], meshes, {
                     fxaa: true,
                     meshes,
+                    gamma: 2.2,
+                    exposure: 1.2,
                     materials: [],
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
                     cameraType: CAMERA_TYPES.SPHERICAL,
                     injectMaterial: material
                 })
+            }
         }
 
         return () => {
