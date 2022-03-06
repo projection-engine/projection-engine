@@ -38,9 +38,9 @@ export default class ImageProcessor {
         return ctx
     }
 
-    static dataToImage(data, width, height, zeroToOne){
+    static dataToImage(data, width, height, zeroToOne) {
         let parsed = data
-        if(zeroToOne)
+        if (zeroToOne)
             parsed = data.map(d => {
                 return d * 255 * (d < 0 ? -1 : 1)
             })
@@ -52,12 +52,13 @@ export default class ImageProcessor {
 
         for (let i = 0; i < w; i++) {
             for (let j = 0; j < h; j++) {
-                context.fillStyle =  `rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`
+                context.fillStyle = `rgb(${parsed[i]}, ${parsed[i + 1]}, ${parsed[i + 2]})`
                 context.fillRect(i, j, 1, 1);
             }
         }
         return canvas.toDataURL()
     }
+
     static extractChannel([r, g, b, a], img) {
         const c = document.createElement("canvas");
         const imageToLoad = new Image()
@@ -88,6 +89,41 @@ export default class ImageProcessor {
                         newImage[i] = col[accent]
                         newImage[i + 1] = col[accent]
                         newImage[i + 2] = col[accent]
+                        newImage[i + 3] = col.iA
+                    }
+                    imgData.data.set(newImage)
+                    ctx.putImageData(imgData, 0, 0)
+                    resolve(c.toDataURL())
+                }
+                imageToLoad.src = img
+            } else
+                resolve(img)
+        })
+    }
+
+    static byChannels([r, g, b, a], img) {
+        const c = document.createElement("canvas");
+        const imageToLoad = new Image()
+
+        return new Promise(resolve => {
+
+            if (imageToLoad) {
+                imageToLoad.onerror = () => resolve('')
+                imageToLoad.onload = () => {
+                    c.width = imageToLoad.width
+                    c.height = imageToLoad.height
+
+                    let ctx = c.getContext("2d");
+                    ctx.drawImage(imageToLoad, 0, 0)
+
+                    const imgData = ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height);
+                    const data = imgData.data;
+                    let newImage = new Array(data.length)
+                    for (let i = 0; i < data.length; i += 4) {
+
+                        newImage[i] = data[i] * r
+                        newImage[i + 1] = data[i + 1] * g
+                        newImage[i + 2] = data[i + 2] * b
                         newImage[i + 3] = data[i + 3] * a
                     }
                     imgData.data.set(newImage)
@@ -97,6 +133,58 @@ export default class ImageProcessor {
                 imageToLoad.src = img
             } else
                 resolve(img)
+        })
+    }
+
+    static async linearInterpolate(img,img0, factor) {
+        const c = document.createElement("canvas");
+        const c0 = document.createElement("canvas");
+        const imageToLoad = new Image()
+        const imageToLoad0 = new Image()
+        const ctx = c.getContext("2d");
+        const ctx0 = c0.getContext("2d");
+
+        imageToLoad0.src = img0
+        imageToLoad.src = img
+
+
+        await Promise.all([
+            new Promise((r) => imageToLoad0.onload = () => {
+                r()
+            }),
+            new Promise((r) => imageToLoad.onload = () => {
+                r()
+            }),
+        ])
+
+
+        return new Promise(resolve => {
+            c.width = imageToLoad.width
+            c.height = imageToLoad.height
+
+            c0.width = imageToLoad0.width
+            c0.height = imageToLoad0.height
+
+            ctx.drawImage(imageToLoad, 0, 0)
+            ctx0.drawImage(imageToLoad0, 0, 0)
+
+            const imgData = ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height);
+            const imgData0 = ctx0.getImageData(0, 0, imageToLoad0.width, imageToLoad0.height);
+
+            const data = imgData.data;
+            const data0 = imgData0.data;
+
+            let newImage = new Array(data.length)
+            console.log(factor)
+            for (let i = 0; i < data.length; i += 4) {
+                newImage[i] = data[i]*(1-factor)+data0[i]*factor
+                newImage[i + 1] = data[i + 1]*(1-factor)+data0[i + 1]*factor
+                newImage[i + 2] = data[i + 2]*(1-factor)+data0[i + 2]*factor
+                newImage[i + 3] = data[i + 3]*(1-factor)+data0[i + 3]*factor
+            }
+            imgData.data.set(newImage)
+            ctx.putImageData(imgData, 0, 0)
+            resolve(c.toDataURL())
         })
     }
 
