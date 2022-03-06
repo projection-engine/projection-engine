@@ -6,7 +6,6 @@ import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions, 
 
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import Range from "../../../components/range/Range";
-import CAMERA_TYPES from "../../../services/engine/utils/camera/CAMERA_TYPES";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)

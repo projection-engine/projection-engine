@@ -27,7 +27,6 @@ import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
 import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
-import {render} from "react-dom";
 
 
 export default function useVisualizer(initializePlane, initializeSphere,  centerOnSphere) {

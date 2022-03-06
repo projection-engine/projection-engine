@@ -6,11 +6,6 @@ import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
 
 export default function LightComponent(props) {
-    console.log({
-        r: props.selected.color[0] * 255,
-        g: props.selected.color[1] * 255,
-        b: props.selected.color[2] * 255
-    })
     const getNewState = () => {
         return {
             placement: {
@@ -36,7 +31,6 @@ export default function LightComponent(props) {
     }
     const [state, setState] = useState(getNewState())
     useEffect(() => {
-
         setState(getNewState())
     }, [props.selected])
 
@@ -179,7 +173,6 @@ export default function LightComponent(props) {
                         Light attenuation
                     </AccordionSummary>
                     <div className={styles.inputs}>
-                        <div className={styles.label}>Attenuation</div>
                         {getInputs(
                             'attenuation',
                             ['x', 'y', 'z'],
@@ -220,7 +213,6 @@ export default function LightComponent(props) {
                     Light color
                 </AccordionSummary>
                 <div className={styles.inputs} style={{justifyContent: 'space-between'}}>
-
                     <ColorPicker
                         value={state.color} submit={color => {
                         const split = color.match(/[\d.]+/g)
