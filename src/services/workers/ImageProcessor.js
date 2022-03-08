@@ -1,3 +1,5 @@
+import {func} from "prop-types";
+
 export const COLOR_BLEND_OPERATIONS = {
     ADD: 0,
     MULTIPLY: 1,
@@ -136,65 +138,90 @@ export default class ImageProcessor {
         })
     }
 
-    static async linearInterpolate(img,img0, factor) {
+    static async invert(img) {
         const c = document.createElement("canvas");
-        const c0 = document.createElement("canvas");
         const imageToLoad = new Image()
-        const imageToLoad0 = new Image()
         const ctx = c.getContext("2d");
-        const ctx0 = c0.getContext("2d");
-
-        imageToLoad0.src = img0
         imageToLoad.src = img
+        return await new Promise(resolve => {
+            imageToLoad.onload = () => {
+                c.width = imageToLoad.width
+                c.height = imageToLoad.height
 
+                ctx.drawImage(imageToLoad, 0, 0);
+                ctx.globalCompositeOperation = 'difference';
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, imageToLoad.width, imageToLoad.height);
 
-        await Promise.all([
-            new Promise((r) => imageToLoad0.onload = () => {
-                r()
-            }),
-            new Promise((r) => imageToLoad.onload = () => {
-                r()
-            }),
-        ])
+                resolve(c.toDataURL())
+            }
+        })
+
+    }
+
+    static async heightBasedLinearInterpolate(image0, image1, heightImg, f) {
+        const i0 = await getImageData(image0,),
+            i1 = await getImageData(image1),
+            heightMap = await getImageData(heightImg)
 
 
         return new Promise(resolve => {
-            c.width = imageToLoad.width
-            c.height = imageToLoad.height
-
-            c0.width = imageToLoad0.width
-            c0.height = imageToLoad0.height
-
-            ctx.drawImage(imageToLoad, 0, 0)
-            ctx0.drawImage(imageToLoad0, 0, 0)
-
-            const imgData = ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height);
-            const imgData0 = ctx0.getImageData(0, 0, imageToLoad0.width, imageToLoad0.height);
-
-            const data = imgData.data;
-            const data0 = imgData0.data;
+            const data = i0.data.data
+            const data0 = i1.data.data
+            const height = heightMap.data.data
 
             let newImage = new Array(data.length)
-            console.log(factor)
+            const factor = f*255
             for (let i = 0; i < data.length; i += 4) {
-                newImage[i] = data[i]*(1-factor)+data0[i]*factor
-                newImage[i + 1] = data[i + 1]*(1-factor)+data0[i + 1]*factor
-                newImage[i + 2] = data[i + 2]*(1-factor)+data0[i + 2]*factor
-                newImage[i + 3] = data[i + 3]*(1-factor)+data0[i + 3]*factor
+                if(height[i] > factor) {
+                    newImage[i] = data[i]
+                    newImage[i + 1] = data[i + 1]
+                    newImage[i + 2] = data[i + 2]
+                    newImage[i + 3] = data[i + 3]
+                }
+                else{
+                    newImage[i] = data0[i]
+                    newImage[i + 1] = data0[i + 1]
+                    newImage[i + 2] = data0[i + 2]
+                    newImage[i + 3] = data0[i + 3]
+                }
             }
-            imgData.data.set(newImage)
-            ctx.putImageData(imgData, 0, 0)
-            resolve(c.toDataURL())
+            i0.data.data.set(newImage)
+            i0.context.putImageData(i0.data, 0, 0)
+            resolve(i0.canvas.toDataURL())
+        })
+    }
+
+    static async linearInterpolate(img, img0, factor) {
+        const i0 = await getImageData(img),
+            i1 = await getImageData(img0)
+
+
+        return new Promise(resolve => {
+            const data = i0.data.data
+            const data0 = i1.data.data
+
+            let newImage = new Array(data.length)
+
+            for (let i = 0; i < data.length; i += 4) {
+                newImage[i] = data[i] * (1 - factor) + data0[i] * factor
+                newImage[i + 1] = data[i + 1] * (1 - factor) + data0[i + 1] * factor
+                newImage[i + 2] = data[i + 2] * (1 - factor) + data0[i + 2] * factor
+                newImage[i + 3] = data[i + 3] * (1 - factor) + data0[i + 3] * factor
+            }
+            i0.data.data.set(newImage)
+            i0.context.putImageData(i0.data, 0, 0)
+            resolve(i0.canvas.toDataURL())
         })
     }
 
     static colorToImage(color) {
         const c = document.createElement("canvas");
-        c.width = 2048
-        c.height = 2048
+        c.width = 1024
+        c.height = 1024
         let ctx = c.getContext("2d");
         ctx.fillStyle = typeof color === 'string' ? color : `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
-        ctx.fillRect(0, 0, 2048, 2048)
+        ctx.fillRect(0, 0, 1024, 1024)
         return c.toDataURL()
     }
 
@@ -267,4 +294,24 @@ export default class ImageProcessor {
     static specularToMetallic(img) {
 
     }
+}
+
+async function getImageData(img) {
+    const c = document.createElement("canvas");
+    const imageToLoad = new Image()
+    imageToLoad.src = img
+
+    return await new Promise(resolve => {
+        imageToLoad.onload = () => {
+            c.width = imageToLoad.width
+            c.height = imageToLoad.height
+            let ctx = c.getContext("2d");
+            ctx.drawImage(imageToLoad, 0, 0)
+            resolve({
+                data: ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height),
+                canvas: c,
+                context: ctx
+            })
+        }
+    })
 }
