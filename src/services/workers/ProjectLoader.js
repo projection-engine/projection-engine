@@ -197,10 +197,14 @@ export default class ProjectLoader {
     }
 
     static mapMaterial(material, gpu, id) {
-
+        const heightIsObject = typeof material.height === 'object'
         const newMat = new MaterialInstance(
             gpu,
-            id
+            id,
+            heightIsObject,
+            heightIsObject ? material.height.heightScale : undefined,
+            heightIsObject ? material.height.layers : undefined,
+            material.variant
         )
         newMat.initializeTextures(
             material.albedo,
@@ -208,7 +212,12 @@ export default class ProjectLoader {
             material.roughness,
             material.normal,
             material.height,
-            material.ao
+            material.ao,
+
+            material.emissive,
+            material.opacity,
+            material.subSurface,
+            material.variant
         ).catch()
         return newMat
     }

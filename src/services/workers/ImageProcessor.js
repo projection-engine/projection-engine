@@ -1,4 +1,5 @@
 import {func} from "prop-types";
+import FileBlob from "./FileBlob";
 
 export const COLOR_BLEND_OPERATIONS = {
     ADD: 0,
@@ -160,10 +161,9 @@ export default class ImageProcessor {
     }
 
     static async heightBasedLinearInterpolate(image0, image1, heightImg, f) {
-        const i0 = await getImageData(image0,),
-            i1 = await getImageData(image1),
-            heightMap = await getImageData(heightImg)
-
+        const i0 = await getImageData(image0),
+            i1 = await getImageData(await ImageProcessor.resizeImage(image1, i0.width, i0.height)),
+            heightMap = await getImageData(await ImageProcessor.resizeImage(heightImg, i0.width, i0.height))
 
         return new Promise(resolve => {
             const data = i0.data.data
@@ -171,15 +171,14 @@ export default class ImageProcessor {
             const height = heightMap.data.data
 
             let newImage = new Array(data.length)
-            const factor = f*255
+            const factor = f * 255
             for (let i = 0; i < data.length; i += 4) {
-                if(height[i] > factor) {
+                if (factor <= height[i]) {
                     newImage[i] = data[i]
                     newImage[i + 1] = data[i + 1]
                     newImage[i + 2] = data[i + 2]
                     newImage[i + 3] = data[i + 3]
-                }
-                else{
+                } else {
                     newImage[i] = data0[i]
                     newImage[i + 1] = data0[i + 1]
                     newImage[i + 2] = data0[i + 2]
@@ -188,14 +187,22 @@ export default class ImageProcessor {
             }
             i0.data.data.set(newImage)
             i0.context.putImageData(i0.data, 0, 0)
-            resolve(i0.canvas.toDataURL())
+            i0.canvas.convertToBlob({
+                type: "image/png",
+                quality: 1
+            }).then(blob => {
+                FileBlob.loadAsString(blob, false, true)
+                    .then(parsed => {
+                        resolve(parsed)
+                    })
+            })
+
         })
     }
 
     static async linearInterpolate(img, img0, factor) {
         const i0 = await getImageData(img),
-            i1 = await getImageData(img0)
-
+            i1 = await getImageData(await ImageProcessor.resizeImage(img0, i0.width, i0.height))
 
         return new Promise(resolve => {
             const data = i0.data.data
@@ -211,7 +218,16 @@ export default class ImageProcessor {
             }
             i0.data.data.set(newImage)
             i0.context.putImageData(i0.data, 0, 0)
-            resolve(i0.canvas.toDataURL())
+            i0.canvas.convertToBlob({
+                type: "image/png",
+                quality: 1
+            }).then(blob => {
+                FileBlob.loadAsString(blob, false, true)
+                    .then(parsed => {
+                        console.log(parsed)
+                        resolve(parsed)
+                    })
+            })
         })
     }
 
@@ -225,25 +241,36 @@ export default class ImageProcessor {
         return c.toDataURL()
     }
 
-    static async reduceImage(src) {
-        return new Promise(resolve => {
+    static async resizeImage(src, w, h) {
+        return await new Promise(resolve => {
             let img = new Image();
             img.src = src
 
             img.onload = () => {
-                let canvas = document.createElement("canvas");
-                let ctx = canvas.getContext("2d");
-
-                ctx.drawImage(img, 0, 0, 256, 256);
-                resolve(canvas.toDataURL())
+                if (img.naturalWidth === w && img.naturalHeight === h)
+                    resolve(src)
+                else {
+                    const canvas = new OffscreenCanvas(w, h),
+                        ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, w, h);
+                    canvas.convertToBlob({
+                        type: "image/png",
+                        quality: 1
+                    }).then(blob => {
+                        FileBlob.loadAsString(blob, false, true)
+                            .then(parsed => {
+                                console.log(parsed)
+                                resolve(parsed)
+                            })
+                    })
+                }
             }
-
         })
     }
 
 
     static blendWithColor(src, color, operation) {
-        const c = document.createElement("canvas");
+
         const split = color.match(/[\d.]+/g)
         const [r, g, b] = split.map(v => parseFloat(v))
 
@@ -253,8 +280,7 @@ export default class ImageProcessor {
 
         return new Promise(resolve => {
             imageToLoad.onload = () => {
-                c.width = imageToLoad.width
-                c.height = imageToLoad.height
+                const c = new OffscreenCanvas(imageToLoad.width, imageToLoad.height);
                 let ctx = c.getContext("2d");
                 ctx.drawImage(imageToLoad, 0, 0)
 
@@ -286,7 +312,16 @@ export default class ImageProcessor {
                 imgData.data.set(newImage)
                 ctx.putImageData(imgData, 0, 0)
 
-                resolve(c.toDataURL())
+                c.convertToBlob({
+                    type: "image/png",
+                    quality: 1
+                }).then(blob => {
+                    FileBlob.loadAsString(blob, false, true)
+                        .then(parsed => {
+                            console.log(parsed)
+                            resolve(parsed)
+                        })
+                })
             }
         })
     }
@@ -297,20 +332,21 @@ export default class ImageProcessor {
 }
 
 async function getImageData(img) {
-    const c = document.createElement("canvas");
+
     const imageToLoad = new Image()
     imageToLoad.src = img
 
     return await new Promise(resolve => {
         imageToLoad.onload = () => {
-            c.width = imageToLoad.width
-            c.height = imageToLoad.height
+            const c = new OffscreenCanvas(imageToLoad.width, imageToLoad.height);
             let ctx = c.getContext("2d");
             ctx.drawImage(imageToLoad, 0, 0)
             resolve({
                 data: ctx.getImageData(0, 0, imageToLoad.width, imageToLoad.height),
                 canvas: c,
-                context: ctx
+                context: ctx,
+                width: imageToLoad.naturalWidth,
+                height: imageToLoad.naturalHeight
             })
         }
     })

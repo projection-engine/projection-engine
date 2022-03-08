@@ -29,11 +29,11 @@ import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 
-export default function useVisualizer(initializePlane, initializeSphere,  centerOnSphere) {
+export default function useVisualizer(initializePlane, initializeSphere,  centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])
-    const [material, setMaterial] = useState()
+    const [   material,  setMaterial] = useState()
     const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
     const [initialized, setInitialized] = useState(false)
     const [canRender, setCanRender] = useState(true)
@@ -68,6 +68,11 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
             if (initializeSphere)
                 initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', dispatchEntities, setMeshes)
 
+            if(loadAllMeshes)
+                import('../../static/assets/Cube.json')
+                    .then(cubeData => {
+                        initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true)
+                    })
             renderer.current = new Engine(id, gpu)
 
             const deferred = new MeshSystem(gpu, 1)
@@ -96,6 +101,7 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
 
+
             if (!canRender)
                 renderer.current?.stop()
             else {
@@ -103,7 +109,7 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
                     renderer.current.camera.centerOn = [0, 1, 0]
                     renderer.current.camera.updateViewMatrix()
                 }
-                renderer.current?.start(entities, [], meshes, {
+                renderer.current?.start(entities, material ? [material] : [], meshes, {
                     fxaa: true,
                     meshes,
                     gamma: 2.2,
@@ -111,8 +117,7 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
                     materials: [],
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
-                    cameraType: CAMERA_TYPES.SPHERICAL,
-                    injectMaterial: material
+                    cameraType: CAMERA_TYPES.SPHERICAL
                 })
             }
         }
@@ -136,7 +141,7 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
         id, load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
-        material, setMaterial,
+        material,  setMaterial,
         initialized, renderer: renderer.current,
         canRender, setCanRender
     }
@@ -183,41 +188,40 @@ function initializeLight(dispatch) {
     })
 }
 
-export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTranslation) {
+export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTranslation, noEntity) {
     let mesh = new MeshInstance({
         ...data,
-        id: randomID(),
+        id: id,
         gpu: gpu,
 
     })
     setMeshes(prev => [...prev, mesh])
+    if(!noEntity) {
+        const newEntity = new Entity(id, name)
+        const transformation = new TransformComponent()
 
-    const newEntity = new Entity(id, name)
+        transformation.scaling = data.scaling
+        transformation.rotation = data.rotation
+        if (!noTranslation)
+            transformation.translation = data.translation
 
-    const transformation = new TransformComponent()
+        if (id === IDS.SPHERE)
+            transformation.translation = [0, 1, 0]
+        newEntity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
+        newEntity.components.TransformComponent = transformation
+        newEntity.components.MaterialComponent = new MaterialComponent(undefined, id === IDS.PLANE ? undefined : IDS.MATERIAL, id === IDS.PLANE)
 
-
-    transformation.scaling = data.scaling
-    transformation.rotation = data.rotation
-    if (!noTranslation)
-        transformation.translation = data.translation
-
-    if(id === IDS.SPHERE)
-        transformation.translation = [0, 1, 0]
-    newEntity.components.MeshComponent =  new MeshComponent(undefined, mesh.id)
-    newEntity.components.TransformComponent =  transformation
-    newEntity.components.MaterialComponent =  new MaterialComponent(undefined, undefined, id === IDS.PLANE)
-
-
-    console.log(mesh, newEntity)
-    dispatch({
-        type: ENTITY_ACTIONS.ADD,
-        payload: newEntity
-    })
+        dispatch({
+            type: ENTITY_ACTIONS.ADD,
+            payload: newEntity
+        })
+    }
 }
 
 export const IDS = {
+    MATERIAL: '1',
     SPHERE: 'SPHERE-0',
     PLANE: 'PLANE-0',
-    TARGET: 'TARGET'
+    TARGET: 'TARGET',
+    CUBE: 'CUBE-0'
 }

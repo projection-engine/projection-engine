@@ -105,7 +105,7 @@ export default class FileSystem {
                 new Promise(r => {
                     if (!fs.existsSync(this.path + '\\previews\\'))
                         fs.mkdirSync(this.path + '\\previews\\')
-                    ImageProcessor.reduceImage(res).then(reduced => {
+                    ImageProcessor.resizeImage(res, 256, 256).then(reduced => {
                         fs.writeFile(
                             this.path + '\\previews\\' + fileID + `.preview`,
                             reduced,
