@@ -17,7 +17,7 @@ import DirectionalLightComponent from "../engine/ecs/components/DirectionalLight
 
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
-import MeshInstance from "../engine/elements/instances/MeshInstance";
+import MeshInstance from "../engine/instances/MeshInstance";
 
 import skybox from '../../static/sky.jpg'
 import {LoaderProvider} from "@f-ui/core";

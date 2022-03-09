@@ -10,8 +10,8 @@ import FolderComponent from "../engine/ecs/components/FolderComponent";
 import PhysicsBodyComponent from "../engine/ecs/components/PhysicsBodyComponent";
 import ColliderComponent from "../engine/ecs/components/ColliderComponent";
 import Entity from "../engine/ecs/basic/Entity";
-import MaterialInstance from "../engine/elements/instances/MaterialInstance";
-import MeshInstance from "../engine/elements/instances/MeshInstance";
+import MaterialInstance from "../engine/instances/MaterialInstance";
+import MeshInstance from "../engine/instances/MeshInstance";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 import SkylightComponent from "../engine/ecs/components/SkyLightComponent";
 

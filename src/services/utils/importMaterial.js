@@ -1,4 +1,4 @@
-import MaterialInstance from "../engine/elements/instances/MaterialInstance";
+import MaterialInstance from "../engine/instances/MaterialInstance";
 import EVENTS from "./misc/EVENTS";
 
 export default function importMaterial(mat, engine, load) {

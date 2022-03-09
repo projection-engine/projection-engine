@@ -1,6 +1,6 @@
 import importMesh from "./importMesh";
 import EVENTS from "./misc/EVENTS";
-import MaterialInstance from "../engine/elements/instances/MaterialInstance";
+import MaterialInstance from "../engine/instances/MaterialInstance";
 import {ENTITY_ACTIONS} from "./entityReducer";
 
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID) {

@@ -1,4 +1,3 @@
-import {func} from "prop-types";
 import FileBlob from "./FileBlob";
 
 export const COLOR_BLEND_OPERATIONS = {
