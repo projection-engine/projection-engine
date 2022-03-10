@@ -6,12 +6,25 @@ import emptyMaterial from '../utils/emptyMaterial.json'
 import TerrainWorker from "./TerrainWorker";
 
 const fs = window.require('fs')
-const path = window.require('path')
+const pathRequire = window.require('path')
 
+function resolvePath(p){
+    return pathRequire.resolve(p)
+}
 export default class FileSystem {
     constructor(projectID) {
 
         this._path = (localStorage.getItem('basePath') + '\\projects\\' + projectID).replace(/\\\\/g, '\\')
+
+        if (!fs.existsSync(this.path + '\\previews\\'))
+            fs.mkdirSync(this.path + '\\previews\\')
+        if (!fs.existsSync(this.path + '\\assets\\'))
+            fs.mkdirSync(this.path + '\\assets\\')
+        if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
+            fs.mkdirSync(this.path + '\\assetsRegistry\\')
+        if (!fs.existsSync(this.path + '\\logic'))
+            fs.mkdirSync(this.path + '\\logic')
+
     }
 
     get path() {
@@ -52,7 +65,7 @@ export default class FileSystem {
 
     async findRegistry(p) {
         return new Promise(resolve => {
-            fs.readdir(this.path + '\\assetsRegistry', (e, res) => {
+            fs.readdir(resolvePath(this.path + '\\assetsRegistry'), (e, res) => {
                 if (res) {
                     Promise
                         .all(
@@ -61,7 +74,7 @@ export default class FileSystem {
                             })
                         )
                         .then(registryData => {
-                            const parsedPath = path.resolve(p)
+                            const parsedPath = pathRequire.resolve(p)
 
                             resolve(registryData.filter(f => f !== undefined).find(f => {
                                 return parsedPath.includes(f.path)
@@ -80,7 +93,7 @@ export default class FileSystem {
                     .then(rs => {
 
                         if (rs) {
-                            fs.rm(this.path + '\\assetsRegistry\\' + rs.id + '.reg', () => {
+                            fs.rm(resolvePath(this.path + '\\assetsRegistry\\' + rs.id + '.reg'), () => {
                                 resolve()
                             })
                         } else resolve()
@@ -103,11 +116,9 @@ export default class FileSystem {
                         })
                 }),
                 new Promise(r => {
-                    if (!fs.existsSync(this.path + '\\previews\\'))
-                        fs.mkdirSync(this.path + '\\previews\\')
                     ImageProcessor.resizeImage(res, 256, 256).then(reduced => {
                         fs.writeFile(
-                            this.path + '\\previews\\' + fileID + `.preview`,
+                            resolvePath(this.path + '\\previews\\' + fileID + `.preview`),
                             reduced,
                             (error) => {
                                 r()
@@ -119,7 +130,7 @@ export default class FileSystem {
         else return []
     }
 
-    async importFile(file, filePath, asHeightMap) {
+    async importFile(file, filePath, asHeightMap, terrainSettings) {
         return new Promise(resolve => {
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
@@ -131,12 +142,12 @@ export default class FileSystem {
                         .loadAsString(file, false, true)
                         .then(res => {
                             if (asHeightMap)
-                                TerrainWorker.loadHeightMap(res)
+                                TerrainWorker.loadHeightMap(res, terrainSettings)
                                     .then(data => {
                                         Promise.all( [
                                             new Promise(r => {
                                                 fs.writeFile(
-                                                    newRoot + `.terrain`,
+                                                    resolvePath(newRoot + `.terrain`),
                                                     JSON.stringify(data),
                                                     () => {
                                                         r()
@@ -154,7 +165,7 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    fs.mkdir(newRoot, (err) => {
+                    fs.mkdir(resolvePath(newRoot), (err) => {
                         if (!err)
                             FileBlob
                                 .loadAsString(file)
@@ -168,7 +179,7 @@ export default class FileSystem {
                                                     return [
                                                         new Promise(r => {
                                                             fs.writeFile(
-                                                                newRoot + `\\${d.name}.mesh`,
+                                                                resolvePath(newRoot + `\\${d.name}.mesh`),
                                                                 JSON.stringify(d.data),
                                                                 () => {
                                                                     r()
@@ -179,9 +190,9 @@ export default class FileSystem {
                                                 }))
                                             }
 
-                                            if (materials) {
-                                                fs.mkdir(newRoot + `\\Materials`, () => {
-                                                    fs.mkdir(newRoot + `\\Materials\\Resources`, () => {
+                                            if (materials && materials.length > 0) {
+                                                fs.mkdir(resolvePath(newRoot + `\\Materials`), () => {
+                                                    fs.mkdir(resolvePath(newRoot + `\\Materials\\Resources`), () => {
                                                         promises.push(...materials.map(d => {
                                                             let parsedData = {...emptyMaterial}
                                                             const keysOnRes = Object.keys(d.response)
@@ -209,7 +220,7 @@ export default class FileSystem {
                                                             let localPromises = [
                                                                 new Promise(r => {
                                                                     fs.writeFile(
-                                                                        newRoot + `\\Materials\\${d.name}.material`,
+                                                                        resolvePath(newRoot + `\\Materials\\${d.name}.material`),
                                                                         JSON.stringify(parsedData),
                                                                         () => {
                                                                             r()
@@ -248,12 +259,14 @@ export default class FileSystem {
     }
 
     createRegistryEntry(fID = randomID(), path) {
+        const pathRe = resolvePath(this.path+ '\\assets\\')
+        console.log( resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, ''))
         return new Promise(r => {
             fs.writeFile(
-                this.path + '\\assetsRegistry\\' + fID + `.reg`,
+                resolvePath(this.path + '\\assetsRegistry\\' + fID + `.reg`),
                 JSON.stringify({
                     id: fID,
-                    path: path
+                    path: resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, '')
                 }),
                 () => {
                     r()
@@ -263,7 +276,7 @@ export default class FileSystem {
 
     async readRegistryFile(id) {
         return new Promise(resolve => {
-            fs.readFile(this.path + '\\assetsRegistry\\' + id + '.reg', (e, res) => {
+            fs.readFile(resolvePath(this.path + '\\assetsRegistry\\' + id + '.reg'), (e, res) => {
                 if (!e) {
                     try {
                         resolve(JSON.parse(res.toString()))
@@ -286,30 +299,18 @@ export default class FileSystem {
         return new Promise(resolve => {
             const promises = [
                 new Promise(resolve1 => {
-                    fs.writeFile(this.path + '\\assets\\' + path, fileData, (err) => {
+                    fs.writeFile(resolvePath(this.path + '\\assets\\' + path), fileData, (err) => {
                         if (!previewImage)
                             resolve1()
                         else {
-                            if (!fs.existsSync(this.path + '\\previews'))
-                                fs.mkdirSync(this.path + '\\previews')
-                            fs.writeFile(this.path + '\\previews\\' + registryID + '.preview', previewImage, () => {
+                            fs.writeFile(resolvePath(this.path + '\\previews\\' + registryID + '.preview'), previewImage, () => {
                                 resolve1()
                             })
                         }
 
                     })
                 }),
-
-                new Promise(resolve1 => {
-
-                    fs.writeFile(this.path + '\\assetsRegistry\\' + fileID + '.reg', JSON.stringify({
-                        id: fileID,
-                        path: path
-                    }), (err) => {
-
-                        resolve1()
-                    })
-                })
+                this.createRegistryEntry(fileID, path)
             ]
 
             Promise.all(promises)
@@ -320,25 +321,11 @@ export default class FileSystem {
         })
     }
 
-    readAsset(registryID) {
-        return new Promise(resolve => {
-            this.readRegistryFile(registryID)
-                .then(reg => {
-                    this.readFile(this.path + '\\assets\\' + reg.path, !reg.path.includes('.pimg') ? 'json' : 'base64')
-                        .then(res => {
-                            if (res)
-                                resolve(res)
-                            else
-                                resolve()
-                        })
-                })
-        })
-    }
 
     async updateAsset(registryID, fileData, previewImage) {
         return new Promise(resolve => {
-            if (!fs.existsSync(this.path + '\\assets'))
-                fs.mkdir(this.path + '\\assets', () => null)
+            if (!fs.existsSync(resolvePath(this.path + '\\assets')))
+                fs.mkdir(resolvePath(this.path + '\\assets'), () => null)
             this.readRegistryFile(registryID)
                 .then(res => {
                     this.writeAsset(res.path, fileData, previewImage, registryID)
@@ -359,9 +346,7 @@ export default class FileSystem {
     async updateEntity(entity) {
 
         return new Promise(resolve => {
-            if (!fs.existsSync(this.path + '\\logic'))
-                fs.mkdir(this.path + '\\logic', () => null)
-            fs.writeFile(this.path + '\\logic\\' + entity.id + '.entity', JSON.stringify(entity), (e) => {
+            fs.writeFile(resolvePath(this.path + '\\logic\\' + entity.id + '.entity'), JSON.stringify(entity), (e) => {
                 resolve()
             })
         })
@@ -373,7 +358,7 @@ export default class FileSystem {
 
                 if (meta)
 
-                    fs.writeFile(this.path + '\\.meta', JSON.stringify(meta), () => {
+                    fs.writeFile(resolvePath(this.path + '\\.meta'), JSON.stringify(meta), () => {
                         resolve()
                     })
 
@@ -387,7 +372,7 @@ export default class FileSystem {
                     delete sett.type
                     delete sett.data
 
-                    fs.writeFile(this.path + '\\.settings', JSON.stringify(sett), () => {
+                    fs.writeFile(resolvePath(this.path + '\\.settings'), JSON.stringify(sett), () => {
                         resolve()
                     })
                 } else
@@ -405,7 +390,7 @@ export default class FileSystem {
                 let pending = list.length;
                 if (!pending) return done(results);
                 list.forEach((file) => {
-                    file = path.resolve(dir, file);
+                    file = pathRequire.resolve(dir, file);
                     fs.stat(file, (err, stat) => {
                         results.push(file);
                         if (stat && stat.isDirectory()) {
@@ -430,7 +415,7 @@ export default class FileSystem {
         let res = []
         let files = fs.readdirSync(startPath);
         for (let i = 0; i < files.length; i++) {
-            let filename = path.join(startPath, files[i]);
+            let filename = pathRequire.join(startPath, files[i]);
             let stat = fs.lstatSync(filename);
             if (stat.isDirectory())
                 res.push(...this.fromDirectory(filename, extension))
@@ -449,7 +434,7 @@ export default class FileSystem {
         let res = []
         let files = fs.readdirSync(startPath);
         for (let i = 0; i < files.length; i++) {
-            let filename = path.join(startPath, files[i]);
+            let filename = pathRequire.join(startPath, files[i]);
             let stat = fs.lstatSync(filename);
             if (stat.isDirectory())
                 res.push(filename)
@@ -492,7 +477,7 @@ export default class FileSystem {
     }
 
     async rename(from, to) {
-        const fromResolved = path.resolve(from)
+        const fromResolved = pathRequire.resolve(from)
 
         let newRegistry = await this.readRegistry()
 
@@ -550,7 +535,6 @@ export default class FileSystem {
                     ]
                     Promise.all(promises)
                         .then((errors) => {
-
                             rootResolve()
                         })
                 } else
@@ -561,13 +545,13 @@ export default class FileSystem {
     }
 
     async updateRegistry(from, to, registryData) {
-        const assetsResolved = path.resolve(this.path + '\\assets\\')
-        const fromResolved = path.resolve(from).replace(assetsResolved, '')
-        const toResolved = path.resolve(to)
+        const assetsResolved = pathRequire.resolve(this.path + '\\assets\\')
+        const fromResolved = pathRequire.resolve(from).replace(assetsResolved, '')
+        const toResolved = pathRequire.resolve(to)
 
         return new Promise(resolve => {
             const registryFound = registryData.find(reg => {
-                const regResolved = path.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
+                const regResolved = pathRequire.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
                 return regResolved === fromResolved
             })
             if (registryFound) {
@@ -585,11 +569,11 @@ export default class FileSystem {
     static async createProject(name) {
         return new Promise(resolve => {
             const projectID = randomID(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
-            if (!fs.existsSync(localStorage.getItem('basePath') + 'projects'))
-                fs.mkdirSync(localStorage.getItem('basePath') + 'projects')
+            if (!fs.existsSync(resolvePath(localStorage.getItem('basePath') + 'projects')))
+                fs.mkdirSync(resolvePath(localStorage.getItem('basePath') + 'projects'))
 
             fs.mkdir(projectPath, () => {
-                fs.writeFile(projectPath + '/.meta', JSON.stringify({
+                fs.writeFile(resolvePath(projectPath + '/.meta'), JSON.stringify({
                     id: projectID,
                     name: name,
                     creationDate: new Date().toDateString()

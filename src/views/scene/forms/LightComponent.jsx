@@ -132,6 +132,8 @@ export default function LightComponent(props) {
                         <div className={styles.inputsColumn}>
                             <Range
                                 accentColor={'yellow'}
+                                incrementPercentage={.01}
+                                precision={2}
                                 value={state.indirectAttenuation}
                                 minValue={0}
                                 onFinish={() => props.submit(state.indirectAttenuation, 'attenuation')}
@@ -201,7 +203,7 @@ export default function LightComponent(props) {
                                     props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
 
                             },
-                            ['Constant', 'Linear', 'Quadratic']
+                            true
                         )}
                     </div>
                 </Accordion>

@@ -29,11 +29,11 @@ import CAMERA_TYPES from "../engine/utils/camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 
-export default function useVisualizer(initializePlane, initializeSphere,  centerOnSphere, loadAllMeshes) {
+export default function useVisualizer(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])
-    const [   material,  setMaterial] = useState()
+    const [material, setMaterial] = useState()
     const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
     const [initialized, setInitialized] = useState(false)
     const [canRender, setCanRender] = useState(true)
@@ -68,7 +68,7 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
             if (initializeSphere)
                 initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', dispatchEntities, setMeshes)
 
-            if(loadAllMeshes)
+            if (loadAllMeshes)
                 import('../../static/assets/Cube.json')
                     .then(cubeData => {
                         initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true)
@@ -84,7 +84,6 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
                         new TransformSystem(),
                         new ShadowMapSystem(gpu),
                         deferred,
-                        // new AOSystem(gpu),
                         new PostProcessingSystem(gpu, 1)
                     ]
                     renderer.current.camera.radius = 2
@@ -101,11 +100,10 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
             resizeObserver.observe(document.getElementById(id + '-canvas'))
 
 
-
             if (!canRender)
                 renderer.current?.stop()
             else {
-                if(centerOnSphere) {
+                if (centerOnSphere) {
                     renderer.current.camera.centerOn = [0, 1, 0]
                     renderer.current.camera.updateViewMatrix()
                 }
@@ -141,34 +139,28 @@ export default function useVisualizer(initializePlane, initializeSphere,  center
         id, load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
-        material,  setMaterial,
+        material, setMaterial,
         initialized, renderer: renderer.current,
         canRender, setCanRender
     }
 }
 
 function initializeSkybox(dispatch, gpu) {
-    const newEntity = new Entity(undefined, 'sky')
-    const sky = new SkyboxComponent(undefined, gpu)
+
     const img = new Image()
     img.src = skybox
 
     img.onload = () => {
-        sky.hdrTexture = {blob: img}
+        const newEntity = new Entity(undefined, 'sky')
+        newEntity.addComponent(new SkyboxComponent(undefined, gpu))
+
+        newEntity.components.SkyboxComponent.hdrTexture = {blob: img, imageID: ''}
+
         dispatch({
             type: ENTITY_ACTIONS.ADD,
             payload: newEntity
         })
-        dispatch({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                entityID: newEntity.id,
-                data: sky
-            }
-        })
     }
-
-
 }
 
 function initializeLight(dispatch) {
@@ -196,7 +188,7 @@ export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTrans
 
     })
     setMeshes(prev => [...prev, mesh])
-    if(!noEntity) {
+    if (!noEntity) {
         const newEntity = new Entity(id, name)
         const transformation = new TransformComponent()
 

@@ -23,28 +23,12 @@ export default function Controls(props) {
     if (props.engine.initialized && selected)
         return (
             <div className={styles.controlsWrapper}>
-                <MeshComponent
-                    quickAccess={quickAccess}
-                    load={props.load} setAlert={({message, type}) => alert.pushAlert(message, type)}
-                    submit={(mesh) => {
-                        selected.components.MeshComponent.meshID = mesh
-                        props.engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                entityID:  selected.id,
-                                data: selected.components.MeshComponent,
-                                key: 'MeshComponent'
-                            }
-                        })
-                    }}
-                    engine={props.engine}
-                    selected={selected.components.MeshComponent.meshID}
-                />
-
                 <MaterialComponent
                     quickAccess={quickAccess}
                     meshes={props.engine.meshes}
                     meshID={selected.components.MeshComponent.meshID}
                     submit={(mat) => {
+
                         importMaterial(mat, props.engine, props.load,selected.components.MeshComponent.meshID)
                     }}
                     setAlert={({message, type}) => alert.pushAlert(message, type)}

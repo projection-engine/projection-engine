@@ -252,7 +252,7 @@ const ENTITIES = {
     'PointLightComponent': (entity, k) => new PointLightComponent(entity.components[k].id),
     'SkyboxComponent': (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
-        const foundImage = skyboxes.find(i => i.id === entity.components[k]._imageID)
+        const foundImage = skyboxes.find(i => i.id === entity.components[k].imageID)
         if (foundImage)
             component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
 

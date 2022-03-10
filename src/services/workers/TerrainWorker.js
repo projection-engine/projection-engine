@@ -1,9 +1,8 @@
 import ImageProcessor from "./ImageProcessor";
 import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
 
-const MAX_HEIGHT = 100
 export default class TerrainWorker {
-    static loadHeightMap(imgBlob) {
+    static loadHeightMap(imgBlob, settings) {
         const img = new Image(imgBlob)
         img.src = imgBlob
 
@@ -14,9 +13,9 @@ export default class TerrainWorker {
                 const vertexCount = img.naturalHeight
 
                 const count = vertexCount ** 2
-                const terrainDimensions = img.naturalHeight
+                const terrainDimensions = settings.dimension ? settings.dimension : img.naturalHeight
                 let vertices = new Array(count * 3),
-                    // normals = new Array(count * 3),
+
                     uvs = new Array(count * 2),
                     indices = new Array(6 * (vertexCount - 1) * vertexCount),
                     vertexPointer = 0
@@ -25,7 +24,7 @@ export default class TerrainWorker {
                 for (let i = 0; i < vertexCount; i++) {
                     for (let j = 0; j < vertexCount; j++) {
                         vertices[vertexPointer * 3] = (j / (vertexCount - 1)) * terrainDimensions
-                        vertices[vertexPointer * 3 + 1] = TerrainWorker.sampleTexture(j, i, ctx)
+                        vertices[vertexPointer * 3 + 1] = TerrainWorker.sampleTexture(j, i, ctx, settings.heightScale)
                         vertices[vertexPointer * 3 + 2] = (i / (vertexCount - 1)) * terrainDimensions
 
 
@@ -61,19 +60,20 @@ export default class TerrainWorker {
                     uvs,
                     normals,
                     indices,
-                    tangents
+                    tangents,
+                    heightMap: imgBlob
                 })
             }
         })
 
     }
 
-    static sampleTexture(x, y, ctx) {
+    static sampleTexture(x, y, ctx, heightScale) {
         const [
             r
         ] = ImageProcessor.getPixel(ctx, x, y)
         let height = (r / 255)
-        return height * MAX_HEIGHT
+        return height * heightScale
     }
 
 }

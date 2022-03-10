@@ -7,7 +7,7 @@ import Controls from "./components/Controls";
 
 import useVisualizer, {IDS, initializeMesh} from "../../services/hooks/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import {useContext, useEffect, useMemo} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 
 
 import ControlProvider from "../../components/tabs/components/ControlProvider";
@@ -17,15 +17,18 @@ import EVENTS from "../../services/utils/misc/EVENTS";
 
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
+import updateMeshFile from "./utils/updateMeshFile";
+import skybox from '../../static/sky.jpg'
 
 export default function MeshView(props) {
-    const engine = useVisualizer(false, false)
+    const engine = useVisualizer(false, false, false, false)
     const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
     const type = props.file.type
+    const controlProvider = useContext(ControlProvider)
+    const [meshData, setMeshData] = useState({})
 
     useEffect(() => {
-        console.log(type)
         if (engine.initialized && type !== VIEWER_TYPES.TERRAIN) {
             load.pushEvent(EVENTS.LOADING_VIEWPORT)
             quickAccess.fileSystem.readRegistryFile(props.file.registryID)
@@ -39,30 +42,24 @@ export default function MeshView(props) {
         }
     }, [engine.initialized])
 
-    const controlProvider = useContext(ControlProvider)
-    const options = useMemo(() => {
-        return [
-            {
-                label: 'Save',
-                icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
-                onClick: () => {
-
-                }
-            },
-            {
-                label: 'Save & close',
-                icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
-                onClick: () => {
-
-                }
-            }
-        ]
-    }, [engine.entities, engine.materials])
-
     useEffect(() => {
         if (controlProvider.tab === props.index) {
             controlProvider.setTabAttributes(
-                options,
+                [ {
+                    label: 'Save',
+                    icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
+                    onClick: () => {
+                        updateMeshFile(quickAccess.fileSystem, props.file.registryID, meshData)
+                    }
+                },
+                    {
+                        label: 'Save & close',
+                        icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
+                        onClick: () => {
+                            updateMeshFile(quickAccess.fileSystem, props.file.registryID, meshData)
+                            props.handleClose()
+                        }
+                    }],
                 props.file.name,
                 <span
                     style={{fontSize: '1.2rem'}}
@@ -77,25 +74,27 @@ export default function MeshView(props) {
                 props.index
             )
         }
-    }, [options, controlProvider.tab])
+    }, [meshData, controlProvider.tab])
+
 
     return (
         <div className={styles.wrapper}>
+
             <div style={{width: '100%', height: '100%'}}>
                 <Viewport allowDrop={false} id={engine.id} engine={engine} renderer={engine.renderer}/>
             </div>
             <ResizableBar type={'width'}/>
-            <Controls engine={engine} load={load}/>
+            <Controls meshData={meshData} setMeshData={setMeshData} engine={engine} load={load}/>
         </div>
     )
 }
 MeshView.propTypes = {
+    handleClose: PropTypes.func,
     index: PropTypes.number.isRequired,
     file: PropTypes.shape({
         fileID: PropTypes.string,
         name: PropTypes.string,
         blob: PropTypes.any,
         type: PropTypes.oneOf(['mesh', 'terrain']),
-    }),
-    setAlert: PropTypes.func
+    })
 }
