@@ -216,8 +216,7 @@ export default class ProjectLoader {
 
             material.emissive,
             material.opacity,
-            material.subSurface,
-            material.variant
+            material.tiling
         ).catch()
         return newMat
     }

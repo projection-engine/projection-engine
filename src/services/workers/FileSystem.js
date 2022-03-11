@@ -132,6 +132,7 @@ export default class FileSystem {
 
     async importFile(file, filePath, asHeightMap, terrainSettings) {
         return new Promise(resolve => {
+
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
             const fileID = randomID()
             switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {

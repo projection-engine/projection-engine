@@ -223,7 +223,7 @@ export default class ImageProcessor {
             }).then(blob => {
                 FileBlob.loadAsString(blob, false, true)
                     .then(parsed => {
-                        console.log(parsed)
+
                         resolve(parsed)
                     })
             })
@@ -258,7 +258,7 @@ export default class ImageProcessor {
                     }).then(blob => {
                         FileBlob.loadAsString(blob, false, true)
                             .then(parsed => {
-                                console.log(parsed)
+
                                 resolve(parsed)
                             })
                     })
@@ -317,7 +317,7 @@ export default class ImageProcessor {
                 }).then(blob => {
                     FileBlob.loadAsString(blob, false, true)
                         .then(parsed => {
-                            console.log(parsed)
+
                             resolve(parsed)
                         })
                 })

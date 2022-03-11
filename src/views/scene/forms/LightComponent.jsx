@@ -34,24 +34,33 @@ export default function LightComponent(props) {
         setState(getNewState())
     }, [props.selected])
 
-    const getInputs = (key, values, onChange, labels) => {
+    const getInputs = (key, values, onChange, highPrecision) => {
         return (
             <>
                 <Range
                     accentColor={'red'}
-                    label={labels[0]}
+
+                    incrementPercentage={highPrecision ? .01 : undefined}
+                    precision={highPrecision ? 2 : undefined}
+
                     value={state[key][values[0]]}
                     onFinish={() => onChange(undefined, values[0], true)}
                     handleChange={e => onChange(parseFloat(e), values[0], false)}/>
                 <Range
                     accentColor={'green'}
-                    label={labels[1]}
+
+                    incrementPercentage={highPrecision ? .01 : undefined}
+                    precision={highPrecision ? 2 : undefined}
+
                     value={state[key][values[1]]}
                     onFinish={() => onChange(undefined, values[1], true)}
                     handleChange={e => onChange(parseFloat(e), values[1], false)}/>
                 <Range
                     accentColor={'blue'}
-                    label={labels[2]}
+
+                    incrementPercentage={highPrecision ? .01 : undefined}
+                    precision={highPrecision ? 2 : undefined}
+
                     value={state[key][values[2]]}
                     onFinish={() => onChange(undefined, values[2], true)}
                     handleChange={e => onChange(parseFloat(e), values[2], false)}/>
@@ -96,7 +105,7 @@ export default function LightComponent(props) {
                                 } else
                                     props.submit([state.placement.x, state.placement.y, state.placement.z], k)
                             },
-                            ['x', 'y', 'z']
+
                         )}
                     </div>
                 </div>

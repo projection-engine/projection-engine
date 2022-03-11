@@ -42,6 +42,8 @@ export default function TransformComponent(props) {
                         accentColor={'red'}
                         label={'x'}
                         value={state.xT}
+                        precision={3}
+                        incrementPercentage={.01}
                         onFinish={() => props.submitTranslation('x', state.xT)}
                         handleChange={e => {
                             props.selected.translation = [parseFloat(e), props.selected.translation[1], props.selected.translation[2]]
@@ -52,6 +54,8 @@ export default function TransformComponent(props) {
                         metric={'m'}
                         accentColor={'#00ff00'}
                         label={'y'}
+                        precision={3}
+                        incrementPercentage={.01}
                         value={state.yT}
                         onFinish={() => props.submitTranslation('y', state.yT)}
                         handleChange={e => {
@@ -64,6 +68,8 @@ export default function TransformComponent(props) {
                         metric={'m'}
                         accentColor={'#0095ff'}
                         label={'z'}
+                        precision={3}
+                        incrementPercentage={.01}
                         value={state.zT}
                         onFinish={() => props.submitTranslation('z', state.zT)}
                         handleChange={e => {
@@ -80,38 +86,44 @@ export default function TransformComponent(props) {
                         accentColor={'red'}
                         label={'x'}
                         value={state.xS}
-                        minValue={0.1}
+                        minValue={0.00001}
+                        precision={3}
+                        incrementPercentage={.01}
                         onFinish={() => props.submitScaling('x', state.xS)}
                         handleChange={e => {
-                            if (parseFloat(e) > 0.1) {
-                                props.selected.scaling = [parseFloat(e), props.selected.scaling[1], props.selected.scaling[2]]
-                                setState({...state, xS: parseFloat(e)})
-                            }
+
+                                props.selected.scaling = [e, props.selected.scaling[1], props.selected.scaling[2]]
+                                setState({...state, xS: e})
+
                         }}
                     />
                     <Range
                         accentColor={'#00ff00'}
                         label={'y'}
                         value={state.yS}
-                        minValue={0.1}
+                        minValue={0.00001}
+                        precision={3}
+                        incrementPercentage={.01}
                         onFinish={() => props.submitScaling('y', state.yS)}
                         handleChange={e => {
-                            if (parseFloat(e) > 0.1) {
-                                props.selected.scaling = [props.selected.scaling[0], parseFloat(e), props.selected.scaling[2]]
-                                setState({...state, yS: parseFloat(e)})
-                            }
+
+                                props.selected.scaling = [props.selected.scaling[0], e, props.selected.scaling[2]]
+                                setState({...state, yS: e})
+
                         }}/>
                     <Range
                         accentColor={'#0095ff'}
                         label={'z'}
                         value={state.zS}
-                        minValue={0.1}
+                        minValue={0.00001}
+                        precision={3}
+                        incrementPercentage={.01}
                         onFinish={() => props.submitScaling('z', state.zS)}
                         handleChange={e => {
-                            if (parseFloat(e) > 0.1) {
-                                props.selected.scaling = [props.selected.scaling[0], props.selected.scaling[1], parseFloat(e)]
-                                setState({...state, zS: parseFloat(e)})
-                            }
+
+                                props.selected.scaling = [props.selected.scaling[0], props.selected.scaling[1], e]
+                                setState({...state, zS: e})
+
                         }}
                     />
                 </div>

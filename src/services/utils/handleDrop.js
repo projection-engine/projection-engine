@@ -68,7 +68,10 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                             m.material.roughness,
                             m.material.normal,
                             m.material.height,
-                            m.material.ao
+                            m.material.ao,
+                            m.material.emissive,
+                            m.material.opacity,
+                            m.material.tiling
                         ).catch()
                         return newMaterial
                     } else

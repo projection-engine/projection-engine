@@ -17,6 +17,9 @@ export default function importMaterial(mat, engine, load) {
             mat.blob.normal,
             mat.blob.height,
             mat.blob.ao,
+            mat.blob.emissive,
+            mat.blob.opacity,
+            mat.blob.tiling
         ).then(() => {
             if(engine.setMaterials)
                 engine.setMaterials(prev => {
