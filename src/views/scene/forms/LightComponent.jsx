@@ -26,7 +26,9 @@ export default function LightComponent(props) {
             },
             size: props.selected.size,
             indirectAttenuation: props.selected.attenuation,
-            lpvSamples: props.selected.lpvSamples
+            lpvSamples: props.selected.lpvSamples,
+            zNear: props.selected.zNear,
+            zFar: props.selected.zFar
         }
     }
     const [state, setState] = useState(getNewState())
@@ -219,6 +221,41 @@ export default function LightComponent(props) {
                 :
                 null
             }
+
+            <Accordion>
+                <AccordionSummary className={styles.summary}>
+                    Planes
+                </AccordionSummary>
+
+                <div className={styles.inputs}>
+                    <Range
+                        accentColor={'red'}
+                        value={state.zFar}
+                        precision={3}
+                        incrementPercentage={.01}
+                        onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
+                        handleChange={e => setState(prev => {
+                            return {
+                                ...prev,
+                                zFar: e
+                            }
+                        })}
+                    />
+                    <Range
+                        accentColor={'green'}
+                        value={state.zNear}
+                        precision={3}
+                        incrementPercentage={.01}
+                        onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
+                        handleChange={e => setState(prev => {
+                            return {
+                                ...prev,
+                                zNear: e
+                            }
+                        })}/>
+
+                </div>
+            </Accordion>
             <Accordion>
                 <AccordionSummary className={styles.summary}>
                     Light color

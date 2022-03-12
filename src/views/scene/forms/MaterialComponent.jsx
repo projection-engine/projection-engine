@@ -15,7 +15,7 @@ export default function MaterialComponent(props) {
 
     useEffect(() => {
         setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === props.materialID))
-    }, [])
+    }, [props.materialID])
 
     return (
         <Accordion>
