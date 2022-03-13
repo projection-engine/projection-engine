@@ -41,7 +41,7 @@ export default function LightComponent(props) {
             <>
                 <Range
                     accentColor={'red'}
-
+                    metric={'x'}
                     incrementPercentage={highPrecision ? .01 : undefined}
                     precision={highPrecision ? 2 : undefined}
 
@@ -50,7 +50,7 @@ export default function LightComponent(props) {
                     handleChange={e => onChange(parseFloat(e), values[0], false)}/>
                 <Range
                     accentColor={'green'}
-
+                    metric={'y'}
                     incrementPercentage={highPrecision ? .01 : undefined}
                     precision={highPrecision ? 2 : undefined}
 
@@ -59,7 +59,7 @@ export default function LightComponent(props) {
                     handleChange={e => onChange(parseFloat(e), values[1], false)}/>
                 <Range
                     accentColor={'blue'}
-
+                    metric={'z'}
                     incrementPercentage={highPrecision ? .01 : undefined}
                     precision={highPrecision ? 2 : undefined}
 
@@ -78,41 +78,65 @@ export default function LightComponent(props) {
                 </AccordionSummary>
                 <div className={styles.inputsColumn}>
                     <div className={styles.inputs}>
-                        {getInputs(
-                            'placement',
-                            ['x', 'y', 'z'],
-                            (e, field, finalSubmit) => {
-                                const k = props.type === 'PointLightComponent' ? 'position' : 'direction'
-                                if (!finalSubmit) {
-                                    switch (field) {
-                                        case 'x':
-                                            props.selected[k] = [e, props.selected[k][1], props.selected[k][2]]
-                                            break
-                                        case 'y':
-                                            props.selected[k] = [props.selected[k][0], e, props.selected[k][2]]
-                                            break
-                                        case 'z':
-                                            props.selected[k] = [props.selected[k][0], props.selected[k][1], e]
-                                            break
-                                    }
-                                    setState(prev => {
-
-                                        return {
-                                            ...prev, placement: {
-                                                ...prev.placement,
-                                                [field]: e
-                                            }
+                        <Range
+                            accentColor={'red'}
+                            metric={'x'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.placement.x}
+                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                            handleChange={e => {
+                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [parseFloat(e), state.placement.y, state.placement.z]
+                                setState(prev => {
+                                    return {
+                                        ...prev, placement: {
+                                            ...prev.placement,
+                                            x: parseFloat(e)
                                         }
-                                    })
-                                } else
-                                    props.submit([state.placement.x, state.placement.y, state.placement.z], k)
-                            },
+                                    }
+                                })
+                            }}/>
+                        <Range
+                            accentColor={'green'}
+                            metric={'y'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.placement.y}
+                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                            handleChange={e => {
+                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, parseFloat(e), state.placement.z]
+                                setState(prev => {
+                                    return {
+                                        ...prev, placement: {
+                                            ...prev.placement,
+                                            y: parseFloat(e)
+                                        }
+                                    }
+                                })
+                            }}/>
+                        <Range
+                            accentColor={'blue'}
+                            metric={'z'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.placement.z}
+                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                            handleChange={e => {
+                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, state.placement.y,parseFloat(e)]
+                                setState(prev => {
+                                    return {
+                                        ...prev, placement: {
+                                            ...prev.placement,
+                                            z: parseFloat(e)
+                                        }
+                                    }
+                                })
+                            }}/>
 
-                        )}
                     </div>
                 </div>
             </Accordion>
-            {props.type === 'DirectionalLightComponent'  || props.type === 'SkylightComponent'?
+            {props.type === 'DirectionalLightComponent' || props.type === 'SkylightComponent' ?
                 <Accordion className={styles.fieldset}>
                     <AccordionSummary className={styles.summary}>
                         Size
@@ -134,15 +158,16 @@ export default function LightComponent(props) {
                 :
                 null
             }
-            {props.type === 'SkylightComponent'?
+            {props.type === 'SkylightComponent' ?
                 <>
                     <Accordion className={styles.fieldset}>
                         <AccordionSummary className={styles.summary}>
-                            Indirect light attenuation
+                            GI
                         </AccordionSummary>
                         <div className={styles.inputsColumn}>
+                            <label className={styles.label} style={{marginBottom: '4px'}}>Attenuation</label>
                             <Range
-                                accentColor={'yellow'}
+                                accentColor={'red'}
                                 incrementPercentage={.01}
                                 precision={2}
                                 value={state.indirectAttenuation}
@@ -154,28 +179,24 @@ export default function LightComponent(props) {
                                         indirectAttenuation: parseFloat(e)
                                     }
                                 })}/>
+
+                            <label className={styles.label} style={{marginBottom: '4px'}}>Samples</label>
+                            <Range
+                                integer={true}
+                                accentColor={'green'}
+                                value={state.lpvSamples}
+                                minValue={1}
+                                maxValue={128}
+                                onFinish={() => props.submit(state.lpvSamples, 'lpvSamples')}
+                                handleChange={e => setState(prev => {
+                                    return {
+                                        ...prev,
+                                        lpvSamples: parseInt(e)
+                                    }
+                                })}/>
                         </div>
                     </Accordion>
-                <Accordion className={styles.fieldset}>
-                    <AccordionSummary className={styles.summary}>
-                        Propagation samples
-                    </AccordionSummary>
-                    <div className={styles.inputsColumn}>
-                        <Range
-                            integer={true}
-                            accentColor={'yellow'}
-                            value={state.lpvSamples}
-                            minValue={1}
-                            maxValue={128}
-                            onFinish={() => props.submit(state.lpvSamples, 'lpvSamples')}
-                            handleChange={e => setState(prev => {
-                                return {
-                                    ...prev,
-                                    lpvSamples: parseInt(e)
-                                }
-                            })}/>
-                    </div>
-                </Accordion>
+
                 </>
                 :
                 null
@@ -186,36 +207,57 @@ export default function LightComponent(props) {
                         Light attenuation
                     </AccordionSummary>
                     <div className={styles.inputs}>
-                        {getInputs(
-                            'attenuation',
-                            ['x', 'y', 'z'],
-                            (e, field, finalSubmit) => {
-                                if (!finalSubmit) {
-                                    switch (field) {
-                                        case 'x':
-                                            props.selected.attenuation[0] = e
-                                            break
-                                        case 'y':
-                                            props.selected.attenuation[1] = e
-                                            break
-                                        case 'z':
-                                            props.selected.attenuation[2] = e
-                                            break
-                                    }
-                                    setState(prev => {
-                                        return {
-                                            ...prev, attenuation: {
-                                                ...prev.attenuation,
-                                                [field]: e
-                                            }
+                        <Range
+                            accentColor={'red'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.attenuation.x}
+                            onFinish={() => props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')}
+                            handleChange={e => {
+                                props.selected.attenuation[0] = parseFloat(e)
+                                setState(prev => {
+                                    return {
+                                        ...prev, attenuation: {
+                                            ...prev.attenuation,
+                                            x: parseFloat(e)
                                         }
-                                    })
-                                } else
-                                    props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
-
-                            },
-                            true
-                        )}
+                                    }
+                                })
+                            }}/>
+                        <Range
+                            accentColor={'green'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.attenuation.y}
+                            onFinish={() => props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')}
+                            handleChange={e => {
+                                props.selected.attenuation[1] = parseFloat(e)
+                                setState(prev => {
+                                    return {
+                                        ...prev, attenuation: {
+                                            ...prev.attenuation,
+                                            y: parseFloat(e)
+                                        }
+                                    }
+                                })
+                            }}/>
+                        <Range
+                            accentColor={'blue'}
+                            incrementPercentage={.01}
+                            precision={2}
+                            value={state.attenuation.z}
+                            onFinish={() => props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')}
+                            handleChange={e => {
+                                props.selected.attenuation[2] = parseFloat(e)
+                                setState(prev => {
+                                    return {
+                                        ...prev, attenuation: {
+                                            ...prev.attenuation,
+                                            z: parseFloat(e)
+                                        }
+                                    }
+                                })
+                            }}/>
                     </div>
                 </Accordion>
                 :
@@ -231,6 +273,7 @@ export default function LightComponent(props) {
                     <Range
                         accentColor={'red'}
                         value={state.zFar}
+                        metric={'Far'}
                         precision={3}
                         incrementPercentage={.01}
                         onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
@@ -244,6 +287,7 @@ export default function LightComponent(props) {
                     <Range
                         accentColor={'green'}
                         value={state.zNear}
+                        metric={'Near'}
                         precision={3}
                         incrementPercentage={.01}
                         onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
@@ -258,7 +302,7 @@ export default function LightComponent(props) {
             </Accordion>
             <Accordion>
                 <AccordionSummary className={styles.summary}>
-                    Light color
+                    Color
                 </AccordionSummary>
                 <div className={styles.inputs} style={{justifyContent: 'space-between'}}>
                     <ColorPicker

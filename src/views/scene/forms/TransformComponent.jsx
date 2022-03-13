@@ -35,7 +35,7 @@ export default function TransformComponent(props) {
                 Transformation
             </AccordionSummary>
             <div className={styles.inputsColumn}>
-                <div className={styles.label} style={{marginBottom: '4px'}}>Translation</div>
+                <label className={styles.label} style={{marginBottom: '4px'}}>Translation</label>
                 <div className={styles.inputs} style={{padding: 0}}>
                     <Range
                         metric={'m'}
@@ -80,7 +80,7 @@ export default function TransformComponent(props) {
                 </div>
             </div>
             <div className={styles.inputsColumn}>
-                <div className={styles.label} style={{marginBottom: '4px'}}>Scale</div>
+                <label className={styles.label} style={{marginBottom: '4px'}}>Scale</label>
                 <div className={styles.inputs} style={{padding: 0}}>
                     <Range
                         accentColor={'red'}
@@ -129,7 +129,7 @@ export default function TransformComponent(props) {
                 </div>
             </div>
             <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
-                <div className={styles.label} style={{marginBottom: '4px'}}>Rotation</div>
+                <label className={styles.label} style={{marginBottom: '4px'}}>Rotation</label>
                 <div className={styles.inputs} style={{padding: 0}}>
                     <Range
                         accentColor={'red'}

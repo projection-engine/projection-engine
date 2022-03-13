@@ -70,32 +70,38 @@ export default function useForm(
                 return (
                     <MaterialComponent
                         quickAccess={quickAccess}
-                        materialID={selected.components.MaterialComponent.materialID}
-                        submit={(mat) => {
-                            if(mat){
-                                importMaterial(mat, engine, load)
+                        selected={selected.components.MaterialComponent}
+                        submitTiling={(tiling, allow) => {
+                            const clone = cloneClass(selected.components.MaterialComponent)
+                            if(!allow) {
+                                clone.tiling = tiling
 
-                                const clone = cloneClass(selected.components.MaterialComponent)
+                            }
+                            else
+                                clone.overrideTiling = allow
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selectedElement,
+                                    data: clone,
+                                    key: 'MaterialComponent'
+                                }
+                            })
+                        }}
+                        submit={(mat) => {
+                            const clone = cloneClass(selected.components.MaterialComponent)
+                            if(mat) {
+                                importMaterial(mat, engine, load)
                                 clone.materialID = mat.id
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        data: clone,
-                                        key: 'MaterialComponent'
-                                    }
-                                })
                             }
-                            else{
-                                const clone = cloneClass(selected.components.MaterialComponent)
+                            else
                                 clone.materialID = undefined
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: selectedElement,
-                                        data: clone,
-                                        key: 'MaterialComponent'
-                                    }
-                                })
-                            }
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selectedElement,
+                                    data: clone,
+                                    key: 'MaterialComponent'
+                                }
+                            })
                         }}
                         setAlert={setAlert}
 
