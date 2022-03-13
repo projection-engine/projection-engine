@@ -164,35 +164,15 @@ export default function useForm(
             case 'CubeMapComponent': {
                 return (
                     <CubeMapComponent
-                        type={key}
                         selected={selected.components[key]}
-                        quickAccess={quickAccess}
-                        submitPlacement={(axis, data) => {
-                            const k = 'position'
-                            const component = selected.components[key]
-                            const prev = component[k]
-                            component[k] = [
-                                axis === 'x' ? data : prev[0],
-                                axis === 'y' ? data : prev[1],
-                                axis === 'z' ? data : prev[2]
-                            ]
+                        submit={(data, key) => {
+                            selected.components.CubeMapComponent[key] = data
                             engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+                                payload: {
                                     entityID: selectedElement,
-                                    key: key,
-                                    data: component
-                                }
-                            })
-                        }}
-                        submitData={(k, data) => {
-                            const component = selected.components[key]
-                            component[k] = data
-
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
-                                    key: key,
-                                    data: component
+                                    data: selected.components.CubeMapComponent,
+                                    key: 'CubeMapComponent'
                                 }
                             })
                         }}

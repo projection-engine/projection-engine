@@ -36,45 +36,11 @@ export default function LightComponent(props) {
         setState(getNewState())
     }, [props.selected])
 
-    const getInputs = (key, values, onChange, highPrecision) => {
-        return (
-            <>
-                <Range
-                    accentColor={'red'}
-                    metric={'x'}
-                    incrementPercentage={highPrecision ? .01 : undefined}
-                    precision={highPrecision ? 2 : undefined}
-
-                    value={state[key][values[0]]}
-                    onFinish={() => onChange(undefined, values[0], true)}
-                    handleChange={e => onChange(parseFloat(e), values[0], false)}/>
-                <Range
-                    accentColor={'green'}
-                    metric={'y'}
-                    incrementPercentage={highPrecision ? .01 : undefined}
-                    precision={highPrecision ? 2 : undefined}
-
-                    value={state[key][values[1]]}
-                    onFinish={() => onChange(undefined, values[1], true)}
-                    handleChange={e => onChange(parseFloat(e), values[1], false)}/>
-                <Range
-                    accentColor={'blue'}
-                    metric={'z'}
-                    incrementPercentage={highPrecision ? .01 : undefined}
-                    precision={highPrecision ? 2 : undefined}
-
-                    value={state[key][values[2]]}
-                    onFinish={() => onChange(undefined, values[2], true)}
-                    handleChange={e => onChange(parseFloat(e), values[2], false)}/>
-            </>
-        )
-    }
-
     return (
         <>
             <Accordion className={styles.fieldset}>
                 <AccordionSummary className={styles.summary}>
-                    {props.type === 'PointLightComponent' ? 'Position' : 'Direction'}
+                    {props.type === 'PointLightComponent' ? 'Placement' : 'Direction'}
                 </AccordionSummary>
                 <div className={styles.inputsColumn}>
                     <div className={styles.inputs}>

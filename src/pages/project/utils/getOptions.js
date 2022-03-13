@@ -28,5 +28,14 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             }
 
         },
+        {
+            group: 'b',
+            label: 'Rebuild cubemaps',
+            icon: <span className={'material-icons-round'}
+                        style={{fontSize: '1.2rem'}}>refresh</span>,
+            onClick: async () => engine.renderer.recompiled = false
+
+
+        }
     ]
 }

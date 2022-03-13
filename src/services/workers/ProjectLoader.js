@@ -14,6 +14,7 @@ import MaterialInstance from "../engine/instances/MaterialInstance";
 import MeshInstance from "../engine/instances/MeshInstance";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 import SkylightComponent from "../engine/ecs/components/SkyLightComponent";
+import CubeMapComponent from "../engine/ecs/components/CubeMapComponent";
 
 
 export default class ProjectLoader {
@@ -262,6 +263,7 @@ const ENTITIES = {
     'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id),
     'FolderComponent': (entity, k) => new FolderComponent(entity.components[k].id),
     'PhysicsComponent': (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
+    'CubeMapComponent': (entity, k) => new CubeMapComponent(entity.components[k].id),
     'SphereCollider': (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
 
 }
