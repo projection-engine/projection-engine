@@ -32,18 +32,24 @@ export default function Project(props) {
     }
     const settings = useSettings()
     const load = useContext(LoaderProvider)
-    const engine = useEngine(props.id, executingAnimation, settings, load)
+    const [loading, setLoading] = useState({
+        data: true,
+        initialized: false
+    })
+
+    const engine = useEngine(props.id, executingAnimation, settings, load, loading.data === false)
 
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)
-    const [initialized, setInitialized] = useState(false)
-    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (engine.gpu && !initialized && !loading) {
-            setLoading(true)
+        if (engine.gpu && !loading.initialized) {
+            setLoading({
+                data: true,
+                initialized: true
+            })
             load.pushEvent(EVENTS.PROJECT_DATA)
             ProjectLoader
                 .loadProject(engine.gpu, quickAccess.fileSystem)
@@ -57,13 +63,19 @@ export default function Project(props) {
                         })
                     if (res.meta)
                         settings.name = res.meta.data.name
-                    console.log( res.meta.data.name)
+
                     load.finishEvent(EVENTS.PROJECT_DATA)
-                    setInitialized(true)
+                    setLoading({
+                        data: false,
+                        initialized: true
+                    })
                 })
                 .catch(e => {
                     load.finishEvent(EVENTS.PROJECT_DATA)
-                    setInitialized(true)
+                    setLoading({
+                        data: false,
+                        initialized: true
+                    })
                 })
         }
     }, [engine.gpu])

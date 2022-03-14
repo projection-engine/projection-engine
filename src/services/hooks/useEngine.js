@@ -14,7 +14,7 @@ import SYSTEMS from "../engine/utils/misc/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
 
 
-export default function useEngine(id, canExecutePhysicsAnimation, settings, load) {
+export default function useEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
     const [selected, setSelected] = useState([])
@@ -23,7 +23,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [finished, setFinished] = useState(false)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [initialized, setInitialized] = useState(false)
-
 
     useEffect(() => {
         if (id) {
@@ -93,17 +92,15 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [settings.resolutionMultiplier, initialized])
 
     useEffect(() => {
+
         if (gpu && !initialized && id) {
-
             renderer.current = new Engine(id, gpu)
-
             setInitialized(true)
             updateSystems(() => {
                 setFinished(true)
             })
 
-        } else if (gpu && id && initialized && finished) {
-
+        } else if (finished && canStart) {
             resizeObserver = new ResizeObserver(() => {
                 if (gpu && initialized)
                     renderer.current.camera.aspectRatio = gpu.canvas.width / gpu.canvas.height
@@ -117,11 +114,9 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                 renderer.current?.start(entities, materials, meshes, {
                     canExecutePhysicsAnimation,
                     selected, setSelected,
-
                     ...settings
                 })
         }
-
         return () => {
             renderer.current?.stop()
         }
@@ -130,7 +125,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         selected, setSelected,
         materials, meshes,
         initialized, entities, gpu, id, canRender,
-        settings, finished
+        settings, finished, canStart
     ])
 
 

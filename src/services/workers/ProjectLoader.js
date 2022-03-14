@@ -15,6 +15,7 @@ import MeshInstance from "../engine/instances/MeshInstance";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 import SkylightComponent from "../engine/ecs/components/SkyLightComponent";
 import CubeMapComponent from "../engine/ecs/components/CubeMapComponent";
+import CubeMapInstance from "../engine/instances/CubeMapInstance";
 
 
 export default class ProjectLoader {
@@ -184,7 +185,9 @@ export default class ProjectLoader {
                             let fileParsed
                             try {
                                 fileParsed = JSON.parse(fileData)
-                                r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
+                                    .then(mat => r(mat))
+
                             } catch (e) {
                                 r()
                             }
@@ -197,7 +200,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static mapMaterial(material, gpu, id) {
+    static async mapMaterial(material, gpu, id) {
         const heightIsObject = typeof material.height === 'object'
         const newMat = new MaterialInstance(
             gpu,
@@ -207,7 +210,7 @@ export default class ProjectLoader {
             heightIsObject ? material.height.layers : undefined,
             material.variant
         )
-        newMat.initializeTextures(
+        await newMat.initializeTextures(
             material.albedo,
             material.metallic,
             material.roughness,
@@ -218,7 +221,7 @@ export default class ProjectLoader {
             material.emissive,
             material.opacity,
             material.tiling
-        ).catch()
+        )
         return newMat
     }
 
@@ -226,15 +229,10 @@ export default class ProjectLoader {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
             let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu)
-            if (k === 'SpotLightComponent' || k === 'PointLightComponent')
-                component.position = entity.components[k]._position
-            if (k === 'SpotLightComponent' || k === 'DirectionalLightComponent' || k === 'SkylightComponent')
-                component.direction = entity.components[k]._direction
-
             if (component) {
                 if (!(component instanceof SkyboxComponent))
                     Object.keys(entity.components[k]).forEach(oK => {
-                        if (!oK.includes("_") && oK !== 'gpu')
+                        if (!oK.includes("__"))
                             component[oK] = entity.components[k][oK]
                     })
                 parsedEntity.components[k] = component
@@ -263,7 +261,12 @@ const ENTITIES = {
     'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id),
     'FolderComponent': (entity, k) => new FolderComponent(entity.components[k].id),
     'PhysicsComponent': (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
-    'CubeMapComponent': (entity, k) => new CubeMapComponent(entity.components[k].id),
+    'CubeMapComponent': (entity, k, meshes, skyboxes, gpu) => {
+        const component = new CubeMapComponent(entity.components[k].id)
+        component.cubeMap = new CubeMapInstance(gpu, component.resolution)
+
+        return component
+    },
     'SphereCollider': (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
 
 }
