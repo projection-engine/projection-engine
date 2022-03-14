@@ -7,11 +7,14 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import {LoaderProvider} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
+import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
+import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
+import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -80,6 +83,25 @@ export default function SceneView(props) {
         load
     )
 
+    const options = useMemo(() => {
+        return [
+            {
+                label: 'Point light',
+                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>lightbulb</span>,
+                instance: () => new PointLightComponent()
+            },
+            {
+                label: 'Directional light',
+                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>light_mode</span>,
+                instance: () => new DirectionalLightComponent()
+            },
+            {
+                label: 'Sky light',
+                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>light_mode</span>,
+                instance: () => new SkylightComponent()
+            },
+        ]
+    }, [props.engine.entities])
     return (
         <div className={styles.wrapper}>
 
@@ -171,15 +193,39 @@ export default function SceneView(props) {
                     ids={props.engine.entities}
                     selected={props.engine.selected}
                     nodes={data}
-                    handleRename={(treeNode, newName) => props.engine.dispatchEntities({
-                        type: ENTITY_ACTIONS.UPDATE,
-                        payload: {entityID: treeNode.id, key: 'name', data: newName}
-                    })}
+                    handleRename={(treeNode, newName) => {
+                        props.engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.UPDATE,
+                            payload: {entityID: treeNode.id, key: 'name', data: newName}
+                        })
+                    }}
                 />
             </div>
             <ResizableBar type={'height'}/>
             <div className={styles.wrapperContent}>
-                {currentForm}
+                {currentForm.open ? (
+                    <div className={styles.header}>
+                        <label>{currentForm.name}</label>
+                        <Dropdown styles={{height: '20px', width: '20px'}} className={styles.button} variant={"outlined"}>
+                            <DropdownOptions>
+                                {options.map((o, i) => (
+                                    <React.Fragment key={i + '-option-scene'}>
+                                        <DropdownOption option={{
+                                            ...o,
+                                            onClick: () => {
+                                                props.engine.dispatchEntities({
+                                                    type: ENTITY_ACTIONS.ADD_COMPONENT,
+                                                    payload: {entityID: currentForm.selected,data: o.instance()}
+                                                })
+                                            }
+                                        }}/>
+                                    </React.Fragment>
+                                ))}
+                            </DropdownOptions>
+                        </Dropdown>
+                    </div>
+                ) : null}
+                {currentForm.content}
             </div>
         </div>
     )

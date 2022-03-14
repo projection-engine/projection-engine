@@ -49,8 +49,12 @@ export default function useForm(
                         <MeshComponent
                             quickAccess={quickAccess}
                             load={load} setAlert={setAlert}
-                            submit={(mesh) => {
-                                selected.components.MeshComponent.meshID = mesh
+                            submit={(mesh, type) => {
+                                if (!type)
+                                    selected.components.MeshComponent.meshID = mesh
+                                 else
+                                    selected.components.MeshComponent.meshType = mesh
+
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                         entityID: selectedElement,
@@ -60,7 +64,7 @@ export default function useForm(
                                 })
                             }}
                             engine={engine}
-                            selected={selected.components.MeshComponent.meshID}
+                            selected={selected.components.MeshComponent}
                         />
 
                     </>
@@ -73,11 +77,10 @@ export default function useForm(
                         selected={selected.components.MaterialComponent}
                         submitTiling={(tiling, allow) => {
                             const clone = cloneClass(selected.components.MaterialComponent)
-                            if(!allow) {
+                            if (!allow) {
                                 clone.tiling = tiling
 
-                            }
-                            else
+                            } else
                                 clone.overrideTiling = allow
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -89,11 +92,10 @@ export default function useForm(
                         }}
                         submit={(mat) => {
                             const clone = cloneClass(selected.components.MaterialComponent)
-                            if(mat) {
+                            if (mat) {
                                 importMaterial(mat, engine, load)
                                 clone.materialID = mat.id
-                            }
-                            else
+                            } else
                                 clone.materialID = undefined
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -212,26 +214,32 @@ export default function useForm(
             }
             const data = Object.keys(selected.components)
                 .map((k) => getField(k))
-            return (
-                <div className={styles.formsWrapper}>
-                    {data.map((d, i) => (
-                        <React.Fragment key={'component-field-' + i}>
-                            {d}
-                        </React.Fragment>
-                    ))}
-                </div>
-            )
+            return {
+                open: true,
+                content: (
+                    <div className={styles.formsWrapper}>
+                        {data.map((d, i) => (
+                            <React.Fragment key={'component-field-' + i}>
+                                {d}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                ),
+                name: selected.name
+            }
         } else {
             if (currentKey)
                 setCurrentKey(undefined)
-            return (
-                <div className={styles.emptyWrapper}>
+            return {
+                open: false,
+                content: (
+                    <div className={styles.emptyWrapper}>
                     <span style={{fontSize: executingAnimation ? '140px' : '90px'}}
                           className={'material-icons-round'}>{executingAnimation ? 'play_arrow' : 'category'}</span>
-                    {executingAnimation ? 'Stop the simulation to change attributes.' : 'Select an entity to edit it.'}
-
-                </div>
-            )
+                        {executingAnimation ? 'Stop the simulation to change attributes.' : 'Select an entity to edit it.'}
+                    </div>
+                )
+            }
         }
 
     }, [selected, allSelected, currentKey, executingAnimation])
