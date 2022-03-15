@@ -29,6 +29,7 @@
 }
 
 .container{
+    position: relative;
     border-radius: 5px;
     background: var(--fabric-background-primary);
     width: 100%;

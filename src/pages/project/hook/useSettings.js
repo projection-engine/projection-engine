@@ -1,4 +1,5 @@
 import {useMemo, useState} from "react";
+import CAMERA_TYPES from "../../../services/engine/utils/camera/CAMERA_TYPES";
 
 
 export const SHADING_MODELS = {
@@ -18,7 +19,7 @@ export default function useSettings() {
         fov: Math.PI / 2,
         fpsVisibility: true,
         resolutionMultiplier: 1,
-        cameraType: 'spherical',
+        cameraType: CAMERA_TYPES.SPHERICAL,
         fullscreen: false,
         viewPreferences: false,
         filesVisibility: true,

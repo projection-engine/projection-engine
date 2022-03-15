@@ -19,7 +19,8 @@ export default function useForm(
     setAlert,
     executingAnimation,
     quickAccess,
-    load
+    load,
+    currentTab
 ) {
     const selectedElement = allSelected.length > 1 ? undefined : allSelected[0]
 
@@ -202,7 +203,7 @@ export default function useForm(
                 )
             }
             default:
-                return
+                return null
         }
     }
 
@@ -212,20 +213,17 @@ export default function useForm(
             if (!currentKey) {
                 setCurrentKey(Object.keys(selected.components)[0])
             }
-            const data = Object.keys(selected.components)
-                .map((k) => getField(k))
+            const data = getField(Object.keys(selected.components)[currentTab])
+
             return {
                 open: true,
                 content: (
                     <div className={styles.formsWrapper}>
-                        {data.map((d, i) => (
-                            <React.Fragment key={'component-field-' + i}>
-                                {d}
-                            </React.Fragment>
-                        ))}
+                        {data}
                     </div>
                 ),
-                name: selected.name
+                name: selected.name,
+                selected: selected
             }
         } else {
             if (currentKey)
@@ -242,5 +240,5 @@ export default function useForm(
             }
         }
 
-    }, [selected, allSelected, currentKey, executingAnimation])
+    }, [selected, allSelected, currentKey, executingAnimation, currentTab])
 }

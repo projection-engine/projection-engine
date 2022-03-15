@@ -30,13 +30,13 @@ export default function TransformComponent(props) {
 
 
     return (
-        <Accordion className={styles.fieldset}>
-            <AccordionSummary className={styles.summary}>
-                Transformation
-            </AccordionSummary>
-            <div className={styles.inputsColumn}>
-                <label className={styles.label} style={{marginBottom: '4px'}}>Translation</label>
-                <div className={styles.inputs} style={{padding: 0}}>
+        <>
+            <Accordion className={styles.fieldset}>
+                <AccordionSummary className={styles.summary}>
+                    Translation
+                </AccordionSummary>
+
+                <div className={styles.inputs}>
                     <Range
                         metric={'m'}
                         accentColor={'red'}
@@ -78,10 +78,13 @@ export default function TransformComponent(props) {
                         }}
                     />
                 </div>
-            </div>
-            <div className={styles.inputsColumn}>
-                <label className={styles.label} style={{marginBottom: '4px'}}>Scale</label>
-                <div className={styles.inputs} style={{padding: 0}}>
+
+            </Accordion>
+            <Accordion className={styles.fieldset}>
+                <AccordionSummary className={styles.summary}>
+                    Scale
+                </AccordionSummary>
+                <div className={styles.inputs}>
                     <Range
                         accentColor={'red'}
                         label={'x'}
@@ -92,8 +95,8 @@ export default function TransformComponent(props) {
                         onFinish={() => props.submitScaling('x', state.xS)}
                         handleChange={e => {
 
-                                props.selected.scaling = [e, props.selected.scaling[1], props.selected.scaling[2]]
-                                setState({...state, xS: e})
+                            props.selected.scaling = [e, props.selected.scaling[1], props.selected.scaling[2]]
+                            setState({...state, xS: e})
 
                         }}
                     />
@@ -107,8 +110,8 @@ export default function TransformComponent(props) {
                         onFinish={() => props.submitScaling('y', state.yS)}
                         handleChange={e => {
 
-                                props.selected.scaling = [props.selected.scaling[0], e, props.selected.scaling[2]]
-                                setState({...state, yS: e})
+                            props.selected.scaling = [props.selected.scaling[0], e, props.selected.scaling[2]]
+                            setState({...state, yS: e})
 
                         }}/>
                     <Range
@@ -121,16 +124,18 @@ export default function TransformComponent(props) {
                         onFinish={() => props.submitScaling('z', state.zS)}
                         handleChange={e => {
 
-                                props.selected.scaling = [props.selected.scaling[0], props.selected.scaling[1], e]
-                                setState({...state, zS: e})
+                            props.selected.scaling = [props.selected.scaling[0], props.selected.scaling[1], e]
+                            setState({...state, zS: e})
 
                         }}
                     />
                 </div>
-            </div>
-            <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
-                <label className={styles.label} style={{marginBottom: '4px'}}>Rotation</label>
-                <div className={styles.inputs} style={{padding: 0}}>
+            </Accordion>
+            <Accordion className={styles.fieldset}>
+                <AccordionSummary className={styles.summary}>
+                    Rotation
+                </AccordionSummary>
+                <div className={styles.inputs}>
                     <Range
                         accentColor={'red'}
                         label={'x'}
@@ -164,8 +169,9 @@ export default function TransformComponent(props) {
                         }}
                     />
                 </div>
-            </div>
-        </Accordion>
+
+            </Accordion>
+        </>
     )
 }
 

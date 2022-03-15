@@ -7,7 +7,7 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import {Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
@@ -15,15 +15,18 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
+import FormTabs from "./forms/FormTabs";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
-    const [searchString, setSearchString] = useState('')
+
     const [allHidden, setAllHidden] = useState(false)
+    const [hidden, setHidden] = useState(false)
+    const [currentTab, setCurrentTab] = useState(0)
 
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
-        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.Grid && (searchString.length > 0 ? d.name.toLowerCase().includes(searchString) : true))
+        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.Grid)
         return [{
             id: 0,
             label: 'Scene',
@@ -70,7 +73,7 @@ export default function SceneView(props) {
             canBeHidden: true,
             hidden: allHidden
         }]
-    }, [props.engine.entities, searchString])
+    }, [props.engine.entities])
 
 
     const currentForm = useForm(
@@ -80,7 +83,8 @@ export default function SceneView(props) {
         props.executingAnimation,
 
         quickAccess,
-        load
+        load,
+        currentTab
     )
 
     const options = useMemo(() => {
@@ -102,131 +106,172 @@ export default function SceneView(props) {
             },
         ]
     }, [props.engine.entities])
+
+
+    const createFolder = () => {
+        const newEntity = new Entity()
+        newEntity.name = 'New folder'
+        props.engine.dispatchEntities({
+            type: ENTITY_ACTIONS.ADD,
+            payload: newEntity
+        })
+        props.engine.dispatchEntities({
+            type: ENTITY_ACTIONS.ADD_COMPONENT,
+            payload: {
+                entityID: newEntity.id,
+                data: new FolderComponent()
+            }
+        })
+    }
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{width: hidden ? '35px' : undefined}}>
 
-            <div className={styles.wrapperContent} style={{overflow: 'hidden'}}>
-                <TreeView
-                    contextTriggers={[
-                        'data-node',
-                        'data-self'
-                    ]}
-                    onMultiSelect={(items) => props.engine.setSelected(items)}
-                    multiSelect={true}
-                    searchable={true}
-                    draggable={true}
-                    options={[
-                        {
-                            requiredTrigger: 'data-self',
-                            label: 'Create folder',
-                            icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                            onClick: () => {
-                                const newEntity = new Entity()
-                                newEntity.name = 'New folder'
-                                props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.ADD,
-                                    payload: newEntity
-                                })
-                                props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.ADD_COMPONENT,
-                                    payload: {
-                                        entityID: newEntity.id,
-                                        data: new FolderComponent()
-                                    }
-                                })
-                            }
-                        },
+            <div className={styles.wrapperContent} style={{overflow: 'hidden', height: hidden ? '100%' : undefined}}>
+                <div className={[styles.header, styles.mainHeader].join(' ')} data-hidden={`${hidden}`}
+                     style={{justifyContent: 'flex-start', padding: '0 4px'}}>
+                    <Button className={styles.button} onClick={() => setHidden(!hidden)} variant={'outlined'}>
+                        <span className={'material-icons-round'}
+                              style={{fontSize: '1rem'}}>{!hidden ? 'menu_open' : 'menu'}</span>
+                    </Button>
+                    <label>
+                        Scene hierarchy
+                    </label>
+                    {hidden ? null :
 
-                        {
-                            requiredTrigger: 'data-node',
-                            label: 'Remove entity',
-                            icon: <span className={'material-icons-round'}>delete</span>,
-                            onClick: (node) => {
-                                props.engine.setSelected([])
-                                props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.REMOVE,
-                                    payload: {
-                                        entityID: node.getAttribute('data-node')
-                                    }
-                                })
-                            }
-                        }
-                    ]}
-                    onDrop={(event, target) => {
-                        event.preventDefault()
-                        try {
-                            const entities = JSON.parse(event.dataTransfer.getData('text'))
-                            entities.forEach(entity => {
-                                const current = props.engine.entities.find(f => f.id === target)
-                                const dropTarget = props.engine.entities.find(f => f.id === entity)
+                        <Button className={styles.button} onClick={() => createFolder()}
+                                styles={{position: 'absolute', right: '4px'}}>
+                        <span className={'material-icons-round'}
+                              style={{fontSize: '1rem'}}>create_new_folder</span>
+                        </Button>
+                    }
+                </div>
+                {hidden ? null :
+                    <TreeView
+                        contextTriggers={[
+                            'data-node',
+                            'data-self'
+                        ]}
+                        onMultiSelect={(items) => props.engine.setSelected(items)}
+                        multiSelect={true}
+                        searchable={true}
+                        draggable={true}
+                        options={[
+                            {
+                                requiredTrigger: 'data-self',
+                                label: 'Create folder',
+                                icon: <span className={'material-icons-round'}>create_new_folder</span>,
+                                onClick: () => {
+                                    createFolder()
+                                }
+                            },
 
-                                if (!current) {
+                            {
+                                requiredTrigger: 'data-node',
+                                label: 'Remove entity',
+                                icon: <span className={'material-icons-round'}>delete</span>,
+                                onClick: (node) => {
+                                    props.engine.setSelected([])
                                     props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.UPDATE,
+                                        type: ENTITY_ACTIONS.REMOVE,
                                         payload: {
-                                            entityID: dropTarget.id,
-                                            key: 'linkedTo',
-                                            data: undefined
-                                        }
-                                    })
-                                } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
-                                    props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.UPDATE,
-                                        payload: {
-                                            entityID: dropTarget.id,
-                                            key: 'linkedTo',
-                                            data: current.id
+                                            entityID: node.getAttribute('data-node')
                                         }
                                     })
                                 }
-                            })
-                        } catch (e) {
-                        }
-                    }}
-                    onDragStart={e => {
-                        if (e.ctrlKey)
-                            e.dataTransfer.setData('text', JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
-                        else
-                            e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
-                    }}
+                            }
+                        ]}
+                        onDrop={(event, target) => {
+                            event.preventDefault()
+                            try {
+                                const entities = JSON.parse(event.dataTransfer.getData('text'))
+                                entities.forEach(entity => {
+                                    const current = props.engine.entities.find(f => f.id === target)
+                                    const dropTarget = props.engine.entities.find(f => f.id === entity)
 
-                    ids={props.engine.entities}
-                    selected={props.engine.selected}
-                    nodes={data}
-                    handleRename={(treeNode, newName) => {
-                        props.engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.UPDATE,
-                            payload: {entityID: treeNode.id, key: 'name', data: newName}
-                        })
-                    }}
-                />
-            </div>
-            <ResizableBar type={'height'}/>
-            <div className={styles.wrapperContent}>
-                {currentForm.open ? (
-                    <div className={styles.header}>
-                        <label>{currentForm.name}</label>
-                        <Dropdown styles={{height: '20px', width: '20px'}} className={styles.button} variant={"outlined"}>
-                            <DropdownOptions>
-                                {options.map((o, i) => (
-                                    <React.Fragment key={i + '-option-scene'}>
-                                        <DropdownOption option={{
-                                            ...o,
-                                            onClick: () => {
-                                                props.engine.dispatchEntities({
-                                                    type: ENTITY_ACTIONS.ADD_COMPONENT,
-                                                    payload: {entityID: currentForm.selected,data: o.instance()}
-                                                })
+                                    if (!current) {
+                                        props.engine.dispatchEntities({
+                                            type: ENTITY_ACTIONS.UPDATE,
+                                            payload: {
+                                                entityID: dropTarget.id,
+                                                key: 'linkedTo',
+                                                data: undefined
                                             }
-                                        }}/>
-                                    </React.Fragment>
-                                ))}
-                            </DropdownOptions>
-                        </Dropdown>
-                    </div>
-                ) : null}
-                {currentForm.content}
+                                        })
+                                    } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+                                        props.engine.dispatchEntities({
+                                            type: ENTITY_ACTIONS.UPDATE,
+                                            payload: {
+                                                entityID: dropTarget.id,
+                                                key: 'linkedTo',
+                                                data: current.id
+                                            }
+                                        })
+                                    }
+                                })
+                            } catch (e) {
+                            }
+                        }}
+                        onDragStart={e => {
+                            if (e.ctrlKey)
+                                e.dataTransfer.setData('text', JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
+                            else
+                                e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
+                        }}
+
+                        ids={props.engine.entities}
+                        selected={props.engine.selected}
+                        nodes={data}
+                        handleRename={(treeNode, newName) => {
+                            props.engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE,
+                                payload: {entityID: treeNode.id, key: 'name', data: newName}
+                            })
+                        }}
+                    />
+                }
             </div>
+            {hidden ? null :
+                <>
+                    <ResizableBar type={'height'}/>
+                    <div className={styles.wrapperContent}>
+                        {currentForm.open ? (
+                            <div className={styles.header}>
+                                <label>{currentForm.name}</label>
+                                <Dropdown styles={{height: '20px', width: '20px'}} className={styles.button}
+                                          variant={"outlined"}>
+                                    <DropdownOptions>
+                                        {options.map((o, i) => (
+                                            <React.Fragment key={i + '-option-scene'}>
+                                                <DropdownOption option={{
+                                                    ...o,
+                                                    onClick: () => {
+                                                        props.engine.dispatchEntities({
+                                                            type: ENTITY_ACTIONS.ADD_COMPONENT,
+                                                            payload: {
+                                                                entityID: currentForm.selected?.id,
+                                                                data: o.instance()
+                                                            }
+                                                        })
+                                                    }
+                                                }}/>
+                                            </React.Fragment>
+                                        ))}
+                                    </DropdownOptions>
+                                </Dropdown>
+                            </div>
+                        ) : null}
+
+                        <div  className={styles.content}>
+                            {currentForm.open ?
+                                <FormTabs entity={currentForm.selected} currentTab={currentTab} setCurrentTab={setCurrentTab}/>
+                                :
+                                null
+                            }
+                            {currentForm.content}
+                        </div>
+                    </div>
+                </>
+            }
         </div>
     )
 }

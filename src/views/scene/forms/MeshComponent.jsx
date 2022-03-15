@@ -37,21 +37,21 @@ export default function MeshComponent(props) {
                             }
                         }}/>
 
-                    <div className={styles.inputs} style={{padding: '4px', marginTop: '4px'}}>
-                        <Checkbox checked={meshType === MESH_TYPES.STATIC} handleCheck={() => {
-                            const c = meshType === MESH_TYPES.STATIC ? MESH_TYPES.DYNAMIC : MESH_TYPES.STATIC
-                            setMeshType(c)
-                            props.submit(c, true)
-                        }}/>
-                        <label className={styles.label}>
-                            Static mesh
-                        </label>
-                    </div>
                 </div>
 
             </Accordion>
 
 
+            <div className={styles.inputs} style={{padding: '4px', marginTop: '4px'}}>
+                <Checkbox checked={meshType === MESH_TYPES.STATIC} handleCheck={() => {
+                    const c = meshType === MESH_TYPES.STATIC ? MESH_TYPES.DYNAMIC : MESH_TYPES.STATIC
+                    setMeshType(c)
+                    props.submit(c, true)
+                }}/>
+                <label className={styles.label}>
+                    Static mesh
+                </label>
+            </div>
         </>
     )
 }

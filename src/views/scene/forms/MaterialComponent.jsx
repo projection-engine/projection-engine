@@ -77,15 +77,7 @@ export default function MaterialComponent(props) {
                     UV tiling
                 </AccordionSummary>
                 <div style={{padding: '4px'}}>
-                    <div className={styles.inputs} style={{padding: 0}}>
-                        <Checkbox checked={state.overrideTiling} handleCheck={() => {
-                            setState({...state, overrideTiling: !state.overrideTiling})
-                            props.submitTiling(undefined, !state.overrideTiling)
-                        }}/>
-                        <label className={styles.label}>
-                            Override material UVs
-                        </label>
-                    </div>
+
                     <div className={styles.inputs} style={{padding: 0, marginTop: '8px'}}>
                         <Range
                             accentColor={'red'}
@@ -118,6 +110,15 @@ export default function MaterialComponent(props) {
                     </div>
                 </div>
             </Accordion>
+            <div className={styles.inputs} style={{padding: '4px 0'}}>
+                <Checkbox checked={state.overrideTiling} handleCheck={() => {
+                    setState({...state, overrideTiling: !state.overrideTiling})
+                    props.submitTiling(undefined, !state.overrideTiling)
+                }}/>
+                <label className={styles.label}>
+                    Override material UVs
+                </label>
+            </div>
 
         </>
 

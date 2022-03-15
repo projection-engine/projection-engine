@@ -1,0 +1,25 @@
+.wrapper {
+    display: grid;
+    width: 30px;
+
+    align-content: flex-start;
+    gap: 4px;
+    padding: 2px;
+    border-top-right-radius: 5px;
+    background: var(--fabric-background-secondary);
+
+}
+
+.button {
+    padding: 0 !important;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+}
+
+.button > * {
+    font-size: 1rem !important;
+}
