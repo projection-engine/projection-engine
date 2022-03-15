@@ -8,6 +8,7 @@ export default class PrimitiveProcessor {
         let quantity = positions.length;
         let normals = (new Array(quantity));
 
+        console.log(indices, vertices)
         for (let i = 0; i < quantity; ++i) {
             normals[i] = [0, 0, 0];
         }
@@ -26,7 +27,8 @@ export default class PrimitiveProcessor {
                     m01 = 0,
                     d21 = new Array(3),
                     m21 = 0
-                if (v0 && v1) {
+                console.log(v0, v1 , v2)
+                if (v0 && v1 && v2) {
                     vec3.sub(d01, v0, v1)
                     vec3.sub(d21, v2, v1)
                     m01 = vec3.dot(d01, d01);
@@ -49,6 +51,7 @@ export default class PrimitiveProcessor {
 
     static computeTangents(indices, vertices, uvs, normals) {
         const norm = groupInto(3, normals)
+
         let groupedVertices = groupInto(3, vertices),
             groupedUVs = groupInto(2, uvs),
             tangents = [],

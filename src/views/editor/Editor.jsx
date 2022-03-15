@@ -46,7 +46,7 @@ export default function Editor(props) {
         )
 
     }, [props.executingAnimation, props.engine])
-    const [toCopy, setToCopy] = useState()
+    const [toCopy, setToCopy] = useState([])
     useHotKeys({
         focusTarget: props.id + '-canvas',
         disabled: controlProvider.tab !== 0,
@@ -60,8 +60,9 @@ export default function Editor(props) {
             {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: () => {
-                    setToCopy(props.engine.selectedElement)
-                    if (props.engine.selectedElement)
+                    console.log(props.engine.selected)
+                    setToCopy(props.engine.selected)
+                    if (props.engine.selected)
                         props.setAlert({
                             type: 'info',
                             message: 'Entity copied.'
@@ -103,28 +104,30 @@ export default function Editor(props) {
             {
                 require: [KEYS.ControlLeft, KEYS.KeyV],
                 callback: () => {
-                    const found = props.engine.entities.find(e => e.id === toCopy)
-                    if (toCopy && found) {
-                        let clone = cloneClass(found)
-                        clone.id = randomID()
+                    toCopy.forEach(t => {
+                        const found = props.engine.entities.find(e => e.id === t)
+                        if ( found) {
+                            let clone = cloneClass(found)
+                            clone.id = randomID()
 
-                        clone.name += ' - clone'
+                            clone.name += ' - clone'
 
-                        let newComponents = {}
-                        Object.keys(clone.components).forEach(c => {
-                            const cClone = cloneClass(clone.components[c])
-                            cClone.id = randomID()
-                            if (cClone instanceof PickComponent)
-                                cClone.pickID = generateNextID(props.engine.entities.length + 1)
-                            newComponents[c] = cClone
-                        })
-                        clone.components = newComponents
-                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
-                    } else
-                        props.setAlert({
-                            type: 'info',
-                            message: 'Nothing to paste.'
-                        })
+                            let newComponents = {}
+                            Object.keys(clone.components).forEach(c => {
+                                const cClone = cloneClass(clone.components[c])
+                                cClone.id = randomID()
+                                if (cClone instanceof PickComponent)
+                                    cClone.pickID = generateNextID(props.engine.entities.length + 1)
+                                newComponents[c] = cClone
+                            })
+                            clone.components = newComponents
+                            props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
+                        } else
+                            props.setAlert({
+                                type: 'info',
+                                message: 'Nothing to paste.'
+                            })
+                    })
                 }
             }
         ]

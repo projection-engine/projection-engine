@@ -60,7 +60,7 @@ export default class GLTF {
                                 const currentMesh = meshes[m.meshIndex]
 
                                 const normals = currentMesh.normals === -1 ||  currentMesh.normals === undefined ? PrimitiveProcessor.computeNormals(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data) : accessors[currentMesh.normals].data
-                                const tangents =  PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals)
+                                const tangents =   PrimitiveProcessor.computeTangents(accessors[currentMesh.indices]?.data, accessors[currentMesh.vertices]?.data, accessors[currentMesh.uvs]?.data, normals)
 
 
                                 files.push({
