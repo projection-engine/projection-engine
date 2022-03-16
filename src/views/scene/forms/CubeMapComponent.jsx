@@ -16,6 +16,7 @@ export default function CubeMapComponent(props) {
             resolution: props.selected.resolution,
             irradiance: props.selected.irradiance,
             prefilteredMipmaps: props.selected.prefilteredMipmaps,
+            radius: props.selected.radius
         }
     }
     const [state, setState] = useState(getNewState())
@@ -130,19 +131,28 @@ export default function CubeMapComponent(props) {
                 </div>
             </Accordion>
 
-
             <Accordion className={styles.fieldset}>
                 <AccordionSummary className={styles.summary}>
-                    Generation
+                    Affect Radius
                 </AccordionSummary>
+                <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
 
-
-
+                    <Range
+                        accentColor={'red'}
+                        onFinish={() => props.submit(state.radius, 'radius')}
+                        value={state.radius}
+                        handleChange={e => {
+                            setState({...state, radius: parseInt(e)})
+                        }}
+                    />
+                </div>
+            </Accordion>
+            <Accordion className={styles.fieldset}>
+                <AccordionSummary className={styles.summary}>
+                    Prefiltered LOD samples
+                </AccordionSummary>
                     <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
 
-                        <label className={styles.label} style={{marginBottom: '4px'}}>
-                            Prefiltered LOD samples
-                        </label>
                         <Range
                             accentColor={'blue'}
                             integer={true}
@@ -157,21 +167,19 @@ export default function CubeMapComponent(props) {
                             }}
                         />
                     </div>
-
-
-                    <div className={styles.inputs}>
-                        <Checkbox
-                            checked={state.irradiance}
-                            handleCheck={() => {
-                                setState({...state, irradiance: !state.irradiance})
-                                props.submit(!state.irradiance)
-                            }}/>
-                        <label className={styles.label}>
-                            Generate irradiance map
-                        </label>
-                    </div>
-
             </Accordion>
+
+            <div className={styles.inputs}>
+                <Checkbox
+                    checked={state.irradiance}
+                    handleCheck={() => {
+                        setState({...state, irradiance: !state.irradiance})
+                        props.submit(!state.irradiance)
+                    }}/>
+                <label className={styles.label}>
+                    Generate irradiance map
+                </label>
+            </div>
         </>
 
 

@@ -13,8 +13,10 @@ export default function MaterialComponent(props) {
     const [state, setState] = useState({
         tilingX: props.selected.tiling[0],
         tilingY: props.selected.tiling[1],
-        overrideTiling: props.selected.overrideTiling
+        overrideTiling: props.selected.overrideTiling,
+        radius: props.selected.radius
     })
+    console.log( props.selected.radius)
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
 
@@ -110,6 +112,29 @@ export default function MaterialComponent(props) {
                     </div>
                 </div>
             </Accordion>
+            <Accordion>
+                <AccordionSummary className={styles.summary}>
+                    CubeMap influence radius
+                </AccordionSummary>
+                <div style={{padding: '4px'}}>
+
+
+                        <Range
+                            accentColor={'red'}
+                            metric={'un'}
+
+                            value={state.radius}
+                            precision={3}
+                            incrementPercentage={.01}
+                            onFinish={() => props.submitRadius(state.radius)}
+                            handleChange={e => {
+                                props.selected.radius = state.radius
+                                setState({...state, radius: parseFloat(e)})
+                            }}
+                        />
+
+                </div>
+            </Accordion>
             <div className={styles.inputs} style={{padding: '4px 0'}}>
                 <Checkbox checked={state.overrideTiling} handleCheck={() => {
                     setState({...state, overrideTiling: !state.overrideTiling})
@@ -130,5 +155,6 @@ MaterialComponent.propTypes = {
     selected: PropTypes.object,
     submitTiling: PropTypes.func,
 
-    submit: PropTypes.func
+    submit: PropTypes.func,
+    submitRadius: PropTypes.func
 }

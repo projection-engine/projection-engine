@@ -74,6 +74,17 @@ export default function useForm(
             case 'MaterialComponent': {
                 return (
                     <MaterialComponent
+                        submitRadius={r => {
+                            const clone = cloneClass(selected.components.MaterialComponent)
+                            clone.radius = r
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selectedElement,
+                                    data: clone,
+                                    key: 'MaterialComponent'
+                                }
+                            })
+                        }}
                         quickAccess={quickAccess}
                         selected={selected.components.MaterialComponent}
                         submitTiling={(tiling, allow) => {
