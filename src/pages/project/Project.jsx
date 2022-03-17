@@ -32,12 +32,10 @@ export default function Project(props) {
     }
     const settings = useSettings()
     const load = useContext(LoaderProvider)
-    const [loading, setLoading] = useState({
-        data: true,
-        initialized: false
-    })
+    const [loading, setLoading] = useState(true)
+    const [initialized, setInitialized] = useState(false)
 
-    const engine = useEngine(props.id, executingAnimation, settings, load, loading.data === false)
+    const engine = useEngine(props.id, executingAnimation, settings, load, true)
 
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
@@ -46,10 +44,7 @@ export default function Project(props) {
 
     useEffect(() => {
         if (engine.gpu && !loading.initialized) {
-            setLoading({
-                data: true,
-                initialized: true
-            })
+            setInitialized(true)
             load.pushEvent(EVENTS.PROJECT_DATA)
             ProjectLoader
                 .loadProject(engine.gpu, quickAccess.fileSystem)
@@ -65,17 +60,11 @@ export default function Project(props) {
                         settings.name = res.meta.data.name
 
                     load.finishEvent(EVENTS.PROJECT_DATA)
-                    setLoading({
-                        data: false,
-                        initialized: true
-                    })
+                    setLoading(false)
                 })
                 .catch(e => {
                     load.finishEvent(EVENTS.PROJECT_DATA)
-                    setLoading({
-                        data: false,
-                        initialized: true
-                    })
+                    setLoading(false)
                 })
         }
     }, [engine.gpu])

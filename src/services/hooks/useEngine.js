@@ -78,7 +78,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [settings.fov])
 
     useEffect(() => {
-        if (initialized) {
+        if (initialized && canStart) {
             renderer.current?.stop()
             updateSystems(() => {
                 renderer.current?.start(entities, materials, meshes, {
@@ -89,11 +89,11 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
             })
 
         }
-    }, [settings.resolutionMultiplier, initialized])
+    }, [settings.resolutionMultiplier, initialized, canStart])
 
     useEffect(() => {
-
-        if (gpu && !initialized && id) {
+        console.log(canStart, finished && canStart)
+        if (gpu && !initialized && id && !finished) {
             renderer.current = new Engine(id, gpu)
             setInitialized(true)
             updateSystems(() => {

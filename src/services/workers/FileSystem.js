@@ -130,7 +130,7 @@ export default class FileSystem {
         else return []
     }
 
-    async importFile(file, filePath, asHeightMap, terrainSettings) {
+    async importFile(file, filePath, asHeightMap, options) {
         return new Promise(resolve => {
 
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
@@ -143,7 +143,7 @@ export default class FileSystem {
                         .loadAsString(file, false, true)
                         .then(res => {
                             if (asHeightMap)
-                                TerrainWorker.loadHeightMap(res, terrainSettings)
+                                TerrainWorker.loadHeightMap(res, options)
                                     .then(data => {
                                         Promise.all( [
                                             new Promise(r => {
@@ -172,7 +172,7 @@ export default class FileSystem {
                                 .loadAsString(file)
                                 .then(res => {
                                     GLTF
-                                        .parseGLTF(res, file.path.replace(file.name, ''))
+                                        .parseGLTF(res, file.path.replace(file.name, ''), options)
                                         .then(({nodes, materials}) => {
                                             let promises = []
                                             if (nodes) {
@@ -261,7 +261,7 @@ export default class FileSystem {
 
     createRegistryEntry(fID = randomID(), path) {
         const pathRe = resolvePath(this.path+ '\\assets\\')
-        console.log( resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, ''))
+
         return new Promise(r => {
             fs.writeFile(
                 resolvePath(this.path + '\\assetsRegistry\\' + fID + `.reg`),

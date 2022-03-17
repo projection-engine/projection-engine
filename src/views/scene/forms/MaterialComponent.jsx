@@ -16,7 +16,7 @@ export default function MaterialComponent(props) {
         overrideTiling: props.selected.overrideTiling,
         radius: props.selected.radius
     })
-    console.log( props.selected.radius)
+
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
 

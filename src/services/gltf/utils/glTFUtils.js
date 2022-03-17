@@ -2,6 +2,7 @@ import {mat4, quat} from "gl-matrix";
 import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
 import randomID from "../../utils/misc/randomID";
+import ROTATION_TYPES from "../../engine/utils/misc/ROTATION_TYPES";
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -156,12 +157,13 @@ export function nodeParser(node, allNodes, parentTransform) {
         translation: [0, 0, 0],
         children: []
     }
-
+    let transformationMatrix
     if (node.matrix) {
         parsedNode = {
             ...parsedNode,
-            ...extractTransformations(node.matrix)
+            ...Transformation.extractTransformations(node.matrix)
         }
+        transformationMatrix = node.matrix
     } else {
         let translation = node.translation,
             rotation = node.rotation,
@@ -171,16 +173,16 @@ export function nodeParser(node, allNodes, parentTransform) {
         if (!scale)
             scale = [1, 1, 1]
         if (!rotation)
-            rotation = [0, 0, 0, 1]
-
+            parsedNode.rotation = [0, 0, 0]
+        else
+            parsedNode.rotation = Transformation.getEuler(rotation)
 
         parsedNode.scaling = scale
-        parsedNode.rotation = quaternionToRotation(rotation)
         parsedNode.translation = translation
-
+        transformationMatrix  = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling,  ROTATION_TYPES.GLOBAL)
     }
 
-    let transformationMatrix = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling)
+
     if (parentTransform) {
         mat4.multiply(
             transformationMatrix,
@@ -189,7 +191,7 @@ export function nodeParser(node, allNodes, parentTransform) {
         )
         parsedNode = {
             ...parsedNode,
-            ...extractTransformations(transformationMatrix)
+            ...Transformation.extractTransformations(transformationMatrix)
         }
     }
     children = children
@@ -205,30 +207,9 @@ export function nodeParser(node, allNodes, parentTransform) {
 }
 
 
-function extractTransformations(mat) {
-    let translation = [0, 0, 0],
-        rotation = [0, 0, 0, 1],
-        scaling = [1, 1, 1]
 
-    mat4.getTranslation(translation, mat)
-    mat4.getRotation(rotation, mat)
-    mat4.getScaling(scaling, mat)
 
-    return {
-        translation,
-        rotation: quaternionToRotation(rotation),
-        scaling
-    }
-}
 
-function quaternionToRotation(rotation) {
-    let x, y, z
-    x = quat.getAxisAngle([1, 0, 0], rotation)
-    y = quat.getAxisAngle([0, 1, 0], rotation)
-    z = quat.getAxisAngle([0, 0, 1], rotation)
-
-    return [x, y, z]
-}
 
 
 export function getPrimitives(mesh, materials = []) {

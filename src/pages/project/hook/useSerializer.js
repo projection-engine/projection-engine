@@ -4,6 +4,7 @@ import {LoaderProvider} from "@f-ui/core";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 
+const fs = window.require('fs')
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
 
     const load = useContext(LoaderProvider)
@@ -19,20 +20,28 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 load.pushEvent(EVENTS.PROJECT_SAVE)
                 const canvas = document.getElementById(id + '-canvas')
                 const preview = canvas.toDataURL()
+                fs.readFile(fileSystem.path + '\\.meta', (e, res) => {
+                    if(res) {
+                        const old = JSON.parse(res.toString())
 
-                fileSystem
-                    .updateProject(
-                        {
-                            name: settings.name,
-                            preview,
-                            entities: engine.entities.length,
-                            meshes: engine.meshes.length,
-                            materials: engine.materials.length,
-                            lastModification: (new Date()).toDateString(),
-                            creation: settings.creationDate
-                        },
-                        settings)
-                    .then(() => resolve())
+                        fileSystem
+                            .updateProject(
+                                {
+                                    ...old,
+                                    preview,
+                                    entities: engine.entities.length,
+                                    meshes: engine.meshes.length,
+                                    materials: engine.materials.length,
+                                    lastModification: (new Date()).toDateString(),
+                                    creation: settings.creationDate
+                                },
+                                settings)
+                            .then(() => resolve())
+                    }
+                    else
+                        resolve()
+                })
+
             }))
         }
 

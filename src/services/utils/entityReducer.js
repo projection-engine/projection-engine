@@ -3,24 +3,24 @@ import Component from "../engine/ecs/basic/Component";
 import PickComponent from "../engine/ecs/components/PickComponent";
 import generateNextID from "./generateNextID";
 import cloneClass from "./misc/cloneClass";
+import Transformation from "../engine/utils/workers/Transformation";
 
 
 export const ENTITY_ACTIONS = {
-    ADD: '0-A',
-    ADD_COMPONENT: '0-B',
+    ADD: 0,
+    ADD_COMPONENT: 1,
 
+    UPDATE: 2,
+    UPDATE_COMPONENT: 3,
 
-    UPDATE: '1-A',
-    UPDATE_COMPONENT: '1-B',
+    REMOVE: 4,
+    REMOVE_COMPONENT: 5,
 
-    REMOVE: '2-A',
-    REMOVE_COMPONENT: '2-B',
-
-
-    DISPATCH_BLOCK: 4,
-    PUSH_BLOCK: 6,
-    REMOVE_BLOCK: 7,
-    CLEAR: 5
+    DISPATCH_BLOCK: 6,
+    PUSH_BLOCK: 7,
+    REMOVE_BLOCK: 8,
+    CLEAR: 9,
+    UPDATE_TRANSFORM: 10
 }
 
 function deleteEntity(entity, entities) {
@@ -119,8 +119,7 @@ export default function entityReducer(state, action) {
                         stateCopy.splice(stateCopy.findIndex(entity => entity.id === e), 1)
                     })
                     return stateCopy
-                }
-                else
+                } else
                     return stateCopy
             }
             case ENTITY_ACTIONS.PUSH_BLOCK: {
@@ -130,6 +129,23 @@ export default function entityReducer(state, action) {
                 else
                     return stateCopy
             }
+            case ENTITY_ACTIONS.UPDATE_TRANSFORM: {
+
+                for (let i = 0; i < stateCopy.length; i++) {
+                    const t = stateCopy[i].components.TransformComponent
+                    if (t) {
+                        const transform = Transformation.extractTransformations(t.transformationMatrix)
+                        console.log(transform)
+                        stateCopy[i].components.TransformComponent.translation = transform.translation
+                        stateCopy[i].components.TransformComponent.scaling = transform.scaling
+                        stateCopy[i].components.TransformComponent.rotation = transform.rotation
+                        stateCopy[i].components.TransformComponent.changed = false
+                    }
+                }
+
+                return stateCopy
+            }
+
             default:
                 return stateCopy
         }

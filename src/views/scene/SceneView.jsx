@@ -16,6 +16,9 @@ import PointLightComponent from "../../services/engine/ecs/components/PointLight
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 import FormTabs from "./forms/FormTabs";
+import Transformation from "../../services/engine/utils/workers/Transformation";
+import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
+import {glMatrix, mat4, quat} from "gl-matrix";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -88,6 +91,8 @@ export default function SceneView(props) {
     )
 
     const options = useMemo(() => {
+
+
         return [
             {
                 label: 'Point light',
@@ -160,9 +165,7 @@ export default function SceneView(props) {
                                 requiredTrigger: 'data-self',
                                 label: 'Create folder',
                                 icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                                onClick: () => {
-                                    createFolder()
-                                }
+                                onClick: () => createFolder()
                             },
 
                             {
@@ -170,13 +173,11 @@ export default function SceneView(props) {
                                 label: 'Remove entity',
                                 icon: <span className={'material-icons-round'}>delete</span>,
                                 onClick: (node) => {
-                                    props.engine.setSelected([])
                                     props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.REMOVE,
-                                        payload: {
-                                            entityID: node.getAttribute('data-node')
-                                        }
+                                        type: ENTITY_ACTIONS.REMOVE_BLOCK,
+                                        payload: props.engine.selected
                                     })
+                                    props.engine.setSelected([])
                                 }
                             }
                         ]}
@@ -261,9 +262,10 @@ export default function SceneView(props) {
                             </div>
                         ) : null}
 
-                        <div  className={styles.content}>
+                        <div className={styles.content}>
                             {currentForm.open ?
-                                <FormTabs entity={currentForm.selected} currentTab={currentTab} setCurrentTab={setCurrentTab}/>
+                                <FormTabs entity={currentForm.selected} currentTab={currentTab}
+                                          setCurrentTab={setCurrentTab}/>
                                 :
                                 null
                             }

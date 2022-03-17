@@ -9,8 +9,10 @@ export default function FormTabs(props){
 
     const tabs = useMemo(() => {
         const components = Object.keys(props.entity.components)
-        if(components[props.currentTab] === undefined && props.currentTab > 0)
-            props.setCurrentTab = components.length -1
+        if(components[props.currentTab] === undefined && props.currentTab > 0) {
+            props.setCurrentTab(components.length - 1)
+            return  []
+        }
         return components.map(c => {
             const res = {}
             switch (c){

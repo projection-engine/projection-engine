@@ -52,7 +52,9 @@ export default function LightComponent(props) {
                             value={state.placement.x}
                             onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
                             handleChange={e => {
+
                                 props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [parseFloat(e), state.placement.y, state.placement.z]
+                                props.selected.changed = false
                                 setState(prev => {
                                     return {
                                         ...prev, placement: {
@@ -71,6 +73,7 @@ export default function LightComponent(props) {
                             onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
                             handleChange={e => {
                                 props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, parseFloat(e), state.placement.z]
+                                props.selected.changed = false
                                 setState(prev => {
                                     return {
                                         ...prev, placement: {
@@ -89,6 +92,8 @@ export default function LightComponent(props) {
                             onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
                             handleChange={e => {
                                 props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, state.placement.y,parseFloat(e)]
+                                props.selected.changed = false
+
                                 setState(prev => {
                                     return {
                                         ...prev, placement: {
