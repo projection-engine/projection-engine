@@ -135,7 +135,7 @@ export default function entityReducer(state, action) {
                     const t = stateCopy[i].components.TransformComponent
                     if (t) {
                         const transform = Transformation.extractTransformations(t.transformationMatrix)
-                        console.log(transform)
+
                         stateCopy[i].components.TransformComponent.translation = transform.translation
                         stateCopy[i].components.TransformComponent.scaling = transform.scaling
                         stateCopy[i].components.TransformComponent.rotation = transform.rotation
