@@ -15,20 +15,19 @@ import cloneClass from "../../../services/utils/misc/cloneClass";
 
 export default function useForm(
     engine,
-    allSelected,
+
     setAlert,
     executingAnimation,
     quickAccess,
     load,
     currentTab
 ) {
-    const selectedElement = allSelected.length > 1 ? undefined : allSelected[0]
 
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
-        return engine.entities.find(e => e.id === selectedElement)
-    }, [allSelected])
+        return engine.entities.find(e => e.id === engine.selected[0])
+    }, [engine.selected, engine.entities])
 
 
     const getField = (key) => {
@@ -38,9 +37,9 @@ export default function useForm(
                 return (
                     <TransformComponent
                         selected={selected.components.TransformComponent}
-                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, selectedElement)}
-                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, selectedElement)}
-                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, selectedElement)}
+                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0])}
+                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0])}
+                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0])}
                     />
                 )
             }
@@ -58,7 +57,7 @@ export default function useForm(
 
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: selectedElement,
+                                        entityID: engine.selected[0],
                                         data: selected.components.MeshComponent,
                                         key: 'MeshComponent'
                                     }
@@ -79,7 +78,7 @@ export default function useForm(
                             clone.radius = r
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     data: clone,
                                     key: 'MaterialComponent'
                                 }
@@ -89,14 +88,13 @@ export default function useForm(
                         selected={selected.components.MaterialComponent}
                         submitTiling={(tiling, allow) => {
                             const clone = cloneClass(selected.components.MaterialComponent)
-                            if (!allow) {
+                            if (allow === undefined) {
                                 clone.tiling = tiling
-
                             } else
                                 clone.overrideTiling = allow
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     data: clone,
                                     key: 'MaterialComponent'
                                 }
@@ -111,7 +109,7 @@ export default function useForm(
                                 clone.materialID = undefined
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     data: clone,
                                     key: 'MaterialComponent'
                                 }
@@ -134,7 +132,7 @@ export default function useForm(
                             component[k] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     key: key,
                                     data: component
                                 }
@@ -153,7 +151,7 @@ export default function useForm(
                             ]
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     key: key,
                                     data: component
                                 }
@@ -165,7 +163,7 @@ export default function useForm(
 
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     key: key,
                                     data: component
                                 }
@@ -184,7 +182,7 @@ export default function useForm(
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     data: selected.components.CubeMapComponent,
                                     key: 'CubeMapComponent'
                                 }
@@ -204,7 +202,7 @@ export default function useForm(
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
-                                    entityID: selectedElement,
+                                    entityID: engine.selected[0],
                                     data: selected.components.SkyboxComponent,
                                     key: 'SkyboxComponent'
                                 }
@@ -251,5 +249,5 @@ export default function useForm(
             }
         }
 
-    }, [selected, allSelected, currentKey, executingAnimation, currentTab])
+    }, [selected, currentKey, executingAnimation, currentTab, engine.selected[0], engine.entities])
 }

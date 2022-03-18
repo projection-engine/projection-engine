@@ -10,31 +10,31 @@ import Range from "../../../components/range/Range";
 
 export default function MaterialComponent(props) {
     const [currentMaterial, setCurrentMaterial] = useState(undefined)
-    const [state, setState] = useState({
-        tilingX: props.selected.tiling[0],
-        tilingY: props.selected.tiling[1],
-        overrideTiling: props.selected.overrideTiling,
-        radius: props.selected.radius
-    })
+    const getState = () =>{
+        if(props.selected)
+            return {
+                tilingX: props.selected.tiling[0],
+                tilingY: props.selected.tiling[1],
+                overrideTiling: props.selected.overrideTiling,
+                radius: props.selected.radius
+            }
+        else
+            return {}
+    }
+    const [state, setState] = useState(getState())
 
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
 
 
     useEffect(() => {
-        setState({
-            tilingX: props.selected.tiling[0],
-            tilingY: props.selected.tiling[1],
-            overrideTiling: props.selected.overrideTiling
-        })
+        setState(getState())
 
         setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === props.selected.materialID))
     }, [props.selected])
 
     return (
         <>
-
-
             <Accordion>
                 <AccordionSummary className={styles.summary}>
                     Material

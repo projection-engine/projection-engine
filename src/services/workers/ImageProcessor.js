@@ -243,6 +243,7 @@ export default class ImageProcessor {
     static async resizeImage(src, w, h) {
         return await new Promise(resolve => {
             let img = new Image();
+
             img.src = src
 
             img.onload = () => {
@@ -258,11 +259,15 @@ export default class ImageProcessor {
                     }).then(blob => {
                         FileBlob.loadAsString(blob, false, true)
                             .then(parsed => {
-
+                                console.log(parsed)
                                 resolve(parsed)
                             })
                     })
                 }
+            }
+            img.onerror = (e) => {
+                console.log(e)
+                resolve()
             }
         })
     }

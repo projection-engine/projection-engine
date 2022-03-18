@@ -92,7 +92,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [settings.resolutionMultiplier, initialized, canStart])
 
     useEffect(() => {
-        console.log(canStart, finished && canStart)
         if (gpu && !initialized && id && !finished) {
             renderer.current = new Engine(id, gpu)
             setInitialized(true)

@@ -81,7 +81,7 @@ export default function SceneView(props) {
 
     const currentForm = useForm(
         props.engine,
-        props.engine.selected,
+
         props.setAlert,
         props.executingAnimation,
 
@@ -91,8 +91,6 @@ export default function SceneView(props) {
     )
 
     const options = useMemo(() => {
-
-
         return [
             {
                 label: 'Point light',
@@ -173,11 +171,13 @@ export default function SceneView(props) {
                                 label: 'Remove entity',
                                 icon: <span className={'material-icons-round'}>delete</span>,
                                 onClick: (node) => {
+                                    const toDelete = [...props.engine.selected]
+                                        props.engine.setSelected([])
                                     props.engine.dispatchEntities({
                                         type: ENTITY_ACTIONS.REMOVE_BLOCK,
-                                        payload: props.engine.selected
+                                        payload: toDelete
                                     })
-                                    props.engine.setSelected([])
+
                                 }
                             }
                         ]}
