@@ -3,9 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
-import {mat4, quat, vec4} from "gl-matrix";
 import SettingsProvider from "../../../services/hooks/SettingsProvider";
-import ROTATION_TYPES from "../../../services/engine/utils/misc/ROTATION_TYPES";
 
 
 const toDeg = 57.2957795131

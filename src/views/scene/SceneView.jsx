@@ -16,9 +16,6 @@ import PointLightComponent from "../../services/engine/ecs/components/PointLight
 import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
 import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 import FormTabs from "./forms/FormTabs";
-import Transformation from "../../services/engine/utils/workers/Transformation";
-import ROTATION_TYPES from "../../services/engine/utils/misc/ROTATION_TYPES";
-import {glMatrix, mat4, quat} from "gl-matrix";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)

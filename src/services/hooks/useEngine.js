@@ -1,6 +1,6 @@
 import {useEffect, useReducer, useRef, useState} from "react";
 import {enableBasics} from "../engine/utils/misc/utils";
-import entityReducer, {ENTITY_ACTIONS} from "../utils/entityReducer";
+import entityReducer from "../utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
@@ -12,7 +12,6 @@ import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/utils/misc/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
-import cloneClass from "../utils/misc/cloneClass";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
@@ -91,7 +90,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
 
         }
     }, [settings.resolutionMultiplier, initialized, canStart])
-    let interval, gizmoTarget
+
     useEffect(() => {
         if (gpu && !initialized && id && !finished) {
             renderer.current = new Engine(id, gpu)
@@ -105,7 +104,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                 if (gpu && initialized)
                     renderer.current.camera.aspectRatio = gpu.canvas.width / gpu.canvas.height
             })
-
             resizeObserver.observe(document.getElementById(id + '-canvas'))
             renderer.current?.updateCamera(settings.cameraType)
 
@@ -119,7 +117,6 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                 })
         }
         return () => {
-
             renderer.current?.stop()
         }
     }, [

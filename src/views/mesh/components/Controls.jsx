@@ -8,8 +8,6 @@ import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
 import importMaterial from "../../../services/utils/importMaterial";
 import {IDS} from "../../../services/hooks/useVisualizer";
-import MeshComponent from "../../scene/forms/MeshComponent";
-import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import TransformComponent from "../../scene/forms/TransformComponent";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 

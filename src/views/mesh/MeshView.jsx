@@ -7,7 +7,7 @@ import Controls from "./components/Controls";
 
 import useVisualizer, {IDS, initializeMesh} from "../../services/hooks/useVisualizer";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import {useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 
 import ControlProvider from "../../components/tabs/components/ControlProvider";
@@ -18,7 +18,6 @@ import EVENTS from "../../services/utils/misc/EVENTS";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
-import skybox from '../../static/sky.jpg'
 
 export default function MeshView(props) {
     const engine = useVisualizer(false, false, false, false)
