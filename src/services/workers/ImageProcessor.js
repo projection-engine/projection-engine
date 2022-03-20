@@ -230,43 +230,47 @@ export default class ImageProcessor {
         })
     }
 
-    static colorToImage(color) {
+    static colorToImage(color, resolution=256) {
         const c = document.createElement("canvas");
-        c.width = 1024
-        c.height = 1024
+        c.width = resolution
+        c.height = resolution
         let ctx = c.getContext("2d");
         ctx.fillStyle = typeof color === 'string' ? color : `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`
-        ctx.fillRect(0, 0, 1024, 1024)
+        ctx.fillRect(0, 0, resolution, resolution)
         return c.toDataURL()
     }
 
-    static async resizeImage(src, w, h) {
-        return await new Promise(resolve => {
+    static async resizeImage(src, w, h, sizePercent, quality = 1) {
+        return new Promise(resolve => {
             let img = new Image();
 
             img.src = src
 
             img.onload = () => {
-                if (img.naturalWidth === w && img.naturalHeight === h)
+                const width = w ? w : sizePercent ? img.naturalWidth * sizePercent: img.naturalWidth
+                const height  = h ? h : sizePercent ? img.naturalHeight * sizePercent : img.naturalHeight
+
+                if (img.naturalWidth === width && img.naturalHeight === height)
                     resolve(src)
                 else {
-                    const canvas = new OffscreenCanvas(w, h),
+                    const canvas = new OffscreenCanvas(width, height),
                         ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, width, height);
+                    console.log(quality)
                     canvas.convertToBlob({
                         type: "image/png",
-                        quality: 1
+                        quality: quality
                     }).then(blob => {
                         FileBlob.loadAsString(blob, false, true)
                             .then(parsed => {
-                                console.log(parsed)
+
                                 resolve(parsed)
                             })
                     })
                 }
             }
             img.onerror = (e) => {
-                console.log(e)
+
                 resolve()
             }
         })

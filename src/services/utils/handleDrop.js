@@ -63,15 +63,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                         materialsIDs.splice(matIndex, 1)
                         const newMaterial = new MaterialInstance(engine.gpu, m.material.id)
                         newMaterial.initializeTextures(
-                            m.material.albedo,
-                            m.material.metallic,
-                            m.material.roughness,
-                            m.material.normal,
-                            m.material.height,
-                            m.material.ao,
-                            m.material.emissive,
-                            m.material.opacity,
-                            m.material.tiling
+                            m.material
                         ).catch()
                         return newMaterial
                     } else

@@ -23,7 +23,8 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                         style={{fontSize: '1.2rem'}}>refresh</span>,
             onClick: async () => {
                 load.pushEvent(EVENTS.LOADING_MATERIAL)
-                engine.setMaterials(await ProjectLoader.loadMaterials(engine.materials.map(m => m.id), fileSystem, engine.gpu))
+                ProjectLoader.loadMaterials(engine.materials.map(m => m.id), fileSystem, engine.gpu, engine.materials)
+                    .catch()
                 load.finishEvent(EVENTS.LOADING_MATERIAL)
             }
 

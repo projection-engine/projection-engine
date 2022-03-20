@@ -10,17 +10,8 @@ export default function importMaterial(mat, engine, load) {
     let found = engine.materials?.find(m =>m  !== undefined &&  m.id === mat.id)
     if (!found) {
         load.pushEvent(EVENTS.LOADING_MATERIAL)
-        newMat.initializeTextures(
-            mat.blob.albedo,
-            mat.blob.metallic,
-            mat.blob.roughness,
-            mat.blob.normal,
-            mat.blob.height,
-            mat.blob.ao,
-            mat.blob.emissive,
-            mat.blob.opacity,
-            mat.blob.tiling
-        ).then(() => {
+        newMat.initializeTextures(mat.blob)
+            .then(() => {
             if(engine.setMaterials)
                 engine.setMaterials(prev => {
                     return [...prev, newMat]

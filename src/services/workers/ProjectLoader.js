@@ -130,9 +130,9 @@ export default class ProjectLoader {
 
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
         let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
-            skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e),
-            materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
+            skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e)
 
+        const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
         entities = entitiesFound.map((entity, index) => {
             return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
         })
@@ -176,16 +176,17 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadMaterials(toLoad, fileSystem, gpu) {
+    static async loadMaterials(toLoad, fileSystem, gpu, mapTo) {
         const promises = toLoad.map(m => {
             return new Promise(r => {
+
                 ProjectLoader.readFromRegistry(m, fileSystem)
                     .then(fileData => {
                         if (fileData) {
                             let fileParsed
                             try {
                                 fileParsed = JSON.parse(fileData)
-                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
+                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m, mapTo?.find(d => d.id === m))
                                     .then(mat => r(mat))
 
                             } catch (e) {
@@ -194,34 +195,16 @@ export default class ProjectLoader {
                         } else
                             r()
                     }).catch(() => r())
+
             })
         })
 
         return await Promise.all(promises)
     }
 
-    static async mapMaterial(material, gpu, id) {
-        const heightIsObject = typeof material.height === 'object'
-        const newMat = new MaterialInstance(
-            gpu,
-            id,
-            heightIsObject,
-            heightIsObject ? material.height.heightScale : undefined,
-            heightIsObject ? material.height.layers : undefined,
-            material.variant
-        )
-        await newMat.initializeTextures(
-            material.albedo,
-            material.metallic,
-            material.roughness,
-            material.normal,
-            material.height,
-            material.ao,
-
-            material.emissive,
-            material.opacity,
-            material.tiling
-        )
+    static async mapMaterial(material, gpu, id, mapTo) {
+        const newMat = mapTo ? mapTo : new MaterialInstance(gpu, id, material.variant)
+        await newMat.initializeTextures(material, mapTo !== undefined)
         return newMat
     }
 

@@ -1,16 +1,21 @@
 import PropTypes from "prop-types";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
+import {mat4, quat, vec4} from "gl-matrix";
+import SettingsProvider from "../../../services/hooks/SettingsProvider";
+import ROTATION_TYPES from "../../../services/engine/utils/misc/ROTATION_TYPES";
 
 
+const toDeg = 57.2957795131
 export default function TransformComponent(props) {
+    const settings = useContext(SettingsProvider)
     const getNewState = () => {
         return {
             xT: props.selected.translation[0],
-            yT: props.selected.translation[1],
-            zT: props.selected.translation[2],
+            yT: props.selected.translation[0],
+            zT: props.selected.translation[0],
 
             xS: props.selected.scaling[0],
             yS: props.selected.scaling[1],
@@ -18,7 +23,8 @@ export default function TransformComponent(props) {
 
             xR: props.selected.rotation[0] * 180 / Math.PI,
             yR: props.selected.rotation[1] * 180 / Math.PI,
-            zR: props.selected.rotation[2] * 180 / Math.PI
+            zR: props.selected.rotation[2] * 180 / Math.PI,
+
         }
     }
     const [state, setState] = useState({})
@@ -28,6 +34,16 @@ export default function TransformComponent(props) {
         setState(getNewState())
     }, [props.selected])
 
+    const translate = (newValue) => {
+        let t = newValue
+        props.selected.translation = t
+        setState({
+            ...state,
+            xT: t[0],
+            yT: t[1],
+            zT: t[2],
+        })
+    }
 
     return (
         <>
@@ -46,8 +62,9 @@ export default function TransformComponent(props) {
                         incrementPercentage={.01}
                         onFinish={() => props.submitTranslation('x', state.xT)}
                         handleChange={e => {
-                            props.selected.translation = [parseFloat(e), props.selected.translation[1], props.selected.translation[2]]
-                            setState({...state, xT: parseFloat(e)})
+                            translate([parseFloat(e), state.yT, state.zT])
+                            // props.selected.translation =
+                            // setState({...state, xT: parseFloat(e)})
                         }}
                     />
                     <Range
@@ -59,8 +76,9 @@ export default function TransformComponent(props) {
                         value={state.yT}
                         onFinish={() => props.submitTranslation('y', state.yT)}
                         handleChange={e => {
-                            props.selected.translation = [props.selected.translation[0], parseFloat(e), props.selected.translation[2]]
-                            setState({...state, yT: parseFloat(e)})
+                            translate([state.xT, parseFloat(e), state.zT])
+                            // props.selected.translation =
+                            // setState({...state, yT: parseFloat(e)})
 
                         }}
                     />
@@ -73,8 +91,9 @@ export default function TransformComponent(props) {
                         value={state.zT}
                         onFinish={() => props.submitTranslation('z', state.zT)}
                         handleChange={e => {
-                            props.selected.translation = [props.selected.translation[0], props.selected.translation[1], parseFloat(e)]
-                            setState({...state, zT: parseFloat(e)})
+                            translate([state.xT, state.yT, parseFloat(e)])
+                            // props.selected.translation = [state.xT, state.yT, parseFloat(e)]
+                            // setState({...state, zT: parseFloat(e)})
                         }}
                     />
                 </div>
@@ -89,7 +108,7 @@ export default function TransformComponent(props) {
                         accentColor={'red'}
                         label={'x'}
                         value={state.xS}
-                        minValue={0.00001}
+                        minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
                         onFinish={() => props.submitScaling('x', state.xS)}
@@ -104,7 +123,7 @@ export default function TransformComponent(props) {
                         accentColor={'#00ff00'}
                         label={'y'}
                         value={state.yS}
-                        minValue={0.00001}
+                        minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
                         onFinish={() => props.submitScaling('y', state.yS)}
@@ -118,7 +137,7 @@ export default function TransformComponent(props) {
                         accentColor={'#0095ff'}
                         label={'z'}
                         value={state.zS}
-                        minValue={0.00001}
+                        minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
                         onFinish={() => props.submitScaling('z', state.zS)}
