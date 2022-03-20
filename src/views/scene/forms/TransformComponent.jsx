@@ -14,8 +14,8 @@ export default function TransformComponent(props) {
     const getNewState = () => {
         return {
             xT: props.selected.translation[0],
-            yT: props.selected.translation[0],
-            zT: props.selected.translation[0],
+            yT: props.selected.translation[1],
+            zT: props.selected.translation[2],
 
             xS: props.selected.scaling[0],
             yS: props.selected.scaling[1],
@@ -31,6 +31,7 @@ export default function TransformComponent(props) {
 
 
     useEffect(() => {
+        console.log(props.selected)
         setState(getNewState())
     }, [props.selected])
 
