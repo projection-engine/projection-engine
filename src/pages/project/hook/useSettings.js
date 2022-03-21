@@ -1,5 +1,6 @@
 import {useMemo, useState} from "react";
 import CAMERA_TYPES from "../../../services/engine/utils/camera/CAMERA_TYPES";
+import GIZMOS from "../../../services/engine/utils/misc/GIZMOS";
 
 
 export const SHADING_MODELS = {
@@ -21,6 +22,7 @@ export default function useSettings() {
         resolutionMultiplier: 1,
         cameraType: CAMERA_TYPES.SPHERICAL,
         fullscreen: false,
+        gizmo: GIZMOS.TRANSLATION,
         viewPreferences: false,
         filesVisibility: true,
         sceneVisibility: true,

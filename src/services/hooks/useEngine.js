@@ -106,6 +106,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
             })
             resizeObserver.observe(document.getElementById(id + '-canvas'))
             renderer.current?.updateCamera(settings.cameraType)
+            renderer.current.gizmo = settings.gizmo
 
             if (!canRender)
                 renderer.current?.stop()
