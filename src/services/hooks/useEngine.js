@@ -18,11 +18,13 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
     const [selected, setSelected] = useState([])
+
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
     const [finished, setFinished] = useState(false)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [initialized, setInitialized] = useState(false)
+    const [lockedEntity, setLockedEntity] = useState()
 
     useEffect(() => {
         if (id) {
@@ -130,6 +132,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
 
 
     return {
+        lockedEntity, setLockedEntity,
         entities, dispatchEntities,
         meshes, setMeshes,
         gpu, materials, setMaterials,

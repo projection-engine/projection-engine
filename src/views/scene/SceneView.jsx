@@ -169,7 +169,7 @@ export default function SceneView(props) {
                                 icon: <span className={'material-icons-round'}>delete</span>,
                                 onClick: (node) => {
                                     const toDelete = [...props.engine.selected]
-                                        props.engine.setSelected([])
+                                    props.engine.setSelected([])
                                     props.engine.dispatchEntities({
                                         type: ENTITY_ACTIONS.REMOVE_BLOCK,
                                         payload: toDelete
@@ -235,27 +235,14 @@ export default function SceneView(props) {
                         {currentForm.open ? (
                             <div className={styles.header}>
                                 <label>{currentForm.name}</label>
-                                <Dropdown styles={{height: '20px', width: '20px'}} className={styles.button}
-                                          variant={"outlined"}>
-                                    <DropdownOptions>
-                                        {options.map((o, i) => (
-                                            <React.Fragment key={i + '-option-scene'}>
-                                                <DropdownOption option={{
-                                                    ...o,
-                                                    onClick: () => {
-                                                        props.engine.dispatchEntities({
-                                                            type: ENTITY_ACTIONS.ADD_COMPONENT,
-                                                            payload: {
-                                                                entityID: currentForm.selected?.id,
-                                                                data: o.instance()
-                                                            }
-                                                        })
-                                                    }
-                                                }}/>
-                                            </React.Fragment>
-                                        ))}
-                                    </DropdownOptions>
-                                </Dropdown>
+                                <Button
+                                    styles={{height: '20px', width: '20px'}}
+                                    onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
+                                    className={styles.button}
+                                    highlight={props.engine.lockedEntity === currentForm.selected?.id}
+                                    variant={"outlined"}>
+                                    <span className={'material-icons-round'} style={{fontSize: '1rem'}}>push_pin</span>
+                                </Button>
                             </div>
                         ) : null}
 

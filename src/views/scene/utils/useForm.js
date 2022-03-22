@@ -26,8 +26,8 @@ export default function useForm(
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
-        return engine.entities.find(e => e.id === engine.selected[0])
-    }, [engine.selected, engine.entities])
+        return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
+    }, [engine.selected, engine.entities, engine.lockedEntity])
 
 
     const getField = (key) => {
