@@ -89,14 +89,13 @@ export default function Editor(props) {
             {
                 require: [KEYS.Delete],
                 callback: () => {
-                    props.engine.selected.forEach(e => {
+                    const s = [...props.engine.selected]
+                    props.engine.setSelected([])
+                    props.engine.setLockedEntity(undefined)
+                    s.forEach(e => {
                         props.engine.dispatchEntities({
                             type: ENTITY_ACTIONS.REMOVE,
                             payload: {entityID: e}
-                        })
-                        props.setAlert({
-                            type: 'success',
-                            message: 'Entity deleted.'
                         })
                     })
                 }

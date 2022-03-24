@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@electron/remote": "latest",
-    "@f-ui/charts": "latest",
-    "@f-ui/core": "^0.1.11-alpha",
+
+    "@f-ui/core": "latest",
     "@fontsource/roboto": "latest",
     "dexie": "^3.2.0",
     "draco3d": "^1.5.2",

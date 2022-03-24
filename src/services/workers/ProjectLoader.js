@@ -218,6 +218,7 @@ export default class ProjectLoader {
                         if (!oK.includes("__"))
                             component[oK] = entity.components[k][oK]
                     })
+
                 parsedEntity.components[k] = component
             }
         })
@@ -241,7 +242,7 @@ const ENTITIES = {
     },
     'SpotLightComponent': (entity, k) => new SpotLightComponent(entity.components[k].id),
     'MaterialComponent': (entity, k) => new MaterialComponent(entity.components[k].id),
-    'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id),
+    'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id, true),
     'FolderComponent': (entity, k) => new FolderComponent(entity.components[k].id),
     'PhysicsComponent': (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
     'CubeMapComponent': (entity, k, meshes, skyboxes, gpu) => {

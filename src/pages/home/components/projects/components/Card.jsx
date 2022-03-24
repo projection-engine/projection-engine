@@ -1,6 +1,6 @@
 import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
-import {Button, DataRow, Modal, TextField, ToolTip} from "@f-ui/core";
+import {Button, DataProvider, DataRow, Modal, TextField, ToolTip} from "@f-ui/core";
 import {useState} from "react";
 import logo from '../../../../../static/LOGO.png'
 import shared from "../../../styles/Home.module.css";
@@ -57,15 +57,19 @@ export default function Card(props) {
                         className={styles.image}
                         draggable={false}/>
                 </Button>
+                <DataProvider.Provider value={{
+                    keys: [
+                        {label: 'Name', key: 'name', type: 'string'},
+                        {label: 'Last modification', key: 'lastModification', type: 'string'}
+                    ],
+                    data: [{...props.data.meta, name}],
+                    selfContained: true
+                }}>
                 <DataRow
                     className={styles.dataRow}
-                    selfContained={true}
-                    object={{...props.data.meta, name}}
-                    keys={[{label: 'Name', key: 'name', type: 'string'}, {
-                        label: 'Last modification',
-                        key: 'lastModification',
-                        type: 'string'
-                    }]}/>
+                    index={0}
+                />
+                </DataProvider.Provider>
             </div>
 
             <div className={styles.section} style={{justifyContent: 'flex-end'}}>

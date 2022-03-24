@@ -1162,15 +1162,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@f-ui/charts@latest":
-  version "0.0.1-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/charts/-/charts-0.0.1-alpha.tgz#7188d07309f0ab5d944266bb0278fc7008f8c1a9"
-  integrity sha512-Jp7sjouwgGub5Fc1W2JxOLSt5/uew4fkxolFoCMUrx9FYqt02W9HgxI4j7oQdRUfinQD7h4bVF/5uV42rcTsRA==
-
-"@f-ui/core@^0.1.11-alpha":
-  version "0.1.11-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.11-alpha.tgz#36c62509e09b3d98bb91bdcd122a57e1a51f4bb6"
-  integrity sha512-AYSQW/Jsx6DLR/DSspFF9K7LSVZaLG1TEMjv5sn5i/YqVz64I242uHy7hSKrjQ1XvQC95NMUGfHM0jwjXzxq1A==
+"@f-ui/core@latest":
+  version "0.1.13-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.13-alpha.tgz#9446b4ea28642f04d0c553313c5664056532349c"
+  integrity sha512-sPHlxK+g1PMVvokhDkVuXVYWgwS4Vzk50IXffstMEgHZsBNYLCPaofd5Hgfvp2WulTDaBYRd1rjzn4ny7oKKKg==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"

@@ -1,6 +1,7 @@
 import {useMemo, useState} from "react";
 import CAMERA_TYPES from "../../../services/engine/utils/camera/CAMERA_TYPES";
 import GIZMOS from "../../../services/engine/utils/misc/GIZMOS";
+import RENDERING_TYPES from "../../../services/engine/utils/misc/RENDERING_TYPES";
 
 
 export const SHADING_MODELS = {
@@ -13,7 +14,9 @@ export default function useSettings() {
     const [settings, setSettings] = useState({
         projectCreationDate: (new Date()).toDateString(),
         timestamp: 30000,
-        fxaa: true,
+
+        typeRendering: RENDERING_TYPES.FXAA,
+
         iconsVisibility: true,
         gridVisibility: true,
         shadingModel: SHADING_MODELS.FLAT,

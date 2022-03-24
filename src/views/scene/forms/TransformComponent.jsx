@@ -4,12 +4,15 @@ import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
 import SettingsProvider from "../../../services/hooks/SettingsProvider";
+import Transformation from "../../../services/engine/utils/workers/Transformation";
 
 
 const toDeg = 57.2957795131
 export default function TransformComponent(props) {
     const settings = useContext(SettingsProvider)
     const getNewState = () => {
+        const euler = props.selected.rotationUpdated ? props.selected.rotation : Transformation.getEuler(props.selected.rotationQuat)
+
         return {
             xT: props.selected.translation[0],
             yT: props.selected.translation[1],
@@ -19,9 +22,9 @@ export default function TransformComponent(props) {
             yS: props.selected.scaling[1],
             zS: props.selected.scaling[2],
 
-            xR: props.selected.rotation[0] * 180 / Math.PI,
-            yR: props.selected.rotation[1] * 180 / Math.PI,
-            zR: props.selected.rotation[2] * 180 / Math.PI,
+            xR: euler[0] * 180 / Math.PI,
+            yR: euler[1] * 180 / Math.PI,
+            zR: euler[2] * 180 / Math.PI,
 
         }
     }
