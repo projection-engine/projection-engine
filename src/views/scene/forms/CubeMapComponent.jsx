@@ -8,11 +8,7 @@ import Range from "../../../components/range/Range";
 export default function CubeMapComponent(props) {
     const getNewState = () => {
         return {
-            placement: {
-                x: props.selected.position[0],
-                y: props.selected.position[1],
-                z: props.selected.position[2]
-            },
+
             resolution: props.selected.resolution,
             irradiance: props.selected.irradiance,
             prefilteredMipmaps: props.selected.prefilteredMipmaps,
@@ -27,44 +23,6 @@ export default function CubeMapComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset}>
-                <AccordionSummary className={styles.summary}>
-                    Placement
-                </AccordionSummary>
-                <div className={styles.inputs}>
-                    <Range
-                        accentColor={'red'}
-                        onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], 'position')}
-                        precision={2}
-                        metric={'x'}
-                        value={state.placement.x}
-                        handleChange={e => {
-                            props.selected.position = [parseFloat(e), state.placement.y, state.placement.z]
-                            setState({...state, placement: {...state.placement, x: parseFloat(e)}})
-                        }}/>
-                    <Range
-                        accentColor={'green'}
-                        onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], 'position')}
-                        precision={2}
-                        metric={'y'}
-                        value={state.placement.y}
-                        handleChange={e => {
-                            props.selected.position = [state.placement.x, parseFloat(e), state.placement.z]
-                            setState({...state, placement: {...state.placement, y: parseFloat(e)}})
-                        }}/>
-                    <Range
-                        accentColor={'blue'}
-                        onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], 'position')}
-                        precision={2}
-                        metric={'z'}
-                        value={state.placement.z}
-                        handleChange={e => {
-                            props.selected.position = [state.placement.x, state.placement.y, parseFloat(e)]
-                            setState({...state, placement: {...state.placement, z: parseFloat(e)}})
-                        }}/>
-
-                </div>
-            </Accordion>
 
             <Accordion className={styles.fieldset}>
                 <AccordionSummary className={styles.summary}>

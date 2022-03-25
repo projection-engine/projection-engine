@@ -7,7 +7,7 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 
-import {Button, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
+import {Button, LoaderProvider} from "@f-ui/core";
 import FolderComponent from "../../services/engine/ecs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";

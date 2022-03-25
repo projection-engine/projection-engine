@@ -171,8 +171,7 @@ export default class FileSystem {
                             FileBlob
                                 .loadAsString(file)
                                 .then(res => {
-                                    GLTF
-                                        .parseGLTF(res, file.path.replace(file.name, ''), options)
+                                    GLTF.parseGLTF(res, file.path.replace(file.name, ''), options)
                                         .then(({nodes, materials}) => {
                                             let promises = []
                                             if (nodes) {
@@ -203,7 +202,6 @@ export default class FileSystem {
                                                             parsedData.links = parsedData.links.filter(e => {
                                                                 return keysOnRes.includes(e.target.attribute.key)
                                                             })
-
                                                             parsedData.nodes = parsedData.nodes.map(n => {
                                                                 const newNode = {...n}
                                                                 newNode.sample = {
@@ -212,11 +210,8 @@ export default class FileSystem {
                                                                 }
                                                                 return newNode
                                                             })
-
-                                                            parsedData.response = {
-                                                                ...d.response,
-                                                                name: d.name
-                                                            }
+                                                            parsedData.response = d.response
+                                                            parsedData.response.name = d.name
 
                                                             let localPromises = [
                                                                 new Promise(r => {
@@ -233,7 +228,7 @@ export default class FileSystem {
                                                             parsedData.nodes.forEach((n, i) => {
                                                                 let nameSplit = n.sample.registryID
                                                                 nameSplit = nameSplit.substr(0, nameSplit.length / 2)
-                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + nameSplit, d.response[n.sample.type], n.sample.registryID))
+                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + nameSplit, d.response[n.sample.type]?.high, n.sample.registryID))
                                                             })
 
                                                             return localPromises

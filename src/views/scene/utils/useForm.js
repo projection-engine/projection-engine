@@ -187,6 +187,7 @@ export default function useForm(
                                     key: 'CubeMapComponent'
                                 }
                             })
+                            setAlert({message: 'Reflection captures need to be rebuilt', type: 'alert'})
                         }}
                     />
                 )

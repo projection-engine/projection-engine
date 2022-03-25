@@ -3,6 +3,8 @@ import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
 import randomID from "../../utils/misc/randomID";
 import ROTATION_TYPES from "../../engine/utils/misc/ROTATION_TYPES";
+import Material from "../../../views/material/workflows/material/Material";
+import emptyMaterial from '../../utils/emptyMaterial.json'
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -59,40 +61,16 @@ export function materialParser(basePath, material, textures, images) {
 
         Promise.all(promises)
             .then(result => {
-                let res = {}
-                result.forEach(r => {
-                    if (r.data)
-                        switch (r.key) {
-                            case 'albedo':
-                                res.albedo = r.data
-                                break
-                            case 'metallic':
-                                res.metallic = r.data
-                                break
-                            case 'roughness':
-                                res.roughness = r.data
-                                break
-                            case 'normal':
-                                res.normal = r.data
-                                break
-                            case 'ao':
-                                res.ao = r.data
-                                break
-                            case 'height':
-                                res.height = r.data
-                                break
-                            case 'emissive':
-                                res.emissive = r.data
-                                break
-                        }
+                const mat = new Material()
+                mat.id =  emptyMaterial.response.id
+                mat.compile(result).then(() => {
+                    resolve({
+                        name: material.name,
+                        response: mat,
+                        id: randomID()
+                    })
                 })
 
-                resolve({
-                    name: material.name,
-
-                    response: res,
-                    id: randomID()
-                })
             })
 
     })

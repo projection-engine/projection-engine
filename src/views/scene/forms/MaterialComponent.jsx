@@ -103,7 +103,6 @@ export default function MaterialComponent(props) {
                             value={state.tilingY}
                             onFinish={() => props.submitTiling([state.tilingX, state.tilingY])}
                             handleChange={e => {
-                                console.log(props.selected)
                                 props.selected.tiling = [state.tilingX, parseFloat(e)]
                                 setState({...state, tilingY: parseFloat(e)})
 

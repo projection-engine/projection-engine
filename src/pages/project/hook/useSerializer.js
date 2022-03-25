@@ -112,7 +112,9 @@ export const saveEntities = (entities, fileSystem) => {
                 blob.TransformComponent = {
                     scaling: e.components.TransformComponent.scaling,
                     rotation: e.components.TransformComponent.rotation,
-                    translation: e.components.TransformComponent.translation
+                    translation: e.components.TransformComponent.translation,
+                    lockedRotation: e.components.TransformComponent.lockedRotation,
+                    lockedScaling: e.components.TransformComponent.lockedScaling
                 }
             fileSystem
                 .updateEntity({

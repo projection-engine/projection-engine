@@ -40,20 +40,8 @@
     height: 30px;
 }
 
-.row {
-    background-color: var(--fabric-background-secondary);
-    border-radius: 5px;
-}
-
 .row > summary {
     list-style: none;
-}
-
-
-.circle {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
 }
 
 .position {
@@ -103,20 +91,6 @@
     overflow-x: auto;
     user-select: none;
     min-height: 25px;
-}
-
-.tabButton {
-    min-width: 25px;
-    width: 25px !important;
-    padding: 2px !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.tabButton[data-highlight = 'true'] {
-    background-color: var(--fabric-background-primary) !important;
 }
 
 .button {

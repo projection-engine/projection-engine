@@ -32,7 +32,6 @@ export default function TransformComponent(props) {
 
 
     useEffect(() => {
-        console.log(props.selected)
         setState(getNewState())
     }, [props.selected])
 
@@ -46,6 +45,7 @@ export default function TransformComponent(props) {
             zT: t[2],
         })
     }
+    console.log(props.selected)
 
     return (
         <>
@@ -107,6 +107,7 @@ export default function TransformComponent(props) {
                 </AccordionSummary>
                 <div className={styles.inputs}>
                     <Range
+                        disabled={props.selected.lockedScaling}
                         accentColor={'red'}
                         label={'x'}
                         value={state.xS}
@@ -122,6 +123,7 @@ export default function TransformComponent(props) {
                         }}
                     />
                     <Range
+                        disabled={props.selected.lockedScaling}
                         accentColor={'#00ff00'}
                         label={'y'}
                         value={state.yS}
@@ -136,6 +138,7 @@ export default function TransformComponent(props) {
 
                         }}/>
                     <Range
+                        disabled={props.selected.lockedScaling}
                         accentColor={'#0095ff'}
                         label={'z'}
                         value={state.zS}
@@ -158,6 +161,7 @@ export default function TransformComponent(props) {
                 </AccordionSummary>
                 <div className={styles.inputs}>
                     <Range
+                        disabled={props.selected.lockedRotation}
                         accentColor={'red'}
                         label={'x'}
                         metric={'angle'}
@@ -169,6 +173,7 @@ export default function TransformComponent(props) {
                             setState({...state, xR: parseFloat(e)})
                         }}/>
                     <Range
+                        disabled={props.selected.lockedRotation}
                         metric={'angle'}
                         accentColor={'#00ff00'}
                         label={'y'}
@@ -180,6 +185,7 @@ export default function TransformComponent(props) {
                         }}/>
                     <Range
                         accentColor={'#0095ff'}
+                        disabled={props.selected.lockedRotation}
                         metric={'angle'}
                         label={'z'}
                         value={state.zR}

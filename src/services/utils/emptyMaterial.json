@@ -198,6 +198,7 @@
     }
   ],
   "response": {
+    "id": "material",
     "name": "Material",
     "instance": "Material",
     "albedo": "",

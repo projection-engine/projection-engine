@@ -83,7 +83,6 @@ export default function Home(props) {
                         pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + pjID),
                         {recursive: true, force: true},
                         (e) => {
-                            console.log(e)
                             load.finishEvent(EVENTS.PROJECT_DELETE)
                             setProjects(prev => {
                                 return prev.filter(e => e.id !== pjID)
@@ -95,13 +94,12 @@ export default function Home(props) {
                     const pathName = pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + projectID + '\\.meta')
 
                     fs.readFile(pathName, (error, res) => {
-                        console.log(error)
                         if (res && !error) {
                             fs.writeFile(pathName, JSON.stringify({
                                 ...JSON.parse(res.toString()),
                                 name: newName
                             }), (e) => {
-                                console.log(e)
+
                                 if (!e)
                                     setAlert({
                                         type: 'success',

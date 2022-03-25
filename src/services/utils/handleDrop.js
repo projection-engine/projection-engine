@@ -9,9 +9,8 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
 
     try {
         entities = asID ? [event] : JSON.parse(event.dataTransfer.getData("text"))
-    } catch (e) {
-    }
-    console.log(entities, asID, event)
+    } catch (e) {}
+
     let promises = []
     for (let i = 0; i < entities.length; i++) {
         promises.push(

@@ -256,7 +256,6 @@ export default class ImageProcessor {
                     const canvas = new OffscreenCanvas(width, height),
                         ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
-                    console.log(quality)
                     canvas.convertToBlob({
                         type: "image/png",
                         quality: quality

@@ -16,6 +16,7 @@ import randomID from "../../services/utils/misc/randomID";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";
+import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -57,10 +58,14 @@ export default function Editor(props) {
                     props.serializer.save()
                 }
             },
+
+            {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
+            {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
+            {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},
+
             {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: () => {
-                    console.log(props.engine.selected)
                     setToCopy(props.engine.selected)
                     if (props.engine.selected)
                         props.setAlert({
@@ -105,7 +110,7 @@ export default function Editor(props) {
                 callback: () => {
                     toCopy.forEach(t => {
                         const found = props.engine.entities.find(e => e.id === t)
-                        if ( found) {
+                        if (found) {
                             let clone = cloneClass(found)
                             clone.id = randomID()
 
@@ -163,7 +168,7 @@ export default function Editor(props) {
                     engine={props.engine}
                     showPosition={props.settings.cameraCoordsVisibility}
                     allowDrop={true}
-                    handleDrop={event => handleDrop(event, quickAccess.fileSystem, props.engine, props.setAlert,props.load)}
+                    handleDrop={event => handleDrop(event, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
                 />
             </div>
             {props.settings.sceneVisibility ?
