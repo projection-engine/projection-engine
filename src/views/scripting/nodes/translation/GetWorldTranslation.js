@@ -1,18 +1,18 @@
 import Node from "../../../../components/flow/Node";
-import {TYPES} from "../../templates/TYPES";
-import NODE_TYPES from "../../templates/NODE_TYPES";
-import COMPONENTS from "../../../../services/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../../services/engine/utils/misc/COMPONENTS";
+import {TYPES} from "../../../../components/flow/TYPES";
+import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
 
 export default class GetWorldTranslation extends Node {
     constructor() {
         super(
-            [{label: 'Start', key: 'EXECUTION', type: TYPES.EXECUTION},],
+            [{label: 'Start', key: 'start', accept: [TYPES.EXECUTION]},],
             [
             {label: 'Execute', key: 'EXECUTION', type: TYPES.EXECUTION},
-            {label: 'Translation', key: 'translation', type: TYPES.VEC3},
-            {label: 'X', key: 'x', type: TYPES.VEC3},
-            {label: 'Y', key: 'y', type: TYPES.VEC3},
-            {label: 'Z', key: 'z', type: TYPES.VEC3}
+
+            {label: 'X', key: 'x', type: TYPES.NUMBER},
+            {label: 'Y', key: 'y', type: TYPES.NUMBER},
+            {label: 'Z', key: 'z', type: TYPES.NUMBER}
         ]);
         this.name = 'GetWorldTranslation'
     }

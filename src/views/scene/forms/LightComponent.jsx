@@ -4,7 +4,7 @@ import {Accordion, AccordionSummary} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
-import COMPONENTS from "../../../services/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../services/engine/utils/misc/COMPONENTS";
 
 export default function LightComponent(props) {
     const getNewState = () => {

@@ -12,6 +12,8 @@ import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import cloneClass from "../../../services/utils/misc/cloneClass";
+import ScriptComponent from "../forms/ScriptComponent";
+import COMPONENTS from "../../../services/engine/utils/misc/COMPONENTS";
 
 export default function useForm(
     engine,
@@ -32,63 +34,84 @@ export default function useForm(
 
 
     const getField = (key) => {
-        console.log('EE')
+
         switch (key) {
-            case 'TransformComponent': {
+            case COMPONENTS.TRANSFORM: {
                 return (
                     <TransformComponent
-                        selected={selected.components.TransformComponent}
+                        selected={selected.components[COMPONENTS.TRANSFORM]}
                         submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
                         submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
                         submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0], setAlert)}
                     />
                 )
             }
-            case 'MeshComponent': {
+            case COMPONENTS.SCRIPT: {
                 return (
-                    <>
+                    <ScriptComponent
+                        selected={selected.components[COMPONENTS.SCRIPT]}
+                        setAlert={setAlert}
+                        submit={(s) => {
+
+                            selected.components[COMPONENTS.SCRIPT].ready  = s.blob?.response !== undefined
+                            selected.components[COMPONENTS.SCRIPT].executionTemplate = s.blob?.response
+                            selected.components[COMPONENTS.SCRIPT].registryID = s.id
+
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: engine.selected[0],
+                                    data: selected.components[COMPONENTS.SCRIPT],
+                                    key: COMPONENTS.SCRIPT
+                                }
+                            })
+                        }}
+                        quickAccess={quickAccess}
+                    />
+                )
+            }
+
+            case COMPONENTS.MESH: {
+                return (
                         <MeshComponent
                             quickAccess={quickAccess}
                             load={load} setAlert={setAlert}
                             submit={(mesh, type) => {
                                 if (!type)
-                                    selected.components.MeshComponent.meshID = mesh
+                                    selected.components[COMPONENTS.MESH].meshID = mesh
                                  else
-                                    selected.components.MeshComponent.meshType = mesh
+                                    selected.components[COMPONENTS.MESH].meshType = mesh
 
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                         entityID: engine.selected[0],
-                                        data: selected.components.MeshComponent,
-                                        key: 'MeshComponent'
+                                        data: selected.components[COMPONENTS.MESH],
+                                        key: COMPONENTS.MESH
                                     }
                                 })
                             }}
                             engine={engine}
-                            selected={selected.components.MeshComponent}
+                            selected={selected.components[COMPONENTS.MESH]}
                         />
-
-                    </>
                 )
             }
-            case 'MaterialComponent': {
+            case COMPONENTS.MATERIAL: {
                 return (
                     <MaterialComponent
                         submitRadius={r => {
-                            const clone = cloneClass(selected.components.MaterialComponent)
+                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                             clone.radius = r
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
                                     data: clone,
-                                    key: 'MaterialComponent'
+                                    key: COMPONENTS.MATERIAL
                                 }
                             })
                         }}
                         quickAccess={quickAccess}
-                        selected={selected.components.MaterialComponent}
+                        selected={selected.components[COMPONENTS.MATERIAL]}
                         submitTiling={(tiling, allow) => {
-                            const clone = cloneClass(selected.components.MaterialComponent)
+                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                             if (allow === undefined) {
                                 clone.tiling = tiling
                             } else
@@ -97,12 +120,12 @@ export default function useForm(
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
                                     data: clone,
-                                    key: 'MaterialComponent'
+                                    key: COMPONENTS.MATERIAL
                                 }
                             })
                         }}
                         submit={(mat) => {
-                            const clone = cloneClass(selected.components.MaterialComponent)
+                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                             if (mat) {
                                 importMaterial(mat, engine, load)
                                 clone.materialID = mat.id
@@ -112,7 +135,7 @@ export default function useForm(
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
                                     data: clone,
-                                    key: 'MaterialComponent'
+                                    key: COMPONENTS.MATERIAL
                                 }
                             })
                         }}
@@ -121,9 +144,9 @@ export default function useForm(
                     />
                 )
             }
-            case 'SkylightComponent':
-            case 'DirectionalLightComponent':
-            case 'PointLightComponent': {
+            case COMPONENTS.SKYLIGHT:
+            case COMPONENTS.DIRECTIONAL_LIGHT:
+            case COMPONENTS.POINT_LIGHT: {
                 return (
                     <LightComponent
                         type={key}
@@ -142,10 +165,10 @@ export default function useForm(
 
                         quickAccess={quickAccess}
                         submitPlacement={(axis, data) => {
-                            const k = key === 'DirectionalLightComponent' ? 'direction' : 'position'
+
                             const component = selected.components[key]
-                            const prev = component[k]
-                            component[k] = [
+                            const prev = component.direction
+                            component.direction = [
                                 axis === 'x' ? data : prev[0],
                                 axis === 'y' ? data : prev[1],
                                 axis === 'z' ? data : prev[2]
@@ -174,18 +197,18 @@ export default function useForm(
                 )
             }
 
-            case 'CubeMapComponent': {
+            case COMPONENTS.CUBE_MAP: {
                 return (
                     <CubeMapComponent
                         selected={selected.components[key]}
                         submit={(data, key) => {
-                            selected.components.CubeMapComponent[key] = data
+                            selected.components[COMPONENTS.CUBE_MAP][key] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
                                     entityID: engine.selected[0],
-                                    data: selected.components.CubeMapComponent,
-                                    key: 'CubeMapComponent'
+                                    data: selected.components[COMPONENTS.CUBE_MAP],
+                                    key: COMPONENTS.CUBE_MAP
                                 }
                             })
                             setAlert({message: 'Reflection captures need to be rebuilt', type: 'alert'})
@@ -193,20 +216,20 @@ export default function useForm(
                     />
                 )
             }
-            case 'SkyboxComponent': {
+            case COMPONENTS.SKYBOX: {
                 return (
                     <SkyboxComponent
                         quickAccess={quickAccess}
-                        selected={selected.components.SkyboxComponent}
+                        selected={selected.components[COMPONENTS.SKYBOX]}
                         submit={(data, key) => {
 
-                            selected.components.SkyboxComponent[key] = data
+                            selected.components[COMPONENTS.SKYBOX][key] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
                                     entityID: engine.selected[0],
-                                    data: selected.components.SkyboxComponent,
-                                    key: 'SkyboxComponent'
+                                    data: selected.components[COMPONENTS.SKYBOX],
+                                    key: COMPONENTS.SKYBOX
                                 }
                             })
                         }}
@@ -221,10 +244,9 @@ export default function useForm(
 
     return useMemo(() => {
 
-        if (selected && !executingAnimation && !selected.components.FolderComponent) {
-            if (!currentKey) {
+        if (selected && !executingAnimation && !selected.components[COMPONENTS.FOLDER]) {
+            if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
-            }
             const data = getField(Object.keys(selected.components)[currentTab])
 
             return {

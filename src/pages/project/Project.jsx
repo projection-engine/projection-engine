@@ -105,7 +105,30 @@ export default function Project(props) {
             case 'image':
                 return <ImageView file={file}/>
             case 'flow':
-                return <ScriptingView index={index} file={file} submitPackage={() => null} setAlert={setAlert}/>
+                return <ScriptingView
+                    index={index}
+                    file={file}
+                    submitPackage={(pack, close) => {
+                        quickAccess.fileSystem
+                            .updateAsset(file.registryID, pack)
+                            .then(() => {
+                                setAlert({
+                                    type: 'success',
+                                    message: 'Saved'
+                                })
+                                if (close) {
+                                    if ((currentTab) === index)
+                                        setCurrentTab(filesLoaded.length - 1)
+                                    setFilesLoaded(prev => {
+                                        const newD = [...prev]
+                                        newD.splice(index, 1)
+                                        return newD
+                                    })
+                                }
+                            })
+
+                    }}
+                    setAlert={setAlert}/>
             default:
                 return null
         }

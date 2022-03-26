@@ -16,6 +16,8 @@ import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 import SkylightComponent from "../engine/ecs/components/SkyLightComponent";
 import CubeMapComponent from "../engine/ecs/components/CubeMapComponent";
 import CubeMapInstance from "../engine/instances/CubeMapInstance";
+import COMPONENTS from "../engine/utils/misc/COMPONENTS";
+import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 
 
 export default class ProjectLoader {
@@ -252,5 +254,6 @@ const ENTITIES = {
         return component
     },
     'SphereCollider': (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
 
 }

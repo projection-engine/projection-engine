@@ -1,12 +1,12 @@
 import Node from "../../../../components/flow/Node";
-import {TYPES} from "../../templates/TYPES";
-import NODE_TYPES from "../../templates/NODE_TYPES";
-import COMPONENTS from "../../../../services/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../../services/engine/utils/misc/COMPONENTS";
+import {TYPES} from "../../../../components/flow/TYPES";
+import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
 
 export default class GetWorldRotation extends Node {
     constructor() {
         super(
-            [{label: 'Start', key: 'EXECUTION', type: TYPES.EXECUTION},],
+            [{label: 'Start', key: 'start', accept: [TYPES.EXECUTION]}],
             [
                 {label: 'Execute', key: 'EXECUTION', type: TYPES.EXECUTION},
                 {label: 'Quat', key: 'quat', type: TYPES.VEC4},

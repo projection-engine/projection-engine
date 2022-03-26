@@ -1,6 +1,7 @@
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import EventTick from "../nodes/EventTick";
-import {TYPES} from "../templates/TYPES";
+import {TYPES} from "../../../components/flow/TYPES";
+
 
 export default function compile(n, links) {
     let order = [], nodes = n.map(node => cloneClass(node))
@@ -20,8 +21,18 @@ export default function compile(n, links) {
         }
 
         if (applied > 0 || !currentNode.ready) {
-            if (!currentNode.ready)
-                order.push(currentNode.id)
+            console.log(currentNode)
+            if (!currentNode.ready) {
+                let inputs = {}
+                linksToResolve.forEach(l => {
+                    inputs[l.target.attribute.key] = l.source.id + '/' + l.source.attribute.key
+                })
+                order.push({
+                    nodeID: currentNode.id,
+                    inputs,
+                    executor: currentNode.constructor.name
+                })
+            }
             currentNode.ready = true
         }
     }
@@ -33,7 +44,9 @@ export default function compile(n, links) {
         const forwardLinks = links.filter(l => l.source.id === nodes[exec].id)
         let linkToExecute
         for (let liExec = 0; liExec < forwardLinks.length; liExec++) {
-            if (nodes[exec].inputs[liExec].type === TYPES.EXECUTION) {
+            const n = nodes.find(no => no.id === forwardLinks[liExec].target.id)
+            console.log(n.inputs, forwardLinks[liExec].target)
+            if (n && n.inputs.find(i => i.key === forwardLinks[liExec].target.attribute.key).accept.includes(TYPES.EXECUTION) ) {
                 linkToExecute = forwardLinks[liExec]
                 break
             }

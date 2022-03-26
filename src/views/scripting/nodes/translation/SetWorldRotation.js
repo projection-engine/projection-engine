@@ -1,16 +1,17 @@
 import Node from "../../../../components/flow/Node";
-import {TYPES} from "../../templates/TYPES";
-import NODE_TYPES from "../../templates/NODE_TYPES";
-import COMPONENTS from "../../../../services/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../../services/engine/utils/misc/COMPONENTS";
 import {quat} from "gl-matrix";
+import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
+import {TYPES} from "../../../../components/flow/TYPES";
 
 export default class SetWorldRotation extends Node {
 
     constructor() {
         super([
+            {label: 'Start', key: 'start', accept: [TYPES.EXECUTION]},
             {label: 'Rotation Quat', key: 'quat', accept: [TYPES.VEC4]},
             {label: 'Rotation Euler', key: 'euler', accept: [TYPES.VEC3]},
-            {label: 'Start', key: 'EXECUTION', type: TYPES.EXECUTION},
+
         ], [
             {label: 'Execute', key: 'EXECUTION', type: TYPES.EXECUTION}]);
         this.name = 'SetWorldRotation'

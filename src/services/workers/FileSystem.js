@@ -256,13 +256,14 @@ export default class FileSystem {
 
     createRegistryEntry(fID = randomID(), path) {
         const pathRe = resolvePath(this.path+ '\\assets\\')
+        const p =resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, '')
 
         return new Promise(r => {
             fs.writeFile(
                 resolvePath(this.path + '\\assetsRegistry\\' + fID + `.reg`),
                 JSON.stringify({
                     id: fID,
-                    path: resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, '')
+                    path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
                 }),
                 () => {
                     r()
@@ -287,7 +288,8 @@ export default class FileSystem {
     }
 
     assetExists(path) {
-        return fs.existsSync(this.path + '\\assets\\' + path)
+        console.log(resolvePath(this.path + '\\assets\\' + path), fs.existsSync(resolvePath(this.path + '\\assets\\' + path)))
+        return fs.existsSync(resolvePath(this.path + '\\assets\\' + path))
     }
 
     async writeAsset(path, fileData, previewImage, registryID) {

@@ -12,7 +12,8 @@ import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/utils/misc/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
-import COMPONENTS from "../utils/misc/COMPONENTS";
+import COMPONENTS from "../engine/utils/misc/COMPONENTS";
+import ScriptSystem from "../engine/ecs/systems/ScriptSystem";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
@@ -54,10 +55,11 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                     physics = renderer.current.systems[SYSTEMS.PHYSICS],
                     perf = renderer.current.systems[SYSTEMS.PERF],
                     pick = renderer.current.systems[SYSTEMS.PICK],
-                    cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP]
-
+                    cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP],
+                    s = renderer.current.systems[SYSTEMS.SCRIPT]
 
                 renderer.current.systems = [
+                    s ? s : new ScriptSystem(),
                     perf ? perf : new PerformanceSystem(gpu),
                     physics ? physics : new PhysicsSystem(),
                     transformation ? transformation : new TransformSystem(),

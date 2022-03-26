@@ -13,6 +13,8 @@ import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
+import COMPONENTS from "../../services/engine/utils/misc/COMPONENTS";
+import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -225,8 +227,22 @@ export default function SceneView(props) {
 
                         <div className={styles.content}>
                             {currentForm.open ?
-                                <FormTabs entity={currentForm.selected} currentTab={currentTab}
-                                          setCurrentTab={setCurrentTab}/>
+                                <FormTabs
+                                    addComponent={() => {
+                                        currentForm.selected.components[COMPONENTS.SCRIPT] = new ScriptComponent()
+                                        props.engine.dispatchEntities({
+                                            type: ENTITY_ACTIONS.ADD_COMPONENT,
+                                            payload: {
+                                                entityID: props.engine.selected[0],
+                                                data: currentForm.selected.components[COMPONENTS.SCRIPT],
+                                                key: COMPONENTS.SCRIPT
+                                            }
+                                        })
+                                    }}
+                                    entity={currentForm.selected}
+                                    currentTab={currentTab}
+                                    setCurrentTab={setCurrentTab}
+                                />
                                 :
                                 null
                             }

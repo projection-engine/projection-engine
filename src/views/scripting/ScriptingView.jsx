@@ -34,8 +34,7 @@ export default function ScriptingView(props) {
                 ...n,
                 x: parseFloat(transformation[0]),
                 y: parseFloat(transformation[1]),
-                instance: n.constructor.name,
-                sample: n.sample && typeof n.sample === 'object' ? {registryID: n.sample.registryID} : undefined
+                instance: n.constructor.name
             }
         })
 
@@ -56,13 +55,11 @@ export default function ScriptingView(props) {
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
                     onClick: () => {
-                        console.log(compile(hook.nodes, hook.links))
-
-                        // const response = mapNodes(res)
-                        // props.submitPackage(
-                        //     response,
-                        //     false
-                        // )
+                        const response = mapNodes(compile(hook.nodes, hook.links))
+                        props.submitPackage(
+                            response,
+                            false
+                        )
 
                     }
                 },
@@ -72,15 +69,11 @@ export default function ScriptingView(props) {
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
                     onClick: () => {
 
-
-                        hook.load.pushEvent(EVENTS.LOADING_MATERIAL)
-                        compile(hook.nodes, hook.links)
-
-                        // const response = mapNodes(res)
-                        // props.submitPackage(
-                        //     response,
-                        //     true
-                        // )
+                        const response = mapNodes(compile(hook.nodes, hook.links))
+                        props.submitPackage(
+                            response,
+                            true
+                        )
 
                     }
                 }
@@ -104,7 +97,12 @@ export default function ScriptingView(props) {
             {
                 require: [KEYS.ControlLeft, KEYS.KeyS],
                 callback: () => {
-                    props.serializer.save()
+                    hook.load.pushEvent(EVENTS.LOADING_MATERIAL)
+                    const response = mapNodes(compile(hook.nodes, hook.links))
+                    props.submitPackage(
+                        response,
+                        false
+                    )
                 }
             },
             {

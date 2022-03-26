@@ -1,7 +1,7 @@
 import Node from "../../../components/flow/Node";
-import {TYPES} from "../templates/TYPES";
-import NODE_TYPES from "../templates/NODE_TYPES";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
+import {TYPES} from "../../../components/flow/TYPES";
+import NODE_TYPES from "../../../components/flow/NODE_TYPES";
 
 export default class QuaternionToEuler extends Node {
     euler = [0, 0, 0]
@@ -12,7 +12,7 @@ export default class QuaternionToEuler extends Node {
     constructor() {
         super(
             [
-                {label: 'Quaternion', key: 'q', type: TYPES.VEC4}
+                {label: 'Quaternion', key: 'q', accept: [TYPES.VEC4]}
             ],
             [
             {label: 'Euler', key: 'euler', type: TYPES.VEC3},
