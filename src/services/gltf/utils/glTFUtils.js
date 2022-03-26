@@ -3,7 +3,7 @@ import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
 import randomID from "../../utils/misc/randomID";
 import ROTATION_TYPES from "../../engine/utils/misc/ROTATION_TYPES";
-import Material from "../../../views/material/workflows/material/Material";
+import Material from "../../../views/material/nodes/Material";
 import emptyMaterial from '../../utils/emptyMaterial.json'
 
 const fs = window.require('fs')

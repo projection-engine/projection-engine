@@ -12,9 +12,6 @@ import FolderComponent from "../../services/engine/ecs/components/FolderComponen
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import PointLightComponent from "../../services/engine/ecs/components/PointLightComponent";
-import DirectionalLightComponent from "../../services/engine/ecs/components/DirectionalLightComponent";
-import SkylightComponent from "../../services/engine/ecs/components/SkyLightComponent";
 import FormTabs from "./forms/FormTabs";
 
 export default function SceneView(props) {
