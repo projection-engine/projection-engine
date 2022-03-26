@@ -87,26 +87,6 @@ export default function SceneView(props) {
         currentTab
     )
 
-    const options = useMemo(() => {
-        return [
-            {
-                label: 'Point light',
-                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>lightbulb</span>,
-                instance: () => new PointLightComponent()
-            },
-            {
-                label: 'Directional light',
-                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>light_mode</span>,
-                instance: () => new DirectionalLightComponent()
-            },
-            {
-                label: 'Sky light',
-                icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>light_mode</span>,
-                instance: () => new SkylightComponent()
-            },
-        ]
-    }, [props.engine.entities])
-
 
     const createFolder = () => {
         const newEntity = new Entity()
@@ -168,7 +148,7 @@ export default function SceneView(props) {
                                 label: 'Remove entity',
                                 icon: <span className={'material-icons-round'}>delete</span>,
                                 onClick: (node) => {
-                                    const toDelete = [...props.engine.selected]
+                                    const toDelete = [...props.engine.selected, node.getAttribute('data-node')]
                                     props.engine.setSelected([])
                                     props.engine.dispatchEntities({
                                         type: ENTITY_ACTIONS.REMOVE_BLOCK,

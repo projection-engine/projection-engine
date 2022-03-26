@@ -26,20 +26,21 @@ export default function useForm(
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
+
         return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
     }, [engine.selected, engine.entities, engine.lockedEntity])
 
 
     const getField = (key) => {
-
+        console.log('EE')
         switch (key) {
             case 'TransformComponent': {
                 return (
                     <TransformComponent
                         selected={selected.components.TransformComponent}
-                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0])}
-                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0])}
-                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0])}
+                        submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
+                        submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
+                        submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0], setAlert)}
                     />
                 )
             }
@@ -219,6 +220,7 @@ export default function useForm(
 
 
     return useMemo(() => {
+
         if (selected && !executingAnimation && !selected.components.FolderComponent) {
             if (!currentKey) {
                 setCurrentKey(Object.keys(selected.components)[0])

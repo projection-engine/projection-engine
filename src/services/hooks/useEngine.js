@@ -1,6 +1,6 @@
 import {useEffect, useReducer, useRef, useState} from "react";
 import {enableBasics} from "../engine/utils/misc/utils";
-import entityReducer from "../utils/entityReducer";
+import entityReducer, {ENTITY_ACTIONS} from "../utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
@@ -12,6 +12,7 @@ import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/utils/misc/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
+import COMPONENTS from "../utils/misc/COMPONENTS";
 
 
 export default function useEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
@@ -74,23 +75,15 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
             })
     }
 
+
     useEffect(() => {
         if (renderer.current)
             renderer.current.camera.fov = settings.fov
     }, [settings.fov])
 
     useEffect(() => {
-        if (initialized && canStart) {
-            renderer.current?.stop()
-            updateSystems(() => {
-                renderer.current?.start(entities, materials, meshes, {
-                    canExecutePhysicsAnimation,
-                    selected, setSelected,
-                    ...settings
-                })
-            })
-
-        }
+        if (initialized && canStart)
+            updateSystems(() => null)
     }, [settings.resolutionMultiplier, initialized, canStart])
 
     useEffect(() => {
@@ -115,7 +108,32 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
             else
                 renderer.current?.start(entities, materials, meshes, {
                     canExecutePhysicsAnimation,
-                    selected, setSelected,
+                    onGizmoChange: () => {
+                        const found = entities.find(e => e.id === selected[0])
+                        if (found && found[COMPONENTS.POINT_LIGHT]) {
+                            found.components[COMPONENTS.POINT_LIGHT].changed = true
+                            dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selected[0],
+                                    data: found.components[COMPONENTS.POINT_LIGHT],
+                                    key: COMPONENTS.POINT_LIGHT
+                                }
+                            })
+                        } else if(found){
+
+                            dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: selected[0],
+                                    data: found.components[COMPONENTS.TRANSFORM],
+                                    key: COMPONENTS.TRANSFORM
+                                }
+                            })
+                        }
+                    },
+                    selected,
+                    setSelected: d => {
+                        setSelected(d)
+                    },
                     ...settings
                 })
         }

@@ -32,8 +32,9 @@ export default function TransformComponent(props) {
 
 
     useEffect(() => {
+
         setState(getNewState())
-    }, [props.selected])
+    }, [props])
 
     const translate = (newValue) => {
         let t = newValue
@@ -45,8 +46,6 @@ export default function TransformComponent(props) {
             zT: t[2],
         })
     }
-    console.log(props.selected)
-
     return (
         <>
             <Accordion className={styles.fieldset}>
@@ -91,7 +90,10 @@ export default function TransformComponent(props) {
                         precision={3}
                         incrementPercentage={.01}
                         value={state.zT}
-                        onFinish={() => props.submitTranslation('z', state.zT)}
+                        onFinish={() => {
+
+                            props.submitTranslation('z', state.zT)
+                        }}
                         handleChange={e => {
                             translate([state.xT, state.yT, parseFloat(e)])
                             // props.selected.translation = [state.xT, state.yT, parseFloat(e)]

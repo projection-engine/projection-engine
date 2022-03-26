@@ -140,17 +140,7 @@ export default function Editor(props) {
 
     return (
         <div className={styles.viewportWrapper}>
-            {/*{props.settings.sceneVisibility ?*/}
-            {/*    <>*/}
 
-            {/*        <SceneView*/}
-            {/*            executingAnimation={props.executingAnimation}*/}
-            {/*            hierarchy={props.engine.hierarchy}*/}
-            {/*            setAlert={props.setAlert}*/}
-            {/*            engine={props.engine}*/}
-            {/*        />*/}
-            {/*        <ResizableBar type={'width'}/>*/}
-            {/*    </> : null}*/}
             <div
                 id={'fullscreen-element-' + props.id}
                 className={styles.container}>

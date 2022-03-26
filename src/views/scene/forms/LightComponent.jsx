@@ -4,17 +4,18 @@ import {Accordion, AccordionSummary} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
+import COMPONENTS from "../../../services/utils/misc/COMPONENTS";
 
 export default function LightComponent(props) {
     const getNewState = () => {
         return {
-            placement: {
-                x: props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'][0],
-                y: props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'][1],
-                z: props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'][2]
-            },
+            placement: props.selected.direction ? {
+                x: props.selected.direction[0],
+                y: props.selected.direction[1],
+                z: props.selected.direction[2]
+            } : {},
 
-            attenuation: props.type === 'PointLightComponent' ? {
+            attenuation: props.selected.attenuation ?  {
                 x: props.selected.attenuation[0],
                 y: props.selected.attenuation[1],
                 z: props.selected.attenuation[2]
@@ -38,94 +39,96 @@ export default function LightComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset}>
-                <AccordionSummary className={styles.summary}>
-                    {props.type === 'PointLightComponent' ? 'Placement' : 'Direction'}
-                </AccordionSummary>
-                <div className={styles.inputsColumn}>
-                    <div className={styles.inputs}>
-                        <Range
-                            accentColor={'red'}
-                            metric={'x'}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.x}
-                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
-                            handleChange={e => {
+            {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
+                <>
+                    <Accordion className={styles.fieldset}>
+                        <AccordionSummary className={styles.summary}>
+                            Direction
+                        </AccordionSummary>
+                        <div className={styles.inputsColumn}>
+                            <div className={styles.inputs}>
+                                <Range
+                                    accentColor={'red'}
+                                    metric={'x'}
+                                    incrementPercentage={.01}
+                                    precision={2}
+                                    value={state.placement.x}
+                                    onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                                    handleChange={e => {
 
-                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [parseFloat(e), state.placement.y, state.placement.z]
-                                props.selected.changed = false
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            x: parseFloat(e)
-                                        }
-                                    }
-                                })
-                            }}/>
-                        <Range
-                            accentColor={'green'}
-                            metric={'y'}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.y}
-                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
-                            handleChange={e => {
-                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, parseFloat(e), state.placement.z]
-                                props.selected.changed = false
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            y: parseFloat(e)
-                                        }
-                                    }
-                                })
-                            }}/>
-                        <Range
-                            accentColor={'blue'}
-                            metric={'z'}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.z}
-                            onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
-                            handleChange={e => {
-                                props.selected[props.type === 'PointLightComponent' ? 'position' : 'direction'] = [state.placement.x, state.placement.y,parseFloat(e)]
-                                props.selected.changed = false
+                                        props.selected.direction = [parseFloat(e), state.placement.y, state.placement.z]
+                                        props.selected.changed = false
+                                        setState(prev => {
+                                            return {
+                                                ...prev, placement: {
+                                                    ...prev.placement,
+                                                    x: parseFloat(e)
+                                                }
+                                            }
+                                        })
+                                    }}/>
+                                <Range
+                                    accentColor={'green'}
+                                    metric={'y'}
+                                    incrementPercentage={.01}
+                                    precision={2}
+                                    value={state.placement.y}
+                                    onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                                    handleChange={e => {
+                                        props.selected.direction = [state.placement.x, parseFloat(e), state.placement.z]
+                                        props.selected.changed = false
+                                        setState(prev => {
+                                            return {
+                                                ...prev, placement: {
+                                                    ...prev.placement,
+                                                    y: parseFloat(e)
+                                                }
+                                            }
+                                        })
+                                    }}/>
+                                <Range
+                                    accentColor={'blue'}
+                                    metric={'z'}
+                                    incrementPercentage={.01}
+                                    precision={2}
+                                    value={state.placement.z}
+                                    onFinish={() => props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')}
+                                    handleChange={e => {
+                                        props.selected.direction = [state.placement.x, state.placement.y, parseFloat(e)]
+                                        props.selected.changed = false
 
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            z: parseFloat(e)
-                                        }
-                                    }
-                                })
-                            }}/>
+                                        setState(prev => {
+                                            return {
+                                                ...prev, placement: {
+                                                    ...prev.placement,
+                                                    z: parseFloat(e)
+                                                }
+                                            }
+                                        })
+                                    }}/>
 
-                    </div>
-                </div>
-            </Accordion>
-            {props.type === 'DirectionalLightComponent' || props.type === 'SkylightComponent' ?
-                <Accordion className={styles.fieldset}>
-                    <AccordionSummary className={styles.summary}>
-                        Size
-                    </AccordionSummary>
-                    <div className={styles.inputsColumn}>
-                        <Range
-                            accentColor={'yellow'}
-                            value={state.size}
-                            minValue={1}
-                            onFinish={() => props.submit(state.size, 'size')}
-                            handleChange={e => setState(prev => {
-                                return {
-                                    ...prev,
-                                    size: parseFloat(e)
-                                }
-                            })}/>
-                    </div>
-                </Accordion>
+                            </div>
+                        </div>
+                    </Accordion>
+                    <Accordion className={styles.fieldset}>
+                        <AccordionSummary className={styles.summary}>
+                            Size
+                        </AccordionSummary>
+                        <div className={styles.inputsColumn}>
+                            <Range
+                                accentColor={'yellow'}
+                                value={state.size}
+                                minValue={1}
+                                onFinish={() => props.submit(state.size, 'size')}
+                                handleChange={e => setState(prev => {
+                                    return {
+                                        ...prev,
+                                        size: parseFloat(e)
+                                    }
+                                })}/>
+                        </div>
+                    </Accordion>
+                </>
                 :
                 null
             }

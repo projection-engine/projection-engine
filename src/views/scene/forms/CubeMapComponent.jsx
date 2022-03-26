@@ -33,6 +33,19 @@ export default function CubeMapComponent(props) {
                         {state.resolution}p
                         <DropdownOptions>
                             <DropdownOption option={{
+                                label: '128p',
+                                icon: state.resolution === 128 ?
+                                    <span style={{fontSize: '1.2rem'}}
+                                          className={'material-icons-round'}>check</span> : undefined,
+                                onClick: () => {
+                                    setState({
+                                        ...state,
+                                        resolution: 128
+                                    })
+                                    props.submit(128, 'resolution')
+                                }
+                            }}/>
+                            <DropdownOption option={{
                                 label: '512p',
                                 icon: state.resolution === 512 ?
                                     <span style={{fontSize: '1.2rem'}}
@@ -71,19 +84,7 @@ export default function CubeMapComponent(props) {
                                     props.submit(2048, 'resolution')
                                 }
                             }}/>
-                            <DropdownOption option={{
-                                label: '4096p',
-                                icon: state.resolution === 4096 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 4096
-                                    })
-                                    props.submit(4096, 'resolution')
-                                }
-                            }}/>
+
                         </DropdownOptions>
                     </Dropdown>
                 </div>
