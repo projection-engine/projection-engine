@@ -1,7 +1,7 @@
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 
-export default function getOptions(executingAnimation, setExecutingAnimation, engine, save, fileSystem, load) {
+export default function getOptions(executingAnimation, setExecutingAnimation, engine, save, fileSystem, load, setAlert) {
     return [
         {
             label: 'Save',
@@ -23,9 +23,19 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
                         style={{fontSize: '1.2rem'}}>refresh</span>,
             onClick: async () => {
                 load.pushEvent(EVENTS.LOADING_MATERIAL)
-                ProjectLoader.loadMaterials(engine.materials.map(m => m.id), fileSystem, engine.gpu, engine.materials)
-                    .catch()
+                await ProjectLoader.loadMaterials(engine.materials.map(m => m.id), fileSystem, engine.gpu, engine.materials)
                 load.finishEvent(EVENTS.LOADING_MATERIAL)
+            }
+
+        },
+        {
+            group: 'b',
+            label: 'Reload Scripts',
+            icon: <span className={'material-icons-round'}
+                        style={{fontSize: '1.2rem'}}>refresh</span>,
+            onClick: async () => {
+                engine.setScripts(await ProjectLoader.loadScripts(engine.scripts.map(m => m.id), fileSystem, engine.gpu, engine.scripts))
+                setAlert({message: 'Scripts reloaded', type: 'success'})
             }
 
         },
@@ -35,8 +45,6 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>refresh</span>,
             onClick: async () => engine.renderer.recompiled = false
-
-
         }
     ]
 }

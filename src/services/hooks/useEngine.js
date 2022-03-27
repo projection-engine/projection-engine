@@ -27,6 +27,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [initialized, setInitialized] = useState(false)
     const [lockedEntity, setLockedEntity] = useState()
+    const [scripts, setScripts] = useState([])
 
     useEffect(() => {
         if (id) {
@@ -59,7 +60,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                     s = renderer.current.systems[SYSTEMS.SCRIPT]
 
                 renderer.current.systems = [
-                    s ? s : new ScriptSystem(),
+                    s ? s : new ScriptSystem(gpu),
                     perf ? perf : new PerformanceSystem(gpu),
                     physics ? physics : new PhysicsSystem(),
                     transformation ? transformation : new TransformSystem(),
@@ -137,7 +138,8 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
                         setSelected(d)
                     },
                     ...settings
-                })
+                },scripts)
+
         }
         return () => {
             renderer.current?.stop()
@@ -145,7 +147,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [
         canExecutePhysicsAnimation,
         selected, setSelected,
-        materials, meshes,
+        materials, meshes,scripts,
         initialized, entities, gpu, id, canRender,
         settings, finished, canStart
     ])
@@ -158,6 +160,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
         gpu, materials, setMaterials,
         selected, setSelected,
         canRender, setCanRender,
-        renderer: renderer.current
+        renderer: renderer.current,
+        scripts, setScripts
     }
 }

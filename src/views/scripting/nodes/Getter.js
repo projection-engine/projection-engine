@@ -13,7 +13,7 @@ export default class Getter extends Node {
     }
 
     get type (){
-        return NODE_TYPES.DATA
+        return NODE_TYPES.VARIABLE
     }
     static compile(tick, inputs, entity, entities, a, nodeID, executors, setExecutors) {
         const attributes = {...a}

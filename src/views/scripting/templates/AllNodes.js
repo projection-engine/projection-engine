@@ -4,14 +4,15 @@ import SetWorldTranslation from "../nodes/transformation/SetWorldTranslation";
 import GetWorldTranslation from "../nodes/transformation/GetWorldTranslation";
 import GetWorldRotation from "../nodes/transformation/GetWorldRotation";
 import QuaternionToEuler from "../nodes/QuaternionToEuler";
-import Add from "../nodes/basic/Add";
-import Subtract from "../nodes/basic/Subtract";
-import Multiply from "../nodes/basic/Multiply";
-import Divide from "../nodes/basic/Divide";
-import ToVector from "../nodes/basic/ToVector";
-import FromVector from "../nodes/basic/FromVector";
+import Add from "../nodes/operators/math/Add";
+import Subtract from "../nodes/operators/math/Subtract";
+import Multiply from "../nodes/operators/math/Multiply";
+import Divide from "../nodes/operators/math/Divide";
+import ToVector from "../nodes/operators/conversions/ToVector";
+import FromVector from "../nodes/operators/conversions/FromVector";
 import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
 import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
+import Print from "../nodes/Print";
 
 
 export const allNodes = [
@@ -108,5 +109,12 @@ export const allNodes = [
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new SetTransformationRelativeOrigin()
+    },
+    {
+        label: <label className={styles.label}>Print</label>,
+        dataTransfer: 'Print',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Print()
     }
 ]

@@ -30,7 +30,8 @@ export default function Editor(props) {
                 props.engine,
                 props.serializer.save,
                 quickAccess.fileSystem,
-                props.load
+                props.load,
+                props.setAlert
             ),
             'Editor',
             <span

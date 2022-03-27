@@ -10,14 +10,15 @@ import SetWorldRotation from "../nodes/transformation/SetWorldRotation";
 import QuaternionToEuler from "../nodes/QuaternionToEuler";
 import Getter from "../nodes/Getter";
 import Setter from "../nodes/Setter";
-import Add from "../nodes/basic/Add";
-import Subtract from "../nodes/basic/Subtract";
-import Divide from "../nodes/basic/Divide";
-import Multiply from "../nodes/basic/Multiply";
+import Add from "../nodes/operators/math/Add";
+import Subtract from "../nodes/operators/math/Subtract";
+import Divide from "../nodes/operators/math/Divide";
+import Multiply from "../nodes/operators/math/Multiply";
 import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
 import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
-import ToVector from "../nodes/basic/ToVector";
-import FromVector from "../nodes/basic/FromVector";
+import ToVector from "../nodes/operators/conversions/ToVector";
+import FromVector from "../nodes/operators/conversions/FromVector";
+import Print from "../nodes/Print";
 
 
 export default function useScriptingView(file) {
@@ -75,7 +76,10 @@ const INSTANCES = {
     SetTransformationRelativeOrigin:  () => new SetTransformationRelativeOrigin(),
     SetLocalRotation:  () => new SetLocalRotation(),
     ToVector:  () => new ToVector(),
-    FromVector:  () => new FromVector()
+    FromVector:  () => new FromVector(),
+
+    Print:  () => new Print(),
+
 }
 
 function parse(file, quickAccess, setNodes, setLinks, setVariables, load) {

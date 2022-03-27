@@ -81,7 +81,6 @@ export default class ProjectLoader {
                     files
                         .forEach(f => {
                             const path = fileSystem.path + '\\assets\\' + f.path
-
                             if (!fs.existsSync(path))
                                 deletePromises.push(new Promise(resolve2 => {
                                     fs.rm(f.registryPath, () => {
@@ -105,6 +104,7 @@ export default class ProjectLoader {
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')
         let entities
+
         let meshes = [...new Set(entitiesFound.filter(e => e.data.components?.MeshComponent).map(e => e.data.components.MeshComponent?.meshID))],
             skyboxes = [...new Set(
                 entitiesFound
@@ -131,18 +131,22 @@ export default class ProjectLoader {
             }))
 
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
+        const entitiesWithScripts = entitiesFound.map(e => e.data.components[COMPONENTS.SCRIPT]?.registryID).filter(e => e !== undefined)
         let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
             skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e)
-
         const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
-        entities = entitiesFound.map((entity, index) => {
-            return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
-        })
-
+        const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem)).filter(e => e !== undefined)
+        try {
+            entities = entitiesFound.map((entity, index) => {
+                return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
+            })
+        } catch (e) {
+        }
         return {
             meta,
             settings,
             entities,
+            scripts: scriptsToLoad,
             materials: materialsToLoad,
             meshes: meshData
         }
@@ -153,6 +157,7 @@ export default class ProjectLoader {
             return new Promise(r => {
                 ProjectLoader.readFromRegistry(m, fileSystem)
                     .then(fileData => {
+
                         if (fileData) {
                             const parsed = JSON.parse(fileData)
                             r(new MeshInstance({
@@ -178,7 +183,34 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadMaterials(toLoad, fileSystem, gpu, mapTo) {
+    static async loadScripts(toLoad, fileSystem) {
+
+        const promises = toLoad.map(m => {
+            return new Promise(r => {
+
+                ProjectLoader.readFromRegistry(m, fileSystem)
+                    .then(fileData => {
+
+                        if (fileData)
+                            try {
+                                const d = JSON.parse(fileData)
+                                r({
+                                    id: m,
+                                    executor: d.response
+                                })
+                            } catch (e) {
+                                r()
+                            }
+                        else
+                            r()
+                    }).catch(() => r())
+            })
+        })
+
+        return await Promise.all(promises)
+    }
+
+    static async loadMaterials(toLoad, fileSystem, gpu) {
         const promises = toLoad.map(m => {
             return new Promise(r => {
 
@@ -211,9 +243,12 @@ export default class ProjectLoader {
     }
 
     static mapEntity(entity, index, meshes, skyboxes, gpu) {
+
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
+
             let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu)
+
             if (component) {
                 if (!(component instanceof SkyboxComponent))
                     Object.keys(entity.components[k]).forEach(oK => {
@@ -229,12 +264,12 @@ export default class ProjectLoader {
 }
 
 const ENTITIES = {
-    'DirectionalLightComponent': (entity, k) => new DirectionalLightComponent(entity.components[k].id),
-    'SkylightComponent': (entity, k) => new SkylightComponent(entity.components[k].id),
-    'MeshComponent': (entity, k) => new MeshComponent(entity.components[k].id),
-    'PickComponent': (entity, k, index) => new PickComponent(entity.components[k].id, index),
-    'PointLightComponent': (entity, k) => new PointLightComponent(entity.components[k].id),
-    'SkyboxComponent': (entity, k, _, skyboxes, gpu) => {
+    [COMPONENTS.DIRECTIONAL_LIGHT]: (entity, k) => new DirectionalLightComponent(entity.components[k].id),
+    [COMPONENTS.SKYLIGHT]: (entity, k) => new SkylightComponent(entity.components[k].id),
+    [COMPONENTS.MESH]: (entity, k) => new MeshComponent(entity.components[k].id),
+    [COMPONENTS.PICK]: (entity, k, index) => new PickComponent(entity.components[k].id, index),
+    [COMPONENTS.POINT_LIGHT]: (entity, k) => new PointLightComponent(entity.components[k].id),
+    [COMPONENTS.SKYBOX]: (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
         const foundImage = skyboxes.find(i => i.id === entity.components[k].imageID)
         if (foundImage)
@@ -242,18 +277,18 @@ const ENTITIES = {
 
         return component
     },
-    'SpotLightComponent': (entity, k) => new SpotLightComponent(entity.components[k].id),
-    'MaterialComponent': (entity, k) => new MaterialComponent(entity.components[k].id),
-    'TransformComponent': (entity, k) => new TransformComponent(entity.components[k].id, true),
-    'FolderComponent': (entity, k) => new FolderComponent(entity.components[k].id),
-    'PhysicsComponent': (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
-    'CubeMapComponent': (entity, k, meshes, skyboxes, gpu) => {
+    [COMPONENTS.SPOT_LIGHT]: (entity, k) => new SpotLightComponent(entity.components[k].id),
+    [COMPONENTS.MATERIAL]: (entity, k) => new MaterialComponent(entity.components[k].id),
+    [COMPONENTS.TRANSFORM]: (entity, k) => new TransformComponent(entity.components[k].id, true),
+    [COMPONENTS.FOLDER]: (entity, k) => new FolderComponent(entity.components[k].id),
+    [COMPONENTS.PHYSICS]: (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
+    [COMPONENTS.CUBE_MAP]: (entity, k, meshes, skyboxes, gpu) => {
         const component = new CubeMapComponent(entity.components[k].id)
         component.cubeMap = new CubeMapInstance(gpu, component.resolution)
 
         return component
     },
-    'SphereCollider': (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
     [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
 
 }

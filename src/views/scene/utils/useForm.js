@@ -53,10 +53,21 @@ export default function useForm(
                         setAlert={setAlert}
                         submit={(s) => {
 
-                            selected.components[COMPONENTS.SCRIPT].ready  = s.blob?.response !== undefined
-                            selected.components[COMPONENTS.SCRIPT].executionTemplate = s.blob?.response
-                            selected.components[COMPONENTS.SCRIPT].registryID = s.id
+                            if (s) {
+                                if(!engine.scripts.find(sc => sc.id === s.id))
+                                 engine.setScripts(prev => {
+                                     return [...prev, {
+                                         id: s.id,
+                                         executor: s.blob.response
+                                     }]
+                                 })
 
+                                selected.components[COMPONENTS.SCRIPT].ready  = s.blob?.response !== undefined
+                                selected.components[COMPONENTS.SCRIPT].registryID = s.id
+
+
+                            } else
+                                selected.registryID = undefined
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
@@ -64,6 +75,7 @@ export default function useForm(
                                     key: COMPONENTS.SCRIPT
                                 }
                             })
+
                         }}
                         quickAccess={quickAccess}
                     />

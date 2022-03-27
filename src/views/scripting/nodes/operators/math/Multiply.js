@@ -1,10 +1,10 @@
-import Node from "../../../../components/flow/Node";
-import {TYPES} from "../../../../components/flow/TYPES";
-import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
-import COMPONENTS from "../../../../services/engine/templates/COMPONENTS";
+import Node from "../../../../../components/flow/Node";
+import {TYPES} from "../../../../../components/flow/TYPES";
+import NODE_TYPES from "../../../../../components/flow/NODE_TYPES";
+import COMPONENTS from "../../../../../services/engine/templates/COMPONENTS";
 
 
-export default class Divide extends Node {
+export default class Multiply extends Node {
     constructor() {
         super([
             {label: 'A', key: 'a', accept: [TYPES.NUMBER]},
@@ -12,7 +12,7 @@ export default class Divide extends Node {
         ], [
             {label: 'Result', key: 'res', type: TYPES.NUMBER}
         ]);
-        this.name = 'Divide'
+        this.name = 'Multiply'
     }
 
     get type (){
@@ -21,7 +21,7 @@ export default class Divide extends Node {
     static compile(tick, {a, b}, entity, entities, attr, nodeID) {
         const attributes = {...attr}
         attributes[nodeID] = {}
-        attributes[nodeID].res = a / b
+        attributes[nodeID].res = a * b
         return attributes
     }
 }
