@@ -13,7 +13,7 @@ import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import Entity from "../../services/engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
-import COMPONENTS from "../../services/engine/utils/misc/COMPONENTS";
+import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
 
 export default function SceneView(props) {

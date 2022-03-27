@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
-import {Accordion, AccordionSummary, Checkbox, LoaderProvider} from "@f-ui/core";
+import {Accordion, AccordionSummary, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useEffect, useState} from "react";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
-import Range from "../../../components/range/Range";
 
 
 export default function ScriptComponent(props) {
@@ -37,7 +36,7 @@ export default function ScriptComponent(props) {
                                         if (rs)
                                             fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
                                                 .then(file => {
-                                                    console.log(file)
+
                                                     if (file) {
                                                         props.submit({
                                                             blob: file,

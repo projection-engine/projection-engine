@@ -13,7 +13,7 @@ import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import ScriptComponent from "../forms/ScriptComponent";
-import COMPONENTS from "../../../services/engine/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
 export default function useForm(
     engine,

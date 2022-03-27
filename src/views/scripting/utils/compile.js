@@ -1,10 +1,11 @@
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import EventTick from "../nodes/EventTick";
 import {TYPES} from "../../../components/flow/TYPES";
+import Getter from "../nodes/Getter";
 
 
-export default function compile(n, links) {
-    let order = [], nodes = n.map(node => cloneClass(node))
+export default function compile(n, links, variables) {
+    let order = [], executors = {}, nodes = n.map(node => cloneClass(node))
     const startPoint = nodes.find(n => n instanceof EventTick)
 
     const resolveDependencies = (currentNode) => {
@@ -21,16 +22,27 @@ export default function compile(n, links) {
         }
 
         if (applied > 0 || !currentNode.ready) {
-            console.log(currentNode)
+
             if (!currentNode.ready) {
-                let inputs = {}
+                let inputs = []
                 linksToResolve.forEach(l => {
-                    inputs[l.target.attribute.key] = l.source.id + '/' + l.source.attribute.key
+                    if (l.source.attribute.type !== TYPES.EXECUTION)
+                        inputs.push({
+                            localKey: l.target.attribute.key,
+                            sourceKey: l.source.attribute.key,
+                            sourceID: l.source.id
+                        })
                 })
+
+                if (currentNode instanceof Getter)
+                    executors[currentNode.id.split('/')[0]] = {
+                        value: variables.find(v => v.id === currentNode.id.split('/')[0])?.value
+                    }
                 order.push({
                     nodeID: currentNode.id,
                     inputs,
-                    executor: currentNode.constructor.name
+                    classExecutor: currentNode.constructor.name,
+
                 })
             }
             currentNode.ready = true
@@ -45,8 +57,8 @@ export default function compile(n, links) {
         let linkToExecute
         for (let liExec = 0; liExec < forwardLinks.length; liExec++) {
             const n = nodes.find(no => no.id === forwardLinks[liExec].target.id)
-            console.log(n.inputs, forwardLinks[liExec].target)
-            if (n && n.inputs.find(i => i.key === forwardLinks[liExec].target.attribute.key).accept.includes(TYPES.EXECUTION) ) {
+
+            if (n && n.inputs.find(i => i.key === forwardLinks[liExec].target.attribute.key).accept.includes(TYPES.EXECUTION)) {
                 linkToExecute = forwardLinks[liExec]
                 break
             }
@@ -56,5 +68,8 @@ export default function compile(n, links) {
             resolveDependencies(nodes.find(n => n.id === linkToExecute.target.id))
     }
 
-    return order
+    return {
+        executors,
+        order
+    }
 }

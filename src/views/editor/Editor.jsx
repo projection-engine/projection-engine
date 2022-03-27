@@ -16,7 +16,7 @@ import randomID from "../../services/utils/misc/randomID";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";
-import GIZMOS from "../../services/engine/utils/misc/GIZMOS";
+import GIZMOS from "../../services/engine/templates/GIZMOS";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)

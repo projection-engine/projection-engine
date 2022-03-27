@@ -2,31 +2,28 @@ import {useContext, useEffect, useState} from "react";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {LoaderProvider} from "@f-ui/core";
 import EventTick from "../nodes/EventTick";
-import Lerp from "../../material/nodes/Lerp";
-import Mask from "../../material/nodes/Mask";
-import OneMinus from "../../material/nodes/OneMinus";
-import HeightLerp from "../../material/nodes/HeightLerp";
-import Add from "../../material/nodes/Add";
-import Multiply from "../../material/nodes/Multiply";
-import Power from "../../material/nodes/Power";
-import Numeric from "../../material/nodes/Numeric";
-import Color from "../../material/nodes/Color";
-import TextureSample from "../../material/nodes/TextureSample";
-import Material from "../../material/nodes/Material";
-import Vector from "../../material/nodes/Vector";
-import ParallaxOcclusionMapping from "../../material/nodes/ParallaxOcclusionMapping";
-import applyViewport from "../../material/utils/applyViewport";
 import EVENTS from "../../../services/utils/misc/EVENTS";
-import GetWorldTranslation from "../nodes/translation/GetWorldTranslation";
-import GetWorldRotation from "../nodes/translation/GetWorldRotation";
-import SetWorldTranslation from "../nodes/translation/SetWorldTranslation";
-import SetWorldRotation from "../nodes/translation/SetWorldRotation";
+import GetWorldTranslation from "../nodes/transformation/GetWorldTranslation";
+import GetWorldRotation from "../nodes/transformation/GetWorldRotation";
+import SetWorldTranslation from "../nodes/transformation/SetWorldTranslation";
+import SetWorldRotation from "../nodes/transformation/SetWorldRotation";
 import QuaternionToEuler from "../nodes/QuaternionToEuler";
+import Getter from "../nodes/Getter";
+import Setter from "../nodes/Setter";
+import Add from "../nodes/basic/Add";
+import Subtract from "../nodes/basic/Subtract";
+import Divide from "../nodes/basic/Divide";
+import Multiply from "../nodes/basic/Multiply";
+import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
+import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
+import ToVector from "../nodes/basic/ToVector";
+import FromVector from "../nodes/basic/FromVector";
 
 
 export default function useScriptingView(file) {
     const [nodes, setNodes] = useState([new EventTick()])
     const [links, setLinks] = useState([])
+    const [variables, setVariables] = useState([])
     const [changed, setChanged] = useState(false)
 
     const [selected, setSelected] = useState([])
@@ -35,7 +32,7 @@ export default function useScriptingView(file) {
 
     useEffect(() => {
 
-        parse(file, quickAccess, setNodes, setLinks, load)
+        parse(file, quickAccess, setNodes, setLinks, setVariables, load)
 
     }, [file])
 
@@ -46,6 +43,10 @@ export default function useScriptingView(file) {
         setSelected,
         setNodes,
         nodes,
+
+        variables,
+        setVariables,
+
         links,
         setLinks,
         quickAccess,
@@ -62,10 +63,22 @@ const INSTANCES = {
     SetWorldRotation: () => new SetWorldRotation(),
 
     QuaternionToEuler: () => new QuaternionToEuler(),
-    EventTick: () => new EventTick()
+    EventTick: () => new EventTick(),
+    Getter:  () => new Getter(),
+    Setter:  () => new Setter(),
+
+    Add:  () => new Add(),
+    Subtract:  () => new Subtract(),
+    Divide:  () => new Divide(),
+    Multiply:  () => new Multiply(),
+
+    SetTransformationRelativeOrigin:  () => new SetTransformationRelativeOrigin(),
+    SetLocalRotation:  () => new SetLocalRotation(),
+    ToVector:  () => new ToVector(),
+    FromVector:  () => new FromVector()
 }
 
-function parse(file, quickAccess, setNodes, setLinks, load) {
+function parse(file, quickAccess, setNodes, setLinks, setVariables, load) {
     quickAccess.fileSystem
         .readRegistryFile(file.registryID)
         .then(res => {
@@ -78,7 +91,7 @@ function parse(file, quickAccess, setNodes, setLinks, load) {
                             const newNodes = file.nodes.map(f => {
                                 const i = INSTANCES[f.instance]()
                                 Object.keys(f).forEach(o => {
-                                    if (o !== 'inputs' && o !== 'output')
+
                                         i[o] = f[o]
                                 })
                                 return i
@@ -86,6 +99,8 @@ function parse(file, quickAccess, setNodes, setLinks, load) {
 
                             setNodes(newNodes)
                             setLinks(file.links)
+                            if(file.variables)
+                                setVariables(file.variables)
                             load.finishEvent(EVENTS.LOAD_FILE)
                         } else
                             load.finishEvent(EVENTS.LOAD_FILE)

@@ -8,7 +8,6 @@ export default class QuaternionToEuler extends Node {
     x = 0
     y = 0
     z = 0
-
     constructor() {
         super(
             [
@@ -26,14 +25,16 @@ export default class QuaternionToEuler extends Node {
     get type() {
         return NODE_TYPES.FUNCTION
     }
-
-    compile(_, [quat]) {
+    static compile(tick, {quat}, entity, entities, a, nodeID) {
+        const attributes = {...a}
+        attributes[nodeID] = {}
         const q = Transformation.getEuler(quat)
-        this.euler = q
-        this.x = q[0]
-        this.y = q[1]
-        this.z = q[2]
+        attributes[nodeID].euler = q
+        attributes[nodeID].x = q[0]
+        attributes[nodeID].y = q[1]
+        attributes[nodeID].z = q[2]
 
-        this.ready = true
+        return attributes
+
     }
 }

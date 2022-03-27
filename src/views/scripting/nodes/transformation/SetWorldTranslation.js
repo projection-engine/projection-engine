@@ -1,5 +1,5 @@
 import Node from "../../../../components/flow/Node";
-import COMPONENTS from "../../../../services/engine/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../../services/engine/templates/COMPONENTS";
 import {TYPES} from "../../../../components/flow/TYPES";
 import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
 
@@ -23,11 +23,9 @@ export default class SetWorldTranslation extends Node {
         return NODE_TYPES.VOID_FUNCTION
     }
 
-    compile(_, [x, y, z], entity) {
-        entity.components[COMPONENTS.TRANSFORM].translation[0] = x
-        entity.components[COMPONENTS.TRANSFORM].translation[1] = y
-        entity.components[COMPONENTS.TRANSFORM].translation[2] = z
-
-        this.ready = true
+    static   compile(tick, {x, y, z}, entity, entities, a, nodeID) {
+        console.log(x, y, z)
+        entity.components[COMPONENTS.TRANSFORM].translation = [x, y, z]
+        return a
     }
 }

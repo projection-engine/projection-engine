@@ -10,9 +10,9 @@ import PickSystem from "../engine/ecs/systems/PickSystem";
 import Engine from "../engine/Engine";
 import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
-import SYSTEMS from "../engine/utils/misc/SYSTEMS";
+import SYSTEMS from "../engine/templates/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
-import COMPONENTS from "../engine/utils/misc/COMPONENTS";
+import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptSystem from "../engine/ecs/systems/ScriptSystem";
 
 

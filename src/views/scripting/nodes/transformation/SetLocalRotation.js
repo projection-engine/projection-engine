@@ -1,10 +1,10 @@
 import Node from "../../../../components/flow/Node";
-import COMPONENTS from "../../../../services/engine/utils/misc/COMPONENTS";
+import COMPONENTS from "../../../../services/engine/templates/COMPONENTS";
 import {quat} from "gl-matrix";
 import NODE_TYPES from "../../../../components/flow/NODE_TYPES";
 import {TYPES} from "../../../../components/flow/TYPES";
 
-export default class SetWorldRotation extends Node {
+export default class SetLocalRotation extends Node {
 
     constructor() {
         super([
@@ -14,14 +14,13 @@ export default class SetWorldRotation extends Node {
 
         ], [
             {label: 'Execute', key: 'EXECUTION', type: TYPES.EXECUTION}]);
-        this.name = 'SetWorldRotation'
+        this.name = 'SetLocalRotation'
     }
 
     get type() {
         return NODE_TYPES.VOID_FUNCTION
     }
-
-    compile(_, [quat, euler], entity) {
+    static  compile(tick, {quat, euler}, entity, entities, a, nodeID) {
         if (quat)
             entity.components[COMPONENTS.TRANSFORM].rotationQuat = quat
         else if (euler) {
@@ -31,9 +30,8 @@ export default class SetWorldRotation extends Node {
             quat.rotateY(quatA, quatA, euler[1])
             quat.rotateZ(quatA, quatA, euler[2])
 
-            entity.components[COMPONENTS.TRANSFORM].rotationQuat = quat.multiply([], quatA, entity.components[COMPONENTS.TRANSFORM].rotationQuat)
+            entity.components[COMPONENTS.TRANSFORM].rotationQuat = quat.multiply([], entity.components[COMPONENTS.TRANSFORM].rotationQuat, quatA)
         }
-
-        this.ready = true
+        return a
     }
 }

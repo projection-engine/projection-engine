@@ -2,7 +2,7 @@ import Board from "../../components/flow/components/Board";
 import useScriptingView from "./hooks/useScriptingView";
 import Available from "./components/Available";
 import styles from '../../components/flow/styles/Board.module.css'
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useMemo, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import ResizableBar from "../../components/resizable/ResizableBar";
@@ -14,7 +14,10 @@ import randomID from "../../services/utils/misc/randomID";
 import deleteNode from "../../components/flow/utils/deleteNode";
 import EventTick from "./nodes/EventTick";
 import {allNodes} from "./templates/AllNodes";
-
+import NodeEditor from "./components/NodeEditor";
+import SetWorldRotation from "./nodes/transformation/SetWorldRotation";
+import Setter from "./nodes/Setter";
+import Getter from "./nodes/Getter";
 
 export default function ScriptingView(props) {
     const hook = useScriptingView(props.file)
@@ -42,6 +45,7 @@ export default function ScriptingView(props) {
         return JSON.stringify({
             nodes: parsedNodes,
             links: hook.links,
+            variables: hook.variables,
             response: res,
             type: res.variant
         })
@@ -55,7 +59,7 @@ export default function ScriptingView(props) {
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
                     onClick: () => {
-                        const response = mapNodes(compile(hook.nodes, hook.links))
+                        const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
                         props.submitPackage(
                             response,
                             false
@@ -69,7 +73,7 @@ export default function ScriptingView(props) {
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
                     onClick: () => {
 
-                        const response = mapNodes(compile(hook.nodes, hook.links))
+                        const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
                         props.submitPackage(
                             response,
                             true
@@ -88,7 +92,7 @@ export default function ScriptingView(props) {
             props.index
         )
 
-    }, [hook.nodes, hook.links])
+    }, [hook.nodes, hook.links, hook.variables])
     const [toCopy, setToCopy] = useState([])
     useHotKeys({
         focusTarget: props.file.fileID + '-board',
@@ -97,8 +101,8 @@ export default function ScriptingView(props) {
             {
                 require: [KEYS.ControlLeft, KEYS.KeyS],
                 callback: () => {
-                    hook.load.pushEvent(EVENTS.LOADING_MATERIAL)
-                    const response = mapNodes(compile(hook.nodes, hook.links))
+
+                    const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
                     props.submitPackage(
                         response,
                         false
@@ -148,16 +152,39 @@ export default function ScriptingView(props) {
         ]
     })
 
+    const availableNodes = useMemo(() => {
+        return [...allNodes, ...hook.variables.map(v => {
+            return [
+                {
+                    label: <label className={styles.label}>Getter - {v.name}</label>,
+                    dataTransfer: JSON.stringify({
+                        key: v.id,
+                        type: 'getter'
+                    }),
+                    getNewInstance: () => new Getter(v.id + '/getter/' + randomID(), v.name + ' - Getter', v.type)
+                },
+                {
+                    label: <label className={styles.label}>Setter - {v.name}</label>,
+                    dataTransfer: JSON.stringify({
+                        key: v.id,
+                        type: 'setter'
+                    }),
+                    getNewInstance: () => new Setter(v.id + '/setter/' + randomID(), v.name + ' - Setter', v.type)
+                }
+            ]
+        }).flat()]
+    }, [hook.variables])
+
     return (
         <div className={styles.prototypeWrapper} ref={ref}>
-            {/*<NodeEditor hook={hook}*/}
-
-            {/*            engine={hook.engine}*/}
-            {/*            selected={hook.selected.length === 0 && fallbackSelected ? fallbackSelected.id : hook.selected[0]}/>*/}
+            <NodeEditor
+                hook={hook}
+                selected={hook.selected[0]}
+            />
             <ResizableBar type={"width"}/>
             <div className={styles.prototypeWrapperBoard} id={props.file.fileID + '-board'}>
                 <Board
-                    allNodes={allNodes}
+                    allNodes={availableNodes}
                     setAlert={props.setAlert}
                     parentRef={ref}
                     hook={hook}
@@ -165,7 +192,7 @@ export default function ScriptingView(props) {
                     setSelected={hook.setSelected}
                 />
             </div>
-            <Available/>
+            <Available />
         </div>
     )
 }
