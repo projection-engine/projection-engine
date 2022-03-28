@@ -6,7 +6,7 @@ import Branch from "../nodes/operators/boolean/Branch";
 import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
 
 
-export default function compile(n, links, variables, alreadyCompiled = [],  startPoint) {
+export default function compile(n, links, variables, alreadyCompiled = [], startPoint) {
     let order = [], executors = {}, nodes = alreadyCompiled.length > 0 ? n : n.map(node => cloneClass(node))
 
 
@@ -60,26 +60,25 @@ export default function compile(n, links, variables, alreadyCompiled = [],  star
 
     let organizedLinks = []
 
-        const getForward = (l) => {
-            organizedLinks.push(l)
+    const getForward = (l) => {
+        organizedLinks.push(l)
 
-            const forward = links.filter(ll => {
-                return l.target.id === ll.source.id && ll.source.attribute.type === TYPES.EXECUTION
-            })
+        const forward = links.filter(ll => {
+            return l.target.id === ll.source.id && ll.source.attribute.type === TYPES.EXECUTION
+        })
 
-            forward.forEach(ff => {
-                getForward(ff)
-            })
-        }
-
-        const e = nodes.find(n => n instanceof EventTick)
-        getForward(links.find(ll => ll.source.id === e.id))
+        forward.forEach(ff => {
+            getForward(ff)
+        })
+    }
+console.log(startPoint)
+    getForward(startPoint ? startPoint : links.find(ll => ll.source.id === nodes.find(n => n instanceof EventTick).id))
 
     for (let exec = 0; exec < organizedLinks.length; exec++) {
         const t = organizedLinks[exec].target
         const targetNode = nodes.find(n => n.id === t.id)
 
-        if (  !alreadyCompiled.includes(t.id)) {
+        if (!alreadyCompiled.includes(t.id)) {
             const forwardLinks = links.filter(l => l.source.id === targetNode.id)
 
 
@@ -105,19 +104,19 @@ export default function compile(n, links, variables, alreadyCompiled = [],  star
                 const orderIndex = order.findIndex(oo => oo.nodeID === targetNode.id)
 
 
-                if(orderIndex > -1) {
+                if (orderIndex > -1) {
 
 
                     if (branchA) {
-                        const bA = compile(nodes, links, variables,  branchB ? [...compiled, branchB.target.id] :compiled)
+                        const bA = compile(nodes, links, variables, branchB ? [...compiled, branchB.target.id] : compiled, branchA)
                         order[orderIndex].branchA = bA.order
 
                         executors = {...executors, ...bA.executors}
                     }
                     if (branchB) {
+                        console.log(links.find(l => l.source.id === branchB.target.id), branchB)
+                        const bB = compile(nodes, links, variables, branchA ? [...compiled, branchA.target.id] : compiled, branchB)
 
-                        const bB=  compile(nodes, links, variables, branchA ? [...compiled, branchA.target.id] :compiled)
-                        console.log(bB.order)
                         order[orderIndex].branchB = bB.order
                         executors = {...executors, ...bB.executors}
                     }
@@ -127,7 +126,7 @@ export default function compile(n, links, variables, alreadyCompiled = [],  star
             }
         }
     }
-
+    console.log(order)
     return {
         executors,
         order
