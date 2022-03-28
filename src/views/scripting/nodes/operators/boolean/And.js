@@ -23,8 +23,12 @@ export default class And extends Node {
         return NODE_TYPES.FUNCTION
     }
 
-    static compile(tick, {data}, entity, entities, a, nodeID, executors, setExecutors, renderTarget) {
-        renderTarget.innerText = JSON.stringify(data)
-        return a
+    static compile(tick, {a, b}, entity, entities, attr, nodeID) {
+        const attributes = {...attr}
+
+        attributes[nodeID] = {}
+        attributes[nodeID].t = a && b
+
+        return attributes
     }
 }

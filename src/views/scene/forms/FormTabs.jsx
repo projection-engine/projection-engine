@@ -95,7 +95,7 @@ export default function FormTabs(props){
                 </React.Fragment>
 
             ))}
-            <Dropdown disabled={props.entity.components[COMPONENTS.SCRIPT]} className={styles.button} variant={"outlined"} hideArrow={true}>
+            <Dropdown disabled={props.entity.components[COMPONENTS.SCRIPT] !== undefined} className={styles.button} variant={"outlined"} hideArrow={true}>
                 <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>add</span>
                 <ToolTip content={'Add component'}/>
                 <DropdownOptions>

@@ -2,11 +2,13 @@ import cloneClass from "../../../services/utils/misc/cloneClass";
 import EventTick from "../nodes/EventTick";
 import {TYPES} from "../../../components/flow/TYPES";
 import Getter from "../nodes/Getter";
+import Branch from "../nodes/operators/boolean/Branch";
+import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
 
 
-export default function compile(n, links, variables) {
-    let order = [], executors = {}, nodes = n.map(node => cloneClass(node))
-    const startPoint = nodes.find(n => n instanceof EventTick)
+export default function compile(n, links, variables, alreadyCompiled = [],  startPoint) {
+    let order = [], executors = {}, nodes = alreadyCompiled.length > 0 ? n : n.map(node => cloneClass(node))
+
 
     const resolveDependencies = (currentNode) => {
         const linksToResolve = links.filter(l => l.target.id === currentNode.id)
@@ -38,34 +40,92 @@ export default function compile(n, links, variables) {
                     executors[currentNode.id.split('/')[0]] = {
                         value: variables.find(v => v.id === currentNode.id.split('/')[0])?.value
                     }
+
                 order.push({
                     nodeID: currentNode.id,
                     inputs,
                     classExecutor: currentNode.constructor.name,
-
+                    isBranch: currentNode instanceof Branch
                 })
             }
             currentNode.ready = true
         }
     }
+    let compiled = [...alreadyCompiled]
+    if (alreadyCompiled.length === 0) {
+        const f = nodes.find(n => n instanceof EventTick)
+        resolveDependencies(f)
+        compiled.push(f.id)
+    }
 
-    resolveDependencies(startPoint)
+    let organizedLinks = []
+
+        const getForward = (l) => {
+            organizedLinks.push(l)
+
+            const forward = links.filter(ll => {
+                return l.target.id === ll.source.id && ll.source.attribute.type === TYPES.EXECUTION
+            })
+
+            forward.forEach(ff => {
+                getForward(ff)
+            })
+        }
+
+        const e = nodes.find(n => n instanceof EventTick)
+        getForward(links.find(ll => ll.source.id === e.id))
+
+    for (let exec = 0; exec < organizedLinks.length; exec++) {
+        const t = organizedLinks[exec].target
+        const targetNode = nodes.find(n => n.id === t.id)
+
+        if (  !alreadyCompiled.includes(t.id)) {
+            const forwardLinks = links.filter(l => l.source.id === targetNode.id)
 
 
-    for (let exec = 0; exec < nodes.length; exec++) {
-        const forwardLinks = links.filter(l => l.source.id === nodes[exec].id)
-        let linkToExecute
-        for (let liExec = 0; liExec < forwardLinks.length; liExec++) {
-            const n = nodes.find(no => no.id === forwardLinks[liExec].target.id)
+            if (!(targetNode instanceof Branch)) {
 
-            if (n && n.inputs.find(i => i.key === forwardLinks[liExec].target.attribute.key).accept.includes(TYPES.EXECUTION)) {
-                linkToExecute = forwardLinks[liExec]
+                resolveDependencies(targetNode)
+
+                compiled.push(t.id)
+
+            } else {
+                let branchA, branchB
+                for (let liExec = 0; liExec < forwardLinks.length; liExec++) {
+                    if (forwardLinks[liExec].source.attribute.type === TYPES.EXECUTION) {
+                        if (!branchA)
+                            branchA = forwardLinks[liExec]
+                        else
+                            branchB = forwardLinks[liExec]
+                    }
+                }
+                compiled.push(t.id)
+                resolveDependencies(targetNode)
+
+                const orderIndex = order.findIndex(oo => oo.nodeID === targetNode.id)
+
+
+                if(orderIndex > -1) {
+
+
+                    if (branchA) {
+                        const bA = compile(nodes, links, variables,  branchB ? [...compiled, branchB.target.id] :compiled)
+                        order[orderIndex].branchA = bA.order
+
+                        executors = {...executors, ...bA.executors}
+                    }
+                    if (branchB) {
+
+                        const bB=  compile(nodes, links, variables, branchA ? [...compiled, branchA.target.id] :compiled)
+                        console.log(bB.order)
+                        order[orderIndex].branchB = bB.order
+                        executors = {...executors, ...bB.executors}
+                    }
+                }
+
                 break
             }
         }
-
-        if (linkToExecute)
-            resolveDependencies(nodes.find(n => n.id === linkToExecute.target.id))
     }
 
     return {

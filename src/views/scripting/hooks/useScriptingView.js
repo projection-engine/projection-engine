@@ -19,6 +19,19 @@ import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
 import ToVector from "../nodes/operators/conversions/ToVector";
 import FromVector from "../nodes/operators/conversions/FromVector";
 import Print from "../nodes/Print";
+import And from "../nodes/operators/boolean/And";
+import Branch from "../nodes/operators/boolean/Branch";
+import Equal from "../nodes/operators/boolean/Equal";
+import Greater from "../nodes/operators/boolean/Greater";
+import GreaterEqual from "../nodes/operators/boolean/GreaterEqual";
+import Less from "../nodes/operators/boolean/Less";
+import LessEqual from "../nodes/operators/boolean/LessEqual";
+import Nand from "../nodes/operators/boolean/Nand";
+import Nor from "../nodes/operators/boolean/Nor";
+import Not from "../nodes/operators/boolean/Not";
+import NotEqual from "../nodes/operators/boolean/NotEqual";
+import Or from "../nodes/operators/boolean/Or";
+import Xor from "../nodes/operators/boolean/Xor";
 
 
 export default function useScriptingView(file) {
@@ -79,6 +92,22 @@ const INSTANCES = {
     FromVector:  () => new FromVector(),
 
     Print:  () => new Print(),
+
+
+    And:  () => new And(),
+    Branch:  () => new Branch(),
+    Equal:  () => new Equal(),
+    Greater:  () => new Greater(),
+    GreaterEqual:  () => new GreaterEqual(),
+    Less:  () => new Less(),
+    LessEqual:  () => new LessEqual(),
+    Nand:  () => new Nand(),
+    Nor:  () => new Nor(),
+    Not:  () => new Not(),
+    NotEqual:  () => new NotEqual(),
+    Or:  () => new Or(),
+    Xor:  () => new Xor(),
+
 
 }
 
