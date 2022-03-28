@@ -71,7 +71,6 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
             getForward(ff)
         })
     }
-console.log(startPoint)
     getForward(startPoint ? startPoint : links.find(ll => ll.source.id === nodes.find(n => n instanceof EventTick).id))
 
     for (let exec = 0; exec < organizedLinks.length; exec++) {
@@ -114,7 +113,6 @@ console.log(startPoint)
                         executors = {...executors, ...bA.executors}
                     }
                     if (branchB) {
-                        console.log(links.find(l => l.source.id === branchB.target.id), branchB)
                         const bB = compile(nodes, links, variables, branchA ? [...compiled, branchA.target.id] : compiled, branchB)
 
                         order[orderIndex].branchB = bB.order
@@ -126,7 +124,7 @@ console.log(startPoint)
             }
         }
     }
-    console.log(order)
+
     return {
         executors,
         order

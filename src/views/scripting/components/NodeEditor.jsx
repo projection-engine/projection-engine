@@ -23,7 +23,9 @@ import Getter from "../nodes/Getter";
 import {startKey} from "../nodes/Setter";
 
 export default function NodeEditor(props) {
-    const [selectedVariable, setSelectedVariable] = useState()
+     const {
+         selectedVariable
+     } = props
     const selected = useMemo(() => {
         return props.hook.variables.findIndex(v => v.id === selectedVariable)
     }, [selectedVariable, props.hook.variables])
@@ -174,55 +176,7 @@ export default function NodeEditor(props) {
         }
     }
 
-    const getName = (prev) => {
-        let n = 'New Variable'
-        let it = 0
 
-        while (prev.filter(e => e.name === n).length > 0) {
-            it++
-            n = 'New Variable' + `(${it})`
-        }
-
-        return n
-    }
-
-
-    const getType = (t) => {
-        switch (t) {
-            case TYPES.VEC2:
-                return 'Vector 2D'
-            case TYPES.VEC3:
-                return 'Vector 3D'
-            case TYPES.VEC4:
-                return 'Vector 4D'
-            case TYPES.NUMBER:
-                return 'Number'
-            case TYPES.BOOL:
-                return 'Boolean'
-            default:
-                break
-        }
-    }
-    const mappedVariables = useMemo(() => {
-        return props.hook.variables.map(v => {
-            return {
-                ...v,
-                type: getType(v.type)
-            }
-        })
-    }, [props.hook.variables])
-    const hookList = useListData([
-        {
-            label: 'Name',
-            key: 'name',
-            type: 'string'
-        },
-        {
-            label: 'Type',
-            key: 'type',
-            type: 'string'
-        }
-    ], mappedVariables, true)
 
     const getNewValue = (type) => {
         switch (type) {
@@ -242,38 +196,7 @@ export default function NodeEditor(props) {
     }
     return (
         <div className={styles.wrapper}>
-            <div className={styles.variablesWrapper}>
-                <div className={styles.header}>
-                    Variables
-                    <Button className={styles.addButton} variant={'outlined'} onClick={() => {
-                        props.hook.setVariables(prev => {
-                            return [...prev, {
-                                id: randomID(),
-                                name: getName(prev),
-                                type: TYPES.NUMBER
-                            }]
-                        })
-                    }}>
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span>
-                    </Button>
-                </div>
-                <div className={styles.variablesContent}>
-                    <List hook={hookList}>
-                        <Sort/>
-                        {hookList.data.map((d, i) => (
-                            <DataRow
-                                className={[styles.row, d.id === selectedVariable ? styles.rowHighlight : ''].join(' ')}
-                                onClick={() => setSelectedVariable(d.id)}
-                                index={i}
-                                selfContained={true}
-                            />
-                        ))}
-                    </List>
-                </div>
-
-            </div>
-
-
+            {selectedVariable ?
             <div className={styles.form}>
                 {selectedVariable ?
                     <TextField
@@ -373,12 +296,20 @@ export default function NodeEditor(props) {
                     </Accordion>
                 ) : null}
             </div>
+                :
+                <div className={styles.emptyWrapper}>
+                    <span style={{fontSize:  '90px'}}
+                          className={'material-icons-round'}>category</span>
+                        Select a variable to edit it.
+                </div>
+            }
+
         </div>
     )
 }
 
 NodeEditor.propTypes = {
-
+    selectedVariable: PropTypes.string,
     selected: PropTypes.string,
     hook: PropTypes.object
 }

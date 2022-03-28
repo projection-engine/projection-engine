@@ -2,7 +2,7 @@ import Board from "../../components/flow/components/Board";
 import useScriptingView from "./hooks/useScriptingView";
 import Available from "./components/Available";
 import styles from '../../components/flow/styles/Board.module.css'
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import ResizableBar from "../../components/resizable/ResizableBar";
@@ -18,12 +18,13 @@ import NodeEditor from "./components/NodeEditor";
 import SetWorldRotation from "./nodes/transformation/SetWorldRotation";
 import Setter from "./nodes/Setter";
 import Getter from "./nodes/Getter";
+import Structure from "./components/Structure";
 
 export default function ScriptingView(props) {
     const hook = useScriptingView(props.file)
     const ref = useRef()
     const controlProvider = useContext(ControlProvider)
-
+    const [selectedVariable, setSelectedVariable] = useState()
     const mapNodes = (res) => {
         const parsedNodes = hook.nodes.map(n => {
             const docNode = document.getElementById(n.id).parentNode
@@ -177,10 +178,13 @@ export default function ScriptingView(props) {
 
     return (
         <div className={styles.prototypeWrapper} ref={ref}>
-            <NodeEditor
+
+            <Structure
                 hook={hook}
+                selectedVariable={selectedVariable} setSelectedVariable={setSelectedVariable}
                 selected={hook.selected[0]}
             />
+
             <ResizableBar type={"width"}/>
             <div className={styles.prototypeWrapperBoard} id={props.file.fileID + '-board'}>
                 <Board
@@ -192,7 +196,23 @@ export default function ScriptingView(props) {
                     setSelected={hook.setSelected}
                 />
             </div>
-            <Available />
+            <ResizableBar type={'width'}/>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '275px',
+                gap: '3px',
+                overflow: 'hidden'
+            }}>
+                <NodeEditor
+                    hook={hook}
+                    selected={hook.selected[0]}
+                    selectedVariable={selectedVariable}
+                />
+
+                <Available/>
+            </div>
+
         </div>
     )
 }

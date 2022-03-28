@@ -4,9 +4,10 @@
     flex-direction: column;
 
     gap: 0;
+    overflow: hidden;
     width: clamp(250px, 20vw, 325px);
 
-    overflow: hidden;
+
 }
 
 .wrapperContent {

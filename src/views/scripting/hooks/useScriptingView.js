@@ -106,9 +106,7 @@ const INSTANCES = {
     Not:  () => new Not(),
     NotEqual:  () => new NotEqual(),
     Or:  () => new Or(),
-    Xor:  () => new Xor(),
-
-
+    Xor:  () => new Xor()
 }
 
 function parse(file, quickAccess, setNodes, setLinks, setVariables, load) {
