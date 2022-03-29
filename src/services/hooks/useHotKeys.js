@@ -117,25 +117,26 @@ export default function useHotKeys(props) {
     let clicked = {}
     const [focused, setFocused] = useState(false)
     const handleKey = (e) => {
-      if(focused){
-          if (e.type === 'keydown') {
-              clicked[e.code] = true
+        if (focused) {
+            if (e.type === 'keydown') {
+                clicked[e.code] = true
 
-              props.actions.forEach(a => {
+                props.actions.forEach(a => {
 
-                  let trigger = true
-                  a.require.forEach(r => {
-                      trigger = trigger && clicked[r]
-                  })
+                    let trigger = true, c = 0
+                    a.require.forEach(r => {
+                        trigger = trigger && clicked[r]
+                        c++
+                    })
 
-                  if (trigger)
-                      a.callback()
-              })
-          } else {
+                    if (trigger && c === Object.keys(clicked).length)
+                        a.callback()
+                })
+            } else {
 
-              delete clicked[e.code]
-          }
-      }
+                delete clicked[e.code]
+            }
+        }
     }
     const handleMouseDown = (event) => {
         const target = typeof props.focusTarget === 'string' ? document.getElementById(props.focusTarget) : props.focusTarget

@@ -21,6 +21,8 @@ import {TYPES} from "../../../components/flow/TYPES";
 import randomID from "../../../services/utils/misc/randomID";
 import Getter from "../nodes/Getter";
 import {startKey} from "../nodes/Setter";
+import TreeView from "../../../components/tree/TreeView";
+import deleteNode from "../../../components/flow/utils/deleteNode";
 
 export default function Structure(props) {
     const {
@@ -59,55 +61,62 @@ export default function Structure(props) {
         return props.hook.variables.map(v => {
             return {
                 ...v,
-                type: getType(v.type)
+                type: getType(v.type),
+                label: v.name,
+                onClick: () => {
+                    setSelectedVariable(v.id)
+
+                    props.hook.setSelected(props.hook.nodes.filter(nn => nn.id.includes(v.id)).map(nn => nn.id))
+                },
+                attributes: {'data-var': v.id}
             }
         })
     }, [props.hook.variables])
-    const hookList = useListData([
-        {
-            label: 'Name',
-            key: 'name',
-            type: 'string'
-        },
-        {
-            label: 'Type',
-            key: 'type',
-            type: 'string'
-        }
-    ], mappedVariables, true)
+
 
     return (
         <div className={styles.wrapper} style={{width: '275px'}}>
 
-                <div className={styles.header}>
-                    Variables
-                    <Button className={styles.addButton} variant={'outlined'} onClick={() => {
-                        props.hook.setVariables(prev => {
-                            return [...prev, {
-                                id: randomID(),
-                                name: getName(prev),
-                                type: TYPES.NUMBER
-                            }]
+            <div className={styles.header}>
+                Variables
+                <Button className={styles.addButton} variant={'outlined'} onClick={() => {
+                    props.hook.setVariables(prev => {
+                        return [...prev, {
+                            id: randomID(),
+                            name: getName(prev),
+                            type: TYPES.NUMBER
+                        }]
+                    })
+                }}>
+                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span>
+                </Button>
+            </div>
+
+            <TreeView
+                options={[{
+                    requiredTrigger: 'data-var',
+                    onClick: (n) => {
+
+                        setSelectedVariable(undefined)
+                        const allN = props.hook.nodes.filter(nn => nn.id.includes(n.getAttribute('data-var')))
+                        allN.forEach(nn => {
+                            deleteNode(nn.id, props.hook, ()=>null)
                         })
-                    }}>
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span>
-                    </Button>
-                </div>
-                <div className={styles.variablesContent}>
-                    <List hook={hookList}>
-                        <Sort/>
-                        {hookList.data.map((d, i) => (
-                            <DataRow
-                                className={[styles.row, d.id === selectedVariable ? styles.rowHighlight : ''].join(' ')}
-                                onClick={() => setSelectedVariable(d.id)}
-                                index={i}
-                                selfContained={true}
-                            />
-                        ))}
-                    </List>
-                </div>
+                        props.hook.setVariables(p => {
+                            return p.filter(pp => pp.id !== n.getAttribute('data-var'))
+                        })
+                    },
+                    label: 'Delete variable',
+                    icon: <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete_forever</span>
+                }]}
+                contextTriggers={[
+                    'data-var'
+                ]}
+                nodes={mappedVariables}
+                selected={[selectedVariable]}
 
-
+                handleRename={() => null}
+            />
         </div>
     )
 }

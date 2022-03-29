@@ -37,6 +37,7 @@ import Xor from "../nodes/operators/boolean/Xor";
 export default function useScriptingView(file) {
     const [nodes, setNodes] = useState([new EventTick()])
     const [links, setLinks] = useState([])
+    const [groups, setGroups] = useState([])
     const [variables, setVariables] = useState([])
     const [changed, setChanged] = useState(false)
 
@@ -46,13 +47,13 @@ export default function useScriptingView(file) {
 
     useEffect(() => {
 
-        parse(file, quickAccess, setNodes, setLinks, setVariables, load)
+        parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, load)
 
     }, [file])
 
 
     return {
-
+        groups, setGroups,
         selected,
         setSelected,
         setNodes,
@@ -78,38 +79,38 @@ const INSTANCES = {
 
     QuaternionToEuler: () => new QuaternionToEuler(),
     EventTick: () => new EventTick(),
-    Getter:  () => new Getter(),
-    Setter:  () => new Setter(),
+    Getter: () => new Getter(),
+    Setter: () => new Setter(),
 
-    Add:  () => new Add(),
-    Subtract:  () => new Subtract(),
-    Divide:  () => new Divide(),
-    Multiply:  () => new Multiply(),
+    Add: () => new Add(),
+    Subtract: () => new Subtract(),
+    Divide: () => new Divide(),
+    Multiply: () => new Multiply(),
 
-    SetTransformationRelativeOrigin:  () => new SetTransformationRelativeOrigin(),
-    SetLocalRotation:  () => new SetLocalRotation(),
-    ToVector:  () => new ToVector(),
-    FromVector:  () => new FromVector(),
+    SetTransformationRelativeOrigin: () => new SetTransformationRelativeOrigin(),
+    SetLocalRotation: () => new SetLocalRotation(),
+    ToVector: () => new ToVector(),
+    FromVector: () => new FromVector(),
 
-    Print:  () => new Print(),
+    Print: () => new Print(),
 
 
-    And:  () => new And(),
-    Branch:  () => new Branch(),
-    Equal:  () => new Equal(),
-    Greater:  () => new Greater(),
-    GreaterEqual:  () => new GreaterEqual(),
-    Less:  () => new Less(),
-    LessEqual:  () => new LessEqual(),
-    Nand:  () => new Nand(),
-    Nor:  () => new Nor(),
-    Not:  () => new Not(),
-    NotEqual:  () => new NotEqual(),
-    Or:  () => new Or(),
-    Xor:  () => new Xor()
+    And: () => new And(),
+    Branch: () => new Branch(),
+    Equal: () => new Equal(),
+    Greater: () => new Greater(),
+    GreaterEqual: () => new GreaterEqual(),
+    Less: () => new Less(),
+    LessEqual: () => new LessEqual(),
+    Nand: () => new Nand(),
+    Nor: () => new Nor(),
+    Not: () => new Not(),
+    NotEqual: () => new NotEqual(),
+    Or: () => new Or(),
+    Xor: () => new Xor()
 }
 
-function parse(file, quickAccess, setNodes, setLinks, setVariables, load) {
+function parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, load) {
     quickAccess.fileSystem
         .readRegistryFile(file.registryID)
         .then(res => {
@@ -122,15 +123,16 @@ function parse(file, quickAccess, setNodes, setLinks, setVariables, load) {
                             const newNodes = file.nodes.map(f => {
                                 const i = INSTANCES[f.instance]()
                                 Object.keys(f).forEach(o => {
-
-                                        i[o] = f[o]
+                                    i[o] = f[o]
                                 })
                                 return i
                             })
 
                             setNodes(newNodes)
                             setLinks(file.links)
-                            if(file.variables)
+                            if (file.groups)
+                                setGroups(file.groups)
+                            if (file.variables)
                                 setVariables(file.variables)
                             load.finishEvent(EVENTS.LOAD_FILE)
                         } else

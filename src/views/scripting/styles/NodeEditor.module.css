@@ -2,7 +2,6 @@
 .wrapper {
     width: 100%;
 
-    height: fit-content;
 
     background-color: var(--fabric-background-primary);
     border: var(--fabric-border-primary) 1px solid;
@@ -112,7 +111,7 @@
     top: 0;
     z-index: 10;
     padding: 4px 2px;
-    box-shadow: var(--fabric-boxshadow);
+
     background: var(--fabric-background-primary);
 }
 

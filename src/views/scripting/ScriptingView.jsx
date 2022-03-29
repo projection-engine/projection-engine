@@ -1,6 +1,6 @@
 import Board from "../../components/flow/components/Board";
 import useScriptingView from "./hooks/useScriptingView";
-import Available from "./components/Available";
+import Available from "../../components/flow/components/Available";
 import styles from '../../components/flow/styles/Board.module.css'
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import PropTypes from "prop-types";
@@ -15,16 +15,20 @@ import deleteNode from "../../components/flow/utils/deleteNode";
 import EventTick from "./nodes/EventTick";
 import {allNodes} from "./templates/AllNodes";
 import NodeEditor from "./components/NodeEditor";
-import SetWorldRotation from "./nodes/transformation/SetWorldRotation";
+
 import Setter from "./nodes/Setter";
 import Getter from "./nodes/Getter";
 import Structure from "./components/Structure";
+import createGroupShortcut from "../../components/flow/utils/createGroupShortcut";
 
 export default function ScriptingView(props) {
     const hook = useScriptingView(props.file)
     const ref = useRef()
+    const wrapperRef = useRef()
     const controlProvider = useContext(ControlProvider)
     const [selectedVariable, setSelectedVariable] = useState()
+    const [scale, setScale] = useState(1)
+
     const mapNodes = (res) => {
         const parsedNodes = hook.nodes.map(n => {
             const docNode = document.getElementById(n.id).parentNode
@@ -34,20 +38,39 @@ export default function ScriptingView(props) {
                 .replace(')', '')
                 .split(' ')
 
+
             return {
                 ...n,
                 x: parseFloat(transformation[0]),
                 y: parseFloat(transformation[1]),
+
                 instance: n.constructor.name
             }
         })
+        const parsedGroups = hook.groups.map(n => {
+            const docNode = document.getElementById(n.id).parentNode
+            const transformation = docNode
+                .getAttribute('transform')
+                .replace('translate(', '')
+                .replace(')', '')
+                .split(' ')
 
+            return {
+                ...n,
+                width: parseFloat(docNode.firstChild.style.width.replace('px', '')),
+                height: parseFloat(docNode.firstChild.style.height.replace('px', '')),
+                x: parseFloat(transformation[0]),
+                y: parseFloat(transformation[1]),
+
+            }
+        })
 
         return JSON.stringify({
             nodes: parsedNodes,
             links: hook.links,
             variables: hook.variables,
             response: res,
+            groups: parsedGroups,
             type: res.variant
         })
     }
@@ -93,12 +116,19 @@ export default function ScriptingView(props) {
             props.index
         )
 
-    }, [hook.nodes, hook.links, hook.variables])
+    }, [hook.nodes, hook.links, hook.variables, hook.groups])
     const [toCopy, setToCopy] = useState([])
     useHotKeys({
         focusTarget: props.file.fileID + '-board',
         disabled: controlProvider.tab !== props.index,
         actions: [
+            {
+                require: [KEYS.KeyG],
+                callback: () => {
+                    if(hook.selected.length > 0)
+                        createGroupShortcut(hook, wrapperRef, scale)
+                }
+            },
             {
                 require: [KEYS.ControlLeft, KEYS.KeyS],
                 callback: () => {
@@ -186,7 +216,7 @@ export default function ScriptingView(props) {
             />
 
             <ResizableBar type={"width"}/>
-            <div className={styles.prototypeWrapperBoard} id={props.file.fileID + '-board'}>
+            <div className={styles.prototypeWrapperBoard} ref={wrapperRef} id={props.file.fileID + '-board'}>
                 <Board
                     allNodes={availableNodes}
                     setAlert={props.setAlert}
@@ -194,6 +224,8 @@ export default function ScriptingView(props) {
                     hook={hook}
                     selected={hook.selected}
                     setSelected={hook.setSelected}
+                    scale={scale}
+                    setScale={setScale}
                 />
             </div>
             <ResizableBar type={'width'}/>
@@ -210,7 +242,7 @@ export default function ScriptingView(props) {
                     selectedVariable={selectedVariable}
                 />
 
-                <Available/>
+                <Available allNodes={allNodes}/>
             </div>
 
         </div>

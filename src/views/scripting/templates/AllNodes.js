@@ -1,4 +1,4 @@
-import styles from "../styles/Available.module.css";
+import styles from "../../../components/flow/styles/Available.module.css";
 import SetWorldRotation from "../nodes/transformation/SetWorldRotation";
 import SetWorldTranslation from "../nodes/transformation/SetWorldTranslation";
 import GetWorldTranslation from "../nodes/transformation/GetWorldTranslation";
@@ -30,42 +30,42 @@ import Branch from "../nodes/operators/boolean/Branch";
 
 export const allNodes = [
     {
-        label: <label className={styles.label}>Get world rotation</label>,
+        label: 'Get world rotation',
         dataTransfer: 'GetWorldRotation',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new GetWorldRotation()
     },
     {
-        label: <label className={styles.label}>Get world translation</label>,
+        label: 'Get world translation',
         dataTransfer: 'GetWorldTranslation',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new GetWorldTranslation()
     },
     {
-        label: <label className={styles.label}>Set world rotation</label>,
+        label: 'Set world rotation',
         dataTransfer: 'SetWorldRotation',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new SetWorldRotation()
     },
     {
-        label: <label className={styles.label}>Set world translation</label>,
+        label: 'Set world translation',
         dataTransfer: 'SetWorldTranslation',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new SetWorldTranslation()
     },
     {
-        label: <label className={styles.label}>Quaternion to Euler</label>,
+        label: 'Quaternion to Euler',
         dataTransfer: 'QuaternionToEuler',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new QuaternionToEuler()
     },
     {
-        label: <label className={styles.label}>Add</label>,
+        label: 'Add',
         dataTransfer: 'Add',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
@@ -73,21 +73,21 @@ export const allNodes = [
     }
     ,
     {
-        label: <label className={styles.label}>Subtract</label>,
+        label: 'Subtract',
         dataTransfer: 'Subtract',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Subtract()
     },
     {
-        label: <label className={styles.label}>Multiply</label>,
+        label: 'Multiply',
         dataTransfer: 'Multiply',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Multiply()
     },
     {
-        label: <label className={styles.label}>Divide</label>,
+        label: 'Divide',
         dataTransfer: 'Divide',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
@@ -96,35 +96,35 @@ export const allNodes = [
 
 
     {
-        label: <label className={styles.label}>ToVector</label>,
+        label: 'ToVector',
         dataTransfer: 'ToVector',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new ToVector()
     },
     {
-        label: <label className={styles.label}>FromVector</label>,
+        label: 'FromVector',
         dataTransfer: 'FromVector',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new FromVector()
     },
     {
-        label: <label className={styles.label}>SetLocalRotation</label>,
+        label: 'SetLocalRotation',
         dataTransfer: 'SetLocalRotation',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new SetLocalRotation()
     },
     {
-        label: <label className={styles.label}>SetTransformationRelativeOrigin</label>,
+        label: 'SetTransformationRelativeOrigin',
         dataTransfer: 'SetTransformationRelativeOrigin',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new SetTransformationRelativeOrigin()
     },
     {
-        label: <label className={styles.label}>Print</label>,
+        label: 'Print',
         dataTransfer: 'Print',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
@@ -134,63 +134,63 @@ export const allNodes = [
 
 
     {
-        label: <label className={styles.label}>Branch</label>,
+        label: 'Branch',
         dataTransfer: 'Branch',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Branch()
     },
     {
-        label: <label className={styles.label}>And</label>,
+        label: 'And',
         dataTransfer: 'And',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new And()
     },
     {
-        label: <label className={styles.label}>Equal</label>,
+        label: 'Equal',
         dataTransfer: 'Equal',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Equal()
     },
     {
-        label: <label className={styles.label}>Greater</label>,
+        label: 'Greater',
         dataTransfer: 'Greater',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Greater()
     },
     {
-        label: <label className={styles.label}>GreaterEqual</label>,
+        label: 'GreaterEqual',
         dataTransfer: 'GreaterEqual',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new GreaterEqual()
     },
     {
-        label: <label className={styles.label}>Less</label>,
+        label: 'Less',
         dataTransfer: 'Less',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Less()
     },
     {
-        label: <label className={styles.label}>LessEqual</label>,
+        label: 'LessEqual',
         dataTransfer: 'LessEqual',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new LessEqual()
     },
     {
-        label: <label className={styles.label}>Nand</label>,
+        label: 'Nand',
         dataTransfer: 'Nand',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Nand()
     },
     {
-        label: <label className={styles.label}>Nor</label>,
+        label: 'Nor',
         dataTransfer: 'Nor',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
@@ -198,28 +198,28 @@ export const allNodes = [
     },
 
     {
-        label: <label className={styles.label}>Not</label>,
+        label: 'Not',
         dataTransfer: 'Not',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Not()
     },
     {
-        label: <label className={styles.label}>NotEqual</label>,
+        label: 'NotEqual',
         dataTransfer: 'NotEqual',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new NotEqual()
     },
     {
-        label: <label className={styles.label}>Or</label>,
+        label: 'Or',
         dataTransfer: 'Or',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Or()
     },
     {
-        label: <label className={styles.label}>Xor</label>,
+        label: 'Xor',
         dataTransfer: 'Xor',
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
