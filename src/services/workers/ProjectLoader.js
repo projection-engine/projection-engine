@@ -247,7 +247,7 @@ export default class ProjectLoader {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity.components).forEach(k => {
 
-            let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu)
+            let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu, index)
 
             if (component) {
                 if (!(component instanceof SkyboxComponent))
@@ -267,7 +267,7 @@ const ENTITIES = {
     [COMPONENTS.DIRECTIONAL_LIGHT]: (entity, k) => new DirectionalLightComponent(entity.components[k].id),
     [COMPONENTS.SKYLIGHT]: (entity, k) => new SkylightComponent(entity.components[k].id),
     [COMPONENTS.MESH]: (entity, k) => new MeshComponent(entity.components[k].id),
-    [COMPONENTS.PICK]: (entity, k, index) => new PickComponent(entity.components[k].id, index),
+    [COMPONENTS.PICK]: (entity, k, meshes, skyboxes, gpu, index) => new PickComponent(entity.components[k].id, index),
     [COMPONENTS.POINT_LIGHT]: (entity, k) => new PointLightComponent(entity.components[k].id),
     [COMPONENTS.SKYBOX]: (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)

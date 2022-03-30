@@ -6,74 +6,22 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import ResizableBar from "../../components/resizable/ResizableBar";
-import EVENTS from "../../services/utils/misc/EVENTS";
-import compile from "./utils/compile";
-import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
-import cloneClass from "../../services/utils/misc/cloneClass";
-import randomID from "../../services/utils/misc/randomID";
-import deleteNode from "../../components/flow/utils/deleteNode";
-import EventTick from "./nodes/EventTick";
+import useHotKeys from "../../services/hooks/useHotKeys";
 import {allNodes} from "./templates/AllNodes";
 import NodeEditor from "./components/NodeEditor";
-
-import Setter from "./nodes/Setter";
-import Getter from "./nodes/Getter";
 import Structure from "./components/Structure";
-import createGroupShortcut from "../../components/flow/utils/createGroupShortcut";
+import mapNodes from "./utils/mapNodes";
+import getHotKeys from "./utils/getHotKeys";
+import getAvailableNodes from "./utils/getAvailableNodes";
 
 export default function ScriptingView(props) {
     const hook = useScriptingView(props.file)
     const ref = useRef()
     const wrapperRef = useRef()
     const controlProvider = useContext(ControlProvider)
+    const [toCopy, setToCopy] = useState([])
     const [selectedVariable, setSelectedVariable] = useState()
     const [scale, setScale] = useState(1)
-
-    const mapNodes = (res) => {
-        const parsedNodes = hook.nodes.map(n => {
-            const docNode = document.getElementById(n.id).parentNode
-            const transformation = docNode
-                .getAttribute('transform')
-                .replace('translate(', '')
-                .replace(')', '')
-                .split(' ')
-
-
-            return {
-                ...n,
-                x: parseFloat(transformation[0]),
-                y: parseFloat(transformation[1]),
-
-                instance: n.constructor.name
-            }
-        })
-        const parsedGroups = hook.groups.map(n => {
-            const docNode = document.getElementById(n.id).parentNode
-            const transformation = docNode
-                .getAttribute('transform')
-                .replace('translate(', '')
-                .replace(')', '')
-                .split(' ')
-
-            return {
-                ...n,
-                width: parseFloat(docNode.firstChild.style.width.replace('px', '')),
-                height: parseFloat(docNode.firstChild.style.height.replace('px', '')),
-                x: parseFloat(transformation[0]),
-                y: parseFloat(transformation[1]),
-
-            }
-        })
-
-        return JSON.stringify({
-            nodes: parsedNodes,
-            links: hook.links,
-            variables: hook.variables,
-            response: res,
-            groups: parsedGroups,
-            type: res.variant
-        })
-    }
 
     useEffect(() => {
         controlProvider.setTabAttributes(
@@ -82,28 +30,13 @@ export default function ScriptingView(props) {
                     label: 'Save',
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
-                    onClick: () => {
-                        const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
-                        props.submitPackage(
-                            response,
-                            false
-                        )
-
-                    }
+                    onClick: () => props.submitPackage(mapNodes(hook), false)
                 },
                 {
                     label: 'Save & close',
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
-                    onClick: () => {
-
-                        const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
-                        props.submitPackage(
-                            response,
-                            true
-                        )
-
-                    }
+                    onClick: () => props.submitPackage(mapNodes(hook), true)
                 }
             ],
             props.file.name,
@@ -117,93 +50,15 @@ export default function ScriptingView(props) {
         )
 
     }, [hook.nodes, hook.links, hook.variables, hook.groups])
-    const [toCopy, setToCopy] = useState([])
+
     useHotKeys({
         focusTarget: props.file.fileID + '-board',
         disabled: controlProvider.tab !== props.index,
-        actions: [
-            {
-                require: [KEYS.KeyG],
-                callback: () => {
-                    if(hook.selected.length > 0)
-                        createGroupShortcut(hook, wrapperRef, scale)
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyS],
-                callback: () => {
-
-                    const response = mapNodes(compile(hook.nodes, hook.links, hook.variables))
-                    props.submitPackage(
-                        response,
-                        false
-                    )
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyC],
-                callback: () => {
-                    setToCopy(hook.selected)
-                    if (hook.selected.length > 0)
-                        props.setAlert({
-                            type: 'success',
-                            message: 'Entities copied.'
-                        })
-                }
-            },
-            {
-                require: [KEYS.Delete],
-                callback: () => {
-                    hook.selected.forEach(n => {
-                        if (!(hook.nodes.find(nod => nod.id === n) instanceof EventTick))
-                            deleteNode(n, hook)
-                    })
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyV],
-                callback: () => {
-                    toCopy.forEach(toC => {
-                        const toCopyNode = hook.nodes.find(n => n.id === toC)
-                        if (toCopyNode && !(toCopyNode instanceof EventTick)) {
-                            const nodeEl = document.getElementById(toC)
-
-                            const clone = cloneClass(toCopyNode)
-                            clone.id = randomID()
-                            clone.x = nodeEl.getBoundingClientRect().x + 5
-                            clone.y = nodeEl.getBoundingClientRect().y + 5
-
-                            hook.setNodes(prev => {
-                                return [...prev, clone]
-                            })
-                        }
-                    })
-                }
-            }
-        ]
+        actions: getHotKeys(hook, props, toCopy, setToCopy)
     })
 
     const availableNodes = useMemo(() => {
-        return [...allNodes, ...hook.variables.map(v => {
-            return [
-                {
-                    label: <label className={styles.label}>Getter - {v.name}</label>,
-                    dataTransfer: JSON.stringify({
-                        key: v.id,
-                        type: 'getter'
-                    }),
-                    getNewInstance: () => new Getter(v.id + '/getter/' + randomID(), v.name + ' - Getter', v.type)
-                },
-                {
-                    label: <label className={styles.label}>Setter - {v.name}</label>,
-                    dataTransfer: JSON.stringify({
-                        key: v.id,
-                        type: 'setter'
-                    }),
-                    getNewInstance: () => new Setter(v.id + '/setter/' + randomID(), v.name + ' - Setter', v.type)
-                }
-            ]
-        }).flat()]
+        return getAvailableNodes(hook)
     }, [hook.variables])
 
     return (
@@ -213,6 +68,23 @@ export default function ScriptingView(props) {
                 hook={hook}
                 selectedVariable={selectedVariable} setSelectedVariable={setSelectedVariable}
                 selected={hook.selected[0]}
+                focusNode={(n) => {
+                    let f = document.getElementById(n)?.parentNode
+
+                    if (f) {
+
+                        const transformation = f
+                            .getAttribute('transform')
+                            .replace('translate(', '')
+                            .replace(')', '')
+                            .split(' ')
+
+                        wrapperRef.current.lastChild.scrollLeft = parseFloat(transformation[0]) - wrapperRef.current.lastChild.offsetWidth / 2 + 150
+                        wrapperRef.current.lastChild.scrollTop = parseFloat(transformation[1]) - wrapperRef.current.lastChild.offsetHeight / 2
+                        hook.setSelected([n])
+
+                    }
+                }}
             />
 
             <ResizableBar type={"width"}/>

@@ -1,31 +1,17 @@
-import React, {useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import styles from '../styles/NodeEditor.module.css'
 import PropTypes from "prop-types";
 
-import {
-    Accordion,
-    AccordionSummary,
-    Button,
-    Checkbox,
-    DataRow,
-    Dropdown,
-    DropdownOption,
-    DropdownOptions,
-    List,
-    Sort,
-    TextField,
-    useListData,
-} from "@f-ui/core";
+import {Accordion, AccordionSummary, Checkbox, Dropdown, DropdownOption, DropdownOptions, TextField,} from "@f-ui/core";
 import Range from "../../../components/range/Range";
 import {TYPES} from "../../../components/flow/TYPES";
-import randomID from "../../../services/utils/misc/randomID";
-import Getter from "../nodes/Getter";
-import {startKey} from "../nodes/Setter";
+import Getter from "../nodes/utils/Getter";
+import {startKey} from "../nodes/utils/Setter";
 
 export default function NodeEditor(props) {
-     const {
-         selectedVariable
-     } = props
+    const {
+        selectedVariable
+    } = props
     const selected = useMemo(() => {
         return props.hook.variables.findIndex(v => v.id === selectedVariable)
     }, [selectedVariable, props.hook.variables])
@@ -177,7 +163,6 @@ export default function NodeEditor(props) {
     }
 
 
-
     const getNewValue = (type) => {
         switch (type) {
             case TYPES.VEC2:
@@ -197,79 +182,79 @@ export default function NodeEditor(props) {
     return (
         <div className={styles.wrapper}>
             {selectedVariable ?
-            <div className={styles.form}>
-                {selectedVariable ?
-                    <TextField
-                        value={props.hook.variables[selected].name}
-                        width={'100%'}
-                        height={'35px'}
-                        handleChange={ev => {
-                            props.hook.setVariables(prev => {
-                                const n = [...prev]
-                                const classLocation = n.find(e => e.id === selectedVariable)
-                                classLocation.name = ev.target.value
-                                return n
-                            })
-                        }}
-                        label={'Name'}
-                        placeholder={'Name'}/>
-                    : null}
-                {attributes.map((attr, i) => (
-                    <React.Fragment key={attr.label + '-attribute-' + i}>
-                        <Accordion>
-                            <AccordionSummary>
-                                {attr.key === 'type' ? 'Variable Type' : 'Variable Value'}
-                            </AccordionSummary>
-                            <div className={styles.content}>
-                                {getInput(
-                                    attr.label,
-                                    attr.type,
-                                    props.hook.variables[selected][attr.key],
-                                    (event) => props.hook.setVariables(prev => {
-                                        const n = [...prev]
-                                        const classLocation = n.find(e => e.id === selectedVariable)
-                                        classLocation[attr.key] = event
-                                        if (attr.key === 'type') {
-                                            classLocation.value = getNewValue(event)
-                                            props.hook.setNodes(prevN => {
-                                                return [...prevN].map(node => {
-                                                    if (node.id.includes(selectedVariable)) {
-                                                        if (node instanceof Getter)
-                                                            node.output = [{label: 'Value', key: 'value', type: event}]
-                                                        else {
-                                                            node.inputs = [{
-                                                                label: 'Start',
-                                                                key: startKey,
-                                                                accept: [TYPES.EXECUTION]
-                                                            }, {label: 'Value', key: 'value', accept: [event]}]
-                                                            node.output = [
-                                                                {
-                                                                    label: 'Execute',
-                                                                    key: 'EXECUTION',
-                                                                    type: TYPES.EXECUTION
-                                                                },
-                                                                {label: 'Value', key: 'value', type: event}
-                                                            ]
+                <div className={styles.form}>
+                    {selectedVariable ?
+                        <TextField
+                            value={props.hook.variables[selected].name}
+                            width={'100%'}
+                            height={'35px'}
+                            handleChange={ev => {
+                                props.hook.setVariables(prev => {
+                                    const n = [...prev]
+                                    const classLocation = n.find(e => e.id === selectedVariable)
+                                    classLocation.name = ev.target.value
+                                    return n
+                                })
+                            }}
+                            label={'Name'}
+                            placeholder={'Name'}/>
+                        : null}
+                    {attributes.map((attr, i) => (
+                        <React.Fragment key={attr.label + '-attribute-' + i}>
+                            <Accordion>
+                                <AccordionSummary>
+                                    {attr.key === 'type' ? 'Variable Type' : 'Variable Value'}
+                                </AccordionSummary>
+                                <div className={styles.content}>
+                                    {getInput(
+                                        attr.label,
+                                        attr.type,
+                                        props.hook.variables[selected][attr.key],
+                                        (event) => props.hook.setVariables(prev => {
+                                            const n = [...prev]
+                                            const classLocation = n.find(e => e.id === selectedVariable)
+                                            classLocation[attr.key] = event
+                                            if (attr.key === 'type') {
+                                                classLocation.value = getNewValue(event)
+                                                props.hook.setNodes(prevN => {
+                                                    return [...prevN].map(node => {
+                                                        if (node.id.includes(selectedVariable)) {
+                                                            if (node instanceof Getter)
+                                                                node.output = [{
+                                                                    label: 'Value',
+                                                                    key: 'value',
+                                                                    type: event
+                                                                }]
+                                                            else {
+                                                                node.inputs = [{
+                                                                    label: 'Start',
+                                                                    key: startKey,
+                                                                    accept: [TYPES.EXECUTION]
+                                                                }, {label: 'Value', key: 'value', accept: [event]}]
+                                                                node.output = [
+                                                                    {
+                                                                        label: 'Execute',
+                                                                        key: 'EXECUTION',
+                                                                        type: TYPES.EXECUTION
+                                                                    },
+                                                                    {label: 'Value', key: 'value', type: event}
+                                                                ]
+                                                            }
                                                         }
-                                                    }
-                                                    return node
+                                                        return node
+                                                    })
                                                 })
-                                            })
-                                        }
+                                            }
 
-                                        return n
-                                    }),
-                                    attr)}
-                            </div>
-                        </Accordion>
-                    </React.Fragment>
-                ))}
-                {selectedVariable ? (
-                    <Accordion className={styles.options}>
-                        <AccordionSummary>
-                            Get node instance
-                        </AccordionSummary>
-                        <div className={styles.buttonGroup} style={{width: '100%', padding: '4px'}}>
+                                            return n
+                                        }),
+                                        attr)}
+                                </div>
+                            </Accordion>
+                        </React.Fragment>
+                    ))}
+                    {selectedVariable ? (
+                        <div className={styles.buttonGroup}>
                             <div
                                 className={styles.option}
                                 draggable={true}
@@ -277,8 +262,8 @@ export default function NodeEditor(props) {
                                     key: props.hook.variables[selected].id,
                                     type: 'getter'
                                 }))}
-                                style={{background: 'green'}}
                             >
+                                <span style={{fontSize: '1.1rem'}}  className={'material-icons-round'}>drag_indicator</span>
                                 Getter
                             </div>
                             <div
@@ -288,19 +273,18 @@ export default function NodeEditor(props) {
                                     key: props.hook.variables[selected].id,
                                     type: 'setter'
                                 }))}
-                                style={{background: 'red'}}
                             >
+                                <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>drag_indicator</span>
                                 Setter
                             </div>
                         </div>
-                    </Accordion>
-                ) : null}
-            </div>
+                    ) : null}
+                </div>
                 :
                 <div className={styles.emptyWrapper}>
-                    <span style={{fontSize:  '90px'}}
+                    <span style={{fontSize: '90px'}}
                           className={'material-icons-round'}>category</span>
-                        Select a variable to edit it.
+                    Select a variable to edit it.
                 </div>
             }
 

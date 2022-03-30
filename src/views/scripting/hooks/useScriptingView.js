@@ -1,15 +1,15 @@
 import {useContext, useEffect, useState} from "react";
 import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
 import {LoaderProvider} from "@f-ui/core";
-import EventTick from "../nodes/EventTick";
+import EventTick from "../nodes/events/EventTick";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import GetWorldTranslation from "../nodes/transformation/GetWorldTranslation";
 import GetWorldRotation from "../nodes/transformation/GetWorldRotation";
 import SetWorldTranslation from "../nodes/transformation/SetWorldTranslation";
 import SetWorldRotation from "../nodes/transformation/SetWorldRotation";
-import QuaternionToEuler from "../nodes/QuaternionToEuler";
-import Getter from "../nodes/Getter";
-import Setter from "../nodes/Setter";
+import QuaternionToEuler from "../nodes/transformation/QuaternionToEuler";
+import Getter from "../nodes/utils/Getter";
+import Setter from "../nodes/utils/Setter";
 import Add from "../nodes/operators/math/Add";
 import Subtract from "../nodes/operators/math/Subtract";
 import Divide from "../nodes/operators/math/Divide";
@@ -18,7 +18,7 @@ import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransfor
 import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
 import ToVector from "../nodes/operators/conversions/ToVector";
 import FromVector from "../nodes/operators/conversions/FromVector";
-import Print from "../nodes/Print";
+import Print from "../nodes/utils/Print";
 import And from "../nodes/operators/boolean/And";
 import Branch from "../nodes/operators/boolean/Branch";
 import Equal from "../nodes/operators/boolean/Equal";
@@ -31,11 +31,13 @@ import Nor from "../nodes/operators/boolean/Nor";
 import Not from "../nodes/operators/boolean/Not";
 import NotEqual from "../nodes/operators/boolean/NotEqual";
 import Or from "../nodes/operators/boolean/Or";
-import Xor from "../nodes/operators/boolean/Xor";
+import MouseX from "../nodes/events/MouseX";
+import MouseY from "../nodes/events/MouseY";
+import MousePosition from "../nodes/events/MousePosition";
 
 
 export default function useScriptingView(file) {
-    const [nodes, setNodes] = useState([new EventTick()])
+    const [nodes, setNodes] = useState([])
     const [links, setLinks] = useState([])
     const [groups, setGroups] = useState([])
     const [variables, setVariables] = useState([])
@@ -47,7 +49,9 @@ export default function useScriptingView(file) {
 
     useEffect(() => {
 
-        parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, load)
+        parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups,  load)
+
+
 
     }, [file])
 
@@ -66,7 +70,9 @@ export default function useScriptingView(file) {
         setLinks,
         quickAccess,
         load,
-        changed, setChanged
+        changed,
+
+        setChanged
     }
 }
 
@@ -107,7 +113,10 @@ const INSTANCES = {
     Not: () => new Not(),
     NotEqual: () => new NotEqual(),
     Or: () => new Or(),
-    Xor: () => new Xor()
+
+    MouseX: () => new MouseX(),
+    MouseY: () => new MouseY(),
+    MousePosition: () => new MousePosition()
 }
 
 function parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, load) {
@@ -134,6 +143,8 @@ function parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, l
                                 setGroups(file.groups)
                             if (file.variables)
                                 setVariables(file.variables)
+
+
                             load.finishEvent(EVENTS.LOAD_FILE)
                         } else
                             load.finishEvent(EVENTS.LOAD_FILE)

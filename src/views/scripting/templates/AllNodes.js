@@ -1,9 +1,8 @@
-import styles from "../../../components/flow/styles/Available.module.css";
 import SetWorldRotation from "../nodes/transformation/SetWorldRotation";
 import SetWorldTranslation from "../nodes/transformation/SetWorldTranslation";
 import GetWorldTranslation from "../nodes/transformation/GetWorldTranslation";
 import GetWorldRotation from "../nodes/transformation/GetWorldRotation";
-import QuaternionToEuler from "../nodes/QuaternionToEuler";
+import QuaternionToEuler from "../nodes/transformation/QuaternionToEuler";
 import Add from "../nodes/operators/math/Add";
 import Subtract from "../nodes/operators/math/Subtract";
 import Multiply from "../nodes/operators/math/Multiply";
@@ -12,7 +11,7 @@ import ToVector from "../nodes/operators/conversions/ToVector";
 import FromVector from "../nodes/operators/conversions/FromVector";
 import SetLocalRotation from "../nodes/transformation/SetLocalRotation";
 import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
-import Print from "../nodes/Print";
+import Print from "../nodes/utils/Print";
 import Xor from "../nodes/operators/boolean/Xor";
 import Or from "../nodes/operators/boolean/Or";
 import NotEqual from "../nodes/operators/boolean/NotEqual";
@@ -26,9 +25,23 @@ import Greater from "../nodes/operators/boolean/Greater";
 import Equal from "../nodes/operators/boolean/Equal";
 import And from "../nodes/operators/boolean/And";
 import Branch from "../nodes/operators/boolean/Branch";
+import EventTick from "../nodes/events/EventTick";
+import RandomFloat from "../nodes/utils/RandomFloat";
+import RandomInt from "../nodes/utils/RandomInt";
+import MousePosition from "../nodes/events/MousePosition";
+import MouseY from "../nodes/events/MouseY";
+import MouseX from "../nodes/events/MouseX";
 
 
 export const allNodes = [
+    {
+        label: 'Event Tick',
+        dataTransfer: 'EventTick',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new EventTick()
+    },
+
     {
         label: 'Get world rotation',
         dataTransfer: 'GetWorldRotation',
@@ -224,5 +237,46 @@ export const allNodes = [
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new Xor()
+    },
+
+    {
+        label: 'Random Float',
+        dataTransfer: 'RandomFloat',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new RandomFloat()
+    },
+
+    {
+        label: 'Random Int',
+        dataTransfer: 'RandomInt',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new RandomInt()
+    },
+
+
+    {
+        label: 'Mouse X',
+        dataTransfer: 'MouseX',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new MouseX()
+    },
+
+    {
+        label: 'Mouse Y',
+        dataTransfer: 'MouseY',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new MouseY()
+    },
+
+    {
+        label: 'Mouse Position',
+        dataTransfer: 'MousePosition',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new MousePosition()
     }
 ]

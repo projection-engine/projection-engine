@@ -1,9 +1,9 @@
 import cloneClass from "../../../services/utils/misc/cloneClass";
-import EventTick from "../nodes/EventTick";
+import EventTick from "../nodes/events/EventTick";
 import {TYPES} from "../../../components/flow/TYPES";
-import Getter from "../nodes/Getter";
+import Getter from "../nodes/utils/Getter";
 import Branch from "../nodes/operators/boolean/Branch";
-import SetTransformationRelativeOrigin from "../nodes/transformation/SetTransformationRelativeOrigin";
+import NODE_TYPES from "../../../components/flow/NODE_TYPES";
 
 
 export default function compile(n, links, variables, alreadyCompiled = [], startPoint) {
@@ -45,24 +45,23 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
                     nodeID: currentNode.id,
                     inputs,
                     classExecutor: currentNode.constructor.name,
-                    isBranch: currentNode instanceof Branch
+                    isBranch: currentNode.type === NODE_TYPES.BRANCH
                 })
             }
             currentNode.ready = true
         }
     }
     let compiled = [...alreadyCompiled]
-    if (alreadyCompiled.length === 0) {
-        const f = nodes.find(n => n instanceof EventTick)
-        resolveDependencies(f)
-        compiled.push(f.id)
-    }
+    // if (alreadyCompiled.length === 0) {
+    //     const f = nodes.find(n => n instanceof EventTick)
+    //     resolveDependencies(f)
+    //     compiled.push(f.id)
+    // }
 
     let organizedLinks = []
-
     const getForward = (l) => {
-        organizedLinks.push(l)
 
+        organizedLinks.push(l)
         const forward = links.filter(ll => {
             return l.target.id === ll.source.id && ll.source.attribute.type === TYPES.EXECUTION
         })
@@ -72,7 +71,6 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
         })
     }
     getForward(startPoint ? startPoint : links.find(ll => ll.source.id === nodes.find(n => n instanceof EventTick).id))
-
     for (let exec = 0; exec < organizedLinks.length; exec++) {
         const t = organizedLinks[exec].target
         const targetNode = nodes.find(n => n.id === t.id)
@@ -124,6 +122,7 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
             }
         }
     }
+
 
     return {
         executors,

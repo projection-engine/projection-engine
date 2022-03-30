@@ -19,13 +19,11 @@ export default class Branch extends Node {
         this.name = 'Branch'
     }
 
-    get type (){
-        return NODE_TYPES.FUNCTION
+    get type() {
+        return NODE_TYPES.BRANCH
     }
+
     static compile({c}, obj) {
-        console.log(c, obj)
-
-            return c ?  obj.branchA : obj.branchB
-
+        return c ? obj.branchA : obj.branchB
     }
 }

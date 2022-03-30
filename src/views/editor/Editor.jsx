@@ -63,6 +63,7 @@ export default function Editor(props) {
             {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
             {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
             {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},
+            {require: [KEYS.Escape], callback: () => props.setExecutingAnimation(false)},
 
             {
                 require: [KEYS.ControlLeft, KEYS.KeyC],

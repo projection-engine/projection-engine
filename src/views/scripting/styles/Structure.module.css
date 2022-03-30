@@ -1,0 +1,55 @@
+
+.wrapper {
+    width: 100%;
+    padding: 4px;
+
+    background-color: var(--fabric-background-primary);
+    border: var(--fabric-border-primary) 1px solid;
+
+
+    border-radius: 5px;
+
+    outline: transparent 2px solid;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+}
+
+
+
+.formFieldWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+}
+
+.option {
+    position: relative;
+    overflow: hidden;
+    font-size: .7rem;
+    font-weight: 550;
+    color: var(--fabric-color-secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    padding: 4px;
+    border-bottom: var(--fabric-border-primary) 1px solid;
+
+    cursor: pointer;
+}
+.option[data-highlight = 'true']{
+    color: var(--fabric-accent-color);
+    border-bottom-color: var(--fabric-accent-color);
+}
+.options {
+    display: flex;
+    flex-direction: column;
+}
