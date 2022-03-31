@@ -58,7 +58,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                             .then(all => {
                                 let cleanUp = all.map(a => {
                                     return new Promise(((resolve1) => {
-
                                         if (!engine.entities.find(e => e.id === a.data.id)) {
                                             fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true)
                                                 .then((er) => resolve1(er))
@@ -105,22 +104,8 @@ export const saveEntities = (entities, fileSystem) => {
     let promises = []
     entities.filter(e => !e.components.Grid).forEach(e => {
         promises.push(new Promise((resolve) => {
-            let blob = {...e.components}
-
-
-            if (e.components.TransformComponent)
-                blob.TransformComponent = {
-                    scaling: e.components.TransformComponent.scaling,
-                    rotation: e.components.TransformComponent.rotation,
-                    translation: e.components.TransformComponent.translation,
-                    lockedRotation: e.components.TransformComponent.lockedRotation,
-                    lockedScaling: e.components.TransformComponent.lockedScaling
-                }
             fileSystem
-                .updateEntity({
-                    ...e,
-                    components: blob
-                })
+                .updateEntity(e)
                 .then(() => resolve())
         }))
     })

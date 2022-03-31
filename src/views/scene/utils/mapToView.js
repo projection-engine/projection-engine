@@ -3,18 +3,19 @@ import getElementType from "./getElementType";
 import React from "react";
 import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 
-export default function mapToView(current, entities, setSelected, engine, setAllHidden) {
+export default function mapToView(current, entities, setSelected, engine, setAllHidden, isBP) {
     const children = entities.filter(f => f.linkedTo === current.id)
+    const isBlueprint= current.isBlueprint
     return {
         id: current.id,
         label: current.name,
         onClick: (e) => {
             setSelected(current.id, e)
         },
-        children: children.map(f => mapToView(f, entities, setSelected, engine, setAllHidden )),
-        icon: getElementIcon(current.components),
-        type: getElementType(current.components),
-
+        children: children.map(f => mapToView(f, entities, setSelected, engine, setAllHidden, isBP || current.isBlueprint)),
+        icon: getElementIcon(current.components, isBlueprint),
+        type: getElementType(current.components, isBlueprint),
+        draggable: !isBP,
         onHide: () => {
             if (!current.active && setAllHidden)
                 setAllHidden(false)

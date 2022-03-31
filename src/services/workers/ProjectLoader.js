@@ -40,6 +40,7 @@ export default class ProjectLoader {
                             data: res
                         })
                     })
+
             }),
             entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
@@ -106,7 +107,7 @@ export default class ProjectLoader {
         let entitiesFound = projectData.filter(e => e.type === 'entity')
         let entities
 
-        let meshes = [...new Set(entitiesFound.filter(e => e.data.components?.MeshComponent).map(e => e.data.components.MeshComponent?.meshID))],
+        let meshes = [...new Set(entitiesFound.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components.MeshComponent?.meshID))],
             skyboxes = [...new Set(
                 entitiesFound
                     .filter(e => e.data.components?.SkyboxComponent)
@@ -132,22 +133,32 @@ export default class ProjectLoader {
             }))
 
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
-        const entitiesWithScripts = entitiesFound.map(e => e.data.components[COMPONENTS.SCRIPT]?.registryID).filter(e => e !== undefined)
+        const entitiesWithScripts = entitiesFound.map(e => {
+            if(e.data.components[COMPONENTS.SCRIPT])
+                return e.data.components[COMPONENTS.SCRIPT]?.registryID
+            else
+                return  e.data.blueprintID
+        }).filter(e => e !== undefined)
+
+        const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem, entitiesFound.length)).filter(e => e !== undefined)
         let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
             skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e)
+
         const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
-        const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem)).filter(e => e !== undefined)
+
         try {
             entities = entitiesFound.map((entity, index) => {
+
                 return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
             })
         } catch (e) {
         }
+
         return {
             meta,
             settings,
             entities,
-            scripts: scriptsToLoad,
+            scripts: scriptsToLoad.map(s => s.script),
             materials: materialsToLoad,
             meshes: meshData
         }
@@ -184,7 +195,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem) {
+    static async loadScripts(toLoad, fileSystem, meshesLoaded) {
 
         const promises = toLoad.map(m => {
             return new Promise(r => {
@@ -196,8 +207,14 @@ export default class ProjectLoader {
                             try {
                                 const d = JSON.parse(fileData)
                                 r({
-                                    id: m,
-                                    executor: d.response
+                                    script: {
+                                        id: m,
+                                        executors: d.response,
+                                        name: d.name
+                                    },
+                                    entities: d.entities.map((e, i) => {
+                                        return ProjectLoader.mapEntity(e, i + meshesLoaded, [], [])
+                                    })
                                 })
                             } catch (e) {
                                 r()
@@ -246,10 +263,10 @@ export default class ProjectLoader {
     static mapEntity(entity, index, meshes, skyboxes, gpu) {
 
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
+        parsedEntity.blueprintID = entity.blueprintID
+
         Object.keys(entity.components).forEach(k => {
-
             let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu, index)
-
             if (component) {
                 if (!(component instanceof SkyboxComponent))
                     Object.keys(entity.components[k]).forEach(oK => {
@@ -280,7 +297,12 @@ const ENTITIES = {
     },
     [COMPONENTS.SPOT_LIGHT]: (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.MATERIAL]: (entity, k) => new MaterialComponent(entity.components[k].id),
-    [COMPONENTS.TRANSFORM]: (entity, k) => new TransformComponent(entity.components[k].id, true),
+    [COMPONENTS.TRANSFORM]: (entity, k) => {
+
+        const component = new TransformComponent(entity.components[k].id, true)
+        component.changed = true
+        return component
+    },
     [COMPONENTS.FOLDER]: (entity, k) => new FolderComponent(entity.components[k].id),
     [COMPONENTS.PHYSICS]: (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
     [COMPONENTS.CUBE_MAP]: (entity, k, meshes, skyboxes, gpu) => {

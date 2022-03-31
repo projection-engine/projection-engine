@@ -148,7 +148,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [
         canExecutePhysicsAnimation,
         selected, setSelected,
-        materials, meshes,scripts,
+        materials, meshes, scripts,
         initialized, entities, gpu, id, canRender,
         settings, finished, canStart
     ])

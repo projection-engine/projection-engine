@@ -42,7 +42,7 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
                         value: variables.find(v => v.id === currentNode.id.split('/')[0])?.value
                     }
                 if (currentNode instanceof EntityReference)
-                    executors[currentNode.id.split('/')[1]] = {
+                    executors[currentNode.id] = {
                         value: currentNode.id.split('/')[0]
                     }
 

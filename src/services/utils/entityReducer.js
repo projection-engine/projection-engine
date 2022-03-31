@@ -115,10 +115,7 @@ export default function entityReducer(state, action) {
             case ENTITY_ACTIONS.REMOVE_BLOCK: {
                 const block = action.payload
                 if (Array.isArray(block)) {
-                    block.forEach(e => {
-                        stateCopy.splice(stateCopy.findIndex(entity => entity.id === e), 1)
-                    })
-                    return stateCopy
+                    return stateCopy.filter(e => !block.includes(e.id) && !block.includes(e.linkedTo))
                 } else
                     return stateCopy
             }

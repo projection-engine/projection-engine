@@ -15,37 +15,45 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
+import getElementIcon from "./utils/getElementIcon";
+import getElementType from "./utils/getElementType";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState(0)
     const [allHidden, setAllHidden] = useState(false)
     const [hidden, setHidden] = useState(false)
-
-
     const load = useContext(LoaderProvider)
+
     const data = useMemo(() => {
-        let toFilter = props.engine.entities.filter(d => !d.linkedTo && !d.components.Grid)
+        let toFilter = props.engine.entities.filter(d => !d.linkedTo)
+    console.log(props.engine.entities)
         return [{
             id: 0,
             label: 'Scene',
-            children: toFilter.map(f => {
-                return mapToView(f, props.engine.entities, (el, e) => {
-                    if (e && e.ctrlKey) {
-                        props.engine.setSelected(prev => {
-                            const indexFound = prev.findIndex(f => f === el)
-                            if (indexFound === -1)
-                                return [...prev, el]
-                            else {
-                                let n = [...prev]
-                                n.splice(indexFound, 1)
-                                return n
-                            }
-                        })
-                    } else
-                        props.engine.setSelected([el])
-                }, props.engine, setAllHidden)
-            }),
+            children:
+                toFilter.map(f => {
+                    return mapToView(
+                        f,
+                        props.engine.entities,
+                        (el, e) => {
+                            if (e && e.ctrlKey) {
+                                props.engine.setSelected(prev => {
+                                    const indexFound = prev.findIndex(f => f === el)
+                                    if (indexFound === -1)
+                                        return [...prev, el]
+                                    else {
+                                        let n = [...prev]
+                                        n.splice(indexFound, 1)
+                                        return n
+                                    }
+                                })
+                            } else
+                                props.engine.setSelected([el])
+                        },
+                        props.engine,
+                        setAllHidden, false)
+                }),
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
             type: 'Scene',
             phantomNode: true,
@@ -64,9 +72,7 @@ export default function SceneView(props) {
                         e.active = false
                         return e
                     })
-
                 }
-
                 props.engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
             },
             canBeHidden: true,
@@ -147,7 +153,13 @@ export default function SceneView(props) {
                                 label: 'Remove entity',
                                 icon: <span className={'material-icons-round'}>delete</span>,
                                 onClick: (node) => {
-                                    const toDelete = [...props.engine.selected, node.getAttribute('data-node')]
+                                    const toDelete = [node.getAttribute('data-node')]
+                                    const e = props.engine.scripts.find(s => s.id === toDelete[0])
+
+                                    if (e)
+                                        props.engine.setScripts(prev => {
+                                            return prev.filter(p => p.id !== e.id)
+                                        })
                                     props.engine.setSelected([])
                                     props.engine.dispatchEntities({
                                         type: ENTITY_ACTIONS.REMOVE_BLOCK,

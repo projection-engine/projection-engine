@@ -6,7 +6,7 @@ import MeshComponent from "../engine/ecs/components/MeshComponent";
 import PickComponent from "../engine/ecs/components/PickComponent";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
-export default async function importMesh(objLoaded, engine, id, index, fileSystem) {
+export default async function importMesh(objLoaded, engine, id, index, fileSystem, isBlueprint) {
 
     let mesh,
         entity,
@@ -44,6 +44,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
             existsMesh = true
 
         entity = new Entity(undefined, objLoaded.name)
+        entity.isBlueprint = isBlueprint
         const transformation = new TransformComponent()
         transformation.scaling = objLoaded.scaling
         transformation.rotation = objLoaded.rotation

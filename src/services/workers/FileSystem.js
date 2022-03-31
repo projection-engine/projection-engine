@@ -353,13 +353,10 @@ export default class FileSystem {
     async updateProject(meta, settings) {
         return Promise.all([
             new Promise(resolve => {
-
                 if (meta)
-
                     fs.writeFile(resolvePath(this.path + '\\.meta'), JSON.stringify(meta), () => {
                         resolve()
                     })
-
                 else
                     resolve()
             }),

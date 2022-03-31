@@ -1,7 +1,8 @@
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
-export default function getElementIcon(components) {
-
+export default function getElementIcon(components, isBP) {
+    if (isBP)
+        return <span className={'material-icons-round'} style={{fontSize: '1rem'}}>terminal</span>
     switch (true) {
         case components.SkyboxComponent !== undefined:
             return (

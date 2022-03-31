@@ -21,9 +21,10 @@ export default class EntityReference extends Node {
     }
 
     static compile(tick, inputs, entities, attributes, nodeID, executors) {
-
+        console.log(executors[nodeID], nodeID, entities)
         attributes[nodeID] = {}
         attributes[nodeID].entity = entities[executors[nodeID].value]
+
 
         return attributes
     }

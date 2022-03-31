@@ -2,7 +2,7 @@ import NODE_TYPES from "../../../components/flow/NODE_TYPES";
 import {TYPES} from "../../../components/flow/TYPES";
 import compile from "./compile";
 
-export default function mapNodes (hook, engine) {
+export default function mapNodes (hook, engine, file) {
     const res = mapCompile(hook)
     const parsedNodes = hook.nodes.map(n => {
         const docNode = document.getElementById(n.id).parentNode
@@ -47,7 +47,11 @@ export default function mapNodes (hook, engine) {
         response: res,
         groups: parsedGroups,
         type: res.variant,
-        entities: engine.entities
+        entities: engine.entities.map(e => {
+            e.blueprintID = file.registryID
+            return e
+        }),
+        name: file.name
     })
 }
 export function mapCompile (hook) {

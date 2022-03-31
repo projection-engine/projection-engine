@@ -61,13 +61,13 @@ export default function BlueprintView(props) {
                     label: 'Save',
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
-                    onClick: () => props.submitPackage(mapNodes(hook, engine), false)
+                    onClick: () => props.submitPackage(mapNodes(hook, engine, props.file), false)
                 },
                 {
                     label: 'Save & close',
                     disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
-                    onClick: () => props.submitPackage(mapNodes(hook, engine), true)
+                    onClick: () => props.submitPackage(mapNodes(hook, engine, props.file), true)
                 }
             ],
             props.file.name,
@@ -164,7 +164,7 @@ export default function BlueprintView(props) {
                         allowDrop={true}
                         id={props.file.registryID}
                         showPosition={false}
-                        handleDrop={event => handleDrop(event, hook.quickAccess.fileSystem, engine, setAlert, load)}
+                        handleDrop={event => handleDrop(event, hook.quickAccess.fileSystem, engine, setAlert, load, false, true)}
                         engine={engine}/>
                 </div>
 
@@ -176,6 +176,7 @@ export default function BlueprintView(props) {
                         onDrop={(ev) => {
                             const dt = ev.dataTransfer.getData('text')
                             const entity = engine.entities.find(e => e.id === dt)
+                            console.log(dt)
                             if(entity)
                                 return [true, new EntityReference(dt, entity?.name)]
                             else

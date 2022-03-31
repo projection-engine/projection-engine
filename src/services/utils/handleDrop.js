@@ -2,14 +2,20 @@ import importMesh from "./importMesh";
 import EVENTS from "./misc/EVENTS";
 import MaterialInstance from "../engine/instances/MaterialInstance";
 import {ENTITY_ACTIONS} from "./entityReducer";
+import ProjectLoader from "../workers/ProjectLoader";
+import COMPONENTS from "../engine/templates/COMPONENTS";
+import Entity from "../engine/ecs/basic/Entity";
+import FolderComponent from "../engine/ecs/components/FolderComponent";
+import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 
-export default function handleDrop(event, fileSystem, engine, setAlert, load, asID) {
+export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     let entities = []
     load.pushEvent(EVENTS.LOADING_MESHES)
 
     try {
         entities = asID ? [event] : JSON.parse(event.dataTransfer.getData("text"))
-    } catch (e) {}
+    } catch (e) {
+    }
 
     let promises = []
     for (let i = 0; i < entities.length; i++) {
@@ -22,7 +28,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                             fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                                 .then(mesh => {
                                     if (res.path.includes('.mesh'))
-                                        importMesh(mesh, engine, data, i, fileSystem)
+                                        importMesh(mesh, engine, data, i, fileSystem, isBlueprint)
                                             .then(loadedData => {
                                                 resolve(loadedData)
                                             })
@@ -33,13 +39,47 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                                             translation: [0, 0, 0],
                                             scaling: [1, 1, 1],
                                             rotation: [0, 0, 0]
-                                        }, engine, data, i, fileSystem)
+                                        }, engine, data, i, fileSystem, isBlueprint)
                                             .then(loadedData => {
                                                 resolve(loadedData)
                                             })
                                 })
+                        else if (res && res.path.includes('.flow')){
+                            fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
+                                .then(script => {
+                                    const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
+                                    ProjectLoader.loadMeshes(meshesToLoad, fileSystem, engine.gpu)
+                                        .then(m => {
+                                            const folder = new Entity()
+                                            folder.id = res.id
+                                            folder.name = script.name
+                                            folder.isBlueprint = true
+                                            folder.addComponent(new FolderComponent(undefined, script.name))
 
-                        else {
+                                            const entities = script.entities.map((e, index) => {
+                                                const ee = ProjectLoader.mapEntity(e, index, m, [], engine.gpu)
+                                                ee.id = e.id
+                                                ee.linkedTo = res.id
+                                                ee.components[COMPONENTS.MESH].meshID = m[0].id
+                                                ee.addComponent(new ScriptComponent())
+                                                ee.components[COMPONENTS.SCRIPT].registryID = res.id
+                                                return ee
+                                            })
+
+
+                                            engine.setScripts(prev =>{
+                                                return [...prev, {
+                                                    executors: script.response,
+                                                    id: res.id,
+                                                    name: script.name
+                                                }]
+                                            })
+                                            engine.setMeshes([...engine.meshes, ...m])
+                                            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: [...entities, folder]})
+                                            resolve()
+                                        })
+                                })
+                        } else {
                             setAlert({
                                 type: 'info',
                                 message: 'Not a mesh file.'
@@ -53,7 +93,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
     return new Promise(resolveRoot => {
         Promise.all(promises)
             .then(loadedData => {
-                const toApply = loadedData.filter(d => d.mesh)
+                const toApply = loadedData.filter(d => d?.mesh)
                 let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
 
                 const notRepeatedMaterials = toApply.map(m => {

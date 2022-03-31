@@ -1,20 +1,28 @@
-export default function getElementType(components){
+import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+
+export default function getElementType(components, isBP){
+    if(isBP)
+        return 'Blueprint'
+
     switch (true) {
-        case components.SkyboxComponent !== undefined:
+        case components[COMPONENTS.SKYBOX] !== undefined:
             return 'Skybox'
-        case components.MeshComponent !== undefined:
+        case components[COMPONENTS.MESH] !== undefined:
             return 'Mesh instance'
-        case components.PointLightComponent !== undefined:
+        case components[COMPONENTS.POINT_LIGHT] !== undefined:
             return 'Point light'
-        case components.SpotLightComponent !== undefined:
+        case components[COMPONENTS.SPOT_LIGHT] !== undefined:
             return 'Spot light'
-        case components.DirectionalLightComponent !== undefined:
+        case components[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined:
             return 'Directional light'
 
-        case components.FolderComponent !== undefined:
+        case components[COMPONENTS.FOLDER] !== undefined:
             return 'Folder'
-        case components.CubeMapComponent !== undefined:
+        case components[COMPONENTS.CUBE_MAP] !== undefined:
             return 'Cube map'
+        case components[COMPONENTS.SKYLIGHT] !== undefined:
+            return 'Skylight'
+
         default:
             return
     }
