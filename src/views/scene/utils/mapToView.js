@@ -16,7 +16,7 @@ export default function mapToView(current, entities, setSelected, engine, setAll
         type: getElementType(current.components),
 
         onHide: () => {
-            if (!current.active)
+            if (!current.active && setAllHidden)
                 setAllHidden(false)
             engine.dispatchEntities({
                 type: ENTITY_ACTIONS.UPDATE, payload: {
@@ -36,7 +36,7 @@ export default function mapToView(current, entities, setSelected, engine, setAll
                 })
             })
         },
-        canBeHidden: true,
+        canBeHidden:setAllHidden !== undefined,
         hidden: !current.active
 
     }

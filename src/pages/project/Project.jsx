@@ -22,7 +22,7 @@ import MeshView from "../../views/mesh/MeshView";
 import MaterialView from "../../views/material/MaterialView";
 import ImageView from "../../views/image/ImageView";
 import EntitiesProvider from "../../services/hooks/EntitiesProvider";
-import ScriptingView from "../../views/scripting/ScriptingView";
+import BlueprintView from "../../views/blueprint/BlueprintView";
 
 
 export default function Project(props) {
@@ -107,7 +107,7 @@ export default function Project(props) {
             case 'image':
                 return <ImageView file={file}/>
             case 'flow':
-                return <ScriptingView
+                return <BlueprintView
                     index={index}
                     file={file}
                     submitPackage={(pack, close) => {

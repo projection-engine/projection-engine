@@ -30,6 +30,7 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     const [scripts, setScripts] = useState([])
 
     useEffect(() => {
+        console.log(id)
         if (id) {
             const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
                 antialias: false,
@@ -85,9 +86,9 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
     }, [settings.fov])
 
     useEffect(() => {
-        if (initialized && canStart)
+        if (initialized && canStart && canRender)
             updateSystems(() => null)
-    }, [settings.resolutionMultiplier, initialized, canStart])
+    }, [settings.resolutionMultiplier, initialized, canStart, canRender])
 
     useEffect(() => {
         if (gpu && !initialized && id && !finished) {

@@ -18,10 +18,10 @@ import ScriptComponent from "../../services/engine/ecs/components/ScriptComponen
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
-
+    const [currentTab, setCurrentTab] = useState(0)
     const [allHidden, setAllHidden] = useState(false)
     const [hidden, setHidden] = useState(false)
-    const [currentTab, setCurrentTab] = useState(0)
+
 
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
