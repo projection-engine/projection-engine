@@ -20,8 +20,8 @@ import GIZMOS from "../../services/engine/templates/GIZMOS";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
-
     const controlProvider = useContext(ControlProvider)
+
     useEffect(() => {
         controlProvider.setTabAttributes(
             getOptions(

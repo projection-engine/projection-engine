@@ -18,6 +18,7 @@ import CubeMapComponent from "../engine/ecs/components/CubeMapComponent";
 import CubeMapInstance from "../engine/instances/CubeMapInstance";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptComponent from "../engine/ecs/components/ScriptComponent";
+import CameraComponent from "../engine/ecs/components/CameraComponent";
 
 
 export default class ProjectLoader {
@@ -289,6 +290,7 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
-    [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    [COMPONENTS.COLLIDER]: (entity, k, meshes) => new CameraComponent(entity.components[k].id),
+    [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id),
 
 }

@@ -14,6 +14,7 @@ import Transformation from "../../../services/engine/utils/workers/Transformatio
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import ScriptComponent from "../forms/ScriptComponent";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+import CameraComponent from "../forms/CameraComponent";
 
 export default function useForm(
     engine,
@@ -36,6 +37,16 @@ export default function useForm(
     const getField = (key) => {
 
         switch (key) {
+            case COMPONENTS.CAMERA: {
+                return (
+                    <CameraComponent
+                        selected={selected.components[COMPONENTS.CAMERA]}
+                        submit={() => {
+
+                        }}
+                    />
+                )
+            }
             case COMPONENTS.TRANSFORM: {
                 return (
                     <TransformComponent

@@ -72,6 +72,11 @@ export default function FormTabs(props){
                     res.label = 'Flow Script'
                     res.icon = <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>functions</span>
                     break
+                case COMPONENTS.CAMERA:
+                    res.key = c
+                    res.label = 'Camera'
+                    res.icon = <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
+                    break
                 default:
                     break
             }

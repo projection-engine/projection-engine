@@ -1,3 +1,5 @@
+import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+
 export default function getElementIcon(components) {
 
     switch (true) {
@@ -32,6 +34,10 @@ export default function getElementIcon(components) {
         case components.CubeMapComponent !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>panorama_photosphere</span>
+            )
+        case components[COMPONENTS.CAMERA] !== undefined:
+            return (
+                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>videocam</span>
             )
         default:
             return
