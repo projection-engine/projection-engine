@@ -268,12 +268,11 @@ export default class ProjectLoader {
         Object.keys(entity.components).forEach(k => {
             let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu, index)
             if (component) {
-                if (!(component instanceof SkyboxComponent))
-                    Object.keys(entity.components[k]).forEach(oK => {
-                        if (!oK.includes("__"))
-                            component[oK] = entity.components[k][oK]
-                    })
 
+                Object.keys(entity.components[k]).forEach(oK => {
+                    if (!oK.includes("__"))
+                        component[oK] = entity.components[k][oK]
+                })
                 parsedEntity.components[k] = component
             }
         })

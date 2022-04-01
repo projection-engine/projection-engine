@@ -136,7 +136,6 @@ export default function BlueprintView(props) {
                     }
                 }}
             />
-
             <ResizableBar type={"width"}/>
             <MinimalTabs
 

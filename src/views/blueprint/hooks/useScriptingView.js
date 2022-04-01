@@ -38,6 +38,15 @@ import EntityReference from "../nodes/events/EntityReference";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
+import Cos from "../nodes/operators/math/Cos";
+import Sin from "../nodes/operators/math/Sin";
+import ASin from "../nodes/operators/math/ASin";
+import ACos from "../nodes/operators/math/ACos";
+import ATan from "../nodes/operators/math/ATan";
+import Tan from "../nodes/operators/math/Tan";
+import Mod from "../nodes/operators/math/Mod";
+import Abs from "../nodes/operators/math/Abs";
+import KeyPress from "../nodes/events/KeyPress";
 
 
 export default function useScriptingView(file, engine, load) {
@@ -79,46 +88,56 @@ export default function useScriptingView(file, engine, load) {
 
 
 const INSTANCES = {
-    GetWorldTranslation: () => new GetWorldTranslation(),
-    GetWorldRotation: () => new GetWorldRotation(),
-    SetWorldTranslation: () => new SetWorldTranslation(),
-    SetWorldRotation: () => new SetWorldRotation(),
+    [GetWorldTranslation.name]: () => new GetWorldTranslation(),
+    [GetWorldRotation.name]: () => new GetWorldRotation(),
+    [SetWorldTranslation.name]: () => new SetWorldTranslation(),
+    [SetWorldRotation.name]: () => new SetWorldRotation(),
 
-    QuaternionToEuler: () => new QuaternionToEuler(),
-    EventTick: () => new EventTick(),
-    Getter: () => new Getter(),
-    Setter: () => new Setter(),
+    [QuaternionToEuler.name]: () => new QuaternionToEuler(),
+    [EventTick.name]: () => new EventTick(),
+    [Getter.name]: () => new Getter(),
+    [Setter.name]: () => new Setter(),
 
-    Add: () => new Add(),
-    Subtract: () => new Subtract(),
-    Divide: () => new Divide(),
-    Multiply: () => new Multiply(),
+    [Add.name]: () => new Add(),
+    [Subtract.name]: () => new Subtract(),
+    [Divide.name]: () => new Divide(),
+    [Multiply.name]: () => new Multiply(),
 
-    SetTransformationRelativeOrigin: () => new SetTransformationRelativeOrigin(),
-    SetLocalRotation: () => new SetLocalRotation(),
-    ToVector: () => new ToVector(),
-    FromVector: () => new FromVector(),
+    [SetTransformationRelativeOrigin.name]: () => new SetTransformationRelativeOrigin(),
+    [SetLocalRotation.name]: () => new SetLocalRotation(),
+    [ToVector.name]: () => new ToVector(),
+    [FromVector.name]: () => new FromVector(),
 
-    Print: () => new Print(),
+    [Print.name]: () => new Print(),
 
 
-    And: () => new And(),
-    Branch: () => new Branch(),
-    Equal: () => new Equal(),
-    Greater: () => new Greater(),
-    GreaterEqual: () => new GreaterEqual(),
-    Less: () => new Less(),
-    LessEqual: () => new LessEqual(),
-    Nand: () => new Nand(),
-    Nor: () => new Nor(),
-    Not: () => new Not(),
-    NotEqual: () => new NotEqual(),
-    Or: () => new Or(),
+    [And.name]: () => new And(),
+    [Branch.name]: () => new Branch(),
+    [Equal.name]: () => new Equal(),
+    [Greater.name]: () => new Greater(),
+    [GreaterEqual.name]: () => new GreaterEqual(),
+    [Less.name]: () => new Less(),
+    [LessEqual.name]: () => new LessEqual(),
+    [Nand.name]: () => new Nand(),
+    [Nor.name]: () => new Nor(),
+    [Not.name]: () => new Not(),
+    [NotEqual.name]: () => new NotEqual(),
+    [Or.name]: () => new Or(),
 
-    MouseX: () => new MouseX(),
-    MouseY: () => new MouseY(),
-    MousePosition: () => new MousePosition(),
-    EntityReference: () => new EntityReference()
+    [MouseX.name]: () => new MouseX(),
+    [MouseY.name]: () => new MouseY(),
+    [MousePosition.name]: () => new MousePosition(),
+    [EntityReference.name]: () => new EntityReference(),
+
+    [Cos.name]: () => new Cos(),
+    [Sin.name]: () => new Sin(),
+    [ASin.name]: () => new ASin(),
+    [ACos.name]: () => new ACos(),
+    [ATan.name]: () => new ATan(),
+    [Tan.name]: () => new Tan(),
+    [Mod.name]: () => new Mod(),
+    [Abs.name]: () => new Abs(),
+    [KeyPress.name]: () => new KeyPress(),
 }
 
 function parse(file, quickAccess, setNodes, setLinks, setVariables, setGroups, load, engine, fileSystem) {

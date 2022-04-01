@@ -31,6 +31,15 @@ import RandomInt from "../nodes/utils/RandomInt";
 import MousePosition from "../nodes/events/MousePosition";
 import MouseY from "../nodes/events/MouseY";
 import MouseX from "../nodes/events/MouseX";
+import Cos from "../nodes/operators/math/Cos";
+import Sin from "../nodes/operators/math/Sin";
+import ACos from "../nodes/operators/math/ACos";
+import ASin from "../nodes/operators/math/ASin";
+import Tan from "../nodes/operators/math/Tan";
+import ATan from "../nodes/operators/math/ATan";
+import Mod from "../nodes/operators/math/Mod";
+import Abs from "../nodes/operators/math/Abs";
+import KeyPress from "../nodes/events/KeyPress";
 
 
 export const allNodes = [
@@ -278,5 +287,70 @@ export const allNodes = [
         tooltip: 'TODO',
         icon: <span className={'material-icons-round'}>functions</span>,
         getNewInstance: () => new MousePosition()
-    }
+    },
+
+
+
+    {
+        label: 'Cosine',
+        dataTransfer: 'Cos',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Cos()
+    },
+    {
+        label: 'Sine',
+        dataTransfer: 'Sin',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Sin()
+    },
+    {
+        label: 'Arc Cosine',
+        dataTransfer: 'ACos',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new ACos()
+    },
+    {
+        label: 'Arc Sine',
+        dataTransfer: 'ASin',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new ASin()
+    },
+    {
+        label: 'Tangent',
+        dataTransfer: 'Tan',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Tan()
+    },
+    {
+        label: 'Arc Tangent',
+        dataTransfer: 'ATan',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new ATan()
+    },
+    {
+        label: 'Modulo',
+        dataTransfer: 'Mod',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Mod()
+    },   {
+        label: 'Absolute',
+        dataTransfer: 'Abs',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new Abs()
+    },
+    {
+        label: 'Key Press',
+        dataTransfer: 'KeyPress',
+        tooltip: 'TODO',
+        icon: <span className={'material-icons-round'}>functions</span>,
+        getNewInstance: () => new KeyPress()
+    },
 ]

@@ -12,8 +12,8 @@ export default class Branch extends Node {
                 {label: 'Condition', key: 'c', accept: [TYPES.BOOL]}
             ],
             [
-                {label: 'True', key: 'a', type: TYPES.EXECUTION},
-                {label: 'False', key: 'b', type: TYPES.EXECUTION},
+                {label: 'True', key: 'a', type: TYPES.EXECUTION, showTitle: true},
+                {label: 'False', key: 'b', type: TYPES.EXECUTION, showTitle: true},
             ],
         );
         this.name = 'Branch'

@@ -5,6 +5,7 @@ import Getter from "../nodes/utils/Getter";
 import Branch from "../nodes/operators/boolean/Branch";
 import NODE_TYPES from "../../../components/flow/NODE_TYPES";
 import EntityReference from "../nodes/events/EntityReference";
+import KeyPress from "../nodes/events/KeyPress";
 
 
 export default function compile(n, links, variables, alreadyCompiled = [], startPoint) {
@@ -45,27 +46,28 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
                     executors[currentNode.id] = {
                         value: currentNode.id.split('/')[0]
                     }
+                const bundledKeys = currentNode.inputs.filter(i => i.bundled)
+                bundledKeys
+                    .forEach(bk => {
+                        const old = executors[currentNode.id]
+                        if (old)
+                            executors[currentNode.id] = {...old, [bk.key]: currentNode[bk.key]}
+                        else
+                            executors[currentNode.id] = {[bk.key]: currentNode[bk.key]}
+                    })
 
                 order.push({
                     nodeID: currentNode.id,
                     inputs,
                     classExecutor: currentNode.constructor.name,
-                    isBranch: currentNode.type === NODE_TYPES.BRANCH
+                    isBranch: currentNode.type === NODE_TYPES.BRANCH || currentNode instanceof KeyPress
                 })
             }
             currentNode.ready = true
         }
     }
-    let compiled = [...alreadyCompiled]
-    // if (alreadyCompiled.length === 0) {
-    //     const f = nodes.find(n => n instanceof EventTick)
-    //     resolveDependencies(f)
-    //     compiled.push(f.id)
-    // }
-
-    let organizedLinks = []
+    let compiled = [...alreadyCompiled], organizedLinks = []
     const getForward = (l) => {
-
         organizedLinks.push(l)
         const forward = links.filter(ll => {
             return l.target.id === ll.source.id && ll.source.attribute.type === TYPES.EXECUTION
@@ -75,21 +77,16 @@ export default function compile(n, links, variables, alreadyCompiled = [], start
             getForward(ff)
         })
     }
-    getForward(startPoint ? startPoint : links.find(ll => ll.source.id === nodes.find(n => n instanceof EventTick).id))
+    getForward(startPoint)
     for (let exec = 0; exec < organizedLinks.length; exec++) {
         const t = organizedLinks[exec].target
         const targetNode = nodes.find(n => n.id === t.id)
 
         if (!alreadyCompiled.includes(t.id)) {
             const forwardLinks = links.filter(l => l.source.id === targetNode.id)
-
-
-            if (!(targetNode instanceof Branch)) {
-
+            if (!(targetNode instanceof Branch || targetNode instanceof KeyPress)) {
                 resolveDependencies(targetNode)
-
                 compiled.push(t.id)
-
             } else {
                 let branchA, branchB
                 for (let liExec = 0; liExec < forwardLinks.length; liExec++) {
