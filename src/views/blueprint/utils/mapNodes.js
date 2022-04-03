@@ -4,7 +4,7 @@ import compile from "./compile";
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import Setter from "../nodes/utils/Setter";
 
-export default function mapNodes(hook, engine, file) {
+export default function mapNodes(hook, engine, file, isLevelBp) {
     const res = mapCompile(hook)
     const parsedNodes = hook.nodes.map(n => {
         const docNode = document.getElementById(n.id).parentNode
@@ -53,7 +53,7 @@ export default function mapNodes(hook, engine, file) {
         response: res,
         groups: parsedGroups,
         type: res.variant,
-        entities: engine.entities.map(e => {
+        entities: isLevelBp ? [] : engine.entities.map(e => {
             e.blueprintID = file.registryID
             return e
         }),

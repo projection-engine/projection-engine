@@ -296,12 +296,12 @@ export default function LightComponent(props) {
             </Accordion>
 
             <div className={styles.inputs} style={{padding: '4px 0'}}>
-                <Checkbox checked={state.overrideTiling} handleCheck={() => {
+                <Checkbox checked={state.shadowMap} handleCheck={() => {
                     setState({...state, shadowMap: !state.shadowMap})
                     props.submit(state.shadowMap, 'shadowMap')
                 }}/>
                 <label className={styles.label}>
-                    Override material UVs
+                    Shadow map
                 </label>
             </div>
 

@@ -1,7 +1,7 @@
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 import EVENTS from "../../../services/utils/misc/EVENTS";
 
-export default function getOptions(executingAnimation, setExecutingAnimation, engine, save, fileSystem, load, setAlert) {
+export default function getOptions(executingAnimation, setExecutingAnimation, engine, save,openLevelBlueprint) {
     return [
         {
             label: 'Save',
@@ -22,6 +22,13 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>refresh</span>,
             onClick: async () => engine.renderer.recompiled = false
+        },
+        {
+            group: 'Edit level blueprint',
+            label: 'Edit level blueprint',
+            icon: <span className={'material-icons-round'}
+                        style={{fontSize: '1.2rem'}}>foundation</span>,
+            onClick: async () => openLevelBlueprint()
         }
     ]
 }

@@ -15,6 +15,7 @@ export default function Structure(props) {
     const {
         selectedVariable, setSelectedVariable
     } = props
+
     const events = useMemo(() => {
         return props.hook.nodes.filter(n => n.type === NODE_TYPES.START_POINT)
     }, [props.hook.nodes])
@@ -85,7 +86,7 @@ export default function Structure(props) {
                     'data-node',
                     'data-self'
                 ]}
-                draggable={props.openTab === 1}
+                draggable={props.openTab === 1 || props.isLevelBlueprint}
 
                 searchable={true}
                 options={[
@@ -120,7 +121,9 @@ export default function Structure(props) {
                     Events
                 </AccordionSummary>
                 {events.map(g => (
-                    <div className={styles.option} onDoubleClick={() => {props.focusNode(g.id)}}>
+                    <div className={styles.option} onDoubleClick={() => {
+                        props.focusNode(g.id)
+                    }}>
                          <span className={'material-icons-round'}
                                style={{fontSize: '1.1rem'}}>output</span>
                         {g.name}
@@ -157,14 +160,14 @@ export default function Structure(props) {
                         variant={'filled'}
 
                         onClick={() => {
-                        props.hook.setVariables(prev => {
-                            return [...prev, {
-                                id: randomID(),
-                                name: getName(prev),
-                                type: TYPES.NUMBER
-                            }]
-                        })
-                    }}>
+                            props.hook.setVariables(prev => {
+                                return [...prev, {
+                                    id: randomID(),
+                                    name: getName(prev),
+                                    type: TYPES.NUMBER
+                                }]
+                            })
+                        }}>
 
                         <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span>
                         Add new variable
@@ -174,8 +177,8 @@ export default function Structure(props) {
                             data-highlight={`${selectedVariable === g.id}`}
                             className={styles.option}
                             onClick={() => {
+                                props.hook.setSelected([])
                                 setSelectedVariable(g.id)
-                                props.hook.setSelected(props.hook.nodes.filter(nn => nn.id.includes(g.id)).map(nn => nn.id))
                             }}
                             data-var={g.id}>
                             <div>
@@ -200,7 +203,8 @@ Structure.propTypes = {
     focusNode: PropTypes.func,
     selectedVariable: PropTypes.string,
     setSelectedVariable: PropTypes.func,
-    selected: PropTypes.string,
+
     hook: PropTypes.object,
-    engine: PropTypes.object
+    engine: PropTypes.object,
+    isLevelBlueprint: PropTypes.bool
 }

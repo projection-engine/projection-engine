@@ -29,9 +29,7 @@ export default function Editor(props) {
                 props.setExecutingAnimation,
                 props.engine,
                 props.serializer.save,
-                quickAccess.fileSystem,
-                props.load,
-                props.setAlert
+                props.openLevelBlueprint
             ),
             'Editor',
             <span
@@ -175,5 +173,6 @@ Editor.propTypes = {
     engine: PropTypes.object.isRequired,
     setAlert: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
-    serializer: PropTypes.object.isRequired
+    serializer: PropTypes.object.isRequired,
+    openLevelBlueprint: PropTypes.func
 }

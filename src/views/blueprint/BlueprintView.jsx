@@ -53,7 +53,10 @@ export default function BlueprintView(props) {
     const setAlert = ({type, message}) => {
         alert.pushAlert(message, type)
     }
-
+    useEffect(() => {
+        if(hook.selected.length > 0)
+            setSelectedVariable(undefined)
+    }, [hook.selected])
     useEffect(() => {
         controlProvider.setTabAttributes(
             [
@@ -80,7 +83,7 @@ export default function BlueprintView(props) {
             props.file.name,
             <span
                 style={{fontSize: '1.2rem'}}
-                className={`material-icons-round`}>functions</span>,
+                className={`material-icons-round`}>engineering</span>,
             (newTab) => {
                 if (newTab === props.index)
                     engine.setCanRender(true)
@@ -180,6 +183,7 @@ export default function BlueprintView(props) {
                         allNodes={availableNodes}
                         setAlert={props.setAlert}
                         parentRef={ref}
+                        onEmptyClick={() => setSelectedVariable(undefined)}
                         onDrop={(ev) => {
                             const dt = ev.dataTransfer.getData('text')
                             const entity = engine.entities.find(e => e.id === dt)
@@ -263,6 +267,8 @@ export default function BlueprintView(props) {
 }
 
 BlueprintView.propTypes = {
+    isLevelBlueprint: PropTypes.bool,
+
     index: PropTypes.number.isRequired,
     setAlert: PropTypes.func.isRequired,
     file: PropTypes.shape({

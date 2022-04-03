@@ -8,9 +8,10 @@ import TerrainWorker from "./TerrainWorker";
 const fs = window.require('fs')
 const pathRequire = window.require('path')
 
-function resolvePath(p){
+function resolvePath(p) {
     return pathRequire.resolve(p)
 }
+
 export default class FileSystem {
     constructor(projectID) {
 
@@ -29,6 +30,10 @@ export default class FileSystem {
 
     get path() {
         return this._path
+    }
+
+    async createFile(pathName, content) {
+        return await new Promise(resolve => fs.writeFile(this.path + '\\'+pathName, content, (e, s) => resolve(e)))
     }
 
     async readFile(pathName, type) {
@@ -145,7 +150,7 @@ export default class FileSystem {
                             if (asHeightMap)
                                 TerrainWorker.loadHeightMap(res, options)
                                     .then(data => {
-                                        Promise.all( [
+                                        Promise.all([
                                             new Promise(r => {
                                                 fs.writeFile(
                                                     resolvePath(newRoot + `.terrain`),
@@ -255,8 +260,8 @@ export default class FileSystem {
     }
 
     createRegistryEntry(fID = randomID(), path) {
-        const pathRe = resolvePath(this.path+ '\\assets\\')
-        const p =resolvePath(this.path + '\\assets\\'+ path).replace(pathRe, '')
+        const pathRe = resolvePath(this.path + '\\assets\\')
+        const p = resolvePath(this.path + '\\assets\\' + path).replace(pathRe, '')
 
         return new Promise(r => {
             fs.writeFile(

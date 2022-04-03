@@ -7,11 +7,18 @@ import Range from "../../../components/range/Range";
 import {TYPES} from "../../../components/flow/TYPES";
 import Getter from "../nodes/utils/Getter";
 import {startKey} from "../nodes/utils/Setter";
+import getInput from "../utils/getInput";
+import ColorPicker from "../../../components/color/ColorPicker";
 
 export default function NodeEditor(props) {
     const {
         selectedVariable
     } = props
+
+    const groupsSelected = useMemo(() => {
+        return props.hook.groups.filter(g => props.selected.includes(g.id))
+    }, [props.selected, props.hook.groups])
+
     const selected = useMemo(() => {
         return props.hook.variables.findIndex(v => v.id === selectedVariable)
     }, [selectedVariable, props.hook.variables])
@@ -50,118 +57,10 @@ export default function NodeEditor(props) {
                     {label: 'Number', data: TYPES.NUMBER},
                     {label: 'Boolean', data: TYPES.BOOL}
                 ]
-
             })
         }
-
         return res
     }, [selected, props.hook.variables])
-
-
-    const getInput = (label, type, value, submit, obj) => {
-
-        switch (type) {
-            case TYPES.NUMBER:
-                return (
-                    <Range
-                        accentColor={'red'}
-                        precision={3}
-                        maxValue={obj.max}
-                        incrementPercentage={.01}
-                        minValue={obj.min}
-                        value={value !== undefined ? value : 0}
-                        handleChange={submit} label={label}/>
-                )
-            case TYPES.VEC2:
-            case TYPES.VEC3:
-            case TYPES.VEC4:
-                return (
-                    <div className={styles.vecWrapper}>
-                        <Range
-                            accentColor={'red'}
-                            precision={3}
-                            maxValue={obj.max}
-                            incrementPercentage={.01}
-                            minValue={obj.min}
-                            value={value ? value[0] : undefined}
-                            handleChange={v => {
-                                const c = [...value]
-                                c[0] = parseFloat(v)
-                                submit(c)
-                            }}
-                            label={label}/>
-                        <Range accentColor={'green'}
-                               precision={3}
-                               maxValue={obj.max}
-                               incrementPercentage={.01}
-                               minValue={obj.min}
-                               value={value ? value[1] : undefined}
-                               handleChange={v => {
-                                   const c = [...value]
-                                   c[1] = parseFloat(v)
-                                   submit(c)
-                               }}
-                               label={label}/>
-                        {type === TYPES.VEC3 || type === TYPES.VEC4 ?
-                            <Range
-                                accentColor={'blue'}
-                                precision={3}
-                                maxValue={obj.max}
-                                incrementPercentage={.01}
-                                minValue={obj.min}
-                                value={value ? value[2] : undefined}
-                                handleChange={v => {
-                                    const c = [...value]
-                                    c[2] = parseFloat(v)
-                                    submit(c)
-                                }}
-                                label={label}/>
-                            : null}
-                        {type === TYPES.VEC4 ?
-                            <Range
-                                accentColor={'yellow'}
-                                precision={3}
-                                maxValue={obj.max}
-                                incrementPercentage={.01}
-                                minValue={obj.min}
-                                value={value ? value[3] : undefined}
-                                handleChange={v => {
-                                    const c = [...value]
-                                    c[3] = parseFloat(v)
-                                    submit(c)
-                                }}
-                                label={label}/>
-                            : null}
-                    </div>
-                )
-
-            case TYPES.BOOL:
-                return <Checkbox label={label} checked={value} handleCheck={() => submit(!value)}/>
-            case TYPES.OPTIONS:
-                return (
-                    <Dropdown styles={{width: '100%', justifyContent: 'space-between'}}>
-                        {obj.options.find(o => o.data === props.hook.variables[selected][obj.key])?.label}
-                        <DropdownOptions>
-                            {obj.options?.map((o, i) => (
-                                <React.Fragment key={'options-' + i}>
-                                    <DropdownOption option={{
-                                        ...o,
-                                        icon: o.data === props.hook.variables[selected][obj.key] ?
-                                            <span style={{fontSize: '1.1rem'}}
-                                                  className={'material-icons-round'}>check</span> : null,
-                                        onClick: () => {
-                                            submit(o.data)
-                                        }
-                                    }}/>
-                                </React.Fragment>
-                            ))}
-                        </DropdownOptions>
-                    </Dropdown>
-                )
-            default:
-                return
-        }
-    }
 
 
     const getNewValue = (type) => {
@@ -197,8 +96,8 @@ export default function NodeEditor(props) {
 
                                     props.hook.setNodes(prevN => {
                                         return [...prevN].map(node => {
-                                            if(node.id.includes(selectedVariable))
-                                                 node.name = ev.target.value + (node instanceof Getter ? ' - Getter' : ' - Setter')
+                                            if (node.id.includes(selectedVariable))
+                                                node.name = ev.target.value + (node instanceof Getter ? ' - Getter' : ' - Setter')
                                             return node
                                         })
                                     })
@@ -230,7 +129,6 @@ export default function NodeEditor(props) {
                                                 props.hook.setNodes(prevN => {
                                                     return [...prevN].map(node => {
                                                         if (node.id.includes(selectedVariable)) {
-
                                                             if (node instanceof Getter)
                                                                 node.output = [{
                                                                     label: 'Value',
@@ -260,7 +158,9 @@ export default function NodeEditor(props) {
 
                                             return n
                                         }),
-                                        attr)}
+                                        attr,
+                                        props.hook,
+                                        selected)}
                                 </div>
                             </Accordion>
                         </React.Fragment>
@@ -295,11 +195,36 @@ export default function NodeEditor(props) {
                     ) : null}
                 </div>
                 :
-                <div className={styles.emptyWrapper}>
-                    <span style={{fontSize: '90px'}}
-                          className={'material-icons-round'}>category</span>
-                    Select a variable to edit it.
-                </div>
+                groupsSelected.length > 0 ? (
+                        <Accordion>
+                            <AccordionSummary>
+                                Comment accent color
+                            </AccordionSummary>
+                            <ColorPicker
+                                submit={newValue => {
+                                    const split = newValue.match(/[\d.]+/g)
+                                    const v = split.map(v => parseFloat(v))
+
+                                    props.hook.setGroups(prev => {
+                                        return prev.map(p => {
+                                            console.log(p)
+                                            if(props.hook.selected.includes(p.id))
+                                                p.color = v
+                                            return p
+                                        })
+                                    })
+                                }}
+                                value={`rgb(${groupsSelected[0].color[0]}, ${groupsSelected[0].color[1]}, ${groupsSelected[0].color[2]})`}/>
+                        </Accordion>
+                    )
+                    :
+                    (
+                        <div className={styles.emptyWrapper}>
+                            <div style={{fontSize: '90px'}} className={'material-icons-round'}>category</div>
+                            Select a variable or comment to edit it.
+                        </div>
+                    )
+
             }
 
         </div>

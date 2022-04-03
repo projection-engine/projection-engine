@@ -25,6 +25,7 @@ import EntitiesProvider from "../../services/hooks/EntitiesProvider";
 import BlueprintView from "../../views/blueprint/BlueprintView";
 import handleTabChange from "./utils/handleTabChange";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
+import MinimalBlueprintView from "../../views/blueprint/MinimalBlueprintView";
 
 
 export default function Project(props) {
@@ -75,17 +76,47 @@ export default function Project(props) {
     }, [engine.gpu])
 
     const getTab = (file, index) => {
-        switch (file.type) {
-            case 'mesh':
-                return <MeshView file={file} setAlert={setAlert} index={index}/>
-            case 'material':
-                return (
-                    <MaterialView
+        if (!file.isLevelBlueprint)
+            switch (file.type) {
+                case 'mesh':
+                    return <MeshView file={file} setAlert={setAlert} index={index}/>
+                case 'material':
+                    return (
+                        <MaterialView
+                            index={index}
+                            setAlert={setAlert}
+                            submitPackage={(previewImage, pack, close) => {
+                                quickAccess.fileSystem
+                                    .updateAsset(file.registryID, pack, previewImage)
+                                    .then(() => {
+                                        setAlert({
+                                            type: 'success',
+                                            message: 'Saved'
+                                        })
+                                        if (close) {
+                                            if ((currentTab) === index)
+                                                setCurrentTab(filesLoaded.length - 1)
+                                            setFilesLoaded(prev => {
+                                                const newD = [...prev]
+                                                newD.splice(index, 1)
+                                                return newD
+                                            })
+                                        }
+                                    })
+
+                            }}
+                            file={file}
+                        />
+                    )
+                case 'image':
+                    return <ImageView file={file}/>
+                case 'flow':
+                    return <BlueprintView
                         index={index}
-                        setAlert={setAlert}
-                        submitPackage={(previewImage, pack, close) => {
+                        file={file}
+                        submitPackage={(pack, close) => {
                             quickAccess.fileSystem
-                                .updateAsset(file.registryID, pack, previewImage)
+                                .updateAsset(file.registryID, pack)
                                 .then(() => {
                                     setAlert({
                                         type: 'success',
@@ -103,18 +134,21 @@ export default function Project(props) {
                                 })
 
                         }}
-                        file={file}
-                    />
-                )
-            case 'image':
-                return <ImageView file={file}/>
-            case 'flow':
-                return <BlueprintView
+                        setAlert={setAlert}/>
+                default:
+                    return null
+            }
+        else
+            return (
+                <MinimalBlueprintView
                     index={index}
-                    file={file}
+                    name={'Level Blueprint'}
+                    id={props.id}
+                    engine={engine}
                     submitPackage={(pack, close) => {
+
                         quickAccess.fileSystem
-                            .updateAsset(file.registryID, pack)
+                            .createFile('levelBlueprint.flow', pack)
                             .then(() => {
                                 setAlert({
                                     type: 'success',
@@ -130,12 +164,10 @@ export default function Project(props) {
                                     })
                                 }
                             })
-
                     }}
-                    setAlert={setAlert}/>
-            default:
-                return null
-        }
+                    setAlert={setAlert}
+                />
+            )
     }
     const openTab = useCallback((fileID, fileName) => {
         const found = filesLoaded.find(f => {
@@ -220,7 +252,6 @@ export default function Project(props) {
                                 })
                             }}
                             onTabSwitch={(newTab, lastTab) => {
-                                console.log(newTab, lastTab)
                                 if (newTab === 0)
                                     handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                             }}
@@ -233,6 +264,15 @@ export default function Project(props) {
                                 executingAnimation={executingAnimation}
                                 engine={engine}
                                 id={props.id} load={load}
+                                openLevelBlueprint={() => {
+
+                                    setFilesLoaded(prev => {
+                                        return [...prev, {
+                                            isLevelBlueprint: true
+                                        }]
+                                    })
+                                    setCurrentTab(filesLoaded.length + 1)
+                                }}
                                 setAlert={setAlert}
                                 settings={settings}
                                 serializer={serializer}
