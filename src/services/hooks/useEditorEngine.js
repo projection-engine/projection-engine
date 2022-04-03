@@ -116,26 +116,26 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                 renderer.current?.start(entities, materials, meshes, {
                     canExecutePhysicsAnimation,
                     onGizmoChange: () => {
-                        const found = entities.find(e => e.id === selected[0])
-                        if (found && found[COMPONENTS.POINT_LIGHT]) {
-                            found.components[COMPONENTS.POINT_LIGHT].changed = true
-                            dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selected[0],
-                                    data: found.components[COMPONENTS.POINT_LIGHT],
-                                    key: COMPONENTS.POINT_LIGHT
-                                }
-                            })
-                        } else if(found){
-
-                            dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: selected[0],
-                                    data: found.components[COMPONENTS.TRANSFORM],
-                                    key: COMPONENTS.TRANSFORM
-                                }
-                            })
-                        }
+                        // const found = entities.find(e => e.id === selected[0])
+                        // if (found && found[COMPONENTS.POINT_LIGHT]) {
+                        //     found.components[COMPONENTS.POINT_LIGHT].changed = true
+                        //     dispatchEntities({
+                        //         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                        //             entityID: selected[0],
+                        //             data: found.components[COMPONENTS.POINT_LIGHT],
+                        //             key: COMPONENTS.POINT_LIGHT
+                        //         }
+                        //     })
+                        // } else if(found){
+                        //
+                        //     dispatchEntities({
+                        //         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                        //             entityID: selected[0],
+                        //             data: found.components[COMPONENTS.TRANSFORM],
+                        //             key: COMPONENTS.TRANSFORM
+                        //         }
+                        //     })
+                        // }
                     },
                     selected,
                     setSelected: d => {

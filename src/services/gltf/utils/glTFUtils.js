@@ -1,4 +1,4 @@
-import {mat4} from "gl-matrix";
+import {mat4, quat} from "gl-matrix";
 import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
 import randomID from "../../utils/misc/randomID";
@@ -146,14 +146,15 @@ export function nodeParser(node, allNodes, parentTransform) {
         let translation = node.translation,
             rotation = node.rotation,
             scale = node.scale
+
         if (!translation)
             translation = [0, 0, 0]
         if (!scale)
             scale = [1, 1, 1]
         if (!rotation)
-            parsedNode.rotation = [0, 0, 0]
+            parsedNode.rotationQuad = [0, 0, 0, 1]
         else
-            parsedNode.rotation = Transformation.getEuler(rotation)
+            parsedNode.rotationQuat = quat.normalize([], rotation)
 
         parsedNode.scaling = scale
         parsedNode.translation = translation
