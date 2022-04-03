@@ -4,6 +4,7 @@ import PickComponent from "../engine/ecs/components/PickComponent";
 import generateNextID from "./generateNextID";
 import cloneClass from "./misc/cloneClass";
 import Transformation from "../engine/utils/workers/Transformation";
+import COMPONENTS from "../engine/templates/COMPONENTS";
 
 
 export const ENTITY_ACTIONS = {
@@ -19,8 +20,7 @@ export const ENTITY_ACTIONS = {
     DISPATCH_BLOCK: 6,
     PUSH_BLOCK: 7,
     REMOVE_BLOCK: 8,
-    CLEAR: 9,
-    UPDATE_TRANSFORM: 10
+    CLEAR: 9
 }
 
 function deleteEntity(entity, entities) {
@@ -126,23 +126,6 @@ export default function entityReducer(state, action) {
                 else
                     return stateCopy
             }
-            case ENTITY_ACTIONS.UPDATE_TRANSFORM: {
-
-                for (let i = 0; i < stateCopy.length; i++) {
-                    const t = stateCopy[i].components.TransformComponent
-                    if (t) {
-                        const transform = Transformation.extractTransformations(t.transformationMatrix)
-
-                        stateCopy[i].components.TransformComponent.translation = transform.translation
-                        stateCopy[i].components.TransformComponent.scaling = transform.scaling
-                        stateCopy[i].components.TransformComponent.rotation = transform.rotation
-                        stateCopy[i].components.TransformComponent.changed = false
-                    }
-                }
-
-                return stateCopy
-            }
-
             default:
                 return stateCopy
         }

@@ -5,7 +5,7 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useVisualizer, {IDS, initializeMesh} from "../../services/hooks/useVisualizer";
+import useMinimalEngine, {IDS, initializeMesh} from "../../services/hooks/useMinimalEngine";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
 
@@ -20,7 +20,7 @@ import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
 
 export default function MeshView(props) {
-    const engine = useVisualizer(false, false, false, false)
+    const engine = useMinimalEngine(false, false, false, false)
     const load = useContext(LoaderProvider)
     const quickAccess = useContext(QuickAccessProvider)
     const type = props.file.type

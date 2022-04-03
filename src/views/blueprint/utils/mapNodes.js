@@ -1,7 +1,8 @@
 import NODE_TYPES from "../../../components/flow/NODE_TYPES";
 import {TYPES} from "../../../components/flow/TYPES";
 import compile from "./compile";
-import KeyPress from "../nodes/events/KeyPress";
+import cloneClass from "../../../services/utils/misc/cloneClass";
+import Setter from "../nodes/utils/Setter";
 
 export default function mapNodes(hook, engine, file) {
     const res = mapCompile(hook)
@@ -13,9 +14,13 @@ export default function mapNodes(hook, engine, file) {
             .replace(')', '')
             .split(' ')
 
-
+        const copy = cloneClass(n)
+        if (!(copy instanceof Setter)) {
+            delete copy.inputs
+            delete copy.outputs
+        }
         return {
-            ...n,
+            ...copy,
             x: parseFloat(transformation[0]),
             y: parseFloat(transformation[1]),
 
@@ -89,11 +94,13 @@ export function mapCompile(hook) {
                     executors
                 }
                 res.forEach((l, i) => {
-
-                    const o = l.order.slice(1, l.order.length)
-                    newRes.order[0]['branch' + i] = {...l, order: o}
+                    newRes.order[0]['branch' + i] = l.order.slice(1, l.order.length)
+                    console.log(l.executors)
+                    newRes.executors = {...newRes.executors, ...l.executors}
                 })
+
                 res = [newRes]
+
             }
             return res
         }).flat()

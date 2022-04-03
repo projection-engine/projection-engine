@@ -195,7 +195,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem, meshesLoaded) {
+    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities=true) {
 
         const promises = toLoad.map(m => {
             return new Promise(r => {
@@ -212,9 +212,9 @@ export default class ProjectLoader {
                                         executors: d.response,
                                         name: d.name
                                     },
-                                    entities: d.entities.map((e, i) => {
+                                    entities:mapEntities ?  d.entities.map((e, i) => {
                                         return ProjectLoader.mapEntity(e, i + meshesLoaded, [], [])
-                                    })
+                                    }) : []
                                 })
                             } catch (e) {
                                 r()
@@ -238,7 +238,8 @@ export default class ProjectLoader {
                             let fileParsed
                             try {
                                 fileParsed = JSON.parse(fileData)
-                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m, mapTo?.find(d => d.id === m))
+
+                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
                                     .then(mat => r(mat))
 
                             } catch (e) {

@@ -129,7 +129,8 @@ export default function useHotKeys(props) {
                         c++
                     })
 
-                    if (trigger && c === Object.keys(clicked).length)
+
+                    if (trigger && c === Object.keys(clicked).length && !document.pointerLockElement)
                         a.callback()
                 })
             } else {

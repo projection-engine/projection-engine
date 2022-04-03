@@ -12,7 +12,7 @@ import ProjectLoader from "../../services/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import useSerializer from "./hook/useSerializer";
 
-import useEngine from "../../services/hooks/useEngine";
+import useEditorEngine from "../../services/hooks/useEditorEngine";
 import useSettings from "./hook/useSettings";
 import EVENTS from "../../services/utils/misc/EVENTS";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
@@ -23,6 +23,8 @@ import MaterialView from "../../views/material/MaterialView";
 import ImageView from "../../views/image/ImageView";
 import EntitiesProvider from "../../services/hooks/EntitiesProvider";
 import BlueprintView from "../../views/blueprint/BlueprintView";
+import handleTabChange from "./utils/handleTabChange";
+import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 
 
 export default function Project(props) {
@@ -36,7 +38,7 @@ export default function Project(props) {
     const [loading, setLoading] = useState(true)
     const [initialized, setInitialized] = useState(false)
 
-    const engine = useEngine(props.id, executingAnimation, settings, load, true)
+    const engine = useEditorEngine(props.id, executingAnimation, settings, load, true)
 
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
@@ -176,8 +178,8 @@ export default function Project(props) {
             return {
                 name: e.name,
                 entity: e.id,
-                mesh: e.components.MeshComponent.meshID,
-                material: engine.meshes.find(m => m.id === e.components.MeshComponent.meshID)?.materialID
+                mesh: e.components[COMPONENTS.MESH].meshID,
+                material: engine.meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)?.materialID
             }
         })
     }, [engine.entities])
@@ -185,7 +187,6 @@ export default function Project(props) {
         <EntitiesProvider.Provider value={{
             entities: entitiesWithMeshes,
             removeEntities: (entities) => {
-
                 engine.setSelected([])
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.REMOVE_BLOCK,
@@ -202,22 +203,31 @@ export default function Project(props) {
                         <GlobalOptions
                             downloadProject={() => {
                                 Maker.make(props.id, load, setAlert)
-
                             }}
 
                             redirect={props.redirect}
                             save={serializer.save}
                         />
                         <Tabs
-                            handleTabClose={(tabIndex) => {
+                            handleTabClose={(newTab, lastTab) => {
+                                if (newTab === 0)
+                                    handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                                 setFilesLoaded(prev => {
                                     const newD = [...prev]
-                                    newD.splice(tabIndex - 1, 1)
+
+                                    newD.splice(newTab, 1)
                                     return newD
                                 })
                             }}
+                            onTabSwitch={(newTab, lastTab) => {
+                                console.log(newTab, lastTab)
+                                if (newTab === 0)
+                                    handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
+                            }}
                             tab={currentTab}
-                            setTab={setCurrentTab}>
+                            setTab={setCurrentTab}
+
+                        >
                             <Editor
                                 setExecutingAnimation={setExecutingAnimation}
                                 executingAnimation={executingAnimation}

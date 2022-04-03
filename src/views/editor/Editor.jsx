@@ -50,20 +50,17 @@ export default function Editor(props) {
     }, [props.executingAnimation, props.engine])
     const [toCopy, setToCopy] = useState([])
     useHotKeys({
-        focusTarget: props.id + '-canvas',
+        focusTarget: props.id + '-editor-wrapper',
         disabled: controlProvider.tab !== 0,
         actions: [
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyS],
-                callback: () => {
-                    props.serializer.save()
-                }
-            },
-
+            {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => props.serializer.save()},
             {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
             {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
             {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},
             {require: [KEYS.Escape], callback: () => props.setExecutingAnimation(false)},
+
+            {require: [KEYS.ControlLeft, KEYS.KeyZ], callback: () => props.engine.returnChanges()},
+            {require: [KEYS.ControlLeft, KEYS.KeyY], callback: () => props.engine.forwardChanges()},
 
             {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
@@ -88,11 +85,7 @@ export default function Editor(props) {
                     }
                 }
             },
-            {
-                require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
-                callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics
-
-            },
+            {require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH], callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics},
             {
                 require: [KEYS.Delete],
                 callback: () => {
@@ -115,9 +108,7 @@ export default function Editor(props) {
                         if (found) {
                             let clone = cloneClass(found)
                             clone.id = randomID()
-
                             clone.name += ' - clone'
-
                             let newComponents = {}
                             Object.keys(clone.components).forEach(c => {
                                 const cClone = cloneClass(clone.components[c])
@@ -141,11 +132,10 @@ export default function Editor(props) {
 
 
     return (
-        <div className={styles.viewportWrapper}>
+        <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
 
-            <div
-                id={'fullscreen-element-' + props.id}
-                className={styles.container}>
+            <div id={'fullscreen-element-' + props.id}
+                 className={styles.container}>
                 {props.settings.viewportOptionsVisibility ?
                     <ViewportOptions
                         engine={props.engine}

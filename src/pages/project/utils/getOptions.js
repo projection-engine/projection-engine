@@ -11,33 +11,10 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
 
         },
         {
-            label: executingAnimation ? 'Stop simulation' : 'Play simulation',
+            label: executingAnimation ? 'Stop' : 'Play',
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>{executingAnimation ? 'pause' : 'play_arrow'}</span>,
             onClick: () => setExecutingAnimation(prev => !prev)
-        },
-        {
-            group: 'b',
-            label: 'Reload materials',
-            icon: <span className={'material-icons-round'}
-                        style={{fontSize: '1.2rem'}}>refresh</span>,
-            onClick: async () => {
-                load.pushEvent(EVENTS.LOADING_MATERIAL)
-                await ProjectLoader.loadMaterials(engine.materials.map(m => m.id), fileSystem, engine.gpu, engine.materials)
-                load.finishEvent(EVENTS.LOADING_MATERIAL)
-            }
-
-        },
-        {
-            group: 'b',
-            label: 'Reload Scripts',
-            icon: <span className={'material-icons-round'}
-                        style={{fontSize: '1.2rem'}}>refresh</span>,
-            onClick: async () => {
-                engine.setScripts(await ProjectLoader.loadScripts(engine.scripts.map(m => m.id), fileSystem, engine.gpu, engine.scripts))
-                setAlert({message: 'Scripts reloaded', type: 'success'})
-            }
-
         },
         {
             group: 'b',

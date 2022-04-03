@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
-import {Accordion, AccordionSummary} from "@f-ui/core";
+import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
@@ -29,7 +29,8 @@ export default function LightComponent(props) {
             indirectAttenuation: props.selected.attenuation,
             lpvSamples: props.selected.lpvSamples,
             zNear: props.selected.zNear,
-            zFar: props.selected.zFar
+            zFar: props.selected.zFar,
+            shadowMap: props.selected.shadowMap
         }
     }
     const [state, setState] = useState(getNewState())
@@ -293,6 +294,17 @@ export default function LightComponent(props) {
                     }}/>
                 </div>
             </Accordion>
+
+            <div className={styles.inputs} style={{padding: '4px 0'}}>
+                <Checkbox checked={state.overrideTiling} handleCheck={() => {
+                    setState({...state, shadowMap: !state.shadowMap})
+                    props.submit(state.shadowMap, 'shadowMap')
+                }}/>
+                <label className={styles.label}>
+                    Override material UVs
+                </label>
+            </div>
+
         </>
 
     )

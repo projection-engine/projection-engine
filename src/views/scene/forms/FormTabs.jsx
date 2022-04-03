@@ -67,11 +67,6 @@ export default function FormTabs(props){
                     res.label = 'Collider'
                     res.icon = <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>compare_arrows</span>
                     break
-                case COMPONENTS.SCRIPT:
-                    res.key = c
-                    res.label = 'Flow Script'
-                    res.icon = <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>functions</span>
-                    break
                 case COMPONENTS.CAMERA:
                     res.key = c
                     res.label = 'Camera'
@@ -100,17 +95,6 @@ export default function FormTabs(props){
                 </React.Fragment>
 
             ))}
-            <Dropdown disabled={props.entity.components[COMPONENTS.SCRIPT] !== undefined} className={styles.button} variant={"outlined"} hideArrow={true}>
-                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>add</span>
-                <ToolTip content={'Add component'}/>
-                <DropdownOptions>
-                    <DropdownOption option={{
-                        label: "Flow Script",
-                        icon: <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>functions</span>,
-                        onClick: () => props.addComponent()
-                    }}/>
-                </DropdownOptions>
-            </Dropdown>
         </div>
     )
 }

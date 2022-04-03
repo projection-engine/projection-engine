@@ -6,8 +6,11 @@ import EventTick from "../nodes/events/EventTick";
 import deleteNode from "../../../components/flow/utils/deleteNode";
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import randomID from "../../../services/utils/misc/randomID";
+import EntityReference from "../nodes/events/EntityReference";
+import Setter from "../nodes/utils/Setter";
+import Getter from "../nodes/utils/Getter";
 
-export default function getHotKeys(hook, props, toCopy, setToCopy){
+export default function getHotKeys(hook, props, toCopy, setToCopy) {
     return [
         {
             require: [KEYS.KeyG],
@@ -57,12 +60,32 @@ export default function getHotKeys(hook, props, toCopy, setToCopy){
                 toCopy.forEach(toC => {
                     const toCopyNode = hook.nodes.find(n => n.id === toC)
                     if (toCopyNode && !(toCopyNode instanceof EventTick)) {
-                        const nodeEl = document.getElementById(toC)
+                        const nodeEl = document.getElementById(toC).parentNode
+                        const transformation = nodeEl
+                            .getAttribute('transform')
+                            .replace('translate(', '')
+                            .replace(')', '')
+                            .split(' ')
 
                         const clone = cloneClass(toCopyNode)
-                        clone.id = randomID()
-                        clone.x = nodeEl.getBoundingClientRect().x + 5
-                        clone.y = nodeEl.getBoundingClientRect().y + 5
+
+                        switch (true) {
+                            case clone instanceof Getter:
+                                clone.id = clone.id.split('/getter/')[0] + '/getter/' + randomID()
+                                break
+                            case clone instanceof Setter:
+                                clone.id = clone.id.split('/setter/')[0] + '/setter/' + randomID()
+                                break
+                            case clone instanceof EntityReference:
+                                clone.id = clone.id.split('/')[0] + '/' + randomID()
+                                break
+                            default:
+                                clone.id = randomID()
+                                break
+                        }
+
+                        clone.x = parseFloat(transformation[0]) + 5
+                        clone.y = parseFloat(transformation[1]) + 5
 
                         hook.setNodes(prev => {
                             return [...prev, clone]

@@ -14,23 +14,26 @@ import SYSTEMS from "../engine/templates/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptSystem from "../engine/ecs/systems/ScriptSystem";
+import useEngineEssentials from "../engine/useEngineEssentials";
 
 
-export default function useEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
+export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
+    const {
+        meshes, setMeshes,
+        materials, setMaterials,
+        entities, dispatchEntities,
+        scripts, setScripts,
+        returnChanges, forwardChanges
+    } = useEngineEssentials(true)
+
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
     const [selected, setSelected] = useState([])
-
-    const [meshes, setMeshes] = useState([])
-    const [materials, setMaterials] = useState([])
     const [finished, setFinished] = useState(false)
-    const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [initialized, setInitialized] = useState(false)
     const [lockedEntity, setLockedEntity] = useState()
-    const [scripts, setScripts] = useState([])
 
     useEffect(() => {
-        console.log(id)
         if (id) {
             const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
                 antialias: false,
@@ -155,8 +158,12 @@ export default function useEngine(id, canExecutePhysicsAnimation, settings, load
 
 
     return {
+        returnChanges, forwardChanges,
         lockedEntity, setLockedEntity,
-        entities, dispatchEntities,
+        entities, dispatchEntities: (obj) => {
+            console.log(obj)
+            dispatchEntities(obj)
+        },
         meshes, setMeshes,
         gpu, materials, setMaterials,
         selected, setSelected,

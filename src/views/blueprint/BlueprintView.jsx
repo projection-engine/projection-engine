@@ -16,7 +16,7 @@ import getAvailableNodes from "./utils/getAvailableNodes";
 import {AlertProvider, Button, LoaderProvider, Tab, Tabs} from "@f-ui/core";
 import MinimalTabs from "./components/MinimalTabs";
 import SettingsProvider from "../../services/hooks/SettingsProvider";
-import useEngine from "../../services/hooks/useEngine";
+import useEditorEngine from "../../services/hooks/useEditorEngine";
 import Viewport from "../../components/viewport/Viewport";
 import FormTabs from "../scene/forms/FormTabs";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
@@ -34,7 +34,7 @@ import EntityReference from "./nodes/events/EntityReference";
 export default function BlueprintView(props) {
     const settings = useContext(SettingsProvider)
     const load = useContext(LoaderProvider)
-    const engine = useEngine(props.file.registryID, false, {
+    const engine = useEditorEngine(props.file.registryID, false, {
         ...settings,
         shadingModel: SHADING_MODELS.FLAT,
         cameraType: CAMERA_TYPES.SPHERICAL
@@ -58,14 +58,21 @@ export default function BlueprintView(props) {
         controlProvider.setTabAttributes(
             [
                 {
+                    label: 'Compile',
+                    group: 'b',
+                    icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>check</span>,
+                    onClick: () => {
+                        const e = mapNodes(hook, engine, props.file)
+                        // TODO - find errors
+                    }
+                },
+                {
                     label: 'Save',
-                    disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save</span>,
                     onClick: () => props.submitPackage(mapNodes(hook, engine, props.file), false)
                 },
                 {
                     label: 'Save & close',
-                    disabled: hook.disabled,
                     icon: <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>save_alt</span>,
                     onClick: () => props.submitPackage(mapNodes(hook, engine, props.file), true)
                 }
@@ -88,7 +95,7 @@ export default function BlueprintView(props) {
     }, [hook.nodes, hook.links, hook.variables, hook.groups, engine.entities])
 
     useHotKeys({
-        focusTarget: props.file.registryID + '-board',
+        focusTarget: props.file.registryID + '-board-wrapper',
         disabled: controlProvider.tab !== props.index,
         actions: getHotKeys(hook, props, toCopy, setToCopy)
     })
@@ -111,7 +118,7 @@ export default function BlueprintView(props) {
 
 
     return (
-        <div className={styles.prototypeWrapper} ref={ref}>
+        <div className={styles.prototypeWrapper} ref={ref} id={props.file.registryID + '-board-wrapper'}>
 
             <Structure
                 hook={hook}
@@ -168,6 +175,7 @@ export default function BlueprintView(props) {
                 </div>
 
                     <Board
+                        id={props.file.registryID}
                         hide={open === 0}
                         allNodes={availableNodes}
                         setAlert={props.setAlert}
@@ -175,7 +183,7 @@ export default function BlueprintView(props) {
                         onDrop={(ev) => {
                             const dt = ev.dataTransfer.getData('text')
                             const entity = engine.entities.find(e => e.id === dt)
-                            console.log(dt)
+
                             if(entity)
                                 return [true, new EntityReference(dt, entity?.name)]
                             else

@@ -26,7 +26,7 @@ export default class GetWorldTranslation extends Node {
     }
 
     static compile(tick, {entity}, entities, attributes, nodeID) {
-        console.log(entity)
+
         attributes[nodeID] = {}
         attributes[nodeID].x = entity.components[COMPONENTS.TRANSFORM].translation[0]
         attributes[nodeID].y = entity.components[COMPONENTS.TRANSFORM].translation[1]

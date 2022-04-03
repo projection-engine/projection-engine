@@ -24,9 +24,10 @@ export default class Setter extends Node {
     }
 
     static compile(tick, {value}, entities, attributes, nodeID, executors, setExecutors) {
+
         setExecutors({
             ...executors,
-            [nodeID]: {
+            [nodeID.split('/')[0]]: {
                 value
             }
         })

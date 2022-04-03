@@ -29,7 +29,7 @@ import CAMERA_TYPES from "../engine/templates/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 
-export default function useVisualizer(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
+export default function useMinimalEngine(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState()
     const [gpu, setGpu] = useState()
     const [meshes, setMeshes] = useState([])

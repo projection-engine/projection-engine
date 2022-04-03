@@ -1,5 +1,5 @@
 export default {
-
+    LOADING: 'Loading',
     PROJECT_DATA: "Loading project data",
     PROJECT_DELETE: "Deleting project",
     PROJECT_LIST: "Loading projects",
