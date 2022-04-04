@@ -51,6 +51,7 @@ export default function useForm(
                     <TransformComponent
                         entityID={selected.id}
                         engine={engine}
+
                         selected={selected.components[COMPONENTS.TRANSFORM]}
                         submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
                         submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
@@ -86,6 +87,9 @@ export default function useForm(
             case COMPONENTS.MATERIAL: {
                 return (
                     <MaterialComponent
+                        entityID={selected.id}
+                        engine={engine}
+
                         submitRadius={r => {
                             const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                             clone.radius = r
@@ -138,6 +142,9 @@ export default function useForm(
             case COMPONENTS.POINT_LIGHT: {
                 return (
                     <LightComponent
+                        entityID={selected.id}
+                        engine={engine}
+
                         type={key}
                         selected={selected.components[key]}
                         submit={(data, k) => {

@@ -6,6 +6,8 @@ import EVENTS from "../../../services/utils/misc/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
+import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
+import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
 
 export default function MaterialComponent(props) {
@@ -33,6 +35,21 @@ export default function MaterialComponent(props) {
         setCurrentMaterial(props.quickAccess.materials.find(i => i.registryID === props.selected.materialID))
     }, [props.selected])
 
+    const [hasChanged, setHasChanged] = useState(false)
+    const saveVersion = () => {
+        if (!hasChanged) {
+            setHasChanged(true)
+            props.engine.dispatchChanges({
+                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
+                payload: {
+                    key: props.selected.constructor.name,
+                    entityID: props.entityID,
+                    component: props.selected
+                }
+            })
+        }
+    }
+
     return (
         <>
             <Accordion>
@@ -52,6 +69,7 @@ export default function MaterialComponent(props) {
                                             fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
                                                 .then(file => {
                                                     if (file && file.response) {
+                                                        saveVersion()
                                                         props.submit({
                                                             blob: file.response,
                                                             id: src.registryID,
@@ -88,8 +106,13 @@ export default function MaterialComponent(props) {
                             value={state.tilingX}
                             precision={3}
                             incrementPercentage={.01}
-                            onFinish={() => props.submitTiling([state.tilingX, state.tilingY])}
+                            onFinish={() => {
+                                setHasChanged(false)
+                                props.submitTiling([state.tilingX, state.tilingY])
+                            }}
                             handleChange={e => {
+                                saveVersion()
+
                                 props.selected.tiling = [parseFloat(e), state.tilingY]
                                 setState({...state, tilingX: parseFloat(e)})
                             }}
@@ -101,8 +124,13 @@ export default function MaterialComponent(props) {
                             precision={3}
                             incrementPercentage={.01}
                             value={state.tilingY}
-                            onFinish={() => props.submitTiling([state.tilingX, state.tilingY])}
+                            onFinish={() => {
+                                setHasChanged(false)
+                                props.submitTiling([state.tilingX, state.tilingY])
+                            }}
                             handleChange={e => {
+                                saveVersion()
+
                                 props.selected.tiling = [state.tilingX, parseFloat(e)]
                                 setState({...state, tilingY: parseFloat(e)})
 
@@ -125,8 +153,12 @@ export default function MaterialComponent(props) {
                         value={state.radius}
                         precision={3}
                         incrementPercentage={.01}
-                        onFinish={() => props.submitRadius(state.radius)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitRadius(state.radius)
+                        }}
                         handleChange={e => {
+                            saveVersion()
                             props.selected.radius = state.radius
                             setState({...state, radius: parseFloat(e)})
                         }}
@@ -134,22 +166,29 @@ export default function MaterialComponent(props) {
 
                 </div>
             </Accordion>
-
             <Checkbox
                 noMargin={true}
                 label={'Override material UVs'}
                 width={'100%'}
                 height={'35px'}
 
-                checked={state.overrideTiling} handleCheck={() => {
-                setState({...state, overrideTiling: !state.overrideTiling})
-                props.submitTiling(undefined, !state.overrideTiling)
-            }}/>
+                checked={state.overrideTiling}
+                handleCheck={() => {
+                    saveVersion()
+                    setHasChanged(false)
+                    setState({...state, overrideTiling: !state.overrideTiling})
+                    props.submitTiling(undefined, !state.overrideTiling)
+                }}
+            />
         </>
 
     )
 }
 MaterialComponent.propTypes = {
+    engine: PropTypes.object,
+    entityID: PropTypes.string,
+
+
     quickAccess: PropTypes.object,
     setAlert: PropTypes.func.isRequired,
     selected: PropTypes.object,

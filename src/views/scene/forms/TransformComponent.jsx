@@ -132,9 +132,12 @@ export default function TransformComponent(props) {
                         minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
-                        onFinish={() => props.submitScaling('x', state.xS)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitScaling('x', state.xS)
+                        }}
                         handleChange={e => {
-
+                            saveVersion()
                             props.selected.scaling = [e, props.selected.scaling[1], props.selected.scaling[2]]
                             setState({...state, xS: e})
 
@@ -148,9 +151,12 @@ export default function TransformComponent(props) {
                         minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
-                        onFinish={() => props.submitScaling('y', state.yS)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitScaling('y', state.yS)
+                        }}
                         handleChange={e => {
-
+                            saveVersion()
                             props.selected.scaling = [props.selected.scaling[0], e, props.selected.scaling[2]]
                             setState({...state, yS: e})
 
@@ -163,9 +169,12 @@ export default function TransformComponent(props) {
                         minValue={0.001}
                         precision={3}
                         incrementPercentage={.01}
-                        onFinish={() => props.submitScaling('z', state.zS)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitScaling('z', state.zS)
+                        }}
                         handleChange={e => {
-
+                            saveVersion()
                             props.selected.scaling = [props.selected.scaling[0], props.selected.scaling[1], e]
                             setState({...state, zS: e})
 
@@ -184,10 +193,13 @@ export default function TransformComponent(props) {
                         label={'x'}
                         metric={'angle'}
                         value={state.xR}
-                        onFinish={() => props.submitRotation('x', state.xR * Math.PI / 180)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitRotation('x', state.xR * Math.PI / 180)
+                        }}
                         handleChange={e => {
+                            saveVersion()
                             props.selected.rotation = [parseFloat(e) * Math.PI / 180, props.selected.rotation[1], props.selected.rotation[2]]
-
                             setState({...state, xR: parseFloat(e)})
                         }}/>
                     <Range
@@ -196,8 +208,13 @@ export default function TransformComponent(props) {
                         accentColor={'#00ff00'}
                         label={'y'}
                         value={state.yR}
-                        onFinish={() => props.submitRotation('y', state.yR * Math.PI / 180)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitRotation('y', state.yR * Math.PI / 180)
+                        }}
                         handleChange={e => {
+                            saveVersion()
+
                             props.selected.rotation = [props.selected.rotation[0], parseFloat(e) * Math.PI / 180, props.selected.rotation[2]]
                             setState({...state, yR: parseFloat(e)})
                         }}/>
@@ -207,8 +224,13 @@ export default function TransformComponent(props) {
                         metric={'angle'}
                         label={'z'}
                         value={state.zR}
-                        onFinish={() => props.submitRotation('z', state.zR * Math.PI / 180)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitRotation('z', state.zR * Math.PI / 180)
+                        }}
                         handleChange={e => {
+                            saveVersion()
+
                             props.selected.rotation = [props.selected.rotation[0], props.selected.rotation[1], parseFloat(e) * Math.PI / 180]
                             setState({...state, zR: parseFloat(e)})
                         }}
