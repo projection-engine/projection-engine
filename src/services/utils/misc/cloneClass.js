@@ -1,3 +1,3 @@
 export default function cloneClass(orig){
-    return Object.assign(Object.create(Object.getPrototypeOf(orig)), orig)
+    return orig ? Object.assign(Object.create(Object.getPrototypeOf(orig)), orig) : orig
 }

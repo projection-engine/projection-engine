@@ -12,7 +12,6 @@ import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
 import importMaterial from "../../../services/utils/importMaterial";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import cloneClass from "../../../services/utils/misc/cloneClass";
-import ScriptComponent from "../forms/ScriptComponent";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
 
@@ -50,45 +49,12 @@ export default function useForm(
             case COMPONENTS.TRANSFORM: {
                 return (
                     <TransformComponent
+                        entityID={selected.id}
+                        engine={engine}
                         selected={selected.components[COMPONENTS.TRANSFORM]}
                         submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
                         submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
                         submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0], setAlert)}
-                    />
-                )
-            }
-            case COMPONENTS.SCRIPT: {
-                return (
-                    <ScriptComponent
-                        selected={selected.components[COMPONENTS.SCRIPT]}
-                        setAlert={setAlert}
-                        submit={(s) => {
-
-                            if (s) {
-                                if(!engine.scripts.find(sc => sc.id === s.id))
-                                 engine.setScripts(prev => {
-                                     return [...prev, {
-                                         id: s.id,
-                                         executor: s.blob.response
-                                     }]
-                                 })
-
-                                selected.components[COMPONENTS.SCRIPT].ready  = s.blob?.response !== undefined
-                                selected.components[COMPONENTS.SCRIPT].registryID = s.id
-
-
-                            } else
-                                selected.registryID = undefined
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: selected.components[COMPONENTS.SCRIPT],
-                                    key: COMPONENTS.SCRIPT
-                                }
-                            })
-
-                        }}
-                        quickAccess={quickAccess}
                     />
                 )
             }

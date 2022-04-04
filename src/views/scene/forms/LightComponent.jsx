@@ -15,7 +15,7 @@ export default function LightComponent(props) {
                 z: props.selected.direction[2]
             } : {},
 
-            attenuation: props.selected.attenuation ?  {
+            attenuation: props.selected.attenuation ? {
                 x: props.selected.attenuation[0],
                 y: props.selected.attenuation[1],
                 z: props.selected.attenuation[2]
@@ -295,15 +295,17 @@ export default function LightComponent(props) {
                 </div>
             </Accordion>
 
-            <div className={styles.inputs} style={{padding: '4px 0'}}>
-                <Checkbox checked={state.shadowMap} handleCheck={() => {
+
+            <Checkbox
+                noMargin={true}
+                label={'Shadow map'}
+                width={'100%'}
+                height={'35px'}
+                checked={state.shadowMap}
+                handleCheck={() => {
                     setState({...state, shadowMap: !state.shadowMap})
                     props.submit(state.shadowMap, 'shadowMap')
                 }}/>
-                <label className={styles.label}>
-                    Shadow map
-                </label>
-            </div>
 
         </>
 

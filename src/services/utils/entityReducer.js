@@ -32,20 +32,20 @@ function deleteEntity(entity, entities) {
     return copy
 }
 
-export default function entityReducer(state, action) {
+export default function entityReducer(state, {type, payload}) {
     let stateCopy = [...state]
-    const entityIndex = state.findIndex(e => e.id === action.payload?.entityID)
+    const entityIndex = state.findIndex(e => e.id === payload?.entityID)
 
     if (entityIndex > -1) {
         const entity = cloneClass(stateCopy[entityIndex])
-        switch (action.type) {
+        switch (type) {
 
             // ENTITY
             case ENTITY_ACTIONS.UPDATE: {
                 const {
                     key,
                     data,
-                } = action.payload
+                } = payload
                 if (key === 'name')
                     entity.name = data
                 else if (key === 'active')
@@ -64,14 +64,14 @@ export default function entityReducer(state, action) {
             // COMPONENT
             case ENTITY_ACTIONS.ADD_COMPONENT: {
 
-                if (action.payload.data instanceof Component) {
-                    if (action.payload instanceof PickComponent) {
+                if (payload.data instanceof Component) {
+                    if (payload instanceof PickComponent) {
                         const existing = state.filter(s => s.components.MeshComponent !== undefined)
-                        action.payload.data.pickID = generateNextID(existing.length)
+                        payload.data.pickID = generateNextID(existing.length)
                     }
 
 
-                    entity.addComponent(action.payload.data)
+                    entity.addComponent(payload.data)
                 }
 
                 stateCopy[entityIndex] = entity
@@ -81,14 +81,14 @@ export default function entityReducer(state, action) {
                 const {
                     key,
                     data,
-                } = action.payload
+                } = payload
                 entity.components[key] = data
 
                 stateCopy[entityIndex] = entity
                 return stateCopy
             }
             case ENTITY_ACTIONS.REMOVE_COMPONENT: {
-                entity.removeComponent(action.payload.constructor.name)
+                entity.removeComponent(payload.constructor.name)
                 stateCopy[entityIndex] = entity
                 return stateCopy
             }
@@ -96,31 +96,32 @@ export default function entityReducer(state, action) {
                 return stateCopy
         }
     } else
-        switch (action.type) {
+        switch (type) {
             case ENTITY_ACTIONS.CLEAR:
                 return []
             case ENTITY_ACTIONS.ADD: {
-                if (action.payload instanceof Entity)
-                    stateCopy.push(action.payload)
+                if (payload instanceof Entity)
+                    stateCopy.push(payload)
 
                 return stateCopy
             }
             case ENTITY_ACTIONS.DISPATCH_BLOCK: {
-                const block = action.payload
+                const block = payload
                 if (Array.isArray(block))
                     return block
                 else
                     return stateCopy
             }
             case ENTITY_ACTIONS.REMOVE_BLOCK: {
-                const block = action.payload
+                const block = payload
                 if (Array.isArray(block)) {
                     return stateCopy.filter(e => !block.includes(e.id) && !block.includes(e.linkedTo))
                 } else
                     return stateCopy
             }
             case ENTITY_ACTIONS.PUSH_BLOCK: {
-                const block = action.payload
+                const block = payload
+
                 if (Array.isArray(block))
                     return [...stateCopy, ...block]
                 else

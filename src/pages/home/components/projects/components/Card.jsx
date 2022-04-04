@@ -16,7 +16,7 @@ export default function Card(props) {
     return (
         <div className={styles.wrapper} data-card={props.data.id} style={{
             animationDelay: props.index * 100 + 'ms',
-            background: props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)',
+            background: props.index % 2 === 0 ? 'var(--fabric-background-primary)' : 'var(--fabric-background-tertiary)',
             borderRadius: props.index === 0 ? '5px 5px 0 0' : undefined
         }}>
             <Modal
@@ -30,7 +30,6 @@ export default function Card(props) {
                         src={props.data.meta?.preview ? props.data.meta?.preview : logo}
                         draggable={false}
                     />
-
                     :
                     <>
                         <TextField

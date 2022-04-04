@@ -17,6 +17,7 @@ import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
 import getElementIcon from "./utils/getElementIcon";
 import getElementType from "./utils/getElementType";
+import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -96,16 +97,14 @@ export default function SceneView(props) {
     const createFolder = () => {
         const newEntity = new Entity()
         newEntity.name = 'New folder'
+        newEntity.components[COMPONENTS.FOLDER] = new FolderComponent()
         props.engine.dispatchEntities({
             type: ENTITY_ACTIONS.ADD,
             payload: newEntity
         })
-        props.engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD_COMPONENT,
-            payload: {
-                entityID: newEntity.id,
-                data: new FolderComponent()
-            }
+        props.engine.dispatchChanges({
+            type: HISTORY_ACTIONS.PUSHING_DATA,
+            payload: [newEntity]
         })
     }
     return (

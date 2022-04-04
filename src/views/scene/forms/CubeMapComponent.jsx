@@ -111,7 +111,6 @@ export default function CubeMapComponent(props) {
                     Prefiltered LOD samples
                 </AccordionSummary>
                     <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
-
                         <Range
                             accentColor={'blue'}
                             integer={true}
@@ -127,18 +126,14 @@ export default function CubeMapComponent(props) {
                         />
                     </div>
             </Accordion>
-
-            <div className={styles.inputs}>
                 <Checkbox
                     checked={state.irradiance}
+                    label={'Generate irradiance map'}
                     handleCheck={() => {
                         setState({...state, irradiance: !state.irradiance})
                         props.submit(!state.irradiance)
-                    }}/>
-                <label className={styles.label}>
-                    Generate irradiance map
-                </label>
-            </div>
+                    }} height={'35px'} width={'100%'}
+                    noMargin={true}/>
         </>
 
 
@@ -147,6 +142,5 @@ export default function CubeMapComponent(props) {
 
 CubeMapComponent.propTypes = {
     selected: PropTypes.object,
-    submit: PropTypes.func,
-
+    submit: PropTypes.func
 }

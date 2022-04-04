@@ -5,11 +5,11 @@ import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
 import SettingsProvider from "../../../services/hooks/SettingsProvider";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
+import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
+import cloneClass from "../../../services/utils/misc/cloneClass";
+import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
-
-const toDeg = 57.2957795131
 export default function TransformComponent(props) {
-    const settings = useContext(SettingsProvider)
     const getNewState = () => {
         const euler = props.selected.rotationUpdated ? props.selected.rotation : Transformation.getEuler(props.selected.rotationQuat)
 
@@ -29,7 +29,7 @@ export default function TransformComponent(props) {
         }
     }
     const [state, setState] = useState({})
-
+    const [hasChanged, setHasChanged] = useState(false)
 
     useEffect(() => {
 
@@ -46,6 +46,19 @@ export default function TransformComponent(props) {
             zT: t[2],
         })
     }
+    const saveVersion = () => {
+        if (!hasChanged) {
+            setHasChanged(true)
+            props.engine.dispatchChanges({
+                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
+                payload: {
+                    key: COMPONENTS.TRANSFORM,
+                    entityID: props.entityID,
+                    component: props.selected
+                }
+            })
+        }
+    }
     return (
         <>
             <Accordion className={styles.fieldset}>
@@ -61,11 +74,14 @@ export default function TransformComponent(props) {
                         value={state.xT}
                         precision={3}
                         incrementPercentage={.01}
-                        onFinish={() => props.submitTranslation('x', state.xT)}
+
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitTranslation('x', state.xT)
+                        }}
                         handleChange={e => {
+                            saveVersion()
                             translate([parseFloat(e), state.yT, state.zT])
-                            // props.selected.translation =
-                            // setState({...state, xT: parseFloat(e)})
                         }}
                     />
                     <Range
@@ -75,12 +91,13 @@ export default function TransformComponent(props) {
                         precision={3}
                         incrementPercentage={.01}
                         value={state.yT}
-                        onFinish={() => props.submitTranslation('y', state.yT)}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitTranslation('y', state.yT)
+                        }}
                         handleChange={e => {
+                            saveVersion()
                             translate([state.xT, parseFloat(e), state.zT])
-                            // props.selected.translation =
-                            // setState({...state, yT: parseFloat(e)})
-
                         }}
                     />
                     <Range
@@ -91,13 +108,12 @@ export default function TransformComponent(props) {
                         incrementPercentage={.01}
                         value={state.zT}
                         onFinish={() => {
-
+                            setHasChanged(false)
                             props.submitTranslation('z', state.zT)
                         }}
                         handleChange={e => {
+                            saveVersion()
                             translate([state.xT, state.yT, parseFloat(e)])
-                            // props.selected.translation = [state.xT, state.yT, parseFloat(e)]
-                            // setState({...state, zT: parseFloat(e)})
                         }}
                     />
                 </div>
@@ -197,6 +213,7 @@ export default function TransformComponent(props) {
                             setState({...state, zR: parseFloat(e)})
                         }}
                     />
+
                 </div>
 
             </Accordion>
@@ -205,6 +222,9 @@ export default function TransformComponent(props) {
 }
 
 TransformComponent.propTypes = {
+    engine: PropTypes.object,
+    entityID: PropTypes.string,
+
     selected: PropTypes.object,
     submitRotation: PropTypes.func,
     submitTranslation: PropTypes.func,

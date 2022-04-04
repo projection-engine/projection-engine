@@ -7,6 +7,7 @@ import COMPONENTS from "../engine/templates/COMPONENTS";
 import Entity from "../engine/ecs/basic/Entity";
 import FolderComponent from "../engine/ecs/components/FolderComponent";
 import ScriptComponent from "../engine/ecs/components/ScriptComponent";
+import {HISTORY_ACTIONS} from "./historyReducer";
 
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     let entities = []
@@ -44,7 +45,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                                                 resolve(loadedData)
                                             })
                                 })
-                        else if (res && res.path.includes('.flow')){
+                        else if (res && res.path.includes('.flow')) {
                             fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                                 .then(script => {
                                     const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
@@ -67,7 +68,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                                             })
 
 
-                                            engine.setScripts(prev =>{
+                                            engine.setScripts(prev => {
                                                 return [...prev, {
                                                     executors: script.response,
                                                     id: res.id,
@@ -75,7 +76,14 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                                                 }]
                                             })
                                             engine.setMeshes([...engine.meshes, ...m])
-                                            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: [...entities, folder]})
+                                            engine.dispatchChanges({
+                                                type: HISTORY_ACTIONS.PUSHING_DATA,
+                                                payload: [...entities, folder]
+                                            })
+                                            engine.dispatchEntities({
+                                                type: ENTITY_ACTIONS.PUSH_BLOCK,
+                                                payload: [...entities, folder]
+                                            })
                                             resolve()
                                         })
                                 })
@@ -125,6 +133,10 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                     const entities = toApply.map(m => {
                         return m.entity
                     }).filter(m => m !== undefined)
+                    engine.dispatchChanges({
+                        type: HISTORY_ACTIONS.PUSHING_DATA,
+                        payload: entities
+                    })
                     engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                 }
                 load.finishEvent(EVENTS.LOADING_MESHES)

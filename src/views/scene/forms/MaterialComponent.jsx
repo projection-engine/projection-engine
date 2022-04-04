@@ -10,8 +10,8 @@ import Range from "../../../components/range/Range";
 
 export default function MaterialComponent(props) {
     const [currentMaterial, setCurrentMaterial] = useState(undefined)
-    const getState = () =>{
-        if(props.selected)
+    const getState = () => {
+        if (props.selected)
             return {
                 tilingX: props.selected.tiling[0],
                 tilingY: props.selected.tiling[1],
@@ -118,32 +118,33 @@ export default function MaterialComponent(props) {
                 <div style={{padding: '4px'}}>
 
 
-                        <Range
-                            accentColor={'red'}
-                            metric={'un'}
+                    <Range
+                        accentColor={'red'}
+                        metric={'un'}
 
-                            value={state.radius}
-                            precision={3}
-                            incrementPercentage={.01}
-                            onFinish={() => props.submitRadius(state.radius)}
-                            handleChange={e => {
-                                props.selected.radius = state.radius
-                                setState({...state, radius: parseFloat(e)})
-                            }}
-                        />
+                        value={state.radius}
+                        precision={3}
+                        incrementPercentage={.01}
+                        onFinish={() => props.submitRadius(state.radius)}
+                        handleChange={e => {
+                            props.selected.radius = state.radius
+                            setState({...state, radius: parseFloat(e)})
+                        }}
+                    />
 
                 </div>
             </Accordion>
-            <div className={styles.inputs} style={{padding: '4px 0'}}>
-                <Checkbox checked={state.overrideTiling} handleCheck={() => {
-                    setState({...state, overrideTiling: !state.overrideTiling})
-                    props.submitTiling(undefined, !state.overrideTiling)
-                }}/>
-                <label className={styles.label}>
-                    Override material UVs
-                </label>
-            </div>
 
+            <Checkbox
+                noMargin={true}
+                label={'Override material UVs'}
+                width={'100%'}
+                height={'35px'}
+
+                checked={state.overrideTiling} handleCheck={() => {
+                setState({...state, overrideTiling: !state.overrideTiling})
+                props.submitTiling(undefined, !state.overrideTiling)
+            }}/>
         </>
 
     )

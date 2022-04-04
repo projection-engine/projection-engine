@@ -17,6 +17,7 @@ import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";
 import GIZMOS from "../../services/engine/templates/GIZMOS";
+import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -83,13 +84,20 @@ export default function Editor(props) {
                     }
                 }
             },
-            {require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH], callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics},
+            {
+                require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
+                callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics
+            },
             {
                 require: [KEYS.Delete],
                 callback: () => {
                     const s = [...props.engine.selected]
                     props.engine.setSelected([])
                     props.engine.setLockedEntity(undefined)
+                    props.engine.dispatchChanges({
+                        type: HISTORY_ACTIONS.DELETING_ENTITIES,
+                        payload: {entitiesToDelete: s, entities: props.engine.entities}
+                    })
                     s.forEach(e => {
                         props.engine.dispatchEntities({
                             type: ENTITY_ACTIONS.REMOVE,
