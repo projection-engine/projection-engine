@@ -1,34 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Projection engine
 
-## Getting Started
+### Sobre *(About)*
+- **Editor**: construído do zero com foco em usabilidade e desempenho, utilizando ReactJS e ElectronJS para fornecer uma melhor experiência de trabalho fora do navegador.
+- **Renderizador**: utilizando WebGL2 e múltiplas técnicas gráficas, a Projection Engine fornece bastante flexibilidade com setup gráfico.
+- **Scripting**: programação baseada em nodes é um dos focos desse motor gráfico *(em desenvolvimento)*, irá fornecer ao usuário uma ampla variedade de nodes para criação das diversas interações.
+- **Importação**: glTF 2 é a forma padrão de importação de modelos 3D externos.
 
-First, run the development server:
+### Exemplos *(Examples)*
+> ##### Exemplo cena simples *(Exemple simple scene)*
+> <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="Cena" style="width: 100%;"/>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+> ##### Editor de material baseado em nodes *(Node based Material editor)*
+> <img src="https://github.com/projection-engine/.github/blob/main/Material v2.png?raw=true" alt="Editor material"/>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> ##### Light propagation volumes global illumination
+> <img src="https://github.com/projection-engine/.github/blob/main/EEE.png?raw=true" title="Light propagation volumes"  alt="demo"/>
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+> ##### Blend com mapa de altura *(Height map based blending)*
+> <img src="https://github.com/projection-engine/.github/blob/main/BLEND.png?raw=true"  title="Material blend" alt="demo"/>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+> ##### Sombras omnidirecionais *(Omnidirectional shadow maps)*
+> <img src="https://github.com/projection-engine/.github/blob/main/OMNI.png?raw=true"  title="Point light shadow maps" alt="demo"/>
 
-The `pages/api` directory is mapped to `/api/*`. Cards in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+> ##### Parallax occlusion mapping
+> <img src="https://github.com/projection-engine/.github/blob/main/True parallax.png?raw=true"  title="Parallax occlusion mapping" alt="demo"/>
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+> ##### Programação baseada em nodes *(Node-based Scripting)*
+> <img src="https://github.com/projection-engine/.github/blob/main/scripting.png?raw=true"  title="Scripting" alt="demo"/>
