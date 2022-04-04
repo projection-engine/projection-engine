@@ -14,7 +14,11 @@ export default function Card(props) {
     const [name, setName] = useState(props.data.meta.name)
 
     return (
-        <div className={styles.wrapper} data-card={props.data.id} style={{animationDelay: props.index * 100 + 'ms'}}>
+        <div className={styles.wrapper} data-card={props.data.id} style={{
+            animationDelay: props.index * 100 + 'ms',
+            background: props.index % 2 === 0 ? 'var(--fabric-background-secondary)' : 'var(--fabric-background-tertiary)',
+            borderRadius: props.index === 0 ? '5px 5px 0 0' : undefined
+        }}>
             <Modal
                 className={shared.modal}
                 styles={{width: open.image ? 'fit-content' : undefined, height: open.image ? 'fit-content' : undefined}}
@@ -57,19 +61,20 @@ export default function Card(props) {
                         className={styles.image}
                         draggable={false}/>
                 </Button>
-                <DataProvider.Provider value={{
-                    keys: [
-                        {label: 'Name', key: 'name', type: 'string'},
-                        {label: 'Last modification', key: 'lastModification', type: 'string'}
-                    ],
-                    data: [{...props.data.meta, name}],
-                    selfContained: true
-                }}>
+
                 <DataRow
+                    object={{...props.data.meta, name}}
+                    keys={[
+                        {label: 'Name', key: 'name', type: 'string'},
+                        {label: 'Creation date', key: 'creationDate', type: 'string'},
+                        {label: 'Last modification', key: 'lastModification', type: 'string'},
+                        {label: 'Entities', key: 'entities', type: 'string'}
+                    ]}
+                    selfContained={true}
                     className={styles.dataRow}
                     index={0}
                 />
-                </DataProvider.Provider>
+
             </div>
 
             <div className={styles.section} style={{justifyContent: 'flex-end'}}>
@@ -83,7 +88,6 @@ export default function Card(props) {
                     }}
                 >
                     <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
-
                 </Button>
                 <Button
                     variant={'outlined'}
@@ -118,23 +122,6 @@ export default function Card(props) {
                 </Button>
             </div>
 
-
-            <ToolTip>
-                <div className={styles.data}>
-                    id:
-                    <div className={styles.overflow} style={{fontWeight: 'normal'}}>{props.data.id}</div>
-                </div>
-                <div className={styles.data}>
-                    Last modified:
-                    <div className={styles.overflow}
-                         style={{fontWeight: 'normal'}}>{props.data.meta?.lastModification}</div>
-                </div>
-                <div className={styles.data}>
-                    Creation date:
-                    <div className={styles.overflow}
-                         style={{fontWeight: 'normal'}}>{props.data.meta?.creationDate}</div>
-                </div>
-            </ToolTip>
         </div>
     )
 }

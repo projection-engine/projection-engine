@@ -2,87 +2,31 @@ import styles from "./styles/Projects.module.css";
 import PropTypes from 'prop-types'
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import Card from "./components/Card";
-import {Button, Dropdown, DropdownOption, DropdownOptions, Modal} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, List, Modal, useListData} from "@f-ui/core";
 import randomID from "../../../../services/utils/misc/randomID";
 import shared from '../../styles/Home.module.css'
+import LinkProject from "./components/LinkProject";
+import Search from "../../../../components/search/Search";
 
 export default function Projects(props) {
     const ref = useRef()
-    const [pathLinkModal, setPathLinkModal] = useState(false)
     const [searchString, setSearchString] = useState('')
+
     const projectsToShow = useMemo(() => {
 
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
-    useEffect(() => {
-        if (localStorage.getItem('basePath') === null) {
-            setPathLinkModal(true)
-        }
-    }, [])
+
 
     return (
         <div className={styles.wrapper}>
-            <Modal
-                open={pathLinkModal}
-                handleClose={() => {
-                    if (localStorage.getItem('basePath') !== null)
-                        setPathLinkModal(false)
-                }}
-                className={shared.modal}>
-                <div className={styles.button} style={{gap: '8px'}}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>info</span>
-                    Link a projects source folder
-                </div>
+           <LinkProject reference={ref}/>
 
-                <Button className={styles.button} styles={{gap: '4px'}} variant={'filled'}
-                        onClick={() => ref.current?.click()}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>snippet_folder</span>
-                    Link folder
-                </Button>
-                <div>
-
-                    <div className={styles.button} style={{gap: '8px'}}>
-                        Can't link you directory ?
-                    </div>
-                    <div style={{fontWeight: 'normal'}}>
-                        Please make sure to place the project identifier on the desired folder
-                    </div>
-                </div>
-                <Button className={styles.button} styles={{gap: '4px'}}
-                        variant={"outlined"}
-                        onClick={() => {
-                            const id = randomID()
-                            const url = window.URL.createObjectURL(new Blob([id], {type: 'plain/text'}));
-                            const a = document.createElement('a');
-                            a.style.display = 'none';
-                            a.href = url
-
-                            a.download = 'identifier.projection';
-                            document.body.appendChild(a);
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                        }}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>download</span>
-                    Get identifier
-                </Button>
-            </Modal>
-            <input
-                ref={ref}
-                type="file"
-                onChange={(e) => {
-                    let path = e.target.files[0].path.replace(e.target.files[0].name, '')
-                    localStorage.setItem('basePath', path)
-                    e.target.value = ''
-                    setPathLinkModal(false)
-                }}
-                webkitdirectory={''}
-                directory={''}
-                style={{display: 'none'}}
-            />
             <div className={styles.titleWrapper}>
                 <label className={styles.title}>
                     Your projects
+                    <Search searchString={searchString} setSearchString={setSearchString} size={'big'}/>
                 </label>
                 <div className={styles.optionsWrapper}>
                     <Dropdown
@@ -118,6 +62,7 @@ export default function Projects(props) {
                     </Button>
                 </div>
             </div>
+
             <div className={styles.content}>
                 {projectsToShow.length > 0 ? projectsToShow.map((p, i) => (
                         <React.Fragment key={p.id}>

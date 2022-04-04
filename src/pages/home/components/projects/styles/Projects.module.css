@@ -3,9 +3,9 @@
     width: 100%;
     padding: 0 5%;
     position: relative;
-    background-color: var(--fabric-background-secondary);
+
     height: 100%;
-    border-radius: 5px;
+
     border: var(--fabric-border-primary) 1px solid;
 }
 
@@ -27,12 +27,12 @@
 }
 
 .title {
-    overflow: hidden;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
-.optionsWrapper{
+
+.optionsWrapper {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -46,7 +46,6 @@
     display: grid;
     height: fit-content;
 
-    gap: 3px;
     align-items: flex-start;
 
 }

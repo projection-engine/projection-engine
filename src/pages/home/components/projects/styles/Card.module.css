@@ -7,14 +7,12 @@
 
     width: 100%;
     height: var(--size);
-    border-radius: 5px;
+
     overflow: hidden;
 
 
     border: var(--fabric-border-primary) 1px solid;
     color: var(--fabric-color-secondary);
-    background: var(--fabric-background-primary);
-
 
     transition: 150ms linear;
     font-size: .75rem;
@@ -56,7 +54,7 @@
     height: 30px;
     padding: 4px !important;
     gap: 4px;
-    color: var(--fabric-color-secondary);
+
 }
 
 .overflow {
