@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Scene.module.css'
-import React, {useContext, useMemo, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 
 import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
@@ -15,8 +15,6 @@ import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
-import getElementIcon from "./utils/getElementIcon";
-import getElementType from "./utils/getElementType";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
 
 export default function SceneView(props) {
@@ -28,7 +26,7 @@ export default function SceneView(props) {
 
     const data = useMemo(() => {
         let toFilter = props.engine.entities.filter(d => !d.linkedTo)
-    console.log(props.engine.entities)
+
         return [{
             id: 0,
             label: 'Scene',

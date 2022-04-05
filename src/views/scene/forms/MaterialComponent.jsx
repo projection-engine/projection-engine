@@ -7,7 +7,6 @@ import EVENTS from "../../../services/utils/misc/EVENTS";
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
 import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
-import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
 
 export default function MaterialComponent(props) {

@@ -21,13 +21,12 @@ import MeshInstance from "../engine/instances/MeshInstance";
 
 import skybox from '../../static/sky.jpg'
 import {LoaderProvider} from "@f-ui/core";
-
-import randomID from "../utils/misc/randomID";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
 import CAMERA_TYPES from "../engine/templates/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
+import {v4 as uuidv4} from 'uuid';
 
 export default function useMinimalEngine(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState()
@@ -44,7 +43,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
     let resizeObserver
 
     useLayoutEffect(() => {
-        setId(randomID())
+        setId(uuidv4())
     }, [])
 
 

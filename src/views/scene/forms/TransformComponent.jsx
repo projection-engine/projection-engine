@@ -1,18 +1,16 @@
 import PropTypes from "prop-types";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
-import SettingsProvider from "../../../services/hooks/SettingsProvider";
 import Transformation from "../../../services/engine/utils/workers/Transformation";
 import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
-import cloneClass from "../../../services/utils/misc/cloneClass";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 
 export default function TransformComponent(props) {
+    const [state, setState] = useState({})
     const getNewState = () => {
         const euler = props.selected.rotationUpdated ? props.selected.rotation : Transformation.getEuler(props.selected.rotationQuat)
-
         return {
             xT: props.selected.translation[0],
             yT: props.selected.translation[1],
@@ -28,14 +26,11 @@ export default function TransformComponent(props) {
 
         }
     }
-    const [state, setState] = useState({})
-    const [hasChanged, setHasChanged] = useState(false)
-
     useEffect(() => {
-
         setState(getNewState())
     }, [props])
 
+    const [hasChanged, setHasChanged] = useState(false)
     const translate = (newValue) => {
         let t = newValue
         props.selected.translation = t
@@ -77,6 +72,7 @@ export default function TransformComponent(props) {
 
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitTranslation('x', state.xT)
                         }}
                         handleChange={e => {
@@ -93,6 +89,7 @@ export default function TransformComponent(props) {
                         value={state.yT}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitTranslation('y', state.yT)
                         }}
                         handleChange={e => {
@@ -109,6 +106,7 @@ export default function TransformComponent(props) {
                         value={state.zT}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitTranslation('z', state.zT)
                         }}
                         handleChange={e => {
@@ -134,6 +132,7 @@ export default function TransformComponent(props) {
                         incrementPercentage={.01}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitScaling('x', state.xS)
                         }}
                         handleChange={e => {
@@ -153,6 +152,7 @@ export default function TransformComponent(props) {
                         incrementPercentage={.01}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitScaling('y', state.yS)
                         }}
                         handleChange={e => {
@@ -171,6 +171,7 @@ export default function TransformComponent(props) {
                         incrementPercentage={.01}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitScaling('z', state.zS)
                         }}
                         handleChange={e => {
@@ -195,6 +196,7 @@ export default function TransformComponent(props) {
                         value={state.xR}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitRotation('x', state.xR * Math.PI / 180)
                         }}
                         handleChange={e => {
@@ -210,6 +212,7 @@ export default function TransformComponent(props) {
                         value={state.yR}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitRotation('y', state.yR * Math.PI / 180)
                         }}
                         handleChange={e => {
@@ -226,6 +229,7 @@ export default function TransformComponent(props) {
                         value={state.zR}
                         onFinish={() => {
                             setHasChanged(false)
+                            saveVersion()
                             props.submitRotation('z', state.zR * Math.PI / 180)
                         }}
                         handleChange={e => {

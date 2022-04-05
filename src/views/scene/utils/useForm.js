@@ -40,9 +40,7 @@ export default function useForm(
                 return (
                     <CameraComponent
                         selected={selected.components[COMPONENTS.CAMERA]}
-                        submit={() => {
-
-                        }}
+                        submit={(value, key) => selected.components[COMPONENTS.CAMERA][key] = value}
                     />
                 )
             }

@@ -12,12 +12,13 @@ import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import cloneClass from "../../services/utils/misc/cloneClass";
-import randomID from "../../services/utils/misc/randomID";
 import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
 import PickComponent from "../../services/engine/ecs/components/PickComponent";
 import generateNextID from "../../services/utils/generateNextID";
 import GIZMOS from "../../services/engine/templates/GIZMOS";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
+
+import {v4 as uuidv4} from 'uuid';
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -113,12 +114,12 @@ export default function Editor(props) {
                         const found = props.engine.entities.find(e => e.id === t)
                         if (found) {
                             let clone = cloneClass(found)
-                            clone.id = randomID()
+                            clone.id = uuidv4()
                             clone.name += ' - clone'
                             let newComponents = {}
                             Object.keys(clone.components).forEach(c => {
                                 const cClone = cloneClass(clone.components[c])
-                                cClone.id = randomID()
+                                cClone.id = uuidv4()
                                 if (cClone instanceof PickComponent)
                                     cClone.pickID = generateNextID(props.engine.entities.length + 1)
                                 newComponents[c] = cClone

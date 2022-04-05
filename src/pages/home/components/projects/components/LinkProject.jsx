@@ -1,9 +1,9 @@
 import {Button, Modal} from "@f-ui/core";
 import shared from "../../../styles/Home.module.css";
 import styles from "../styles/Projects.module.css";
-import randomID from "../../../../../services/utils/misc/randomID";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
+import {v4 as uuidv4} from 'uuid';
 
 export default function LinkProject(props) {
     const [pathLinkModal, setPathLinkModal] = useState(false)
@@ -43,7 +43,7 @@ export default function LinkProject(props) {
                 <Button className={styles.button} styles={{gap: '4px'}}
                         variant={"outlined"}
                         onClick={() => {
-                            const id = randomID()
+                            const id = uuidv4()
                             const url = window.URL.createObjectURL(new Blob([id], {type: 'plain/text'}));
                             const a = document.createElement('a');
                             a.style.display = 'none';

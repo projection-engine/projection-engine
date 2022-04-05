@@ -1,10 +1,8 @@
 import {ENTITY_ACTIONS} from "../utils/entityReducer";
-import cloneClass from "../utils/misc/cloneClass";
 import {useEffect, useReducer, useState} from "react";
 import historyReducer, {HISTORY_ACTIONS} from "../utils/historyReducer";
-import COMPONENTS from "../engine/templates/COMPONENTS";
 
-export default function useHistory(entities, dispatchEntities) {
+export default function useHistory(entities, dispatchEntities, setAlert) {
     const [currentChange, setCurrentChange] = useState()
     const [changes, dispatchChanges] = useReducer(historyReducer, [], () => [])
     useEffect(() => {
@@ -22,6 +20,7 @@ export default function useHistory(entities, dispatchEntities) {
         if (c >= 0 && c <= 10) {
             switch (changes[c].type) {
                 case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
+                    setAlert({type: 'info', message: 'Undo: Changing component'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                             entityID: changes[c].entityID,
@@ -31,9 +30,11 @@ export default function useHistory(entities, dispatchEntities) {
                     })
                     break
                 case HISTORY_ACTIONS.PUSHING_DATA:
+                    setAlert({type: 'info', message: 'Undo: Adding entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities})
                     break
                 case HISTORY_ACTIONS.DELETING_ENTITIES:
+                    setAlert({type: 'info', message: 'Undo: Deleting entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.flat().map(e => e.id)
                     })
@@ -53,13 +54,7 @@ export default function useHistory(entities, dispatchEntities) {
         if (c >= 0) {
             switch (changes[c].type) {
                 case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
-                    dispatchChanges({
-                        type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE, payload: {
-                            key: changes[c].componentKey,
-                            entityID: changes[c].entityID,
-                            component: cloneClass(entities.find(e => e.id === changes[c].entityID).components[changes[c].componentKey])
-                        }
-                    })
+                    setAlert({type: 'info', message: 'Redo: Changing component'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                             entityID: changes[c].entityID,
@@ -69,10 +64,11 @@ export default function useHistory(entities, dispatchEntities) {
                     })
                     break
                 case HISTORY_ACTIONS.PUSHING_DATA:
+                    setAlert({type: 'info', message: 'Redo: Adding entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.map(e => e.id)})
                     break
                 case HISTORY_ACTIONS.DELETING_ENTITIES:
-                    console.log(changes[c].entities)
+                    setAlert({type: 'info', message: 'Redo: Deleting entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities.flat()
                     })

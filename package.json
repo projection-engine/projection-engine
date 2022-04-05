@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@electron/remote": "latest",
-
     "@f-ui/core": "0.1.26-alpha",
     "@fontsource/roboto": "latest",
     "dexie": "^3.2.0",
@@ -21,6 +20,7 @@
     "react-scripts": "latest",
     "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
+    "uuid": "^8.3.2",
     "web-vitals": "latest",
     "webpack": "^5.68.0"
   },

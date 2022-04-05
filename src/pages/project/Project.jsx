@@ -39,7 +39,7 @@ export default function Project(props) {
     const [loading, setLoading] = useState(true)
     const [initialized, setInitialized] = useState(false)
 
-    const engine = useEditorEngine(props.id, executingAnimation, settings, load, true)
+    const engine = useEditorEngine(props.id, executingAnimation, settings, load, true, setAlert)
 
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
@@ -265,7 +265,6 @@ export default function Project(props) {
                                 engine={engine}
                                 id={props.id} load={load}
                                 openLevelBlueprint={() => {
-
                                     setFilesLoaded(prev => {
                                         return [...prev, {
                                             isLevelBlueprint: true

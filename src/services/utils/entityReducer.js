@@ -3,8 +3,6 @@ import Component from "../engine/ecs/basic/Component";
 import PickComponent from "../engine/ecs/components/PickComponent";
 import generateNextID from "./generateNextID";
 import cloneClass from "./misc/cloneClass";
-import Transformation from "../engine/utils/workers/Transformation";
-import COMPONENTS from "../engine/templates/COMPONENTS";
 
 
 export const ENTITY_ACTIONS = {

@@ -27,8 +27,10 @@ function createWindow() {
             contextIsolation: false
         },
         autoHideMenuBar: true,
+        icon: __dirname + '/L.png',
 
     })
+
     win.openDevTools();
     win.loadURL(
         isDev

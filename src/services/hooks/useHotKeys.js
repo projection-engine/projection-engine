@@ -110,7 +110,13 @@ export const KEYS = {
     BracketLeft: "BracketLeft",
     Backslash: "Backslash",
     BracketRight: "BracketRight",
-    Quote: "Quote"
+    Quote: "Quote",
+    Mouse0: "MouseLeft",
+    Mouse1: "MouseMiddle",
+    Mouse2: "MouseRight",
+    Mouse3: "MouseKey0",
+    Mouse4: "MouseKey1",
+    Mouse5: "MouseKey2",
 }
 
 export default function useHotKeys(props) {

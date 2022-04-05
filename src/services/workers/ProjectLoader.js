@@ -134,13 +134,16 @@ export default class ProjectLoader {
 
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
         const entitiesWithScripts = entitiesFound.map(e => {
-            if(e.data.components[COMPONENTS.SCRIPT])
+            if (e.data.components[COMPONENTS.SCRIPT])
                 return e.data.components[COMPONENTS.SCRIPT]?.registryID
             else
-                return  e.data.blueprintID
+                return e.data.blueprintID
         }).filter(e => e !== undefined)
 
         const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem, entitiesFound.length)).filter(e => e !== undefined)
+
+        const levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json')
+
         let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
             skyboxData = (await Promise.all(skyboxes)).filter(e => e && e.type === 'skybox').map(e => e)
 
@@ -154,6 +157,14 @@ export default class ProjectLoader {
         } catch (e) {
         }
 
+        if (levelBlueprint)
+            scriptsToLoad.push({
+                script: {
+                    id: fileSystem.projectID,
+                    executors: levelBlueprint.response,
+                    name: levelBlueprint.name
+                }
+            })
         return {
             meta,
             settings,
@@ -195,7 +206,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities=true) {
+    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true) {
 
         const promises = toLoad.map(m => {
             return new Promise(r => {
@@ -212,7 +223,7 @@ export default class ProjectLoader {
                                         executors: d.response,
                                         name: d.name
                                     },
-                                    entities:mapEntities ?  d.entities.map((e, i) => {
+                                    entities: mapEntities ? d.entities.map((e, i) => {
                                         return ProjectLoader.mapEntity(e, i + meshesLoaded, [], [])
                                     }) : []
                                 })
@@ -312,7 +323,7 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
-    [COMPONENTS.COLLIDER]: (entity, k, meshes) => new CameraComponent(entity.components[k].id),
+    [COMPONENTS.CAMERA]: (entity, k, meshes) => new CameraComponent(entity.components[k].id),
     [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id),
 
 }

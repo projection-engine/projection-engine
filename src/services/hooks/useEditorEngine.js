@@ -1,6 +1,5 @@
-import {useEffect, useReducer, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {enableBasics} from "../engine/utils/misc/utils";
-import entityReducer, {ENTITY_ACTIONS} from "../utils/entityReducer";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
@@ -12,13 +11,15 @@ import EVENTS from "../utils/misc/EVENTS";
 import PerformanceSystem from "../engine/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../engine/templates/SYSTEMS";
 import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
-import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptSystem from "../engine/ecs/systems/ScriptSystem";
 import useEngineEssentials from "../engine/useEngineEssentials";
 import useHistory from "./useHistory";
+import GIZMOS from "../engine/templates/GIZMOS";
+import {HISTORY_ACTIONS} from "../utils/historyReducer";
+import COMPONENTS from "../engine/templates/COMPONENTS";
 
 
-export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart) {
+export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
     const {
         meshes, setMeshes,
         materials, setMaterials,
@@ -26,9 +27,10 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         scripts, setScripts
     } = useEngineEssentials(true)
     const {
-        returnChanges, forwardChanges,
+        returnChanges,
+        forwardChanges,
         dispatchChanges
-    } = useHistory(entities, dispatchEntities)
+    } = useHistory(entities, dispatchEntities, setAlert)
     const [canRender, setCanRender] = useState(true)
     const [gpu, setGpu] = useState()
     const [selected, setSelected] = useState([])
@@ -116,17 +118,38 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
             if (!canRender)
                 renderer.current?.stop()
             else
-                renderer.current?.start(entities, materials, meshes, {
-                    canExecutePhysicsAnimation,
-                    onGizmoChange: () => {
+                renderer.current?.start(
+                    entities,
+                    materials,
+                    meshes,
+                    {canExecutePhysicsAnimation, selected, setSelected: d => setSelected(d), ...settings},
+                    scripts,
+                    () => {
+                        const e = entities.find(e => e.id === selected[0])
+                        if (e)
+                            dispatchChanges({
+                                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
+                                payload: {
+                                    key: COMPONENTS.TRANSFORM,
+                                    entityID: selected[0],
+                                    component: e.components[COMPONENTS.TRANSFORM]
+                                }
+                            })
+                    },
+                    () => {
+                        const e = entities.find(e => e.id === selected[0])
 
-                    },
-                    selected,
-                    setSelected: d => {
-                        setSelected(d)
-                    },
-                    ...settings
-                }, scripts)
+                        if (e)
+                            dispatchChanges({
+                                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
+                                payload: {
+                                    key: COMPONENTS.TRANSFORM,
+                                    entityID: selected[0],
+                                    component: e.components[COMPONENTS.TRANSFORM]
+                                }
+                            })
+                    }
+                )
 
         }
         return () => {

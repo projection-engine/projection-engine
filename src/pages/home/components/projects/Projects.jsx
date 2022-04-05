@@ -1,10 +1,8 @@
 import styles from "./styles/Projects.module.css";
 import PropTypes from 'prop-types'
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import Card from "./components/Card";
-import {Button, Dropdown, DropdownOption, DropdownOptions, List, Modal, useListData} from "@f-ui/core";
-import randomID from "../../../../services/utils/misc/randomID";
-import shared from '../../styles/Home.module.css'
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import LinkProject from "./components/LinkProject";
 import Search from "../../../../components/search/Search";
 

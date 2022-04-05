@@ -2,7 +2,7 @@ import styles from '../styles/Tabs.module.css'
 import PropTypes from "prop-types";
 import React, {useMemo} from "react";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
-import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core";
+import {Button, ToolTip} from "@f-ui/core";
 
 
 export default function FormTabs(props){

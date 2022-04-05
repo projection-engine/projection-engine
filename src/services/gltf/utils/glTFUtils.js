@@ -1,10 +1,11 @@
 import {mat4, quat} from "gl-matrix";
 import Transformation from "../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../workers/ImageProcessor";
-import randomID from "../../utils/misc/randomID";
 import ROTATION_TYPES from "../../engine/templates/ROTATION_TYPES";
 import Material from "../../../views/material/implementations/material/nodes/Material";
 import emptyMaterial from '../../utils/emptyMaterial.json'
+
+import {v4 as uuidv4} from 'uuid';
 
 const fs = window.require('fs')
 const path = window.require('path')
@@ -67,7 +68,7 @@ export function materialParser(basePath, material, textures, images) {
                     resolve({
                         name: material.name,
                         response: mat,
-                        id: randomID()
+                        id: uuidv4()
                     })
                 })
 

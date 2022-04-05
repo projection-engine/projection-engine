@@ -1,9 +1,11 @@
 import FileBlob from "./FileBlob";
 import GLTF from "../gltf/GLTF";
-import randomID from "../utils/misc/randomID";
+
 import ImageProcessor from "./ImageProcessor";
 import emptyMaterial from '../utils/emptyMaterial.json'
 import TerrainWorker from "./TerrainWorker";
+
+import {v4 as uuidv4} from 'uuid';
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -14,7 +16,7 @@ function resolvePath(p) {
 
 export default class FileSystem {
     constructor(projectID) {
-
+        this.projectID = projectID
         this._path = (localStorage.getItem('basePath') + '\\projects\\' + projectID).replace(/\\\\/g, '\\')
 
         if (!fs.existsSync(this.path + '\\previews\\'))
@@ -139,7 +141,7 @@ export default class FileSystem {
         return new Promise(resolve => {
 
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
-            const fileID = randomID()
+            const fileID = uuidv4()
             switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
                 case 'png':
                 case 'jpg':
@@ -211,7 +213,7 @@ export default class FileSystem {
                                                                 const newNode = {...n}
                                                                 newNode.sample = {
                                                                     type: n.id,
-                                                                    registryID: randomID()
+                                                                    registryID: uuidv4()
                                                                 }
                                                                 return newNode
                                                             })
@@ -259,7 +261,7 @@ export default class FileSystem {
         })
     }
 
-    createRegistryEntry(fID = randomID(), path) {
+    createRegistryEntry(fID = uuidv4(), path) {
         const pathRe = resolvePath(this.path + '\\assets\\')
         const p = resolvePath(this.path + '\\assets\\' + path).replace(pathRe, '')
 
@@ -298,7 +300,7 @@ export default class FileSystem {
     }
 
     async writeAsset(path, fileData, previewImage, registryID) {
-        const fileID = registryID !== undefined ? registryID : randomID()
+        const fileID = registryID !== undefined ? registryID : uuidv4()
         return new Promise(resolve => {
             const promises = [
                 new Promise(resolve1 => {
@@ -568,7 +570,7 @@ export default class FileSystem {
 
     static async createProject(name) {
         return new Promise(resolve => {
-            const projectID = randomID(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
+            const projectID = uuidv4(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
             if (!fs.existsSync(resolvePath(localStorage.getItem('basePath') + 'projects')))
                 fs.mkdirSync(resolvePath(localStorage.getItem('basePath') + 'projects'))
 

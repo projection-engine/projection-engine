@@ -1,6 +1,3 @@
-import ProjectLoader from "../../../services/workers/ProjectLoader";
-import EVENTS from "../../../services/utils/misc/EVENTS";
-
 export default function getOptions(executingAnimation, setExecutingAnimation, engine, save,openLevelBlueprint) {
     return [
         {
