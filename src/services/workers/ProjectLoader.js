@@ -19,6 +19,8 @@ import CubeMapInstance from "../engine/instances/CubeMapInstance";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 import CameraComponent from "../engine/ecs/components/CameraComponent";
+import {quat} from "gl-matrix";
+import Transformation from "../engine/utils/workers/Transformation";
 
 
 export default class ProjectLoader {
@@ -309,9 +311,15 @@ const ENTITIES = {
     [COMPONENTS.SPOT_LIGHT]: (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.MATERIAL]: (entity, k) => new MaterialComponent(entity.components[k].id),
     [COMPONENTS.TRANSFORM]: (entity, k) => {
-
         const component = new TransformComponent(entity.components[k].id, true)
         component.changed = true
+
+        try{
+            component.updateQuatOnEulerChange = false
+            component.rotation = Transformation.getEuler(entity.components[k]._rotationQuat)
+            component.updateQuatOnEulerChange = true
+        }catch (e){ }
+
         return component
     },
     [COMPONENTS.FOLDER]: (entity, k) => new FolderComponent(entity.components[k].id),

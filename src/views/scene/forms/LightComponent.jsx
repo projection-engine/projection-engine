@@ -22,9 +22,9 @@ export default function LightComponent(props) {
                 z: props.selected.attenuation[2]
             } : {},
             color: {
-                r: props.selected.color[0] * 255,
-                g: props.selected.color[1] * 255,
-                b: props.selected.color[2] * 255
+                r: props.selected.color[0] ,
+                g: props.selected.color[1] ,
+                b: props.selected.color[2]
             },
             size: props.selected.size,
             indirectAttenuation: props.selected.attenuation,

@@ -67,9 +67,10 @@
 }
 
 .formsWrapper {
-    display: grid;
-    align-content: flex-start;
+    display:flex;
+    flex-direction: column;
 
+    height: 100%;
     gap: 4px;
     width: 100%;
     overflow-y: auto;
