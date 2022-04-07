@@ -11,6 +11,8 @@
 
 
 .modal {
+    max-width: 90vw;
+    max-height: 90vh;
     padding: 8px;
     display: grid;
     gap: 16px;

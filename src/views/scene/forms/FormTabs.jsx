@@ -82,7 +82,7 @@ export default function FormTabs(props){
 
     const currentKey = useMemo(() => {
         return Object.keys(props.entity.components)[props.currentTab]
-    }, [props.currentTab])
+    }, [props.currentTab, props.entity?.id])
 
     return (
         <div className={styles.wrapper}>

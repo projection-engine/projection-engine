@@ -28,6 +28,7 @@ export default class FileSystem {
         if (!fs.existsSync(this.path + '\\logic'))
             fs.mkdirSync(this.path + '\\logic')
 
+
     }
 
     get path() {
@@ -295,7 +296,6 @@ export default class FileSystem {
     }
 
     assetExists(path) {
-        console.log(resolvePath(this.path + '\\assets\\' + path), fs.existsSync(resolvePath(this.path + '\\assets\\' + path)))
         return fs.existsSync(resolvePath(this.path + '\\assets\\' + path))
     }
 

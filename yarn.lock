@@ -1162,10 +1162,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@f-ui/core@0.1.26-alpha":
-  version "0.1.26-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.26-alpha.tgz#bb9e769f9fbbabd3bd885f27997f85fb3963ddb9"
-  integrity sha512-IOjBgJwNhSpQZlSzOQYCWB8OjxowoYX1/tjCanL72w0YLDF1GqeW6MMHj3NPmEvat2KihLxZnG+qE1L1iVv1XA==
+"@f-ui/core@0.1.29-alpha":
+  version "0.1.29-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.29-alpha.tgz#54fa055d61764840db636bcd3b30899525f1aee9"
+  integrity sha512-oKRxWY8xGYdjW05ighVdf3qazjfgfIE4eoYF3t/AQ02A4yakTI1CFZLjA72QufEoIOZAFthVj/vdqWcgSln/Qg==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"
@@ -2519,6 +2519,11 @@ assert-plus@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
   integrity sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
+
+assimpjs@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/assimpjs/-/assimpjs-0.0.7.tgz#7d856013b2cbac4226c21b0d5cada8b2c8593d66"
+  integrity sha512-pvnX9XHIboh4pqkjMkX7ud9Wq4lBG4hKroTcz6r4Le0rM7BE56PqvSQGrB5BU4KgaxAalLdX+lKqQdHP2xIhTg==
 
 ast-types-flow@^0.0.7:
   version "0.0.7"
@@ -7047,6 +7052,11 @@ pascal-case@^3.1.2:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
+
+path-browserify@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-1.0.1.tgz#d98454a9c3753d5790860f16f68867b9e46be1fd"
+  integrity sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==
 
 path-exists@^3.0.0:
   version "3.0.0"

@@ -53,7 +53,6 @@ export default function Project(props) {
             ProjectLoader
                 .loadProject(engine.gpu, quickAccess.fileSystem)
                 .then(res => {
-                    console.log(res.scripts)
                     engine.setScripts(res.scripts)
                     engine.setMeshes(res.meshes)
                     engine.setMaterials(res.materials)

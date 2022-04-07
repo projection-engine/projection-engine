@@ -170,7 +170,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
         lockedEntity, setLockedEntity,
         entities, dispatchEntities: (obj) => {
-            console.log(obj)
+
             dispatchEntities(obj)
         },
         meshes, setMeshes,

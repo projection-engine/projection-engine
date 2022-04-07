@@ -70,12 +70,10 @@
     display:flex;
     flex-direction: column;
 
-    height: 100%;
+    height: fit-content;
     gap: 4px;
     width: 100%;
-    overflow-y: auto;
     max-width: 100%;
-    overflow-x: hidden;
     padding: 4px 4px 32px;
     color: var(--fabric-color-primary);
 }
@@ -145,6 +143,6 @@
     height: 100%;
     display: flex;
     max-height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
 
 }

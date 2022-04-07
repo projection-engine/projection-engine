@@ -8,6 +8,9 @@
     border-top-right-radius: 5px;
     background: var(--fabric-background-secondary);
 
+    position: sticky;
+    top: 0;
+
 }
 
 .button {
