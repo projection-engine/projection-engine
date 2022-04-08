@@ -146,6 +146,8 @@ export default function LightComponent(props) {
                                 accentColor={'yellow'}
                                 value={state.size}
                                 minValue={1}
+                                incrementPercentage={1}
+                                precision={0}
                                 onFinish={() => {
                                     setHasChanged(false)
                                     props.submit(state.size, 'size')
@@ -172,7 +174,7 @@ export default function LightComponent(props) {
                             GI
                         </AccordionSummary>
                         <div className={styles.inputsColumn}>
-                            <label className={styles.label} style={{marginBottom: '4px'}}>Attenuation</label>
+                            <label className={styles.label} style={{marginBottom: '4px'}}>Intensity</label>
                             <Range
                                 accentColor={'red'}
                                 incrementPercentage={.01}
@@ -229,6 +231,7 @@ export default function LightComponent(props) {
                         <Range
                             accentColor={'red'}
                             incrementPercentage={.01}
+                            minValue={.0001}
                             precision={2}
                             value={state.attenuation.x}
                             onFinish={() => {
@@ -250,6 +253,7 @@ export default function LightComponent(props) {
                         <Range
                             accentColor={'green'}
                             incrementPercentage={.01}
+                            minValue={.01}
                             precision={2}
                             value={state.attenuation.y}
                             onFinish={() => {
@@ -271,6 +275,7 @@ export default function LightComponent(props) {
                         <Range
                             accentColor={'blue'}
                             incrementPercentage={.01}
+                            minValue={.01}
                             precision={2}
                             value={state.attenuation.z}
                             onFinish={() => {
@@ -379,7 +384,7 @@ export default function LightComponent(props) {
                     setHasChanged(false)
 
                     setState({...state, shadowMap: !state.shadowMap})
-                    props.submit(state.shadowMap, 'shadowMap')
+                    props.submit(!state.shadowMap, 'shadowMap')
                 }}/>
 
         </>

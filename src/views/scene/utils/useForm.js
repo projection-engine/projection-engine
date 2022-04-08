@@ -115,20 +115,32 @@ export default function useForm(
                                 }
                             })
                         }}
-                        submit={(mat) => {
-                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
-                            if (mat) {
-                                importMaterial(mat, engine, load)
-                                clone.materialID = mat.id
-                            } else
-                                clone.materialID = undefined
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: clone,
-                                    key: COMPONENTS.MATERIAL
-                                }
-                            })
+                        submit={(val, key) => {
+                            if(key){
+                                const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
+                                clone[key] = val
+                                engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                        entityID: engine.selected[0],
+                                        data: clone,
+                                        key: COMPONENTS.MATERIAL
+                                    }
+                                })
+                            }else {
+                                const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
+                                if (val) {
+                                    importMaterial(val, engine, load)
+                                    clone.materialID = val.id
+                                } else
+                                    clone.materialID = undefined
+                                engine.dispatchEntities({
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                        entityID: engine.selected[0],
+                                        data: clone,
+                                        key: COMPONENTS.MATERIAL
+                                    }
+                                })
+                            }
                         }}
                         setAlert={setAlert}
 

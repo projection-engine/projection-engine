@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@electron/remote": "latest",
-    "@f-ui/core": "0.1.29-alpha",
+    "@f-ui/core": "0.1.32-alpha",
     "@fontsource/roboto": "latest",
     "assimpjs": "^0.0.7",
     "dexie": "^3.2.0",

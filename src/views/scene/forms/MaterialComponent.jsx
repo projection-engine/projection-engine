@@ -17,7 +17,9 @@ export default function MaterialComponent(props) {
                 tilingX: props.selected.tiling[0],
                 tilingY: props.selected.tiling[1],
                 overrideTiling: props.selected.overrideTiling,
-                radius: props.selected.radius
+                radius: props.selected.radius,
+                parallaxLayers:  props.selected.parallaxLayers,
+                parallaxHeightScale: props.selected.parallaxHeightScale
             }
         else
             return {}
@@ -90,14 +92,37 @@ export default function MaterialComponent(props) {
                         }}/>
                 </div>
             </Accordion>
+            <Accordion>
+                <AccordionSummary className={styles.summary}>
+                    CubeMap influence radius
+                </AccordionSummary>
+                <div style={{padding: '4px'}}>
+                    <Range
+                        accentColor={'red'}
+                        metric={'un'}
 
+                        value={state.radius}
+                        precision={3}
+                        incrementPercentage={.01}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submitRadius(state.radius, 'radius')
+                        }}
+                        handleChange={e => {
+                            saveVersion()
+                            props.selected.radius = state.radius
+                            setState({...state, radius: parseFloat(e)})
+                        }}
+                    />
+
+                </div>
+            </Accordion>
             <Accordion>
                 <AccordionSummary className={styles.summary}>
                     UV tiling
                 </AccordionSummary>
-                <div style={{padding: '4px'}}>
 
-                    <div className={styles.inputs} style={{padding: 0, marginTop: '8px'}}>
+                    <div className={styles.inputs} style={{padding: '4px', marginTop: '8px'}}>
                         <Range
                             accentColor={'red'}
                             metric={'x'}
@@ -136,38 +161,61 @@ export default function MaterialComponent(props) {
                             }}
                         />
                     </div>
+
+            </Accordion>
+            <Accordion>
+                <AccordionSummary className={styles.summary}>
+                    Parallax height scale
+                </AccordionSummary>
+                <div style={{padding: '4px'}}>
+                    <Range
+                        accentColor={'red'}
+
+                        value={state.parallaxHeightScale}
+                        precision={3}
+                        maxValue={2}
+                        minValue={.01}
+                        incrementPercentage={.01}
+                        onFinish={() => {
+                            setHasChanged(false)
+                            props.submit (state.parallaxHeightScale, 'parallaxHeightScale')
+                        }}
+                        handleChange={e => {
+                            saveVersion()
+                            props.selected.parallaxHeightScale = state.parallaxHeightScale
+                            setState({...state, parallaxHeightScale: e})
+                        }}
+                    />
                 </div>
             </Accordion>
             <Accordion>
                 <AccordionSummary className={styles.summary}>
-                    CubeMap influence radius
+                    Parallax layers
                 </AccordionSummary>
                 <div style={{padding: '4px'}}>
-
-
                     <Range
                         accentColor={'red'}
-                        metric={'un'}
 
-                        value={state.radius}
-                        precision={3}
-                        incrementPercentage={.01}
+                        value={state.parallaxLayers}
+                        precision={0}
+                        minValue={1}
+                        maxValue={64}
+                        incrementPercentage={1}
                         onFinish={() => {
                             setHasChanged(false)
-                            props.submitRadius(state.radius)
+                            props.submit (state.parallaxLayers, 'parallaxLayers')
                         }}
                         handleChange={e => {
                             saveVersion()
-                            props.selected.radius = state.radius
-                            setState({...state, radius: parseFloat(e)})
+                            props.selected.parallaxLayers = state.parallaxLayers
+                            setState({...state, parallaxLayers: e})
                         }}
                     />
-
                 </div>
             </Accordion>
             <Checkbox
                 noMargin={true}
-                label={'Override material UVs'}
+                label={'Override material params'}
                 width={'100%'}
                 height={'35px'}
 

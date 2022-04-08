@@ -230,7 +230,7 @@ export default class ImageProcessor {
         })
     }
 
-    static colorToImage(color, resolution=256) {
+    static colorToImage(color, resolution = 256) {
         const c = document.createElement("canvas");
         c.width = resolution
         c.height = resolution
@@ -245,29 +245,34 @@ export default class ImageProcessor {
             let img = new Image();
 
             img.src = src
+            if (src)
+                img.onload = () => {
+                    const width = w ? w : sizePercent ? img.naturalWidth * sizePercent : img.naturalWidth
+                    const height = h ? h : sizePercent ? img.naturalHeight * sizePercent : img.naturalHeight
+                    if (width === 0 || height === 0)
+                        resolve()
+                    if (img.naturalWidth === width && img.naturalHeight === height)
+                        resolve(src)
 
-            img.onload = () => {
-                const width = w ? w : sizePercent ? img.naturalWidth * sizePercent: img.naturalWidth
-                const height  = h ? h : sizePercent ? img.naturalHeight * sizePercent : img.naturalHeight
+                    else {
 
-                if (img.naturalWidth === width && img.naturalHeight === height)
-                    resolve(src)
-                else {
-                    const canvas = new OffscreenCanvas(width, height),
-                        ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
-                    canvas.convertToBlob({
-                        type: "image/png",
-                        quality: quality
-                    }).then(blob => {
-                        FileBlob.loadAsString(blob, false, true)
-                            .then(parsed => {
+                        const canvas = new OffscreenCanvas(width, height),
+                            ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.convertToBlob({
+                            type: "image/png",
+                            quality: quality
+                        }).then(blob => {
+                            FileBlob.loadAsString(blob, false, true)
+                                .then(parsed => {
 
-                                resolve(parsed)
-                            })
-                    })
+                                    resolve(parsed)
+                                })
+                        }).catch((e) =>resolve(src))
+                    }
                 }
-            }
+            else
+                resolve()
             img.onerror = (e) => {
 
                 resolve()

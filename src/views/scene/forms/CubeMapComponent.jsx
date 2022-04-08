@@ -101,7 +101,7 @@ export default function CubeMapComponent(props) {
                         onFinish={() => props.submit(state.radius, 'radius')}
                         value={state.radius}
                         handleChange={e => {
-                            setState({...state, radius: parseInt(e)})
+                            setState({...state, radius: e})
                         }}
                     />
                 </div>

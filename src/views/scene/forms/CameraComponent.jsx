@@ -30,7 +30,8 @@ export default function CameraComponent(props) {
                 <Range
                     metric={'angle'}
                     accentColor={'red'}
-                    value={state.fov}
+                    value={state.fov} minValue={35}
+                    maxValue={175}
                     precision={1}
                     incrementPercentage={.1}
                     onFinish={() => {
@@ -53,36 +54,47 @@ export default function CameraComponent(props) {
                     handleChange={e => setState({...state, aspectRatio: e})}
                 />
             </Accordion>
-            <Accordion className={styles.fieldset}>
-                <AccordionSummary className={styles.summary}>
-                    Near plane
-                </AccordionSummary>
-                <Range
-                    value={state.zNear}
-                    precision={1}
-                    incrementPercentage={.1}
 
-                    onFinish={() => {
-                        props.submit(state.zNear, 'zNear')
-                    }}
-                    handleChange={e => setState({...state, zNear: e})}
-                />
-            </Accordion>
-            <Accordion className={styles.fieldset}>
+            <Accordion>
                 <AccordionSummary className={styles.summary}>
-                    Far plane
+                    Planes
                 </AccordionSummary>
-                <Range
-                    value={state.zFar}
-                    precision={0}
-                    incrementPercentage={1}
-                    onFinish={() => {
-                        props.submit(state.zFar, 'zFar')
-                    }}
-                    handleChange={e => setState({...state, zFar: e})}
-                />
-            </Accordion>
 
+                <div className={styles.inputs}>
+                    <Range
+                        accentColor={'red'}
+                        value={state.zFar}
+                        metric={'Far'}
+                        precision={1}
+                        incrementPercentage={.1}
+                        onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
+                        handleChange={e => {
+                            setState(prev => {
+                                return {
+                                    ...prev,
+                                    zFar: e
+                                }
+                            })
+                        }}
+                    />
+                    <Range
+                        accentColor={'green'}
+                        value={state.zNear}
+                        metric={'Near'}
+                        precision={1}
+                        incrementPercentage={.1}
+                        onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
+                        handleChange={e => {
+                            setState(prev => {
+                                return {
+                                    ...prev,
+                                    zNear: e
+                                }
+                            })
+                        }}/>
+
+                </div>
+            </Accordion>
         </>
 
 

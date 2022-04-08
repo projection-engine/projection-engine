@@ -40,11 +40,12 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
     useEffect(() => {
         if (id) {
-            const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
-                antialias: false,
-                preserveDrawingBuffer: true,
-                premultipliedAlpha: false
-            })
+            const newGPU = document.getElementById(id + '-canvas')
+                .getContext('webgl2', {
+                    antialias: false,
+                    preserveDrawingBuffer: true,
+                    premultipliedAlpha: false
+                })
             enableBasics(newGPU)
             setGpu(newGPU)
         }
