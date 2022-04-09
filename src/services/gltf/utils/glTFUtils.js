@@ -1,6 +1,6 @@
 import {mat4, quat} from "gl-matrix";
 import Transformation from "../../engine/utils/workers/Transformation";
-import ImageProcessor from "../../workers/ImageProcessor";
+import ImageProcessor from "../../workers/image/ImageProcessor";
 import ROTATION_TYPES from "../../engine/templates/ROTATION_TYPES";
 import Material from "../../../views/material/implementations/material/nodes/Material";
 import emptyMaterial from '../../utils/emptyMaterial.json'
@@ -26,9 +26,9 @@ export function materialParser(basePath, material, textures, images) {
             if (material.pbrMetallicRoughness.baseColorTexture)
                 promises.push(loadTexture('albedo', basePath, material.pbrMetallicRoughness.baseColorTexture, textures, images))
             else if (material.pbrMetallicRoughness.baseColorFactor)
-                promises.push(new Promise(resolve => resolve({
+                promises.push(new Promise(async resolve => resolve({
                     key: 'albedo',
-                    data: ImageProcessor.colorToImage(material.pbrMetallicRoughness.baseColorFactor)
+                    data: await ImageProcessor.colorToImage(material.pbrMetallicRoughness.baseColorFactor)
                 })))
 
             if (material.pbrMetallicRoughness.metallicRoughnessTexture) {
@@ -38,14 +38,14 @@ export function materialParser(basePath, material, textures, images) {
                 const m = material.pbrMetallicRoughness.metallicFactor,
                     r = material.pbrMetallicRoughness.roughnessFactor
                 if (m)
-                    promises.push(new Promise(resolve => resolve({
+                    promises.push(new Promise(async resolve => resolve({
                         key: 'metallic',
-                        data: ImageProcessor.colorToImage([m, m, m, 1])
+                        data: await ImageProcessor.colorToImage([m, m, m, 1])
                     })))
                 if (r)
-                    promises.push(new Promise(resolve => resolve({
+                    promises.push(new Promise(async resolve => resolve({
                         key: 'roughness',
-                        data: ImageProcessor.colorToImage([r, r, r, 1])
+                        data: await ImageProcessor.colorToImage([r, r, r, 1])
                     })))
             }
         }
@@ -63,7 +63,7 @@ export function materialParser(basePath, material, textures, images) {
         Promise.all(promises)
             .then(result => {
                 const mat = new Material()
-                mat.id =  emptyMaterial.response.id
+                mat.id = emptyMaterial.response.id
                 mat.compile(result).then(() => {
                     resolve({
                         name: material.name,
@@ -100,7 +100,7 @@ function loadTexture(key, basePath, texture, textures, images, channels) {
             if (file) {
                 file = `data:image/${imgURI.uri.split('.').pop()};base64, ` + file
                 if (channels !== undefined && channels.length === 4)
-                    ImageProcessor.extractChannel(channels, file)
+                    ImageProcessor.byChannels(channels, file)
                         .then(f => {
                             resolve({key, data: f})
                         })
@@ -159,7 +159,7 @@ export function nodeParser(node, allNodes, parentTransform) {
 
         parsedNode.scaling = scale
         parsedNode.translation = translation
-        transformationMatrix  = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling,  ROTATION_TYPES.GLOBAL)
+        transformationMatrix = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling, ROTATION_TYPES.GLOBAL)
     }
 
 
@@ -185,11 +185,6 @@ export function nodeParser(node, allNodes, parentTransform) {
         res.push(parsedNode)
     return res
 }
-
-
-
-
-
 
 
 export function getPrimitives(mesh, materials = []) {

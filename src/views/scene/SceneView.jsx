@@ -16,6 +16,7 @@ import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
+import {WebWorker} from "../../services/workers/WebWorker";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)

@@ -7,12 +7,12 @@ import useGlobalOptions from "./pages/project/hook/useGlobalOptions";
 
 import Home from "./pages/home/Home";
 import Project from "./pages/project/Project";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import ImageProcessor, {COLOR_BLEND_OPERATIONS} from "./services/workers/image/ImageProcessor";
 
-export default function App( ) {
+export default function App() {
     const [currentTab, setCurrentTab] = useState(0)
     const global = useGlobalOptions()
-
 
     return (
         <Fabric

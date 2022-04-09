@@ -1,7 +1,7 @@
 import FileBlob from "./FileBlob";
 import GLTF from "../gltf/GLTF";
 
-import ImageProcessor from "./ImageProcessor";
+import ImageProcessor from "./image/ImageProcessor";
 import emptyMaterial from '../utils/emptyMaterial.json'
 import TerrainWorker from "./TerrainWorker";
 

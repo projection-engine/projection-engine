@@ -27,6 +27,7 @@ import CAMERA_TYPES from "../engine/templates/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 import {v4 as uuidv4} from 'uuid';
+import FileBlob from "../workers/FileBlob";
 
 export default function useMinimalEngine(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState()
@@ -42,6 +43,11 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
     const renderer = useRef()
     let resizeObserver
 
+    const toImage = () => {
+
+
+            return new Promise(re => re(gpu.canvas.toDataURL()))
+    }
     useLayoutEffect(() => {
         setId(uuidv4())
     }, [])
@@ -49,7 +55,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
 
     useEffect(() => {
         if (id && !gpu && !initialized) {
-            const newGPU = document.getElementById(id + '-canvas').getContext('webgl2', {
+            const newGPU = document.getElementById(id + '-canvas') .getContext('webgl2', {
                 antialias: false,
                 preserveDrawingBuffer: true
             })
@@ -73,7 +79,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
                         initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true)
                     })
             renderer.current = new Engine(id, gpu)
-
+            renderer.current.camera.notChangableRadius = true
             const deferred = new MeshSystem(gpu, 1)
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
             setInitialized(true)
@@ -83,20 +89,20 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
                         new TransformSystem(),
                         new ShadowMapSystem(gpu),
                         deferred,
-                        new PostProcessingSystem(gpu, 1)
+                        new PostProcessingSystem(gpu,   1)
                     ]
-                    renderer.current.camera.radius = 2
+                    renderer.current.camera.radius = 2.5
                     load.finishEvent(EVENTS.UPDATING_SYSTEMS)
 
                     setFinished(true)
                 })
         } else if (gpu && id && initialized && finished) {
 
-            resizeObserver = new ResizeObserver(() => {
-                if (initialized)
-                    renderer.current.camera.aspectRatio = gpu?.canvas.width / gpu?.canvas.height
-            })
-            resizeObserver.observe(document.getElementById(id + '-canvas'))
+        resizeObserver = new ResizeObserver(() => {
+            if (initialized)
+                renderer.current.camera.aspectRatio = gpu?.canvas.width / gpu?.canvas.height
+        })
+        resizeObserver.observe(document.getElementById(id + '-canvas'))
 
 
             if (!canRender)
@@ -115,7 +121,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
                     cameraType: CAMERA_TYPES.SPHERICAL
-                })
+                } )
             }
         }
 
@@ -140,7 +146,8 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
         meshes, setMeshes, gpu,
         material, setMaterial,
         initialized, renderer: renderer.current,
-        canRender, setCanRender
+        canRender, setCanRender,
+        toImage
     }
 }
 

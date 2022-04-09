@@ -12,6 +12,8 @@ a {
 }
 
 * {
+  font-family: Roboto;
+
   box-sizing: border-box;
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
