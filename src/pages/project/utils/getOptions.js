@@ -1,4 +1,4 @@
-export default function getOptions(executingAnimation, setExecutingAnimation, engine, save,openLevelBlueprint) {
+export default function getOptions(executingAnimation, setExecutingAnimation, engine, save,openLevelBlueprint, setAlert) {
     return [
         {
             label: 'Save',
@@ -18,7 +18,10 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             label: 'Rebuild cubemaps',
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>refresh</span>,
-            onClick: async () => engine.renderer.recompiled = false
+            onClick: async () => {
+                setAlert({message: 'Recompiling cubemaps', type: 'info'})
+                engine.renderer.recompiled = false
+            }
         },
         {
             group: 'Edit level blueprint',

@@ -9,6 +9,7 @@ import Home from "./pages/home/Home";
 import Project from "./pages/project/Project";
 import {useEffect, useState} from "react";
 import ImageProcessor, {COLOR_BLEND_OPERATIONS} from "./services/workers/image/ImageProcessor";
+import write from "./services/workers/files/functions/write";
 
 export default function App() {
     const [currentTab, setCurrentTab] = useState(0)

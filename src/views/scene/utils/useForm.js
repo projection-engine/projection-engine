@@ -228,8 +228,12 @@ export default function useForm(
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.SKYBOX]}
                         submit={(data, key) => {
-
-                            selected.components[COMPONENTS.SKYBOX][key] = data
+                            if(key === 'blob') {
+                                selected.components[COMPONENTS.SKYBOX].blob = data.blob
+                                selected.components[COMPONENTS.SKYBOX].imageID = data.imageID
+                            }
+                            else
+                                selected.components[COMPONENTS.SKYBOX][key] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {

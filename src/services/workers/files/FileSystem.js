@@ -1,9 +1,9 @@
-import FileBlob from "./FileBlob";
-import GLTF from "../gltf/GLTF";
+import FileBlob from "../FileBlob";
+import GLTF from "../../gltf/GLTF";
 
-import ImageProcessor from "./image/ImageProcessor";
-import emptyMaterial from '../utils/emptyMaterial.json'
-import TerrainWorker from "./TerrainWorker";
+import ImageProcessor from "../image/ImageProcessor";
+import emptyMaterial from '../../utils/emptyMaterial.json'
+import TerrainWorker from "../TerrainWorker";
 
 import {v4 as uuidv4} from 'uuid';
 

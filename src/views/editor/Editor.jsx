@@ -31,7 +31,8 @@ export default function Editor(props) {
                 props.setExecutingAnimation,
                 props.engine,
                 props.serializer.save,
-                props.openLevelBlueprint
+                props.openLevelBlueprint,
+                props.setAlert
             ),
             'Editor',
             <span

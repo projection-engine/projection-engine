@@ -25,6 +25,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                 const data = entities[i]
                 fileSystem.readRegistryFile(data)
                     .then(res => {
+                        console.log(res)
                         if (res && (res.path.includes('.mesh') || res.path.includes('.terrain')))
                             fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                                 .then(mesh => {

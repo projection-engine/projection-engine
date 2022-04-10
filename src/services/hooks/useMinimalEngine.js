@@ -28,13 +28,17 @@ import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 import {v4 as uuidv4} from 'uuid';
 import FileBlob from "../workers/FileBlob";
+import useEngineEssentials from "../engine/useEngineEssentials";
 
 export default function useMinimalEngine(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
-    const [id, setId] = useState()
-    const [gpu, setGpu] = useState()
-    const [meshes, setMeshes] = useState([])
-    const [material, setMaterial] = useState()
-    const [entities, dispatchEntities] = useReducer(entityReducer, [], () => [])
+    const [id, setId] = useState(uuidv4())
+    const {
+        meshes, setMeshes,
+        materials, setMaterials,
+        entities, dispatchEntities,
+        gpu
+    } = useEngineEssentials(id + '-canvas')
+
     const [initialized, setInitialized] = useState(false)
     const [canRender, setCanRender] = useState(true)
     const [finished, setFinished] = useState(false)
@@ -43,28 +47,9 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
     const renderer = useRef()
     let resizeObserver
 
-    const toImage = () => {
-
-
-            return new Promise(re => re(gpu.canvas.toDataURL()))
-    }
-    useLayoutEffect(() => {
-        setId(uuidv4())
-    }, [])
-
 
     useEffect(() => {
-        if (id && !gpu && !initialized) {
-            const newGPU = document.getElementById(id + '-canvas') .getContext('webgl2', {
-                antialias: false,
-                preserveDrawingBuffer: true
-            })
-            enableBasics(newGPU)
-            setGpu(newGPU)
-        }
-
         if (gpu && !initialized && id) {
-
             initializeSkybox(dispatchEntities, gpu)
             initializeLight(dispatchEntities)
 
@@ -112,7 +97,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
                     renderer.current.camera.centerOn = [0, 1, 0]
                     renderer.current.camera.updateViewMatrix()
                 }
-                renderer.current?.start(entities, material ? [material] : [], meshes, {
+                renderer.current?.start(entities, materials, meshes, {
                     fxaa: true,
                     meshes,
                     gamma: 2.2,
@@ -130,7 +115,7 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
         }
     }, [
         meshes,
-        material,
+        materials,
         finished,
         initialized,
         entities,
@@ -144,10 +129,10 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
         id, load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
-        material, setMaterial,
+        material: materials[0], setMaterial: mat => setMaterials([mat]),
         initialized, renderer: renderer.current,
         canRender, setCanRender,
-        toImage
+        toImage: () => new Promise(re => re(gpu.canvas.toDataURL()))
     }
 }
 

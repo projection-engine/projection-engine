@@ -59,7 +59,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                 let cleanUp = all.map(a => {
                                     return new Promise(((resolve1) => {
                                         if (!engine.entities.find(e => e.id === a.data.id)) {
-                                            fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true)
+                                            fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity')
                                                 .then((er) => resolve1(er))
                                         } else
                                             resolve1()

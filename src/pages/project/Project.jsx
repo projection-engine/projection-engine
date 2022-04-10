@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useEffect, useMemo, useState} from "reac
 import {AlertProvider, LoaderProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import Maker from "../../services/workers/Maker";
-import useQuickAccess from "./hook/useQuickAccess";
+import useQuickAccess from "../../services/hooks/useQuickAccess";
 import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";

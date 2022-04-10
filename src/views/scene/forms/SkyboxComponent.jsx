@@ -6,6 +6,7 @@ import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions, 
 
 import EVENTS from "../../../services/utils/misc/EVENTS";
 import Range from "../../../components/range/Range";
+import ImageProcessor from "../../../services/workers/image/ImageProcessor";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)
@@ -39,16 +40,15 @@ export default function SkyboxComponent(props) {
                                         fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path)
                                             .then(file => {
                                                 if (file) {
-                                                    const img = new Image()
-                                                    img.src = file
-                                                    img.onload = () => {
-                                                        props.submit({
-                                                            blob: img,
-                                                            imageID: src.registryID
-                                                        }, 'hdrTexture')
-                                                        load.finishEvent(EVENTS.LOAD_FILE)
-                                                        setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
-                                                    }
+                                                    ImageProcessor.getImageBitmap(file)
+                                                        .then(res => {
+                                                            props.submit({
+                                                                blob: res,
+                                                                imageID: src.registryID
+                                                            }, 'blob')
+                                                            load.finishEvent(EVENTS.LOAD_FILE)
+                                                            setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
+                                                        })
                                                 } else
                                                     load.finishEvent(EVENTS.LOAD_FILE)
                                             })

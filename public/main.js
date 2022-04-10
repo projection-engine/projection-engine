@@ -24,7 +24,10 @@ function createWindow() {
 
             enableRemoteModule: true,
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            nativeWindowOpen: true,
+            nodeIntegrationInWorker: true,
+
         },
         autoHideMenuBar: true,
         icon: __dirname + '/L.png',

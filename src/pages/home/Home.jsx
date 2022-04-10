@@ -1,14 +1,15 @@
 import {Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
-import React from "react";
+import React, {useEffect} from "react";
 import Projects from "./components/projects/Projects";
 
 import PropTypes from "prop-types";
-import FileSystem from "../../services/workers/FileSystem";
+import FileSystem from "../../services/workers/files/FileSystem";
 
 import EVENTS from "../../services/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";
+import write from "../../services/workers/files/functions/write";
 
 const fs = window.require('fs')
 const pathResolve = window.require('path')
@@ -75,10 +76,8 @@ export default function Home(props) {
             <Projects
                 onNew={() => setOpenModal(true)}
                 onLoad={() => uploadRef.current.click()}
-
                 deleteProject={pjID => {
                     load.pushEvent(EVENTS.PROJECT_DELETE)
-
                     fs.rm(
                         pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + pjID),
                         {recursive: true, force: true},

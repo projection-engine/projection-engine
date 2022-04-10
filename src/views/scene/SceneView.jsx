@@ -112,7 +112,9 @@ export default function SceneView(props) {
             <div className={styles.wrapperContent} style={{overflow: 'hidden', height: hidden ? '100%' : undefined}}>
                 <div className={[styles.header, styles.mainHeader].join(' ')} data-hidden={`${hidden}`}
                      style={{justifyContent: 'flex-start', padding: '0 4px'}}>
-                    <Button className={styles.button} onClick={() => setHidden(!hidden)} variant={'outlined'}>
+                    <Button
+                        className={styles.button}
+                            onClick={() => setHidden(!hidden)}>
                         <span className={'material-icons-round'}
                               style={{fontSize: '1rem'}}>{!hidden ? 'menu_open' : 'menu'}</span>
                     </Button>

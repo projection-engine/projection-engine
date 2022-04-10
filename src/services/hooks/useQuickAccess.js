@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import FileSystem from "../../../services/workers/FileSystem";
-import EVENTS from "../../../services/utils/misc/EVENTS";
+import FileSystem from "../workers/files/FileSystem";
+import EVENTS from "../utils/misc/EVENTS";
 
 const fs = window.require('fs')
 export default function useQuickAccess(projectID, load) {
@@ -26,7 +26,8 @@ export default function useQuickAccess(projectID, load) {
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
+                        fileSystem.readFile(
+                            fileSystem.path + '\\previews\\' + i.id + '.preview')
                             .then(preview => {
                                 resolve({
                                     type: 'image',

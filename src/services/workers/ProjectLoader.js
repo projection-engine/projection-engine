@@ -21,6 +21,7 @@ import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 import CameraComponent from "../engine/ecs/components/CameraComponent";
 import {quat} from "gl-matrix";
 import Transformation from "../engine/utils/workers/Transformation";
+import ImageProcessor from "./image/ImageProcessor";
 
 
 export default class ProjectLoader {
@@ -118,18 +119,16 @@ export default class ProjectLoader {
             ].map(e => new Promise(r => {
                 ProjectLoader.readFromRegistry(e, fileSystem)
                     .then(fileData => {
-                        if (fileData) {
-                            const img = new Image()
-                            img.src = fileData
-                            img.onload = () => {
-                                r({
-                                    type: 'skybox',
-                                    data: img,
-                                    id: e
+                        if (fileData)
+                            ImageProcessor.getImageBitmap(fileData)
+                                .then(img => {
+                                    r({
+                                        type: 'skybox',
+                                        data: img,
+                                        id: e
+                                    })
                                 })
-                            }
-
-                        } else
+                         else
                             r(undefined)
                     })
             }))
@@ -303,8 +302,12 @@ const ENTITIES = {
     [COMPONENTS.SKYBOX]: (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
         const foundImage = skyboxes.find(i => i.id === entity.components[k].imageID)
-        if (foundImage)
-            component.hdrTexture = {blob: foundImage.data, imageID: foundImage.id}
+
+        if (foundImage) {
+            console.log(foundImage)
+            component.imageID = foundImage.id
+            component.blob = foundImage.data
+        }
 
         return component
     },

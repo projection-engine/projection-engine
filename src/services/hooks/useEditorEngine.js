@@ -24,33 +24,21 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         meshes, setMeshes,
         materials, setMaterials,
         entities, dispatchEntities,
-        scripts, setScripts
-    } = useEngineEssentials(true)
+        scripts, setScripts,
+        gpu
+    } = useEngineEssentials(id + '-canvas')
+
     const {
         returnChanges,
         forwardChanges,
         dispatchChanges
     } = useHistory(entities, dispatchEntities, setAlert)
     const [canRender, setCanRender] = useState(true)
-    const [gpu, setGpu] = useState()
+
     const [selected, setSelected] = useState([])
     const [finished, setFinished] = useState(false)
     const [initialized, setInitialized] = useState(false)
     const [lockedEntity, setLockedEntity] = useState()
-
-    useEffect(() => {
-        if (id) {
-            const newGPU = document.getElementById(id + '-canvas')
-                .getContext('webgl2', {
-                    antialias: false,
-                    preserveDrawingBuffer: true,
-                    premultipliedAlpha: false
-                })
-            enableBasics(newGPU)
-            setGpu(newGPU)
-        }
-    }, [id])
-
 
     const renderer = useRef()
     let resizeObserver
