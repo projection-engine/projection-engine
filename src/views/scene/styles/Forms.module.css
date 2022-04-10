@@ -131,7 +131,8 @@
 }
 
 .summary {
-    background-color: var(--fabric-background-secondary) !important;
+    background-color: var(--fabric-border-primary) !important;
     font-size: .75rem;
     font-weight: 550;
+
 }

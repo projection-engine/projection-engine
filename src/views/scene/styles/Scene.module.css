@@ -50,21 +50,6 @@
     display: grid;
 }
 
-.form {
-    background-color: var(--fabric-background-secondary);
-    padding: 24px;
-
-    text-align: left;
-    border-radius: 5px;
-    display: grid;
-    gap: 8px;
-    border: var(--fabric-border-primary) 1px solid;
-}
-
-.form > legend {
-    font-size: .9rem;
-    font-weight: 600;
-}
 
 .formsWrapper {
     display:flex;
@@ -77,6 +62,11 @@
     padding: 4px 4px 32px;
     color: var(--fabric-color-primary);
     overflow-x: hidden;
+}
+.formsWrapper > div{
+    border: none;
+    background-color: var(--fabric-border-primary) !important;
+    border-radius: 3px;
 }
 
 

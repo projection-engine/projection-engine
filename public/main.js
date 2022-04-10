@@ -21,7 +21,7 @@ function createWindow() {
         title: "Projection Engine",
         protocol: 'file:',
         webPreferences: {
-
+            webSecurity: false,
             enableRemoteModule: true,
             nodeIntegration: true,
             contextIsolation: false,
