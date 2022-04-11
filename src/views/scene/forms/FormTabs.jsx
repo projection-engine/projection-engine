@@ -88,7 +88,7 @@ export default function FormTabs(props){
         <div className={styles.wrapper}>
             {tabs.map((t, i) => (
                 <React.Fragment key={i + '-component-tab'}>
-                    <Button className={styles.button} variant={"outlined"} highlight={currentKey === t.key} onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
+                    <Button className={styles.button} highlight={currentKey === t.key} onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
                         {t.icon}
                         <ToolTip content={t.label}/>
                     </Button>

@@ -1,5 +1,5 @@
 import ImageProcessor from "./image/ImageProcessor";
-import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
+import PrimitiveProcessor from "./files/gltf/workers/PrimitiveProcessor";
 
 export default class TerrainWorker {
     static loadHeightMap(imgBlob, settings) {

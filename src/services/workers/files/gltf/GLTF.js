@@ -1,10 +1,11 @@
-import groupInto from "../utils/groupInto";
+import groupInto from "../../../utils/groupInto";
 import {getPrimitives, materialParser, nodeParser} from "./utils/glTFUtils";
 import GLTFBuffer from "./workers/GLTFBuffer";
 import Accessor from "./workers/Accessor";
 import PrimitiveProcessor from "./workers/PrimitiveProcessor";
 
 export default class GLTF {
+
     static async parseGLTF(data, basePath, options) {
         try {
             let parsed = JSON.parse(data)

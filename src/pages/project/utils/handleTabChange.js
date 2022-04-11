@@ -22,14 +22,14 @@ export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engin
         load.pushEvent(EVENTS.LOADING)
         ProjectLoader.loadMaterials([toRemove.registryID], fileSystem, engine.gpu, engine.materials)
             .then(newMat => {
-
-                engine.setMaterials(prev => {
-                    return prev.map(p => {
-                        if (p.id === toRemove.registryID)
-                            return newMat[0]
-                        return p
+                if(newMat[0])
+                    engine.setMaterials(prev => {
+                        return prev.map(p => {
+                            if (p.id === toRemove.registryID)
+                                return newMat[0]
+                            return p
+                        })
                     })
-                })
                 load.finishEvent(EVENTS.LOADING)
             })
     } else if (toRemove.isLevelBlueprint) {

@@ -1,4 +1,4 @@
-import groupInto from "../../utils/groupInto";
+import groupInto from "../../../../utils/groupInto";
 
 export default class Mesh{
     constructor(data) {

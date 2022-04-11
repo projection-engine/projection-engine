@@ -24,116 +24,115 @@ export default function CubeMapComponent(props) {
     return (
         <>
 
-            <Accordion className={styles.fieldset}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Resolution
                 </AccordionSummary>
-                <div className={styles.formWrapper}>
-                    <Dropdown className={styles.dropdown}>
-                        {state.resolution}p
-                        <DropdownOptions>
-                            <DropdownOption option={{
-                                label: '128p',
-                                icon: state.resolution === 128 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 128
-                                    })
-                                    props.submit(128, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '512p',
-                                icon: state.resolution === 512 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 512
-                                    })
-                                    props.submit(512, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '1024p',
-                                icon: state.resolution === 1024 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 1024
-                                    })
-                                    props.submit(1024, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '2048p',
-                                icon: state.resolution === 2048 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 2048
-                                    })
-                                    props.submit(2048, 'resolution')
-                                }
-                            }}/>
 
-                        </DropdownOptions>
-                    </Dropdown>
-                </div>
+                <Dropdown className={styles.dropdown}>
+                    {state.resolution}p
+                    <DropdownOptions>
+                        <DropdownOption option={{
+                            label: '128p',
+                            icon: state.resolution === 128 ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 128
+                                })
+                                props.submit(128, 'resolution')
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: '512p',
+                            icon: state.resolution === 512 ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 512
+                                })
+                                props.submit(512, 'resolution')
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: '1024p',
+                            icon: state.resolution === 1024 ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 1024
+                                })
+                                props.submit(1024, 'resolution')
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: '2048p',
+                            icon: state.resolution === 2048 ?
+                                <span style={{fontSize: '1.2rem'}}
+                                      className={'material-icons-round'}>check</span> : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 2048
+                                })
+                                props.submit(2048, 'resolution')
+                            }
+                        }}/>
+
+                    </DropdownOptions>
+                </Dropdown>
+
             </Accordion>
 
-            <Accordion className={styles.fieldset}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Affect Radius
                 </AccordionSummary>
-                <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
 
-                    <Range
-                        accentColor={'red'}
-                        onFinish={() => props.submit(state.radius, 'radius')}
-                        value={state.radius}
-                        handleChange={e => {
-                            setState({...state, radius: e})
-                        }}
-                    />
-                </div>
+                <Range
+                    accentColor={'red'}
+                    onFinish={() => props.submit(state.radius, 'radius')}
+                    value={state.radius}
+                    handleChange={e => {
+                        setState({...state, radius: e})
+                    }}
+                />
+
             </Accordion>
-            <Accordion className={styles.fieldset}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Prefiltered LOD samples
                 </AccordionSummary>
-                    <div className={styles.inputsColumn} style={{marginBottom: '4px'}}>
-                        <Range
-                            accentColor={'blue'}
-                            integer={true}
-                            incrementPercentage={1}
-                            minValue={1}
-                            maxValue={10}
 
-                            onFinish={() => props.submit(state.prefilteredMipmaps, 'prefilteredMipmaps')}
-                            value={state.prefilteredMipmaps}
-                            handleChange={e => {
-                                setState({...state, prefilteredMipmaps: parseInt(e)})
-                            }}
-                        />
-                    </div>
+                <Range
+                    accentColor={'blue'}
+                    integer={true}
+                    incrementPercentage={1}
+                    minValue={1}
+                    maxValue={10}
+
+                    onFinish={() => props.submit(state.prefilteredMipmaps, 'prefilteredMipmaps')}
+                    value={state.prefilteredMipmaps}
+                    handleChange={e => {
+                        setState({...state, prefilteredMipmaps: parseInt(e)})
+                    }}
+                />
+
             </Accordion>
-                <Checkbox
-                    checked={state.irradiance}
-                    label={'Generate irradiance map'}
-                    handleCheck={() => {
-                        setState({...state, irradiance: !state.irradiance})
-                        props.submit(!state.irradiance)
-                    }} height={'35px'} width={'100%'}
-                    noMargin={true}/>
+            <Checkbox
+                checked={state.irradiance}
+                label={'Generate irradiance map'}
+                handleCheck={() => {
+                    setState({...state, irradiance: !state.irradiance})
+                    props.submit(!state.irradiance)
+                }} height={'35px'} width={'100%'}
+                noMargin={true}/>
         </>
 
 

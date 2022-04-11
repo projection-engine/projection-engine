@@ -1,10 +1,7 @@
-import {useContext, useEffect, useLayoutEffect, useReducer, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 
-import entityReducer, {ENTITY_ACTIONS} from "../utils/entityReducer";
-import {enableBasics} from "../engine/utils/misc/utils";
+import {ENTITY_ACTIONS} from "../utils/entityReducer";
 import Entity from "../engine/ecs/basic/Entity";
-
-import planeMesh from '../../static/assets/Plane.json'
 import sphereMesh from '../../static/assets/Sphere.json'
 
 import Engine from "../engine/Engine";
@@ -18,8 +15,6 @@ import DirectionalLightComponent from "../engine/ecs/components/DirectionalLight
 import MeshComponent from "../engine/ecs/components/MeshComponent";
 import TransformComponent from "../engine/ecs/components/TransformComponent";
 import MeshInstance from "../engine/instances/MeshInstance";
-
-import skybox from '../../static/sky.jpg'
 import {LoaderProvider} from "@f-ui/core";
 import {SHADING_MODELS} from "../../pages/project/hook/useSettings";
 import EVENTS from "../utils/misc/EVENTS";
@@ -27,10 +22,11 @@ import CAMERA_TYPES from "../engine/templates/CAMERA_TYPES";
 import MaterialComponent from "../engine/ecs/components/MaterialComponent";
 
 import {v4 as uuidv4} from 'uuid';
-import FileBlob from "../workers/FileBlob";
 import useEngineEssentials from "../engine/useEngineEssentials";
+import ImageProcessor from "../workers/image/ImageProcessor";
+import COMPONENTS from "../engine/templates/COMPONENTS";
 
-export default function useMinimalEngine(initializePlane, initializeSphere, centerOnSphere, loadAllMeshes) {
+export default function useMinimalEngine(initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState(uuidv4())
     const {
         meshes, setMeshes,
@@ -53,8 +49,6 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
             initializeSkybox(dispatchEntities, gpu)
             initializeLight(dispatchEntities)
 
-            if (initializePlane)
-                initializeMesh(planeMesh, gpu, IDS.PLANE, 'Plane', dispatchEntities, setMeshes)
             if (initializeSphere)
                 initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', dispatchEntities, setMeshes)
 
@@ -82,14 +76,6 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
                     setFinished(true)
                 })
         } else if (gpu && id && initialized && finished) {
-
-        resizeObserver = new ResizeObserver(() => {
-            if (initialized)
-                renderer.current.camera.aspectRatio = gpu?.canvas.width / gpu?.canvas.height
-        })
-        resizeObserver.observe(document.getElementById(id + '-canvas'))
-
-
             if (!canRender)
                 renderer.current?.stop()
             else {
@@ -137,21 +123,22 @@ export default function useMinimalEngine(initializePlane, initializeSphere, cent
 }
 
 function initializeSkybox(dispatch, gpu) {
+    import('../../static/sky.json')
+        .then(img => {
+            console.log(img)
+            ImageProcessor.getImageBitmap(img.data)
+                .then(res => {
+                    const newEntity = new Entity(undefined, 'sky')
+                    newEntity.addComponent(new SkyboxComponent(undefined, gpu))
 
-    const img = new Image()
-    img.src = skybox
-
-    img.onload = () => {
-        const newEntity = new Entity(undefined, 'sky')
-        newEntity.addComponent(new SkyboxComponent(undefined, gpu))
-
-        newEntity.components.SkyboxComponent.hdrTexture = {blob: img, imageID: ''}
-
-        dispatch({
-            type: ENTITY_ACTIONS.ADD,
-            payload: newEntity
+                    newEntity.components[COMPONENTS.SKYBOX].blob = res
+                    dispatch({
+                        type: ENTITY_ACTIONS.ADD,
+                        payload: newEntity
+                    })
+                })
         })
-    }
+
 }
 
 function initializeLight(dispatch) {

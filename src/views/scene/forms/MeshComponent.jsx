@@ -16,11 +16,11 @@ export default function MeshComponent(props) {
 
     return (
         <>
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Mesh
                 </AccordionSummary>
-                <div className={styles.wrapper} style={{display: 'grid', padding: '4px', gap: '4px'}}>
+
                     <Selector
                         selected={currentMesh}
                         type={'mesh'}
@@ -36,9 +36,6 @@ export default function MeshComponent(props) {
                                 props.submit(m.registryID)
                             }
                         }}/>
-
-                </div>
-
             </Accordion>
 
 

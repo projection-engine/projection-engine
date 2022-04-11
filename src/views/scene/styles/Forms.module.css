@@ -26,10 +26,13 @@
 
 .fieldset {
     display: grid;
-    gap: 4px;
+    border: var(--fabric-border-primary) 1px solid !important;
+
+
+
     max-width: 100%;
     overflow: hidden;
-    border-radius: 5px;
+
     background-color: var(--fabric-background-primary);
     user-select: none;
 
@@ -73,6 +76,7 @@
 
     max-width: 100%;
     overflow: hidden;
+    background: var(--fabric-background-tertiary);
 }
 
 .label {
@@ -132,6 +136,7 @@
 
 .summary {
     background-color: var(--fabric-border-primary) !important;
+    border-radius: 5px 5px 0 0;
     font-size: .75rem;
     font-weight: 550;
 

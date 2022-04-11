@@ -1,12 +1,11 @@
 import FileBlob from "../FileBlob";
-import GLTF from "../../gltf/GLTF";
 
 import ImageProcessor from "../image/ImageProcessor";
-import emptyMaterial from '../../utils/emptyMaterial.json'
 import TerrainWorker from "../TerrainWorker";
 
 import {v4 as uuidv4} from 'uuid';
-import PrimitiveProcessor from "../../gltf/workers/PrimitiveProcessor";
+import glTFImporter from "./gltf/glTFImporter";
+import fbxImporter from "./fbx/fbxImporter";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -176,168 +175,10 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    fs.mkdir(resolvePath(newRoot), (err) => {
-                        if (!err)
-                            FileBlob
-                                .loadAsString(file)
-                                .then(res => {
-                                    GLTF.parseGLTF(res, file.path.replace(file.name, ''), options)
-                                        .then(({nodes, materials}) => {
-                                            let promises = []
-                                            if (nodes) {
-                                                promises.push(...nodes.map(d => {
-                                                    return [
-                                                        new Promise(r => {
-                                                            fs.writeFile(
-                                                                resolvePath(newRoot + `\\${d.name}.mesh`),
-                                                                JSON.stringify(d.data),
-                                                                () => {
-                                                                    r()
-                                                                });
-                                                        }),
-                                                        this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`)
-                                                    ]
-                                                }))
-                                            }
-
-                                            if (materials && materials.length > 0) {
-                                                fs.mkdir(resolvePath(newRoot + `\\Materials`), () => {
-                                                    fs.mkdir(resolvePath(newRoot + `\\Materials\\Resources`), () => {
-                                                        promises.push(...materials.map(d => {
-                                                            let parsedData = {...emptyMaterial}
-                                                            const keysOnRes = Object.keys(d.response)
-                                                            parsedData.nodes = parsedData.nodes.filter(n => {
-                                                                return keysOnRes.includes(n.id) || n.id === 'material'
-                                                            })
-                                                            parsedData.links = parsedData.links.filter(e => {
-                                                                return keysOnRes.includes(e.target.attribute.key)
-                                                            })
-                                                            parsedData.nodes = parsedData.nodes.map(n => {
-                                                                const newNode = {...n}
-                                                                newNode.sample = {
-                                                                    type: n.id,
-                                                                    registryID: uuidv4()
-                                                                }
-                                                                return newNode
-                                                            })
-                                                            parsedData.response = d.response
-                                                            parsedData.response.name = d.name
-
-                                                            let localPromises = [
-                                                                new Promise(r => {
-                                                                    fs.writeFile(
-                                                                        resolvePath(newRoot + `\\Materials\\${d.name}.material`),
-                                                                        JSON.stringify(parsedData),
-                                                                        () => {
-                                                                            r()
-                                                                        });
-                                                                }),
-                                                                this.createRegistryEntry(d.id, newRoot.replace(this.path + '\\assets\\', '') + `\\Materials\\${d.name}.material`)
-                                                            ]
-
-                                                            parsedData.nodes.forEach((n, i) => {
-                                                                let nameSplit = n.sample.registryID
-                                                                nameSplit = nameSplit.substr(0, nameSplit.length / 2)
-                                                                localPromises.push(...this.importImage(newRoot + '\\Materials\\Resources\\' + nameSplit, d.response[n.sample.type]?.high, n.sample.registryID))
-                                                            })
-
-                                                            return localPromises
-                                                        }))
-                                                    })
-                                                })
-                                            }
-                                            Promise.all(promises)
-                                                .then(() => {
-                                                    resolve()
-                                                })
-                                        })
-                                })
-                        else
-                            resolve(err)
-                    })
+                    glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
                     break
                 case 'fbx':
-                    fs.mkdir(resolvePath(newRoot), async (err) => {
-                        let reader = new FileReader();
-                        const data = await new Promise(resolve1 => {
-                            reader.onload = function () {
-                                let arrayBuffer = new Uint8Array(reader.result);
-                                const assimpjs = window.require('assimpjs')();
-                                assimpjs.then((ajs) => {
-                                    // create new file list object
-                                    let fileList = new ajs.FileList();
-
-                                    // add model files
-                                    fileList.AddFile(
-                                        'ee.fbx',
-                                        arrayBuffer
-                                    );
-
-
-                                    // convert file list to assimp json
-                                    let result = ajs.ConvertFileList(fileList, 'assjson');
-
-                                    // check if the conversion succeeded
-                                    if (!result.IsSuccess() || result.FileCount() === 0) {
-                                        console.log(result.GetErrorCode());
-                                        return;
-                                    }
-
-                                    // get the result file, and convert to string
-                                    let resultFile = result.GetFile(0);
-                                    let jsonContent = new TextDecoder().decode(resultFile.GetContent());
-
-                                    // parse the result json
-                                    try {
-                                        jsonContent = JSON.parse(jsonContent)
-                                        resolve1(jsonContent)
-                                    } catch (e) {
-                                        resolve1()
-                                    }
-                                })
-                            }
-                            reader.readAsArrayBuffer(file);
-                        })
-
-                        let promises = []
-                        promises.push(...data.meshes.map(d => {
-
-                            return [
-                                new Promise(r => {
-                                    fs.writeFile(
-                                        resolvePath(newRoot + `\\${d.name}.mesh`),
-                                        JSON.stringify({
-                                            indices: d.faces.flat(),
-                                            vertices: d.vertices,
-                                            tangents: PrimitiveProcessor.computeTangents(d.faces.flat(), d.vertices, d.texturecoords[0], d.normals),
-                                            normals: d.normals,
-                                            uvs: d.texturecoords[0],
-                                            maxBoundingBox: [0, 0, 0],
-                                            minBoundingBox: [0, 0, 0],
-                                            name: d.name,
-                                            scaling: [
-                                                1,
-                                                1,
-                                                1
-                                            ],
-                                            translation: [0, 0, 0],
-                                            rotationQuad: [0, 0, 0, 1]
-                                        }),
-                                        (err) => {
-                                            console.log(err)
-                                            r()
-                                        });
-                                }),
-                                this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `\\${d.name}.mesh`)
-                            ]
-                        }))
-                        Promise.all(promises)
-                            .then(() => resolve())
-                            .catch(e => {
-                                console.log(e)
-                                resolve()
-                            })
-                    })
+                    fbxImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
                     break
                 default:
                     resolve()
@@ -348,6 +189,7 @@ export default class FileSystem {
     }
 
     createRegistryEntry(fID = uuidv4(), path) {
+
         const pathRe = resolvePath(this.path + '\\assets\\')
         const p = resolvePath(this.path + '\\assets\\' + path).replace(pathRe, '')
 

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from './styles/Scene.module.css'
-import React, {useContext, useEffect, useMemo, useState} from "react";
+import React, {useContext, useMemo, useState} from "react";
 
 import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
@@ -16,7 +16,6 @@ import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import ScriptComponent from "../../services/engine/ecs/components/ScriptComponent";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
-import {WebWorker} from "../../services/workers/WebWorker";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -230,8 +229,8 @@ export default function SceneView(props) {
                                     styles={{height: '20px', width: '20px'}}
                                     onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
                                     className={styles.button}
-                                    highlight={props.engine.lockedEntity === currentForm.selected?.id}
-                                    variant={"outlined"}>
+                                    variant={props.engine.lockedEntity === currentForm.selected?.id ? 'filled' : undefined}
+                                >
                                     <span className={'material-icons-round'} style={{fontSize: '1rem'}}>push_pin</span>
                                 </Button>
                             </div>

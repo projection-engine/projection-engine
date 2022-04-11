@@ -19,7 +19,6 @@ import CubeMapInstance from "../engine/instances/CubeMapInstance";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 import CameraComponent from "../engine/ecs/components/CameraComponent";
-import {quat} from "gl-matrix";
 import Transformation from "../engine/utils/workers/Transformation";
 import ImageProcessor from "./image/ImageProcessor";
 
@@ -251,8 +250,11 @@ export default class ProjectLoader {
                             try {
                                 fileParsed = JSON.parse(fileData)
 
-                                ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
-                                    .then(mat => r(mat))
+                                if(fileParsed && Object.keys(fileParsed).length > 0)
+                                    ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
+                                        .then(mat => r(mat))
+                                else
+                                    r()
 
                             } catch (e) {
                                 r()

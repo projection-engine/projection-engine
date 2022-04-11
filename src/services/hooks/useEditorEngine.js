@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-import {enableBasics} from "../engine/utils/misc/utils";
 import PostProcessingSystem from "../engine/ecs/systems/PostProcessingSystem";
 import MeshSystem from "../engine/ecs/systems/MeshSystem";
 import TransformSystem from "../engine/ecs/systems/TransformSystem";
@@ -14,7 +13,6 @@ import CubeMapSystem from "../engine/ecs/systems/CubeMapSystem";
 import ScriptSystem from "../engine/ecs/systems/ScriptSystem";
 import useEngineEssentials from "../engine/useEngineEssentials";
 import useHistory from "./useHistory";
-import GIZMOS from "../engine/templates/GIZMOS";
 import {HISTORY_ACTIONS} from "../utils/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 
@@ -41,7 +39,6 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
     const [lockedEntity, setLockedEntity] = useState()
 
     const renderer = useRef()
-    let resizeObserver
 
 
     const updateSystems = (callback) => {
@@ -96,11 +93,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
             })
 
         } else if (finished && canStart) {
-            resizeObserver = new ResizeObserver(() => {
-                if (gpu && initialized)
-                    renderer.current.camera.aspectRatio = gpu.canvas.width / gpu.canvas.height
-            })
-            resizeObserver.observe(document.getElementById(id + '-canvas'))
+
             renderer.current?.updateCamera(settings.cameraType)
             renderer.current.gizmo = settings.gizmo
 

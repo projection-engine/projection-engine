@@ -1,8 +1,7 @@
-import FileBlob from "../FileBlob";
 import {WebWorker} from "../WebWorker";
 import blendWithColor, {colorToImage, heightBasedLinearInterpolate, linearInterpolate} from "./functions/blend";
 
-import resize, {getImageBitmap, extractChannel, invert} from "./functions/misc";
+import resize, {extractChannel, getImageBitmap, invert} from "./functions/misc";
 
 export const COLOR_BLEND_OPERATIONS = {
     ADD: 0,

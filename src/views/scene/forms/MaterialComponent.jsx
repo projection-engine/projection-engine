@@ -53,11 +53,10 @@ export default function MaterialComponent(props) {
 
     return (
         <>
-            <Accordion>
+        <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Material
                 </AccordionSummary>
-                <div className={styles.formWrapper}>
                     <Selector
                         selected={currentMaterial}
                         type={'material'}
@@ -90,13 +89,12 @@ export default function MaterialComponent(props) {
                             } else
                                 props.submit()
                         }}/>
-                </div>
+
             </Accordion>
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     CubeMap influence radius
                 </AccordionSummary>
-                <div style={{padding: '4px'}}>
                     <Range
                         accentColor={'red'}
                         metric={'un'}
@@ -115,14 +113,14 @@ export default function MaterialComponent(props) {
                         }}
                     />
 
-                </div>
             </Accordion>
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
+                       contentStyles={{display: 'flex', gap: '2px'}}>
                 <AccordionSummary className={styles.summary}>
                     UV tiling
                 </AccordionSummary>
 
-                    <div className={styles.inputs} style={{padding: '4px', marginTop: '8px'}}>
+
                         <Range
                             accentColor={'red'}
                             metric={'x'}
@@ -160,14 +158,14 @@ export default function MaterialComponent(props) {
 
                             }}
                         />
-                    </div>
+
 
             </Accordion>
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Parallax height scale
                 </AccordionSummary>
-                <div style={{padding: '4px'}}>
+
                     <Range
                         accentColor={'red'}
 
@@ -186,13 +184,13 @@ export default function MaterialComponent(props) {
                             setState({...state, parallaxHeightScale: e})
                         }}
                     />
-                </div>
+
             </Accordion>
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Parallax layers
                 </AccordionSummary>
-                <div style={{padding: '4px'}}>
+
                     <Range
                         accentColor={'red'}
 
@@ -211,7 +209,7 @@ export default function MaterialComponent(props) {
                             setState({...state, parallaxLayers: e})
                         }}
                     />
-                </div>
+
             </Accordion>
             <Checkbox
                 noMargin={true}

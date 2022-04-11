@@ -91,7 +91,7 @@
     height: 25px;
     overflow: hidden;
 
-
+    background-color: var(--fabric-border-primary);
     display: flex;
     align-items: center;
     justify-content: center;

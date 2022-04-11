@@ -1,6 +1,6 @@
 import {Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
-import React, {useEffect} from "react";
+import React from "react";
 import Projects from "./components/projects/Projects";
 
 import PropTypes from "prop-types";
@@ -9,7 +9,6 @@ import FileSystem from "../../services/workers/files/FileSystem";
 import EVENTS from "../../services/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/sidebar/SideBar";
-import write from "../../services/workers/files/functions/write";
 
 const fs = window.require('fs')
 const pathResolve = window.require('path')

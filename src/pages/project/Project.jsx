@@ -39,7 +39,7 @@ export default function Project(props) {
     const [loading, setLoading] = useState(true)
     const [initialized, setInitialized] = useState(false)
 
-    const engine = useEditorEngine(props.id, executingAnimation, settings, load, true, setAlert)
+    const engine = useEditorEngine(props.id, executingAnimation, settings, load, initialized, setAlert)
 
     const quickAccess = useQuickAccess(props.id, load)
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
@@ -241,7 +241,7 @@ export default function Project(props) {
                         />
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
-                                if (newTab === 0)
+                                if (newTab === 0 )
                                     handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                                 setFilesLoaded(prev => {
                                     const newD = [...prev]

@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
-import Transformation from "../../../services/engine/utils/workers/Transformation";
 import Range from "../../../components/range/Range";
 
 
