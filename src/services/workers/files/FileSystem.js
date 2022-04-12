@@ -5,7 +5,7 @@ import TerrainWorker from "../TerrainWorker";
 
 import {v4 as uuidv4} from 'uuid';
 import glTFImporter from "./gltf/glTFImporter";
-import fbxImporter from "./fbx/fbxImporter";
+import assimpImporter from "./fbx/assimpImporter";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -46,8 +46,20 @@ export default class FileSystem {
                 case 'json':
                     fs.readFile(pathName, (e, res) => {
                         try {
-                            resolve(JSON.parse(res.toString()))
+
+                            const data = res.toString().replaceAll(',,', ',')
+                            let l = []
+                            for (let i = 0; i < 1000; i++) {
+
+                                l.push(data[145062 + i])
+                            }
+                            console.log(l.join(''))
+
+                            const d = JSON.parse(data)
+
+                            resolve(d)
                         } catch (e) {
+                            console.log(e)
                             resolve(null)
                         }
                     })
@@ -139,7 +151,7 @@ export default class FileSystem {
         else return []
     }
 
-    async importFile(file, filePath, asHeightMap, options) {
+    async importFile(file, filePath, asHeightMap, options, setAlert) {
         return new Promise(async resolve => {
 
             const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
@@ -175,10 +187,20 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
-                    break
+                    // glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
+                    // break
+                case 'obj':
                 case 'fbx':
-                    fbxImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
+                    const res = await assimpImporter(fs, resolvePath, newRoot, file, options, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
+                    if(setAlert)
+                        res.forEach(r => {
+                            console.log(r)
+                            setAlert({
+                                message: r.reason + ' - ' + r.name,
+                                type: 'error'
+                            })
+                        })
+                    resolve()
                     break
                 default:
                     resolve()

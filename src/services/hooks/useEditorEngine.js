@@ -15,6 +15,7 @@ import useEngineEssentials from "../engine/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "../utils/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
+import CameraCubeSystem from "../engine/ecs/systems/CameraCubeSystem";
 
 
 export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
@@ -52,7 +53,8 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     perf = renderer.current.systems[SYSTEMS.PERF],
                     pick = renderer.current.systems[SYSTEMS.PICK],
                     cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP],
-                    s = renderer.current.systems[SYSTEMS.SCRIPT]
+                    s = renderer.current.systems[SYSTEMS.SCRIPT],
+                    c = renderer.current.systems[SYSTEMS.CAMERA_CUBE]
 
                 renderer.current.systems = [
                     s ? s : new ScriptSystem(gpu),
@@ -66,7 +68,8 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     pick ? pick : new PickSystem(gpu),
                     deferred,
                     // new AOSystem(gpu),
-                    new PostProcessingSystem(gpu, settings.resolutionMultiplier)
+                    new PostProcessingSystem(gpu, settings.resolutionMultiplier),
+                    c ? c : new CameraCubeSystem(id + '-camera')
                 ]
                 load.finishEvent(EVENTS.UPDATING_SYSTEMS)
                 callback()
@@ -104,7 +107,13 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     entities,
                     materials,
                     meshes,
-                    {canExecutePhysicsAnimation, selected, setSelected: d => setSelected(d), ...settings},
+                    {
+                        canExecutePhysicsAnimation,
+                        selected,
+                        setSelected: d => {
+                            console.log(setSelected(d))
+                        }, ...settings
+                    },
                     scripts,
                     () => {
                         const e = entities.find(e => e.id === selected[0])

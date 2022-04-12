@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 
 
-const toDeg =  180/Math.PI, toRad =  Math.PI / 180
+const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 export default function CameraComponent(props) {
     const [state, setState] = useState({})
     const getNewState = () => {
@@ -22,7 +22,7 @@ export default function CameraComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     FOV
                 </AccordionSummary>
@@ -39,7 +39,7 @@ export default function CameraComponent(props) {
                     handleChange={e => setState({...state, fov: e})}
                 />
             </Accordion>
-            <Accordion className={styles.fieldset}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Aspect Ratio
                 </AccordionSummary>
@@ -54,45 +54,45 @@ export default function CameraComponent(props) {
                 />
             </Accordion>
 
-            <Accordion>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
+                       contentStyles={{display: 'flex', gap: '2px'}}>
                 <AccordionSummary className={styles.summary}>
                     Planes
                 </AccordionSummary>
 
-                <div className={styles.inputs}>
-                    <Range
-                        accentColor={'red'}
-                        value={state.zFar}
-                        metric={'Far'}
-                        precision={1}
-                        incrementPercentage={.1}
-                        onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
-                        handleChange={e => {
-                            setState(prev => {
-                                return {
-                                    ...prev,
-                                    zFar: e
-                                }
-                            })
-                        }}
-                    />
-                    <Range
-                        accentColor={'green'}
-                        value={state.zNear}
-                        metric={'Near'}
-                        precision={1}
-                        incrementPercentage={.1}
-                        onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
-                        handleChange={e => {
-                            setState(prev => {
-                                return {
-                                    ...prev,
-                                    zNear: e
-                                }
-                            })
-                        }}/>
 
-                </div>
+                <Range
+                    accentColor={'red'}
+                    value={state.zFar}
+                    metric={'Far'}
+                    precision={1}
+                    incrementPercentage={.1}
+                    onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
+                    handleChange={e => {
+                        setState(prev => {
+                            return {
+                                ...prev,
+                                zFar: e
+                            }
+                        })
+                    }}
+                />
+                <Range
+                    accentColor={'green'}
+                    value={state.zNear}
+                    metric={'Near'}
+                    precision={1}
+                    incrementPercentage={.1}
+                    onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
+                    handleChange={e => {
+                        setState(prev => {
+                            return {
+                                ...prev,
+                                zNear: e
+                            }
+                        })
+                    }}/>
+
             </Accordion>
         </>
 

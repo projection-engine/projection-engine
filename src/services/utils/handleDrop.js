@@ -29,9 +29,11 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                         if (res && (res.path.includes('.mesh') || res.path.includes('.terrain')))
                             fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                                 .then(mesh => {
+
                                     if (res.path.includes('.mesh'))
                                         importMesh(mesh, engine, data, i, fileSystem, isBlueprint)
                                             .then(loadedData => {
+
                                                 resolve(loadedData)
                                             })
                                     else // TODO - IMPORT ESPECIFICO PARA TERRAIN
@@ -103,6 +105,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
         Promise.all(promises)
             .then(loadedData => {
                 const toApply = loadedData.filter(d => d?.mesh)
+
                 let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
 
                 const notRepeatedMaterials = toApply.map(m => {
@@ -127,6 +130,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                 engine.setMaterials(prev => {
                     return [...prev, ...notRepeatedMaterials]
                 })
+
                 engine.setMeshes(prev => {
                     return [...prev, ...notRepeatedMeshes]
                 })
