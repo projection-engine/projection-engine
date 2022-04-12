@@ -94,7 +94,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
         } else if (finished && canStart) {
 
-            renderer.current?.updateCamera(settings.cameraType)
+            renderer.current.cameraType = settings.cameraType
             renderer.current.gizmo = settings.gizmo
 
             if (!canRender)
