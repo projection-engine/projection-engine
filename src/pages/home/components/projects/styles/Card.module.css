@@ -1,49 +1,7 @@
 .wrapper {
-    --size: 50px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    width: 100%;
-    height: var(--size);
-
-    overflow: hidden;
-
-
-    border: var(--fabric-border-primary) 1px solid;
-    color: var(--fabric-color-secondary);
-
-    transition: 150ms linear;
-    font-size: .75rem;
-    padding-right: 8px;
 }
-
-
-
-.imageWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--size);
-    overflow: hidden;
-    height: var(--size);
-    margin-right: 16px;
-
-    border-radius: 5px;
-    padding: 0 !important;
-}
-
-
-.image {
-
-    height: 100%;
-
-    object-fit: cover;
-    max-height: 200px;
-    transition: 150ms linear;
-}
-
 
 
 .button {
@@ -112,19 +70,20 @@
 }
 
 .section {
+
+    background: var(--fabric-border-primary);
+    border-radius: 5px;
+    box-shadow: var(--fabric-boxshadow);
+    bottom: 0;
+
+    position: absolute;
+
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+
     gap: 6px;
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-}
-
-.dataRow {
-    height: 50% !important;
-    overflow: hidden;
-    background: transparent !important;
-    border: none !important;
-    width: 100%;
-
 }

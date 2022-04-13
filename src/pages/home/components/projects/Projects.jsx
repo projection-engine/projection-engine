@@ -2,7 +2,7 @@ import styles from "./styles/Projects.module.css";
 import PropTypes from 'prop-types'
 import React, {useMemo, useRef, useState} from "react";
 import Card from "./components/Card";
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions, Masonry} from "@f-ui/core";
 import LinkProject from "./components/LinkProject";
 import Search from "../../../../components/search/Search";
 
@@ -61,7 +61,7 @@ export default function Projects(props) {
                 </div>
             </div>
 
-            <div className={styles.content}>
+            <Masonry  className={styles.content}>
                 {projectsToShow.length > 0 ? projectsToShow.map((p, i) => (
                         <React.Fragment key={p.id}>
                             <Card
@@ -82,7 +82,7 @@ export default function Projects(props) {
                         No projects found.
                     </div>
                 }
-            </div>
+            </Masonry>
         </div>
 
     )

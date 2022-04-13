@@ -241,8 +241,8 @@ export default function Project(props) {
                         />
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
-                                if (newTab === 0 )
-                                    handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
+
+                                handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                                 setFilesLoaded(prev => {
                                     const newD = [...prev]
 

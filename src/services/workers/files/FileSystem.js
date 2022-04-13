@@ -46,20 +46,8 @@ export default class FileSystem {
                 case 'json':
                     fs.readFile(pathName, (e, res) => {
                         try {
-
-                            const data = res.toString().replaceAll(',,', ',')
-                            let l = []
-                            for (let i = 0; i < 1000; i++) {
-
-                                l.push(data[145062 + i])
-                            }
-                            console.log(l.join(''))
-
-                            const d = JSON.parse(data)
-
-                            resolve(d)
+                            resolve(JSON.parse(res.toString()))
                         } catch (e) {
-                            console.log(e)
                             resolve(null)
                         }
                     })
@@ -187,8 +175,8 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    // glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
-                    // break
+                    glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
+                    break
                 case 'obj':
                 case 'fbx':
                     const res = await assimpImporter(fs, resolvePath, newRoot, file, options, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))

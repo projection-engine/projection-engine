@@ -40,15 +40,16 @@ export default function SkyboxComponent(props) {
                                     fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path)
                                         .then(file => {
                                             if (file) {
-                                                ImageProcessor.getImageBitmap(file)
-                                                    .then(res => {
-                                                        props.submit({
-                                                            blob: res,
-                                                            imageID: src.registryID
-                                                        }, 'blob')
-                                                        load.finishEvent(EVENTS.LOAD_FILE)
-                                                        setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
-                                                    })
+                                                const img = new Image()
+                                                img.onload = () => {
+                                                    props.submit({
+                                                        blob: img,
+                                                        imageID: src.registryID
+                                                    }, 'blob')
+                                                    load.finishEvent(EVENTS.LOAD_FILE)
+                                                    setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
+                                                }
+                                                img.src = file
                                             } else
                                                 load.finishEvent(EVENTS.LOAD_FILE)
                                         })
