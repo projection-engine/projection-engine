@@ -7,6 +7,7 @@
 .button {
     display: flex;
     align-items: center;
+    justify-content: center;
 
     overflow: hidden;
     height: 30px;
@@ -38,10 +39,12 @@
 
 .onDelete {
     background: var(--fabric-background-primary);
-    padding: 8px;
+    padding: 16px;
+
 
     display: grid;
-    gap: 8px;
+    align-items: flex-end;
+    gap: 32px;
     font-size: .8rem;
     font-weight: 550;
     color: var(--fabric-color-secondary);
@@ -49,7 +52,7 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, .2) 2px 2px 10px 2px;
-    transform: translateY(75%);
+
 }
 
 .modal {
@@ -86,4 +89,12 @@
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+}
+
+
+.buttonGroup{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 4px;
 }

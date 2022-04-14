@@ -33,26 +33,13 @@ export default function CameraComponent(props) {
                     maxValue={175}
                     precision={1}
                     incrementPercentage={.1}
-                    onFinish={() => {
-                        props.submit(state.fov * toRad, 'fov')
+                    onFinish={(v) => {
+                        props.submit(v * toRad, 'fov')
                     }}
                     handleChange={e => setState({...state, fov: e})}
                 />
             </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Aspect Ratio
-                </AccordionSummary>
-                <Range
-                    value={state.aspectRatio}
-                    precision={3}
-                    incrementPercentage={.01}
-                    onFinish={() => {
-                        props.submit(state.aspectRatio, 'aspectRatio')
-                    }}
-                    handleChange={e => setState({...state, aspectRatio: e})}
-                />
-            </Accordion>
+
 
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
                        contentStyles={{display: 'flex', gap: '2px'}}>
@@ -67,7 +54,7 @@ export default function CameraComponent(props) {
                     metric={'Far'}
                     precision={1}
                     incrementPercentage={.1}
-                    onFinish={() => props.submit(parseFloat(state.zFar), 'zFar')}
+                    onFinish={(v) => props.submit(v, 'zFar')}
                     handleChange={e => {
                         setState(prev => {
                             return {
@@ -83,7 +70,7 @@ export default function CameraComponent(props) {
                     metric={'Near'}
                     precision={1}
                     incrementPercentage={.1}
-                    onFinish={() => props.submit(parseFloat(state.zNear), 'zNear')}
+                    onFinish={(v) => props.submit(v, 'zNear')}
                     handleChange={e => {
                         setState(prev => {
                             return {

@@ -18,7 +18,7 @@ export default function MaterialComponent(props) {
                 tilingY: props.selected.tiling[1],
                 overrideTiling: props.selected.overrideTiling,
                 radius: props.selected.radius,
-                parallaxLayers:  props.selected.parallaxLayers,
+                parallaxLayers: props.selected.parallaxLayers,
                 parallaxHeightScale: props.selected.parallaxHeightScale
             }
         else
@@ -53,65 +53,65 @@ export default function MaterialComponent(props) {
 
     return (
         <>
-        <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     Material
                 </AccordionSummary>
-                    <Selector
-                        selected={currentMaterial}
-                        type={'material'}
-                        handleChange={src => {
-                            if (src) {
-                                load.pushEvent(EVENTS.LOAD_FILE)
-                                fileSystem.readRegistryFile(src.registryID)
-                                    .then(rs => {
-                                        if (rs)
-                                            fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
-                                                .then(file => {
-                                                    if (file && file.response) {
-                                                        saveVersion()
-                                                        props.submit({
-                                                            blob: file.response,
-                                                            id: src.registryID,
-                                                            name: src.name
-                                                        })
-                                                        setCurrentMaterial(src)
-                                                    } else
-                                                        props.setAlert({
-                                                            type: 'error',
-                                                            message: 'Error loading material.'
-                                                        })
-                                                    load.finishEvent(EVENTS.LOAD_FILE)
-                                                })
-                                        else
-                                            load.finishEvent(EVENTS.LOAD_FILE)
-                                    })
-                            } else
-                                props.submit()
-                        }}/>
+                <Selector
+                    selected={currentMaterial}
+                    type={'material'}
+                    handleChange={src => {
+                        if (src) {
+                            load.pushEvent(EVENTS.LOAD_FILE)
+                            fileSystem.readRegistryFile(src.registryID)
+                                .then(rs => {
+                                    if (rs)
+                                        fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
+                                            .then(file => {
+                                                if (file && file.response) {
+                                                    saveVersion()
+                                                    props.submit({
+                                                        blob: file.response,
+                                                        id: src.registryID,
+                                                        name: src.name
+                                                    })
+                                                    setCurrentMaterial(src)
+                                                } else
+                                                    props.setAlert({
+                                                        type: 'error',
+                                                        message: 'Error loading material.'
+                                                    })
+                                                load.finishEvent(EVENTS.LOAD_FILE)
+                                            })
+                                    else
+                                        load.finishEvent(EVENTS.LOAD_FILE)
+                                })
+                        } else
+                            props.submit()
+                    }}/>
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                 <AccordionSummary className={styles.summary}>
                     CubeMap influence radius
                 </AccordionSummary>
-                    <Range
-                        accentColor={'red'}
-                        metric={'un'}
+                <Range
+                    accentColor={'red'}
+                    metric={'un'}
 
-                        value={state.radius}
-                        precision={3}
-                        incrementPercentage={.01}
-                        onFinish={() => {
-                            setHasChanged(false)
-                            props.submitRadius(state.radius, 'radius')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.radius = state.radius
-                            setState({...state, radius: parseFloat(e)})
-                        }}
-                    />
+                    value={state.radius}
+                    precision={3}
+                    incrementPercentage={.01}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submitRadius(v, 'radius')
+                    }}
+                    handleChange={e => {
+                        saveVersion()
+                        props.selected.radius = state.radius
+                        setState({...state, radius: parseFloat(e)})
+                    }}
+                />
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
@@ -119,45 +119,43 @@ export default function MaterialComponent(props) {
                 <AccordionSummary className={styles.summary}>
                     UV tiling
                 </AccordionSummary>
+                <Range
+                    accentColor={'red'}
+                    metric={'x'}
+                    disabled={!state.overrideTiling}
+                    value={state.tilingX}
+                    precision={3}
+                    incrementPercentage={.01}
+                    onFinish={v => {
+                        setHasChanged(false)
+                        props.submitTiling([v, state.tilingY])
+                    }}
+                    handleChange={e => {
+                        saveVersion()
 
+                        props.selected.tiling = [parseFloat(e), state.tilingY]
+                        setState({...state, tilingX: parseFloat(e)})
+                    }}
+                />
+                <Range
+                    accentColor={'green'}
+                    metric={'y'}
+                    disabled={!state.overrideTiling}
+                    precision={3}
+                    incrementPercentage={.01}
+                    value={state.tilingY}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submitTiling([state.tilingX, v])
+                    }}
+                    handleChange={e => {
+                        saveVersion()
 
-                        <Range
-                            accentColor={'red'}
-                            metric={'x'}
-                            disabled={!state.overrideTiling}
-                            value={state.tilingX}
-                            precision={3}
-                            incrementPercentage={.01}
-                            onFinish={() => {
-                                setHasChanged(false)
-                                props.submitTiling([state.tilingX, state.tilingY])
-                            }}
-                            handleChange={e => {
-                                saveVersion()
+                        props.selected.tiling = [state.tilingX, parseFloat(e)]
+                        setState({...state, tilingY: parseFloat(e)})
 
-                                props.selected.tiling = [parseFloat(e), state.tilingY]
-                                setState({...state, tilingX: parseFloat(e)})
-                            }}
-                        />
-                        <Range
-                            accentColor={'green'}
-                            metric={'y'}
-                            disabled={!state.overrideTiling}
-                            precision={3}
-                            incrementPercentage={.01}
-                            value={state.tilingY}
-                            onFinish={() => {
-                                setHasChanged(false)
-                                props.submitTiling([state.tilingX, state.tilingY])
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-
-                                props.selected.tiling = [state.tilingX, parseFloat(e)]
-                                setState({...state, tilingY: parseFloat(e)})
-
-                            }}
-                        />
+                    }}
+                />
 
 
             </Accordion>
@@ -166,24 +164,24 @@ export default function MaterialComponent(props) {
                     Parallax height scale
                 </AccordionSummary>
 
-                    <Range
-                        accentColor={'red'}
-
-                        value={state.parallaxHeightScale}
-                        precision={3}
-                        maxValue={2}
-                        minValue={.01}
-                        incrementPercentage={.01}
-                        onFinish={() => {
-                            setHasChanged(false)
-                            props.submit (state.parallaxHeightScale, 'parallaxHeightScale')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.parallaxHeightScale = state.parallaxHeightScale
-                            setState({...state, parallaxHeightScale: e})
-                        }}
-                    />
+                <Range
+                    accentColor={'red'}
+                    disabled={!state.overrideTiling}
+                    value={state.parallaxHeightScale}
+                    precision={3}
+                    maxValue={2}
+                    minValue={.01}
+                    incrementPercentage={.01}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submit(v, 'parallaxHeightScale')
+                    }}
+                    handleChange={e => {
+                        saveVersion()
+                        props.selected.parallaxHeightScale = state.parallaxHeightScale
+                        setState({...state, parallaxHeightScale: e})
+                    }}
+                />
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
@@ -191,24 +189,24 @@ export default function MaterialComponent(props) {
                     Parallax layers
                 </AccordionSummary>
 
-                    <Range
-                        accentColor={'red'}
-
-                        value={state.parallaxLayers}
-                        precision={0}
-                        minValue={1}
-                        maxValue={64}
-                        incrementPercentage={1}
-                        onFinish={() => {
-                            setHasChanged(false)
-                            props.submit (state.parallaxLayers, 'parallaxLayers')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.parallaxLayers = state.parallaxLayers
-                            setState({...state, parallaxLayers: e})
-                        }}
-                    />
+                <Range
+                    accentColor={'red'}
+                    disabled={!state.overrideTiling}
+                    value={state.parallaxLayers}
+                    precision={0}
+                    minValue={1}
+                    maxValue={64}
+                    incrementPercentage={1}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submit(v, 'parallaxLayers')
+                    }}
+                    handleChange={e => {
+                        saveVersion()
+                        props.selected.parallaxLayers = state.parallaxLayers
+                        setState({...state, parallaxLayers: e})
+                    }}
+                />
 
             </Accordion>
             <Checkbox

@@ -24,7 +24,7 @@ function createWindow() {
         },
         autoHideMenuBar: true,
         icon: __dirname + '/L.png',
-
+        darkTheme: true
     })
 
     win.loadURL(

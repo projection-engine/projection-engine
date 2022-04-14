@@ -1,5 +1,5 @@
 import {Button, Modal} from "@f-ui/core";
-import shared from "../../../styles/Home.module.css";
+import shared from "../styles/Home.module.css";
 import styles from "../styles/Projects.module.css";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";

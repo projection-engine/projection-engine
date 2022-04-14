@@ -19,6 +19,7 @@ import GIZMOS from "../../services/engine/templates/GIZMOS";
 import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
 
 import {v4 as uuidv4} from 'uuid';
+import useEditorKeys from "./hooks/useEditorKeys";
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -49,94 +50,7 @@ export default function Editor(props) {
         )
 
     }, [props.executingAnimation, props.engine])
-    const [toCopy, setToCopy] = useState([])
-    useHotKeys({
-        focusTarget: props.id + '-editor-wrapper',
-        disabled: controlProvider.tab !== 0 || props.engine.canExecutePhysicsAnimation,
-        actions: [
-            {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => props.serializer.save()},
-            {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
-            {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
-            {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},
-            {require: [KEYS.Escape], callback: () => props.setExecutingAnimation(false)},
-
-            {require: [KEYS.ControlLeft, KEYS.KeyZ], callback: () => props.engine.returnChanges()},
-            {require: [KEYS.ControlLeft, KEYS.KeyY], callback: () => props.engine.forwardChanges()},
-
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyC],
-                callback: () => {
-                    setToCopy(props.engine.selected)
-                    if (props.engine.selected)
-                        props.setAlert({
-                            type: 'info',
-                            message: 'Entity copied.'
-                        })
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyF],
-                callback: () => {
-                    const el = document.getElementById('fullscreen-element-' + props.id)
-                    if (el) {
-                        if (!document.fullscreenElement)
-                            el.requestFullscreen()
-                        else
-                            document.exitFullscreen()
-                    }
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
-                callback: () => props.settings.performanceMetrics = !props.settings.performanceMetrics
-            },
-            {
-                require: [KEYS.Delete],
-                callback: () => {
-                    const s = [...props.engine.selected]
-                    props.engine.setSelected([])
-                    props.engine.setLockedEntity(undefined)
-                    props.engine.dispatchChanges({
-                        type: HISTORY_ACTIONS.DELETING_ENTITIES,
-                        payload: {entitiesToDelete: s, entities: props.engine.entities}
-                    })
-                    s.forEach(e => {
-                        props.engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.REMOVE,
-                            payload: {entityID: e}
-                        })
-                    })
-                }
-            },
-            {
-                require: [KEYS.ControlLeft, KEYS.KeyV],
-                callback: () => {
-                    toCopy.forEach(t => {
-                        const found = props.engine.entities.find(e => e.id === t)
-                        if (found) {
-                            let clone = cloneClass(found)
-                            clone.id = uuidv4()
-                            clone.name += ' - clone'
-                            let newComponents = {}
-                            Object.keys(clone.components).forEach(c => {
-                                const cClone = cloneClass(clone.components[c])
-                                cClone.id = uuidv4()
-                                if (cClone instanceof PickComponent)
-                                    cClone.pickID = generateNextID(props.engine.entities.length + 1)
-                                newComponents[c] = cClone
-                            })
-                            clone.components = newComponents
-                            props.engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
-                        } else
-                            props.setAlert({
-                                type: 'info',
-                                message: 'Nothing to paste.'
-                            })
-                    })
-                }
-            }
-        ]
-    })
+    useEditorKeys(props, controlProvider)
 
 
     return (

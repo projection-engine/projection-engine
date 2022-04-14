@@ -97,7 +97,7 @@ export default function CubeMapComponent(props) {
 
                 <Range
                     accentColor={'red'}
-                    onFinish={() => props.submit(state.radius, 'radius')}
+                    onFinish={(v) => props.submit(v, 'radius')}
                     value={state.radius}
                     handleChange={e => {
                         setState({...state, radius: e})
@@ -117,7 +117,7 @@ export default function CubeMapComponent(props) {
                     minValue={1}
                     maxValue={10}
 
-                    onFinish={() => props.submit(state.prefilteredMipmaps, 'prefilteredMipmaps')}
+                    onFinish={(v) => props.submit(v, 'prefilteredMipmaps')}
                     value={state.prefilteredMipmaps}
                     handleChange={e => {
                         setState({...state, prefilteredMipmaps: parseInt(e)})

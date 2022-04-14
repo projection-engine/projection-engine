@@ -31,7 +31,8 @@ export default function useSettings() {
         sceneVisibility: true,
         viewportOptionsVisibility: true,
         gamma: 2.2,
-        exposure: 1.5
+        exposure: 1.5,
+        gridSize: .01
     })
  
     return useMemo(() => {

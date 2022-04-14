@@ -19,8 +19,9 @@ export default function getOptions(executingAnimation, setExecutingAnimation, en
             icon: <span className={'material-icons-round'}
                         style={{fontSize: '1.2rem'}}>refresh</span>,
             onClick: async () => {
+
                 setAlert({message: 'Recompiling cubemaps', type: 'info'})
-                engine.renderer.recompiled = false
+                engine.renderer.refreshCubemaps()
             }
         },
         {

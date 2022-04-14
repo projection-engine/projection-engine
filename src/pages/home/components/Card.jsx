@@ -2,8 +2,9 @@ import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
 import {Button, DataRow, Modal, TextField} from "@f-ui/core";
 import {useMemo, useRef, useState} from "react";
-import logo from '../../../../../static/LOGO.png'
-import shared from "../../../styles/Home.module.css";
+import logo from '../../../static/LOGO.png'
+import shared from "../styles/Home.module.css";
+
 const KEYS = [
     {key: 'preview', type: 'image'},
     {label: 'Name', key: 'name', type: 'string'},
@@ -65,17 +66,51 @@ export default function Card(props) {
                     </>
                 }
             </Modal>
+            {open.delete ?
+                <div
+                    className={styles.onDelete}>
+                    Are you sure ?
+                    <div className={styles.buttonGroup}>
 
-            <DataRow
-                asCard={true}
-                object={object}
-                keys={KEYS}
-                styles={{width: '100%', minWidth: '100%', background: 'var(--fabric-background-secondary)'}}
-                selfContained={true}
-            />
+                        <Button
+                            onClick={() => props.onDelete()}
+                            variant={'filled'}
+                            styles={{'--fabric-accent-color': '#ff5555', width: '100%'}}
+                            className={styles.button}
+                        >
+                            <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete_forever</span>
+                            Delete
+                        </Button>
+                        <Button
+                            onClick={() => setOpen({...open, delete: false})}
+                            variant={'outlined'}
+                            styles={{width: '100%'}}
+                            className={styles.button}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
+                :
+                <DataRow
+                    asCard={true}
+                    object={object}
+                    keys={KEYS}
+                    styles={{width: '100%', minWidth: '100%', background: 'var(--fabric-background-secondary)'}}
+                    selfContained={true}
+                />
+            }
 
+            <div className={styles.section} style={{display: hovered && !open.delete && !open.edit ? undefined : 'none'}}>
+                <Button
+                    variant={'outlined'}
+                    className={styles.button}
+                    onClick={() => setOpen({
+                        delete: true
+                    })}>
+                    <span className={'material-icons-round'}>delete</span>
 
-            <div className={styles.section} style={{ display: hovered && !open.edit ? undefined : 'none'}}>
+                </Button>
                 <Button
                     variant={'outlined'}
                     className={styles.button}
@@ -87,28 +122,7 @@ export default function Card(props) {
                 >
                     <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
                 </Button>
-                <Button
-                    variant={'outlined'}
-                    className={styles.button}
-                    onClick={() => setOpen({
-                        delete: true
-                    })}>
-                    <span className={'material-icons-round'}>delete</span>
-                    <Modal
-                        className={styles.onDelete} variant={'fit'}
-                        handleClose={() => setOpen({})} open={open.delete}>
-                        Are you sure ?
-                        <Button
-                            onClick={() => props.onDelete()}
-                            variant={'filled'}
-                            styles={{'--fabric-accent-color': '#ff5555'}}
-                            className={styles.button}
-                        >
-                            <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete</span>
-                            Delete permanently
-                        </Button>
-                    </Modal>
-                </Button>
+
                 <Button
                     onClick={() => props.onClick()}
                     variant={'filled'}

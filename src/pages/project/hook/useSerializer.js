@@ -5,7 +5,7 @@ import EVENTS from "../../../services/utils/misc/EVENTS";
 import ProjectLoader from "../../../services/workers/ProjectLoader";
 
 const fs = window.require('fs')
-export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
+export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {
 
     const load = useContext(LoaderProvider)
     const fileSystem = quickAccess.fileSystem
@@ -19,16 +19,16 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
                 const canvas = document.getElementById(id + '-canvas')
-                const preview = canvas.toDataURL()
+                const preview =  canvas.toDataURL()
                 fs.readFile(fileSystem.path + '\\.meta', (e, res) => {
-                    if(res) {
+                    if (res) {
                         const old = JSON.parse(res.toString())
 
                         fileSystem
                             .updateProject(
                                 {
                                     ...old,
-                                    preview,
+                                    preview: currentTab === 0 ? preview : old.preview,
                                     entities: engine.entities.length,
                                     meshes: engine.meshes.length,
                                     materials: engine.materials.length,
@@ -37,8 +37,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                 },
                                 settings)
                             .then(() => resolve())
-                    }
-                    else
+                    } else
                         resolve()
                 })
 
@@ -58,7 +57,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                             .then(all => {
                                 let cleanUp = all.map(a => {
                                     return new Promise(((resolve1) => {
-                                        if (!engine.entities.find(e => e.id === a.data.id)) {
+                                        if (a && a.data && !engine.entities.find(e => e.id === a.data.id)) {
                                             fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity')
                                                 .then((er) => resolve1(er))
                                         } else

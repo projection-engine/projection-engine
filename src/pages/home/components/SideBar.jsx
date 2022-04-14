@@ -1,10 +1,10 @@
-import styles from './styles/SideBar.module.css'
-import logo from "../../../../static/LOGO.png";
+import styles from '../styles/SideBar.module.css'
+import logo from "../../../static/LOGO.png";
 import {Button} from "@f-ui/core";
-import gitDark from "../../../../static/github/dark.svg";
-import gitLight from "../../../../static/github/light.svg";
+import gitDark from "../../../static/github/dark.svg";
+import gitLight from "../../../static/github/light.svg";
 import PropTypes from "prop-types";
-import ThemeProvider from "../../../../services/hooks/ThemeProvider";
+import ThemeProvider from "../../../services/hooks/ThemeProvider";
 import {useContext, useState} from "react";
 
 export default function SideBar(props) {

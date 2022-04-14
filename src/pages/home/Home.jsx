@@ -1,14 +1,14 @@
 import {Button, Modal, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
 import React from "react";
-import Projects from "./components/projects/Projects";
+import Projects from "./components/Projects";
 
 import PropTypes from "prop-types";
 import FileSystem from "../../services/workers/files/FileSystem";
 
 import EVENTS from "../../services/utils/misc/EVENTS";
 import useProjects from "./hooks/useProjects";
-import SideBar from "./components/sidebar/SideBar";
+import SideBar from "./components/SideBar";
 
 const fs = window.require('fs')
 const pathResolve = window.require('path')

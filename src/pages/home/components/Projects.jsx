@@ -1,10 +1,10 @@
-import styles from "./styles/Projects.module.css";
+import styles from "../styles/Projects.module.css";
 import PropTypes from 'prop-types'
 import React, {useMemo, useRef, useState} from "react";
-import Card from "./components/Card";
+import Card from "./Card";
 import {Button, Dropdown, DropdownOption, DropdownOptions, Masonry} from "@f-ui/core";
-import LinkProject from "./components/LinkProject";
-import Search from "../../../../components/search/Search";
+import LinkProject from "./LinkProject";
+import Search from "../../../components/search/Search";
 
 export default function Projects(props) {
     const ref = useRef()

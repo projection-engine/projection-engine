@@ -42,9 +42,10 @@ export default function Project(props) {
     const engine = useEditorEngine(props.id, executingAnimation, settings, load, initialized, setAlert)
 
     const quickAccess = useQuickAccess(props.id, load)
-    const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess)
+
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)
+    const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess, currentTab)
 
     useEffect(() => {
         if (engine.gpu && !loading.initialized) {

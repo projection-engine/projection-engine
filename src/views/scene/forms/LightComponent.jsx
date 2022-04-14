@@ -67,9 +67,9 @@ export default function LightComponent(props) {
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.x}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
+                                props.submit([v, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -90,9 +90,9 @@ export default function LightComponent(props) {
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.y}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
+                                props.submit([state.placement.x, v, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -113,9 +113,9 @@ export default function LightComponent(props) {
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.z}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit([state.placement.x, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
+                                props.submit([state.placement.x, state.placement.y, v], props.type === 'PointLightComponent' ? 'position' : 'direction')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -143,9 +143,9 @@ export default function LightComponent(props) {
                             minValue={1}
                             incrementPercentage={1}
                             precision={0}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit(state.size, 'size')
+                                props.submit(v, 'size')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -175,9 +175,9 @@ export default function LightComponent(props) {
                             precision={2}
                             value={state.indirectAttenuation}
                             minValue={0}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit(state.indirectAttenuation, 'attenuation')
+                                props.submit(v, 'attenuation')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -196,9 +196,9 @@ export default function LightComponent(props) {
                             value={state.lpvSamples}
                             minValue={1}
                             maxValue={128}
-                            onFinish={() => {
+                            onFinish={(v) => {
                                 setHasChanged(false)
-                                props.submit(state.lpvSamples, 'lpvSamples')
+                                props.submit(v, 'lpvSamples')
                             }}
                             handleChange={e => {
                                 saveVersion()
@@ -227,9 +227,9 @@ export default function LightComponent(props) {
                         minValue={.0001}
                         precision={2}
                         value={state.attenuation.x}
-                        onFinish={() => {
+                        onFinish={(v) => {
                             setHasChanged(false)
-                            props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
+                            props.submit([v, state.attenuation.y, state.attenuation.z], 'attenuation')
                         }}
                         handleChange={e => {
                             saveVersion()
@@ -249,9 +249,9 @@ export default function LightComponent(props) {
                         minValue={.01}
                         precision={2}
                         value={state.attenuation.y}
-                        onFinish={() => {
+                        onFinish={(v) => {
                             setHasChanged(false)
-                            props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
+                            props.submit([state.attenuation.x,v, state.attenuation.z], 'attenuation')
                         }}
                         handleChange={e => {
                             saveVersion()
@@ -271,9 +271,9 @@ export default function LightComponent(props) {
                         minValue={.01}
                         precision={2}
                         value={state.attenuation.z}
-                        onFinish={() => {
+                        onFinish={(v) => {
                             setHasChanged(false)
-                            props.submit([state.attenuation.x, state.attenuation.y, state.attenuation.z], 'attenuation')
+                            props.submit([state.attenuation.x, state.attenuation.y, v], 'attenuation')
                         }}
                         handleChange={e => {
                             saveVersion()
@@ -303,9 +303,9 @@ export default function LightComponent(props) {
                     metric={'Far'}
                     precision={3}
                     incrementPercentage={.01}
-                    onFinish={() => {
+                    onFinish={(v) => {
                         setHasChanged(false)
-                        props.submit(parseFloat(state.zFar), 'zFar')
+                        props.submit(v, 'zFar')
                     }}
                     handleChange={e => {
                         saveVersion()
@@ -323,9 +323,9 @@ export default function LightComponent(props) {
                     metric={'Near'}
                     precision={3}
                     incrementPercentage={.01}
-                    onFinish={() => {
+                    onFinish={(v) => {
                         setHasChanged(false)
-                        props.submit(parseFloat(state.zNear), 'zNear')
+                        props.submit(v, 'zNear')
                     }}
                     handleChange={e => {
                         saveVersion()

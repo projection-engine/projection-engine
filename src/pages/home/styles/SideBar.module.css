@@ -11,6 +11,8 @@
     max-width: 55px;
     min-width: 55px;
 
+    background: var(--fabric-background-quaternary);
+    border-right: var(--fabric-border-primary) 1px solid;
     gap: 8px;
 }
 

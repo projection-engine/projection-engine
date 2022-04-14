@@ -16,6 +16,7 @@ import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "../utils/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import CameraCubeSystem from "../engine/ecs/systems/CameraCubeSystem";
+import {ENTITY_ACTIONS} from "../utils/entityReducer";
 
 
 export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
@@ -62,14 +63,14 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     physics ? physics : new PhysicsSystem(),
                     transformation ? transformation : new TransformSystem(),
 
-                    cubeMap ? cubeMap : new CubeMapSystem(gpu),
 
                     shadows ? shadows : new ShadowMapSystem(gpu),
                     pick ? pick : new PickSystem(gpu),
                     deferred,
                     // new AOSystem(gpu),
                     new PostProcessingSystem(gpu, settings.resolutionMultiplier),
-                    c ? c : new CameraCubeSystem(id + '-camera')
+                    c ? c : new CameraCubeSystem(id + '-camera'),
+                    cubeMap ? cubeMap : new CubeMapSystem(gpu),
                 ]
                 load.finishEvent(EVENTS.UPDATING_SYSTEMS)
                 callback()
@@ -115,7 +116,9 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                         }, ...settings
                     },
                     scripts,
+
                     () => {
+                        console.log('STARTED')
                         const e = entities.find(e => e.id === selected[0])
                         if (e)
                             dispatchChanges({
@@ -126,17 +129,18 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                                     component: e.components[COMPONENTS.TRANSFORM]
                                 }
                             })
-                    },
-                    () => {
-                        const e = entities.find(e => e.id === selected[0])
 
+                    },
+                    () => { // onGizmoEnd
+                        console.log('ENDED')
+                        const e = entities.find(e => e.id === selected[0])
                         if (e)
-                            dispatchChanges({
-                                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
+                            dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                 payload: {
                                     key: COMPONENTS.TRANSFORM,
                                     entityID: selected[0],
-                                    component: e.components[COMPONENTS.TRANSFORM]
+                                    data: e.components[COMPONENTS.TRANSFORM]
                                 }
                             })
                     }

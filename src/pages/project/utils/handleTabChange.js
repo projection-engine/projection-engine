@@ -3,7 +3,6 @@ import ProjectLoader from "../../../services/workers/ProjectLoader";
 
 export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engine, load) {
     const toRemove = filesLoaded[tabIndex - 1]
-    console.log(toRemove)
     if(toRemove) {
         if (toRemove?.type === 'flow') {
             load.pushEvent(EVENTS.LOADING)

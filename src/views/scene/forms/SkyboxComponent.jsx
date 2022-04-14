@@ -134,7 +134,7 @@ export default function SkyboxComponent(props) {
                     value={state.gamma}
                     minValue={.1}
                     maxValue={10}
-                    onFinish={() => props.submit(state.gamma, 'gamma')}
+                    onFinish={(v) => props.submit(v, 'gamma')}
                     handleChange={e => setState(prev => {
                         return {
                             ...prev,
@@ -153,7 +153,7 @@ export default function SkyboxComponent(props) {
                     value={state.exposure}
                     minValue={.1}
                     maxValue={10}
-                    onFinish={() => props.submit(state.exposure, 'exposure')}
+                    onFinish={(v) => props.submit(v, 'exposure')}
                     handleChange={e => setState(prev => {
                         return {
                             ...prev,

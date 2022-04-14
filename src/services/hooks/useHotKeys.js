@@ -119,11 +119,11 @@ export const KEYS = {
     Mouse5: "MouseKey2",
 }
 
-export default function useHotKeys(props) {
+export default function useHotKeys(props, listeners=[]) {
     let clicked = {}
     const [focused, setFocused] = useState(false)
     const handleKey = (e) => {
-        if (focused) {
+        if (focused && document.activeElement === document.body) {
             if (e.type === 'keydown') {
                 clicked[e.code] = true
 
@@ -155,7 +155,6 @@ export default function useHotKeys(props) {
     }
 
     useEffect(() => {
-
         if (!props.disabled) {
             document.addEventListener('mousedown', handleMouseDown)
             document.addEventListener('keydown', handleKey)
@@ -166,7 +165,7 @@ export default function useHotKeys(props) {
             document.removeEventListener('keyup', handleKey)
             document.removeEventListener('keydown', handleKey)
         }
-    }, [props.actions, props.disabled, props.focusTarget, focused])
+}, [props.actions, props.disabled, props.focusTarget, focused, listeners])
 }
 useHotKeys.propTypes = {
     focusTarget: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
