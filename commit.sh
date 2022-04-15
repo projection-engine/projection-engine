@@ -13,7 +13,7 @@ git commit -m "$MESSAGE"
 git push origin v2.0
 
 
-cd ../../views/material
+cd ../../views/blueprints
 git add --all
 git commit -m "$MESSAGE"
 git push origin electron
