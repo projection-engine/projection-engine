@@ -45,36 +45,33 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
     const updateSystems = (callback) => {
         load.pushEvent(EVENTS.UPDATING_SYSTEMS)
-        const deferred = new MeshSystem(gpu, settings.resolutionMultiplier)
-        deferred.initializeTextures()
-            .then(() => {
-                const shadows = renderer.current.systems[SYSTEMS.SHADOWS],
-                    transformation = renderer.current.systems[SYSTEMS.TRANSFORMATION],
-                    physics = renderer.current.systems[SYSTEMS.PHYSICS],
-                    perf = renderer.current.systems[SYSTEMS.PERF],
-                    pick = renderer.current.systems[SYSTEMS.PICK],
-                    cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP],
-                    s = renderer.current.systems[SYSTEMS.SCRIPT],
-                    c = renderer.current.systems[SYSTEMS.CAMERA_CUBE]
+        const shadows = renderer.current.systems[SYSTEMS.SHADOWS],
+            transformation = renderer.current.systems[SYSTEMS.TRANSFORMATION],
+            physics = renderer.current.systems[SYSTEMS.PHYSICS],
+            perf = renderer.current.systems[SYSTEMS.PERF],
+            pick = renderer.current.systems[SYSTEMS.PICK],
+            cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP],
+            s = renderer.current.systems[SYSTEMS.SCRIPT],
+            c = renderer.current.systems[SYSTEMS.CAMERA_CUBE]
 
-                renderer.current.systems = [
-                    s ? s : new ScriptSystem(gpu),
-                    perf ? perf : new PerformanceSystem(gpu),
-                    physics ? physics : new PhysicsSystem(),
-                    transformation ? transformation : new TransformSystem(),
+        renderer.current.systems = [
+            s ? s : new ScriptSystem(gpu),
+            perf ? perf : new PerformanceSystem(gpu),
+            physics ? physics : new PhysicsSystem(),
+            transformation ? transformation : new TransformSystem(),
 
 
-                    shadows ? shadows : new ShadowMapSystem(gpu),
-                    pick ? pick : new PickSystem(gpu),
-                    deferred,
-                    // new AOSystem(gpu),
-                    new PostProcessingSystem(gpu, settings.resolutionMultiplier),
-                    c ? c : new CameraCubeSystem(id + '-camera'),
-                    cubeMap ? cubeMap : new CubeMapSystem(gpu),
-                ]
-                load.finishEvent(EVENTS.UPDATING_SYSTEMS)
-                callback()
-            })
+            shadows ? shadows : new ShadowMapSystem(gpu),
+            pick ? pick : new PickSystem(gpu),
+            new MeshSystem(gpu, settings.resolutionMultiplier),
+            // new AOSystem(gpu),
+            new PostProcessingSystem(gpu, settings.resolutionMultiplier),
+            c ? c : new CameraCubeSystem(id + '-camera'),
+            cubeMap ? cubeMap : new CubeMapSystem(gpu),
+        ]
+        load.finishEvent(EVENTS.UPDATING_SYSTEMS)
+        callback()
+
     }
 
 

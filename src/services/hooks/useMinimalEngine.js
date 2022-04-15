@@ -59,22 +59,20 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                     })
             renderer.current = new Engine(id, gpu)
             renderer.current.camera.notChangableRadius = true
-            const deferred = new MeshSystem(gpu, 1)
+
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
             setInitialized(true)
-            deferred.initializeTextures()
-                .then(() => {
-                    renderer.current.systems = [
-                        new TransformSystem(),
-                        new ShadowMapSystem(gpu),
-                        deferred,
-                        new PostProcessingSystem(gpu,   1)
-                    ]
-                    renderer.current.camera.radius = 2.5
-                    load.finishEvent(EVENTS.UPDATING_SYSTEMS)
+            renderer.current.systems = [
+                new TransformSystem(),
+                new ShadowMapSystem(gpu),
+                new MeshSystem(gpu, 1),
+                new PostProcessingSystem(gpu, 1)
+            ]
+            renderer.current.camera.radius = 2.5
+            load.finishEvent(EVENTS.UPDATING_SYSTEMS)
 
-                    setFinished(true)
-                })
+            setFinished(true)
+
         } else if (gpu && id && initialized && finished) {
             if (!canRender)
                 renderer.current?.stop()
@@ -92,7 +90,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
                     cameraType: CAMERA_TYPES.SPHERICAL
-                } )
+                })
             }
         }
 

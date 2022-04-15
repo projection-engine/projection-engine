@@ -150,10 +150,7 @@ export default class ProjectLoader {
         const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 
         try {
-            entities = entitiesFound.map((entity, index) => {
-
-                return ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu)
-            })
+            entities = entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu, materialsToLoad))
         } catch (e) {
         }
 
@@ -206,7 +203,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true) {
+    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true, gpu, materials) {
 
         const promises = toLoad.map(m => {
             return new Promise(r => {
@@ -224,7 +221,7 @@ export default class ProjectLoader {
                                         name: d.name
                                     },
                                     entities: mapEntities ? d.entities.map((e, i) => {
-                                        return ProjectLoader.mapEntity(e, i + meshesLoaded, [], [])
+                                        return ProjectLoader.mapEntity(e, i + meshesLoaded, [], [], gpu, materials)
                                     }) : []
                                 })
                             } catch (e) {
@@ -251,8 +248,7 @@ export default class ProjectLoader {
                                 fileParsed = JSON.parse(fileData)
 
                                 if(fileParsed && Object.keys(fileParsed).length > 0)
-                                    ProjectLoader.mapMaterial(fileParsed.response, gpu, m)
-                                        .then(mat => r(mat))
+                                    r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
                                 else
                                     r()
 
@@ -269,22 +265,20 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async mapMaterial(material, gpu, id, mapTo) {
-        const newMat = mapTo ? mapTo : new MaterialInstance(gpu, id, material.variant)
-        await newMat.initializeTextures(material, mapTo !== undefined)
-
-        return newMat
+    static mapMaterial({shader, uniforms, uniformData}, gpu, id) {
+        const newD =  new MaterialInstance(gpu, id, shader, uniformData)
+        newD.uniforms = uniforms
+        return newD
     }
 
-    static mapEntity(entity, index, meshes, skyboxes, gpu) {
+    static mapEntity(entity, index, meshes, skyboxes, gpu, materials) {
 
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         parsedEntity.blueprintID = entity.blueprintID
 
         Object.keys(entity.components).forEach(k => {
-            let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu, index)
+            let component = ENTITIES[k](entity, k, meshes, skyboxes, gpu, index, materials)
             if (component) {
-
                 Object.keys(entity.components[k]).forEach(oK => {
                     if (!oK.includes("__"))
                         component[oK] = entity.components[k][oK]
@@ -305,17 +299,21 @@ const ENTITIES = {
     [COMPONENTS.SKYBOX]: (entity, k, _, skyboxes, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
         const foundImage = skyboxes.find(i => i.id === entity.components[k].imageID)
-
         if (foundImage) {
-            console.log(foundImage)
             component.imageID = foundImage.id
             component.blob = foundImage.data
         }
-
         return component
     },
     [COMPONENTS.SPOT_LIGHT]: (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: (entity, k) => new MaterialComponent(entity.components[k].id),
+    [COMPONENTS.MATERIAL]: (entity, k,meshes, skyboxes, gpu, index, materials) => {
+        const newMat = new MaterialComponent(entity.components[k].id)
+        const matFound = materials.find(m => m.id === entity.components[k].materialID)
+
+        if(matFound)
+            newMat.uniforms = matFound.uniforms
+        return newMat
+    },
     [COMPONENTS.TRANSFORM]: (entity, k) => {
         const component = new TransformComponent(entity.components[k].id, true)
         component.changed = true
@@ -337,7 +335,7 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
-    [COMPONENTS.CAMERA]: (entity, k, meshes) => new CameraComponent(entity.components[k].id),
-    [COMPONENTS.SCRIPT]: (entity, k, meshes) => new ScriptComponent(entity.components[k].id),
+    [COMPONENTS.CAMERA]: (entity, k) => new CameraComponent(entity.components[k].id),
+    [COMPONENTS.SCRIPT]: (entity, k) => new ScriptComponent(entity.components[k].id),
 
 }
