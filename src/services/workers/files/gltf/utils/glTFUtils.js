@@ -2,7 +2,7 @@ import {mat4, quat} from "gl-matrix";
 import Transformation from "../../../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../../image/ImageProcessor";
 import ROTATION_TYPES from "../../../../engine/templates/ROTATION_TYPES";
-import Material from "../../../../../views/material/material/nodes/Material";
+import Material from "../../../../../views/blueprints/material/nodes/Material";
 import emptyMaterial from '../../../../utils/emptyMaterial.json'
 
 import {v4 as uuidv4} from 'uuid';

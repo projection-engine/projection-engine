@@ -132,7 +132,7 @@ export default class ProjectLoader {
                     })
             }))
 
-        const entitiesWithMaterials = entitiesFound.map(e => e.data.components?.MaterialComponent?.materialID).filter(e => e !== undefined)
+        const entitiesWithMaterials = entitiesFound.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined)
         const entitiesWithScripts = entitiesFound.map(e => {
             if (e.data.components[COMPONENTS.SCRIPT])
                 return e.data.components[COMPONENTS.SCRIPT]?.registryID
@@ -272,6 +272,7 @@ export default class ProjectLoader {
     static async mapMaterial(material, gpu, id, mapTo) {
         const newMat = mapTo ? mapTo : new MaterialInstance(gpu, id, material.variant)
         await newMat.initializeTextures(material, mapTo !== undefined)
+
         return newMat
     }
 

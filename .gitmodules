@@ -2,7 +2,7 @@
 	path = src/components
 	url = git@github.com:projection-engine/components.git
 [submodule "src/views/material"]
-	path = src/views/material
+	path = src/views/blueprints
 	url = git@github.com:projection-engine/material.git
 [submodule "src/views/files"]
 	path = src/views/files

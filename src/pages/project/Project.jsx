@@ -19,13 +19,13 @@ import SettingsProvider from "../../services/hooks/SettingsProvider";
 import FilesView from "../../views/files/FilesView";
 import Editor from "../../views/editor/Editor";
 import MeshView from "../../views/mesh/MeshView";
-import MaterialView from "../../views/material/material/MaterialView";
+import MaterialView from "../../views/blueprints/material2.0/MaterialView";
 import ImageView from "../../views/image/ImageView";
 import EntitiesProvider from "../../services/hooks/EntitiesProvider";
-import BlueprintView from "../../views/material/blueprint/BlueprintView";
+import BlueprintView from "../../views/blueprints/blueprint/BlueprintView";
 import handleTabChange from "./utils/handleTabChange";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
-import MinimalBlueprintView from "../../views/material/blueprint/MinimalBlueprintView";
+import MinimalBlueprintView from "../../views/blueprints/blueprint/MinimalBlueprintView";
 
 
 export default function Project(props) {
