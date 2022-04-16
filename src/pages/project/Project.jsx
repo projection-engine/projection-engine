@@ -26,6 +26,7 @@ import BlueprintView from "../../views/blueprints/blueprint/BlueprintView";
 import handleTabChange from "./utils/handleTabChange";
 import COMPONENTS from "../../services/engine/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/blueprint/MinimalBlueprintView";
+import {ca} from "wait-on/exampleConfig";
 
 
 export default function Project(props) {
@@ -49,29 +50,29 @@ export default function Project(props) {
 
     useEffect(() => {
         if (engine.gpu && !loading.initialized) {
-            setInitialized(true)
-            load.pushEvent(EVENTS.PROJECT_DATA)
-            ProjectLoader
-                .loadProject(engine.gpu, quickAccess.fileSystem)
-                .then(res => {
+            new Promise(async resolve => {
+                setInitialized(true)
+                load.pushEvent(EVENTS.PROJECT_DATA)
+                try {
+                    const res = await ProjectLoader.loadProject(engine.gpu, quickAccess.fileSystem)
+                    load.finishEvent(EVENTS.PROJECT_DATA)
+
                     engine.setScripts(res.scripts)
                     engine.setMeshes(res.meshes)
                     engine.setMaterials(res.materials)
                     engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: res.entities})
-                    if (res.settings)
+                    if (res.settings && res.settings.data)
                         Object.keys(res.settings.data).forEach(key => {
                             settings[key] = res.settings.data[key]
                         })
-                    if (res.meta)
+                    if (res.meta && res.meta.data)
                         settings.name = res.meta.data.name
-
-                    load.finishEvent(EVENTS.PROJECT_DATA)
                     setLoading(false)
-                })
-                .catch(e => {
-                    load.finishEvent(EVENTS.PROJECT_DATA)
-                    setLoading(false)
-                })
+                } catch (error) {
+                    console.log(error)
+                }
+                resolve()
+            }).catch(error => console.log(error))
         }
     }, [engine.gpu])
 

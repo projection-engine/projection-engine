@@ -6,6 +6,7 @@ import TerrainWorker from "../TerrainWorker";
 import {v4 as uuidv4} from 'uuid';
 import glTFImporter from "./gltf/glTFImporter";
 import assimpImporter from "./fbx/assimpImporter";
+import {WebWorker} from "../WebWorker";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -14,6 +15,22 @@ function resolvePath(p) {
     return pathRequire.resolve(p)
 }
 
+function fetchData() {
+    self.addEventListener('message', async (event) => {
+        const {pathName, type} = event.data
+
+        try {
+            const t = await fetch(pathName)
+
+            const data = await t.text()
+            console.log('DONE WITH FETCH')
+            self.postMessage({valid: true, data: type === 'json' ? JSON.parse(data) : data})
+        } catch (e) {
+            console.log(e)
+            self.postMessage({valid: false})
+        }
+    })
+}
 
 export default class FileSystem {
     constructor(projectID) {
@@ -40,35 +57,39 @@ export default class FileSystem {
         return await new Promise(resolve => fs.writeFile(this.path + '\\' + pathName, content, (e, s) => resolve(e)))
     }
 
-    async readFile(pathName, type) {
-        return new Promise(resolve => {
-            switch (type) {
-                case 'json':
+    async readFile(pathName, type, withRead) {
+
+        return new Promise(async resolve => {
+            try {
+                const worker = new WebWorker()
+                const {data, valid} = withRead ? null : await worker.createExecution({
+                    pathName: resolvePath(pathName),
+                    type
+                }, fetchData.toString())
+                if (!valid) {
                     fs.readFile(pathName, (e, res) => {
                         try {
-                            resolve(JSON.parse(res.toString()))
+                            const d = res.toString()
+                            resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
+                            console.trace(e)
                             resolve(null)
                         }
                     })
-                    break
-                case 'base64':
-                    fs.readFile(pathName, 'base64', (e, res) => {
-                        if (!e)
-                            resolve(res.toString())
-                        else
-                            resolve(null)
-                    })
-                    break
-                default:
-                    fs.readFile(pathName, (e, res) => {
-                        if (!e)
-                            resolve(res.toString())
-                        else
-                            resolve(null)
-                    })
-                    break
+                } else
+                    resolve(data)
+            } catch (e) {
+                fs.readFile(pathName, (e, res) => {
+                    try {
+                        const data = res.toString()
+                        resolve(type === 'json' ? JSON.parse(data) : data)
+                    } catch (e) {
+                        console.trace(e)
+                        resolve(null)
+                    }
+                })
             }
+
         })
     }
 
@@ -180,7 +201,7 @@ export default class FileSystem {
                 case 'obj':
                 case 'fbx':
                     const res = await assimpImporter(fs, resolvePath, newRoot, file, options, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
-                    if(setAlert)
+                    if (setAlert)
                         res.forEach(r => {
                             console.log(r)
                             setAlert({
@@ -217,19 +238,11 @@ export default class FileSystem {
     }
 
     async readRegistryFile(id) {
-        return new Promise(resolve => {
-            fs.readFile(resolvePath(this.path + '\\assetsRegistry\\' + id + '.reg'), (e, res) => {
-                if (!e) {
-                    try {
-                        resolve(JSON.parse(res.toString()))
-                    } catch (e) {
-                        resolve()
-                    }
-                } else
-                    resolve()
-
-            })
-        })
+        try {
+            return await this.readFile(resolvePath(this.path + '\\assetsRegistry\\' + id + '.reg'), 'json')
+        } catch (e) {
+            return null
+        }
     }
 
     assetExists(path) {

@@ -21,41 +21,49 @@ import ScriptComponent from "../engine/ecs/components/ScriptComponent";
 import CameraComponent from "../engine/ecs/components/CameraComponent";
 import Transformation from "../engine/utils/workers/Transformation";
 import ImageProcessor from "./image/ImageProcessor";
+import {ca} from "wait-on/exampleConfig";
 
 
 export default class ProjectLoader {
     static async getEntities(fileSystem) {
-        let settings = new Promise(resolve => {
-                fileSystem.readFile(fileSystem.path + '\\.settings', 'json')
-                    .then(res => {
-                        resolve({
-                            type: 'settings',
-                            data: res
-                        })
+        let settings = new Promise(async resolve => {
+                try {
+                    const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
+                    resolve({
+                        type: 'settings',
+                        data: res ? res : {}
                     })
+                } catch (e) {
+                    resolve()
+                }
             }),
-            meta = new Promise(resolve => {
-                fileSystem.readFile(fileSystem.path + '\\.meta', 'json')
-                    .then(res => {
-                        resolve({
-                            type: 'meta',
-                            data: res
-                        })
+            meta = new Promise(async resolve => {
+                try {
+                    const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
+                    console.log(res)
+                    resolve({
+                        type: 'meta',
+                        data: res ? res : {}
                     })
-
+                } catch (e) {
+                    resolve()
+                }
             }),
             entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
         return Promise
             .all([settings, meta, ...entities.map(e => {
-                return new Promise(resolve => {
-                    fileSystem.readFile(fileSystem.path + '\\logic\\' + e)
-                        .then(res => {
-                            resolve({
-                                type: 'entity',
-                                data: JSON.parse(res)
-                            })
+
+                return new Promise(async resolve => {
+                    try {
+                        const res = await fileSystem.readFile(fileSystem.path + '\\logic\\' + e, 'json', true)
+                        resolve({
+                            type: 'entity',
+                            data: res
                         })
+                    } catch (e) {
+                        resolve()
+                    }
                 })
             })])
     }
@@ -68,11 +76,14 @@ export default class ProjectLoader {
                     if (lookUpTable) {
                         fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
                             .then(fileData => {
-                                resolve(fileData)
-                            })
+                                if (fileData)
+                                    resolve(fileData)
+                                else
+                                    resolve(null)
+                            }).catch(() => resolve(null))
                     } else
                         resolve(null)
-                })
+                }).catch(() => resolve(null))
         })
     }
 
@@ -95,20 +106,24 @@ export default class ProjectLoader {
                     Promise.all(deletePromises)
                         .then(() => {
                             resolve()
-                        })
+                        }).catch(() => resolve())
                 })
         })
     }
 
     static async loadProject(gpu, fileSystem) {
         await ProjectLoader.cleanUpRegistry(fileSystem)
-        const projectData = await ProjectLoader.getEntities(fileSystem)
+        let projectData = []
+        try {
+            projectData = await ProjectLoader.getEntities(fileSystem)
+        }catch (error){
+
+        }
 
         let settings = projectData[0]
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')
         let entities
-
         let meshes = [...new Set(entitiesFound.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components.MeshComponent?.meshID))],
             skyboxes = [...new Set(
                 entitiesFound
@@ -126,12 +141,11 @@ export default class ProjectLoader {
                                         data: img,
                                         id: e
                                     })
-                                })
-                         else
+                                }).catch(() => r())
+                        else
                             r(undefined)
-                    })
+                    }).catch(() => r())
             }))
-
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined)
         const entitiesWithScripts = entitiesFound.map(e => {
             if (e.data.components[COMPONENTS.SCRIPT])
@@ -141,7 +155,6 @@ export default class ProjectLoader {
         }).filter(e => e !== undefined)
 
         const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem, entitiesFound.length)).filter(e => e !== undefined)
-
         const levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json')
 
         let meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
@@ -152,6 +165,7 @@ export default class ProjectLoader {
         try {
             entities = entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, index, meshData, skyboxData, gpu, materialsToLoad))
         } catch (e) {
+            console.log(e)
         }
 
         if (levelBlueprint)
@@ -162,6 +176,7 @@ export default class ProjectLoader {
                     name: levelBlueprint.name
                 }
             })
+
         return {
             meta,
             settings,
@@ -196,7 +211,7 @@ export default class ProjectLoader {
                             )
                         } else
                             r(undefined)
-                    })
+                    }).catch(() => r())
             })
         })
 
@@ -225,6 +240,7 @@ export default class ProjectLoader {
                                     }) : []
                                 })
                             } catch (e) {
+                                console.log(e)
                                 r()
                             }
                         else
@@ -247,12 +263,13 @@ export default class ProjectLoader {
                             try {
                                 fileParsed = JSON.parse(fileData)
 
-                                if(fileParsed && Object.keys(fileParsed).length > 0)
+                                if (fileParsed && Object.keys(fileParsed).length > 0)
                                     r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
                                 else
                                     r()
 
                             } catch (e) {
+                                console.log(e)
                                 r()
                             }
                         } else
@@ -266,7 +283,7 @@ export default class ProjectLoader {
     }
 
     static mapMaterial({shader, uniforms, uniformData}, gpu, id) {
-        const newD =  new MaterialInstance(gpu, id, shader, uniformData)
+        const newD = new MaterialInstance(gpu, id, shader, uniformData)
         newD.uniforms = uniforms
         return newD
     }
@@ -306,11 +323,11 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.SPOT_LIGHT]: (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: (entity, k,meshes, skyboxes, gpu, index, materials) => {
+    [COMPONENTS.MATERIAL]: (entity, k, meshes, skyboxes, gpu, index, materials) => {
         const newMat = new MaterialComponent(entity.components[k].id)
         const matFound = materials.find(m => m.id === entity.components[k].materialID)
 
-        if(matFound)
+        if (matFound)
             newMat.uniforms = matFound.uniforms
         return newMat
     },
@@ -318,11 +335,13 @@ const ENTITIES = {
         const component = new TransformComponent(entity.components[k].id, true)
         component.changed = true
 
-        try{
+        try {
             component.updateQuatOnEulerChange = false
             component.rotation = Transformation.getEuler(entity.components[k]._rotationQuat)
             component.updateQuatOnEulerChange = true
-        }catch (e){ }
+        } catch (e) {
+            console.log(e)
+        }
 
         return component
     },
