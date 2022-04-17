@@ -103,7 +103,6 @@ export default function useForm(
                         selected={selected.components[COMPONENTS.MATERIAL]}
 
                         submit={async (val, key) => {
-                            console.log(key, val)
                             if (key) {
                                 const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                                 clone[key] = val

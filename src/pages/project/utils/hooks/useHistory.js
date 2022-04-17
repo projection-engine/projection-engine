@@ -78,7 +78,6 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
             }
         }
     }
-    console.log(changes)
     return {
         forwardChanges,
         returnChanges,

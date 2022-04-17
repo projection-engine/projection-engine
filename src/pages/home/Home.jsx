@@ -22,7 +22,7 @@ export default function Home(props) {
         load, uploadRef,
           setProjects
     } = useProjects(fs)
-
+    console.log(projects)
     return (
         <div className={styles.wrapper}>
             <Modal

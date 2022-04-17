@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@electron/remote": "latest",
+    "@electron/remote": "2.0.4",
     "@f-ui/core": "0.1.39-alpha",
-    "@fontsource/roboto": "latest",
+    "@fontsource/roboto": "4.5.3",
     "assimpjs": "^0.0.7",
     "dexie": "^3.2.0",
     "draco3d": "^1.5.2",
@@ -28,7 +28,7 @@
   },
   "main": "public/main.js",
   "scripts": {
-    "start": "react-scripts  start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

@@ -21,10 +21,8 @@ function fetchData() {
             const t = await fetch(pathName)
 
             const data = await t.text()
-            console.log('DONE WITH FETCH')
             self.postMessage({valid: true, data: type === 'json' ? JSON.parse(data) : data})
         } catch (e) {
-            console.log(e)
             self.postMessage({valid: false})
         }
     })
@@ -55,7 +53,7 @@ export default class FileSystem {
         return await new Promise(resolve => fs.writeFile(this.path + '\\' + pathName, content, (e, s) => resolve(e)))
     }
 
-    async readFile(pathName, type, withRead) {
+    async readFile(pathName, type, withRead=true) {
 
         return new Promise(async resolve => {
             try {
@@ -70,7 +68,6 @@ export default class FileSystem {
                             const d = res.toString()
                             resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
-                            console.trace(e)
                             resolve(null)
                         }
                     })
@@ -82,7 +79,6 @@ export default class FileSystem {
                         const data = res.toString()
                         resolve(type === 'json' ? JSON.parse(data) : data)
                     } catch (e) {
-                        console.trace(e)
                         resolve(null)
                     }
                 })
@@ -206,7 +202,6 @@ export default class FileSystem {
                     const res = await assimpImporter(fs, resolvePath, newRoot, file, options, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
                     if (setAlert)
                         res.forEach(r => {
-                            console.log(r)
                             setAlert({
                                 message: r.reason + ' - ' + r.name,
                                 type: 'error'
@@ -301,10 +296,10 @@ export default class FileSystem {
         })
     }
 
-    async updateEntity(entity) {
-
+    async updateEntity(entity, id) {
         return new Promise(resolve => {
-            fs.writeFile(resolvePath(this.path + '\\logic\\' + entity.id + '.entity'), JSON.stringify(entity), (e) => {
+            fs.writeFile(resolvePath(this.path + '\\logic\\' + id + '.entity'), entity, (e) => {
+
                 resolve()
             })
         })

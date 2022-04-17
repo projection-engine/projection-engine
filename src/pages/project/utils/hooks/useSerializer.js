@@ -19,7 +19,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
                 const canvas = document.getElementById(id + '-canvas')
-                const preview =  canvas.toDataURL()
+                const preview = canvas.toDataURL()
                 fs.readFile(fileSystem.path + '\\.meta', (e, res) => {
                     if (res) {
                         const old = JSON.parse(res.toString())
@@ -51,34 +51,34 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         if (id)
             return new Promise(resolve => {
                 saveSettings()
-                    .then(() => {
-                        ProjectLoader.getEntities(fileSystem)
-                            .then(all => {
-                                let cleanUp = all.map(a => {
-                                    return new Promise(((resolve1) => {
-                                        if (a && a.data && !engine.entities.find(e => e.id === a.data.id)) {
-                                            fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity')
-                                                .then((er) => resolve1(er))
-                                        } else
-                                            resolve1()
-                                    }))
-                                })
+                    .then(async () => {
+                        const all = await ProjectLoader.getEntities(fileSystem)
 
-                                Promise.all(cleanUp)
-                                    .then((er) => {
-                                        saveEntities(engine.entities, fileSystem)
-                                            .then(r => {
-                                                setAlert({
-                                                    type: 'success',
-                                                    message: 'Project saved.'
-                                                })
-                                                load.finishEvent(EVENTS.PROJECT_SAVE)
-                                                resolve()
-                                            }).catch(() => resolve())
-                                    })
-
-
+                        let cleanUp = all.map(a => {
+                            return new Promise(((resolve1) => {
+                                if (a && a.data && !engine.entities.find(e => e.id === a.data.id)) {
+                                    fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity')
+                                        .then((er) => resolve1(er))
+                                } else
+                                    resolve1()
+                            }))
+                        })
+                        await Promise.all(cleanUp)
+                        await Promise.all(engine.entities.map(e => {
+                            return new Promise((resolve) => {
+                                const str = JSON.stringify(e)
+                                fileSystem
+                                    .updateEntity(str, e.id)
+                                    .then(() => resolve())
                             })
+                        }))
+                        setAlert({
+                            type: 'success',
+                            message: 'Project saved.'
+                        })
+                        load.finishEvent(EVENTS.PROJECT_SAVE)
+                        resolve()
+
                     }).catch(() => resolve())
             })
         else return new Promise(resolve => resolve())
@@ -98,15 +98,3 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
     }
 }
 
-export const saveEntities = (entities, fileSystem) => {
-    let promises = []
-    entities.filter(e => !e.components.Grid).forEach(e => {
-        promises.push(new Promise((resolve) => {
-            fileSystem
-                .updateEntity(e)
-                .then(() => resolve())
-        }))
-    })
-
-    return Promise.all(promises)
-}

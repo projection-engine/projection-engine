@@ -30,7 +30,6 @@ export default function Card(props) {
             className={styles.wrapper}
             data-card={props.data.id}
             ref={ref}
-
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
@@ -96,7 +95,7 @@ export default function Card(props) {
                     asCard={true}
                     object={object}
                     keys={KEYS}
-                    styles={{width: '100%', minWidth: '100%', background: 'var(--fabric-background-secondary)'}}
+                    styles={{ background: 'var(--fabric-background-secondary)'}}
                     selfContained={true}
                 />
             }
@@ -137,6 +136,7 @@ export default function Card(props) {
     )
 }
 Card.propTypes = {
+    isLast: PropTypes.bool,
     index: PropTypes.number,
     data: PropTypes.object,
     onRename: PropTypes.func.isRequired,

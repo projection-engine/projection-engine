@@ -123,7 +123,6 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
 function initializeSkybox(dispatch, gpu) {
     import('../../../../static/sky.json')
         .then(img => {
-            console.log(img)
             ImageProcessor.getImageBitmap(img.data)
                 .then(res => {
                     const newEntity = new Entity(undefined, 'sky')

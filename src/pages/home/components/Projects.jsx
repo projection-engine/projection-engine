@@ -15,7 +15,7 @@ export default function Projects(props) {
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
-
+console.log(projectsToShow.length)
 
     return (
         <div className={styles.wrapper}>
@@ -61,8 +61,8 @@ export default function Projects(props) {
                 </div>
             </div>
 
-            <Masonry  className={styles.content}>
-                {projectsToShow.length > 0 ? projectsToShow.map((p, i) => (
+            <Masonry className={styles.content}>
+                {projectsToShow.map((p, i) => (
                         <React.Fragment key={p.id}>
                             <Card
                                 onClick={() => props.redirect(p.id)}
@@ -75,13 +75,8 @@ export default function Projects(props) {
                                     props.deleteProject(p.id)
                                 }}/>
                         </React.Fragment>
-                    ))
-                    :
-                    <div className={styles.emptyWrapper}>
-                        <span className={'material-icons-round'} style={{fontSize: '5rem'}}>folder</span>
-                        No projects found.
-                    </div>
-                }
+                    ))}
+
             </Masonry>
         </div>
 

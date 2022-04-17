@@ -32,7 +32,6 @@ export default function AssimpJS(files) {
             })
             let result = ajs.ConvertFileList(fileList, 'assjson');
             if (!result.IsSuccess() || result.FileCount() === 0) {
-                console.log(result.GetErrorCode());
                 resolve1()
             }
             let resultFile = result.GetFile(0);

@@ -67,10 +67,9 @@ export default function Project(props) {
                         settings.name = res.meta.data.name
                     setLoading(false)
                 } catch (error) {
-                    console.log(error)
                 }
                 resolve()
-            }).catch(error => console.log(error))
+            }).catch()
         }
     }, [engine.gpu])
 

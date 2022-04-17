@@ -19,7 +19,6 @@ export default function assimpImporter(fs, resolvePath, newRoot, file, options, 
 
                     return d.meshes.map(m => {
                         const mesh = data.meshes[m]
-                        console.log(mesh, data)
                         if (mesh && mesh.texturecoords !== undefined && mesh.texturecoords[0] !== undefined) {
                             const b = GLTF.computeBoundingBox(mesh.vertices)
                             const jsonText = JSON.stringify({
@@ -42,7 +41,6 @@ export default function assimpImporter(fs, resolvePath, newRoot, file, options, 
                                         resolvePath(newRoot + `\\${mesh.name + ' - ' + m}.mesh`),
                                         jsonText,
                                         (err) => {
-                                            console.log(err)
                                             r()
                                         });
                                 }),

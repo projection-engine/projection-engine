@@ -7,7 +7,6 @@ export default  function write(path, data) {
         const worker = new WebWorker()
         worker.createExecution({s: data}, lzwEncode.toString())
             .then(res => {
-                console.log(res)
                 fs.writeFile(
                     path,
                     res,
@@ -42,7 +41,6 @@ function lzwEncode() {
         for (var i = 0; i < out.length; i++) {
             out[i] = String.fromCharCode(out[i]);
         }
-        console.log(out.join(""))
         self.postMessage(out.join(""))
     })
 

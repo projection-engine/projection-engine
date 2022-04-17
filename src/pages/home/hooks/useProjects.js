@@ -65,6 +65,7 @@ export default function useProjects(fs){
     }
 
     useEffect(() => {
+        console.log(localStorage.getItem('basePath'))
         if (localStorage.getItem('basePath') !== null)
             refresh()
     }, [])

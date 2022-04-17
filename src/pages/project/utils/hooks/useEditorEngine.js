@@ -115,7 +115,6 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     scripts,
 
                     () => {
-                        console.log('STARTED')
                         const e = entities.find(e => e.id === selected[0])
                         if (e)
                             dispatchChanges({
@@ -129,7 +128,6 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
                     },
                     () => { // onGizmoEnd
-                        console.log('ENDED')
                         const e = entities.find(e => e.id === selected[0])
                         if (e)
                             dispatchEntities({

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, Checkbox, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
@@ -17,20 +17,22 @@ export default function MaterialComponent(props) {
     const [state, clear] = useDirectState()
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
-
+    const lastID = useRef()
     useEffect(() => {
-        clear()
-        state.overrideMaterial = props.selected.overrideMaterial
-        state.uniforms = props.selected.uniforms
-        state.currentMaterial = props.quickAccess.materials.find(i => i.registryID === props.selected.materialID)
+        if(!lastID.current || lastID.current !== props.entityID) {
+            clear()
+            lastID.current = props.entityID
+            state.overrideMaterial = props.selected.overrideMaterial
+            state.uniforms = props.selected.uniforms
+            state.currentMaterial = props.quickAccess.materials.find(i => i.registryID === props.selected.materialID)
+        }
     }, [props.selected, props.entityID])
 
 
-    const loadFile = async (src, type='json') => {
+    const loadFile = async (src, type = 'json') => {
         load.pushEvent(EVENTS.LOAD_FILE)
         const rs = await fileSystem.readRegistryFile(src.registryID)
         if (rs) {
-            console.log(type)
             const file = await fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, type)
             load.finishEvent(EVENTS.LOAD_FILE)
             if (file)
@@ -46,14 +48,23 @@ export default function MaterialComponent(props) {
             load.finishEvent(EVENTS.LOAD_FILE)
 
     }
-    const updateUniforms = (key, value, obj, submit) => {
+    const updateUniforms = (key, value, obj, submit, submitUniformList) => {
         const index = state.uniforms.findIndex(u => u.key === key)
         if (index > -1) {
             const copy = [...state.uniforms]
             copy[index] = {...obj, value}
 
             state.uniforms = copy
-            if (submit)
+            if (submit) {
+                const values = {}
+                copy.forEach(c => {
+                    if (c.type !== DATA_TYPES.TEXTURE)
+                        values[c.key] = c.value
+                })
+                props.submit(values, 'uniformValues')
+            }
+
+            if(submitUniformList)
                 props.submit(copy, 'uniforms')
         }
     }
@@ -119,14 +130,15 @@ export default function MaterialComponent(props) {
                 return (
                     <Selector
                         type={'image'}
+                        findData={true}
                         handleChange={async src => {
                             if (src) {
-                                console.log(obj)
                                 const k = obj.format
                                 const file = await loadFile(src, 'string')
                                 if (file) {
-                                    const texture = await new Promise(resolve => {
-                                        new TextureInstance(
+                                    let texture
+                                    await new Promise(resolve => {
+                                        texture = new TextureInstance(
                                             file,
                                             k.yFlip,
                                             props.engine.gpu,
@@ -143,7 +155,38 @@ export default function MaterialComponent(props) {
                                             }
                                         )
                                     })
-                                    updateUniforms(key, texture, obj, true)
+
+                                    let index = state.uniforms.findIndex(u => u.key === key)
+                                    if (index > -1) {
+                                        const copy = [...state.uniforms]
+                                        copy[index] = {...obj, value: src.registryID}
+
+                                        state.uniforms = copy
+
+                                        const values = {}
+                                        copy.forEach(c => {
+                                            if (c.type !== DATA_TYPES.TEXTURE)
+                                                values[c.key] = c.value
+                                            else if (c.key === key)
+                                                values[c.key] = texture.texture
+                                        })
+
+                                        index = state.uniforms.findIndex(u => u.key === key)
+                                        if (index > -1) {
+                                            const copy = [...state.uniforms]
+                                            copy[index] = {...obj, value: src.registryID, modified: true}
+
+                                            state.uniforms = copy
+                                            props.submit(copy, 'uniforms')
+                                        }
+
+                                        // updateUniforms(key, src.registryID, obj, false, false)
+                                        // updateUniforms('modified', true, obj, false, true)
+
+
+                                        props.submit(values, 'uniformValues')
+                                    }
+
                                 }
                             }
                         }}
@@ -181,7 +224,7 @@ export default function MaterialComponent(props) {
                             props.submit()
                     }}/>
             </Accordion>
-            {props.selected.uniforms.length > 0 ? (
+            {props.selected.uniforms?.length > 0 ? (
                 <Checkbox
                     noMargin={true}
                     label={'Override material uniforms'}
@@ -189,13 +232,14 @@ export default function MaterialComponent(props) {
                     height={'35px'}
                     checked={state.overrideMaterial}
                     handleCheck={() => {
-                        state.overrideMaterial = !state.overrideMaterial
-                        props.submit(!state.overrideMaterial, 'overrideMaterial')
+                        const s = !state.overrideMaterial
+                        state.overrideMaterial = s
+                        props.submit(s, 'overrideMaterial')
                     }}
                 />
             ) : null}
             {state.overrideMaterial ?
-                state.uniforms.map(u => (
+                state.uniforms?.map(u => (
                     <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
                         <AccordionSummary className={styles.summary}>
                             {u.label}
