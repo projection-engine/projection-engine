@@ -1,4 +1,4 @@
-import ImageProcessor from "../../../../services/engine/utils/image/ImageProcessor";
+import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
 import PrimitiveProcessor from "./files/gltf/workers/PrimitiveProcessor";
 
 export default class TerrainWorker {

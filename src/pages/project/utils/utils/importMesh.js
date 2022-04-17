@@ -1,11 +1,11 @@
-import MeshInstance from "../../../../services/engine/shared/instances/MeshInstance";
-import Entity from "../../../../services/engine/shared/ecs/basic/Entity";
-import TransformComponent from "../../../../services/engine/shared/ecs/components/TransformComponent";
+import MeshInstance from "../../../../engine/shared/instances/MeshInstance";
+import Entity from "../../../../engine/shared/ecs/basic/Entity";
+import TransformComponent from "../../../../engine/shared/ecs/components/TransformComponent";
 
-import MeshComponent from "../../../../services/engine/shared/ecs/components/MeshComponent";
-import PickComponent from "../../../../services/engine/shared/ecs/components/PickComponent";
-import MaterialComponent from "../../../../services/engine/shared/ecs/components/MaterialComponent";
-import COMPONENTS from "../../../../services/engine/shared/templates/COMPONENTS";
+import MeshComponent from "../../../../engine/shared/ecs/components/MeshComponent";
+import PickComponent from "../../../../engine/shared/ecs/components/PickComponent";
+import MaterialComponent from "../../../../engine/shared/ecs/components/MaterialComponent";
+import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
 
 export default async function importMesh(objLoaded, engine, id, index, fileSystem, isBlueprint) {
 

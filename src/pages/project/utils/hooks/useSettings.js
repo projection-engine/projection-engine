@@ -1,7 +1,7 @@
-import {useMemo, useState} from "react";
-import CAMERA_TYPES from "../../../../services/engine/editor/camera/CAMERA_TYPES";
-import GIZMOS from "../../../../services/engine/editor/gizmo/GIZMOS";
-import RENDERING_TYPES from "../../../../services/engine/shared/templates/RENDERING_TYPES";
+import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
+import GIZMOS from "../../../../engine/editor/gizmo/GIZMOS";
+import RENDERING_TYPES from "../../../../engine/shared/templates/RENDERING_TYPES";
+import useDirectState from "./useDirectState";
 
 
 export const SHADING_MODELS = {
@@ -10,8 +10,7 @@ export const SHADING_MODELS = {
     WIREFRAME: 2
 }
 export default function useSettings() {
-
-    const [settings, setSettings] = useState({
+    const [state] = useDirectState({
         projectCreationDate: (new Date()).toDateString(),
         timestamp: 30000,
 
@@ -34,22 +33,5 @@ export default function useSettings() {
         exposure: 1.5,
         gridSize: .01
     })
- 
-    return useMemo(() => {
-        return new Proxy(settings, {
-                get(obj, key) {
-                    return obj[key];
-                },
-                set(obj, key, value) {
-                    setSettings(prev => {
-                        return {
-                            ...prev,
-                            [key]: value
-                        }
-                    })
-                    return true
-                }
-            }
-        )
-    }, [settings])
+    return state
 }

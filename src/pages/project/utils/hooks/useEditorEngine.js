@@ -1,22 +1,22 @@
 import {useEffect, useRef, useState} from "react";
-import PostProcessingSystem from "../../../../services/engine/shared/ecs/systems/PostProcessingSystem";
-import MeshSystem from "../../../../services/engine/shared/ecs/systems/MeshSystem";
-import TransformSystem from "../../../../services/engine/shared/ecs/systems/TransformSystem";
-import PhysicsSystem from "../../../../services/engine/shared/ecs/systems/PhysicsSystem";
-import ShadowMapSystem from "../../../../services/engine/shared/ecs/systems/ShadowMapSystem";
-import PickSystem from "../../../../services/engine/shared/ecs/systems/PickSystem";
-import Engine from "../../../../services/engine/editor/Engine";
+import PostProcessingSystem from "../../../../engine/shared/ecs/systems/PostProcessingSystem";
+import MeshSystem from "../../../../engine/shared/ecs/systems/MeshSystem";
+import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
+import PhysicsSystem from "../../../../engine/shared/ecs/systems/PhysicsSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
+import PickSystem from "../../../../engine/shared/ecs/systems/PickSystem";
+import Engine from "../../../../engine/editor/Engine";
 import EVENTS from "../utils/EVENTS";
-import PerformanceSystem from "../../../../services/engine/shared/ecs/systems/PerformanceSystem";
-import SYSTEMS from "../../../../services/engine/shared/templates/SYSTEMS";
-import CubeMapSystem from "../../../../services/engine/shared/ecs/systems/CubeMapSystem";
-import ScriptSystem from "../../../../services/engine/shared/ecs/systems/ScriptSystem";
-import useEngineEssentials from "../../../../services/engine/shared/useEngineEssentials";
+import PerformanceSystem from "../../../../engine/shared/ecs/systems/PerformanceSystem";
+import SYSTEMS from "../../../../engine/shared/templates/SYSTEMS";
+import CubeMapSystem from "../../../../engine/shared/ecs/systems/CubeMapSystem";
+import ScriptSystem from "../../../../engine/shared/ecs/systems/ScriptSystem";
+import useEngineEssentials from "../../../../engine/shared/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
-import COMPONENTS from "../../../../services/engine/shared/templates/COMPONENTS";
-import CameraCubeSystem from "../../../../services/engine/shared/ecs/systems/CameraCubeSystem";
-import {ENTITY_ACTIONS} from "../../../../services/engine/utils/entityReducer";
+import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
+import CameraCubeSystem from "../../../../engine/shared/ecs/systems/CameraCubeSystem";
+import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
 
 
 export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {

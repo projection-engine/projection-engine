@@ -1,12 +1,12 @@
 import importMesh from "./importMesh";
 import EVENTS from "./EVENTS";
-import MaterialInstance from "../../../../services/engine/shared/instances/MaterialInstance";
-import {ENTITY_ACTIONS} from "../../../../services/engine/utils/entityReducer";
+import MaterialInstance from "../../../../engine/shared/instances/MaterialInstance";
+import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
 import ProjectLoader from "../workers/ProjectLoader";
-import COMPONENTS from "../../../../services/engine/shared/templates/COMPONENTS";
-import Entity from "../../../../services/engine/shared/ecs/basic/Entity";
-import FolderComponent from "../../../../services/engine/shared/ecs/components/FolderComponent";
-import ScriptComponent from "../../../../services/engine/shared/ecs/components/ScriptComponent";
+import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
+import Entity from "../../../../engine/shared/ecs/basic/Entity";
+import FolderComponent from "../../../../engine/shared/ecs/components/FolderComponent";
+import ScriptComponent from "../../../../engine/shared/ecs/components/ScriptComponent";
 import {HISTORY_ACTIONS} from "../hooks/historyReducer";
 
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {

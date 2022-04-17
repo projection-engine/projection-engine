@@ -1,4 +1,4 @@
-import ImageProcessor from "../../../../../services/engine/utils/image/ImageProcessor";
+import ImageProcessor from "../../../../../engine/utils/image/ImageProcessor";
 import TerrainWorker from "../TerrainWorker";
 
 import {v4 as uuidv4} from 'uuid';

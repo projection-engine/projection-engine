@@ -8,13 +8,13 @@ import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
 
 import {Button, LoaderProvider} from "@f-ui/core";
-import FolderComponent from "../../services/engine/shared/ecs/components/FolderComponent";
-import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
-import Entity from "../../services/engine/shared/ecs/basic/Entity";
+import FolderComponent from "../../engine/shared/ecs/components/FolderComponent";
+import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
+import Entity from "../../engine/shared/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
-import COMPONENTS from "../../services/engine/shared/templates/COMPONENTS";
-import ScriptComponent from "../../services/engine/shared/ecs/components/ScriptComponent";
+import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
+import ScriptComponent from "../../engine/shared/ecs/components/ScriptComponent";
 import {HISTORY_ACTIONS} from "../../pages/project/utils/hooks/historyReducer";
 
 export default function SceneView(props) {

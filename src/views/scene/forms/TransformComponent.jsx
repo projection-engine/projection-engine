@@ -3,9 +3,9 @@ import React, {useEffect, useState} from "react";
 import styles from "../styles/Forms.module.css";
 import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
-import Transformation from "../../../services/engine/shared/utils/workers/Transformation";
+import Transformation from "../../../engine/shared/utils/workers/Transformation";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
-import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
 
 export default function TransformComponent(props) {
     const [state, setState] = useState({})

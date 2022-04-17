@@ -4,7 +4,7 @@ import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
 import styles from "../styles/Forms.module.css";
 import handleDrop from "../../../pages/project/utils/utils/handleDrop";
 import Selector from "../../../components/selector/Selector";
-import MESH_TYPES from "../../../services/engine/shared/templates/MESH_TYPES";
+import MESH_TYPES from "../../../engine/shared/templates/MESH_TYPES";
 
 
 export default function MeshComponent(props) {

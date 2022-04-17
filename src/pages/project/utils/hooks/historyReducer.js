@@ -1,4 +1,4 @@
-import cloneClass from "../../../../services/engine/utils/cloneClass";
+import cloneClass from "../../../../engine/utils/cloneClass";
 
 
 export const HISTORY_ACTIONS = {

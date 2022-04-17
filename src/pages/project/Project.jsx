@@ -8,7 +8,7 @@ import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "./utils/workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
 import useSerializer from "./utils/hooks/useSerializer";
 
 import useEditorEngine from "./utils/hooks/useEditorEngine";
@@ -23,7 +23,7 @@ import ImageView from "../../views/image/ImageView";
 import EntitiesProvider from "./utils/hooks/EntitiesProvider";
 import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
 import handleTabChange from "./utils/utils/handleTabChange";
-import COMPONENTS from "../../services/engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
 
 

@@ -8,12 +8,12 @@ import MeshComponent from "../forms/MeshComponent";
 
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
-import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
-import Transformation from "../../../services/engine/shared/utils/workers/Transformation";
-import cloneClass from "../../../services/engine/utils/cloneClass";
-import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
+import {ENTITY_ACTIONS} from "../../../engine/utils/entityReducer";
+import Transformation from "../../../engine/shared/utils/workers/Transformation";
+import cloneClass from "../../../engine/utils/cloneClass";
+import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
-import MaterialInstance from "../../../services/engine/shared/instances/MaterialInstance";
+import MaterialInstance from "../../../engine/shared/instances/MaterialInstance";
 import {IDS} from "../../../pages/project/utils/hooks/useMinimalEngine";
 
 export default function useForm(
@@ -101,21 +101,9 @@ export default function useForm(
                         }}
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.MATERIAL]}
-                        // submitTiling={(tiling, allow) => {
-                        //     const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
-                        //     if (allow === undefined) {
-                        //         clone.tiling = tiling
-                        //     } else
-                        //         clone.overrideTiling = allow
-                        //     engine.dispatchEntities({
-                        //         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                        //             entityID: engine.selected[0],
-                        //             data: clone,
-                        //             key: COMPONENTS.MATERIAL
-                        //         }
-                        //     })
-                        // }}
+
                         submit={async (val, key) => {
+                            console.log(key, val)
                             if (key) {
                                 const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                                 clone[key] = val

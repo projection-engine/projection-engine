@@ -1,30 +1,30 @@
 import {useContext, useEffect, useRef, useState} from "react";
 
-import {ENTITY_ACTIONS} from "../../../../services/engine/utils/entityReducer";
-import Entity from "../../../../services/engine/shared/ecs/basic/Entity";
-import sphereMesh from '../../../../services/engine/editor/assets/Sphere.json'
+import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
+import Entity from "../../../../engine/shared/ecs/basic/Entity";
+import sphereMesh from '../../../../engine/editor/assets/Sphere.json'
 
-import Engine from "../../../../services/engine/editor/Engine";
-import TransformSystem from "../../../../services/engine/shared/ecs/systems/TransformSystem";
-import ShadowMapSystem from "../../../../services/engine/shared/ecs/systems/ShadowMapSystem";
-import MeshSystem from "../../../../services/engine/shared/ecs/systems/MeshSystem";
-import PostProcessingSystem from "../../../../services/engine/shared/ecs/systems/PostProcessingSystem";
-import SkyboxComponent from "../../../../services/engine/shared/ecs/components/SkyboxComponent";
-import DirectionalLightComponent from "../../../../services/engine/shared/ecs/components/DirectionalLightComponent";
+import Engine from "../../../../engine/editor/Engine";
+import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
+import MeshSystem from "../../../../engine/shared/ecs/systems/MeshSystem";
+import PostProcessingSystem from "../../../../engine/shared/ecs/systems/PostProcessingSystem";
+import SkyboxComponent from "../../../../engine/shared/ecs/components/SkyboxComponent";
+import DirectionalLightComponent from "../../../../engine/shared/ecs/components/DirectionalLightComponent";
 
-import MeshComponent from "../../../../services/engine/shared/ecs/components/MeshComponent";
-import TransformComponent from "../../../../services/engine/shared/ecs/components/TransformComponent";
-import MeshInstance from "../../../../services/engine/shared/instances/MeshInstance";
+import MeshComponent from "../../../../engine/shared/ecs/components/MeshComponent";
+import TransformComponent from "../../../../engine/shared/ecs/components/TransformComponent";
+import MeshInstance from "../../../../engine/shared/instances/MeshInstance";
 import {LoaderProvider} from "@f-ui/core";
 import {SHADING_MODELS} from "./useSettings";
 import EVENTS from "../utils/EVENTS";
-import CAMERA_TYPES from "../../../../services/engine/editor/camera/CAMERA_TYPES";
-import MaterialComponent from "../../../../services/engine/shared/ecs/components/MaterialComponent";
+import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
+import MaterialComponent from "../../../../engine/shared/ecs/components/MaterialComponent";
 
 import {v4 as uuidv4} from 'uuid';
-import useEngineEssentials from "../../../../services/engine/shared/useEngineEssentials";
-import ImageProcessor from "../../../../services/engine/utils/image/ImageProcessor";
-import COMPONENTS from "../../../../services/engine/shared/templates/COMPONENTS";
+import useEngineEssentials from "../../../../engine/shared/useEngineEssentials";
+import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
+import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
 
 export default function useMinimalEngine(initializeSphere, centerOnSphere, loadAllMeshes) {
     const [id, setId] = useState(uuidv4())
@@ -53,7 +53,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                 initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', dispatchEntities, setMeshes)
 
             if (loadAllMeshes)
-                import('../../../../services/engine/editor/assets/Cube.json')
+                import('../../../../engine/editor/assets/Cube.json')
                     .then(cubeData => {
                         initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true)
                     })

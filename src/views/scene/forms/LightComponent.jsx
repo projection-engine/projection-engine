@@ -4,7 +4,7 @@ import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
-import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
 
 export default function LightComponent(props) {

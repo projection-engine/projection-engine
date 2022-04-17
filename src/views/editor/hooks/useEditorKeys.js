@@ -1,12 +1,12 @@
 import useHotKeys, {KEYS} from "../../../pages/project/utils/hooks/useHotKeys";
-import GIZMOS from "../../../services/engine/editor/gizmo/GIZMOS";
+import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
-import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
-import cloneClass from "../../../services/engine/utils/cloneClass";
+import {ENTITY_ACTIONS} from "../../../engine/utils/entityReducer";
+import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
-import PickComponent from "../../../services/engine/shared/ecs/components/PickComponent";
+import PickComponent from "../../../engine/shared/ecs/components/PickComponent";
 import {useState} from "react";
-import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
 
 export default function useEditorKeys(props, controlProvider){
     const [toCopy, setToCopy] = useState([])
