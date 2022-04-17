@@ -14,10 +14,11 @@ import Transformation from "../../../services/engine/utils/workers/Transformatio
 import cloneClass from "../../../services/utils/misc/cloneClass";
 import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
+import MaterialInstance from "../../../services/engine/instances/MaterialInstance";
+import {IDS} from "../../../services/hooks/useMinimalEngine";
 
 export default function useForm(
     engine,
-
     setAlert,
     executingAnimation,
     quickAccess,
@@ -60,26 +61,26 @@ export default function useForm(
 
             case COMPONENTS.MESH: {
                 return (
-                        <MeshComponent
-                            quickAccess={quickAccess}
-                            load={load} setAlert={setAlert}
-                            submit={(mesh, type) => {
-                                if (!type)
-                                    selected.components[COMPONENTS.MESH].meshID = mesh
-                                 else
-                                    selected.components[COMPONENTS.MESH].meshType = mesh
+                    <MeshComponent
+                        quickAccess={quickAccess}
+                        load={load} setAlert={setAlert}
+                        submit={(mesh, type) => {
+                            if (!type)
+                                selected.components[COMPONENTS.MESH].meshID = mesh
+                            else
+                                selected.components[COMPONENTS.MESH].meshType = mesh
 
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: engine.selected[0],
-                                        data: selected.components[COMPONENTS.MESH],
-                                        key: COMPONENTS.MESH
-                                    }
-                                })
-                            }}
-                            engine={engine}
-                            selected={selected.components[COMPONENTS.MESH]}
-                        />
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: engine.selected[0],
+                                    data: selected.components[COMPONENTS.MESH],
+                                    key: COMPONENTS.MESH
+                                }
+                            })
+                        }}
+                        engine={engine}
+                        selected={selected.components[COMPONENTS.MESH]}
+                    />
                 )
             }
             case COMPONENTS.MATERIAL: {
@@ -101,22 +102,22 @@ export default function useForm(
                         }}
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.MATERIAL]}
-                        submitTiling={(tiling, allow) => {
-                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
-                            if (allow === undefined) {
-                                clone.tiling = tiling
-                            } else
-                                clone.overrideTiling = allow
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: clone,
-                                    key: COMPONENTS.MATERIAL
-                                }
-                            })
-                        }}
-                        submit={(val, key) => {
-                            if(key){
+                        // submitTiling={(tiling, allow) => {
+                        //     const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
+                        //     if (allow === undefined) {
+                        //         clone.tiling = tiling
+                        //     } else
+                        //         clone.overrideTiling = allow
+                        //     engine.dispatchEntities({
+                        //         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                        //             entityID: engine.selected[0],
+                        //             data: clone,
+                        //             key: COMPONENTS.MATERIAL
+                        //         }
+                        //     })
+                        // }}
+                        submit={async (val, key) => {
+                            if (key) {
                                 const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                                 clone[key] = val
                                 engine.dispatchEntities({
@@ -126,22 +127,37 @@ export default function useForm(
                                         key: COMPONENTS.MATERIAL
                                     }
                                 })
-                            }else {
+                            } else {
+                                const exists = engine.materials.find(m => m.id === val.id)
+                                if (!exists) {
+                                    let newMat
+                                    await new Promise(resolve => {
+                                        newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, () => resolve(), IDS.MATERIAL)
+                                    })
+                                    newMat.id = val.id
+                                    engine.setMaterials(prev => {
+                                        return [...prev, newMat]
+                                    })
+                                }
+
                                 const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                                 if (val) {
-                                    importMaterial(val, engine, load)
                                     clone.materialID = val.id
+                                    clone.uniforms = val.blob.uniforms
                                 } else
                                     clone.materialID = undefined
+
                                 engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+                                    payload: {
                                         entityID: engine.selected[0],
                                         data: clone,
                                         key: COMPONENTS.MATERIAL
                                     }
                                 })
                             }
-                        }}
+                        }
+                        }
                         setAlert={setAlert}
 
                     />
@@ -228,11 +244,10 @@ export default function useForm(
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.SKYBOX]}
                         submit={(data, key) => {
-                            if(key === 'blob') {
+                            if (key === 'blob') {
                                 selected.components[COMPONENTS.SKYBOX].blob = data.blob
                                 selected.components[COMPONENTS.SKYBOX].imageID = data.imageID
-                            }
-                            else
+                            } else
                                 selected.components[COMPONENTS.SKYBOX][key] = data
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT,

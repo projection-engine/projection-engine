@@ -116,7 +116,7 @@ export default class ProjectLoader {
         let projectData = []
         try {
             projectData = await ProjectLoader.getEntities(fileSystem)
-        }catch (error){
+        } catch (error) {
 
         }
 
@@ -257,19 +257,17 @@ export default class ProjectLoader {
             return new Promise(r => {
 
                 ProjectLoader.readFromRegistry(m, fileSystem)
-                    .then(fileData => {
+                    .then(async fileData => {
                         if (fileData) {
                             let fileParsed
                             try {
                                 fileParsed = JSON.parse(fileData)
-
                                 if (fileParsed && Object.keys(fileParsed).length > 0)
-                                    r(ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                                    r(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
                                 else
                                     r()
 
                             } catch (e) {
-                                console.log(e)
                                 r()
                             }
                         } else
@@ -282,10 +280,14 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static mapMaterial({shader, uniforms, uniformData}, gpu, id) {
-        const newD = new MaterialInstance(gpu, id, shader, uniformData)
-        newD.uniforms = uniforms
-        return newD
+    static async mapMaterial({shader, uniforms, uniformData}, gpu, id) {
+
+        let newMat
+        await new Promise(resolve => {
+            newMat = new MaterialInstance(gpu, shader, uniformData, () => resolve(), id)
+        })
+        newMat.uniforms = uniforms
+        return newMat
     }
 
     static mapEntity(entity, index, meshes, skyboxes, gpu, materials) {

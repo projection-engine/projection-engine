@@ -2,7 +2,6 @@ import {mat4, quat} from "gl-matrix";
 import Transformation from "../../../../engine/utils/workers/Transformation";
 import ImageProcessor from "../../../image/ImageProcessor";
 import ROTATION_TYPES from "../../../../engine/templates/ROTATION_TYPES";
-import Material from "../../../../../views/blueprints/material/nodes/Material";
 import emptyMaterial from '../../../../utils/emptyMaterial.json'
 
 import {v4 as uuidv4} from 'uuid';
@@ -60,20 +59,22 @@ export function materialParser(basePath, material, textures, images) {
             promises.push(loadTexture('height', basePath, material.heightTexture, textures, images))
 
 
-        Promise.all(promises)
-            .then(result => {
-                const mat = new Material()
-                mat.id = emptyMaterial.response.id
-                mat.compile(result).then(() => {
-                    resolve({
-                        name: material.name,
-                        response: mat,
-                        id: uuidv4()
-                    })
-                })
+        // Promise.all(promises)
+        //     .then(result => {
+        //         const mat = new Material()
+        //         mat.id = emptyMaterial.response.id
+        //         mat.compile(result).then(() => {
+        //             resolve({
+        //                 name: material.name,
+        //                 response: mat,
+        //                 id: uuidv4()
+        //             })
+        //         })
+        //
+        //     })
 
-            })
-
+        // TODO REWORK MATERIAL
+        resolve()
     })
 }
 

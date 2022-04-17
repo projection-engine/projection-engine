@@ -68,6 +68,7 @@ export default function MaterialComponent(props) {
                                     if (rs)
                                         fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
                                             .then(file => {
+                                                console.log(file)
                                                 if (file && file.response) {
                                                     saveVersion()
                                                     props.submit({

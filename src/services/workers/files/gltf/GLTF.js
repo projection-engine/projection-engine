@@ -37,9 +37,9 @@ export default class GLTF {
                 images: parsed.images
             }
 
-            const parsedMaterials = await Promise.all(parsed.materials ? parsed.materials.map(m => {
-                return materialParser(basePath, m, parsed.textures, parsed.images)
-            }) : [])
+            // const parsedMaterials = await Promise.all(parsed.materials ? parsed.materials.map(m => {
+            //     return materialParser(basePath, m, parsed.textures, parsed.images)
+            // }) : [])
             let meshes = parsed.meshes.filter((_, index) => {
                 return sceneNodes.find(n => n.meshIndex === index) !== undefined
             }).map(m => getPrimitives(m, parsed.materials)[0])
@@ -54,7 +54,7 @@ export default class GLTF {
                     name: m.name,
                     data: {
                         ...m,
-                        material: currentMesh.material ? parsedMaterials.find(p => p.name === currentMesh.material.name)?.id : undefined,
+                        // material: currentMesh.material ? parsedMaterials.find(p => p.name === currentMesh.material.name)?.id : undefined,
                         indices: accessors[currentMesh.indices]?.data,
                         vertices: accessors[currentMesh.vertices]?.data,
                         tangents: tangents,
@@ -66,7 +66,7 @@ export default class GLTF {
                 })
             })
 
-            return {nodes: files, materials: parsedMaterials}
+            return {nodes: files, materials: []}
         } catch (error) {
             return {}
         }
