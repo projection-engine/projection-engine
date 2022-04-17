@@ -55,14 +55,14 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                         const all = await ProjectLoader.getEntities(fileSystem)
 
                         let cleanUp = all.map(a => {
-                            return new Promise(((resolve1) => {
-                                if (a && a.data && !engine.entities.find(e => e.id === a.data.id)) {
-                                    fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity')
-                                        .then((er) => resolve1(er))
-                                } else
+                            return new Promise(async (resolve1) => {
+                                if (a && a.data && !engine.entities.find(e => e.id === a.data.id))
+                                    resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true))
+                                else
                                     resolve1()
-                            }))
+                            })
                         })
+                        console.log(cleanUp)
                         await Promise.all(cleanUp)
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {

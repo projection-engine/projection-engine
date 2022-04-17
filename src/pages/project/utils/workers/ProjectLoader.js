@@ -305,7 +305,6 @@ const ENTITIES = {
                 return new Promise(async resolve => {
                     const fileData = await ProjectLoader.readFromRegistry(u.value, fileSystem)
                     if (fileData) {
-
                         let texture
                         await new Promise(r => {
                             const k = u.format
@@ -340,15 +339,11 @@ const ENTITIES = {
         newMat.uniformValues = {}
         const values = await Promise.all(toLoad)
         values.forEach(dd => {
-            console.log(dd)
             if(dd.changed)
                 newMat.uniformValues[dd.key] = dd.value
         })
 
         newMat.overrideMaterial = entity.components[k].overrideMaterial
-
-        console.log(newMat)
-
         return newMat
     },
     [COMPONENTS.TRANSFORM]: async (entity, k) => {
