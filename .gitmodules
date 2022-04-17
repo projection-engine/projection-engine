@@ -8,5 +8,5 @@
 	path = src/views/files
 	url = git@github.com:projection-engine/files.git
 [submodule "src/services/engine"]
-	path = src/services/engine
+	path = src/engine
 	url = git@github.com:projection-engine/engine.git

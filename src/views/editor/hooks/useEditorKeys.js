@@ -1,13 +1,12 @@
-import useHotKeys, {KEYS} from "../../../services/hooks/useHotKeys";
-import GIZMOS from "../../../services/engine/templates/GIZMOS";
-import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
-import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
-import cloneClass from "../../../services/utils/misc/cloneClass";
+import useHotKeys, {KEYS} from "../../../pages/project/utils/hooks/useHotKeys";
+import GIZMOS from "../../../services/engine/editor/gizmo/GIZMOS";
+import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
+import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
+import cloneClass from "../../../services/engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
-import PickComponent from "../../../services/engine/ecs/components/PickComponent";
-import generateNextID from "../../../services/utils/generateNextID";
+import PickComponent from "../../../services/engine/shared/ecs/components/PickComponent";
 import {useState} from "react";
-import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
 
 export default function useEditorKeys(props, controlProvider){
     const [toCopy, setToCopy] = useState([])

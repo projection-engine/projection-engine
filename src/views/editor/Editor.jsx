@@ -1,24 +1,15 @@
 import styles from "../../pages/project/styles/Project.module.css";
 import ViewportOptions from "../../components/viewport/ViewportOptions";
 import Viewport from "../../components/viewport/Viewport";
-import handleDrop from "../../services/utils/handleDrop";
+import handleDrop from "../../pages/project/utils/utils/handleDrop";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
-import getOptions from "../../pages/project/utils/getOptions";
-import {useContext, useEffect, useState} from "react";
-import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
-import useHotKeys, {KEYS} from "../../services/hooks/useHotKeys";
+import getOptions from "../../pages/project/utils/utils/getOptions";
+import {useContext, useEffect} from "react";
+import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import cloneClass from "../../services/utils/misc/cloneClass";
-import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
-import PickComponent from "../../services/engine/ecs/components/PickComponent";
-import generateNextID from "../../services/utils/generateNextID";
-import GIZMOS from "../../services/engine/templates/GIZMOS";
-import {HISTORY_ACTIONS} from "../../services/utils/historyReducer";
-
-import {v4 as uuidv4} from 'uuid';
 import useEditorKeys from "./hooks/useEditorKeys";
 
 export default function Editor(props) {

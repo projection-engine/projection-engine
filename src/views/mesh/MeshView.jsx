@@ -5,7 +5,7 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useMinimalEngine, {IDS, initializeMesh} from "../../services/hooks/useMinimalEngine";
+import useMinimalEngine, {IDS, initializeMesh} from "../../pages/project/utils/hooks/useMinimalEngine";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
 
@@ -13,9 +13,9 @@ import {useContext, useEffect, useState} from "react";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import {LoaderProvider} from "@f-ui/core";
 
-import EVENTS from "../../services/utils/misc/EVENTS";
+import EVENTS from "../../pages/project/utils/utils/EVENTS";
 
-import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
 

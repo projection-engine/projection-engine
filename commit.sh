@@ -7,13 +7,13 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin electron
 
-cd ../services/engine
+cd ../engine
 git add --all
 git commit -m "$MESSAGE"
 git push origin v2.0
 
 
-cd ../../views/blueprints
+cd ../views/blueprints
 git add --all
 git commit -m "$MESSAGE"
 git push origin electron

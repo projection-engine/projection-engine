@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
 
 export default function getElementIcon(components, isBP) {
     if (isBP)

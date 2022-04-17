@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, Checkbox, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useEffect, useState} from "react";
-import EVENTS from "../../../services/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
-import {HISTORY_ACTIONS} from "../../../services/utils/historyReducer";
+import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
 
 
 export default function MaterialComponent(props) {

@@ -4,12 +4,12 @@ import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core";
 
 import {useContext, useMemo} from "react";
 
-import QuickAccessProvider from "../../../services/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
-import importMaterial from "../../../services/utils/importMaterial";
-import {IDS} from "../../../services/hooks/useMinimalEngine";
+
+import {IDS} from "../../../pages/project/utils/hooks/useMinimalEngine";
 import TransformComponent from "../../scene/forms/TransformComponent";
-import Transformation from "../../../services/engine/utils/workers/Transformation";
+import Transformation from "../../../services/engine/shared/utils/workers/Transformation";
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -27,7 +27,6 @@ export default function Controls(props) {
                     meshID={selected.components.MeshComponent.meshID}
                     submit={(mat) => {
 
-                        importMaterial(mat, props.engine, props.load,selected.components.MeshComponent.meshID)
                     }}
                     setAlert={({message, type}) => alert.pushAlert(message, type)}
                 />

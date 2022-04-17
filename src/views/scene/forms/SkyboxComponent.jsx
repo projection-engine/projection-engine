@@ -4,9 +4,8 @@ import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
 import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
 
-import EVENTS from "../../../services/utils/misc/EVENTS";
+import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import Range from "../../../components/range/Range";
-import ImageProcessor from "../../../services/workers/image/ImageProcessor";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)

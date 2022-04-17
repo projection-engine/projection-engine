@@ -8,14 +8,13 @@ import MeshComponent from "../forms/MeshComponent";
 
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
-import {ENTITY_ACTIONS} from "../../../services/utils/entityReducer";
-import importMaterial from "../../../services/utils/importMaterial";
-import Transformation from "../../../services/engine/utils/workers/Transformation";
-import cloneClass from "../../../services/utils/misc/cloneClass";
-import COMPONENTS from "../../../services/engine/templates/COMPONENTS";
+import {ENTITY_ACTIONS} from "../../../services/engine/utils/entityReducer";
+import Transformation from "../../../services/engine/shared/utils/workers/Transformation";
+import cloneClass from "../../../services/engine/utils/cloneClass";
+import COMPONENTS from "../../../services/engine/shared/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
-import MaterialInstance from "../../../services/engine/instances/MaterialInstance";
-import {IDS} from "../../../services/hooks/useMinimalEngine";
+import MaterialInstance from "../../../services/engine/shared/instances/MaterialInstance";
+import {IDS} from "../../../pages/project/utils/hooks/useMinimalEngine";
 
 export default function useForm(
     engine,

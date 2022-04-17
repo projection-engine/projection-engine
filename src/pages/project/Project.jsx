@@ -1,32 +1,30 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {AlertProvider, LoaderProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
-import Maker from "../../services/workers/Maker";
-import useQuickAccess from "../../services/hooks/useQuickAccess";
-import QuickAccessProvider from "../../services/hooks/QuickAccessProvider";
+import useQuickAccess from "./utils/hooks/useQuickAccess";
+import QuickAccessProvider from "./utils/hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
-import ProjectLoader from "../../services/workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../services/utils/entityReducer";
-import useSerializer from "./hook/useSerializer";
+import ProjectLoader from "./utils/workers/ProjectLoader";
+import {ENTITY_ACTIONS} from "../../services/engine/utils/entityReducer";
+import useSerializer from "./utils/hooks/useSerializer";
 
-import useEditorEngine from "../../services/hooks/useEditorEngine";
-import useSettings from "./hook/useSettings";
-import EVENTS from "../../services/utils/misc/EVENTS";
-import SettingsProvider from "../../services/hooks/SettingsProvider";
+import useEditorEngine from "./utils/hooks/useEditorEngine";
+import useSettings from "./utils/hooks/useSettings";
+import EVENTS from "./utils/utils/EVENTS";
+import SettingsProvider from "./utils/hooks/SettingsProvider";
 import FilesView from "../../views/files/FilesView";
 import Editor from "../../views/editor/Editor";
 import MeshView from "../../views/mesh/MeshView";
-import MaterialView from "../../views/blueprints/material2.0/MaterialView";
+import MaterialView from "../../views/blueprints/material/MaterialView";
 import ImageView from "../../views/image/ImageView";
-import EntitiesProvider from "../../services/hooks/EntitiesProvider";
-import BlueprintView from "../../views/blueprints/blueprint/BlueprintView";
-import handleTabChange from "./utils/handleTabChange";
-import COMPONENTS from "../../services/engine/templates/COMPONENTS";
-import MinimalBlueprintView from "../../views/blueprints/blueprint/MinimalBlueprintView";
-import {ca} from "wait-on/exampleConfig";
+import EntitiesProvider from "./utils/hooks/EntitiesProvider";
+import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
+import handleTabChange from "./utils/utils/handleTabChange";
+import COMPONENTS from "../../services/engine/shared/templates/COMPONENTS";
+import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
 
 
 export default function Project(props) {
@@ -235,9 +233,8 @@ export default function Project(props) {
                         <Preferences serializer={serializer}/>
                         <GlobalOptions
                             downloadProject={() => {
-                                Maker.make(props.id, load, setAlert)
-                            }}
 
+                            }}
                             redirect={props.redirect}
                             save={serializer.save}
                         />

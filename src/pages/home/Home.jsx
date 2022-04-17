@@ -4,9 +4,9 @@ import React from "react";
 import Projects from "./components/Projects";
 
 import PropTypes from "prop-types";
-import FileSystem from "../../services/workers/files/FileSystem";
+import FileSystem from "../project/utils/workers/files/FileSystem";
 
-import EVENTS from "../../services/utils/misc/EVENTS";
+import EVENTS from "../project/utils/utils/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/SideBar";
 
