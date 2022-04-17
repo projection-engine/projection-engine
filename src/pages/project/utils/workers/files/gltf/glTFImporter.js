@@ -1,5 +1,4 @@
 import GLTF from "./GLTF";
-import {v4 as uuidv4} from "uuid";
 
 export default function glTFImporter(fs, resolvePath, newRoot, file, options, resolve, createRegistryEntry, path, importImage) {
     fs.mkdir(resolvePath(newRoot), async (err) => {

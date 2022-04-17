@@ -1,7 +1,3 @@
-import RENDERING_TYPES from "../../../../engine/shared/templates/RENDERING_TYPES";
-import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
-import GIZMOS from "../../../../engine/editor/gizmo/GIZMOS";
-import {SHADING_MODELS} from "./useSettings";
 import {useMemo, useState} from "react";
 
 export default function useDirectState(initialState={}){

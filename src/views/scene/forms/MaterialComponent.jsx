@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Accordion, AccordionSummary, Checkbox, LoaderProvider} from "@f-ui/core";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
-import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
 import useDirectState from "../../../pages/project/utils/hooks/useDirectState";
 import {DATA_TYPES} from "../../blueprints/base/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
@@ -21,6 +20,7 @@ export default function MaterialComponent(props) {
     useEffect(() => {
         if(!lastID.current || lastID.current !== props.entityID) {
             clear()
+            state.doubleSided = props.selected.doubleSided
             lastID.current = props.entityID
             state.overrideMaterial = props.selected.overrideMaterial
             state.uniforms = props.selected.uniforms
@@ -238,6 +238,19 @@ export default function MaterialComponent(props) {
                     }}
                 />
             ) : null}
+
+                <Checkbox
+                    noMargin={true}
+                    label={'Double sided'}
+                    width={'100%'}
+                    height={'35px'}
+                    checked={state.doubleSided}
+                    handleCheck={() => {
+                        const s = !state.doubleSided
+                        state.doubleSided = s
+                        props.submit(s, 'doubleSided')
+                    }}
+                />
             {state.overrideMaterial ?
                 state.uniforms?.map(u => (
                     <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>

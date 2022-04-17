@@ -2,7 +2,7 @@
 
 ### Sobre *(About)*
 - **Editor**: construído do zero com foco em usabilidade e desempenho, utilizando ReactJS e ElectronJS para fornecer uma melhor experiência de trabalho fora do navegador.
-- **Renderizador**: utilizando WebGL2 e múltiplas técnicas gráficas, a Projection Engine fornece bastante flexibilidade com setup gráfico.
+- **Renderizador**: utilizando WebGL2 e múltiplas técnicas gráficas, a Projection EditorEngine fornece bastante flexibilidade com setup gráfico.
 - **Scripting**: programação baseada em nodes é um dos focos desse motor gráfico *(em desenvolvimento)*, irá fornecer ao usuário uma ampla variedade de nodes para criação das diversas interações.
 - **Importação**: glTF 2 é a forma padrão de importação de modelos 3D externos.
 

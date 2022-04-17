@@ -4,11 +4,10 @@ import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
 import Entity from "../../../../engine/shared/ecs/basic/Entity";
 import sphereMesh from '../../../../engine/editor/assets/Sphere.json'
 
-import Engine from "../../../../engine/editor/Engine";
-import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
-import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
-import MeshSystem from "../../../../engine/shared/ecs/systems/MeshSystem";
-import PostProcessingSystem from "../../../../engine/shared/ecs/systems/PostProcessingSystem";
+import EditorEngine from "../../../../engine/editor/EditorEngine";
+import TransformSystem from "../../../../engine/shared/ecs/systems/utils/TransformSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/rendering/ShadowMapSystem";
+import GBufferSystem from "../../../../engine/shared/ecs/systems/rendering/GBufferSystem";
 import SkyboxComponent from "../../../../engine/shared/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../../../../engine/shared/ecs/components/DirectionalLightComponent";
 
@@ -41,8 +40,6 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
 
     const load = useContext(LoaderProvider)
     const renderer = useRef()
-    let resizeObserver
-
 
     useEffect(() => {
         if (gpu && !initialized && id) {
@@ -57,7 +54,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                     .then(cubeData => {
                         initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true)
                     })
-            renderer.current = new Engine(id, gpu)
+            renderer.current = new EditorEngine(id, gpu)
             renderer.current.camera.notChangableRadius = true
 
             load.pushEvent(EVENTS.UPDATING_SYSTEMS)
@@ -65,8 +62,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
             renderer.current.systems = [
                 new TransformSystem(),
                 new ShadowMapSystem(gpu),
-                new MeshSystem(gpu, 1),
-                new PostProcessingSystem(gpu, 1)
+                new GBufferSystem(gpu, 1)
             ]
             renderer.current.camera.radius = 2.5
             load.finishEvent(EVENTS.UPDATING_SYSTEMS)

@@ -1,21 +1,20 @@
 import {useEffect, useRef, useState} from "react";
-import PostProcessingSystem from "../../../../engine/shared/ecs/systems/PostProcessingSystem";
-import MeshSystem from "../../../../engine/shared/ecs/systems/MeshSystem";
-import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
-import PhysicsSystem from "../../../../engine/shared/ecs/systems/PhysicsSystem";
-import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
-import PickSystem from "../../../../engine/shared/ecs/systems/PickSystem";
-import Engine from "../../../../engine/editor/Engine";
+import GBufferSystem from "../../../../engine/shared/ecs/systems/rendering/GBufferSystem";
+import TransformSystem from "../../../../engine/shared/ecs/systems/utils/TransformSystem";
+import PhysicsSystem from "../../../../engine/shared/ecs/systems/utils/PhysicsSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/rendering/ShadowMapSystem";
+import PickSystem from "../../../../engine/shared/ecs/systems/utils/PickSystem";
+import EditorEngine from "../../../../engine/editor/EditorEngine";
 import EVENTS from "../utils/EVENTS";
-import PerformanceSystem from "../../../../engine/shared/ecs/systems/PerformanceSystem";
+import PerformanceSystem from "../../../../engine/shared/ecs/systems/utils/PerformanceSystem";
 import SYSTEMS from "../../../../engine/shared/templates/SYSTEMS";
-import CubeMapSystem from "../../../../engine/shared/ecs/systems/CubeMapSystem";
-import ScriptSystem from "../../../../engine/shared/ecs/systems/ScriptSystem";
+import CubeMapSystem from "../../../../engine/shared/ecs/systems/rendering/CubeMapSystem";
+import ScriptSystem from "../../../../engine/shared/ecs/systems/utils/ScriptSystem";
 import useEngineEssentials from "../../../../engine/shared/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
 import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
-import CameraCubeSystem from "../../../../engine/shared/ecs/systems/CameraCubeSystem";
+import CameraCubeSystem from "../../../../engine/shared/ecs/systems/utils/CameraCubeSystem";
 import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
 
 
@@ -59,13 +58,10 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
             perf ? perf : new PerformanceSystem(gpu),
             physics ? physics : new PhysicsSystem(),
             transformation ? transformation : new TransformSystem(),
-
-
             shadows ? shadows : new ShadowMapSystem(gpu),
             pick ? pick : new PickSystem(gpu),
-            new MeshSystem(gpu, settings.resolutionMultiplier),
-            // new AOSystem(gpu),
-            new PostProcessingSystem(gpu, settings.resolutionMultiplier),
+            new GBufferSystem(gpu, settings.resolutionMultiplier),
+
             c ? c : new CameraCubeSystem(id + '-camera'),
             cubeMap ? cubeMap : new CubeMapSystem(gpu),
         ]
@@ -87,7 +83,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
 
     useEffect(() => {
         if (gpu && !initialized && id && !finished) {
-            renderer.current = new Engine(id, gpu)
+            renderer.current = new EditorEngine(id, gpu)
             setInitialized(true)
             updateSystems(() => {
                 setFinished(true)

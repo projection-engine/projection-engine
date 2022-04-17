@@ -342,7 +342,7 @@ const ENTITIES = {
             if(dd.changed)
                 newMat.uniformValues[dd.key] = dd.value
         })
-
+        newMat.doubleSided = entity.components[k].doubleSided
         newMat.overrideMaterial = entity.components[k].overrideMaterial
         return newMat
     },

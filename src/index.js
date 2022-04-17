@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import './pages/wrapper/styles/globals.css'
 import {Fabric} from "@f-ui/core";
@@ -9,7 +9,6 @@ import useGlobalOptions from "./pages/project/utils/hooks/useGlobalOptions";
 
 import Home from "./pages/home/Home";
 import Project from "./pages/project/Project";
-import {useState} from "react";
 
 function App() {
     const [currentTab, setCurrentTab] = useState(0)
