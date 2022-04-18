@@ -105,30 +105,30 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
             .then(loadedData => {
                 const toApply = loadedData.filter(d => d?.mesh)
 
-                let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
+                // let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
 
-                const notRepeatedMaterials = toApply.map(m => {
-                    const matIndex = m.material ? materialsIDs.indexOf(m.material.id) : -1
-                    if (matIndex > -1) {
-                        materialsIDs.splice(matIndex, 1)
-                        const newMaterial = new MaterialInstance(engine.gpu, m.material.id)
-                        newMaterial.initializeTextures(
-                            m.material
-                        ).catch()
-                        return newMaterial
-                    } else
-                        return undefined
-                }).filter(m => m !== undefined)
+                // const notRepeatedMaterials = toApply.map(m => {
+                //     const matIndex = m.material ? materialsIDs.indexOf(m.material.id) : -1
+                //     if (matIndex > -1) {
+                //         materialsIDs.splice(matIndex, 1)
+                //         // const newMaterial = new MaterialInstance(engine.gpu, m.material.id)
+                //         // newMaterial.initializeTextures(
+                //         //     m.material
+                //         // ).catch()
+                //         // return newMaterial
+                //     } else
+                //         return undefined
+                // }).filter(m => m !== undefined)
                 const notRepeatedMeshes = toApply.map(m => {
                     if (!m.existsMesh)
                         return m.mesh
                     else
                         return undefined
                 }).filter(m => m !== undefined)
-
-                engine.setMaterials(prev => {
-                    return [...prev, ...notRepeatedMaterials]
-                })
+                 // TODO REWORK IMPORT
+                // engine.setMaterials(prev => {
+                //     return [...prev, ...notRepeatedMaterials]
+                // })
 
                 engine.setMeshes(prev => {
                     return [...prev, ...notRepeatedMeshes]
@@ -150,12 +150,12 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
     })
 }
 
-function removeDuplicated(ids) {
-    let unique = {};
-    ids.forEach(function (i) {
-        if (!unique[i]) {
-            unique[i] = true;
-        }
-    });
-    return Object.keys(unique);
-}
+// function removeDuplicated(ids) {
+//     let unique = {};
+//     ids.forEach(function (i) {
+//         if (!unique[i]) {
+//             unique[i] = true;
+//         }
+//     });
+//     return Object.keys(unique);
+// }

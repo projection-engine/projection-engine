@@ -20,7 +20,6 @@ export default function MaterialComponent(props) {
     useEffect(() => {
         if(!lastID.current || lastID.current !== props.entityID) {
             clear()
-            state.doubleSided = props.selected.doubleSided
             lastID.current = props.entityID
             state.overrideMaterial = props.selected.overrideMaterial
             state.uniforms = props.selected.uniforms
@@ -239,18 +238,7 @@ export default function MaterialComponent(props) {
                 />
             ) : null}
 
-                <Checkbox
-                    noMargin={true}
-                    label={'Double sided'}
-                    width={'100%'}
-                    height={'35px'}
-                    checked={state.doubleSided}
-                    handleCheck={() => {
-                        const s = !state.doubleSided
-                        state.doubleSided = s
-                        props.submit(s, 'doubleSided')
-                    }}
-                />
+
             {state.overrideMaterial ?
                 state.uniforms?.map(u => (
                     <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>

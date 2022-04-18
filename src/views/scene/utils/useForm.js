@@ -118,7 +118,7 @@ export default function useForm(
                                 if (!exists) {
                                     let newMat
                                     await new Promise(resolve => {
-                                        newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, () => resolve(), IDS.MATERIAL)
+                                        newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
                                     })
                                     newMat.id = val.id
                                     engine.setMaterials(prev => {

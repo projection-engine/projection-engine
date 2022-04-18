@@ -4,26 +4,26 @@
   "private": true,
   "dependencies": {
     "@electron/remote": "2.0.4",
-    "@f-ui/core": "0.1.39-alpha",
+    "@f-ui/core": "0.1.40-alpha",
     "@fontsource/roboto": "4.5.3",
     "assimpjs": "^0.0.7",
     "dexie": "^3.2.0",
     "draco3d": "^1.5.2",
-    "electron-is-dev": "latest",
-    "gl-matrix": "latest",
+    "electron-is-dev": "^2.0.0",
+    "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "path-browserify": "^1.0.1",
     "pj-math": "^0.0.6-alpha",
-    "prop-types": "latest",
+    "prop-types": "^15.8.1",
     "raw-loader": "^4.0.2",
-    "react": "latest",
-    "react-colorful": "latest",
-    "react-dom": "latest",
-    "react-scripts": "latest",
+    "react": "17.0.2",
+    "react-colorful": "^5.5.1",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^5.0.0",
     "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
     "uuid": "^8.3.2",
-    "web-vitals": "latest",
+    "web-vitals": "^2.1.4",
     "webpack": "^5.68.0"
   },
   "main": "public/main.js",
@@ -62,10 +62,10 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "latest",
-    "cross-env": "latest",
-    "electron": "latest",
-    "electron-builder": "latest",
-    "wait-on": "latest"
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^17.0.0",
+    "electron-builder": "^22.14.13",
+    "wait-on": "^6.0.1"
   }
 }
