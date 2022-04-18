@@ -11,7 +11,7 @@
     max-width: 55px;
     min-width: 55px;
 
-    background: var(--fabric-background-quaternary);
+    background: var(--fabric-background-tertiary);
     border-right: var(--fabric-border-primary) 1px solid;
     gap: 8px;
 }
@@ -63,7 +63,7 @@
     gap: 8px;
 
     padding: 4px !important;
-    background: var(--fabric-background-tertiary);
+    background: var(--fabric-border-primary);
 }
 
 .logoTitle {
@@ -82,6 +82,7 @@
 }
 
 .block {
+    transform: translateY(8px);
     transition: 150ms linear;
     display: grid;
     height: fit-content;

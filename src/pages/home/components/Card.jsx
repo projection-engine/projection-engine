@@ -22,7 +22,7 @@ export default function Card(props) {
     const [name, setName] = useState(props.data.meta.name)
     const [hovered, setHovered] = useState(false)
     const object = useMemo(() => {
-        return {...props.data.meta, name, preview: props.data.meta?.preview ? props.data.meta?.preview : logo}
+        return {...props.data.meta, name, preview: props.data.meta?.preview ? props.data.meta?.preview : logo,}
     }, [props.data, name])
 
     return (
@@ -95,12 +95,12 @@ export default function Card(props) {
                     asCard={true}
                     object={object}
                     keys={KEYS}
-                    styles={{ background: 'var(--fabric-background-secondary)'}}
+                    styles={{ background: 'var(--fabric-background-secondary)', border: 'none'}}
                     selfContained={true}
                 />
             }
 
-            <div className={styles.section} style={{display: hovered && !open.delete && !open.edit ? undefined : 'none'}}>
+            <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : 'none'}}>
                 <Button
                     variant={'outlined'}
                     className={styles.button}

@@ -26,7 +26,7 @@ export default function SideBar(props) {
                         null}
 
                 </div>
-                <div className={styles.block} style={{marginTop: extended ? '50px' : '4px'}}>
+                <div className={styles.block} >
                     <Button onClick={() => theme.setDark(!theme.dark)}
                             className={styles.button}
                             variant={'minimal-horizontal'}
@@ -39,7 +39,7 @@ export default function SideBar(props) {
                     </Button>
                 </div>
             </div>
-            <div className={styles.block}>
+            <div className={styles.block} style={{transform: 'none'}}>
                 <Button onClick={() => theme.setDark(!theme.dark)}
                         className={styles.button}
                         variant={'outlined'}
