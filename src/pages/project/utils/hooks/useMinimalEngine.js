@@ -61,8 +61,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
             setInitialized(true)
             renderer.current.systems = [
                 new TransformSystem(),
-                new ShadowMapSystem(gpu),
-                new GBufferSystem(gpu, 1)
+                new ShadowMapSystem(gpu)
             ]
             renderer.current.camera.radius = 2.5
             load.finishEvent(EVENTS.UPDATING_SYSTEMS)

@@ -46,7 +46,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         load.pushEvent(EVENTS.UPDATING_SYSTEMS)
         const shadows = renderer.current.systems[SYSTEMS.SHADOWS],
             transformation = renderer.current.systems[SYSTEMS.TRANSFORMATION],
-            physics = renderer.current.systems[SYSTEMS.PHYSICS],
+            // physics = renderer.current.systems[SYSTEMS.PHYSICS],
             perf = renderer.current.systems[SYSTEMS.PERF],
             pick = renderer.current.systems[SYSTEMS.PICK],
             cubeMap = renderer.current.systems[SYSTEMS.CUBE_MAP],
@@ -56,12 +56,10 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         renderer.current.systems = [
             s ? s : new ScriptSystem(gpu),
             perf ? perf : new PerformanceSystem(gpu),
-            physics ? physics : new PhysicsSystem(),
+            // physics ? physics : new PhysicsSystem(),
             transformation ? transformation : new TransformSystem(),
             shadows ? shadows : new ShadowMapSystem(gpu),
             pick ? pick : new PickSystem(gpu),
-            new GBufferSystem(gpu, settings.resolutionMultiplier),
-
             c ? c : new CameraCubeSystem(id + '-camera'),
             cubeMap ? cubeMap : new CubeMapSystem(gpu),
         ]
