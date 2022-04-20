@@ -254,8 +254,7 @@ export default function useForm(
 
 
     return useMemo(() => {
-
-        if (selected && !executingAnimation && !selected.components[COMPONENTS.FOLDER]) {
+        if (selected && !executingAnimation && selected.components &&  !selected.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
             const data = getField(Object.keys(selected.components)[currentTab])

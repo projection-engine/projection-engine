@@ -198,7 +198,8 @@ export default class ProjectLoader {
 
         const promises = toLoad.map(m => {
             return new Promise(async r => {
-                const fileData = ProjectLoader.readFromRegistry(m, fileSystem)
+                const fileData = await ProjectLoader.readFromRegistry(m, fileSystem)
+
                 if (fileData)
                     try {
                         const d = JSON.parse(fileData)

@@ -20,132 +20,122 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
     let promises = []
     for (let i = 0; i < entities.length; i++) {
         promises.push(
-            new Promise(resolve => {
+            new Promise(async resolve => {
                 const data = entities[i]
-                fileSystem.readRegistryFile(data)
-                    .then(res => {
-                        if (res && (res.path.includes('.mesh') || res.path.includes('.terrain')))
-                            fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
-                                .then(mesh => {
+                const res = await fileSystem.readRegistryFile(data)
 
-                                    if (res.path.includes('.mesh'))
-                                        importMesh(mesh, engine, data, i, fileSystem, isBlueprint)
-                                            .then(loadedData => {
+                if (res && (res.path.includes('.mesh') || res.path.includes('.terrain'))) {
+                    const mesh = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
+                    if (res.path.includes('.mesh'))
+                        resolve(await importMesh(mesh, engine, data, i, fileSystem, isBlueprint))
+                    else // TODO - IMPORT ESPECIFICO PARA TERRAIN
+                        resolve(await importMesh({
+                            ...mesh,
+                            id: res.id,
+                            translation: [0, 0, 0],
+                            scaling: [1, 1, 1],
+                            rotation: [0, 0, 0]
+                        }, engine, data, i, fileSystem, isBlueprint))
 
-                                                resolve(loadedData)
-                                            })
-                                    else // TODO - IMPORT ESPECIFICO PARA TERRAIN
-                                        importMesh({
-                                            ...mesh,
-                                            id: res.id,
-                                            translation: [0, 0, 0],
-                                            scaling: [1, 1, 1],
-                                            rotation: [0, 0, 0]
-                                        }, engine, data, i, fileSystem, isBlueprint)
-                                            .then(loadedData => {
-                                                resolve(loadedData)
-                                            })
-                                })
-                        else if (res && res.path.includes('.flow')) {
-                            fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
-                                .then(script => {
-                                    const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
-                                    ProjectLoader.loadMeshes(meshesToLoad, fileSystem, engine.gpu)
-                                        .then(m => {
-                                            const folder = new Entity()
-                                            folder.id = res.id
-                                            folder.name = script.name
-                                            folder.isBlueprint = true
-                                            folder.addComponent(new FolderComponent(undefined, script.name))
+                } else if (res && res.path.includes('.flow')) {
+                    const script = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
+                    const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
+                    const m = await ProjectLoader.loadMeshes(meshesToLoad, fileSystem, engine.gpu)
 
-                                            const entities = script.entities.map((e, index) => {
-                                                const ee = ProjectLoader.mapEntity(e, index, m, [], engine.gpu)
-                                                ee.id = e.id
-                                                ee.linkedTo = res.id
-                                                ee.components[COMPONENTS.MESH].meshID = m[0].id
-                                                ee.addComponent(new ScriptComponent())
-                                                ee.components[COMPONENTS.SCRIPT].registryID = res.id
-                                                return ee
-                                            })
+                    const folder = new Entity()
+                    folder.id = res.id
+                    folder.name = script.name
+                    folder.isBlueprint = true
+                    folder.addComponent(new FolderComponent(undefined, script.name))
 
+                    const entities = []
+                    for (let i = 0; i < script.entities.length; i++) {
+                        const ee = await ProjectLoader.mapEntity(script.entities[i], i, fileSystem, engine.gpu)
 
-                                            engine.setScripts(prev => {
-                                                return [...prev, {
-                                                    executors: script.response,
-                                                    id: res.id,
-                                                    name: script.name
-                                                }]
-                                            })
-                                            engine.setMeshes([...engine.meshes, ...m])
-                                            engine.dispatchChanges({
-                                                type: HISTORY_ACTIONS.PUSHING_DATA,
-                                                payload: [...entities, folder]
-                                            })
-                                            engine.dispatchEntities({
-                                                type: ENTITY_ACTIONS.PUSH_BLOCK,
-                                                payload: [...entities, folder]
-                                            })
-                                            resolve()
-                                        })
-                                })
-                        } else {
-                            setAlert({
-                                type: 'info',
-                                message: 'Not a mesh file.'
-                            })
-                            resolve()
-                        }
+                        ee.id = script.entities[i].id
+                        ee.linkedTo = res.id
+                        if (ee.components[COMPONENTS.MESH])
+                            ee.components[COMPONENTS.MESH].meshID = m[0].id
+                        ee.addComponent(new ScriptComponent())
+                        ee.components[COMPONENTS.SCRIPT].registryID = res.id
+                        entities.push(ee)
+                    }
+
+                    engine.setScripts(prev => {
+                        return [...prev, {
+                            executors: script.response,
+                            id: res.id,
+                            name: script.name
+                        }]
                     })
+                    engine.setMeshes([...engine.meshes, ...m])
+                    engine.dispatchChanges({
+                        type: HISTORY_ACTIONS.PUSHING_DATA,
+                        payload: [...entities, folder]
+                    })
+                    engine.dispatchEntities({
+                        type: ENTITY_ACTIONS.PUSH_BLOCK,
+                        payload: [...entities, folder]
+                    })
+                    resolve()
+
+
+                } else {
+                    setAlert({
+                        type: 'info',
+                        message: 'Not a mesh file.'
+                    })
+                    resolve()
+                }
+
             })
         )
     }
-    return new Promise(resolveRoot => {
-        Promise.all(promises)
-            .then(loadedData => {
-                const toApply = loadedData.filter(d => d?.mesh)
+    return new Promise(async resolveRoot => {
+        const loadedData = await Promise.all(promises)
+        const toApply = loadedData.filter(d => d?.mesh)
 
-                // let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
+        // let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))
 
-                // const notRepeatedMaterials = toApply.map(m => {
-                //     const matIndex = m.material ? materialsIDs.indexOf(m.material.id) : -1
-                //     if (matIndex > -1) {
-                //         materialsIDs.splice(matIndex, 1)
-                //         // const newMaterial = new MaterialInstance(engine.gpu, m.material.id)
-                //         // newMaterial.initializeTextures(
-                //         //     m.material
-                //         // ).catch()
-                //         // return newMaterial
-                //     } else
-                //         return undefined
-                // }).filter(m => m !== undefined)
-                const notRepeatedMeshes = toApply.map(m => {
-                    if (!m.existsMesh)
-                        return m.mesh
-                    else
-                        return undefined
-                }).filter(m => m !== undefined)
-                 // TODO REWORK IMPORT
-                // engine.setMaterials(prev => {
-                //     return [...prev, ...notRepeatedMaterials]
-                // })
+        // const notRepeatedMaterials = toApply.map(m => {
+        //     const matIndex = m.material ? materialsIDs.indexOf(m.material.id) : -1
+        //     if (matIndex > -1) {
+        //         materialsIDs.splice(matIndex, 1)
+        //         // const newMaterial = new MaterialInstance(engine.gpu, m.material.id)
+        //         // newMaterial.initializeTextures(
+        //         //     m.material
+        //         // ).catch()
+        //         // return newMaterial
+        //     } else
+        //         return undefined
+        // }).filter(m => m !== undefined)
+        const notRepeatedMeshes = toApply.map(m => {
+            if (!m.existsMesh)
+                return m.mesh
+            else
+                return undefined
+        }).filter(m => m !== undefined)
+        // TODO REWORK IMPORT
+        // engine.setMaterials(prev => {
+        //     return [...prev, ...notRepeatedMaterials]
+        // })
 
-                engine.setMeshes(prev => {
-                    return [...prev, ...notRepeatedMeshes]
-                })
-                if (!asID) {
-                    const entities = toApply.map(m => {
-                        return m.entity
-                    }).filter(m => m !== undefined)
-                    engine.dispatchChanges({
-                        type: HISTORY_ACTIONS.PUSHING_DATA,
-                        payload: entities
-                    })
-                    engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
-                }
-                load.finishEvent(EVENTS.LOADING_MESHES)
-
-                resolveRoot()
+        engine.setMeshes(prev => {
+            return [...prev, ...notRepeatedMeshes]
+        })
+        if (!asID) {
+            const entities = toApply.map(m => {
+                return m.entity
+            }).filter(m => m !== undefined)
+            engine.dispatchChanges({
+                type: HISTORY_ACTIONS.PUSHING_DATA,
+                payload: entities
             })
+            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+        }
+        load.finishEvent(EVENTS.LOADING_MESHES)
+
+        resolveRoot()
     })
 }
 

@@ -1,7 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import GBufferSystem from "../../../../engine/shared/ecs/systems/rendering/GBufferSystem";
 import TransformSystem from "../../../../engine/shared/ecs/systems/utils/TransformSystem";
-import PhysicsSystem from "../../../../engine/shared/ecs/systems/utils/PhysicsSystem";
 import ShadowMapSystem from "../../../../engine/shared/ecs/systems/rendering/ShadowMapSystem";
 import PickSystem from "../../../../engine/shared/ecs/systems/utils/PickSystem";
 import EditorEngine from "../../../../engine/editor/EditorEngine";
