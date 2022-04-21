@@ -79,7 +79,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                     fxaa: true,
                     meshes,
                     gamma: 2.2,
-                    exposure: 1.2,
+                    exposure: 1,
                     materials: [],
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
@@ -123,6 +123,8 @@ function initializeSkybox(dispatch, gpu) {
                     newEntity.addComponent(new SkyboxComponent(undefined, gpu))
 
                     newEntity.components[COMPONENTS.SKYBOX].blob = res
+                    newEntity.components[COMPONENTS.SKYBOX].gamma = .5
+                    newEntity.components[COMPONENTS.SKYBOX].exposure = 1
                     dispatch({
                         type: ENTITY_ACTIONS.ADD,
                         payload: newEntity
