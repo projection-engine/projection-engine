@@ -114,25 +114,26 @@ export default function useForm(
                                     }
                                 })
                             } else {
-                                const exists = engine.materials.find(m => m.id === val.id)
-                                if (!exists) {
-                                    let newMat
-                                    await new Promise(resolve => {
-                                        newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
-                                    })
-                                    newMat.id = val.id
-                                    engine.setMaterials(prev => {
-                                        return [...prev, newMat]
-                                    })
+                                if(val) {
+                                    const exists = engine.materials.find(m => m.id === val.id)
+                                    if (!exists) {
+                                        let newMat
+                                        await new Promise(resolve => {
+                                            newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
+                                        })
+                                        newMat.id = val.id
+                                        engine.setMaterials(prev => {
+                                            return [...prev, newMat]
+                                        })
+                                    }
                                 }
-
                                 const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
                                 if (val) {
                                     clone.materialID = val.id
                                     clone.uniforms = val.blob.uniforms
                                 } else
                                     clone.materialID = undefined
-
+                                console.log(clone.materialID)
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                     payload: {

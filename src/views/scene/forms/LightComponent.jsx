@@ -31,7 +31,8 @@ export default function LightComponent(props) {
             lpvSamples: props.selected.lpvSamples,
             zNear: props.selected.zNear,
             zFar: props.selected.zFar,
-            shadowMap: props.selected.shadowMap
+            shadowMap: props.selected.shadowMap,
+            intensity: props.selected.intensity
         }
     }
     const [state, setState] = useState(getNewState())
@@ -161,6 +162,33 @@ export default function LightComponent(props) {
                 :
                 null
             }
+
+            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
+                <AccordionSummary className={styles.summary}>
+                    Intensity
+                </AccordionSummary>
+
+                <Range
+                    accentColor={'yellow'}
+                    value={state.intensity}
+                    minValue={.0001}
+
+                    precision={4}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submit(v, 'intensity')
+                    }}
+                    handleChange={e => {
+                        saveVersion()
+                        props.selected.intensity = e
+                        setState(prev => {
+                            return {
+                                ...prev,
+                                intensity: e
+                            }
+                        })
+                    }}/>
+            </Accordion>
             {props.type === 'SkylightComponent' ?
                 <>
                     <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
