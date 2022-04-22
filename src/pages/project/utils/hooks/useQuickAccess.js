@@ -26,61 +26,46 @@ export default function useQuickAccess(projectID, load) {
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(
-                            fileSystem.path + '\\previews\\' + i.id + '.preview')
-                            .then(preview => {
-                                resolve({
-                                    type: 'image',
-                                    registryID: i.id,
-                                    name: split[split.length  -1],
-                                     preview
-                                })
-                            })
+                        resolve({
+                            type: 'image',
+                            registryID: i.id,
+                            name: split[split.length - 1]
+                        })
                     })
                 }))
 
                 promises.push(...meshesReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
-                            .then(preview => {
-                                resolve({
-                                    type: 'mesh',
-                                    registryID: i.id,
-                                    name: split[split.length  -1],
-                                     preview
-                                })
-                            })
+                        resolve({
+                            type: 'mesh',
+                            registryID: i.id,
+                            name: split[split.length - 1]
+                        })
+
                     })
                 }))
                 promises.push(...materialsReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-                        fileSystem.readFile(fileSystem.path + '\\previews\\' + i.id + '.preview')
-                            .then(preview => {
-                                resolve({
-                                    type: 'material',
-                                    registryID: i.id,
-                                    name: split[split.length  -1].split('.')[0],
-                                     preview
-                                })
-                            })
+                        resolve({
+                            type: 'material',
+                            registryID: i.id,
+                            name: split[split.length - 1].split('.')[0]
+                        })
                     })
                 }))
                 promises.push(...scriptReg.map(i => {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
-
-
-                            resolve({
-                                type: 'flow',
-                                registryID: i.id,
-                                name: split[split.length  -1].split('.')[0]
-                            })
-
+                        resolve({
+                            type: 'flow',
+                            registryID: i.id,
+                            name: split[split.length - 1].split('.')[0]
+                        })
                     })
                 }))
-               Promise.all(promises)
+                Promise.all(promises)
                     .then(res => {
                         setMeshes(res.filter(f => f.type === 'mesh'))
                         setMaterials(res.filter(f => f.type === 'material'))
