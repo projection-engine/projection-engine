@@ -62,7 +62,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                     resolve1()
                             })
                         })
-                        console.log(cleanUp)
                         await Promise.all(cleanUp)
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {

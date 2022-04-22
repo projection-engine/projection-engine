@@ -213,6 +213,7 @@ export default function Project(props) {
             }
         })
     }, [engine.entities])
+
     return (
         <EntitiesProvider.Provider value={{
             entities: entitiesWithMeshes,

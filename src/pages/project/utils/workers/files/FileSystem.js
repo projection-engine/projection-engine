@@ -53,16 +53,19 @@ export default class FileSystem {
         return await new Promise(resolve => fs.writeFile(this.path + '\\' + pathName, content, (e, s) => resolve(e)))
     }
 
-    async readFile(pathName, type, withRead=true) {
+    async readFile(pathName, type) {
 
         return new Promise(async resolve => {
             try {
-                const worker = new WebWorker()
-                const {data, valid} = withRead ? null : await worker.createExecution({
-                    pathName: resolvePath(pathName),
-                    type
-                }, fetchData.toString())
-                if (!valid) {
+                if(pathName.includes('.pimg')){
+                    const worker = new WebWorker()
+                    const {data, valid} =  await worker.createExecution({
+                        pathName: resolvePath(pathName),
+                        type
+                    }, fetchData.toString())
+                    resolve(data)
+                }
+                else{
                     fs.readFile(pathName, (e, res) => {
                         try {
                             const d = res.toString()
@@ -71,8 +74,7 @@ export default class FileSystem {
                             resolve(null)
                         }
                     })
-                } else
-                    resolve(data)
+                }
             } catch (e) {
                 fs.readFile(pathName, (e, res) => {
                     try {
