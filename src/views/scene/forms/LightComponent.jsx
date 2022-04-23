@@ -172,7 +172,7 @@ export default function LightComponent(props) {
                     accentColor={'yellow'}
                     value={state.intensity}
                     minValue={.0001}
-
+                    incrementPercentage={.01}
                     precision={4}
                     onFinish={(v) => {
                         setHasChanged(false)

@@ -13,7 +13,7 @@ export default function SideBar(props) {
 
     return (
         <div className={styles.wrapper} data-extended={`${extended}`}>
-            <div style={{width: '100%'}}>
+            <div style={{width: '100%', overflow: 'hidden', height: '100%'}}>
                 <div className={styles.logoWrapper} style={{justifyContent: extended ? undefined : 'center'}}>
                     <div className={styles.logo}>
                         <img src={logo} alt={'logo'}/>
@@ -26,7 +26,7 @@ export default function SideBar(props) {
                         null}
 
                 </div>
-                <div className={styles.block} >
+                <div className={styles.block}>
                     <Button onClick={() => theme.setDark(!theme.dark)}
                             className={styles.button}
                             variant={'minimal-horizontal'}
@@ -39,7 +39,7 @@ export default function SideBar(props) {
                     </Button>
                 </div>
             </div>
-            <div className={styles.block} style={{transform: 'none'}}>
+            <div className={styles.block} style={{transform: 'none', height: '100%', alignContent: 'flex-end'}}>
                 <Button onClick={() => theme.setDark(!theme.dark)}
                         className={styles.button}
                         variant={'outlined'}

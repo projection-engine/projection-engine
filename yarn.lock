@@ -1162,10 +1162,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@f-ui/core@0.1.41-alpha":
-  version "0.1.41-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.41-alpha.tgz#aa28dba6451a39d15037b6c2741d9a576eac88b9"
-  integrity sha512-llkwvZ0u2h2D4Hy0nyy+U7Lw8RZ6w2Gb5e6TWUx3sAX6bGj7fFUe29v/zzgWslH1dI3rtESh2tFvxvtwtT8Reg==
+"@f-ui/core@0.1.45-alpha":
+  version "0.1.45-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.45-alpha.tgz#10344bd8508db7ef431e36741a9ab73acd7179fc"
+  integrity sha512-GYXSxZhcvtcVgq5LJvyeJOpuidtriOrtVQGhkEEfaSE7XA8e6f/8S8GGHTN7Ye3ARKy7M4rED3zDeCZJYVNiZg==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"

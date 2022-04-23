@@ -15,7 +15,6 @@ export default function Projects(props) {
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
-console.log(projectsToShow.length)
 
     return (
         <div className={styles.wrapper}>

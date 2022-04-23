@@ -29,7 +29,6 @@
     border: var(--fabric-border-primary) 1px solid !important;
 
 
-
     max-width: 100%;
     overflow: hidden;
 
@@ -76,7 +75,7 @@
 
     max-width: 100%;
     overflow: hidden;
-    background: var(--fabric-background-tertiary);
+    background: var(--fabric-background-secondary);
 }
 
 .label {
@@ -137,7 +136,5 @@
 .summary {
     background-color: var(--fabric-border-primary) !important;
     border-radius: 5px 5px 0 0;
-    font-size: .75rem;
-    font-weight: 550;
-
+    font-size: .75rem !important;
 }

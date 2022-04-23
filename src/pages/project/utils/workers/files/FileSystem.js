@@ -53,37 +53,40 @@ export default class FileSystem {
         return await new Promise(resolve => fs.writeFile(this.path + '\\' + pathName, content, (e, s) => resolve(e)))
     }
 
+    async writeFile(pathName, data) {
+        return new Promise(resolve => {
+            fs.writeFile(resolvePath(this.path + pathName), typeof data === 'object' ? JSON.stringify(data) : data, (e, res) => {
+                console.log(e, res)
+                resolve(e)
+            })
+        })
+    }
+
     async readFile(pathName, type) {
 
         return new Promise(async resolve => {
             try {
-                if(pathName.includes('.pimg')){
+                if (pathName.includes('.pimg')) {
                     const worker = new WebWorker()
-                    const {data, valid} =  await worker.createExecution({
+                    const {data, valid} = await worker.createExecution({
                         pathName: resolvePath(pathName),
                         type
                     }, fetchData.toString())
                     resolve(data)
-                }
-                else{
+                } else {
                     fs.readFile(pathName, (e, res) => {
+
                         try {
                             const d = res.toString()
                             resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
+
                             resolve(null)
                         }
                     })
                 }
             } catch (e) {
-                fs.readFile(pathName, (e, res) => {
-                    try {
-                        const data = res.toString()
-                        resolve(type === 'json' ? JSON.parse(data) : data)
-                    } catch (e) {
-                        resolve(null)
-                    }
-                })
+                resolve(null)
             }
 
         })

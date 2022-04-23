@@ -4,9 +4,9 @@ import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer
 import {ENTITY_ACTIONS} from "../../../engine/utils/entityReducer";
 import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
-import PickComponent from "../../../engine/shared/ecs/components/PickComponent";
 import {useState} from "react";
 import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
+import TransformComponent from "../../../engine/shared/ecs/components/TransformComponent";
 
 export default function useEditorKeys(props, controlProvider){
     const [toCopy, setToCopy] = useState([])
@@ -40,9 +40,9 @@ export default function useEditorKeys(props, controlProvider){
                     const el = document.getElementById('fullscreen-element-' + props.id)
                     if (el) {
                         if (!document.fullscreenElement)
-                            el.requestFullscreen()
+                            el.requestFullscreen().catch(() => document.exitFullscreen())
                         else
-                            document.exitFullscreen()
+                            document.exitFullscreen().catch()
                     }
                 }
             },
@@ -80,16 +80,24 @@ export default function useEditorKeys(props, controlProvider){
                             clone.name += ' - clone'
                             let newComponents = {}
                             Object.keys(clone.components).forEach(c => {
-
-
-                                if (clone.components[c] instanceof PickComponent)
-                                    newComponents[COMPONENTS.PICK] = new PickComponent(undefined, props.engine.entities.length + index)
+                                if (c === COMPONENTS.TRANSFORM) {
+                                    newComponents[COMPONENTS.TRANSFORM] = new TransformComponent()
+                                    newComponents[COMPONENTS.TRANSFORM].rotation = [...clone.components[c].rotation]
+                                    newComponents[COMPONENTS.TRANSFORM].rotationQuat = [...clone.components[c].rotationQuat]
+                                    newComponents[COMPONENTS.TRANSFORM].translation =[...clone.components[c].translation]
+                                    newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
+                                    newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
+                                    newComponents[COMPONENTS.TRANSFORM].lockedRotation= clone.components[c].lockedRotation
+                                    newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
+                                    newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange
+                                }
                                 else {
                                     const cClone = cloneClass(clone.components[c])
                                     cClone.id = uuidv4()
                                     newComponents[c] = cClone
                                 }
                             })
+                            delete clone.components
                             clone.components = newComponents
                             block.push(clone)
                         }
@@ -105,5 +113,5 @@ export default function useEditorKeys(props, controlProvider){
                 }
             }
         ]
-    }, [toCopy])
+    }, [toCopy ])
 }

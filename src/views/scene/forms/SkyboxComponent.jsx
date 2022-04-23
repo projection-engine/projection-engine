@@ -24,7 +24,7 @@ export default function SkyboxComponent(props) {
     return (
         <>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
+                <AccordionSummary className={styles.summary}>
                     Environment map
                 </AccordionSummary>
 
@@ -60,7 +60,8 @@ export default function SkyboxComponent(props) {
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
+                <AccordionSummary className={styles.summary}>
+
                     Skybox Resolution
                 </AccordionSummary>
 
@@ -124,7 +125,7 @@ export default function SkyboxComponent(props) {
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
+                <AccordionSummary className={styles.summary}>
                     Gamma
                 </AccordionSummary>
 
@@ -143,7 +144,7 @@ export default function SkyboxComponent(props) {
 
             </Accordion>
             <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary styles={{maxWidth: '100%', overflow: 'hidden'}}>
+                <AccordionSummary className={styles.summary}>
                     Exposure
                 </AccordionSummary>
 
