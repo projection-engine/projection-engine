@@ -1,4 +1,5 @@
 import GLTF from "./GLTF";
+import {lzwEncode} from "../functions/lzString";
 
 export default function glTFImporter(fs, resolvePath, newRoot, file, options, resolve, createRegistryEntry, path, importImage) {
     fs.mkdir(resolvePath(newRoot), async (err) => {
@@ -21,7 +22,7 @@ export default function glTFImporter(fs, resolvePath, newRoot, file, options, re
                         new Promise(r => {
                             fs.writeFile(
                                 resolvePath(newRoot + `\\${d.name}.mesh`),
-                                JSON.stringify(d.data),
+                                lzwEncode(JSON.stringify(d.data)),
                                 () => {
                                     r()
                                 });

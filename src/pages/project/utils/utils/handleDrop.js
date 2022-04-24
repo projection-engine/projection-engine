@@ -11,12 +11,13 @@ import {HISTORY_ACTIONS} from "../hooks/historyReducer";
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     let entities = []
     load.pushEvent(EVENTS.LOADING_MESHES)
-
+    console.log(event)
     try {
-        entities = asID ? [event] : JSON.parse(event.dataTransfer.getData("text"))
+        entities = Array.isArray(event)? event : [event]
     } catch (e) {
     }
 
+    console.log(entities)
     let promises = []
     for (let i = 0; i < entities.length; i++) {
         promises.push(
@@ -93,6 +94,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
     }
     return new Promise(async resolveRoot => {
         const loadedData = await Promise.all(promises)
+
         const toApply = loadedData.filter(d => d?.mesh)
 
         // let materialsIDs = removeDuplicated(toApply.map(m => m.material?.id).filter(m => m))

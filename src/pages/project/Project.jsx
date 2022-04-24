@@ -25,6 +25,7 @@ import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
 import handleTabChange from "./utils/utils/handleTabChange";
 import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
+import DragDropProvider from "../../components/dragdrop/hooks/DragDropProvider";
 
 
 export default function Project(props) {
@@ -215,6 +216,7 @@ export default function Project(props) {
     }, [engine.entities])
 
     return (
+
         <EntitiesProvider.Provider value={{
             entities: entitiesWithMeshes,
             removeEntities: (entities) => {
@@ -293,6 +295,7 @@ export default function Project(props) {
                 </QuickAccessProvider.Provider>
             </SettingsProvider.Provider>
         </EntitiesProvider.Provider>
+
     )
 }
 

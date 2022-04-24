@@ -13,6 +13,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         entity,
         existsMesh = false,
         material
+
     try {
         mesh = engine.meshes.find(m => m.id === objLoaded.id)
         if (!mesh) {
@@ -22,6 +23,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
                 gpu: engine.gpu,
                 wireframeBuffer: true
             })
+
 
             if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
                 const rs = await fileSystem.readRegistryFile(objLoaded.material)
@@ -52,7 +54,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         entity.components[COMPONENTS.PICK] = new PickComponent(undefined, engine.entities.length + index + 1)
 
     } catch (e) {
-
+        console.log(e, objLoaded)
     }
 
     return {

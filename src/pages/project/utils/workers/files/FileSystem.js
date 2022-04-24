@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import glTFImporter from "./gltf/glTFImporter";
 import assimpImporter from "./fbx/assimpImporter";
 import {WebWorker} from "../WebWorker";
+import {lzwDecode, lzwEncode} from "./functions/lzString";
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -40,7 +41,7 @@ export default class FileSystem {
         if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
             fs.mkdirSync(this.path + '\\assetsRegistry\\')
         if (!fs.existsSync(this.path + '\\logic'))
-            fs.mkdirSync(this.path + '\\logic')
+            fs.mkdirSync(this.path + '\\logic ')
 
 
     }
@@ -75,12 +76,14 @@ export default class FileSystem {
                     resolve(data)
                 } else {
                     fs.readFile(pathName, (e, res) => {
-
                         try {
-                            const d = res.toString()
+                            let d = res.toString()
+                            if(pathName.includes('.mesh'))
+                                d = lzwDecode(d)
+                            console.log(d)
                             resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
-
+                            console.log(e)
                             resolve(null)
                         }
                     })
@@ -257,7 +260,10 @@ export default class FileSystem {
         return new Promise(resolve => {
             const promises = [
                 new Promise(resolve1 => {
-                    fs.writeFile(resolvePath(this.path + '\\assets\\' + path), fileData, (err) => {
+                    let d = fileData
+                    if(path.includes('.mesh'))
+                        d = lzwEncode(fileData)
+                    fs.writeFile(resolvePath(this.path + '\\assets\\' + path), d, (err) => {
                         if (!previewImage)
                             resolve1()
                         else {

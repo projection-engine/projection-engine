@@ -3,6 +3,7 @@ import AssimpJS from "../AssimpJS";
 import Transformation from "../../../../../../engine/shared/utils/workers/Transformation";
 import {mat4} from "gl-matrix";
 import GLTF from "../gltf/GLTF";
+import {lzwEncode} from "../functions/lzString";
 
 export default function assimpImporter(fs, resolvePath, newRoot, file, options,  createRegistryEntry, path, importImage) {
     return new Promise(resolve => {
@@ -37,9 +38,10 @@ export default function assimpImporter(fs, resolvePath, newRoot, file, options, 
                             })
                             return [
                                 new Promise(r => {
+
                                     fs.writeFile(
                                         resolvePath(newRoot + `\\${mesh.name + ' - ' + m}.mesh`),
-                                        jsonText,
+                                        lzwEncode(jsonText),
                                         (err) => {
                                             r()
                                         });
