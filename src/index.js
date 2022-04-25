@@ -13,7 +13,6 @@ import Project from "./pages/project/Project";
 function App() {
     const [currentTab, setCurrentTab] = useState(0)
     const global = useGlobalOptions()
-
     return (
         <Fabric
             language={"en"}

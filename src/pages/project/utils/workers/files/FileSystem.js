@@ -57,7 +57,7 @@ export default class FileSystem {
     async writeFile(pathName, data) {
         return new Promise(resolve => {
             fs.writeFile(resolvePath(this.path + pathName), typeof data === 'object' ? JSON.stringify(data) : data, (e, res) => {
-                console.log(e, res)
+
                 resolve(e)
             })
         })
@@ -80,10 +80,8 @@ export default class FileSystem {
                             let d = res.toString()
                             if(pathName.includes('.mesh'))
                                 d = lzwDecode(d)
-                            console.log(d)
                             resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
-                            console.log(e)
                             resolve(null)
                         }
                     })

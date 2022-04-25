@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const {app, BrowserWindow} = require('electron')
 
 const path = require('path')
 const isDev = require('electron-is-dev')
@@ -9,8 +9,7 @@ app.commandLine.appendSwitch('enable-unsafe-webgpu') // WEB GPU
 function createWindow() {
     const win = new BrowserWindow({
 
-        width: 800,
-        height: 600,
+       show: false,
         title: "Projection Engine",
         protocol: 'file:',
         webPreferences: {
@@ -26,15 +25,16 @@ function createWindow() {
         icon: __dirname + '/L.png',
         darkTheme: true
     })
-
+    win.maximize();
+    win.show();
     win.loadURL(
         isDev
             ? 'http://localhost:3000'
-            : `file://${path.join(__dirname, '../build/index.html')}`
+            : `file://${path.join($dirname, '../build/index.html')}`
     )
 }
 
-app.whenReady().then(createWindow)
+app.on("ready", createWindow)
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
         app.quit()
