@@ -1,12 +1,14 @@
+git checkout -b v0.2.x
+
 cd src/components
-git checkout electron
+git checkout -b v0.2.x
 
 cd ../engine
-git checkout v2.0
+git checkout -b v0.2.x
 
 cd ../views/blueprints
-git checkout electron
+git checkout -b v0.2.x
 
 cd ../files
-git checkout electron
+git checkout -b v0.2.x
 
