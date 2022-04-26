@@ -3,7 +3,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import styles from './styles/ImageView.module.css'
 import ResizableBar from "../../components/resizable/ResizableBar";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import handleBoardScroll from "../blueprints/base/utils/handleBoardScroll";
+import handleBoardScroll from "../blueprints/components/utils/handleBoardScroll";
 import ControlBar from "./components/ControlBar";
 
 export default function ImageView(props) {

@@ -5,8 +5,8 @@ import Entity from "../../../../engine/shared/ecs/basic/Entity";
 import sphereMesh from '../../../../engine/editor/assets/Sphere.json'
 
 import EditorEngine from "../../../../engine/editor/EditorEngine";
-import TransformSystem from "../../../../engine/shared/ecs/systems/utils/TransformSystem";
-import ShadowMapSystem from "../../../../engine/shared/ecs/systems/rendering/ShadowMapSystem";
+import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
 import SkyboxComponent from "../../../../engine/shared/ecs/components/SkyboxComponent";
 import DirectionalLightComponent from "../../../../engine/shared/ecs/components/DirectionalLightComponent";
 

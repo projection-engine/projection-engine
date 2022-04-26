@@ -7,7 +7,7 @@ import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
 import useDirectState from "../../../pages/project/utils/hooks/useDirectState";
-import {DATA_TYPES} from "../../blueprints/base/DATA_TYPES";
+import {DATA_TYPES} from "../../blueprints/components/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/shared/instances/TextureInstance";
 

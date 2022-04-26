@@ -1,18 +1,18 @@
 import {useEffect, useRef, useState} from "react";
-import TransformSystem from "../../../../engine/shared/ecs/systems/utils/TransformSystem";
-import ShadowMapSystem from "../../../../engine/shared/ecs/systems/rendering/ShadowMapSystem";
-import PickSystem from "../../../../engine/shared/ecs/systems/utils/PickSystem";
+import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
+import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
+import PickSystem from "../../../../engine/shared/ecs/systems/PickSystem";
 import EditorEngine from "../../../../engine/editor/EditorEngine";
 import EVENTS from "../utils/EVENTS";
-import PerformanceSystem from "../../../../engine/shared/ecs/systems/utils/PerformanceSystem";
+import PerformanceSystem from "../../../../engine/shared/ecs/systems/PerformanceSystem";
 import SYSTEMS from "../../../../engine/shared/templates/SYSTEMS";
-import CubeMapSystem from "../../../../engine/shared/ecs/systems/rendering/CubeMapSystem";
-import ScriptSystem from "../../../../engine/shared/ecs/systems/utils/ScriptSystem";
+import CubeMapSystem from "../../../../engine/shared/ecs/systems/CubeMapSystem";
+import ScriptSystem from "../../../../engine/shared/ecs/systems/ScriptSystem";
 import useEngineEssentials from "../../../../engine/shared/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
 import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
-import CameraCubeSystem from "../../../../engine/shared/ecs/systems/utils/CameraCubeSystem";
+import CameraCubeSystem from "../../../../engine/shared/ecs/systems/CameraCubeSystem";
 import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
 
 

@@ -20,7 +20,7 @@ import ScriptComponent from "../../../../engine/shared/ecs/components/ScriptComp
 import CameraComponent from "../../../../engine/shared/ecs/components/CameraComponent";
 import Transformation from "../../../../engine/shared/utils/workers/Transformation";
 import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
-import {DATA_TYPES} from "../../../../views/blueprints/base/DATA_TYPES";
+import {DATA_TYPES} from "../../../../views/blueprints/components/DATA_TYPES";
 import TextureInstance from "../../../../engine/shared/instances/TextureInstance";
 
 
