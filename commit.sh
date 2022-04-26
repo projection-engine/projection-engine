@@ -1,6 +1,26 @@
 # SEM SUDO DESGRETA
 
-MESSAGE="$1"
+TYPE="$1"
+M="$2"
+
+case $TYPE in
+        0)
+          TYPE="[FIX] - "
+          ;;
+        1)
+          TYPE="[HOT-FIX] - "
+          ;;
+        2)
+          TYPE="[FEATURE] - "
+          ;;
+        *)
+          TYPE="[MIX] - "
+          ;;
+esac
+MESSAGE=$TYPE
+MESSAGE+="["$M"]"
+
+
 
 cd src/components
 git add --all
@@ -29,6 +49,4 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin v0.2.x
 
-
-
-
+sleep 10s

@@ -1474,10 +1474,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@f-ui/core@0.1.46-alpha":
-  version "0.1.46-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.46-alpha.tgz#bc5c304995ce4fbe64f7215d8035b609af93e065"
-  integrity sha512-jY7FKi6WdVgOrg96sHnI1BRyVMXrCVlaDq8AOU2xeJZAvpRMlfRg/Ik853EZH1zcm3ETO5QnMQt4XH4SodJ2bA==
+"@f-ui/core@0.1.47-alpha":
+  version "0.1.47-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.47-alpha.tgz#510573a814d620da537f483fc8126456bc10ecbb"
+  integrity sha512-qhhAAuG0RM0Rh6763rQcGIcejhaX1jfwM9TbRztAQ2Az0aP9rGKERN83S4jHKbRtIW9SwRONKyyodRq4qTN4lQ==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"

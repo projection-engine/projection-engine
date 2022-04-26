@@ -18,6 +18,16 @@ function App() {
             language={"en"}
             theme={global.dark ? 'dark' : "light"}
             accentColor={global.accentColor}
+            backgrounds={{
+                primary: '#f0f0f0',
+                secondary: '#e5e5e5',
+                tertiary: '#e0e0e0',
+                quaternary:'#d5d5d5'
+            }}
+            borders={{
+                primary: '#e8e8e8'
+            }}
+
             className={[styles.wrapper, global.dark ? styles.dark : styles.light].join(' ')}
         >
             <ThemeProvider.Provider value={{
