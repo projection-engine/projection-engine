@@ -45,7 +45,7 @@
 
 .onDelete {
     background: var(--fabric-background-primary);
-    padding: 16px;
+    padding: 4px;
 
 
     display: grid;

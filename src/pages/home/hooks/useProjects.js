@@ -6,22 +6,22 @@ export default function useProjects(fs){
     const [projects, setProjects] = useState([])
     const [openModal, setOpenModal] = useState(false)
     const [projectName, setProjectName] = useState('')
-    const [startPath, setStartPath] = useState( localStorage.getItem('basePath') + '\\projects\\')
+    const [startPath, setStartPath] = useState( )
     const load = useContext(LoaderProvider)
     const alert = useContext(AlertProvider)
 
     const uploadRef = useRef()
 
-    const refresh = () => {
+    const refresh = (path) => {
         load.pushEvent(EVENTS.PROJECT_LIST)
-        fs.readdir(startPath, (e, res) => {
+        fs.readdir(path, (e, res) => {
             let promises = []
-            if(!fs.existsSync(startPath))
-                fs.mkdirSync(startPath)
+            if(!fs.existsSync(path))
+                fs.mkdirSync(path)
             if (!e)
                 res.forEach(f => {
                     promises.push(new Promise((resolve,) => {
-                        let filename = startPath + f;
+                        let filename = path + f;
 
                         fs.lstat(filename, (e, stat) => {
                             if (stat && stat.isDirectory()) {
@@ -65,9 +65,14 @@ export default function useProjects(fs){
     }
 
     useEffect(() => {
-        console.log(localStorage.getItem('basePath'))
-        if (localStorage.getItem('basePath') !== null)
-            refresh()
+        let b = localStorage.getItem('basePath')
+        if (localStorage.getItem('basePath') === null) {
+            b = window.require("os").homedir() + '\\ProjectionEngineProjects\\'
+            localStorage.setItem('basePath', b)
+        }
+        setStartPath(b  + '\\projects\\')
+        refresh(b  + '\\projects\\')
+
     }, [])
 
     return {

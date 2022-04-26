@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, {useMemo, useRef, useState} from "react";
 import Card from "./Card";
 import {Button, Dropdown, DropdownOption, DropdownOptions, Masonry} from "@f-ui/core";
-import LinkProject from "./LinkProject";
+
 import Search from "../../../components/search/Search";
 
 export default function Projects(props) {
@@ -11,14 +11,12 @@ export default function Projects(props) {
     const [searchString, setSearchString] = useState('')
 
     const projectsToShow = useMemo(() => {
-
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, props.projects])
 
     return (
         <div className={styles.wrapper}>
-           <LinkProject reference={ref}/>
 
             <div className={styles.titleWrapper}>
                 <label className={styles.title}>

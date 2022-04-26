@@ -6,19 +6,13 @@ export class WebWorker {
     }
 
     async createExecution(data, execute) {
-        const response = await new Promise((resolve) => {
+        return await new Promise((resolve) => {
             this._build(execute)
-
-            function handler(e) {
+            this._worker.addEventListener('message', e => {
+                this._worker.terminate()
                 resolve(e.data)
-            }
-
-            this._worker.addEventListener('message', handler);
+            });
             this._worker.postMessage(data);
         })
-
-        this._worker.terminate()
-
-        return response
     }
 }

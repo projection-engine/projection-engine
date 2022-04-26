@@ -34,14 +34,17 @@ export default class FileSystem {
         this.projectID = projectID
         this._path = (localStorage.getItem('basePath') + '\\projects\\' + projectID).replace(/\\\\/g, '\\')
 
-        if (!fs.existsSync(this.path + '\\previews\\'))
-            fs.mkdirSync(this.path + '\\previews\\')
-        if (!fs.existsSync(this.path + '\\assets\\'))
-            fs.mkdirSync(this.path + '\\assets\\')
-        if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
-            fs.mkdirSync(this.path + '\\assetsRegistry\\')
-        if (!fs.existsSync(this.path + '\\logic'))
-            fs.mkdirSync(this.path + '\\logic ')
+        try {
+            if (!fs.existsSync(this.path + '\\previews\\'))
+                fs.mkdirSync(this.path + '\\previews\\')
+            if (!fs.existsSync(this.path + '\\assets\\'))
+                fs.mkdirSync(this.path + '\\assets\\')
+            if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
+                fs.mkdirSync(this.path + '\\assetsRegistry\\')
+            if (!fs.existsSync(this.path + '\\logic'))
+                fs.mkdirSync(this.path + '\\logic ')
+        }catch (e){}
+
 
 
     }
@@ -541,7 +544,6 @@ export default class FileSystem {
                 })
             })
         })
-
     }
 }
 

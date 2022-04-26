@@ -1,19 +1,102 @@
 {
-  "name": "projection-engine",
-  "version": "0.0.1-alpha",
-  "private": true,
+  "name": "projection",
+  "productName": "projection",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": ".webpack/main",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package ",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "facobackup",
+    "email": "gustavomicaelbarbosa@gmail.com"
+  },
   "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "projection"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "devContentSecurityPolicy": "default-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; script-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; connect-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; img-src * 'self' data: blob: file: data: blob: 'unsafe-inline'; frame-src * 'self' data: blob: file:; style-src * 'self' data: blob: file: 'unsafe-inline';",
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./public/index.html",
+                  "js": "./public/renderer.js",
+                  "name": "main_window"
+                }
+              ]
+            }
+          }
+        ]
+      ]
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-transform-async-to-generator": "^7.16.8",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/runtime": "^7.17.9",
+    "@babel/polyfill": "7.12.1",
+    "@babel/cli": "7.17.6",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-module-resolver": "^4.1.0",
+
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "@electron-forge/plugin-webpack": "^6.0.0-beta.63",
+    "@vercel/webpack-asset-relocator-loader": "^1.7.0",
+
+    "css-loader": "^6.7.1",
+    "electron": "17.4.1",
+    "node-loader": "^2.0.0",
+    "style-loader": "^3.3.1"
+  },
   "dependencies": {
-    "@electron/remote": "2.0.4",
-    "@f-ui/core": "0.1.45-alpha",
+    "@f-ui/core": "0.1.46-alpha",
     "@fontsource/roboto": "4.5.3",
     "assimpjs": "^0.0.7",
     "dexie": "^3.2.0",
     "draco3d": "^1.5.2",
-    "electron-is-dev": "^2.0.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "file-loader": "^6.2.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "path-browserify": "^1.0.1",
     "pj-math": "^0.0.6-alpha",
     "prop-types": "^15.8.1",
     "raw-loader": "^4.0.2",
@@ -23,50 +106,7 @@
     "react-scripts": "^5.0.0",
     "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
-    "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4",
-    "webpack": "^5.68.0"
-  },
-  "main": "public/main.js",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "s": "concurrently -k  \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
-    "electron:start": "electron ."
-  },
-  "build": {
-    "extends": null,
-    "appId": "projection-engine",
-    "files": [
-      "dist/**/*",
-      "build/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "concurrently": "^7.0.0",
-    "cross-env": "^7.0.3",
-    "electron": "^18.1.0",
-    "electron-builder": "^22.14.13",
-    "wait-on": "^6.0.1"
+    "url-loader": "^4.1.1",
+    "uuid": "^8.3.2"
   }
 }

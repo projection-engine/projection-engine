@@ -1,46 +1,54 @@
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow } = require('electron');
 
-const path = require('path')
-const isDev = require('electron-is-dev')
-
-require('@electron/remote/main').initialize()
-
-app.commandLine.appendSwitch('enable-unsafe-webgpu') // WEB GPU
-function createWindow() {
-    const win = new BrowserWindow({
-
-       show: false,
-        title: "Projection Engine",
-        protocol: 'file:',
-        webPreferences: {
-            webSecurity: false,
-            enableRemoteModule: true,
-            nodeIntegration: true,
-            contextIsolation: false,
-            nativeWindowOpen: true,
-            nodeIntegrationInWorker: true,
-
-        },
-        autoHideMenuBar: true,
-        icon: __dirname + '/L.png',
-        darkTheme: true
-    })
-    win.maximize();
-    win.show();
-    win.loadURL(
-        isDev
-            ? 'http://localhost:3000'
-            : `file://${path.join($dirname, '../build/index.html')}`
-    )
+if (require('electron-squirrel-startup')) {
+  // eslint-disable-line global-require
+  app.quit();
 }
 
-app.on("ready", createWindow)
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
+const createWindow = () => {
+  const { session } = require('electron')
 
-app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-})
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [`default-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; script-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; connect-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; img-src * 'self' data: blob: file: data: blob: 'unsafe-inline'; frame-src * 'self' data: blob: file:; style-src * 'self' data: blob: file: 'unsafe-inline';`]
+      }
+    })
+  })
+
+  const mainWindow = new BrowserWindow({
+
+    show: false,
+    title: "Projection Engine",
+
+    webPreferences: {
+      webSecurity: false,
+      enableRemoteModule: true,
+      nodeIntegration: true,
+      contextIsolation: false,
+      nativeWindowOpen: true,
+      nodeIntegrationInWorker: true,
+
+    },
+    autoHideMenuBar: true,
+    icon: __dirname + '/L.png',
+    darkTheme: true,
+
+  });
+  mainWindow.maximize();
+  mainWindow.show();
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.webContents.openDevTools();
+};
+app.on('ready', createWindow);
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});

@@ -1,6 +1,6 @@
 import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
-import {Button, DataRow, Modal, TextField} from "@f-ui/core";
+import {Button, DataRow, Dropdown, DropdownOptions, Modal, TextField} from "@f-ui/core";
 import {useMemo, useRef, useState} from "react";
 import logo from '../../../static/LOGO.png'
 import shared from "../styles/Home.module.css";
@@ -20,7 +20,6 @@ export default function Card(props) {
         image: false
     })
     const [name, setName] = useState(props.data.meta.name)
-    const [hovered, setHovered] = useState(false)
     const object = useMemo(() => {
         return {...props.data.meta, name, preview: props.data.meta?.preview ? props.data.meta?.preview : logo,}
     }, [props.data, name])
@@ -30,8 +29,6 @@ export default function Card(props) {
             className={styles.wrapper}
             data-card={props.data.id}
             ref={ref}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
         >
             <Modal
                 className={shared.modal}
@@ -65,32 +62,8 @@ export default function Card(props) {
                     </>
                 }
             </Modal>
-            {open.delete ?
-                <div
-                    className={styles.onDelete}>
-                    Are you sure ?
-                    <div className={styles.buttonGroup}>
 
-                        <Button
-                            onClick={() => props.onDelete()}
-                            variant={'filled'}
-                            styles={{'--fabric-accent-color': '#ff5555', width: '100%'}}
-                            className={styles.button}
-                        >
-                            <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete_forever</span>
-                            Delete
-                        </Button>
-                        <Button
-                            onClick={() => setOpen({...open, delete: false})}
-                            variant={'outlined'}
-                            styles={{width: '100%'}}
-                            className={styles.button}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                </div>
-                :
+
                 <DataRow
                     asCard={true}
                     object={object}
@@ -98,18 +71,35 @@ export default function Card(props) {
                     styles={{ background: 'var(--fabric-background-secondary)', border: 'none'}}
                     selfContained={true}
                 />
-            }
 
             <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : 'none'}}>
-                <Button
+                <Dropdown
                     variant={'outlined'}
                     className={styles.button}
                     onClick={() => setOpen({
                         delete: true
-                    })}>
+                    })} hideArrow={true}>
                     <span className={'material-icons-round'}>delete</span>
+                    <DropdownOptions>
+                        <div
+                            className={styles.onDelete}>
+                            Are you sure ?
+                            <div className={styles.buttonGroup}>
 
-                </Button>
+                                <Button
+                                    onClick={() => props.onDelete()}
+                                    variant={'filled'}
+                                    styles={{'--fabric-accent-color': '#ff5555', width: '100%'}}
+                                    className={styles.button}
+                                >
+                                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete_forever</span>
+                                    Delete
+                                </Button>
+
+                            </div>
+                        </div>
+                    </DropdownOptions>
+                </Dropdown>
                 <Button
                     variant={'outlined'}
                     className={styles.button}
