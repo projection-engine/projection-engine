@@ -19,7 +19,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "--asar": false
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -89,7 +91,7 @@
   "dependencies": {
     "@f-ui/core": "0.1.48-alpha",
     "@fontsource/roboto": "4.5.3",
-    "assimpjs": "^0.0.7",
+    "assimpjs": "https://github.com/kovacsv/assimpjs.git",
     "axios": "^0.27.2",
     "dexie": "^3.2.0",
     "draco3d": "^1.5.2",

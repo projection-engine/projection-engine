@@ -100,9 +100,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
                     {
                         canExecutePhysicsAnimation,
                         selected,
-                        setSelected: d => {
-                            console.log(setSelected(d))
-                        }, ...settings
+                        setSelected, ...settings
                     },
                     scripts,
 

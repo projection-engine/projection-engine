@@ -5,14 +5,11 @@ export default function useGlobalOptions() {
     const [accentColor, setAccentColor] = useState('#0095ff')
 
     useEffect(() => {
-
-        setDark( localStorage.getItem('dark') === '0')
+        const local =  localStorage.getItem('dark')
+        setDark(local === '0'  || !local ? 'dark' : 'light')
         const c = localStorage.getItem('color')
-
         if (c)
             setAccentColor(c)
-
-
     }, [])
 
     return {

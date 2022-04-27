@@ -1,5 +1,5 @@
-const assimpjs = window.require('assimpjs')
 export default function AssimpJS(files) {
+    const assimpjs = window.require('assimpjs')
     const promises = []
     const reader = new FileReader();
 

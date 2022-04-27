@@ -116,9 +116,9 @@ export default class ProjectLoader {
         try {
             projectData = await ProjectLoader.getEntities(fileSystem)
         } catch (error) {
-            console.log(error)
+
         }
-        console.log(projectData)
+
         let settings = projectData[0]
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')
@@ -132,6 +132,7 @@ export default class ProjectLoader {
                 return e.data.blueprintID
         }).filter(e => e !== undefined)
 
+
         const scriptsToLoad = (await ProjectLoader.loadScripts([...new Set(entitiesWithScripts)], fileSystem, entitiesFound.length)).filter(e => e !== undefined)
         const levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json')
 
@@ -142,8 +143,10 @@ export default class ProjectLoader {
         try {
             entities = await Promise.all(entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, index, gpu, fileSystem)))
         } catch (e) {
+            console.log(e)
         }
 
+        console.log(meshes, entities)
         if (levelBlueprint)
             scriptsToLoad.push({
                 script: {
@@ -265,16 +268,20 @@ export default class ProjectLoader {
     static async mapEntity(entity, index, gpu, fileSystem) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         parsedEntity.blueprintID = entity.blueprintID
+
         for (const k in entity.components) {
-            let component = await ENTITIES[k](entity, k, gpu, index, fileSystem)
-            if (component) {
-                if (k !== COMPONENTS.MATERIAL)
-                    Object.keys(entity.components[k]).forEach(oK => {
-                        if (!oK.includes("__"))
-                            component[oK] = entity.components[k][oK]
-                    })
-                parsedEntity.components[k] = component
-            }
+           if(typeof ENTITIES[k] === 'function') {
+               let component = await ENTITIES[k](entity, k, gpu, index, fileSystem)
+               if (component) {
+                   if (k !== COMPONENTS.MATERIAL)
+                       Object.keys(entity.components[k]).forEach(oK => {
+                           if (!oK.includes("__"))
+                               component[oK] = entity.components[k][oK]
+                       })
+                   parsedEntity.components[k] = component
+               }else
+                   console.log(k)
+           }
         }
         return parsedEntity
     }

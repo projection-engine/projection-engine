@@ -99,5 +99,5 @@ export default function SideBar(props) {
 
 SideBar.propTypes = {
     open: PropTypes.number,
-    setOpen: PropTypes.number
+    setOpen: PropTypes.func
 }

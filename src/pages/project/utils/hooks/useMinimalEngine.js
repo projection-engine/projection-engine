@@ -120,7 +120,7 @@ function initializeSkybox(dispatch, gpu) {
             ImageProcessor.getImageBitmap(img.data)
                 .then(res => {
                     const newEntity = new Entity(undefined, 'sky')
-                    newEntity.addComponent(new SkyboxComponent(undefined, gpu))
+                    newEntity.components[COMPONENTS.SKYBOX] = new SkyboxComponent(undefined, gpu)
 
                     newEntity.components[COMPONENTS.SKYBOX].blob = res
                     newEntity.components[COMPONENTS.SKYBOX].gamma = .5
@@ -138,16 +138,10 @@ function initializeLight(dispatch) {
     const newEntity = new Entity(undefined, 'light')
     const light = new DirectionalLightComponent()
     light.direction = [0, 100, 100]
+    newEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
     dispatch({
         type: ENTITY_ACTIONS.ADD,
         payload: newEntity
-    })
-    dispatch({
-        type: ENTITY_ACTIONS.ADD_COMPONENT,
-        payload: {
-            entityID: newEntity.id,
-            data: light
-        }
     })
 }
 

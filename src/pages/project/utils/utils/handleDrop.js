@@ -46,7 +46,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                     folder.id = res.id
                     folder.name = script.name
                     folder.isBlueprint = true
-                    folder.addComponent(new FolderComponent(undefined, script.name))
+                    folder.components[COMPONENTS.FOLDER] = new FolderComponent(undefined, script.name)
 
                     const entities = []
                     for (let i = 0; i < script.entities.length; i++) {
@@ -56,7 +56,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                         ee.linkedTo = res.id
                         if (ee.components[COMPONENTS.MESH])
                             ee.components[COMPONENTS.MESH].meshID = m[0].id
-                        ee.addComponent(new ScriptComponent())
+                        ee.components[COMPONENTS.SCRIPT] = new ScriptComponent()
                         ee.components[COMPONENTS.SCRIPT].registryID = res.id
                         entities.push(ee)
                     }

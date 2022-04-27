@@ -316,6 +316,7 @@ export default class FileSystem {
                     console.log(err)
                 }
             }
+
             fs.writeFile(resolvePath(p + '\\' + id + '.entity '), entity, (e) => {
                 console.log(e)
                 resolve()

@@ -39,7 +39,7 @@ const createWindow = () => {
   mainWindow.maximize();
   mainWindow.show();
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {
