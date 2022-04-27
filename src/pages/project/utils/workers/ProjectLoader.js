@@ -116,9 +116,9 @@ export default class ProjectLoader {
         try {
             projectData = await ProjectLoader.getEntities(fileSystem)
         } catch (error) {
-
+            console.log(error)
         }
-
+        console.log(projectData)
         let settings = projectData[0]
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')

@@ -11,6 +11,9 @@ export default function SideBar(props) {
     const theme = useContext(ThemeProvider)
     const [extended, setExtended] = useState(false)
 
+    const {
+        open, setOpen
+    } = props
     return (
         <div className={styles.wrapper} data-extended={`${extended}`}>
             <div style={{width: '100%', overflow: 'hidden', height: '100%'}}>
@@ -27,16 +30,37 @@ export default function SideBar(props) {
 
                 </div>
                 <div className={styles.block}>
-                    <Button onClick={() => theme.setDark(!theme.dark)}
+                    <Button onClick={() => setOpen(0)}
                             className={styles.button}
-                            variant={'minimal-horizontal'}
-                            highlight={true}
+                            variant={open === 0 ? "filled" : undefined}
                             styles={{justifyContent: !extended ? 'center' : undefined}}
                     >
-                    <span style={{width: '30px'}}
-                          className={'material-icons-round'}>inventory_2</span>
+                    <span
+                        style={{width: '30px'}}
+                        className={'material-icons-round'}>inventory_2</span>
                         {extended ? 'Projects' : undefined}
                     </Button>
+
+                    <Button onClick={() => setOpen(1)}
+                            className={styles.button}
+                            variant={open === 1 ? "filled" : undefined}
+                            styles={{justifyContent: !extended ? 'center' : undefined}}
+                    >
+                    <span
+                        style={{width: '30px'}}
+                        className={'material-icons-round'}>chat_bubble</span>
+                        {extended ? 'Give feedback' : undefined}
+                    </Button>
+                    {/*<Button onClick={() => setOpen(0)}*/}
+                    {/*        className={styles.button}*/}
+                    {/*        variant={open === 0 ? "filled" : undefined}*/}
+                    {/*        styles={{justifyContent: !extended ? 'center' : undefined}}*/}
+                    {/*>*/}
+                    {/*<span*/}
+                    {/*    style={{width: '30px'}}*/}
+                    {/*    className={'material-icons-round'}>inventory_2</span>*/}
+                    {/*    {extended ? 'Projects' : undefined}*/}
+                    {/*</Button>*/}
                 </div>
             </div>
             <div className={styles.block} style={{transform: 'none', height: '100%', alignContent: 'flex-end'}}>
@@ -74,5 +98,6 @@ export default function SideBar(props) {
 }
 
 SideBar.propTypes = {
-    theme: PropTypes.object
+    open: PropTypes.number,
+    setOpen: PropTypes.number
 }

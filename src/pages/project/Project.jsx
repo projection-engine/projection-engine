@@ -48,10 +48,11 @@ export default function Project(props) {
     const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess, currentTab)
 
     useEffect(() => {
+        load.pushEvent(EVENTS.PROJECT_DATA)
         if (engine.gpu && !loading.initialized) {
             new Promise(async resolve => {
                 setInitialized(true)
-                load.pushEvent(EVENTS.PROJECT_DATA)
+
                 try {
                     const res = await ProjectLoader.loadProject(engine.gpu, quickAccess.fileSystem)
                     load.finishEvent(EVENTS.PROJECT_DATA)

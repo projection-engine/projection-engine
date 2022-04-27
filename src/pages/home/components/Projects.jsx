@@ -23,29 +23,7 @@ export default function Projects(props) {
                     Your projects
                     <Search searchString={searchString} setSearchString={setSearchString} size={'big'}/>
                 </label>
-                <div className={styles.optionsWrapper}>
-                    <Dropdown
-                        className={styles.button}
-                        variant={'outlined'}
-                        styles={{backgroundColor: 'var(--fabric-background-primary)', padding: '2px 5px 0px 10px'}}
-                    >
-                        <label>
-                            More
-                        </label>
-                        <DropdownOptions>
-                            <DropdownOption option={{
-                                label: 'Import from package.',
-                                icon: <span className={'material-icons-round'}>folder_zip</span>,
-                                onClick: () => props.onLoad()
-                            }}/>
-                            <DropdownOption option={{
-                                label: 'Link source directory',
-                                icon: <span className={'material-icons-round'}>snippet_folder</span>,
-                                onClick: () => ref.current?.click()
-                            }}/>
 
-                        </DropdownOptions>
-                    </Dropdown>
                     <Button
                         className={styles.button}
                         variant={'filled'}
@@ -55,7 +33,7 @@ export default function Projects(props) {
                             New project
                         </label>
                     </Button>
-                </div>
+
             </div>
 
             <Masonry className={styles.content}>

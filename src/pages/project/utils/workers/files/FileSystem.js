@@ -42,11 +42,9 @@ export default class FileSystem {
             if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
                 fs.mkdirSync(this.path + '\\assetsRegistry\\')
             if (!fs.existsSync(this.path + '\\logic'))
-                fs.mkdirSync(this.path + '\\logic ')
-        }catch (e){}
-
-
-
+                fs.mkdirSync(this.path + '\\logic')
+        } catch (e) {
+        }
     }
 
     get path() {
@@ -81,7 +79,7 @@ export default class FileSystem {
                     fs.readFile(pathName, (e, res) => {
                         try {
                             let d = res.toString()
-                            if(pathName.includes('.mesh'))
+                            if (pathName.includes('.mesh'))
                                 d = lzwDecode(d)
                             resolve(type === 'json' ? JSON.parse(d) : d)
                         } catch (e) {
@@ -262,7 +260,7 @@ export default class FileSystem {
             const promises = [
                 new Promise(resolve1 => {
                     let d = fileData
-                    if(path.includes('.mesh'))
+                    if (path.includes('.mesh'))
                         d = lzwEncode(fileData)
                     fs.writeFile(resolvePath(this.path + '\\assets\\' + path), d, (err) => {
                         if (!previewImage)
@@ -310,8 +308,16 @@ export default class FileSystem {
 
     async updateEntity(entity, id) {
         return new Promise(resolve => {
-            fs.writeFile(resolvePath(this.path + '\\logic\\' + id + '.entity'), entity, (e) => {
-
+            const p = resolvePath(this.path + '\\logic\\')
+            if (!p) {
+                try {
+                    fs.mkdirSync(p)
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            fs.writeFile(resolvePath(p + '\\' + id + '.entity '), entity, (e) => {
+                console.log(e)
                 resolve()
             })
         })
@@ -384,7 +390,7 @@ export default class FileSystem {
             else if (filename.indexOf(extension) >= 0)
                 res.push(files[i])
         }
-
+        console.log(res)
         return res
     }
 

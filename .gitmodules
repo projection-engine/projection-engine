@@ -10,3 +10,6 @@
 [submodule "src/services/engine"]
 	path = src/engine
 	url = git@github.com:projection-engine/engine.git
+[submodule "src/home"]
+	path = src/pages/home/issues
+	url = git@github.com:projection-engine/feedback-github-integration.git

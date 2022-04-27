@@ -53,16 +53,15 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 saveSettings()
                     .then(async () => {
                         const all = await ProjectLoader.getEntities(fileSystem)
-
-                        let cleanUp = all.map(a => {
+                        await Promise.all(all.map(a => {
                             return new Promise(async (resolve1) => {
                                 if (a && a.data && !engine.entities.find(e => e.id === a.data.id))
                                     resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true))
                                 else
                                     resolve1()
                             })
-                        })
-                        await Promise.all(cleanUp)
+                        }))
+                        console.log('HERE', all)
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {
                                 const str = JSON.stringify(e)
@@ -80,7 +79,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
                     }).catch(() => resolve())
             })
-        else return new Promise(resolve => resolve())
+        return new Promise(resolve => resolve())
     }, [engine.entities, settings, id])
 
     useEffect(() => {

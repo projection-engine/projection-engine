@@ -1,6 +1,10 @@
 module.exports = [
     // REACT
     {
+        test: /\.worker\.js$/,
+        use: { loader: "worker-loader" },
+    },
+    {
         test: /\.wasm$/,
         loader: 'raw-loader',
     },
