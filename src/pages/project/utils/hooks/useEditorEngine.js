@@ -1,19 +1,19 @@
 import {useEffect, useRef, useState} from "react";
-import TransformSystem from "../../../../engine/shared/ecs/systems/TransformSystem";
-import ShadowMapSystem from "../../../../engine/shared/ecs/systems/ShadowMapSystem";
-import PickSystem from "../../../../engine/shared/ecs/systems/PickSystem";
+import TransformSystem from "../../../../engine/ecs/systems/TransformSystem";
+import ShadowMapSystem from "../../../../engine/ecs/systems/ShadowMapSystem";
+import PickSystem from "../../../../engine/ecs/systems/PickSystem";
 import EditorEngine from "../../../../engine/editor/EditorEngine";
 import EVENTS from "../utils/EVENTS";
-import PerformanceSystem from "../../../../engine/shared/ecs/systems/PerformanceSystem";
-import SYSTEMS from "../../../../engine/shared/templates/SYSTEMS";
-import CubeMapSystem from "../../../../engine/shared/ecs/systems/CubeMapSystem";
-import ScriptSystem from "../../../../engine/shared/ecs/systems/ScriptSystem";
-import useEngineEssentials from "../../../../engine/shared/useEngineEssentials";
+import PerformanceSystem from "../../../../engine/ecs/systems/PerformanceSystem";
+import SYSTEMS from "../../../../engine/templates/SYSTEMS";
+import CubeMapSystem from "../../../../engine/ecs/systems/CubeMapSystem";
+import ScriptSystem from "../../../../engine/ecs/systems/ScriptSystem";
+import useEngineEssentials from "../../../../engine/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
-import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
-import CameraCubeSystem from "../../../../engine/shared/ecs/systems/CameraCubeSystem";
-import {ENTITY_ACTIONS} from "../../../../engine/utils/entityReducer";
+import COMPONENTS from "../../../../engine/templates/COMPONENTS";
+import CameraCubeSystem from "../../../../engine/ecs/systems/CameraCubeSystem";
+import {ENTITY_ACTIONS} from "../../../../engine/useEngineEssentials";
 
 
 export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {

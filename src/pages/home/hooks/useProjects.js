@@ -1,6 +1,7 @@
-import {AlertProvider, LoaderProvider} from "@f-ui/core";
+import {AlertProvider} from "@f-ui/core";
 import EVENTS from "../../project/utils/utils/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
+import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 export default function useProjects(fs){
     const [projects, setProjects] = useState([])

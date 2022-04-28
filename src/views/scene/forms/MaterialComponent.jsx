@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
-import {Checkbox, LoaderProvider} from "@f-ui/core";
+import {Checkbox} from "@f-ui/core";
 import React, {useContext, useEffect, useRef} from "react";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
@@ -9,8 +9,9 @@ import Range from "../../../components/range/Range";
 import useDirectState from "../../../pages/project/utils/hooks/useDirectState";
 import {DATA_TYPES} from "../../blueprints/components/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
-import TextureInstance from "../../../engine/shared/instances/TextureInstance";
+import TextureInstance from "../../../engine/instances/TextureInstance";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
+import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 
 export default function MaterialComponent(props) {

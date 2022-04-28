@@ -1,8 +1,9 @@
 import {useCallback, useContext, useEffect} from "react";
-import {LoaderProvider} from "@f-ui/core";
+
 
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../workers/ProjectLoader";
+import LoaderProvider from "../../../../components/loader/LoaderProvider";
 
 const fs = window.require('fs')
 export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {

@@ -1,6 +1,6 @@
 import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
 import GIZMOS from "../../../../engine/editor/gizmo/GIZMOS";
-import RENDERING_TYPES from "../../../../engine/shared/templates/RENDERING_TYPES";
+import RENDERING_TYPES from "../../../../engine/templates/RENDERING_TYPES";
 import useDirectState from "./useDirectState";
 
 

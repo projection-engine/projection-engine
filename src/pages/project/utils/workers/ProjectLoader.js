@@ -1,27 +1,27 @@
-import DirectionalLightComponent from "../../../../engine/shared/ecs/components/DirectionalLightComponent";
+import DirectionalLightComponent from "../../../../engine/ecs/components/DirectionalLightComponent";
 
-import MeshComponent from "../../../../engine/shared/ecs/components/MeshComponent";
-import PickComponent from "../../../../engine/shared/ecs/components/PickComponent";
-import PointLightComponent from "../../../../engine/shared/ecs/components/PointLightComponent";
-import SkyboxComponent from "../../../../engine/shared/ecs/components/SkyboxComponent";
-import SpotLightComponent from "../../../../engine/shared/ecs/components/SpotLightComponent";
-import TransformComponent from "../../../../engine/shared/ecs/components/TransformComponent";
-import FolderComponent from "../../../../engine/shared/ecs/components/FolderComponent";
-import PhysicsBodyComponent from "../../../../engine/shared/ecs/components/PhysicsBodyComponent";
-import Entity from "../../../../engine/shared/ecs/basic/Entity";
-import MaterialInstance from "../../../../engine/shared/instances/MaterialInstance";
-import MeshInstance from "../../../../engine/shared/instances/MeshInstance";
-import MaterialComponent from "../../../../engine/shared/ecs/components/MaterialComponent";
-import SkylightComponent from "../../../../engine/shared/ecs/components/SkyLightComponent";
-import CubeMapComponent from "../../../../engine/shared/ecs/components/CubeMapComponent";
-import CubeMapInstance from "../../../../engine/shared/instances/CubeMapInstance";
-import COMPONENTS from "../../../../engine/shared/templates/COMPONENTS";
-import ScriptComponent from "../../../../engine/shared/ecs/components/ScriptComponent";
-import CameraComponent from "../../../../engine/shared/ecs/components/CameraComponent";
-import Transformation from "../../../../engine/shared/utils/workers/Transformation";
+import MeshComponent from "../../../../engine/ecs/components/MeshComponent";
+import PickComponent from "../../../../engine/ecs/components/PickComponent";
+import PointLightComponent from "../../../../engine/ecs/components/PointLightComponent";
+import SkyboxComponent from "../../../../engine/ecs/components/SkyboxComponent";
+import SpotLightComponent from "../../../../engine/ecs/components/SpotLightComponent";
+import TransformComponent from "../../../../engine/ecs/components/TransformComponent";
+import FolderComponent from "../../../../engine/ecs/components/FolderComponent";
+import PhysicsBodyComponent from "../../../../engine/ecs/components/PhysicsBodyComponent";
+import Entity from "../../../../engine/ecs/basic/Entity";
+import MaterialInstance from "../../../../engine/instances/MaterialInstance";
+import MeshInstance from "../../../../engine/instances/MeshInstance";
+import MaterialComponent from "../../../../engine/ecs/components/MaterialComponent";
+import SkylightComponent from "../../../../engine/ecs/components/SkyLightComponent";
+import CubeMapComponent from "../../../../engine/ecs/components/CubeMapComponent";
+import CubeMapInstance from "../../../../engine/instances/CubeMapInstance";
+import COMPONENTS from "../../../../engine/templates/COMPONENTS";
+import ScriptComponent from "../../../../engine/ecs/components/ScriptComponent";
+import CameraComponent from "../../../../engine/ecs/components/CameraComponent";
+import Transformation from "../../../../engine/utils/Transformation";
 import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
 import {DATA_TYPES} from "../../../../views/blueprints/components/DATA_TYPES";
-import TextureInstance from "../../../../engine/shared/instances/TextureInstance";
+import TextureInstance from "../../../../engine/instances/TextureInstance";
 
 
 export default class ProjectLoader {
@@ -141,7 +141,7 @@ export default class ProjectLoader {
         const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 
         try {
-            entities = await Promise.all(entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, index, gpu, fileSystem)))
+            entities = await Promise.all(entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))
         } catch (e) {
             console.log(e)
         }
@@ -213,7 +213,7 @@ export default class ProjectLoader {
                                 name: d.name
                             },
                             entities: mapEntities ? await Promise.all(d.entities.map((e, i) => {
-                                return ProjectLoader.mapEntity(e, i + meshesLoaded, gpu, fileSystem)
+                                return ProjectLoader.mapEntity(e, gpu, fileSystem)
                             })) : []
                         })
                     } catch (e) {
@@ -265,13 +265,13 @@ export default class ProjectLoader {
         return newMat
     }
 
-    static async mapEntity(entity, index, gpu, fileSystem) {
+    static async mapEntity(entity,  gpu, fileSystem) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         parsedEntity.blueprintID = entity.blueprintID
 
         for (const k in entity.components) {
            if(typeof ENTITIES[k] === 'function') {
-               let component = await ENTITIES[k](entity, k, gpu, index, fileSystem)
+               let component = await ENTITIES[k](entity, k, gpu,  fileSystem)
                if (component) {
                    if (k !== COMPONENTS.MATERIAL)
                        Object.keys(entity.components[k]).forEach(oK => {
@@ -291,9 +291,9 @@ const ENTITIES = {
     [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id),
     [COMPONENTS.SKYLIGHT]: async (entity, k) => new SkylightComponent(entity.components[k].id),
     [COMPONENTS.MESH]: async (entity, k) => new MeshComponent(entity.components[k].id),
-    [COMPONENTS.PICK]: async (entity, k, gpu, index) => new PickComponent(entity.components[k].id, index),
+
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
-    [COMPONENTS.SKYBOX]: async (entity, k, gpu, index, fileSystem) => {
+    [COMPONENTS.SKYBOX]: async (entity, k, gpu,  fileSystem) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
         const fileData = await ProjectLoader.readFromRegistry(entity.components[k].imageID, fileSystem)
         if (fileData) {
@@ -304,7 +304,7 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: async (entity, k, gpu, index, fileSystem) => {
+    [COMPONENTS.MATERIAL]: async (entity, k, gpu,  fileSystem) => {
         const newMat = new MaterialComponent(entity.components[k].id)
          newMat.materialID = entity.components[k].materialID
         const toLoad = (entity.components[k].uniforms ? entity.components[k].uniforms : []).map(u => {

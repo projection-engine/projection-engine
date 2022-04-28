@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
-import Transformation from "../../../engine/shared/utils/workers/Transformation";
+import Transformation from "../../../engine/utils/Transformation";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
-import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 export default function TransformComponent(props) {

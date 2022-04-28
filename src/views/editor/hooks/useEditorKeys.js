@@ -1,14 +1,14 @@
 import useHotKeys, {KEYS} from "../../../pages/project/utils/hooks/useHotKeys";
 import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
-import {ENTITY_ACTIONS} from "../../../engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
 import {useState} from "react";
-import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
-import TransformComponent from "../../../engine/shared/ecs/components/TransformComponent";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
+import TransformComponent from "../../../engine/ecs/components/TransformComponent";
 
-export default function useEditorKeys(props, controlProvider){
+export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])
     useHotKeys({
         focusTarget: props.id + '-editor-wrapper',
@@ -24,14 +24,24 @@ export default function useEditorKeys(props, controlProvider){
             {require: [KEYS.ControlLeft, KEYS.KeyY], callback: () => props.engine.forwardChanges()},
 
             {
+                require: [KEYS.ControlLeft, KEYS.KeyP],
+                callback: () => {
+                    setToCopy(props.engine.selected)
+                    if (props.engine.selected.length > 1)
+                        props.engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.LINK_MULTIPLE,
+                            payload: props.engine.selected
+                        })
+                }
+            },
+            {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: () => {
                     setToCopy(props.engine.selected)
-                    if (props.engine.selected)
-                        props.setAlert({
-                            type: 'info',
-                            message: `Entities copied (${props.engine.selected.length}).`
-                        })
+                    props.setAlert({
+                        type: 'info',
+                        message: `Entities copied (${props.engine.selected.length}).`
+                    })
                 }
             },
             {
@@ -84,14 +94,13 @@ export default function useEditorKeys(props, controlProvider){
                                     newComponents[COMPONENTS.TRANSFORM] = new TransformComponent()
                                     newComponents[COMPONENTS.TRANSFORM].rotation = [...clone.components[c].rotation]
                                     newComponents[COMPONENTS.TRANSFORM].rotationQuat = [...clone.components[c].rotationQuat]
-                                    newComponents[COMPONENTS.TRANSFORM].translation =[...clone.components[c].translation]
+                                    newComponents[COMPONENTS.TRANSFORM].translation = [...clone.components[c].translation]
                                     newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
                                     newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
-                                    newComponents[COMPONENTS.TRANSFORM].lockedRotation= clone.components[c].lockedRotation
+                                    newComponents[COMPONENTS.TRANSFORM].lockedRotation = clone.components[c].lockedRotation
                                     newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
                                     newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange
-                                }
-                                else {
+                                } else {
                                     const cClone = cloneClass(clone.components[c])
                                     cClone.id = uuidv4()
                                     newComponents[c] = cClone
@@ -113,5 +122,5 @@ export default function useEditorKeys(props, controlProvider){
                 }
             }
         ]
-    }, [toCopy ])
+    }, [toCopy])
 }

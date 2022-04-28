@@ -7,14 +7,15 @@ import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
 
-import {Button, LoaderProvider} from "@f-ui/core";
-import FolderComponent from "../../engine/shared/ecs/components/FolderComponent";
-import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
-import Entity from "../../engine/shared/ecs/basic/Entity";
+import {Button} from "@f-ui/core";
+import FolderComponent from "../../engine/ecs/components/FolderComponent";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
+import Entity from "../../engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
-import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../pages/project/utils/hooks/historyReducer";
+import LoaderProvider from "../../components/loader/LoaderProvider";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -37,17 +38,20 @@ export default function SceneView(props) {
                         (el, e) => {
                             if (e && e.ctrlKey) {
                                 props.engine.setSelected(prev => {
-                                    const indexFound = prev.findIndex(f => f === el)
+                                    const indexFound = prev.findIndex(f => f === el.id)
                                     if (indexFound === -1)
-                                        return [...prev, el]
+                                        return [...prev, el.id]
                                     else {
                                         let n = [...prev]
                                         n.splice(indexFound, 1)
                                         return n
                                     }
                                 })
-                            } else
-                                props.engine.setSelected([el])
+                            } else if(!el.components[COMPONENTS.FOLDER])
+                                props.engine.setSelected([el.id])
+                            else if(el.components[COMPONENTS.FOLDER]){
+                                props.engine.setSelected(props.engine.entities.filter(e => e.linkedTo === el.id).map(e => e.id))
+                            }
                         },
                         props.engine,
                         setAllHidden, false)

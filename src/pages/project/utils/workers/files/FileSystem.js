@@ -146,6 +146,7 @@ export default class FileSystem {
                             r()
                         })
                 }),
+
                 new Promise(r => {
                     ImageProcessor.resizeImage(res, 256, 256).then(reduced => {
                         fs.writeFile(

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {Checkbox} from "@f-ui/core";
 import handleDrop from "../../../pages/project/utils/utils/handleDrop";
 import Selector from "../../../components/selector/Selector";
-import MESH_TYPES from "../../../engine/shared/templates/MESH_TYPES";
+import MESH_TYPES from "../../../engine/templates/MESH_TYPES";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 

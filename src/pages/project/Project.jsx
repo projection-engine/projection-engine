@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
-import {AlertProvider, LoaderProvider} from "@f-ui/core";
+import {AlertProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import useQuickAccess from "./utils/hooks/useQuickAccess";
 import QuickAccessProvider from "./utils/hooks/QuickAccessProvider";
@@ -8,7 +8,7 @@ import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "./utils/workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import useSerializer from "./utils/hooks/useSerializer";
 
 import useEditorEngine from "./utils/hooks/useEditorEngine";
@@ -23,8 +23,9 @@ import ImageView from "../../views/image/ImageView";
 import EntitiesProvider from "./utils/hooks/EntitiesProvider";
 import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
 import handleTabChange from "./utils/utils/handleTabChange";
-import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
+import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
+import LoaderProvider from "../../components/loader/LoaderProvider";
 
 
 export default function Project(props) {

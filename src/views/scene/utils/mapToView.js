@@ -1,7 +1,7 @@
 import getElementIcon from "./getElementIcon";
 import getElementType from "./getElementType";
 import React from "react";
-import {ENTITY_ACTIONS} from "../../../engine/utils/entityReducer";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 
 export default function mapToView(current, entities, setSelected, engine, setAllHidden, isBP) {
     const children = entities.filter(f => f.linkedTo === current.id)
@@ -10,7 +10,7 @@ export default function mapToView(current, entities, setSelected, engine, setAll
         id: current.id,
         label: current.name,
         onClick: (e) => {
-            setSelected(current.id, e)
+            setSelected(current, e)
         },
         children: children.map(f => mapToView(f, entities, setSelected, engine, setAllHidden, isBP || current.isBlueprint)),
         icon: getElementIcon(current.components, isBlueprint),

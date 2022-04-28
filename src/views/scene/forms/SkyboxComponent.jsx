@@ -2,11 +2,12 @@ import styles from '../styles/Forms.module.css'
 import React, {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
-import {Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import Range from "../../../components/range/Range";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
+import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)

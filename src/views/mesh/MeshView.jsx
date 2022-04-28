@@ -8,16 +8,12 @@ import Controls from "./components/Controls";
 import useMinimalEngine, {IDS, initializeMesh} from "../../pages/project/utils/hooks/useMinimalEngine";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
-
-
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import {LoaderProvider} from "@f-ui/core";
-
 import EVENTS from "../../pages/project/utils/utils/EVENTS";
-
 import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
+import LoaderProvider from "../../components/loader/LoaderProvider";
 
 export default function MeshView(props) {
     const engine = useMinimalEngine(false, false, false, false)

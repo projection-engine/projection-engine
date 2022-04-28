@@ -86,29 +86,31 @@
     "electron": "17.4.1",
     "node-loader": "^2.0.0",
     "style-loader": "^3.3.1",
-    "worker-loader": "^3.0.8"
+    "worker-loader": "^3.0.8",
+    "url-loader": "^4.1.1",
+    "react-scripts": "^5.0.0"
   },
   "dependencies": {
-    "@f-ui/core": "0.1.48-alpha",
+    "@f-ui/core": "0.1.49-alpha",
     "@fontsource/roboto": "4.5.3",
     "assimpjs": "https://github.com/kovacsv/assimpjs.git",
     "axios": "^0.27.2",
-    "dexie": "^3.2.0",
-    "draco3d": "^1.5.2",
+
+
     "electron-squirrel-startup": "^1.0.0",
-    "file-loader": "^6.2.0",
+
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",
     "prop-types": "^15.8.1",
-    "raw-loader": "^4.0.2",
+
     "react": "17.0.2",
     "react-colorful": "^5.5.1",
     "react-dom": "^17.0.2",
-    "react-scripts": "^5.0.0",
+
     "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
-    "url-loader": "^4.1.1",
+
     "uuid": "^8.3.2"
   }
 }
