@@ -2,7 +2,7 @@ import styles from "../styles/Projects.module.css";
 import PropTypes from 'prop-types'
 import React, {useMemo, useRef, useState} from "react";
 import Card from "./Card";
-import {Button, Dropdown, DropdownOption, DropdownOptions, Masonry} from "@f-ui/core";
+import {Button, Masonry} from "@f-ui/core";
 
 import Search from "../../../components/search/Search";
 

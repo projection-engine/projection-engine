@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
-import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
-import styles from "../styles/Forms.module.css";
+import {Checkbox} from "@f-ui/core";
 import handleDrop from "../../../pages/project/utils/utils/handleDrop";
 import Selector from "../../../components/selector/Selector";
 import MESH_TYPES from "../../../engine/shared/templates/MESH_TYPES";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 
 export default function MeshComponent(props) {
@@ -16,29 +16,23 @@ export default function MeshComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Mesh
-                </AccordionSummary>
+            <AccordionTemplate title={'Mesh instance'}>
+                <Selector
+                    selected={currentMesh}
+                    type={'mesh'}
+                    handleChange={m => {
+                        let data = props.engine.meshes.find(mesh => mesh.id === m.registryID)
+                        if (!data)
+                            handleDrop(m.registryID, props.quickAccess.fileSystem, props.engine, props.setAlert, props.load, true)
+                                .then(() => {
+                                    props.submit(m.registryID)
+                                })
+                        else {
 
-                    <Selector
-                        selected={currentMesh}
-                        type={'mesh'}
-                        handleChange={m => {
-                            let data = props.engine.meshes.find(mesh => mesh.id === m.registryID)
-                            if (!data)
-                                handleDrop(m.registryID, props.quickAccess.fileSystem, props.engine, props.setAlert, props.load, true)
-                                    .then(() => {
-                                        props.submit(m.registryID)
-                                    })
-                            else {
-
-                                props.submit(m.registryID)
-                            }
-                        }}/>
-            </Accordion>
-
-
+                            props.submit(m.registryID)
+                        }
+                    }}/>
+            </AccordionTemplate>
             <Checkbox
                 noMargin={true}
                 label={'Static mesh'}
@@ -50,7 +44,6 @@ export default function MeshComponent(props) {
                 setMeshType(c)
                 props.submit(c, true)
             }}/>
-
         </>
     )
 }

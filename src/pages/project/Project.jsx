@@ -25,7 +25,6 @@ import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
 import handleTabChange from "./utils/utils/handleTabChange";
 import COMPONENTS from "../../engine/shared/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
-import DragDropProvider from "../../components/dragdrop/hooks/DragDropProvider";
 
 
 export default function Project(props) {

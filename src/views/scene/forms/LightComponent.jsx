@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
-import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
+import {Checkbox} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
 import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 export default function LightComponent(props) {
     const getNewState = () => {
@@ -58,10 +59,8 @@ export default function LightComponent(props) {
         <>
             {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
                 <>
-                    <Accordion className={styles.fieldset} contentClassName={styles.formWrapper} contentStyles={{display: 'flex', gap: '2px'}}>
-                        <AccordionSummary className={styles.summary}>
-                            Direction
-                        </AccordionSummary>
+
+                    <AccordionTemplate title={'Direction'} type={'flex'}>
                         <Range
                             accentColor={'red'}
                             metric={'x'}
@@ -132,12 +131,9 @@ export default function LightComponent(props) {
                                     }
                                 })
                             }}/>
-                    </Accordion>
-                    <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                        <AccordionSummary className={styles.summary}>
-                            Size
-                        </AccordionSummary>
+                    </AccordionTemplate>
 
+                    <AccordionTemplate title={'Size'}>
                         <Range
                             accentColor={'yellow'}
                             value={state.size}
@@ -157,17 +153,14 @@ export default function LightComponent(props) {
                                     }
                                 })
                             }}/>
-                    </Accordion>
+                    </AccordionTemplate>
                 </>
                 :
                 null
             }
 
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Intensity
-                </AccordionSummary>
 
+            <AccordionTemplate title={'Intensity'}>
                 <Range
                     accentColor={'yellow'}
                     value={state.intensity}
@@ -188,14 +181,11 @@ export default function LightComponent(props) {
                             }
                         })
                     }}/>
-            </Accordion>
-            {props.type === 'SkylightComponent' ?
+            </AccordionTemplate>
+            {props.type === COMPONENTS.SKYLIGHT ?
                 <>
-                    <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                        <AccordionSummary className={styles.summary}>
-                            GI
-                        </AccordionSummary>
 
+                    <AccordionTemplate title={'Global illumination'}>
                         <label className={styles.label} style={{marginBottom: '4px'}}>Intensity</label>
                         <Range
                             accentColor={'red'}
@@ -238,17 +228,15 @@ export default function LightComponent(props) {
                                 })
                             }}/>
 
-                    </Accordion>
+                    </AccordionTemplate>
 
                 </>
                 :
                 null
             }
-            {props.type === 'PointLightComponent' ?
-                <Accordion className={styles.fieldset} contentClassName={styles.formWrapper} contentStyles={{display: 'flex', gap: '2px'}}>
-                    <AccordionSummary className={styles.summary}>
-                        Light attenuation
-                    </AccordionSummary>
+            {props.type === COMPONENTS.POINT_LIGHT ?
+
+                <AccordionTemplate title={'Attenuation'} type={'flex'}>
                     <Range
                         accentColor={'red'}
                         incrementPercentage={.01}
@@ -316,15 +304,12 @@ export default function LightComponent(props) {
                             })
                         }}/>
 
-                </Accordion>
+                </AccordionTemplate>
                 :
                 null
             }
 
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper} contentStyles={{display: 'flex', gap: '2px'}}>
-                <AccordionSummary className={styles.summary}>
-                    Planes
-                </AccordionSummary>
+            <AccordionTemplate title={'View planes'} type={'flex'}>
                 <Range
                     accentColor={'red'}
                     value={state.zFar}
@@ -365,12 +350,8 @@ export default function LightComponent(props) {
                             }
                         })
                     }}/>
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Color
-                </AccordionSummary>
-
+            </AccordionTemplate>
+            <AccordionTemplate title={'Light color'}>
                 <ColorPicker
                     value={state.color}
                     submit={color => {
@@ -387,7 +368,7 @@ export default function LightComponent(props) {
                         props.submit([r, g, b], 'color')
                     }}/>
 
-            </Accordion>
+            </AccordionTemplate>
 
 
             <Checkbox

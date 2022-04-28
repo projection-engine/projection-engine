@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import styles from "../styles/Forms.module.css";
-import {Accordion, AccordionSummary} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 
 const toDeg = 180 / Math.PI, toRad = Math.PI / 180
@@ -22,10 +21,7 @@ export default function CameraComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    FOV
-                </AccordionSummary>
+            <AccordionTemplate title={'FOV'}>
                 <Range
                     metric={'angle'}
                     accentColor={'red'}
@@ -38,16 +34,10 @@ export default function CameraComponent(props) {
                     }}
                     handleChange={e => setState({...state, fov: e})}
                 />
-            </Accordion>
+            </AccordionTemplate>
 
 
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
-                       contentStyles={{display: 'flex', gap: '2px'}}>
-                <AccordionSummary className={styles.summary}>
-                    Planes
-                </AccordionSummary>
-
-
+            <AccordionTemplate title={'View planes'} type={'flex'}>
                 <Range
                     accentColor={'red'}
                     value={state.zFar}
@@ -79,8 +69,7 @@ export default function CameraComponent(props) {
                             }
                         })
                     }}/>
-
-            </Accordion>
+            </AccordionTemplate>
         </>
 
 

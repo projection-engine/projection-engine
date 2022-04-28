@@ -12,8 +12,11 @@
 
 .wrapperContent {
     height: 100%;
-    position: relative;
     max-width: 100%;
+    width: 100%;
+
+    position: relative;
+
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -21,7 +24,7 @@
     align-content: flex-start;
     background-color: var(--fabric-background-primary);
 
-    width: 100%;
+
 
     border-radius: 5px;
     overflow-y: auto;

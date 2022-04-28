@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
-import {Accordion, AccordionSummary, Checkbox, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Checkbox, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 
 export default function CubeMapComponent(props) {
@@ -24,10 +25,9 @@ export default function CubeMapComponent(props) {
     return (
         <>
 
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Resolution
-                </AccordionSummary>
+            <AccordionTemplate title={'Resolution'}>
+
+
 
                 <Dropdown className={styles.dropdown}>
                     {state.resolution}p
@@ -88,13 +88,10 @@ export default function CubeMapComponent(props) {
                     </DropdownOptions>
                 </Dropdown>
 
-            </Accordion>
+            </AccordionTemplate>
 
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Affect Radius
-                </AccordionSummary>
 
+            <AccordionTemplate title={'Affect radius'}>
                 <Range
                     accentColor={'red'}
                     onFinish={(v) => props.submit(v, 'radius')}
@@ -103,13 +100,8 @@ export default function CubeMapComponent(props) {
                         setState({...state, radius: e})
                     }}
                 />
-
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Prefiltered LOD samples
-                </AccordionSummary>
-
+            </AccordionTemplate>
+            <AccordionTemplate title={'LOD samples'}>
                 <Range
                     accentColor={'blue'}
                     integer={true}
@@ -123,8 +115,7 @@ export default function CubeMapComponent(props) {
                         setState({...state, prefilteredMipmaps: parseInt(e)})
                     }}
                 />
-
-            </Accordion>
+            </AccordionTemplate>
             <Checkbox
                 checked={state.irradiance}
                 label={'Generate irradiance map'}

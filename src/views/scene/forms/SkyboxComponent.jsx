@@ -2,10 +2,11 @@ import styles from '../styles/Forms.module.css'
 import React, {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../components/selector/Selector";
-import {Accordion, AccordionSummary, Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions, LoaderProvider} from "@f-ui/core";
 
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 import Range from "../../../components/range/Range";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)
@@ -23,11 +24,7 @@ export default function SkyboxComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Environment map
-                </AccordionSummary>
-
+            <AccordionTemplate title={'Environment map'}>
                 <Selector
                     type={'image'}
                     selected={currentImage}
@@ -57,14 +54,8 @@ export default function SkyboxComponent(props) {
                             })
                     }}
                 />
-
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-
-                    Skybox Resolution
-                </AccordionSummary>
-
+            </AccordionTemplate>
+            <AccordionTemplate title={'Resolution'}>
                 <Dropdown className={styles.dropdown}>
                     {state.resolution}p
                     <DropdownOptions>
@@ -122,13 +113,8 @@ export default function SkyboxComponent(props) {
                         }}/>
                     </DropdownOptions>
                 </Dropdown>
-
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Gamma
-                </AccordionSummary>
-
+            </AccordionTemplate>
+            <AccordionTemplate title={'Gamma'}>
                 <Range
                     accentColor={'yellow'}
                     value={state.gamma}
@@ -141,13 +127,8 @@ export default function SkyboxComponent(props) {
                             gamma: e
                         }
                     })}/>
-
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Exposure
-                </AccordionSummary>
-
+            </AccordionTemplate>
+            <AccordionTemplate title={'Exposure'}>
                 <Range
                     accentColor={'yellow'}
                     value={state.exposure}
@@ -161,7 +142,7 @@ export default function SkyboxComponent(props) {
                         }
                     })}/>
 
-            </Accordion>
+            </AccordionTemplate>
         </>
     )
 }

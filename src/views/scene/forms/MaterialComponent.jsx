@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
-import {Accordion, AccordionSummary, Checkbox, LoaderProvider} from "@f-ui/core";
+import {Checkbox, LoaderProvider} from "@f-ui/core";
 import React, {useContext, useEffect, useRef} from "react";
 import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
@@ -10,6 +10,7 @@ import useDirectState from "../../../pages/project/utils/hooks/useDirectState";
 import {DATA_TYPES} from "../../blueprints/components/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/shared/instances/TextureInstance";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 
 export default function MaterialComponent(props) {
@@ -200,10 +201,7 @@ export default function MaterialComponent(props) {
 
     return (
         <>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                <AccordionSummary className={styles.summary}>
-                    Material
-                </AccordionSummary>
+            <AccordionTemplate title={'Material'}>
                 <Selector
                     selected={state.currentMaterial}
                     type={'material'}
@@ -222,7 +220,7 @@ export default function MaterialComponent(props) {
                         } else
                             props.submit()
                     }}/>
-            </Accordion>
+            </AccordionTemplate>
             {props.selected.uniforms?.length > 0 ? (
                 <Checkbox
                     noMargin={true}
@@ -241,12 +239,9 @@ export default function MaterialComponent(props) {
 
             {state.overrideMaterial ?
                 state.uniforms?.map(u => (
-                    <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}>
-                        <AccordionSummary className={styles.summary}>
-                            {u.label}
-                        </AccordionSummary>
+                    <AccordionTemplate title={u.label}>
                         {getField(u)}
-                    </Accordion>
+                    </AccordionTemplate>
                 ))
                 : null}
         </>

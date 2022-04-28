@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
-import styles from "../styles/Forms.module.css";
-import {Accordion, AccordionSummary} from "@f-ui/core";
 import Range from "../../../components/range/Range";
 import Transformation from "../../../engine/shared/utils/workers/Transformation";
 import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
 import COMPONENTS from "../../../engine/shared/templates/COMPONENTS";
+import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 export default function TransformComponent(props) {
     const [state, setState] = useState({})
@@ -56,11 +55,7 @@ export default function TransformComponent(props) {
     }
     return (
         <>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
-                       contentStyles={{display: 'flex', gap: '2px'}}>
-                <AccordionSummary className={styles.summary}>
-                    Translation
-                </AccordionSummary>
+            <AccordionTemplate type={'flex'} title={'Translation'}>
                 <Range
                     metric={'m'}
                     accentColor={'red'}
@@ -110,12 +105,8 @@ export default function TransformComponent(props) {
                         translate([state.xT, state.yT, parseFloat(e)])
                     }}
                 />
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
-                       contentStyles={{display: 'flex', gap: '2px'}}>
-                <AccordionSummary className={styles.summary}>
-                    Scale
-                </AccordionSummary>
+            </AccordionTemplate>
+            <AccordionTemplate title={'Scale'} type={'flex'}>
                 <Range
                     disabled={props.selected.lockedScaling}
                     accentColor={'red'}
@@ -172,12 +163,8 @@ export default function TransformComponent(props) {
 
                     }}
                 />
-            </Accordion>
-            <Accordion className={styles.fieldset} contentClassName={styles.formWrapper}
-                       contentStyles={{display: 'flex', gap: '2px'}}>
-                <AccordionSummary className={styles.summary}>
-                    Rotation
-                </AccordionSummary>
+            </AccordionTemplate>
+            <AccordionTemplate title={'Rotation'} type={'flex'}>
                 <Range
                     disabled={props.selected.lockedRotation}
                     accentColor={'red'}
@@ -224,7 +211,7 @@ export default function TransformComponent(props) {
                         setState({...state, zR: parseFloat(e)})
                     }}
                 />
-            </Accordion>
+            </AccordionTemplate>
         </>
     )
 }
