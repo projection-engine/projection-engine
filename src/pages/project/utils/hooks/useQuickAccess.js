@@ -1,13 +1,32 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import FileSystem from "../workers/files/FileSystem";
 import EVENTS from "../utils/EVENTS";
+import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
+import Entity from "../../../../engine/ecs/basic/Entity";
+import COMPONENTS from "../../../../engine/templates/COMPONENTS";
+import SkyboxComponent from "../../../../engine/ecs/components/SkyboxComponent";
 
-const fs = window.require('fs')
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
     const [scripts, setScripts] = useState([])
+    const [sampleSkybox, setSampleSkybox] = useState()
+    useEffect(() => {
+        import('../../../../static/sky.json')
+            .then(img => {
+                ImageProcessor.getImageBitmap(img.data)
+                    .then(res => {
+                        const newEntity = new Entity(undefined, 'sky')
+                        newEntity.components[COMPONENTS.SKYBOX] = new SkyboxComponent()
+                        newEntity.components[COMPONENTS.SKYBOX].blob = res
+                        newEntity.components[COMPONENTS.SKYBOX].gamma = .5
+                        newEntity.components[COMPONENTS.SKYBOX].exposure = 1
+
+                        setSampleSkybox(newEntity)
+                    })
+            })
+    }, [])
 
     const fileSystem = new FileSystem(projectID)
 
@@ -80,6 +99,7 @@ export default function useQuickAccess(projectID, load) {
         refresh()
     }, [])
     return {
+        sampleSkybox,
         fileSystem,
         images,
         meshes,

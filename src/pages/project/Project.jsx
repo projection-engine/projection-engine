@@ -11,7 +11,7 @@ import ProjectLoader from "./utils/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import useSerializer from "./utils/hooks/useSerializer";
 
-import useEditorEngine from "./utils/hooks/useEditorEngine";
+import useEditorEngine from "../../engine/useEditorEngine";
 import useSettings from "./utils/hooks/useSettings";
 import EVENTS from "./utils/utils/EVENTS";
 import SettingsProvider from "./utils/hooks/SettingsProvider";

@@ -14,7 +14,7 @@ import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
-import {IDS} from "../../../pages/project/utils/hooks/useMinimalEngine";
+import {IDS} from "../../../engine/useMinimalEngine";
 
 export default function useForm(
     engine,

@@ -30,8 +30,8 @@ export default function useSettings() {
         filesVisibility: true,
         sceneVisibility: true,
         viewportOptionsVisibility: true,
-        gamma: 1,
-        exposure: .8,
+        gamma: 2.2,
+        exposure: 1.2,
         gridSize: .01,
         rotationType: ROTATION_TYPES.GLOBAL
     })

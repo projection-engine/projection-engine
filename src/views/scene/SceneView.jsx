@@ -26,7 +26,6 @@ export default function SceneView(props) {
 
     const data = useMemo(() => {
         let toFilter = props.engine.entities.filter(d => !d.linkedTo)
-
         return [{
             id: 0,
             label: 'Scene',
@@ -243,15 +242,6 @@ export default function SceneView(props) {
                             {currentForm.open ?
                                 <FormTabs
                                     addComponent={() => {
-                                        // currentForm.selected.components[COMPONENTS.SCRIPT] = new ScriptComponent()
-                                        // props.engine.dispatchEntities({
-                                        //     type: ENTITY_ACTIONS.ADD_COMPONENT,
-                                        //     payload: {
-                                        //         entityID: props.engine.selected[0],
-                                        //         data: currentForm.selected.components[COMPONENTS.SCRIPT],
-                                        //         key: COMPONENTS.SCRIPT
-                                        //     }
-                                        // })
                                     }}
                                     entity={currentForm.selected}
                                     currentTab={currentTab}
