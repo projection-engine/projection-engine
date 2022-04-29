@@ -2,6 +2,7 @@ import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
 import GIZMOS from "../../../../engine/editor/gizmo/GIZMOS";
 import RENDERING_TYPES from "../../../../engine/templates/RENDERING_TYPES";
 import useDirectState from "./useDirectState";
+import ROTATION_TYPES from "../../../../engine/editor/gizmo/ROTATION_TYPES";
 
 
 export const SHADING_MODELS = {
@@ -29,9 +30,10 @@ export default function useSettings() {
         filesVisibility: true,
         sceneVisibility: true,
         viewportOptionsVisibility: true,
-        gamma: 2.2,
-        exposure: 1.5,
-        gridSize: .01
+        gamma: 1,
+        exposure: .8,
+        gridSize: .01,
+        rotationType: ROTATION_TYPES.GLOBAL
     })
     return state
 }

@@ -15,14 +15,15 @@ function resolvePath(p) {
 }
 
 function fetchData() {
-    self.addEventListener('message', async (event) => {
+    self.addEventListener('message', (event) => {
         const {pathName, type} = event.data
-
         try {
-            const t = await fetch(pathName)
-
-            const data = await t.text()
-            self.postMessage({valid: true, data: type === 'json' ? JSON.parse(data) : data})
+            fetch(pathName)
+                .then(t => {
+                    t.text().then(data => {
+                        self.postMessage({valid: true, data: type === 'json' ? JSON.parse(data) : data})
+                    }).catch(e => self.postMessage({valid: false}))
+                }).catch(e => self.postMessage({valid: false}))
         } catch (e) {
             self.postMessage({valid: false})
         }

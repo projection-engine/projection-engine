@@ -1,9 +1,10 @@
 {
   "name": "projection",
   "productName": "projection",
-  "version": "1.0.0",
+  "version": "0.0.11-alpha",
   "description": "My Electron application description",
   "main": ".webpack/main",
+
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package ",
@@ -85,32 +86,27 @@
     "css-loader": "^6.7.1",
     "electron": "17.4.1",
     "node-loader": "^2.0.0",
+    "react-scripts": "^5.0.0",
     "style-loader": "^3.3.1",
-    "worker-loader": "^3.0.8",
     "url-loader": "^4.1.1",
-    "react-scripts": "^5.0.0"
+    "worker-loader": "^3.0.8"
   },
   "dependencies": {
     "@f-ui/core": "0.1.49-alpha",
     "@fontsource/roboto": "4.5.3",
     "assimpjs": "https://github.com/kovacsv/assimpjs.git",
     "axios": "^0.27.2",
-
-
+    "babel-runtime": "^6.26.0",
     "electron-squirrel-startup": "^1.0.0",
-
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",
     "prop-types": "^15.8.1",
-
     "react": "17.0.2",
     "react-colorful": "^5.5.1",
     "react-dom": "^17.0.2",
-
     "seed-random": "^2.2.0",
     "systeminformation": "^5.11.3",
-
     "uuid": "^8.3.2"
   }
 }

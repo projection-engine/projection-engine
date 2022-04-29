@@ -60,7 +60,7 @@ export function materialParser(basePath, material, textures, images) {
         //     .then(result => {
         //         const mat = new Material()
         //         mat.id = emptyMaterial.response.id
-        //         mat.compile(result).then(() => {
+        //         mat.organizer(result).then(() => {
         //             resolve({
         //                 name: material.name,
         //                 response: mat,

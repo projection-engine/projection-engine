@@ -25,28 +25,28 @@ MESSAGE+="["$M"]"
 cd src/components
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.2.x
+git push origin v0.1.x-alpha
 
 cd ../engine
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.2.x
+git push origin v0.1.x-alpha
 
 
 cd ../views/blueprints
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.2.x
+git push origin v0.1.x-alpha
 
 
 cd ../files
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.2.x
+git push origin v0.1.x-alpha
 
 cd ../../../
 git add --all
 git commit -m "$MESSAGE"
-git push origin v0.2.x
+git push origin v0.1.x-alpha
 
 sleep 10s
