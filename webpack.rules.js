@@ -2,7 +2,22 @@ module.exports = [
     // REACT
     {
         test: /\.worker\.js$/,
-        use: { loader: "worker-loader" },
+        use: [
+            {
+                loader: "worker-loader",
+            },
+
+            // BABEL LOADER ? https://v4.webpack.js.org/loaders/worker-loader/#esmodule
+            {
+                loader: "babel-loader",
+                options: {
+                    presets: ["@babel/preset-env"],
+                },
+            },
+        ],
+        options: {
+            esModule: true,
+        },
     },
     {
         test: /\.wasm$/,
