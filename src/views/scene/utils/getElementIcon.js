@@ -1,38 +1,33 @@
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
-export default function getElementIcon(components, isBP) {
-    if (isBP)
-        return <span className={'material-icons-round'} style={{fontSize: '1rem'}}>terminal</span>
+export default function getElementIcon(components) {
     switch (true) {
-        case components.SkyboxComponent !== undefined:
+        case components[COMPONENTS.SKYBOX] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>cloud</span>
             )
-        case components.MeshComponent !== undefined:
+        case components[COMPONENTS.MESH] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>view_in_ar</span>
             )
-        case components.PointLightComponent !== undefined:
+        case components[COMPONENTS.POINT_LIGHT] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>lightbulb</span>
             )
-        case components.SpotLightComponent !== undefined:
+        case components[COMPONENTS.SPOT_LIGHT] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>flashlight_on</span>
             )
-        case components.DirectionalLightComponent !== undefined:
+        case components[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>light_mode</span>
             )
-        case components.Grid !== undefined:
-            return (
-                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>grid_4x4</span>
-            )
-        case components.FolderComponent !== undefined:
+
+        case components[COMPONENTS.FOLDER] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>folder</span>
             )
-        case components.CubeMapComponent !== undefined:
+        case components[COMPONENTS.CUBE_MAP] !== undefined:
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>panorama_photosphere</span>
             )

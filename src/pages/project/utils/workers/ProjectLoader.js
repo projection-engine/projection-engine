@@ -272,6 +272,7 @@ export default class ProjectLoader {
                if (component) {
                    if (k !== COMPONENTS.MATERIAL)
                        Object.keys(entity.components[k]).forEach(oK => {
+                           console.log(oK, entity.components[k][oK])
                            if (!oK.includes("__"))
                                component[oK] = entity.components[k][oK]
                        })

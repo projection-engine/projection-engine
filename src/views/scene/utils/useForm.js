@@ -15,6 +15,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine/useMinimalEngine";
+import ScriptComponent from "../forms/ScriptComponent";
 
 export default function useForm(
     engine,
@@ -36,6 +37,27 @@ export default function useForm(
     const getField = (key) => {
 
         switch (key) {
+            case COMPONENTS.SCRIPT: {
+                return (
+                    <ScriptComponent
+                        quickAccess={quickAccess}
+                        selected={selected.components[COMPONENTS.SCRIPT]}
+                        submit={(value, add) => {
+                            if(add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value))
+                                selected.components[COMPONENTS.SCRIPT].scripts.push(value)
+                            else if(!add)
+                                selected.components[COMPONENTS.SCRIPT].scripts = selected.components[COMPONENTS.SCRIPT].scripts.filter(s => s !== value)
+                            engine.dispatchEntities({
+                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                                    entityID: engine.selected[0],
+                                    data: selected.components[COMPONENTS.SCRIPT],
+                                    key: COMPONENTS.SCRIPT
+                                }
+                            })
+                        }}
+                    />
+                )
+            }
             case COMPONENTS.CAMERA: {
                 return (
                     <CameraComponent

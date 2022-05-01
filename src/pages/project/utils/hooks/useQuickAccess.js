@@ -38,7 +38,7 @@ export default function useQuickAccess(projectID, load) {
                 const imagesReg = (reg.filter(r => r.path.includes('.pimg')))
                 const meshesReg = (reg.filter(r => r.path.includes('.mesh')))
                 const materialsReg = (reg.filter(r => r.path.includes('.material')))
-                const scriptReg = (reg.filter(r => r.path.includes('.flow')))
+                const scriptReg = (reg.filter(r => r.path.includes('.flowRaw')))
 
                 let promises = []
 
@@ -78,7 +78,7 @@ export default function useQuickAccess(projectID, load) {
                     return new Promise(resolve => {
                         const split = (i.path.split('\\'))
                         resolve({
-                            type: 'flow',
+                            type: 'flowRaw',
                             registryID: i.id,
                             name: split[split.length - 1].split('.')[0]
                         })
@@ -89,7 +89,7 @@ export default function useQuickAccess(projectID, load) {
                         setMeshes(res.filter(f => f.type === 'mesh'))
                         setMaterials(res.filter(f => f.type === 'material'))
                         setImages(res.filter(f => f.type === 'image'))
-                        setScripts(res.filter(f => f.type === 'flow'))
+                        setScripts(res.filter(f => f.type === 'flowRaw'))
                         load.finishEvent(EVENTS.REFRESHING)
                     })
 

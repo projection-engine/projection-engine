@@ -5,7 +5,6 @@ import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 
 export default function mapToView(current, entities, setSelected, engine, setAllHidden, isBP) {
     const children = entities.filter(f => f.linkedTo === current.id)
-    const isBlueprint= current.isBlueprint
     return {
         id: current.id,
         label: current.name,
@@ -13,8 +12,8 @@ export default function mapToView(current, entities, setSelected, engine, setAll
             setSelected(current, e)
         },
         children: children.map(f => mapToView(f, entities, setSelected, engine, setAllHidden, isBP || current.isBlueprint)),
-        icon: getElementIcon(current.components, isBlueprint),
-        type: getElementType(current.components, isBlueprint),
+        icon: getElementIcon(current.components),
+        type: getElementType(current.components),
         draggable: !isBP,
         onHide: () => {
             if (!current.active && setAllHidden)

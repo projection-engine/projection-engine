@@ -320,7 +320,7 @@ export default class FileSystem {
                 }
             }
 
-            fs.writeFile(resolvePath(p + '\\' + id + '.entity '), entity, (e) => {
+            fs.writeFile(resolvePath(p + '\\' + id + '.entity'), entity, (e) => {
                 console.trace(e)
                 resolve()
             })

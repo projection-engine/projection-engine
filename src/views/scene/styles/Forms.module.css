@@ -138,3 +138,34 @@
     border-radius: 5px 5px 0 0;
     font-size: .75rem !important;
 }
+
+.scriptsList {
+    display: flex;
+    align-items: center;
+    font-size: .75rem;
+    font-weight: 550;
+    justify-content: space-between;
+    height: 25px;
+    padding-left: 4px;
+}
+
+.buttonScriptsList {
+    height: 25px;
+    width: 25px;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: .75rem;
+    font-weight: 550;
+    border-radius: 5px;
+    padding: 8px;
+}
