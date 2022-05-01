@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import './pages/wrapper/styles/globals.css'
-import {Button, Fabric} from "@f-ui/core";
+import {Fabric} from "@f-ui/core";
 import styles from './pages/wrapper/styles/App.module.css'
 import ThemeProvider from "./pages/project/utils/hooks/ThemeProvider";
 
@@ -11,7 +11,6 @@ import Home from "./pages/home/Home";
 import Project from "./pages/project/Project";
 import useLoader from "./components/loader/useLoader";
 import LoaderProvider from "./components/loader/LoaderProvider";
-import {v4} from "uuid";
 
 function App() {
     const [currentTab, setCurrentTab] = useState()

@@ -12,7 +12,7 @@ export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])
     useHotKeys({
         focusTarget: props.id + '-editor-wrapper',
-        disabled: controlProvider.tab !== 0 || props.engine.canExecutePhysicsAnimation,
+        disabled: controlProvider.tab !== 0 || props.executingAnimation === true,
         actions: [
             {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => props.serializer.save()},
             {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},

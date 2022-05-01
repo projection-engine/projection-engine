@@ -1,7 +1,6 @@
 import DirectionalLightComponent from "../../../../engine/ecs/components/DirectionalLightComponent";
 
 import MeshComponent from "../../../../engine/ecs/components/MeshComponent";
-import PickComponent from "../../../../engine/ecs/components/PickComponent";
 import PointLightComponent from "../../../../engine/ecs/components/PointLightComponent";
 import SkyboxComponent from "../../../../engine/ecs/components/SkyboxComponent";
 import SpotLightComponent from "../../../../engine/ecs/components/SpotLightComponent";
@@ -141,12 +140,10 @@ export default class ProjectLoader {
         const materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 
         try {
-            entities = await Promise.all(entitiesFound.map((entity, index) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))
+            entities = await Promise.all(entitiesFound.map((entity) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))
         } catch (e) {
-            console.log(e)
         }
 
-        console.log(meshes, entities)
         if (levelBlueprint)
             scriptsToLoad.push({
                 script: {

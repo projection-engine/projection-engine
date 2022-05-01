@@ -120,7 +120,8 @@ export default class FileSystem {
     async deleteFile(pathName, absolute) {
         const currentPath = absolute ? pathName : (this._path + pathName)
         return new Promise(resolve => {
-            fs.rm(currentPath, () => {
+            fs.rm(currentPath, (err) => {
+                console.log(err)
                 this.findRegistry(currentPath)
                     .then(rs => {
 
@@ -320,7 +321,7 @@ export default class FileSystem {
             }
 
             fs.writeFile(resolvePath(p + '\\' + id + '.entity '), entity, (e) => {
-                console.log(e)
+                console.trace(e)
                 resolve()
             })
         })

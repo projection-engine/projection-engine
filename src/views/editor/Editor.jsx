@@ -51,6 +51,7 @@ export default function Editor(props) {
                 {props.settings.viewportOptionsVisibility ?
                     <ViewportOptions
                         engine={props.engine}
+                        executingAnimation={props.executingAnimation}
                         id={props.id}
                         fullscreenID={'fullscreen-element-' + props.id}
                     />

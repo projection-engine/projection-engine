@@ -24,7 +24,6 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 fs.readFile(fileSystem.path + '\\.meta', (e, res) => {
                     if (res) {
                         const old = JSON.parse(res.toString())
-
                         fileSystem
                             .updateProject(
                                 {
@@ -56,12 +55,14 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                         const all = await ProjectLoader.getEntities(fileSystem)
                         await Promise.all(all.map(a => {
                             return new Promise(async (resolve1) => {
+                                console.log(a)
                                 if (a && a.data && !engine.entities.find(e => e.id === a.data.id))
                                     resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true))
                                 else
                                     resolve1()
                             })
                         }))
+
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {
                                 const str = JSON.stringify(e)
