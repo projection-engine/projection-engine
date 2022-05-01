@@ -3,7 +3,6 @@ import {AlertProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
 import useQuickAccess from "./utils/hooks/useQuickAccess";
 import QuickAccessProvider from "./utils/hooks/QuickAccessProvider";
-import PropTypes from "prop-types";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
@@ -26,9 +25,11 @@ import handleTabChange from "./utils/utils/handleTabChange";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
 import LoaderProvider from "../../components/loader/LoaderProvider";
+import {useParams} from "react-router-dom";
 
 
-export default function Project(props) {
+export default function Project() {
+    const {id} = useParams()
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const alert = useContext(AlertProvider)
     const setAlert = ({type, message}) => {
@@ -38,14 +39,11 @@ export default function Project(props) {
     const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(true)
     const [initialized, setInitialized] = useState(false)
-
-    const engine = useEditorEngine(props.id, executingAnimation, settings, load, initialized, setAlert)
-
-    const quickAccess = useQuickAccess(props.id, load)
-
+    const engine = useEditorEngine(id, executingAnimation, settings, load, initialized, setAlert)
+    const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)
-    const serializer = useSerializer(engine, setAlert, settings, props.id, quickAccess, currentTab)
+    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess, currentTab)
 
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
@@ -143,7 +141,7 @@ export default function Project(props) {
                 <MinimalBlueprintView
                     index={index}
                     name={'Level Blueprint'}
-                    id={props.id}
+                    id={id}
                     engine={engine}
                     submitPackage={(pack, close) => {
 
@@ -234,13 +232,7 @@ export default function Project(props) {
                 <QuickAccessProvider.Provider value={quickAccess}>
                     <div className={styles.wrapper}>
                         <Preferences serializer={serializer}/>
-                        <GlobalOptions
-                            downloadProject={() => {
-
-                            }}
-                            redirect={props.redirect}
-                            save={serializer.save}
-                        />
+                        <GlobalOptions save={serializer.save}/>
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
 
@@ -264,7 +256,7 @@ export default function Project(props) {
                                 setExecutingAnimation={setExecutingAnimation}
                                 executingAnimation={executingAnimation}
                                 engine={engine}
-                                id={props.id} load={load}
+                                id={id} load={load}
                                 openLevelBlueprint={() => {
                                     setFilesLoaded(prev => {
                                         return [...prev, {
@@ -287,7 +279,7 @@ export default function Project(props) {
                             <FilesView
                                 setAlert={setAlert}
                                 currentTab={currentTab}
-                                id={props.id}
+                                id={id}
                                 openEngineFile={openTab}
                             />
                             :
@@ -300,7 +292,3 @@ export default function Project(props) {
     )
 }
 
-Project.propTypes = {
-    redirect: PropTypes.func.isRequired,
-    id: PropTypes.string
-}

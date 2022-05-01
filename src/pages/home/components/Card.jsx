@@ -4,6 +4,7 @@ import {Button, DataRow, Dropdown, DropdownOptions, Modal, TextField} from "@f-u
 import {useMemo, useRef, useState} from "react";
 import logo from '../../../static/LOGO.png'
 import shared from "../styles/Home.module.css";
+import {Link} from "react-router-dom";
 
 const KEYS = [
     {key: 'preview', type: 'image'},
@@ -64,13 +65,13 @@ export default function Card(props) {
             </Modal>
 
 
-                <DataRow
-                    asCard={true}
-                    object={object}
-                    keys={KEYS}
-                    styles={{ background: 'var(--fabric-background-secondary)', border: 'none'}}
-                    selfContained={true}
-                />
+            <DataRow
+                asCard={true}
+                object={object}
+                keys={KEYS}
+                styles={{background: 'var(--fabric-background-secondary)', border: 'none'}}
+                selfContained={true}
+            />
 
             <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : 'none'}}>
                 <Dropdown
@@ -92,7 +93,8 @@ export default function Card(props) {
                                     styles={{'--fabric-accent-color': '#ff5555', width: '100%'}}
                                     className={styles.button}
                                 >
-                                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>delete_forever</span>
+                                    <span className={'material-icons-round'}
+                                          style={{fontSize: '1.1rem'}}>delete_forever</span>
                                     Delete
                                 </Button>
 
@@ -111,16 +113,18 @@ export default function Card(props) {
                 >
                     <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
                 </Button>
+                <Link to={'/project/' + props.data.id}>
+                    <Button
+                        variant={'filled'}
+                        className={styles.button}>
 
-                <Button
-                    onClick={() => props.onClick()}
-                    variant={'filled'}
-                    className={styles.button}>
-                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
-                    <label>
-                        Load project
-                    </label>
-                </Button>
+                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
+                        <label>
+                            Load project
+                        </label>
+
+                    </Button>
+                </Link>
             </div>
         </div>
     )
@@ -131,6 +135,5 @@ Card.propTypes = {
     data: PropTypes.object,
     onRename: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
     variant: PropTypes.oneOf(['row', 'cell'])
 }

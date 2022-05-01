@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import './pages/wrapper/styles/globals.css'
 import {Fabric} from "@f-ui/core";
@@ -11,11 +11,13 @@ import Home from "./pages/home/Home";
 import Project from "./pages/project/Project";
 import useLoader from "./components/loader/useLoader";
 import LoaderProvider from "./components/loader/LoaderProvider";
+import {HashRouter, Route, Routes} from "react-router-dom";
 
 function App() {
-    const [currentTab, setCurrentTab] = useState()
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
+
+
     return (
         <Fabric
             language={"en"}
@@ -38,13 +40,20 @@ function App() {
                     ...global,
                     themeClass: global.dark ? styles.dark : styles.light
                 }}>
-                    {!currentTab ?
-                        <Home redirect={(id) => {
-                            setCurrentTab(id)
-                        }}/>
-                        :
-                        <Project id={currentTab} redirect={() => setCurrentTab(undefined)}/>
-                    }
+                    <HashRouter>
+                        <Routes>
+                            <Route
+                                path={'/'}
+                                exact={true}
+                                element={<Home/>}
+                            />
+
+                            <Route
+                                path={'/project/:id'}
+                                element={<Project/>}
+                            />
+                        </Routes>
+                    </HashRouter>
                 </ThemeProvider.Provider>
             </LoaderProvider.Provider>
         </Fabric>

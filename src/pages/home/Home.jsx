@@ -2,8 +2,6 @@ import {Button, Modal, Switcher, TextField,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
 import React, {useState} from "react";
 import Projects from "./components/Projects";
-
-import PropTypes from "prop-types";
 import FileSystem from "../project/utils/workers/files/FileSystem";
 
 import EVENTS from "../project/utils/utils/EVENTS";
@@ -117,9 +115,7 @@ export default function Home(props) {
                     }}
                     refresh={() => refresh()}
                     load={load} projects={projects}
-                    redirect={id => {
-                        props.redirect(id)
-                    }}
+
                     setProjects={setProjects}/>
                 <IssuesList/>
             </Switcher>
@@ -127,6 +123,3 @@ export default function Home(props) {
     )
 }
 
-Home.propTypes = {
-    redirect: PropTypes.func.isRequired
-}

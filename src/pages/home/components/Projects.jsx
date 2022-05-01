@@ -40,7 +40,7 @@ export default function Projects(props) {
                 {projectsToShow.map((p, i) => (
                         <React.Fragment key={p.id}>
                             <Card
-                                onClick={() => props.redirect(p.id)}
+
 
                                 data={p} index={i}
                                 onRename={newName => {
@@ -65,7 +65,6 @@ Projects.propTypes = {
     refresh: PropTypes.func,
     renameProject: PropTypes.func.isRequired,
     load: PropTypes.object,
-    redirect: PropTypes.func,
     projects: PropTypes.array,
     setProjects: PropTypes.func
 }
