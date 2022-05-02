@@ -1,7 +1,7 @@
 import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
-import {Button, DataRow, Dropdown, DropdownOptions, Modal, TextField} from "@f-ui/core";
-import {useMemo, useRef, useState} from "react";
+import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, Modal, TextField} from "@f-ui/core";
+import {useContext, useMemo, useRef, useState} from "react";
 import logo from '../../../static/LOGO.png'
 import shared from "../styles/Home.module.css";
 import {Link} from "react-router-dom";
@@ -17,12 +17,11 @@ export default function Card(props) {
     const ref = useRef()
     const [open, setOpen] = useState({
         delete: false,
-        edit: false,
-        image: false
+        edit: false
     })
     const [name, setName] = useState(props.data.meta.name)
     const object = useMemo(() => {
-        return {...props.data.meta, name, preview: props.data.meta?.preview ? props.data.meta?.preview : logo,}
+        return {...props.data.meta, preview: props.data.meta?.preview ? props.data.meta?.preview : logo, name}
     }, [props.data, name])
 
     return (
@@ -31,45 +30,11 @@ export default function Card(props) {
             data-card={props.data.id}
             ref={ref}
         >
-            <Modal
-                className={shared.modal}
-                styles={{width: open.image ? 'fit-content' : '250px', height: open.image ? 'fit-content' : undefined}}
-                open={open.edit || open.image}
-                variant={open.edit ? 'fit' : undefined}
-                handleClose={() => setOpen({})}>
-                {open.image ?
-
-                    <img
-                        alt={'Preview'}
-                        src={props.data.meta?.preview ? props.data.meta?.preview : logo}
-                        draggable={false}
-                    />
-                    :
-                    <>
-                        <TextField
-                            handleChange={e => setName(e.target.value)}
-                            label={'Project name'}
-                            placeholder={'Project name'}
-                            value={name} size={'small'}/>
-                        <Button
-                            variant={'filled'}
-                            disabled={name === ''}
-                            onClick={() => {
-                                props.onRename(name)
-                                setOpen({})
-                            }}>
-                            Rename project
-                        </Button>
-                    </>
-                }
-            </Modal>
-
-
             <DataRow
                 asCard={true}
                 object={object}
                 keys={KEYS}
-                styles={{background: 'var(--fabric-background-secondary)', border: 'none'}}
+                className={styles.dataRow}
                 selfContained={true}
             />
 
@@ -80,7 +45,7 @@ export default function Card(props) {
                     onClick={() => setOpen({
                         delete: true
                     })} hideArrow={true}>
-                    <span className={'material-icons-round'}>delete</span>
+                    <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>delete_forever</span>
                     <DropdownOptions>
                         <div
                             className={styles.onDelete}>
@@ -94,7 +59,7 @@ export default function Card(props) {
                                     className={styles.button}
                                 >
                                     <span className={'material-icons-round'}
-                                          style={{fontSize: '1.1rem'}}>delete_forever</span>
+                                          style={{fontSize: '1rem'}}>delete_forever</span>
                                     Delete
                                 </Button>
 
@@ -102,27 +67,32 @@ export default function Card(props) {
                         </div>
                     </DropdownOptions>
                 </Dropdown>
-                <Button
+                <Dropdown
                     variant={'outlined'}
                     className={styles.button}
-                    onClick={() => {
-                        setOpen({
-                            edit: true
-                        })
-                    }}
-                >
-                    <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>edit</span>
-                </Button>
+                    wrapperClassname={styles.modalOptions}
+                    onClick={() => setOpen({
+                        edit: true
+                    })} hideArrow={true}>
+                    <span style={{fontSize: '1rem'}} className={'material-icons-round'}>edit</span>
+                    <DropdownOptions>
+                        <div
+                            className={styles.onDelete}>
+
+                            <Rename name={name} setName={setName} setOpen={setOpen} onRename={props.onRename}/>
+
+                        </div>
+                    </DropdownOptions>
+                </Dropdown>
+
                 <Link to={'/project/' + props.data.id}>
                     <Button
                         variant={'filled'}
                         className={styles.button}>
-
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>open_in_new</span>
+                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
                         <label>
                             Load project
                         </label>
-
                     </Button>
                 </Link>
             </div>
@@ -136,4 +106,27 @@ Card.propTypes = {
     onRename: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     variant: PropTypes.oneOf(['row', 'cell'])
+}
+
+function Rename({setName, name, onRename, setOpen}) {
+    const dropdownContext = useContext(DropdownProvider)
+    return (
+        <>
+            <TextField
+                handleChange={e => setName(e.target.value)}
+                label={'Project name'}
+                placeholder={'Project name'}
+                value={name} size={'small'}/>
+            <Button
+                variant={'filled'}
+                disabled={name === ''}
+                onClick={() => {
+                    onRename(name)
+                    setOpen({})
+                    dropdownContext.setOpen(false)
+                }}>
+                Rename project
+            </Button>
+        </>
+    )
 }

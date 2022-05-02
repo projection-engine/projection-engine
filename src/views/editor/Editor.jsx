@@ -42,7 +42,6 @@ export default function Editor(props) {
 
     }, [props.executingAnimation, props.engine])
     useEditorKeys(props, controlProvider)
-
     return (
         <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
 

@@ -1,10 +1,12 @@
 .wrapper {
     position: relative;
     width: 100%;
-    background-color: var(--fabric-background-secondary);
+    background-color: var(--fabric-border-primary);
 
-    border: var(--fabric-border-primary) 1px solid;
     border-radius: 5px;
+    overflow: hidden;
+
+
 }
 
 
@@ -14,12 +16,14 @@
     justify-content: center;
 
     overflow: hidden;
-    height: 30px;
-    min-width: 30px;
+    height: 25px;
+    min-width: 25px;
 
+    font-size: .7rem;
+    font-weight: 550;
     padding: 4px !important;
     gap: 4px;
-    background-color: var(--fabric-border-primary) ;
+    background-color: var(--fabric-border-primary);
 }
 
 .overflow {
@@ -61,25 +65,9 @@
 
 }
 
-.modal {
-    padding: 8px;
-    display: grid;
-    gap: 16px;
-    width: 500px;
-    height: fit-content;
-    background-color: var(--fabric-background-primary);
-    border-radius: 5px;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-}
 
 .section {
-    padding: 8px;
+    padding: 4px;
 
     display: flex;
     align-items: center;
@@ -92,9 +80,22 @@
 }
 
 
-.buttonGroup{
+.buttonGroup {
     display: flex;
     align-items: center;
     width: 100%;
     gap: 4px;
+}
+
+.modalOptions {
+    max-width: unset;
+    width: 300px;
+}
+
+.dataRow {
+    background: var(--fabric-border-primary);
+    border: none;
+    width: 100%;
+    border-radius: 0;
+    border-bottom: var(--fabric-background-tertiary) 1px solid;
 }

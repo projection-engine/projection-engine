@@ -141,7 +141,7 @@ export default function useForm(
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
-                                            newMat = new MaterialInstance(engine.gpu, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
+                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader,val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
                                         })
                                         newMat.id = val.id
                                         engine.setMaterials(prev => {
@@ -155,7 +155,7 @@ export default function useForm(
                                     clone.uniforms = val.blob.uniforms
                                 } else
                                     clone.materialID = undefined
-                                console.log(clone.materialID)
+
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                                     payload: {

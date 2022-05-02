@@ -91,7 +91,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@f-ui/core": "0.1.49-alpha",
+    "@f-ui/core": "0.1.51-alpha",
     "@fontsource/roboto": "4.5.3",
     "assimpjs": "https://github.com/kovacsv/assimpjs.git",
     "axios": "^0.27.2",

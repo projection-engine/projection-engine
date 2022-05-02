@@ -176,6 +176,7 @@ export default function Project() {
             load.pushEvent(EVENTS.LOAD_FILE)
             quickAccess.fileSystem.readRegistryFile(fileID)
                 .then(res => {
+                    engine.setCanRender(false)
                     if (res) {
                         load.finishEvent(EVENTS.LOAD_FILE)
                         setFilesLoaded(prev => {
