@@ -16,6 +16,7 @@ import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
+import PostProcessingSettings from "../forms/PostProcessingSettings";
 
 export default function useForm(
     engine,
@@ -43,9 +44,9 @@ export default function useForm(
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.SCRIPT]}
                         submit={(value, add) => {
-                            if(add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value))
+                            if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value))
                                 selected.components[COMPONENTS.SCRIPT].scripts.push(value)
-                            else if(!add)
+                            else if (!add)
                                 selected.components[COMPONENTS.SCRIPT].scripts = selected.components[COMPONENTS.SCRIPT].scripts.filter(s => s !== value)
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -136,12 +137,12 @@ export default function useForm(
                                     }
                                 })
                             } else {
-                                if(val) {
+                                if (val) {
                                     const exists = engine.materials.find(m => m.id === val.id)
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
-                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader,val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
+                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
                                         })
                                         newMat.id = val.id
                                         engine.setMaterials(prev => {
@@ -277,7 +278,7 @@ export default function useForm(
 
 
     return useMemo(() => {
-        if (selected && !executingAnimation && selected.components &&  !selected.components[COMPONENTS.FOLDER]) {
+        if (selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
             const data = getField(Object.keys(selected.components)[currentTab])
@@ -292,20 +293,33 @@ export default function useForm(
                 name: selected.name,
                 selected: selected
             }
-        } else {
+        } else if(executingAnimation) {
             if (currentKey)
                 setCurrentKey(undefined)
             return {
                 open: false,
                 content: (
                     <div className={styles.emptyWrapper}>
-                    <span style={{fontSize: executingAnimation ? '140px' : '90px'}}
-                          className={'material-icons-round'}>{executingAnimation ? 'play_arrow' : 'category'}</span>
-                        {executingAnimation ? 'Stop the simulation to change attributes.' : 'Select an entity to edit it.'}
+                        <div
+                            style={{
+                                fontSize: '140px'
+                            }}
+                            className={'material-icons-round'}>play_arrow
+                        </div>
+                         Stop the simulation to change attributes.
                     </div>
                 )
             }
         }
+        else
+            return {
+                open: false,
+                content: (
+                    <div className={styles.formsWrapper}>
+                        <PostProcessingSettings/>
+                    </div>
+                )
+            }
 
     }, [selected, currentKey, executingAnimation, currentTab, engine.selected[0], engine.entities])
 }

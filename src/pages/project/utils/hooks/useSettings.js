@@ -33,7 +33,13 @@ export default function useSettings() {
         gamma: 2.2,
         exposure: 1.2,
         gridSize: .01,
-        rotationType: ROTATION_TYPES.GLOBAL
+        rotationType: ROTATION_TYPES.GLOBAL,
+
+        bloomStrength: .3,
+        bloomThreshold:  .85,
+        FXAASpanMax:  8,
+        FXAAReduceMin: 1 / 128,
+        FXAAReduceMul:  1 / 8
     })
     return state
 }
