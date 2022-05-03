@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Checkbox} from "@f-ui/core";
 import React, {useContext, useEffect, useRef} from "react";
-import EVENTS from "../../../pages/project/utils/utils/EVENTS";
+import EVENTS from "../../../pages/project/utils/EVENTS";
 
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
-import useDirectState from "../../../pages/project/utils/hooks/useDirectState";
+import useDirectState from "../../../pages/project/hooks/useDirectState";
 import {DATA_TYPES} from "../../blueprints/components/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/instances/TextureInstance";

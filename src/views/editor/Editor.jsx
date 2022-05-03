@@ -1,13 +1,13 @@
 import styles from "../../pages/project/styles/Project.module.css";
 import ViewportOptions from "../../components/viewport/ViewportOptions";
 import Viewport from "../../components/viewport/Viewport";
-import handleDrop from "../../pages/project/utils/utils/handleDrop";
+import handleDrop from "../../pages/project/utils/handleDrop";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
-import getOptions from "../../pages/project/utils/utils/getOptions";
+import getOptions from "../../pages/project/utils/getOptions";
 import {useContext, useEffect} from "react";
-import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../pages/project/hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
 import useEditorKeys from "./hooks/useEditorKeys";

@@ -68,7 +68,7 @@
 }
 .formsWrapper > div{
     border: none;
-    background-color: var(--fabric-border-primary) !important;
+    background-color: var(--fabric-border-primary);
     border-radius: 3px;
 }
 

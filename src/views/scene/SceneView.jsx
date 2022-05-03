@@ -5,7 +5,7 @@ import React, {useContext, useMemo, useState} from "react";
 import TreeView from "../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
-import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../pages/project/hooks/QuickAccessProvider";
 
 import {Button} from "@f-ui/core";
 import FolderComponent from "../../engine/ecs/components/FolderComponent";
@@ -14,12 +14,12 @@ import Entity from "../../engine/ecs/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
-import {HISTORY_ACTIONS} from "../../pages/project/utils/hooks/historyReducer";
+import {HISTORY_ACTIONS} from "../../pages/project/hooks/historyReducer";
 import LoaderProvider from "../../components/loader/LoaderProvider";
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
-    const [currentTab, setCurrentTab] = useState(0)
+    const [currentTab, setCurrentTab] = useState('-2')
     const [allHidden, setAllHidden] = useState(false)
     const [hidden, setHidden] = useState(false)
     const load = useContext(LoaderProvider)
@@ -192,39 +192,39 @@ export default function SceneView(props) {
         {hidden ? null : <>
             <ResizableBar type={'height'}/>
             <div className={styles.wrapperContent}>
-                {currentForm.open ? (<div className={styles.header}>
-                    <label>{currentForm.name}</label>
-                    <Button
-                        styles={{height: '20px', width: '20px'}}
-                        onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
-                        className={styles.button}
-                        variant={props.engine.lockedEntity === currentForm.selected?.id ? 'filled' : undefined}
-                    >
-                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>push_pin</span>
-                    </Button>
-                </div>) : props.engine.executingAnimation ? null : (
-                    <div className={styles.header} style={{justifyContent: 'flex-start'}}>
+
+                <div className={styles.content}>
+                    <FormTabs
+                        entity={currentForm.selected}
+                        currentTab={currentTab}
+                        setCurrentTab={setCurrentTab}
+                    />
+                    <div style={{width: '100%'}}>
+                        {currentForm.open ? (<div className={styles.header}>
+                            <label>{currentForm.name}</label>
+                            <Button
+                                styles={{height: '20px', width: '20px'}}
+                                onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
+                                className={styles.button}
+                                variant={props.engine.lockedEntity === currentForm.selected?.id ? 'filled' : undefined}
+                            >
+                                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>push_pin</span>
+                            </Button>
+                        </div>) : props.engine.executingAnimation ? null : (
+                            <div className={styles.header} style={{justifyContent: 'flex-start'}}>
                                   <span
                                       className={'material-icons-round'}
                                       style={{fontSize: '1.2rem'}}
                                   >
-                                developer_board
-                            </span>
-                        <label className={styles.overflow}>
-                            Scene post-processing
-                        </label>
+                                {currentTab === '0' ? 'tv' : 'image'}
+                                </span>
+                                <label className={styles.overflow}>
+                                    {currentTab === '0' ? 'Display' : 'Scene effects'}
+                                </label>
+                            </div>
+                        )}
+                        {currentForm.content}
                     </div>
-                )}
-
-                <div className={styles.content}>
-                    {currentForm.open ? <FormTabs
-                        addComponent={() => {
-                        }}
-                        entity={currentForm.selected}
-                        currentTab={currentTab}
-                        setCurrentTab={setCurrentTab}
-                    /> : null}
-                    {currentForm.content}
                 </div>
             </div>
         </>}

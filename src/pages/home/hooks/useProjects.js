@@ -1,5 +1,5 @@
 import {AlertProvider} from "@f-ui/core";
-import EVENTS from "../../project/utils/utils/EVENTS";
+import EVENTS from "../../project/utils/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
 

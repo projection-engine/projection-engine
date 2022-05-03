@@ -4,7 +4,7 @@ import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core";
 
 import {useContext, useMemo} from "react";
 
-import QuickAccessProvider from "../../../pages/project/utils/hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../pages/project/hooks/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
 
 import {IDS} from "../../../engine/useMinimalEngine";

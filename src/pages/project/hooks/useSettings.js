@@ -1,8 +1,8 @@
-import CAMERA_TYPES from "../../../../engine/editor/camera/CAMERA_TYPES";
-import GIZMOS from "../../../../engine/editor/gizmo/GIZMOS";
-import RENDERING_TYPES from "../../../../engine/templates/RENDERING_TYPES";
+import CAMERA_TYPES from "../../../engine/editor/camera/CAMERA_TYPES";
+import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
+import RENDERING_TYPES from "../../../engine/templates/RENDERING_TYPES";
 import useDirectState from "./useDirectState";
-import ROTATION_TYPES from "../../../../engine/editor/gizmo/ROTATION_TYPES";
+import ROTATION_TYPES from "../../../engine/editor/gizmo/ROTATION_TYPES";
 
 
 export const SHADING_MODELS = {
@@ -40,7 +40,16 @@ export default function useSettings() {
         FXAASpanMax:  8,
         FXAAReduceMin: 1 / 128,
         FXAAReduceMul:  1 / 8,
-        filmGrainStrength: .01
+        filmGrainStrength: .01,
+
+        resolution: [window.screen.width, window.screen.height],
+        frameRate: 75,
+        distortion: false,
+        chromaticAberration: false,
+
+        distortionStrength: 1,
+        chromaticAberrationStrength: 1,
+
     })
     return state
 }

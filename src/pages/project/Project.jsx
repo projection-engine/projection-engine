@@ -1,27 +1,27 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {AlertProvider} from "@f-ui/core";
 import styles from './styles/Project.module.css'
-import useQuickAccess from "./utils/hooks/useQuickAccess";
-import QuickAccessProvider from "./utils/hooks/QuickAccessProvider";
+import useQuickAccess from "./hooks/useQuickAccess";
+import QuickAccessProvider from "./hooks/QuickAccessProvider";
 import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
-import ProjectLoader from "./utils/workers/ProjectLoader";
+import ProjectLoader from "./workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import useSerializer from "./utils/hooks/useSerializer";
+import useSerializer from "./hooks/useSerializer";
 
 import useEditorEngine from "../../engine/useEditorEngine";
-import useSettings from "./utils/hooks/useSettings";
-import EVENTS from "./utils/utils/EVENTS";
-import SettingsProvider from "./utils/hooks/SettingsProvider";
+import useSettings from "./hooks/useSettings";
+import EVENTS from "./utils/EVENTS";
+import SettingsProvider from "./hooks/SettingsProvider";
 import FilesView from "../../views/files/FilesView";
 import Editor from "../../views/editor/Editor";
 import MeshView from "../../views/mesh/MeshView";
 import MaterialView from "../../views/blueprints/material/MaterialView";
 import ImageView from "../../views/image/ImageView";
-import EntitiesProvider from "./utils/hooks/EntitiesProvider";
+import EntitiesProvider from "./hooks/EntitiesProvider";
 import BlueprintView from "../../views/blueprints/scripts/BlueprintView";
-import handleTabChange from "./utils/utils/handleTabChange";
+import handleTabChange from "./utils/handleTabChange";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MinimalBlueprintView from "../../views/blueprints/scripts/MinimalBlueprintView";
 import LoaderProvider from "../../components/loader/LoaderProvider";
@@ -49,7 +49,7 @@ export default function Project() {
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (engine.gpu && !loading.initialized) {
             new Promise(async resolve => {
-                setInitialized(true)
+
 
                 try {
                     const res = await ProjectLoader.loadProject(engine.gpu, quickAccess.fileSystem)
@@ -68,6 +68,7 @@ export default function Project() {
                     setLoading(false)
                 } catch (error) {
                 }
+                setInitialized(true)
                 resolve()
             }).catch()
         }

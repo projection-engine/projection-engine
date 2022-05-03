@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import Range from "../../../components/range/Range";
 import ColorPicker from "../../../components/color/ColorPicker";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
+import {HISTORY_ACTIONS} from "../../../pages/project/hooks/historyReducer";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 
 export default function LightComponent(props) {

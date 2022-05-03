@@ -17,7 +17,8 @@ import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
 import PostProcessingSettings from "../forms/PostProcessingSettings";
-import EVENTS from "../../../pages/project/utils/utils/EVENTS";
+import EVENTS from "../../../pages/project/utils/EVENTS";
+import DisplaySettings from "../forms/DisplaySettings";
 
 export default function useForm(
     engine,
@@ -301,7 +302,7 @@ export default function useForm(
 
 
     return useMemo(() => {
-        if (selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
+        if (parseInt(currentTab) > -1 && selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
             const data = getField(Object.keys(selected.components)[currentTab])
@@ -339,9 +340,15 @@ export default function useForm(
                 open: false,
                 content: (
                     <div className={styles.formsWrapper}>
-                        <PostProcessingSettings/>
+                        {currentTab === '-1' ?
+                            <DisplaySettings/>
+                            :
+                            <PostProcessingSettings/>
+                        }
+
                     </div>
-                )
+                ),
+                selected: selected
             }
 
     }, [selected, currentKey, executingAnimation, currentTab, engine.selected[0], engine.entities])

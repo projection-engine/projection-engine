@@ -12,3 +12,4 @@ git checkout v0.1.x-alpha
 cd ../files
 git checkout v0.1.x-alpha
 
+sleep 10s

@@ -38,6 +38,18 @@
 
 }
 
+.group {
+    display: grid;
+
+    background: none !important;
+    gap: 4px;
+}
+.group > div{
+    border: none;
+    background-color: var(--fabric-border-primary);
+    border-radius: 3px;
+}
+
 .inputsColumn {
     padding: 4px;
     display: grid;
@@ -158,7 +170,7 @@
     justify-content: center;
 }
 
-.empty{
+.empty {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -169,8 +181,20 @@
     border-radius: 5px;
     padding: 8px;
 }
-.overflow{
+
+.overflow {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.ppWrapper{
+    display: grid;
+    gap: 16px;
+    background: none !important;
+
+}
+.ppWrapper > div{
+    border: none;
+    background-color: var(--fabric-border-primary);
+    border-radius: 3px;
 }

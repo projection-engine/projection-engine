@@ -1,6 +1,6 @@
-import useHotKeys, {KEYS} from "../../../pages/project/utils/hooks/useHotKeys";
+import useHotKeys, {KEYS} from "../../../pages/project/hooks/useHotKeys";
 import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
-import {HISTORY_ACTIONS} from "../../../pages/project/utils/hooks/historyReducer";
+import {HISTORY_ACTIONS} from "../../../pages/project/hooks/historyReducer";
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";

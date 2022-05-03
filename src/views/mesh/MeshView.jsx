@@ -9,8 +9,8 @@ import useMinimalEngine, {IDS, initializeMesh} from "../../engine/useMinimalEngi
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
 import ControlProvider from "../../components/tabs/components/ControlProvider";
-import EVENTS from "../../pages/project/utils/utils/EVENTS";
-import QuickAccessProvider from "../../pages/project/utils/hooks/QuickAccessProvider";
+import EVENTS from "../../pages/project/utils/EVENTS";
+import QuickAccessProvider from "../../pages/project/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
 import LoaderProvider from "../../components/loader/LoaderProvider";

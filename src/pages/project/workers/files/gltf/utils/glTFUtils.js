@@ -1,7 +1,7 @@
 import {mat4, quat} from "gl-matrix";
-import Transformation from "../../../../../../../engine/utils/Transformation";
-import ImageProcessor from "../../../../../../../engine/utils/image/ImageProcessor";
-import ROTATION_TYPES from "../../../../../../../engine/editor/gizmo/ROTATION_TYPES";
+import Transformation from "../../../../../../engine/utils/Transformation";
+import ImageProcessor from "../../../../../../engine/utils/image/ImageProcessor";
+import ROTATION_TYPES from "../../../../../../engine/editor/gizmo/ROTATION_TYPES";
 
 const fs = window.require('fs')
 const path = window.require('path')

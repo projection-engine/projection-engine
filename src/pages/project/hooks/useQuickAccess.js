@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import FileSystem from "../workers/files/FileSystem";
 import EVENTS from "../utils/EVENTS";
-import ImageProcessor from "../../../../engine/utils/image/ImageProcessor";
-import Entity from "../../../../engine/ecs/basic/Entity";
-import COMPONENTS from "../../../../engine/templates/COMPONENTS";
-import SkyboxComponent from "../../../../engine/ecs/components/SkyboxComponent";
+import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
+import Entity from "../../../engine/ecs/basic/Entity";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
+import SkyboxComponent from "../../../engine/ecs/components/SkyboxComponent";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
@@ -13,7 +13,7 @@ export default function useQuickAccess(projectID, load) {
     const [scripts, setScripts] = useState([])
     const [sampleSkybox, setSampleSkybox] = useState()
     useEffect(() => {
-        import('../../../../static/sky.json')
+        import('../../../static/sky.json')
             .then(img => {
                 ImageProcessor.getImageBitmap(img.data)
                     .then(res => {
