@@ -169,3 +169,8 @@
     border-radius: 5px;
     padding: 8px;
 }
+.overflow{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -15,7 +15,6 @@ export default function FormTabs(props){
         }
         return components.map(c => {
             const res = {}
-            console.log(components)
             switch (c){
                 case COMPONENTS.TRANSFORM:
                     res.key = c

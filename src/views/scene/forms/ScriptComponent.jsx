@@ -54,7 +54,9 @@ function Script({scripts, selected, submit}) {
     if (found)
         return (
             <div className={styles.scriptsList}>
-                {found.name}
+                <label className={styles.overflow}>
+                    {found.name}
+                </label>
                 <Button styles={{'--fabric-accent-color': '#ff5555'}} className={styles.buttonScriptsList} onClick={() => submit(selected, false)}>
                     <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>close</span>
                 </Button>

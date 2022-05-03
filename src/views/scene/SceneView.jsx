@@ -50,6 +50,7 @@ export default function SceneView(props) {
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
             type: 'Scene',
             phantomNode: true,
+            highlight: true,
             onHide: () => {
                 let newEntities
                 if (allHidden) {
@@ -199,19 +200,19 @@ export default function SceneView(props) {
                         className={styles.button}
                         variant={props.engine.lockedEntity === currentForm.selected?.id ? 'filled' : undefined}
                     >
-                                        <span className={'material-icons-round'}
-                                              style={{fontSize: '1rem'}}>push_pin</span>
+                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>push_pin</span>
                     </Button>
                 </div>) : props.engine.executingAnimation ? null : (
                     <div className={styles.header} style={{justifyContent: 'flex-start'}}>
-
                                   <span
                                       className={'material-icons-round'}
                                       style={{fontSize: '1.2rem'}}
                                   >
                                 developer_board
                             </span>
+                        <label className={styles.overflow}>
                             Scene post-processing
+                        </label>
                     </div>
                 )}
 

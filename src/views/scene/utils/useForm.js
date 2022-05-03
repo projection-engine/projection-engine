@@ -17,6 +17,7 @@ import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
 import PostProcessingSettings from "../forms/PostProcessingSettings";
+import EVENTS from "../../../pages/project/utils/utils/EVENTS";
 
 export default function useForm(
     engine,
@@ -43,9 +44,31 @@ export default function useForm(
                     <ScriptComponent
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.SCRIPT]}
-                        submit={(value, add) => {
-                            if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value))
+                        submit={async (value, add) => {
+                            if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value)) {
                                 selected.components[COMPONENTS.SCRIPT].scripts.push(value)
+                                if(!engine.scripts.find(s => s.id === value)){
+
+                                    const rs = await quickAccess.fileSystem.readRegistryFile(value)
+                                    if (rs) {
+                                        const file = await quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + '\\assets\\' + rs.path)
+                                        if (file)
+                                            engine.setScripts(prev => {
+                                                return [...prev, {
+                                                    id: value,
+                                                    executors: file
+                                                }]
+                                            })
+                                        else {
+                                            setAlert({
+                                                type: 'error',
+                                                message: 'Error loading file.'
+                                            })
+                                            return null
+                                        }
+                                    }
+                                }
+                            }
                             else if (!add)
                                 selected.components[COMPONENTS.SCRIPT].scripts = selected.components[COMPONENTS.SCRIPT].scripts.filter(s => s !== value)
                             engine.dispatchEntities({

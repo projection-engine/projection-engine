@@ -52,12 +52,18 @@ export default function PostProcessingSettings() {
                 width={'100%'}/>
             <AccordionTemplate title={'Bloom strength'}>
                 <Range accentColor={'red'} disabled={!settings.bloom}
+                       onFinish={v => settings.bloomStrength = v}
+                       incrementPercentage={.001}
+                       precision={3}
                        handleChange={v => setState({...state, bloomStrength: v})}
                        value={state.bloomStrength} maxValue={10} minValue={0}/>
             </AccordionTemplate>
             <AccordionTemplate title={'Bloom threshold'}>
                 <Range
                     accentColor={'green'} disabled={!settings.bloom}
+                    incrementPercentage={.001}
+                    precision={3}
+                    onFinish={v => settings.bloomThreshold = v}
                     handleChange={v => setState({...state, bloomThreshold: v})}
                     value={state.bloomThreshold} maxValue={1} minValue={0}
                 />
