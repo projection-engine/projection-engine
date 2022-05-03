@@ -39,7 +39,8 @@ export default function useSettings() {
         bloomThreshold:  .85,
         FXAASpanMax:  8,
         FXAAReduceMin: 1 / 128,
-        FXAAReduceMul:  1 / 8
+        FXAAReduceMul:  1 / 8,
+        filmGrainStrength: .01
     })
     return state
 }

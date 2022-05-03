@@ -1,6 +1,6 @@
 import {useContext, useState} from "react";
 import SettingsProvider from "../../../pages/project/utils/hooks/SettingsProvider";
-import {Checkbox} from "@f-ui/core";
+import {Accordion, AccordionSummary, Checkbox} from "@f-ui/core";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 import Range from "../../../components/range/Range";
 
@@ -11,11 +11,13 @@ export default function PostProcessingSettings() {
         bloomThreshold: settings.bloomThreshold ? settings.bloomThreshold : .85,
         FXAASpanMax: settings.FXAASpanMax ? settings.FXAASpanMax : 8,
         FXAAReduceMin: settings.FXAAReduceMin ? settings.FXAAReduceMin : 1 / 128,
-        FXAAReduceMul: settings.FXAAReduceMul ? settings.FXAAReduceMul : 1 / 8
+        FXAAReduceMul: settings.FXAAReduceMul ? settings.FXAAReduceMul : 1 / 8,
+        gamma: settings.gamma,
+        exposure: settings.exposure,
+        filmGrainStrength: settings.filmGrainStrength ? settings.filmGrainStrength : .01
     })
     return (
         <>
-            {/*FXAA*/}
             <Checkbox
                 noMargin={true}
                 checked={settings.fxaa}
@@ -43,6 +45,19 @@ export default function PostProcessingSettings() {
             {/*           value={state.bloomStrength} maxValue={10} minValue={0}/>*/}
             {/*</AccordionTemplate>*/}
 
+            <Checkbox
+                checked={settings.filmGrain}
+                handleCheck={() => settings.filmGrain = !settings.filmGrain}
+                label={'Film grain'}
+                width={'100%'}/>
+            <AccordionTemplate title={'Film grain strength'}>
+                <Range accentColor={'red'} disabled={!settings.filmGrain}
+                       onFinish={v => settings.filmGrainStrength = v}
+                       incrementPercentage={.001}
+                       precision={3}
+                       handleChange={v => setState({...state, filmGrainStrength: v})}
+                       value={state.filmGrainStrength} maxValue={10} minValue={0}/>
+            </AccordionTemplate>
 
             {/*BLOOM*/}
             <Checkbox
@@ -63,9 +78,45 @@ export default function PostProcessingSettings() {
                     accentColor={'green'} disabled={!settings.bloom}
                     incrementPercentage={.001}
                     precision={3}
+
                     onFinish={v => settings.bloomThreshold = v}
                     handleChange={v => setState({...state, bloomThreshold: v})}
-                    value={state.bloomThreshold} maxValue={1} minValue={0}
+                    value={state.bloomThreshold}
+
+                    maxValue={1} minValue={0}
+                />
+            </AccordionTemplate>
+
+
+
+            {/*COLOR CORRECTION*/}
+            <AccordionTemplate title={'gamma'}>
+                <Range
+                    accentColor={'yellow'}
+                    incrementPercentage={.001}
+                    precision={3}
+                    minValue={.1}
+                    maxValue={10}
+
+
+                    onFinish={v => settings.gamma = v}
+                    handleChange={v => setState({...state, gamma: v})}
+                    value={state.gamma}
+
+                />
+            </AccordionTemplate>
+            <AccordionTemplate title={'Exposure'}>
+                <Range
+                    accentColor={'white'}
+                    minValue={.1}
+                    incrementPercentage={.001}
+                    precision={3}
+                    maxValue={10}
+
+
+                    onFinish={v => settings.exposure = v}
+                    handleChange={v => setState({...state, exposure: v})}
+                    value={state.exposure}
                 />
             </AccordionTemplate>
         </>
