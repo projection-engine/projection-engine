@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import FileSystem from "../workers/files/FileSystem";
 import EVENTS from "../utils/EVENTS";
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
-import Entity from "../../../engine/ecs/basic/Entity";
+import Entity from "../../../engine/basic/Entity";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import SkyboxComponent from "../../../engine/ecs/components/SkyboxComponent";
+import SkyboxComponent from "../../../engine/components/SkyboxComponent";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])

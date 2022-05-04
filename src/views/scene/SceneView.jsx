@@ -8,9 +8,9 @@ import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../pages/project/hooks/QuickAccessProvider";
 
 import {Button} from "@f-ui/core";
-import FolderComponent from "../../engine/ecs/components/FolderComponent";
+import FolderComponent from "../../engine/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../engine/hooks/useEngineEssentials";
-import Entity from "../../engine/ecs/basic/Entity";
+import Entity from "../../engine/basic/Entity";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import FormTabs from "./forms/FormTabs";
 import COMPONENTS from "../../engine/templates/COMPONENTS";

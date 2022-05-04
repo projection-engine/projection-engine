@@ -6,7 +6,7 @@ import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
 import {useState} from "react";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import TransformComponent from "../../../engine/ecs/components/TransformComponent";
+import TransformComponent from "../../../engine/components/TransformComponent";
 
 export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])
