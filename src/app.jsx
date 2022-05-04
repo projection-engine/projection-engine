@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './pages/wrapper/styles/globals.css'
+import './pages/wrapper/globals.css'
 import {Fabric} from "@f-ui/core";
-import styles from './pages/wrapper/styles/App.module.css'
+import styles from './pages/wrapper/App.module.css'
 import ThemeProvider from "./pages/project/hooks/ThemeProvider";
 
 import useGlobalOptions from "./pages/project/hooks/useGlobalOptions";

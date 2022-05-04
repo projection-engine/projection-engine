@@ -15,7 +15,7 @@ import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 
 export default function MaterialComponent(props) {
-    const [state, clear] = useDirectState()
+    const [state, clear] = useDirectState({})
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
     const lastID = useRef()
@@ -23,8 +23,13 @@ export default function MaterialComponent(props) {
         if(!lastID.current || lastID.current !== props.entityID) {
             clear()
             lastID.current = props.entityID
+            const matSelected = props.engine?.materials.find(m => m.id === props.selected.materialID)
+
             state.overrideMaterial = props.selected.overrideMaterial
-            state.uniforms = props.selected.uniforms
+
+            state.uniforms = matSelected && matSelected.uniforms ? matSelected.uniforms.map(u => {
+                return {...u, value: props.selected.uniformValues[u.key]}
+            }) : []
             state.currentMaterial = props.quickAccess.materials.find(i => i.registryID === props.selected.materialID)
         }
     }, [props.selected, props.entityID])
@@ -238,11 +243,13 @@ export default function MaterialComponent(props) {
             ) : null}
 
 
-            {state.overrideMaterial ?
-                state.uniforms?.map(u => (
+            {state.overrideMaterial && state.uniforms?
+                state.uniforms?.map((u, i) => (
+                    <React.Fragment key={i + '-uniforms-mat'}>
                     <AccordionTemplate title={u.label}>
                         {getField(u)}
                     </AccordionTemplate>
+                    </React.Fragment>
                 ))
                 : null}
         </>

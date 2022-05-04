@@ -155,7 +155,6 @@ export default function useHotKeys(props, listeners=[]) {
     }
 
     useEffect(() => {
-        console.log(props.disabled)
         if (!props.disabled) {
             document.addEventListener('mousedown', handleMouseDown)
             document.addEventListener('keydown', handleKey)

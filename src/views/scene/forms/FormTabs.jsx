@@ -142,6 +142,6 @@ FormTabs.propTypes = {
     addComponent: PropTypes.func,
 
     entity: PropTypes.object,
-    currentTab: PropTypes.number,
+    currentTab: PropTypes.any,
     setCurrentTab: PropTypes.func
 }

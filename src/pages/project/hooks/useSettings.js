@@ -46,7 +46,7 @@ export default function useSettings() {
         frameRate: 75,
         distortion: false,
         chromaticAberration: false,
-
+        preferencesVisibility: false,
         distortionStrength: 1,
         chromaticAberrationStrength: 1,
 
