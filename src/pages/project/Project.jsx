@@ -49,8 +49,6 @@ export default function Project() {
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (engine.gpu && !loading.initialized) {
             new Promise(async resolve => {
-
-
                 try {
                     const res = await ProjectLoader.loadProject(engine.gpu, quickAccess.fileSystem)
                     load.finishEvent(EVENTS.PROJECT_DATA)

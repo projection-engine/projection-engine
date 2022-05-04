@@ -4,6 +4,7 @@ import {useCallback, useContext, useEffect} from "react";
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../workers/ProjectLoader";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 const fs = window.require('fs')
 export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {
@@ -53,7 +54,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 saveSettings()
                     .then(async () => {
                         const all = await ProjectLoader.getEntities(fileSystem)
-                        console.log(all)
+
                         await Promise.all(all.map(a => {
                             return new Promise(async (resolve1) => {
                                 console.log(a, engine.entities.find(e => e.id === a?.data?.id))
@@ -65,10 +66,20 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                     resolve1()
                             })
                         }))
-
+                        console.log(engine.entities.map(e => {
+                            return {
+                                u: e.components[COMPONENTS.MATERIAL]?.uniformValues,
+                                id: e.id
+                            }
+                        }))
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {
-                                const str = JSON.stringify(e)
+
+                                const str = JSON.stringify(structuredClone(e))
+                                if(e.id === "09f311c0-15f6-4bdf-866c-cd5b444eb8c6") {
+                                    console.log(e.components[COMPONENTS.MATERIAL])
+                                    console.dir(str)
+                                }
                                 fileSystem
                                     .updateEntity(str, e.id)
                                     .then(() => resolve())
@@ -85,6 +96,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             })
         return new Promise(resolve => resolve())
     }, [engine.entities, settings, id])
+
 
     useEffect(() => {
         interval = setInterval(save, 300000)

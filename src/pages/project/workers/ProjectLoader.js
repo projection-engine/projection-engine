@@ -17,7 +17,7 @@ import CubeMapInstance from "../../../engine/instances/CubeMapInstance";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import ScriptComponent from "../../../engine/components/ScriptComponent";
 import CameraComponent from "../../../engine/components/CameraComponent";
-import Transformation from "../../../engine/utils/Transformation";
+import Transformation from "../../../engine/instances/Transformation";
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
 import {DATA_TYPES} from "../../../views/blueprints/components/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";
@@ -273,6 +273,7 @@ export default class ProjectLoader {
             if (typeof ENTITIES[k] === 'function') {
                 let component = await ENTITIES[k](entity, k, gpu, fileSystem)
                 if (component) {
+
                     if (k !== COMPONENTS.MATERIAL)
                         Object.keys(entity.components[k]).forEach(oK => {
                             if (!oK.includes("__"))
@@ -305,6 +306,7 @@ const ENTITIES = {
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.MATERIAL]: async (entity, k, gpu, fileSystem) => {
         const newMat = new MaterialComponent(entity.components[k].id)
+
         newMat.materialID = entity.components[k].materialID
         const toLoad = (entity.components[k].uniforms ? entity.components[k].uniforms : []).map(u => {
             if (u.type === DATA_TYPES.TEXTURE && u.modified)
@@ -331,23 +333,22 @@ const ENTITIES = {
                                 }
                             )
                         })
-
                         resolve({key: u.key, value: texture.texture, changed: true})
                     }
                 })
-            else if (u.type !== DATA_TYPES.TEXTURE)
-                return new Promise(resolve => resolve({...u, changed: true}))
             else
                 return new Promise(resolve => resolve(u))
         })
         newMat.uniforms = entity.components[k].uniforms
-
+        newMat.overrideMaterial = entity.components[k].overrideMaterial
         newMat.uniformValues = {}
         const values = await Promise.all(toLoad)
+        newMat.uniformValues = {...entity.components[k].uniformValues}
         values.forEach(dd => {
             if (dd.changed)
                 newMat.uniformValues[dd.key] = dd.value
         })
+        console.log(newMat, values)
         newMat.doubleSided = entity.components[k].doubleSided
         newMat.overrideMaterial = entity.components[k].overrideMaterial
         return newMat

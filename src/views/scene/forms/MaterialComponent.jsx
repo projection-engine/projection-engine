@@ -12,6 +12,7 @@ import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 
 export default function MaterialComponent(props) {
@@ -19,6 +20,7 @@ export default function MaterialComponent(props) {
     const fileSystem = props.quickAccess.fileSystem
     const load = useContext(LoaderProvider)
     const lastID = useRef()
+
     useEffect(() => {
         if(!lastID.current || lastID.current !== props.entityID) {
             clear()
@@ -33,7 +35,6 @@ export default function MaterialComponent(props) {
             state.currentMaterial = props.quickAccess.materials.find(i => i.registryID === props.selected.materialID)
         }
     }, [props.selected, props.entityID])
-
 
     const loadFile = async (src, type = 'json') => {
         load.pushEvent(EVENTS.LOAD_FILE)
@@ -67,6 +68,7 @@ export default function MaterialComponent(props) {
                     if (c.type !== DATA_TYPES.TEXTURE)
                         values[c.key] = c.value
                 })
+
                 props.submit(values, 'uniformValues')
             }
 

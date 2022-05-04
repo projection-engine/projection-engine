@@ -1,6 +1,6 @@
 import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
 import AssimpJS from "../AssimpJS";
-import Transformation from "../../../../../engine/utils/Transformation";
+import Transformation from "../../../../../engine/instances/Transformation";
 import {mat4} from "gl-matrix";
 import GLTF from "../gltf/GLTF";
 import {lzwEncode} from "../functions/lzString";

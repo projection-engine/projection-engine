@@ -9,7 +9,7 @@ import MaterialComponent from "../../scene/forms/MaterialComponent";
 
 import {IDS} from "../../../engine/hooks/useMinimalEngine";
 import TransformComponent from "../../scene/forms/TransformComponent";
-import Transformation from "../../../engine/utils/Transformation";
+import Transformation from "../../../engine/instances/Transformation";
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)

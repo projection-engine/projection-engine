@@ -9,7 +9,7 @@ import MeshComponent from "../forms/MeshComponent";
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
 import {ENTITY_ACTIONS} from "../../../engine/hooks/useEngineEssentials";
-import Transformation from "../../../engine/utils/Transformation";
+import Transformation from "../../../engine/instances/Transformation";
 import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
@@ -29,6 +29,7 @@ export default function useForm(
     currentTab
 ) {
 
+
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
@@ -36,7 +37,17 @@ export default function useForm(
         return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
     }, [engine.selected, engine.entities, engine.lockedEntity])
 
-
+    const submit = (component, key, data) => {
+        const clone = cloneClass(selected.components[component])
+        clone[key] = data
+        engine.dispatchEntities({
+            type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+                entityID: engine.selected[0],
+                data: clone,
+                key: component
+            }
+        })
+    }
     const getField = (key) => {
 
         switch (key) {
@@ -104,7 +115,6 @@ export default function useForm(
                     />
                 )
             }
-
             case COMPONENTS.MESH: {
                 return (
                     <MeshComponent
@@ -134,32 +144,14 @@ export default function useForm(
                     <MaterialComponent
                         entityID={selected.id}
                         engine={engine}
-
-                        submitRadius={r => {
-                            const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
-                            clone.radius = r
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: clone,
-                                    key: COMPONENTS.MATERIAL
-                                }
-                            })
-                        }}
+                        submitRadius={r => submit(COMPONENTS.MATERIAL, 'radius', r)}
                         quickAccess={quickAccess}
                         selected={selected.components[COMPONENTS.MATERIAL]}
 
                         submit={async (val, key) => {
                             if (key) {
-                                const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
-                                clone[key] = val
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                        entityID: engine.selected[0],
-                                        data: clone,
-                                        key: COMPONENTS.MATERIAL
-                                    }
-                                })
+                                submit(COMPONENTS.MATERIAL, key, val)
+                                console.log(key)
                             } else {
                                 if (val) {
                                     const exists = engine.materials.find(m => m.id === val.id)
@@ -208,15 +200,7 @@ export default function useForm(
                         type={key}
                         selected={selected.components[key]}
                         submit={(data, k) => {
-                            const component = selected.components[key]
-                            component[k] = data
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    key: key,
-                                    data: component
-                                }
-                            })
+                            submit(key, k, data)
                         }}
 
                         quickAccess={quickAccess}
@@ -237,18 +221,7 @@ export default function useForm(
                                 }
                             })
                         }}
-                        submitColor={(data) => {
-                            const component = selected.components[key]
-                            component['color'] = data
-
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    key: key,
-                                    data: component
-                                }
-                            })
-                        }}
+                        submitColor={(data) => submit(key, 'color', data)}
                     />
                 )
             }
@@ -258,15 +231,7 @@ export default function useForm(
                     <CubeMapComponent
                         selected={selected.components[key]}
                         submit={(data, key) => {
-                            selected.components[COMPONENTS.CUBE_MAP][key] = data
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                                payload: {
-                                    entityID: engine.selected[0],
-                                    data: selected.components[COMPONENTS.CUBE_MAP],
-                                    key: COMPONENTS.CUBE_MAP
-                                }
-                            })
+                            submit(COMPONENTS.CUBE_MAP, key, data)
                             setAlert({message: 'Reflection captures need to be rebuilt', type: 'alert'})
                         }}
                     />
