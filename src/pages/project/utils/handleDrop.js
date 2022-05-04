@@ -1,6 +1,6 @@
 import importMesh from "./importMesh";
 import EVENTS from "./EVENTS";
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../../engine/hooks/useEngineEssentials";
 import ProjectLoader from "../workers/ProjectLoader";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import Entity from "../../../engine/ecs/basic/Entity";
