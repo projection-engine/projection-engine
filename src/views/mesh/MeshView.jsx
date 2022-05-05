@@ -5,7 +5,7 @@ import Viewport from "../../components/viewport/Viewport";
 import Controls from "./components/Controls";
 
 
-import useMinimalEngine, {IDS, initializeMesh} from "../../engine/hooks/useMinimalEngine";
+import useMinimalEngine, {IDS, initializeMesh} from "../../pages/project/hooks/useMinimalEngine";
 import ResizableBar from "../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
 import ControlProvider from "../../components/tabs/components/ControlProvider";

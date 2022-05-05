@@ -7,10 +7,10 @@ import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "./workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../engine/hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "./hooks/useEngineEssentials";
 import useSerializer from "./hooks/useSerializer";
 
-import useEditorEngine from "../../engine/hooks/useEditorEngine";
+import useEditorEngine from "./hooks/useEditorEngine";
 import useSettings from "./hooks/useSettings";
 import EVENTS from "./utils/EVENTS";
 import SettingsProvider from "./hooks/SettingsProvider";

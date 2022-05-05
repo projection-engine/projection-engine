@@ -8,13 +8,13 @@ import MeshComponent from "../forms/MeshComponent";
 
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
-import {ENTITY_ACTIONS} from "../../../engine/hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../../pages/project/hooks/useEngineEssentials";
 import Transformation from "../../../engine/instances/Transformation";
 import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
-import {IDS} from "../../../engine/hooks/useMinimalEngine";
+import {IDS} from "../../../pages/project/hooks/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
 import PostProcessingSettings from "../forms/PostProcessingSettings";
 import DisplaySettings from "../forms/DisplaySettings";

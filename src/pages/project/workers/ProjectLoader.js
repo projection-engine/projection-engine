@@ -256,7 +256,6 @@ export default class ProjectLoader {
     }
 
     static async mapMaterial({shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
-
         let newMat
         await new Promise(resolve => {
             newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id)
