@@ -40,7 +40,6 @@ export default function Home(props) {
                     disabled={projectName === ''}
                     className={styles.submitButton}
                     onClick={() => {
-                        console.log(projectName)
                         FileSystem.createProject(projectName)
                             .then(res => {
                                 setProjects(prev => {

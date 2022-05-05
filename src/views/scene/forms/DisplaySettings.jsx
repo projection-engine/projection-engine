@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import SettingsProvider from "../../../pages/project/hooks/SettingsProvider";
-import {Accordion, AccordionSummary, Checkbox, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 import Range from "../../../components/range/Range";
 

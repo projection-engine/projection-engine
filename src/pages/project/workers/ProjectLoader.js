@@ -348,7 +348,7 @@ const ENTITIES = {
             if (dd.changed)
                 newMat.uniformValues[dd.key] = dd.value
         })
-        console.log(newMat, values)
+
         newMat.doubleSided = entity.components[k].doubleSided
         newMat.overrideMaterial = entity.components[k].overrideMaterial
         return newMat

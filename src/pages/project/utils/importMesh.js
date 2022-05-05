@@ -54,7 +54,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         entity.components[COMPONENTS.PICK] = new PickComponent(undefined, engine.entities.length + index + 1)
 
     } catch (e) {
-        console.log(e, objLoaded)
+
     }
 
     return {

@@ -1,11 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
-import {Button, Checkbox} from "@f-ui/core";
-import React, {useEffect, useMemo, useState} from "react";
-import Range from "../../../components/range/Range";
-import ColorPicker from "../../../components/color/ColorPicker";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import {HISTORY_ACTIONS} from "../../../pages/project/hooks/historyReducer";
+import {Button} from "@f-ui/core";
+import React, {useMemo} from "react";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 import Selector from "../../../components/selector/Selector";
 

@@ -17,7 +17,6 @@ import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine/hooks/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
 import PostProcessingSettings from "../forms/PostProcessingSettings";
-import EVENTS from "../../../pages/project/utils/EVENTS";
 import DisplaySettings from "../forms/DisplaySettings";
 
 export default function useForm(
@@ -151,7 +150,7 @@ export default function useForm(
                         submit={async (val, key) => {
                             if (key) {
                                 submit(COMPONENTS.MATERIAL, key, val)
-                                console.log(key)
+
                             } else {
                                 if (val) {
                                     const exists = engine.materials.find(m => m.id === val.id)

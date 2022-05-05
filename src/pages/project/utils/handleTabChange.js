@@ -8,7 +8,7 @@ export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engin
             load.pushEvent(EVENTS.LOADING)
             ProjectLoader.loadScripts([toRemove.registryID], fileSystem, [], false)
                 .then(newScript => {
-                    console.log(newScript,toRemove)
+
                     if(newScript[0])
                         engine.setScripts(prev => {
                             return prev.map(p => {

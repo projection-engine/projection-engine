@@ -13,3 +13,6 @@
 [submodule "src/home"]
 	path = src/pages/home/issues
 	url = git@github.com:projection-engine/feedback-github-integration.git
+[submodule "src/builders/web"]
+	path = src/builders/web
+	url = git@github.com:projection-engine/builder-web.git

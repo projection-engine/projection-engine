@@ -4,7 +4,6 @@ import {useCallback, useContext, useEffect} from "react";
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../workers/ProjectLoader";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 const fs = window.require('fs')
 export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {
@@ -57,29 +56,19 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
                         await Promise.all(all.map(a => {
                             return new Promise(async (resolve1) => {
-                                console.log(a, engine.entities.find(e => e.id === a?.data?.id))
                                 if (a && a.data && a.type === 'entity' && !engine.entities.find(e => e.id === a.data.id)){
-                                    console.trace('awaiting')
                                     resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true))
                                 }
                                 else
                                     resolve1()
                             })
                         }))
-                        console.log(engine.entities.map(e => {
-                            return {
-                                u: e.components[COMPONENTS.MATERIAL]?.uniformValues,
-                                id: e.id
-                            }
-                        }))
+
                         await Promise.all(engine.entities.map(e => {
                             return new Promise((resolve) => {
 
                                 const str = JSON.stringify(structuredClone(e))
-                                if(e.id === "09f311c0-15f6-4bdf-866c-cd5b444eb8c6") {
-                                    console.log(e.components[COMPONENTS.MATERIAL])
-                                    console.dir(str)
-                                }
+
                                 fileSystem
                                     .updateEntity(str, e.id)
                                     .then(() => resolve())

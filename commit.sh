@@ -44,6 +44,11 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
+cd ../../builders/web
+git add --all
+git commit -m "$MESSAGE"
+git push origin v0.1.x-alpha
+
 cd ../../../
 git add --all
 git commit -m "$MESSAGE"

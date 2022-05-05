@@ -121,7 +121,7 @@ export default class FileSystem {
         const currentPath = absolute ? pathName : (this._path + pathName)
         return new Promise(resolve => {
             fs.rm(currentPath, (err) => {
-                console.log(err)
+
                 this.findRegistry(currentPath)
                     .then(rs => {
 
@@ -316,7 +316,7 @@ export default class FileSystem {
                 try {
                     fs.mkdirSync(p)
                 } catch (err) {
-                    console.log(err)
+
                 }
             }
             fs.writeFile(resolvePath(p + '\\' + id + '.entity'), entity, (e) => {
@@ -392,7 +392,7 @@ export default class FileSystem {
             else if (filename.indexOf(extension) >= 0)
                 res.push(files[i])
         }
-        console.log(res)
+
         return res
     }
 

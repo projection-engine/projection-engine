@@ -1,9 +1,8 @@
 import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
-import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, Modal, TextField} from "@f-ui/core";
+import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core";
 import {useContext, useMemo, useRef, useState} from "react";
 import logo from '../../../static/LOGO.png'
-import shared from "../styles/Home.module.css";
 import {Link} from "react-router-dom";
 
 const KEYS = [

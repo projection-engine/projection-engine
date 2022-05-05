@@ -12,7 +12,6 @@ import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 
 export default function MaterialComponent(props) {

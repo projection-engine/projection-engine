@@ -232,7 +232,7 @@ export default function Project() {
                 <QuickAccessProvider.Provider value={quickAccess}>
                     <div className={styles.wrapper}>
                         <Preferences serializer={serializer}/>
-                        <GlobalOptions save={serializer.save}/>
+                        <GlobalOptions engine={engine} setAlert={setAlert} save={serializer.save} quickAccess={quickAccess}/>
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
 
