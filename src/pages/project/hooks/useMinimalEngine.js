@@ -35,22 +35,38 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
 
     const renderer = useMemo(() => {
         if (gpu) {
-            const r = new EditorEngine(id, gpu, {w: window.screen.width, h: window.screen.height}, SYSTEMS.MESH)
-            if (quickAccess.sampleSkybox)
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.ADD,
-                    payload: quickAccess.sampleSkybox
-                })
-            initializeLight(dispatchEntities)
+            const r = new EditorEngine(id, gpu, {w: window.screen.width, h: window.screen.height}, [SYSTEMS.SHADOWS])
 
+            const lightEntity = new Entity(undefined, 'light')
+            const light = new DirectionalLightComponent()
+            light.direction = [0, 100, 100]
+            light.shadowMap = false
+            lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
+
+            const promises = []
             if (initializeSphere)
-                import('../../../engine/editor/assets/Sphere.json').then(sphereMesh => {
-                    initializeMesh(sphereMesh.value, gpu, IDS.SPHERE, 'Sphere', dispatchEntities, setMeshes)
-                })
+                promises.push(new Promise(async r => {
+                    const sphereMesh = await import('../../../engine/editor/assets/Sphere.json')
+                    r(initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes))
+                }))
             if (loadAllMeshes)
-                import('../../../engine/editor/assets/Cube.json')
-                    .then(cubeData => initializeMesh(cubeData, gpu, IDS.CUBE, 'Sphere', dispatchEntities, setMeshes, undefined, true))
+                promises.push(new Promise(async r => {
+                    const cubeData = await import('../../../engine/editor/assets/Cube.json')
+                    r(initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true))
+                }))
 
+            Promise.all(promises).then(r => {
+                const toLoad = [
+                    quickAccess.sampleSkybox,
+                    lightEntity,
+                ]
+                if (r[0])
+                    toLoad.push(r[0])
+                if (r[1])
+                    toLoad.push(r[1])
+                dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
+            })
+            r.camera.radius = 2
             return r
         }
         return undefined
@@ -105,23 +121,11 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
 }
 
 
-function initializeLight(dispatch) {
-    const newEntity = new Entity(undefined, 'light')
-    const light = new DirectionalLightComponent()
-    light.direction = [0, 100, 100]
-    newEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
-    dispatch({
-        type: ENTITY_ACTIONS.ADD,
-        payload: newEntity
-    })
-}
-
-export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTranslation, noEntity) {
+export function initializeMesh(data, gpu, id, name, setMeshes, noTranslation, noEntity) {
     let mesh = new MeshInstance({
         ...data,
         id: id,
-        gpu: gpu,
-
+        gpu: gpu
     })
     setMeshes(prev => [...prev, mesh])
     if (!noEntity) {
@@ -139,11 +143,9 @@ export function initializeMesh(data, gpu, id, name, dispatch, setMeshes, noTrans
         newEntity.components.TransformComponent = transformation
         newEntity.components.MaterialComponent = new MaterialComponent(undefined, id === IDS.PLANE ? undefined : IDS.MATERIAL, id === IDS.PLANE)
 
-        dispatch({
-            type: ENTITY_ACTIONS.ADD,
-            payload: newEntity
-        })
+        return newEntity
     }
+    return null
 }
 
 export const IDS = {

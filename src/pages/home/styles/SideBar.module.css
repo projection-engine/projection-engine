@@ -11,7 +11,7 @@
     max-width: 55px;
     min-width: 55px;
 
-    background: var(--fabric-background-tertiary);
+    background: var(--fabric-background-secondary);
     border-right: var(--fabric-border-primary) 1px solid;
     gap: 8px;
 }

@@ -166,6 +166,7 @@ export default function Project() {
                 />
             )
     }
+    console.log(filesLoaded)
     const openTab = useCallback((fileID, fileName) => {
         const found = filesLoaded.find(f => {
             return f.registryID === fileID
@@ -235,7 +236,6 @@ export default function Project() {
                         <GlobalOptions engine={engine} setAlert={setAlert} save={serializer.save} quickAccess={quickAccess}/>
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
-
                                 handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                                 setFilesLoaded(prev => {
                                     const newD = [...prev]
@@ -269,11 +269,11 @@ export default function Project() {
                                 settings={settings}
                                 serializer={serializer}
                             />
-                            {filesLoaded.map((file, index) => (
+                            {filesLoaded.length > 0 ? filesLoaded.map((file, index) => (
                                 <React.Fragment key={index + '-tab-wrapper'}>
                                     {getTab(file, index + 1)}
                                 </React.Fragment>
-                            ))}
+                            )) : null}
                         </Tabs>
                         {settings.filesVisibility ?
                             <FilesView

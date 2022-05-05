@@ -1,16 +1,22 @@
 .wrapper {
     position: relative;
     width: 100%;
-    background-color: var(--fabric-border-primary);
+    background-color: var(--fabric-background-tertiary);
 
     border-radius: 5px;
     overflow: hidden;
 
+transition: 150ms linear;
+}
+.wrapper:hover{
+    background: var(--fabric-background-primary);
 
 }
+.wrapper:hover .dataRow{
+    background: var(--fabric-background-primary);
+}
 
-
-.button {
+.openButton, .button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,9 +29,21 @@
     font-weight: 550;
     padding: 4px !important;
     gap: 4px;
-    background-color: var(--fabric-border-primary);
 }
-
+.openButton{
+    --fabric-accent-color: var(--fabric-border-primary);
+    color: var(--fabric-color-secondary);
+}
+.openButton:hover, .openButton:active{
+    --fabric-accent-color: #0095ff;
+}
+.button:hover{
+    background: var(--fabric-border-primary) !important;
+}
+.button[data-highlight='true']{
+    background: var(--fabric-accent-color) !important;
+    color: white !important;
+}
 .overflow {
     white-space: nowrap;
     overflow: hidden;
@@ -93,9 +111,10 @@
 }
 
 .dataRow {
-    background: var(--fabric-border-primary);
+    background-color: var(--fabric-background-tertiary);
     border: none;
     width: 100%;
     border-radius: 0;
+    transition: 150ms linear;
     border-bottom: var(--fabric-background-tertiary) 1px solid;
 }

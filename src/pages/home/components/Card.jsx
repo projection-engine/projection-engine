@@ -39,11 +39,12 @@ export default function Card(props) {
 
             <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : 'none'}}>
                 <Dropdown
-                    variant={'outlined'}
+                    styles={{'--fabric-accent-color': '#ff5555'}}
                     className={styles.button}
                     onClick={() => setOpen({
                         delete: true
-                    })} hideArrow={true}>
+                    })}
+                    hideArrow={true}>
                     <span className={'material-icons-round'} style={{fontSize: '1.2rem'}}>delete_forever</span>
                     <DropdownOptions>
                         <div
@@ -67,7 +68,7 @@ export default function Card(props) {
                     </DropdownOptions>
                 </Dropdown>
                 <Dropdown
-                    variant={'outlined'}
+
                     className={styles.button}
                     wrapperClassname={styles.modalOptions}
                     onClick={() => setOpen({
@@ -87,7 +88,7 @@ export default function Card(props) {
                 <Link to={'/project/' + props.data.id}>
                     <Button
                         variant={'filled'}
-                        className={styles.button}>
+                        className={styles.openButton}>
                         <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
                         <label>
                             Load project

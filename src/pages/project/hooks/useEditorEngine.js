@@ -26,7 +26,15 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
             return new EditorEngine(id, gpu, {
                 w: settings.resolution[0],
                 h: settings.resolution[1]
-            }, [SYSTEMS.SCRIPT, SYSTEMS.PERF, SYSTEMS.TRANSFORMATION, SYSTEMS.SHADOWS, SYSTEMS.PICK, SYSTEMS.CAMERA_CUBE, SYSTEMS.CUBE_MAP])
+            }, [
+                SYSTEMS.SCRIPT,
+                SYSTEMS.PERF,
+                SYSTEMS.TRANSFORMATION,
+                SYSTEMS.SHADOWS,
+                SYSTEMS.PICK,
+                SYSTEMS.CAMERA_CUBE,
+                SYSTEMS.CUBE_MAP
+            ])
         }
         return undefined
     }, [gpu, canStart])

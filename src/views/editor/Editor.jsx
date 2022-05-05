@@ -44,7 +44,6 @@ export default function Editor(props) {
     useEditorKeys(props, controlProvider)
     return (
         <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
-
             <div id={'fullscreen-element-' + props.id}
                  className={styles.container}>
                 {props.settings.viewportOptionsVisibility ?

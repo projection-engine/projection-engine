@@ -51,16 +51,6 @@ export default function SideBar(props) {
                         className={'material-icons-round'}>chat_bubble</span>
                         {extended ? 'Give feedback' : undefined}
                     </Button>
-                    {/*<Button onClick={() => setOpen(0)}*/}
-                    {/*        className={styles.button}*/}
-                    {/*        variant={open === 0 ? "filled" : undefined}*/}
-                    {/*        styles={{justifyContent: !extended ? 'center' : undefined}}*/}
-                    {/*>*/}
-                    {/*<span*/}
-                    {/*    style={{width: '30px'}}*/}
-                    {/*    className={'material-icons-round'}>inventory_2</span>*/}
-                    {/*    {extended ? 'Projects' : undefined}*/}
-                    {/*</Button>*/}
                 </div>
             </div>
             <div className={styles.block} style={{transform: 'none', height: '100%', alignContent: 'flex-end'}}>
