@@ -4,7 +4,7 @@ import TerrainWorker from "../TerrainWorker";
 import {v4 as uuidv4} from 'uuid';
 import glTFImporter from "./gltf/glTFImporter";
 import assimpImporter from "./fbx/assimpImporter";
-import {WebWorker} from "../WebWorker";
+import {WebWorker} from "../../../../engine/utils/WebWorker";
 import {lzwDecode, lzwEncode} from "./functions/lzString";
 
 const fs = window.require('fs')

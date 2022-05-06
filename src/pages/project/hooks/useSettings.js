@@ -3,13 +3,8 @@ import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
 
 import useDirectState from "./useDirectState";
 import ROTATION_TYPES from "../../../engine/editor/gizmo/ROTATION_TYPES";
+import SHADING_MODELS from "../../../engine/templates/SHADING_MODELS";
 
-
-export const SHADING_MODELS = {
-    FLAT: 0,
-    DETAIL: 1,
-    WIREFRAME: 2
-}
 export default function useSettings() {
     const [state] = useDirectState({
         projectCreationDate: (new Date()).toDateString(),
