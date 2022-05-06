@@ -7,7 +7,7 @@ import EVENTS from "../../../pages/project/utils/EVENTS";
 import Selector from "../../../components/selector/Selector";
 import Range from "../../../components/range/Range";
 import useDirectState from "../../../pages/project/hooks/useDirectState";
-import {DATA_TYPES} from "../../blueprints/components/DATA_TYPES";
+import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import ColorPicker from "../../../components/color/ColorPicker";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import AccordionTemplate from "../../../components/accordion/AccordionTemplate";

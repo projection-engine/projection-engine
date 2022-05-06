@@ -19,7 +19,7 @@ import ScriptComponent from "../../../engine/components/ScriptComponent";
 import CameraComponent from "../../../engine/components/CameraComponent";
 import Transformation from "../../../engine/instances/Transformation";
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
-import {DATA_TYPES} from "../../../views/blueprints/components/DATA_TYPES";
+import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 
 export default class ProjectLoader {
