@@ -42,7 +42,7 @@ git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
 
-cd ../files
+cd ../file
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
