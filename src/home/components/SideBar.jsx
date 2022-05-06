@@ -1,5 +1,5 @@
 import styles from '../styles/SideBar.module.css'
-import logo from "../../static/LOGO.png";
+import logo from "../../static/logo.png";
 import {Button} from "@f-ui/core";
 import gitDark from "../../static/github/dark.svg";
 import gitLight from "../../static/github/light.svg";
@@ -17,18 +17,6 @@ export default function SideBar(props) {
     return (
         <div className={styles.wrapper} data-extended={`${extended}`}>
             <div style={{width: '100%', overflow: 'hidden', height: '100%'}}>
-                <div className={styles.logoWrapper} style={{justifyContent: extended ? undefined : 'center'}}>
-                    <div className={styles.logo}>
-                        <img src={logo} alt={'logo'}/>
-                    </div>
-                    {extended ?
-                        <div className={styles.logoTitle}>
-                            Projection Engine
-                        </div>
-                        :
-                        null}
-
-                </div>
                 <div className={styles.block}>
                     <Button onClick={() => setOpen(0)}
                             className={styles.button}

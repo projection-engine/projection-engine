@@ -2,8 +2,9 @@ import styles from '../styles/Card.module.css'
 import PropTypes from "prop-types";
 import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core";
 import {useContext, useMemo, useRef, useState} from "react";
-import logo from '../../static/LOGO.png'
+import logo from '../../static/logo.png'
 import {Link} from "react-router-dom";
+import LOAD_CHANNEL from "../../project/LOAD_CHANNEL";
 
 const KEYS = [
     {key: 'preview', type: 'image'},
@@ -12,6 +13,7 @@ const KEYS = [
     {label: 'Last modification', key: 'lastModification', type: 'string'},
     {label: 'Entities', key: 'entities', type: 'string'}
 ]
+const {ipcRenderer} = window.require('electron')
 export default function Card(props) {
     const ref = useRef()
     const [open, setOpen] = useState({
@@ -85,8 +87,15 @@ export default function Card(props) {
                     </DropdownOptions>
                 </Dropdown>
 
-                <Link to={'/project/' + props.data.id}>
+
                     <Button
+                        onClick={() => ipcRenderer.send('create-project-window', {
+                            windowID: props.data.id,
+                            data: props.data,
+                            channel: LOAD_CHANNEL,
+                            entryPoint: 'project',
+                            hasMain: false
+                        })}
                         variant={'filled'}
                         className={styles.openButton}>
                         <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
@@ -94,7 +103,7 @@ export default function Card(props) {
                             Load project
                         </label>
                     </Button>
-                </Link>
+
             </div>
         </div>
     )

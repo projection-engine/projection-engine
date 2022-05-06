@@ -3,16 +3,19 @@ git checkout v0.1.x-alpha
 cd src/components
 git checkout v0.1.x-alpha
 
-cd ../engine
+cd ../project/engine
 git checkout v0.1.x-alpha
 
 cd ../views/blueprints
 git checkout v0.1.x-alpha
 
-cd ../files
+cd ../file
 git checkout v0.1.x-alpha
 
-cd ../../builders/web
+cd ../../builder/web
+git checkout v0.1.x-alpha
+
+cd ../../../../
 git checkout v0.1.x-alpha
 
 sleep 10s

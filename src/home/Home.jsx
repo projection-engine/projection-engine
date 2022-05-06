@@ -7,12 +7,12 @@ import FileSystem from "../project/utils/workers/files/FileSystem";
 import EVENTS from "../project/utils/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/SideBar";
-import IssuesList from "./issues/issues/IssuesList";
+import IssuesList from "./components/issues/issues/IssuesList";
 
 const fs = window.require('fs')
 const pathResolve = window.require('path')
 
-export default function Home(props) {
+export default function Home() {
     const {
         projects,
         openModal, setOpenModal,
@@ -114,7 +114,6 @@ export default function Home(props) {
                     }}
                     refresh={() => refresh()}
                     load={load} projects={projects}
-
                     setProjects={setProjects}/>
                 <IssuesList/>
             </Switcher>

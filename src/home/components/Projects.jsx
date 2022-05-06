@@ -17,40 +17,31 @@ export default function Projects(props) {
 
     return (
         <div className={styles.wrapper}>
-
             <div className={styles.titleWrapper}>
                 <label className={styles.title}>
                     Your projects
                     <Search searchString={searchString} setSearchString={setSearchString} size={'big'}/>
                 </label>
-
-                    <Button
-                        className={styles.button}
-                        variant={'filled'}
-                        onClick={() => props.onNew()}>
-
-                        <label>
-                            New project
-                        </label>
-                    </Button>
-
+                <Button
+                    className={styles.button}
+                    variant={'filled'}
+                    onClick={() => props.onNew()}>
+                    New project
+                </Button>
             </div>
-
             <Masonry className={styles.content}>
                 {projectsToShow.map((p, i) => (
-                        <React.Fragment key={p.id}>
-                            <Card
-
-
-                                data={p} index={i}
-                                onRename={newName => {
-                                    props.renameProject(newName, p.id)
-                                }}
-                                onDelete={() => {
-                                    props.deleteProject(p.id)
-                                }}/>
-                        </React.Fragment>
-                    ))}
+                    <React.Fragment key={p.id}>
+                        <Card
+                            data={p} index={i}
+                            onRename={newName => {
+                                props.renameProject(newName, p.id)
+                            }}
+                            onDelete={() => {
+                                props.deleteProject(p.id)
+                            }}/>
+                    </React.Fragment>
+                ))}
 
             </Masonry>
         </div>

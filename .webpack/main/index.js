@@ -19473,16 +19473,79 @@ var EventsWrapper = /*#__PURE__*/function () {
   function EventsWrapper(mainWindow) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, EventsWrapper);
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "windows", {});
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "windows", []);
 
     this.mainWindow = mainWindow;
+    var loader = this.loader.bind(this);
+    var closeEvent = 'home-close',
+        minimizeEvent = 'home-minimize',
+        maximizeEvent = 'home-maximize';
+    ipcMain.on(minimizeEvent, function () {
+      console.log('HERE');
+      mainWindow.minimize();
+    });
+    ipcMain.on(maximizeEvent, function () {
+      console.log('HERE');
+      mainWindow.maximize();
+    });
+    ipcMain.on(closeEvent, function () {
+      console.log('HERE');
+      mainWindow.close();
+    });
+    ipcMain.on('load-page', loader);
+    this.onLoadPage = this.onLoad.bind(this);
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(EventsWrapper, [{
+    key: "loader",
+    value: function loader(ev) {
+      ev.sender.send('page-load-props', this.windows[this.windows.length - 1]);
+    }
+  }, {
+    key: "onLoad",
+    value: function onLoad(_, d) {
+      var windowID = d.windowID,
+          data = d.data;
+      var newWindow = new BrowserWindow({
+        show: false,
+        frame: false,
+        webPreferences: {
+          webSecurity: false,
+          enableRemoteModule: true,
+          nodeIntegration: true,
+          contextIsolation: false,
+          nativeWindowOpen: true,
+          nodeIntegrationInWorker: true
+        },
+        autoHideMenuBar: true
+      });
+      newWindow.maximize();
+      newWindow.show();
+      var closeEvent = windowID + '-close',
+          minimizeEvent = windowID + '-minimize',
+          maximizeEvent = windowID + '-maximize';
+      newWindow.loadURL('http://localhost:3000/project_window');
+      this.windows.push({
+        "package": data,
+        pageID: windowID,
+        closeEvent: closeEvent,
+        minimizeEvent: minimizeEvent,
+        maximizeEvent: maximizeEvent
+      });
+      console.trace('HERE');
+      ipcMain.on(minimizeEvent, function () {
+        newWindow.minimize();
+      });
+      ipcMain.on(maximizeEvent, function () {
+        newWindow.maximize();
+      });
+      ipcMain.on(closeEvent, function () {
+        newWindow.close();
+      });
+    }
+  }, {
     key: "listen",
     value: function listen() {
-      var _this = this;
-
       ipcMain.on('get-current-load', /*#__PURE__*/function () {
         var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee(event) {
           var load;
@@ -19495,10 +19558,9 @@ var EventsWrapper = /*#__PURE__*/function () {
 
                 case 2:
                   load = _context.sent;
-                  console.log('HERE');
                   event.sender.send('current-load', load);
 
-                case 5:
+                case 4:
                 case "end":
                   return _context.stop();
               }
@@ -19510,35 +19572,7 @@ var EventsWrapper = /*#__PURE__*/function () {
           return _ref.apply(this, arguments);
         };
       }());
-      ipcMain.on('create-project-window', function (_, d) {
-        var windowID = d.windowID,
-            data = d.data,
-            channel = d.channel,
-            closeEvent = d.closeEvent;
-        var childWindow = new BrowserWindow({
-          parent: _this.mainWindow,
-          width: 700,
-          height: 400,
-          webPreferences: {
-            webSecurity: false,
-            enableRemoteModule: true,
-            nodeIntegration: true,
-            contextIsolation: false,
-            nativeWindowOpen: true,
-            nodeIntegrationInWorker: true
-          },
-          resizable: false,
-          frame: false,
-          autoHideMenuBar: true
-        });
-        childWindow.loadURL('http://localhost:3000/project_window');
-        childWindow.webContents.send(channel, data);
-        _this.windows[windowID] = childWindow;
-        ipcMain.on(closeEvent, function () {
-          console.log('CLOSING');
-          childWindow.close();
-        });
-      });
+      ipcMain.on('create-project-window', this.onLoadPage);
     }
   }]);
 
@@ -19784,9 +19818,9 @@ var createWindow = function createWindow() {
     });
   });
   var mainWindow = new BrowserWindow({
-    show: false,
-    title: "Projection Engine",
-    // frame: false,
+    width: 1024,
+    height: 768,
+    frame: false,
     webPreferences: {
       webSecurity: false,
       enableRemoteModule: true,
@@ -19795,11 +19829,8 @@ var createWindow = function createWindow() {
       nativeWindowOpen: true,
       nodeIntegrationInWorker: true
     },
-    autoHideMenuBar: true,
-    icon: __webpack_require__.ab + "L.png"
+    autoHideMenuBar: true
   });
-  mainWindow.maximize();
-  mainWindow.show();
   mainWindow.loadURL('http://localhost:3000/main_window');
   var wrapper = new _events_EventsWrapper__WEBPACK_IMPORTED_MODULE_1__["default"](mainWindow);
   wrapper.listen();

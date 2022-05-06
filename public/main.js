@@ -19,9 +19,10 @@ const createWindow = () => {
     })
 
     const mainWindow = new BrowserWindow({
-        show: false,
-        title: "Projection Engine",
-        // frame: false,
+
+        width: 1024,
+        height: 768,
+        frame: false,
         webPreferences: {
             webSecurity: false,
             enableRemoteModule: true,
@@ -31,11 +32,9 @@ const createWindow = () => {
             nodeIntegrationInWorker: true,
 
         },
-        autoHideMenuBar: true,
-        icon: __dirname + '/L.png',
+        autoHideMenuBar: true
     });
-    mainWindow.maximize();
-    mainWindow.show();
+
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
 

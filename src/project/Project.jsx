@@ -25,11 +25,10 @@ import handleTabChange from "./utils/handleTabChange";
 import COMPONENTS from "./engine/templates/COMPONENTS";
 import MinimalBlueprintView from "./views/blueprints/scripts/MinimalBlueprintView";
 import LoaderProvider from "../components/loader/LoaderProvider";
-import {useParams} from "react-router-dom";
 
 
-export default function Project() {
-    const {id} = useParams()
+
+export default function Project({id, meta}) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const alert = useContext(AlertProvider)
     const setAlert = ({type, message}) => {
@@ -233,7 +232,7 @@ export default function Project() {
                 <QuickAccessProvider.Provider value={quickAccess}>
                     <div className={styles.wrapper}>
                         <Preferences serializer={serializer}/>
-                        <GlobalOptions engine={engine} setAlert={setAlert} save={serializer.save} quickAccess={quickAccess}/>
+                        {/*<GlobalOptions engine={engine} setAlert={setAlert} save={serializer.save} quickAccess={quickAccess}/>*/}
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
                                 handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)

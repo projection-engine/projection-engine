@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import '../styles/globals.css'
 import {Button, Fabric} from "@f-ui/core";
@@ -7,16 +7,30 @@ import ThemeProvider from "../project/hooks/ThemeProvider";
 import useGlobalOptions from "../project/hooks/useGlobalOptions";
 import useLoader from "../components/loader/useLoader";
 import LoaderProvider from "../components/loader/LoaderProvider";
-import {CLOSE_CHANNEL} from "../home/openProject";
+import Frame from "../components/frame/Frame";
+import Project from "./Project";
 
 const {ipcRenderer} = window.require('electron')
+
+// {
+//     package,
+//     pageID,
+//     closeEvent,
+//     minimizeEvent,
+//     maximizeEvent
+// }
 
 function EntryPoint() {
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
+    const [project, setProject] = useState()
+    const [events, setEvents] = useState({})
+
     useEffect(() => {
-        ipcRenderer.on('project-load', (event, data) => {
-            console.log('EH')
+        ipcRenderer.send('load-page')
+        ipcRenderer.on('page-load-props', (ev, data) => {
+            setProject(data.package)
+            setEvents(data)
         })
     }, [])
 
@@ -32,14 +46,12 @@ function EntryPoint() {
         }}
         className={[styles.wrapper, global.dark ? styles.dark : styles.light].join(' ')}
     >
+        <Frame options={[]} hasLogo={true} pageInfo={events} label={project?.meta?.name}/>
         <LoaderProvider.Provider value={loader}>
             <ThemeProvider.Provider value={{
                 ...global, themeClass: global.dark ? styles.dark : styles.light
             }}>
-                <Button onClick={() => ipcRenderer.send(CLOSE_CHANNEL)}>
-                    CLOSE
-                </Button>
-
+                {project ? <Project id={project.id} meta={project.meta}/> : null}
             </ThemeProvider.Provider>
         </LoaderProvider.Provider>
     </Fabric>)
