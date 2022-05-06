@@ -1,6 +1,6 @@
 import {useContext, useEffect, useMemo, useState} from "react";
 
-import useEngineEssentials, {ENTITY_ACTIONS} from "./useEngineEssentials";
+import useEngineEssentials, {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import Entity from "../../../engine/basic/Entity";
 
 

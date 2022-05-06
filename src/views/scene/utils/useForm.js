@@ -8,7 +8,7 @@ import MeshComponent from "../forms/MeshComponent";
 
 import styles from '../styles/Scene.module.css'
 import CubeMapComponent from "../forms/CubeMapComponent";
-import {ENTITY_ACTIONS} from "../../../pages/project/hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import Transformation from "../../../engine/instances/Transformation";
 import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";

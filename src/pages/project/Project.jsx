@@ -7,7 +7,7 @@ import Preferences from "../../components/preferences/Preferences";
 import GlobalOptions from "../../components/options/GlobalOptions";
 import Tabs from "../../components/tabs/Tabs";
 import ProjectLoader from "./workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "./hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import useSerializer from "./hooks/useSerializer";
 
 import useEditorEngine from "./hooks/useEditorEngine";

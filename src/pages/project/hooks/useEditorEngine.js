@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useState} from "react";
 import EditorEngine from "../../../engine/editor/EditorEngine";
-import useEngineEssentials, {ENTITY_ACTIONS} from "./useEngineEssentials";
+import useEngineEssentials, {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";

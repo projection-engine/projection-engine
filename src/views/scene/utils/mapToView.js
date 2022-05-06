@@ -1,7 +1,7 @@
 import getElementIcon from "./getElementIcon";
 import getElementType from "./getElementType";
 import React from "react";
-import {ENTITY_ACTIONS} from "../../../pages/project/hooks/useEngineEssentials";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 
 export default function mapToView(current, entities, setSelected, engine, setAllHidden, isBP) {
     const children = entities.filter(f => f.linkedTo === current.id)
