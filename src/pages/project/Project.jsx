@@ -166,7 +166,7 @@ export default function Project() {
                 />
             )
     }
-    console.log(filesLoaded)
+
     const openTab = useCallback((fileID, fileName) => {
         const found = filesLoaded.find(f => {
             return f.registryID === fileID

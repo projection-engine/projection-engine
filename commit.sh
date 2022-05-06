@@ -13,6 +13,9 @@ case $TYPE in
         2)
           TYPE="[FEATURE] - "
           ;;
+        3)
+          TYPE="[OPTIMIZATION] - "
+          ;;
         *)
           TYPE="[MIX] - "
           ;;
