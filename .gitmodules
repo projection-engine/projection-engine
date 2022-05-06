@@ -2,17 +2,17 @@
 	path = src/components
 	url = git@github.com:projection-engine/components.git
 [submodule "src/views/material"]
-	path = src/views/blueprints
+	path = src/project/views/blueprints
 	url = git@github.com:projection-engine/material.git
 [submodule "src/views/files"]
-	path = src/views/files
+	path = src/project/views/file
 	url = git@github.com:projection-engine/files.git
 [submodule "src/services/engine"]
-	path = src/engine
+	path = src/project/engine
 	url = git@github.com:projection-engine/engine.git
 [submodule "src/home"]
 	path = src/pages/home/issues
 	url = git@github.com:projection-engine/feedback-github-integration.git
 [submodule "src/builders/web"]
-	path = src/builders/web
+	path = src/project/builder/web
 	url = git@github.com:projection-engine/builder-web.git

@@ -30,7 +30,7 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
-cd ../engine
+cd ../project/engine
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
@@ -52,7 +52,7 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
-cd ../../../
+cd ../../../../
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha

@@ -9,7 +9,7 @@ module.exports = {
                     config: './webpack.renderer.config.js',
                     entryPoints: [
                         {
-                            html: './src/index.html',
+                            html: './src/home.html',
                             js: './src/renderer.ts',
                             name: 'main_window',
                             preload: {

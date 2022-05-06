@@ -1,0 +1,45 @@
+.wrapper{
+    width: clamp(250px, 25%, 300px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    position: sticky;
+    top: 0;
+}
+
+.button{
+
+
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+
+
+    font-weight: 600;
+
+    background: transparent;
+    border: none;
+    border-left: transparent 2px solid;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: .9rem;
+    color: var(--fabric-color-tertiary) !important;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.button:hover, .button[data-highlight = 'true']{
+    border-left-color: #0095ff;
+    border-radius: 0 5px 5px 0 ;
+}
+
+
+.button[ data-variant = '3']{
+    padding-left: 32px;
+    font-size: .8rem;
+}
+

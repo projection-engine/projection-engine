@@ -1,0 +1,369 @@
+
+.wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(32px, 10%, 128px);
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 8px 0 35% 10%;
+
+}
+
+.article {
+    display: grid;
+    width: 100%;
+}
+
+.quote {
+    background: var(--fabric-background-tertiary) !important;
+    border-radius: 0 5px 5px 0;
+
+    padding: 8px;
+    margin: 8px auto;
+    width: calc(100% - 16px);
+    max-height: 25vh;
+    overflow-y: auto;
+    border: var(--fabric-border-primary) 1px solid;
+    border-left: #0095ff 2px solid;
+    color: var(--fabric-color-primary);
+}
+
+.quote[ data-layer = 'true' ] {
+    border-color: var(--fabric-border-secondary);
+    border-left-color: #0095ff;
+}
+
+.article > * {
+    font-family: "Roboto" !important;
+    max-width: 100%;
+    width: 100%;
+
+    overflow-x: hidden;
+    /*margin: 0;*/
+    white-space: pre-wrap;
+
+}
+
+.article > *[dir='auto'] {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+    gap: 8px;
+    justify-content: flex-start;
+    white-space: pre-wrap;
+}
+
+.article > *[align = 'center'] {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    align-content: center;
+    gap: 8px;
+    justify-content: center;
+    white-space: pre-wrap;
+}
+
+.divider {
+
+    width: 100%;
+    margin: 8px auto;
+    height: 1px;
+    background: var(--fabric-border-secondary);
+    border-radius: 2px;
+
+}
+
+.list {
+    width: 100%;
+    margin: 0;
+
+    line-height: .85rem;
+    font-size: .8rem;
+    overflow: visible;
+    color: var(--fabric-color-secondary);
+}
+
+
+.nestedList {
+    font-size: .75rem;
+    color: var(--fabric-color-tertiary) !important;
+}
+
+.paragraph {
+    color: var(--fabric-color-tertiary);
+    width: 100%;
+    display: inline-block;
+
+    max-width: 100%;
+    /*display: flex;*/
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /*margin: 1rem 0 ;*/
+    /*padding: 0;*/
+
+    font-size: .9rem;
+
+}
+
+.image {
+    width: fit-content;
+    height: fit-content;
+
+}
+
+.tableWrapper {
+    border-collapse: collapse;
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.tableRow:nth-child(even) {
+    color: var(--fabric-color-tertiary);
+    background-color: var(--fabric-background-secondary);
+}
+
+.tableRow:nth-child(odd) {
+    color: var(--fabric-color-secondary);
+    /*background-color: var(--fabric-background-secondary);*/
+}
+
+.tableContent {
+    /*color: var(--fabric-color-tertiary);*/
+    border: 1px solid var(--fabric-border-secondary);
+    text-align: left;
+    padding: 8px;
+
+}
+
+.header {
+
+    width: 100%;
+    position: relative;
+    color: var(--fabric-color-primary);
+    overflow: visible;
+    margin: 4px 0;
+}
+
+.header:is(h1) {
+    font-size: 1.2rem;
+}
+
+.header:is(h2) {
+    font-size: 1.05rem;
+}
+
+.header:is(h3) {
+    font-size: .95rem;
+}
+
+.header:is(h4) {
+    font-size: .85rem;
+}
+
+.header[data-variant='1']::after, .header[data-variant='2']::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+
+
+    background-color: var(--fabric-border-secondary);
+
+}
+
+.link {
+
+    text-decoration: none;
+    color: #0095ff;
+    font-weight: bold;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/*CODE*/
+.inlineCode {
+
+    padding: 0 5px;
+    width: fit-content;
+    position: relative;
+    overflow: hidden;
+
+    color: #ff5555;
+    font-size: .85rem;
+}
+
+.inlineCode::after {
+    content: '';
+    position: absolute;
+    background: #ff5555;
+    opacity: .1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.code {
+
+    margin: 0;
+    font-family: Consolas, serif;
+    font-weight: normal;
+
+    position: relative;
+
+    font-size: 14px;
+    color: var(--fabric-color-secondary);
+    border-radius: 5px;
+    padding: 5px 0 5px 5px;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /*tab-size: 1rem;*/
+
+    overflow: auto;
+    max-height: 35vh;
+    background: var(--fabric-background-secondary);
+    border: var(--fabric-border-secondary) 1px solid;
+
+}
+
+.tag {
+    font-weight: bold;
+    color: #FFA900;
+}
+
+.attr {
+    font-weight: normal;
+    color: var(--fabric-color-tertiary);
+}
+
+.attrValue {
+    color: var(--fabric-color-secondary);
+    font-weight: normal !important;
+}
+
+
+.keyword {
+    font-weight: 600;
+    color: #FF5500;
+}
+
+.domKeyword {
+    font-weight: 600;
+    color: #7209b7;
+}
+
+.strings {
+    font-weight: bold;
+    color: #6a994e !important;
+}
+
+.lineEnumeration {
+
+    all: unset;
+    user-select: none;
+
+    position: relative;
+    width: 100%;
+}
+
+.lineEnumeration::after {
+    user-select: none;
+    content: attr(data-index);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--fabric-color-quaternary);
+}
+
+.lineEnumeration:hover::after, .lineEnumeration:focus::after {
+    color: var(--fabric-color-primary);
+}
+
+.lineEnumeration:focus {
+    outline: var(--fabric-border-secondary) 2px solid;
+}
+
+.copyButton {
+    position: absolute;
+
+    z-index: 5;
+    top: 8px;
+    right: 8px;
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 5px;
+
+    background: var(--fabric-background-secondary);
+    border: var(--fabric-border-secondary) 1px solid;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 150ms linear;
+    color: var(--fabric-color-secondary);
+    cursor: pointer;
+}
+
+.copyButton:active {
+    background: var(--fabric-background-quaternary);
+    transform: scale(.98);
+}
+
+.copyButton:hover {
+    border-color: #0095ff;
+    color: #0095ff;
+}
+
+.copyButton > * {
+    font-size: 1.3rem !important;
+}
+
+.successButton {
+    border-color: #38b000;
+    color: #38b000;
+    outline: #38b000 1px solid;
+
+
+}
+
+.successButton::after {
+    content: 'Copied';
+    position: absolute;
+    z-index: 999;
+
+    left: -8px;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    background: rgba(0, 0, 0, .75);
+    padding: 8px;
+    border-radius: 5px;
+    color: white;
+
+
+}
+
+
+.checkbox {
+    width: 15px;
+    height: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    border-radius: 3px;
+
+    background: var(--fabric-background-tertiary);
+    border: var(--fabric-border-secondary) 1px solid;
+}

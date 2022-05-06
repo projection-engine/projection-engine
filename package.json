@@ -54,9 +54,14 @@
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
                 {
-                  "html": "./public/index.html",
-                  "js": "./public/renderer.js",
+                  "html": "./public/entry/home.html",
+                  "js": "./public/entry/home.js",
                   "name": "main_window"
+                },
+                {
+                  "html": "./public/entry/project.html",
+                  "js": "./public/entry/project.js",
+                  "name": "project_window"
                 }
               ]
             }
@@ -106,7 +111,7 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.3.0",
     "seed-random": "^2.2.0",
-    "systeminformation": "^5.11.3",
+    "systeminformation": "^5.11.14",
     "uuid": "^8.3.2"
   }
 }
