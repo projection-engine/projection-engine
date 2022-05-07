@@ -5,8 +5,6 @@
     overflow: hidden;
     justify-items: center;
 
-
-
     height: 100%;
     max-width: 55px;
     min-width: 55px;
@@ -19,8 +17,6 @@
 .wrapper[data-extended = 'true'] {
     min-width: 15%;
     max-width: 15%;
-
-
 }
 
 .logoWrapper {

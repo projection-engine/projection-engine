@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import '../styles/globals.css'
 import {Fabric} from "@f-ui/core";
@@ -8,14 +8,9 @@ import ThemeProvider from "../project/hooks/ThemeProvider";
 import useGlobalOptions from "../project/hooks/useGlobalOptions";
 
 import Home from "./Home";
-import Project from "../project/Project";
-
-import {HashRouter, Route, Routes} from "react-router-dom";
 import useLoader from "../components/loader/useLoader";
 import LoaderProvider from "../components/loader/LoaderProvider";
-import openProject from "./openProject";
 import Frame from "../components/frame/Frame";
-import LOAD_CHANNEL from "./LOAD_CHANNEL";
 
 function EntryPoint() {
     const global = useGlobalOptions()

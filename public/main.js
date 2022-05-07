@@ -1,4 +1,6 @@
-import EventsWrapper from "./events/EventsWrapper";
+import WindowEvents from "./events/WindowEvents";
+import FileSystemEvents from "./events/FileSystemEvents";
+
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 
 if (require('electron-squirrel-startup')) {
@@ -17,30 +19,10 @@ const createWindow = () => {
             }
         })
     })
+    const windowEvents = new WindowEvents(),
+        projectEvents = new FileSystemEvents()
 
-    const mainWindow = new BrowserWindow({
-
-        width: 1024,
-        height: 768,
-        frame: false,
-        webPreferences: {
-            webSecurity: false,
-            enableRemoteModule: true,
-            nodeIntegration: true,
-            contextIsolation: false,
-            nativeWindowOpen: true,
-            nodeIntegrationInWorker: true,
-
-        },
-        autoHideMenuBar: true
-    });
-
-    mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-
-    const wrapper = new EventsWrapper(mainWindow)
-    wrapper.listen()
-};
+}
 
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {

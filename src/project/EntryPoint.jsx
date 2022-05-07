@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import '../styles/globals.css'
-import {Button, Fabric} from "@f-ui/core";
+import {Fabric} from "@f-ui/core";
 import styles from '../styles/App.module.css'
 import ThemeProvider from "../project/hooks/ThemeProvider";
 import useGlobalOptions from "../project/hooks/useGlobalOptions";
 import useLoader from "../components/loader/useLoader";
 import LoaderProvider from "../components/loader/LoaderProvider";
-import Frame from "../components/frame/Frame";
 import Project from "./Project";
 
 const {ipcRenderer} = window.require('electron')
@@ -46,12 +45,11 @@ function EntryPoint() {
         }}
         className={[styles.wrapper, global.dark ? styles.dark : styles.light].join(' ')}
     >
-        <Frame options={[]} hasLogo={true} pageInfo={events} label={project?.meta?.name}/>
         <LoaderProvider.Provider value={loader}>
             <ThemeProvider.Provider value={{
                 ...global, themeClass: global.dark ? styles.dark : styles.light
             }}>
-                {project ? <Project id={project.id} meta={project.meta}/> : null}
+                {project ? <Project events={events} id={project.id} meta={project.meta}/> : null}
             </ThemeProvider.Provider>
         </LoaderProvider.Provider>
     </Fabric>)

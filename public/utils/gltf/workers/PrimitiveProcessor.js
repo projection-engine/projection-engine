@@ -1,5 +1,6 @@
 import {vec3} from "gl-matrix";
-import groupInto from "../../../../groupInto";
+import groupInto from "../utils/groupInto";
+
 
 export default class PrimitiveProcessor {
     static computeNormals(indices, vertices) {

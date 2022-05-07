@@ -1,5 +1,4 @@
-import React from 'react'
-import {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from 'react'
 import useCopyToClipboard from "./useCopyToClipboard";
 import markdownParser from "../utils/markdown";
 import styles from "../styles/Markdown.module.css";

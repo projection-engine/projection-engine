@@ -1,24 +1,25 @@
-import groupInto from "../../../groupInto";
+import groupInto from "./utils/groupInto";
 import {getPrimitives, nodeParser} from "./utils/glTFUtils";
 import GLTFBuffer from "./workers/GLTFBuffer";
 import Accessor from "./workers/Accessor";
 import PrimitiveProcessor from "./workers/PrimitiveProcessor";
 
 export default class GLTF {
-
     static async parseGLTF(data, basePath, options) {
         try {
             let parsed = JSON.parse(data)
             const buffers = parsed.buffers.map(b => {
                 return new GLTFBuffer(b, basePath)
             })
+
             await Promise.all(buffers.map(b => b.initialize()))
+
             parsed.buffers = null
 
-            const accessors = parsed.accessors.map(a => {
-                return new Accessor(a, buffers, parsed.bufferViews)
-            })
+
+            const accessors = parsed.accessors.map(a => new Accessor(a, buffers, parsed.bufferViews))
             const mainScene = parsed.scenes[0]
+
             let sceneNodes = parsed.nodes
                 .map((n, index) => {
                     if (mainScene.nodes.includes(index))
@@ -36,13 +37,15 @@ export default class GLTF {
                 textures: parsed.textures,
                 images: parsed.images
             }
-
             // const parsedMaterials = await Promise.all(parsed.materials ? parsed.materials.map(m => {
             //     return materialParser(basePath, m, parsed.textures, parsed.images)
             // }) : [])
+
+            console.log(parsed)
             let meshes = parsed.meshes.filter((_, index) => {
                 return sceneNodes.find(n => n.meshIndex === index) !== undefined
             }).map(m => getPrimitives(m, parsed.materials)[0])
+            console.log(parsed, meshes)
             let files = []
             sceneNodes.forEach(m => {
                 const [min, max] = GLTF.computeBoundingBox(accessors[meshes[m.meshIndex]?.vertices].data)
@@ -65,12 +68,12 @@ export default class GLTF {
                     }
                 })
             })
-
+            console.log(files)
             return {nodes: files, materials: []}
         } catch (error) {
+            console.trace(error)
             return {}
         }
-
     }
 
     static computeBoundingBox(vertices) {

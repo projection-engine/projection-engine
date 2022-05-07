@@ -1,4 +1,5 @@
 import React from 'react'
+
 export default function removeParts(toRemove, str, id, type) {
     const split = str.split('\n')
     toRemove.forEach((t, i) => {

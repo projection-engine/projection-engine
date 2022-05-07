@@ -1,10 +1,7 @@
 import {mat4, quat} from "gl-matrix";
-import Transformation from "../../../../../engine/instances/Transformation";
-import ImageProcessor from "../../../../../engine/utils/image/ImageProcessor";
-import ROTATION_TYPES from "../../../../../engine/editor/gizmo/ROTATION_TYPES";
 
-const fs = window.require('fs')
-const path = window.require('path')
+const fs = require('fs')
+const path = require('path')
 
 
 export function materialParser(basePath, material, textures, images) {
@@ -16,15 +13,13 @@ export function materialParser(basePath, material, textures, images) {
         // }
         // TODO - EMISSIVE
         let promises = []
-
-
         if (material.pbrMetallicRoughness) {
             if (material.pbrMetallicRoughness.baseColorTexture)
                 promises.push(loadTexture('albedo', basePath, material.pbrMetallicRoughness.baseColorTexture, textures, images))
             else if (material.pbrMetallicRoughness.baseColorFactor)
                 promises.push(new Promise(async resolve => resolve({
                     key: 'albedo',
-                    data: await ImageProcessor.colorToImage(material.pbrMetallicRoughness.baseColorFactor)
+                    data: material.pbrMetallicRoughness.baseColorFactor
                 })))
 
             if (material.pbrMetallicRoughness.metallicRoughnessTexture) {
@@ -36,12 +31,12 @@ export function materialParser(basePath, material, textures, images) {
                 if (m)
                     promises.push(new Promise(async resolve => resolve({
                         key: 'metallic',
-                        data: await ImageProcessor.colorToImage([m, m, m, 1])
+                        data: m
                     })))
                 if (r)
                     promises.push(new Promise(async resolve => resolve({
                         key: 'roughness',
-                        data: await ImageProcessor.colorToImage([r, r, r, 1])
+                        data: m
                     })))
             }
         }
@@ -97,13 +92,14 @@ function loadTexture(key, basePath, texture, textures, images, channels) {
 
             if (file) {
                 file = `data:image/${imgURI.uri.split('.').pop()};base64, ` + file
-                if (channels !== undefined && channels.length === 4)
-                    ImageProcessor.byChannels(channels, file)
-                        .then(f => {
-                            resolve({key, data: f})
-                        })
-                        .catch(() => resolve({key}))
-                else
+                // if (channels !== undefined && channels.length === 4)
+                    // TODO - SHADER THAT LINKS CHANNELS
+                    // ImageProcessor.byChannels(channels, file)
+                    //     .then(f => {
+                    //         resolve({key, data: f})
+                    //     })
+                    //     .catch(() => resolve({key}))
+                // else
                     resolve({key, data: file})
             } else
                 resolve({key})
@@ -138,7 +134,10 @@ export function nodeParser(node, allNodes, parentTransform) {
     if (node.matrix) {
         parsedNode = {
             ...parsedNode,
-            ...Transformation.extractTransformations(node.matrix)
+            translation: [0,0,0],
+            rotationQuat: [0,0,0,1],
+            scaling: [1,1,1],
+            baseTransformationMatrix: node.matrix
         }
         transformationMatrix = node.matrix
     } else {
@@ -157,7 +156,7 @@ export function nodeParser(node, allNodes, parentTransform) {
 
         parsedNode.scaling = scale
         parsedNode.translation = translation
-        transformationMatrix = Transformation.transform(parsedNode.translation, parsedNode.rotation, parsedNode.scaling, ROTATION_TYPES.GLOBAL)
+        transformationMatrix = mat4.fromRotationTranslationScale([], parsedNode.rotation, parsedNode.translation, parsedNode.scaling)
     }
 
 
@@ -169,13 +168,14 @@ export function nodeParser(node, allNodes, parentTransform) {
         )
         parsedNode = {
             ...parsedNode,
-            ...Transformation.extractTransformations(transformationMatrix)
+            translation: [0,0,0],
+            rotationQuat: [0,0,0,1],
+            scaling: [1,1,1],
+            baseTransformationMatrix: transformationMatrix
         }
     }
     children = children
-        .map(child => {
-            return nodeParser(child, allNodes, transformationMatrix)
-        })
+        .map(child => nodeParser(child, allNodes, transformationMatrix))
         .flat()
 
     res.push(...children)

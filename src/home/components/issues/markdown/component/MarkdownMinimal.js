@@ -1,8 +1,7 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useRef} from 'react'
 
 import PropTypes from "prop-types";
 import styles from '../styles/Markdown.module.css'
-import Navigation from "./Navigation";
 
 export default function MarkdownMinimal(props) {
     const ref = useRef()

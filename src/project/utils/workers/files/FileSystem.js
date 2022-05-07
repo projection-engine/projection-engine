@@ -1,11 +1,10 @@
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
 import TerrainWorker from "../TerrainWorker";
 
-import {v4 as uuidv4} from 'uuid';
-import glTFImporter from "./gltf/glTFImporter";
+import {v4, v4 as uuidv4} from 'uuid';
 import assimpImporter from "./fbx/assimpImporter";
-import {WebWorker} from "../../../engine/utils/WebWorker";
-import {lzwDecode, lzwEncode} from "./functions/lzString";
+import {lzwEncode} from "./functions/lzString";
+
 
 const fs = window.require('fs')
 const pathRequire = window.require('path')
@@ -14,21 +13,7 @@ function resolvePath(p) {
     return pathRequire.resolve(p)
 }
 
-function fetchData() {
-    self.addEventListener('message', (event) => {
-        const {pathName, type} = event.data
-        try {
-            fetch(pathName)
-                .then(t => {
-                    t.text().then(data => {
-                        self.postMessage({valid: true, data: type === 'json' ? JSON.parse(data) : data})
-                    }).catch(e => self.postMessage({valid: false}))
-                }).catch(e => self.postMessage({valid: false}))
-        } catch (e) {
-            self.postMessage({valid: false})
-        }
-    })
-}
+const {ipcRenderer} = window.require('electron')
 
 export default class FileSystem {
     constructor(projectID) {
@@ -66,32 +51,10 @@ export default class FileSystem {
     }
 
     async readFile(pathName, type) {
-
-        return new Promise(async resolve => {
-            try {
-                if (pathName.includes('.pimg')) {
-                    const worker = new WebWorker()
-                    const {data, valid} = await worker.createExecution({
-                        pathName: resolvePath(pathName),
-                        type
-                    }, fetchData.toString())
-                    resolve(data)
-                } else {
-                    fs.readFile(pathName, (e, res) => {
-                        try {
-                            let d = res.toString()
-                            if (pathName.includes('.mesh'))
-                                d = lzwDecode(d)
-                            resolve(type === 'json' ? JSON.parse(d) : d)
-                        } catch (e) {
-                            resolve(null)
-                        }
-                    })
-                }
-            } catch (e) {
-                resolve(null)
-            }
-
+        return await new Promise(resolve => {
+            const listenID = v4().toString()
+            ipcRenderer.once('read-file-'+listenID, (ev, data) => resolve(data))
+            ipcRenderer.send('read-file', {pathName, type, listenID})
         })
     }
 
@@ -121,7 +84,6 @@ export default class FileSystem {
         const currentPath = absolute ? pathName : (this._path + pathName)
         return new Promise(resolve => {
             fs.rm(currentPath, (err) => {
-
                 this.findRegistry(currentPath)
                     .then(rs => {
 
@@ -131,8 +93,6 @@ export default class FileSystem {
                             })
                         } else resolve()
                     })
-
-
             })
         })
     }
@@ -205,7 +165,14 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    glTFImporter(fs, resolvePath, newRoot, file, options, resolve, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
+                    await new Promise(resolve => {
+                        const listenID = v4().toString()
+                        ipcRenderer.once('import-gltf-'+listenID, (ev, data) =>{
+                            resolve(data)
+                        })
+                        ipcRenderer.send('import-gltf', {filePath: file.path,  newRoot, options, projectPath: this.path, listenID, fileName: file.name})
+                    })
+                    resolve()
                     break
                 case 'obj':
                 case 'fbx':
@@ -283,7 +250,6 @@ export default class FileSystem {
                 .then(() => {
                     resolve()
                 })
-
         })
     }
 
@@ -414,43 +380,20 @@ export default class FileSystem {
     }
 
     readRegistry() {
-        return new Promise(resolve => {
-            fs.readdir(this.path + '\\assetsRegistry\\', (e, res) => {
-                if (!e) {
-                    let promises = res.map(f => {
-                        return new Promise(resolve1 => {
-                            const registryPath = this.path + '\\assetsRegistry\\' + f
-                            fs.readFile(registryPath, (e, registryFile) => {
-                                if (!e)
-                                    try {
-                                        resolve1({
-                                            ...JSON.parse(registryFile.toString()),
-                                            registryPath
-                                        })
-                                    } catch (e) {
-                                        resolve1()
-                                    }
-                                else
-                                    resolve1()
-                            })
-                        })
-                    })
-
-                    Promise.all(promises).then(registryFiles => {
-                        resolve(registryFiles
-                            .filter(f => f !== undefined))
-                    })
-                } else
-                    resolve([])
+        return  new Promise(resolve => {
+            const listenID = v4().toString()
+            ipcRenderer.once('read-registry-'+listenID, (ev, data) => {
+                console.log(data)
+                resolve(data)
             })
+            ipcRenderer.send('read-registry', {pathName: this.path + '\\assetsRegistry\\', listenID})
         })
+
     }
 
     async rename(from, to) {
         const fromResolved = pathRequire.resolve(from)
-
         let newRegistry = await this.readRegistry()
-
         return new Promise(rootResolve => {
             fs.lstat(fromResolved, (er, stat) => {
                 if (stat !== undefined && stat.isDirectory())

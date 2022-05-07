@@ -1,13 +1,13 @@
-import useHotKeys  from "../../../hooks/useHotKeys";
-import GIZMOS from "../../../engine/editor/gizmo/GIZMOS";
-import {HISTORY_ACTIONS} from "../../../hooks/historyReducer";
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
-import cloneClass from "../../../engine/utils/cloneClass";
+import useHotKeys from "./useHotKeys";
+import GIZMOS from "../engine/editor/gizmo/GIZMOS";
+import {HISTORY_ACTIONS} from "./historyReducer";
+import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
+import cloneClass from "../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
 import {useState} from "react";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import TransformComponent from "../../../engine/components/TransformComponent";
-import KEYS from "../../../engine/templates/KEYS";
+import COMPONENTS from "../engine/templates/COMPONENTS";
+import TransformComponent from "../engine/components/TransformComponent";
+import KEYS from "../engine/templates/KEYS";
 
 export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])

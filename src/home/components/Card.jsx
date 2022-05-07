@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core";
 import {useContext, useMemo, useRef, useState} from "react";
 import logo from '../../static/logo.png'
-import {Link} from "react-router-dom";
-import LOAD_CHANNEL from "../../project/LOAD_CHANNEL";
 
 const KEYS = [
     {key: 'preview', type: 'image'},
@@ -87,13 +85,10 @@ export default function Card(props) {
                     </DropdownOptions>
                 </Dropdown>
 
-
                     <Button
-                        onClick={() => ipcRenderer.send('create-project-window', {
+                        onClick={() => ipcRenderer.send('switch-window', {
                             windowID: props.data.id,
                             data: props.data,
-                            channel: LOAD_CHANNEL,
-                            entryPoint: 'project',
                             hasMain: false
                         })}
                         variant={'filled'}

@@ -1,4 +1,6 @@
-const fs = window.require('fs')
+const fs = require('fs')
+const path = require('path')
+const atob = require('atob')
 export default class GLTFBuffer {
     constructor(data, basePath) {
         this.data = data
@@ -13,7 +15,7 @@ export default class GLTFBuffer {
             })
         else {
             return new Promise(resolve => {
-                fs.readFile(this.basePath + '\\' + this.data.uri, 'base64', (e, r) => {
+                fs.readFile(path.resolve(this.basePath + '\\' + this.data.uri), 'base64', (e, r) => {
                     this.data = this._getBufferData(r)
                     resolve()
                 })
@@ -21,7 +23,7 @@ export default class GLTFBuffer {
         }
     }
     _getBufferData(str) {
-        let byteCharacters = window.atob(str.replace('data:application/octet-stream;base64,', ''));
+        let byteCharacters = atob(str.replace('data:application/octet-stream;base64,', ''));
 
         let dv = new DataView(new ArrayBuffer(byteCharacters.length));
 

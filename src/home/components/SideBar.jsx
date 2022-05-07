@@ -1,5 +1,4 @@
 import styles from '../styles/SideBar.module.css'
-import logo from "../../static/logo.png";
 import {Button} from "@f-ui/core";
 import gitDark from "../../static/github/dark.svg";
 import gitLight from "../../static/github/light.svg";

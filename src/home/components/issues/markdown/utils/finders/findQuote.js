@@ -1,6 +1,4 @@
 import React from 'react'
-
-import styles from "../../styles/Markdown.module.css";
 import {QUOTE_REGEX} from "../regex";
 
 
