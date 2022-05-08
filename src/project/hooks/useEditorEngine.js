@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import EditorEngine from "../engine/editor/EditorEngine";
+import EditorEngine from "../engine-editor/EditorEngine";
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import useHistory from "./useHistory";
 import {HISTORY_ACTIONS} from "./historyReducer";
@@ -19,8 +19,6 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         gpu
     } = useEngineEssentials(id + '-canvas')
     const {returnChanges, forwardChanges, dispatchChanges} = useHistory(entities, dispatchEntities, setAlert)
-
-
     const renderer = useMemo(() => {
         if (gpu && canStart) {
             return new EditorEngine(id, gpu, {
@@ -66,7 +64,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
             })
     }
     useEffect(() => {
-        if (renderer && canStart) {
+        if (renderer && canStart && canRender) {
             renderer.cameraType = settings.cameraType
             renderer.gizmo = settings.gizmo
             renderer.camera.fov = settings.fov
@@ -82,6 +80,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         }
 
     }, [
+        canRender,
         canExecutePhysicsAnimation,
         selected, setSelected,
         materials, meshes, scripts,

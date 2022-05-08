@@ -47,6 +47,8 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         transformation.scaling = objLoaded.scaling
         transformation.rotation = objLoaded.rotation
         transformation.translation = objLoaded.translation
+        console.log(objLoaded)
+        transformation.baseTransformationMatrix = objLoaded.baseTransformationMatrix
 
         entity.components[COMPONENTS.MATERIAL] = new MaterialComponent(undefined, mesh.material)
         entity.components[COMPONENTS.MESH] = new MeshComponent(undefined, mesh.id)

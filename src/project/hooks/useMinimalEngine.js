@@ -4,14 +4,14 @@ import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials
 import Entity from "../engine/basic/Entity";
 
 
-import EditorEngine from "../engine/editor/EditorEngine";
+import EditorEngine from "../engine-editor/EditorEngine";
 import DirectionalLightComponent from "../engine/components/DirectionalLightComponent";
 
 import MeshComponent from "../engine/components/MeshComponent";
 import TransformComponent from "../engine/components/TransformComponent";
 import MeshInstance from "../engine/instances/MeshInstance";
 
-import CAMERA_TYPES from "../engine/editor/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "../engine-editor/camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/components/MaterialComponent";
 
 import {v4 as uuidv4} from 'uuid';
@@ -46,12 +46,12 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
             const promises = []
             if (initializeSphere)
                 promises.push(new Promise(async r => {
-                    const sphereMesh = await import('../engine/editor/assets/Sphere.json')
+                    const sphereMesh = await import('../engine-editor/assets/Sphere.json')
                     r(initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes))
                 }))
             if (loadAllMeshes)
                 promises.push(new Promise(async r => {
-                    const cubeData = await import('../engine/editor/assets/Cube.json')
+                    const cubeData = await import('../engine-editor/assets/Cube.json')
                     r(initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true))
                 }))
 

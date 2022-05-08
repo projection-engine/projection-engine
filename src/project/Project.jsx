@@ -90,15 +90,16 @@ export default function Project({id, meta, events}) {
                         <Preferences serializer={serializer}/>
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
+                                engine.setCanRender(true)
                                 handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                                 setFilesLoaded(prev => {
                                     const newD = [...prev]
-
                                     newD.splice(newTab, 1)
                                     return newD
                                 })
                             }}
                             onTabSwitch={(newTab, lastTab) => {
+
                                 if (newTab === 0)
                                     handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                             }}

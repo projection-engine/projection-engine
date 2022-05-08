@@ -1,8 +1,8 @@
-import CAMERA_TYPES from "../engine/editor/camera/CAMERA_TYPES";
-import GIZMOS from "../engine/editor/gizmo/GIZMOS";
+import CAMERA_TYPES from "../engine-editor/camera/CAMERA_TYPES";
+import GIZMOS from "../engine-editor/gizmo/GIZMOS";
 
 import useDirectState from "./useDirectState";
-import ROTATION_TYPES from "../engine/editor/gizmo/ROTATION_TYPES";
+import ROTATION_TYPES from "../engine-editor/gizmo/ROTATION_TYPES";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 
 export default function useSettings() {

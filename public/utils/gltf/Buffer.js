@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const atob = require('atob')
-export default class GLTFBuffer {
+export default class Buffer {
     constructor(data, basePath) {
         this.data = data
         this.basePath = basePath

@@ -1,7 +1,8 @@
-import glTFImporter from "../utils/gltf/glTFImporter";
-import {v4 as uuidv4} from "uuid";
 
-const {BrowserWindow,dialog, ipcMain} = require('electron')
+import {v4 as uuidv4} from "uuid";
+import glTF from "../utils/gltf/glTF";
+
+const {BrowserWindow, dialog, ipcMain} = require('electron')
 const fs = require('fs')
 const path = require('path')
 const si = require("systeminformation");
@@ -19,7 +20,8 @@ async function readFile(event, {pathName, type}) {
     })
 
 }
-async function createRegistryEntry(pathName, projectPath){
+
+async function createRegistryEntry(pathName, projectPath) {
     const fID = uuidv4()
     const pathRe = path.resolve(projectPath + '\\assets\\')
     const p = path.resolve(projectPath + '\\assets\\' + pathName).replace(pathRe, '')
@@ -36,17 +38,19 @@ async function createRegistryEntry(pathName, projectPath){
             })
     })
 }
+
 export default class FileSystemEvents {
     constructor() {
         ipcMain.on('open-file-dialog', (ev, {listenID}) => {
-            const properties = ['openFile','multiSelections']
-            dialog.showOpenDialog({properties, filters: [{name: 'Assets', extensions: ['jpg', 'png', 'jpeg', 'gltf', 'hdri']}]
+            const properties = ['openFile', 'multiSelections']
+            dialog.showOpenDialog({
+                properties, filters: [{name: 'Assets', extensions: ['jpg', 'png', 'jpeg', 'gltf', 'hdri']}]
             })
                 .then(result => {
-                    if(!result.canceled)
-                        ev.sender.send('dialog-response-'+listenID, result.filePaths)
+                    if (!result.canceled)
+                        ev.sender.send('dialog-response-' + listenID, result.filePaths)
                     else
-                        ev.sender.send('dialog-response-'+listenID, [])
+                        ev.sender.send('dialog-response-' + listenID, [])
                 })
                 .catch(err => console.log(err))
         })
@@ -93,14 +97,13 @@ export default class FileSystemEvents {
         })
 
         // IMPORT
-        ipcMain.on('import-gltf', async (event, {filePath,  newRoot, options, projectPath, fileName, listenID}) => {
-            fs.readFile(path.resolve(filePath),async (e, data) => {
-                if(!e){
+        ipcMain.on('import-gltf', async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
+            fs.readFile(path.resolve(filePath), async (e, data) => {
+                if (!e) {
                     const file = data.toString()
-                    await glTFImporter(newRoot, file, options, p => createRegistryEntry(p, projectPath), projectPath, filePath, fileName)
+                    await glTF(newRoot, file, options, p => createRegistryEntry(p, projectPath), projectPath, filePath, fileName)
                     event.sender.send('import-gltf-' + listenID, undefined)
-                }
-                else
+                } else
                     event.sender.send('import-gltf-' + listenID, undefined)
             })
         })

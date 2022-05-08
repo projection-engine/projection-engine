@@ -1,5 +1,5 @@
 import useHotKeys from "./useHotKeys";
-import GIZMOS from "../engine/editor/gizmo/GIZMOS";
+import GIZMOS from "../engine-editor/gizmo/GIZMOS";
 import {HISTORY_ACTIONS} from "./historyReducer";
 import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import cloneClass from "../engine/utils/cloneClass";
