@@ -15,10 +15,9 @@ export default class EditorEngine extends Renderer {
     gizmo
     cameraData = {}
 
-    constructor(id, gpu, resolution, systems) {
+    constructor(gpu, resolution, systems) {
         super(gpu, resolution, systems);
-        this.id = id
-        this.cameraData = new EditorCameras(id, CAMERA_TYPES.SPHERICAL, gpu.canvas)
+        this.cameraData = new EditorCameras(CAMERA_TYPES.SPHERICAL, gpu.canvas)
         this.initialized = true
         this.editorSystem = new EditorWrapper(gpu)
     }

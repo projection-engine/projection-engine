@@ -20,7 +20,7 @@ export default class GizmoSystem extends System {
 
         const canvas = gpu.canvas
         if (gpu.canvas.id) {
-            const targetID = canvas.id.replace('-canvas', '-gizmo')
+            const targetID = canvas.id + '-gizmo'
             if (document.getElementById(targetID) !== null)
                 this.renderTarget = document.getElementById(targetID)
             else {

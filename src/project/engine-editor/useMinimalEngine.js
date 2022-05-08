@@ -1,86 +1,77 @@
-import {useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import Entity from "../engine/basic/Entity";
-
-
-import EditorEngine from "../engine-editor/EditorEngine";
 import DirectionalLightComponent from "../engine/components/DirectionalLightComponent";
 
 import MeshComponent from "../engine/components/MeshComponent";
 import TransformComponent from "../engine/components/TransformComponent";
 import MeshInstance from "../engine/instances/MeshInstance";
 
-import CAMERA_TYPES from "../engine-editor/camera/CAMERA_TYPES";
+import CAMERA_TYPES from "./camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/components/MaterialComponent";
-
-import {v4 as uuidv4} from 'uuid';
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import QuickAccessProvider from "./QuickAccessProvider";
-import SYSTEMS from "../engine/templates/SYSTEMS";
+import QuickAccessProvider from "../hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
-const id = uuidv4().toString()
 export default function useMinimalEngine(initializeSphere, centerOnSphere, loadAllMeshes) {
     const {
         meshes, setMeshes,
         materials, setMaterials,
         entities, dispatchEntities,
-        gpu
-    } = useEngineEssentials(id + '-canvas')
+    } = useEngineEssentials()
+    const {gpu, renderer, target} = useContext(GPUContextProvider)
     const quickAccess = useContext(QuickAccessProvider)
-    const [canRender, setCanRender] = useState(true)
+    const [initialized, setInitialized] = useState(false)
     const load = useContext(LoaderProvider)
 
-    const renderer = useMemo(() => {
-        if (gpu) {
-            const r = new EditorEngine(id, gpu, {w: window.screen.width, h: window.screen.height}, [SYSTEMS.SHADOWS])
+    useEffect(() => {
+        const lightEntity = new Entity(undefined, 'light')
+        const light = new DirectionalLightComponent()
+        light.direction = [0, 100, 100]
+        light.shadowMap = false
+        lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
 
-            const lightEntity = new Entity(undefined, 'light')
-            const light = new DirectionalLightComponent()
-            light.direction = [0, 100, 100]
-            light.shadowMap = false
-            lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
+        const promises = []
+        if (initializeSphere)
+            promises.push(new Promise(async r => {
+                const sphereMesh = await import('./assets/Sphere.json')
+                r(initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes))
+            }))
+        if (loadAllMeshes)
+            promises.push(new Promise(async r => {
+                const cubeData = await import('./assets/Cube.json')
+                r(initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true))
+            }))
 
-            const promises = []
-            if (initializeSphere)
-                promises.push(new Promise(async r => {
-                    const sphereMesh = await import('../engine-editor/assets/Sphere.json')
-                    r(initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes))
-                }))
-            if (loadAllMeshes)
-                promises.push(new Promise(async r => {
-                    const cubeData = await import('../engine-editor/assets/Cube.json')
-                    r(initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true))
-                }))
-
-            Promise.all(promises).then(r => {
-                const toLoad = [
-                    quickAccess.sampleSkybox,
-                    lightEntity,
-                ]
-                if (r[0])
-                    toLoad.push(r[0])
-                if (r[1])
-                    toLoad.push(r[1])
-                dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
-            })
-            r.camera.radius = 2
-            return r
+        Promise.all(promises).then(r => {
+            const toLoad = [
+                quickAccess.sampleSkybox,
+                lightEntity,
+            ]
+            if (r[0])
+                toLoad.push(r[0])
+            if (r[1])
+                toLoad.push(r[1])
+            dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
+        })
+    }, [])
+    useEffect(() => {
+        if (!initialized) {
+            console.log('ON EFFECT E')
+            setInitialized(true)
+            renderer.camera.radius = 2
+            renderer.camera.centerOn = [0, 1, 0]
         }
-        return undefined
-    }, [gpu])
+    }, [initialized])
     useEffect(() => {
-        if (canRender && renderer) {
-            renderer.start()
-        } else if (renderer)
-            renderer.stop()
-    }, [canRender])
-    useEffect(() => {
-        if (renderer) {
-
-            renderer.updatePackage(entities, materials, meshes, {
+        renderer.updatePackage(
+            entities,
+            materials,
+            meshes,
+            {
                 fxaa: true,
                 meshes,
                 gamma: 2.2,
@@ -93,30 +84,25 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                 filmGrain: true,
                 filmGrainStrength: .07,
                 bloomStrength: .1,
-                bloomThreshold: .75
+                bloomThreshold: .75,
+                selected: []
             })
-
-        }
-        return () => renderer?.stop()
     }, [
-        meshes,
-        materials,
-        entities,
-        gpu,
-        id,
+        meshes, materials,
+        entities, gpu,
         renderer,
-        canRender
+        target,
+        initialized
     ])
 
 
     return {
-        id, load,
+        load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
+        setInitialized,
         material: materials[0], setMaterial: mat => setMaterials([mat]),
-        renderer,
-        canRender, setCanRender,
-        toImage: () => new Promise(re => re(gpu.canvas.toDataURL()))
+        renderer, toImage: () => new Promise(re => re(gpu.canvas.toDataURL()))
     }
 }
 

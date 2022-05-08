@@ -14,7 +14,7 @@ import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
-import {IDS} from "../../../hooks/useMinimalEngine";
+import {IDS} from "../../../engine-editor/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
 import PostProcessingSettings from "../forms/PostProcessingSettings";
 import DisplaySettings from "../forms/DisplaySettings";

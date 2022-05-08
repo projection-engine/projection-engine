@@ -5,13 +5,14 @@ import KEYS from "../../../engine/templates/KEYS";
 
 export default function perspectiveCameraEvents(camera, canvasID, onClick) {
     let target = document.getElementById(canvasID),
-        cameraTarget = document.getElementById(canvasID.replace('-canvas', '') + '-camera-position')
+        cameraTarget = document.getElementById(canvasID + '-camera-position')
 
     let isFocused = false
     let positionChanged = false
     const maxAngle = 1.5
 
     const updateCamPosition = () => {
+        if(cameraTarget)
         cameraTarget.innerHTML = `
                     <div><b>X:</b> ${camera.position[0].toFixed(2)}</div>
                     <div><b>Y:</b>  ${camera.position[1].toFixed(2)}</div>

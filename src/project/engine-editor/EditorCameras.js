@@ -18,9 +18,8 @@ export default class EditorCameras{
     frontCamera = new OrthographicCamera(1, DIRECTIONS.FRONT)
     backCamera = new OrthographicCamera(1, DIRECTIONS.BACK)
     onClick = () => null
-    constructor(id, cameraType, canvasRef) {
+    constructor(cameraType, canvasRef) {
         this.camera = this.sphericalCamera
-        this.id = id
         this.canvasID = canvasRef.id
         this.canvasRef = canvasRef
 

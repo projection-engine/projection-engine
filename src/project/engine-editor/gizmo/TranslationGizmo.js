@@ -72,7 +72,8 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
     onMouseMove(event) {
         if (!this.started) {
             this.started = true
-            this.onGizmoStart()
+            if (this.onGizmoStart)
+                this.onGizmoStart()
             this.renderTarget.start()
         }
         const vector = [event.movementX, event.movementX, event.movementX]

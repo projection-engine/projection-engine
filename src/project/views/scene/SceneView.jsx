@@ -21,7 +21,6 @@ export default function SceneView(props) {
     const [allHidden, setAllHidden] = useState(false)
     const [hidden, setHidden] = useState(false)
     const load = useContext(LoaderProvider)
-    console.log(props.engine.entities.map(e => e.components[COMPONENTS.PICK]))
     const data = useMemo(() => {
         let toFilter = props.engine.entities.filter(d => !d.linkedTo)
         return [{

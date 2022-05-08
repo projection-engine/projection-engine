@@ -1,7 +1,6 @@
 import {AlertProvider} from "@f-ui/core";
-import useSettings from "./useSettings";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import useEditorEngine from "./useEditorEngine";
+import useEditorEngine from "../engine-editor/useEditorEngine";
 import useQuickAccess from "./useQuickAccess";
 import useSerializer from "./useSerializer";
 import {useCallback, useContext, useEffect, useMemo, useState} from "react";
@@ -10,30 +9,32 @@ import ProjectLoader from "../utils/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import WebBuilder from "../builder/web/WebBuilder";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
-export default function useProjectWrapper(id) {
+export default function useProjectWrapper(id, initialized, setInitialized, settings) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const alert = useContext(AlertProvider)
     const setAlert = ({type, message}) => {
         alert.pushAlert(message, type)
     }
-    const settings = useSettings()
+    const {gpu} = useContext(GPUContextProvider)
+
     const load = useContext(LoaderProvider)
-    const [loading, setLoading] = useState(true)
-    const [initialized, setInitialized] = useState(false)
-    const engine = useEditorEngine(id, executingAnimation, settings, load, initialized, setAlert)
+    const [loading, setLoading] = useState(false)
+    const engine = useEditorEngine(executingAnimation, settings, load, initialized, setAlert)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)
     const serializer = useSerializer(engine, setAlert, settings, id, quickAccess, currentTab)
 
-
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
-        if (engine.gpu && !loading.initialized) {
+        if (gpu && !loading) {
+            setLoading(true)
             new Promise(async resolve => {
                 try {
-                    const res = await ProjectLoader.loadProject(engine.gpu, quickAccess.fileSystem)
+                    console.log('G')
+                    const res = await ProjectLoader.loadProject(gpu, quickAccess.fileSystem)
                     load.finishEvent(EVENTS.PROJECT_DATA)
 
                     engine.setScripts(res.scripts)
@@ -53,18 +54,17 @@ export default function useProjectWrapper(id) {
                 resolve()
             }).catch()
         }
-    }, [engine.gpu])
+    }, [gpu])
 
 
     const openTab = useCallback((fileID, fileName) => {
         const found = filesLoaded.find(f => f.registryID === fileID)
         if (!found) {
-            load.pushEvent(EVENTS.LOAD_FILE)
             quickAccess.fileSystem.readRegistryFile(fileID)
                 .then(res => {
                     engine.setCanRender(false)
                     if (res) {
-                        load.finishEvent(EVENTS.LOAD_FILE)
+
                         setFilesLoaded(prev => {
                             return [
                                 ...prev,
@@ -73,7 +73,7 @@ export default function useProjectWrapper(id) {
                         })
                         setCurrentTab(filesLoaded.length + 1)
                     } else {
-                        load.finishEvent(EVENTS.LOAD_FILE)
+
                         setAlert({
                             type: 'error',
                             message: 'Could not load file.'
@@ -110,6 +110,6 @@ export default function useProjectWrapper(id) {
         currentTab, setCurrentTab,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
-         quickAccess, filesLoaded
+        quickAccess, filesLoaded
     }
 }

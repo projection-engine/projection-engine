@@ -14,16 +14,16 @@ import useProjectWrapper from "./hooks/useProjectWrapper";
 import TabSelector from "./components/TabSelector";
 
 const {shell} = window.require('electron')
-export default function Project({id, meta, events}) {
+export default function Project({id, meta, events, initialized, setInitialized, settings}) {
     const {
-        load, settings,
+        load,
         setAlert, setFilesLoaded,
         currentTab, setCurrentTab,
         exporter, entitiesWithMeshes, openTab,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
         quickAccess, filesLoaded
-    } = useProjectWrapper(id)
+    } = useProjectWrapper(id, initialized, setInitialized, settings)
 
     return (
         <EntitiesProvider.Provider value={{

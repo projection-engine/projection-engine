@@ -19,7 +19,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         if (id) {
             promise.push(new Promise((resolve) => {
                 load.pushEvent(EVENTS.PROJECT_SAVE)
-                const canvas = document.getElementById(id + '-canvas')
+                const canvas = engine.gpu.canvas
                 const preview = canvas.toDataURL()
                 fs.readFile(fileSystem.path + '\\.meta', (e, res) => {
                     if (res) {

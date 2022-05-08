@@ -1,13 +1,12 @@
-import {useEffect, useMemo, useState} from "react";
-import EditorEngine from "../engine-editor/EditorEngine";
+import {useContext, useEffect, useState} from "react";
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
-import useHistory from "./useHistory";
-import {HISTORY_ACTIONS} from "./historyReducer";
+import useHistory from "../hooks/useHistory";
+import {HISTORY_ACTIONS} from "../hooks/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
-import SYSTEMS from "../engine/templates/SYSTEMS";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
 
-export default function useEditorEngine(id, canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
+export default function useEditorEngine( canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
@@ -15,33 +14,18 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         meshes, setMeshes,
         materials, setMaterials,
         entities, dispatchEntities,
-        scripts, setScripts,
-        gpu
-    } = useEngineEssentials(id + '-canvas')
+        scripts, setScripts
+    } = useEngineEssentials()
+    const {gpu, renderer} = useContext(GPUContextProvider)
+    console.log(renderer)
     const {returnChanges, forwardChanges, dispatchChanges} = useHistory(entities, dispatchEntities, setAlert)
-    const renderer = useMemo(() => {
-        if (gpu && canStart) {
-            return new EditorEngine(id, gpu, {
-                w: settings.resolution[0],
-                h: settings.resolution[1]
-            }, [
-                SYSTEMS.SCRIPT,
-                SYSTEMS.PERF,
-                SYSTEMS.TRANSFORMATION,
-                SYSTEMS.SHADOWS,
-                SYSTEMS.PICK,
-                SYSTEMS.CAMERA_CUBE,
-                SYSTEMS.CUBE_MAP
-            ])
-        }
-        return undefined
-    }, [gpu, canStart])
+
     useEffect(() => {
-        if (canRender && renderer) {
+        if (renderer)
             renderer.start()
-        } else if (renderer)
-            renderer.stop()
-    }, [canRender])
+        // } else if (renderer)
+        //     renderer.stop()
+    }, [renderer])
 
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])
@@ -84,7 +68,7 @@ export default function useEditorEngine(id, canExecutePhysicsAnimation, settings
         canExecutePhysicsAnimation,
         selected, setSelected,
         materials, meshes, scripts,
-        entities, gpu, id,
+        entities, gpu,
         settings, canStart
     ])
 
