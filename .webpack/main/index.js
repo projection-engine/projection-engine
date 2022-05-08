@@ -25035,6 +25035,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var _require = __webpack_require__(/*! electron */ "electron"),
     BrowserWindow = _require.BrowserWindow,
+    dialog = _require.dialog,
     ipcMain = _require.ipcMain;
 
 var fs = __webpack_require__(/*! fs */ "fs");
@@ -25048,18 +25049,18 @@ function readFile(_x, _x2) {
 }
 
 function _readFile() {
-  _readFile = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee6(event, _ref8) {
+  _readFile = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee6(event, _ref9) {
     var pathName, type;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            pathName = _ref8.pathName, type = _ref8.type;
+            pathName = _ref9.pathName, type = _ref9.type;
             _context6.next = 3;
             return new Promise(function (resolve) {
               fs.readFile(path.resolve(pathName), function (e, res) {
                 try {
-                  var d = res ? res.toString() : undefined;
+                  var d = type === 'buffer' ? res : res ? res.toString() : undefined;
                   resolve(type === 'json' && d ? JSON.parse(d) : d);
                 } catch (e) {
                   resolve();
@@ -25116,8 +25117,23 @@ function _createRegistryEntry() {
 var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(function FileSystemEvents() {
   _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, FileSystemEvents);
 
+  ipcMain.on('open-file-dialog', function (ev, _ref) {
+    var listenID = _ref.listenID;
+    var properties = ['openFile', 'multiSelections'];
+    dialog.showOpenDialog({
+      properties: properties,
+      filters: [{
+        name: 'Assets',
+        extensions: ['jpg', 'png', 'jpeg', 'gltf', 'hdri']
+      }]
+    }).then(function (result) {
+      if (!result.canceled) ev.sender.send('dialog-response-' + listenID, result.filePaths);else ev.sender.send('dialog-response-' + listenID, []);
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  });
   ipcMain.on('get-current-load', /*#__PURE__*/function () {
-    var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee(event) {
+    var _ref2 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee(event) {
       var load;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee$(_context) {
         while (1) {
@@ -25139,11 +25155,11 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
     }));
 
     return function (_x5) {
-      return _ref.apply(this, arguments);
+      return _ref2.apply(this, arguments);
     };
   }());
   ipcMain.on('read-file', /*#__PURE__*/function () {
-    var _ref2 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee2(event, data) {
+    var _ref3 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee2(event, data) {
       var result;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee2$(_context2) {
         while (1) {
@@ -25165,17 +25181,17 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
     }));
 
     return function (_x6, _x7) {
-      return _ref2.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }());
   ipcMain.on('read-registry', /*#__PURE__*/function () {
-    var _ref3 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee3(event, _ref4) {
+    var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee3(event, _ref5) {
       var pathName, listenID, result;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              pathName = _ref4.pathName, listenID = _ref4.listenID;
+              pathName = _ref5.pathName, listenID = _ref5.listenID;
               _context3.next = 3;
               return new Promise(function (resolve) {
                 fs.readdir(pathName, function (e, res) {
@@ -25216,20 +25232,20 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
     }));
 
     return function (_x8, _x9) {
-      return _ref3.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }()); // IMPORT
 
   ipcMain.on('import-gltf', /*#__PURE__*/function () {
-    var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee5(event, _ref6) {
+    var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee5(event, _ref7) {
       var filePath, newRoot, options, projectPath, fileName, listenID;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              filePath = _ref6.filePath, newRoot = _ref6.newRoot, options = _ref6.options, projectPath = _ref6.projectPath, fileName = _ref6.fileName, listenID = _ref6.listenID;
+              filePath = _ref7.filePath, newRoot = _ref7.newRoot, options = _ref7.options, projectPath = _ref7.projectPath, fileName = _ref7.fileName, listenID = _ref7.listenID;
               fs.readFile(path.resolve(filePath), /*#__PURE__*/function () {
-                var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee4(e, data) {
+                var _ref8 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee4(e, data) {
                   var file;
                   return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee4$(_context4) {
                     while (1) {
@@ -25263,7 +25279,7 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
                 }));
 
                 return function (_x12, _x13) {
-                  return _ref7.apply(this, arguments);
+                  return _ref8.apply(this, arguments);
                 };
               }());
 
@@ -25276,7 +25292,7 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
     }));
 
     return function (_x10, _x11) {
-      return _ref5.apply(this, arguments);
+      return _ref6.apply(this, arguments);
     };
   }());
 });

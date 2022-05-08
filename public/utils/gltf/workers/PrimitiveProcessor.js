@@ -46,7 +46,6 @@ export default class PrimitiveProcessor {
                 }
             }
         }
-
         return normals.flat()
     }
 

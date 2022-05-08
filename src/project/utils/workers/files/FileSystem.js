@@ -1,8 +1,6 @@
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
-import TerrainWorker from "../TerrainWorker";
 
 import {v4, v4 as uuidv4} from 'uuid';
-import assimpImporter from "./fbx/assimpImporter";
 import {lzwEncode} from "./functions/lzString";
 
 
@@ -44,7 +42,6 @@ export default class FileSystem {
     async writeFile(pathName, data) {
         return new Promise(resolve => {
             fs.writeFile(resolvePath(this.path + pathName), typeof data === 'object' ? JSON.stringify(data) : data, (e, res) => {
-
                 resolve(e)
             })
         })
@@ -53,7 +50,7 @@ export default class FileSystem {
     async readFile(pathName, type) {
         return await new Promise(resolve => {
             const listenID = v4().toString()
-            ipcRenderer.once('read-file-'+listenID, (ev, data) => resolve(data))
+            ipcRenderer.once('read-file-' + listenID, (ev, data) => resolve(data))
             ipcRenderer.send('read-file', {pathName, type, listenID})
         })
     }
@@ -80,13 +77,12 @@ export default class FileSystem {
         })
     }
 
-    async deleteFile(pathName, absolute) {
+    async deleteFile(pathName, absolute, options) {
         const currentPath = absolute ? pathName : (this._path + pathName)
         return new Promise(resolve => {
-            fs.rm(currentPath, (err) => {
+            fs.rm(currentPath, options, (err) => {
                 this.findRegistry(currentPath)
                     .then(rs => {
-
                         if (rs) {
                             fs.rm(resolvePath(this.path + '\\assetsRegistry\\' + rs.id + '.reg'), () => {
                                 resolve()
@@ -97,101 +93,79 @@ export default class FileSystem {
         })
     }
 
-    importImage(newRoot, res, fileID) {
-        if (res)
-            return [
-                new Promise(r => {
-                    fs.writeFile(
-                        newRoot + `.pimg`,
-                        res,
-                        () => {
-                            r()
-                        })
-                }),
-
-                new Promise(r => {
-                    ImageProcessor.resizeImage(res, 256, 256).then(reduced => {
-                        fs.writeFile(
-                            resolvePath(this.path + '\\previews\\' + fileID + `.preview`),
-                            reduced,
-                            (error) => {
-                                r()
-                            })
+    async importImage(newRoot, res, fileID) {
+        if (res) {
+            await new Promise(r => {
+                fs.writeFile(
+                    newRoot + `.pimg`,
+                    res,
+                    () => {
+                        r()
                     })
-                }),
-                this.createRegistryEntry(fileID, newRoot.replace(this.path + '\\assets\\', '') + `.pimg`)
-            ]
-        else return []
+            })
+
+            await new Promise(async r => {
+                const reduced = await ImageProcessor.resizeImage(res, 256, 256)
+                fs.writeFile(
+                    resolvePath(this.path + '\\previews\\' + fileID + `.preview`),
+                    reduced,
+                    () => {
+                        r()
+                    })
+            })
+
+            await this.createRegistryEntry(fileID, newRoot.replace(this.path + '\\assets\\', '') + `.pimg`)
+        }
     }
 
-    async importFile(file, filePath, asHeightMap, options, setAlert) {
-        return new Promise(async resolve => {
+    async openDialog() {
+        return await new Promise(resolve => {
+            const listenID = v4().toString()
+            ipcRenderer.once('dialog-response-' + listenID, (ev, data) => {
+                resolve(data)
+            })
+            ipcRenderer.send('open-file-dialog', {listenID})
+        })
+    }
 
-            const newRoot = filePath + '\\' + file.name.split(/\.([a-zA-Z0-9]+)$/)[0]
+    async importFile(options, targetDir, filesToLoad) {
+
+        for (let i in filesToLoad) {
+            const filePath = filesToLoad[i]
+            const name = filePath.split(pathRequire.sep).pop()
+
+            const newRoot = targetDir + pathRequire.sep + name.split('.')[0]
             const fileID = uuidv4()
-            switch (file.name.split(/\.([a-zA-Z0-9]+)$/)[1]) {
+            const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
+            switch (type) {
                 case 'png':
                 case 'jpg':
                 case 'jpeg': {
-                    const res = await new Promise(re => {
-                        let reader = new FileReader();
-                        reader.addEventListener('load', event => {
-                            re(event.target.result)
-                        });
-                        reader.readAsDataURL(file)
-                    })
-
-                    if (asHeightMap)
-                        TerrainWorker.loadHeightMap(res, options)
-                            .then(data => {
-                                Promise.all([
-                                    new Promise(r => {
-                                        fs.writeFile(
-                                            resolvePath(newRoot + `.terrain`),
-                                            JSON.stringify(data),
-                                            () => {
-                                                r()
-                                            });
-                                    }),
-                                    this.createRegistryEntry(undefined, newRoot.replace(this.path + '\\assets\\', '') + `.terrain`)
-                                ]).then(() => resolve())
-                            })
-                    else
-                        Promise.all(this.importImage(newRoot, res, fileID))
-                            .then(() => {
-                                resolve()
-                            })
-
+                    const file = await this.readFile(filePath, 'buffer')
+                    await this.importImage(newRoot, `data:image/${type};base64,` + new Buffer(file).toString('base64'), fileID)
                     break
                 }
                 case 'gltf':
                     await new Promise(resolve => {
                         const listenID = v4().toString()
-                        ipcRenderer.once('import-gltf-'+listenID, (ev, data) =>{
+                        ipcRenderer.once('import-gltf-' + listenID, (ev, data) => {
                             resolve(data)
                         })
-                        ipcRenderer.send('import-gltf', {filePath: file.path,  newRoot, options, projectPath: this.path, listenID, fileName: file.name})
-                    })
-                    resolve()
-                    break
-                case 'obj':
-                case 'fbx':
-                    const res = await assimpImporter(fs, resolvePath, newRoot, file, options, (v, x) => this.createRegistryEntry(v, x), this._path, (i, x, y) => this.importImage(i, x, y))
-                    if (setAlert)
-                        res.forEach(r => {
-                            setAlert({
-                                message: r.reason + ' - ' + r.name,
-                                type: 'error'
-                            })
+
+                        ipcRenderer.send('import-gltf', {
+                            filePath: filePath,
+                            newRoot,
+                            options,
+                            projectPath: this.path,
+                            listenID,
+                            fileName: filePath.split(pathRequire.sep).pop()
                         })
-                    resolve()
+                    })
                     break
                 default:
-                    resolve()
                     break
             }
-
-        })
+        }
     }
 
     createRegistryEntry(fID = uuidv4(), path) {
@@ -380,10 +354,9 @@ export default class FileSystem {
     }
 
     readRegistry() {
-        return  new Promise(resolve => {
+        return new Promise(resolve => {
             const listenID = v4().toString()
-            ipcRenderer.once('read-registry-'+listenID, (ev, data) => {
-                console.log(data)
+            ipcRenderer.once('read-registry-' + listenID, (ev, data) => {
                 resolve(data)
             })
             ipcRenderer.send('read-registry', {pathName: this.path + '\\assetsRegistry\\', listenID})

@@ -1,5 +1,5 @@
 import ImageProcessor from "../../engine/utils/image/ImageProcessor";
-import PrimitiveProcessor from "./files/gltf/workers/PrimitiveProcessor";
+// import PrimitiveProcessor from "./files/gltf/workers/PrimitiveProcessor";
 
 export default class TerrainWorker {
     static loadHeightMap(imgBlob, settings) {
@@ -52,8 +52,8 @@ export default class TerrainWorker {
                     }
                 }
 
-                const normals = PrimitiveProcessor.computeNormals(indices, vertices)
-                const tangents = PrimitiveProcessor.computeTangents(indices, vertices, uvs, normals)
+                // const normals = PrimitiveProcessor.computeNormals(indices, vertices)
+                // const tangents = PrimitiveProcessor.computeTangents(indices, vertices, uvs, normals)
 
                 resolve({
                     vertices,

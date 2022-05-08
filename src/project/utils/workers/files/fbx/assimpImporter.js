@@ -1,8 +1,8 @@
-import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
+// import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
 import AssimpJS from "../AssimpJS";
 import Transformation from "../../../../engine/instances/Transformation";
 import {mat4} from "gl-matrix";
-import GLTF from "../gltf/GLTF";
+// import GLTF from "../gltf/GLTF";
 import {lzwEncode} from "../functions/lzString";
 
 export default function assimpImporter(fs, resolvePath, newRoot, file, options,  createRegistryEntry, path, importImage) {
@@ -21,15 +21,15 @@ export default function assimpImporter(fs, resolvePath, newRoot, file, options, 
                     return d.meshes.map(m => {
                         const mesh = data.meshes[m]
                         if (mesh && mesh.texturecoords !== undefined && mesh.texturecoords[0] !== undefined) {
-                            const b = GLTF.computeBoundingBox(mesh.vertices)
+                            // const b = GLTF.computeBoundingBox(mesh.vertices)
                             const jsonText = JSON.stringify({
                                 indices: mesh.faces.flat(),
                                 vertices: mesh.vertices,
-                                tangents: PrimitiveProcessor.computeTangents(mesh.faces.flat(), mesh.vertices, mesh.texturecoords[0], mesh.normals),
+                                // tangents: PrimitiveProcessor.computeTangents(mesh.faces.flat(), mesh.vertices, mesh.texturecoords[0], mesh.normals),
                                 normals: mesh.normals,
                                 uvs: mesh.texturecoords[0],
-                                maxBoundingBox: b[1] ? b[1] : [0, 0, 0],
-                                minBoundingBox: b[0] ? b[0] : [0, 0, 0],
+                                // maxBoundingBox: b[1] ? b[1] : [0, 0, 0],
+                                // minBoundingBox: b[0] ? b[0] : [0, 0, 0],
                                 name: mesh.name,
                                 scaling: file.name.includes('.fbx') ? d.scaling.map(s => s / 100) : d.scaling,
                                 rotation: [0, 0, 0],
