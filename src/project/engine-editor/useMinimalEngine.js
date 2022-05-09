@@ -60,8 +60,8 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
     }, [])
     useEffect(() => {
         if (!initialized) {
-            console.log('ON EFFECT E')
             setInitialized(true)
+
             renderer.camera.radius = 2
             renderer.camera.centerOn = [0, 1, 0]
         }
