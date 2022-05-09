@@ -26,7 +26,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
     const quickAccess = useContext(QuickAccessProvider)
     const [initialized, setInitialized] = useState(false)
     const load = useContext(LoaderProvider)
-
+    const [focused, setFocused] = useState(true)
     useEffect(() => {
         const lightEntity = new Entity(undefined, 'light')
         const light = new DirectionalLightComponent()
@@ -59,14 +59,14 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
         })
     }, [])
     useEffect(() => {
-        if (!initialized) {
+        renderer.cameraType = CAMERA_TYPES.SPHERICAL
+        renderer.camera.radius = 2
+        if (!initialized && focused) {
             setInitialized(true)
-
-            renderer.camera.radius = 2
-            renderer.camera.centerOn = [0, 1, 0]
         }
-    }, [initialized])
+    }, [initialized, focused])
     useEffect(() => {
+        if(focused)
         renderer.updatePackage(
             entities,
             materials,
@@ -92,11 +92,13 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
         entities, gpu,
         renderer,
         target,
-        initialized
+        initialized,
+        focused
     ])
 
 
     return {
+        focused, setFocused,
         load,
         entities, dispatchEntities,
         meshes, setMeshes, gpu,
@@ -123,8 +125,6 @@ export function initializeMesh(data, gpu, id, name, setMeshes, noTranslation, no
         if (!noTranslation)
             transformation.translation = data.translation
 
-        if (id === IDS.SPHERE)
-            transformation.translation = [0, 1, 0]
         newEntity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
         newEntity.components.TransformComponent = transformation
         newEntity.components.MaterialComponent = new MaterialComponent(undefined, id === IDS.PLANE ? undefined : IDS.MATERIAL, id === IDS.PLANE)

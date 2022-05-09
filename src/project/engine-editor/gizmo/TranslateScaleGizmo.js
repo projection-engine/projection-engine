@@ -3,7 +3,6 @@ import System from "../../engine/basic/System";
 import {mat4, quat, vec3} from "gl-matrix";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import ROTATION_TYPES from "./ROTATION_TYPES";
-import GizmoToolTip from "./GizmoToolTip";
 
 export default class TranslateScaleGizmo extends System {
     target = []
@@ -17,7 +16,8 @@ export default class TranslateScaleGizmo extends System {
 
     constructor(gpu, gizmoShader, renderTarget) {
         super([]);
-        this.renderTarget = new GizmoToolTip(renderTarget)
+        console.log(renderTarget)
+        this.renderTarget = renderTarget
         this.gpu = gpu
         this.gizmoShader = gizmoShader
     }

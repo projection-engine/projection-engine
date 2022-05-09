@@ -17,14 +17,11 @@ export default function useEditorEngine( canExecutePhysicsAnimation, settings, l
         scripts, setScripts
     } = useEngineEssentials()
     const {gpu, renderer} = useContext(GPUContextProvider)
-    console.log(renderer)
     const {returnChanges, forwardChanges, dispatchChanges} = useHistory(entities, dispatchEntities, setAlert)
 
     useEffect(() => {
         if (renderer)
             renderer.start()
-        // } else if (renderer)
-        //     renderer.stop()
     }, [renderer])
 
     const onGizmoStart = () => {

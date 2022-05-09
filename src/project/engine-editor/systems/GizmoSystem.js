@@ -8,6 +8,7 @@ import MeshInstance from "../../engine/instances/MeshInstance";
 import cube from "../assets/Cube.json";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import * as gizmoShaderCode from "../../engine/shaders/misc/gizmo.glsl";
+import GizmoToolTip from "../gizmo/GizmoToolTip";
 
 export default class GizmoSystem extends System {
     hiddenTarget = true
@@ -34,9 +35,9 @@ export default class GizmoSystem extends System {
                 });
                 canvas.parentNode.appendChild(this.renderTarget)
             }
-
-            this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.renderTarget)
-            this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.renderTarget)
+            this.gizmoTooltip = new GizmoToolTip(this.renderTarget)
+            this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip)
+            this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.gizmoTooltip)
 
             this.rotationGizmo = new RotationGizmo(gpu, this.renderTarget)
 
@@ -47,11 +48,11 @@ export default class GizmoSystem extends System {
                 indices: cube.indices
             })
         }
+
         this.handlerListener = this.handler.bind(this)
 
         this.gpu.canvas.addEventListener('mouseup', this.handlerListener)
         this.gpu.canvas.addEventListener('mousedown', this.handlerListener)
-        this.gpu.canvas.addEventListener('mousemove', this.handlerListener)
     }
 
     handler(event) {
@@ -59,12 +60,15 @@ export default class GizmoSystem extends System {
             case 'mousedown':
                 if (this.targetGizmo)
                     this.targetGizmo.onMouseDown(event)
+                this.gpu.canvas.addEventListener('mousemove', this.handlerListener)
                 break
             case 'mouseup':
                 if (this.targetGizmo) {
                     this.targetGizmo.onMouseUp(event)
                     this.targetGizmo = undefined
                 }
+                this.gizmoTooltip.stop()
+                this.gpu.canvas.removeEventListener('mousemove', this.handlerListener)
                 break
             case 'mousemove':
                 if (this.targetGizmo)
