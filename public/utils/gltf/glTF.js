@@ -19,17 +19,21 @@ export default async function glTF(newRoot, file, options, createRegistryEntry, 
     let promises = []
     if (nodes)
         promises.push(...nodes.map(d => {
-            return [
-                new Promise(r => {
-                    fs.writeFile(
-                        path.resolve(newRoot + `\\${d.name}.mesh`),
-                        JSON.stringify(d.data),
-                        () => {
-                            r()
-                        });
-                }),
-                createRegistryEntry(newRoot.replace(pathName + '\\assets\\', '') + `\\${d.name}.mesh`)
-            ]
+            const filePathLocal = newRoot.replace(pathName + '\\assets\\', '') + `\\${d.name}.mesh`
+            if(!fs.existsSync(newRoot))
+                return [
+                    new Promise(r => {
+                        fs.writeFile(
+                            path.resolve(newRoot + `\\${d.name}.mesh`),
+                            JSON.stringify(d.data),
+                            () => {
+                                r()
+                            });
+                    }),
+                    createRegistryEntry(filePathLocal)
+                ]
+            else
+                return []
         }))
 
 

@@ -25901,11 +25901,12 @@ function _glTF() {
             materials = _yield$parseGLTF.materials;
             promises = [];
             if (nodes) promises.push.apply(promises, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(nodes.map(function (d) {
-              return [new Promise(function (r) {
+              var filePathLocal = newRoot.replace(pathName + '\\assets\\', '') + "\\".concat(d.name, ".mesh");
+              if (!fs.existsSync(newRoot)) return [new Promise(function (r) {
                 fs.writeFile(path.resolve(newRoot + "\\".concat(d.name, ".mesh")), JSON.stringify(d.data), function () {
                   r();
                 });
-              }), createRegistryEntry(newRoot.replace(pathName + '\\assets\\', '') + "\\".concat(d.name, ".mesh"))];
+              }), createRegistryEntry(filePathLocal)];else return [];
             }))); // if (materials && materials.length > 0) {
             //     fs.mkdir(resolvePath(newRoot + `\\Materials`), () => {
             //         fs.mkdir(resolvePath(newRoot + `\\Materials\\Resources`), () => {

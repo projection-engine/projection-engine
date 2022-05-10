@@ -94,7 +94,7 @@ export default class FileSystem {
     }
 
     async importImage(newRoot, res, fileID) {
-        if (res) {
+        if (res && !fs.existsSync(newRoot + `.pimg`)) {
             await new Promise(r => {
                 fs.writeFile(
                     newRoot + `.pimg`,

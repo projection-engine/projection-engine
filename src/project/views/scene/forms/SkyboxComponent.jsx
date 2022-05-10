@@ -8,6 +8,7 @@ import EVENTS from "../../../utils/EVENTS";
 import Range from "../../../../components/range/Range";
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
+import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
 
 export default function SkyboxComponent(props) {
     const [currentImage, setCurrentImage] = useState(undefined)
@@ -17,7 +18,6 @@ export default function SkyboxComponent(props) {
         exposure: props.selected.exposure
     })
     const fileSystem = props.quickAccess.fileSystem
-    const load = useContext(LoaderProvider)
     useEffect(() => {
         if (props.selected.imageID)
             setCurrentImage(props.quickAccess.images.find(i => i.registryID === props.selected.imageID))
@@ -30,28 +30,24 @@ export default function SkyboxComponent(props) {
                     type={'image'}
                     selected={currentImage}
                     handleChange={(src) => {
-                        load.pushEvent(EVENTS.LOAD_FILE)
+
                         fileSystem.readRegistryFile(src.registryID)
                             .then(rs => {
                                 if (rs)
                                     fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path)
                                         .then(file => {
-                                            if (file) {
-                                                const img = new Image()
-                                                img.onload = () => {
-                                                    props.submit({
-                                                        blob: img,
-                                                        imageID: src.registryID
-                                                    }, 'blob')
-                                                    load.finishEvent(EVENTS.LOAD_FILE)
-                                                    setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
-                                                }
-                                                img.src = file
-                                            } else
-                                                load.finishEvent(EVENTS.LOAD_FILE)
+                                            if (file)
+                                                ImageProcessor.getImageBitmap(file)
+                                                    .then(res => {
+                                                        props.submit({
+                                                            blob: res,
+                                                            imageID: src.registryID
+                                                        }, 'blob')
+                                                        setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
+                                                    })
+
                                         })
-                                else
-                                    load.finishEvent(EVENTS.LOAD_FILE)
+
                             })
                     }}
                 />
@@ -120,6 +116,8 @@ export default function SkyboxComponent(props) {
                     accentColor={'yellow'}
                     value={state.gamma}
                     minValue={.1}
+                    incrementPercentage={.01}
+                    precision={3}
                     maxValue={10}
                     onFinish={(v) => props.submit(v, 'gamma')}
                     handleChange={e => setState(prev => {
@@ -134,6 +132,8 @@ export default function SkyboxComponent(props) {
                     accentColor={'yellow'}
                     value={state.exposure}
                     minValue={.1}
+                    incrementPercentage={.01}
+                    precision={3}
                     maxValue={10}
                     onFinish={(v) => props.submit(v, 'exposure')}
                     handleChange={e => setState(prev => {

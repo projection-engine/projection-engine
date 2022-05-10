@@ -43,6 +43,8 @@ export default function useSettings() {
         distortionStrength: 1,
         chromaticAberrationStrength: 1,
 
+        gridRotationSize: 1
+
     })
     return state
 }

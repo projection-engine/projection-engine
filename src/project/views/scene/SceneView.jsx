@@ -126,7 +126,6 @@ export default function SceneView(props) {
                     icon: <span className={'material-icons-round'}>create_new_folder</span>,
                     onClick: () => createFolder()
                 },
-
                     {
                         requiredTrigger: 'data-node',
                         label: 'Remove entity',
@@ -160,8 +159,10 @@ export default function SceneView(props) {
                                     }
                                 })
                             } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+
                                 props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE, payload: {
+                                    type: ENTITY_ACTIONS.UPDATE,
+                                    payload: {
                                         entityID: dropTarget.id, key: 'linkedTo', data: current.id
                                     }
                                 })

@@ -24,23 +24,23 @@ import TextureInstance from "../../engine/instances/TextureInstance";
 
 export default class ProjectLoader {
     static async loadProject(gpu, fileSystem) {
-        console.log(0)
+
         await ProjectLoader.cleanUpRegistry(fileSystem)
         let projectData = []
         try {
             projectData = await ProjectLoader.getEntities(fileSystem)
         } catch (error) {
-            console.log(error)
+
         }
-        console.log(1)
+
         let settings = projectData[0]
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')
         let entities
         let meshes = [...new Set(entitiesFound.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components.MeshComponent?.meshID))]
-        console.log(2)
+
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined)
-        console.log(3)
+
         const entitiesWithScripts = entitiesFound.map(e => {
             const comp = e.data.components[COMPONENTS.SCRIPT]
             if (comp) {
@@ -51,16 +51,16 @@ export default class ProjectLoader {
             } else
                 return e.data.blueprintID
         }).filter(e => e !== undefined)
-        console.log(4)
+
         const toLoadScripts = [...new Set(entitiesWithScripts.flat())],
             scriptsToLoad = (await ProjectLoader.loadScripts(toLoadScripts, fileSystem, entitiesFound.length)).filter(e => e !== undefined),
             levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json'),
             meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
             materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 
-        console.log(5)
+
         try {entities = await Promise.all(entitiesFound.map((entity) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))} catch (e) {}
-        console.log(6)
+
         if (levelBlueprint)
             scriptsToLoad.push({
                 script: {
@@ -69,7 +69,7 @@ export default class ProjectLoader {
                     name: levelBlueprint.name
                 }
             })
-        console.log(7)
+
         return {
             meta,
             settings,
@@ -244,6 +244,7 @@ export default class ProjectLoader {
                         if (fileData) {
                             let fileParsed
                             try {
+
                                 fileParsed = JSON.parse(fileData)
                                 if (fileParsed && Object.keys(fileParsed).length > 0)
                                     r(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
@@ -263,10 +264,11 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async mapMaterial({shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
+    static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
+        console.log()
         let newMat
         await new Promise(resolve => {
-            newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id)
+            newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader.code)
         })
         newMat.uniforms = uniforms
         return newMat
