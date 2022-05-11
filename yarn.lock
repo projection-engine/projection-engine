@@ -1475,15 +1475,24 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@f-ui/core@0.1.51-alpha":
-  version "0.1.51-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.51-alpha.tgz#411373593e0e9e7cdd64067cb2b60ededcb8b328"
-  integrity sha512-9Vp0qkV7IX9G/o/mG2dInin7UUCdhNCCut4c81arBJzK8ucOsZ1KJMNpECZIie09yjEP4Zx/R6cTfcaqyfw+Lw==
+"@f-ui/core@0.1.53-alpha":
+  version "0.1.53-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.1.53-alpha.tgz#19e38b3806d342e9a0b4eb815af25cf53db74256"
+  integrity sha512-IdmSslW5xSGKcoW6LMVvkr1BNiJoJ7Aie32/jNtWo+zSd/J0KHdNh+Dj+Hs7AVdGmmtXXFZyxjbUHxjmGpVlzw==
   dependencies:
     prop-types "^15.7.2"
     react "17.0.2"
     react-dom "17.0.2"
     react-imask "^6.4.2"
+
+"@f-ui/markdown@^0.1.2-alpha":
+  version "0.1.2-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/markdown/-/markdown-0.1.2-alpha.tgz#d7b8795d00036f17440e68d606975e57281ee891"
+  integrity sha512-pw5cRF3/kOpT2q8W+phcXK4BVnTY0DO6b7mKu+z0OLKYAiZfvWRR2ebCz+U5DR+xyKABSrMuZcZAt+ndyOZpmQ==
+  dependencies:
+    prop-types "^15.7.2"
+    react "17.0.2"
+    react-dom "17.0.2"
 
 "@fontsource/roboto@4.5.3":
   version "4.5.3"

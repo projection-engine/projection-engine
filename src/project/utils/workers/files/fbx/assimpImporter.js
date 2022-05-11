@@ -5,7 +5,8 @@ import {mat4} from "gl-matrix";
 // import GLTF from "../gltf/GLTF";
 import {lzwEncode} from "../functions/lzString";
 
-export default function assimpImporter(fs, resolvePath, newRoot, file, options,  createRegistryEntry, path, importImage) {
+const {fs} = window.require('fs')
+export default function assimpImporter( resolvePath, newRoot, file, options,  createRegistryEntry, path, importImage) {
     return new Promise(resolve => {
         fs.mkdir(resolvePath(newRoot), async () => {
 

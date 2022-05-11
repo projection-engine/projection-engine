@@ -1,13 +1,10 @@
 import styles from '../styles/Forms.module.css'
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Selector from "../../../../components/selector/Selector";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-
-import EVENTS from "../../../utils/EVENTS";
 import Range from "../../../../components/range/Range";
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
-import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
 
 export default function SkyboxComponent(props) {

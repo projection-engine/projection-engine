@@ -92,7 +92,7 @@ export default function TabSelector(props) {
                     submitPackage={(pack, close) => {
 
                         quickAccess.fileSystem
-                            .createFile('levelBlueprint.flow', pack)
+                            .writeFile('\\levelBlueprint.flow', pack)
                             .then(() => {
                                 setAlert({
                                     type: 'success',

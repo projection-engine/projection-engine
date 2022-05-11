@@ -1,50 +1,33 @@
 import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
-
 import {v4, v4 as uuidv4} from 'uuid';
-import {lzwEncode} from "./functions/lzString";
+import AsyncFS, {getCall} from "../../../../components/AsyncFS";
 
-
-const fs = window.require('fs')
 const pathRequire = window.require('path')
-
 function resolvePath(p) {
     return pathRequire.resolve(p)
 }
-
 const {ipcRenderer} = window.require('electron')
-
 export default class FileSystem {
     constructor(projectID) {
         this.projectID = projectID
         this._path = (localStorage.getItem('basePath') + '\\projects\\' + projectID).replace(/\\\\/g, '\\')
 
-        try {
-            if (!fs.existsSync(this.path + '\\previews\\'))
-                fs.mkdirSync(this.path + '\\previews\\')
-            if (!fs.existsSync(this.path + '\\assets\\'))
-                fs.mkdirSync(this.path + '\\assets\\')
-            if (!fs.existsSync(this.path + '\\assetsRegistry\\'))
-                fs.mkdirSync(this.path + '\\assetsRegistry\\')
-            if (!fs.existsSync(this.path + '\\logic'))
-                fs.mkdirSync(this.path + '\\logic')
-        } catch (e) {
-        }
+        new Promise(async resolve => {
+            if (!await AsyncFS.exists(this.path + '\\previews\\')) await AsyncFS.mkdir(this.path + '\\previews\\')
+            if (!await AsyncFS.exists(this.path + '\\assets\\')) await AsyncFS.mkdir(this.path + '\\assets\\')
+            if (!await AsyncFS.exists(this.path + '\\assetsRegistry\\')) await AsyncFS.mkdir(this.path + '\\assetsRegistry\\')
+            if (!await AsyncFS.exists(this.path + '\\logic')) await AsyncFS.mkdir(this.path + '\\logic')
+
+            resolve()
+        }).catch(err => console.error(err))
     }
 
     get path() {
         return this._path
     }
 
-    async createFile(pathName, content) {
-        return await new Promise(resolve => fs.writeFile(this.path + '\\' + pathName, content, (e, s) => resolve(e)))
-    }
-
     async writeFile(pathName, data) {
-        return new Promise(resolve => {
-            fs.writeFile(resolvePath(this.path + pathName), typeof data === 'object' ? JSON.stringify(data) : data, (e, res) => {
-                resolve(e)
-            })
-        })
+        return await AsyncFS.write(resolvePath(this.path + pathName), typeof data === 'object' ? JSON.stringify(data) : data)
     }
 
     async readFile(pathName, type) {
@@ -56,64 +39,27 @@ export default class FileSystem {
     }
 
     async findRegistry(p) {
-        return new Promise(resolve => {
-            fs.readdir(resolvePath(this.path + '\\assetsRegistry'), (e, res) => {
-                if (res) {
-                    Promise
-                        .all(
-                            res.map(data => {
-                                return this.readRegistryFile(data.replace('.reg', ''))
-                            })
-                        )
-                        .then(registryData => {
-                            const parsedPath = pathRequire.resolve(p)
-
-                            resolve(registryData.filter(f => f !== undefined).find(f => {
-                                return parsedPath.includes(f.path)
-                            }))
-                        })
-                } else resolve()
-            })
-        })
+        const [e, res] = await AsyncFS.readdir(resolvePath(this.path + '\\assetsRegistry'))
+        if (res) {
+            const registryData = await Promise.all(res.map(data => this.readRegistryFile(data.replace('.reg', ''))))
+            const parsedPath = pathRequire.resolve(p)
+            return registryData.filter(f => f !== undefined).find(f => parsedPath.includes(f.path))
+        }
     }
 
     async deleteFile(pathName, absolute, options) {
         const currentPath = absolute ? pathName : (this._path + pathName)
-        return new Promise(resolve => {
-            fs.rm(currentPath, options, (err) => {
-                this.findRegistry(currentPath)
-                    .then(rs => {
-                        if (rs) {
-                            fs.rm(resolvePath(this.path + '\\assetsRegistry\\' + rs.id + '.reg'), () => {
-                                resolve()
-                            })
-                        } else resolve()
-                    })
-            })
-        })
+        await AsyncFS.rm(currentPath, options)
+        const rs = await this.findRegistry(currentPath)
+        if (rs) await AsyncFS.rm(resolvePath(this.path + '\\assetsRegistry\\' + rs.id + '.reg'))
     }
 
     async importImage(newRoot, res, fileID) {
-        if (res && !fs.existsSync(newRoot + `.pimg`)) {
-            await new Promise(r => {
-                fs.writeFile(
-                    newRoot + `.pimg`,
-                    res,
-                    () => {
-                        r()
-                    })
-            })
+        if (res && !(await AsyncFS.exists(newRoot + `.pimg`))) {
 
-            await new Promise(async r => {
-                const reduced = await ImageProcessor.resizeImage(res, 256, 256)
-                fs.writeFile(
-                    resolvePath(this.path + '\\previews\\' + fileID + `.preview`),
-                    reduced,
-                    () => {
-                        r()
-                    })
-            })
-
+            await AsyncFS.write(newRoot + `.pimg`, res)
+            const reduced = await ImageProcessor.resizeImage(res, 256, 256)
+            await AsyncFS.write(resolvePath(this.path + '\\previews\\' + fileID + `.preview`), reduced)
             await this.createRegistryEntry(fileID, newRoot.replace(this.path + '\\assets\\', '') + `.pimg`)
         }
     }
@@ -129,7 +75,6 @@ export default class FileSystem {
     }
 
     async importFile(options, targetDir, filesToLoad) {
-
         for (let i in filesToLoad) {
             const filePath = filesToLoad[i]
             const name = filePath.split(pathRequire.sep).pop()
@@ -146,20 +91,12 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    await new Promise(resolve => {
-                        const listenID = v4().toString()
-                        ipcRenderer.once('import-gltf-' + listenID, (ev, data) => {
-                            resolve(data)
-                        })
-
-                        ipcRenderer.send('import-gltf', {
-                            filePath: filePath,
-                            newRoot,
-                            options,
-                            projectPath: this.path,
-                            listenID,
-                            fileName: filePath.split(pathRequire.sep).pop()
-                        })
+                    await getCall('import-gltf', {
+                        filePath: filePath,
+                        newRoot,
+                        options,
+                        projectPath: this.path,
+                        fileName: filePath.split(pathRequire.sep).pop()
                     })
                     break
                 default:
@@ -168,22 +105,12 @@ export default class FileSystem {
         }
     }
 
-    createRegistryEntry(fID = uuidv4(), path) {
-
+    async createRegistryEntry(fID = uuidv4(), path) {
         const pathRe = resolvePath(this.path + '\\assets\\')
         const p = resolvePath(this.path + '\\assets\\' + path).replace(pathRe, '')
-
-        return new Promise(r => {
-            fs.writeFile(
-                resolvePath(this.path + '\\assetsRegistry\\' + fID + `.reg`),
-                JSON.stringify({
-                    id: fID,
-                    path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
-                }),
-                () => {
-                    r()
-                })
-        })
+        await AsyncFS.write(resolvePath(this.path + '\\assetsRegistry\\' + fID + `.reg`), JSON.stringify({
+            id: fID, path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
+        }))
     }
 
     async readRegistryFile(id) {
@@ -194,164 +121,130 @@ export default class FileSystem {
         }
     }
 
-    assetExists(path) {
-        return fs.existsSync(resolvePath(this.path + '\\assets\\' + path))
+    async assetExists(path) {
+        return await AsyncFS.exists(resolvePath(this.path + '\\assets\\' + path))
     }
 
     async writeAsset(path, fileData, previewImage, registryID) {
         const fileID = registryID !== undefined ? registryID : uuidv4()
-        return new Promise(resolve => {
-            const promises = [
-                new Promise(resolve1 => {
-                    let d = fileData
-                    if (path.includes('.mesh'))
-                        d = lzwEncode(fileData)
-                    fs.writeFile(resolvePath(this.path + '\\assets\\' + path), d, (err) => {
-                        if (!previewImage)
-                            resolve1()
-                        else {
-                            fs.writeFile(resolvePath(this.path + '\\previews\\' + registryID + '.preview'), previewImage, () => {
-                                resolve1()
-                            })
-                        }
-
-                    })
-                }),
-                this.createRegistryEntry(fileID, path)
-            ]
-
-            Promise.all(promises)
-                .then(() => {
-                    resolve()
-                })
+        return new Promise(async resolve => {
+            await new Promise(async resolve1 => {
+                await AsyncFS.write(resolvePath(this.path + '\\assets\\' + path), fileData)
+                if (!previewImage) {
+                    resolve1()
+                } else {
+                    await AsyncFS.write(resolvePath(this.path + '\\previews\\' + registryID + '.preview'), previewImage)
+                    resolve1()
+                }
+            })
+            await this.createRegistryEntry(fileID, path)
+            resolve()
         })
     }
 
 
     async updateAsset(registryID, fileData, previewImage) {
-        return new Promise(resolve => {
-            if (!fs.existsSync(resolvePath(this.path + '\\assets')))
-                fs.mkdir(resolvePath(this.path + '\\assets'), () => null)
-            this.readRegistryFile(registryID)
-                .then(res => {
-                    this.writeAsset(res.path, fileData, previewImage, registryID)
-                        .then(() => resolve())
-                })
-
-        })
+        const res = await this.readRegistryFile(registryID)
+        await this.writeAsset(res.path, fileData, previewImage, registryID)
     }
 
-    deleteEntity(entityID) {
-        return new Promise(resolve => {
-            this.deleteFile(this.path + '\\logic\\' + entityID + '.entity', true)
-                .then(() => resolve())
-                .catch(() => resolve())
-        })
+    async deleteEntity(entityID) {
+        await this.deleteFile(this.path + '\\logic\\' + entityID + '.entity', true)
     }
 
     async updateEntity(entity, id) {
-        return new Promise(resolve => {
-            const p = resolvePath(this.path + '\\logic\\')
-            if (!p) {
-                try {
-                    fs.mkdirSync(p)
-                } catch (err) {
-
-                }
-            }
-            fs.writeFile(resolvePath(p + '\\' + id + '.entity'), entity, (e) => {
-                resolve()
-            })
-        })
+        const p = resolvePath(this.path + '\\logic\\')
+        await AsyncFS.write(resolvePath(p + '\\' + id + '.entity'), entity)
     }
 
     async updateProject(meta, settings) {
-        return Promise.all([
-            new Promise(resolve => {
-                if (meta)
-                    fs.writeFile(resolvePath(this.path + '\\.meta'), JSON.stringify(meta), () => {
-                        resolve()
-                    })
-                else
-                    resolve()
-            }),
-
-            new Promise(resolve => {
-                if (settings) {
-                    let sett = {...settings}
-                    delete sett.type
-                    delete sett.data
-
-                    fs.writeFile(resolvePath(this.path + '\\.settings'), JSON.stringify(sett), () => {
-                        resolve()
-                    })
-                } else
-                    resolve()
-            })
-        ])
+        if (meta) await AsyncFS.write(resolvePath(this.path + '\\.meta'), JSON.stringify(meta))
+        if (settings) {
+            let sett = {...settings}
+            delete sett.type
+            delete sett.data
+            await AsyncFS.write(resolvePath(this.path + '\\.settings'), JSON.stringify(sett))
+        }
     }
 
-
-    dirStructure(dir, done) {
+    async dirStructure(dir) {
         let results = [];
-        if (fs.existsSync(dir))
-            fs.readdir(dir, (err, list) => {
-                if (err) return done([]);
-                let pending = list.length;
-                if (!pending) return done(results);
-                list.forEach((file) => {
-                    file = pathRequire.resolve(dir, file);
-                    fs.stat(file, (err, stat) => {
-                        results.push(file);
-                        if (stat && stat.isDirectory()) {
-                            this.dirStructure(file, (res) => {
-                                results = results.concat(res)
-                                if (!--pending) done(results)
-                            })
-                        } else if (!--pending) done(results)
-                    })
-                })
-            })
-        else
-            done([])
-
+        if ((await AsyncFS.exists(dir))) {
+            const [err, list] = await AsyncFS.readdir(dir)
+            if (err) return [];
+            let pending = list.length;
+            if (!pending) return results;
+            for (let i in list) {
+                let file = pathRequire.resolve(dir, list[i]);
+                const [err, stat] = await AsyncFS.stat(file)
+                results.push(file);
+                if (stat && stat.isDirectory) {
+                    const res = await this.dirStructure(file)
+                    results = results.concat(res)
+                    if (!--pending) return results
+                } else if (!--pending) return results
+            }
+        }
+        return []
     }
 
-    fromDirectory(startPath, extension) {
-
-        if (!fs.existsSync(startPath)) {
-            return []
-        }
+    async fromDirectory(startPath, extension) {
+        if (!(await AsyncFS.exists(startPath))) return []
         let res = []
-        let files = fs.readdirSync(startPath);
+        let files = (await AsyncFS.readdir(startPath))[1];
         for (let i = 0; i < files.length; i++) {
-            let filename = pathRequire.join(startPath, files[i]);
-            let stat = fs.lstatSync(filename);
-            if (stat.isDirectory())
-                res.push(...this.fromDirectory(filename, extension))
-            else if (filename.indexOf(extension) >= 0)
-                res.push(files[i])
+            const filename = pathRequire.join(startPath, files[i]);
+            const stat = (await AsyncFS.lstat(filename))[1];
+            if (stat.isDirectory) res.push(...(await this.fromDirectory(filename, extension)))
+            else if (filename.indexOf(extension) >= 0) res.push(files[i])
         }
-
         return res
     }
 
-    foldersFromDirectory(startPath) {
-
-        if (!fs.existsSync(startPath)) {
-            return []
-        }
+    async foldersFromDirectory(startPath) {
+        if (!(await AsyncFS.exists(startPath))) return []
         let res = []
-        let files = fs.readdirSync(startPath);
+        let files = (await AsyncFS.readdir(startPath))[1];
         for (let i = 0; i < files.length; i++) {
-            let filename = pathRequire.join(startPath, files[i]);
-            let stat = fs.lstatSync(filename);
-            if (stat.isDirectory())
-                res.push(filename)
+            const filename = pathRequire.join(startPath, files[i]);
+            const stat = (await AsyncFS.lstat(filename))[1];
+            if (stat.isDirectory) res.push(filename)
         }
-
         return res
     }
+
+    async rename(from, to) {
+        const fromResolved = pathRequire.resolve(from)
+        let newRegistry = await this.readRegistry()
+        return new Promise(async rootResolve => {
+            const stat = (await AsyncFS.lstat(fromResolved))[1]
+            if (stat !== undefined && stat.isDirectory) {
+                await AsyncFS.mkdir(to)
+                const [error, res] = AsyncFS.readdir(fromResolved)
+                if (res) {
+
+                    for (let i in res) {
+                        const file = res[i]
+                        const oldPath = fromResolved + `/${file}`
+                        const newPath = to + `/${file}`;
+                        if ((await AsyncFS.lstat(oldPath))[1].isDirectory) await this.rename(oldPath, newPath)
+                        else {
+                            await AsyncFS.rename(oldPath, newPath)
+                            await this.updateRegistry(oldPath, newPath, newRegistry)
+                        }
+                    }
+                    await AsyncFS.rm(fromResolved, {recursive: true, force: true})
+                    rootResolve()
+                } else rootResolve(error)
+            } else if (stat !== undefined) {
+                await AsyncFS.rename(fromResolved, to)
+                await this.updateRegistry(from, to, newRegistry)
+                rootResolve()
+            } else rootResolve()
+        })
+
+    }
+
 
     readRegistry() {
         return new Promise(resolve => {
@@ -364,110 +257,28 @@ export default class FileSystem {
 
     }
 
-    async rename(from, to) {
-        const fromResolved = pathRequire.resolve(from)
-        let newRegistry = await this.readRegistry()
-        return new Promise(rootResolve => {
-            fs.lstat(fromResolved, (er, stat) => {
-                if (stat !== undefined && stat.isDirectory())
-                    fs.mkdir(to, () => {
-                        fs.readdir(fromResolved, (error, res) => {
-                            if (res) {
-                                let promises = []
-                                res.forEach(file => {
-                                    const oldPath = fromResolved + `/${file}`
-                                    const newPath = to + `/${file}`;
-
-                                    if (fs.lstatSync(oldPath).isDirectory())
-                                        promises.push(this.rename(oldPath, newPath))
-                                    else
-                                        promises
-                                            .push(
-                                                new Promise(resolve => {
-                                                    fs.rename(
-                                                        oldPath,
-                                                        newPath,
-                                                        (err) => {
-                                                            resolve(err)
-                                                        }
-                                                    )
-                                                }),
-                                                this.updateRegistry(oldPath, newPath, newRegistry)
-                                            )
-                                })
-                                Promise.all(promises)
-                                    .then((errors) => {
-                                        fs.rm(fromResolved, {recursive: true, force: true}, (e) => {
-                                            rootResolve(errors)
-                                        })
-
-                                    })
-                            } else
-                                rootResolve(error)
-                        })
-                    })
-                else if (stat !== undefined) {
-                    let promises = [
-                        new Promise(resolve => {
-                            fs.rename(
-                                fromResolved,
-                                to,
-                                (err) => {
-                                    resolve(err)
-                                }
-                            )
-                        }),
-                        this.updateRegistry(from, to, newRegistry)
-                    ]
-                    Promise.all(promises)
-                        .then((errors) => {
-                            rootResolve()
-                        })
-                } else
-                    rootResolve(er)
-            })
-        })
-
-    }
-
     async updateRegistry(from, to, registryData) {
         const assetsResolved = pathRequire.resolve(this.path + '\\assets\\')
         const fromResolved = pathRequire.resolve(from).replace(assetsResolved, '')
         const toResolved = pathRequire.resolve(to)
-
-        return new Promise(resolve => {
-            const registryFound = registryData.find(reg => {
-                const regResolved = pathRequire.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
-                return regResolved === fromResolved
-            })
-            if (registryFound) {
-                fs.writeFile(registryFound.registryPath, JSON.stringify({
-                    id: registryFound.id,
-                    path: toResolved.replace(assetsResolved, '')
-                }), () => {
-                    resolve(registryFound.registryPath, registryFound)
-                })
-            } else
-                resolve()
+        const registryFound = registryData.find(reg => {
+            const regResolved = pathRequire.resolve(this.path + '\\assets\\' + reg.path).replace(assetsResolved, '')
+            return regResolved === fromResolved
         })
+        if (registryFound) await AsyncFS.write(registryFound.registryPath, JSON.stringify({
+            id: registryFound.id, path: toResolved.replace(assetsResolved, '')
+        }))
     }
 
     static async createProject(name) {
-        return new Promise(resolve => {
-            const projectID = uuidv4(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
-            if (!fs.existsSync(resolvePath(localStorage.getItem('basePath') + 'projects')))
-                fs.mkdirSync(resolvePath(localStorage.getItem('basePath') + 'projects'))
 
-            fs.mkdir(projectPath, () => {
-                fs.writeFile(resolvePath(projectPath + '/.meta'), JSON.stringify({
-                    id: projectID,
-                    name: name,
-                    creationDate: new Date().toDateString()
-                }), () => {
-                    resolve(projectID)
-                })
-            })
-        })
+        const projectID = uuidv4(), projectPath = localStorage.getItem('basePath') + 'projects\\' + projectID
+        if (!(await AsyncFS.exists(resolvePath(localStorage.getItem('basePath') + 'projects')))) await AsyncFS.mkdir(resolvePath(localStorage.getItem('basePath') + 'projects'))
+        await AsyncFS.mkdir(projectPath)
+        await AsyncFS.write(resolvePath(projectPath + '/.meta'), JSON.stringify({
+            id: projectID, name: name, creationDate: new Date().toDateString()
+        }))
+        return projectID
     }
 }
 

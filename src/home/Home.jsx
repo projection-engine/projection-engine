@@ -7,9 +7,10 @@ import FileSystem from "../project/utils/workers/files/FileSystem";
 import EVENTS from "../project/utils/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/SideBar";
-import IssuesList from "./components/issues/issues/IssuesList";
+import IssuesList from "./components/issues/IssuesList";
+import AsyncFS from "../components/AsyncFS";
 
-const fs = window.require('fs')
+
 const pathResolve = window.require('path')
 
 export default function Home() {
@@ -19,8 +20,8 @@ export default function Home() {
         projectName, setProjectName,
         setAlert, refresh,
         load, uploadRef,
-          setProjects
-    } = useProjects(fs)
+        setProjects
+    } = useProjects( )
     const [open, setOpen] = useState(0)
     return (
         <div className={styles.wrapper}>
@@ -60,7 +61,7 @@ export default function Home() {
                     Create project
                 </Button>
             </Modal>
-            <SideBar open={open} setOpen={setOpen} />
+            <SideBar open={open} setOpen={setOpen}/>
             <input style={{display: 'none'}}
                    type={'file'}
                    accept={['.projection']}
@@ -75,42 +76,36 @@ export default function Home() {
                 <Projects
                     onNew={() => setOpenModal(true)}
                     onLoad={() => uploadRef.current.click()}
-                    deleteProject={pjID => {
-                        load.pushEvent(EVENTS.PROJECT_DELETE)
-                        fs.rm(
+                    deleteProject={async pjID => {
+                        setAlert({message: 'Deleting project', type: 'info'})
+                        await AsyncFS.rm(
                             pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + pjID),
-                            {recursive: true, force: true},
-                            (e) => {
-                                load.finishEvent(EVENTS.PROJECT_DELETE)
-                                setProjects(prev => {
-                                    return prev.filter(e => e.id !== pjID)
-                                })
-                            })
-                    }}
-                    renameProject={(newName, projectID) => {
+                            {recursive: true, force: true}
+                        )
 
-                        const pathName = pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + projectID + '\\.meta')
-
-                        fs.readFile(pathName, (error, res) => {
-                            if (res && !error) {
-                                fs.writeFile(pathName, JSON.stringify({
-                                    ...JSON.parse(res.toString()),
-                                    name: newName
-                                }), (e) => {
-
-                                    if (!e)
-                                        setAlert({
-                                            type: 'success',
-                                            message: 'Project renamed'
-                                        })
-                                    else
-                                        setAlert({
-                                            type: 'error',
-                                            message: 'Error renaming project.'
-                                        })
-                                })
-                            }
+                        setProjects(prev => {
+                            return prev.filter(e => e.id !== pjID)
                         })
+                    }}
+                    renameProject={async (newName, projectID) => {
+                        const pathName = pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + projectID + '\\.meta')
+                        const [error, res] = await AsyncFS.read(pathName)
+                        if (res && !error) {
+                            const [e] = await AsyncFS.write(pathName, JSON.stringify({
+                                ...JSON.parse(res),
+                                name: newName
+                            }))
+                            if (!e)
+                                setAlert({
+                                    type: 'success',
+                                    message: 'Project renamed'
+                                })
+                            else
+                                setAlert({
+                                    type: 'error',
+                                    message: 'Error renaming project.'
+                                })
+                        }
                     }}
                     refresh={() => refresh()}
                     load={load} projects={projects}

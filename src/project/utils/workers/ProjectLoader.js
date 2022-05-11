@@ -21,6 +21,7 @@ import Transformation from "../../engine/instances/Transformation";
 import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import {DATA_TYPES} from "../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../engine/instances/TextureInstance";
+import AsyncFS from "../../../components/AsyncFS";
 
 export default class ProjectLoader {
     static async loadProject(gpu, fileSystem) {
@@ -30,7 +31,6 @@ export default class ProjectLoader {
         try {
             projectData = await ProjectLoader.getEntities(fileSystem)
         } catch (error) {
-
         }
 
         let settings = projectData[0]
@@ -44,12 +44,9 @@ export default class ProjectLoader {
         const entitiesWithScripts = entitiesFound.map(e => {
             const comp = e.data.components[COMPONENTS.SCRIPT]
             if (comp) {
-                if (comp.registryID)
-                    return comp.registryID
-                else
-                    return comp.scripts
-            } else
-                return e.data.blueprintID
+                if (comp.registryID) return comp.registryID
+                return comp.scripts
+            } else return e.data.blueprintID
         }).filter(e => e !== undefined)
 
         const toLoadScripts = [...new Set(entitiesWithScripts.flat())],
@@ -59,16 +56,16 @@ export default class ProjectLoader {
             materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 
 
-        try {entities = await Promise.all(entitiesFound.map((entity) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))} catch (e) {}
+        try {
+            entities = await Promise.all(entitiesFound.map((entity) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))
+        } catch (e) {
+        }
 
-        if (levelBlueprint)
-            scriptsToLoad.push({
-                script: {
-                    id: fileSystem.projectID,
-                    executors: levelBlueprint.response,
-                    name: levelBlueprint.name
-                }
-            })
+        if (levelBlueprint) scriptsToLoad.push({
+            script: {
+                id: fileSystem.projectID, executors: levelBlueprint.response, name: levelBlueprint.name
+            }
+        })
 
         return {
             meta,
@@ -82,28 +79,24 @@ export default class ProjectLoader {
 
     static async getEntities(fileSystem) {
         let settings = new Promise(async resolve => {
-                try {
-                    const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
-                    resolve({
-                        type: 'settings',
-                        data: res ? res : {}
-                    })
-                } catch (e) {
-                    resolve()
-                }
-            }),
-            meta = new Promise(async resolve => {
-                try {
-                    const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
-                    resolve({
-                        type: 'meta',
-                        data: res ? res : {}
-                    })
-                } catch (e) {
-                    resolve()
-                }
-            }),
-            entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
+            try {
+                const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
+                resolve({
+                    type: 'settings', data: res ? res : {}
+                })
+            } catch (e) {
+                resolve()
+            }
+        }), meta = new Promise(async resolve => {
+            try {
+                const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
+                resolve({
+                    type: 'meta', data: res ? res : {}
+                })
+            } catch (e) {
+                resolve()
+            }
+        }), entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
         return Promise
             .all([settings, meta, ...entities.map(e => {
@@ -112,8 +105,7 @@ export default class ProjectLoader {
                     try {
                         const res = await fileSystem.readFile(fileSystem.path + '\\logic\\' + e, 'json', true)
                         resolve({
-                            type: 'entity',
-                            data: res
+                            type: 'entity', data: res
                         })
                     } catch (e) {
                         resolve()
@@ -130,41 +122,23 @@ export default class ProjectLoader {
                     if (lookUpTable) {
                         fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
                             .then(fileData => {
-                                if (fileData)
-                                    resolve(fileData)
-                                else
-                                    resolve(null)
+                                if (fileData) resolve(fileData)
+                                else resolve(null)
                             }).catch(() => resolve(null))
-                    } else
-                        resolve(null)
+                    } else resolve(null)
                 }).catch(() => resolve(null))
         })
     }
 
     static async cleanUpRegistry(fileSystem) {
-        const fs = window.require('fs')
-        new Promise(resolve => {
-            fileSystem.readRegistry()
-                .then(files => {
-                    let deletePromises = []
-                    files
-                        .forEach(f => {
-                            const path = fileSystem.path + '\\assets\\' + f.path
-                            if (!fs.existsSync(path))
-                                deletePromises.push(new Promise(resolve2 => {
-                                    fs.rm(f.registryPath, () => {
-                                        resolve2()
-                                    })
-                                }))
-                        })
-                    Promise.all(deletePromises)
-                        .then(() => {
-                            resolve()
-                        }).catch(() => resolve())
-                })
-        })
+        const files = await fileSystem.readRegistry()
+        for (let i in files) {
+            const f = files[i]
+            const path = fileSystem.path + '\\assets\\' + f.path
+            if (!(await AsyncFS.exists(path)))
+                await AsyncFS.rm(f.registryPath)
+        }
     }
-
 
 
     static async loadMeshes(toLoad, fileSystem, gpu) {
@@ -172,25 +146,22 @@ export default class ProjectLoader {
             return new Promise(r => {
                 ProjectLoader.readFromRegistry(m, fileSystem)
                     .then(fileData => {
-
                         if (fileData) {
                             const parsed = JSON.parse(fileData)
                             r(new MeshInstance({
-                                    vertices: parsed.vertices,
-                                    indices: parsed.indices,
-                                    normals: parsed.normals,
-                                    uvs: parsed.uvs,
-                                    id: m,
-                                    maxBoundingBox: parsed.maxBoundingBox,
-                                    minBoundingBox: parsed.minBoundingBox,
-                                    gpu: gpu,
-                                    tangents: parsed.tangents,
-                                    wireframeBuffer: true,
-                                    material: parsed.material
-                                })
-                            )
-                        } else
-                            r(undefined)
+                                vertices: parsed.vertices,
+                                indices: parsed.indices,
+                                normals: parsed.normals,
+                                uvs: parsed.uvs,
+                                id: m,
+                                maxBoundingBox: parsed.maxBoundingBox,
+                                minBoundingBox: parsed.minBoundingBox,
+                                gpu: gpu,
+                                tangents: parsed.tangents,
+                                wireframeBuffer: true,
+                                material: parsed.material
+                            }))
+                        } else r(undefined)
                     }).catch(() => r())
             })
         })
@@ -204,31 +175,23 @@ export default class ProjectLoader {
             return new Promise(async r => {
                 const fileData = await ProjectLoader.readFromRegistry(m, fileSystem)
 
-                if (fileData)
-                    try {
-                        const d = JSON.parse(fileData)
+                if (fileData) try {
+                    const d = JSON.parse(fileData)
 
-                        r({
-                            script: {
-                                id: m,
-                                executors: d.response,
-                                name: d.name
-                            },
-                            entities: mapEntities ? await Promise.all(d.entities.map((e, i) => {
-                                return ProjectLoader.mapEntity(e, gpu, fileSystem)
-                            })) : []
-                        })
-                    } catch (e) {
-                        r({
-                            script: {
-                                id: m,
-                                executors: fileData
-                            },
-                            entities: []
-                        })
-                    }
-                else
-                    r()
+                    r({
+                        script: {
+                            id: m, executors: d.response, name: d.name
+                        }, entities: mapEntities ? await Promise.all(d.entities.map((e, i) => {
+                            return ProjectLoader.mapEntity(e, gpu, fileSystem)
+                        })) : []
+                    })
+                } catch (e) {
+                    r({
+                        script: {
+                            id: m, executors: fileData
+                        }, entities: []
+                    })
+                } else r()
             })
         })
 
@@ -248,14 +211,12 @@ export default class ProjectLoader {
                                 fileParsed = JSON.parse(fileData)
                                 if (fileParsed && Object.keys(fileParsed).length > 0)
                                     r(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                                else
-                                    r()
+                                else r()
 
                             } catch (e) {
                                 r()
                             }
-                        } else
-                            r()
+                        } else r()
                     }).catch(() => r())
 
             })
@@ -283,11 +244,9 @@ export default class ProjectLoader {
                 let component = await ENTITIES[k](entity, k, gpu, fileSystem)
                 if (component) {
 
-                    if (k !== COMPONENTS.MATERIAL)
-                        Object.keys(entity.components[k]).forEach(oK => {
-                            if (!oK.includes("__"))
-                                component[oK] = entity.components[k][oK]
-                        })
+                    if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
+                        if (!oK.includes("__")) component[oK] = entity.components[k][oK]
+                    })
                     parsedEntity.components[k] = component
                 }
             }
@@ -318,35 +277,20 @@ const ENTITIES = {
 
         newMat.materialID = entity.components[k].materialID
         const toLoad = (entity.components[k].uniforms ? entity.components[k].uniforms : []).map(u => {
-            if (u.type === DATA_TYPES.TEXTURE && u.modified)
-                return new Promise(async resolve => {
-                    const fileData = await ProjectLoader.readFromRegistry(u.value, fileSystem)
-                    if (fileData) {
-                        let texture
-                        await new Promise(r => {
-                            const k = u.format
-                            texture = new TextureInstance(
-                                fileData,
-                                k.yFlip,
-                                gpu,
-                                gpu[k.internalFormat],
-                                gpu[k.format],
-                                true,
-                                false,
-                                gpu.UNSIGNED_BYTE,
-                                undefined,
-                                undefined,
-                                0,
-                                () => {
-                                    r()
-                                }
-                            )
+            if (u.type === DATA_TYPES.TEXTURE && u.modified) return new Promise(async resolve => {
+                const fileData = await ProjectLoader.readFromRegistry(u.value, fileSystem)
+                if (fileData) {
+                    let texture
+                    await new Promise(r => {
+                        const k = u.format
+                        texture = new TextureInstance(fileData, k.yFlip, gpu, gpu[k.internalFormat], gpu[k.format], true, false, gpu.UNSIGNED_BYTE, undefined, undefined, 0, () => {
+                            r()
                         })
-                        resolve({key: u.key, value: texture.texture, changed: true})
-                    }
-                })
-            else
-                return new Promise(resolve => resolve(u))
+                    })
+                    resolve({key: u.key, value: texture.texture, changed: true})
+                }
+            })
+            return new Promise(resolve => resolve(u))
         })
         newMat.uniforms = entity.components[k].uniforms
         newMat.overrideMaterial = entity.components[k].overrideMaterial
@@ -354,8 +298,7 @@ const ENTITIES = {
         const values = await Promise.all(toLoad)
         newMat.uniformValues = {...entity.components[k].uniformValues}
         values.forEach(dd => {
-            if (dd.changed)
-                newMat.uniformValues[dd.key] = dd.value
+            if (dd.changed) newMat.uniformValues[dd.key] = dd.value
         })
 
         newMat.doubleSided = entity.components[k].doubleSided
@@ -380,8 +323,7 @@ const ENTITIES = {
         component.cubeMap = new CubeMapInstance(gpu, component.resolution)
 
         return component
-    },
-    // [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    }, // [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
     [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id),
     [COMPONENTS.SCRIPT]: async (entity, k) => new ScriptComponent(entity.components[k].id),
 

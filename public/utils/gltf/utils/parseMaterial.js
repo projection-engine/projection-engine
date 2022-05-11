@@ -1,5 +1,3 @@
-import {mat4, quat} from "gl-matrix";
-
 const fs = require('fs')
 const path = require('path')
 

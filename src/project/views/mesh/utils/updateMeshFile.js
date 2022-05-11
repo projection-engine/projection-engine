@@ -1,3 +1,3 @@
-export default function updateMeshFile(fs, regID, newData){
+export default function updateMeshFile( regID, newData){
 
 }

@@ -24997,6 +24997,314 @@ function validate(uuid) {
 
 /***/ }),
 
+/***/ "./public/events/FSEvents.js":
+/*!***********************************!*\
+  !*** ./public/events/FSEvents.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FSEvents)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+var _require = __webpack_require__(/*! electron */ "electron"),
+    BrowserWindow = _require.BrowserWindow,
+    dialog = _require.dialog,
+    ipcMain = _require.ipcMain;
+
+var fs = __webpack_require__(/*! fs */ "fs");
+
+var path = __webpack_require__(/*! path */ "path");
+
+function FSEvents() {
+  ipcMain.on('fs-read', /*#__PURE__*/function () {
+    var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(event, data) {
+      var path, options, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              path = data.path, options = data.options, listenID = data.listenID;
+              _context.next = 3;
+              return new Promise(function (resolve) {
+                fs.readFile(path, options, function (err, res) {
+                  return resolve([err, res ? res.toString() : undefined]);
+                });
+              });
+
+            case 3:
+              result = _context.sent;
+              event.sender.send('fs-read-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-write', /*#__PURE__*/function () {
+    var _ref2 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee2(event, pkg) {
+      var path, data, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              path = pkg.path, data = pkg.data, listenID = pkg.listenID;
+              _context2.next = 3;
+              return new Promise(function (resolve) {
+                fs.writeFile(path, data, function (err) {
+                  return resolve([err]);
+                });
+              });
+
+            case 3:
+              result = _context2.sent;
+              event.sender.send('fs-write-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function (_x3, _x4) {
+      return _ref2.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-rm', /*#__PURE__*/function () {
+    var _ref3 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee3(event, data) {
+      var path, options, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              path = data.path, options = data.options, listenID = data.listenID;
+              _context3.next = 3;
+              return new Promise(function (resolve) {
+                fs.rm(path, options, function (err) {
+                  return resolve([err]);
+                });
+              });
+
+            case 3:
+              result = _context3.sent;
+              event.sender.send('fs-rm-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function (_x5, _x6) {
+      return _ref3.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-mkdir', /*#__PURE__*/function () {
+    var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee4(event, data) {
+      var path, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              path = data.path, listenID = data.listenID;
+              _context4.next = 3;
+              return new Promise(function (resolve) {
+                fs.mkdir(path, function (err) {
+                  return resolve([err]);
+                });
+              });
+
+            case 3:
+              result = _context4.sent;
+              event.sender.send('fs-mkdir-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+
+    return function (_x7, _x8) {
+      return _ref4.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-stat', /*#__PURE__*/function () {
+    var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee5(event, data) {
+      var path, options, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              path = data.path, options = data.options, listenID = data.listenID;
+              _context5.next = 3;
+              return new Promise(function (resolve) {
+                fs.stat(path, options, function (err, res) {
+                  return resolve([err, res ? {
+                    isDirectory: res.isDirectory()
+                  } : undefined]);
+                });
+              });
+
+            case 3:
+              result = _context5.sent;
+              event.sender.send('fs-stat-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }));
+
+    return function (_x9, _x10) {
+      return _ref5.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-exists', /*#__PURE__*/function () {
+    var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee6(event, data) {
+      var path, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              path = data.path, listenID = data.listenID;
+              result = fs.existsSync(path);
+              event.sender.send('fs-exists-' + listenID, result);
+
+            case 3:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6);
+    }));
+
+    return function (_x11, _x12) {
+      return _ref6.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-readdir', /*#__PURE__*/function () {
+    var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee7(event, data) {
+      var path, options, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              path = data.path, options = data.options, listenID = data.listenID;
+              console.log(path, options, listenID);
+              _context7.next = 4;
+              return new Promise(function (resolve) {
+                fs.readdir(path, options, function (err, res) {
+                  return resolve([err, res]);
+                });
+              });
+
+            case 4:
+              result = _context7.sent;
+              event.sender.send('fs-readdir-' + listenID, result);
+
+            case 6:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
+    }));
+
+    return function (_x13, _x14) {
+      return _ref7.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-lstat', /*#__PURE__*/function () {
+    var _ref8 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee8(event, data) {
+      var path, options, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee8$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              path = data.path, options = data.options, listenID = data.listenID;
+              _context8.next = 3;
+              return new Promise(function (resolve) {
+                fs.lstat(path, options, function (err, res) {
+                  return resolve([err, res ? {
+                    isDirectory: res.isDirectory()
+                  } : undefined]);
+                });
+              });
+
+            case 3:
+              result = _context8.sent;
+              event.sender.send('fs-lstat-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, _callee8);
+    }));
+
+    return function (_x15, _x16) {
+      return _ref8.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('fs-rename', /*#__PURE__*/function () {
+    var _ref9 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee9(event, data) {
+      var oldPath, newPath, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee9$(_context9) {
+        while (1) {
+          switch (_context9.prev = _context9.next) {
+            case 0:
+              oldPath = data.oldPath, newPath = data.newPath, listenID = data.listenID;
+              _context9.next = 3;
+              return new Promise(function (resolve) {
+                fs.rename(oldPath, newPath, function (err) {
+                  return resolve([err]);
+                });
+              });
+
+            case 3:
+              result = _context9.sent;
+              event.sender.send('fs-rename-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context9.stop();
+          }
+        }
+      }, _callee9);
+    }));
+
+    return function (_x17, _x18) {
+      return _ref9.apply(this, arguments);
+    };
+  }());
+}
+
+/***/ }),
+
 /***/ "./public/events/FileSystemEvents.js":
 /*!*******************************************!*\
   !*** ./public/events/FileSystemEvents.js ***!
@@ -25010,18 +25318,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-node/v4.js");
-/* harmony import */ var _utils_gltf_glTF__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/gltf/glTF */ "./public/utils/gltf/glTF.js");
-
-
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-node/v4.js");
+/* harmony import */ var _utils_gltf_glTF__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/gltf/glTF */ "./public/utils/gltf/glTF.js");
 
 
 
@@ -25044,58 +25346,21 @@ var path = __webpack_require__(/*! path */ "path");
 
 var si = __webpack_require__(/*! systeminformation */ "./node_modules/systeminformation/lib/index.js");
 
-function readFile(_x, _x2) {
-  return _readFile.apply(this, arguments);
-}
-
-function _readFile() {
-  _readFile = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee6(event, _ref9) {
-    var pathName, type;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            pathName = _ref9.pathName, type = _ref9.type;
-            _context6.next = 3;
-            return new Promise(function (resolve) {
-              fs.readFile(path.resolve(pathName), function (e, res) {
-                try {
-                  var d = type === 'buffer' ? res : res ? res.toString() : undefined;
-                  resolve(type === 'json' && d ? JSON.parse(d) : d);
-                } catch (e) {
-                  resolve();
-                }
-              });
-            });
-
-          case 3:
-            return _context6.abrupt("return", _context6.sent);
-
-          case 4:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6);
-  }));
-  return _readFile.apply(this, arguments);
-}
-
-function createRegistryEntry(_x3, _x4) {
+function createRegistryEntry(_x, _x2) {
   return _createRegistryEntry.apply(this, arguments);
 }
 
 function _createRegistryEntry() {
-  _createRegistryEntry = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee7(pathName, projectPath) {
+  _createRegistryEntry = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee6(pathName, projectPath) {
     var fID, pathRe, p;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee7$(_context7) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            fID = (0,uuid__WEBPACK_IMPORTED_MODULE_6__["default"])();
+            fID = (0,uuid__WEBPACK_IMPORTED_MODULE_4__["default"])();
             pathRe = path.resolve(projectPath + '\\assets\\');
             p = path.resolve(projectPath + '\\assets\\' + pathName).replace(pathRe, '');
-            return _context7.abrupt("return", new Promise(function (r) {
+            return _context6.abrupt("return", new Promise(function (r) {
               fs.writeFile(path.resolve(projectPath + '\\assetsRegistry\\' + fID + ".reg"), JSON.stringify({
                 id: fID,
                 path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
@@ -25106,19 +25371,53 @@ function _createRegistryEntry() {
 
           case 4:
           case "end":
-            return _context7.stop();
+            return _context6.stop();
         }
       }
-    }, _callee7);
+    }, _callee6);
   }));
   return _createRegistryEntry.apply(this, arguments);
 }
 
-var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(function FileSystemEvents() {
-  _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, FileSystemEvents);
+function FileSystemEvents() {
+  ipcMain.on('read-file', /*#__PURE__*/function () {
+    var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee(event, _ref2) {
+      var pathName, type, listenID, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              pathName = _ref2.pathName, type = _ref2.type, listenID = _ref2.listenID;
+              _context.next = 3;
+              return new Promise(function (resolve) {
+                fs.readFile(path.resolve(pathName), function (e, res) {
+                  try {
+                    var d = type === 'buffer' ? res : res ? res.toString() : undefined;
+                    resolve(type === 'json' && d ? JSON.parse(d) : d);
+                  } catch (e) {
+                    resolve();
+                  }
+                });
+              });
 
-  ipcMain.on('open-file-dialog', function (ev, _ref) {
-    var listenID = _ref.listenID;
+            case 3:
+              result = _context.sent;
+              event.sender.send('read-file-' + listenID, result);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x3, _x4) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+  ipcMain.on('open-file-dialog', function (ev, _ref3) {
+    var listenID = _ref3.listenID;
     var properties = ['openFile', 'multiSelections'];
     dialog.showOpenDialog({
       properties: properties,
@@ -25133,44 +25432,18 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
     });
   });
   ipcMain.on('get-current-load', /*#__PURE__*/function () {
-    var _ref2 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee(event) {
+    var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee2(event) {
       var load;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return si.currentLoad();
-
-            case 2:
-              load = _context.sent;
-              event.sender.send('current-load', load);
-
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-
-    return function (_x5) {
-      return _ref2.apply(this, arguments);
-    };
-  }());
-  ipcMain.on('read-file', /*#__PURE__*/function () {
-    var _ref3 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee2(event, data) {
-      var result;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee2$(_context2) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return readFile(event, data);
+              return si.currentLoad();
 
             case 2:
-              result = _context2.sent;
-              event.sender.send('read-file-' + data.listenID, result);
+              load = _context2.sent;
+              event.sender.send('current-load', load);
 
             case 4:
             case "end":
@@ -25180,18 +25453,18 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
       }, _callee2);
     }));
 
-    return function (_x6, _x7) {
-      return _ref3.apply(this, arguments);
+    return function (_x5) {
+      return _ref4.apply(this, arguments);
     };
   }());
   ipcMain.on('read-registry', /*#__PURE__*/function () {
-    var _ref4 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee3(event, _ref5) {
+    var _ref5 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee3(event, _ref6) {
       var pathName, listenID, result;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee3$(_context3) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              pathName = _ref5.pathName, listenID = _ref5.listenID;
+              pathName = _ref6.pathName, listenID = _ref6.listenID;
               _context3.next = 3;
               return new Promise(function (resolve) {
                 fs.readdir(pathName, function (e, res) {
@@ -25231,23 +25504,22 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
       }, _callee3);
     }));
 
-    return function (_x8, _x9) {
-      return _ref4.apply(this, arguments);
+    return function (_x6, _x7) {
+      return _ref5.apply(this, arguments);
     };
-  }()); // IMPORT
-
+  }());
   ipcMain.on('import-gltf', /*#__PURE__*/function () {
-    var _ref6 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee5(event, _ref7) {
+    var _ref7 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee5(event, _ref8) {
       var filePath, newRoot, options, projectPath, fileName, listenID;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee5$(_context5) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              filePath = _ref7.filePath, newRoot = _ref7.newRoot, options = _ref7.options, projectPath = _ref7.projectPath, fileName = _ref7.fileName, listenID = _ref7.listenID;
+              filePath = _ref8.filePath, newRoot = _ref8.newRoot, options = _ref8.options, projectPath = _ref8.projectPath, fileName = _ref8.fileName, listenID = _ref8.listenID;
               fs.readFile(path.resolve(filePath), /*#__PURE__*/function () {
-                var _ref8 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee4(e, data) {
+                var _ref9 = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee4(e, data) {
                   var file;
-                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee4$(_context4) {
+                  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee4$(_context4) {
                     while (1) {
                       switch (_context4.prev = _context4.next) {
                         case 0:
@@ -25258,7 +25530,7 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
 
                           file = data.toString();
                           _context4.next = 4;
-                          return (0,_utils_gltf_glTF__WEBPACK_IMPORTED_MODULE_5__["default"])(newRoot, file, options, function (p) {
+                          return (0,_utils_gltf_glTF__WEBPACK_IMPORTED_MODULE_3__["default"])(newRoot, file, options, function (p) {
                             return createRegistryEntry(p, projectPath);
                           }, projectPath, filePath, fileName);
 
@@ -25278,8 +25550,8 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
                   }, _callee4);
                 }));
 
-                return function (_x12, _x13) {
-                  return _ref8.apply(this, arguments);
+                return function (_x10, _x11) {
+                  return _ref9.apply(this, arguments);
                 };
               }());
 
@@ -25291,13 +25563,11 @@ var FileSystemEvents = /*#__PURE__*/_babel_runtime_helpers_createClass__WEBPACK_
       }, _callee5);
     }));
 
-    return function (_x10, _x11) {
-      return _ref6.apply(this, arguments);
+    return function (_x8, _x9) {
+      return _ref7.apply(this, arguments);
     };
   }());
-});
-
-
+}
 
 /***/ }),
 
@@ -26191,8 +26461,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-
-
 var fs = __webpack_require__(/*! fs */ "fs");
 
 var path = __webpack_require__(/*! path */ "path");
@@ -26689,11 +26957,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _events_WindowEvents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./events/WindowEvents */ "./public/events/WindowEvents.js");
 /* harmony import */ var _events_FileSystemEvents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./events/FileSystemEvents */ "./public/events/FileSystemEvents.js");
+/* harmony import */ var _events_FSEvents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./events/FSEvents */ "./public/events/FSEvents.js");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 
 
 
@@ -26720,8 +26990,9 @@ var createWindow = function createWindow() {
       })
     });
   });
-  var windowEvents = new _events_WindowEvents__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      projectEvents = new _events_FileSystemEvents__WEBPACK_IMPORTED_MODULE_2__["default"]();
+  var windowEvents = new _events_WindowEvents__WEBPACK_IMPORTED_MODULE_1__["default"]();
+  (0,_events_FSEvents__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  (0,_events_FileSystemEvents__WEBPACK_IMPORTED_MODULE_2__["default"])();
 };
 
 app.on('ready', createWindow);
