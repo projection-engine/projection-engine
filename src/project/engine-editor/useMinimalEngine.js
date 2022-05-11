@@ -37,12 +37,12 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
         const promises = []
         if (initializeSphere)
             promises.push(new Promise(async r => {
-                const sphereMesh = await import('./assets/Sphere.json')
+                const sphereMesh = await import('../../static/assets/Sphere.json')
                 r(initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes))
             }))
         if (loadAllMeshes)
             promises.push(new Promise(async r => {
-                const cubeData = await import('./assets/Cube.json')
+                const cubeData = await import('../../static/assets/Cube.json')
                 r(initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true))
             }))
 

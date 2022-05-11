@@ -4,7 +4,7 @@ import TransformComponent from "../../engine/components/TransformComponent";
 import MeshInstance from "../../engine/instances/MeshInstance";
 import Transformation from "../../engine/instances/Transformation";
 import PickComponent from "../../engine/components/PickComponent";
-import arrow from '../assets/ScaleGizmo.json'
+import arrow from '../../../static/assets/ScaleGizmo.json'
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import ROTATION_TYPES from "./ROTATION_TYPES";
 import TranslateScaleGizmo from "./TranslateScaleGizmo";

@@ -10,7 +10,7 @@ import Transformation from "../../engine/instances/Transformation";
 import PickComponent from "../../engine/components/PickComponent";
 import TextureInstance from "../../engine/instances/TextureInstance";
 import circle from "../icons/circle.png";
-import plane from "../assets/Circle.json";
+import plane from "../../../static/assets/Circle.json";
 import ROTATION_TYPES from "./ROTATION_TYPES";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 

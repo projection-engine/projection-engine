@@ -5,7 +5,7 @@ import GIZMOS from "../gizmo/GIZMOS";
 import ScaleGizmo from "../gizmo/ScaleGizmo";
 import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
 import MeshInstance from "../../engine/instances/MeshInstance";
-import cube from "../assets/Cube.json";
+import cube from "../../../static/assets/Cube.json";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import * as gizmoShaderCode from "../../engine/shaders/misc/gizmo.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";

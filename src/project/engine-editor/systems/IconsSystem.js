@@ -9,7 +9,7 @@ import * as shaderCode from '../../engine/shaders/misc/gizmo.glsl'
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MeshInstance from "../../engine/instances/MeshInstance";
-import camera from "../assets/Camera.json";
+import camera from "../../../static/assets/Camera.json";
 
 export default class IconsSystem extends System {
     _ready = false
