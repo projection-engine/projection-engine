@@ -1,6 +1,6 @@
 import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import {v4, v4 as uuidv4} from 'uuid';
-import AsyncFS, {getCall} from "../../../components/AsyncFS";
+import AsyncFS from "../../../components/AsyncFS";
 
 const pathRequire = window.require('path')
 function resolvePath(p) {
