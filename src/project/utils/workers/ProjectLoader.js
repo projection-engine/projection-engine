@@ -25,22 +25,15 @@ import AsyncFS from "../../../components/AsyncFS";
 
 export default class ProjectLoader {
     static async loadProject(gpu, fileSystem) {
-
         await ProjectLoader.cleanUpRegistry(fileSystem)
-        let projectData = []
-        try {
-            projectData = await ProjectLoader.getEntities(fileSystem)
-        } catch (error) {
-        }
+        let projectData = await ProjectLoader.getEntities(fileSystem)
 
         let settings = projectData[0]
         let meta = projectData[1]
         let entitiesFound = projectData.filter(e => e.type === 'entity')
         let entities
         let meshes = [...new Set(entitiesFound.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components.MeshComponent?.meshID))]
-
         const entitiesWithMaterials = entitiesFound.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined)
-
         const entitiesWithScripts = entitiesFound.map(e => {
             const comp = e.data.components[COMPONENTS.SCRIPT]
             if (comp) {
@@ -79,24 +72,25 @@ export default class ProjectLoader {
 
     static async getEntities(fileSystem) {
         let settings = new Promise(async resolve => {
-            try {
-                const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
-                resolve({
-                    type: 'settings', data: res ? res : {}
-                })
-            } catch (e) {
-                resolve()
-            }
-        }), meta = new Promise(async resolve => {
-            try {
-                const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
-                resolve({
-                    type: 'meta', data: res ? res : {}
-                })
-            } catch (e) {
-                resolve()
-            }
-        }), entities = fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
+                try {
+                    const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
+                    resolve({
+                        type: 'settings', data: res ? res : {}
+                    })
+                } catch (e) {
+                    resolve()
+                }
+            }), meta = new Promise(async resolve => {
+                try {
+                    const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
+                    resolve({
+                        type: 'meta', data: res ? res : {}
+                    })
+                } catch (e) {
+                    resolve()
+                }
+            }),
+            entities = await fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
         return Promise
             .all([settings, meta, ...entities.map(e => {
@@ -199,37 +193,27 @@ export default class ProjectLoader {
     }
 
     static async loadMaterials(toLoad, fileSystem, gpu) {
-        const promises = toLoad.map(m => {
-            return new Promise(r => {
-
-                ProjectLoader.readFromRegistry(m, fileSystem)
-                    .then(async fileData => {
-                        if (fileData) {
-                            let fileParsed
-                            try {
-
-                                fileParsed = JSON.parse(fileData)
-                                if (fileParsed && Object.keys(fileParsed).length > 0)
-                                    r(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                                else r()
-
-                            } catch (e) {
-                                r()
-                            }
-                        } else r()
-                    }).catch(() => r())
-
-            })
-        })
-
-        return await Promise.all(promises)
+        const result = []
+        for (let i in toLoad) {
+            const m = toLoad[i]
+            const fileData = await ProjectLoader.readFromRegistry(m, fileSystem)
+            if (fileData) {
+                let fileParsed
+                try {
+                    fileParsed = JSON.parse(fileData)
+                    if (fileParsed && Object.keys(fileParsed).length > 0)
+                        result.push(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
+                } catch (e) {
+                }
+            }
+        }
+        return result
     }
 
     static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
-        console.log()
         let newMat
         await new Promise(resolve => {
-            newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader.code)
+            newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader?.code)
         })
         newMat.uniforms = uniforms
         return newMat

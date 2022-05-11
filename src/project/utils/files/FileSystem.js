@@ -1,6 +1,6 @@
-import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
+import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import {v4, v4 as uuidv4} from 'uuid';
-import AsyncFS, {getCall} from "../../../../components/AsyncFS";
+import AsyncFS, {getCall} from "../../../components/AsyncFS";
 
 const pathRequire = window.require('path')
 function resolvePath(p) {
@@ -91,12 +91,21 @@ export default class FileSystem {
                     break
                 }
                 case 'gltf':
-                    await getCall('import-gltf', {
-                        filePath: filePath,
-                        newRoot,
-                        options,
-                        projectPath: this.path,
-                        fileName: filePath.split(pathRequire.sep).pop()
+                    await new Promise(resolve => {
+                        const listenID = v4().toString()
+                        ipcRenderer.once('import-gltf-' + listenID, (ev, data) => {
+                            resolve(data)
+                            console.log(data, 'HERE')
+                        })
+
+                        ipcRenderer.send('import-gltf', {
+                            filePath: filePath,
+                            newRoot,
+                            options,
+                            projectPath: this.path,
+                            listenID,
+                            fileName: filePath.split(pathRequire.sep).pop()
+                        })
                     })
                     break
                 default:

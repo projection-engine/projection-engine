@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import FileSystem from "../utils/workers/files/FileSystem";
+import FileSystem from "../utils/files/FileSystem";
 import EVENTS from "../utils/EVENTS";
 import ImageProcessor from "../engine/utils/image/ImageProcessor";
 import Entity from "../engine/basic/Entity";

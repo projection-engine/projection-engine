@@ -30,6 +30,7 @@ export default function PostProcessingSettings() {
                 checked={settings.fxaa}
                 handleCheck={() => settings.fxaa = !settings.fxaa}
                 label={'FXAA anti-aliasing'}
+                height={'25px'}
                 width={'100%'}/>
 
             <div className={styles.group}>
@@ -38,6 +39,7 @@ export default function PostProcessingSettings() {
                     checked={settings.distortion}
                     handleCheck={() => settings.distortion = !settings.distortion}
                     label={'Lens distortion'}
+                    height={'25px'}
                     width={'100%'}/>
                 <AccordionTemplate title={'Distortion strength'}>
                     <Range accentColor={'red'} disabled={!settings.distortion}
@@ -55,6 +57,7 @@ export default function PostProcessingSettings() {
                     checked={settings.chromaticAberration}
                     handleCheck={() => settings.chromaticAberration = !settings.chromaticAberration}
                     label={'Chromatic aberration'}
+                    height={'25px'}
                     width={'100%'}/>
                 <AccordionTemplate title={'Chromatic aberration strength'}>
                     <Range accentColor={'red'} disabled={!settings.chromaticAberration}
@@ -71,6 +74,7 @@ export default function PostProcessingSettings() {
                     checked={settings.filmGrain}
                     handleCheck={() => settings.filmGrain = !settings.filmGrain}
                     label={'Film grain'}
+                    height={'25px'}
                     width={'100%'}/>
                 <AccordionTemplate title={'Film grain strength'}>
                     <Range accentColor={'red'} disabled={!settings.filmGrain}
@@ -88,6 +92,7 @@ export default function PostProcessingSettings() {
                     checked={settings.bloom}
                     handleCheck={() => settings.bloom = !settings.bloom}
                     label={'Bloom'}
+                    height={'25px'}
                     width={'100%'}/>
                 <AccordionTemplate title={'Bloom strength'}>
                     <Range accentColor={'red'} disabled={!settings.bloom}

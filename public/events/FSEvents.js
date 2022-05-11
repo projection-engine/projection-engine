@@ -66,7 +66,6 @@ export default function FSEvents() {
         const {
             path, options, listenID
         } = data
-        console.log(path, options, listenID)
 
         const result = await new Promise(resolve => {
             fs.readdir(path, options, (err, res) => resolve([err, res]))

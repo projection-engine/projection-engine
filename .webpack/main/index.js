@@ -25213,19 +25213,18 @@ function FSEvents() {
           switch (_context7.prev = _context7.next) {
             case 0:
               path = data.path, options = data.options, listenID = data.listenID;
-              console.log(path, options, listenID);
-              _context7.next = 4;
+              _context7.next = 3;
               return new Promise(function (resolve) {
                 fs.readdir(path, options, function (err, res) {
                   return resolve([err, res]);
                 });
               });
 
-            case 4:
+            case 3:
               result = _context7.sent;
               event.sender.send('fs-readdir-' + listenID, result);
 
-            case 6:
+            case 5:
             case "end":
               return _context7.stop();
           }
@@ -26172,8 +26171,9 @@ function _glTF() {
             promises = [];
             if (nodes) promises.push.apply(promises, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(nodes.map(function (d) {
               var filePathLocal = newRoot.replace(pathName + '\\assets\\', '') + "\\".concat(d.name, ".mesh");
-              if (!fs.existsSync(newRoot)) return [new Promise(function (r) {
-                fs.writeFile(path.resolve(newRoot + "\\".concat(d.name, ".mesh")), JSON.stringify(d.data), function () {
+              if (!fs.existsSync(newRoot + "\\".concat(d.name, ".mesh"))) return [new Promise(function (r) {
+                fs.writeFile(path.resolve(newRoot + "\\".concat(d.name, ".mesh")), JSON.stringify(d.data), function (err) {
+                  console.log(err);
                   r();
                 });
               }), createRegistryEntry(filePathLocal)];else return [];
@@ -26939,10 +26939,6 @@ module.exports = JSON.parse('{"name":"systeminformation","version":"5.11.14","de
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};

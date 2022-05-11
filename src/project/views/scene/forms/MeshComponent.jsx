@@ -37,7 +37,7 @@ export default function MeshComponent(props) {
                 noMargin={true}
                 label={'Static mesh'}
                 width={'100%'}
-                height={'35px'}
+                height={'25px'}
 
                 checked={meshType === MESH_TYPES.STATIC} handleCheck={() => {
                 const c = meshType === MESH_TYPES.STATIC ? MESH_TYPES.DYNAMIC : MESH_TYPES.STATIC

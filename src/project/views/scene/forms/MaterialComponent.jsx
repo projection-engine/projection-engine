@@ -234,7 +234,7 @@ export default function MaterialComponent(props) {
                     noMargin={true}
                     label={'Override material uniforms'}
                     width={'100%'}
-                    height={'35px'}
+                    height={'25px'}
                     checked={state.overrideMaterial}
                     handleCheck={() => {
                         const s = !state.overrideMaterial

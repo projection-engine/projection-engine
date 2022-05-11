@@ -375,7 +375,7 @@ export default function LightComponent(props) {
                 noMargin={true}
                 label={'Shadow map'}
                 width={'100%'}
-                height={'35px'}
+                height={'25px'}
                 checked={state.shadowMap}
                 handleCheck={() => {
                     saveVersion()
