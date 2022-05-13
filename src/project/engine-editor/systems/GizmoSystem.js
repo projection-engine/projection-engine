@@ -7,7 +7,7 @@ import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
 import MeshInstance from "../../engine/instances/MeshInstance";
 import cube from "../../../static/assets/Cube.json";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../../engine/shaders/misc/gizmo.glsl";
+import * as gizmoShaderCode from "../shaders/gizmo.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";
 
 export default class GizmoSystem extends System {

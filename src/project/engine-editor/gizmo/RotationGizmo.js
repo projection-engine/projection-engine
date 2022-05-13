@@ -1,6 +1,6 @@
 import System from "../../engine/basic/System";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../../engine/shaders/misc/gizmo.glsl";
+import * as gizmoShaderCode from "../shaders/gizmo.glsl";
 
 import {mat4, quat, vec3} from "gl-matrix";
 import Entity from "../../engine/basic/Entity";

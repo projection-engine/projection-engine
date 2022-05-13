@@ -1,6 +1,6 @@
 import System from "../../engine/basic/System";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from '../../engine/shaders/misc/gizmo.glsl'
+import * as gizmoShaderCode from '../shaders/gizmo.glsl'
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 
 export default class SelectedSystem extends System {

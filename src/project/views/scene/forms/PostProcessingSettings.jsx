@@ -16,9 +16,6 @@ export default function PostProcessingSettings() {
         gamma: settings.gamma,
         exposure: settings.exposure,
         filmGrainStrength: settings.filmGrainStrength ? settings.filmGrainStrength : .01,
-        // distortion: false,
-        // chromaticAberration: false,
-
         distortionStrength: settings.distortionStrength ? settings.distortionStrength : 1,
         chromaticAberrationStrength: settings.chromaticAberrationStrength ? settings.chromaticAberrationStrength : 1,
     })
@@ -32,6 +29,14 @@ export default function PostProcessingSettings() {
                 label={'FXAA anti-aliasing'}
                 height={'25px'}
                 width={'100%'}/>
+            <Checkbox
+
+                checked={settings.ao}
+                handleCheck={() => settings.ao = !settings.ao}
+                label={'Ambient occlusion'}
+                height={'25px'}
+                width={'100%'}/>
+
 
             <div className={styles.group}>
                 <Checkbox

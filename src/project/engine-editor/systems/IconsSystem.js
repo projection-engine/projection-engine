@@ -5,7 +5,7 @@ import spotLightIcon from "../icons/spot_light.png";
 import cubeMapIcon from "../icons/cubemap.png";
 import TextureInstance from "../../engine/instances/TextureInstance";
 import BillboardsInstance from "../../engine/instances/BillboardsInstance";
-import * as shaderCode from '../../engine/shaders/misc/gizmo.glsl'
+import * as shaderCode from '../shaders/gizmo.glsl'
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MeshInstance from "../../engine/instances/MeshInstance";
