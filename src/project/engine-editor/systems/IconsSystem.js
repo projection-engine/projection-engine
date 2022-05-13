@@ -94,8 +94,10 @@ export default class IconsSystem extends System {
                 }
                 this.cameraMesh.vertexVBO.disable()
                 this.cameraMesh.normalVBO.disable()
+
             }
         }
+        this.gpu.bindVertexArray(null)
     }
 
 }

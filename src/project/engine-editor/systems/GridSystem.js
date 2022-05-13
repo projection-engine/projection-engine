@@ -17,9 +17,7 @@ export default class GridSystem extends System {
         super.execute()
         const {
             gridVisibility,
-            camera,
-            gamma,
-            exposure
+            camera
         } = options
         if(gridVisibility) {
             this.gridShader.use()
@@ -27,8 +25,8 @@ export default class GridSystem extends System {
                 cameraType: camera instanceof OrthographicCamera ? 1 + camera.direction : 0,
                 viewMatrix: camera instanceof OrthographicCamera ? camera.viewMatrixGrid : camera.viewMatrix,
                 projectionMatrix: camera.projectionMatrix,
-                gamma,
-                exposure
+                gamma: camera.gamma,
+                exposure: camera.exposure
             })
 
             this.grid.draw()

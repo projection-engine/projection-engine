@@ -210,14 +210,18 @@ export default function SceneView(props) {
                             </Button>
                         </div>) : props.engine.executingAnimation ? null : (
                             <div className={styles.header} style={{justifyContent: 'flex-start'}}>
-                                  <span
-                                      className={'material-icons-round'}
-                                      style={{fontSize: '1.2rem'}}
-                                  >
-                                {currentTab === '0' ? 'tv' : 'image'}
-                                </span>
+                                <div
+                                    className={'material-icons-round'}
+                                    style={{fontSize: '1.2rem'}}
+                                >
+                                    {currentTab === '-1' ? 'tv' : null}
+                                    {currentTab === '-2' ? 'image' : null}
+                                    {currentTab === '-3' ? 'videocam' : null}
+                                </div>
                                 <label className={styles.overflow}>
-                                    {currentTab === '0' ? 'Display' : 'Scene effects'}
+                                    {currentTab === '-1' ? 'Display' : null}
+                                    {currentTab === '-2' ? 'Rendering features' : null}
+                                    {currentTab === '-3' ? 'Editor camera effects' : null}
                                 </label>
                             </div>
                         )}

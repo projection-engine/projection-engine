@@ -5,14 +5,12 @@ import AccordionTemplate from "../../../../components/accordion/AccordionTemplat
 import Range from "../../../../components/range/Range";
 import styles from '../styles/Forms.module.css'
 
-export default function PostProcessingSettings() {
+export default function EditorCamera() {
     const settings = useContext(SettingsProvider)
     const [state, setState] = useState({
         bloomStrength: settings.bloomStrength ? settings.bloomStrength : .3,
         bloomThreshold: settings.bloomThreshold ? settings.bloomThreshold : .85,
-        FXAASpanMax: settings.FXAASpanMax ? settings.FXAASpanMax : 8,
-        FXAAReduceMin: settings.FXAAReduceMin ? settings.FXAAReduceMin : 1 / 128,
-        FXAAReduceMul: settings.FXAAReduceMul ? settings.FXAAReduceMul : 1 / 8,
+
         gamma: settings.gamma,
         exposure: settings.exposure,
         filmGrainStrength: settings.filmGrainStrength ? settings.filmGrainStrength : .01,
@@ -21,23 +19,6 @@ export default function PostProcessingSettings() {
     })
     return (
         <div className={styles.ppWrapper}>
-
-            <Checkbox
-                noMargin={true}
-                checked={settings.fxaa}
-                handleCheck={() => settings.fxaa = !settings.fxaa}
-                label={'FXAA anti-aliasing'}
-                height={'25px'}
-                width={'100%'}/>
-            <Checkbox
-
-                checked={settings.ao}
-                handleCheck={() => settings.ao = !settings.ao}
-                label={'Ambient occlusion'}
-                height={'25px'}
-                width={'100%'}/>
-
-
             <div className={styles.group}>
                 <Checkbox
                     noMargin={true}

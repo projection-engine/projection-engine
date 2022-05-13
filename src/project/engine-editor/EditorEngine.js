@@ -38,7 +38,23 @@ export default class EditorEngine extends Renderer {
         else
             this.cameraData.cameraEvents.stopTracking()
         this._changed = true
+
+        this.camera.fov = params.fov
+        this.camera.distortion = params.distortion
+        this.camera.distortionStrength = params.distortionStrength
+        this.camera.chromaticAberration = params.chromaticAberration
+        this.camera.chromaticAberrationStrength = params.chromaticAberrationStrength
+
+        this.camera.filmGrain = params.filmGrain
+        this.camera.filmGrainStrength = params.filmGrainStrength
+        this.camera.bloom = params.bloom
+        this.camera.bloomStrength = params.bloomStrength
+        this.camera.bloomThreshold = params.bloomThreshold
+        this.camera.gamma = params.gamma
+        this.camera.exposure = params.exposure
+
         const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
+
 
         const meshSources = toObject(meshes)
         if (typeof params.setSelected === 'function') this.cameraData.onClick = (currentCoords, ctrlKey) => {
@@ -104,6 +120,7 @@ export default class EditorEngine extends Renderer {
     }
 
     set cameraType(data) {
+
         this.cameraData.cameraType = data
         this.cameraData.changeCamera(data)
     }

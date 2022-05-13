@@ -6,7 +6,7 @@ import COMPONENTS from "../engine/templates/COMPONENTS";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
 
-export default function useEditorEngine( canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
+export default function useEditorEngine(canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
@@ -48,7 +48,8 @@ export default function useEditorEngine( canExecutePhysicsAnimation, settings, l
         if (renderer && canStart && canRender) {
             renderer.cameraType = settings.cameraType
             renderer.gizmo = settings.gizmo
-            renderer.camera.fov = settings.fov
+
+
             renderer?.updatePackage(
                 entities,
                 materials,
@@ -83,3 +84,5 @@ export default function useEditorEngine( canExecutePhysicsAnimation, settings, l
         scripts, setScripts
     }
 }
+
+

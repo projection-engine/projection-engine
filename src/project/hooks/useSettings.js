@@ -43,7 +43,11 @@ export default function useSettings() {
         distortionStrength: 1,
         chromaticAberrationStrength: 1,
 
-        gridRotationSize: 1
+        gridRotationSize: 1,
+
+        pcfSamples: 3.,
+        shadowAtlasQuantity: 4,
+        shadowMapResolution: 4096
 
     })
     return state

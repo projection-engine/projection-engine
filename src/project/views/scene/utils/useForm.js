@@ -16,8 +16,9 @@ import CameraComponent from "../forms/CameraComponent";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
 import {IDS} from "../../../engine-editor/useMinimalEngine";
 import ScriptComponent from "../forms/ScriptComponent";
-import PostProcessingSettings from "../forms/PostProcessingSettings";
+import RenderingSettings from "../forms/RenderingSettings";
 import DisplaySettings from "../forms/DisplaySettings";
+import EditorCamera from "../forms/EditorCamera";
 
 export default function useForm(
     engine,
@@ -48,7 +49,6 @@ export default function useForm(
         })
     }
     const getField = (key) => {
-
         switch (key) {
             case COMPONENTS.SCRIPT: {
                 return (
@@ -58,7 +58,7 @@ export default function useForm(
                         submit={async (value, add) => {
                             if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value)) {
                                 selected.components[COMPONENTS.SCRIPT].scripts.push(value)
-                                if(!engine.scripts.find(s => s.id === value)){
+                                if (!engine.scripts.find(s => s.id === value)) {
 
                                     const rs = await quickAccess.fileSystem.readRegistryFile(value)
                                     if (rs) {
@@ -79,8 +79,7 @@ export default function useForm(
                                         }
                                     }
                                 }
-                            }
-                            else if (!add)
+                            } else if (!add)
                                 selected.components[COMPONENTS.SCRIPT].scripts = selected.components[COMPONENTS.SCRIPT].scripts.filter(s => s !== value)
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -281,7 +280,7 @@ export default function useForm(
                 name: selected.name,
                 selected: selected
             }
-        } else if(executingAnimation) {
+        } else if (executingAnimation) {
             if (currentKey)
                 setCurrentKey(undefined)
             return {
@@ -294,22 +293,18 @@ export default function useForm(
                             }}
                             className={'material-icons-round'}>play_arrow
                         </div>
-                         Stop the simulation to change attributes.
+                        Stop the simulation to change attributes.
                     </div>
                 )
             }
-        }
-        else
+        } else
             return {
                 open: false,
                 content: (
                     <div className={styles.formsWrapper}>
-                        {currentTab === '-1' ?
-                            <DisplaySettings/>
-                            :
-                            <PostProcessingSettings/>
-                        }
-
+                        {currentTab === '-1' ? <DisplaySettings/> : null}
+                        {currentTab === '-2' ? <RenderingSettings/> : null}
+                        {currentTab === '-3' ? <EditorCamera/> : null}
                     </div>
                 ),
                 selected: selected

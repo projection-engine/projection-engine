@@ -104,7 +104,14 @@ export default function FormTabs(props) {
 
     return (
         <div className={styles.wrapper}>
-
+            <Button
+                className={styles.button}
+                variant={props.currentTab === '-3' ? "filled" : undefined}
+                onClick={() => props.setCurrentTab('-3')}
+            >
+                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
+                <ToolTip content={'Editor camera'}/>
+            </Button>
             <Button
                 className={styles.button}
                 variant={props.currentTab === '-2' ? "filled" : undefined}
