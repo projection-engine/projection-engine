@@ -198,3 +198,11 @@
     background-color: var(--fabric-border-primary);
     border-radius: 3px;
 }
+
+
+.inline{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+}

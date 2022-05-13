@@ -4,7 +4,7 @@ import Range from "../../../../components/range/Range";
 import Transformation from "../../../engine/instances/Transformation";
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 
 export default function TransformComponent(props) {
     const [state, setState] = useState({})

@@ -3,7 +3,7 @@ import styles from "../styles/Forms.module.css";
 import {Checkbox, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import React, {useEffect, useState} from "react";
 import Range from "../../../../components/range/Range";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 
 
 export default function CubeMapComponent(props) {

@@ -47,8 +47,14 @@ export default function useSettings() {
 
         pcfSamples: 3.,
         shadowAtlasQuantity: 4,
-        shadowMapResolution: 4096
+        shadowMapResolution: 4096,
 
+        total_strength:  3.5,
+        base:  8,
+        area:  12,
+        falloff:  23,
+        radius:  1,
+        samples: 16,
     })
     return state
 }

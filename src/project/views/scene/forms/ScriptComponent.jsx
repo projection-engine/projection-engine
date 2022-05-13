@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styles from "../styles/Forms.module.css";
 import {Button} from "@f-ui/core";
 import React, {useMemo} from "react";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 import Selector from "../../../../components/selector/Selector";
 
 export default function ScriptComponent(props) {

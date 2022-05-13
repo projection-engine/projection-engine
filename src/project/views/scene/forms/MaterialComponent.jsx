@@ -9,7 +9,7 @@ import Range from "../../../../components/range/Range";
 import useDirectState from "../../../hooks/useDirectState";
 import ColorPicker from "../../../../components/color/ColorPicker";
 
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";

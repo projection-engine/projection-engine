@@ -1,7 +1,7 @@
 import {useContext, useState} from "react";
 import SettingsProvider from "../../../hooks/SettingsProvider";
 import {Checkbox} from "@f-ui/core";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 import Range from "../../../../components/range/Range";
 import styles from '../styles/Forms.module.css'
 

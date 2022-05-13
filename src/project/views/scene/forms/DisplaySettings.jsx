@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import SettingsProvider from "../../../hooks/SettingsProvider";
 import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 import Range from "../../../../components/range/Range";
 
 export default function DisplaySettings() {

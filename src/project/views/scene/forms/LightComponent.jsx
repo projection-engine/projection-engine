@@ -6,7 +6,7 @@ import Range from "../../../../components/range/Range";
 import ColorPicker from "../../../../components/color/ColorPicker";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer";
-import AccordionTemplate from "../../../../components/accordion/AccordionTemplate";
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
 
 export default function LightComponent(props) {
     const getNewState = () => {
