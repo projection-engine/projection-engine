@@ -1,5 +1,6 @@
 import EVENTS from "./EVENTS";
 import ProjectLoader from "./workers/ProjectLoader";
+import FILE_TYPES from "../../../public/glTF/FILE_TYPES";
 
 export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engine, load) {
     const toRemove = filesLoaded[tabIndex - 1]
@@ -34,7 +35,7 @@ export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engin
                     load.finishEvent(EVENTS.LOADING)
                 })
         } else if (toRemove.isLevelBlueprint) {
-            fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json')
+            fileSystem.readFile(fileSystem.path + '\\levelBlueprint'+FILE_TYPES.SCRIPT, 'json')
                 .then(res => {
                     engine.setScripts(prev => {
                         return prev.map(p => {

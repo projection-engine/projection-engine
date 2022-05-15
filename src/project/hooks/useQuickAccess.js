@@ -5,6 +5,7 @@ import ImageProcessor from "../engine/utils/image/ImageProcessor";
 import Entity from "../engine/basic/Entity";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import SkyboxComponent from "../engine/components/SkyboxComponent";
+import FILE_TYPES from "../../../public/glTF/FILE_TYPES";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
@@ -31,10 +32,10 @@ export default function useQuickAccess(projectID, load) {
     const refresh = () => {
         fileSystem.readRegistry()
             .then(reg => {
-                const imagesReg = (reg.filter(r => r.path.includes('.pimg')))
-                const meshesReg = (reg.filter(r => r.path.includes('.mesh')))
-                const materialsReg = (reg.filter(r => r.path.includes('.material')))
-                const scriptReg = (reg.filter(r => r.path.includes('.flowRaw')))
+                const imagesReg = (reg.filter(r => r.path.includes(FILE_TYPES.IMAGE)))
+                const meshesReg = (reg.filter(r => r.path.includes(FILE_TYPES.MESH)))
+                const materialsReg = (reg.filter(r => r.path.includes(FILE_TYPES.MATERIAL)))
+                const scriptReg = (reg.filter(r => r.path.includes(FILE_TYPES.RAW_SCRIPT)))
 
                 let promises = []
 

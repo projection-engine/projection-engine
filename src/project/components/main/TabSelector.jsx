@@ -5,6 +5,7 @@ import ImageView from "../image/ImageView";
 import BlueprintView from "../../components/blueprints/scripts/BlueprintView";
 import MinimalBlueprintView from "../../components/blueprints/scripts/MinimalBlueprintView";
 import UI from "../ui/UI";
+import FILE_TYPES from "../../../../public/glTF/FILE_TYPES";
 
 export default function TabSelector(props) {
     const {
@@ -22,7 +23,7 @@ export default function TabSelector(props) {
     } = props
     const submitPackage = (pack, close, previewImage, isLevel) => {
         quickAccess.fileSystem
-            .updateAsset(isLevel ? '\\levelBlueprint.flow' : file.registryID, pack, previewImage)
+            .updateAsset(isLevel ? '\\levelBlueprint'+FILE_TYPES.SCRIPT : file.registryID, pack, previewImage)
             .then(() => {
                 setAlert({
                     type: 'success',

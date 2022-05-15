@@ -1,5 +1,6 @@
 import {v4 as uuidv4} from "uuid";
-import glTF from "../utils/gltf/glTF";
+import glTF from "../glTF/glTF";
+import REG_PATH from "../glTF/REG_PATH";
 
 const {BrowserWindow, dialog, ipcMain} = require('electron')
 const fs = require('fs')
@@ -13,7 +14,7 @@ async function createRegistryEntry(pathName, projectPath) {
     const p = path.resolve(projectPath + '\\assets\\' + pathName).replace(pathRe, '')
 
     return new Promise(r => {
-        fs.writeFile(path.resolve(projectPath + '\\assetsRegistry\\' + fID + `.reg`), JSON.stringify({
+        fs.writeFile(path.resolve(projectPath + `\\${REG_PATH}\\` + fID + `.reg`), JSON.stringify({
             id: fID, path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
         }), () => {
             r()
@@ -88,7 +89,7 @@ export default function FileSystemEvents() {
         fs.readFile(path.resolve(filePath), async (e, data) => {
             if (!e) {
                 const file = data.toString()
-                await glTF(newRoot, file, options, p => createRegistryEntry(p, projectPath), projectPath, filePath, fileName)
+                await glTF(newRoot, fileName, projectPath, file, options)
                 event.sender.send('import-gltf-' + listenID, undefined)
             } else event.sender.send('import-gltf-' + listenID, undefined)
         })

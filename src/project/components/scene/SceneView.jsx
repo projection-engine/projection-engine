@@ -197,11 +197,11 @@ export default function SceneView(props) {
                         currentTab={currentTab}
                         setCurrentTab={setCurrentTab}
                     />
-                    <div style={{width: '100%'}}>
+                    <div style={{width: '100%', overflowX: 'hidden'}}>
                         {currentForm.open ? (<div className={styles.header}>
-                            <label>{currentForm.name}</label>
+                            <label className={styles.overflow}>{currentForm.name}</label>
                             <Button
-                                styles={{height: '20px', width: '20px'}}
+                                styles={{minHeight: '25px', minWidth: '25px'}}
                                 onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
                                 className={styles.button}
                                 variant={props.engine.lockedEntity === currentForm.selected?.id ? 'filled' : undefined}

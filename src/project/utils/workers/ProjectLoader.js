@@ -22,6 +22,7 @@ import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import {DATA_TYPES} from "../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../engine/instances/TextureInstance";
 import AsyncFS from "../../../components/AsyncFS";
+import FILE_TYPES from "../../../../public/glTF/FILE_TYPES";
 
 export default class ProjectLoader {
     static async loadProject(gpu, fileSystem) {
@@ -44,7 +45,7 @@ export default class ProjectLoader {
 
         const toLoadScripts = [...new Set(entitiesWithScripts.flat())],
             scriptsToLoad = (await ProjectLoader.loadScripts(toLoadScripts, fileSystem, entitiesFound.length)).filter(e => e !== undefined),
-            levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint.flow', 'json'),
+            levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint'+FILE_TYPES.SCRIPT, 'json'),
             meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
             materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
 

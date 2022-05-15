@@ -4,9 +4,10 @@ import Transformation from "../../../engine/instances/Transformation";
 import {mat4} from "gl-matrix";
 // import GLTF from "../gltf/GLTF";
 import {lzwEncode} from "../functions/lzString";
+import FILE_TYPES from "../../../../../public/glTF/FILE_TYPES";
 
 const {fs} = window.require('fs')
-export default function assimpImporter( resolvePath, newRoot, file, options,  createRegistryEntry, path, importImage) {
+export default function assimpImporter(resolvePath, newRoot, file, options, createRegistryEntry, path, importImage) {
     return new Promise(resolve => {
         fs.mkdir(resolvePath(newRoot), async () => {
 
@@ -41,13 +42,13 @@ export default function assimpImporter( resolvePath, newRoot, file, options,  cr
                                 new Promise(r => {
 
                                     fs.writeFile(
-                                        resolvePath(newRoot + `\\${mesh.name + ' - ' + m}.mesh`),
+                                        resolvePath(newRoot + `\\${mesh.name + ' - ' + m + FILE_TYPES.MESH}`),
                                         lzwEncode(jsonText),
                                         (err) => {
                                             r()
                                         });
                                 }),
-                                createRegistryEntry(undefined, newRoot.replace(path + '\\assets\\', '') + `\\${mesh.name + ' - ' + m}.mesh`)
+                                createRegistryEntry(undefined, newRoot.replace(path + '\\assets\\', '') + `\\${mesh.name + ' - ' + m + FILE_TYPES.MESH}`)
                             ]
                         } else if (mesh) {
                             rejectedMeshes.push({

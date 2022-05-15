@@ -7,6 +7,7 @@ import Entity from "../engine/basic/Entity";
 import FolderComponent from "../engine/components/FolderComponent";
 import ScriptComponent from "../engine/components/ScriptComponent";
 import {HISTORY_ACTIONS} from "../hooks/historyReducer";
+import FILE_TYPES from "../../../public/glTF/FILE_TYPES";
 
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     let entities = []
@@ -23,9 +24,9 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                 const data = entities[i]
                 const res = await fileSystem.readRegistryFile(data)
 
-                if (res && (res.path.includes('.mesh') || res.path.includes('.terrain'))) {
+                if (res && (res.path.includes(FILE_TYPES.MESH) || res.path.includes('.terrain'))) {
                     const mesh = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
-                    if (res.path.includes('.mesh'))
+                    if (res.path.includes(FILE_TYPES.MESH))
                         resolve(await importMesh(mesh, engine, data, i, fileSystem, isBlueprint))
                     else // TODO - IMPORT ESPECIFICO PARA TERRAIN
                         resolve(await importMesh({
@@ -36,7 +37,7 @@ export default function handleDrop(event, fileSystem, engine, setAlert, load, as
                             rotation: [0, 0, 0]
                         }, engine, data, i, fileSystem, isBlueprint))
 
-                } else if (res && res.path.includes('.flow')) {
+                } else if (res && res.path.includes(FILE_TYPES.SCRIPT)) {
                     const script = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
                     const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
                     const m = await ProjectLoader.loadMeshes(meshesToLoad, fileSystem, engine.gpu)
