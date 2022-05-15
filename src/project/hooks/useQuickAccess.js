@@ -29,7 +29,6 @@ export default function useQuickAccess(projectID, load) {
     }, [])
     const fileSystem = new FileSystem(projectID)
     const refresh = () => {
-        load.pushEvent(EVENTS.REFRESHING)
         fileSystem.readRegistry()
             .then(reg => {
                 const imagesReg = (reg.filter(r => r.path.includes('.pimg')))

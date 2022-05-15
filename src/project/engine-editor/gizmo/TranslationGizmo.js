@@ -70,33 +70,28 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
     }
 
     onMouseMove(event) {
-        if (!this.started) {
-            this.started = true
-            if (this.onGizmoStart)
-                this.onGizmoStart()
-            this.renderTarget.start()
-        }
-        const vector = [event.movementX, event.movementX, event.movementX]
 
+        const s = Math.abs(event.movementX *this.gridSize)
+        const sign  =Math.sign(event.movementX)
         switch (this.clickedAxis) {
             case 1: // x
-                this.distanceX += Math.abs(vector[0] * 0.1)
+                this.distanceX += s
                 if (Math.abs(this.distanceX) >= this.gridSize) {
-                    this.transformElement([Math.sign(vector[0]) * this.distanceX, 0, 0])
+                    this.transformElement([sign * this.distanceX, 0, 0])
                     this.distanceX = 0
                 }
                 break
             case 2: // y
-                this.distanceY += Math.abs(vector[1] * 0.1)
+                this.distanceY += s
                 if (Math.abs(this.distanceY) >= this.gridSize) {
-                    this.transformElement([0, Math.sign(vector[1]) * this.distanceY, 0])
+                    this.transformElement([0, sign * this.distanceY, 0])
                     this.distanceY = 0
                 }
                 break
             case 3: // z
-                this.distanceZ += Math.abs(vector[2] * 0.1)
+                this.distanceZ += s
                 if (Math.abs(this.distanceZ) >= this.gridSize) {
-                    this.transformElement([0, 0, Math.sign(vector[2]) * this.distanceZ])
+                    this.transformElement([0, 0, sign * this.distanceZ])
                     this.distanceZ = 0
                 }
                 break
@@ -108,12 +103,15 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
                 t = this.target[0].components[COMPONENTS.SKYLIGHT]?.direction
             if (!t)
                 t = this.target[0].components[COMPONENTS.DIRECTIONAL_LIGHT]?.direction
+            console.log('HERE', this.started)
             this.renderTarget.render(t)
         }
     }
 
     execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize) {
+        this.gridSize = gridSize
         super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz);
+
     }
 
     transformElement(vec) {

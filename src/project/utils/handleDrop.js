@@ -10,7 +10,6 @@ import {HISTORY_ACTIONS} from "../hooks/historyReducer";
 
 export default function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     let entities = []
-    load.pushEvent(EVENTS.LOADING_MESHES)
 
     try {
         entities = asID ? [event] : JSON.parse(event.dataTransfer.getData("text"))

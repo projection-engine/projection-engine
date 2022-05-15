@@ -10,6 +10,12 @@ import ShaderInstance from "../../engine/instances/ShaderInstance";
 import * as gizmoShaderCode from "../shaders/gizmo.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";
 
+function move(event) {
+    const canvas = event.target
+    if (canvas.targetGizmo)
+        canvas.targetGizmo.onMouseMove(event)
+}
+
 export default class GizmoSystem extends System {
     hiddenTarget = true
     targetGizmo
@@ -58,21 +64,19 @@ export default class GizmoSystem extends System {
     handler(event) {
         switch (event.type) {
             case 'mousedown':
-                if (this.targetGizmo)
+                if (this.targetGizmo) {
                     this.targetGizmo.onMouseDown(event)
-                this.gpu.canvas.addEventListener('mousemove', this.handlerListener)
+                    this.gpu.canvas.addEventListener('mousemove', move)
+                }
+                this.gpu.canvas.targetGizmo = this.targetGizmo
                 break
             case 'mouseup':
                 if (this.targetGizmo) {
                     this.targetGizmo.onMouseUp(event)
-                    this.targetGizmo = undefined
                 }
+                this.targetGizmo = undefined
                 this.gizmoTooltip.stop()
-                this.gpu.canvas.removeEventListener('mousemove', this.handlerListener)
-                break
-            case 'mousemove':
-                if (this.targetGizmo)
-                    this.targetGizmo.onMouseMove(event)
+                this.gpu.canvas.removeEventListener('mousemove', move)
                 break
             default:
                 break
@@ -98,21 +102,23 @@ export default class GizmoSystem extends System {
         super.execute()
 
         this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
-
-        switch (gizmo) {
-            case GIZMOS.TRANSLATION:
-                this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize ? gridSize : .0001)
-                break
-            case GIZMOS.ROTATION:
-                this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1)
-                break
-            case GIZMOS.SCALE:
-                this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001)
-                break
-        }
+        if (selected.length > 0)
+            switch (gizmo) {
+                case GIZMOS.TRANSLATION:
+                    this.targetGizmo = this.translationGizmo
+                    this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize)
+                    break
+                case GIZMOS.ROTATION:
+                    this.targetGizmo = this.rotationGizmo
+                    this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1)
+                    break
+                case GIZMOS.SCALE:
+                    this.targetGizmo = this.scaleGizmo
+                    this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001)
+                    break
+            }
+        else
+            this.targetGizmo = null
 
     }
 }

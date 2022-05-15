@@ -30,11 +30,11 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
                     })
                     break
                 case HISTORY_ACTIONS.PUSHING_DATA:
-                    setAlert({type: 'info', message: 'Undo: Adding entities (' + changes[c].entities.length+ ')'})
+                    setAlert({type: 'info', message: 'Redo: Adding entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities})
                     break
                 case HISTORY_ACTIONS.DELETING_ENTITIES:
-                    setAlert({type: 'info', message: 'Undo: Deleting entities (' + changes[c].entities.length+ ')'})
+                    setAlert({type: 'info', message: 'Redo: Deleting entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.flat().map(e => e.id)
                     })
@@ -64,11 +64,11 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
                     })
                     break
                 case HISTORY_ACTIONS.PUSHING_DATA:
-                    setAlert({type: 'info', message: 'Redo: Adding entities (' + changes[c].entities.length+ ')'})
+                    setAlert({type: 'info', message: 'Undo: Adding entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.map(e => e.id)})
                     break
                 case HISTORY_ACTIONS.DELETING_ENTITIES:
-                    setAlert({type: 'info', message: 'Redo: Deleting entities (' + changes[c].entities.length+ ')'})
+                    setAlert({type: 'info', message: 'Undo: Deleting entities (' + changes[c].entities.length+ ')'})
                     dispatchEntities({
                         type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities.flat()
                     })

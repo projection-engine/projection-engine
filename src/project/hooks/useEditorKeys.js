@@ -88,7 +88,7 @@ export default function useEditorKeys(props, controlProvider) {
                         if (found) {
                             let clone = cloneClass(found)
                             clone.id = uuidv4()
-                            clone.name += ' - clone'
+                            clone.name = '_' + clone.name
                             let newComponents = {}
                             Object.keys(clone.components).forEach(c => {
                                 if (c === COMPONENTS.TRANSFORM) {
@@ -98,6 +98,7 @@ export default function useEditorKeys(props, controlProvider) {
                                     newComponents[COMPONENTS.TRANSFORM].translation = [...clone.components[c].translation]
                                     newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
                                     newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
+                                    newComponents[COMPONENTS.TRANSFORM].baseTransformationMatrix = clone.components[c].baseTransformationMatrix
                                     newComponents[COMPONENTS.TRANSFORM].lockedRotation = clone.components[c].lockedRotation
                                     newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
                                     newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange

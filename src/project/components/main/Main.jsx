@@ -26,7 +26,7 @@ export default function Main(props) {
                 props.openLevelBlueprint,
                 props.setAlert
             ),
-            'Editor',
+            'Level viewport',
             <span
                 style={{fontSize: '1.2rem'}}
                 className={`material-icons-round`}>video_settings</span>,

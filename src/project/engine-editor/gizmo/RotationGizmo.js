@@ -100,12 +100,10 @@ export default class RotationGizmo extends System {
             this.currentCoord = undefined
             this.gpu.canvas.removeEventListener("mousemove", this.handlerListener)
             document.exitPointerLock()
-            this.renderTarget.style.display = 'none'
-
             this.currentRotation = [0, 0, 0]
-
             this.t = 0
         }
+        this.renderTarget.style.display = 'none'
     }
 
     onMouseMove(event) {

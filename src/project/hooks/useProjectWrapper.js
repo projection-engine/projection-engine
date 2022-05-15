@@ -33,7 +33,6 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
             setLoading(true)
             new Promise(async resolve => {
                 try {
-                    console.log('G')
                     const res = await ProjectLoader.loadProject(gpu, quickAccess.fileSystem)
                     load.finishEvent(EVENTS.PROJECT_DATA)
 

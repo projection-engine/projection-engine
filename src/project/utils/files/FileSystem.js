@@ -217,6 +217,7 @@ export default class FileSystem {
         for (let i = 0; i < files.length; i++) {
             const filename = pathRequire.join(startPath, files[i]);
             const stat = (await AsyncFS.lstat(filename))[1];
+
             if (stat.isDirectory) res.push(filename)
         }
         return res
@@ -229,7 +230,7 @@ export default class FileSystem {
             const stat = (await AsyncFS.lstat(fromResolved))[1]
             if (stat !== undefined && stat.isDirectory) {
                 await AsyncFS.mkdir(to)
-                const [error, res] = AsyncFS.readdir(fromResolved)
+                const [error, res] = await AsyncFS.readdir(fromResolved)
                 if (res) {
 
                     for (let i in res) {

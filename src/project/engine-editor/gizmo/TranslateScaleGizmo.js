@@ -16,7 +16,6 @@ export default class TranslateScaleGizmo extends System {
 
     constructor(gpu, gizmoShader, renderTarget) {
         super([]);
-        console.log(renderTarget)
         this.renderTarget = renderTarget
         this.gpu = gpu
         this.gizmoShader = gizmoShader
@@ -33,8 +32,6 @@ export default class TranslateScaleGizmo extends System {
     onMouseUp(){
         this.firstPick = true
         if (this.tracking) {
-            this.renderTarget.stop()
-            this.onGizmoEnd()
             this.tracking = false
             this.started = false
             this.distanceX = 0
@@ -43,10 +40,12 @@ export default class TranslateScaleGizmo extends System {
             this.currentCoord = undefined
             this.gpu.canvas.removeEventListener("mousemove", this.handlerListener)
             document.exitPointerLock()
-
             this.clickedAxis = -1
             this.t = 0
+            this.onGizmoEnd()
+
         }
+        this.renderTarget.stop()
     }
 
     transformElement() {
@@ -108,7 +107,7 @@ export default class TranslateScaleGizmo extends System {
                 this.firstPick = false
                 this.camera = camera
                 this.typeRot = transformationType
-                this.onGizmoStart = onGizmoStart
+
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking) {
 
@@ -126,6 +125,8 @@ export default class TranslateScaleGizmo extends System {
                         lockCamera(true)
                         this.target = selected.map(e => entities[e])
                         this.gpu.canvas.requestPointerLock()
+                        this.renderTarget.start()
+                        onGizmoStart()
                     }
                 }
                 const t = el.components[COMPONENTS.TRANSFORM]
