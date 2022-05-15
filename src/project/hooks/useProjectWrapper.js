@@ -8,7 +8,7 @@ import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../utils/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import COMPONENTS from "../engine/templates/COMPONENTS";
-import WebBuilder from "../builder/web/WebBuilder";
+import WebBuilder from "../utils/builder/WebBuilder";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings) {

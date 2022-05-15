@@ -4,7 +4,7 @@ import directionalLightIcon from "../icons/directional_light.png";
 import spotLightIcon from "../icons/spot_light.png";
 import cubeMapIcon from "../icons/cubemap.png";
 import TextureInstance from "../../engine/instances/TextureInstance";
-import BillboardsInstance from "../../engine/instances/BillboardsInstance";
+import BillboardsInstance from "../BillboardsInstance";
 import * as shaderCode from '../shaders/gizmo.glsl'
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import COMPONENTS from "../../engine/templates/COMPONENTS";

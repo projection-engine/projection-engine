@@ -15,7 +15,8 @@ import LoaderProvider from "../../components/loader/LoaderProvider";
 import QuickAccessProvider from "../hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
-
+import SettingsProvider from "../hooks/SettingsProvider";
+const toRad = 180/Math.PI
 export default function useMinimalEngine(initializeSphere, centerOnSphere, loadAllMeshes) {
     const {
         meshes, setMeshes,
@@ -58,9 +59,11 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
             dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
         })
     }, [])
+
     useEffect(() => {
+
         renderer.cameraType = CAMERA_TYPES.SPHERICAL
-        renderer.camera.radius = 2
+        renderer.camera.radius = 3
         if (!initialized && focused) {
             setInitialized(true)
         }
@@ -72,9 +75,17 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
             materials,
             meshes,
             {
+               fov : 60 * toRad,
+               distortion: false,
+               distortionStrength: 1,
+               chromaticAberration: false,
+               chromaticAberrationStrength: .5,
+
+
+
                 fxaa: true,
                 meshes,
-                gamma: 2.2,
+                gamma: 2,
                 exposure: 1,
                 materials: [],
                 noRSM: true,
@@ -82,7 +93,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                 cameraType: CAMERA_TYPES.SPHERICAL,
                 bloom: true,
                 filmGrain: true,
-                filmGrainStrength: .07,
+                filmGrainStrength: .05,
                 bloomStrength: .1,
                 bloomThreshold: .75,
                 selected: []
@@ -125,9 +136,9 @@ export function initializeMesh(data, gpu, id, name, setMeshes, noTranslation, no
         if (!noTranslation)
             transformation.translation = data.translation
 
-        newEntity.components.MeshComponent = new MeshComponent(undefined, mesh.id)
-        newEntity.components.TransformComponent = transformation
-        newEntity.components.MaterialComponent = new MaterialComponent(undefined, id === IDS.PLANE ? undefined : IDS.MATERIAL, id === IDS.PLANE)
+        newEntity.components[COMPONENTS.MESH] = new MeshComponent(undefined, mesh.id)
+        newEntity.components[COMPONENTS.TRANSFORM] = transformation
+        newEntity.components[COMPONENTS.MATERIAL] = new MaterialComponent(undefined, id === IDS.PLANE ? undefined : IDS.MATERIAL, id === IDS.PLANE)
 
         return newEntity
     }

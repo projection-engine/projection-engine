@@ -24,8 +24,12 @@ MESSAGE=$TYPE
 MESSAGE+="["$M"]"
 
 
+cd docs
+git add --all
+git commit -m "$MESSAGE"
+git push origin main
 
-cd src/components
+cd ../src/components
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
@@ -36,18 +40,23 @@ git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
 
-cd ../views/blueprints
+cd ../components/blueprints
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
 
-cd ../file
+cd ../files
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
-cd ../../builder/web
+cd ../ui
+git add --all
+git commit -m "$MESSAGE"
+git push origin main
+
+cd ../../utils/builder
 git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha

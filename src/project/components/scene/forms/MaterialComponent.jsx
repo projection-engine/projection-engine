@@ -22,7 +22,7 @@ export default function MaterialComponent(props) {
     const lastID = useRef()
 
     useEffect(() => {
-        if(!lastID.current || lastID.current !== props.entityID) {
+        if (!lastID.current || lastID.current !== props.entityID) {
             clear()
             lastID.current = props.entityID
             const matSelected = props.engine?.materials.find(m => m.id === props.selected.materialID)
@@ -37,11 +37,10 @@ export default function MaterialComponent(props) {
     }, [props.selected, props.entityID])
 
     const loadFile = async (src, type = 'json') => {
-        load.pushEvent(EVENTS.LOAD_FILE)
+
         const rs = await fileSystem.readRegistryFile(src.registryID)
         if (rs) {
             const file = await fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, type)
-            load.finishEvent(EVENTS.LOAD_FILE)
             if (file)
                 return file
             else {
@@ -51,8 +50,7 @@ export default function MaterialComponent(props) {
                 })
                 return null
             }
-        } else
-            load.finishEvent(EVENTS.LOAD_FILE)
+        }
 
     }
     const updateUniforms = (key, value, obj, submit, submitUniformList) => {
@@ -72,7 +70,7 @@ export default function MaterialComponent(props) {
                 props.submit(values, 'uniformValues')
             }
 
-            if(submitUniformList)
+            if (submitUniformList)
                 props.submit(copy, 'uniforms')
         }
     }
@@ -245,12 +243,12 @@ export default function MaterialComponent(props) {
             ) : null}
 
 
-            {state.overrideMaterial && state.uniforms?
+            {state.overrideMaterial && state.uniforms ?
                 state.uniforms?.map((u, i) => (
                     <React.Fragment key={i + '-uniforms-mat'}>
-                    <AccordionTemplate title={u.label}>
-                        {getField(u)}
-                    </AccordionTemplate>
+                        <AccordionTemplate title={u.label}>
+                            {getField(u)}
+                        </AccordionTemplate>
                     </React.Fragment>
                 ))
                 : null}

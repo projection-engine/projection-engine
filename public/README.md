@@ -6,7 +6,7 @@
 
 - [] projectWindow:
 
-> Editor window. Loads project and shows content
+> Main window. Loads project and shows content
 
 
 ### Secondary windows

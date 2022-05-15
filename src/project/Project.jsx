@@ -5,13 +5,13 @@ import Preferences from "../components/preferences/Preferences";
 import Tabs from "../components/tabs/Tabs";
 import {ENTITY_ACTIONS} from "./engine/useEngineEssentials";
 import SettingsProvider from "./hooks/SettingsProvider";
-import FilesView from "./views/file/FilesView";
-import Editor from "./components/Editor";
+import FilesView from "./components/files/FilesView";
+import Main from "./components/main/Main";
 import EntitiesProvider from "./hooks/EntitiesProvider";
 import handleTabChange from "./utils/handleTabChange";
 import Frame from "../components/frame/Frame";
 import useProjectWrapper from "./hooks/useProjectWrapper";
-import TabSelector from "./components/TabSelector";
+import TabSelector from "./components/main/TabSelector";
 
 const {shell} = window.require('electron')
 export default function Project({id, meta, events, initialized, setInitialized, settings}) {
@@ -107,7 +107,7 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                             setTab={setCurrentTab}
 
                         >
-                            <Editor
+                            <Main
                                 setExecutingAnimation={setExecutingAnimation}
                                 executingAnimation={executingAnimation}
                                 engine={engine}

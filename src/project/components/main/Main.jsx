@@ -1,18 +1,18 @@
-import styles from "../styles/Project.module.css";
-import ViewportOptions from "../../components/viewport/ViewportOptions";
-import Viewport from "../../components/viewport/Viewport";
-import handleDrop from "../utils/handleDrop";
-import ResizableBar from "../../components/resizable/ResizableBar";
-import SceneView from "../views/scene/SceneView";
+import styles from "../../styles/Project.module.css";
+import ViewportOptions from "../../../components/viewport/ViewportOptions";
+import Viewport from "../../../components/viewport/Viewport";
+import handleDrop from "../../utils/handleDrop";
+import ResizableBar from "../../../components/resizable/ResizableBar";
+import SceneView from "../scene/SceneView";
 
-import getOptions from "../utils/getOptions";
+import getOptions from "../../utils/getOptions";
 import {useContext, useEffect} from "react";
-import QuickAccessProvider from "../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
-import ControlProvider from "../../components/tabs/components/ControlProvider";
-import useEditorKeys from "../hooks/useEditorKeys";
+import ControlProvider from "../../../components/tabs/components/ControlProvider";
+import useEditorKeys from "../../hooks/useEditorKeys";
 
-export default function Editor(props) {
+export default function Main(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const controlProvider = useContext(ControlProvider)
 
@@ -78,7 +78,7 @@ export default function Editor(props) {
     )
 }
 
-Editor.propTypes = {
+Main.propTypes = {
     load: PropTypes.object,
     setExecutingAnimation: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
