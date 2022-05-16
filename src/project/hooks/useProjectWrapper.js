@@ -11,6 +11,9 @@ import COMPONENTS from "../engine/templates/COMPONENTS";
 import WebBuilder from "../utils/builder/WebBuilder";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 import {getCall} from "../../components/AsyncFS";
+import MeshInstance from "../engine/instances/MeshInstance";
+import {v4} from "uuid";
+import CHANNELS from "../../../public/project/loader/CHANNELS";
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
@@ -32,27 +35,42 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (gpu && !loading) {
             setLoading(true)
-            new Promise(async resolve => {
-                try {
-                    const res = await ProjectLoader.loadProject(gpu, quickAccess.fileSystem)
-                    load.finishEvent(EVENTS.PROJECT_DATA)
+            const {ipcRenderer} = window.require('electron')
 
-                    engine.setScripts(res.scripts)
-                    engine.setMeshes(res.meshes)
-                    engine.setMaterials(res.materials)
-                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: res.entities})
-                    if (res.settings && res.settings.data)
-                        Object.keys(res.settings.data).forEach(key => {
-                            settings[key] = res.settings.data[key]
-                        })
-                    if (res.meta && res.meta.data)
-                        settings.name = res.meta.data.name
-                    setLoading(false)
-                } catch (error) {
-                }
+
+            const listenID = v4().toString()
+            ipcRenderer.once(CHANNELS.META_DATA + '-' + listenID, async (ev, res) => {
+                if (res.settings && res.settings.data)
+                    Object.keys(res.settings.data).forEach(key => {
+                        settings[key] = res.settings.data[key]
+                    })
+                if (res.meta && res.meta.data)
+                    settings.name = res.meta.data.name
+                const entities = await Promise.all(res.entities.map(e => ProjectLoader.mapEntity(e.data, gpu, quickAccess.fileSystem)))
+                engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
+
                 setInitialized(true)
-                resolve()
-            }).catch()
+                setLoading(false)
+                load.finishEvent(EVENTS.PROJECT_DATA)
+            })
+            ipcRenderer.on(CHANNELS.MESH + '-' + listenID, (ev, res) => {
+                engine.setMeshes(prev => {
+                    return [...prev, new MeshInstance({...res, gpu})]
+                })
+            })
+            ipcRenderer.on(CHANNELS.MATERIAL + '-' + listenID, (ev, res) => {
+                console.log(res.result)
+                ProjectLoader.mapMaterial(res.result, gpu, res.id)
+                    .then(mat => engine.setMaterials(prev => {
+                        return [...prev, mat]
+                    }))
+            })
+            ipcRenderer.once(CHANNELS.SCRIPTS + '-' + listenID, (ev, res) => {
+                engine.setScripts(prev => {
+                    return [...prev, res]
+                })
+            })
+            ipcRenderer.send(CHANNELS.SEND, {projectPath: quickAccess.fileSystem.path, projectID: id, listenID})
         }
     }, [gpu])
 

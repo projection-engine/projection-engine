@@ -6,26 +6,31 @@ import loadMaterials from "./loadMaterials";
 import {readFile} from "../../events/FSEvents";
 import loadData from "./loadData";
 import cleanUpRegistry from "./cleanUp";
+import CHANNELS from "./CHANNELS";
 
-export default async function loader(projectPath, projectID) {
+const {ipcMain} = require('electron')
+export default async function loader(projectPath, projectID, listenID, sender) {
     await cleanUpRegistry(projectPath)
     const {settings, meta, entities} = await loadData(projectPath)
+    sender.send(CHANNELS.META_DATA + '-' + listenID, {
+        meta,
+        settings,
+        entities
+    })
 
     let meshes = [...new Set(entities.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components[COMPONENTS.MESH].meshID))],
-        entitiesWithMaterials = entities.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined),
-        entitiesWithScripts = entities.map(e => {
+        materials = [...new Set(entities.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined))],
+        scripts = entities.map(e => {
             const comp = e.data.components[COMPONENTS.SCRIPT]
             if (comp) {
                 if (comp.registryID) return comp.registryID
                 return comp.scripts
             } else return e.data.blueprintID
         }).filter(e => e !== undefined),
-        toLoadScripts = [...new Set(entitiesWithScripts.flat())],
+        toLoadScripts = [...new Set(scripts.flat())],
         scriptsToLoad = (await loadScripts(toLoadScripts, entities.length, true, projectPath)).filter(e => e !== undefined),
-        levelBlueprint = (await readFile(projectPath + '\\levelBlueprint' + FILE_TYPES.SCRIPT))[1],
-        meshData = (await loadMeshes(meshes, projectPath)).filter(e => e !== undefined),
-        materialsToLoad = (await loadMaterials([...new Set(entitiesWithMaterials)], projectPath)).filter(e => e !== undefined)
-    console.log(meshes)
+
+        levelBlueprint = (await readFile(projectPath + '\\levelBlueprint' + FILE_TYPES.SCRIPT))[1]
     if (levelBlueprint) {
         levelBlueprint = JSON.parse(levelBlueprint)
         scriptsToLoad.push({
@@ -36,12 +41,9 @@ export default async function loader(projectPath, projectID) {
             }
         })
     }
-    return {
-        meta,
-        settings,
-        entities,
-        scripts: scriptsToLoad.map(s => s.script),
-        materials: materialsToLoad,
-        meshes: meshData
-    }
+
+    sender.send(CHANNELS.SCRIPTS + '-' + listenID, scriptsToLoad)
+    loadMeshes(meshes, projectPath, (data) => sender.send(CHANNELS.MESH + '-' + listenID, data)).catch()
+    loadMaterials(materials, projectPath, (data) => sender.send(CHANNELS.MATERIAL + '-' + listenID, data)).catch()
+
 }

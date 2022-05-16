@@ -62,9 +62,10 @@ export default class TranslateScaleGizmo extends System {
                         data: el.components[k[i]].direction
                     }
                 case COMPONENTS.TRANSFORM:
+                    const m = el.components[COMPONENTS.TRANSFORM]?.transformationMatrix
                     return {
                         valid: true,
-                        data: el.components[COMPONENTS.TRANSFORM]?.translation
+                        data: [m[12], m[13], m[14]]
                     }
                 default:
                     break

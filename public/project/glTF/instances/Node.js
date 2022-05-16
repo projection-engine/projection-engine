@@ -15,36 +15,33 @@ export function getNormalizedName(name) {
 }
 
 function getChildren(allNodes, node) {
-    return node.children && node.children.length > 0 ? allNodes
-            .map((n, index) => {
-                if (node.children.includes(index))
-                    return {...allNodes[index], index}
-                else
-                    return undefined
-            }).filter(e => e !== undefined)
-        :
-        []
+    const children = []
+    if (node.children !== undefined && node.children.length > 0) {
+        node.children.forEach(child => {
+            children.push(allNodes[child])
+        })
+    }
+    return children.filter(c => c !== undefined)
 }
 
-export default class glTFNode {
+export default class Node {
     data = {}
     children = []
     id = v4().toString()
 
     constructor(node, allNodes, parentTransform, projectPath) {
-        this.#processChildren(allNodes, node)
-        this.#extractTransformation(node, parentTransform)
-
         this.projectPath = projectPath
+        this.#extractTransformation(node, parentTransform)
+        this.#processChildren(allNodes, node)
     }
 
     #processChildren(allNodes, node) {
         this.children = getChildren(allNodes, node)
-            .map(child => new glTFNode(allNodes, child, this.transformationMatrix, this.projectPath))
-            .flat()
+            .map(child => new Node(child, allNodes, this.transformationMatrix, this.projectPath))
     }
 
     #extractTransformation(node, parentTransform) {
+
         let parsedNode = {
             name: node.name,
             meshIndex: node.mesh,
@@ -90,11 +87,8 @@ export default class glTFNode {
                 parentTransform,
                 transformationMatrix
             )
-            try{
-                console.log(extractTransformations(transformationMatrix))
-            }catch (e){
-                console.log(e)
-            }
+
+
             parsedNode = {
                 ...parsedNode,
                 translation: [0, 0, 0],
@@ -103,18 +97,18 @@ export default class glTFNode {
                 baseTransformationMatrix: Array.from(transformationMatrix)
             }
         }
+
         this.data = parsedNode
         this.transformationMatrix = transformationMatrix
     }
 
     async write(partialPath, meshes, accessors, options) {
 
-        if (meshes[this.data.meshIndex] !== undefined) {
-            const mesh = meshes[this.data.meshIndex]
+        const mesh = meshes[this.data.meshIndex]
+        if (mesh !== undefined) {
             const primitiveIDs = []
-            createDirectory(partialPath + getNormalizedName(mesh.name))
             await Promise.all(mesh.primitives.map((p, i) => {
-                const primitivePath = partialPath + getNormalizedName(mesh.name) + path.sep + 'primitive-' + i + FILE_TYPES.MESH
+                const primitivePath = partialPath + mesh.name + '-primitive-' + i + FILE_TYPES.MESH
                 const primitiveData = primitive(p)
                 const regID = v4().toString()
                 const [min, max] = PrimitiveProcessor.computeBoundingBox(accessors[primitiveData.vertices].data)
@@ -122,7 +116,7 @@ export default class glTFNode {
                 const tangents = !options.keepTangents || (primitiveData.tangents === -1 || primitiveData.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data, accessors[primitiveData.uvs]?.data, normals) : accessors[primitiveData.tangents].data
 
                 primitiveIDs.push(regID)
-                return glTFNode.writeData(primitivePath, {
+                return Node.writeData(primitivePath, {
                     ...this.data,
                     indices: accessors[primitiveData.indices]?.data,
                     vertices: accessors[primitiveData.vertices]?.data,
@@ -137,7 +131,11 @@ export default class glTFNode {
 
             this.primitives = primitiveIDs
         }
-        await Promise.all(this.children.map(c => c.write(partialPath, meshes, accessors, options)))
+        for (let i in this.children) {
+            const child = this.children[i]
+
+            await child.write(partialPath, meshes, accessors, options)
+        }
     }
 
     childNodes() {
@@ -159,7 +157,6 @@ export default class glTFNode {
                             id: regID
                         }),
                         (e2) => {
-                            console.log(e2)
                             resolve()
                         }
                     )

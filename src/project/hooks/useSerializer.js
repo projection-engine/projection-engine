@@ -55,9 +55,9 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
                         await Promise.all(all.map(a => {
                             return new Promise(async (resolve1) => {
-                                if (a && a.data && a.type === 'entity' && !engine.entities.find(e => e.id === a.data.id)) {
+                                if (a && !engine.entities.find(e => e.id === a.id))
                                     resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.data.id + '.entity', true))
-                                } else
+                                else
                                     resolve1()
                             })
                         }))

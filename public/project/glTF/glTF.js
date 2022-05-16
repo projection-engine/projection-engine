@@ -17,11 +17,11 @@ export function createDirectory(p){
         console.log(e)
     }
 }
-export default async function glTF(root, fileSRC, projectPath, file, options) {
+export default async function glTF(root, fileSRC, projectPath, file, options, filePath) {
     createDirectory(root)
     try {
         let parsed = JSON.parse(file)
-        const buffers = parsed.buffers.map(b => new Buffer(b, fileSRC))
+        const buffers = parsed.buffers.map(b => new Buffer(b, filePath.replace(fileSRC, '')))
         await Promise.all(buffers.map(b => b.initialize()))
         parsed.buffers = null
         const accessors = parsed.accessors.map(a => new Accessor(a, buffers, parsed.bufferViews))

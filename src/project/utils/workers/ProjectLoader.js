@@ -25,88 +25,22 @@ import AsyncFS from "../../../components/AsyncFS";
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
 
 export default class ProjectLoader {
-    static async loadProject(gpu, fileSystem) {
-        await ProjectLoader.cleanUpRegistry(fileSystem)
-        let projectData = await ProjectLoader.getEntities(fileSystem)
 
-        let settings = projectData[0]
-        let meta = projectData[1]
-        let entitiesFound = projectData.filter(e => e.type === 'entity')
-        let entities
-        let meshes = [...new Set(entitiesFound.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components.MeshComponent?.meshID))]
-        const entitiesWithMaterials = entitiesFound.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined)
-        const entitiesWithScripts = entitiesFound.map(e => {
-            const comp = e.data.components[COMPONENTS.SCRIPT]
-            if (comp) {
-                if (comp.registryID) return comp.registryID
-                return comp.scripts
-            } else return e.data.blueprintID
-        }).filter(e => e !== undefined)
-
-        const toLoadScripts = [...new Set(entitiesWithScripts.flat())],
-            scriptsToLoad = (await ProjectLoader.loadScripts(toLoadScripts, fileSystem, entitiesFound.length)).filter(e => e !== undefined),
-            levelBlueprint = await fileSystem.readFile(fileSystem.path + '\\levelBlueprint'+FILE_TYPES.SCRIPT, 'json'),
-            meshData = (await ProjectLoader.loadMeshes(meshes, fileSystem, gpu)).filter(e => e !== undefined),
-            materialsToLoad = (await ProjectLoader.loadMaterials([...new Set(entitiesWithMaterials)], fileSystem, gpu)).filter(e => e !== undefined)
-
-
-        try {
-            entities = await Promise.all(entitiesFound.map((entity) => ProjectLoader.mapEntity(entity.data, gpu, fileSystem)))
-        } catch (e) {
-        }
-
-        if (levelBlueprint) scriptsToLoad.push({
-            script: {
-                id: fileSystem.projectID, executors: levelBlueprint.response, name: levelBlueprint.name
-            }
-        })
-
-        return {
-            meta,
-            settings,
-            entities,
-            scripts: scriptsToLoad.map(s => s.script),
-            materials: materialsToLoad,
-            meshes: meshData
-        }
-    }
 
     static async getEntities(fileSystem) {
-        let settings = new Promise(async resolve => {
-                try {
-                    const res = await fileSystem.readFile(fileSystem.path + '\\.settings', 'json', true)
-                    resolve({
-                        type: 'settings', data: res ? res : {}
-                    })
-                } catch (e) {
-                    resolve()
-                }
-            }), meta = new Promise(async resolve => {
-                try {
-                    const res = await fileSystem.readFile(fileSystem.path + '\\.meta', 'json', true)
-                    resolve({
-                        type: 'meta', data: res ? res : {}
-                    })
-                } catch (e) {
-                    resolve()
-                }
-            }),
-            entities = await fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
+        let entities = await fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
 
         return Promise
-            .all([settings, meta, ...entities.map(e => {
-
+            .all(entities.map(e => {
                 return new Promise(async resolve => {
                     try {
                         const res = await fileSystem.readFile(fileSystem.path + '\\logic\\' + e, 'json', true)
-                        resolve({
-                            type: 'entity', data: res
-                        })
+                        resolve(res)
                     } catch (e) {
                         resolve()
                     }
                 })
-            })])
+            }))
     }
 
     static async readFromRegistry(fileID, fileSystem) {
@@ -125,15 +59,6 @@ export default class ProjectLoader {
         })
     }
 
-    static async cleanUpRegistry(fileSystem) {
-        const files = await fileSystem.readRegistry()
-        for (let i in files) {
-            const f = files[i]
-            const path = fileSystem.path + '\\assets\\' + f.path
-            if (!(await AsyncFS.exists(path)))
-                await AsyncFS.rm(f.registryPath)
-        }
-    }
 
 
     static async loadMeshes(toLoad, fileSystem, gpu) {

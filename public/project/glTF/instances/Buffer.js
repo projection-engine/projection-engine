@@ -10,23 +10,25 @@ export default class Buffer {
     initialize(){
         if (this.data.uri.includes('base64'))
             return new Promise(resolve => {
-                this.data = this._getBufferData(this.data.uri)
+                this.data = this.#getBufferData(this.data.uri)
                 resolve()
             })
         else {
             return new Promise(resolve => {
-                fs.readFile(path.resolve(this.basePath + '\\' + this.data.uri), 'base64', (e, r) => {
-                    this.data = this._getBufferData(r)
+                fs.readFile(path.resolve(this.basePath + '\\' + this.data.uri),  {encoding: 'base64'}, (e, r) => {
+                    console.log(e, path.resolve(this.basePath + '\\' + this.data.uri))
+                    if(!e) {
+                        this.data = this.#getBufferData(r.toString())
+                    }
                     resolve()
                 })
             })
         }
     }
-    _getBufferData(str) {
+    #getBufferData(str) {
+
         let byteCharacters = atob(str.replace('data:application/octet-stream;base64,', ''));
-
         let dv = new DataView(new ArrayBuffer(byteCharacters.length));
-
         Array.from(byteCharacters).forEach((char, i) => {
             dv.setUint8(i, char.charCodeAt(0));
         });

@@ -1,7 +1,8 @@
-import glTFNode, {getNormalizedName} from "./glTFNode";
+import  {getNormalizedName} from "./Node";
 import {v4} from "uuid";
 import FILE_TYPES from "../FILE_TYPES";
 import {createDirectory} from "../glTF";
+import Node from "./Node";
 
 const path = require('path')
 export default class Scene {
@@ -10,22 +11,20 @@ export default class Scene {
 
     constructor(allNodes, scene) {
         this.scene = scene
-        this.nodes = allNodes
-            .map((n, index) => {
-                if (scene.nodes.includes(index))
-                    return {...allNodes[index], index}
-                else
-                    return undefined
-            })
-            .filter(e => e !== undefined)
+        for(let i in scene.nodes){
+            const n = scene.nodes[i]
+            this.nodes.push({...allNodes[n], index: n})
+        }
+        this.allNodes = allNodes
     }
 
     async load(projectPath, rootPath, meshes, accessors, options) {
-        const scenePath = rootPath + path.sep + getNormalizedName(this.scene.name) +  path.sep
-        const nodes = this.nodes.map(n => new glTFNode(n, this.nodes, undefined, projectPath))
+        const scenePath = rootPath + path.sep + getNormalizedName(this.scene.name) + path.sep
+        const nodes = this.nodes.map(n => new Node(n, this.allNodes, undefined, projectPath))
         createDirectory(scenePath)
-        await Promise.all(nodes.map(n => n.write(scenePath, meshes, accessors, options)))
-        await glTFNode.writeData(
+        createDirectory(scenePath + 'primitives')
+        await Promise.all(nodes.map(n => n.write(scenePath + 'primitives' + path.sep, meshes, accessors, options)))
+        await Node.writeData(
             scenePath +  getNormalizedName(this.scene.name) + FILE_TYPES.SCENE,
             {
                 name: this.scene.name,

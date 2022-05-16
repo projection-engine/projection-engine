@@ -4,8 +4,8 @@ const pathRequire = require('path')
 const fs = require('fs')
 
 
-export default async function loadMaterials(toLoad, projectPath) {
-    const result = []
+export default async function loadMaterials(toLoad, projectPath, callback) {
+
     for (let i in toLoad) {
         const m = toLoad[i]
         const fileData = await readFromRegistry(m, projectPath)
@@ -13,12 +13,11 @@ export default async function loadMaterials(toLoad, projectPath) {
             try {
                 const fileParsed = JSON.parse(fileData)
                 if (Object.keys(fileParsed).length > 0)
-                    result.push({
+                    callback({
                         result: fileParsed.response, id: m
                     })
             } catch (e) {
             }
         }
     }
-    return result
 }

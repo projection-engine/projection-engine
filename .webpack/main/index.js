@@ -25610,7 +25610,7 @@ function FileSystemEvents() {
 
                           file = data.toString();
                           _context4.next = 4;
-                          return (0,_project_glTF_glTF__WEBPACK_IMPORTED_MODULE_2__["default"])(newRoot, fileName, projectPath, file, options);
+                          return (0,_project_glTF_glTF__WEBPACK_IMPORTED_MODULE_2__["default"])(newRoot, fileName, projectPath, file, options, filePath);
 
                         case 4:
                           event.sender.send('import-gltf-' + listenID, undefined);
@@ -25653,17 +25653,10 @@ function FileSystemEvents() {
           switch (_context6.prev = _context6.next) {
             case 0:
               projectPath = _ref11.projectPath, projectID = _ref11.projectID, listenID = _ref11.listenID;
-              _context6.t0 = event.sender;
-              _context6.t1 = 'load-project-' + listenID;
-              _context6.next = 5;
-              return (0,_project_loader_loader__WEBPACK_IMPORTED_MODULE_5__["default"])(projectPath, projectID);
+              _context6.next = 3;
+              return (0,_project_loader_loader__WEBPACK_IMPORTED_MODULE_5__["default"])(projectPath, projectID, listenID, event.sender);
 
-            case 5:
-              _context6.t2 = _context6.sent;
-
-              _context6.t0.send.call(_context6.t0, _context6.t1, _context6.t2);
-
-            case 7:
+            case 3:
             case "end":
               return _context6.stop();
           }
@@ -25940,12 +25933,12 @@ function createDirectory(p) {
     console.log(e);
   }
 }
-function glTF(_x, _x2, _x3, _x4, _x5) {
+function glTF(_x, _x2, _x3, _x4, _x5, _x6) {
   return _glTF.apply(this, arguments);
 }
 
 function _glTF() {
-  _glTF = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(root, fileSRC, projectPath, file, options) {
+  _glTF = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(root, fileSRC, projectPath, file, options, filePath) {
     var parsed, buffers, accessors, scenes;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
       while (1) {
@@ -25955,7 +25948,7 @@ function _glTF() {
             _context.prev = 1;
             parsed = JSON.parse(file);
             buffers = parsed.buffers.map(function (b) {
-              return new _instances_Buffer__WEBPACK_IMPORTED_MODULE_2__["default"](b, fileSRC);
+              return new _instances_Buffer__WEBPACK_IMPORTED_MODULE_2__["default"](b, filePath.replace(fileSRC, ''));
             });
             _context.next = 6;
             return Promise.all(buffers.map(function (b) {
@@ -26146,15 +26139,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
 var fs = __webpack_require__(/*! fs */ "fs");
 
 var path = __webpack_require__(/*! path */ "path");
 
 var atob = __webpack_require__(/*! atob */ "./node_modules/atob/node-atob.js");
 
+var _getBufferData = /*#__PURE__*/new WeakSet();
+
 var Buffer = /*#__PURE__*/function () {
   function Buffer(data, basePath) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Buffer);
+
+    _classPrivateMethodInitSpec(this, _getBufferData);
 
     this.data = data;
     this.basePath = basePath;
@@ -26166,31 +26169,333 @@ var Buffer = /*#__PURE__*/function () {
       var _this = this;
 
       if (this.data.uri.includes('base64')) return new Promise(function (resolve) {
-        _this.data = _this._getBufferData(_this.data.uri);
+        _this.data = _classPrivateMethodGet(_this, _getBufferData, _getBufferData2).call(_this, _this.data.uri);
         resolve();
       });else {
         return new Promise(function (resolve) {
-          fs.readFile(path.resolve(_this.basePath + '\\' + _this.data.uri), 'base64', function (e, r) {
-            _this.data = _this._getBufferData(r);
+          fs.readFile(path.resolve(_this.basePath + '\\' + _this.data.uri), {
+            encoding: 'base64'
+          }, function (e, r) {
+            console.log(e, path.resolve(_this.basePath + '\\' + _this.data.uri));
+
+            if (!e) {
+              _this.data = _classPrivateMethodGet(_this, _getBufferData, _getBufferData2).call(_this, r.toString());
+            }
+
             resolve();
           });
         });
       }
     }
-  }, {
-    key: "_getBufferData",
-    value: function _getBufferData(str) {
-      var byteCharacters = atob(str.replace('data:application/octet-stream;base64,', ''));
-      var dv = new DataView(new ArrayBuffer(byteCharacters.length));
-      Array.from(byteCharacters).forEach(function (_char, i) {
-        dv.setUint8(i, _char.charCodeAt(0));
-      });
-      return dv;
-    }
   }]);
 
   return Buffer;
 }();
+
+function _getBufferData2(str) {
+  var byteCharacters = atob(str.replace('data:application/octet-stream;base64,', ''));
+  var dv = new DataView(new ArrayBuffer(byteCharacters.length));
+  Array.from(byteCharacters).forEach(function (_char, i) {
+    dv.setUint8(i, _char.charCodeAt(0));
+  });
+  return dv;
+}
+
+
+
+/***/ }),
+
+/***/ "./public/project/glTF/instances/Node.js":
+/*!***********************************************!*\
+  !*** ./public/project/glTF/instances/Node.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Node),
+/* harmony export */   "getNormalizedName": () => (/* binding */ getNormalizedName)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/quat.js");
+/* harmony import */ var _utils_getPrimitive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/getPrimitive */ "./public/project/glTF/utils/getPrimitive.js");
+/* harmony import */ var _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./PrimitiveProcessor */ "./public/project/glTF/instances/PrimitiveProcessor.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-node/v4.js");
+/* harmony import */ var _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../FILE_TYPES */ "./public/project/glTF/FILE_TYPES.js");
+/* harmony import */ var _glTF__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../glTF */ "./public/project/glTF/glTF.js");
+/* harmony import */ var _REG_PATH__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../REG_PATH */ "./public/project/glTF/REG_PATH.js");
+/* harmony import */ var _utils_extractTransformations__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/extractTransformations */ "./public/project/glTF/utils/extractTransformations.js");
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
+
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+
+
+
+
+
+
+
+
+
+var fs = __webpack_require__(/*! fs */ "fs");
+
+var path = __webpack_require__(/*! path */ "path");
+
+function getNormalizedName(name) {
+  return name.replaceAll(/((\s|<|>|\}|\\|\.|´|`|{|\/|\||\*|\?|'|")+)/g, '_');
+}
+
+function getChildren(allNodes, node) {
+  var children = [];
+
+  if (node.children !== undefined && node.children.length > 0) {
+    node.children.forEach(function (child) {
+      children.push(allNodes[child]);
+    });
+  }
+
+  return children.filter(function (c) {
+    return c !== undefined;
+  });
+}
+
+var _processChildren = /*#__PURE__*/new WeakSet();
+
+var _extractTransformation = /*#__PURE__*/new WeakSet();
+
+var Node = /*#__PURE__*/function () {
+  function Node(_node, _allNodes, _parentTransform, projectPath) {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, Node);
+
+    _classPrivateMethodInitSpec(this, _extractTransformation);
+
+    _classPrivateMethodInitSpec(this, _processChildren);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "data", {});
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "children", []);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "id", (0,uuid__WEBPACK_IMPORTED_MODULE_12__["default"])().toString());
+
+    this.projectPath = projectPath;
+
+    _classPrivateMethodGet(this, _extractTransformation, _extractTransformation2).call(this, _node, _parentTransform);
+
+    _classPrivateMethodGet(this, _processChildren, _processChildren2).call(this, _allNodes, _node);
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Node, [{
+    key: "write",
+    value: function () {
+      var _write = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().mark(function _callee(partialPath, meshes, accessors, options) {
+        var _this = this;
+
+        var mesh, primitiveIDs, i, child;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                mesh = meshes[this.data.meshIndex];
+
+                if (!(mesh !== undefined)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                primitiveIDs = [];
+                _context.next = 5;
+                return Promise.all(mesh.primitives.map(function (p, i) {
+                  var _accessors$primitiveD, _accessors$primitiveD2, _accessors$primitiveD3, _accessors$primitiveD4, _accessors$primitiveD5, _accessors$primitiveD6, _accessors$primitiveD7;
+
+                  var primitivePath = partialPath + mesh.name + '-primitive-' + i + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__["default"].MESH;
+                  var primitiveData = (0,_utils_getPrimitive__WEBPACK_IMPORTED_MODULE_6__.primitive)(p);
+                  var regID = (0,uuid__WEBPACK_IMPORTED_MODULE_12__["default"])().toString();
+
+                  var _PrimitiveProcessor$c = _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeBoundingBox(accessors[primitiveData.vertices].data),
+                      _PrimitiveProcessor$c2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_PrimitiveProcessor$c, 2),
+                      min = _PrimitiveProcessor$c2[0],
+                      max = _PrimitiveProcessor$c2[1];
+
+                  var normals = !options.keepNormals || primitiveData.normals === -1 || primitiveData.normals === undefined ? _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeNormals((_accessors$primitiveD = accessors[primitiveData.indices]) === null || _accessors$primitiveD === void 0 ? void 0 : _accessors$primitiveD.data, (_accessors$primitiveD2 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD2 === void 0 ? void 0 : _accessors$primitiveD2.data) : accessors[primitiveData.normals].data;
+                  var tangents = !options.keepTangents || primitiveData.tangents === -1 || primitiveData.tangents === undefined ? _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeTangents((_accessors$primitiveD3 = accessors[primitiveData.indices]) === null || _accessors$primitiveD3 === void 0 ? void 0 : _accessors$primitiveD3.data, (_accessors$primitiveD4 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD4 === void 0 ? void 0 : _accessors$primitiveD4.data, (_accessors$primitiveD5 = accessors[primitiveData.uvs]) === null || _accessors$primitiveD5 === void 0 ? void 0 : _accessors$primitiveD5.data, normals) : accessors[primitiveData.tangents].data;
+                  primitiveIDs.push(regID);
+                  return Node.writeData(primitivePath, _objectSpread(_objectSpread({}, _this.data), {}, {
+                    indices: (_accessors$primitiveD6 = accessors[primitiveData.indices]) === null || _accessors$primitiveD6 === void 0 ? void 0 : _accessors$primitiveD6.data,
+                    vertices: (_accessors$primitiveD7 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD7 === void 0 ? void 0 : _accessors$primitiveD7.data,
+                    tangents: tangents,
+                    normals: normals,
+                    uvs: accessors[primitiveData.uvs].data,
+                    maxBoundingBox: max,
+                    minBoundingBox: min
+                  }), regID, _this.projectPath);
+                }));
+
+              case 5:
+                this.primitives = primitiveIDs;
+
+              case 6:
+                _context.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().keys(this.children);
+
+              case 7:
+                if ((_context.t1 = _context.t0()).done) {
+                  _context.next = 14;
+                  break;
+                }
+
+                i = _context.t1.value;
+                child = this.children[i];
+                _context.next = 12;
+                return child.write(partialPath, meshes, accessors, options);
+
+              case 12:
+                _context.next = 7;
+                break;
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function write(_x, _x2, _x3, _x4) {
+        return _write.apply(this, arguments);
+      }
+
+      return write;
+    }()
+  }, {
+    key: "childNodes",
+    value: function childNodes() {
+      var _this2 = this;
+
+      return this.children.map(function (n) {
+        return {
+          id: n.id,
+          primitives: _this2.primitives
+        };
+      });
+    }
+  }], [{
+    key: "writeData",
+    value: function () {
+      var _writeData = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().mark(function _callee2(pathName, data, regID, projectPath) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return new Promise(function (resolve) {
+                  fs.writeFile(pathName, JSON.stringify(data), function (e1) {
+                    fs.writeFile(projectPath + path.sep + _REG_PATH__WEBPACK_IMPORTED_MODULE_10__["default"] + path.sep + regID + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__["default"].REGISTRY, JSON.stringify({
+                      path: path.resolve(pathName).replace(path.resolve(projectPath + '\\assets') + path.sep, ''),
+                      id: regID
+                    }), function (e2) {
+                      resolve();
+                    });
+                  });
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function writeData(_x5, _x6, _x7, _x8) {
+        return _writeData.apply(this, arguments);
+      }
+
+      return writeData;
+    }()
+  }]);
+
+  return Node;
+}();
+
+function _processChildren2(allNodes, node) {
+  var _this3 = this;
+
+  this.children = getChildren(allNodes, node).map(function (child) {
+    return new Node(child, allNodes, _this3.transformationMatrix, _this3.projectPath);
+  });
+}
+
+function _extractTransformation2(node, parentTransform) {
+  var parsedNode = {
+    name: node.name,
+    meshIndex: node.mesh,
+    scaling: [1, 1, 1],
+    rotation: [0, 0, 0],
+    translation: [0, 0, 0],
+    children: [],
+    baseTransformationMatrix: Array.from(gl_matrix__WEBPACK_IMPORTED_MODULE_13__.create())
+  };
+  var transformationMatrix;
+
+  if (node.matrix) {
+    parsedNode = _objectSpread(_objectSpread({}, parsedNode), {}, {
+      translation: [0, 0, 0],
+      rotationQuat: [0, 0, 0, 1],
+      scaling: [1, 1, 1],
+      baseTransformationMatrix: Array.from(node.matrix)
+    });
+    transformationMatrix = node.matrix;
+  } else {
+    var translation = node.translation,
+        rotation = node.rotation,
+        scale = node.scale;
+    if (!translation) translation = [0, 0, 0];
+    if (!scale) scale = [1, 1, 1];
+    if (!rotation) parsedNode.rotationQuat = [0, 0, 0, 1];else parsedNode.rotationQuat = gl_matrix__WEBPACK_IMPORTED_MODULE_14__.normalize([], rotation);
+    parsedNode.scaling = scale;
+    parsedNode.translation = translation;
+    transformationMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_13__.fromRotationTranslationScale([], parsedNode.rotationQuat, parsedNode.translation, parsedNode.scaling);
+  }
+
+  if (parentTransform) {
+    gl_matrix__WEBPACK_IMPORTED_MODULE_13__.multiply(transformationMatrix, parentTransform, transformationMatrix);
+    parsedNode = _objectSpread(_objectSpread({}, parsedNode), {}, {
+      translation: [0, 0, 0],
+      rotationQuat: [0, 0, 0, 1],
+      scaling: [1, 1, 1],
+      baseTransformationMatrix: Array.from(transformationMatrix)
+    });
+  }
+
+  this.data = parsedNode;
+  this.transformationMatrix = transformationMatrix;
+}
 
 
 
@@ -26389,7 +26694,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _glTFNode__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glTFNode */ "./public/project/glTF/instances/glTFNode.js");
+/* harmony import */ var _Node__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Node */ "./public/project/glTF/instances/Node.js");
 /* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-node/v4.js");
 /* harmony import */ var _FILE_TYPES__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../FILE_TYPES */ "./public/project/glTF/FILE_TYPES.js");
 /* harmony import */ var _glTF__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../glTF */ "./public/project/glTF/glTF.js");
@@ -26408,6 +26713,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 var path = __webpack_require__(/*! path */ "path");
 
 var Scene = /*#__PURE__*/function () {
@@ -26419,13 +26725,15 @@ var Scene = /*#__PURE__*/function () {
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3___default()(this, "scene", {});
 
     this.scene = scene;
-    this.nodes = allNodes.map(function (n, index) {
-      if (scene.nodes.includes(index)) return _objectSpread(_objectSpread({}, allNodes[index]), {}, {
-        index: index
-      });else return undefined;
-    }).filter(function (e) {
-      return e !== undefined;
-    });
+
+    for (var i in scene.nodes) {
+      var n = scene.nodes[i];
+      this.nodes.push(_objectSpread(_objectSpread({}, allNodes[n]), {}, {
+        index: n
+      }));
+    }
+
+    this.allNodes = allNodes;
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(Scene, [{
@@ -26439,26 +26747,27 @@ var Scene = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                scenePath = rootPath + path.sep + (0,_glTFNode__WEBPACK_IMPORTED_MODULE_5__.getNormalizedName)(this.scene.name) + path.sep;
+                scenePath = rootPath + path.sep + (0,_Node__WEBPACK_IMPORTED_MODULE_5__.getNormalizedName)(this.scene.name) + path.sep;
                 nodes = this.nodes.map(function (n) {
-                  return new _glTFNode__WEBPACK_IMPORTED_MODULE_5__["default"](n, _this.nodes, undefined, projectPath);
+                  return new _Node__WEBPACK_IMPORTED_MODULE_5__["default"](n, _this.allNodes, undefined, projectPath);
                 });
                 (0,_glTF__WEBPACK_IMPORTED_MODULE_7__.createDirectory)(scenePath);
-                _context.next = 5;
+                (0,_glTF__WEBPACK_IMPORTED_MODULE_7__.createDirectory)(scenePath + 'primitives');
+                _context.next = 6;
                 return Promise.all(nodes.map(function (n) {
-                  return n.write(scenePath, meshes, accessors, options);
+                  return n.write(scenePath + 'primitives' + path.sep, meshes, accessors, options);
                 }));
 
-              case 5:
-                _context.next = 7;
-                return _glTFNode__WEBPACK_IMPORTED_MODULE_5__["default"].writeData(scenePath + (0,_glTFNode__WEBPACK_IMPORTED_MODULE_5__.getNormalizedName)(this.scene.name) + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_6__["default"].SCENE, {
+              case 6:
+                _context.next = 8;
+                return _Node__WEBPACK_IMPORTED_MODULE_5__["default"].writeData(scenePath + (0,_Node__WEBPACK_IMPORTED_MODULE_5__.getNormalizedName)(this.scene.name) + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_6__["default"].SCENE, {
                   name: this.scene.name,
                   nodes: nodes.map(function (n) {
                     return n.childNodes();
                   })
                 }, (0,uuid__WEBPACK_IMPORTED_MODULE_8__["default"])().toString(), projectPath);
 
-              case 7:
+              case 8:
               case "end":
                 return _context.stop();
             }
@@ -26481,294 +26790,6 @@ var Scene = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./public/project/glTF/instances/glTFNode.js":
-/*!***************************************************!*\
-  !*** ./public/project/glTF/instances/glTFNode.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ glTFNode),
-/* harmony export */   "getNormalizedName": () => (/* binding */ getNormalizedName)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
-/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/quat.js");
-/* harmony import */ var _utils_getPrimitive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/getPrimitive */ "./public/project/glTF/utils/getPrimitive.js");
-/* harmony import */ var _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./PrimitiveProcessor */ "./public/project/glTF/instances/PrimitiveProcessor.js");
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-node/v4.js");
-/* harmony import */ var _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../FILE_TYPES */ "./public/project/glTF/FILE_TYPES.js");
-/* harmony import */ var _glTF__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../glTF */ "./public/project/glTF/glTF.js");
-/* harmony import */ var _REG_PATH__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../REG_PATH */ "./public/project/glTF/REG_PATH.js");
-/* harmony import */ var _utils_extractTransformations__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/extractTransformations */ "./public/project/glTF/utils/extractTransformations.js");
-
-
-
-
-
-
-
-function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
-
-function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
-
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-
-
-
-
-
-
-
-
-
-var fs = __webpack_require__(/*! fs */ "fs");
-
-var path = __webpack_require__(/*! path */ "path");
-
-function getNormalizedName(name) {
-  return name.replaceAll(/((\s|<|>|\}|\\|\.|´|`|{|\/|\||\*|\?|'|")+)/g, '_');
-}
-
-function getChildren(allNodes, node) {
-  return node.children && node.children.length > 0 ? allNodes.map(function (n, index) {
-    if (node.children.includes(index)) return _objectSpread(_objectSpread({}, allNodes[index]), {}, {
-      index: index
-    });else return undefined;
-  }).filter(function (e) {
-    return e !== undefined;
-  }) : [];
-}
-
-var _processChildren = /*#__PURE__*/new WeakSet();
-
-var _extractTransformation = /*#__PURE__*/new WeakSet();
-
-var glTFNode = /*#__PURE__*/function () {
-  function glTFNode(_node, _allNodes, _parentTransform, projectPath) {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, glTFNode);
-
-    _classPrivateMethodInitSpec(this, _extractTransformation);
-
-    _classPrivateMethodInitSpec(this, _processChildren);
-
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "data", {});
-
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "children", []);
-
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_4___default()(this, "id", (0,uuid__WEBPACK_IMPORTED_MODULE_12__["default"])().toString());
-
-    _classPrivateMethodGet(this, _processChildren, _processChildren2).call(this, _allNodes, _node);
-
-    _classPrivateMethodGet(this, _extractTransformation, _extractTransformation2).call(this, _node, _parentTransform);
-
-    this.projectPath = projectPath;
-  }
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(glTFNode, [{
-    key: "write",
-    value: function () {
-      var _write = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().mark(function _callee(partialPath, meshes, accessors, options) {
-        var _this = this;
-
-        var mesh, primitiveIDs;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!(meshes[this.data.meshIndex] !== undefined)) {
-                  _context.next = 7;
-                  break;
-                }
-
-                mesh = meshes[this.data.meshIndex];
-                primitiveIDs = [];
-                (0,_glTF__WEBPACK_IMPORTED_MODULE_9__.createDirectory)(partialPath + getNormalizedName(mesh.name));
-                _context.next = 6;
-                return Promise.all(mesh.primitives.map(function (p, i) {
-                  var _accessors$primitiveD, _accessors$primitiveD2, _accessors$primitiveD3, _accessors$primitiveD4, _accessors$primitiveD5, _accessors$primitiveD6, _accessors$primitiveD7;
-
-                  var primitivePath = partialPath + getNormalizedName(mesh.name) + path.sep + 'primitive-' + i + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__["default"].MESH;
-                  var primitiveData = (0,_utils_getPrimitive__WEBPACK_IMPORTED_MODULE_6__.primitive)(p);
-                  var regID = (0,uuid__WEBPACK_IMPORTED_MODULE_12__["default"])().toString();
-
-                  var _PrimitiveProcessor$c = _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeBoundingBox(accessors[primitiveData.vertices].data),
-                      _PrimitiveProcessor$c2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_PrimitiveProcessor$c, 2),
-                      min = _PrimitiveProcessor$c2[0],
-                      max = _PrimitiveProcessor$c2[1];
-
-                  var normals = !options.keepNormals || primitiveData.normals === -1 || primitiveData.normals === undefined ? _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeNormals((_accessors$primitiveD = accessors[primitiveData.indices]) === null || _accessors$primitiveD === void 0 ? void 0 : _accessors$primitiveD.data, (_accessors$primitiveD2 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD2 === void 0 ? void 0 : _accessors$primitiveD2.data) : accessors[primitiveData.normals].data;
-                  var tangents = !options.keepTangents || primitiveData.tangents === -1 || primitiveData.tangents === undefined ? _PrimitiveProcessor__WEBPACK_IMPORTED_MODULE_7__["default"].computeTangents((_accessors$primitiveD3 = accessors[primitiveData.indices]) === null || _accessors$primitiveD3 === void 0 ? void 0 : _accessors$primitiveD3.data, (_accessors$primitiveD4 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD4 === void 0 ? void 0 : _accessors$primitiveD4.data, (_accessors$primitiveD5 = accessors[primitiveData.uvs]) === null || _accessors$primitiveD5 === void 0 ? void 0 : _accessors$primitiveD5.data, normals) : accessors[primitiveData.tangents].data;
-                  primitiveIDs.push(regID);
-                  return glTFNode.writeData(primitivePath, _objectSpread(_objectSpread({}, _this.data), {}, {
-                    indices: (_accessors$primitiveD6 = accessors[primitiveData.indices]) === null || _accessors$primitiveD6 === void 0 ? void 0 : _accessors$primitiveD6.data,
-                    vertices: (_accessors$primitiveD7 = accessors[primitiveData.vertices]) === null || _accessors$primitiveD7 === void 0 ? void 0 : _accessors$primitiveD7.data,
-                    tangents: tangents,
-                    normals: normals,
-                    uvs: accessors[primitiveData.uvs].data,
-                    maxBoundingBox: max,
-                    minBoundingBox: min
-                  }), regID, _this.projectPath);
-                }));
-
-              case 6:
-                this.primitives = primitiveIDs;
-
-              case 7:
-                _context.next = 9;
-                return Promise.all(this.children.map(function (c) {
-                  return c.write(partialPath, meshes, accessors, options);
-                }));
-
-              case 9:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function write(_x, _x2, _x3, _x4) {
-        return _write.apply(this, arguments);
-      }
-
-      return write;
-    }()
-  }, {
-    key: "childNodes",
-    value: function childNodes() {
-      var _this2 = this;
-
-      return this.children.map(function (n) {
-        return {
-          id: n.id,
-          primitives: _this2.primitives
-        };
-      });
-    }
-  }], [{
-    key: "writeData",
-    value: function () {
-      var _writeData = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().mark(function _callee2(pathName, data, regID, projectPath) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_5___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return new Promise(function (resolve) {
-                  fs.writeFile(pathName, JSON.stringify(data), function (e1) {
-                    fs.writeFile(projectPath + path.sep + _REG_PATH__WEBPACK_IMPORTED_MODULE_10__["default"] + path.sep + regID + _FILE_TYPES__WEBPACK_IMPORTED_MODULE_8__["default"].REGISTRY, JSON.stringify({
-                      path: path.resolve(pathName).replace(path.resolve(projectPath + '\\assets') + path.sep, ''),
-                      id: regID
-                    }), function (e2) {
-                      console.log(e2);
-                      resolve();
-                    });
-                  });
-                });
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function writeData(_x5, _x6, _x7, _x8) {
-        return _writeData.apply(this, arguments);
-      }
-
-      return writeData;
-    }()
-  }]);
-
-  return glTFNode;
-}();
-
-function _processChildren2(allNodes, node) {
-  var _this3 = this;
-
-  this.children = getChildren(allNodes, node).map(function (child) {
-    return new glTFNode(allNodes, child, _this3.transformationMatrix, _this3.projectPath);
-  }).flat();
-}
-
-function _extractTransformation2(node, parentTransform) {
-  var parsedNode = {
-    name: node.name,
-    meshIndex: node.mesh,
-    scaling: [1, 1, 1],
-    rotation: [0, 0, 0],
-    translation: [0, 0, 0],
-    children: [],
-    baseTransformationMatrix: Array.from(gl_matrix__WEBPACK_IMPORTED_MODULE_13__.create())
-  };
-  var transformationMatrix;
-
-  if (node.matrix) {
-    parsedNode = _objectSpread(_objectSpread({}, parsedNode), {}, {
-      translation: [0, 0, 0],
-      rotationQuat: [0, 0, 0, 1],
-      scaling: [1, 1, 1],
-      baseTransformationMatrix: Array.from(node.matrix)
-    });
-    transformationMatrix = node.matrix;
-  } else {
-    var translation = node.translation,
-        rotation = node.rotation,
-        scale = node.scale;
-    if (!translation) translation = [0, 0, 0];
-    if (!scale) scale = [1, 1, 1];
-    if (!rotation) parsedNode.rotationQuat = [0, 0, 0, 1];else parsedNode.rotationQuat = gl_matrix__WEBPACK_IMPORTED_MODULE_14__.normalize([], rotation);
-    parsedNode.scaling = scale;
-    parsedNode.translation = translation;
-    transformationMatrix = gl_matrix__WEBPACK_IMPORTED_MODULE_13__.fromRotationTranslationScale([], parsedNode.rotationQuat, parsedNode.translation, parsedNode.scaling);
-  }
-
-  if (parentTransform) {
-    gl_matrix__WEBPACK_IMPORTED_MODULE_13__.multiply(transformationMatrix, parentTransform, transformationMatrix);
-
-    try {
-      console.log((0,_utils_extractTransformations__WEBPACK_IMPORTED_MODULE_11__["default"])(transformationMatrix));
-    } catch (e) {
-      console.log(e);
-    }
-
-    parsedNode = _objectSpread(_objectSpread({}, parsedNode), {}, {
-      translation: [0, 0, 0],
-      rotationQuat: [0, 0, 0, 1],
-      scaling: [1, 1, 1],
-      baseTransformationMatrix: Array.from(transformationMatrix)
-    });
-  }
-
-  this.data = parsedNode;
-  this.transformationMatrix = transformationMatrix;
-}
-
-
-
-/***/ }),
-
 /***/ "./public/project/glTF/utils/extractTransformations.js":
 /*!*************************************************************!*\
   !*** ./public/project/glTF/utils/extractTransformations.js ***!
@@ -26783,6 +26804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/toConsumableArray.js");
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/vec3.js");
+/* harmony import */ var gl_matrix__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gl-matrix */ "./node_modules/gl-matrix/esm/mat4.js");
 
 
 function extractTransformations(matrix) {
@@ -26793,17 +26815,17 @@ function extractTransformations(matrix) {
   scaling[0] = m[15] * Math.sqrt(Math.pow(m[0], 2) + Math.pow(m[1], 2) + Math.pow(m[2], 2));
   scaling[1] = m[15] * Math.sqrt(Math.pow(m[4], 2) + Math.pow(m[5], 2) + Math.pow(m[6], 2));
   scaling[2] = m[15] * Math.sqrt(Math.pow(m[8], 2) + Math.pow(m[9], 2) + Math.pow(m[10], 2));
-  var mt = [0, 1, 2];
-  mt.forEach(function (_, i) {
-    return m[i] /= scaling[0];
+  var indices = [0, 1, 2];
+  indices.forEach(function (v) {
+    return m[v] /= scaling[0];
   });
-  mt = [4, 5, 6];
-  mt.forEach(function (_, i) {
-    return m[i] /= scaling[1];
+  indices = [4, 5, 6];
+  indices.forEach(function (v) {
+    return m[v] /= scaling[1];
   });
-  mt = [8, 9, 10];
-  mt.forEach(function (_, i) {
-    return m[i] /= scaling[2];
+  indices = [8, 9, 10];
+  indices.forEach(function (v) {
+    return m[v] /= scaling[2];
   });
   m[15] = 1.0;
   var tmp_z_axis = gl_matrix__WEBPACK_IMPORTED_MODULE_1__.cross([], [m[0], m[1], m[2]], [m[4], m[5], m[6]]);
@@ -26813,8 +26835,7 @@ function extractTransformations(matrix) {
     m[0] = -m[0];
     m[1] = -m[1];
     m[2] = -m[2];
-  } // http://www.insomniacgames.com/mike-day-extracting-euler-angles-from-a-rotation-matrix/
-
+  }
 
   var theta1 = Math.atan2(m[6], m[10]),
       c2 = Math.sqrt(Math.pow(m[0], 2) + Math.pow(m[1], 2)),
@@ -26826,7 +26847,8 @@ function extractTransformations(matrix) {
   return {
     translation: translation,
     scaling: scaling,
-    rotation: rotation
+    rotationQuat: Array.from(gl_matrix__WEBPACK_IMPORTED_MODULE_2__.getRotation([], matrix)) // quat.fromEuler([], rotation[0], rotation[1], rotation[2])
+
   };
 }
 
@@ -27256,6 +27278,27 @@ function parseNode(node, allNodes, parentTransform) {
   if (node.mesh !== undefined) res.push(parsedNode);
   return res;
 }
+
+/***/ }),
+
+/***/ "./public/project/loader/CHANNELS.js":
+/*!*******************************************!*\
+  !*** ./public/project/loader/CHANNELS.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  SEND: 'load-project',
+  META_DATA: 'meta-settings',
+  MESH: 'mesh',
+  MATERIAL: 'material',
+  SCRIPTS: 'scripts'
+});
 
 /***/ }),
 
@@ -27715,51 +27758,47 @@ var pathRequire = __webpack_require__(/*! path */ "path");
 
 var fs = __webpack_require__(/*! fs */ "fs");
 
-function loadMaterials(_x, _x2) {
+function loadMaterials(_x, _x2, _x3) {
   return _loadMaterials.apply(this, arguments);
 }
 
 function _loadMaterials() {
-  _loadMaterials = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(toLoad, projectPath) {
-    var result, i, m, fileData, fileParsed;
+  _loadMaterials = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(toLoad, projectPath, callback) {
+    var i, m, fileData, fileParsed;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            result = [];
             _context.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().keys(toLoad);
 
-          case 2:
+          case 1:
             if ((_context.t1 = _context.t0()).done) {
-              _context.next = 11;
+              _context.next = 10;
               break;
             }
 
             i = _context.t1.value;
             m = toLoad[i];
-            _context.next = 7;
+            _context.next = 6;
             return (0,_FSOperations__WEBPACK_IMPORTED_MODULE_2__.readFromRegistry)(m, projectPath);
 
-          case 7:
+          case 6:
             fileData = _context.sent;
 
             if (fileData) {
               try {
                 fileParsed = JSON.parse(fileData);
-                if (Object.keys(fileParsed).length > 0) result.push({
+                if (Object.keys(fileParsed).length > 0) callback({
                   result: fileParsed.response,
                   id: m
                 });
               } catch (e) {}
             }
 
-            _context.next = 2;
+            _context.next = 1;
             break;
 
-          case 11:
-            return _context.abrupt("return", result);
-
-          case 12:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -27795,48 +27834,43 @@ var pathRequire = __webpack_require__(/*! path */ "path");
 
 var fs = __webpack_require__(/*! fs */ "fs");
 
-function loadMeshes(_x, _x2) {
+function loadMeshes(_x, _x2, _x3) {
   return _loadMeshes.apply(this, arguments);
 }
 
 function _loadMeshes() {
-  _loadMeshes = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(toLoad, projectPath) {
-    var meshes, i, m, fileData, parsed;
+  _loadMeshes = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(toLoad, projectPath, callback) {
+    var i, m, fileData, parsed;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            meshes = [];
             _context.t0 = _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().keys(toLoad);
 
-          case 2:
+          case 1:
             if ((_context.t1 = _context.t0()).done) {
-              _context.next = 12;
+              _context.next = 10;
               break;
             }
 
             i = _context.t1.value;
             m = toLoad[i];
-            _context.next = 7;
+            _context.next = 6;
             return (0,_FSOperations__WEBPACK_IMPORTED_MODULE_2__.readFromRegistry)(m, projectPath);
 
-          case 7:
+          case 6:
             fileData = _context.sent;
 
             if (fileData) {
               parsed = JSON.parse(fileData);
               parsed.id = m;
-              meshes.push(parsed);
+              callback(parsed); // meshes.push(parsed)
             }
 
-            console.log(fileData);
-            _context.next = 2;
+            _context.next = 1;
             break;
 
-          case 12:
-            return _context.abrupt("return", meshes);
-
-          case 13:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -27977,6 +28011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _events_FSEvents__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../events/FSEvents */ "./public/events/FSEvents.js");
 /* harmony import */ var _loadData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./loadData */ "./public/project/loader/loadData.js");
 /* harmony import */ var _cleanUp__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./cleanUp */ "./public/project/loader/cleanUp.js");
+/* harmony import */ var _CHANNELS__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./CHANNELS */ "./public/project/loader/CHANNELS.js");
 
 
 
@@ -27988,13 +28023,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function loader(_x, _x2) {
+
+
+var _require = __webpack_require__(/*! electron */ "electron"),
+    ipcMain = _require.ipcMain;
+
+function loader(_x, _x2, _x3, _x4) {
   return _loader.apply(this, arguments);
 }
 
 function _loader() {
-  _loader = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee(projectPath, projectID) {
-    var _yield$loadData, settings, meta, entities, meshes, entitiesWithMaterials, entitiesWithScripts, toLoadScripts, scriptsToLoad, levelBlueprint, meshData, materialsToLoad;
+  _loader = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee(projectPath, projectID, listenID, sender) {
+    var _yield$loadData, settings, meta, entities, meshes, materials, scripts, toLoadScripts, scriptsToLoad, levelBlueprint;
 
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
       while (1) {
@@ -28012,19 +28052,24 @@ function _loader() {
             settings = _yield$loadData.settings;
             meta = _yield$loadData.meta;
             entities = _yield$loadData.entities;
+            sender.send(_CHANNELS__WEBPACK_IMPORTED_MODULE_11__["default"].META_DATA + '-' + listenID, {
+              meta: meta,
+              settings: settings,
+              entities: entities
+            });
             meshes = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(new Set(entities.filter(function (e) {
               return e.data.components[_src_project_engine_templates_COMPONENTS__WEBPACK_IMPORTED_MODULE_3__["default"].MESH];
             }).map(function (e) {
               return e.data.components[_src_project_engine_templates_COMPONENTS__WEBPACK_IMPORTED_MODULE_3__["default"].MESH].meshID;
             })));
-            entitiesWithMaterials = entities.map(function (e) {
+            materials = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(new Set(entities.map(function (e) {
               var _e$data$components$CO;
 
               return (_e$data$components$CO = e.data.components[_src_project_engine_templates_COMPONENTS__WEBPACK_IMPORTED_MODULE_3__["default"].MATERIAL]) === null || _e$data$components$CO === void 0 ? void 0 : _e$data$components$CO.materialID;
             }).filter(function (e) {
               return e !== undefined;
-            });
-            entitiesWithScripts = entities.map(function (e) {
+            })));
+            scripts = entities.map(function (e) {
               var comp = e.data.components[_src_project_engine_templates_COMPONENTS__WEBPACK_IMPORTED_MODULE_3__["default"].SCRIPT];
 
               if (comp) {
@@ -28034,34 +28079,19 @@ function _loader() {
             }).filter(function (e) {
               return e !== undefined;
             });
-            toLoadScripts = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(new Set(entitiesWithScripts.flat()));
-            _context.next = 14;
+            toLoadScripts = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(new Set(scripts.flat()));
+            _context.next = 15;
             return (0,_loadScripts__WEBPACK_IMPORTED_MODULE_5__["default"])(toLoadScripts, entities.length, true, projectPath);
 
-          case 14:
+          case 15:
             scriptsToLoad = _context.sent.filter(function (e) {
               return e !== undefined;
             });
-            _context.next = 17;
+            _context.next = 18;
             return (0,_events_FSEvents__WEBPACK_IMPORTED_MODULE_8__.readFile)(projectPath + '\\levelBlueprint' + _glTF_FILE_TYPES__WEBPACK_IMPORTED_MODULE_4__["default"].SCRIPT);
 
-          case 17:
+          case 18:
             levelBlueprint = _context.sent[1];
-            _context.next = 20;
-            return (0,_loadMeshes__WEBPACK_IMPORTED_MODULE_6__["default"])(meshes, projectPath);
-
-          case 20:
-            meshData = _context.sent.filter(function (e) {
-              return e !== undefined;
-            });
-            _context.next = 23;
-            return (0,_loadMaterials__WEBPACK_IMPORTED_MODULE_7__["default"])(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(new Set(entitiesWithMaterials)), projectPath);
-
-          case 23:
-            materialsToLoad = _context.sent.filter(function (e) {
-              return e !== undefined;
-            });
-            console.log(meshes);
 
             if (levelBlueprint) {
               levelBlueprint = JSON.parse(levelBlueprint);
@@ -28074,18 +28104,15 @@ function _loader() {
               });
             }
 
-            return _context.abrupt("return", {
-              meta: meta,
-              settings: settings,
-              entities: entities,
-              scripts: scriptsToLoad.map(function (s) {
-                return s.script;
-              }),
-              materials: materialsToLoad,
-              meshes: meshData
-            });
+            sender.send(_CHANNELS__WEBPACK_IMPORTED_MODULE_11__["default"].SCRIPTS + '-' + listenID, scriptsToLoad);
+            (0,_loadMeshes__WEBPACK_IMPORTED_MODULE_6__["default"])(meshes, projectPath, function (data) {
+              return sender.send(_CHANNELS__WEBPACK_IMPORTED_MODULE_11__["default"].MESH + '-' + listenID, data);
+            })["catch"]();
+            (0,_loadMaterials__WEBPACK_IMPORTED_MODULE_7__["default"])(materials, projectPath, function (data) {
+              return sender.send(_CHANNELS__WEBPACK_IMPORTED_MODULE_11__["default"].MATERIAL + '-' + listenID, data);
+            })["catch"]();
 
-          case 27:
+          case 23:
           case "end":
             return _context.stop();
         }
@@ -28327,10 +28354,6 @@ module.exports = JSON.parse('{"name":"systeminformation","version":"5.11.14","de
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};

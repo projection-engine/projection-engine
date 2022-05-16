@@ -1,4 +1,4 @@
-import {vec3} from "gl-matrix";
+import {mat4, quat, vec3} from "gl-matrix";
 
 export default function extractTransformations(matrix) {
     let m = [...matrix]
@@ -9,13 +9,12 @@ export default function extractTransformations(matrix) {
     scaling[1] = m[15] * Math.sqrt(m[4] ** 2 + m[5] ** 2 + m[6] ** 2)
     scaling[2] = m[15] * Math.sqrt(m[8] ** 2 + m[9] ** 2 + m[10] ** 2)
 
-
-    let mt = [0, 1, 2]
-    mt.forEach((_, i) => m[i] /= scaling[0])
-    mt = [4, 5, 6]
-    mt.forEach((_, i) => m[i] /= scaling[1])
-    mt = [8, 9, 10]
-    mt.forEach((_, i) => m[i] /= scaling[2])
+    let indices = [0, 1, 2]
+    indices.forEach((v) => m[v] /= scaling[0])
+    indices = [4, 5, 6]
+    indices.forEach((v) => m[v] /= scaling[1])
+    indices = [8, 9, 10]
+    indices.forEach((v) => m[v] /= scaling[2])
     m[15] = 1.0
 
     const tmp_z_axis = vec3.cross([], [m[0], m[1], m[2]], [m[4], m[5], m[6]]);
@@ -26,8 +25,6 @@ export default function extractTransformations(matrix) {
         m[2] = -m[2]
     }
 
-
-    // http://www.insomniacgames.com/mike-day-extracting-euler-angles-from-a-rotation-matrix/
     const theta1 = Math.atan2(m[6], m[10]),
         c2 = Math.sqrt(m[0] ** 2 + m[1] ** 2),
         theta2 = Math.atan2(-m[2], c2),
@@ -36,5 +33,9 @@ export default function extractTransformations(matrix) {
         theta3 = Math.atan2(s1 * m[8] - c1 * m[4], c1 * m[5] - s1 * m[9]),
         rotation = [-theta1, -theta2, -theta3]
 
-    return {translation, scaling, rotation}
+    return {
+        translation,
+        scaling,
+        rotationQuat: Array.from(mat4.getRotation([], matrix)) // quat.fromEuler([], rotation[0], rotation[1], rotation[2])
+    }
 }

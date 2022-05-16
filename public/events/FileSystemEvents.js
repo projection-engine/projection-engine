@@ -67,12 +67,12 @@ export default function FileSystemEvents() {
         fs.readFile(path.resolve(filePath), async (e, data) => {
             if (!e) {
                 const file = data.toString()
-                await glTF(newRoot, fileName, projectPath, file, options)
+                await glTF(newRoot, fileName, projectPath, file, options, filePath)
                 event.sender.send('import-gltf-' + listenID, undefined)
             } else event.sender.send('import-gltf-' + listenID, undefined)
         })
     })
     ipcMain.on('load-project', async (event, {projectPath, projectID, listenID}) => {
-        event.sender.send('load-project-' + listenID, await loader(projectPath, projectID))
+        await loader(projectPath, projectID, listenID, event.sender)
     })
 }
