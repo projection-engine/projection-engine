@@ -11,7 +11,7 @@ import EntitiesProvider from "./hooks/EntitiesProvider";
 import handleTabChange from "./utils/handleTabChange";
 import Frame from "../components/frame/Frame";
 import useProjectWrapper from "./hooks/useProjectWrapper";
-import TabSelector from "./components/main/TabSelector";
+import TabSelector from "./components/main/components/TabSelector";
 
 const {shell} = window.require('electron')
 export default function Project({id, meta, events, initialized, setInitialized, settings}) {

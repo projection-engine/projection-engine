@@ -1,6 +1,6 @@
 import EVENTS from "./EVENTS";
 import ProjectLoader from "./workers/ProjectLoader";
-import FILE_TYPES from "../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
 
 export default function handleTabChange(filesLoaded, tabIndex, fileSystem, engine, load) {
     const toRemove = filesLoaded[tabIndex - 1]

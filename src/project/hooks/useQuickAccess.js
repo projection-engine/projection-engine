@@ -5,7 +5,7 @@ import ImageProcessor from "../engine/utils/image/ImageProcessor";
 import Entity from "../engine/basic/Entity";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import SkyboxComponent from "../engine/components/SkyboxComponent";
-import FILE_TYPES from "../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])

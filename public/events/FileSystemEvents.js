@@ -1,8 +1,10 @@
 import {v4 as uuidv4} from "uuid";
-import glTF from "../glTF/glTF";
-import REG_PATH from "../glTF/REG_PATH";
+import glTF from "../project/glTF/glTF";
+import REG_PATH from "../project/glTF/REG_PATH";
+import {readRegistry} from "../project/loader/FSOperations";
+import loader from "../project/loader/loader";
 
-const {BrowserWindow, dialog, ipcMain} = require('electron')
+const {dialog, ipcMain} = require('electron')
 const fs = require('fs')
 const path = require('path')
 const si = require("systeminformation");
@@ -57,31 +59,7 @@ export default function FileSystemEvents() {
     })
 
     ipcMain.on('read-registry', async (event, {pathName, listenID}) => {
-        const result = await new Promise(resolve => {
-            fs.readdir(pathName, (e, res) => {
-                if (!e) {
-                    let promises = res.map(f => {
-                        return new Promise(resolve1 => {
-                            const registryPath = pathName + f
-                            fs.readFile(registryPath, (e, registryFile) => {
-                                if (!e) try {
-                                    resolve1({
-                                        ...JSON.parse(registryFile.toString()), registryPath
-                                    })
-                                } catch (e) {
-                                    resolve1()
-                                } else resolve1()
-                            })
-                        })
-                    })
-
-                    Promise.all(promises).then(registryFiles => {
-                        resolve(registryFiles
-                            .filter(f => f !== undefined))
-                    })
-                } else resolve([])
-            })
-        })
+        const result = await readRegistry(pathName)
         event.sender.send('read-registry-' + listenID, result)
     })
 
@@ -94,5 +72,7 @@ export default function FileSystemEvents() {
             } else event.sender.send('import-gltf-' + listenID, undefined)
         })
     })
-
+    ipcMain.on('load-project', async (event, {projectPath, projectID, listenID}) => {
+        event.sender.send('load-project-' + listenID, await loader(projectPath, projectID))
+    })
 }

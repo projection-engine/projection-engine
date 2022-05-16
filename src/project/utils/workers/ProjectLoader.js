@@ -22,7 +22,7 @@ import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import {DATA_TYPES} from "../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../engine/instances/TextureInstance";
 import AsyncFS from "../../../components/AsyncFS";
-import FILE_TYPES from "../../../../public/glTF/FILE_TYPES";
+import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
 
 export default class ProjectLoader {
     static async loadProject(gpu, fileSystem) {
@@ -164,7 +164,7 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true, gpu, materials) {
+    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true, gpu) {
 
         const promises = toLoad.map(m => {
             return new Promise(async r => {

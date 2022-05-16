@@ -2,14 +2,35 @@ const {BrowserWindow, dialog, ipcMain} = require('electron')
 const fs = require('fs')
 const path = require('path')
 
+export async function readFile(path, options) {
+    return await new Promise(resolve => {
+        fs.readFile(path, options, (err, res) => resolve([err, res ? res.toString() : undefined]))
+    })
+}
+
+export async function rm(path, options) {
+    return await new Promise(resolve => {
+        fs.rm(path, options, (err) => resolve([err]))
+    })
+}
+
+export async function lstat(path, options) {
+    return await new Promise(resolve => {
+        fs.lstat(path, options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
+    })
+}
+export async function readdir(path, options) {
+    return await new Promise(resolve => {
+        fs.readdir(path, options, (err, res) => resolve([err, res]))
+    })
+}
+
 export default function FSEvents() {
     ipcMain.on('fs-read', async (event, data) => {
         const {
             path, options, listenID
         } = data
-        const result = await new Promise(resolve => {
-            fs.readFile(path, options, (err, res) => resolve([err, res ? res.toString() : undefined]))
-        })
+        const result = await readFile(path, options)
         event.sender.send('fs-read-' + listenID, result)
     })
 
@@ -28,9 +49,7 @@ export default function FSEvents() {
         const {
             path, options, listenID
         } = data
-        const result = await new Promise(resolve => {
-            fs.rm(path, options, (err) => resolve([err]))
-        })
+        const result = await rm(path, options)
         event.sender.send('fs-rm-' + listenID, result)
     })
 
@@ -67,9 +86,7 @@ export default function FSEvents() {
             path, options, listenID
         } = data
 
-        const result = await new Promise(resolve => {
-            fs.readdir(path, options, (err, res) => resolve([err, res]))
-        })
+        const result = await readdir(path, options)
         event.sender.send('fs-readdir-' + listenID, result)
     })
 
@@ -77,9 +94,7 @@ export default function FSEvents() {
         const {
             path, options, listenID
         } = data
-        const result = await new Promise(resolve => {
-            fs.lstat(path, options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
-        })
+        const result = await lstat(path, options)
         event.sender.send('fs-lstat-' + listenID, result)
     })
 

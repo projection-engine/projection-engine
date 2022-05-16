@@ -1,11 +1,11 @@
 import styles from "../../styles/Project.module.css";
 import ViewportOptions from "../../../components/viewport/ViewportOptions";
 import Viewport from "../../../components/viewport/Viewport";
-import handleDrop from "../../utils/handleDrop";
+import handleDrop from "../../utils/importer/import";
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
-import getOptions from "../../utils/getOptions";
+import useOptions from "./hooks/useOptions";
 import {useContext, useEffect} from "react";
 import QuickAccessProvider from "../../hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
@@ -15,17 +15,17 @@ import useEditorKeys from "../../hooks/useEditorKeys";
 export default function Main(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const controlProvider = useContext(ControlProvider)
-
+    const options = useOptions(
+        props.executingAnimation,
+        props.setExecutingAnimation,
+        props.engine,
+        props.serializer.save,
+        props.openLevelBlueprint,
+        props.setAlert
+    )
     useEffect(() => {
         controlProvider.setTabAttributes(
-            getOptions(
-                props.executingAnimation,
-                props.setExecutingAnimation,
-                props.engine,
-                props.serializer.save,
-                props.openLevelBlueprint,
-                props.setAlert
-            ),
+            options,
             'Level viewport',
             <span
                 style={{fontSize: '1.2rem'}}

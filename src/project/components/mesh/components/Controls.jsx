@@ -7,7 +7,7 @@ import {useContext, useMemo} from "react";
 import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
 import MaterialComponent from "../../scene/forms/MaterialComponent";
 
-import {IDS} from "../../../engine-editor/useMinimalEngine";
+import {IDS} from "../../../utils/extension/useMinimalEngine";
 import TransformComponent from "../../scene/forms/TransformComponent";
 import Transformation from "../../../engine/instances/Transformation";
 
