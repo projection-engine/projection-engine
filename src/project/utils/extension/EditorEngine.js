@@ -8,6 +8,13 @@ import COMPONENTS from "../../engine/templates/COMPONENTS";
 import EditorCameras from "./EditorCameras";
 import EditorWrapper from "./EditorWrapper";
 import OrthographicCamera from "./camera/ortho/OrthographicCamera";
+import * as debugCode from './shaders/debug.glsl'
+import MaterialInstance from "../../engine/instances/MaterialInstance";
+import * as shaderCode from "../../engine/shaders/mesh/FALLBACK.glsl";
+import {DATA_TYPES} from "../../engine/templates/DATA_TYPES";
+import ImageProcessor from "../../engine/utils/image/ImageProcessor";
+import SHADING_MODELS from "../../engine/templates/SHADING_MODELS";
+
 
 export default class EditorEngine extends Renderer {
 
@@ -20,14 +27,31 @@ export default class EditorEngine extends Renderer {
         this.cameraData = new EditorCameras(CAMERA_TYPES.SPHERICAL, gpu.canvas)
         this.initialized = true
         this.editorSystem = new EditorWrapper(gpu)
+        this.debugMaterial = new MaterialInstance(
+            gpu,
+            shaderCode.vertex,
+            debugCode.fragment,
+            [{
+                key: 'shadingModel',
+                data: SHADING_MODELS.DEPTH,
+                type: DATA_TYPES.INT
+            }], {
+                isForwardShaded: true,
+                doubledSided: true
+            },
+         undefined,
+         'shading-models'
+        )
     }
 
     get camera() {
         return this.cameraData.camera
     }
+
     set camera(data) {
         this.cameraData.camera = data
     }
+
     refreshCubemaps() {
         this.systems[SYSTEMS.CUBE_MAP].step = STEPS_CUBE_MAP.BASE
     }
@@ -85,10 +109,11 @@ export default class EditorEngine extends Renderer {
                 })
             } else params.setSelected([])
         }
-
+        this.debugMaterial.uniformData.shadingModel = params.shadingModel
         super.updatePackage(
+            params.shadingModel !== SHADING_MODELS.DETAIL ? this.debugMaterial : undefined,
             entities,
-            materials,
+            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
             meshes,
             {
                 ...params,

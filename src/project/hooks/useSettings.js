@@ -12,7 +12,7 @@ export default function useSettings() {
 
         iconsVisibility: true,
         gridVisibility: true,
-        shadingModel: SHADING_MODELS.FLAT,
+        shadingModel: SHADING_MODELS.DETAIL,
         fov: Math.PI / 2,
         fpsVisibility: true,
         resolutionMultiplier: 1,

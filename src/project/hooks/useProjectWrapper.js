@@ -25,7 +25,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
     const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(false)
-    const engine = useEditorEngine(executingAnimation, settings, load, initialized, setAlert)
+    const engine = useEditorEngine(executingAnimation, settings,  initialized, setAlert)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
     const [currentTab, setCurrentTab] = useState(0)

@@ -2,7 +2,7 @@
   "name": "projection",
   "productName": "projection",
   "version": "0.0.11-alpha",
-  "description": "My Electron application description",
+  "description": "Projection Engine",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

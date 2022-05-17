@@ -6,7 +6,7 @@ import COMPONENTS from "../../engine/templates/COMPONENTS";
 import GPUContextProvider from "../../../components/viewport/hooks/GPUContextProvider";
 
 
-export default function useEditorEngine(canExecutePhysicsAnimation, settings, load, canStart, setAlert) {
+export default function useEditorEngine(canExecutePhysicsAnimation, settings,  canStart, setAlert) {
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()

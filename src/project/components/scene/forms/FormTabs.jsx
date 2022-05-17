@@ -1,6 +1,6 @@
 import styles from '../styles/Tabs.module.css'
 import PropTypes from "prop-types";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import {Button, ToolTip} from "@f-ui/core";
 
@@ -101,6 +101,11 @@ export default function FormTabs(props) {
         else
             return undefined
     }, [props.currentTab, props.entity?.id])
+
+    useEffect(()=> {
+        if(!props.entity)
+            props.setCurrentTab(-2)
+    }, [props.entity])
 
     return (
         <div className={styles.wrapper}>
