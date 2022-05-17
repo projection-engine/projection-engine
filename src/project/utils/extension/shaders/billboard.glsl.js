@@ -25,7 +25,7 @@ layout (location = 1) in mat4 transformation;
 // UNIFORM
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
- 
+uniform float iconSize;
 
 
 out vec2 texCoord;
@@ -34,7 +34,7 @@ void main(){
     texCoord = (position.xy) * 0.5 + 0.5;
     mat4 m =  viewMatrix * transformation;
 
-    float d = .75; // BILLBOARD SIZE
+    float d = .75 * iconSize; // BILLBOARD SIZE
 
     m[0][0]  = d;
     m[0][1]  = 0.0;

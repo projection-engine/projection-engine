@@ -7,6 +7,7 @@ import ColorPicker from "../../../../components/color/ColorPicker";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer";
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
+import LabeledRange from "../../../../components/templates/LabeledRange";
 
 export default function LightComponent(props) {
     const getNewState = () => {
@@ -133,55 +134,12 @@ export default function LightComponent(props) {
                             }}/>
                     </AccordionTemplate>
 
-                    <AccordionTemplate title={'Size'}>
-                        <Range
-                            accentColor={'yellow'}
-                            value={state.size}
-                            minValue={1}
-                            incrementPercentage={1}
-                            precision={0}
-                            onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit(v, 'size')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                setState(prev => {
-                                    return {
-                                        ...prev,
-                                        size: parseFloat(e)
-                                    }
-                                })
-                            }}/>
-                    </AccordionTemplate>
                 </>
                 :
                 null
             }
 
 
-            <AccordionTemplate title={'Intensity'}>
-                <Range
-                    accentColor={'yellow'}
-                    value={state.intensity}
-                    minValue={.0001}
-                    incrementPercentage={.01}
-                    precision={4}
-                    onFinish={(v) => {
-                        setHasChanged(false)
-                        props.submit(v, 'intensity')
-                    }}
-                    handleChange={e => {
-                        saveVersion()
-                        props.selected.intensity = e
-                        setState(prev => {
-                            return {
-                                ...prev,
-                                intensity: e
-                            }
-                        })
-                    }}/>
-            </AccordionTemplate>
             {props.type === COMPONENTS.SKYLIGHT ?
                 <>
 
@@ -267,7 +225,7 @@ export default function LightComponent(props) {
                         value={state.attenuation.y}
                         onFinish={(v) => {
                             setHasChanged(false)
-                            props.submit([state.attenuation.x,v, state.attenuation.z], 'attenuation')
+                            props.submit([state.attenuation.x, v, state.attenuation.z], 'attenuation')
                         }}
                         handleChange={e => {
                             saveVersion()
@@ -351,7 +309,7 @@ export default function LightComponent(props) {
                         })
                     }}/>
             </AccordionTemplate>
-            <AccordionTemplate title={'Light color'}>
+            <AccordionTemplate title={'Intensity & color'}>
                 <ColorPicker
                     value={state.color}
                     submit={color => {
@@ -367,23 +325,70 @@ export default function LightComponent(props) {
                         })
                         props.submit([r, g, b], 'color')
                     }}/>
+                <LabeledRange
+                    label={'Intensity'}
+                    accentColor={'red'}
+                    value={state.intensity}
+                    minValue={.0001}
+                    incrementPercentage={.01}
+                    precision={4}
+                    onFinish={(v) => {
+                        setHasChanged(false)
+                        props.submit(v, 'intensity')
+                    }}
+                    handleChange={e => {
+                        saveVersion()
+                        props.selected.intensity = e
+                        setState(prev => {
+                            return {
+                                ...prev,
+                                intensity: e
+                            }
+                        })
+                    }}/>
+            </AccordionTemplate>
+            <AccordionTemplate title={'Shadows'}>
+                <div className={styles.inline} style={{alignItems: 'flex-end'}}>
+                    <Checkbox
+                        noMargin={true}
+                        label={'Casts shadows'}
+                        width={'100%'}
+                        height={'25px'}
+                        checked={state.shadowMap}
+                        handleCheck={() => {
+                            saveVersion()
+                            setHasChanged(false)
 
+                            setState({...state, shadowMap: !state.shadowMap})
+                            props.submit(!state.shadowMap, 'shadowMap')
+                        }}/>
+                    {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
+                        <LabeledRange
+                            label={'Size'}
+                            accentColor={'green'}
+                            value={state.size}
+                            minValue={1}
+                            incrementPercentage={1}
+                            precision={0}
+                            onFinish={(v) => {
+                                setHasChanged(false)
+                                props.submit(v, 'size')
+                            }}
+                            handleChange={e => {
+                                saveVersion()
+                                setState(prev => {
+                                    return {
+                                        ...prev,
+                                        size: parseFloat(e)
+                                    }
+                                })
+                            }}/>
+                        :
+                        null
+                    }
+                </div>
             </AccordionTemplate>
 
-
-            <Checkbox
-                noMargin={true}
-                label={'Shadow map'}
-                width={'100%'}
-                height={'25px'}
-                checked={state.shadowMap}
-                handleCheck={() => {
-                    saveVersion()
-                    setHasChanged(false)
-
-                    setState({...state, shadowMap: !state.shadowMap})
-                    props.submit(!state.shadowMap, 'shadowMap')
-                }}/>
 
         </>
 

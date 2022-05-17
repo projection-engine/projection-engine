@@ -29,7 +29,7 @@ export default function RenderingSettings() {
         state.samples = settings.samples
     }, [])
 
-    console.log(state.pcfSamples)
+
     return (
         <div className={styles.ppWrapper}>
 

@@ -1,6 +1,6 @@
 import styles from '../styles/Tabs.module.css'
 import PropTypes from "prop-types";
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect, useMemo, useRef} from "react";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 import {Button, ToolTip} from "@f-ui/core";
 
@@ -101,22 +101,19 @@ export default function FormTabs(props) {
         else
             return undefined
     }, [props.currentTab, props.entity?.id])
-
-    useEffect(()=> {
-        if(!props.entity)
-            props.setCurrentTab(-2)
+    const initialized = useRef(false)
+    useEffect(() => {
+        if (!props.entity) {
+            props.setCurrentTab('-2')
+            initialized.current = false
+        } else if (!initialized.current && !props.entity.components[COMPONENTS.FOLDER]) {
+            props.setCurrentTab('0')
+            initialized.current = true
+        }
     }, [props.entity])
 
     return (
         <div className={styles.wrapper}>
-            <Button
-                className={styles.button}
-                variant={props.currentTab === '-3' ? "filled" : undefined}
-                onClick={() => props.setCurrentTab('-3')}
-            >
-                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
-                <ToolTip content={'Editor camera'}/>
-            </Button>
             <Button
                 className={styles.button}
                 variant={props.currentTab === '-2' ? "filled" : undefined}
@@ -125,6 +122,15 @@ export default function FormTabs(props) {
                 <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>image</span>
                 <ToolTip content={'Display'}/>
             </Button>
+            <Button
+                className={styles.button}
+                variant={props.currentTab === '-3' ? "filled" : undefined}
+                onClick={() => props.setCurrentTab('-3')}
+            >
+                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
+                <ToolTip content={'Editor camera'}/>
+            </Button>
+
             <Button
                 variant={props.currentTab === '-1' ? "filled" : undefined}
                 className={styles.button}

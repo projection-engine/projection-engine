@@ -4,25 +4,12 @@ import SphericalCamera from "./SphericalCamera";
 import KEYS from "../../../../engine/templates/KEYS";
 
 export default function perspectiveCameraEvents(camera, canvasID, onClick) {
-    let target = document.getElementById(canvasID),
-        cameraTarget = document.getElementById(canvasID + '-camera-position')
-
+    let target = document.getElementById(canvasID)
     let isFocused = false
     let positionChanged = false
     const maxAngle = 1.5
 
-    const updateCamPosition = () => {
-        if(cameraTarget)
-        cameraTarget.innerHTML = `
-                    <div><b>X:</b> ${camera.position[0].toFixed(2)}</div>
-                    <div><b>Y:</b>  ${camera.position[1].toFixed(2)}</div>
-                    <div><b>Z:</b>  ${camera.position[2].toFixed(2)}</div>
-                    `
-    }
 
-    if (camera instanceof FreeCamera)
-        camera.onMove = updateCamPosition
-    updateCamPosition()
     const updateZ = (forward, active) => {
 
         if (forward)
@@ -63,13 +50,9 @@ export default function perspectiveCameraEvents(camera, canvasID, onClick) {
                             camera.position[1] -= Math.sin(camera.pitch)
                             camera.position[2] -= newPosition[2]
                         }
-
                         camera.updateViewMatrix()
-                        updateCamPosition()
-                    } else {
+                    } else
                         camera.radius -= distance
-                        updateCamPosition()
-                    }
                 }
                 break
             }
@@ -110,7 +93,6 @@ export default function perspectiveCameraEvents(camera, canvasID, onClick) {
                         camera.yaw -= .01 * Math.abs(event.movementX)
 
                     camera.updateViewMatrix()
-                    updateCamPosition()
                 }
                 break
             }

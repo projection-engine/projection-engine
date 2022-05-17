@@ -111,7 +111,7 @@ export default class EditorEngine extends Renderer {
         }
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
         super.updatePackage(
-            params.shadingModel !== SHADING_MODELS.DETAIL ? this.debugMaterial : undefined,
+            params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO  && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
             entities,
             params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
             meshes,

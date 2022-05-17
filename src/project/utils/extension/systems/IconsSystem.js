@@ -62,18 +62,19 @@ export default class IconsSystem extends System {
         }
     }
 
-    execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras) {
+    execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras, options) {
         super.execute()
+        const {iconSize} = options
         if (this._ready) {
             const billboards = [...pointLights, ...directionalLights, ...spotLights, ...cubeMaps]
             if (iconsVisibility) {
                 const mapped = this._map(billboards)
-                this.billboardRenderer.draw(mapped.pointLights, this.pointLightTexture.texture, camera)
-                this.billboardRenderer.draw(mapped.directionalLights, this.directionalLightTexture.texture, camera)
+                this.billboardRenderer.draw(mapped.pointLights, this.pointLightTexture.texture, camera, iconSize)
+                this.billboardRenderer.draw(mapped.directionalLights, this.directionalLightTexture.texture, camera, iconSize)
                 if (skylight)
-                    this.billboardRenderer.draw([skylight.transformationMatrix], this.directionalLightTexture.texture, camera)
-                this.billboardRenderer.draw(mapped.spotLights, this.spotLightTexture.texture, camera)
-                this.billboardRenderer.draw(mapped.cubemaps, this.cubemapTexture.texture, camera)
+                    this.billboardRenderer.draw([skylight.transformationMatrix], this.directionalLightTexture.texture, camera, iconSize)
+                this.billboardRenderer.draw(mapped.spotLights, this.spotLightTexture.texture, camera, iconSize)
+                this.billboardRenderer.draw(mapped.cubemaps, this.cubemapTexture.texture, camera, iconSize)
 
                 this.cameraShader.use()
                 this.gpu.bindVertexArray(this.cameraMesh.VAO)

@@ -4,7 +4,7 @@ import GIZMOS from "../utils/extension/gizmo/GIZMOS";
 import useDirectState from "./useDirectState";
 import ROTATION_TYPES from "../utils/extension/gizmo/ROTATION_TYPES";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
-
+const toRad = Math.PI/180
 export default function useSettings() {
     const [state] = useDirectState({
         projectCreationDate: (new Date()).toDateString(),
@@ -13,7 +13,7 @@ export default function useSettings() {
         iconsVisibility: true,
         gridVisibility: true,
         shadingModel: SHADING_MODELS.DETAIL,
-        fov: Math.PI / 2,
+        fov: 60 * toRad,
         fpsVisibility: true,
         resolutionMultiplier: 1,
         cameraType: CAMERA_TYPES.SPHERICAL,
@@ -27,7 +27,7 @@ export default function useSettings() {
         exposure: 1.2,
         gridSize: .01,
         rotationType: ROTATION_TYPES.GLOBAL,
-
+        iconSize: 1,
         bloomStrength: .3,
         bloomThreshold:  .85,
         FXAASpanMax:  8,

@@ -1,5 +1,5 @@
 import {mat4, quat} from "gl-matrix";
-
+const toRad = Math.PI/180
 export default class Camera {
     _position = [0, 0, 0]
     _yaw = 0
@@ -21,7 +21,7 @@ export default class Camera {
     ) {
 
 
-        this._fov = fov
+        this._fov = 60 * toRad
 
         this._position = origin
 

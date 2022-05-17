@@ -40,7 +40,7 @@ export default class BillboardsInstance {
         this.gpu.vertexAttribDivisor(4, 1);
     }
 
-    draw(transformations, texture, camera) {
+    draw(transformations, texture, camera, iconSize) {
         this.shader.use()
         this.gpu.bindVertexArray(this.vao)
         this.vertexVBO.enable()
@@ -50,7 +50,8 @@ export default class BillboardsInstance {
             cameraPosition: camera.position,
             iconSampler: texture,
             viewMatrix: camera.viewMatrix,
-            projectionMatrix: camera.projectionMatrix
+            projectionMatrix: camera.projectionMatrix,
+            iconSize
         })
 
         this.gpu.drawArraysInstanced(this.gpu.TRIANGLES, 0, 6, transformations.length)

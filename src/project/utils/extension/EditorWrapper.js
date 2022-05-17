@@ -56,7 +56,7 @@ export default class EditorWrapper extends System {
             this.gpu.enable(this.gpu.BLEND)
             this.gpu.blendFunc(this.gpu.SRC_ALPHA, this.gpu.ONE_MINUS_SRC_ALPHA)
             if (!canExecutePhysicsAnimation) {
-                this.billboardSystem.execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras)
+                this.billboardSystem.execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras, options)
             }
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
                 this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)
