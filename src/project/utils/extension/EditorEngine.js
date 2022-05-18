@@ -14,6 +14,7 @@ import * as shaderCode from "../../engine/shaders/mesh/FALLBACK.glsl";
 import {DATA_TYPES} from "../../engine/templates/DATA_TYPES";
 import ImageProcessor from "../../engine/utils/image/ImageProcessor";
 import SHADING_MODELS from "../../engine/templates/SHADING_MODELS";
+import {STEPS_LIGHT_PROBE} from "../../engine/systems/LightProbeSystem";
 
 
 export default class EditorEngine extends Renderer {
@@ -54,6 +55,7 @@ export default class EditorEngine extends Renderer {
 
     refreshCubemaps() {
         this.systems[SYSTEMS.CUBE_MAP].step = STEPS_CUBE_MAP.BASE
+        this.systems[SYSTEMS.PROBE].step = STEPS_LIGHT_PROBE.GENERATION
     }
 
     updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {

@@ -13,7 +13,12 @@ export default function CubeMapComponent(props) {
             resolution: props.selected.resolution,
             irradiance: props.selected.irradiance,
             prefilteredMipmaps: props.selected.prefilteredMipmaps,
-            radius: props.selected.radius
+            radius: props.selected.radius,
+            asLightProbe: props.selected.asLightProbe,
+
+            xR: props.selected.irradianceMultiplier[0],
+            yR: props.selected.irradianceMultiplier[1],
+            zR: props.selected.irradianceMultiplier[2],
         }
     }
     const [state, setState] = useState(getNewState())
@@ -21,6 +26,7 @@ export default function CubeMapComponent(props) {
         setState(getNewState())
     }, [props.selected])
 
+    console.log(props.selected.asLightProbe)
     if (!props.selected.asLightProbe)
         return (
             <>
@@ -100,19 +106,56 @@ export default function CubeMapComponent(props) {
                     />
                 </AccordionTemplate>
                 <Checkbox
-                    checked={state.irradiance}
-                    label={'Generate irradiance map'}
+                    checked={state.asLightProbe}
+                    label={'Light probe'}
                     handleCheck={() => {
-                        setState({...state, irradiance: !state.irradiance})
-                        props.submit(!state.irradiance)
+                        setState({...state, asLightProbe: !state.asLightProbe})
+                        props.submit(!state.asLightProbe, 'asLightProbe')
                     }} height={'25px'} width={'100%'}
                     noMargin={true}
                 />
+
             </>
         )
-    return null
-}
+    return (
+        <AccordionTemplate type={'flex'} title={'Translation'}>
+            <Range
+                metric={'m'}
+                accentColor={'red'}
+                label={'x'}
 
+                precision={3}
+                incrementPercentage={.01}
+
+                value={state.xR}
+                onFinish={(v) => props.submit([v, state.yR, state.zR], 'irradianceMultiplier')}
+                handleChange={e => setState({...state, xR: parseInt(e)})}
+            />
+            <Range
+                metric={'m'}
+                accentColor={'#00ff00'}
+                label={'y'}
+                precision={3}
+                incrementPercentage={.01}
+
+                value={state.yR}
+                onFinish={(v) => props.submit([state.xR, v, state.zR], 'irradianceMultiplier')}
+                handleChange={e => setState({...state, yR: parseInt(e)})}
+            />
+            <Range
+                metric={'m'}
+                accentColor={'#0095ff'}
+                label={'z'}
+                precision={3}
+                incrementPercentage={.01}
+
+                value={state.zR}
+                onFinish={(v) => props.submit([state.xR, state.yR, v], 'irradianceMultiplier')}
+                handleChange={e => setState({...state, zR: parseInt(e)})}
+            />
+        </AccordionTemplate>
+    )
+}
 CubeMapComponent.propTypes = {
     selected: PropTypes.object,
     submit: PropTypes.func

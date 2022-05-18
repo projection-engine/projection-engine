@@ -28,8 +28,6 @@ export default function useForm(
     load,
     currentTab
 ) {
-
-
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
@@ -181,8 +179,7 @@ export default function useForm(
                                         }
                                     })
                                 }
-                            }
-                            }
+                            }}
                             setAlert={setAlert}
 
                         />
@@ -231,6 +228,7 @@ export default function useForm(
                             selected={selected.components[key]}
                             submit={(data, key) => {
                                 submit(COMPONENTS.CUBE_MAP, key, data)
+                                engine.renderer.refreshCubemaps()
                                 setAlert({message: 'Reflection captures need to be rebuilt', type: 'alert'})
                             }}
                         />
