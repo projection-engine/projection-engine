@@ -104,7 +104,6 @@
     "axios": "^0.27.2",
     "babel-runtime": "^6.26.0",
     "electron-squirrel-startup": "^1.0.0",
-    "fs-extra": "^10.1.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",

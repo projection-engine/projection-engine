@@ -155,7 +155,7 @@ export default class ProjectLoader {
                 if (component) {
 
                     if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
-                        if (!oK.includes("__")) component[oK] = entity.components[k][oK]
+                        if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
                     })
                     parsedEntity.components[k] = component
                 }
