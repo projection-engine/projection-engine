@@ -15,6 +15,15 @@ import COMPONENTS from "../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
 
+const getHierarchy = (start, all) => {
+    const result = [ ]
+    const direct = all.filter(e => e.linkedTo === start.id)
+    direct.forEach(d => {
+        result.push(...getHierarchy(d, all))
+    })
+    result.push(...direct)
+    return result
+}
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState('-2')
@@ -27,7 +36,7 @@ export default function SceneView(props) {
             id: 0,
             label: 'Scene',
             children: toFilter.map(f => {
-                return mapToView(f, props.engine.entities, (el, e) => {
+                return mapToView(f, props.engine.entities, (el, e, children) => {
                     if (e && e.ctrlKey) {
                         props.engine.setSelected(prev => {
                             const indexFound = prev.findIndex(f => f === el.id)
@@ -40,7 +49,7 @@ export default function SceneView(props) {
                         })
                     } else if (!el.components[COMPONENTS.FOLDER]) props.engine.setSelected([el.id])
                     else if (el.components[COMPONENTS.FOLDER]) {
-                        props.engine.setSelected(props.engine.entities.filter(e => e.linkedTo === el.id).map(e => e.id))
+                        props.engine.setSelected(getHierarchy(el, props.engine.entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
                     }
                 }, props.engine, setAllHidden, false)
             }),
@@ -131,15 +140,12 @@ export default function SceneView(props) {
                         label: 'Remove entity',
                         icon: <span className={'material-icons-round'}>delete</span>,
                         onClick: (node) => {
-                            const toDelete = [node.getAttribute('data-node')]
-                            const e = props.engine.scripts.find(s => s.id === toDelete[0])
+                            const t = node.getAttribute('data-node')
+                            const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
 
-                            if (e) props.engine.setScripts(prev => {
-                                return prev.filter(p => p.id !== e.id)
-                            })
                             props.engine.setSelected([])
                             props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: toDelete
+                                type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
                             })
 
                         }

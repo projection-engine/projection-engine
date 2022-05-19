@@ -139,9 +139,14 @@ export default class Node {
     }
 
     childNodes() {
-        return this.children.map(n => {
-            return {id: n.id, primitives: this.primitives}
-        })
+        return {
+            id: this.id,
+            name: this.data.name,
+            primitives: this.primitives,
+            children: this.children.map(n => {
+                return n.childNodes()
+            })
+        }
     }
 
     static async writeData(pathName, data, regID, projectPath) {

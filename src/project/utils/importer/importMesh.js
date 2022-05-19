@@ -24,7 +24,6 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
                 wireframeBuffer: true
             })
 
-
             if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
                 const rs = await fileSystem.readRegistryFile(objLoaded.material)
                 if (rs) {
@@ -40,24 +39,8 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         }
         else
             existsMesh = true
-
-        entity = new Entity(undefined, objLoaded.name)
-        entity.isBlueprint = isBlueprint
-        const transformation = new TransformComponent()
-        transformation.scaling = objLoaded.scaling
-        transformation.rotation = objLoaded.rotation
-        transformation.translation = objLoaded.translation
-        console.log(objLoaded)
-        transformation.baseTransformationMatrix = objLoaded.baseTransformationMatrix
-
-        entity.components[COMPONENTS.MATERIAL] = new MaterialComponent(undefined, mesh.material)
-        entity.components[COMPONENTS.MESH] = new MeshComponent(undefined, mesh.id)
-        entity.components[COMPONENTS.TRANSFORM] = transformation
-        entity.components[COMPONENTS.PICK] = new PickComponent(undefined, engine.entities.length + index + 1)
-
-    } catch (e) {
-
-    }
+        entity = initializeEntity(objLoaded, mesh.id)
+    } catch (e) {}
 
     return {
         mesh,
@@ -65,4 +48,20 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         entity,
         existsMesh
     }
+}
+
+export function initializeEntity(data, meshID, parent){
+    const entity = new Entity(undefined, data.name)
+    entity.linkedTo = parent
+    const transformation = new TransformComponent()
+    transformation.scaling = data.scaling
+    transformation.rotationQuat = data.rotationQuat
+    transformation.translation = data.translation
+    transformation.baseTransformationMatrix = data.baseTransformationMatrix
+    entity.components[COMPONENTS.MATERIAL] = new MaterialComponent()
+    entity.components[COMPONENTS.MESH] = new MeshComponent()
+    entity.components[COMPONENTS.MESH].meshID = meshID
+    entity.components[COMPONENTS.TRANSFORM] = transformation
+
+    return entity
 }

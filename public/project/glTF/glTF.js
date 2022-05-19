@@ -1,10 +1,5 @@
 import Buffer from "./instances/Buffer";
 import Accessor from "./instances/Accessor";
-import PrimitiveProcessor from "./instances/PrimitiveProcessor";
-import groupInto from "./utils/groupInto";
-import parseNode from "./utils/parseNode";
-import getPrimitives from "./utils/getPrimitive";
-import parseMaterial from "./utils/parseMaterial";
 import Scene from "./instances/Scene";
 
 

@@ -4,6 +4,7 @@ import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
 import importScript from "./importScript";
+import importScene from "./importScene";
 
 export default async function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     const entities = [], meshes = []
@@ -30,13 +31,12 @@ export default async function handleDrop(event, fileSystem, engine, setAlert, lo
                 await importScript(fileSystem, engine, res)
                 break
             case FILE_TYPES.SCENE:
+                await importScene(fileSystem, engine, res, setAlert)
                 break
             default:
                 setAlert({type: 'error', message: 'Error importing file.'})
                 break
         }
-
-
     }
 
     if (meshes.length > 0) {
