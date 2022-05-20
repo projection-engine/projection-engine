@@ -13,7 +13,6 @@ export default class EditorWrapper extends System {
 
         this.gridSystem = new GridSystem(gpu)
         this.billboardSystem = new IconsSystem(gpu)
-        this.billboardSystem.initializeTextures().catch()
         this.gizmoSystem = new GizmoSystem(gpu)
         this.selectedSystem = new SelectedSystem(gpu)
     }
@@ -56,7 +55,7 @@ export default class EditorWrapper extends System {
             this.gpu.enable(this.gpu.BLEND)
             this.gpu.blendFunc(this.gpu.SRC_ALPHA, this.gpu.ONE_MINUS_SRC_ALPHA)
             if (!canExecutePhysicsAnimation) {
-                this.billboardSystem.execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras, options)
+                this.billboardSystem.execute(data, options)
             }
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
                 this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)

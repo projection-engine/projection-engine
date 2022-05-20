@@ -3,6 +3,7 @@ import pointLightIcon from "../icons/point_light.png";
 import directionalLightIcon from "../icons/directional_light.png";
 import spotLightIcon from "../icons/spot_light.png";
 import cubeMapIcon from "../icons/cubemap.png";
+import probeIcon from "../icons/probe.png";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import BillboardsInstance from "../BillboardsInstance";
 import * as shaderCode from '../shaders/gizmo.glsl'
@@ -27,54 +28,61 @@ export default class IconsSystem extends System {
             uvs: [],
             tangents: [],
         })
-    }
 
-    async initializeTextures() {
         this.pointLightTexture = new TextureInstance(pointLightIcon, false, this.gpu)
         this.directionalLightTexture = new TextureInstance(directionalLightIcon, false, this.gpu)
-
         this.spotLightTexture = new TextureInstance(spotLightIcon, false, this.gpu)
         this.cubemapTexture = new TextureInstance(cubeMapIcon, false, this.gpu)
-
-        this._ready = true
+        this.probeTexture = new TextureInstance(probeIcon, false, this.gpu)
     }
 
-    _map(billboards) {
-        let point = [], directional = [], spot = [], cubemaps = []
+    loop(ref, comp, key){
+        const result = []
+        const size = ref.length
 
-
-        for (let i = 0; i < billboards.length; i++) {
-            if (billboards[i].components[COMPONENTS.POINT_LIGHT])
-                point.push(billboards[i].components[COMPONENTS.TRANSFORM].transformationMatrix)
-            else if (billboards[i].components[COMPONENTS.DIRECTIONAL_LIGHT])
-                directional.push(billboards[i].components[COMPONENTS.DIRECTIONAL_LIGHT]?.transformationMatrix)
-            else if (billboards[i].components[COMPONENTS.SPOT_LIGHT])
-                spot.push(billboards[i].components[COMPONENTS.SPOT_LIGHT].transformationMatrix)
-            else if (billboards[i].components[COMPONENTS.CUBE_MAP])
-                cubemaps.push(Array.from(billboards[i].components[COMPONENTS.TRANSFORM].transformationMatrix))
+        for(let i = 0; i< size; i++){
+            result.push(ref[i].components[comp][key])
         }
 
-        return {
-            pointLights: point,
-            directionalLights: directional,
-            spotLights: spot,
-            cubemaps: cubemaps
-        }
+        return result
     }
 
-    execute(pointLights, directionalLights, spotLights, cubeMaps, camera, iconsVisibility, skylight, cameras, options) {
+    execute(data, options) {
         super.execute()
-        const {iconSize} = options
-        if (this._ready) {
-            const billboards = [...pointLights, ...directionalLights, ...spotLights, ...cubeMaps]
+        const {
+            pointLights,
+            spotLights,
+            directionalLights,
+            cubeMaps,
+            skylight,
+            cameras,
+            lightProbes
+        } = data
+        const {
+
+            camera,
+            iconsVisibility,
+            iconSize,
+
+        } = options
+
+
+
             if (iconsVisibility) {
-                const mapped = this._map(billboards)
+                const mapped = {
+                    pointLights: this.loop(pointLights, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                    directionalLights: this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, 'transformationMatrix'),
+
+                    cubemaps: this.loop(cubeMaps, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                    probes: this.loop(lightProbes, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                }
+
                 this.billboardRenderer.draw(mapped.pointLights, this.pointLightTexture.texture, camera, iconSize)
                 this.billboardRenderer.draw(mapped.directionalLights, this.directionalLightTexture.texture, camera, iconSize)
                 if (skylight)
                     this.billboardRenderer.draw([skylight.transformationMatrix], this.directionalLightTexture.texture, camera, iconSize)
-                this.billboardRenderer.draw(mapped.spotLights, this.spotLightTexture.texture, camera, iconSize)
                 this.billboardRenderer.draw(mapped.cubemaps, this.cubemapTexture.texture, camera, iconSize)
+                this.billboardRenderer.draw(mapped.probes, this.probeTexture.texture, camera, iconSize)
 
                 this.cameraShader.use()
                 this.gpu.bindVertexArray(this.cameraMesh.VAO)
@@ -97,7 +105,7 @@ export default class IconsSystem extends System {
                 this.cameraMesh.normalVBO.disable()
 
             }
-        }
+
         this.gpu.bindVertexArray(null)
     }
 
