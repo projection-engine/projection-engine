@@ -10,7 +10,7 @@ import FolderComponent from "../../engine/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import Entity from "../../engine/basic/Entity";
 import ResizableBar from "../../../components/resizable/ResizableBar";
-import FormTabs from "./forms/FormTabs";
+import FormTabs from "./components/FormTabs";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
@@ -36,7 +36,7 @@ export default function SceneView(props) {
             id: 0,
             label: 'Scene',
             children: toFilter.map(f => {
-                return mapToView(f, props.engine.entities, (el, e, children) => {
+                return mapToView(f, props.engine.entities, (el, e) => {
                     if (e && e.ctrlKey) {
                         props.engine.setSelected(prev => {
                             const indexFound = prev.findIndex(f => f === el.id)
@@ -47,7 +47,8 @@ export default function SceneView(props) {
                                 return n
                             }
                         })
-                    } else if (!el.components[COMPONENTS.FOLDER]) props.engine.setSelected([el.id])
+                    } else if (!el.components[COMPONENTS.FOLDER])
+                        props.engine.setSelected([el.id])
                     else if (el.components[COMPONENTS.FOLDER]) {
                         props.engine.setSelected(getHierarchy(el, props.engine.entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
                     }
@@ -80,7 +81,6 @@ export default function SceneView(props) {
         }]
     }, [props.engine.entities])
 
-
     const currentForm = useForm(
         props.engine,
         props.setAlert,
@@ -102,7 +102,6 @@ export default function SceneView(props) {
         })
     }
     return (<div className={styles.wrapper} style={{width: hidden ? '35px' : undefined}}>
-
         <div className={styles.wrapperContent} style={{overflow: 'hidden', height: hidden ? '100%' : undefined}}>
             <div className={[styles.header, styles.mainHeader].join(' ')} data-hidden={`${hidden}`}
                  style={{justifyContent: 'flex-start', padding: '0 4px'}}>

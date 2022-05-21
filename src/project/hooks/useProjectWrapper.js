@@ -1,6 +1,6 @@
 import {AlertProvider} from "@f-ui/core";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import useEditorEngine from "../utils/extension/useEditorEngine";
+import useEditorEngine from "../extension/useEditorEngine";
 import useQuickAccess from "./useQuickAccess";
 import useSerializer from "./useSerializer";
 import {useCallback, useContext, useEffect, useMemo, useState} from "react";

@@ -1,9 +1,10 @@
-import TransformComponent from "../forms/TransformComponent";
-import MeshComponent from "../forms/MeshComponent";
-import MaterialComponent from "../forms/MaterialComponent";
-import CubeMapComponent from "../forms/CubeMapComponent";
-import SkyboxComponent from "../forms/SkyboxComponent";
+import Transform from "../components/Transform";
+import Mesh from "../components/Mesh";
+import Material from "../components/Material";
+import CubeMap from "../components/CubeMap";
+import Skybox from "../components/Skybox";
 import React from "react";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 
 export default function getTabIcon(key) {
@@ -23,8 +24,12 @@ export default function getTabIcon(key) {
             return 'flashlight_on'
         case 'CubeMapComponent':
             return 'panorama_photosphere'
-        case 'SkyboxComponent':
+        case COMPONENTS.SKYBOX:
             return 'cloud'
+        case COMPONENTS.PROBE:
+            return 'lens_blur'
+        case COMPONENTS.LINE:
+            return 'arrow_right_alt'
         default:
             return
     }

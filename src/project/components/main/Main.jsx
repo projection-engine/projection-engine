@@ -59,7 +59,6 @@ export default function Main(props) {
                 <Viewport
                     id={props.id}
                     engine={props.engine}
-                    showPosition={props.settings.cameraCoordsVisibility}
                     allowDrop={true}
                     handleDrop={e => handleDrop(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
                 />
@@ -69,7 +68,7 @@ export default function Main(props) {
                     <ResizableBar type={'width'}/>
                     <SceneView
                         executingAnimation={props.executingAnimation}
-                        hierarchy={props.engine.hierarchy}
+
                         setAlert={props.setAlert}
                         engine={props.engine}
                     />

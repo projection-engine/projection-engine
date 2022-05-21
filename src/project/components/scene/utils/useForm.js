@@ -1,25 +1,50 @@
 import React, {useMemo, useState} from "react";
-import TransformComponent from "../forms/TransformComponent";
+import Transform from "../components/Transform";
 
-import SkyboxComponent from "../forms/SkyboxComponent";
-import LightComponent from "../forms/LightComponent";
-import MaterialComponent from "../forms/MaterialComponent";
-import MeshComponent from "../forms/MeshComponent";
+import Skybox from "../components/Skybox";
+import Lights from "../components/Lights";
+import Material from "../components/Material";
+import Mesh from "../components/Mesh";
 
 import styles from '../styles/Scene.module.css'
-import CubeMapComponent from "../forms/CubeMapComponent";
+import CubeMap from "../components/CubeMap";
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
-import Transformation from "../../../engine/instances/Transformation";
 import cloneClass from "../../../engine/utils/cloneClass";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import CameraComponent from "../forms/CameraComponent";
+import Camera from "../components/Camera";
 import MaterialInstance from "../../../engine/instances/MaterialInstance";
-import {IDS} from "../../../utils/extension/useMinimalEngine";
-import ScriptComponent from "../forms/ScriptComponent";
-import RenderingSettings from "../forms/RenderingSettings";
-import DisplaySettings from "../forms/DisplaySettings";
-import EditorCamera from "../forms/EditorCamera";
+import {IDS} from "../../../extension/useMinimalEngine";
+import Script from "../components/Script";
+import Rendering from "../components/Rendering";
+import Display from "../components/Display";
+import Editor from "../components/Editor";
+import Line from "../components/Line";
+import LightProbe from "../components/LightProbe";
 
+export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
+
+    const entity = engine.entities.find(e => e.id === entityID)
+
+    const component = entity.components[COMPONENTS.TRANSFORM]
+    const prev = component[key]
+    component[key] = [
+        axis === 'x' ? data : prev[0],
+        axis === 'y' ? data : prev[1],
+        axis === 'z' ? data : prev[2]
+    ]
+
+    if (entity.components[COMPONENTS.POINT_LIGHT])
+        entity.components[COMPONENTS.POINT_LIGHT].changed = true
+    if (entity.components[COMPONENTS.CUBE_MAP])
+        setAlert({message: 'Reflection captures need to be rebuilt', type: 'alert'})
+    engine.dispatchEntities({
+        type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
+            entityID,
+            key: COMPONENTS.TRANSFORM,
+            data: component
+        }
+    })
+}
 export default function useForm(
     engine,
     setAlert,
@@ -31,7 +56,6 @@ export default function useForm(
     const [currentKey, setCurrentKey] = useState()
     const selected = useMemo(() => {
         setCurrentKey(undefined)
-
         return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
     }, [engine.selected, engine.entities, engine.lockedEntity])
 
@@ -49,9 +73,37 @@ export default function useForm(
     const getField = (key) => {
         if (selected.components[key])
             switch (key) {
+                case COMPONENTS.PROBE: {
+                    return (
+                        <LightProbe
+                            selected={selected.components[COMPONENTS.PROBE]}
+                            submit={(key, value) => selected.components[COMPONENTS.PROBE][key] = value}
+                            addProbe={() => {
+                                selected.components[COMPONENTS.PROBE].addProbe()
+                                submit(COMPONENTS.PROBE, 'probes', selected.components[COMPONENTS.PROBE].probes)
+                            }}
+                            removeProbe={(s) => {
+                                selected.components[COMPONENTS.PROBE].removeProbe(s)
+                                submit(COMPONENTS.PROBE, 'probes', selected.components[COMPONENTS.PROBE].probes)
+                            }}
+                            submitProbe={(translation, s) => {
+                                selected.components[COMPONENTS.PROBE].updateProbe(s, 'translation', translation)
+                                submit(COMPONENTS.PROBE, 'probes', selected.components[COMPONENTS.PROBE].probes)
+                            }}
+                        />
+                    )
+                }
+                case COMPONENTS.LINE: {
+                    return (
+                        <Line
+                            selected={selected.components[COMPONENTS.LINE]}
+                            submit={(key, value) => selected.components[COMPONENTS.LINE][key] = value}
+                        />
+                    )
+                }
                 case COMPONENTS.SCRIPT: {
                     return (
-                        <ScriptComponent
+                        <Script
                             quickAccess={quickAccess}
                             selected={selected.components[COMPONENTS.SCRIPT]}
                             submit={async (value, add) => {
@@ -93,7 +145,7 @@ export default function useForm(
                 }
                 case COMPONENTS.CAMERA: {
                     return (
-                        <CameraComponent
+                        <Camera
                             selected={selected.components[COMPONENTS.CAMERA]}
                             submit={(value, key) => selected.components[COMPONENTS.CAMERA][key] = value}
                         />
@@ -101,20 +153,20 @@ export default function useForm(
                 }
                 case COMPONENTS.TRANSFORM: {
                     return (
-                        <TransformComponent
+                        <Transform
                             entityID={selected.id}
                             engine={engine}
 
                             selected={selected.components[COMPONENTS.TRANSFORM]}
-                            submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
-                            submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
-                            submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation', engine, engine.selected[0], setAlert)}
+                            submitRotation={(axis, data) => updateTransform(axis, data, 'rotation', engine, engine.selected[0], setAlert)}
+                            submitScaling={(axis, data) => updateTransform(axis, data, 'scaling', engine, engine.selected[0], setAlert)}
+                            submitTranslation={(axis, data) => updateTransform(axis, data, 'translation', engine, engine.selected[0], setAlert)}
                         />
                     )
                 }
                 case COMPONENTS.MESH: {
                     return (
-                        <MeshComponent
+                        <Mesh
                             quickAccess={quickAccess}
                             load={load} setAlert={setAlert}
                             submit={(mesh, type) => {
@@ -138,7 +190,7 @@ export default function useForm(
                 }
                 case COMPONENTS.MATERIAL: {
                     return (
-                        <MaterialComponent
+                        <Material
                             entityID={selected.id}
                             engine={engine}
                             submitRadius={r => submit(COMPONENTS.MATERIAL, 'radius', r)}
@@ -189,7 +241,7 @@ export default function useForm(
                 case COMPONENTS.DIRECTIONAL_LIGHT:
                 case COMPONENTS.POINT_LIGHT: {
                     return (
-                        <LightComponent
+                        <Lights
                             entityID={selected.id}
                             engine={engine}
 
@@ -224,7 +276,7 @@ export default function useForm(
 
                 case COMPONENTS.CUBE_MAP: {
                     return (
-                        <CubeMapComponent
+                        <CubeMap
                             selected={selected.components[key]}
                             submit={(data, key) => {
                                 submit(COMPONENTS.CUBE_MAP, key, data)
@@ -236,7 +288,7 @@ export default function useForm(
                 }
                 case COMPONENTS.SKYBOX: {
                     return (
-                        <SkyboxComponent
+                        <Skybox
                             quickAccess={quickAccess}
                             selected={selected.components[COMPONENTS.SKYBOX]}
                             submit={(data, key) => {
@@ -302,9 +354,9 @@ export default function useForm(
                 open: false,
                 content: (
                     <div className={styles.formsWrapper}>
-                        {currentTab === '-1' ? <DisplaySettings/> : null}
-                        {currentTab === '-2' ? <RenderingSettings/> : null}
-                        {currentTab === '-3' ? <EditorCamera/> : null}
+                        {currentTab === '-1' ? <Display/> : null}
+                        {currentTab === '-2' ? <Rendering/> : null}
+                        {currentTab === '-3' ? <Editor/> : null}
                     </div>
                 ),
                 selected: selected

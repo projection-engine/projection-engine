@@ -35,6 +35,15 @@ export default function getElementIcon(components) {
             return (
                 <span className={'material-icons-round'} style={{fontSize: '1rem'}}>videocam</span>
             )
+        case components[COMPONENTS.LINE] !== undefined:
+            return (
+                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>arrow_right_alt</span>
+            )
+        case components[COMPONENTS.PROBE] !== undefined:
+            return (
+                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>lens_blur</span>
+            )
+
         default:
             return
     }

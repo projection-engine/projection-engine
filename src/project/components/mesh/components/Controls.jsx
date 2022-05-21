@@ -5,11 +5,11 @@ import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core";
 import {useContext, useMemo} from "react";
 
 import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
-import MaterialComponent from "../../scene/forms/MaterialComponent";
+import Material from "../../scene/components/Material";
 
-import {IDS} from "../../../utils/extension/useMinimalEngine";
-import TransformComponent from "../../scene/forms/TransformComponent";
-import Transformation from "../../../engine/instances/Transformation";
+import {IDS} from "../../../extension/useMinimalEngine";
+import Transform from "../../scene/components/Transform";
+import {updateTransform} from "../../scene/utils/useForm";
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -21,7 +21,7 @@ export default function Controls(props) {
     if (props.engine.initialized && selected)
         return (
             <div className={styles.controlsWrapper}>
-                <MaterialComponent
+                <Material
                     quickAccess={quickAccess}
                     meshes={props.engine.meshes}
                     meshID={selected.components.MeshComponent.meshID}
@@ -30,11 +30,11 @@ export default function Controls(props) {
                     }}
                     setAlert={({message, type}) => alert.pushAlert(message, type)}
                 />
-                <TransformComponent
+                <Transform
                     selected={selected.components.TransformComponent}
-                    submitRotation={(axis, data) => Transformation.updateTransform(axis, data, 'rotation',  props.engine, IDS.TARGET)}
-                    submitScaling={(axis, data) => Transformation.updateTransform(axis, data, 'scaling',  props.engine, IDS.TARGET)}
-                    submitTranslation={(axis, data) => Transformation.updateTransform(axis, data, 'translation',  props.engine, IDS.TARGET)}
+                    submitRotation={(axis, data) => updateTransform(axis, data, 'rotation',  props.engine, IDS.TARGET)}
+                    submitScaling={(axis, data) => updateTransform(axis, data, 'scaling',  props.engine, IDS.TARGET)}
+                    submitTranslation={(axis, data) => updateTransform(axis, data, 'translation',  props.engine, IDS.TARGET)}
                 />
                 <Accordion>
                     <AccordionSummary className={styles.summary}>

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import FileSystem from "../utils/files/FileSystem";
 import EVENTS from "../utils/EVENTS";
 import ImageProcessor from "../engine/utils/image/ImageProcessor";
@@ -6,6 +6,12 @@ import Entity from "../engine/basic/Entity";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import SkyboxComponent from "../engine/components/SkyboxComponent";
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
+import RenderingPackager from "../engine/RenderingPackager";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import VBO from "../engine/instances/VBO";
+import ShaderInstance from "../engine/instances/ShaderInstance";
+import * as shaderCodeSkybox from "../engine/shaders/CUBE_MAP.glsl";
+import * as skyboxCode from "../engine/shaders/SKYBOX.glsl";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
@@ -13,21 +19,28 @@ export default function useQuickAccess(projectID, load) {
     const [materials, setMaterials] = useState([])
     const [scripts, setScripts] = useState([])
     const [sampleSkybox, setSampleSkybox] = useState()
+    const {gpu} = useContext(GPUContextProvider)
     useEffect(() => {
+        if(gpu && !sampleSkybox)
         import('../../static/sky.json')
             .then(img => {
+
                 ImageProcessor.getImageBitmap(img.data)
                     .then(res => {
                         const newEntity = new Entity(undefined, 'sky')
                         newEntity.components[COMPONENTS.SKYBOX] = new SkyboxComponent()
                         newEntity.components[COMPONENTS.SKYBOX].blob = res
-                        newEntity.components[COMPONENTS.SKYBOX].gamma = .5
-                        newEntity.components[COMPONENTS.SKYBOX].exposure = 1
 
-                        setSampleSkybox(newEntity)
+                        import('../engine/templates/CUBE')
+                            .then(res => {
+                                const skyShader = new ShaderInstance(shaderCodeSkybox.vertex, skyboxCode.generationFragment, gpu)
+                                const cubeBuffer = new VBO(gpu, 1, new Float32Array(res), gpu.ARRAY_BUFFER, 3, gpu.FLOAT)
+                                RenderingPackager.loadSkybox(newEntity, gpu, cubeBuffer, skyShader)
+                                setSampleSkybox(newEntity)
+                            })
                     })
             })
-    }, [])
+    }, [gpu])
     const fileSystem = new FileSystem(projectID)
     const refresh = () => {
         fileSystem.readRegistry()

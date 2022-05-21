@@ -43,14 +43,14 @@ Multiple features are already implemented or on the way to the editor, here is a
 ### 3.1 Viewport
 
 - **Manipulation**:
-    - Transformation gizmos:
+    - Transform gizmos:
         - Rotation
         - Translation
         - Scaling
     - Entity picking
     - Hot keys
     - Multi select
-    - Transformation for multiple entities
+    - Transform for multiple entities
     - Individual manipulation grid for rotation, scaling and translation
     - Hierarchical transformation
 - **Visualization**

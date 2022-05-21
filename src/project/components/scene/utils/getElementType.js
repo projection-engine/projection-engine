@@ -22,6 +22,8 @@ export default function getElementType(components, isBP){
             return 'Cube map'
         case components[COMPONENTS.SKYLIGHT] !== undefined:
             return 'Skylight'
+        case components[COMPONENTS.PROBE] !== undefined:
+            return 'Light probe'
 
         default:
             return
