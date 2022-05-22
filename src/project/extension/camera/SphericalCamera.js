@@ -1,9 +1,11 @@
 import {mat4, vec3} from "gl-matrix";
-import Camera from "../Camera";
+import Camera from "./Camera";
+
 
 export default class SphericalCamera extends Camera {
     _radius = 25
-    centerOn = [0,0,0]
+    centerOn = [0, 0, 0]
+    ortho = false
 
     constructor(origin, fov, zNear, zFar, aspectRatio) {
         super(origin, fov, zNear, zFar, aspectRatio,);
@@ -14,25 +16,33 @@ export default class SphericalCamera extends Camera {
     }
 
     // FOV - ASPECT - PROJECTION
-    get fov (){
+    get fov() {
         return this._fov
     }
-    set fov(data){
+
+    set fov(data) {
         this._fov = data
         this.updateProjection()
     }
+
     get aspectRatio() {
         return this._aspectRatio
     }
+
     set aspectRatio(data) {
 
         this._aspectRatio = data
         this.updateProjection()
     }
-    updateProjection(){
-        // mat4.ortho(this._projectionMatrix, -50, 50, -50, 50, this._zNear, this._zFar);
-        mat4.perspective(this._projectionMatrix, this._fov, this._aspectRatio, this._zNear, this._zFar)
+
+
+    updateProjection() {
+        if (this.ortho)
+            mat4.ortho(this._projectionMatrix, -this._radius, this._radius, -this._radius / this._aspectRatio, this._radius / this._aspectRatio, this._zNear, this._zFar);
+        else
+            mat4.perspective(this._projectionMatrix, this._fov, this._aspectRatio, this._zNear, this._zFar)
     }
+
     set position(data) {
         this._position = data
         this.updateViewMatrix()
@@ -41,6 +51,7 @@ export default class SphericalCamera extends Camera {
     get position() {
         return this._position
     }
+
     getNotTranslatedViewMatrix() {
         let m = [...this.viewMatrix].flat()
         m[12] = m[13] = m[14] = 0
@@ -76,9 +87,9 @@ export default class SphericalCamera extends Camera {
 
     updateViewMatrix() {
         super.updateViewMatrix()
-        if(this._pitch > 1.5)
+        if (this._pitch > 1.5)
             this._pitch = 1.5
-        if(this._pitch < -1.5)
+        if (this._pitch < -1.5)
             this._pitch = -1.5
         const cosPitch = Math.cos(this._pitch)
 
@@ -88,6 +99,8 @@ export default class SphericalCamera extends Camera {
 
         vec3.add(this._position, this._position, this.centerOn)
         mat4.lookAt(this.viewMatrix, this._position, this.centerOn, [0, 1, 0])
+        if (this.ortho)
+            this.updateProjection()
     }
 }
 

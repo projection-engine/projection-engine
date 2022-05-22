@@ -111,8 +111,8 @@ export default class ScaleGizmo extends TranslateScaleGizmo {
         }
     }
 
-    execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize) {
+    execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem) {
         if (this.xyz && selected[0] && entities[selected[0]].components[COMPONENTS.TRANSFORM] )
-            super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz);
+            super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem);
     }
 }

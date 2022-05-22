@@ -42,7 +42,6 @@ in mat4 fragView;
 in mat4 fragProj;
 uniform float gamma;
 uniform float exposure;
-uniform int cameraType;
 out vec4 finalColor;
 
 
@@ -57,8 +56,7 @@ vec4 grid(vec3 fragPos3D, float scale, bool lighter,  vec3 verticalAxisColor, ve
     vec4 color = vec4(baseColor, baseColor,baseColor, 1.0 - min(lighter ?  line : line - .5, 1.0));
     
     float comparison = .3;
-    if(cameraType >= 1)
-    comparison = 1.;
+  
       
     if(fragPos3D.x > -comparison * minimumx && fragPos3D.x < comparison * minimumx)
         color.rgb = verticalAxisColor;
@@ -90,26 +88,7 @@ void main() {
     vec3 verticalAxisColor = vec3(.0, .0, 1.);
     vec3 horizontalAxisColor = vec3(1., .0, .0);
     
-    
-    if(cameraType >= 1){
-        if(cameraType >= 3)
-            switch (cameraType) {
-                case 3: // LEFT 
-                case 4: // RIGHT
-                    verticalAxisColor =  vec3(0., 1., .0);
-                    
-                    horizontalAxisColor =  vec3(0., .0, 1.);
-                    break;
-                case 5: // FRONT
-                case 6: // BACK
-                    verticalAxisColor =  vec3(0., 1., .0);
-                    horizontalAxisColor =  vec3(1., .0, .0);
-                    break;
-            }
-        fading = .35;
-        finalColor = (grid(fragPos3D * .5, 1., false, verticalAxisColor, horizontalAxisColor)) * float(t > 0.);
-    }
-    else
+
         finalColor = (
             grid(fragPos3D* .2, 2., true,  verticalAxisColor, horizontalAxisColor) +
             grid(fragPos3D * .2, 1., false,  verticalAxisColor, horizontalAxisColor)

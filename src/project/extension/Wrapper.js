@@ -6,7 +6,7 @@ import GizmoSystem from "./systems/GizmoSystem";
 import SelectedSystem from "./systems/SelectedSystem";
 
 
-export default class EditorWrapper extends System {
+export default class Wrapper extends System {
     constructor(gpu) {
         super([]);
         this.gpu = gpu
@@ -73,7 +73,8 @@ export default class EditorWrapper extends System {
                     onGizmoEnd,
                     gridSize,
                     gridRotationSize,
-                    gridScaleSize
+                    gridScaleSize,
+                    systems[SYSTEMS.DEPTH_PRE_PASS]
                 )
 
             }

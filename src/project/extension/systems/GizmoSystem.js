@@ -7,6 +7,8 @@ import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import * as gizmoShaderCode from "../shaders/gizmo.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";
+import COMPONENTS from "../../engine/templates/COMPONENTS";
+import generateNextID from "../../engine/utils/generateNextID";
 
 function move(event) {
     const canvas = event.target
@@ -37,7 +39,7 @@ export default class GizmoSystem extends System {
                     color: 'white', padding: '8px', fontSize: '.75rem',
                     display: 'none'
                 });
-                canvas.parentNode.appendChild(this.renderTarget)
+                document.body.appendChild(this.renderTarget)
             }
             this.gizmoTooltip = new GizmoToolTip(this.renderTarget)
             this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip)
@@ -72,6 +74,31 @@ export default class GizmoSystem extends System {
         }
     }
 
+    static drawToDepthSampler(depthSystem, mesh, view, projection, transforms, shader, camPos,
+                              translation) {
+        // DOESNT AFFECT AO BECAUSE IT IS AFTER
+        depthSystem.frameBuffer.startMapping()
+        shader.use()
+        mesh.use()
+        depthSystem.gpu.disable(depthSystem.gpu.CULL_FACE)
+        for(let i=0; i<transforms.length; i++){
+            shader.bindForUse({
+                viewMatrix: view,
+                transformMatrix: transforms[i],
+                projectionMatrix: projection,
+                uID: [...generateNextID(i + 1), 1.],
+                camPos,
+                translation,
+            })
+            depthSystem.gpu.drawElements(depthSystem.gpu.TRIANGLES, mesh.verticesQuantity, depthSystem.gpu.UNSIGNED_INT, 0)
+        }
+        depthSystem.gpu.enable(depthSystem.gpu.CULL_FACE)
+        mesh.finish()
+
+
+        depthSystem.frameBuffer.stopMapping()
+    }
+
     execute(
         meshes,
         meshSources,
@@ -86,7 +113,8 @@ export default class GizmoSystem extends System {
         onGizmoEnd,
         gridSize,
         gridRotationSize,
-        gridScaleSize
+        gridScaleSize,
+        depthSystem
     ) {
         super.execute()
 
@@ -95,15 +123,15 @@ export default class GizmoSystem extends System {
             switch (gizmo) {
                 case GIZMOS.TRANSLATION:
                     this.targetGizmo = this.translationGizmo
-                    this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize)
+                    this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem)
                     break
                 case GIZMOS.ROTATION:
                     this.targetGizmo = this.rotationGizmo
-                    this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1)
+                    this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem)
                     break
                 case GIZMOS.SCALE:
                     this.targetGizmo = this.scaleGizmo
-                    this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001)
+                    this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem)
                     break
             }
         else

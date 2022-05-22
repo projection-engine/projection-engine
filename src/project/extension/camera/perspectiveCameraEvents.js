@@ -1,7 +1,7 @@
 import {linearAlgebraMath, Vector} from "pj-math";
 import FreeCamera from "./FreeCamera";
 import SphericalCamera from "./SphericalCamera";
-import KEYS from "../../../engine/templates/KEYS";
+import KEYS from "../../engine/templates/KEYS";
 
 export default function perspectiveCameraEvents(camera, canvasID, onClick) {
     let target = document.getElementById(canvasID)
@@ -165,24 +165,24 @@ export default function perspectiveCameraEvents(camera, canvasID, onClick) {
     }
 
     function startTracking() {
-        target.parentNode.addEventListener('keydown', handleInput)
+        target.addEventListener('keydown', handleInput)
         document.addEventListener('keyup', handleInput)
 
 
-        target.parentNode.addEventListener('click', handleClick)
-        target.parentNode.addEventListener('mousedown', handleInput)
+        target.addEventListener('click', handleClick)
+        target.addEventListener('mousedown', handleInput)
         document.addEventListener('mouseup', handleInput)
         document.addEventListener('mousemove', handleInput)
         target.addEventListener('wheel', handleInput, {passive: true})
     }
 
     function stopTracking() {
-        target.parentNode.removeEventListener('keydown', handleInput)
+        target.removeEventListener('keydown', handleInput)
         document.removeEventListener('keyup', handleInput)
 
 
-        target?.parentNode.removeEventListener('click', handleClick)
-        target.parentNode.removeEventListener('mousedown', handleInput)
+        target?.removeEventListener('click', handleClick)
+        target.removeEventListener('mousedown', handleInput)
         document.removeEventListener('mouseup', handleInput)
         document.removeEventListener('mousemove', handleInput)
         target?.removeEventListener('wheel', handleInput)

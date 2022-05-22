@@ -3,6 +3,8 @@ import System from "../../engine/basic/System";
 import {mat4, quat, vec3} from "gl-matrix";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import ROTATION_TYPES from "./ROTATION_TYPES";
+import Conversion from "../../engine/utils/Conversion";
+import GizmoSystem from "../systems/GizmoSystem";
 
 export default class TranslateScaleGizmo extends System {
     target = []
@@ -22,14 +24,20 @@ export default class TranslateScaleGizmo extends System {
     }
 
     onMouseDown(event) {
-        if (document.elementsFromPoint(event.clientX, event.clientY).includes(this.gpu.canvas) && !this.firstPick) {
-            const target = this.gpu.canvas.getBoundingClientRect()
-            this.currentCoord = {x: event.clientX - target.left, y: event.clientY - target.top}
+        if (event.target === this.gpu.canvas && !this.firstPick) {
+            const w = window.screen.width, h = window.screen.height
+            const x = event.clientX
+            const y = event.clientY
+
+            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, this.gpu.canvas)
+            this.currentCoord.clientX = event.clientX
+            this.currentCoord.clientY = event.clientY
         }
         if (this.firstPick)
             this.firstPick = false
     }
-    onMouseUp(){
+
+    onMouseUp() {
         this.firstPick = true
         if (this.tracking) {
             this.tracking = false
@@ -73,9 +81,42 @@ export default class TranslateScaleGizmo extends System {
         }
         return {
             valid: false,
-            data: [0,0,0]
+            data: [0, 0, 0]
         }
     }
+
+    #testClick(depthSystem, camera, arrow, lockCamera, translation, pickSystem, onGizmoStart, selected, entities) {
+        const mX = this._translateMatrix(translation, this.xGizmo.components)
+        const mY = this._translateMatrix(translation, this.yGizmo.components)
+        const mZ = this._translateMatrix(translation, this.zGizmo.components)
+        GizmoSystem.drawToDepthSampler(
+            depthSystem,
+            arrow,
+            camera.viewMatrix,
+            camera.projectionMatrix,
+            [mX, mY, mZ],
+            pickSystem.shaderSameSize,
+            camera.position,
+            translation
+        )
+        const dd = pickSystem.depthPick(depthSystem.frameBuffer, this.currentCoord)
+        const pickID = Math.round(255 * (dd[0]))
+        this.clickedAxis = pickID
+
+
+        if (pickID === 0) {
+            lockCamera(false)
+            this.currentCoord = undefined
+        } else {
+            this.tracking = true
+            lockCamera(true)
+            this.target = selected.map(e => entities[e])
+            this.gpu.canvas.requestPointerLock()
+            this.renderTarget.start()
+            onGizmoStart()
+        }
+    }
+
 
     execute(
         meshes,
@@ -89,7 +130,8 @@ export default class TranslateScaleGizmo extends System {
         onGizmoStart,
         onGizmoEnd,
         gridSize,
-        arrow
+        arrow,
+        depthSystem
     ) {
         super.execute()
 
@@ -110,30 +152,10 @@ export default class TranslateScaleGizmo extends System {
                 this.typeRot = transformationType
 
                 this.onGizmoEnd = onGizmoEnd
-                if (this.currentCoord && !this.tracking) {
-
-                    const pickID = pickSystem.pickElement((shader, proj) => {
-                        this._drawGizmo(translation, camera.viewMatrix, proj, shader, arrow)
-                    }, this.currentCoord, camera, true)
-
-                    this.clickedAxis = pickID - 2
-
-                    if (pickID === 0) {
-                        lockCamera(false)
-                        this.currentCoord = undefined
-                    } else {
-                        this.tracking = true
-                        lockCamera(true)
-                        this.target = selected.map(e => entities[e])
-                        this.gpu.canvas.requestPointerLock()
-                        this.renderTarget.start()
-                        onGizmoStart()
-                    }
-                }
+                if (this.currentCoord && !this.tracking)
+                    this.#testClick(depthSystem, camera, arrow, lockCamera, translation, pickSystem, onGizmoStart, selected, entities)
                 const t = el.components[COMPONENTS.TRANSFORM]
-
                 this.rotationTarget = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
-
                 this._drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)
             }
         }

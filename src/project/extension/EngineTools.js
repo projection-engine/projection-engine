@@ -5,9 +5,8 @@ import PickSystem from "../engine/systems/PickSystem";
 import SYSTEMS from "../engine/templates/SYSTEMS";
 import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem";
 import COMPONENTS from "../engine/templates/COMPONENTS";
-import EditorCameras from "./EditorCameras";
-import EditorWrapper from "./EditorWrapper";
-import OrthographicCamera from "./camera/ortho/OrthographicCamera";
+import Cameras from "./Cameras";
+import Wrapper from "./Wrapper";
 import * as debugCode from './shaders/debug.glsl'
 import MaterialInstance from "../engine/instances/MaterialInstance";
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl";
@@ -15,9 +14,11 @@ import {DATA_TYPES} from "../engine/templates/DATA_TYPES";
 import ImageProcessor from "../engine/utils/image/ImageProcessor";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem";
+import GIZMOS from "./gizmo/GIZMOS";
+import Conversion from "../engine/utils/Conversion";
 
 
-export default class EditorEngine extends Renderer {
+export default class EngineTools extends Renderer {
 
     recompiled = false
     gizmo
@@ -25,9 +26,9 @@ export default class EditorEngine extends Renderer {
 
     constructor(gpu, resolution, systems) {
         super(gpu, resolution, systems);
-        this.cameraData = new EditorCameras(CAMERA_TYPES.SPHERICAL, gpu.canvas)
+        this.cameraData = new Cameras(CAMERA_TYPES.SPHERICAL, gpu.canvas)
         this.initialized = true
-        this.editorSystem = new EditorWrapper(gpu)
+        this.editorSystem = new Wrapper(gpu)
         this.debugMaterial = new MaterialInstance(
             gpu,
             shaderCode.vertex,
@@ -40,8 +41,8 @@ export default class EditorEngine extends Renderer {
                 isForwardShaded: true,
                 doubledSided: true
             },
-         undefined,
-         'shading-models'
+            undefined,
+            'shading-models'
         )
     }
 
@@ -85,9 +86,9 @@ export default class EditorEngine extends Renderer {
         const meshSources = toObject(meshes)
         if (typeof params.setSelected === 'function') this.cameraData.onClick = (currentCoords, ctrlKey) => {
             const p = this.systems[SYSTEMS.PICK]
-
             const cameraMesh = this.editorSystem.billboardSystem.cameraMesh
-            const index = p.pickElement((shader, proj) => {
+
+            const pickID = p.pickElement((shader, proj) => {
                 for (let m = 0; m < entities.length; m++) {
                     const currentInstance = entities[m]
                     if (entities[m].active) {
@@ -99,8 +100,8 @@ export default class EditorEngine extends Renderer {
                     }
                 }
             }, currentCoords, camera)
-            if (index > 0) {
-                const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickID[0] * 255 === index)
+            if (pickID > 0) {
+                const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickID[0] * 255 === pickID)
                 if (entity) params.setSelected(prev => {
                     const i = prev.findIndex(e => e === entity.id)
                     if (i > -1) {
@@ -110,14 +111,13 @@ export default class EditorEngine extends Renderer {
                     if (ctrlKey) return [...prev, entity.id]
                     else return [entity.id]
                 })
-            } else{
-                console.log('ON ELSE')
+            } else {
                 params.setSelected([])
             }
         }
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
         super.updatePackage(
-            params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO  && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
+            params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
             entities,
             params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
             meshes,
@@ -134,8 +134,13 @@ export default class EditorEngine extends Renderer {
                 dataChanged: this._changed,
                 setDataChanged: () => this._changed = false,
                 gizmo: this.gizmo,
-                isOrtho: camera instanceof OrthographicCamera
-            }, scripts, () => this.camera.updatePlacement(), this.editorSystem)
+                isOrtho: camera.ortho
+            },
+            scripts,
+            () => this.camera.updatePlacement(),
+            this.editorSystem,
+
+            )
 
         this.start()
 

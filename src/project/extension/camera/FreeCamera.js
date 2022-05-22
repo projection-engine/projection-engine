@@ -1,5 +1,5 @@
-import {lookAt} from "../../../engine/utils/utils";
-import Camera from "../Camera";
+import {lookAt} from "../../engine/utils/utils";
+import Camera from "./Camera";
 import {mat4, vec3} from "gl-matrix";
 
 export default class FreeCamera extends Camera {
