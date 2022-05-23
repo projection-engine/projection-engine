@@ -8,16 +8,15 @@ import MeshComponent from "../engine/components/MeshComponent";
 import TransformComponent from "../engine/components/TransformComponent";
 import MeshInstance from "../engine/instances/MeshInstance";
 
-import CAMERA_TYPES from "./camera/CAMERA_TYPES";
 import MaterialComponent from "../engine/components/MaterialComponent";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import LoaderProvider from "../../components/loader/LoaderProvider";
 import QuickAccessProvider from "../hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
-import SettingsProvider from "../hooks/SettingsProvider";
+
 const toRad = 180/Math.PI
-export default function useMinimalEngine(initializeSphere, centerOnSphere, loadAllMeshes) {
+export default function useMinimalEngine() {
     const {
         meshes, setMeshes,
         materials, setMaterials,
@@ -52,8 +51,6 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
     }, [])
 
     useEffect(() => {
-
-        renderer.cameraType = CAMERA_TYPES.SPHERICAL
         renderer.camera.radius = 3
         if (!initialized && focused) {
             setInitialized(true)
@@ -79,7 +76,7 @@ export default function useMinimalEngine(initializeSphere, centerOnSphere, loadA
                 materials: [],
                 noRSM: true,
                 shadingModel: SHADING_MODELS.DETAIL,
-                cameraType: CAMERA_TYPES.SPHERICAL,
+
                 bloom: true,
                 filmGrain: true,
                 filmGrainStrength: .1,

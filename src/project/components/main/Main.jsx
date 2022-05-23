@@ -6,11 +6,12 @@ import ResizableBar from "../../../components/resizable/ResizableBar";
 import SceneView from "../scene/SceneView";
 
 import useOptions from "./hooks/useOptions";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useMemo} from "react";
 import QuickAccessProvider from "../../hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import ControlProvider from "../../../components/tabs/components/ControlProvider";
 import useEditorKeys from "../../hooks/useEditorKeys";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 
 export default function Main(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -41,6 +42,22 @@ export default function Main(props) {
         )
 
     }, [props.executingAnimation, props.engine])
+
+    const optionsViewport = useMemo(() => {
+        const selected = props.engine.selected[0]
+        return [
+            {
+                label: 'Delete entity',
+                onClick: () => {
+                    console.log(selected)
+                    if (selected) {
+                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
+                    }
+                },
+                icon: 'delete_forever'
+            }
+        ]
+    }, [props.engine.entities, props.engine.selected])
     useEditorKeys(props, controlProvider)
     return (
         <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
@@ -58,6 +75,7 @@ export default function Main(props) {
                 }
                 <Viewport
                     id={props.id}
+                    options={optionsViewport}
                     engine={props.engine}
                     allowDrop={true}
                     handleDrop={e => handleDrop(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}

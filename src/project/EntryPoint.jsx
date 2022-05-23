@@ -11,7 +11,6 @@ import Project from "./Project";
 import useGPU from "../components/viewport/hooks/useGPU";
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 import useSettings from "./hooks/useSettings";
-
 const {ipcRenderer} = window.require('electron')
 
 function EntryPoint() {
@@ -24,12 +23,18 @@ function EntryPoint() {
     const gpuContext = useGPU(initialized, settings.resolution)
 
     useEffect(() => {
+
         ipcRenderer.send('load-page')
         ipcRenderer.on('page-load-props', (ev, data) => {
             setProject(data.package)
             setEvents(data)
         })
     }, [])
+
+    useEffect(() => {
+        document.body.classList.remove(global.dark ? 'light' : 'dark')
+        document.body.classList.add(global.dark ? 'dark' : 'light')
+    }, [global.dark])
 
     return (<Fabric
         language={"en"}
@@ -41,7 +46,7 @@ function EntryPoint() {
         borders={{
             primary: '#e8e8e8'
         }}
-        className={[styles.wrapper, global.dark ? styles.dark : styles.light].join(' ')}
+        className={styles.wrapper}
     >
         <LoaderProvider.Provider value={loader}>
             <ThemeProvider.Provider value={{

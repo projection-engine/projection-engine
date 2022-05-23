@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
 import {Checkbox} from "@f-ui/core";
 import React, {useContext, useEffect, useRef} from "react";
-import EVENTS from "../../../utils/EVENTS";
 
 import Selector from "../../../../components/selector/Selector";
 import Range from "../../../../components/range/Range";

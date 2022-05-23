@@ -10,7 +10,6 @@ import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import WebBuilder from "../utils/builder/WebBuilder";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
-import {getCall} from "../../components/AsyncFS";
 import MeshInstance from "../engine/instances/MeshInstance";
 import {v4} from "uuid";
 import CHANNELS from "../../../public/project/loader/CHANNELS";

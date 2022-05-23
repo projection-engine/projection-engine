@@ -1,8 +1,3 @@
-import Transform from "../components/Transform";
-import Mesh from "../components/Mesh";
-import Material from "../components/Material";
-import CubeMap from "../components/CubeMap";
-import Skybox from "../components/Skybox";
 import React from "react";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
 

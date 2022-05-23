@@ -4,6 +4,7 @@ import {useCallback, useContext, useEffect} from "react";
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../utils/workers/ProjectLoader";
 import LoaderProvider from "../../components/loader/LoaderProvider";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {
@@ -11,9 +12,10 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
     const load = useContext(LoaderProvider)
     const fileSystem = quickAccess.fileSystem
     let interval
+    const {renderer} = useContext(GPUContextProvider)
 
 
-    const saveSettings = useCallback(() => {
+    const saveSettings = () => {
         let promise = []
 
         if (id) {
@@ -24,6 +26,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                 const res = await fileSystem.readFile(fileSystem.path + '\\.meta')
                 if (res) {
                     const old = JSON.parse(res.toString())
+                    console.log(renderer)
                     fileSystem
                         .updateProject(
                             {
@@ -35,7 +38,12 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                                 lastModification: (new Date()).toDateString(),
                                 creation: settings.creationDate
                             },
-                            settings)
+                            {
+                                ...settings,
+                                cameraPosition: renderer.camera.position,
+                                yaw: renderer.camera.yaw,
+                                pitch: renderer.camera.pitch,
+                            })
                         .then(() => resolve())
                 } else
                     resolve()
@@ -43,7 +51,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         }
 
         return Promise.all(promise)
-    }, [settings, id])
+    }
 
     const save = useCallback(() => {
         load.pushEvent(EVENTS.PROJECT_SAVE)
@@ -84,7 +92,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
                     }).catch(() => resolve())
             })
         return new Promise(resolve => resolve())
-    }, [engine.entities, settings, id])
+    }, [engine.entities, settings, id, renderer])
 
 
     useEffect(() => {

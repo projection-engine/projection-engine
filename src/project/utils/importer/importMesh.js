@@ -3,7 +3,6 @@ import Entity from "../../engine/basic/Entity";
 import TransformComponent from "../../engine/components/TransformComponent";
 
 import MeshComponent from "../../engine/components/MeshComponent";
-import PickComponent from "../../engine/components/PickComponent";
 import MaterialComponent from "../../engine/components/MaterialComponent";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 

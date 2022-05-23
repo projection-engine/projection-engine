@@ -46,10 +46,7 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
     }
     useEffect(() => {
         if (renderer && canStart && canRender) {
-            renderer.cameraType = settings.cameraType
             renderer.gizmo = settings.gizmo
-
-
             renderer?.updatePackage(
                 entities,
                 materials,

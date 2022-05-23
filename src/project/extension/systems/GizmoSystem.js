@@ -7,7 +7,6 @@ import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import * as gizmoShaderCode from "../shaders/gizmo.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
 import generateNextID from "../../engine/utils/generateNextID";
 
 function move(event) {

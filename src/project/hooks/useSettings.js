@@ -1,10 +1,10 @@
-import CAMERA_TYPES from "../extension/camera/CAMERA_TYPES";
 import GIZMOS from "../extension/gizmo/GIZMOS";
 
 import useDirectState from "./useDirectState";
 import ROTATION_TYPES from "../extension/gizmo/ROTATION_TYPES";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
-const toRad = Math.PI/180
+
+const toRad = Math.PI / 180
 export default function useSettings() {
     const [state] = useDirectState({
         projectCreationDate: (new Date()).toDateString(),
@@ -13,10 +13,8 @@ export default function useSettings() {
         iconsVisibility: true,
         gridVisibility: true,
         shadingModel: SHADING_MODELS.DETAIL,
-        fov: 60 * toRad,
-        fpsVisibility: true,
+
         resolutionMultiplier: 1,
-        cameraType: CAMERA_TYPES.SPHERICAL,
         fullscreen: false,
         gizmo: GIZMOS.TRANSLATION,
         viewPreferences: false,
@@ -29,10 +27,10 @@ export default function useSettings() {
         rotationType: ROTATION_TYPES.GLOBAL,
         iconSize: 1,
         bloomStrength: .3,
-        bloomThreshold:  .85,
-        FXAASpanMax:  8,
+        bloomThreshold: .85,
+        FXAASpanMax: 8,
         FXAAReduceMin: 1 / 128,
-        FXAAReduceMul:  1 / 8,
+        FXAAReduceMul: 1 / 8,
         filmGrainStrength: .01,
 
         resolution: [window.screen.width, window.screen.height],
@@ -43,17 +41,21 @@ export default function useSettings() {
         distortionStrength: 1,
         chromaticAberrationStrength: 1,
 
+        fov: 60 * toRad,
+        zNear: .1,
+        zFar: 100000,
+
         gridRotationSize: 1,
 
         pcfSamples: 3.,
         shadowAtlasQuantity: 4,
         shadowMapResolution: 4096,
 
-        total_strength:  3.5,
-        base:  8,
-        area:  12,
-        falloff:  23,
-        radius:  1,
+        total_strength: 3.5,
+        base: 8,
+        area: 12,
+        falloff: 23,
+        radius: 1,
         samples: 16,
     })
     return state

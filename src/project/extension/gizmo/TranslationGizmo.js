@@ -5,7 +5,6 @@ import MeshInstance from "../../engine/instances/MeshInstance";
 import Transformation from "../../engine/instances/Transformation";
 import PickComponent from "../../engine/components/PickComponent";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
-import arrow from '../../../static/assets/Arrow.json'
 import ROTATION_TYPES from "./ROTATION_TYPES";
 import TranslateScaleGizmo from "./TranslateScaleGizmo";
 

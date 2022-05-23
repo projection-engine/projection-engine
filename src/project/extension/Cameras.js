@@ -1,55 +1,20 @@
-import CAMERA_TYPES from "./camera/CAMERA_TYPES";
-import SphericalCamera from "./camera/SphericalCamera";
-import FreeCamera from "./camera/FreeCamera";
-
-import perspectiveCameraEvents from "./camera/perspectiveCameraEvents";
+import EditorCamera from "./camera/EditorCamera";
+import CameraEvents from "./camera/CameraEvents";
 
 export default class Cameras {
     currentCoord = {x: 0, y: 0}
     clicked = false
 
-    sphericalCamera = new SphericalCamera([0, 10, 30], 1.57, .1, 10000, 1)
-    freeCamera = new FreeCamera([0, 10, 30], 1.57, .1, 10000, 1)
-
     onClick = () => null
 
-    constructor(cameraType, canvasRef) {
-        this.camera = this.sphericalCamera
+    constructor(canvasRef, position = [0, 10, 30], fov = Math.P / 2, zNear = .1, zFar = 10000, yaw, pitch) {
+        this.camera = new EditorCamera(position, fov, zNear, zFar, 1, yaw, pitch)
         this.canvasID = canvasRef.id
         this.canvasRef = canvasRef
 
-        this.cameraType = cameraType
-
-        this._resetCameraEvents()
-    }
-
-    _resetCameraEvents() {
-        this.cameraEvents = new perspectiveCameraEvents(
+        this.cameraEvents = new CameraEvents(
             this.camera,
-            this.canvasID,
+            canvasRef,
             (x, y, ctrlKey) => this.onClick({x, y}, ctrlKey))
-
     }
-
-    changeCamera(newType) {
-        this.cameraEvents.stopTracking()
-        let cameraToApply
-
-        switch (newType) {
-            case CAMERA_TYPES.FREE:
-                cameraToApply = this.freeCamera
-                break
-            default:
-                cameraToApply = this.sphericalCamera
-                break
-        }
-        const bBox = this.canvasRef.getBoundingClientRect()
-        cameraToApply.aspectRatio = bBox.width / bBox.height
-
-        this.camera = cameraToApply
-        this._resetCameraEvents()
-
-        this.cameraEvents.startTracking()
-    }
-
 }
