@@ -11,6 +11,7 @@ import Project from "./Project";
 import useGPU from "../components/viewport/hooks/useGPU";
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 import useSettings from "./hooks/useSettings";
+
 const {ipcRenderer} = window.require('electron')
 
 function EntryPoint() {
