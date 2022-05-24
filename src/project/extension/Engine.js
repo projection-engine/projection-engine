@@ -14,7 +14,6 @@ import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem";
 
 
 export default class Engine extends Renderer {
-
     recompiled = false
     gizmo
     cameraData = {}
@@ -49,6 +48,7 @@ export default class Engine extends Renderer {
         )
     }
 
+
     get camera() {
         return this.cameraData.camera
     }
@@ -63,7 +63,6 @@ export default class Engine extends Renderer {
     }
 
     testClick(currentCoords, ctrlKey, always) {
-        console.log(currentCoords)
         const camera = this.camera
         const params = this.params
         const entities = this.filteredEntities
@@ -98,11 +97,17 @@ export default class Engine extends Renderer {
             params.setSelected([])
     }
 
-    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
+    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd, useBackupCamera=false) {
+        this.cameraData.cameraSpeed = params.cameraSpeed
+        this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
+        this.cameraData.cameraScrollDelay = params.cameraScrollDelay
+
         if (!params.canExecutePhysicsAnimation)
             this.cameraData.cameraEvents.startTracking()
         else
             this.cameraData.cameraEvents.stopTracking()
+
+        this.cameraData.useBackupCamera = useBackupCamera
         this._changed = true
         this.camera.fov = params.fov
         this.camera.distortion = params.distortion

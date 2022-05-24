@@ -2,7 +2,7 @@ import {mat4, quat} from "gl-matrix";
 
 const toRad = Math.PI / 180
 export default class EditorCamera {
-    _radius = 25
+    #radius = 25
     centerOn = [0, 0, 0]
     ortho = false
     locked = false
@@ -86,7 +86,7 @@ export default class EditorCamera {
 
     updateProjection() {
         if (this.ortho)
-            mat4.ortho(this.projectionMatrix, -this._radius, this._radius, -this._radius / this._aspectRatio, this._radius / this._aspectRatio, this._zNear, this._zFar);
+            mat4.ortho(this.projectionMatrix, -this.#radius, this.#radius, -this.#radius / this._aspectRatio, this.#radius / this._aspectRatio, this._zNear, this._zFar);
         else
             mat4.perspective(this.projectionMatrix, this.#fov, this._aspectRatio, this._zNear, this._zFar)
     }
@@ -120,17 +120,17 @@ export default class EditorCamera {
     }
 
     set radius(data) {
-        this._radius = data
+        this.#radius = data
         this.updateViewMatrix()
     }
 
 
     get radius() {
-        return this._radius
+        return this.#radius
     }
 
     updateViewMatrix(ctrl) {
-        console.log(ctrl)
+        // console.log(ctrl)
         // if(ctrl) Spherical
         // else free
         if (this.#pitch > Math.PI / 2)

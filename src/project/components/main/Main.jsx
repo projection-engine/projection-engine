@@ -12,10 +12,12 @@ import PropTypes from "prop-types";
 import ControlProvider from "../../../components/tabs/components/ControlProvider";
 import useEditorKeys from "../../hooks/useEditorKeys";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
+import getOptionsViewport from "./utils/getOptionsViewport";
 
 export default function Main(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const controlProvider = useContext(ControlProvider)
+    const utils = useEditorKeys(props, controlProvider)
     const options = useOptions(
         props.executingAnimation,
         props.setExecutingAnimation,
@@ -45,20 +47,11 @@ export default function Main(props) {
 
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
-        return [
-            {
-                label: 'Delete entity',
-                onClick: () => {
-                    console.log(selected)
-                    if (selected) {
-                        props.engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
-                    }
-                },
-                icon: 'delete_forever'
-            }
-        ]
-    }, [props.engine.entities, props.engine.selected])
-    useEditorKeys(props, controlProvider)
+        const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined
+        return getOptionsViewport(props.engine, selected, selectedRef, utils)
+
+    }, [props.engine.entities, props.engine.selected, utils.toCopy])
+
     return (
         <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
             <div id={'fullscreen-element-' + props.id}
@@ -74,6 +67,7 @@ export default function Main(props) {
                     null
                 }
                 <Viewport
+                    utils={utils}
                     id={props.id}
                     options={optionsViewport}
                     engine={props.engine}

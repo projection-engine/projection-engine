@@ -57,6 +57,9 @@ export default function useSettings() {
         falloff: 23,
         radius: 1,
         samples: 16,
+        cameraSpeed: .01,
+        cameraScrollSpeed: .5,
+        cameraScrollDelay: 100
     })
     return state
 }

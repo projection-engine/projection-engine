@@ -54,7 +54,8 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
                 {canExecutePhysicsAnimation, selected, setSelected, ...settings},
                 scripts,
                 onGizmoStart,
-                onGizmoEnd
+                onGizmoEnd,
+                false
             )
         }
 

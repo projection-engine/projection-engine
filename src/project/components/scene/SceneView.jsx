@@ -16,7 +16,7 @@ import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
 
 const getHierarchy = (start, all) => {
-    const result = [ ]
+    const result = []
     const direct = all.filter(e => e.linkedTo === start.id)
     direct.forEach(d => {
         result.push(...getHierarchy(d, all))
@@ -158,17 +158,22 @@ export default function SceneView(props) {
                             const dropTarget = props.engine.entities.find(f => f.id === entity)
 
                             if (!current) {
+                                dropTarget.components[COMPONENTS.TRANSFORM].changed = true
                                 props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE, payload: {
+                                    type: ENTITY_ACTIONS.UPDATE,
+                                    payload: {
                                         entityID: dropTarget.id, key: 'linkedTo', data: undefined
                                     }
                                 })
                             } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+                                dropTarget.components[COMPONENTS.TRANSFORM].changed = true
 
                                 props.engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE,
                                     payload: {
-                                        entityID: dropTarget.id, key: 'linkedTo', data: current.id
+                                        entityID: dropTarget.id,
+                                        key: 'linkedTo',
+                                        data: current.id
                                     }
                                 })
                             }

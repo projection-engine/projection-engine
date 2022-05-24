@@ -11,6 +11,65 @@ import KEYS from "../engine/templates/KEYS";
 
 export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])
+
+    function copy(single) {
+        setToCopy(single ? [props.engine.selected[0]] : props.engine.selected)
+        props.setAlert({
+            type: 'info',
+            message: `Entities copied (${props.engine.selected.length}).`
+        })
+    }
+
+    function paste() {
+        let block = []
+        toCopy.forEach((t, index) => {
+            const found = props.engine.entities.find(e => e.id === t)
+            if (found) {
+                let clone = cloneClass(found)
+                clone.id = uuidv4()
+                clone.name = '_' + clone.name
+                let newComponents = {}
+                Object.keys(clone.components).forEach(c => {
+                    if (c === COMPONENTS.TRANSFORM) {
+                        newComponents[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        newComponents[COMPONENTS.TRANSFORM].rotation = [...clone.components[c].rotation]
+                        newComponents[COMPONENTS.TRANSFORM].rotationQuat = [...clone.components[c].rotationQuat]
+                        newComponents[COMPONENTS.TRANSFORM].translation = [...clone.components[c].translation]
+                        newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
+                        newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
+                        newComponents[COMPONENTS.TRANSFORM].baseTransformationMatrix = clone.components[c].baseTransformationMatrix
+                        newComponents[COMPONENTS.TRANSFORM].lockedRotation = clone.components[c].lockedRotation
+                        newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
+                        newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange
+                    } else {
+                        const cClone = cloneClass(clone.components[c])
+                        cClone.id = uuidv4()
+                        newComponents[c] = cClone
+                    }
+                })
+                delete clone.components
+                clone.components = newComponents
+                block.push(clone)
+            }
+        })
+
+
+        props.engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
+        props.engine.setSelected(block.map(b => b.id))
+        props.setAlert({
+            type: 'info',
+            message: `Pasted ${toCopy.length} entities.`
+        })
+    }
+    function group() {
+        setToCopy(props.engine.selected)
+        if (props.engine.selected.length > 1)
+            props.engine.dispatchEntities({
+                type: ENTITY_ACTIONS.LINK_MULTIPLE,
+                payload: props.engine.selected
+            })
+    }
+
     useHotKeys({
         focusTarget: props.id + '-editor-wrapper',
         disabled: controlProvider.tab !== 0 || props.executingAnimation === true,
@@ -26,24 +85,11 @@ export default function useEditorKeys(props, controlProvider) {
 
             {
                 require: [KEYS.ControlLeft, KEYS.KeyP],
-                callback: () => {
-                    setToCopy(props.engine.selected)
-                    if (props.engine.selected.length > 1)
-                        props.engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.LINK_MULTIPLE,
-                            payload: props.engine.selected
-                        })
-                }
+                callback: group
             },
             {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
-                callback: () => {
-                    setToCopy(props.engine.selected)
-                    props.setAlert({
-                        type: 'info',
-                        message: `Entities copied (${props.engine.selected.length}).`
-                    })
-                }
+                callback: copy
             },
             {
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyF],
@@ -81,48 +127,15 @@ export default function useEditorKeys(props, controlProvider) {
             },
             {
                 require: [KEYS.ControlLeft, KEYS.KeyV],
-                callback: () => {
-                    let block = []
-                    toCopy.forEach((t, index) => {
-                        const found = props.engine.entities.find(e => e.id === t)
-                        if (found) {
-                            let clone = cloneClass(found)
-                            clone.id = uuidv4()
-                            clone.name = '_' + clone.name
-                            let newComponents = {}
-                            Object.keys(clone.components).forEach(c => {
-                                if (c === COMPONENTS.TRANSFORM) {
-                                    newComponents[COMPONENTS.TRANSFORM] = new TransformComponent()
-                                    newComponents[COMPONENTS.TRANSFORM].rotation = [...clone.components[c].rotation]
-                                    newComponents[COMPONENTS.TRANSFORM].rotationQuat = [...clone.components[c].rotationQuat]
-                                    newComponents[COMPONENTS.TRANSFORM].translation = [...clone.components[c].translation]
-                                    newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
-                                    newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
-                                    newComponents[COMPONENTS.TRANSFORM].baseTransformationMatrix = clone.components[c].baseTransformationMatrix
-                                    newComponents[COMPONENTS.TRANSFORM].lockedRotation = clone.components[c].lockedRotation
-                                    newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
-                                    newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange
-                                } else {
-                                    const cClone = cloneClass(clone.components[c])
-                                    cClone.id = uuidv4()
-                                    newComponents[c] = cClone
-                                }
-                            })
-                            delete clone.components
-                            clone.components = newComponents
-                            block.push(clone)
-                        }
-                    })
-
-
-                    props.engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
-                    props.engine.setSelected(block.map(b => b.id))
-                    props.setAlert({
-                        type: 'info',
-                        message: `Pasted ${toCopy.length} entities.`
-                    })
-                }
+                callback: paste
             }
         ]
     }, [toCopy])
+
+    return {
+        toCopy,
+        group,
+        copy,
+        paste
+    }
 }

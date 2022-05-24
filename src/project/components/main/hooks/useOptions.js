@@ -28,7 +28,7 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
                 }
             },
             {
-                group: 'Edit level blueprint',
+                group: 'c',
                 label: 'Edit level blueprint',
                 icon: <span className={'material-icons-round'}
                             style={{fontSize: '1.2rem'}}>foundation</span>,

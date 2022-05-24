@@ -15,7 +15,7 @@ import QuickAccessProvider from "../hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
 
-const toRad = 180/Math.PI
+const toRad = 180 / Math.PI
 export default function useMinimalEngine() {
     const {
         meshes, setMeshes,
@@ -33,57 +33,63 @@ export default function useMinimalEngine() {
         light.direction = [0, 100, 100]
         light.shadowMap = false
         lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
-        Promise.all([import('../../static/assets/Sphere.json'), import('../../static/assets/Cube.json') ])
+        Promise.all([import('../../static/assets/Sphere.json'), import('../../static/assets/Cube.json')])
             .then(r => {
-            const [sphereMesh, cubeData] = r
-            const sphere = initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes)
-            const cube = initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true)
-            const toLoad = [
-                quickAccess.sampleSkybox,
-                lightEntity,
-            ]
-            if (sphere)
-                toLoad.push(sphere)
-            if (cube)
-                toLoad.push(cube)
-            dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
-        })
+                const [sphereMesh, cubeData] = r
+                const sphere = initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes)
+                const cube = initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true)
+                const toLoad = [
+                    quickAccess.sampleSkybox,
+                    lightEntity,
+                ]
+                if (sphere)
+                    toLoad.push(sphere)
+                if (cube)
+                    toLoad.push(cube)
+                dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
+            })
     }, [])
 
     useEffect(() => {
+        renderer.cameraData.useBackupCamera = true
         renderer.camera.radius = 3
+
         if (!initialized && focused) {
             setInitialized(true)
         }
     }, [initialized, focused])
     useEffect(() => {
-        if(focused)
-        renderer.updatePackage(
-            entities,
-            materials,
-            meshes,
-            {
-               fov : 60 * toRad,
-               distortion: false,
-               distortionStrength: 1,
-               chromaticAberration: true,
-               chromaticAberrationStrength: .5,
-
-                fxaa: true,
+        if (focused)
+            renderer.updatePackage(
+                entities,
+                materials,
                 meshes,
-                gamma: 1.8,
-                exposure: 1,
-                materials: [],
-                noRSM: true,
-                shadingModel: SHADING_MODELS.DETAIL,
+                {
+                    fov: 60 * toRad,
+                    distortion: false,
+                    distortionStrength: 1,
+                    chromaticAberration: true,
+                    chromaticAberrationStrength: .5,
 
-                bloom: true,
-                filmGrain: true,
-                filmGrainStrength: .1,
-                bloomStrength: .1,
-                bloomThreshold: .75,
-                selected: []
-            })
+                    fxaa: true,
+                    meshes,
+                    gamma: 1.8,
+                    exposure: 1,
+                    materials: [],
+                    noRSM: true,
+                    shadingModel: SHADING_MODELS.DETAIL,
+
+                    bloom: true,
+                    filmGrain: true,
+                    filmGrainStrength: .1,
+                    bloomStrength: .1,
+                    bloomThreshold: .75,
+                    selected: []
+                },
+                [],
+                undefined,
+                undefined,
+                true)
     }, [
         meshes, materials,
         entities, gpu,
