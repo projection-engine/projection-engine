@@ -30,7 +30,7 @@ export default class Engine extends Renderer {
             settings.pitch
         )
         this.initialized = true
-        this.editorSystem = new Wrapper(gpu)
+        this.editorSystem = new Wrapper(gpu, resolution)
         this.debugMaterial = new MaterialInstance(
             gpu,
             shaderCode.vertex,

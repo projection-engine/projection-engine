@@ -78,7 +78,6 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
 
         selected: [...selected],
         setSelected: (data) => {
-            console.trace(data)
             setSelected(data)
         },
         canRender, setCanRender,

@@ -10,16 +10,15 @@
 
 .titleWrapper {
     color: var(--fabric-color-secondary);
-    font-size: 1.5rem;
-    font-weight: 550;
-    font-family: Roboto;
 
+    border-bottom: var(--fabric-border-primary) 1px solid;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     padding-top: 4vh;
-    padding-bottom: clamp(32px, 2vh, 128px);
+    padding-bottom: 16px;
+    margin-bottom: clamp(32px, 2vh, 128px);
 
     overflow: hidden;
     max-width: 100%;
@@ -29,6 +28,11 @@
     display: flex;
     align-items: center;
     gap: 16px;
+
+}
+.title > label{
+    font-size: 1.5rem;
+    font-weight: 550;
 }
 
 .optionsWrapper {
@@ -57,11 +61,17 @@
     display: flex;
     align-items: center;
 
+    gap: 4px;
+    padding: 2px 8px !important;
+
     font-weight: 550;
     overflow: hidden;
     max-width: 100%;
+background: var(--fabric-border-primary) !important;
 
-
+}
+.button:hover{
+    background: var(--fabric-accent-color) !important;
 }
 
 .emptyWrapper {
@@ -77,4 +87,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-weight: 550;
+    font-size: .8rem;
+}
+
+.createModal {
+    padding: 8px;
+    width: 250px;
+
+
 }

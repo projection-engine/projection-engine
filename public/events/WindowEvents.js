@@ -7,94 +7,27 @@ const closeEvent = 'project-close',
     minimizeEvent = 'project-minimize',
     maximizeEvent = 'project-maximize'
 
-export default class WindowEvents {
-    project = null
-
-    currentListeners = {
-        close: undefined,
-        minimize: undefined,
-        maximize: undefined,
-    }
-
-    constructor() {
-        this.getData = this.getDataCall.bind(this)
-        this.onSwitch = this.onSwitchCall.bind(this)
-
-        this.prepareHomeWindow()
-        this.initEvents(this.mainWindow, maximizeEventHome, minimizeEventHome, closeEventHome)
-
-        ipcMain.on('switch-window', this.onSwitch)
-        ipcMain.on('load-page', this.getData)
-    }
-
-    initEvents(window, mE, minE, closeE) {
-        this.currentListeners.minimize = ipcMain.on(minE, () => window.minimize())
-        this.currentListeners.maximize = ipcMain.on(mE, () => {
-            if (window.isMaximized())
-                window.setSize(800, 650)
-            else
-                window.maximize()
-        })
-        this.currentListeners.close = ipcMain.on(closeE, () => window.close())
-    }
-
-    removeEvents() {
-        if (this.project) {
-            this.currentListeners.minimize?.removeAllListeners(maximizeEvent)
-            this.currentListeners.maximize?.removeAllListeners(minimizeEvent)
-            this.currentListeners.close?.removeAllListeners(closeEvent)
-        } else {
-            this.currentListeners.minimize?.removeAllListeners(maximizeEventHome)
-            this.currentListeners.maximize?.removeAllListeners(minimizeEventHome)
-            this.currentListeners.close?.removeAllListeners(closeEventHome)
+export default function WindowEvents() {
+    let project = null,
+        mainWindow,
+        currentListeners = {
+            close: undefined,
+            minimize: undefined,
+            maximize: undefined,
         }
-    }
 
-    getDataCall(ev) {
-        ev.sender.send('page-load-props', this.project)
-    }
+    prepareHomeWindow()
+    initEvents(mainWindow, maximizeEventHome, minimizeEventHome, closeEventHome)
+    ipcMain.on('switch-window', onSwitchCall)
+    ipcMain.on('load-page', getDataCall)
 
-    prepareProjectWindow(data) {
-        this.removeEvents()
-        this.mainWindow.close()
-        const newWindow = new BrowserWindow({
-            show: false,
-            frame: false,
-            webPreferences: {
-                webSecurity: false,
-                enableRemoteModule: true,
-                nodeIntegration: true,
-                contextIsolation: false,
-                nativeWindowOpen: true,
-                nodeIntegrationInWorker: true,
-            },
-            autoHideMenuBar: true
-        });
-        this.mainWindow = newWindow
-        newWindow.maximize();
-        newWindow.show();
 
-        newWindow.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY);
-        this.project = {
-            package: data,
-            closeEvent,
-            minimizeEvent,
-            maximizeEvent
+    function prepareHomeWindow() {
+        if (mainWindow) {
+            removeEvents()
+            mainWindow.close()
         }
-        return {
-            newWindow,
-            closeEvent,
-            minimizeEvent,
-            maximizeEvent
-        }
-    }
-
-    prepareHomeWindow() {
-        if(this.mainWindow) {
-            this.removeEvents()
-            this.mainWindow.close()
-        }
-        this.project = null
+        project = null
         const newWindow = new BrowserWindow({
             width: 800,
             height: 650,
@@ -109,9 +42,9 @@ export default class WindowEvents {
             },
             autoHideMenuBar: true
         });
-        this.mainWindow = newWindow
+        mainWindow = newWindow
         newWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
+        console.log('OPENING')
         return {
             newWindow,
             closeEvent: closeEventHome,
@@ -120,14 +53,80 @@ export default class WindowEvents {
         }
     }
 
-    onSwitchCall(_, d) {
+
+
+
+    function initEvents(window, mE, minE, closeE) {
+        currentListeners.minimize = ipcMain.on(minE, () => window.minimize())
+        currentListeners.maximize = ipcMain.on(mE, () => {
+            if (window.isMaximized())
+                window.setSize(800, 650)
+            else
+                window.maximize()
+        })
+        currentListeners.close = ipcMain.on(closeE, () => window.close())
+    }
+
+    function removeEvents() {
+        if (project) {
+            currentListeners.minimize?.removeAllListeners(maximizeEvent)
+            currentListeners.maximize?.removeAllListeners(minimizeEvent)
+            currentListeners.close?.removeAllListeners(closeEvent)
+        } else {
+            currentListeners.minimize?.removeAllListeners(maximizeEventHome)
+            currentListeners.maximize?.removeAllListeners(minimizeEventHome)
+            currentListeners.close?.removeAllListeners(closeEventHome)
+        }
+    }
+
+    function getDataCall(ev) {
+        ev.sender.send('page-load-props', project)
+    }
+
+    function prepareProjectWindow(data) {
+        removeEvents()
+        mainWindow.close()
+        const newWindow = new BrowserWindow({
+            show: false,
+            frame: false,
+            webPreferences: {
+                webSecurity: false,
+                enableRemoteModule: true,
+                nodeIntegration: true,
+                contextIsolation: false,
+                nativeWindowOpen: true,
+                nodeIntegrationInWorker: true,
+            },
+            autoHideMenuBar: true
+        });
+        mainWindow = newWindow
+        newWindow.maximize();
+        newWindow.show();
+
+        newWindow.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY);
+        project = {
+            package: data,
+            closeEvent,
+            minimizeEvent,
+            maximizeEvent
+        }
+        return {
+            newWindow,
+            closeEvent,
+            minimizeEvent,
+            maximizeEvent
+        }
+    }
+
+
+    function onSwitchCall(_, d) {
         const {
             newWindow,
             closeEvent,
             minimizeEvent,
             maximizeEvent
-        } = this.project ? this.prepareHomeWindow() : this.prepareProjectWindow(d.data)
+        } = project ? prepareHomeWindow() : prepareProjectWindow(d.data)
 
-        this.initEvents(newWindow, maximizeEvent, minimizeEvent, closeEvent)
+        initEvents(newWindow, maximizeEvent, minimizeEvent, closeEvent)
     }
 }

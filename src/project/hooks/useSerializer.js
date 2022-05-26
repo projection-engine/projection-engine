@@ -15,83 +15,69 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
     const {renderer} = useContext(GPUContextProvider)
 
 
-    const saveSettings = () => {
+    const saveSettings = async () => {
         let promise = []
 
         if (id) {
-            promise.push(new Promise(async (resolve) => {
-                load.pushEvent(EVENTS.PROJECT_SAVE)
-                const canvas = engine.gpu.canvas
-                const preview = canvas.toDataURL()
-                const res = await fileSystem.readFile(fileSystem.path + '\\.meta')
-                if (res) {
-                    const old = JSON.parse(res.toString())
-                    console.log(renderer)
-                    fileSystem
-                        .updateProject(
-                            {
-                                ...old,
-                                preview: currentTab === 0 ? preview : old.preview,
-                                entities: engine.entities.length,
-                                meshes: engine.meshes.length,
-                                materials: engine.materials.length,
-                                lastModification: (new Date()).toDateString(),
-                                creation: settings.creationDate
-                            },
-                            {
-                                ...settings,
-                                cameraPosition: renderer.camera.position,
-                                yaw: renderer.camera.yaw,
-                                pitch: renderer.camera.pitch,
-                            })
-                        .then(() => resolve())
-                } else
-                    resolve()
-            }))
-        }
 
+            const canvas = engine.gpu.canvas
+            const preview = canvas.toDataURL()
+            const res = await fileSystem.readFile(fileSystem.path + '\\.meta')
+            if (res) {
+                const old = JSON.parse(res.toString())
+                await fileSystem
+                    .updateProject(
+                        {
+                            ...old,
+                            preview: currentTab === 0 ? preview : old.preview,
+                            entities: engine.entities.length,
+                            meshes: engine.meshes.length,
+                            materials: engine.materials.length,
+                            lastModification: (new Date()).toDateString(),
+                            creation: settings.creationDate
+                        },
+                        {
+                            ...settings,
+                            cameraPosition: renderer.camera.position,
+                            yaw: renderer.camera.yaw,
+                            pitch: renderer.camera.pitch,
+                        })
+            }
+        }
         return Promise.all(promise)
     }
 
-    const save = useCallback(() => {
-        load.pushEvent(EVENTS.PROJECT_SAVE)
-        if (id)
-            return new Promise(resolve => {
-                saveSettings()
-                    .then(async () => {
-                        const all = await ProjectLoader.getEntities(fileSystem)
-
-                        await Promise.all(all.map(a => {
-                            return new Promise(async (resolve1) => {
-                                if (a && !engine.entities.find(e => e.id === a.id))
-                                    resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.id + '.entity', true))
-                                else
-                                    resolve1()
-                            })
-                        }))
-
-                        try {
-                            await Promise.all(engine.entities.map(e => {
-                                return new Promise((resolve) => {
-                                    const str = JSON.stringify(e)
-                                    fileSystem
-                                        .updateEntity(str, e.id)
-                                        .then(() => resolve())
-                                })
-                            }))
-                        } catch (err) {
-                            console.log(err)
-                        }
-                        setAlert({
-                            type: 'success',
-                            message: 'Project saved.'
-                        })
-                        load.finishEvent(EVENTS.PROJECT_SAVE)
-                        resolve()
-
-                    }).catch(() => resolve())
+    const save = useCallback(async () => {
+        setAlert({message: 'Saving project', type: 'info'})
+        if (id) {
+            await saveSettings()
+            const all = await ProjectLoader.getEntities(fileSystem)
+            await Promise.all(all.map(a => {
+                return new Promise(async (resolve1) => {
+                    if (a && !engine.entities.find(e => e.id === a.id))
+                        resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.id + '.entity', true))
+                    else
+                        resolve1()
+                })
+            }))
+            try {
+                await Promise.all(engine.entities.map(e => {
+                    return new Promise((resolve) => {
+                        const str = JSON.stringify(e)
+                        fileSystem
+                            .updateEntity(str, e.id)
+                            .then(() => resolve())
+                    })
+                }))
+            } catch (err) {
+            }
+            setAlert({
+                type: 'success',
+                message: 'Project saved.'
             })
-        return new Promise(resolve => resolve())
+            load.finishEvent(EVENTS.PROJECT_SAVE)
+        } else
+            setAlert({message: 'Error saving project', type: 'error'})
     }, [engine.entities, settings, id, renderer])
 
 
@@ -104,8 +90,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
 
     return {
         saveSettings,
-
-        save,
+        save
     }
 }
 

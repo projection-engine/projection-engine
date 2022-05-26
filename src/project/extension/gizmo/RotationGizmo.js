@@ -1,6 +1,5 @@
-import System from "../../engine/basic/System";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../shaders/gizmo.glsl";
+import * as gizmoShaderCode from "../shaders/GIZMO.glsl";
 
 import {mat4, quat, vec3} from "gl-matrix";
 import Entity from "../../engine/basic/Entity";
@@ -16,7 +15,7 @@ import GizmoSystem from "../systems/GizmoSystem";
 import Conversion from "../../engine/utils/Conversion";
 
 const toDeg = 57.29, toRad = 3.1415 / 180
-export default class RotationGizmo extends System {
+export default class RotationGizmo {
 
     clickedAxis = -1
     tracking = false
@@ -27,7 +26,6 @@ export default class RotationGizmo extends System {
     distanceZ = 0
 
     constructor(gpu, renderTarget) {
-        super();
         this.renderTarget = renderTarget
         this.gpu = gpu
 
@@ -236,7 +234,6 @@ export default class RotationGizmo extends System {
         gridSize,
         depthSystem
     ) {
-        super.execute()
         if (selected.length > 0) {
             const el = entities[selected[0]]
             const parent = el ? entities[el.linkedTo] : undefined

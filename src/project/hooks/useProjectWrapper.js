@@ -58,7 +58,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                 })
             })
             ipcRenderer.on(CHANNELS.MATERIAL + '-' + listenID, (ev, res) => {
-                console.log(res.result)
+
                 ProjectLoader.mapMaterial(res.result, gpu, res.id)
                     .then(mat => engine.setMaterials(prev => {
                         return [...prev, mat]

@@ -1,8 +1,7 @@
-import {Button, Modal, Switcher, TextField,} from "@f-ui/core";
+import {Switcher,} from "@f-ui/core";
 import styles from './styles/Home.module.css'
 import React, {useState} from "react";
 import Projects from "./components/Projects";
-import FileSystem from "../project/utils/files/FileSystem";
 
 import EVENTS from "../project/utils/EVENTS";
 import useProjects from "./hooks/useProjects";
@@ -16,8 +15,7 @@ const pathResolve = window.require('path')
 export default function Home() {
     const {
         projects,
-        openModal, setOpenModal,
-        projectName, setProjectName,
+        alert,
         setAlert, refresh,
         load, uploadRef,
         setProjects
@@ -25,42 +23,6 @@ export default function Home() {
     const [open, setOpen] = useState(0)
     return (
         <div className={styles.wrapper}>
-            <Modal
-                open={openModal}
-                handleClose={() => {
-                    setProjectName('')
-                    setOpenModal(false)
-                }} className={styles.modal}>
-                <TextField
-                    handleChange={e => setProjectName(e.target.value)}
-                    label={'Project name'}
-                    placeholder={'Project name'}
-                    value={projectName} size={'small'}/>
-                <Button
-                    variant={'filled'}
-                    disabled={projectName === ''}
-                    className={styles.submitButton}
-                    onClick={() => {
-                        FileSystem.createProject(projectName)
-                            .then(res => {
-                                setProjects(prev => {
-                                    return [...prev, {
-                                        id: res,
-                                        meta: {
-                                            name: projectName
-                                        }
-                                    }]
-                                })
-                            })
-
-                        setProjectName('')
-                        setOpenModal(false)
-
-                    }}
-                >
-                    Create project
-                </Button>
-            </Modal>
             <SideBar open={open} setOpen={setOpen}/>
             <input style={{display: 'none'}}
                    type={'file'}
@@ -74,7 +36,7 @@ export default function Home() {
 
             <Switcher openChild={open} styles={{width: '100%'}}>
                 <Projects
-                    onNew={() => setOpenModal(true)}
+                    alert={alert}
                     onLoad={() => uploadRef.current.click()}
                     deleteProject={async pjID => {
                         setAlert({message: 'Deleting project', type: 'info'})

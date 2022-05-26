@@ -11,7 +11,6 @@ import QuickAccessProvider from "../../hooks/QuickAccessProvider";
 import PropTypes from "prop-types";
 import ControlProvider from "../../../components/tabs/components/ControlProvider";
 import useEditorKeys from "../../hooks/useEditorKeys";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import getOptionsViewport from "./utils/getOptionsViewport";
 
 export default function Main(props) {

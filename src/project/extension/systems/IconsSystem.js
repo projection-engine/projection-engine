@@ -1,7 +1,7 @@
 import System from "../../engine/basic/System";
 import TextureInstance from "../../engine/instances/TextureInstance";
 import Icon from "../Icon";
-import * as shaderCode from '../shaders/gizmo.glsl'
+import * as shaderCode from '../shaders/GIZMO.glsl'
 import ShaderInstance from "../../engine/instances/ShaderInstance";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import MeshInstance from "../../engine/instances/MeshInstance";
@@ -17,7 +17,6 @@ export default class IconsSystem extends System {
         this.gpu = gpu
         this.billboardRenderer = new Icon(gpu)
         this.cameraShader = new ShaderInstance(shaderCode.shadedVertex, shaderCode.shadedFragment, gpu)
-
 
         Promise.all([
             import("../icons/point_light.png"),

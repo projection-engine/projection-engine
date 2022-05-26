@@ -5,7 +5,7 @@ import GIZMOS from "../gizmo/GIZMOS";
 import ScaleGizmo from "../gizmo/ScaleGizmo";
 import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
 import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../shaders/gizmo.glsl";
+import * as gizmoShaderCode from "../shaders/GIZMO.glsl";
 import GizmoToolTip from "../gizmo/GizmoToolTip";
 import generateNextID from "../../engine/utils/generateNextID";
 
@@ -15,12 +15,14 @@ function move(event) {
         canvas.targetGizmo.onMouseMove(event)
 }
 
+const LEFT_BUTTON = 0
+
 export default class GizmoSystem extends System {
     hiddenTarget = true
     targetGizmo
 
     constructor(gpu) {
-        super([]);
+        super();
         this.gpu = gpu
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment, gpu)
 
@@ -54,13 +56,17 @@ export default class GizmoSystem extends System {
     handler(event) {
         switch (event.type) {
             case 'mousedown':
-                if (this.targetGizmo) {
-                    this.targetGizmo.onMouseDown(event)
-                    this.gpu.canvas.addEventListener('mousemove', move)
+                console.log(event.button)
+                if (event.button === LEFT_BUTTON) {
+                    if (this.targetGizmo) {
+                        this.targetGizmo.onMouseDown(event)
+                        this.gpu.canvas.addEventListener('mousemove', move)
+                    }
+                    this.gpu.canvas.targetGizmo = this.targetGizmo
                 }
-                this.gpu.canvas.targetGizmo = this.targetGizmo
                 break
             case 'mouseup':
+
                 if (this.targetGizmo) {
                     this.targetGizmo.onMouseUp(event)
                 }
@@ -73,14 +79,21 @@ export default class GizmoSystem extends System {
         }
     }
 
-    static drawToDepthSampler(depthSystem, mesh, view, projection, transforms, shader, camPos,
-                              translation) {
+    static drawToDepthSampler(
+        depthSystem,
+        mesh,
+        view,
+        projection,
+        transforms,
+        shader,
+        camPos,
+        translation) {
         // DOESNT AFFECT AO BECAUSE IT IS AFTER
         depthSystem.frameBuffer.startMapping()
         shader.use()
         mesh.use()
         depthSystem.gpu.disable(depthSystem.gpu.CULL_FACE)
-        for(let i=0; i<transforms.length; i++){
+        for (let i = 0; i < transforms.length; i++) {
             shader.bindForUse({
                 viewMatrix: view,
                 transformMatrix: transforms[i],
@@ -117,7 +130,6 @@ export default class GizmoSystem extends System {
     ) {
         super.execute()
 
-        this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
         if (selected.length > 0)
             switch (gizmo) {
                 case GIZMOS.TRANSLATION:

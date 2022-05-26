@@ -6,13 +6,17 @@
     border-radius: 5px;
     overflow: hidden;
 
-transition: 150ms linear;
+    transition: 150ms linear;
+    border: var(--fabric-border-primary) 1px solid;
+    padding: 4px;
 }
-.wrapper:hover{
+
+.wrapper:hover {
     background: var(--fabric-background-primary);
 
 }
-.wrapper:hover .dataRow{
+
+.wrapper:hover .dataRow {
     background: var(--fabric-background-primary);
 }
 
@@ -30,20 +34,25 @@ transition: 150ms linear;
     padding: 4px !important;
     gap: 4px;
 }
-.openButton{
+
+.openButton {
     --fabric-accent-color: var(--fabric-border-primary);
     color: var(--fabric-color-secondary);
 }
-.openButton:hover, .openButton:active{
+
+.openButton:hover, .openButton:active {
     --fabric-accent-color: #0095ff;
 }
-.button:hover{
+
+.button:hover {
     background: var(--fabric-border-primary) !important;
 }
-.button[data-highlight='true']{
+
+.button[data-highlight='true'] {
     background: var(--fabric-accent-color) !important;
     color: white !important;
 }
+
 .overflow {
     white-space: nowrap;
     overflow: hidden;
@@ -85,7 +94,7 @@ transition: 150ms linear;
 
 
 .section {
-    padding: 4px;
+    padding-top: 4px;
 
     display: flex;
     align-items: center;
@@ -106,6 +115,7 @@ transition: 150ms linear;
 }
 
 .modalOptions {
+    padding: 4px;
     max-width: unset;
     width: 300px;
 }

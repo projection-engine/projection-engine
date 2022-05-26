@@ -43,7 +43,6 @@ export default function SideBar(props) {
             <div className={styles.block} style={{transform: 'none', height: '100%', alignContent: 'flex-end'}}>
                 <Button onClick={() => theme.setDark(!theme.dark)}
                         className={styles.button}
-                        variant={'outlined'}
                         styles={{justifyContent: !extended ? 'center' : undefined}}
                 >
                     <span style={{width: '30px'}}
@@ -54,7 +53,7 @@ export default function SideBar(props) {
                 <Button onClick={() => window.open('https://github.com/projection-engine')}
                         className={styles.button}
                         styles={{justifyContent: !extended ? 'center' : undefined}}
-                        variant={'outlined'}>
+                        >
                     <img style={{width: '30px'}} alt={'github'}
                          src={!theme.dark ? gitDark : gitLight}/>
                     {extended ? 'GitHub' : undefined}
@@ -63,7 +62,7 @@ export default function SideBar(props) {
                 <Button onClick={() => setExtended(!extended)}
                         styles={{justifyContent: !extended ? 'center' : undefined}}
                         className={styles.button}
-                        variant={'outlined'}>
+            >
                     <span style={{width: '30px'}}
                           className={'material-icons-round'}>{extended ? 'chevron_right' : 'chevron_left'}</span>
                     {extended ? 'Hide' : undefined}

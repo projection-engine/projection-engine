@@ -20,7 +20,7 @@ const createWindow = () => {
             }
         })
     })
-    const windowEvents = new WindowEvents()
+    WindowEvents()
     FSEvents()
     FileSystemEvents()
 

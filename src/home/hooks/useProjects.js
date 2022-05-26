@@ -1,13 +1,10 @@
 import {AlertProvider} from "@f-ui/core";
-import EVENTS from "../../project/utils/EVENTS";
 import {useContext, useEffect, useRef, useState} from "react";
 import LoaderProvider from "../../components/loader/LoaderProvider";
 import AsyncFS from "../../components/AsyncFS";
 
 export default function useProjects() {
     const [projects, setProjects] = useState([])
-    const [openModal, setOpenModal] = useState(false)
-    const [projectName, setProjectName] = useState('')
     const [startPath, setStartPath] = useState()
     const load = useContext(LoaderProvider)
     const alert = useContext(AlertProvider)
@@ -15,7 +12,8 @@ export default function useProjects() {
     const uploadRef = useRef()
 
     const refresh = async (path) => {
-        load.pushEvent(EVENTS.PROJECT_LIST)
+
+        alert.pushAlert('Loading projects', 'info')
         const [e, res] = await AsyncFS.readdir(path)
         if (!(await AsyncFS.exists(path))) await AsyncFS.mkdir(path)
         if (!e) {
@@ -43,28 +41,26 @@ export default function useProjects() {
                 if (!res.meta.name) res.meta.name = 'New project'
                 return res
             }))
-            load.finishEvent(EVENTS.PROJECT_LIST)
         }
     }
 
     useEffect(() => {
+
         let b = localStorage.getItem('basePath')
         if (localStorage.getItem('basePath') === null) {
             b = window.require("os").homedir() + '\\ProjectionEngineProjects\\'
             localStorage.setItem('basePath', b)
         }
+        AsyncFS.mkdir(b).catch()
         setStartPath(b + '\\projects\\')
-        refresh(b + '\\projects\\')
+        refresh(b + '\\projects\\').catch()
 
     }, [])
 
     return {
+        alert,
         projects,
         setProjects,
-        openModal,
-        setOpenModal,
-        projectName,
-        setProjectName,
         setAlert: ({type, message}) => alert.pushAlert(message, type),
         load,
         uploadRef,

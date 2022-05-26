@@ -7,34 +7,26 @@ import SelectedSystem from "./systems/SelectedSystem";
 
 
 export default class Wrapper extends System {
-    constructor(gpu) {
-        super([]);
+    constructor(gpu, resolution) {
+        super();
         this.gpu = gpu
 
         this.gridSystem = new GridSystem(gpu)
         this.billboardSystem = new IconsSystem(gpu)
         this.gizmoSystem = new GizmoSystem(gpu)
-        this.selectedSystem = new SelectedSystem(gpu)
+        this.selectedSystem = new SelectedSystem(gpu, resolution)
     }
 
     execute(options, systems, data, entities, entitiesMap, after) {
         super.execute()
         const {
-            pointLights,
-            spotLights,
             meshes,
-            directionalLights,
-            meshSources,
-            cubeMaps,
-            skylight,
-            cameras
+            meshSources
         } = data
         const {
             lockCamera,
             selected,
             camera,
-            iconsVisibility,
-
             rotationType,
             onGizmoStart,
             onGizmoEnd,
@@ -58,7 +50,7 @@ export default class Wrapper extends System {
                 this.billboardSystem.execute(data, options)
             }
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
-                this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)
+                this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
                 this.gizmoSystem.execute(
                     meshes,
                     meshSources,
@@ -76,7 +68,7 @@ export default class Wrapper extends System {
                     gridScaleSize,
                     systems[SYSTEMS.DEPTH_PRE_PASS]
                 )
-
+                this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)
             }
         }
 

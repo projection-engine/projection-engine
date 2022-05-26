@@ -1,6 +1,5 @@
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
 import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import {mat4} from "gl-matrix";
 
 export default function getOptionsViewport(engine, selected, selectedRef, utils) {
     const {

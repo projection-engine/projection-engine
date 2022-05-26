@@ -1,12 +1,10 @@
-import System from "../../engine/basic/System";
-
 import {mat4, quat, vec3} from "gl-matrix";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import ROTATION_TYPES from "./ROTATION_TYPES";
 import Conversion from "../../engine/utils/Conversion";
 import GizmoSystem from "../systems/GizmoSystem";
 
-export default class TranslateScaleGizmo extends System {
+export default class TranslateScaleGizmo {
     target = []
     clickedAxis = -1
     tracking = false
@@ -17,7 +15,6 @@ export default class TranslateScaleGizmo extends System {
     distanceZ = 0
 
     constructor(gpu, gizmoShader, renderTarget) {
-        super([]);
         this.renderTarget = renderTarget
         this.gpu = gpu
         this.gizmoShader = gizmoShader
@@ -133,8 +130,6 @@ export default class TranslateScaleGizmo extends System {
         arrow,
         depthSystem
     ) {
-        super.execute()
-
         if (selected.length > 0) {
             const el = entities[selected[0]]
             const parent = el ? entities[el.linkedTo] : undefined

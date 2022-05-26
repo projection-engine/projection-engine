@@ -5,7 +5,7 @@ import TreeView from "../../../components/tree/TreeView";
 import mapToView from "./utils/mapToView";
 import useForm from "./utils/useForm";
 import QuickAccessProvider from "../../hooks/QuickAccessProvider";
-import {Button} from "@f-ui/core";
+import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import FolderComponent from "../../engine/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
 import Entity from "../../engine/basic/Entity";
@@ -14,6 +14,7 @@ import FormTabs from "./components/FormTabs";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
+import getComponentInfo from "./utils/getComponentInfo";
 
 const getHierarchy = (start, all) => {
     const result = []
@@ -28,31 +29,39 @@ export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState('-2')
     const [allHidden, setAllHidden] = useState(false)
-    const [hidden, setHidden] = useState(false)
+    const [required, setRequired] = useState()
+
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
-        let toFilter = props.engine.entities.filter(d => !d.linkedTo)
+        console.log(required)
+        const toFilter = props.engine.entities.filter(d => !d.linkedTo && !required || required && d.components[required] !== undefined)
         return [{
             id: 0,
             label: 'Scene',
             children: toFilter.map(f => {
-                return mapToView(f, props.engine.entities, (el, e) => {
-                    if (e && e.ctrlKey) {
-                        props.engine.setSelected(prev => {
-                            const indexFound = prev.findIndex(f => f === el.id)
-                            if (indexFound === -1) return [...prev, el.id]
-                            else {
-                                let n = [...prev]
-                                n.splice(indexFound, 1)
-                                return n
-                            }
-                        })
-                    } else if (!el.components[COMPONENTS.FOLDER])
-                        props.engine.setSelected([el.id])
-                    else if (el.components[COMPONENTS.FOLDER]) {
-                        props.engine.setSelected(getHierarchy(el, props.engine.entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
-                    }
-                }, props.engine, setAllHidden, false)
+                return mapToView(
+                    f,
+                    props.engine.entities,
+                    (el, e) => {
+                        if (e && e.ctrlKey) {
+                            props.engine.setSelected(prev => {
+                                const indexFound = prev.findIndex(f => f === el.id)
+                                if (indexFound === -1) return [...prev, el.id]
+                                else {
+                                    let n = [...prev]
+                                    n.splice(indexFound, 1)
+                                    return n
+                                }
+                            })
+                        } else if (!el.components[COMPONENTS.FOLDER])
+                            props.engine.setSelected([el.id])
+                        else if (el.components[COMPONENTS.FOLDER]) {
+                            props.engine.setSelected(getHierarchy(el, props.engine.entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
+                        }
+                    },
+                    props.engine,
+                    setAllHidden,
+                    required)
             }),
             icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
             type: 'Scene',
@@ -79,7 +88,7 @@ export default function SceneView(props) {
             canBeHidden: true,
             hidden: allHidden
         }]
-    }, [props.engine.entities])
+    }, [props.engine.entities, required])
 
     const currentForm = useForm(
         props.engine,
@@ -101,103 +110,119 @@ export default function SceneView(props) {
             type: HISTORY_ACTIONS.PUSHING_DATA, payload: [newEntity]
         })
     }
-    return (<div className={styles.wrapper} style={{width: hidden ? '35px' : undefined}}>
-        <div className={styles.wrapperContent} style={{overflow: 'hidden', height: hidden ? '100%' : undefined}}>
-            <div className={[styles.header, styles.mainHeader].join(' ')} data-hidden={`${hidden}`}
-                 style={{justifyContent: 'flex-start', padding: '0 4px'}}>
-                <Button
-                    className={styles.button}
-                    onClick={() => setHidden(!hidden)}>
-                        <span className={'material-icons-round'}
-                              style={{fontSize: '1rem'}}>{!hidden ? 'menu_open' : 'menu'}</span>
-                </Button>
-                <label>
-                    Scene hierarchy
-                </label>
-                {hidden ? null :
-
-                    <Button className={styles.button} onClick={() => createFolder()}
-                            styles={{position: 'absolute', right: '4px'}}>
+    const options = useMemo(() => {
+        return Object.keys(COMPONENTS).map(e => {
+            const o = getComponentInfo(COMPONENTS[e])
+            if (Object.keys(o).length > 0)
+                return (
+                    <React.Fragment key={e}>
+                        <DropdownOption option={{
+                            onClick: () => setRequired(required === COMPONENTS[e] ? undefined : COMPONENTS[e]),
+                            ...o,
+                            icon: required !== COMPONENTS[e] ? undefined :
+                                <span className={'material-icons-round'} style={{fontSize: '1rem'}}>checked</span>
+                        }}/>
+                    </React.Fragment>
+                )
+        })
+    }, [required])
+    return (<div className={styles.wrapper}>
+            <div className={styles.wrapperContent} style={{overflow: 'hidden'}}>
+                <div className={[styles.header, styles.mainHeader].join(' ')}
+                     style={{justifyContent: 'space-between', padding: '0 4px'}}>
+                    <label className={styles.overflow}>
+                        Scene hierarchy
+                    </label>
+                    <div style={{display: 'flex', gap: '2px'}}>
+                        <Button className={styles.button} onClick={() => createFolder()}>
                         <span className={'material-icons-round'}
                               style={{fontSize: '1rem'}}>create_new_folder</span>
-                    </Button>}
-            </div>
-            {hidden ? null : <TreeView
-                contextTriggers={['data-node', 'data-self']}
-                onMultiSelect={(items) => props.engine.setSelected(items)}
-                multiSelect={true}
-                searchable={true}
-                draggable={true}
-                options={[{
-                    requiredTrigger: 'data-self',
-                    label: 'Create folder',
-                    icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                    onClick: () => createFolder()
-                },
-                    {
-                        requiredTrigger: 'data-node',
-                        label: 'Remove entity',
-                        icon: <span className={'material-icons-round'}>delete</span>,
-                        onClick: (node) => {
-                            const t = node.getAttribute('data-node')
-                            const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
+                        </Button>
+                        <Dropdown className={styles.button} hideArrow={true}>
+                        <span className={'material-icons-round'}
+                              style={{fontSize: '1rem'}}>filter_alt</span>
+                            <DropdownOptions>
+                                {options}
+                            </DropdownOptions>
+                        </Dropdown>
+                    </div>
+                </div>
+                <TreeView
+                    contextTriggers={['data-node', 'data-self']}
+                    onMultiSelect={(items) => props.engine.setSelected(items)}
+                    multiSelect={true}
+                    searchable={true}
+                    draggable={true}
+                    options={[{
+                        requiredTrigger: 'data-self',
+                        label: 'Create folder',
+                        icon: <span className={'material-icons-round'}>create_new_folder</span>,
+                        onClick: () => createFolder()
+                    },
+                        {
+                            requiredTrigger: 'data-node',
+                            label: 'Remove entity',
+                            icon: <span className={'material-icons-round'}>delete</span>,
+                            onClick: (node) => {
+                                const t = node.getAttribute('data-node')
+                                const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
 
-                            props.engine.setSelected([])
-                            props.engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
-                            })
-
-                        }
-                    }]}
-                onDrop={(event, target) => {
-                    event.preventDefault()
-                    try {
-                        const entities = JSON.parse(event.dataTransfer.getData('text'))
-                        entities.forEach(entity => {
-                            const current = props.engine.entities.find(f => f.id === target)
-                            const dropTarget = props.engine.entities.find(f => f.id === entity)
-
-                            if (!current) {
-                                dropTarget.components[COMPONENTS.TRANSFORM].changed = true
+                                props.engine.setSelected([])
                                 props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE,
-                                    payload: {
-                                        entityID: dropTarget.id, key: 'linkedTo', data: undefined
-                                    }
+                                    type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
                                 })
-                            } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
-                                dropTarget.components[COMPONENTS.TRANSFORM].changed = true
 
-                                props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE,
-                                    payload: {
-                                        entityID: dropTarget.id,
-                                        key: 'linkedTo',
-                                        data: current.id
-                                    }
-                                })
                             }
-                        })
-                    } catch (e) {
-                    }
-                }}
-                onDragStart={e => {
-                    if (e.ctrlKey)
-                        e.dataTransfer.setData('text', JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
-                    else e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
-                }}
+                        }]}
+                    onDrop={(event, target) => {
+                        event.preventDefault()
+                        try {
+                            const entities = JSON.parse(event.dataTransfer.getData('text'))
+                            entities.forEach(entity => {
+                                const current = props.engine.entities.find(f => f.id === target)
+                                const dropTarget = props.engine.entities.find(f => f.id === entity)
 
-                ids={props.engine.entities}
-                selected={props.engine.selected}
-                nodes={data}
-                handleRename={(treeNode, newName) => {
-                    props.engine.dispatchEntities({
-                        type: ENTITY_ACTIONS.UPDATE, payload: {entityID: treeNode.id, key: 'name', data: newName}
-                    })
-                }}
-            />}
-        </div>
-        {hidden ? null : <>
+                                if (!current) {
+                                    dropTarget.components[COMPONENTS.TRANSFORM].changed = true
+                                    props.engine.dispatchEntities({
+                                        type: ENTITY_ACTIONS.UPDATE,
+                                        payload: {
+                                            entityID: dropTarget.id, key: 'linkedTo', data: undefined
+                                        }
+                                    })
+                                } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
+                                    dropTarget.components[COMPONENTS.TRANSFORM].changed = true
+
+                                    props.engine.dispatchEntities({
+                                        type: ENTITY_ACTIONS.UPDATE,
+                                        payload: {
+                                            entityID: dropTarget.id,
+                                            key: 'linkedTo',
+                                            data: current.id
+                                        }
+                                    })
+                                }
+                            })
+                        } catch (e) {
+                        }
+                    }}
+                    onDragStart={e => {
+                        if (e.ctrlKey)
+                            e.dataTransfer.setData('text', JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
+                        else e.dataTransfer.setData('text', JSON.stringify([e.currentTarget.id]))
+                    }}
+
+                    ids={props.engine.entities}
+                    selected={props.engine.selected}
+                    nodes={data}
+                    handleRename={(treeNode, newName) => {
+                        props.engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.UPDATE, payload: {entityID: treeNode.id, key: 'name', data: newName}
+                        })
+                    }}
+                />
+            </div>
+
             <ResizableBar type={'height'}/>
             <div className={styles.wrapperContent}>
 
@@ -239,8 +264,8 @@ export default function SceneView(props) {
                     </div>
                 </div>
             </div>
-        </>}
-    </div>)
+        </div>
+    )
 }
 
 SceneView.propTypes = {

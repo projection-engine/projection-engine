@@ -76,28 +76,24 @@ export default function Card(props) {
                     })} hideArrow={true}>
                     <span style={{fontSize: '1rem'}} className={'material-icons-round'}>edit</span>
                     <DropdownOptions>
-                        <div
-                            className={styles.onDelete}>
 
-                            <Rename name={name} setName={setName} setOpen={setOpen} onRename={props.onRename}/>
+                        <Rename name={name} setName={setName} setOpen={setOpen} onRename={props.onRename}/>
 
-                        </div>
                     </DropdownOptions>
                 </Dropdown>
-
-                    <Button
-                        onClick={() => ipcRenderer.send('switch-window', {
-                            windowID: props.data.id,
-                            data: props.data,
-                            hasMain: false
-                        })}
-                        variant={'filled'}
-                        className={styles.openButton}>
-                        <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
-                        <label>
-                            Load project
-                        </label>
-                    </Button>
+                <Button
+                    onClick={() => ipcRenderer.send('switch-window', {
+                        windowID: props.data.id,
+                        data: props.data,
+                        hasMain: false
+                    })}
+                    variant={'filled'}
+                    className={styles.openButton}>
+                    <span className={'material-icons-round'} style={{fontSize: '1rem'}}>open_in_new</span>
+                    <label>
+                        Load project
+                    </label>
+                </Button>
 
             </div>
         </div>
@@ -115,22 +111,16 @@ Card.propTypes = {
 function Rename({setName, name, onRename, setOpen}) {
     const dropdownContext = useContext(DropdownProvider)
     return (
-        <>
-            <TextField
-                handleChange={e => setName(e.target.value)}
-                label={'Project name'}
-                placeholder={'Project name'}
-                value={name} size={'small'}/>
-            <Button
-                variant={'filled'}
-                disabled={name === ''}
-                onClick={() => {
-                    onRename(name)
-                    setOpen({})
-                    dropdownContext.setOpen(false)
-                }}>
-                Rename project
-            </Button>
-        </>
+        <TextField
+            handleChange={e => setName(e.target.value)}
+            label={'New name'}
+            placeholder={'New name'}
+            value={name} height={'30px'}
+            onEnter={() => {
+                onRename(name)
+                setOpen({})
+                dropdownContext.setOpen(false)
+            }}
+        />
     )
 }
