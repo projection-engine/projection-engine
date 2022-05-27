@@ -1,7 +1,6 @@
 import React from "react";
 import styles from './styles/Project.module.css'
 import QuickAccessProvider from "./hooks/QuickAccessProvider";
-import Preferences from "../components/preferences/Preferences";
 import Tabs from "../components/tabs/Tabs";
 import {ENTITY_ACTIONS} from "./engine/useEngineEssentials";
 import SettingsProvider from "./hooks/SettingsProvider";
@@ -53,6 +52,7 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                                     },
                                     {
                                         label: 'Export project',
+                                        disabled: true,
                                         icon: 'save_alt',
                                         onClick: () => {
                                             exporter.build({
@@ -62,7 +62,6 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                                                 scripts: engine.scripts
                                             })
                                                 .then(() => {
-
                                                     setAlert({
                                                         type: 'success',
                                                         message: 'Successfully exported'
@@ -76,18 +75,11 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                                                     message: 'Error during packaging process'
                                                 }))
                                         }
-                                    },
-                                    {
-                                        label: 'Preferences',
-                                        icon: 'settings',
-                                        shortcut: 'Ctrl + alt + S',
-                                        onClick: () => settings.preferencesVisibility = true
                                     }
                                 ]
                             }
                         ]} hasLogo={true} pageInfo={events} label={meta?.name}/>
                     <div className={styles.wrapper}>
-                        <Preferences serializer={serializer}/>
                         <Tabs
                             handleTabClose={(newTab, lastTab) => {
                                 engine.setCanRender(true)
@@ -99,7 +91,6 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                                 })
                             }}
                             onTabSwitch={(newTab, lastTab) => {
-
                                 if (newTab === 0)
                                     handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
                             }}
