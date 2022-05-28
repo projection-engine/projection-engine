@@ -11,9 +11,6 @@
 	path = src/project/engine
 	url = git@github.com:projection-engine/engine.git
 
-[submodule "src/builders/web"]
-	path = src/project/utils/builder
-	url = git@github.com:projection-engine/builder-web.git
 [submodule "src/home/components/issues"]
 	path = src/home/components/issues
 	url = git@github.com:projection-engine/feedback-github-integration.git
