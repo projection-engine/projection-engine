@@ -14,6 +14,6 @@ cd ../files
 git checkout v0.1.x-alpha
 
 cd ../ui
-git checkout v0.1.x-alpha
+git checkout main
 
 sleep 10s
