@@ -12,6 +12,7 @@ import AccordionTemplate from "../../../../components/templates/AccordionTemplat
 import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";
+import FileSystem from "../../../utils/files/FileSystem";
 
 
 export default function Material(props) {
@@ -39,7 +40,7 @@ export default function Material(props) {
 
         const rs = await fileSystem.readRegistryFile(src.registryID)
         if (rs) {
-            const file = await fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, type)
+            const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + rs.path, type)
             if (file)
                 return file
             else {

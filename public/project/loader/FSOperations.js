@@ -19,7 +19,7 @@ export async function fromDirectory(startPath, extension) {
 
 export async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
-        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + '\\assetsRegistry\\' + fileID + FILE_TYPES.REGISTRY) ))[1]
+        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + '\\assetsRegistry\\' + fileID + FILE_TYPES.REGISTRY)))[1]
 
         if (lookUpTable) {
             const fileData = (await readFile(projectPath + '\\assets\\' + JSON.parse(lookUpTable).path))[1]
@@ -35,7 +35,7 @@ export async function readRegistry(pathName) {
             if (!e) {
                 let promises = res.map(f => {
                     return new Promise(resolve1 => {
-                        const registryPath = pathName + f
+                        const registryPath = pathName + pathRequire.sep + f
                         fs.readFile(registryPath, (e, registryFile) => {
                             if (!e) try {
                                 resolve1({

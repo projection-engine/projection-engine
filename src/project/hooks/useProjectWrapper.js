@@ -9,7 +9,7 @@ import ProjectLoader from "../utils/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import WebBuilder from "../utils/builder/WebBuilder";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 import MeshInstance from "../engine/instances/MeshInstance";
 import {v4} from "uuid";
 import CHANNELS from "../../../public/project/loader/CHANNELS";
@@ -27,8 +27,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
     const engine = useEditorEngine(executingAnimation, settings,  initialized, setAlert)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
-    const [currentTab, setCurrentTab] = useState(0)
-    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess, currentTab)
+    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess )
 
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
@@ -74,33 +73,6 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
     }, [gpu])
 
 
-    const openTab = useCallback((fileID, fileName) => {
-        const found = filesLoaded.find(f => f.registryID === fileID)
-        if (!found) {
-            quickAccess.fileSystem.readRegistryFile(fileID)
-                .then(res => {
-                    engine.setCanRender(false)
-                    if (res) {
-
-                        setFilesLoaded(prev => {
-                            return [
-                                ...prev,
-                                {registryID: fileID, type: res.path.split('.').pop(), name: fileName}
-                            ]
-                        })
-                        setCurrentTab(filesLoaded.length + 1)
-                    } else {
-
-                        setAlert({
-                            type: 'error',
-                            message: 'Could not load file.'
-                        })
-                    }
-                })
-        } else
-            setCurrentTab(filesLoaded.indexOf(found) + 1)
-    }, [currentTab, filesLoaded])
-
     const entitiesWithMeshes = useMemo(() => {
         return engine.entities.filter(e => {
             return (e.components.MeshComponent)
@@ -121,10 +93,9 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
 
     return {
-        exporter, entitiesWithMeshes, openTab,
+        exporter, entitiesWithMeshes,
         load, settings,
         setAlert, setFilesLoaded,
-        currentTab, setCurrentTab,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
         quickAccess, filesLoaded

@@ -20,6 +20,7 @@ import Display from "../components/Display";
 import Editor from "../components/Editor";
 import Line from "../components/Line";
 import LightProbe from "../components/LightProbe";
+import FileSystem from "../../../utils/files/FileSystem";
 
 export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
 
@@ -113,7 +114,7 @@ export default function useForm(
 
                                         const rs = await quickAccess.fileSystem.readRegistryFile(value)
                                         if (rs) {
-                                            const file = await quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + '\\assets\\' + rs.path)
+                                            const file = await quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + FileSystem.sep + 'assets' +FileSystem.sep +  rs.path)
                                             if (file)
                                                 engine.setScripts(prev => {
                                                     return [...prev, {

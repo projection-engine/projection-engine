@@ -7,7 +7,8 @@ import EVENTS from "../project/utils/EVENTS";
 import useProjects from "./hooks/useProjects";
 import SideBar from "./components/SideBar";
 import IssuesList from "./components/issues/IssuesList";
-import AsyncFS from "../components/AsyncFS";
+import AsyncFS from "../project/utils/AsyncFS";
+import FileSystem from "../project/utils/files/FileSystem";
 
 
 const pathResolve = window.require('path')
@@ -19,7 +20,7 @@ export default function Home() {
         setAlert, refresh,
         load, uploadRef,
         setProjects
-    } = useProjects( )
+    } = useProjects()
     const [open, setOpen] = useState(0)
     return (
         <div className={styles.wrapper}>
@@ -41,7 +42,7 @@ export default function Home() {
                     deleteProject={async pjID => {
                         setAlert({message: 'Deleting project', type: 'info'})
                         await AsyncFS.rm(
-                            pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + pjID),
+                            pathResolve.resolve(localStorage.getItem('basePath') + 'projects' + FileSystem.sep + pjID),
                             {recursive: true, force: true}
                         )
 
@@ -50,7 +51,7 @@ export default function Home() {
                         })
                     }}
                     renameProject={async (newName, projectID) => {
-                        const pathName = pathResolve.resolve(localStorage.getItem('basePath') + '\\projects\\' + projectID + '\\.meta')
+                        const pathName = pathResolve.resolve(localStorage.getItem('basePath') + 'projects' + FileSystem.sep + projectID + FileSystem.sep + '.meta')
                         const [error, res] = await AsyncFS.read(pathName)
                         if (res && !error) {
                             const [e] = await AsyncFS.write(pathName, JSON.stringify({

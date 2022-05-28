@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import {useContext, useEffect, useRef, useState} from "react";
 import styles from './styles/ImageView.module.css'
 import ResizableBar from "../../../components/resizable/ResizableBar";
-import ControlProvider from "../../../components/tabs/components/ControlProvider";
+import ControlProvider from "../router/components/ControlProvider";
 import handleBoardScroll from "../../components/blueprints/components/utils/handleBoardScroll";
 import ControlBar from "./components/ControlBar";
 

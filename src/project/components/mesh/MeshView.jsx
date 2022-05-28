@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
 import styles from './styles/Mesh.module.css'
 
-import Viewport from "../../../components/viewport/Viewport";
+import Viewport from "../viewport/Viewport";
 import Controls from "./components/Controls";
 
 
 import useMinimalEngine, {IDS, initializeMesh} from "../../extension/useMinimalEngine";
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
-import ControlProvider from "../../../components/tabs/components/ControlProvider";
+import ControlProvider from "../router/components/ControlProvider";
 import EVENTS from "../../utils/EVENTS";
 import QuickAccessProvider from "../../hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
+import FileSystem from "../../utils/files/FileSystem";
 
 export default function MeshView(props) {
     const engine = useMinimalEngine(false, false, false, false)
@@ -28,7 +29,7 @@ export default function MeshView(props) {
             load.pushEvent(EVENTS.LOADING_VIEWPORT)
             quickAccess.fileSystem.readRegistryFile(props.file.registryID)
                 .then(res => {
-                    quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + '\\assets\\' + res.path, 'json')
+                    quickAccess.fileSystem.readFile(quickAccess.fileSystem.path +FileSystem.sep +  'assets' +FileSystem.sep +  res.path, 'json')
                         .then(fileData => {
                             load.finishEvent(EVENTS.LOADING_VIEWPORT)
                             initializeMesh(fileData, engine.gpu, IDS.TARGET, props.file.name, engine.dispatchEntities, engine.setMeshes, true)
@@ -69,7 +70,7 @@ export default function MeshView(props) {
                 props.index
             )
         }
-    }, [meshData, controlProvider.tab])
+    }, [meshData, controlProvider.selected])
 
 
     return (

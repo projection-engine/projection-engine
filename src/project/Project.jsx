@@ -1,144 +1,113 @@
 import React from "react";
 import styles from './styles/Project.module.css'
 import QuickAccessProvider from "./hooks/QuickAccessProvider";
-import Tabs from "../components/tabs/Tabs";
+import TabRouter from "./components/router/TabRouter";
 import {ENTITY_ACTIONS} from "./engine/useEngineEssentials";
 import SettingsProvider from "./hooks/SettingsProvider";
 import FilesView from "./components/files/FilesView";
-import Main from "./components/main/Main";
+import Editor from "./components/editor/Editor";
 import EntitiesProvider from "./hooks/EntitiesProvider";
-import handleTabChange from "./utils/handleTabChange";
+import refreshData from "./utils/refreshData";
 import Frame from "../components/frame/Frame";
 import useProjectWrapper from "./hooks/useProjectWrapper";
-import TabSelector from "./components/main/components/TabSelector";
+import FileSystem from "./utils/files/FileSystem";
+import {HashRouter, Route, Routes} from "react-router-dom";
+import PropTypes from "prop-types";
+import FILE_TYPES from "../../public/project/glTF/FILE_TYPES";
 
 const {shell} = window.require('electron')
 export default function Project({id, meta, events, initialized, setInitialized, settings}) {
     const {
+        setAlert,
+        exporter,
+        entitiesWithMeshes,
         load,
-        setAlert, setFilesLoaded,
-        currentTab, setCurrentTab,
-        exporter, entitiesWithMeshes, openTab,
-        serializer, engine,
-        executingAnimation, setExecutingAnimation,
-        quickAccess, filesLoaded
+        serializer,
+        engine,
+        quickAccess,
+        setExecutingAnimation,
+        executingAnimation
     } = useProjectWrapper(id, initialized, setInitialized, settings)
 
     return (
-        <EntitiesProvider.Provider value={{
-            entities: entitiesWithMeshes,
-            removeEntities: (entities) => {
-                engine.setSelected([])
-                engine.dispatchEntities({
-                    type: ENTITY_ACTIONS.REMOVE_BLOCK,
-                    payload: entities
-                })
-                entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
-            }
-        }}>
-            <SettingsProvider.Provider value={settings}>
-                <QuickAccessProvider.Provider value={quickAccess}>
-                    <Frame
-                        logoAction={true}
-                        options={[
-                            {
-                                label: 'File',
-                                options: [
-                                    {
-                                        label: 'Save project',
-                                        icon: 'save',
-                                        shortcut: 'Ctrl + S',
-                                        onClick: () => serializer.save()
-                                    },
-                                    {
-                                        label: 'Export project',
-                                        disabled: true,
-                                        icon: 'save_alt',
-                                        onClick: () => {
-                                            exporter.build({
-                                                entities: engine.entities,
-                                                meshes: engine.meshes,
-                                                materials: engine.materials,
-                                                scripts: engine.scripts
-                                            })
-                                                .then(() => {
-                                                    setAlert({
-                                                        type: 'success',
-                                                        message: 'Successfully exported'
-                                                    })
-                                                    setTimeout(() => {
-                                                        shell.openPath(quickAccess.fileSystem.path + '\\out\\web').catch()
-                                                    }, 2000)
+        <HashRouter>
+            <EntitiesProvider.Provider value={{
+                entities: entitiesWithMeshes, removeEntities: (entities) => {
+                    engine.setSelected([])
+                    engine.dispatchEntities({
+                        type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
+                    })
+                    entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
+                }
+            }}>
+                <SettingsProvider.Provider value={settings}>
+                    <QuickAccessProvider.Provider value={quickAccess}>
+                        <Frame
+                            logoAction={true}
+                            options={[{
+                                label: 'File', options: [{
+                                    label: 'Save project',
+                                    icon: 'save',
+                                    shortcut: 'Ctrl + S',
+                                    onClick: () => serializer.save()
+                                }, {
+                                    label: 'Export project', disabled: true, icon: 'save_alt', onClick: () => {
+                                        exporter.build({
+                                            entities: engine.entities,
+                                            meshes: engine.meshes,
+                                            materials: engine.materials,
+                                            scripts: engine.scripts
+                                        })
+                                            .then(() => {
+                                                setAlert({
+                                                    type: 'success', message: 'Successfully exported'
                                                 })
-                                                .catch(() => setAlert({
-                                                    type: 'error',
-                                                    message: 'Error during packaging process'
-                                                }))
-                                        }
+                                                setTimeout(() => {
+                                                    shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + 'out' + FileSystem.sep + 'web').catch()
+                                                }, 2000)
+                                            })
+                                            .catch(() => setAlert({
+                                                type: 'error', message: 'Error during packaging process'
+                                            }))
                                     }
-                                ]
-                            }
-                        ]} hasLogo={true} pageInfo={events} label={meta?.name}/>
-                    <div className={styles.wrapper}>
-                        <Tabs
-                            handleTabClose={(newTab, lastTab) => {
-                                engine.setCanRender(true)
-                                handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
-                                setFilesLoaded(prev => {
-                                    const newD = [...prev]
-                                    newD.splice(newTab, 1)
-                                    return newD
-                                })
-                            }}
-                            onTabSwitch={(newTab, lastTab) => {
-                                if (newTab === 0)
-                                    handleTabChange(filesLoaded, lastTab, quickAccess.fileSystem, engine, load)
-                            }}
-                            tab={currentTab}
-                            setTab={setCurrentTab}
+                                }]
+                            }]}
+                            hasLogo={true}
+                            pageInfo={events}
+                            label={meta?.name}/>
 
-                        >
-                            <Main
-                                setExecutingAnimation={setExecutingAnimation}
-                                executingAnimation={executingAnimation}
-                                engine={engine}
-                                id={id} load={load}
-                                openLevelBlueprint={() => {
-                                    setFilesLoaded(prev => {
-                                        return [...prev, {
-                                            isLevelBlueprint: true
-                                        }]
-                                    })
-                                    setCurrentTab(filesLoaded.length + 1)
+                        <div className={styles.wrapper}>
+                            <TabRouter
+                                refreshData={(type, regID) => refreshData(type, regID, quickAccess.fileSystem, engine, load)}
+                                mainProps={{
+                                    setExecutingAnimation: setExecutingAnimation,
+                                    executingAnimation: executingAnimation,
+                                    engine: engine,
+                                    id: id,
+                                    load: load,
+                                    setAlert: setAlert,
+                                    settings: settings,
+                                    serializer: serializer,
                                 }}
-                                setAlert={setAlert}
-                                settings={settings}
-                                serializer={serializer}
+                                levelProps={{
+                                    engine: engine, id: id
+                                }}
+                                submitPackage={(pack, close, previewImage, isLevel) => {
+                                    quickAccess.fileSystem
+                                    .updateAsset(isLevel ? FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT : file.registryID, pack, previewImage)
+                                    .then(_ => setAlert({type: 'success', message: 'Saved'}))
+                                    .catch(_ => setAlert({type: 'error', message: 'Some error occurred'}))
+                                }}
                             />
-                            {filesLoaded.length > 0 ? filesLoaded.map((file, index) => (
-                                <React.Fragment key={index + '-tab-wrapper'}>
-                                    <TabSelector {...{
-                                        file, index: index + 1, setAlert, setFilesLoaded,
-                                        currentTab, setCurrentTab, engine,
-                                        id, quickAccess, filesLoaded
-                                    }}/>
-                                </React.Fragment>
-                            )) : null}
-                        </Tabs>
-                        {settings.filesVisibility ?
                             <FilesView
                                 setAlert={setAlert}
-                                currentTab={currentTab}
                                 id={id}
-                                openEngineFile={openTab}
                             />
-                            :
-                            null}
-                    </div>
-                </QuickAccessProvider.Provider>
-            </SettingsProvider.Provider>
-        </EntitiesProvider.Provider>
-
+                        </div>
+                    </QuickAccessProvider.Provider>
+                </SettingsProvider.Provider>
+            </EntitiesProvider.Provider>
+        </HashRouter>
     )
 }
 

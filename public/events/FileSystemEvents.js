@@ -1,6 +1,5 @@
 import {v4 as uuidv4} from "uuid";
 import glTF from "../project/glTF/glTF";
-import REG_PATH from "../project/glTF/REG_PATH";
 import {readRegistry} from "../project/loader/FSOperations";
 import loader from "../project/loader/loader";
 
@@ -10,19 +9,6 @@ const path = require('path')
 const si = require("systeminformation");
 
 
-async function createRegistryEntry(pathName, projectPath) {
-    const fID = uuidv4()
-    const pathRe = path.resolve(projectPath + '\\assets\\')
-    const p = path.resolve(projectPath + '\\assets\\' + pathName).replace(pathRe, '')
-
-    return new Promise(r => {
-        fs.writeFile(path.resolve(projectPath + `\\${REG_PATH}\\` + fID + `.reg`), JSON.stringify({
-            id: fID, path: p.charAt(0) === '\\' ? p.substring(1, p.length) : p
-        }), () => {
-            r()
-        })
-    })
-}
 
 export default function FileSystemEvents() {
     ipcMain.on('read-file', async (event, {pathName, type, listenID}) => {

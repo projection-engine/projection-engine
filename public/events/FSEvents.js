@@ -2,26 +2,29 @@ const {BrowserWindow, dialog, ipcMain} = require('electron')
 const fs = require('fs')
 const path = require('path')
 
+const parse = (p) => {
+    return path.resolve(p)
+}
 export async function readFile(path, options) {
     return await new Promise(resolve => {
-        fs.readFile(path, options, (err, res) => resolve([err, res ? res.toString() : undefined]))
+        fs.readFile(parse(path), options, (err, res) => resolve([err, res ? res.toString() : undefined]))
     })
 }
 
 export async function rm(path, options) {
     return await new Promise(resolve => {
-        fs.rm(path, options, (err) => resolve([err]))
+        fs.rm(parse(path), options, (err) => resolve([err]))
     })
 }
 
 export async function lstat(path, options) {
     return await new Promise(resolve => {
-        fs.lstat(path, options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
+        fs.lstat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
     })
 }
 export async function readdir(path, options) {
     return await new Promise(resolve => {
-        fs.readdir(path, options, (err, res) => resolve([err, res]))
+        fs.readdir(parse(path), options, (err, res) => resolve([err, res]))
     })
 }
 
@@ -39,7 +42,7 @@ export default function FSEvents() {
             path, data, listenID
         } = pkg
         const result = await new Promise(resolve => {
-            fs.writeFile(path, data, (err) => resolve([err]))
+            fs.writeFile(parse(path), data, (err) => resolve([err]))
         })
         event.sender.send('fs-write-' + listenID, result)
     })
@@ -58,7 +61,7 @@ export default function FSEvents() {
             path, listenID
         } = data
         const result = await new Promise(resolve => {
-            fs.mkdir(path, (err) => resolve([err]))
+            fs.mkdir(parse(path), (err) => resolve([err]))
         })
         event.sender.send('fs-mkdir-' + listenID, result)
     })
@@ -68,7 +71,7 @@ export default function FSEvents() {
             path, options, listenID
         } = data
         const result = await new Promise(resolve => {
-            fs.stat(path, options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
+            fs.stat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
         })
         event.sender.send('fs-stat-' + listenID, result)
     })
@@ -77,7 +80,7 @@ export default function FSEvents() {
         const {
             path, listenID
         } = data
-        const result = fs.existsSync(path)
+        const result = fs.existsSync(parse(path))
         event.sender.send('fs-exists-' + listenID, result)
     })
 
@@ -103,7 +106,7 @@ export default function FSEvents() {
             oldPath, newPath, listenID
         } = data
         const result = await new Promise(resolve => {
-            fs.rename(oldPath, newPath, (err) => resolve([err]))
+            fs.rename(parse(oldPath), parse(newPath), (err) => resolve([err]))
         })
         event.sender.send('fs-rename-' + listenID, result)
     })

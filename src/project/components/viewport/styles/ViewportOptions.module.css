@@ -1,0 +1,354 @@
+
+.options {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 3px;
+    height: fit-content;
+    user-select: none;
+
+}
+
+
+.align {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    gap: 4px;
+}
+
+.optionWrapper {
+    border-radius: 5px;
+
+
+    width: fit-content;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 25px;
+    transition: 150ms linear;
+
+    min-width: 25px;
+
+
+    font-size: .7rem !important;
+
+    padding: 4px !important;
+    position: relative !important;
+    color: var(--fabric-color-secondary) !important;
+
+    overflow: hidden;
+    background: var(--fabric-border-primary);
+}
+
+.highlighted {
+    background: var(--fabric-background-tertiary);
+    border: var(--fabric-border-primary) 1px solid;
+}
+
+.highlighted:active, .highlighted:hover {
+    border-color: var(--fabric-accent-color);
+}
+
+.rangeWrapper {
+    user-select: none;
+    display: flex;
+
+    align-items: center;
+    padding: 4px;
+    gap: 4px;
+    color: var(--fabric-color-secondary);
+
+}
+
+.rangeLabel {
+    font-size: .75rem !important;
+    color: var(--fabric-color-secondary);
+    font-weight: 550;
+}
+
+.dividerWrapper {
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    color: var(--fabric-color-primary);
+    gap: 8px;
+    font-size: .7rem !important;
+
+
+    padding: 0 6px;
+    overflow: hidden;
+}
+
+.divider {
+    width: 100%;
+    height: 2px;
+    background-color: var(--fabric-border-primary);
+}
+
+.summary {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0 4px;
+    font-size: .7rem !important;
+}
+
+.overflow {
+    max-width: 100%;
+    width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.cameraView {
+    --cubeSize: 25px;
+
+
+    width: calc(var(--cubeSize) * 2);
+    height: calc(var(--cubeSize) * 2);
+    transform: scale3d(1.5, 1.5, 1.5);
+
+    perspective: calc(var(--cubeSize) * 2);
+
+}
+
+.cube {
+
+    width: calc(var(--cubeSize) * 2);
+    height: calc(var(--cubeSize) * 2);
+    position: relative;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--cubeSize) * -4));
+
+}
+
+.face {
+
+    position: absolute;
+    width: calc(var(--cubeSize) * 2);
+    height: calc(var(--cubeSize) * 2);
+    border: 1px solid #555555;
+    line-height: calc(var(--cubeSize) * 2);
+    font-size: .75rem;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+}
+
+.front {
+    background: hsl(205, 100%, 50%);
+}
+
+.right {
+    background: hsl(0, 100%, 50%);
+}
+
+.back {
+    background: hsl(205, 100%, 50%);
+}
+
+.left {
+    background: hsl(0, 100%, 50%);
+}
+
+.top {
+    background: hsl(130, 100%, 50%);
+}
+
+.bottom {
+    background: hsl(130, 100%, 50%);
+}
+
+.front {
+    transform: rotateY(0deg) translateZ(var(--cubeSize));
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(var(--cubeSize));
+}
+
+.back {
+    transform: rotateY(180deg) translateZ(var(--cubeSize));
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(var(--cubeSize));
+}
+
+.bottom {
+    transform: rotateX(90deg) translateZ(var(--cubeSize));
+}
+
+.top {
+    transform: rotateX(-90deg) translateZ(var(--cubeSize));
+}
+
+
+.floating {
+
+
+    position: absolute;
+    right: 0px;
+    top: 35px;
+    z-index: 999;
+    display: grid;
+    align-content: flex-start;
+    justify-items: center;
+    gap: 4px;
+    height: fit-content;
+
+transition: 150ms ease-in;
+}
+
+.buttonGroup {
+    display: flex;
+}
+
+.dropdown{
+    width: fit-content;
+    --colorToApply: white;
+    font-size: .75rem;
+
+    height: 25px;
+    overflow: hidden;
+    padding: 0 4px !important;
+    background: var(--fabric-border-primary) !important;
+}
+
+.shadedIcon {
+    transition: 150ms linear;
+    /*background: -webkit-linear-gradient(top, #e72c83 0%,#a742c6 100%);*/
+    background: linear-gradient(to right bottom, var(--colorToApply) 25%, #333333 75%);
+
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+
+}
+
+.flatIcon {
+    transition: 150ms linear;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+
+    background: var(--colorToApply);
+
+
+}
+
+.dragInput {
+    cursor: move;
+    overflow: hidden;
+
+}
+
+.dragInput:active {
+    color: var(--fabric-accent-color);
+    transform: scale(1.2);
+
+
+}
+
+.dragInput > * {
+    font-size: 1.1rem !important;
+}
+
+.floatingOption {
+
+    backdrop-filter: blur(20px) brightness(.65);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 25px;
+    width: 25px;
+
+    padding: 0 !important;
+    color: var(--fabric-color-secondary) !important;
+
+
+    transition: 150ms linear;
+}
+
+
+.groupItemVert {
+    --colorToApply: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--fabric-background-primary);
+    color: var(--fabric-color-primary);
+
+    height: 27px;
+    width: 27px;
+    padding: 0 !important;
+    border-radius: 50%;
+}
+
+.groupItemVert > * {
+    font-size: 1rem;
+    color-rendering: optimizeSpeed !important;
+    shape-rendering: optimizeSpeed !important;
+}
+
+.transformationWrapper {
+    position: relative;
+    --colorToApply: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--fabric-background-primary);
+
+
+    height: 35px;
+    width: 37px;
+
+    padding: 0 !important;
+    border-radius: 0;
+
+
+}
+
+.transformationWrapper > span {
+    font-size: 1.2rem !important;
+    color-rendering: optimizeSpeed !important;
+    shape-rendering: optimizeSpeed !important;
+}
+
+.button {
+
+    background: var(--fabric-border-primary);
+    padding: 4px 16px !important;
+}
+.button:disabled{
+    color: #999999;
+    background: var(--fabric-background-tertiary);
+}
+.enableButton{
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label{
+    padding-left: 8px;
+    font-weight: 550;
+    margin-top: 4px;
+    color: var(--fabric-color-secondary);
+    font-size: .8rem;
+}
+
+

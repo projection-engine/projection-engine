@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import Entity from "../engine/basic/Entity";
@@ -13,7 +13,7 @@ import COMPONENTS from "../engine/templates/COMPONENTS";
 import LoaderProvider from "../../components/loader/LoaderProvider";
 import QuickAccessProvider from "../hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 
 const toRad = 180 / Math.PI
 export default function useMinimalEngine() {
@@ -27,39 +27,47 @@ export default function useMinimalEngine() {
     const [initialized, setInitialized] = useState(false)
     const load = useContext(LoaderProvider)
     const [focused, setFocused] = useState(true)
+    const ready = useRef(false)
     useEffect(() => {
-        const lightEntity = new Entity(undefined, 'light')
-        const light = new DirectionalLightComponent()
-        light.direction = [0, 100, 100]
-        light.shadowMap = false
-        lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
-        Promise.all([import('../../static/assets/Sphere.json'), import('../../static/assets/Cube.json')])
-            .then(r => {
-                const [sphereMesh, cubeData] = r
-                const sphere = initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes)
-                const cube = initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true)
-                const toLoad = [
-                    quickAccess.sampleSkybox,
-                    lightEntity,
-                ]
-                if (sphere)
-                    toLoad.push(sphere)
-                if (cube)
-                    toLoad.push(cube)
-                dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
-            })
-    }, [])
+        if (renderer && renderer.initialized && !ready.current) {
+            console.log('HERE', renderer)
+            ready.current = true
+            const lightEntity = new Entity(undefined, 'light')
+            const light = new DirectionalLightComponent()
+            light.direction = [0, 100, 100]
+            light.shadowMap = false
+            console.log(lightEntity.components)
+            lightEntity.components[COMPONENTS.DIRECTIONAL_LIGHT] = light
+            Promise.all([import('../../static/assets/Sphere.json'), import('../../static/assets/Cube.json')])
+                .then(r => {
+                    const [sphereMesh, cubeData] = r
+                    const sphere = initializeMesh(sphereMesh, gpu, IDS.SPHERE, 'Sphere', setMeshes)
+                    const cube = initializeMesh(cubeData, gpu, IDS.CUBE, 'Cube', setMeshes, undefined, true)
+                    const toLoad = [
+                        quickAccess.sampleSkybox,
+                        lightEntity,
+                    ]
+                    if (sphere)
+                        toLoad.push(sphere)
+                    if (cube)
+                        toLoad.push(cube)
+                    dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: toLoad})
+                })
 
-    useEffect(() => {
-        renderer.cameraData.useBackupCamera = true
-        renderer.camera.radius = 3
-
-        if (!initialized && focused) {
-            setInitialized(true)
         }
-    }, [initialized, focused])
+    }, [renderer])
+
     useEffect(() => {
-        if (focused)
+        if (renderer) {
+            renderer.cameraData.useBackupCamera = true
+            renderer.camera.radius = 3
+            if (!initialized)
+                setInitialized(true)
+        }
+    }, [initialized])
+
+    const update = useCallback(() => {
+        if (initialized)
             renderer.updatePackage(
                 entities,
                 materials,
@@ -69,38 +77,33 @@ export default function useMinimalEngine() {
                     distortion: false,
                     distortionStrength: 1,
                     chromaticAberration: true,
-                    chromaticAberrationStrength: .5,
+                    chromaticAberrationStrength: .3,
 
                     fxaa: true,
-                    meshes,
                     gamma: 1.8,
-                    exposure: 1,
+                    exposure: .9,
                     materials: [],
                     noRSM: true,
                     shadingModel: SHADING_MODELS.DETAIL,
 
                     bloom: true,
                     filmGrain: true,
-                    filmGrainStrength: .1,
-                    bloomStrength: .1,
+                    filmGrainStrength: .05,
+                    bloomStrength: .08,
                     bloomThreshold: .75,
                     selected: []
-                },
-                [],
-                undefined,
-                undefined,
-                true)
+                }, [], undefined, undefined, true)
     }, [
         meshes, materials,
         entities, gpu,
         renderer,
         target,
-        initialized,
-        focused
+        initialized
     ])
 
-
+    useEffect(update, [update])
     return {
+        update,
         focused, setFocused,
         load,
         entities, dispatchEntities,

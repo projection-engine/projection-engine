@@ -12,6 +12,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
     const {session} = require('electron')
 
+    console.log('HERE')
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
         callback({
             responseHeaders: {

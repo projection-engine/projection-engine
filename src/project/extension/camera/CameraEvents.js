@@ -1,6 +1,6 @@
 import EditorCamera from "./EditorCamera";
 import KEYS from "../../engine/templates/KEYS";
-import {rotateY} from "../../../components/viewport/transformCamera";
+import {rotateY} from "../../components/viewport/transformCamera";
 
 const BUTTON_LEFT = 0
 export default function CameraEvents(c, canvas, onClick) {

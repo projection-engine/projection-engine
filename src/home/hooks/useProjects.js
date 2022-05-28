@@ -1,7 +1,10 @@
 import {AlertProvider} from "@f-ui/core";
 import {useContext, useEffect, useRef, useState} from "react";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import AsyncFS from "../../components/AsyncFS";
+import AsyncFS from "../../project/utils/AsyncFS";
+
+const path = window.require("path")
+import FileSystem from "../../project/utils/files/FileSystem";
 
 export default function useProjects() {
     const [projects, setProjects] = useState([])
@@ -16,20 +19,22 @@ export default function useProjects() {
         alert.pushAlert('Loading projects', 'info')
         const [e, res] = await AsyncFS.readdir(path)
         if (!(await AsyncFS.exists(path))) await AsyncFS.mkdir(path)
+
         if (!e) {
             const data = []
             for (let i in res) {
                 const f = res[i]
                 let filename = path + f;
                 const [_, stat] = await AsyncFS.lstat(filename)
+                console.log(await AsyncFS.lstat(filename))
                 if (stat && stat.isDirectory) {
                     const [e1, meta] = await AsyncFS.read(filename + '/.meta')
                     const [e2, settings] = await AsyncFS.read(filename + '/.settings')
-                    const parts = filename.split('\\')
+                    const parts = filename.split(FileSystem.sep)
                     data.push({
                         id: parts.pop(),
-                        meta:meta ? JSON.parse(meta) : undefined,
-                        settings:settings ? JSON.parse(settings) : undefined
+                        meta: meta ? JSON.parse(meta) : undefined,
+                        settings: settings ? JSON.parse(settings) : undefined
                     })
                 }
             }
@@ -48,12 +53,14 @@ export default function useProjects() {
 
         let b = localStorage.getItem('basePath')
         if (localStorage.getItem('basePath') === null) {
-            b = window.require("os").homedir() + '\\ProjectionEngineProjects\\'
+            b = window.require("os").homedir() + path.sep + 'ProjectionEngineProjects' + path.sep
             localStorage.setItem('basePath', b)
         }
-        AsyncFS.mkdir(b).catch()
-        setStartPath(b + '\\projects\\')
-        refresh(b + '\\projects\\').catch()
+        AsyncFS.mkdir(b).then(res => {
+            console.log(res)
+        })
+        setStartPath(b + 'projects')
+        refresh(b + 'projects' + FileSystem.sep).catch()
 
     }, [])
 

@@ -4,10 +4,11 @@ import {useCallback, useContext, useEffect} from "react";
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../utils/workers/ProjectLoader";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
+import FileSystem from "../utils/files/FileSystem";
 
 
-export default function useSerializer(engine, setAlert, settings, id, quickAccess, currentTab) {
+export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
 
     const load = useContext(LoaderProvider)
     const fileSystem = quickAccess.fileSystem
@@ -19,17 +20,16 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         let promise = []
 
         if (id) {
-
             const canvas = engine.gpu.canvas
             const preview = canvas.toDataURL()
-            const res = await fileSystem.readFile(fileSystem.path + '\\.meta')
+            const res = await fileSystem.readFile(fileSystem.path + FileSystem.sep + '.meta')
             if (res) {
                 const old = JSON.parse(res.toString())
                 await fileSystem
                     .updateProject(
                         {
                             ...old,
-                            preview: currentTab === 0 ? preview : old.preview,
+                            preview: preview,
                             entities: engine.entities.length,
                             meshes: engine.meshes.length,
                             materials: engine.materials.length,
@@ -55,7 +55,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             await Promise.all(all.map(a => {
                 return new Promise(async (resolve1) => {
                     if (a && !engine.entities.find(e => e.id === a.id))
-                        resolve1(await fileSystem.deleteFile(fileSystem.path + '\\logic\\' + a.id + '.entity', true))
+                        resolve1(await fileSystem.deleteFile(fileSystem.path + FileSystem.sep + 'logic' + FileSystem.sep +  a.id + '.entity', true))
                     else
                         resolve1()
                 })

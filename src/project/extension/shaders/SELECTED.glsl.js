@@ -7,7 +7,7 @@
 // uniform mat4 transformMatrix;
 // uniform mat4 projectionMatrix;
 //
-// void main(){
+// void editor(){
 //     gl_Position = projectionMatrix * viewMatrix * transformMatrix * vec4(position + normalize(normal) * .1,1.0);
 // }
 // `

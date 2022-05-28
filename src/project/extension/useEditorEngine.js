@@ -1,12 +1,12 @@
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import useHistory from "../hooks/useHistory";
 import {HISTORY_ACTIONS} from "../hooks/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 
 
-export default function useEditorEngine(canExecutePhysicsAnimation, settings,  canStart, setAlert) {
+export default function useEditorEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
@@ -44,7 +44,8 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
                 payload: {key: COMPONENTS.TRANSFORM, entityID: selected[0], data: e.components[COMPONENTS.TRANSFORM]}
             })
     }
-    useEffect(() => {
+
+    const update = useCallback(() => {
         if (renderer && canStart && canRender) {
             renderer.gizmo = settings.gizmo
             renderer?.updatePackage(
@@ -58,7 +59,6 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
                 false
             )
         }
-
     }, [
         canRender,
         canExecutePhysicsAnimation,
@@ -68,7 +68,9 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings,  c
         settings, canStart
     ])
 
+    useEffect(update, [update])
     return {
+        update,
         returnChanges, forwardChanges,
         dispatchChanges,
         lockedEntity, setLockedEntity,

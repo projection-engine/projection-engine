@@ -16,6 +16,7 @@ export default function WindowEvents() {
             maximize: undefined,
         }
 
+    console.log('WAIT')
     prepareHomeWindow()
     initEvents(mainWindow, maximizeEventHome, minimizeEventHome, closeEventHome)
     ipcMain.on('switch-window', onSwitchCall)

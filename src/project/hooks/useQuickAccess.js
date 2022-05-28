@@ -7,7 +7,7 @@ import COMPONENTS from "../engine/templates/COMPONENTS";
 import SkyboxComponent from "../engine/components/SkyboxComponent";
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
 import RenderingPackager from "../engine/RenderingPackager";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 import VBO from "../engine/instances/VBO";
 import ShaderInstance from "../engine/instances/ShaderInstance";
 import * as shaderCodeSkybox from "../engine/shaders/CUBE_MAP.glsl";
@@ -54,7 +54,7 @@ export default function useQuickAccess(projectID, load) {
 
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split('\\'))
+                        const split = (i.path.split(FileSystem.sep ))
                         resolve({
                             type: 'image',
                             registryID: i.id,
@@ -65,7 +65,7 @@ export default function useQuickAccess(projectID, load) {
 
                 promises.push(...meshesReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split('\\'))
+                        const split = (i.path.split(FileSystem.sep))
                         resolve({
                             type: 'mesh',
                             registryID: i.id,
@@ -76,7 +76,7 @@ export default function useQuickAccess(projectID, load) {
                 }))
                 promises.push(...materialsReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split('\\'))
+                        const split = (i.path.split(FileSystem.sep ))
                         resolve({
                             type: 'material',
                             registryID: i.id,
@@ -86,7 +86,7 @@ export default function useQuickAccess(projectID, load) {
                 }))
                 promises.push(...scriptReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split('\\'))
+                        const split = (i.path.split(FileSystem.sep))
                         resolve({
                             type: 'flowRaw',
                             registryID: i.id,

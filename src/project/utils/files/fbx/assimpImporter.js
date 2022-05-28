@@ -42,13 +42,13 @@ export default function assimpImporter(resolvePath, newRoot, file, options, crea
                                 new Promise(r => {
 
                                     fs.writeFile(
-                                        resolvePath(newRoot + `\\${mesh.name + ' - ' + m + FILE_TYPES.MESH}`),
+                                        resolvePath(newRoot + FileSystem.sep + `${mesh.name + ' - ' + m + FILE_TYPES.MESH}`),
                                         lzwEncode(jsonText),
                                         (err) => {
                                             r()
                                         });
                                 }),
-                                createRegistryEntry(undefined, newRoot.replace(path + '\\assets\\', '') + `\\${mesh.name + ' - ' + m + FILE_TYPES.MESH}`)
+                                createRegistryEntry(undefined, newRoot.replace(path + '\\assets\\', '') + FileSystem.sep + `${mesh.name + ' - ' + m + FILE_TYPES.MESH}`)
                             ]
                         } else if (mesh) {
                             rejectedMeshes.push({
