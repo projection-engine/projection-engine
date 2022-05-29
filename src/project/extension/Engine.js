@@ -14,7 +14,6 @@ import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem";
 
 
 export default class Engine extends Renderer {
-    recompiled = false
     gizmo
     cameraData = {}
     #overrideMaterial
@@ -101,17 +100,19 @@ export default class Engine extends Renderer {
 
     updateOverrideMaterial() {
         console.log(this.data.meshes)
-        const entity = this.data.meshes.find(m => m.id === this.params.selected[0])
+        const entity = this.data.meshes.find(m => m.id === this.params.selected[0] || m.id === this.changedEntity?.id)
         const comp = entity ? entity.components[COMPONENTS.MATERIAL] : undefined
-        if (comp) {
-            if (this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance) {
-                this.changedEntity = {id: entity.id, previousMaterial: comp.materialID}
-                comp.materialID = this.overrideMaterial?.id
-            } else if (this.changedEntity) {
-                comp.materialID = this.changedEntity.previousMaterial
-                this.changedEntity = undefined
-            }
+
+        if (this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance && !this.changedEntity) {
+            console.log(comp.materialID, this.overrideMaterial?.id)
+            this.changedEntity = {id: entity.id, previousMaterial: comp.materialID}
+            comp.materialID = this.overrideMaterial?.id
+        } else if (this.changedEntity) {
+            console.log(this.changedEntity, comp.materialID)
+            comp.materialID = this.changedEntity.previousMaterial
+            this.changedEntity = undefined
         }
+
     }
 
     set overrideMaterial(data) {
@@ -123,7 +124,7 @@ export default class Engine extends Renderer {
         return this.#overrideMaterial
     }
 
-    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd, useBackupCamera = false) {
+    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
@@ -133,7 +134,6 @@ export default class Engine extends Renderer {
         else
             this.cameraData.cameraEvents.stopTracking()
 
-        this.cameraData.useBackupCamera = useBackupCamera
         this._changed = true
         this.camera.fov = params.fov
         this.camera.distortion = params.distortion

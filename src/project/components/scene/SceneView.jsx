@@ -153,12 +153,14 @@ export default function SceneView(props) {
                     multiSelect={true}
                     searchable={true}
                     draggable={true}
-                    options={[{
-                        requiredTrigger: 'data-self',
-                        label: 'Create folder',
-                        icon: <span className={'material-icons-round'}>create_new_folder</span>,
-                        onClick: () => createFolder()
-                    },
+
+                    options={[
+                        {
+                            requiredTrigger: 'data-self',
+                            label: 'Create folder',
+                            icon: <span className={'material-icons-round'}>create_new_folder</span>,
+                            onClick: () => createFolder()
+                        },
                         {
                             requiredTrigger: 'data-node',
                             label: 'Remove entity',
@@ -173,7 +175,24 @@ export default function SceneView(props) {
                                 })
 
                             }
-                        }]}
+                        },
+                        {
+                            requiredTrigger: 'data-node',
+                            label: 'Focus',
+                            onClick: (target) => {
+                                const entity = props.engine.entities.find(e => e.id === target.getAttribute('data-node'))
+                                const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
+                                if (entity && comp) {
+                                    const t = comp.translation
+
+                                    props.engine.renderer.camera.radius = 10
+                                    props.engine.renderer.camera.centerOn = t
+
+                                    props.engine.renderer.camera.updateViewMatrix()
+                                }
+                            }
+                        }
+                    ]}
                     onDrop={(event, target) => {
                         event.preventDefault()
                         try {

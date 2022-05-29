@@ -65,6 +65,7 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                             />
                         ),
                         close: () => {
+                            engine.renderer.overrideMaterial = undefined
                             setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
                             refreshData(FILE_TYPES.MATERIAL, o.registryID, quickAccess.fileSystem, engine, load)
                         }

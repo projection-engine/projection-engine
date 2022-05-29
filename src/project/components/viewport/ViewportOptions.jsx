@@ -60,7 +60,6 @@ export default function ViewportOptions(props) {
                     left: '4px',
                     right: 'unset',
                     top: '36px',
-                    // transform: 'translateY(-50%)',
                     gap: '8px',
                     maxHeight: 'calc(100% - 35px)',
                     transform: hidden ? 'translateX(calc(-100% - 16px))' : undefined
