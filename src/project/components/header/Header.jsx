@@ -1,10 +1,10 @@
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
-import styles from "../styles/Options.module.css";
+import styles from "./styles/Options.module.css";
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import groupBy from "../../../engine/utils/groupBy";
+import groupBy from "../../engine/utils/groupBy";
 
-export default function Options(props) {
+export default function Header(props) {
 
     const groups = useMemo(() => {
         if (props.options)
@@ -15,7 +15,6 @@ export default function Options(props) {
 
     return (
         <div className={styles.options}>
-
             {Object.keys(groups).map((g, i) => (
                 <React.Fragment key={i + '-group'}>
                     {i > 0 ? <div className={styles.divider}/> : null}
@@ -61,7 +60,7 @@ export default function Options(props) {
         </div>
     )
 }
-Options.propTypes = {
+Header.propTypes = {
     options: PropTypes.array
 
 }

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import styles from '../styles/Forms.module.css'
-import {Checkbox} from "@f-ui/core";
+import {Button, Checkbox} from "@f-ui/core";
 import React, {useContext, useEffect, useRef} from "react";
 
 import Selector from "../../../../components/selector/Selector";
@@ -9,16 +9,17 @@ import useDirectState from "../../../hooks/useDirectState";
 import ColorPicker from "../../../../components/color/ColorPicker";
 
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import LoaderProvider from "../../../../components/loader/LoaderProvider";
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import FileSystem from "../../../utils/files/FileSystem";
+import openFile from "../../../utils/openFile";
+import OpenFileProvider from "../../../hooks/OpenFileProvider";
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
 
 
 export default function Material(props) {
     const [state, clear] = useDirectState({})
     const fileSystem = props.quickAccess.fileSystem
-    const load = useContext(LoaderProvider)
     const lastID = useRef()
 
     useEffect(() => {
@@ -204,14 +205,14 @@ export default function Material(props) {
         }
     }
 
-
+    const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider);
     return (
         <>
-            <AccordionTemplate title={'Material'}>
+            <AccordionTemplate title={'Material'} type={"grid"}>
                 <Selector
                     selected={state.currentMaterial}
                     type={'material'}
-                    handleChange={async src => {
+                    handleChange={async (src, clear)=> {
                         if (src) {
                             const file = await loadFile(src)
                             if (file && file.response) {
@@ -223,9 +224,25 @@ export default function Material(props) {
                                 state.uniforms = file.response.uniforms
                                 state.currentMaterial = src
                             }
-                        } else
+                            else {
+                                props.setAlert({message: 'Error loading material', type: 'error'})
+                                clear()
+                            }
+                        } else {
+                            props.setAlert({message: 'Error loading material', type: 'error'})
                             props.submit()
+                            clear()
+                        }
                     }}/>
+                {state.currentMaterial ? (
+                    <Button
+                        styles={{background: 'var(--fabric-background-primary'}}
+                        className={styles.button}
+                        onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
+                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>edit</span>
+                        Edit material
+                    </Button>
+                ) : null}
             </AccordionTemplate>
             {props.selected.uniforms?.length > 0 ? (
                 <Checkbox

@@ -6,7 +6,7 @@ import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
 import importScript from "./importScript";
 import importScene from "./importScene";
 
-export default async function handleDrop(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
+export default async function importData(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
     const entities = [], meshes = []
     if (asID)
         entities.push(event)
@@ -16,6 +16,7 @@ export default async function handleDrop(event, fileSystem, engine, setAlert, lo
         } catch (e) {
         }
 
+    console.log(entities)
     for (let i = 0; i < entities.length; i++) {
         const data = entities[i]
         const res = await fileSystem.readRegistryFile(data)

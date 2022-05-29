@@ -6,8 +6,9 @@
     background-color: var(--fabric-background-quaternary);
     display: flex;
     flex-direction: column;
-    padding: 2px;
+    padding: 3px;
     user-select: none;
+ 
 }
 
 .viewportWrapper{
@@ -15,8 +16,6 @@
     height: 100%;
     overflow: hidden;
     display: flex;
-    gap: 0;
-    padding: 3px 0 0 0;
 
 }
 

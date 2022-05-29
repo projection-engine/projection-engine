@@ -7,18 +7,16 @@ import {readFile} from "../../events/FSEvents";
 import loadData from "./loadData";
 import cleanUpRegistry from "./cleanUp";
 import CHANNELS from "./CHANNELS";
+import PathSep from "../../PathSep";
 
-const {ipcMain} = require('electron')
 export default async function loader(projectPath, projectID, listenID, sender) {
     await cleanUpRegistry(projectPath)
     const {settings, meta, entities} = await loadData(projectPath)
     sender.send(CHANNELS.META_DATA + '-' + listenID, {
-        meta,
-        settings,
-        entities
+        meta, settings, entities
     })
 
-    let meshes = [...new Set(entities.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components[COMPONENTS.MESH].meshID))],
+    const meshes = [...new Set(entities.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components[COMPONENTS.MESH].meshID))],
         materials = [...new Set(entities.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined))],
         scripts = entities.map(e => {
             const comp = e.data.components[COMPONENTS.SCRIPT]
@@ -26,18 +24,16 @@ export default async function loader(projectPath, projectID, listenID, sender) {
                 if (comp.registryID) return comp.registryID
                 return comp.scripts
             } else return e.data.blueprintID
-        }).filter(e => e !== undefined),
-        toLoadScripts = [...new Set(scripts.flat())],
-        scriptsToLoad = (await loadScripts(toLoadScripts, entities.length, true, projectPath)).filter(e => e !== undefined),
+        }).filter(e => e !== undefined), toLoadScripts = [...new Set(scripts.flat())],
+        scriptsToLoad = (await loadScripts(toLoadScripts, entities.length, true, projectPath)).filter(e => e !== undefined)
+    let levelBlueprint = (await readFile(projectPath + PathSep.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT))[1]
 
-        levelBlueprint = (await readFile(projectPath + '\\levelBlueprint' + FILE_TYPES.SCRIPT))[1]
+    console.log(meshes)
     if (levelBlueprint) {
         levelBlueprint = JSON.parse(levelBlueprint)
         scriptsToLoad.push({
             script: {
-                id: projectID,
-                executors: levelBlueprint.response,
-                name: levelBlueprint.name
+                id: projectID, executors: levelBlueprint.response, name: levelBlueprint.name
             }
         })
     }

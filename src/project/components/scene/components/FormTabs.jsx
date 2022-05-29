@@ -15,7 +15,7 @@ export default function FormTabs(props) {
                 props.setCurrentTab(components.length - 1)
                 return []
             }
-            return components.map(c => getComponentInfo(c))
+            return components.map(c => getComponentInfo(c)).filter(c => Object.keys(c).length > 0)
         }
         return []
     }, [props.entity, props.currentTab])
@@ -45,7 +45,7 @@ export default function FormTabs(props) {
                 onClick={() => props.setCurrentTab('-2')}
             >
                 <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>image</span>
-                <ToolTip content={'Display'}/>
+                <ToolTip content={'Display'} animation={'0ms'}/>
             </Button>
             <Button
                 className={styles.button}
@@ -53,7 +53,7 @@ export default function FormTabs(props) {
                 onClick={() => props.setCurrentTab('-3')}
             >
                 <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
-                <ToolTip content={'Editor camera'}/>
+                <ToolTip content={'Editor camera'} animation={'0ms'}/>
             </Button>
 
             <Button
@@ -62,7 +62,7 @@ export default function FormTabs(props) {
                 onClick={() => props.setCurrentTab('-1')}
             >
                 <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>tv</span>
-                <ToolTip content={'Graphics'}/>
+                <ToolTip content={'Graphics'} animation={'0ms'}/>
             </Button>
             {props.entity ? <div className={styles.divider}/> : undefined}
             {tabs.map((t, i) => (
@@ -72,7 +72,7 @@ export default function FormTabs(props) {
                         className={styles.button}
                         onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
                         {t.icon}
-                        <ToolTip content={t.label}/>
+                        <ToolTip content={t.label} animation={'0ms'}/>
                     </Button>
                 </React.Fragment>
 

@@ -158,7 +158,7 @@ export default class Node {
                     fs.writeFile(
                         projectPath + path.sep + REG_PATH + path.sep + regID + FILE_TYPES.REGISTRY,
                         JSON.stringify({
-                            path: path.resolve(pathName).replace(path.resolve(projectPath + '\\assets') + path.sep, ''),
+                            path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + 'assets') + path.sep, ''),
                             id: regID
                         }),
                         (e2) => {

@@ -8,6 +8,7 @@ import {useState} from "react";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import TransformComponent from "../engine/components/TransformComponent";
 import KEYS from "../engine/templates/KEYS";
+import RENDER_TARGET from "../components/viewport/hooks/RENDER_TARGET";
 
 export default function useEditorKeys(props, controlProvider) {
     const [toCopy, setToCopy] = useState([])
@@ -71,10 +72,13 @@ export default function useEditorKeys(props, controlProvider) {
     }
 
     useHotKeys({
-        focusTarget: props.id + '-editor-wrapper',
-        disabled: controlProvider.tab !== 0 || props.executingAnimation === true,
+        focusTarget: RENDER_TARGET,
+        disabled: props.executingAnimation === true,
         actions: [
-            {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => props.serializer.save()},
+            {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => {
+                console.log(props)
+                    props.serializer.save()
+                }},
             {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
             {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
             {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},

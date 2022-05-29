@@ -1,3 +1,5 @@
+import PathSep from "../../../PathSep";
+
 const fs = require('fs')
 const path = require('path')
 const atob = require('atob')
@@ -15,11 +17,9 @@ export default class Buffer {
             })
         else {
             return new Promise(resolve => {
-                fs.readFile(path.resolve(this.basePath + '\\' + this.data.uri),  {encoding: 'base64'}, (e, r) => {
-                    console.log(e, path.resolve(this.basePath + '\\' + this.data.uri))
-                    if(!e) {
+                fs.readFile(path.resolve(this.basePath + PathSep.sep +  this.data.uri),  {encoding: 'base64'}, (e, r) => {
+                    if(!e)
                         this.data = this.#getBufferData(r.toString())
-                    }
                     resolve()
                 })
             })

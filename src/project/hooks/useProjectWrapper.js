@@ -3,12 +3,11 @@ import LoaderProvider from "../../components/loader/LoaderProvider";
 import useEditorEngine from "../extension/useEditorEngine";
 import useQuickAccess from "./useQuickAccess";
 import useSerializer from "./useSerializer";
-import {useCallback, useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import EVENTS from "../utils/EVENTS";
 import ProjectLoader from "../utils/workers/ProjectLoader";
 import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
 import COMPONENTS from "../engine/templates/COMPONENTS";
-import WebBuilder from "../utils/builder/WebBuilder";
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 import MeshInstance from "../engine/instances/MeshInstance";
 import {v4} from "uuid";
@@ -24,11 +23,11 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
     const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(false)
-    const engine = useEditorEngine(executingAnimation, settings,  initialized, setAlert)
+    const engine = useEditorEngine(executingAnimation, settings, initialized, setAlert)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
-    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess )
-
+    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess)
+    const [openTab, setOpenTab] = useState(0)
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (gpu && !loading) {
@@ -38,13 +37,14 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
             const listenID = v4().toString()
             ipcRenderer.once(CHANNELS.META_DATA + '-' + listenID, async (ev, res) => {
+
                 if (res.settings && res.settings.data)
                     Object.keys(res.settings.data).forEach(key => {
                         settings[key] = res.settings.data[key]
                     })
                 if (res.meta && res.meta.data)
                     settings.name = res.meta.data.name
-                const entities = await Promise.all(res.entities.map(e => ProjectLoader.mapEntity(e.data, gpu, quickAccess.fileSystem)))
+                const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data, gpu, quickAccess.fileSystem) : undefined).filter(e => e))
                 engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
 
                 setInitialized(true)
@@ -52,6 +52,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                 load.finishEvent(EVENTS.PROJECT_DATA)
             })
             ipcRenderer.on(CHANNELS.MESH + '-' + listenID, (ev, res) => {
+                console.log(res)
                 engine.setMeshes(prev => {
                     return [...prev, new MeshInstance({...res, gpu})]
                 })
@@ -85,19 +86,16 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
             }
         })
     }, [engine.entities])
-    const exporter = useMemo(() => {
-        if (quickAccess.fileSystem)
-            return new WebBuilder(quickAccess.fileSystem)
-        return undefined
-    }, [])
+
 
 
     return {
-        exporter, entitiesWithMeshes,
+        entitiesWithMeshes,
         load, settings,
         setAlert, setFilesLoaded,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
-        quickAccess, filesLoaded
+        quickAccess, filesLoaded,
+        openTab, setOpenTab
     }
 }

@@ -30,9 +30,7 @@ export default function useHotKeys(props, listeners=[]) {
         }
     }
     const handleMouseDown = (event) => {
-        const target = typeof props.focusTarget === 'string' ? document.getElementById(props.focusTarget) : props.focusTarget
-
-        if (target && document.elementsFromPoint(event.clientX, event.clientY).includes(target))
+        if (event.target.id === props.focusTarget)
             setFocused(true)
         else
             setFocused(false)

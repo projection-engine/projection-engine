@@ -2,11 +2,11 @@ import EVENTS from "./EVENTS";
 import ProjectLoader from "./workers/ProjectLoader";
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
 import FileSystem from "./files/FileSystem";
-import {ROUTER_TYPES} from "../components/router/TabRouter";
 
-export default async function refreshData(type, registryID, tabIndex, fileSystem, engine, load) {
+
+export default async function refreshData(type, registryID, fileSystem, engine, load) {
     switch (type) {
-        case ROUTER_TYPES.BLUEPRINT:
+        case FILE_TYPES.SCRIPT:
             load.pushEvent(EVENTS.LOADING)
             const newScript = await ProjectLoader.loadScripts([registryID], fileSystem, [], false)
             if (newScript[0])
@@ -19,7 +19,7 @@ export default async function refreshData(type, registryID, tabIndex, fileSystem
                 })
             load.finishEvent(EVENTS.LOADING)
             break
-        case ROUTER_TYPES.MATERIAL:
+        case FILE_TYPES.MATERIAL:
             load.pushEvent(EVENTS.LOADING)
             const newMat = await ProjectLoader.loadMaterials([registryID], fileSystem, engine.gpu, engine.materials)
             if (newMat[0])
@@ -32,7 +32,7 @@ export default async function refreshData(type, registryID, tabIndex, fileSystem
                 })
             load.finishEvent(EVENTS.LOADING)
             break
-        case ROUTER_TYPES.LEVEL:
+        default:
             const res = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT, 'json')
             engine.setScripts(prev => {
                 return prev.map(p => {

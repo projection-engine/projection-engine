@@ -1,19 +1,22 @@
-import React from "react";
+import React, {useMemo, useState} from "react";
 import styles from './styles/Project.module.css'
 import QuickAccessProvider from "./hooks/QuickAccessProvider";
-import TabRouter from "./components/router/TabRouter";
 import {ENTITY_ACTIONS} from "./engine/useEngineEssentials";
 import SettingsProvider from "./hooks/SettingsProvider";
 import FilesView from "./components/files/FilesView";
 import Editor from "./components/editor/Editor";
 import EntitiesProvider from "./hooks/EntitiesProvider";
-import refreshData from "./utils/refreshData";
 import Frame from "../components/frame/Frame";
 import useProjectWrapper from "./hooks/useProjectWrapper";
 import FileSystem from "./utils/files/FileSystem";
-import {HashRouter, Route, Routes} from "react-router-dom";
-import PropTypes from "prop-types";
 import FILE_TYPES from "../../public/project/glTF/FILE_TYPES";
+import useOptions from "./components/editor/hooks/useOptions";
+import Header from "./components/header/Header";
+import Tabs from "../components/tabs/Tabs";
+import OpenFileProvider from "./hooks/OpenFileProvider";
+import BlueprintView from "./components/blueprints/scripts/BlueprintView";
+import MaterialView from "./components/blueprints/material/MaterialView";
+import refreshData from "./utils/refreshData";
 
 const {shell} = window.require('electron')
 export default function Project({id, meta, events, initialized, setInitialized, settings}) {
@@ -26,11 +29,71 @@ export default function Project({id, meta, events, initialized, setInitialized, 
         engine,
         quickAccess,
         setExecutingAnimation,
-        executingAnimation
+        executingAnimation,
+        openTab, setOpenTab
     } = useProjectWrapper(id, initialized, setInitialized, settings)
+    const [openFiles, setOpenFiles] = useState([])
+    const options = useOptions(
+        executingAnimation,
+        setExecutingAnimation,
+        engine,
+        serializer.save,
+        () => null, // TODO
+        setAlert
+    )
+    const submitPackage = (pack, close, previewImage, isLevel, registryID) => {
+        console.log(pack, close, previewImage, isLevel, registryID)
+        quickAccess.fileSystem
+            .updateAsset(isLevel ? FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT : registryID, pack, previewImage)
+            .then(_ => setAlert({type: 'success', message: 'Saved'}))
+            .catch(_ => setAlert({type: 'error', message: 'Some error occurred'}))
+    }
 
+    const tabs = useMemo(() => {
+        return openFiles.map(o => {
+            switch ('.' + o.type) {
+                case FILE_TYPES.MATERIAL:
+                    return {
+                        label: o.label,
+                        icon: 'texture',
+                        children: (
+                            <MaterialView
+                                name={o.label}
+                                engine={engine}
+                                registryID={o.registryID}
+                                submitPackage={(pack, close, previewImage, isLevel) => submitPackage(pack, close, previewImage, isLevel, o.registryID)}
+                            />
+                        ),
+                        close: () => {
+                            setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
+                            refreshData(FILE_TYPES.MATERIAL, o.registryID, quickAccess.fileSystem, engine, load)
+                        }
+                    }
+                case FILE_TYPES.SCRIPT:
+                    return {
+                        label: o.label,
+                        icon: 'code',
+                        children: (
+                            <BlueprintView
+                                name={o.label}
+                                engine={engine}
+                                submitPackage={(pack, close, previewImage, isLevel) => submitPackage(pack, close, previewImage, isLevel, o.registryID)}
+                                setAlert={setAlert}
+                                id={o.registryID}
+                            />
+                        ),
+                        close: () => {
+                            setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
+                            refreshData(FILE_TYPES.SCRIPT, o.registryID, quickAccess.fileSystem, engine, load)
+                        }
+                    }
+                default:
+                    return undefined
+            }
+        }).filter(e => e)
+    }, [openFiles])
     return (
-        <HashRouter>
+        <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
             <EntitiesProvider.Provider value={{
                 entities: entitiesWithMeshes, removeEntities: (entities) => {
                     engine.setSelected([])
@@ -77,9 +140,9 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                             label={meta?.name}/>
 
                         <div className={styles.wrapper}>
-                            <TabRouter
-                                refreshData={(type, regID) => refreshData(type, regID, quickAccess.fileSystem, engine, load)}
-                                mainProps={{
+                            <Header options={options}/>
+                            <Editor
+                                {...{
                                     setExecutingAnimation: setExecutingAnimation,
                                     executingAnimation: executingAnimation,
                                     engine: engine,
@@ -88,26 +151,31 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                                     setAlert: setAlert,
                                     settings: settings,
                                     serializer: serializer,
-                                }}
-                                levelProps={{
-                                    engine: engine, id: id
-                                }}
-                                submitPackage={(pack, close, previewImage, isLevel) => {
-                                    quickAccess.fileSystem
-                                    .updateAsset(isLevel ? FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT : file.registryID, pack, previewImage)
-                                    .then(_ => setAlert({type: 'success', message: 'Saved'}))
-                                    .catch(_ => setAlert({type: 'error', message: 'Some error occurred'}))
-                                }}
-                            />
-                            <FilesView
-                                setAlert={setAlert}
-                                id={id}
+                                }}/>
+
+                            <Tabs
+                                open={openTab}
+                                setOpen={setOpenTab}
+                                orientation={'vertical'}
+                                tabs={[
+                                    {
+                                        label: 'Files',
+                                        icon: 'folder',
+                                        children: (
+                                            <FilesView
+                                                setAlert={setAlert}
+                                                id={id}
+                                            />
+                                        )
+                                    },
+                                    ...tabs
+                                ]}
                             />
                         </div>
                     </QuickAccessProvider.Provider>
                 </SettingsProvider.Provider>
             </EntitiesProvider.Provider>
-        </HashRouter>
+        </OpenFileProvider.Provider>
     )
 }
 

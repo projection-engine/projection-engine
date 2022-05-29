@@ -163,7 +163,7 @@ export default class FileSystem {
 
     async updateEntity(entity, id) {
         const p = FileSystem.resolvePath(this.path + FileSystem.sep + 'logic')
-        await AsyncFS.write(FileSystem.resolvePath(p + FileSystem.sep + +id + '.entity'), entity)
+        await AsyncFS.write(FileSystem.resolvePath(p + FileSystem.sep  +id + '.entity'), entity)
     }
 
     async updateProject(meta, settings) {

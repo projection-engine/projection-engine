@@ -1,22 +1,24 @@
 
-
 .viewport {
-    
+
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: var(--fabric-background-secondary);
+    background-color: var(--fabric-background-primary);
     border-radius: 5px;
     transition: 150ms linear;
     position: relative;
-
+    border: var(--fabric-border-primary) 1px solid;
 }
-.viewport:active{
+
+.viewport:active {
     cursor: none;
 }
+
 .viewport > * {
     transition: opacity 150ms linear;
 }
+
 .button {
     display: flex;
     align-items: center;
@@ -28,14 +30,15 @@
 }
 
 
-
-.hovered{
+.hovered {
     outline: var(--fabric-accent-color) 1px dashed !important;
 }
+
 .hovered > * {
     opacity: .5;
 }
-.position{
+
+.position {
     color: var(--fabric-color-primary);
     font-size: .75rem;
 
@@ -52,11 +55,11 @@
     bottom: 4px;
     left: 4px;
     border-radius: 5px;
-  
+
 
 }
 
-.context{
+.context {
     width: 200px;
     display: grid;
     align-content: flex-start;

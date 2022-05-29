@@ -17,6 +17,8 @@ export default class Engine extends Renderer {
     recompiled = false
     gizmo
     cameraData = {}
+    #overrideMaterial
+    changedEntity = undefined
 
     constructor(gpu, resolution, systems, settings) {
         super(gpu, resolution, systems);
@@ -97,7 +99,31 @@ export default class Engine extends Renderer {
             params.setSelected([])
     }
 
-    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd, useBackupCamera=false) {
+    updateOverrideMaterial() {
+        console.log(this.data.meshes)
+        const entity = this.data.meshes.find(m => m.id === this.params.selected[0])
+        const comp = entity ? entity.components[COMPONENTS.MATERIAL] : undefined
+        if (comp) {
+            if (this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance) {
+                this.changedEntity = {id: entity.id, previousMaterial: comp.materialID}
+                comp.materialID = this.overrideMaterial?.id
+            } else if (this.changedEntity) {
+                comp.materialID = this.changedEntity.previousMaterial
+                this.changedEntity = undefined
+            }
+        }
+    }
+
+    set overrideMaterial(data) {
+        this.#overrideMaterial = data
+        this.updateOverrideMaterial()
+    }
+
+    get overrideMaterial() {
+        return this.#overrideMaterial
+    }
+
+    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd, useBackupCamera = false) {
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
@@ -121,12 +147,14 @@ export default class Engine extends Renderer {
         this.camera.bloomThreshold = params.bloomThreshold
         this.camera.gamma = params.gamma
         this.camera.exposure = params.exposure
+
+
         const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
         super.updatePackage(
             params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
             entities,
-            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
+            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : [...materials, this.overrideMaterial],
             meshes,
             {
                 ...params,
@@ -148,6 +176,7 @@ export default class Engine extends Renderer {
         )
         if (typeof params.setSelected === 'function') this.cameraData.onClick = (ck, c) => this.testClick(ck, c)
         this.start()
+        this.updateOverrideMaterial()
 
     }
 

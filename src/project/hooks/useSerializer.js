@@ -52,22 +52,22 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
         if (id) {
             await saveSettings()
             const all = await ProjectLoader.getEntities(fileSystem)
+
             await Promise.all(all.map(a => {
                 return new Promise(async (resolve1) => {
                     if (a && !engine.entities.find(e => e.id === a.id))
-                        resolve1(await fileSystem.deleteFile(fileSystem.path + FileSystem.sep + 'logic' + FileSystem.sep +  a.id + '.entity', true))
+                        resolve1(await fileSystem.deleteFile(fileSystem.path + FileSystem.sep + 'logic' + FileSystem.sep + a.id + '.entity', true))
                     else
                         resolve1()
                 })
             }))
+
             try {
                 await Promise.all(engine.entities.map(e => {
-                    return new Promise((resolve) => {
-                        const str = JSON.stringify(e)
-                        fileSystem
-                            .updateEntity(str, e.id)
-                            .then(() => resolve())
-                    })
+
+                    const str = JSON.stringify(e)
+                    console.log(e, str)
+                    return fileSystem.updateEntity(str, e.id)
                 }))
             } catch (err) {
             }

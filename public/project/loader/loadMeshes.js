@@ -8,6 +8,8 @@ export default async function loadMeshes(toLoad, projectPath, callback) {
     for (let i in toLoad) {
         const m = toLoad[i]
         const fileData = await readFromRegistry(m, projectPath)
+
+        console.log(fileData)
         if (fileData) {
             const parsed = JSON.parse(fileData)
             parsed.id = m

@@ -4,9 +4,10 @@ import FolderComponent from "../../engine/components/FolderComponent";
 import {initializeEntity} from "./importMesh";
 import MeshInstance from "../../engine/instances/MeshInstance";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
+import FileSystem from '../../utils/files/FileSystem'
 
 export default async function importScene(fileSystem, engine, reg, setAlert) {
-    const file = await fileSystem.readFile(fileSystem.path + '\\assets\\' + reg.path, 'json')
+    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + reg.path, 'json')
     console.log(file)
     if (file) {
         const folder = new Entity()
@@ -47,7 +48,7 @@ async function loopNodes(node, fileSystem, gpu, parent) {
         const primitive = node.primitives[m]
         const reg = await fileSystem.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await fileSystem.readFile(fileSystem.path + '\\assets\\' + reg.path, 'json')
+            const meshData = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + reg.path, 'json')
             console.log(meshData, reg)
             const instance = new MeshInstance({
                 ...meshData,

@@ -25,7 +25,7 @@ export default class Scene {
         createDirectory(scenePath + 'primitives')
         await Promise.all(nodes.map(n => n.write(scenePath + 'primitives' + path.sep, meshes, accessors, options)))
         await Node.writeData(
-            scenePath +  getNormalizedName(this.scene.name) + FILE_TYPES.SCENE,
+            rootPath + path.sep  +  getNormalizedName(this.scene.name) + FILE_TYPES.SCENE,
             {
                 name: this.scene.name,
                 nodes: nodes.map(n => n.childNodes())

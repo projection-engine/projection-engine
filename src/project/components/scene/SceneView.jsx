@@ -33,7 +33,6 @@ export default function SceneView(props) {
 
     const load = useContext(LoaderProvider)
     const data = useMemo(() => {
-        console.log(required)
         const toFilter = props.engine.entities.filter(d => !d.linkedTo && !required || required && d.components[required] !== undefined)
         return [{
             id: 0,
@@ -126,7 +125,8 @@ export default function SceneView(props) {
                 )
         })
     }, [required])
-    return (<div className={styles.wrapper}>
+    return (
+        <div className={styles.wrapper}>
             <div className={styles.wrapperContent} style={{overflow: 'hidden'}}>
                 <div className={[styles.header, styles.mainHeader].join(' ')}
                      style={{justifyContent: 'space-between', padding: '0 4px'}}>

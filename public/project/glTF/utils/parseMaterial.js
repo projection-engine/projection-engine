@@ -1,3 +1,5 @@
+import PathSep from "../../../PathSep";
+
 const fs = require('fs')
 const path = require('path')
 
@@ -65,7 +67,7 @@ async function loadTexture(key, basePath, texture, textures, images) {
         if (typeof imgURI.uri === 'string' && imgURI.uri.includes('data:image'))
             file = imgURI.uri
         else
-            file = await new Promise(resolve => fs.readFile(path.resolve(basePath + '\\' + imgURI.uri), {encoding: 'base64'}, (_, data) => resolve(data)))
+            file = await new Promise(resolve => fs.readFile(path.resolve(basePath + PathSep.sep +  imgURI.uri), {encoding: 'base64'}, (_, data) => resolve(data)))
         if (file) {
             return {key, data: `data:image/${imgURI.uri.split('.').pop()};base64, ` + file}
         } else

@@ -2,7 +2,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS";
 
 export default function getElementType(components, isBP){
     if(isBP)
-        return 'Blueprint'
+        return 'BlueprintView'
 
     switch (true) {
         case components[COMPONENTS.SKYBOX] !== undefined:

@@ -1,5 +1,6 @@
 import FILE_TYPES from "../glTF/FILE_TYPES";
 import {lstat, readdir, readFile} from "../../events/FSEvents";
+import PathSep from "../../PathSep";
 
 const pathRequire = require('path')
 const fs = require('fs')
@@ -19,10 +20,10 @@ export async function fromDirectory(startPath, extension) {
 
 export async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
-        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + '\\assetsRegistry\\' + fileID + FILE_TYPES.REGISTRY)))[1]
+        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + PathSep.sep + 'assetsRegistry' + PathSep.sep + fileID + FILE_TYPES.REGISTRY)))[1]
 
         if (lookUpTable) {
-            const fileData = (await readFile(projectPath + '\\assets\\' + JSON.parse(lookUpTable).path))[1]
+            const fileData = (await readFile(projectPath + PathSep.sep + 'assets' +PathSep.sep +  JSON.parse(lookUpTable).path))[1]
             if (fileData) resolve(fileData)
             else resolve(null)
         } else resolve(null)

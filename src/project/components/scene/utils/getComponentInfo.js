@@ -52,7 +52,7 @@ export default function getComponentInfo(c) {
             break
         case COMPONENTS.SCRIPT:
             res.key = c
-            res.label = 'Blueprint'
+            res.label = 'Script'
             res.icon = <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>code</span>
             break
         case COMPONENTS.PHYSICS:
