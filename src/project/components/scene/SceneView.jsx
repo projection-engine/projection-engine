@@ -2,9 +2,8 @@ import PropTypes from "prop-types";
 import styles from './styles/Scene.module.css'
 import React, {useContext, useMemo, useState} from "react";
 import TreeView from "../../../components/tree/TreeView";
-import mapToView from "./utils/mapToView";
-import useForm from "./utils/useForm";
-import QuickAccessProvider from "../../hooks/QuickAccessProvider";
+import useForm from "./hooks/useForm";
+import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider";
 import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
 import FolderComponent from "../../engine/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
@@ -12,9 +11,10 @@ import Entity from "../../engine/basic/Entity";
 import ResizableBar from "../../../components/resizable/ResizableBar";
 import FormTabs from "./components/FormTabs";
 import COMPONENTS from "../../engine/templates/COMPONENTS";
-import {HISTORY_ACTIONS} from "../../hooks/historyReducer";
+import {HISTORY_ACTIONS} from "../../utils/hooks/historyReducer";
 import LoaderProvider from "../../../components/loader/LoaderProvider";
 import getComponentInfo from "./utils/getComponentInfo";
+import useHierarchy from "./useHierarchy";
 
 const getHierarchy = (start, all) => {
     const result = []
@@ -25,79 +25,21 @@ const getHierarchy = (start, all) => {
     result.push(...direct)
     return result
 }
+const worker = new Worker(new URL('./hooks/hierarchy.js', import.meta.url));
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState('-2')
-    const [allHidden, setAllHidden] = useState(false)
     const [required, setRequired] = useState()
-
+    const data = useHierarchy(props.engine, required,  worker)
     const load = useContext(LoaderProvider)
-    const data = useMemo(() => {
-        const toFilter = props.engine.entities.filter(d => !d.linkedTo && !required || required && d.components[required] !== undefined)
-        return [{
-            id: 0,
-            label: 'Scene',
-            children: toFilter.map(f => {
-                return mapToView(
-                    f,
-                    props.engine.entities,
-                    (el, e) => {
-                        if (e && e.ctrlKey) {
-                            props.engine.setSelected(prev => {
-                                const indexFound = prev.findIndex(f => f === el.id)
-                                if (indexFound === -1) return [...prev, el.id]
-                                else {
-                                    let n = [...prev]
-                                    n.splice(indexFound, 1)
-                                    return n
-                                }
-                            })
-                        } else if (!el.components[COMPONENTS.FOLDER])
-                            props.engine.setSelected([el.id])
-                        else if (el.components[COMPONENTS.FOLDER]) {
-                            props.engine.setSelected(getHierarchy(el, props.engine.entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
-                        }
-                    },
-                    props.engine,
-                    setAllHidden,
-                    required)
-            }),
-            icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
-            type: 'Scene',
-            phantomNode: true,
-            highlight: true,
-            onHide: () => {
-                let newEntities
-                if (allHidden) {
-                    setAllHidden(false)
-                    newEntities = props.engine.entities.map(e => {
-                        e.active = true
-                        return e
-                    })
-                } else {
-
-                    setAllHidden(true)
-                    newEntities = props.engine.entities.map(e => {
-                        e.active = false
-                        return e
-                    })
-                }
-                props.engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
-            },
-            canBeHidden: true,
-            hidden: allHidden
-        }]
-    }, [props.engine.entities, required])
-
     const currentForm = useForm(
         props.engine,
         props.setAlert,
         props.executingAnimation,
         quickAccess,
         load,
-        currentTab)
-
-
+        currentTab
+    )
     const createFolder = () => {
         const newEntity = new Entity()
         newEntity.name = 'New folder'

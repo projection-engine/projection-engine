@@ -1,11 +1,11 @@
 import {useCallback, useContext, useEffect} from "react";
 
 
-import EVENTS from "../utils/EVENTS";
-import ProjectLoader from "../utils/workers/ProjectLoader";
-import LoaderProvider from "../../components/loader/LoaderProvider";
-import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
-import FileSystem from "../utils/files/FileSystem";
+import EVENTS from "../EVENTS";
+import ProjectLoader from "../workers/ProjectLoader";
+import LoaderProvider from "../../../components/loader/LoaderProvider";
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
+import FileSystem from "../files/FileSystem";
 
 
 export default function useSerializer(engine, setAlert, settings, id, quickAccess) {

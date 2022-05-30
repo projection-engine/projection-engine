@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import Range from "../../../../components/range/Range";
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import useDirectState from "../../../hooks/useDirectState";
+import useDirectState from "../../../utils/hooks/useDirectState";
 
 
 export default function LightProbe(props) {

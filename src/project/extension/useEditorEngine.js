@@ -1,7 +1,7 @@
 import {useCallback, useContext, useEffect, useState} from "react";
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
-import useHistory from "../hooks/useHistory";
-import {HISTORY_ACTIONS} from "../hooks/historyReducer";
+import useHistory from "../utils/hooks/useHistory";
+import {HISTORY_ACTIONS} from "../utils/hooks/historyReducer";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 

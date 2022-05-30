@@ -92,8 +92,7 @@
     "node-loader": "^2.0.0",
     "react-scripts": "^5.0.0",
     "style-loader": "^3.3.1",
-    "url-loader": "^4.1.1",
-    "worker-loader": "^3.0.8"
+    "url-loader": "^4.1.1"
   },
   "dependencies": {
     "@f-ui/core": "0.1.55-alpha",

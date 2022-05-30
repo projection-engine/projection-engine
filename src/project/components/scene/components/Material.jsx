@@ -5,7 +5,7 @@ import React, {useContext, useEffect, useRef} from "react";
 
 import Selector from "../../../../components/selector/Selector";
 import Range from "../../../../components/range/Range";
-import useDirectState from "../../../hooks/useDirectState";
+import useDirectState from "../../../utils/hooks/useDirectState";
 import ColorPicker from "../../../../components/color/ColorPicker";
 
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
@@ -13,7 +13,7 @@ import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES";
 import TextureInstance from "../../../engine/instances/TextureInstance";
 import FileSystem from "../../../utils/files/FileSystem";
 import openFile from "../../../utils/openFile";
-import OpenFileProvider from "../../../hooks/OpenFileProvider";
+import OpenFileProvider from "../../../utils/hooks/OpenFileProvider";
 import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
 
 

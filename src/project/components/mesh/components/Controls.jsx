@@ -4,12 +4,12 @@ import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core";
 
 import {useContext, useMemo} from "react";
 
-import QuickAccessProvider from "../../../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider";
 import Material from "../../scene/components/Material";
 
 import {IDS} from "../../../extension/useMinimalEngine";
 import Transform from "../../scene/components/Transform";
-import {updateTransform} from "../../scene/utils/useForm";
+import {updateTransform} from "../../scene/hooks/useForm";
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)

@@ -10,7 +10,7 @@ import ResizableBar from "../../../components/resizable/ResizableBar";
 import {useContext, useEffect, useState} from "react";
 import ControlProvider from "../header/ControlProvider";
 import EVENTS from "../../utils/EVENTS";
-import QuickAccessProvider from "../../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider";
 import VIEWER_TYPES from "./templates/VIEWER_TYPES";
 import updateMeshFile from "./utils/updateMeshFile";
 import LoaderProvider from "../../../components/loader/LoaderProvider";

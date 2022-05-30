@@ -1,19 +1,19 @@
 import React, {useMemo, useState} from "react";
 import styles from './styles/Project.module.css'
-import QuickAccessProvider from "./hooks/QuickAccessProvider";
+import QuickAccessProvider from "./utils/hooks/QuickAccessProvider";
 import {ENTITY_ACTIONS} from "./engine/useEngineEssentials";
-import SettingsProvider from "./hooks/SettingsProvider";
+import SettingsProvider from "./utils/hooks/SettingsProvider";
 import FilesView from "./components/files/FilesView";
 import Editor from "./components/editor/Editor";
-import EntitiesProvider from "./hooks/EntitiesProvider";
+import EntitiesProvider from "./utils/hooks/EntitiesProvider";
 import Frame from "../components/frame/Frame";
-import useProjectWrapper from "./hooks/useProjectWrapper";
+import useProjectWrapper from "./utils/hooks/useProjectWrapper";
 import FileSystem from "./utils/files/FileSystem";
 import FILE_TYPES from "../../public/project/glTF/FILE_TYPES";
 import useOptions from "./components/editor/hooks/useOptions";
 import Header from "./components/header/Header";
 import Tabs from "../components/tabs/Tabs";
-import OpenFileProvider from "./hooks/OpenFileProvider";
+import OpenFileProvider from "./utils/hooks/OpenFileProvider";
 import BlueprintView from "./components/blueprints/scripts/BlueprintView";
 import MaterialView from "./components/blueprints/material/MaterialView";
 import refreshData from "./utils/refreshData";
@@ -42,7 +42,6 @@ export default function Project({id, meta, events, initialized, setInitialized, 
         setAlert
     )
     const submitPackage = (pack, close, previewImage, isLevel, registryID) => {
-        console.log(pack, close, previewImage, isLevel, registryID)
         quickAccess.fileSystem
             .updateAsset(isLevel ? FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT : registryID, pack, previewImage)
             .then(_ => setAlert({type: 'success', message: 'Saved'}))

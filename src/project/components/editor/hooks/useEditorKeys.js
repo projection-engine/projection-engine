@@ -1,16 +1,16 @@
-import useHotKeys from "./useHotKeys";
-import GIZMOS from "../extension/gizmo/GIZMOS";
-import {HISTORY_ACTIONS} from "./historyReducer";
-import {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
-import cloneClass from "../engine/utils/cloneClass";
+import useHotKeys from "../../../utils/hooks/useHotKeys";
+import GIZMOS from "../../../extension/gizmo/GIZMOS";
+import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
+import cloneClass from "../../../engine/utils/cloneClass";
 import {v4 as uuidv4} from "uuid";
 import {useState} from "react";
-import COMPONENTS from "../engine/templates/COMPONENTS";
-import TransformComponent from "../engine/components/TransformComponent";
-import KEYS from "../engine/templates/KEYS";
-import RENDER_TARGET from "../components/viewport/hooks/RENDER_TARGET";
+import COMPONENTS from "../../../engine/templates/COMPONENTS";
+import TransformComponent from "../../../engine/components/TransformComponent";
+import KEYS from "../../../engine/templates/KEYS";
+import RENDER_TARGET from "../../viewport/hooks/RENDER_TARGET";
 
-export default function useEditorKeys(props, controlProvider) {
+export default function useEditorKeys(props) {
     const [toCopy, setToCopy] = useState([])
 
     function copy(single) {

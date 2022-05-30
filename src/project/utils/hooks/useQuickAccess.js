@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import FileSystem from "../utils/files/FileSystem";
-import EVENTS from "../utils/EVENTS";
-import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES";
+import FileSystem from "../files/FileSystem";
+import EVENTS from "../EVENTS";
+import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])

@@ -9,11 +9,12 @@ export default function mapToView(current, entities, setSelected, engine, setAll
     return {
         id: current.id,
         label: current.name,
-        onClick: (e) => setSelected(current, e),
+
         children: children.map(f => mapToView(f, entities, setSelected, engine, setAllHidden, required)),
         icon: getElementIcon(current.components),
         type: getElementType(current.components),
         draggable: true,
+        onClick: (e) => setSelected(current, e),
         onHide: () => {
             if (!current.active && setAllHidden)
                 setAllHidden(false)
@@ -37,6 +38,5 @@ export default function mapToView(current, entities, setSelected, engine, setAll
         },
         canBeHidden:setAllHidden !== undefined,
         hidden: !current.active
-
     }
 }

@@ -11,7 +11,7 @@ import MeshInstance from "../engine/instances/MeshInstance";
 import MaterialComponent from "../engine/components/MaterialComponent";
 import COMPONENTS from "../engine/templates/COMPONENTS";
 import LoaderProvider from "../../components/loader/LoaderProvider";
-import QuickAccessProvider from "../hooks/QuickAccessProvider";
+import QuickAccessProvider from "../utils/hooks/QuickAccessProvider";
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
 
