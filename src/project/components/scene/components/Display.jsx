@@ -40,7 +40,7 @@ export default function Display() {
             </AccordionTemplate>
 
             <AccordionTemplate title={'Framerate'}>
-                <Dropdown styles={{width: '100%', justifyContent: 'space-between'}}>
+                <Dropdown styles={{width: '100%', justifyContent: 'space-between', background: 'var(--fabric-border-primary)'}}>
                     {settings.frameRate}fps
                     <DropdownOptions>
                         <DropdownOption option={{

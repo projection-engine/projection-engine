@@ -41,15 +41,22 @@ export default function Project({id, meta, events, initialized, setInitialized, 
         () => null, // TODO
         setAlert
     )
-    const submitPackage = (pack, close, previewImage, isLevel, registryID) => {
+    const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance) => {
         quickAccess.fileSystem
             .updateAsset(isLevel ? FileSystem.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT : registryID, pack, previewImage)
-            .then(_ => setAlert({type: 'success', message: 'Saved'}))
+            .then(_ => {
+                console.log(matInstance)
+                if(matInstance)
+                    engine.setMaterials(prev => {
+                        return prev.map(p => p.id === registryID ? matInstance : p)
+                    })
+                setAlert({type: 'success', message: 'Saved'})
+            })
             .catch(_ => setAlert({type: 'error', message: 'Some error occurred'}))
     }
 
     const tabs = useMemo(() => {
-        return openFiles.map(o => {
+        return openFiles.map((o, i)=> {
             switch ('.' + o.type) {
                 case FILE_TYPES.MATERIAL:
                     return {
@@ -59,15 +66,17 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                             <MaterialView
                                 name={o.label}
                                 engine={engine}
+                                open={i === openTab}
                                 registryID={o.registryID}
-                                submitPackage={(pack, close, previewImage, isLevel) => submitPackage(pack, close, previewImage, isLevel, o.registryID)}
+                                submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance)}
                             />
                         ),
                         close: () => {
                             engine.renderer.overrideMaterial = undefined
                             setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
                             refreshData(FILE_TYPES.MATERIAL, o.registryID, quickAccess.fileSystem, engine, load)
-                        }
+                        },
+
                     }
                 case FILE_TYPES.SCRIPT:
                     return {
@@ -91,7 +100,8 @@ export default function Project({id, meta, events, initialized, setInitialized, 
                     return undefined
             }
         }).filter(e => e)
-    }, [openFiles])
+    }, [openFiles, openTab])
+
     return (
         <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
             <EntitiesProvider.Provider value={{

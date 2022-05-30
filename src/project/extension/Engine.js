@@ -99,20 +99,15 @@ export default class Engine extends Renderer {
     }
 
     updateOverrideMaterial() {
-        console.log(this.data.meshes)
         const entity = this.data.meshes.find(m => m.id === this.params.selected[0] || m.id === this.changedEntity?.id)
         const comp = entity ? entity.components[COMPONENTS.MATERIAL] : undefined
-
-        if (this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance && !this.changedEntity) {
-            console.log(comp.materialID, this.overrideMaterial?.id)
+        if (comp && this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance && !this.changedEntity) {
             this.changedEntity = {id: entity.id, previousMaterial: comp.materialID}
             comp.materialID = this.overrideMaterial?.id
-        } else if (this.changedEntity) {
-            console.log(this.changedEntity, comp.materialID)
+        } else if (comp && this.changedEntity) {
             comp.materialID = this.changedEntity.previousMaterial
             this.changedEntity = undefined
         }
-
     }
 
     set overrideMaterial(data) {

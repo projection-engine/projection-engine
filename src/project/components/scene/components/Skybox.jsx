@@ -37,7 +37,7 @@ export default function Skybox(props) {
             />
         </AccordionTemplate>
         <AccordionTemplate title={'Resolution'}>
-            <Dropdown className={styles.dropdown}>
+            <Dropdown className={styles.dropdown} styles={{background: 'var(--fabric-border-primary)'}}>
                 {state.resolution}p
                 <DropdownOptions>
                     <DropdownOption option={{
@@ -87,37 +87,6 @@ export default function Skybox(props) {
                 </DropdownOptions>
             </Dropdown>
         </AccordionTemplate>
-        {/*<AccordionTemplate title={'Gamma'}>*/}
-        {/*    <Range*/}
-        {/*        accentColor={'yellow'}*/}
-        {/*        value={state.gamma}*/}
-        {/*        minValue={.1}*/}
-        {/*        incrementPercentage={.01}*/}
-        {/*        precision={3}*/}
-        {/*        maxValue={10}*/}
-        {/*        onFinish={(v) => props.submit(v, 'gamma')}*/}
-        {/*        handleChange={e => setState(prev => {*/}
-        {/*            return {*/}
-        {/*                ...prev, gamma: e*/}
-        {/*            }*/}
-        {/*        })}/>*/}
-        {/*</AccordionTemplate>*/}
-        {/*<AccordionTemplate title={'Exposure'}>*/}
-        {/*    <Range*/}
-        {/*        accentColor={'yellow'}*/}
-        {/*        value={state.exposure}*/}
-        {/*        minValue={.1}*/}
-        {/*        incrementPercentage={.01}*/}
-        {/*        precision={3}*/}
-        {/*        maxValue={10}*/}
-        {/*        onFinish={(v) => props.submit(v, 'exposure')}*/}
-        {/*        handleChange={e => setState(prev => {*/}
-        {/*            return {*/}
-        {/*                ...prev, exposure: e*/}
-        {/*            }*/}
-        {/*        })}/>*/}
-
-        {/*</AccordionTemplate>*/}
     </>)
 }
 

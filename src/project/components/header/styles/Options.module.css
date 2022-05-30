@@ -10,10 +10,10 @@
 
 .divider {
     height: 75%;
-    width: 1px;
+    width: 2px;
     margin-left: 4px;
     margin-right: 4px;
-    background-color: var(--fabric-background-quaternary);
+    background-color: var(--fabric-border-primary);
 }
 
 .label {
