@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/docs" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/components" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/home/components/issues" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/project/components/blueprints" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/project/components/files" vcs="Git" />

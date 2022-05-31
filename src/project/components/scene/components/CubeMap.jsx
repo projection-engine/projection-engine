@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
-import styles from "../styles/Forms.module.css";
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import React, {useEffect, useState} from "react";
-import Range from "../../../../components/range/Range";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
+import PropTypes from "prop-types"
+import styles from "../styles/Forms.module.css"
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import React, {useEffect, useState} from "react"
+import Range from "../../../../components/range/Range"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 
 
 export default function CubeMap(props) {

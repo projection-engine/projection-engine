@@ -1,19 +1,18 @@
-import System from "../engine/basic/System";
-import GridSystem from "./systems/GridSystem";
-import IconsSystem from "./systems/IconsSystem";
-import SYSTEMS from "../engine/templates/SYSTEMS";
-import GizmoSystem from "./systems/GizmoSystem";
-import SelectedSystem from "./systems/SelectedSystem";
+import System from "../engine/basic/System"
+import GridSystem from "./systems/GridSystem"
+import IconsSystem from "./systems/IconsSystem"
+import SYSTEMS from "../engine/templates/SYSTEMS"
+import GizmoSystem from "./systems/GizmoSystem"
+import SelectedSystem from "./systems/SelectedSystem"
 
 
 export default class Wrapper extends System {
     constructor(gpu, resolution) {
-        super();
+        super()
         this.gpu = gpu
-
         this.gridSystem = new GridSystem(gpu)
         this.billboardSystem = new IconsSystem(gpu)
-        this.gizmoSystem = new GizmoSystem(gpu)
+        this.gizmoSystem = new GizmoSystem(gpu, resolution)
         this.selectedSystem = new SelectedSystem(gpu, resolution)
     }
 

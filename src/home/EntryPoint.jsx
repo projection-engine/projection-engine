@@ -1,16 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import '../styles/globals.css'
-import {Fabric} from "@f-ui/core";
-import styles from '../styles/App.module.css'
-import ThemeProvider from "../project/utils/hooks/ThemeProvider";
+import React from "react"
+import ReactDOM from "react-dom"
+import "../styles/globals.css"
+import {Fabric} from "@f-ui/core"
+import styles from "../styles/App.module.css"
+import ThemeProvider from "../project/utils/hooks/ThemeProvider"
 
-import useGlobalOptions from "../project/utils/hooks/useGlobalOptions";
+import useGlobalOptions from "../project/utils/hooks/useGlobalOptions"
 
-import Home from "./Home";
-import useLoader from "../components/loader/useLoader";
-import LoaderProvider from "../components/loader/LoaderProvider";
-import Frame from "../components/frame/Frame";
+import Home from "./Home"
+import useLoader from "../components/loader/useLoader"
+import LoaderProvider from "../components/loader/LoaderProvider"
+import Frame from "../components/frame/Frame"
 
 function EntryPoint() {
     const global = useGlobalOptions()

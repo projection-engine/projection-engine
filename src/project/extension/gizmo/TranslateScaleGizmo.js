@@ -1,8 +1,8 @@
-import {mat4, quat, vec3} from "gl-matrix";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import ROTATION_TYPES from "./ROTATION_TYPES";
-import Conversion from "../../engine/utils/Conversion";
-import GizmoSystem from "../systems/GizmoSystem";
+import {mat4, quat, vec3} from "gl-matrix"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import ROTATION_TYPES from "./ROTATION_TYPES"
+import Conversion from "../../engine/utils/Conversion"
+import GizmoSystem from "../systems/GizmoSystem"
 
 export default class TranslateScaleGizmo {
     target = []
@@ -14,15 +14,16 @@ export default class TranslateScaleGizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, gizmoShader, renderTarget) {
+    constructor(gpu, gizmoShader, renderTarget, resolution) {
         this.renderTarget = renderTarget
+        this.resolution = resolution
         this.gpu = gpu
         this.gizmoShader = gizmoShader
     }
 
     onMouseDown(event) {
         if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = window.screen.width, h = window.screen.height
+            const w = this.resolution.w, h = this.resolution.h
             const x = event.clientX
             const y = event.clientY
 
@@ -60,20 +61,20 @@ export default class TranslateScaleGizmo {
         const k = Object.keys(el.components)
         for (let i = 0; i < k.length; i++) {
             switch (k[i]) {
-                case COMPONENTS.SKYLIGHT:
-                case COMPONENTS.DIRECTIONAL_LIGHT:
-                    return {
-                        valid: true,
-                        data: el.components[k[i]].direction
-                    }
-                case COMPONENTS.TRANSFORM:
-                    const m = el.components[COMPONENTS.TRANSFORM]?.transformationMatrix
-                    return {
-                        valid: true,
-                        data: [m[12], m[13], m[14]]
-                    }
-                default:
-                    break
+            case COMPONENTS.SKYLIGHT:
+            case COMPONENTS.DIRECTIONAL_LIGHT:
+                return {
+                    valid: true,
+                    data: el.components[k[i]].direction
+                }
+            case COMPONENTS.TRANSFORM:
+                const m = el.components[COMPONENTS.TRANSFORM]?.transformationMatrix
+                return {
+                    valid: true,
+                    data: [m[12], m[13], m[14]]
+                }
+            default:
+                break
             }
         }
         return {
@@ -159,9 +160,9 @@ export default class TranslateScaleGizmo {
 
     _translateMatrix(t, components) {
         const comp = components[COMPONENTS.TRANSFORM]
-        const matrix = comp ? [...comp.transformationMatrix] : this.getLightData('transformationMatrix', components)
+        const matrix = comp ? [...comp.transformationMatrix] : this.getLightData("transformationMatrix", components)
 
-        const translation = comp ? comp.translation : this.getLightData('direction', components),
+        const translation = comp ? comp.translation : this.getLightData("direction", components),
             rotationQuat = comp ? comp.rotationQuat : [0, 0, 0, 1],
             scale = comp ? comp.scaling : [1, 1, 1]
         if (this.typeRot === ROTATION_TYPES.RELATIVE) {

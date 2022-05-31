@@ -1,8 +1,8 @@
-import GIZMOS from "../../extension/gizmo/GIZMOS";
+import GIZMOS from "../../extension/gizmo/GIZMOS"
 
-import useDirectState from "./useDirectState";
-import ROTATION_TYPES from "../../extension/gizmo/ROTATION_TYPES";
-import SHADING_MODELS from "../../engine/templates/SHADING_MODELS";
+import useDirectState from "./useDirectState"
+import ROTATION_TYPES from "../../extension/gizmo/ROTATION_TYPES"
+import SHADING_MODELS from "../../engine/templates/SHADING_MODELS"
 
 const toRad = Math.PI / 180
 export default function useSettings() {

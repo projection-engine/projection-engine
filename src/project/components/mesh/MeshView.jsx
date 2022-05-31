@@ -1,20 +1,20 @@
-import PropTypes from "prop-types";
-import styles from './styles/Mesh.module.css'
+import PropTypes from "prop-types"
+import styles from "./styles/Mesh.module.css"
 
-import Viewport from "../viewport/Viewport";
-import Controls from "./components/Controls";
+import Viewport from "../viewport/Viewport"
+import Controls from "./components/Controls"
 
 
-import useMinimalEngine, {IDS, initializeMesh} from "../../extension/useMinimalEngine";
-import ResizableBar from "../../../components/resizable/ResizableBar";
-import {useContext, useEffect, useState} from "react";
-import ControlProvider from "../header/ControlProvider";
-import EVENTS from "../../utils/EVENTS";
-import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider";
-import VIEWER_TYPES from "./templates/VIEWER_TYPES";
-import updateMeshFile from "./utils/updateMeshFile";
-import LoaderProvider from "../../../components/loader/LoaderProvider";
-import FileSystem from "../../utils/files/FileSystem";
+import useMinimalEngine, {IDS, initializeMesh} from "../../extension/useMinimalEngine"
+import ResizableBar from "../../../components/resizable/ResizableBar"
+import {useContext, useEffect, useState} from "react"
+import ControlProvider from "../header/ControlProvider"
+import EVENTS from "../../utils/EVENTS"
+import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider"
+import VIEWER_TYPES from "./templates/VIEWER_TYPES"
+import updateMeshFile from "./utils/updateMeshFile"
+import LoaderProvider from "../../../components/loader/LoaderProvider"
+import FileSystem from "../../utils/files/FileSystem"
 
 export default function MeshView(props) {
     const engine = useMinimalEngine(false, false, false, false)

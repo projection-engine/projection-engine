@@ -1,7 +1,7 @@
-import {createVAO} from "../engine/utils/utils";
-import VBO from "../engine/instances/VBO";
-import * as shaderCode from './shaders/billboard.glsl'
-import ShaderInstance from "../engine/instances/ShaderInstance";
+import {createVAO} from "../engine/utils/utils"
+import VBO from "../engine/instances/VBO"
+import * as shaderCode from "./shaders/billboard.glsl"
+import ShaderInstance from "../engine/instances/ShaderInstance"
 
 
 export default class Icon {

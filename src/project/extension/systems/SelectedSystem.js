@@ -1,8 +1,8 @@
-import System from "../../engine/basic/System";
-import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as shaderCode from '../shaders/SELECTED.glsl'
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import FramebufferInstance from "../../engine/instances/FramebufferInstance";
+import System from "../../engine/basic/System"
+import ShaderInstance from "../../engine/instances/ShaderInstance"
+import * as shaderCode from "../shaders/SELECTED.glsl"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import FramebufferInstance from "../../engine/instances/FramebufferInstance"
 
 export default class SelectedSystem extends System {
 

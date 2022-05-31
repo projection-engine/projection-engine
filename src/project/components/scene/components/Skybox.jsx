@@ -1,11 +1,11 @@
-import styles from '../styles/Forms.module.css'
-import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
-import Selector from "../../../../components/selector/Selector";
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import ImageProcessor from "../../../engine/utils/image/ImageProcessor";
-import FileSystem from "../../../utils/files/FileSystem";
+import styles from "../styles/Forms.module.css"
+import React, {useEffect, useState} from "react"
+import PropTypes from "prop-types"
+import Selector from "../../../../components/selector/Selector"
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import ImageProcessor from "../../../engine/utils/image/ImageProcessor"
+import FileSystem from "../../../utils/files/FileSystem"
 
 export default function Skybox(props) {
     const [currentImage, setCurrentImage] = useState(undefined)

@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react'
-import ReactDOM from 'react-dom'
-import '../styles/globals.css'
-import {Fabric} from "@f-ui/core";
-import styles from '../styles/App.module.css'
-import ThemeProvider from "./utils/hooks/ThemeProvider";
-import useGlobalOptions from "./utils/hooks/useGlobalOptions";
-import useLoader from "../components/loader/useLoader";
-import LoaderProvider from "../components/loader/LoaderProvider";
-import Project from "./Project";
-import useGPU from "./components/viewport/hooks/useGPU";
-import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider";
-import useSettings from "./utils/hooks/useSettings";
+import React, {useEffect, useState} from "react"
+import ReactDOM from "react-dom"
+import "../styles/globals.css"
+import {Fabric} from "@f-ui/core"
+import styles from "../styles/App.module.css"
+import ThemeProvider from "./utils/hooks/ThemeProvider"
+import useGlobalOptions from "./utils/hooks/useGlobalOptions"
+import useLoader from "../components/loader/useLoader"
+import LoaderProvider from "../components/loader/LoaderProvider"
+import Project from "./Project"
+import useGPU from "./components/viewport/hooks/useGPU"
+import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
+import useSettings from "./utils/hooks/useSettings"
 
 const {ipcRenderer} = window.require('electron')
 

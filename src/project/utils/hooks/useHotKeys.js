@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import PropTypes from "prop-types";
-import KEYS from "../../engine/templates/KEYS";
+import {useEffect, useState} from "react"
+import PropTypes from "prop-types"
+import KEYS from "../../engine/templates/KEYS"
 
 const BUTTON_LEFT = 0
 export default function useHotKeys(props, listeners = []) {

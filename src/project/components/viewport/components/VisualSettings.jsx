@@ -1,9 +1,9 @@
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
 
-import styles from "../styles/ViewportOptions.module.css";
-import PropTypes from "prop-types";
-import {useState} from "react";
-import LabeledRange from "../../../../components/templates/LabeledRange";
+import styles from "../styles/ViewportOptions.module.css"
+import PropTypes from "prop-types"
+import {useState} from "react"
+import LabeledRange from "../../../../components/templates/LabeledRange"
 
 export default function VisualSettings(props) {
     const {settingsContext} = props

@@ -1,8 +1,8 @@
-import {useCallback, useContext, useEffect, useMemo, useState} from "react";
-import RENDER_TARGET from "./RENDER_TARGET";
-import Engine from "../../../extension/Engine";
-import SYSTEMS from "../../../engine/templates/SYSTEMS";
-import SettingsProvider from "../../../utils/hooks/SettingsProvider";
+import {useCallback, useContext, useEffect, useMemo, useState} from "react"
+import RENDER_TARGET from "./RENDER_TARGET"
+import Engine from "../../../extension/Engine"
+import SYSTEMS from "../../../engine/templates/SYSTEMS"
+import SettingsProvider from "../../../utils/hooks/SettingsProvider"
 
 const callback = (e) => {
     const target = e[0]?.target

@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
-import styles from './styles/Viewport.module.css'
-import {useContext, useEffect, useRef, useState} from "react";
-import GPUContextProvider from "./hooks/GPUContextProvider";
-import ContextMenu from "./components/ContextMenu";
-import {ContextWrapper} from "@f-ui/core";
+import PropTypes from "prop-types"
+import styles from "./styles/Viewport.module.css"
+import React, {useContext, useEffect, useRef, useState} from "react"
+import GPUContextProvider from "./hooks/GPUContextProvider"
+import ContextMenu from "./components/ContextMenu"
+import {ContextWrapper} from "@f-ui/core"
 
 export default function Viewport(props) {
     const ref = useRef()
@@ -41,11 +41,11 @@ export default function Viewport(props) {
                     }
                 }
             }}
-            triggers={['data-self']}
+            triggers={["data-self"]}
             className={styles.viewport}
-            content={() => <ContextMenu options={props.options} engine={props.engine}/>}
+            content={(_, close) => <ContextMenu options={props.options} engine={props.engine} close={close}/>}
         >
-            <span style={{display: 'none'}} ref={ref}/>
+            <span style={{display: "none"}} ref={ref}/>
         </ContextWrapper>
     )
 }

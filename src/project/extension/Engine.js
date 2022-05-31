@@ -1,16 +1,16 @@
-import Renderer from "../engine/Renderer";
-import PickSystem from "../engine/systems/PickSystem";
-import SYSTEMS from "../engine/templates/SYSTEMS";
-import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem";
-import COMPONENTS from "../engine/templates/COMPONENTS";
-import Cameras from "./Cameras";
-import Wrapper from "./Wrapper";
-import * as debugCode from './shaders/debug.glsl'
-import MaterialInstance from "../engine/instances/MaterialInstance";
-import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl";
-import {DATA_TYPES} from "../engine/templates/DATA_TYPES";
-import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
-import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem";
+import Renderer from "../engine/Renderer"
+import PickSystem from "../engine/systems/PickSystem"
+import SYSTEMS from "../engine/templates/SYSTEMS"
+import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
+import COMPONENTS from "../engine/templates/COMPONENTS"
+import Cameras from "./Cameras"
+import Wrapper from "./Wrapper"
+import * as debugCode from "./shaders/debug.glsl"
+import MaterialInstance from "../engine/instances/MaterialInstance"
+import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
+import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
+import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
+import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem"
 
 
 export default class Engine extends Renderer {

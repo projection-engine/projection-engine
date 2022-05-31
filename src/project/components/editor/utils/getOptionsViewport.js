@@ -1,5 +1,5 @@
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
+import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
 export default function getOptionsViewport(engine, selected, selectedRef, utils) {
     const {

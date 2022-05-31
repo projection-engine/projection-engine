@@ -1,10 +1,10 @@
-import Entity from "../../engine/basic/Entity";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import FolderComponent from "../../engine/components/FolderComponent";
-import {initializeEntity} from "./importMesh";
-import MeshInstance from "../../engine/instances/MeshInstance";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import FileSystem from '../../utils/files/FileSystem'
+import Entity from "../../engine/basic/Entity"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import FolderComponent from "../../engine/components/FolderComponent"
+import {initializeEntity} from "./importMesh"
+import MeshInstance from "../../engine/instances/MeshInstance"
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import FileSystem from "../../utils/files/FileSystem"
 
 export default async function importScene(fileSystem, engine, reg, setAlert) {
     const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + reg.path, 'json')

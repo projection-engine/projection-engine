@@ -1,6 +1,6 @@
-import styles from '../styles/ControlBar.module.css'
-import {Accordion, AccordionSummary} from "@f-ui/core";
-import Range from "../../../../components/range/Range";
+import styles from "../styles/ControlBar.module.css"
+import {Accordion, AccordionSummary} from "@f-ui/core"
+import Range from "../../../../components/range/Range"
 
 export default function ControlBar() {
     return (

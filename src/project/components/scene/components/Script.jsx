@@ -1,16 +1,16 @@
-import PropTypes from "prop-types";
-import styles from "../styles/Forms.module.css";
-import {Button} from "@f-ui/core";
-import React, {useMemo} from "react";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import Selector from "../../../../components/selector/Selector";
+import PropTypes from "prop-types"
+import styles from "../styles/Forms.module.css"
+import {Button} from "@f-ui/core"
+import React, {useMemo} from "react"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import Selector from "../../../../components/selector/Selector"
 
 export default function Script(props) {
     return (
         <>
-            <AccordionTemplate title={'Link blueprint'}>
+            <AccordionTemplate title={"Link blueprint"}>
                 <Selector
-                    type={'script'}
+                    type={"script"}
                     selected={undefined}
                     handleChange={d => {
                         if (d)
@@ -26,10 +26,10 @@ export default function Script(props) {
                 </React.Fragment>
             ))
                 :
-            <div className={styles.empty}>
-                <span style={{fontSize: '30px'}} className={'material-icons-round'}>folder</span>
+                <div className={styles.empty}>
+                    <span style={{fontSize: "30px"}} className={"material-icons-round"}>folder</span>
                 No linked blueprints
-            </div>
+                </div>
             }
         </>
     )
@@ -41,22 +41,24 @@ Script.propTypes = {
     submit: PropTypes.func
 }
 
-function ScriptRow({scripts, selected, submit}) {
-    const found = useMemo(() => {
-
-        return scripts.find(s => s.registryID === selected)
-    }, [scripts])
-
+function ScriptRow(props) {
+    const {scripts, selected, submit} = props
+    const found = useMemo(() => scripts.find(s => s.registryID === selected), [scripts])
     if (found)
         return (
             <div className={styles.scriptsList}>
                 <label className={styles.overflow}>
                     {found.name}
                 </label>
-                <Button styles={{'--fabric-accent-color': '#ff5555'}} className={styles.buttonScriptsList} onClick={() => submit(selected, false)}>
-                    <span style={{fontSize: '1.1rem'}} className={'material-icons-round'}>close</span>
+                <Button styles={{"--fabric-accent-color": "#ff5555"}} className={styles.buttonScriptsList} onClick={() => submit(selected, false)}>
+                    <span style={{fontSize: "1.1rem"}} className={"material-icons-round"}>close</span>
                 </Button>
             </div>
         )
     return null
+}
+ScriptRow.propTypes={
+    scripts:PropTypes.array,
+    selected: PropTypes.string,
+    submit: PropTypes.func
 }

@@ -1,19 +1,19 @@
-import styles from "../styles/ViewportOptions.module.css";
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
-import Entity from "../../../engine/basic/Entity";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import PointLightComponent from "../../../engine/components/PointLightComponent";
-import TransformComponent from "../../../engine/components/TransformComponent";
+import styles from "../styles/ViewportOptions.module.css"
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import Entity from "../../../engine/basic/Entity"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import PointLightComponent from "../../../engine/components/PointLightComponent"
+import TransformComponent from "../../../engine/components/TransformComponent"
 
-import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent";
-import SkylightComponent from "../../../engine/components/SkyLightComponent";
-import CameraComponent from "../../../engine/components/CameraComponent";
-import SkyboxComponent from "../../../engine/components/SkyboxComponent";
-import CubeMapComponent from "../../../engine/components/CubeMapComponent";
-import CubeMapInstance from "../../../engine/instances/CubeMapInstance";
-import PropTypes from "prop-types";
-import LineComponent from "../../../engine/components/LineComponent";
-import LightProbeComponent from "../../../engine/components/LightProbeComponent";
+import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
+import SkylightComponent from "../../../engine/components/SkyLightComponent"
+import CameraComponent from "../../../engine/components/CameraComponent"
+import SkyboxComponent from "../../../engine/components/SkyboxComponent"
+import CubeMapComponent from "../../../engine/components/CubeMapComponent"
+import CubeMapInstance from "../../../engine/instances/CubeMapInstance"
+import PropTypes from "prop-types"
+import LineComponent from "../../../engine/components/LineComponent"
+import LightProbeComponent from "../../../engine/components/LightProbeComponent"
 
 export default function CreateEntity(props) {
     const {dispatchEntity, engine} = props

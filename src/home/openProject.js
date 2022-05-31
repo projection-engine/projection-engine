@@ -1,4 +1,4 @@
-import {v4} from "uuid";
+import {v4} from "uuid"
 
 export const CLOSE_CHANNEL ='close-project'
 export default function openProject(projectID) {

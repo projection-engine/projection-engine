@@ -1,12 +1,12 @@
-import {vec4} from "gl-matrix";
-import Entity from "../../engine/basic/Entity";
-import TransformComponent from "../../engine/components/TransformComponent";
-import MeshInstance from "../../engine/instances/MeshInstance";
-import Transformation from "../../engine/instances/Transformation";
-import PickComponent from "../../engine/components/PickComponent";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import ROTATION_TYPES from "./ROTATION_TYPES";
-import TranslateScaleGizmo from "./TranslateScaleGizmo";
+import {vec4} from "gl-matrix"
+import Entity from "../../engine/basic/Entity"
+import TransformComponent from "../../engine/components/TransformComponent"
+import MeshInstance from "../../engine/instances/MeshInstance"
+import Transformation from "../../engine/instances/Transformation"
+import PickComponent from "../../engine/components/PickComponent"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import ROTATION_TYPES from "./ROTATION_TYPES"
+import TranslateScaleGizmo from "./TranslateScaleGizmo"
 
 export default class TranslationGizmo extends TranslateScaleGizmo {
     target = []
@@ -20,12 +20,12 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, gizmoShader, renderTarget) {
-        super(gpu, gizmoShader, renderTarget);
-        this.xGizmo = this._mapEntity(2, 'x')
-        this.yGizmo = this._mapEntity(3, 'y')
-        this.zGizmo = this._mapEntity(4, 'z')
-        import('../../../static/assets/Arrow.json')
+    constructor(gpu, gizmoShader, renderTarget, resolution) {
+        super(gpu, gizmoShader, renderTarget, resolution)
+        this.xGizmo = this._mapEntity(2, "x")
+        this.yGizmo = this._mapEntity(3, "y")
+        this.zGizmo = this._mapEntity(4, "z")
+        import("../../../static/assets/Arrow.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     gpu,
@@ -45,24 +45,24 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
 
         let s, t = [0, 0, 0], r
         switch (axis) {
-            case 'x':
-                s = [.75, 0.05, 0.05]
-                r = [0, 0, 0]
-                break
-            case 'y':
-                s = [.75, 0.05, 0.05]
-                r = [0, 0, 1.57]
-                break
-            case 'z':
-                s = [.75, 0.05, 0.05]
-                r = [3.141592653589793, -1.57, 3.141592653589793]
-                break
-            case 'c':
-                s = [.1, .1, .1]
-                r = [0, 0, 0]
-                break
-            default:
-                break
+        case "x":
+            s = [.75, 0.05, 0.05]
+            r = [0, 0, 0]
+            break
+        case "y":
+            s = [.75, 0.05, 0.05]
+            r = [0, 0, 1.57]
+            break
+        case "z":
+            s = [.75, 0.05, 0.05]
+            r = [3.141592653589793, -1.57, 3.141592653589793]
+            break
+        case "c":
+            s = [.1, .1, .1]
+            r = [0, 0, 0]
+            break
+        default:
+            break
         }
         e.components[COMPONENTS.TRANSFORM].translation = t
         e.components[COMPONENTS.TRANSFORM].rotation = r
@@ -76,27 +76,27 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
         const s = Math.abs(event.movementX *this.gridSize)
         const sign  =Math.sign(event.movementX)
         switch (this.clickedAxis) {
-            case 1: // x
-                this.distanceX += s
-                if (Math.abs(this.distanceX) >= this.gridSize) {
-                    this.transformElement([sign * this.distanceX, 0, 0])
-                    this.distanceX = 0
-                }
-                break
-            case 2: // y
-                this.distanceY += s
-                if (Math.abs(this.distanceY) >= this.gridSize) {
-                    this.transformElement([0, sign * this.distanceY, 0])
-                    this.distanceY = 0
-                }
-                break
-            case 3: // z
-                this.distanceZ += s
-                if (Math.abs(this.distanceZ) >= this.gridSize) {
-                    this.transformElement([0, 0, sign * this.distanceZ])
-                    this.distanceZ = 0
-                }
-                break
+        case 1: // x
+            this.distanceX += s
+            if (Math.abs(this.distanceX) >= this.gridSize) {
+                this.transformElement([sign * this.distanceX, 0, 0])
+                this.distanceX = 0
+            }
+            break
+        case 2: // y
+            this.distanceY += s
+            if (Math.abs(this.distanceY) >= this.gridSize) {
+                this.transformElement([0, sign * this.distanceY, 0])
+                this.distanceY = 0
+            }
+            break
+        case 3: // z
+            this.distanceZ += s
+            if (Math.abs(this.distanceZ) >= this.gridSize) {
+                this.transformElement([0, 0, sign * this.distanceZ])
+                this.distanceZ = 0
+            }
+            break
         }
 
         if (this.target.length === 1) {
@@ -105,14 +105,14 @@ export default class TranslationGizmo extends TranslateScaleGizmo {
                 t = this.target[0].components[COMPONENTS.SKYLIGHT]?.direction
             if (!t)
                 t = this.target[0].components[COMPONENTS.DIRECTIONAL_LIGHT]?.direction
-            console.log('HERE', this.started)
+            console.log("HERE", this.started)
             this.renderTarget.render(t)
         }
     }
 
     execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem) {
         this.gridSize = gridSize
-        super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem);
+        super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem)
 
     }
 

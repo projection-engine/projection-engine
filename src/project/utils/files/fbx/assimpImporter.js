@@ -1,10 +1,10 @@
 // import PrimitiveProcessor from "../gltf/workers/PrimitiveProcessor";
-import AssimpJS from "../AssimpJS";
-import Transformation from "../../../engine/instances/Transformation";
-import {mat4} from "gl-matrix";
+import AssimpJS from "../AssimpJS"
+import Transformation from "../../../engine/instances/Transformation"
+import {mat4} from "gl-matrix"
 // import GLTF from "../gltf/GLTF";
-import {lzwEncode} from "../functions/lzString";
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES";
+import {lzwEncode} from "../functions/lzString"
+import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 
 const {fs} = window.require('fs')
 export default function assimpImporter(resolvePath, newRoot, file, options, createRegistryEntry, path, importImage) {

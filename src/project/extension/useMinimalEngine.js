@@ -1,19 +1,19 @@
-import {useCallback, useContext, useEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react"
 
-import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
-import Entity from "../engine/basic/Entity";
-import DirectionalLightComponent from "../engine/components/DirectionalLightComponent";
+import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
+import Entity from "../engine/basic/Entity"
+import DirectionalLightComponent from "../engine/components/DirectionalLightComponent"
 
-import MeshComponent from "../engine/components/MeshComponent";
-import TransformComponent from "../engine/components/TransformComponent";
-import MeshInstance from "../engine/instances/MeshInstance";
+import MeshComponent from "../engine/components/MeshComponent"
+import TransformComponent from "../engine/components/TransformComponent"
+import MeshInstance from "../engine/instances/MeshInstance"
 
-import MaterialComponent from "../engine/components/MaterialComponent";
-import COMPONENTS from "../engine/templates/COMPONENTS";
-import LoaderProvider from "../../components/loader/LoaderProvider";
-import QuickAccessProvider from "../utils/hooks/QuickAccessProvider";
-import SHADING_MODELS from "../engine/templates/SHADING_MODELS";
-import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
+import MaterialComponent from "../engine/components/MaterialComponent"
+import COMPONENTS from "../engine/templates/COMPONENTS"
+import LoaderProvider from "../../components/loader/LoaderProvider"
+import QuickAccessProvider from "../utils/hooks/QuickAccessProvider"
+import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 
 const toRad = 180 / Math.PI
 export default function useMinimalEngine() {

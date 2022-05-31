@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
-import FileSystem from "../files/FileSystem";
-import EVENTS from "../EVENTS";
-import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES";
+import {useEffect, useState} from "react"
+import FileSystem from "../files/FileSystem"
+import EVENTS from "../EVENTS"
+import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
 
 export default function useQuickAccess(projectID, load) {
     const [images, setImages] = useState([])
@@ -22,7 +22,7 @@ export default function useQuickAccess(projectID, load) {
                     return new Promise(resolve => {
                         const split = i.path.split(FileSystem.sep)
                         resolve({
-                            type: 'image',
+                            type: "image",
                             registryID: i.id,
                             name: split[split.length - 1]
                         })
@@ -33,7 +33,7 @@ export default function useQuickAccess(projectID, load) {
                     return new Promise(resolve => {
                         const split = (i.path.split(FileSystem.sep))
                         resolve({
-                            type: 'mesh',
+                            type: "mesh",
                             registryID: i.id,
                             name: split[split.length - 1]
                         })
@@ -44,9 +44,9 @@ export default function useQuickAccess(projectID, load) {
                     return new Promise(resolve => {
                         const split = (i.path.split(FileSystem.sep ))
                         resolve({
-                            type: 'material',
+                            type: "material",
                             registryID: i.id,
-                            name: split[split.length - 1].split('.')[0]
+                            name: split[split.length - 1].split(".")[0]
                         })
                     })
                 }))
@@ -54,18 +54,18 @@ export default function useQuickAccess(projectID, load) {
                     return new Promise(resolve => {
                         const split = (i.path.split(FileSystem.sep))
                         resolve({
-                            type: 'flowRaw',
+                            type: "flowRaw",
                             registryID: i.id,
-                            name: split[split.length - 1].split('.')[0]
+                            name: split[split.length - 1].split(".")[0]
                         })
                     })
                 }))
                 Promise.all(promises)
                     .then(res => {
-                        setMeshes(res.filter(f => f.type === 'mesh'))
-                        setMaterials(res.filter(f => f.type === 'material'))
-                        setImages(res.filter(f => f.type === 'image'))
-                        setScripts(res.filter(f => f.type === 'flowRaw'))
+                        setMeshes(res.filter(f => f.type === "mesh"))
+                        setMaterials(res.filter(f => f.type === "material"))
+                        setImages(res.filter(f => f.type === "image"))
+                        setScripts(res.filter(f => f.type === "flowRaw"))
                         load.finishEvent(EVENTS.REFRESHING)
                     })
 

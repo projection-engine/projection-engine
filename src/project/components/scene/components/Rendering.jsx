@@ -1,10 +1,10 @@
-import {useContext, useEffect} from "react";
-import SettingsProvider from "../../../utils/hooks/SettingsProvider";
-import {Checkbox} from "@f-ui/core";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import styles from '../styles/Forms.module.css'
-import useDirectState from "../../../utils/hooks/useDirectState";
-import LabeledRange from "../../../../components/templates/LabeledRange";
+import {useContext, useEffect} from "react"
+import SettingsProvider from "../../../utils/hooks/SettingsProvider"
+import {Checkbox} from "@f-ui/core"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import styles from "../styles/Forms.module.css"
+import useDirectState from "../../../utils/hooks/useDirectState"
+import LabeledRange from "../../../../components/templates/LabeledRange"
 
 export default function Rendering() {
     const settings = useContext(SettingsProvider)

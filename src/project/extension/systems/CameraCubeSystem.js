@@ -1,5 +1,5 @@
-import System from "../../engine/basic/System";
-import RENDER_TARGET from "../../components/viewport/hooks/RENDER_TARGET";
+import System from "../../engine/basic/System"
+import RENDER_TARGET from "../../components/viewport/hooks/RENDER_TARGET"
 
 export default class CameraCubeSystem extends System {
     constructor(id) {

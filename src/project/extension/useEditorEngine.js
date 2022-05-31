@@ -1,9 +1,9 @@
-import {useCallback, useContext, useEffect, useState} from "react";
-import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials";
-import useHistory from "../utils/hooks/useHistory";
-import {HISTORY_ACTIONS} from "../utils/hooks/historyReducer";
-import COMPONENTS from "../engine/templates/COMPONENTS";
-import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider";
+import {useCallback, useContext, useEffect, useState} from "react"
+import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
+import useHistory from "../utils/hooks/useHistory"
+import {HISTORY_ACTIONS} from "../utils/hooks/historyReducer"
+import COMPONENTS from "../engine/templates/COMPONENTS"
+import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 
 
 export default function useEditorEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {

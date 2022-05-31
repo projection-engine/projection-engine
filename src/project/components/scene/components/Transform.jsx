@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import React, {useEffect, useState} from "react";
-import Range from "../../../../components/range/Range";
-import Transformation from "../../../engine/instances/Transformation";
-import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
+import PropTypes from "prop-types"
+import React, {useEffect, useState} from "react"
+import Range from "../../../../components/range/Range"
+import Transformation from "../../../engine/instances/Transformation"
+import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 
 export default function Transform(props) {
     const [state, setState] = useState({})

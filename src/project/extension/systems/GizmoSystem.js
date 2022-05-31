@@ -1,13 +1,13 @@
-import System from "../../engine/basic/System";
-import TranslationGizmo from "../gizmo/TranslationGizmo";
-import RotationGizmo from "../gizmo/RotationGizmo";
-import GIZMOS from "../gizmo/GIZMOS";
-import ScaleGizmo from "../gizmo/ScaleGizmo";
-import ROTATION_TYPES from "../gizmo/ROTATION_TYPES";
-import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../shaders/GIZMO.glsl";
-import GizmoToolTip from "../gizmo/GizmoToolTip";
-import generateNextID from "../../engine/utils/generateNextID";
+import System from "../../engine/basic/System"
+import TranslationGizmo from "../gizmo/TranslationGizmo"
+import RotationGizmo from "../gizmo/RotationGizmo"
+import GIZMOS from "../gizmo/GIZMOS"
+import ScaleGizmo from "../gizmo/ScaleGizmo"
+import ROTATION_TYPES from "../gizmo/ROTATION_TYPES"
+import ShaderInstance from "../../engine/instances/ShaderInstance"
+import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
+import GizmoToolTip from "../gizmo/GizmoToolTip"
+import generateNextID from "../../engine/utils/generateNextID"
 
 function move(event) {
     const canvas = event.target
@@ -18,64 +18,62 @@ function move(event) {
 const LEFT_BUTTON = 0
 
 export default class GizmoSystem extends System {
-    hiddenTarget = true
     targetGizmo
 
-    constructor(gpu) {
-        super();
+    constructor(gpu, resolution) {
+        super()
         this.gpu = gpu
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment, gpu)
 
         const canvas = gpu.canvas
         if (gpu.canvas.id) {
-            const targetID = canvas.id + '-gizmo'
+            const targetID = canvas.id + "-gizmo"
             if (document.getElementById(targetID) !== null)
                 this.renderTarget = document.getElementById(targetID)
             else {
-                this.renderTarget = document.createElement('div')
+                this.renderTarget = document.createElement("div")
                 this.renderTarget.id = targetID
                 Object.assign(this.renderTarget.style, {
                     backdropFilter: "blur(10px) brightness(70%)", borderRadius: "5px", width: "fit-content",
-                    height: 'fit-content', position: 'absolute', top: '4px', left: '4px', zIndex: '10',
-                    color: 'white', padding: '8px', fontSize: '.75rem',
-                    display: 'none'
-                });
+                    height: "fit-content", position: "absolute", top: "4px", left: "4px", zIndex: "10",
+                    color: "white", padding: "8px", fontSize: ".75rem",
+                    display: "none"
+                })
                 document.body.appendChild(this.renderTarget)
             }
             this.gizmoTooltip = new GizmoToolTip(this.renderTarget)
-            this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip)
-            this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.gizmoTooltip)
-            this.rotationGizmo = new RotationGizmo(gpu, this.renderTarget)
+            this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
+            this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
+            this.rotationGizmo = new RotationGizmo(gpu, this.renderTarget, resolution)
         }
 
         this.handlerListener = this.handler.bind(this)
-        this.gpu.canvas.addEventListener('mouseup', this.handlerListener)
-        this.gpu.canvas.addEventListener('mousedown', this.handlerListener)
+        this.gpu.canvas.addEventListener("mouseup", this.handlerListener)
+        this.gpu.canvas.addEventListener("mousedown", this.handlerListener)
     }
 
     handler(event) {
         switch (event.type) {
-            case 'mousedown':
-                console.log(event.button)
-                if (event.button === LEFT_BUTTON) {
-                    if (this.targetGizmo) {
-                        this.targetGizmo.onMouseDown(event)
-                        this.gpu.canvas.addEventListener('mousemove', move)
-                    }
-                    this.gpu.canvas.targetGizmo = this.targetGizmo
-                }
-                break
-            case 'mouseup':
-
+        case "mousedown":
+            if (event.button === LEFT_BUTTON) {
                 if (this.targetGizmo) {
-                    this.targetGizmo.onMouseUp(event)
+                    this.targetGizmo.onMouseDown(event)
+                    this.gpu.canvas.addEventListener("mousemove", move)
                 }
-                this.targetGizmo = undefined
-                this.gizmoTooltip.stop()
-                this.gpu.canvas.removeEventListener('mousemove', move)
-                break
-            default:
-                break
+                this.gpu.canvas.targetGizmo = this.targetGizmo
+            }
+            break
+        case "mouseup":
+
+            if (this.targetGizmo) {
+                this.targetGizmo.onMouseUp(event)
+            }
+            this.targetGizmo = undefined
+            this.gizmoTooltip.stop()
+            this.gpu.canvas.removeEventListener("mousemove", move)
+            break
+        default:
+            break
         }
     }
 
@@ -132,18 +130,18 @@ export default class GizmoSystem extends System {
 
         if (selected.length > 0)
             switch (gizmo) {
-                case GIZMOS.TRANSLATION:
-                    this.targetGizmo = this.translationGizmo
-                    this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem)
-                    break
-                case GIZMOS.ROTATION:
-                    this.targetGizmo = this.rotationGizmo
-                    this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem)
-                    break
-                case GIZMOS.SCALE:
-                    this.targetGizmo = this.scaleGizmo
-                    this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem)
-                    break
+            case GIZMOS.TRANSLATION:
+                this.targetGizmo = this.translationGizmo
+                this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem)
+                break
+            case GIZMOS.ROTATION:
+                this.targetGizmo = this.rotationGizmo
+                this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem)
+                break
+            case GIZMOS.SCALE:
+                this.targetGizmo = this.scaleGizmo
+                this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem)
+                break
             }
         else
             this.targetGizmo = null

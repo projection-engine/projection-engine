@@ -1,24 +1,24 @@
-import PropTypes from "prop-types";
-import React from "react";
-import styles from '../styles/ContextMenu.module.css'
-import {Button} from "@f-ui/core";
+import PropTypes from "prop-types"
+import React from "react"
+import styles from "../styles/ContextMenu.module.css"
+import {Button} from "@f-ui/core"
 
 export default function ContextMenu(props) {
-    const {options} = props
+    const {options, close} = props
     if (options && options.length > 0 && props.engine.selected.length > 0)
         return options.map((o, i) => (
-            <React.Fragment key={'viewport-option-' + i}>
+            <React.Fragment key={"viewport-option-" + i}>
                 {o.divider ? <div className={styles.divider}/> :
                     <Button
                         disabled={o.disabled}
                         className={styles.button}
                         onClick={() => {
-                            console.log(o)
                             o.onClick()
+                            close()
                         }}>
                         <div className={styles.icon}>
-                            <span style={{fontSize: '1.1rem'}}
-                                  className={'material-icons-round'}>{o.icon}</span>
+                            <span style={{fontSize: "1.1rem"}}
+                                className={"material-icons-round"}>{o.icon}</span>
                         </div>
                         {o.label}
                     </Button>}
@@ -36,4 +36,5 @@ ContextMenu.propTypes = {
         disabled: PropTypes.bool
     })),
     engine: PropTypes.object,
+    close: PropTypes.func
 }

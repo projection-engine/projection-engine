@@ -1,5 +1,5 @@
-import EditorCamera from "./camera/EditorCamera";
-import CameraEvents from "./camera/CameraEvents";
+import EditorCamera from "./camera/EditorCamera"
+import CameraEvents from "./camera/CameraEvents"
 
 const toRad = 180 / Math.PI
 export default class Cameras {

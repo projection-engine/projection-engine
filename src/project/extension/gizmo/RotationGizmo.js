@@ -1,18 +1,18 @@
-import ShaderInstance from "../../engine/instances/ShaderInstance";
-import * as gizmoShaderCode from "../shaders/GIZMO.glsl";
+import ShaderInstance from "../../engine/instances/ShaderInstance"
+import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 
-import {mat4, quat, vec3} from "gl-matrix";
-import Entity from "../../engine/basic/Entity";
-import TransformComponent from "../../engine/components/TransformComponent";
-import MeshInstance from "../../engine/instances/MeshInstance";
-import Transformation from "../../engine/instances/Transformation";
-import PickComponent from "../../engine/components/PickComponent";
-import TextureInstance from "../../engine/instances/TextureInstance";
-import circle from "../icons/circle.png";
-import ROTATION_TYPES from "./ROTATION_TYPES";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import GizmoSystem from "../systems/GizmoSystem";
-import Conversion from "../../engine/utils/Conversion";
+import {mat4, quat, vec3} from "gl-matrix"
+import Entity from "../../engine/basic/Entity"
+import TransformComponent from "../../engine/components/TransformComponent"
+import MeshInstance from "../../engine/instances/MeshInstance"
+import Transformation from "../../engine/instances/Transformation"
+import PickComponent from "../../engine/components/PickComponent"
+import TextureInstance from "../../engine/instances/TextureInstance"
+import circle from "../icons/circle.png"
+import ROTATION_TYPES from "./ROTATION_TYPES"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import GizmoSystem from "../systems/GizmoSystem"
+import Conversion from "../../engine/utils/Conversion"
 
 const toDeg = 57.29, toRad = 3.1415 / 180
 export default class RotationGizmo {
@@ -25,14 +25,14 @@ export default class RotationGizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, renderTarget) {
+    constructor(gpu, renderTarget, resolution) {
         this.renderTarget = renderTarget
         this.gpu = gpu
-
+        this.resolution = resolution
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
-        this.xGizmo = this._mapEntity(2, 'x')
-        this.yGizmo = this._mapEntity(3, 'y')
-        this.zGizmo = this._mapEntity(4, 'z')
+        this.xGizmo = this._mapEntity(2, "x")
+        this.yGizmo = this._mapEntity(3, "y")
+        this.zGizmo = this._mapEntity(4, "z")
 
         import("../../../static/assets/Circle.json")
             .then(res => {
@@ -55,21 +55,21 @@ export default class RotationGizmo {
         e.components[COMPONENTS.TRANSFORM] = new TransformComponent()
         let s, t = [0, 0, 0], r
         switch (axis) {
-            case 'x':
-                s = [1, .1, 1]
-                r = [0, 0, 1.57]
-                break
-            case 'y':
-                s = [1, .1, 1]
-                r = [0, 0, 0]
-                break
-            case 'z':
-                s = [1, .1, 1]
-                r = [1.57, 0, 0]
-                break
+        case "x":
+            s = [1, .1, 1]
+            r = [0, 0, 1.57]
+            break
+        case "y":
+            s = [1, .1, 1]
+            r = [0, 0, 0]
+            break
+        case "z":
+            s = [1, .1, 1]
+            r = [1.57, 0, 0]
+            break
 
-            default:
-                break
+        default:
+            break
         }
         e.components[COMPONENTS.TRANSFORM].translation = t
         e.components[COMPONENTS.TRANSFORM].rotation = r
@@ -80,7 +80,7 @@ export default class RotationGizmo {
 
     onMouseDown(event) {
         if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = window.screen.width, h = window.screen.height
+            const w = this.resolution.w, h = this.resolution.h
             const x = event.clientX
             const y = event.clientY
 
@@ -96,7 +96,7 @@ export default class RotationGizmo {
     onMouseUp() {
         this.firstPick = true
         if (this.tracking) {
-            this.renderTarget.innerText = ''
+            this.renderTarget.innerText = ""
             this.onGizmoEnd()
             this.started = false
             this.distanceX = 0
@@ -110,7 +110,7 @@ export default class RotationGizmo {
             this.currentRotation = [0, 0, 0]
             this.t = 0
         }
-        this.renderTarget.style.display = 'none'
+        this.renderTarget.style.display = "none"
     }
 
     onMouseMove(event) {
@@ -120,31 +120,31 @@ export default class RotationGizmo {
         }
 
         switch (this.clickedAxis) {
-            case 1: // x
-                this.distanceX += Math.abs(event.movementX * 0.05)
-                if (Math.abs(this.distanceX) >= this.gridSize) {
-                    this.rotateElement([Math.sign(event.movementX) * this.gridSize * toRad, 0, 0])
-                    this.distanceX = 0
-                    this.renderTarget.innerText = `${(this.currentRotation[0] * toDeg).toFixed(1)} θ`
-                }
-                break
-            case 2: // y
-                this.distanceY += Math.abs(event.movementX * 0.05)
-                if (Math.abs(this.distanceY) >= this.gridSize) {
-                    this.rotateElement([0, Math.sign(event.movementX) * this.gridSize * toRad, 0])
-                    this.renderTarget.innerText = `${(this.currentRotation[1] * toDeg).toFixed(1)} θ`
-                    this.distanceY = 0
-                }
-                break
-            case 3: // z
-                this.distanceZ += Math.abs(event.movementX * 0.05)
-                if (Math.abs(this.distanceZ) >= this.gridSize) {
-                    this.rotateElement([0, 0, Math.sign(event.movementX) * this.gridSize * toRad])
+        case 1: // x
+            this.distanceX += Math.abs(event.movementX * 0.05)
+            if (Math.abs(this.distanceX) >= this.gridSize) {
+                this.rotateElement([Math.sign(event.movementX) * this.gridSize * toRad, 0, 0])
+                this.distanceX = 0
+                this.renderTarget.innerText = `${(this.currentRotation[0] * toDeg).toFixed(1)} θ`
+            }
+            break
+        case 2: // y
+            this.distanceY += Math.abs(event.movementX * 0.05)
+            if (Math.abs(this.distanceY) >= this.gridSize) {
+                this.rotateElement([0, Math.sign(event.movementX) * this.gridSize * toRad, 0])
+                this.renderTarget.innerText = `${(this.currentRotation[1] * toDeg).toFixed(1)} θ`
+                this.distanceY = 0
+            }
+            break
+        case 3: // z
+            this.distanceZ += Math.abs(event.movementX * 0.05)
+            if (Math.abs(this.distanceZ) >= this.gridSize) {
+                this.rotateElement([0, 0, Math.sign(event.movementX) * this.gridSize * toRad])
 
-                    this.distanceZ = 0
-                    this.renderTarget.innerText = `${(this.currentRotation[2] * toDeg).toFixed(1)} θ`
-                }
-                break
+                this.distanceZ = 0
+                this.renderTarget.innerText = `${(this.currentRotation[2] * toDeg).toFixed(1)} θ`
+            }
+            break
         }
     }
 
@@ -184,9 +184,9 @@ export default class RotationGizmo {
 
     #testClick(el, depthSystem, camera, lockCamera, pickSystem, selected, entities, translation ) {
         const r = el.components[COMPONENTS.TRANSFORM].rotationQuat
-        const mX = this.#rotateMatrix(translation, r, 'x', this.xGizmo.components[COMPONENTS.TRANSFORM])
-        const mY = this.#rotateMatrix(translation, r, 'y', this.yGizmo.components[COMPONENTS.TRANSFORM])
-        const mZ = this.#rotateMatrix(translation, r, 'z', this.zGizmo.components[COMPONENTS.TRANSFORM])
+        const mX = this.#rotateMatrix(translation, r, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = this.#rotateMatrix(translation, r, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
         GizmoSystem.drawToDepthSampler(
             depthSystem,
@@ -209,11 +209,11 @@ export default class RotationGizmo {
             this.tracking = true
             lockCamera(true)
 
-            this.renderTarget.style.left = this.currentCoord.clientX + 'px'
-            this.renderTarget.style.top = this.currentCoord.clientY + 'px'
-            this.renderTarget.style.display = 'block'
-            this.renderTarget.style.width = 'fit-content'
-            this.renderTarget.innerText = `0 θ`
+            this.renderTarget.style.left = this.currentCoord.clientX + "px"
+            this.renderTarget.style.top = this.currentCoord.clientY + "px"
+            this.renderTarget.style.display = "block"
+            this.renderTarget.style.width = "fit-content"
+            this.renderTarget.innerText = "0 θ"
             this.target = selected.map(e => entities[e])
 
             this.gpu.canvas.requestPointerLock()
@@ -265,17 +265,17 @@ export default class RotationGizmo {
         matrix[14] += t[2]
         if (this.typeRot === ROTATION_TYPES.GLOBAL && axis !== undefined) {
             switch (axis) {
-                case 'x':
-                    mat4.rotateY(matrix, matrix, -this.currentRotation[0])
-                    break
-                case 'y':
-                    mat4.rotateY(matrix, matrix, this.currentRotation[1])
-                    break
-                case 'z':
-                    mat4.rotateY(matrix, matrix, this.currentRotation[2])
-                    break
-                default:
-                    break
+            case "x":
+                mat4.rotateY(matrix, matrix, -this.currentRotation[0])
+                break
+            case "y":
+                mat4.rotateY(matrix, matrix, this.currentRotation[1])
+                break
+            case "z":
+                mat4.rotateY(matrix, matrix, this.currentRotation[2])
+                break
+            default:
+                break
             }
         } else if (axis !== undefined) {
             return mat4.fromRotationTranslationScale([], quat.multiply([], rotation, comp.rotationQuat), t, comp.scaling)
@@ -288,9 +288,9 @@ export default class RotationGizmo {
             this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
             this.gpu.disable(this.gpu.CULL_FACE)
 
-            const mX = this.#rotateMatrix(translation, rotation, 'x', this.xGizmo.components[COMPONENTS.TRANSFORM])
-            const mY = this.#rotateMatrix(translation, rotation, 'y', this.yGizmo.components[COMPONENTS.TRANSFORM])
-            const mZ = this.#rotateMatrix(translation, rotation, 'z', this.zGizmo.components[COMPONENTS.TRANSFORM])
+            const mX = this.#rotateMatrix(translation, rotation, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
+            const mY = this.#rotateMatrix(translation, rotation, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
+            const mZ = this.#rotateMatrix(translation, rotation, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
             shader.use()
             this.gpu.bindVertexArray(this.xyz.VAO)

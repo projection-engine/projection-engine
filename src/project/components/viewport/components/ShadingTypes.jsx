@@ -1,9 +1,9 @@
-import styles from "../styles/ViewportOptions.module.css";
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core";
+import styles from "../styles/ViewportOptions.module.css"
+import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
 
-import PropTypes from "prop-types";
-import SHADING_MODELS from "../../../engine/templates/SHADING_MODELS";
-import {useMemo} from "react";
+import PropTypes from "prop-types"
+import SHADING_MODELS from "../../../engine/templates/SHADING_MODELS"
+import {useMemo} from "react"
 
 export default function ShadingTypes(props) {
     const {settingsContext} = props

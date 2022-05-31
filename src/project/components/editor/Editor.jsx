@@ -1,15 +1,15 @@
-import styles from "../../styles/Project.module.css";
-import ViewportOptions from "../viewport/ViewportOptions";
-import Viewport from "../viewport/Viewport";
-import ResizableBar from "../../../components/resizable/ResizableBar";
-import SceneView from "../scene/SceneView";
-import {useContext, useMemo} from "react";
-import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider";
-import PropTypes from "prop-types";
-import ControlProvider from "../header/ControlProvider";
-import useEditorKeys from "./hooks/useEditorKeys";
-import getOptionsViewport from "./utils/getOptionsViewport";
-import importData from "../../utils/importer/import";
+import styles from "../../styles/Project.module.css"
+import ViewportOptions from "../viewport/ViewportOptions"
+import Viewport from "../viewport/Viewport"
+import ResizableBar from "../../../components/resizable/ResizableBar"
+import SceneView from "../scene/SceneView"
+import {useContext, useMemo} from "react"
+import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider"
+import PropTypes from "prop-types"
+import ControlProvider from "../header/ControlProvider"
+import useEditorKeys from "./hooks/useEditorKeys"
+import getOptionsViewport from "./utils/getOptionsViewport"
+import importData from "../../utils/importer/import"
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)

@@ -1,7 +1,7 @@
-import System from "../../engine/basic/System";
-import * as shaderCode from '../shaders/grid.glsl'
-import ShaderInstance from "../../engine/instances/ShaderInstance";
-import Quad from "../../engine/instances/Quad";
+import System from "../../engine/basic/System"
+import * as shaderCode from "../shaders/grid.glsl"
+import ShaderInstance from "../../engine/instances/ShaderInstance"
+import Quad from "../../engine/instances/Quad"
 
 export default class GridSystem extends System {
     constructor(gpu) {

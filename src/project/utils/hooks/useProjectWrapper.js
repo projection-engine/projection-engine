@@ -1,17 +1,17 @@
-import {AlertProvider} from "@f-ui/core";
-import LoaderProvider from "../../../components/loader/LoaderProvider";
-import useEditorEngine from "../../extension/useEditorEngine";
-import useQuickAccess from "./useQuickAccess";
-import useSerializer from "./useSerializer";
-import {useContext, useEffect, useMemo, useState} from "react";
-import EVENTS from "../EVENTS";
-import ProjectLoader from "../workers/ProjectLoader";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider";
-import MeshInstance from "../../engine/instances/MeshInstance";
-import {v4} from "uuid";
-import CHANNELS from "../../../../public/project/loader/CHANNELS";
+import {AlertProvider} from "@f-ui/core"
+import LoaderProvider from "../../../components/loader/LoaderProvider"
+import useEditorEngine from "../../extension/useEditorEngine"
+import useQuickAccess from "./useQuickAccess"
+import useSerializer from "./useSerializer"
+import {useContext, useEffect, useMemo, useState} from "react"
+import EVENTS from "../EVENTS"
+import ProjectLoader from "../workers/ProjectLoader"
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import GPUContextProvider from "../../components/viewport/hooks/GPUContextProvider"
+import MeshInstance from "../../engine/instances/MeshInstance"
+import {v4} from "uuid"
+import CHANNELS from "../../../../public/project/loader/CHANNELS"
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings) {
     const [executingAnimation, setExecutingAnimation] = useState(false)

@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-import {useContext, useEffect, useRef, useState} from "react";
-import styles from './styles/ImageView.module.css'
-import ResizableBar from "../../../components/resizable/ResizableBar";
-import ControlProvider from "../header/ControlProvider";
-import handleBoardScroll from "../../components/blueprints/components/utils/handleBoardScroll";
-import ControlBar from "./components/ControlBar";
+import PropTypes from "prop-types"
+import {useContext, useEffect, useRef, useState} from "react"
+import styles from "./styles/ImageView.module.css"
+import ResizableBar from "../../../components/resizable/ResizableBar"
+import ControlProvider from "../header/ControlProvider"
+import handleBoardScroll from "../../components/blueprints/components/utils/handleBoardScroll"
+import ControlBar from "./components/ControlBar"
 
 export default function ImageView(props) {
 

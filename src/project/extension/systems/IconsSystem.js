@@ -1,12 +1,12 @@
-import System from "../../engine/basic/System";
-import TextureInstance from "../../engine/instances/TextureInstance";
-import Icon from "../Icon";
-import * as shaderCode from '../shaders/GIZMO.glsl'
-import ShaderInstance from "../../engine/instances/ShaderInstance";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import MeshInstance from "../../engine/instances/MeshInstance";
-import {mat4} from "gl-matrix";
-import {fragmentForward, vertex} from '../../engine/shaders/mesh/FALLBACK.glsl'
+import System from "../../engine/basic/System"
+import TextureInstance from "../../engine/instances/TextureInstance"
+import Icon from "../Icon"
+import * as shaderCode from "../shaders/GIZMO.glsl"
+import ShaderInstance from "../../engine/instances/ShaderInstance"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import MeshInstance from "../../engine/instances/MeshInstance"
+import {mat4} from "gl-matrix"
+import {fragmentForward, vertex} from "../../engine/shaders/mesh/FALLBACK.glsl"
 
 const identity = mat4.create()
 export default class IconsSystem extends System {

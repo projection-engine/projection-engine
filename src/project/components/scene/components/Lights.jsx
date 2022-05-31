@@ -1,13 +1,13 @@
-import PropTypes from "prop-types";
-import styles from "../styles/Forms.module.css";
-import {Checkbox} from "@f-ui/core";
-import React, {useEffect, useState} from "react";
-import Range from "../../../../components/range/Range";
-import ColorPicker from "../../../../components/color/ColorPicker";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import LabeledRange from "../../../../components/templates/LabeledRange";
+import PropTypes from "prop-types"
+import styles from "../styles/Forms.module.css"
+import {Checkbox} from "@f-ui/core"
+import React, {useEffect, useState} from "react"
+import Range from "../../../../components/range/Range"
+import ColorPicker from "../../../../components/color/ColorPicker"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import LabeledRange from "../../../../components/templates/LabeledRange"
 
 export default function Lights(props) {
     const getNewState = () => {

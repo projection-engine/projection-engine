@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import COMPONENTS from "../../engine/templates/COMPONENTS";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
+import React, {useEffect, useState} from "react"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
 
 const getHierarchy = (start, all) => {
     const result = []
@@ -44,7 +44,7 @@ export default function useHierarchy(engine, required,  worker) {
                 payload: {
                     entityID: node.id,
                     data: node.hidden,
-                    key: 'active'
+                    key: "active"
                 }
             })
             node.children.forEach(c => {
@@ -53,12 +53,12 @@ export default function useHierarchy(engine, required,  worker) {
                     payload: {
                         entityID: c.id,
                         data: c.hidden,
-                        key: 'active'
+                        key: "active"
                     }
                 })
             })
         }
-        node.icon = <span className={'material-icons-round'} style={{fontSize: '1rem'}}>{node.icon}</span>
+        node.icon = <span className={"material-icons-round"} style={{fontSize: "1rem"}}>{node.icon}</span>
         if (node.children.length > 0)
             node.children = node.children.map(n => mapChildren(n))
         return node
@@ -66,15 +66,15 @@ export default function useHierarchy(engine, required,  worker) {
     useEffect(() => {
         worker.postMessage({entities: engine.entities.map(e => {
             return {...e, components: Object.keys(e.components)}
-            }), required: required, COMPONENTS});
+        }), required: required, COMPONENTS})
         worker.onmessage = ({data: toFilter}) => {
             setHierarchy([
                 {
                     id: 0,
-                    label: 'Scene',
+                    label: "Scene",
                     children: toFilter.map(e => mapChildren(e)),
-                    icon: <span className={'material-icons-round'} style={{fontSize: '1rem'}}>inventory_2</span>,
-                    type: 'Scene',
+                    icon: <span className={"material-icons-round"} style={{fontSize: "1rem"}}>inventory_2</span>,
+                    type: "Scene",
                     phantomNode: true,
                     onHide: () => {
                         let newEntities
@@ -97,7 +97,7 @@ export default function useHierarchy(engine, required,  worker) {
                     hidden: allHidden
                 }
             ])
-        };
+        }
     }, [engine.entities, allHidden, required])
 
     return hierarchy

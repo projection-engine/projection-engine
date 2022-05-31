@@ -1,15 +1,15 @@
-import PropTypes from "prop-types";
-import styles from '../styles/Mesh.module.css'
-import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core";
+import PropTypes from "prop-types"
+import styles from "../styles/Mesh.module.css"
+import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core"
 
-import {useContext, useMemo} from "react";
+import {useContext, useMemo} from "react"
 
-import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider";
-import Material from "../../scene/components/Material";
+import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider"
+import Material from "../../scene/components/Material"
 
-import {IDS} from "../../../extension/useMinimalEngine";
-import Transform from "../../scene/components/Transform";
-import {updateTransform} from "../../scene/hooks/useForm";
+import {IDS} from "../../../extension/useMinimalEngine"
+import Transform from "../../scene/components/Transform"
+import {updateTransform} from "../../scene/hooks/useForm"
 
 export default function Controls(props) {
     const quickAccess = useContext(QuickAccessProvider)

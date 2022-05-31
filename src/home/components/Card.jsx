@@ -1,8 +1,8 @@
-import styles from '../styles/Card.module.css'
-import PropTypes from "prop-types";
-import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core";
-import {useContext, useMemo, useRef, useState} from "react";
-import logo from '../../static/logo.png'
+import styles from "../styles/Card.module.css"
+import PropTypes from "prop-types"
+import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core"
+import {useContext, useMemo, useRef, useState} from "react"
+import logo from "../../static/logo.png"
 
 const KEYS = [
     {key: 'preview', type: 'image'},

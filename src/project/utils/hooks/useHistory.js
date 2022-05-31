@@ -1,6 +1,6 @@
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import {useEffect, useReducer, useState} from "react";
-import historyReducer, {HISTORY_ACTIONS} from "./historyReducer";
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import {useEffect, useReducer, useState} from "react"
+import historyReducer, {HISTORY_ACTIONS} from "./historyReducer"
 
 export default function useHistory(entities, dispatchEntities, setAlert) {
     const [currentChange, setCurrentChange] = useState()

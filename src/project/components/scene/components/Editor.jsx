@@ -1,9 +1,9 @@
-import {useContext, useState} from "react";
-import SettingsProvider from "../../../utils/hooks/SettingsProvider";
-import {Checkbox} from "@f-ui/core";
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate";
-import Range from "../../../../components/range/Range";
-import styles from '../styles/Forms.module.css'
+import {useContext, useState} from "react"
+import SettingsProvider from "../../../utils/hooks/SettingsProvider"
+import {Checkbox} from "@f-ui/core"
+import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import Range from "../../../../components/range/Range"
+import styles from "../styles/Forms.module.css"
 
 export default function Editor() {
     const settings = useContext(SettingsProvider)

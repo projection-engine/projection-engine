@@ -1,18 +1,18 @@
-import React, {useContext, useEffect, useState} from 'react'
-import PropTypes from "prop-types";
-import styles from "./styles/ViewportOptions.module.css";
-import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core";
-import Range from "../../../components/range/Range";
-import SettingsProvider from "../../utils/hooks/SettingsProvider";
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials";
-import GIZMOS from "../../extension/gizmo/GIZMOS";
-import {HISTORY_ACTIONS} from "../../utils/hooks/historyReducer";
-import ShadingTypes from "./components/ShadingTypes";
-import CreateEntity from "./components/CreateEntity";
-import VisualSettings from "./components/VisualSettings";
-import Extra from "./components/Extra";
-import CameraOptions from "./components/CameraOptions";
-import ROTATION_TYPES from "../../extension/gizmo/ROTATION_TYPES";
+import React, {useContext, useEffect, useState} from "react"
+import PropTypes from "prop-types"
+import styles from "./styles/ViewportOptions.module.css"
+import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core"
+import Range from "../../../components/range/Range"
+import SettingsProvider from "../../utils/hooks/SettingsProvider"
+import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import GIZMOS from "../../extension/gizmo/GIZMOS"
+import {HISTORY_ACTIONS} from "../../utils/hooks/historyReducer"
+import ShadingTypes from "./components/ShadingTypes"
+import CreateEntity from "./components/CreateEntity"
+import VisualSettings from "./components/VisualSettings"
+import Extra from "./components/Extra"
+import CameraOptions from "./components/CameraOptions"
+import ROTATION_TYPES from "../../extension/gizmo/ROTATION_TYPES"
 
 
 export default function ViewportOptions(props) {

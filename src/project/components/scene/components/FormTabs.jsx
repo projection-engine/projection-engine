@@ -1,9 +1,9 @@
-import styles from '../styles/Tabs.module.css'
-import PropTypes from "prop-types";
-import React, {useEffect, useMemo, useRef} from "react";
-import COMPONENTS from "../../../engine/templates/COMPONENTS";
-import {Button, ToolTip} from "@f-ui/core";
-import getComponentInfo from "../utils/getComponentInfo";
+import styles from "../styles/Tabs.module.css"
+import PropTypes from "prop-types"
+import React, {useEffect, useMemo, useRef} from "react"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import {Button, ToolTip} from "@f-ui/core"
+import getComponentInfo from "../utils/getComponentInfo"
 
 
 export default function FormTabs(props) {
