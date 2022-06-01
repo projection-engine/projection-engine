@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import styles from "../styles/Mesh.module.css"
 import {Accordion, AccordionSummary, AlertProvider} from "@f-ui/core"
 
-import {useContext, useMemo} from "react"
+import React, {useContext, useMemo} from "react"
 
 import QuickAccessProvider from "../../../utils/hooks/QuickAccessProvider"
 import Material from "../../scene/components/Material"
@@ -25,16 +25,16 @@ export default function Controls(props) {
                     quickAccess={quickAccess}
                     meshes={props.engine.meshes}
                     meshID={selected.components.MeshComponent.meshID}
-                    submit={(mat) => {
+                    submit={() => {
 
                     }}
                     setAlert={({message, type}) => alert.pushAlert(message, type)}
                 />
                 <Transform
                     selected={selected.components.TransformComponent}
-                    submitRotation={(axis, data) => updateTransform(axis, data, 'rotation',  props.engine, IDS.TARGET)}
-                    submitScaling={(axis, data) => updateTransform(axis, data, 'scaling',  props.engine, IDS.TARGET)}
-                    submitTranslation={(axis, data) => updateTransform(axis, data, 'translation',  props.engine, IDS.TARGET)}
+                    submitRotation={(axis, data) => updateTransform(axis, data, "rotation",  props.engine, IDS.TARGET)}
+                    submitScaling={(axis, data) => updateTransform(axis, data, "scaling",  props.engine, IDS.TARGET)}
+                    submitTranslation={(axis, data) => updateTransform(axis, data, "translation",  props.engine, IDS.TARGET)}
                 />
                 <Accordion>
                     <AccordionSummary className={styles.summary}>

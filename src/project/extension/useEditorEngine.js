@@ -18,11 +18,11 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
     } = useEngineEssentials()
     const {gpu, renderer} = useContext(GPUContextProvider)
     const {returnChanges, forwardChanges, dispatchChanges} = useHistory(entities, dispatchEntities, setAlert)
-
+    const [updated, setUpdated] = useState(false)
     useEffect(() => {
-        if (renderer)
+        if (renderer && updated)
             renderer.start()
-    }, [renderer])
+    }, [renderer, updated])
 
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])
@@ -47,6 +47,8 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
 
     const update = useCallback(() => {
         if (renderer && canStart && canRender) {
+            if(!updated)
+                setUpdated(true)
             renderer.gizmo = settings.gizmo
             renderer?.updatePackage(
                 entities,
@@ -65,7 +67,8 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
         selected, setSelected,
         materials, meshes, scripts,
         entities, gpu,
-        settings, canStart
+        settings, canStart,
+        renderer, updated
     ])
 
     useEffect(update, [update])

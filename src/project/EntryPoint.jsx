@@ -12,7 +12,7 @@ import useGPU from "./components/viewport/hooks/useGPU"
 import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./utils/hooks/useSettings"
 
-const {ipcRenderer} = window.require('electron')
+const {ipcRenderer} = window.require("electron")
 
 function EntryPoint() {
     const global = useGlobalOptions()
@@ -21,32 +21,24 @@ function EntryPoint() {
     const [events, setEvents] = useState({})
     const [initialized, setInitialized] = useState(false)
     const settings = useSettings()
-    const gpuContext = useGPU(initialized, settings.resolution)
+    const gpuContext = useGPU(initialized, settings.resolution, project?.id)
 
     useEffect(() => {
-
-        ipcRenderer.send('load-page')
-        ipcRenderer.on('page-load-props', (ev, data) => {
+        ipcRenderer.send("load-page")
+        ipcRenderer.on("page-load-props", (ev, data) => {
             setProject(data.package)
             setEvents(data)
         })
     }, [])
-
     useEffect(() => {
-        document.body.classList.remove(global.dark ? 'light' : 'dark')
-        document.body.classList.add(global.dark ? 'dark' : 'light')
+        document.body.classList.remove(global.dark ? "light" : "dark")
+        document.body.classList.add(global.dark ? "dark" : "light")
     }, [global.dark])
 
     return (<Fabric
         language={"en"}
-        theme={global.dark ? 'dark' : "light"}
+        theme={"dark"}
         accentColor={global.accentColor}
-        backgrounds={{
-            primary: '#f0f0f0', secondary: '#e5e5e5', tertiary: '#e0e0e0', quaternary: '#d5d5d5'
-        }}
-        borders={{
-            primary: '#e8e8e8'
-        }}
         className={styles.wrapper}
     >
         <LoaderProvider.Provider value={loader}>
@@ -71,4 +63,4 @@ function EntryPoint() {
 
 ReactDOM.render(<React.StrictMode>
     <EntryPoint/>
-</React.StrictMode>, document.getElementById('root'))
+</React.StrictMode>, document.getElementById("root"))

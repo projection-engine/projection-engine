@@ -86,7 +86,7 @@ export default class EditorCamera {
 
     updateProjection() {
         if (this.ortho)
-            mat4.ortho(this.projectionMatrix, -this.#radius, this.#radius, -this.#radius / this._aspectRatio, this.#radius / this._aspectRatio, this._zNear, this._zFar);
+            mat4.ortho(this.projectionMatrix, -this.#radius, this.#radius, -this.#radius / this._aspectRatio, this.#radius / this._aspectRatio, this._zNear, this._zFar)
         else
             mat4.perspective(this.projectionMatrix, this.#fov, this._aspectRatio, this._zNear, this._zFar)
     }

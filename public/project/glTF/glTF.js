@@ -1,6 +1,6 @@
-import Buffer from "./instances/Buffer";
-import Accessor from "./instances/Accessor";
-import Scene from "./instances/Scene";
+import Buffer from "./instances/Buffer"
+import Accessor from "./instances/Accessor"
+import Scene from "./instances/Scene"
 
 
 const fs = require('fs')

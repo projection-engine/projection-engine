@@ -46,30 +46,40 @@ export default function Project(props) {
         },
         setAlert
     )
+
+
     const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance) => {
-        if(!isLevel){
+        if(!isLevel)
             quickAccess.fileSystem
                 .updateAsset(registryID, pack, previewImage)
                 .then(() => {
                     if(matInstance)
                         engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
+                    else {
+                        setTimeout(() => {
+                            setAlert({type: "warning", message: "Reloading script"})
+                            refreshData(FILE_TYPES.SCRIPT, registryID, quickAccess.fileSystem, engine)
+                        }, 1000)
+                    }
                     setAlert({type: "success", message: "Saved"})
                 })
                 .catch(() => {
                     setAlert({type: "error", message: "Some error occurred"})
                 })
-        }
-        else{
+        else
             quickAccess.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
                 .then(() => {
                     setAlert({type: "success", message: "Saved"})
+                    
+                    setTimeout(() => {
+                        setAlert({type: "warning", message: "Reloading script"})
+                        refreshData(undefined, undefined, quickAccess.fileSystem, engine)
+                    }, 1000)
                 })
                 .catch(() => {
 
                     setAlert({type: "error", message: "Some error occurred"})
                 })
-        }
-
     }
 
     const tabs = useMemo(() => {

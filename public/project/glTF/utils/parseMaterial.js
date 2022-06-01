@@ -1,4 +1,4 @@
-import PathSep from "../../../PathSep";
+import PathSep from "../../../PathSep"
 
 const fs = require('fs')
 const path = require('path')

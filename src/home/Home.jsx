@@ -11,7 +11,7 @@ import AsyncFS from "../project/utils/AsyncFS"
 import FileSystem from "../project/utils/files/FileSystem"
 
 
-const pathResolve = window.require('path')
+const pathResolve = window.require("path")
 
 export default function Home() {
     const {
@@ -25,24 +25,24 @@ export default function Home() {
     return (
         <div className={styles.wrapper}>
             <SideBar open={open} setOpen={setOpen}/>
-            <input style={{display: 'none'}}
-                   type={'file'}
-                   accept={['.projection']}
-                   onChange={f => {
-                       load.pushEvent(EVENTS.PROJECT_IMPORT)
-                       // TODO - IMPORT
-                       f.target.value = ''
-                   }}
-                   ref={uploadRef}/>
+            <input style={{display: "none"}}
+                type={"file"}
+                accept={[".projection"]}
+                onChange={f => {
+                    load.pushEvent(EVENTS.PROJECT_IMPORT)
+                    // TODO - IMPORT
+                    f.target.value = ""
+                }}
+                ref={uploadRef}/>
 
-            <Switcher openChild={open} styles={{width: '100%'}}>
+            <Switcher openChild={open} styles={{width: "100%"}}>
                 <Projects
                     alert={alert}
                     onLoad={() => uploadRef.current.click()}
                     deleteProject={async pjID => {
-                        setAlert({message: 'Deleting project', type: 'info'})
+                        setAlert({message: "Deleting project", type: "info"})
                         await AsyncFS.rm(
-                            pathResolve.resolve(localStorage.getItem('basePath') + 'projects' + FileSystem.sep + pjID),
+                            pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
                             {recursive: true, force: true}
                         )
 
@@ -51,7 +51,7 @@ export default function Home() {
                         })
                     }}
                     renameProject={async (newName, projectID) => {
-                        const pathName = pathResolve.resolve(localStorage.getItem('basePath') + 'projects' + FileSystem.sep + projectID + FileSystem.sep + '.meta')
+                        const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID + FileSystem.sep + ".meta")
                         const [error, res] = await AsyncFS.read(pathName)
                         if (res && !error) {
                             const [e] = await AsyncFS.write(pathName, JSON.stringify({
@@ -60,13 +60,13 @@ export default function Home() {
                             }))
                             if (!e)
                                 setAlert({
-                                    type: 'success',
-                                    message: 'Project renamed'
+                                    type: "success",
+                                    message: "Project renamed"
                                 })
                             else
                                 setAlert({
-                                    type: 'error',
-                                    message: 'Error renaming project.'
+                                    type: "error",
+                                    message: "Error renaming project."
                                 })
                         }
                     }}

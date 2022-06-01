@@ -1,4 +1,4 @@
-import {readFromRegistry} from "./FSOperations";
+import {readFromRegistry} from "./FSOperations"
 
 const pathRequire = require('path')
 const fs = require('fs')

@@ -1,1 +1,1 @@
-import '../../src/home/EntryPoint.jsx';
+import "../../src/home/EntryPoint.jsx"

@@ -1,4 +1,4 @@
-import {mat4, quat} from "gl-matrix";
+import {mat4, quat} from "gl-matrix"
 
 export default function parseNode(node, allNodes, parentTransform) {
     let res = []

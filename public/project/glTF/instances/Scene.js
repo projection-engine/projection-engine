@@ -1,8 +1,7 @@
-import  {getNormalizedName} from "./Node";
-import {v4} from "uuid";
-import FILE_TYPES from "../FILE_TYPES";
-import {createDirectory} from "../glTF";
-import Node from "./Node";
+import Node, {getNormalizedName} from "./Node"
+import {v4} from "uuid"
+import FILE_TYPES from "../FILE_TYPES"
+import {createDirectory} from "../glTF"
 
 const path = require('path')
 export default class Scene {

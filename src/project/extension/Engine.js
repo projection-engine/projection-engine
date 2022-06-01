@@ -19,8 +19,8 @@ export default class Engine extends Renderer {
     #overrideMaterial
     changedEntity = undefined
 
-    constructor(gpu, resolution, systems, settings) {
-        super(gpu, resolution, systems);
+    constructor(gpu, resolution, systems, settings, projectID) {
+        super(gpu, resolution, systems, projectID)
         this.cameraData = new Cameras(
             gpu.canvas,
             settings.cameraPosition,
@@ -37,7 +37,7 @@ export default class Engine extends Renderer {
             shaderCode.vertex,
             debugCode.fragment,
             [{
-                key: 'shadingModel',
+                key: "shadingModel",
                 data: SHADING_MODELS.DEPTH,
                 type: DATA_TYPES.INT
             }], {
@@ -45,7 +45,7 @@ export default class Engine extends Renderer {
                 doubledSided: true
             },
             undefined,
-            'shading-models'
+            "shading-models"
         )
     }
 
@@ -120,6 +120,7 @@ export default class Engine extends Renderer {
     }
 
     updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
+
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
@@ -145,6 +146,7 @@ export default class Engine extends Renderer {
 
 
         const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
+
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
         super.updatePackage(
             params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
@@ -169,7 +171,7 @@ export default class Engine extends Renderer {
             scripts,
             this.editorSystem,
         )
-        if (typeof params.setSelected === 'function') this.cameraData.onClick = (ck, c) => this.testClick(ck, c)
+        if (typeof params.setSelected === "function") this.cameraData.onClick = (ck, c) => this.testClick(ck, c)
         this.start()
         this.updateOverrideMaterial()
 

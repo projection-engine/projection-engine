@@ -1,11 +1,11 @@
-const {BrowserWindow, ipcMain} = require('electron')
+const {BrowserWindow, ipcMain} = require("electron")
 
-const closeEventHome = 'home-close',
-    minimizeEventHome = 'home-minimize',
-    maximizeEventHome = 'home-maximize'
-const closeEvent = 'project-close',
-    minimizeEvent = 'project-minimize',
-    maximizeEvent = 'project-maximize'
+const closeEventHome = "home-close",
+    minimizeEventHome = "home-minimize",
+    maximizeEventHome = "home-maximize"
+const closeEvent = "project-close",
+    minimizeEvent = "project-minimize",
+    maximizeEvent = "project-maximize"
 
 export default function WindowEvents() {
     let project = null,
@@ -15,14 +15,10 @@ export default function WindowEvents() {
             minimize: undefined,
             maximize: undefined,
         }
-
-    console.log('WAIT')
     prepareHomeWindow()
     initEvents(mainWindow, maximizeEventHome, minimizeEventHome, closeEventHome)
-    ipcMain.on('switch-window', onSwitchCall)
-    ipcMain.on('load-page', getDataCall)
-
-
+    ipcMain.on("switch-window", onSwitchCall)
+    ipcMain.on("load-page", getDataCall)
     function prepareHomeWindow() {
         if (mainWindow) {
             removeEvents()
@@ -42,10 +38,10 @@ export default function WindowEvents() {
                 nodeIntegrationInWorker: true,
             },
             autoHideMenuBar: true
-        });
+        })
         mainWindow = newWindow
-        newWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-        console.log('OPENING')
+        newWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+        console.log("OPENING")
         return {
             newWindow,
             closeEvent: closeEventHome,
@@ -53,10 +49,6 @@ export default function WindowEvents() {
             maximizeEvent: maximizeEventHome
         }
     }
-
-
-
-
     function initEvents(window, mE, minE, closeE) {
         currentListeners.minimize = ipcMain.on(minE, () => window.minimize())
         currentListeners.maximize = ipcMain.on(mE, () => {
@@ -67,7 +59,6 @@ export default function WindowEvents() {
         })
         currentListeners.close = ipcMain.on(closeE, () => window.close())
     }
-
     function removeEvents() {
         if (project) {
             currentListeners.minimize?.removeAllListeners(maximizeEvent)
@@ -79,11 +70,9 @@ export default function WindowEvents() {
             currentListeners.close?.removeAllListeners(closeEventHome)
         }
     }
-
     function getDataCall(ev) {
-        ev.sender.send('page-load-props', project)
+        ev.sender.send("page-load-props", project)
     }
-
     function prepareProjectWindow(data) {
         removeEvents()
         mainWindow.close()
@@ -99,12 +88,12 @@ export default function WindowEvents() {
                 nodeIntegrationInWorker: true,
             },
             autoHideMenuBar: true
-        });
+        })
         mainWindow = newWindow
-        newWindow.maximize();
-        newWindow.show();
+        newWindow.maximize()
+        newWindow.show()
 
-        newWindow.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY);
+        newWindow.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY)
         project = {
             package: data,
             closeEvent,

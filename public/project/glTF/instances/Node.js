@@ -1,11 +1,9 @@
-import {mat4, quat} from "gl-matrix";
-import {primitive} from "../utils/getPrimitive";
-import PrimitiveProcessor from "./PrimitiveProcessor";
-import {v4} from "uuid";
-import FILE_TYPES from "../FILE_TYPES";
-import {createDirectory} from "../glTF";
-import REG_PATH from "../REG_PATH";
-import extractTransformations from "../utils/extractTransformations";
+import {mat4, quat} from "gl-matrix"
+import {primitive} from "../utils/getPrimitive"
+import PrimitiveProcessor from "./PrimitiveProcessor"
+import {v4} from "uuid"
+import FILE_TYPES from "../FILE_TYPES"
+import REG_PATH from "../REG_PATH"
 
 const fs = require('fs')
 const path = require('path')

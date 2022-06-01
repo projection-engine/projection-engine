@@ -1,7 +1,6 @@
-import {v4 as uuidv4} from "uuid";
-import glTF from "../project/glTF/glTF";
-import {readRegistry} from "../project/loader/FSOperations";
-import loader from "../project/loader/loader";
+import glTF from "../project/glTF/glTF"
+import {readRegistry} from "../project/loader/FSOperations"
+import loader from "../project/loader/loader"
 
 const {dialog, ipcMain} = require('electron')
 const fs = require('fs')

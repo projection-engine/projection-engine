@@ -1,7 +1,4 @@
-import {readFromRegistry} from "./FSOperations";
-
-const pathRequire = require('path')
-const fs = require('fs')
+import {readFromRegistry} from "./FSOperations"
 
 export default async function loadScripts(toLoad, meshesLoaded, mapEntities = true, projectPath) {
 

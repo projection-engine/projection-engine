@@ -1,18 +1,17 @@
-import COMPONENTS from "../../../src/project/engine/templates/COMPONENTS";
-import FILE_TYPES from "../glTF/FILE_TYPES";
-import loadScripts from "./loadScripts";
-import loadMeshes from "./loadMeshes";
-import loadMaterials from "./loadMaterials";
-import {readFile} from "../../events/FSEvents";
-import loadData from "./loadData";
-import cleanUpRegistry from "./cleanUp";
-import CHANNELS from "./CHANNELS";
-import PathSep from "../../PathSep";
+import COMPONENTS from "../../../src/project/engine/templates/COMPONENTS"
+import FILE_TYPES from "../glTF/FILE_TYPES"
+import loadScripts from "./loadScripts"
+import loadMeshes from "./loadMeshes"
+import loadMaterials from "./loadMaterials"
+import {readFile} from "../../events/FSEvents"
+import loadData from "./loadData"
+import CHANNELS from "./CHANNELS"
+import PathSep from "../../PathSep"
 
 export default async function loader(projectPath, projectID, listenID, sender) {
-    await cleanUpRegistry(projectPath)
+    // await cleanUpRegistry(projectPath) TODO FIX CLEANUP REG
     const {settings, meta, entities} = await loadData(projectPath)
-    sender.send(CHANNELS.META_DATA + '-' + listenID, {
+    sender.send(CHANNELS.META_DATA + "-" + listenID, {
         meta, settings, entities
     })
 
@@ -26,7 +25,7 @@ export default async function loader(projectPath, projectID, listenID, sender) {
             } else return e.data.blueprintID
         }).filter(e => e !== undefined), toLoadScripts = [...new Set(scripts.flat())],
         scriptsToLoad = (await loadScripts(toLoadScripts, entities.length, true, projectPath)).filter(e => e !== undefined)
-    let levelBlueprint = (await readFile(projectPath + PathSep.sep + 'levelBlueprint' + FILE_TYPES.SCRIPT))[1]
+    let levelBlueprint = (await readFile(projectPath + PathSep.sep + "levelBlueprint" + FILE_TYPES.SCRIPT))[1]
 
     console.log(meshes)
     if (levelBlueprint) {
@@ -38,8 +37,8 @@ export default async function loader(projectPath, projectID, listenID, sender) {
         })
     }
 
-    sender.send(CHANNELS.SCRIPTS + '-' + listenID, scriptsToLoad)
-    loadMeshes(meshes, projectPath, (data) => sender.send(CHANNELS.MESH + '-' + listenID, data)).catch()
-    loadMaterials(materials, projectPath, (data) => sender.send(CHANNELS.MATERIAL + '-' + listenID, data)).catch()
+    sender.send(CHANNELS.SCRIPTS + "-" + listenID, scriptsToLoad)
+    loadMeshes(meshes, projectPath, (data) => sender.send(CHANNELS.MESH + "-" + listenID, data)).catch()
+    loadMaterials(materials, projectPath, (data) => sender.send(CHANNELS.MATERIAL + "-" + listenID, data)).catch()
 
 }

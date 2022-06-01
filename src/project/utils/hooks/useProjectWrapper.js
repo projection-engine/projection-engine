@@ -32,12 +32,10 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (gpu && !loading) {
             setLoading(true)
-            const {ipcRenderer} = window.require('electron')
-
-
+            const {ipcRenderer} = window.require("electron")
             const listenID = v4().toString()
-            ipcRenderer.once(CHANNELS.META_DATA + '-' + listenID, async (ev, res) => {
 
+            ipcRenderer.once(CHANNELS.META_DATA + "-" + listenID, async (ev, res) => {
                 if (res.settings && res.settings.data)
                     Object.keys(res.settings.data).forEach(key => {
                         settings[key] = res.settings.data[key]
@@ -51,22 +49,22 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                 setLoading(false)
                 load.finishEvent(EVENTS.PROJECT_DATA)
             })
-            ipcRenderer.on(CHANNELS.MESH + '-' + listenID, (ev, res) => {
-                console.log(res)
+            ipcRenderer.on(CHANNELS.MESH + "-" + listenID, (ev, res) => {
                 engine.setMeshes(prev => {
                     return [...prev, new MeshInstance({...res, gpu})]
                 })
             })
-            ipcRenderer.on(CHANNELS.MATERIAL + '-' + listenID, (ev, res) => {
+            ipcRenderer.on(CHANNELS.MATERIAL + "-" + listenID, (ev, res) => {
 
                 ProjectLoader.mapMaterial(res.result, gpu, res.id)
                     .then(mat => engine.setMaterials(prev => {
                         return [...prev, mat]
                     }))
             })
-            ipcRenderer.once(CHANNELS.SCRIPTS + '-' + listenID, (ev, res) => {
+            ipcRenderer.once(CHANNELS.SCRIPTS + "-" + listenID, (ev, res) => {
+                console.trace(res)
                 engine.setScripts(prev => {
-                    return [...prev, res]
+                    return [...prev, ...res.map(s => s.script)]
                 })
             })
             ipcRenderer.send(CHANNELS.SEND, {projectPath: quickAccess.fileSystem.path, projectID: id, listenID})
