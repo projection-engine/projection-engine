@@ -5,8 +5,9 @@ import TransformComponent from "../../engine/components/TransformComponent"
 import MeshComponent from "../../engine/components/MeshComponent"
 import MaterialComponent from "../../engine/components/MaterialComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
+import FileSystem from "../files/FileSystem"
 
-export default async function importMesh(objLoaded, engine, id, index, fileSystem, isBlueprint) {
+export default async function importMesh(objLoaded, engine, id, fileSystem) {
 
     let mesh,
         entity,
@@ -26,8 +27,7 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
             if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
                 const rs = await fileSystem.readRegistryFile(objLoaded.material)
                 if (rs) {
-                    const file = await fileSystem.readFile(fileSystem.path + '\\assets\\' + rs.path, 'json')
-
+                    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
                     if (file && file.response)
                         material = {
                             ...file.response,
@@ -39,7 +39,9 @@ export default async function importMesh(objLoaded, engine, id, index, fileSyste
         else
             existsMesh = true
         entity = initializeEntity(objLoaded, mesh.id)
-    } catch (e) {}
+    } catch (e) {
+        console.error(e)
+    }
 
     return {
         mesh,

@@ -52,6 +52,10 @@ export default class Engine extends Renderer {
     generatePreview(material){
         return this.editorSystem.previewSystem.execute(this.params, this.data, material)
     }
+    generateMeshPreview(entity, mesh){
+        return this.editorSystem.previewSystem.execute(this.params, this.data, mesh, entity)
+    }
+
     get camera() {
         return this.cameraData.camera
     }

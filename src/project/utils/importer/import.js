@@ -16,15 +16,13 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
         } catch (e) {
         }
 
-    console.log(entities)
     for (let i = 0; i < entities.length; i++) {
         const data = entities[i]
         const res = await fileSystem.readRegistryFile(data)
         if(res)
-        switch ('.'+res.path.split('.').pop()){
+            switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
-                const mesh = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
-                meshes.push(await importMesh(mesh, engine, data, i, fileSystem, isBlueprint))
+                meshes.push(await importMesh(await fileSystem.readFile(fileSystem.path + "\\assets\\" + res.path, "json"), engine, data, fileSystem))
                 break
             case FILE_TYPES.TERRAIN:
                 break
@@ -35,9 +33,9 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
                 await importScene(fileSystem, engine, res, setAlert)
                 break
             default:
-                setAlert({type: 'error', message: 'Error importing file.'})
+                setAlert({type: "error", message: "Error importing file."})
                 break
-        }
+            }
     }
 
     if (meshes.length > 0) {

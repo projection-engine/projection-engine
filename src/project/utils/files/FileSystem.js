@@ -28,7 +28,7 @@ export default class FileSystem {
 
     async writeFile(pathName, data) {
         const result = await AsyncFS.write(FileSystem.resolvePath(this.path + pathName), typeof data === "object" ? JSON.stringify(data) : data)
-        console.log(result)
+
         if(result[0])
             throw Error(result[0])
     }
@@ -78,6 +78,7 @@ export default class FileSystem {
     }
 
     async importFile(options, targetDir, filesToLoad) {
+        let result = []
         for (let i in filesToLoad) {
             const filePath = filesToLoad[i]
             const name = filePath.split(pathRequire.sep).pop()
@@ -94,20 +95,22 @@ export default class FileSystem {
                 break
             }
             case "gltf":
-                await new Promise(resolve => {
-                    const listenID = v4().toString()
-                    ipcRenderer.once("import-gltf-" + listenID, (ev, data) => {
-                        resolve(data)
-                        console.log(data, "HERE")
-                    })
+                result.push({
+                    file: name.split(".")[0],
+                    ids: await new Promise(resolve => {
+                        const listenID = v4().toString()
+                        ipcRenderer.once("import-gltf-" + listenID, (ev, data) => {
+                            resolve(data)
+                        })
 
-                    ipcRenderer.send("import-gltf", {
-                        filePath: filePath,
-                        newRoot,
-                        options,
-                        projectPath: this.path,
-                        listenID,
-                        fileName: filePath.split(pathRequire.sep).pop()
+                        ipcRenderer.send("import-gltf", {
+                            filePath: filePath,
+                            newRoot,
+                            options,
+                            projectPath: this.path,
+                            listenID,
+                            fileName: filePath.split(pathRequire.sep).pop()
+                        })
                     })
                 })
                 break
@@ -115,6 +118,7 @@ export default class FileSystem {
                 break
             }
         }
+        return result
     }
 
     async createRegistryEntry(fID = uuidv4(), path) {

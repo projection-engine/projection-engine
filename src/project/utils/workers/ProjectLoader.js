@@ -21,24 +21,14 @@ import Transformation from "../../engine/instances/Transformation"
 import ImageProcessor from "../../engine/utils/image/ImageProcessor"
 import {DATA_TYPES} from "../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../engine/instances/TextureInstance"
+import FileSystem from "../files/FileSystem"
 
 export default class ProjectLoader {
 
 
     static async getEntities(fileSystem) {
-        let entities = await fileSystem.fromDirectory(fileSystem.path + '\\logic', '.entity')
-
-        return Promise
-            .all(entities.map(e => {
-                return new Promise(async resolve => {
-                    try {
-                        const res = await fileSystem.readFile(fileSystem.path + '\\logic\\' + e, 'json', true)
-                        resolve(res)
-                    } catch (e) {
-                        resolve()
-                    }
-                })
-            }))
+        const entities = await fileSystem.fromDirectory(fileSystem.path + FileSystem.sep + "logic", ".entity")
+        return await Promise.all(entities.map(e => fileSystem.readFile(fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
     }
 
     static async readFromRegistry(fileID, fileSystem) {
@@ -47,7 +37,7 @@ export default class ProjectLoader {
                 .then(lookUpTable => {
 
                     if (lookUpTable) {
-                        fileSystem.readFile(fileSystem.path + '\\assets\\' + lookUpTable.path)
+                        fileSystem.readFile(fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
                             .then(fileData => {
                                 if (fileData) resolve(fileData)
                                 else resolve(null)
@@ -148,7 +138,7 @@ export default class ProjectLoader {
         parsedEntity.blueprintID = entity.blueprintID
 
         for (const k in entity.components) {
-            if (typeof ENTITIES[k] === 'function') {
+            if (typeof ENTITIES[k] === "function") {
                 let component = await ENTITIES[k](entity, k, gpu, fileSystem)
                 if (component) {
 

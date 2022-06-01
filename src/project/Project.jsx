@@ -142,7 +142,7 @@ export default function Project(props) {
                         type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
                     })
                     entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
-                }
+                }, engine
             }}>
                 <SettingsProvider.Provider value={settings}>
                     <QuickAccessProvider.Provider value={quickAccess}>

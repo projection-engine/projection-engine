@@ -7,9 +7,8 @@ import {readFile} from "../../events/FSEvents"
 import loadData from "./loadData"
 import CHANNELS from "./CHANNELS"
 import PathSep from "../../PathSep"
-
 export default async function loader(projectPath, projectID, listenID, sender) {
-    // await cleanUpRegistry(projectPath) TODO FIX CLEANUP REG
+    // await cleanUpRegistry(projectPath)
     const {settings, meta, entities} = await loadData(projectPath)
     sender.send(CHANNELS.META_DATA + "-" + listenID, {
         meta, settings, entities
@@ -27,7 +26,6 @@ export default async function loader(projectPath, projectID, listenID, sender) {
         scriptsToLoad = (await loadScripts(toLoadScripts, entities.length, true, projectPath)).filter(e => e !== undefined)
     let levelBlueprint = (await readFile(projectPath + PathSep.sep + "levelBlueprint" + FILE_TYPES.SCRIPT))[1]
 
-    console.log(meshes)
     if (levelBlueprint) {
         levelBlueprint = JSON.parse(levelBlueprint)
         scriptsToLoad.push({

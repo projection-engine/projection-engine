@@ -4,6 +4,7 @@ import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
 import SHADING_MODELS from "../../engine/templates/SHADING_MODELS"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
 
 function toBase64(gpu, fbo) {
     const canvas = document.createElement("canvas")
@@ -49,48 +50,106 @@ export default class PreviewSystem {
         this.cameraData = EditorCamera.update(0, RADIAN_90, 2.5, [0,0,0])
         this.projection = mat4.perspective([], RADIAN_60, 1, .1, 10000)
         this.pointLightData =[
-            0, 0, 10, 0,
-            1, 1, 1, 0,
-            .9, 0, 0, 0,
-            100, .1, 0, 0
+            [
+                0, 0, 10, 0,
+                1, 1, 1, 0,
+                .5, 0, 0, 0,
+                100, .1, 0, 0
+            ],
+            [
+                0, 0, -10, 0,
+                1, 1, 1, 0,
+                .5, 0, 0, 0,
+                100, .1, 0, 0
+            ]
         ]
     }
 
-    execute(options, data, material) {
+    execute(options, data, materialMesh, meshEntity) {
         const {
             elapsed,
-            brdf
+            brdf,
+            fallbackMaterial
         } = options
         let response
         this.frameBuffer.startMapping()
-        const [ viewMatrix, camPosition ] = this.cameraData
-        ForwardSystem.drawMesh({
-            mesh:this.sphereMesh,
-            camPosition,
-            viewMatrix,
-            projectionMatrix: this.projection,
-            transformMatrix: this.identity,
-            material,
-            normalMatrix: this.identity,
-            brdf,
-            directionalLightsQuantity: 0,
-            directionalLightsData: [],
-            dirLightPOV: [],
-            pointLightsQuantity: 1,
-            pointLightData: [this.pointLightData],
-            materialComponent: {},
-            elapsed,
-            ambient: {irradianceMultiplier: [1,1,1]},
 
-            gpu: this.gpu,
-            shadingModel: SHADING_MODELS.NORMAL,
-            useCubeMapShader: true
-        })
 
+
+        if(meshEntity && materialMesh instanceof MeshInstance){
+            const maxX = materialMesh.maxBoundingBox[0] - materialMesh.minBoundingBox[0],
+                maxY = materialMesh.maxBoundingBox[1] - materialMesh.minBoundingBox[1],
+                maxZ = materialMesh.maxBoundingBox[2] - materialMesh.minBoundingBox[2]
+            const radius = Math.max(maxX, maxY, maxZ)
+            const cam = EditorCamera.update(0, RADIAN_90, radius + 2, meshEntity.components[COMPONENTS.TRANSFORM].translation)
+            const transformMatrix =meshEntity.components[COMPONENTS.TRANSFORM].transformationMatrix
+            const pointLightData = [[
+                0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1]/2, radius * 10, 0,
+                1, 1, 1, 0,
+                .5, 0, 0, 0,
+                100, .1, 0, 0
+            ],
+            [
+                0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1]/2, -radius * 10, 0,
+                1, 1, 1, 0,
+                .5, 0, 0, 0,
+                100, .1, 0, 0
+            ]]
+
+            ForwardSystem.drawMesh({
+                mesh: materialMesh,
+                camPosition: cam[1],
+                viewMatrix: cam[0],
+                projectionMatrix: this.projection,
+                transformMatrix,
+                material: fallbackMaterial,
+                normalMatrix: this.identity,
+                brdf,
+                directionalLightsQuantity: 0,
+                directionalLightsData: [],
+                dirLightPOV: [],
+                pointLightsQuantity: 2,
+                pointLightData: pointLightData,
+                materialComponent: {},
+                elapsed,
+                ambient: {irradianceMultiplier: [1, 1, 1]},
+
+                gpu: this.gpu,
+                shadingModel: SHADING_MODELS.NORMAL,
+                useCubeMapShader: true
+            })
+            materialMesh.finish()
+        }
+        else {
+            const [ viewMatrix, camPosition ] = this.cameraData
+            ForwardSystem.drawMesh({
+                mesh: this.sphereMesh,
+                camPosition,
+                viewMatrix,
+                projectionMatrix: this.projection,
+                transformMatrix: this.identity,
+                material: materialMesh,
+                normalMatrix: this.identity,
+                brdf,
+                directionalLightsQuantity: 0,
+                directionalLightsData: [],
+                dirLightPOV: [],
+                pointLightsQuantity: 2,
+                pointLightData: this.pointLightData,
+                materialComponent: {},
+                elapsed,
+                ambient: {irradianceMultiplier: [1, 1, 1]},
+
+                gpu: this.gpu,
+                shadingModel: SHADING_MODELS.NORMAL,
+                useCubeMapShader: true
+            })
+        }
         this.frameBuffer.stopMapping()
         response= toBase64(this.gpu, this.frameBuffer)
         this.sphereMesh.finish()
         this.gpu.bindVertexArray(null)
+        console.log(response)
         return response
     }
 }

@@ -6,16 +6,15 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
 import FileSystem from "../../utils/files/FileSystem"
 
-export default async function importScene(fileSystem, engine, reg, setAlert) {
-    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + reg.path, 'json')
-    console.log(file)
+export default async function importScene(fileSystem, engine, reg, setAlert, onlyReturn) {
+    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+    const meshes = []
+    const entities = []
     if (file) {
         const folder = new Entity()
         folder.name = file.name
         folder.components[COMPONENTS.FOLDER] = new FolderComponent()
 
-        const meshes = []
-        const entities = []
 
         for (let i in file.nodes) {
             const data = await loopNodes(file.nodes[i], fileSystem, engine.gpu, folder.id)
@@ -25,15 +24,17 @@ export default async function importScene(fileSystem, engine, reg, setAlert) {
 
         }
         entities.push(folder)
-
-        engine.setMeshes(prev => {
-            return [...prev, ...meshes]
-        })
-        engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+        if(!onlyReturn) {
+            engine.setMeshes(prev => {
+                return [...prev, ...meshes]
+            })
+            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+        }
     } else
-        setAlert({message: 'Error loading scene', type: 'error'})
-    // const res = await fileSystem.readRegistryFile(data)
+        setAlert({message: "Error loading scene", type: "error"})
 
+
+    return {meshes, entities}
 }
 
 async function loopNodes(node, fileSystem, gpu, parent) {
@@ -48,8 +49,8 @@ async function loopNodes(node, fileSystem, gpu, parent) {
         const primitive = node.primitives[m]
         const reg = await fileSystem.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + reg.path, 'json')
-            console.log(meshData, reg)
+            const meshData = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+            console.log(reg.id)
             const instance = new MeshInstance({
                 ...meshData,
                 id: reg.id,
