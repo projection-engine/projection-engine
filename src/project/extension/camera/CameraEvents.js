@@ -18,7 +18,7 @@ export default function CameraEvents(c, canvas, onClick) {
         case "wheel":
             const forward = event.deltaY < 0
             const distance = (forward ? 1 : -1) * scrollSpeed
-            console.log(cameraScrollDelay)
+
             if (cameraScrollDelay > 0) {
                 const s = Math.sign(increment)
                 if (Math.sign(distance) !== s)

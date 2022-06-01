@@ -4,6 +4,7 @@ import IconsSystem from "./systems/IconsSystem"
 import SYSTEMS from "../engine/templates/SYSTEMS"
 import GizmoSystem from "./systems/GizmoSystem"
 import SelectedSystem from "./systems/SelectedSystem"
+import PreviewSystem from "./systems/PreviewSystem"
 
 
 export default class Wrapper extends System {
@@ -14,6 +15,7 @@ export default class Wrapper extends System {
         this.billboardSystem = new IconsSystem(gpu)
         this.gizmoSystem = new GizmoSystem(gpu, resolution)
         this.selectedSystem = new SelectedSystem(gpu, resolution)
+        this.previewSystem = new PreviewSystem(gpu)
     }
 
     execute(options, systems, data, entities, entitiesMap, after) {

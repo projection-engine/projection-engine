@@ -47,9 +47,11 @@ export default class Engine extends Renderer {
             undefined,
             "shading-models"
         )
+
     }
-
-
+    generatePreview(material){
+        return this.editorSystem.previewSystem.execute(this.params, this.data, material)
+    }
     get camera() {
         return this.cameraData.camera
     }

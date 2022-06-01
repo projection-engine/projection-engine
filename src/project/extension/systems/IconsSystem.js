@@ -13,7 +13,7 @@ export default class IconsSystem extends System {
     #ready = false
 
     constructor(gpu) {
-        super([]);
+        super([])
         this.gpu = gpu
         this.billboardRenderer = new Icon(gpu)
         this.cameraShader = new ShaderInstance(shaderCode.shadedVertex, shaderCode.shadedFragment, gpu)
@@ -87,13 +87,13 @@ export default class IconsSystem extends System {
             this.billboardRenderer.start()
 
             this.billboardRenderer.draw(
-                this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, 'transformationMatrix'),
+                this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, "transformationMatrix"),
                 this.directionalLightTexture.texture,
                 camera,
                 iconSize
             )
             this.billboardRenderer.draw(
-                this.loop(pointLights, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                this.loop(pointLights, COMPONENTS.TRANSFORM, "transformationMatrix"),
                 this.pointLightTexture.texture,
                 camera,
                 iconSize)
@@ -105,13 +105,13 @@ export default class IconsSystem extends System {
                     iconSize
                 )
             this.billboardRenderer.draw(
-                this.loop(cubeMaps, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                this.loop(cubeMaps, COMPONENTS.TRANSFORM, "transformationMatrix"),
                 this.cubemapTexture.texture,
                 camera,
                 iconSize
             )
             this.billboardRenderer.draw(
-                this.loop(lightProbes, COMPONENTS.TRANSFORM, 'transformationMatrix'),
+                this.loop(lightProbes, COMPONENTS.TRANSFORM, "transformationMatrix"),
                 this.probeTexture.texture,
                 camera,
                 iconSize)

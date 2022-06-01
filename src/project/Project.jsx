@@ -49,11 +49,14 @@ export default function Project(props) {
 
 
     const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance) => {
-        if(!isLevel)
+        if(!isLevel) {
+            let p = previewImage
+            if(matInstance)
+                p = engine.renderer.generatePreview(matInstance)
             quickAccess.fileSystem
-                .updateAsset(registryID, pack, previewImage)
+                .updateAsset(registryID, pack, p)
                 .then(() => {
-                    if(matInstance)
+                    if (matInstance)
                         engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
                     else {
                         setTimeout(() => {
@@ -66,6 +69,7 @@ export default function Project(props) {
                 .catch(() => {
                     setAlert({type: "error", message: "Some error occurred"})
                 })
+        }
         else
             quickAccess.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
                 .then(() => {

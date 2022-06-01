@@ -129,10 +129,8 @@ export default class EditorCamera {
         return this.#radius
     }
 
-    updateViewMatrix(ctrl) {
-        // console.log(ctrl)
-        // if(ctrl) Spherical
-        // else free
+    updateViewMatrix() {
+
         if (this.#pitch > Math.PI / 2)
             this.#pitch = Math.PI / 2
         if (this.#pitch < -Math.PI / 2)
@@ -145,6 +143,14 @@ export default class EditorCamera {
         mat4.lookAt(this.viewMatrix, this.#position, this.centerOn, [0, 1, 0])
         if (this.ortho)
             this.updateProjection()
+    }
+    static update(pitch, yaw,  radius, centerOn){
+        const position = []
+        const cosPitch = Math.cos(pitch)
+        position[0] = radius * cosPitch * Math.cos(yaw) + centerOn[0]
+        position[1] = radius * Math.sin(pitch) + centerOn[1]
+        position[2] = radius * cosPitch * Math.sin(yaw) + centerOn[2]
+        return [mat4.lookAt([], position, centerOn, [0, 1, 0]), position]
     }
 }
 
