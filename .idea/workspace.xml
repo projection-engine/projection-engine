@@ -6,21 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/FSEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/FSEvents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/FileSystemEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/FileSystemEvents.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/project/loader/loader.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/project/loader/loader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/color/ColorPicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/color/ColorPicker.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/Projects.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/Projects.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/components/SideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/SideBar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/editor/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/editor/Editor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/editor/hooks/useEditorKeys.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/editor/hooks/useEditorKeys.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/editor/utils/getOptionsViewport.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/editor/utils/getOptionsViewport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/styles/SideBar.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/styles/SideBar.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/material/MaterialView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/material/MaterialView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/FilesView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/FilesView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ImportHandler.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ImportHandler.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/hooks/useFiles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/hooks/useFiles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/Control.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/Control.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/viewport/ViewportOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/ViewportOptions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/ContextMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/ContextMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/ContextMenu.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/ContextMenu.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/utils/AsyncFS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/utils/AsyncFS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/utils/files/FileSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/utils/files/FileSystem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/utils/hooks/useQuickAccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/utils/hooks/useQuickAccess.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/github/dark.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/github/light.svg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +79,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "/home/roque/Documents/GitHub/editor/node_modules/stylelint",
+    "node.js.selected.package.stylelint": "\\home\\roque\\Documents\\GitHub\\editor\\node_modules\\stylelint",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
     "prettierjs.PrettierConfiguration.Package": "",
@@ -128,6 +134,7 @@
       <workItem from="1654040262272" duration="4014000" />
       <workItem from="1654108586631" duration="15355000" />
       <workItem from="1654197760094" duration="3639000" />
+      <workItem from="1654254343425" duration="4013000" />
     </task>
     <servers />
   </component>

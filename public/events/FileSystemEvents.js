@@ -1,6 +1,8 @@
 import glTF from "../project/glTF/glTF"
 import {readRegistry} from "../project/loader/FSOperations"
 import loader from "../project/loader/loader"
+import {parsePath} from "./FileSystemUtils"
+import {directoryStructure} from "./FSEvents"
 
 const {dialog, ipcMain} = require("electron")
 const fs = require("fs")
@@ -38,11 +40,29 @@ export default function FileSystemEvents() {
             .catch(err => console.log(err))
     })
 
+    // TODO - Implement better performance tracking
     ipcMain.on("get-current-load", async (event) => {
         const load = await si.currentLoad()
         event.sender.send("current-load", load)
     })
+    ipcMain.on("refresh-files", async (event, {pathName, listenID}) => {
+        const promiseRes = []
+        const registryData =     await readRegistry(pathName)
+        const rD = registryData.filter(reg => reg !== undefined)
+        const res = await directoryStructure(pathName)
+        for(let i in res){
+            const e = await parsePath(res[i], rD, pathName)
+            if(e)
+                promiseRes.push(e)
+        }
+        const sorted = promiseRes.sort((a, b) => {
+            if (a.name < b.name) return -1
+            if (a.name > b.name) return 1
+            return 0
+        })
 
+        event.sender.send("refresh-files-"+listenID, sorted)
+    })
     ipcMain.on("read-registry", async (event, {pathName, listenID}) => {
         const result = await readRegistry(pathName)
         event.sender.send("read-registry-" + listenID, result)

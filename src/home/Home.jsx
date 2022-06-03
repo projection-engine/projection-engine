@@ -2,8 +2,6 @@ import {Switcher,} from "@f-ui/core"
 import styles from "./styles/Home.module.css"
 import React, {useState} from "react"
 import Projects from "./components/Projects"
-
-import EVENTS from "../project/utils/EVENTS"
 import useProjects from "./hooks/useProjects"
 import SideBar from "./components/SideBar"
 import IssuesList from "./components/issues/IssuesList"

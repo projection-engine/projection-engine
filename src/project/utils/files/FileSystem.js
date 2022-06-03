@@ -177,27 +177,6 @@ export default class FileSystem {
         }
     }
 
-    async dirStructure(dir) {
-        let results = []
-        if ((await AsyncFS.exists(dir))) {
-            const [err, list] = await AsyncFS.readdir(dir)
-            if (err) return []
-            let pending = list.length
-            if (!pending) return results
-            for (let i in list) {
-                let file = pathRequire.resolve(dir, list[i])
-                const [err, stat] = await AsyncFS.stat(file)
-                results.push(file)
-                if (stat && stat.isDirectory) {
-                    const res = await this.dirStructure(file)
-                    results = results.concat(res)
-                    if (!--pending) return results
-                } else if (!--pending) return results
-            }
-        }
-        return []
-    }
-
     async fromDirectory(startPath, extension) {
         if (!(await AsyncFS.exists(startPath))) return []
         let res = []
@@ -290,9 +269,11 @@ export default class FileSystem {
             projectPath = localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID
         if (!(await AsyncFS.exists(FileSystem.resolvePath(localStorage.getItem("basePath") + "projects")))) await AsyncFS.mkdir(FileSystem.resolvePath(localStorage.getItem("basePath") + "projects"))
         const [err] = await AsyncFS.mkdir(projectPath)
-        await AsyncFS.write(FileSystem.resolvePath(projectPath + FileSystem.sep + ".meta"), JSON.stringify({
-            id: projectID, name: name, creationDate: new Date().toDateString()
-        }))
+        if(!err) {
+            await AsyncFS.write(FileSystem.resolvePath(projectPath + FileSystem.sep + ".meta"), JSON.stringify({
+                id: projectID, name: name, creationDate: new Date().toDateString()
+            }))
+        }
         return projectID
     }
 

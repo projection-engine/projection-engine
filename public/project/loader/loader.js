@@ -7,6 +7,7 @@ import {readFile} from "../../events/FSEvents"
 import loadData from "./loadData"
 import CHANNELS from "./CHANNELS"
 import PathSep from "../../PathSep"
+
 export default async function loader(projectPath, projectID, listenID, sender) {
     // await cleanUpRegistry(projectPath)
     const {settings, meta, entities} = await loadData(projectPath)

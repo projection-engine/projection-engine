@@ -15,8 +15,7 @@
 }
 
 .wrapper[data-extended = 'true'] {
-    min-width: 15%;
-    max-width: 15%;
+   min-width: 250px;
 }
 
 .logoWrapper {
