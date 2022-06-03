@@ -59,6 +59,6 @@ git push origin main
 cd ../../../../
 git add --all
 git commit -m "$MESSAGE"
-git push ssh v0.1.x-alpha
+git push origin v0.1.x-alpha
 
 sleep 10s
