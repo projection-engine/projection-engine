@@ -5,22 +5,23 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
     const {
         group,
         copy,
-        paste
+        paste,
+        invertSelection,
+        deleteSelected
+
     } = utils
     if(!selected)
         return [
             {
                 label: "Select all",
                 onClick: () => {
-
+                    engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
                 },
                 shortcut: ["A"]
             },
             {
                 label: "Invert selection",
-                onClick: () => {
-
-                },
+                onClick:invertSelection,
                 shortcut: ["Alt", "A"]
             }
         ]
@@ -67,7 +68,6 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
                 const comp = selectedRef.components[COMPONENTS.TRANSFORM]
                 comp.baseTransformationMatrix = comp.transformationMatrix
 
-
                 comp.translation = [0, 0, 0]
                 comp.scaling = [1, 1, 1]
                 comp.rotationQuat = [0, 0, 0, 1]
@@ -85,10 +85,8 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Rename active",
             onClick: () => {
-
-                engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
             },
-            icon: "delete_forever",
+            icon: "edit",
             disabled: true,
             shortcut: ["F2"]
         },
@@ -104,18 +102,15 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Snap to grid",
             onClick: () => {
-                engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
             },
             disabled: true
         },
         {divider: true},
         {
+            shortcut: ["Delete"],
+            icon: "delete_forever",
             label: "Delete",
-            onClick: () => {
-                const temp = [...engine.selected]
-                engine.setSelected([])
-                engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: temp})
-            }
+            onClick: deleteSelected
         }
     ]
 }

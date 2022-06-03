@@ -11,6 +11,8 @@ import Project from "./Project"
 import useGPU from "./components/viewport/hooks/useGPU"
 import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./utils/hooks/useSettings"
+import HotKeysProvider from "./utils/hot-keys/HotKeysProvider"
+import useHotKeysHelper from "./utils/hot-keys/useHotKeysHelper"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -22,6 +24,7 @@ function EntryPoint() {
     const [initialized, setInitialized] = useState(false)
     const settings = useSettings()
     const gpuContext = useGPU(initialized, settings.resolution, project?.id)
+    const hotKeysHook= useHotKeysHelper()
 
     useEffect(() => {
         ipcRenderer.send("load-page")
@@ -35,29 +38,32 @@ function EntryPoint() {
         document.body.classList.add(global.dark ? "dark" : "light")
     }, [global.dark])
 
-    return (<Fabric
-        language={"en"}
-        theme={"dark"}
-        accentColor={global.accentColor}
-        className={styles.wrapper}
-    >
-        <LoaderProvider.Provider value={loader}>
-            <ThemeProvider.Provider value={{
-                ...global, themeClass: global.dark ? styles.dark : styles.light
-            }}>
-                <GPUContextProvider.Provider value={gpuContext}>
-                    {project ? <Project
-                        settings={settings}
-                        initialized={initialized}
-                        setInitialized={setInitialized}
-                        events={events}
-                        id={project.id}
-                        meta={project.meta}
-                    /> : null}
-                </GPUContextProvider.Provider>
-            </ThemeProvider.Provider>
-        </LoaderProvider.Provider>
-    </Fabric>)
+    return (
+        <Fabric
+            language={"en"}
+            theme={"dark"}
+            accentColor={global.accentColor}
+            className={styles.wrapper}
+        >
+            <HotKeysProvider.Provider value={hotKeysHook}>
+                <LoaderProvider.Provider value={loader}>
+                    <ThemeProvider.Provider value={{
+                        ...global, themeClass: global.dark ? styles.dark : styles.light
+                    }}>
+                        <GPUContextProvider.Provider value={gpuContext}>
+                            {project ? <Project
+                                settings={settings}
+                                initialized={initialized}
+                                setInitialized={setInitialized}
+                                events={events}
+                                id={project.id}
+                                meta={project.meta}
+                            /> : null}
+                        </GPUContextProvider.Provider>
+                    </ThemeProvider.Provider>
+                </LoaderProvider.Provider>
+            </HotKeysProvider.Provider>
+        </Fabric>)
 }
 
 
