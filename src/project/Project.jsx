@@ -183,17 +183,15 @@ export default function Project(props) {
                         <div className={styles.wrapper}>
                             <Header options={options}/>
                             <Editor
-                                {...{
-                                    setExecutingAnimation: setExecutingAnimation,
-                                    executingAnimation: executingAnimation,
-                                    engine: engine,
-                                    id: id,
-                                    load: load,
-                                    setAlert: setAlert,
-                                    settings: settings,
-                                    serializer: serializer,
-                                }}/>
-
+                                setExecutingAnimation={setExecutingAnimation}
+                                executingAnimation={executingAnimation}
+                                engine={engine}
+                                id={id}
+                                load={load}
+                                setAlert={setAlert}
+                                settings={settings}
+                                serializer={serializer}
+                            />
                             <Tabs
                                 open={openTab}
                                 setOpen={setOpenTab}

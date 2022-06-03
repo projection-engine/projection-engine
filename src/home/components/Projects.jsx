@@ -3,12 +3,11 @@ import PropTypes from "prop-types"
 import React, {useContext, useMemo, useState} from "react"
 import Card from "./Card"
 import {Dropdown, DropdownOptions, DropdownProvider, Masonry, TextField} from "@f-ui/core"
-import Search from "../../components/search/Search"
 import FileSystem from "../../project/utils/files/FileSystem"
 
 
 export default function Projects(props) {
-    const [searchString, setSearchString] = useState('')
+    const [searchString, setSearchString] = useState("")
     const projectsToShow = useMemo(() => {
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
@@ -21,17 +20,17 @@ export default function Projects(props) {
                     <label>Your projects</label>
                     <TextField
                         handleChange={e => setSearchString(e.target.value)}
-                        placeholder={'Search'}
+                        placeholder={"Search"}
                         value={searchString}
-                        height={'25px'}
+                        height={"25px"}
                     />
                 </div>
                 <Dropdown
                     className={styles.button}
-                    variant={'filled'} hideArrow={true}
+                    variant={"filled"} hideArrow={true}
                     wrapperClassname={styles.createModal}
                 >
-                    <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span>
+                    <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>add</span>
                     New project
                     <DropdownOptions>
                         <Create setProjects={props.setProjects} alert={props.alert}/>
@@ -40,11 +39,11 @@ export default function Projects(props) {
             </div>
             {projectsToShow.length === 0 ?
 
-            <div className={styles.emptyWrapper}>
-                <span className={'material-icons-round'} style={{fontSize: '100px'}}>folder</span>
+                <div className={styles.emptyWrapper}>
+                    <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
                 No projects found
-            </div>
-            :
+                </div>
+                :
                 <Masonry className={styles.content}>
                     {projectsToShow.map((p, i) => (
                         <React.Fragment key={p.id}>
@@ -68,8 +67,7 @@ export default function Projects(props) {
 
 Projects.propTypes = {
     alert: PropTypes.object,
-    deleteProject: PropTypes.func.isRequired,
-    onLoad: PropTypes.func,
+    deleteProject: PropTypes.func.isRequired, 
     refresh: PropTypes.func,
     renameProject: PropTypes.func.isRequired,
     load: PropTypes.object,
@@ -77,15 +75,16 @@ Projects.propTypes = {
     setProjects: PropTypes.func
 }
 
-function Create({setProjects, alert}) {
-    const [projectName, setProjectName] = useState('')
+function Create(props) {
+    const {setProjects, alert} = props
+    const [projectName, setProjectName] = useState("")
     const dropdownContext = useContext(DropdownProvider)
 
     return (
         <TextField
             handleChange={e => setProjectName(e.target.value)}
-            label={'New project'}
-            placeholder={'New project'}
+            label={"New project"}
+            placeholder={"New project"}
             value={projectName}
             onEnter={async () => {
                 const res = await FileSystem.createProject(projectName)
@@ -97,12 +96,17 @@ function Create({setProjects, alert}) {
                         }
                     }]
                 })
-                alert.pushAlert('Project created', 'success')
-                setProjectName('')
+                alert.pushAlert("Project created", "success")
+                setProjectName("")
                 dropdownContext.setOpen(false)
             }}
-            height={'30px'}
+            height={"30px"}
         />
 
     )
+}
+
+Create.propTypes={
+    setProjects: PropTypes.func, 
+    alert: PropTypes.object
 }

@@ -25,20 +25,10 @@ export default function Home() {
     return (
         <div className={styles.wrapper}>
             <SideBar open={open} setOpen={setOpen}/>
-            <input style={{display: "none"}}
-                type={"file"}
-                accept={[".projection"]}
-                onChange={f => {
-                    load.pushEvent(EVENTS.PROJECT_IMPORT)
-                    // TODO - IMPORT
-                    f.target.value = ""
-                }}
-                ref={uploadRef}/>
 
             <Switcher openChild={open} styles={{width: "100%"}}>
                 <Projects
                     alert={alert}
-                    onLoad={() => uploadRef.current.click()}
                     deleteProject={async pjID => {
                         setAlert({message: "Deleting project", type: "info"})
                         await AsyncFS.rm(

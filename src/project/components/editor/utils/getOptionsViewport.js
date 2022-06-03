@@ -7,39 +7,54 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         copy,
         paste
     } = utils
+    if(!selected)
+        return [
+            {
+                label: "Select all",
+                onClick: () => {
+
+                },
+                shortcut: ["A"]
+            },
+            {
+                label: "Invert selection",
+                onClick: () => {
+
+                },
+                shortcut: ["Alt", "A"]
+            }
+        ]
     return [
         {
-            label: 'Copy active',
-            onClick: () => copy(true),
-            icon: 'copy_all'
+            label: "Copy",
+            onClick: () => copy(false),
+            icon: "copy_all",
+            shortcut: ["Ctrl", "C"]
         },
         {
-            label: 'Copy',
-            onClick: () => copy(true),
-            icon: 'copy_all'
-        },
-        {
-            label: 'Paste',
+            label: "Paste",
             onClick: paste,
-            icon: 'content_paste_go'
+            icon: "content_paste_go",
+            shortcut: ["Ctrl", "V"]
         },
         {divider: true},
         {
-            label: 'Group entities',
+            label: "Group entities",
             onClick: group,
-            disabled: engine.selected.length === 1
+            disabled: engine.selected.length === 1,
+            shortcut: ["Ctrl", "P"]
         },
         {divider: true},
         {
-            label: 'Duplicate active',
+            label: "Duplicate active",
             onClick: () => {
 
             },
-            icon: 'content_copy',
+            icon: "content_copy",
             disabled: true
         },
         {
-            label: 'Duplicate entities',
+            label: "Duplicate entities",
             onClick: () => {
                 engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
             },
@@ -47,7 +62,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         },
         {divider: true},
         {
-            label: 'Set geometry to origin',
+            label: "Set geometry to origin",
             onClick: () => {
                 const comp = selectedRef.components[COMPONENTS.TRANSFORM]
                 comp.baseTransformationMatrix = comp.transformationMatrix
@@ -63,29 +78,31 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
                     payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
                 })
             },
-            icon: 'place'
+            icon: "place"
         },
 
         {divider: true},
         {
-            label: 'Rename active',
+            label: "Rename active",
             onClick: () => {
 
                 engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
             },
-            icon: 'delete_forever',
-            disabled: true
+            icon: "delete_forever",
+            disabled: true,
+            shortcut: ["F2"]
         },
         {
-            label: 'Fixate active',
+            label: "Fixate active",
             onClick: () => {
                 engine.setLockedEntity(selected)
             },
-            icon: 'push_pin'
+            icon: "push_pin",
+            shortcut: ["Ctrl", "F"]
         },
         {divider: true},
         {
-            label: 'Snap to grid',
+            label: "Snap to grid",
             onClick: () => {
                 engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
             },
@@ -93,7 +110,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         },
         {divider: true},
         {
-            label: 'Delete',
+            label: "Delete",
             onClick: () => {
                 const temp = [...engine.selected]
                 engine.setSelected([])

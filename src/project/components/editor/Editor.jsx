@@ -3,7 +3,7 @@ import ViewportOptions from "../viewport/ViewportOptions"
 import Viewport from "../viewport/Viewport"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import SceneView from "../scene/SceneView"
-import {useContext, useMemo} from "react"
+import React, {useContext, useMemo} from "react"
 import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider"
 import PropTypes from "prop-types"
 import ControlProvider from "../header/ControlProvider"
@@ -15,7 +15,6 @@ export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const controlProvider = useContext(ControlProvider)
     const utils = useEditorKeys(props, controlProvider)
-
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
         const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined
@@ -23,14 +22,14 @@ export default function Editor(props) {
     }, [props.engine.entities, props.engine.selected, utils.toCopy])
 
     return (
-        <div className={styles.viewportWrapper} id={props.id + '-editor-wrapper'}>
-            <div id={'fullscreen-element-' + props.id}
-                 className={styles.container}>
+        <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
+            <div id={"fullscreen-element-" + props.id}
+                className={styles.container}>
                 <ViewportOptions
                     engine={props.engine}
                     executingAnimation={props.executingAnimation}
                     id={props.id}
-                    fullscreenID={'fullscreen-element-' + props.id}
+                    fullscreenID={"fullscreen-element-" + props.id}
                 />
                 <Viewport
                     utils={utils}
@@ -41,7 +40,7 @@ export default function Editor(props) {
                     handleDrop={e => importData(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
                 />
             </div>
-            <ResizableBar type={'width'}/>
+            <ResizableBar type={"width"}/>
             <SceneView
                 executingAnimation={props.executingAnimation}
 

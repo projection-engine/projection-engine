@@ -16,19 +16,19 @@ export default function useEditorKeys(props) {
     function copy(single) {
         setToCopy(single ? [props.engine.selected[0]] : props.engine.selected)
         props.setAlert({
-            type: 'info',
+            type: "info",
             message: `Entities copied (${props.engine.selected.length}).`
         })
     }
 
     function paste() {
         let block = []
-        toCopy.forEach((t, index) => {
+        toCopy.forEach((t) => {
             const found = props.engine.entities.find(e => e.id === t)
             if (found) {
                 let clone = cloneClass(found)
                 clone.id = uuidv4()
-                clone.name = '_' + clone.name
+                clone.name = "_" + clone.name
                 let newComponents = {}
                 Object.keys(clone.components).forEach(c => {
                     if (c === COMPONENTS.TRANSFORM) {
@@ -58,7 +58,7 @@ export default function useEditorKeys(props) {
         props.engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         props.engine.setSelected(block.map(b => b.id))
         props.setAlert({
-            type: 'info',
+            type: "info",
             message: `Pasted ${toCopy.length} entities.`
         })
     }
@@ -77,8 +77,8 @@ export default function useEditorKeys(props) {
         actions: [
             {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => {
                 console.log(props)
-                    props.serializer.save()
-                }},
+                props.serializer.save()
+            }},
             {require: [KEYS.KeyG], callback: () => props.settings.gizmo = GIZMOS.TRANSLATION},
             {require: [KEYS.KeyS], callback: () => props.settings.gizmo = GIZMOS.SCALE},
             {require: [KEYS.KeyR], callback: () => props.settings.gizmo = GIZMOS.ROTATION},
@@ -92,13 +92,21 @@ export default function useEditorKeys(props) {
                 callback: group
             },
             {
+                require: [KEYS.ControlLeft, KEYS.KeyF],
+                callback: () => {
+                    if(props.selected[0])
+                        props.engine.setLockedEntity(props.selected[0])
+                }
+            },
+
+            {
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: copy
             },
             {
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyF],
                 callback: () => {
-                    const el = document.getElementById('fullscreen-element-' + props.id)
+                    const el = document.getElementById("fullscreen-element-" + props.id)
                     if (el) {
                         if (!document.fullscreenElement)
                             el.requestFullscreen().catch(() => document.exitFullscreen())
