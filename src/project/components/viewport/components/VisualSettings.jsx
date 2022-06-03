@@ -2,7 +2,7 @@ import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
 
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
-import {useState} from "react"
+import React, {useState} from "react"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 
 export default function VisualSettings(props) {
@@ -13,32 +13,32 @@ export default function VisualSettings(props) {
             className={styles.optionWrapper}
         >
             <div className={styles.summary}>
-                          <span style={{fontSize: '1.1rem'}}
-                                className={'material-icons-round'}>visibility</span>
+                <span style={{fontSize: "1.1rem"}}
+                    className={"material-icons-round"}>visibility</span>
                 <div className={styles.overflow}>
                     View
                 </div>
             </div>
             <DropdownOptions>
                 <DropdownOption option={{
-                    label: 'Grid',
+                    label: "Grid",
                     keepAlive: true,
-                    icon: settingsContext.gridVisibility ? <span style={{fontSize: '1.2rem'}}
-                                                                 className={'material-icons-round'}>check</span> : undefined,
+                    icon: settingsContext.gridVisibility ? <span style={{fontSize: "1.2rem"}}
+                        className={"material-icons-round"}>check</span> : undefined,
                     onClick: () => settingsContext.gridVisibility = !settingsContext.gridVisibility,
                 }}/>
                 <DropdownOption option={{
-                    label: 'Icons',
+                    label: "Icons",
                     keepAlive: true,
-                    icon: settingsContext.iconsVisibility ? <span style={{fontSize: '1.2rem'}}
-                                                                  className={'material-icons-round'}>check</span> : undefined,
+                    icon: settingsContext.iconsVisibility ? <span style={{fontSize: "1.2rem"}}
+                        className={"material-icons-round"}>check</span> : undefined,
                     onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
                 }}/>
 
                 <div className={styles.rangeWrapper}>
                     <LabeledRange
-                        label={'Icon size'}
-                        accentColor={'red'}
+                        label={"Icon size"}
+                        accentColor={"red"}
                         value={iconSize}
                         maxValue={5} minValue={.1}
                         onFinish={() => {

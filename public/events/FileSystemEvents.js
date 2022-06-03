@@ -47,12 +47,14 @@ export default function FileSystemEvents() {
     })
     ipcMain.on("refresh-files", async (event, {pathName, listenID}) => {
         const promiseRes = []
-        const registryData =     await readRegistry(pathName)
-        const rD = registryData.filter(reg => reg !== undefined)
+
+        const registryData = (await readRegistry(pathName + "Registry")).filter(reg => reg)
         const res = await directoryStructure(pathName)
+        console.log(registryData, pathName)
         for(let i in res){
-            const e = await parsePath(res[i], rD, pathName)
-            if(e)
+            const e = await parsePath(res[i], registryData, pathName)
+
+            if(e && (e.registryID || e.isFolder))
                 promiseRes.push(e)
         }
         const sorted = promiseRes.sort((a, b) => {

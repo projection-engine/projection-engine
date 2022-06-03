@@ -5,8 +5,8 @@ import {Button} from "@f-ui/core"
 
 export default function ContextMenu(props) {
     const {options, close} = props
-   
-    return options.map((o, i) => (
+
+    return options?.map((o, i) => (
         <React.Fragment key={"viewport-option-" + i}>
             {o.divider ? <div className={styles.divider}/> :
                 <Button
@@ -44,7 +44,7 @@ ContextMenu.propTypes = {
 }
 function Shortcut(props){
     const shortcut = useMemo(() => {
-        return props.shortcut.map((s, i) => s + (i < props.shortcut.length -1 ? " + " : ""))
+        return props.shortcut?.map((s, i) => s + (i < props.shortcut.length -1 ? " + " : ""))
     }, [props.shortcut])
     if(!shortcut)
         return null

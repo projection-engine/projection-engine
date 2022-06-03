@@ -49,16 +49,15 @@ export default function ViewportOptions(props) {
 
                     <ShadingTypes settingsContext={settingsContext}/>
                 </div>}
-            <div className={styles.floating} style={{top: props.minimal ? "4px" : undefined}}>
-                <TransformationSettings settingsContext={settingsContext}/>
-                <CameraOptions
-                    id={props.id}
-                    engine={props.engine}
-                    setCameraIsOrthographic={setCameraIsOrthographic}
-                    settingsContext={settingsContext}
-                    cameraIsOrthographic={cameraIsOrthographic}
-                />
-            </div>
+            <TransformationSettings settingsContext={settingsContext}/>
+            <CameraOptions 
+                minimal={props.minimal} 
+                id={props.id}
+                engine={props.engine}
+                setCameraIsOrthographic={setCameraIsOrthographic}
+                settingsContext={settingsContext}
+                cameraIsOrthographic={cameraIsOrthographic}
+            />
         </div>
     )
 

@@ -5,8 +5,9 @@ import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
 import importScript from "./importScript"
 import importScene from "./importScene"
+import FileSystem from '../files/FileSystem'
 
-export default async function importData(event, fileSystem, engine, setAlert, load, asID, isBlueprint) {
+export default async function importData(event, fileSystem, engine, setAlert, load, asID) {
     const entities = [], meshes = []
     if (asID)
         entities.push(event)
@@ -14,6 +15,7 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
         try {
             entities.push(...JSON.parse(event.dataTransfer.getData("text")))
         } catch (e) {
+            console.error(e)
         }
 
     for (let i = 0; i < entities.length; i++) {
@@ -22,7 +24,11 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
         if(res)
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
-                meshes.push(await importMesh(await fileSystem.readFile(fileSystem.path + "\\assets\\" + res.path, "json"), engine, data, fileSystem))
+                const meshData = await importMesh(await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data, fileSystem)
+                if(meshData.mesh !== undefined)
+                    meshes.push(meshData)
+                else
+                    setAlert({type: "error", message: "Error importing mesh."})
                 break
             case FILE_TYPES.TERRAIN:
                 break
