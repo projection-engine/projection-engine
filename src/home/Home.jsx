@@ -5,7 +5,7 @@ import Projects from "./components/Projects"
 import useProjects from "./hooks/useProjects"
 import SideBar from "./components/SideBar"
 import IssuesList from "./components/issues/IssuesList"
-import AsyncFS from "../project/utils/AsyncFS"
+import AsyncFS from "../project/templates/AsyncFS"
 import FileSystem from "../project/utils/files/FileSystem"
 
 

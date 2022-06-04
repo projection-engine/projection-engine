@@ -2,7 +2,7 @@ import styles from "../styles/SideBar.module.css"
 import {Button} from "@f-ui/core"
 
 import PropTypes from "prop-types"
-import ThemeProvider from "../../project/utils/hooks/ThemeProvider"
+import ThemeProvider from "../../project/hooks/ThemeProvider"
 import React, {useContext, useState} from "react"
 
 export default function SideBar(props) {

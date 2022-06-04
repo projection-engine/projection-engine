@@ -1,7 +1,7 @@
 import {useCallback, useContext, useEffect, useState} from "react"
 import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
-import useHistory from "../utils/hooks/useHistory"
-import {HISTORY_ACTIONS} from "../utils/hooks/historyReducer"
+import useHistory from "../hooks/useHistory"
+import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 
@@ -17,7 +17,7 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
         scripts, setScripts
     } = useEngineEssentials()
     const {gpu, renderer} = useContext(GPUContextProvider)
-    const {returnChanges, forwardChanges, dispatchChanges} = useHistory(entities, dispatchEntities, setAlert)
+    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities, setAlert)
     const [updated, setUpdated] = useState(false)
     useEffect(() => {
         if (renderer && updated)
@@ -73,7 +73,7 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
 
     useEffect(update, [update])
     return {
-        update,
+        update,changes,
         returnChanges, forwardChanges,
         dispatchChanges,
         lockedEntity, setLockedEntity,
@@ -81,10 +81,8 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
         meshes, setMeshes,
         gpu, materials, setMaterials,
 
-        selected: [...selected],
-        setSelected: (data) => {
-            setSelected(data)
-        },
+        selected,
+        setSelected,
         canRender, setCanRender,
         renderer,
         scripts, setScripts

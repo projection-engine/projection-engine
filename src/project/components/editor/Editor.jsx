@@ -4,17 +4,15 @@ import Viewport from "../viewport/Viewport"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import SceneView from "../scene/SceneView"
 import React, {useContext, useMemo} from "react"
-import QuickAccessProvider from "../../utils/hooks/QuickAccessProvider"
+import QuickAccessProvider from "../../hooks/QuickAccessProvider"
 import PropTypes from "prop-types"
-import ControlProvider from "../header/ControlProvider"
-import useEditorKeys from "./hooks/useEditorKeys"
+import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import getOptionsViewport from "./utils/getOptionsViewport"
 import importData from "../../utils/importer/import"
 
 export default function Editor(props) {
     const quickAccess = useContext(QuickAccessProvider)
-    const controlProvider = useContext(ControlProvider)
-    const utils = useEditorKeys(props, controlProvider)
+    const utils = useEditorShortcuts(props)
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
         const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined

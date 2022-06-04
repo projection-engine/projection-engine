@@ -1,16 +1,16 @@
-import useHotKeys from "../../../utils/hot-keys/useHotKeys"
+import useHotKeys from "../../../../components/hot-keys/useHotKeys"
 import GIZMOS from "../../../extension/gizmo/GIZMOS"
-import {HISTORY_ACTIONS} from "../../../utils/hooks/historyReducer"
+import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
 import cloneClass from "../../../engine/utils/cloneClass"
 import {v4 as uuidv4} from "uuid"
-import {useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import TransformComponent from "../../../engine/components/TransformComponent"
 import KEYS from "../../../engine/templates/KEYS"
 import RENDER_TARGET from "../../viewport/hooks/RENDER_TARGET"
 
-export default function useEditorKeys({engine, setAlert, settings, id, executingAnimation, serializer, setExecutingAnimation}) {
+export default function useEditorShortcuts({engine, setAlert, settings, id, executingAnimation, serializer, setExecutingAnimation}) {
     const [toCopy, setToCopy] = useState([])
 
     function copy(single) {
@@ -97,24 +97,44 @@ export default function useEditorKeys({engine, setAlert, settings, id, executing
             })
     }
 
-    useHotKeys({
-        focusTarget: RENDER_TARGET,
-        disabled: executingAnimation === true,
-        actions: [
-            {require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => serializer.save()},
-            {require: [KEYS.KeyG], callback: () => settings.gizmo = GIZMOS.TRANSLATION},
-            {require: [KEYS.KeyS], callback: () => settings.gizmo = GIZMOS.SCALE},
-            {require: [KEYS.KeyR], callback: () => settings.gizmo = GIZMOS.ROTATION},
-            {require: [KEYS.Escape], callback: () => setExecutingAnimation(false)},
-
-            {require: [KEYS.ControlLeft, KEYS.KeyZ], callback: () => engine.returnChanges()},
-            {require: [KEYS.ControlLeft, KEYS.KeyY], callback: () => engine.forwardChanges()},
-
+    const actions = useMemo(() => {
+        return [
             {
+                label: "Select all",
+                require: [KEYS.KeyA],
+                callback: () => engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
+            },
+            {
+                label: "Select",
+                require: [KEYS.Mouse0]
+            },
+            {
+                label: "Select Multiple",
+                require: [KEYS.ControlLeft, KEYS.Mouse0]
+            },
+            {label: "Save", require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => serializer.save()},
+            {label: "Translate", require: [KEYS.KeyG], callback: () => settings.gizmo = GIZMOS.TRANSLATION},
+            {label: "Scale", require: [KEYS.KeyS], callback: () => settings.gizmo = GIZMOS.SCALE},
+            {label: "Rotate", require: [KEYS.KeyR], callback: () => settings.gizmo = GIZMOS.ROTATION},
+            {
+                disabled: engine.changes.length === 0,
+                label: "Undo",
+                require: [KEYS.ControlLeft, KEYS.KeyZ],
+                callback: () => engine.returnChanges()
+            },
+            {
+                disabled: engine.changes.length === 0,
+                label: "Redo",
+                require: [KEYS.ControlLeft, KEYS.KeyY],
+                callback: () => engine.forwardChanges()
+            },
+            {
+                label: "Group",
+                disabled: engine.selected.length === 0,
                 require: [KEYS.ControlLeft, KEYS.KeyP],
                 callback: group
             },
-            {
+            {label: "Fixate active",
                 require: [KEYS.ControlLeft, KEYS.KeyF],
                 callback: () => {
                     if(engine.selected[0])
@@ -122,11 +142,12 @@ export default function useEditorKeys({engine, setAlert, settings, id, executing
                 }
             },
 
-            {
+            {label: "Copy",
+                disabled: engine.selected.length === 0,
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: copy
             },
-            {
+            {label: "Fullscreen",
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyF],
                 callback: () => {
                     const el = document.getElementById("fullscreen-element-" + id)
@@ -139,19 +160,39 @@ export default function useEditorKeys({engine, setAlert, settings, id, executing
                 }
             },
             {
+                label: "Toggle metrics",
                 require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
                 callback: () => settings.performanceMetrics = !settings.performanceMetrics
             },
             {
+                label: "Delete",
+                disabled: engine.selected.length === 0,
                 require: [KEYS.Delete],
                 callback:  deleteSelected
             },
             {
+                label: "Paste",
+                disabled: toCopy.length === 0,
                 require: [KEYS.ControlLeft, KEYS.KeyV],
                 callback: paste
             }
         ]
-    }, [toCopy])
+    }, [
+        toCopy,
+        engine.selected,
+        engine.entities,
+        settings.performanceMetrics,
+        engine.changes
+    ])
+
+
+    useHotKeys({
+        focusTargetLabel: "Viewport",
+        focusTargetIcon: "window",
+        focusTarget: RENDER_TARGET,
+        disabled: executingAnimation === true,
+        actions
+    })
 
     return {
         toCopy,

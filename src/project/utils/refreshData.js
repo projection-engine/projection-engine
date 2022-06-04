@@ -1,4 +1,4 @@
-import ProjectLoader from "./workers/ProjectLoader"
+import ProjectLoader from "../templates/ProjectLoader"
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
 import FileSystem from "./files/FileSystem"
 

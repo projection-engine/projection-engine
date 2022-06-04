@@ -1,9 +1,9 @@
-import {useContext, useEffect} from "react"
-import SettingsProvider from "../../../utils/hooks/SettingsProvider"
+import React, {useContext, useEffect} from "react"
+import SettingsProvider from "../../../hooks/SettingsProvider"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
-import useDirectState from "../../../utils/hooks/useDirectState"
+import useDirectState from "../../../hooks/useDirectState"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 
 export default function Rendering() {
@@ -30,22 +30,22 @@ export default function Rendering() {
 
 
     return (
-        <div className={styles.ppWrapper}>
+        <div className={styles.ppWrapper} style={{gap: "4px"}}>
 
             <Checkbox
                 noMargin={true}
                 checked={settings.fxaa}
                 handleCheck={() => settings.fxaa = !settings.fxaa}
-                label={'FXAA anti-aliasing'}
-                height={'25px'}
-                width={'100%'}/>
+                label={"FXAA anti-aliasing"}
+                height={"25px"}
+                width={"100%"}/>
 
 
-            <AccordionTemplate title={'Shadows'}>
+            <AccordionTemplate title={"Shadows"}>
 
                 <LabeledRange
-                    label={'Atlas resolution'}
-                    accentColor={'red'}
+                    label={"Atlas resolution"}
+                    accentColor={"red"}
                     onFinish={v => settings.shadowMapResolution = v}
                     incrementPercentage={1}
                     precision={0}
@@ -55,8 +55,8 @@ export default function Rendering() {
                 />
                 <div className={styles.inline}>
                     <LabeledRange
-                        label={'Lights'}
-                        accentColor={'red'}
+                        label={"Lights"}
+                        accentColor={"red"}
                         onFinish={v => settings.shadowAtlasQuantity = v}
                         incrementPercentage={1}
                         precision={0}
@@ -66,8 +66,8 @@ export default function Rendering() {
                     />
 
                     <LabeledRange
-                        label={'Smoothing samples'}
-                        accentColor={'green'}
+                        label={"Smoothing samples"}
+                        accentColor={"green"}
                         onFinish={v => settings.pcfSamples = v}
                         incrementPercentage={1}
                         precision={0}
@@ -79,19 +79,19 @@ export default function Rendering() {
                 </div>
             </AccordionTemplate>
 
-            <AccordionTemplate title={'Ambient occlusion'}>
+            <AccordionTemplate title={"Ambient occlusion"}>
                 <Checkbox
                     noMargin={true}
                     checked={settings.ao}
                     handleCheck={() => settings.ao = !settings.ao}
-                    label={'Ambient occlusion'}
-                    height={'25px'}
-                    width={'100%'}/>
+                    label={"Ambient occlusion"}
+                    height={"25px"}
+                    width={"100%"}/>
                 <div className={styles.inline}>
                     <LabeledRange
                         disabled={!settings.ao}
-                        label={'Strength'}
-                        accentColor={'red'}
+                        label={"Strength"}
+                        accentColor={"red"}
                         onFinish={v => settings.total_strength = v}
                         incrementPercentage={.001}
                         precision={3}
@@ -101,8 +101,8 @@ export default function Rendering() {
                     />
                     <LabeledRange
                         disabled={!settings.ao}
-                        label={'Base'}
-                        accentColor={'green'}
+                        label={"Base"}
+                        accentColor={"green"}
                         onFinish={v => settings.base = v}
                         incrementPercentage={.001}
                         precision={3}
@@ -115,8 +115,8 @@ export default function Rendering() {
                 <div className={styles.inline}>
                     <LabeledRange
                         disabled={!settings.ao}
-                        label={'Area'}
-                        accentColor={'red'}
+                        label={"Area"}
+                        accentColor={"red"}
                         onFinish={v => settings.area = v}
                         incrementPercentage={.001}
                         precision={3}
@@ -126,8 +126,8 @@ export default function Rendering() {
                     />
                     <LabeledRange
                         disabled={!settings.ao}
-                        label={'Falloff'}
-                        accentColor={'green'}
+                        label={"Falloff"}
+                        accentColor={"green"}
                         onFinish={v => settings.falloff = v}
                         incrementPercentage={.001}
                         precision={3}
@@ -140,8 +140,8 @@ export default function Rendering() {
                 <div className={styles.inline}>
                     <LabeledRange
                         disabled={!settings.ao}
-                        label={'Radius'}
-                        accentColor={'red'}
+                        label={"Radius"}
+                        accentColor={"red"}
                         onFinish={v => settings.radius = v}
                         incrementPercentage={.001}
                         precision={3}
@@ -151,8 +151,8 @@ export default function Rendering() {
                     />
 
                     <LabeledRange
-                        label={'Samples'}
-                        accentColor={'red'}
+                        label={"Samples"}
+                        accentColor={"red"}
                         onFinish={v => settings.samples = v}
                         incrementPercentage={1}
                         precision={0}

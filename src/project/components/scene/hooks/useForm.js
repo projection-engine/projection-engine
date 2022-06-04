@@ -13,7 +13,6 @@ import cloneClass from "../../../engine/utils/cloneClass"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
-import {IDS} from "../../../extension/useMinimalEngine"
 import Script from "../components/Script"
 import Rendering from "../components/Rendering"
 import Display from "../components/Display"
@@ -208,9 +207,8 @@ export default function useForm(
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
-                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), IDS.MATERIAL)
+                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), val.id)
                                         })
-                                        newMat.id = val.id
                                         engine.setMaterials(prev => {
                                             return [...prev, newMat]
                                         })

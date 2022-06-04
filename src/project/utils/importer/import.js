@@ -1,11 +1,11 @@
 import importMesh from "./importMesh"
-import EVENTS from "../EVENTS"
+import EVENTS from "../../templates/EVENTS"
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
-import {HISTORY_ACTIONS} from "../hooks/historyReducer"
+import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
 import importScript from "./importScript"
 import importScene from "./importScene"
-import FileSystem from '../files/FileSystem'
+import FileSystem from "../files/FileSystem"
 
 export default async function importData(event, fileSystem, engine, setAlert, load, asID) {
     const entities = [], meshes = []

@@ -3,7 +3,7 @@ import React, {useEffect} from "react"
 import Range from "../../../../components/range/Range"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
-import useDirectState from "../../../utils/hooks/useDirectState"
+import useDirectState from "../../../hooks/useDirectState"
 import {Checkbox} from "@f-ui/core"
 
 const toDeg = 180 / Math.PI, toRad = Math.PI / 180

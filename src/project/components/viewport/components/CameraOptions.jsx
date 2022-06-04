@@ -82,7 +82,7 @@ export default function CameraOptions(props) {
                         setCameraIsOrthographic(!cameraIsOrthographic)
                     }}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                        <div>Camera position</div>
+                        Camera position
                     </ToolTip>
                     <span style={{fontSize: "1.1rem"}} className={"material-icons-round"}>videocam</span>
                     <DropdownOptions>
@@ -122,7 +122,7 @@ export default function CameraOptions(props) {
                     className={styles.groupItemVert}
                     hideArrow={true}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                        <div>Camera sensitivity</div>
+                       Camera sensitivity
                     </ToolTip>
                     <span className={"material-icons-round"}
                         style={{fontSize: "1rem"}}>directions_run</span>
@@ -216,7 +216,7 @@ export default function CameraOptions(props) {
                         onMouseDown={e => handleGrab(e, engine.renderer.camera, 0)}
                     >
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                            <div>- Drag X to zoom in/out</div>
+                            Drag X to zoom in/out
                         </ToolTip>
                         <span className={"material-icons-round"}>zoom_in</span>
                     </div>
