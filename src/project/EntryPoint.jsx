@@ -11,8 +11,8 @@ import Project from "./Project"
 import useGPU from "./components/viewport/hooks/useGPU"
 import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./hooks/useSettings"
-import HotKeysProvider from "../components/hot-keys/HotKeysProvider"
-import useHotKeysHelper from "../components/hot-keys/useHotKeysHelper"
+import HotKeysProvider from "./hooks/hot-keys/HotKeysProvider"
+import useHotKeysHelper from "./hooks/hot-keys/useHotKeysHelper"
 
 const {ipcRenderer} = window.require("electron")
 

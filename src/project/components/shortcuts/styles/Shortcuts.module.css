@@ -16,9 +16,14 @@
   font-weight: 550;
   font-size: 0.7rem;
 }
+
 .itemWrapper{
   font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 2px;
+
+}
+.itemWrapper > * {
+  white-space: nowrap;
 }

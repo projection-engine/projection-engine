@@ -10,22 +10,24 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         deleteSelected
 
     } = utils
-    if(!selected)
-        return [
-            {
-                label: "Select all",
-                onClick: () => {
-                    engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
-                },
-                shortcut: ["A"]
+    const base = [
+        {
+            label: "Select all",
+            onClick: () => {
+                engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
             },
-            {
-                label: "Invert selection",
-                onClick:invertSelection,
-                shortcut: ["Alt", "A"]
-            }
-        ]
+            shortcut: ["A"]
+        },
+        {
+            label: "Invert selection",
+            onClick: invertSelection,
+            shortcut: ["Alt", "A"]
+        }
+    ]
+    if(!selected)
+        return base
     return [
+        ...base,
         {
             label: "Copy",
             onClick: () => copy(false),

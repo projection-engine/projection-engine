@@ -10,7 +10,8 @@
 }
 
 .icon {
-  width: 25px;
+  min-width: 25px;
+  max-width: 25px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -34,6 +35,10 @@
   display: flex;
   align-items: center;
   font-weight: 550;
+}
+
+.overflow {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -21,7 +21,7 @@ export default function ContextMenu(props) {
                             <span style={{fontSize: "1.1rem"}}
                                 className={"material-icons-round"}>{o.icon}</span>
                         </div>
-                        {o.label}
+                        <label className={styles.overflow}>{o.label}</label>
                     </div>
                     <Shortcut shortcut={o.shortcut}/>
                 </Button>}

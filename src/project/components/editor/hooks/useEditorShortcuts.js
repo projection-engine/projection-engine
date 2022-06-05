@@ -1,4 +1,4 @@
-import useHotKeys from "../../../../components/hot-keys/useHotKeys"
+import useHotKeys from "../../../hooks/hot-keys/useHotKeys"
 import GIZMOS from "../../../extension/gizmo/GIZMOS"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
@@ -99,6 +99,11 @@ export default function useEditorShortcuts({engine, setAlert, settings, id, exec
 
     const actions = useMemo(() => {
         return [
+            {
+                label: "Invert selection",
+                require: [KEYS.ControlLeft, KEYS.KeyI],
+                callback: invertSelection
+            },
             {
                 label: "Select all",
                 require: [KEYS.KeyA],

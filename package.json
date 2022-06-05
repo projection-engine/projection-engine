@@ -6,7 +6,7 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package ",
+    "package": "electron-forge package --platform win32",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
@@ -22,6 +22,7 @@
       "packagerConfig": {
         "--asar": false
       },
+      "platforms": ["darwin", "linux", "win32"],
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",

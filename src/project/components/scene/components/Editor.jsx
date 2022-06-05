@@ -24,16 +24,16 @@ export default function Editor() {
                     noMargin={true}
                     checked={settings.distortion}
                     handleCheck={() => settings.distortion = !settings.distortion}
-                    label={'Lens distortion'}
-                    height={'25px'}
-                    width={'100%'}/>
-                <AccordionTemplate title={'Distortion strength'}>
-                    <Range accentColor={'red'} disabled={!settings.distortion}
-                           onFinish={v => settings.distortionStrength = v}
-                           incrementPercentage={.01}
-                           precision={3}
-                           handleChange={v => setState({...state, distortionStrength: v})}
-                           value={state.distortionStrength} maxValue={10} minValue={0}/>
+                    label={"Lens distortion"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Distortion strength"}>
+                    <Range accentColor={"red"} disabled={!settings.distortion}
+                        onFinish={v => settings.distortionStrength = v}
+                        incrementPercentage={.01}
+                        precision={3}
+                        handleChange={v => setState({...state, distortionStrength: v})}
+                        value={state.distortionStrength} maxValue={10} minValue={0}/>
                 </AccordionTemplate>
             </div>
 
@@ -42,16 +42,16 @@ export default function Editor() {
                     noMargin={true}
                     checked={settings.chromaticAberration}
                     handleCheck={() => settings.chromaticAberration = !settings.chromaticAberration}
-                    label={'Chromatic aberration'}
-                    height={'25px'}
-                    width={'100%'}/>
-                <AccordionTemplate title={'Chromatic aberration strength'}>
-                    <Range accentColor={'red'} disabled={!settings.chromaticAberration}
-                           onFinish={v => settings.chromaticAberrationStrength = v}
-                           incrementPercentage={.01}
-                           precision={3}
-                           handleChange={v => setState({...state, chromaticAberrationStrength: v})}
-                           value={state.chromaticAberrationStrength} maxValue={10} minValue={0}/>
+                    label={"Chromatic aberration"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Chromatic aberration strength"}>
+                    <Range accentColor={"red"} disabled={!settings.chromaticAberration}
+                        onFinish={v => settings.chromaticAberrationStrength = v}
+                        incrementPercentage={.01}
+                        precision={3}
+                        handleChange={v => setState({...state, chromaticAberrationStrength: v})}
+                        value={state.chromaticAberrationStrength} maxValue={10} minValue={0}/>
                 </AccordionTemplate>
             </div>
             <div className={styles.group}>
@@ -59,16 +59,16 @@ export default function Editor() {
                     noMargin={true}
                     checked={settings.filmGrain}
                     handleCheck={() => settings.filmGrain = !settings.filmGrain}
-                    label={'Film grain'}
-                    height={'25px'}
-                    width={'100%'}/>
-                <AccordionTemplate title={'Film grain strength'}>
-                    <Range accentColor={'red'} disabled={!settings.filmGrain}
-                           onFinish={v => settings.filmGrainStrength = v}
-                           incrementPercentage={.001}
-                           precision={3}
-                           handleChange={v => setState({...state, filmGrainStrength: v})}
-                           value={state.filmGrainStrength} maxValue={10} minValue={0}/>
+                    label={"Film grain"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Film grain strength"}>
+                    <Range accentColor={"red"} disabled={!settings.filmGrain}
+                        onFinish={v => settings.filmGrainStrength = v}
+                        incrementPercentage={.001}
+                        precision={3}
+                        handleChange={v => setState({...state, filmGrainStrength: v})}
+                        value={state.filmGrainStrength} maxValue={10} minValue={0}/>
                 </AccordionTemplate>
             </div>
 
@@ -77,20 +77,20 @@ export default function Editor() {
                     noMargin={true}
                     checked={settings.bloom}
                     handleCheck={() => settings.bloom = !settings.bloom}
-                    label={'Bloom'}
-                    height={'25px'}
-                    width={'100%'}/>
-                <AccordionTemplate title={'Bloom strength'}>
-                    <Range accentColor={'red'} disabled={!settings.bloom}
-                           onFinish={v => settings.bloomStrength = v}
-                           incrementPercentage={.001}
-                           precision={3}
-                           handleChange={v => setState({...state, bloomStrength: v})}
-                           value={state.bloomStrength} maxValue={10} minValue={0}/>
+                    label={"Bloom"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Bloom strength"}>
+                    <Range accentColor={"red"} disabled={!settings.bloom}
+                        onFinish={v => settings.bloomStrength = v}
+                        incrementPercentage={.001}
+                        precision={3}
+                        handleChange={v => setState({...state, bloomStrength: v})}
+                        value={state.bloomStrength} maxValue={10} minValue={0}/>
                 </AccordionTemplate>
-                <AccordionTemplate title={'Bloom threshold'}>
+                <AccordionTemplate title={"Bloom threshold"}>
                     <Range
-                        accentColor={'green'} disabled={!settings.bloom}
+                        accentColor={"green"} disabled={!settings.bloom}
                         incrementPercentage={.001}
                         precision={3}
 
@@ -105,9 +105,9 @@ export default function Editor() {
             </div>
             {/*COLOR CORRECTION*/}
             <div className={styles.group}>
-                <AccordionTemplate title={'Gamma'}>
+                <AccordionTemplate title={"Gamma"}>
                     <Range
-                        accentColor={'yellow'}
+                        accentColor={"yellow"}
                         incrementPercentage={.001}
                         precision={3}
                         minValue={.1}
@@ -120,9 +120,9 @@ export default function Editor() {
 
                     />
                 </AccordionTemplate>
-                <AccordionTemplate title={'Exposure'}>
+                <AccordionTemplate title={"Exposure"}>
                     <Range
-                        accentColor={'white'}
+                        accentColor={"white"}
                         minValue={.1}
                         incrementPercentage={.001}
                         precision={3}
