@@ -28,7 +28,7 @@ export default function CubeMap(props) {
         return (
             <>
                 <AccordionTemplate title={'Resolution'}>
-                    <Dropdown className={styles.dropdown} styles={{background: 'var(--fabric-border-primary)'}}>
+                    <Dropdown className={styles.dropdown} styles={{background: 'var(--pj-border-primary)'}}>
                         {state.resolution}p
                         <DropdownOptions>
                             <DropdownOption option={{

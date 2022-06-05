@@ -8,7 +8,7 @@ import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 
 export default function CameraOptions(props) {
-    const {settingsContext, engine, minimal, setCameraIsOrthographic, cameraIsOrthographic} = props
+    const {settingsContext, engine,  setCameraIsOrthographic, cameraIsOrthographic} = props
     const cameraIcon = useMemo(() => {
         if (!cameraIsOrthographic)
             return (
@@ -37,7 +37,7 @@ export default function CameraOptions(props) {
     const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
 
     return (
-        <div className={styles.floating} style={{top: minimal ? "4px" : undefined}}>
+        <div className={styles.floating}>
             <div className={styles.cameraView}>
                 <div className={styles.cube} id={RENDER_TARGET + "-camera"}>
                     <div

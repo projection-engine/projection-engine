@@ -1,7 +1,7 @@
 import styles from "../styles/Card.module.css"
 import PropTypes from "prop-types"
 import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core"
-import React,  {useContext, useMemo, useRef, useState} from "react"
+import React, {useContext, useMemo, useRef, useState} from "react"
 import logo from "../../static/icons/logo.png"
 import EN from "../../static/locale/EN"
 
@@ -34,7 +34,7 @@ export default function Card(props) {
 
             <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : "none"}}>
                 <Dropdown
-                    styles={{"--fabric-accent-color": "#ff5555"}}
+                    styles={{"--pj-accent-color": "#ff5555"}}
                     className={styles.button}
                     onClick={() => setOpen({
                         delete: true
@@ -49,7 +49,7 @@ export default function Card(props) {
                                 <Button
                                     onClick={() => props.onDelete()}
                                     variant={"filled"}
-                                    styles={{"--fabric-accent-color": "#ff5555", width: "100%"}}
+                                    styles={{"--pj-accent-color": "#ff5555", width: "100%"}}
                                     className={styles.button}
                                 >
                                     <span className={"material-icons-round"}

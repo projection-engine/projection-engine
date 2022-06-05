@@ -34,9 +34,9 @@ function EntryPoint() {
         })
     }, [])
     useEffect(() => {
-        document.body.classList.remove(global.dark ? "light" : "dark")
-        document.body.classList.add(global.dark ? "dark" : "light")
-    }, [global.dark])
+        // document.body.classList.remove(global.dark ? "light" : "dark")
+        document.body.classList.add(styles.dark)
+    }, [])
 
     return (
         <Fabric

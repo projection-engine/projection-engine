@@ -9,8 +9,8 @@
     max-width: 55px;
     min-width: 55px;
 
-    background: var(--fabric-background-tertiary);
-    border-right: var(--fabric-border-primary) 1px solid;
+    background: var(--pj-background-tertiary);
+    border-right: var(--pj-border-primary) 1px solid;
     gap: 8px;
 }
 
@@ -30,7 +30,7 @@
     gap: 16px;
 
 
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
 
 }
 

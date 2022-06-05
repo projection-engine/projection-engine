@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useRef, useState} from "react"
+import React, {useContext, useEffect, useRef} from "react"
 import GPUContextProvider from "./hooks/GPUContextProvider"
 import ContextMenu from "./components/ContextMenu"
 import {ContextWrapper} from "@f-ui/core"
@@ -8,17 +8,18 @@ import {ContextWrapper} from "@f-ui/core"
 export default function Viewport(props) {
     const ref = useRef()
     const {bindGPU} = useContext(GPUContextProvider)
-    const [visible, setVisible] = useState(false)
+    // const [visible, setVisible] = useState(false)
 
     useEffect(() => {
-        if (visible)
-            bindGPU(ref.current.parentNode)
-    }, [visible])
-    useEffect(() => {
-        const obs = new IntersectionObserver((e) => setVisible(e[0]?.isIntersecting))
-        obs.observe(ref.current.parentNode)
-        return () => obs.disconnect()
+        // if (visible)
+        bindGPU(ref.current)
     }, [])
+    // visible])
+    // useEffect(() => {
+    //     const obs = new IntersectionObserver((e) => setVisible(e[0]?.isIntersecting))
+    //     obs.observe(ref.current.parentNode)
+    //     return () => obs.disconnect()
+    // }, [])
     return (
         <ContextWrapper
             wrapperClassName={styles.context}
@@ -46,6 +47,7 @@ export default function Viewport(props) {
             content={(_, close) => <ContextMenu options={props.options} engine={props.engine} close={close}/>}
         >
             <span style={{display: "none"}} ref={ref}/>
+            {/*<SideBar/>*/}
         </ContextWrapper>
     )
 }

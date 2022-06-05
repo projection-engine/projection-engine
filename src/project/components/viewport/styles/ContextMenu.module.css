@@ -20,7 +20,7 @@
 
 .divider {
   width: 100%;
-  background: var(--fabric-border-primary);
+  background: var(--pj-border-primary);
   height: 1px;
 }
 

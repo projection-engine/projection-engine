@@ -1,20 +1,20 @@
 .wrapper {
   position: relative;
   width: 100%;
-  background-color: var(--fabric-background-tertiary);
+  background-color: var(--pj-background-tertiary);
   border-radius: 5px;
   overflow: hidden;
   transition: 150ms linear;
-  border: var(--fabric-border-primary) 1px solid;
+  border: var(--pj-border-primary) 1px solid;
   padding: 4px;
 }
 
 .wrapper:hover {
-  background: var(--fabric-background-primary);
+  background: var(--pj-background-primary);
 }
 
 .wrapper:hover .dataRow {
-  background: var(--fabric-background-primary);
+  background: var(--pj-background-primary);
 }
 
 .openButton,
@@ -32,22 +32,22 @@
 }
 
 .openButton {
-  --fabric-accent-color: var(--fabric-border-primary);
+  --pj-accent-color: var(--pj-border-primary);
 
-  color: var(--fabric-color-secondary);
+  color: var(--pj-color-secondary);
 }
 
 .openButton:hover,
 .openButton:active {
-  --fabric-accent-color: #0095ff;
+  --pj-accent-color: #0095ff;
 }
 
 .button:hover {
-  background: var(--fabric-border-primary) !important;
+  background: var(--pj-border-primary) !important;
 }
 
 .button[data-highlight="true"] {
-  background: var(--fabric-accent-color) !important;
+  background: var(--pj-accent-color) !important;
   color: white !important;
 }
 
@@ -71,17 +71,17 @@
 }
 
 .onDelete {
-  background: var(--fabric-background-primary);
+  background: var(--pj-background-primary);
   padding: 4px;
   display: grid;
   align-items: flex-end;
   gap: 32px;
   font-size: 0.8rem;
   font-weight: 550;
-  color: var(--fabric-color-secondary);
+  color: var(--pj-color-secondary);
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: var(--fabric-boxshadow);
+  box-shadow: var(--pj-boxshadow);
 }
 
 .section {
@@ -109,10 +109,10 @@
 }
 
 .dataRow {
-  background-color: var(--fabric-background-tertiary);
+  background-color: var(--pj-background-tertiary);
   border: none;
   width: 100%;
   border-radius: 0;
   transition: 150ms linear;
-  border-bottom: var(--fabric-background-tertiary) 1px solid;
+  border-bottom: var(--pj-background-tertiary) 1px solid;
 }

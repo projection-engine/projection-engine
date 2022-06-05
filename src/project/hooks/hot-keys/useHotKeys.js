@@ -23,16 +23,21 @@ export default function useHotKeys(props, listeners = []) {
         else if ((focused.current  || activeWindow?.reference === target) && document.activeElement === document.body) {
             const l = props.actions.length
             if (e.type === "keydown") {
+                if(e.ctrlKey) {
+                    clicked[KEYS.ControlLeft] = true
+                    clicked[KEYS.ControlRight] = true
+                }
+
                 clicked[e.code] = true
                 for (let i = 0; i < l; i++) {
                     const a = props.actions[i]
-                    let trigger = true, c = 0
+                    let trigger = true
                     a.require.forEach(r => {
                         trigger = trigger && clicked[r]
-                        c++
                     })
-                    if (trigger && c === Object.keys(clicked).length && !document.pointerLockElement && !a.disabled && a.callback)
+                    if (trigger && !a.disabled && a.callback !== undefined) {
                         a.callback()
+                    }
                 }
             } else
                 delete clicked[e.code]
@@ -42,11 +47,9 @@ export default function useHotKeys(props, listeners = []) {
     }
 
     useEffect(() => {
-
         if (!props.disabled && target) {
-            if(focused.current) {
+            if(focused.current)
                 setAllShortcuts(props.actions)
-            }
             target.addEventListener("mouseenter", handler)
             target.addEventListener("mouseleave", handler)
             document.addEventListener("keydown", handler)

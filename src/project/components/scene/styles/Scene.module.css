@@ -22,7 +22,7 @@
     flex-direction: column;
     align-items: flex-start;
     align-content: flex-start;
-    background-color: var(--fabric-background-primary);
+    background-color: var(--pj-background-primary);
 
 
 
@@ -34,7 +34,7 @@
 .header {
     display: flex;
     gap: 4px;
-    color: var(--fabric-color-primary);
+    color: var(--pj-color-primary);
     font-size: .8rem;
     font-weight: 550;
     align-items: center;
@@ -63,12 +63,12 @@
     width: 100%;
     max-width: 100%;
     padding: 4px 4px 32px;
-    color: var(--fabric-color-primary);
+    color: var(--pj-color-primary);
     overflow-x: hidden;
 }
 .formsWrapper > div{
     border: none;
-    background-color: var(--fabric-border-primary);
+    background-color: var(--pj-border-primary);
     border-radius: 3px;
 }
 
@@ -79,7 +79,7 @@
     align-items: center;
 
     gap: 6px;
-    background-color: var(--fabric-background-quaternary);
+    background-color: var(--pj-background-quaternary);
     padding: 2px;
     border-radius: 5px;
 
@@ -94,7 +94,7 @@
     height: 25px;
     overflow: hidden;
 
-    background-color: var(--fabric-border-primary);
+    background-color: var(--pj-border-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +112,7 @@
 
 
     text-align: center;
-    color: var(--fabric-color-primary);
+    color: var(--pj-color-primary);
     font-size: .75rem;
     font-weight: 550;
 }

@@ -6,7 +6,7 @@
 
     overflow: hidden;
 
-    background-color: var(--fabric-background-tertiary) !important;
+    background-color: var(--pj-background-tertiary) !important;
 }
 
 
@@ -18,7 +18,7 @@
     gap: 16px;
     width: 500px;
     height: fit-content;
-    background: var(--fabric-background-primary);
+    background: var(--pj-background-primary);
     border-radius: 5px;
 
     position: absolute;

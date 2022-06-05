@@ -3,7 +3,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: var(--fabric-background-quaternary);
+    background-color: var(--pj-background-quaternary);
     display: flex;
     flex-direction: column;
     padding: 3px;
@@ -22,7 +22,7 @@
 .container{
     position: relative;
     border-radius: 5px;
-    background: var(--fabric-background-primary);
+    background: var(--pj-background-primary);
     width: 100%;
     height: 100%;
     overflow: hidden;

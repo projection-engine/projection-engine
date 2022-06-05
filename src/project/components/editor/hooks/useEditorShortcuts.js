@@ -4,7 +4,7 @@ import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
 import cloneClass from "../../../engine/utils/cloneClass"
 import {v4 as uuidv4} from "uuid"
-import {useEffect, useMemo, useState} from "react"
+import {useMemo, useState} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import TransformComponent from "../../../engine/components/TransformComponent"
 import KEYS from "../../../engine/templates/KEYS"
@@ -35,6 +35,7 @@ export default function useEditorShortcuts({engine, setAlert, settings, id, exec
     }
 
     function invertSelection(){
+        console.log('INVERTING')
         const newArr = []
         const notValid = {}
         for(let i in engine.selected){

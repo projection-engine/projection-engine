@@ -4,7 +4,7 @@
     align-items: center;
     gap: 4px;
     border-radius: 5px;
-    background-color: var(--fabric-background-primary);
+    background-color: var(--pj-background-primary);
     margin-bottom: 3px;
 }
 
@@ -13,7 +13,7 @@
     width: 2px;
     margin-left: 4px;
     margin-right: 4px;
-    background-color: var(--fabric-border-primary);
+    background-color: var(--pj-border-primary);
 }
 
 .label {
@@ -34,12 +34,12 @@
 
     font-size: .7rem !important;
     font-weight: 550 !important;
-    color: var(--fabric-color-secondary);
+    color: var(--pj-color-secondary);
 
 }
 
 .option:active {
-    background: var(--fabric-background-secondary);
+    background: var(--pj-background-secondary);
 }
 
 .option:disabled {

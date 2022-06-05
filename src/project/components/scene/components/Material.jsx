@@ -236,7 +236,7 @@ export default function Material(props) {
                     }}/>
                 {state.currentMaterial ? (
                     <Button
-                        styles={{background: 'var(--fabric-background-primary'}}
+                        styles={{background: 'var(--pj-background-primary'}}
                         className={styles.button}
                         onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
                         <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>edit</span>

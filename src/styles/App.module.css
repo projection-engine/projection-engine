@@ -1,19 +1,49 @@
 .wrapper {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-
-    background-color: var(--fabric-background-primary);
-}
-
-.dark {
-    --background-input: #545454;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--pj-background-primary);
 }
 
 .light {
-    --background-input: #E7E7E7;
+  --pj-accent-color: #0095ff;
+  --pj-background-primary: white;
+  --pj-background-secondary: #f8f6f6;
+  --pj-background-tertiary: #f6f4f4;
+  --pj-background-quaternary: #e8f0fe;
+  --pj-border-primary: #f1f1f5;
+  --pj-border-secondary: #e0e0e0;
+  --pj-color-primary: #333;
+  --pj-color-secondary: #555;
+  --pj-color-tertiary: #666;
+  --pj-color-quaternary: #777;
+  --pj-color-quinary: #999;
+  --pj-color-senary: white;
+
+    font-family: "Roboto";
+
+  --pj-boxshadow: rgb(0 0 0 / 10%) 2px 4px 10px 2px;
+  --background-input: #e7e7e7;
 }
 
+.dark {
+    font-family: "Roboto";
+
+  --pj-accent-color: #0095ff;
+  --pj-background-primary: #303030;
+  --pj-background-secondary: #2b2b2b;
+  --pj-background-tertiary: #202020;
+  --pj-background-quaternary: #111;
+  --pj-border-primary: #3f3f3f;
+  --pj-border-secondary: #707070;
+  --pj-color-primary: #f7f7f7;
+  --pj-color-secondary: #f5f5f5;
+  --pj-color-tertiary: #f3f3f3;
+  --pj-color-quaternary: #eee;
+  --pj-color-quinary: #eaeaea;
+  --pj-color-senary: #e0e0e0;
+  --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
+  --background-input: #545454;
+}

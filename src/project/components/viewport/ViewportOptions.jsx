@@ -7,7 +7,7 @@ import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import ShadingTypes from "./components/ShadingTypes"
 import CreateEntity from "./components/CreateEntity"
 import VisualSettings from "./components/VisualSettings"
-import Extra from "./components/Extra"
+import Visualization from "./components/Visualization"
 import CameraOptions from "./components/CameraOptions"
 import TransformationSettings from "./components/TransformationSettings"
 
@@ -41,8 +41,12 @@ export default function ViewportOptions(props) {
             {props.minimal ? null :
                 <div className={styles.options} style={{display: fullscreen ? "none" : undefined}} draggable={false}>
                     <div style={{justifyContent: "flex-start"}} className={styles.align}>
-                        <Extra settingsContext={settingsContext} fullscreen={fullscreen}
-                            setFullscreen={setFullscreen} fullscreenID={props.fullscreenID}/>
+                        <Visualization
+                            settingsContext={settingsContext}
+                            fullscreen={fullscreen}
+                            setFullscreen={setFullscreen}
+                            fullscreenID={props.fullscreenID}
+                        />
                         <VisualSettings settingsContext={settingsContext}/>
                         <CreateEntity dispatchEntity={dispatchEntity} engine={props.engine}/>
                     </div>

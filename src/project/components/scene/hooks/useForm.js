@@ -19,7 +19,6 @@ import Display from "../components/Display"
 import Editor from "../components/Editor"
 import Line from "../components/Line"
 import LightProbe from "../components/LightProbe"
-import FileSystem from "../../../utils/files/FileSystem"
 import loadScript from "../utils/loadScript"
 import {ENTITY_TAB} from "../components/FormTabs"
 

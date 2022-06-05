@@ -1,11 +1,10 @@
 import PropTypes from "prop-types"
-import React, {useContext, useEffect} from "react"
+import React, {useEffect} from "react"
 import Range from "../../../../components/range/Range"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../hooks/useDirectState"
 import {Checkbox} from "@f-ui/core"
-import SettingsProvider from "../../../hooks/SettingsProvider"
 
 const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 export default function Camera(props) {
@@ -33,180 +32,203 @@ export default function Camera(props) {
 
         state.chromaticAberration = props.selected.chromaticAberration
         state.chromaticAberrationStrength = props.selected.chromaticAberrationStrength
+        state.ortho = props.selected.ortho
+        state.size = props.selected.size
     }, [props])
 
-    return (<div className={styles.ppWrapper}>
-        <AccordionTemplate title={"FOV"}>
-            <Range
-                metric={"angle"}
-                accentColor={"red"}
-                value={state.fov} minValue={35}
-                maxValue={175}
-                precision={1}
-                incrementPercentage={.1}
-                onFinish={(v) => {
-                    props.submit( "fov", v * toRad)
-                }}
-                handleChange={e => state.fov = e}
-            />
-        </AccordionTemplate>
-
-
-        <AccordionTemplate title={"View planes"} type={"flex"}>
-            <Range
-                accentColor={"red"}
-                value={state.zFar}
-                metric={"Far"}
-                precision={1}
-                incrementPercentage={.1}
-                onFinish={(v) => props.submit("zFar", v)}
-                handleChange={e => {
-                    state.zFar = e
-                }}
-            />
-            <Range
-                accentColor={"green"}
-                value={state.zNear}
-                metric={"Near"}
-                precision={1}
-                incrementPercentage={.1}
-                onFinish={(v) => props.submit( "zNear", v)}
-                handleChange={e => {
-                    state.zNear = e
-                }}/>
-        </AccordionTemplate>
-
-
-        <div className={styles.group}>
-            <Checkbox
-                noMargin={true}
-                checked={state.distortion}
-                handleCheck={() => {
-                    props.submit("distortion", !state.distortion)
-                    state.distortion = !state.distortion
-                }}
-                label={"Lens distortion"}
-                height={"25px"}
-                width={"100%"}/>
-            <AccordionTemplate title={"Distortion strength"}>
-                <Range accentColor={"red"} disabled={!state.distortion}
-                    onFinish={v => props.submit("distortionStrength", v)}
-                    incrementPercentage={.01}
-                    precision={3}
-                    handleChange={v => state.distortionStrength = v}
-                    value={state.distortionStrength} maxValue={10} minValue={0}/>
-            </AccordionTemplate>
-        </div>
-
-        <div className={styles.group}>
-            <Checkbox
-                noMargin={true}
-                checked={state.chromaticAberration}
-                handleCheck={() => {
-                    props.submit("chromaticAberration", !state.chromaticAberration)
-                    state.chromaticAberration = !state.chromaticAberration
-                }}
-                label={"Chromatic aberration"}
-                height={"25px"}
-                width={"100%"}/>
-            <AccordionTemplate title={"Chromatic aberration strength"}>
-                <Range accentColor={"red"} disabled={!state.chromaticAberration}
-                    onFinish={v => props.submit("chromaticAberrationStrength", v)}
-                    incrementPercentage={.01}
-                    precision={3}
-                    handleChange={v => state.chromaticAberrationStrength = v}
-                    value={state.chromaticAberrationStrength} maxValue={10} minValue={0}/>
-            </AccordionTemplate>
-        </div>
-        <div className={styles.group}>
-            <Checkbox
-                noMargin={true}
-                checked={state.filmGrain}
-                handleCheck={() => {
-                    props.submit("filmGrain", !state.filmGrain)
-                    state.filmGrain = !state.filmGrain
-                }}
-                label={"Film grain"}
-                height={"25px"}
-                width={"100%"}/>
-            <AccordionTemplate title={"Film grain strength"}>
-                <Range accentColor={"red"} disabled={!state.filmGrain}
-                    onFinish={v => props.submit("filmGrain", v)}
-                    incrementPercentage={.001}
-                    precision={3}
-                    handleChange={v => state.filmGrainStrength = v}
-                    value={state.filmGrainStrength} maxValue={10} minValue={0}/>
-            </AccordionTemplate>
-        </div>
-
-        <div className={styles.group}>
-            <Checkbox
-                noMargin={true}
-                checked={state.bloom}
-                handleCheck={() => {
-                    props.submit("bloom", !state.bloom)
-                    state.bloom = !state.bloom
-                }}
-                label={"Bloom"}
-                height={"25px"}
-                width={"100%"}/>
-            <AccordionTemplate title={"Bloom strength"}>
-                <Range accentColor={"red"} disabled={!state.bloom}
-
-                    incrementPercentage={.001}
-                    precision={3}
-                    onFinish={v => props.submit("bloomStrength", v)}
-                    handleChange={v => state.bloomStrength = v}
-                    value={state.bloomStrength} maxValue={10} minValue={0}/>
-            </AccordionTemplate>
-            <AccordionTemplate title={"Bloom threshold"}>
+    return (
+        <div className={styles.ppWrapper}>
+            <div className={styles.group}>
+                <Checkbox
+                    noMargin={true}
+                    checked={state.ortho}
+                    handleCheck={() => {
+                        props.submit("ortho", !state.ortho)
+                        state.ortho = !state.ortho
+                    }}
+                    label={"Orthographic projection"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Orthographic size"}>
+                    <Range accentColor={"red"} disabled={!state.ortho}
+                        onFinish={v => props.submit("size", v)}
+                        incrementPercentage={.01}
+                        precision={3}
+                        handleChange={v => state.size = v}
+                        value={state.size} minValue={0}/>
+                </AccordionTemplate>
+            </div>
+            <AccordionTemplate title={"FOV"}>
                 <Range
-                    accentColor={"green"} disabled={!state.bloom}
-                    incrementPercentage={.001}
-                    precision={3}
-
-                    onFinish={v => props.submit("bloomThreshold", v)}
-                    handleChange={v => state.bloomThreshold = v}
-                    value={state.bloomThreshold}
-
-                    maxValue={1} minValue={0}
+                    metric={"angle"}
+                    accentColor={"red"}
+                    value={state.fov} minValue={35}
+                    maxValue={175}
+                    precision={1}
+                    incrementPercentage={.1}
+                    onFinish={(v) => {
+                        props.submit( "fov", v * toRad)
+                    }}
+                    handleChange={e => state.fov = e}
                 />
             </AccordionTemplate>
 
-        </div>
-        {/*COLOR CORRECTION*/}
-        <div className={styles.group}>
-            <AccordionTemplate title={"Gamma"}>
+
+            <AccordionTemplate title={"View planes"} type={"flex"}>
                 <Range
-                    accentColor={"yellow"}
-                    incrementPercentage={.001}
-                    precision={3}
-                    minValue={.1}
-                    maxValue={10}
-
-
-                    onFinish={v => props.submit("gamma", v)}
-                    handleChange={v => state.gamma = v}
-                    value={state.gamma}
-
+                    accentColor={"red"}
+                    value={state.zFar}
+                    metric={"Far"}
+                    precision={1}
+                    incrementPercentage={.1}
+                    onFinish={(v) => props.submit("zFar", v)}
+                    handleChange={e => {
+                        state.zFar = e
+                    }}
                 />
-            </AccordionTemplate>
-            <AccordionTemplate title={"Exposure"}>
                 <Range
-                    accentColor={"white"}
-                    minValue={.1}
-                    incrementPercentage={.001}
-                    precision={3}
-                    maxValue={10}
-
-
-                    onFinish={v => props.submit("exposure", v)}
-                    handleChange={v => state.exposure = v}
-                    value={state.exposure}
-                />
+                    accentColor={"green"}
+                    value={state.zNear}
+                    metric={"Near"}
+                    precision={1}
+                    incrementPercentage={.1}
+                    onFinish={(v) => props.submit( "zNear", v)}
+                    handleChange={e => {
+                        state.zNear = e
+                    }}/>
             </AccordionTemplate>
+
+
+            <div className={styles.group}>
+                <Checkbox
+                    noMargin={true}
+                    checked={state.distortion}
+                    handleCheck={() => {
+                        props.submit("distortion", !state.distortion)
+                        state.distortion = !state.distortion
+                    }}
+                    label={"Lens distortion"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Distortion strength"}>
+                    <Range accentColor={"red"} disabled={!state.distortion}
+                        onFinish={v => props.submit("distortionStrength", v)}
+                        incrementPercentage={.01}
+                        precision={3}
+                        handleChange={v => state.distortionStrength = v}
+                        value={state.distortionStrength} maxValue={10} minValue={0}/>
+                </AccordionTemplate>
+            </div>
+
+            <div className={styles.group}>
+                <Checkbox
+                    noMargin={true}
+                    checked={state.chromaticAberration}
+                    handleCheck={() => {
+                        props.submit("chromaticAberration", !state.chromaticAberration)
+                        state.chromaticAberration = !state.chromaticAberration
+                    }}
+                    label={"Chromatic aberration"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Chromatic aberration strength"}>
+                    <Range accentColor={"red"} disabled={!state.chromaticAberration}
+                        onFinish={v => props.submit("chromaticAberrationStrength", v)}
+                        incrementPercentage={.01}
+                        precision={3}
+                        handleChange={v => state.chromaticAberrationStrength = v}
+                        value={state.chromaticAberrationStrength} maxValue={10} minValue={0}/>
+                </AccordionTemplate>
+            </div>
+            <div className={styles.group}>
+                <Checkbox
+                    noMargin={true}
+                    checked={state.filmGrain}
+                    handleCheck={() => {
+                        props.submit("filmGrain", !state.filmGrain)
+                        state.filmGrain = !state.filmGrain
+                    }}
+                    label={"Film grain"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Film grain strength"}>
+                    <Range accentColor={"red"} disabled={!state.filmGrain}
+                        onFinish={v => props.submit("filmGrain", v)}
+                        incrementPercentage={.001}
+                        precision={3}
+                        handleChange={v => state.filmGrainStrength = v}
+                        value={state.filmGrainStrength} maxValue={10} minValue={0}/>
+                </AccordionTemplate>
+            </div>
+
+            <div className={styles.group}>
+                <Checkbox
+                    noMargin={true}
+                    checked={state.bloom}
+                    handleCheck={() => {
+                        props.submit("bloom", !state.bloom)
+                        state.bloom = !state.bloom
+                    }}
+                    label={"Bloom"}
+                    height={"25px"}
+                    width={"100%"}/>
+                <AccordionTemplate title={"Bloom strength"}>
+                    <Range accentColor={"red"} disabled={!state.bloom}
+
+                        incrementPercentage={.001}
+                        precision={3}
+                        onFinish={v => props.submit("bloomStrength", v)}
+                        handleChange={v => state.bloomStrength = v}
+                        value={state.bloomStrength} maxValue={10} minValue={0}/>
+                </AccordionTemplate>
+                <AccordionTemplate title={"Bloom threshold"}>
+                    <Range
+                        accentColor={"green"} disabled={!state.bloom}
+                        incrementPercentage={.001}
+                        precision={3}
+
+                        onFinish={v => props.submit("bloomThreshold", v)}
+                        handleChange={v => state.bloomThreshold = v}
+                        value={state.bloomThreshold}
+
+                        maxValue={1} minValue={0}
+                    />
+                </AccordionTemplate>
+
+            </div>
+            {/*COLOR CORRECTION*/}
+            <div className={styles.group}>
+                <AccordionTemplate title={"Gamma"}>
+                    <Range
+                        accentColor={"yellow"}
+                        incrementPercentage={.001}
+                        precision={3}
+                        minValue={.1}
+                        maxValue={10}
+
+
+                        onFinish={v => props.submit("gamma", v)}
+                        handleChange={v => state.gamma = v}
+                        value={state.gamma}
+
+                    />
+                </AccordionTemplate>
+                <AccordionTemplate title={"Exposure"}>
+                    <Range
+                        accentColor={"white"}
+                        minValue={.1}
+                        incrementPercentage={.001}
+                        precision={3}
+                        maxValue={10}
+
+
+                        onFinish={v => props.submit("exposure", v)}
+                        handleChange={v => state.exposure = v}
+                        value={state.exposure}
+                    />
+                </AccordionTemplate>
+            </div>
         </div>
-    </div>
     )
 }
 

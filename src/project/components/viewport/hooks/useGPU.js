@@ -84,14 +84,15 @@ export default function useGPU(canStart, resolution, projectID) {
     }, [gpu, canStart, projectID])
 
     const bindGPU = useCallback((t) => {
+        const currentTarget = t.parentNode
         if (gpu) {
             const resizeObs = new ResizeObserver(callback)
             obs.disconnect()
-            resizeObs.observe(t)
-            setTarget(t)
+            resizeObs.observe(currentTarget)
+            setTarget(currentTarget)
             setObs(resizeObs)
             gpu.canvas.style.display = "block"
-            t.appendChild(gpu.canvas)
+            currentTarget.insertBefore(gpu.canvas, t)
         }
     }, [gpu])
     return {

@@ -21,7 +21,17 @@ export default function TransformationSettings(props){
                 gap: "8px",
                 maxHeight: "calc(100% - 35px)"
             }}>
-
+            <Button
+                className={styles.hideButton}
+                styles={{
+                    transform: hidden ? "translateX(0)" : undefined
+                }}
+                onClick={() => setHidden(!hidden)}>
+                <span className={"material-icons-round"} style={{
+                    fontSize: "1.1rem",
+                    transform: !hidden ? "rotate(180deg)" : undefined
+                }}>navigate_next</span>
+            </Button>
             {hidden ? null : (
                 <>
                     <Button
@@ -78,7 +88,7 @@ export default function TransformationSettings(props){
                                 style={{transform: "rotate(-45deg)"}}>linear_scale</span>
                             <div
                                 className={styles.overflow}
-                                style={{fontSize: ".75rem", fontWeight: "550", color: "var(--fabric-color-tertiary)", padding: "0 2px"}}
+                                style={{fontSize: ".75rem", fontWeight: "550", color: "var(--pj-color-tertiary)", padding: "0 2px"}}
                             >
                                 {!settingsContext.gridScaleSize ? "" : settingsContext.gridScaleSize}
                             </div>
@@ -86,7 +96,7 @@ export default function TransformationSettings(props){
                                 <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
                                     <Button
                                         className={styles.enableButton}
-                                        styles={{color: settingsContext.gridScaleSize ? "var(--fabric-accent-color)" : undefined}}
+                                        styles={{color: settingsContext.gridScaleSize ? "var(--pj-accent-color)" : undefined}}
                                         onClick={() => settingsContext.gridScaleSize = settingsContext.gridScaleSize ? undefined : 1}
                                     >
                                         <span
@@ -136,7 +146,7 @@ export default function TransformationSettings(props){
                             </ToolTip>
                             <svg viewBox="0 0 512 512" style={{width: "1rem"}}>
                                 <path
-                                    fill={"var(--fabric-color-secondary)"}
+                                    fill={"var(--pj-color-secondary)"}
                                     d="M495.304,425.738H255.417c-3.576-52.031-23.828-100.842-58.185-140.23L401.371,81.37c6.52-6.52,6.52-17.091,0-23.611    c-6.519-6.52-17.091-6.52-23.611,0L4.89,430.629c-3.282,3.282-4.984,7.702-4.886,12.172c0.018,0.813,0.095,1.627,0.233,2.436    c0.207,1.214,0.55,2.416,1.034,3.586c2.584,6.239,8.672,10.307,15.425,10.307h222.609h256c9.22,0,16.696-7.475,16.696-16.696    S504.525,425.738,495.304,425.738z M57.002,425.738l116.562-116.561c28.136,32.988,44.927,73.446,48.38,116.561H57.002z"/>
                             </svg>
                             {!settingsContext.gridRotationSize ? "" : settingsContext.gridRotationSize + "°"}
@@ -145,7 +155,7 @@ export default function TransformationSettings(props){
                                     <Button
 
                                         className={styles.enableButton}
-                                        styles={{color: settingsContext.gridRotationSize ? "var(--fabric-accent-color)" : undefined}}
+                                        styles={{color: settingsContext.gridRotationSize ? "var(--pj-accent-color)" : undefined}}
                                         onClick={() => settingsContext.gridRotationSize = settingsContext.gridRotationSize ? undefined : 5}
                                     >
                                         <span
@@ -233,17 +243,7 @@ export default function TransformationSettings(props){
                     </div>
                 </>
             )}
-            <Button
-                className={styles.hideButton}
-                styles={{
-                    transform: hidden ? "translateX(0)" : undefined
-                }}
-                onClick={() => setHidden(!hidden)}>
-                <span className={"material-icons-round"} style={{
-                    fontSize: "1.1rem",
-                    transform: !hidden ? "rotate(180deg)" : undefined
-                }}>navigate_next</span>
-            </Button>
+
         </div>
     )
 }
