@@ -1,1 +1,0 @@
-export default `home-load`

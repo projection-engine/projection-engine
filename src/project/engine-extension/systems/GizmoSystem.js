@@ -1,12 +1,12 @@
 import System from "../../engine/basic/System"
 import TranslationGizmo from "../gizmo/TranslationGizmo"
 import RotationGizmo from "../gizmo/RotationGizmo"
-import GIZMOS from "../gizmo/GIZMOS"
+import GIZMOS from "../../../static/misc/GIZMOS"
 import ScaleGizmo from "../gizmo/ScaleGizmo"
-import ROTATION_TYPES from "../gizmo/ROTATION_TYPES"
+import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
-import GizmoToolTip from "../gizmo/GizmoToolTip"
+import TransformationTooltip from "../gizmo/TransformationTooltip"
 import generateNextID from "../../engine/utils/generateNextID"
 
 function move(event) {
@@ -41,7 +41,7 @@ export default class GizmoSystem extends System {
                 })
                 document.body.appendChild(this.renderTarget)
             }
-            this.gizmoTooltip = new GizmoToolTip(this.renderTarget)
+            this.gizmoTooltip = new TransformationTooltip(this.renderTarget)
             this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
             this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
             this.rotationGizmo = new RotationGizmo(gpu, this.renderTarget, resolution)

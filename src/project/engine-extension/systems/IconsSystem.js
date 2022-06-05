@@ -19,13 +19,13 @@ export default class IconsSystem extends System {
         this.cameraShader = new ShaderInstance(shaderCode.shadedVertex, shaderCode.shadedFragment, gpu)
 
         Promise.all([
-            import("../icons/point_light.png"),
-            import("../icons/directional_light.png"),
-            import("../icons/spot_light.png"),
-            import("../icons/cubemap.png"),
-            import("../icons/probe.png"),
-            import("../../../static/assets/Camera.json"),
-            import("../../../static/assets/Sphere.json"),
+            import("../../../static/icons/point_light.png"),
+            import("../../../static/icons/directional_light.png"),
+            import("../../../static/icons/spot_light.png"),
+            import("../../../static/icons/cubemap.png"),
+            import("../../../static/icons/probe.png"),
+            import("../../../static/meshes/Camera.json"),
+            import("../../../static/meshes/Sphere.json"),
         ]).then(res => {
             const [pl, dl, sl, cm, p, camera, sphere] = res
             this.pointLightTexture = new TextureInstance(pl.default, false, this.gpu)

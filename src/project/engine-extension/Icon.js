@@ -1,6 +1,6 @@
 import {createVAO} from "../engine/utils/utils"
-import VBO from "../engine/instances/VBO"
-import * as shaderCode from "./shaders/billboard.glsl"
+import VBOInstance from "../engine/instances/VBOInstance"
+import * as shaderCode from "./shaders/ICON.glsl"
 import ShaderInstance from "../engine/instances/ShaderInstance"
 
 
@@ -9,7 +9,7 @@ export default class Icon {
         this.gpu = gpu
         this.shader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment, gpu)
         this.vao = createVAO(gpu)
-        this.vertexVBO = new VBO(gpu, 0, new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0]), gpu.ARRAY_BUFFER, 3, gpu.FLOAT, false)
+        this.vertexVBO = new VBOInstance(gpu, 0, new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0]), gpu.ARRAY_BUFFER, 3, gpu.FLOAT, false)
 
         this._prepareTransforms([])
         this.transformVBO = this.gpu.createBuffer()

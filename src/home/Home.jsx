@@ -7,6 +7,7 @@ import SideBar from "./components/SideBar"
 import IssuesList from "./components/issues/IssuesList"
 import AsyncFS from "../project/templates/AsyncFS"
 import FileSystem from "../project/utils/files/FileSystem"
+import EN from "../static/locale/EN"
 
 
 const pathResolve = window.require("path")
@@ -16,24 +17,23 @@ export default function Home() {
         projects,
         alert,
         setAlert, refresh,
-        load, uploadRef,
+        load,
         setProjects
     } = useProjects()
     const [open, setOpen] = useState(0)
+
     return (
         <div className={styles.wrapper}>
             <SideBar open={open} setOpen={setOpen}/>
-
             <Switcher openChild={open} styles={{width: "100%"}}>
                 <Projects
                     alert={alert}
                     deleteProject={async pjID => {
-                        setAlert({message: "Deleting project", type: "info"})
+                        setAlert({message: EN.HOME.HOME.DELETE, type: "info"})
                         await AsyncFS.rm(
                             pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
                             {recursive: true, force: true}
                         )
-
                         setProjects(prev => {
                             return prev.filter(e => e.id !== pjID)
                         })
@@ -49,12 +49,12 @@ export default function Home() {
                             if (!e)
                                 setAlert({
                                     type: "success",
-                                    message: "Project renamed"
+                                    message: EN.HOME.HOME.RENAME
                                 })
                             else
                                 setAlert({
                                     type: "error",
-                                    message: "Error renaming project."
+                                    message:  EN.HOME.HOME.RENAME_ERROR
                                 })
                         }
                     }}

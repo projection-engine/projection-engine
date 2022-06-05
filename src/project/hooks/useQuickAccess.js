@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
-import EVENTS from "../templates/EVENTS"
+import EVENTS from "../../static/misc/EVENTS"
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
 
 export default function useQuickAccess(projectID, load) {
@@ -12,11 +12,12 @@ export default function useQuickAccess(projectID, load) {
     const refresh = () => {
         fileSystem.readRegistry()
             .then(reg => {
-                const imagesReg = (reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)))
-                const meshesReg = (reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)))
-                const materialsReg = (reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)))
-                const scriptReg = (reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.RAW_SCRIPT)))
-                const promises = []
+                const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
+                    meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
+                    materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
+                    scriptReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.RAW_SCRIPT)),
+                    bpReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.SCRIPT) && !r.path.includes(FILE_TYPES.RAW_SCRIPT)),
+                    promises = []
 
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
@@ -31,7 +32,7 @@ export default function useQuickAccess(projectID, load) {
 
                 promises.push(...meshesReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split(FileSystem.sep))
+                        const split = i.path.split(FileSystem.sep)
                         resolve({
                             type: "mesh",
                             registryID: i.id,
@@ -42,7 +43,7 @@ export default function useQuickAccess(projectID, load) {
                 }))
                 promises.push(...materialsReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split(FileSystem.sep ))
+                        const split = i.path.split(FileSystem.sep )
                         resolve({
                             type: "material",
                             registryID: i.id,
@@ -52,7 +53,7 @@ export default function useQuickAccess(projectID, load) {
                 }))
                 promises.push(...scriptReg.map(i => {
                     return new Promise(resolve => {
-                        const split = (i.path.split(FileSystem.sep))
+                        const split = i.path.split(FileSystem.sep)
                         resolve({
                             type: "flowRaw",
                             registryID: i.id,
@@ -60,12 +61,25 @@ export default function useQuickAccess(projectID, load) {
                         })
                     })
                 }))
+                promises.push(...bpReg.map(i => {
+                    return new Promise(resolve => {
+                        const split = i.path.split(FileSystem.sep)
+
+                        resolve({
+                            type: "flow",
+                            registryID: i.id,
+                            name: split[split.length - 1].split(".")[0]
+                        })
+                    })
+                }))
+
                 Promise.all(promises)
                     .then(res => {
+                        console.log([...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")])
                         setMeshes(res.filter(f => f.type === "mesh"))
                         setMaterials(res.filter(f => f.type === "material"))
                         setImages(res.filter(f => f.type === "image"))
-                        setScripts(res.filter(f => f.type === "flowRaw"))
+                        setScripts([...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")])
                         load.finishEvent(EVENTS.REFRESHING)
                     })
 

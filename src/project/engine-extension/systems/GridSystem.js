@@ -1,7 +1,7 @@
 import System from "../../engine/basic/System"
-import * as shaderCode from "../shaders/grid.glsl"
+import * as shaderCode from "../shaders/GRID.glsl"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
-import Quad from "../../engine/instances/Quad"
+import QuadInstance from "../../engine/instances/QuadInstance"
 
 export default class GridSystem extends System {
     constructor(gpu) {
@@ -9,7 +9,7 @@ export default class GridSystem extends System {
         this.gpu = gpu
 
         this.gridShader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment, gpu)
-        this.grid = new Quad(gpu)
+        this.grid = new QuadInstance(gpu)
     }
 
     execute(options) {

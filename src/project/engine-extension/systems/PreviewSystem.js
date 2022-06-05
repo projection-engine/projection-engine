@@ -41,7 +41,7 @@ export default class PreviewSystem {
         this.frameBuffer
             .texture({precision: this.gpu.RGBA32F, format: this.gpu.RGBA, type: this.gpu.FLOAT})
 
-        import("../../../static/assets/Sphere.json").then(res => {
+        import("../../../static/meshes/Sphere.json").then(res => {
             this.sphereMesh = new MeshInstance({
                 ...(res),
                 gpu

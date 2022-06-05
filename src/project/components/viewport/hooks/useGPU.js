@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useRef, useState} from "react"
-import RENDER_TARGET from "./RENDER_TARGET"
-import Engine from "../../../extension/Engine"
+import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
+import Engine from "../../../engine-extension/Engine"
 import SYSTEMS from "../../../engine/templates/SYSTEMS"
 import SettingsProvider from "../../../hooks/SettingsProvider"
 

@@ -5,7 +5,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {Button, ToolTip} from "@f-ui/core"
 import getComponentInfo from "../utils/getComponentInfo"
 
-
+export const ENTITY_TAB = "entity"
 export default function FormTabs(props) {
 
     const tabs = useMemo(() => {
@@ -29,50 +29,61 @@ export default function FormTabs(props) {
     const initialized = useRef(false)
     useEffect(() => {
         if (!props.entity) {
-            props.setCurrentTab('-2')
+            props.setCurrentTab("-2")
             initialized.current = false
         } else if (!initialized.current && !props.entity.components[COMPONENTS.FOLDER]) {
-            props.setCurrentTab('0')
+            props.setCurrentTab("0")
             initialized.current = true
         }
     }, [props.entity])
-
     return (
         <div className={styles.wrapper}>
             <Button
                 className={styles.button}
-                variant={props.currentTab === '-2' ? "filled" : undefined}
-                onClick={() => props.setCurrentTab('-2')}
+                variant={props.currentTab === "-2" ? "filled" : undefined}
+                onClick={() => props.setCurrentTab("-2")}
             >
-                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>image</span>
-                <ToolTip content={'Display'} animation={'0ms'}/>
+                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>image</span>
+                <ToolTip content={"Display"} animation={"0ms"}/>
             </Button>
             <Button
                 className={styles.button}
-                variant={props.currentTab === '-3' ? "filled" : undefined}
-                onClick={() => props.setCurrentTab('-3')}
+                variant={props.currentTab === "-3" ? "filled" : undefined}
+                onClick={() => props.setCurrentTab("-3")}
             >
-                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>videocam</span>
-                <ToolTip content={'Editor camera'} animation={'0ms'}/>
+                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>videocam</span>
+                <ToolTip content={"Editor camera"} animation={"0ms"}/>
             </Button>
 
             <Button
-                variant={props.currentTab === '-1' ? "filled" : undefined}
+                variant={props.currentTab === "-1" ? "filled" : undefined}
                 className={styles.button}
-                onClick={() => props.setCurrentTab('-1')}
+                onClick={() => props.setCurrentTab("-1")}
             >
-                <span className={'material-icons-round'} style={{fontWeight: '1rem'}}>tv</span>
-                <ToolTip content={'Graphics'} animation={'0ms'}/>
+                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>tv</span>
+                <ToolTip content={"Graphics"} animation={"0ms"}/>
             </Button>
             {props.entity ? <div className={styles.divider}/> : undefined}
+            {props.entity === undefined || props.entity.isFolder ? null :
+                <Button
+                    variant={props.currentTab === ENTITY_TAB ? "filled" : undefined}
+                    className={styles.button}
+                    onClick={() => {
+                        console.log(props.currentTab)
+                        props.setCurrentTab(ENTITY_TAB)
+                    }}>
+                    <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>code</span>
+                    <ToolTip content={"Entity"} animation={"0ms"}/>
+                </Button>
+            }
             {tabs.map((t, i) => (
-                <React.Fragment key={i + '-component-tab'}>
+                <React.Fragment key={i + "-component-tab"}>
                     <Button
                         variant={currentKey === t.key ? "filled" : undefined}
                         className={styles.button}
                         onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
                         {t.icon}
-                        <ToolTip content={t.label} animation={'0ms'}/>
+                        <ToolTip content={t.label} animation={"0ms"}/>
                     </Button>
                 </React.Fragment>
 

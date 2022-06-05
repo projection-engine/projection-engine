@@ -1,10 +1,10 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import ROTATION_TYPES from "./ROTATION_TYPES"
+import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
 import Conversion from "../../engine/utils/Conversion"
 import GizmoSystem from "../systems/GizmoSystem"
 
-export default class TranslateScaleGizmo {
+export default class Gizmo {
     target = []
     clickedAxis = -1
     tracking = false

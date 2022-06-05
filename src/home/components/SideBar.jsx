@@ -4,14 +4,11 @@ import {Button} from "@f-ui/core"
 import PropTypes from "prop-types"
 import ThemeProvider from "../../project/hooks/ThemeProvider"
 import React, {useContext, useState} from "react"
+import EN from "../../static/locale/EN"
 
 export default function SideBar(props) {
-    const theme = useContext(ThemeProvider)
+    const {open, setOpen} = props
     const [extended, setExtended] = useState(false)
-
-    const {
-        open, setOpen
-    } = props
     return (
         <div className={styles.wrapper} data-extended={`${extended}`}>
             <div style={{width: "100%", overflow: "hidden", height: "100%"}}>
@@ -24,7 +21,7 @@ export default function SideBar(props) {
                         <span
                             style={{width: "30px"}}
                             className={"material-icons-round"}>inventory_2</span>
-                        {extended ? "Projects" : undefined}
+                        {extended ? EN.HOME.SIDE_BAR.PROJECTS : undefined}
                     </Button>
 
                     <Button onClick={() => setOpen(1)}
@@ -35,28 +32,18 @@ export default function SideBar(props) {
                         <span
                             style={{width: "30px"}}
                             className={"material-icons-round"}>chat_bubble</span>
-                        {extended ? "Give feedback" : undefined}
+                        {extended ? EN.HOME.SIDE_BAR.ISSUES : undefined}
                     </Button>
                 </div>
             </div>
             <div className={styles.block} style={{transform: "none", height: "100%", alignContent: "flex-end"}}>
-                <Button onClick={() => theme.setDark(!theme.dark)}
-                    className={styles.button}
-                    styles={{justifyContent: !extended ? "center" : undefined}}
-                >
-                    <span style={{width: "30px"}}
-                        className={"material-icons-round"}>{theme.dark ? "dark_mode" : "light_mode"}</span>
-                    {extended ? "Theme" : undefined}
-                </Button>
-
-
                 <Button onClick={() => setExtended(!extended)}
                     styles={{justifyContent: !extended ? "center" : undefined}}
                     className={styles.button}
                 >
                     <span style={{width: "30px"}}
                         className={"material-icons-round"}>{extended ? "chevron_right" : "chevron_left"}</span>
-                    {extended ? "Hide" : undefined}
+                    {extended ? EN.HOME.SIDE_BAR.HIDE : undefined}
                 </Button>
             </div>
         </div>

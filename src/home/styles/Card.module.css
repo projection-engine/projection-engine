@@ -1,130 +1,118 @@
 .wrapper {
-    position: relative;
-    width: 100%;
-    background-color: var(--fabric-background-tertiary);
-
-    border-radius: 5px;
-    overflow: hidden;
-
-    transition: 150ms linear;
-    border: var(--fabric-border-primary) 1px solid;
-    padding: 4px;
+  position: relative;
+  width: 100%;
+  background-color: var(--fabric-background-tertiary);
+  border-radius: 5px;
+  overflow: hidden;
+  transition: 150ms linear;
+  border: var(--fabric-border-primary) 1px solid;
+  padding: 4px;
 }
 
 .wrapper:hover {
-    background: var(--fabric-background-primary);
-
+  background: var(--fabric-background-primary);
 }
 
 .wrapper:hover .dataRow {
-    background: var(--fabric-background-primary);
+  background: var(--fabric-background-primary);
 }
 
-.openButton, .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-    height: 25px;
-    min-width: 25px;
-
-    font-size: .7rem;
-    font-weight: 550;
-    padding: 4px !important;
-    gap: 4px;
+.openButton,
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 25px;
+  min-width: 25px;
+  font-size: 0.7rem;
+  font-weight: 550;
+  padding: 4px !important;
+  gap: 4px;
 }
 
 .openButton {
-    --fabric-accent-color: var(--fabric-border-primary);
-    color: var(--fabric-color-secondary);
+  --fabric-accent-color: var(--fabric-border-primary);
+
+  color: var(--fabric-color-secondary);
 }
 
-.openButton:hover, .openButton:active {
-    --fabric-accent-color: #0095ff;
+.openButton:hover,
+.openButton:active {
+  --fabric-accent-color: #0095ff;
 }
 
 .button:hover {
-    background: var(--fabric-border-primary) !important;
+  background: var(--fabric-border-primary) !important;
 }
 
-.button[data-highlight='true'] {
-    background: var(--fabric-accent-color) !important;
-    color: white !important;
+.button[data-highlight="true"] {
+  background: var(--fabric-accent-color) !important;
+  color: white !important;
 }
 
 .overflow {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
-
 
 .date {
-    font-weight: normal;
-    font-size: .8rem;
+  font-weight: normal;
+  font-size: 0.8rem;
 }
 
-
 .data {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    max-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 200px;
 }
 
 .onDelete {
-    background: var(--fabric-background-primary);
-    padding: 4px;
-
-
-    display: grid;
-    align-items: flex-end;
-    gap: 32px;
-    font-size: .8rem;
-    font-weight: 550;
-    color: var(--fabric-color-secondary);
-
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: var(--fabric-boxshadow);
-
+  background: var(--fabric-background-primary);
+  padding: 4px;
+  display: grid;
+  align-items: flex-end;
+  gap: 32px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: var(--fabric-color-secondary);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: var(--fabric-boxshadow);
 }
-
 
 .section {
-    padding-top: 4px;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    gap: 6px;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  padding-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-
 .buttonGroup {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 4px;
 }
 
 .modalOptions {
-    padding: 4px;
-    max-width: unset;
-    width: 300px;
+  padding: 4px;
+  max-width: unset;
+  width: 300px;
 }
 
 .dataRow {
-    background-color: var(--fabric-background-tertiary);
-    border: none;
-    width: 100%;
-    border-radius: 0;
-    transition: 150ms linear;
-    border-bottom: var(--fabric-background-tertiary) 1px solid;
+  background-color: var(--fabric-background-tertiary);
+  border: none;
+  width: 100%;
+  border-radius: 0;
+  transition: 150ms linear;
+  border-bottom: var(--fabric-background-tertiary) 1px solid;
 }

@@ -165,6 +165,7 @@ export default function SceneView(props) {
                                 }
                             })
                         } catch (e) {
+                            console.error(e)
                         }
                     }}
                     onDragStart={e => {

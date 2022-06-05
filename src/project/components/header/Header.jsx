@@ -8,7 +8,7 @@ export default function Header(props) {
 
     const groups = useMemo(() => {
         if (props.options)
-            return groupBy(props.options, 'group')
+            return groupBy(props.options, "group")
         else
             return []
     }, [props.options])
@@ -16,15 +16,15 @@ export default function Header(props) {
     return (
         <div className={styles.options}>
             {Object.keys(groups).map((g, i) => (
-                <React.Fragment key={i + '-group'}>
+                <React.Fragment key={i + "-group"}>
                     {i > 0 ? <div className={styles.divider}/> : null}
                     <div className={styles.group}>
                         {groups[g].map((option, index) => {
-                            if (option.type === 'dropdown') {
+                            if (option.type === "dropdown") {
                                 return (
-                                    <React.Fragment key={i + '-option-' + index}>
+                                    <React.Fragment key={i + "-option-" + index}>
                                         <Dropdown
-                                            align={'bottom'}
+                                            align={"bottom"}
                                             justify={"start"}
                                             disabled={option.disabled}
                                             className={styles.option}
@@ -33,7 +33,7 @@ export default function Header(props) {
                                             {option.label}
                                             <DropdownOptions>
                                                 {option.options.map((o, index) => (
-                                                    <React.Fragment key={index + '-option-' + o.label}>
+                                                    <React.Fragment key={index + "-option-" + o.label}>
                                                         <DropdownOption option={o}/>
                                                     </React.Fragment>
                                                 ))}
@@ -43,7 +43,7 @@ export default function Header(props) {
                                 )
                             } else
                                 return (
-                                    <React.Fragment key={i + '-option-' + index}>
+                                    <React.Fragment key={i + "-option-" + index}>
                                         <Button
                                             onClick={option.onClick}
                                             disabled={option.disabled}

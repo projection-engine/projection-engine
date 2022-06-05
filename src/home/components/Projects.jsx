@@ -4,6 +4,7 @@ import React, {useContext, useMemo, useState} from "react"
 import Card from "./Card"
 import {Dropdown, DropdownOptions, DropdownProvider, Masonry, TextField} from "@f-ui/core"
 import FileSystem from "../../project/utils/files/FileSystem"
+import EN from "../../static/locale/EN"
 
 
 export default function Projects(props) {
@@ -17,10 +18,10 @@ export default function Projects(props) {
         <div className={styles.wrapper}>
             <div className={styles.titleWrapper}>
                 <div className={styles.title}>
-                    <label>Your projects</label>
+                    <label>{EN.HOME.PROJECTS.PROJECTS}</label>
                     <TextField
                         handleChange={e => setSearchString(e.target.value)}
-                        placeholder={"Search"}
+                        placeholder={EN.HOME.PROJECTS.SEARCH}
                         value={searchString}
                         height={"25px"}
                     />
@@ -31,7 +32,7 @@ export default function Projects(props) {
                     wrapperClassname={styles.createModal}
                 >
                     <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>add</span>
-                    New project
+                    {EN.HOME.PROJECTS.CREATE}
                     <DropdownOptions>
                         <Create setProjects={props.setProjects} alert={props.alert}/>
                     </DropdownOptions>
@@ -41,7 +42,7 @@ export default function Projects(props) {
 
                 <div className={styles.emptyWrapper}>
                     <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
-                No projects found
+                    {EN.HOME.PROJECTS.EMPTY}
                 </div>
                 :
                 <Masonry className={styles.content}>
@@ -57,7 +58,6 @@ export default function Projects(props) {
                                 }}/>
                         </React.Fragment>
                     ))}
-
                 </Masonry>
             }
         </div>

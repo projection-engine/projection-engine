@@ -1,5 +1,5 @@
 import importMesh from "./importMesh"
-import EVENTS from "../../templates/EVENTS"
+import EVENTS from "../../../static/misc/EVENTS"
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"

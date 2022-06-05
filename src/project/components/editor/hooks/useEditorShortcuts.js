@@ -1,5 +1,5 @@
 import useHotKeys from "../../../hooks/hot-keys/useHotKeys"
-import GIZMOS from "../../../extension/gizmo/GIZMOS"
+import GIZMOS from "../../../../static/misc/GIZMOS"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
 import cloneClass from "../../../engine/utils/cloneClass"
@@ -8,7 +8,7 @@ import {useEffect, useMemo, useState} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import TransformComponent from "../../../engine/components/TransformComponent"
 import KEYS from "../../../engine/templates/KEYS"
-import RENDER_TARGET from "../../viewport/hooks/RENDER_TARGET"
+import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 
 export default function useEditorShortcuts({engine, setAlert, settings, id, executingAnimation, serializer, setExecutingAnimation}) {
     const [toCopy, setToCopy] = useState([])

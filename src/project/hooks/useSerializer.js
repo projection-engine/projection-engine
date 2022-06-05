@@ -1,7 +1,7 @@
 import {useCallback, useContext, useEffect} from "react"
 
 
-import EVENTS from "../templates/EVENTS"
+import EVENTS from "../../static/misc/EVENTS"
 import ProjectLoader from "../templates/ProjectLoader"
 import LoaderProvider from "../../components/loader/LoaderProvider"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"

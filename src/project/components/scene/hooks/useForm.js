@@ -13,13 +13,15 @@ import cloneClass from "../../../engine/utils/cloneClass"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
-import Script from "../components/Script"
+import Entity from "../components/Entity"
 import Rendering from "../components/Rendering"
 import Display from "../components/Display"
 import Editor from "../components/Editor"
 import Line from "../components/Line"
 import LightProbe from "../components/LightProbe"
 import FileSystem from "../../../utils/files/FileSystem"
+import loadScript from "../utils/loadScript"
+import {ENTITY_TAB} from "../components/FormTabs"
 
 export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
 
@@ -101,48 +103,7 @@ export default function useForm(
                     />
                 )
             }
-            case COMPONENTS.SCRIPT: {
-                return (
-                    <Script
-                        quickAccess={quickAccess}
-                        selected={selected.components[COMPONENTS.SCRIPT]}
-                        submit={async (value, add) => {
-                            if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value)) {
-                                selected.components[COMPONENTS.SCRIPT].scripts.push(value)
-                                if (!engine.scripts.find(s => s.id === value)) {
 
-                                    const rs = await quickAccess.fileSystem.readRegistryFile(value)
-                                    if (rs) {
-                                        const file = await quickAccess.fileSystem.readFile(quickAccess.fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path)
-                                        if (file)
-                                            engine.setScripts(prev => {
-                                                return [...prev, {
-                                                    id: value,
-                                                    executors: file
-                                                }]
-                                            })
-                                        else {
-                                            setAlert({
-                                                type: "error",
-                                                message: "Error loading file."
-                                            })
-                                            return null
-                                        }
-                                    }
-                                }
-                            } else if (!add)
-                                selected.components[COMPONENTS.SCRIPT].scripts = selected.components[COMPONENTS.SCRIPT].scripts.filter(s => s !== value)
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: selected.components[COMPONENTS.SCRIPT],
-                                    key: COMPONENTS.SCRIPT
-                                }
-                            })
-                        }}
-                    />
-                )
-            }
             case COMPONENTS.CAMERA: {
                 return (
                     <Camera
@@ -316,7 +277,7 @@ export default function useForm(
 
 
     return useMemo(() => {
-        if (parseInt(currentTab) > -1 && selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
+        if ((parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
             const data = getField(Object.keys(selected.components)[currentTab])
@@ -325,7 +286,16 @@ export default function useForm(
                 open: true,
                 content: (
                     <div className={styles.formsWrapper}>
-                        {data}
+                        {currentTab !== ENTITY_TAB ?
+                            data
+                            :
+                            <Entity
+                                quickAccess={quickAccess}
+                                entity={selected}
+                                selected={selected.components[COMPONENTS.SCRIPT]}
+                                submit={(value, add) => loadScript(setAlert, selected, engine, value, quickAccess, add).catch()}
+                            />
+                        }
                     </div>
                 ),
                 name: selected.name,

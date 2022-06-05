@@ -51,11 +51,7 @@ export default function getComponentInfo(c) {
         res.icon =
                 <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>flashlight_on</span>
         break
-    case COMPONENTS.SCRIPT:
-        res.key = c
-        res.label = "Script"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>code</span>
-        break
+
     case COMPONENTS.PHYSICS:
         res.key = c
         res.label = "Physics"

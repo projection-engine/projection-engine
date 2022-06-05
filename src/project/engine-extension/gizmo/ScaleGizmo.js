@@ -2,13 +2,13 @@ import {vec4} from "gl-matrix"
 import Entity from "../../engine/basic/Entity"
 import TransformComponent from "../../engine/components/TransformComponent"
 import MeshInstance from "../../engine/instances/MeshInstance"
-import Transformation from "../../engine/instances/Transformation"
+import Transformation from "../../engine/templates/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import ROTATION_TYPES from "./ROTATION_TYPES"
-import TranslateScaleGizmo from "./TranslateScaleGizmo"
+import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
+import Gizmo from "./Gizmo"
 
-export default class ScaleGizmo extends TranslateScaleGizmo {
+export default class ScaleGizmo extends Gizmo {
     target = []
     clickedAxis = -1
     tracking = false
@@ -24,7 +24,7 @@ export default class ScaleGizmo extends TranslateScaleGizmo {
         this.yGizmo = this._mapEntity(3, "y")
         this.zGizmo = this._mapEntity(4, "z")
 
-        import("../../../static/assets/ScaleGizmo.json")
+        import("../../../static/meshes/ScaleGizmo.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     gpu,

@@ -1,4 +1,4 @@
-export default class GizmoToolTip {
+export default class TransformationTooltip {
     constructor(element) {
         this.renderTarget = element
     }

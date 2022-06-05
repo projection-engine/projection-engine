@@ -16,10 +16,10 @@ export default function Mesh(props) {
 
     return (
         <>
-            <AccordionTemplate title={'Mesh instance'}>
+            <AccordionTemplate title={"Mesh instance"}>
                 <Selector
                     selected={currentMesh}
-                    type={'mesh'}
+                    type={"mesh"}
                     handleChange={m => {
                         let data = props.engine.meshes.find(mesh => mesh.id === m.registryID)
                         if (!data)
@@ -35,15 +35,15 @@ export default function Mesh(props) {
             </AccordionTemplate>
             <Checkbox
                 noMargin={true}
-                label={'Static mesh'}
-                width={'100%'}
-                height={'25px'}
+                label={"Static mesh"}
+                width={"100%"}
+                height={"25px"}
 
                 checked={meshType === MESH_TYPES.STATIC} handleCheck={() => {
-                const c = meshType === MESH_TYPES.STATIC ? MESH_TYPES.DYNAMIC : MESH_TYPES.STATIC
-                setMeshType(c)
-                props.submit(c, true)
-            }}/>
+                    const c = meshType === MESH_TYPES.STATIC ? MESH_TYPES.DYNAMIC : MESH_TYPES.STATIC
+                    setMeshType(c)
+                    props.submit(c, true)
+                }}/>
         </>
     )
 }

@@ -1,8 +1,8 @@
 import styles from "../styles/ViewportOptions.module.css"
 import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core"
-import ROTATION_TYPES from "../../../extension/gizmo/ROTATION_TYPES"
+import ROTATION_TYPES from "../../../../static/misc/ROTATION_TYPES"
 import Range from "../../../../components/range/Range"
-import GIZMOS from "../../../extension/gizmo/GIZMOS"
+import GIZMOS from "../../../../static/misc/GIZMOS"
 import PropTypes from "prop-types"
 import React, {useState} from "react"
 

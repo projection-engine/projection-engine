@@ -1,9 +1,9 @@
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
-import RENDER_TARGET from "../hooks/RENDER_TARGET"
+import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core"
 import React, {useMemo, useState} from "react"
-import EditorCamera from "../../../extension/camera/EditorCamera"
+import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 

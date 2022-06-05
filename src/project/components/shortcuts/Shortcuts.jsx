@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from "react"
 import HotKeysProvider from "../../hooks/hot-keys/HotKeysProvider"
 import styles from "./styles/Shortcuts.module.css"
-import KEYS from "./KEYS"
+import KEYS from "../../../static/misc/LABELED_KEYS"
 
 export default function Shortcuts(){
     const { allShortcuts, activeWindow, activeKeys } = useContext(HotKeysProvider)

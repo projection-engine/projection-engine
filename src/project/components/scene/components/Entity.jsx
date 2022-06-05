@@ -2,21 +2,25 @@ import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Button} from "@f-ui/core"
 import React, {useMemo} from "react"
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import Selector from "../../../../components/selector/Selector"
 
-export default function Script(props) {
+export default function Entity(props) {
     return (
         <>
-            <AccordionTemplate title={"Link blueprint"}>
-                <Selector
-                    type={"script"}
-                    selected={undefined}
-                    handleChange={d => {
-                        if (d)
-                            props.submit(d.registryID, true)
-                    }}/>
-            </AccordionTemplate>
+
+            <Selector
+                type={"script"}
+                selected={undefined}
+                handleChange={d => {
+                    if (d)
+                        props.submit(d.registryID, true)
+                }}>
+                <div className={[styles.inline, styles.add].join(" ")}>
+                    <span className={"material-icons-round"}>add</span>
+                    Add new component
+                </div>
+            </Selector>
+  
             <label className={styles.label}>
                 Linked scripts
             </label>
@@ -35,7 +39,7 @@ export default function Script(props) {
     )
 }
 
-Script.propTypes = {
+Entity.propTypes = {
     quickAccess: PropTypes.object,
     selected: PropTypes.object,
     submit: PropTypes.func
