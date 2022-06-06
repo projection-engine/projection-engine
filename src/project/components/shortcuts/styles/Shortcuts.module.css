@@ -6,6 +6,7 @@
   align-items: center;
   gap: 8px;
   color: var(--pj-color-secondary);
+  padding: 0 4px;
 }
 
 .item {
@@ -17,13 +18,13 @@
   font-size: 0.7rem;
 }
 
-.itemWrapper{
+.itemWrapper {
   font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 2px;
-
 }
+
 .itemWrapper > * {
   white-space: nowrap;
 }

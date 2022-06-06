@@ -25,6 +25,7 @@ const getHierarchy = (start, all) => {
     result.push(...direct)
     return result
 }
+const TRIGGERS = ["data-node", "data-self"]
 const worker = new Worker(new URL("./hooks/hierarchy.js", import.meta.url))
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -67,6 +68,47 @@ export default function SceneView(props) {
                 )
         })
     }, [required])
+    const treeOptions = useMemo(() => {
+        return [
+            {
+                requiredTrigger: "data-self",
+                label: "Create folder",
+                icon: "create_new_folder",
+                onClick: () => createFolder()
+            },
+            {
+                requiredTrigger: "data-node",
+                label: "Remove entity",
+                icon: "delete",
+                onClick: (node) => {
+                    const t = node.getAttribute("data-node")
+                    const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
+
+                    props.engine.setSelected([])
+                    props.engine.dispatchEntities({
+                        type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
+                    })
+
+                }
+            },
+            {
+                requiredTrigger: "data-node",
+                label: "Focus",
+                onClick: (target) => {
+                    const entity = props.engine.entities.find(e => e.id === target.getAttribute("data-node"))
+                    const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
+                    if (entity && comp) {
+                        const t = comp.translation
+
+                        props.engine.renderer.camera.radius = 10
+                        props.engine.renderer.camera.centerOn = t
+
+                        props.engine.renderer.camera.updateViewMatrix()
+                    }
+                }
+            }
+        ]
+    }, [props.engine.entities, props.engine.selected])
     return (
         <div className={styles.wrapper}>
             <div className={styles.wrapperContent} style={{overflow: "hidden"}}>
@@ -90,51 +132,13 @@ export default function SceneView(props) {
                     </div>
                 </div>
                 <TreeView
-                    contextTriggers={["data-node", "data-self"]}
+                    contextTriggers={TRIGGERS}
                     onMultiSelect={(items) => props.engine.setSelected(items)}
                     multiSelect={true}
                     searchable={true}
                     draggable={true}
 
-                    options={[
-                        {
-                            requiredTrigger: "data-self",
-                            label: "Create folder",
-                            icon: <span className={"material-icons-round"}>create_new_folder</span>,
-                            onClick: () => createFolder()
-                        },
-                        {
-                            requiredTrigger: "data-node",
-                            label: "Remove entity",
-                            icon: <span className={"material-icons-round"}>delete</span>,
-                            onClick: (node) => {
-                                const t = node.getAttribute("data-node")
-                                const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
-
-                                props.engine.setSelected([])
-                                props.engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
-                                })
-
-                            }
-                        },
-                        {
-                            requiredTrigger: "data-node",
-                            label: "Focus",
-                            onClick: (target) => {
-                                const entity = props.engine.entities.find(e => e.id === target.getAttribute("data-node"))
-                                const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
-                                if (entity && comp) {
-                                    const t = comp.translation
-
-                                    props.engine.renderer.camera.radius = 10
-                                    props.engine.renderer.camera.centerOn = t
-
-                                    props.engine.renderer.camera.updateViewMatrix()
-                                }
-                            }
-                        }
-                    ]}
+                    options={treeOptions}
                     onDrop={(event, target) => {
                         event.preventDefault()
                         try {

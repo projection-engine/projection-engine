@@ -3,24 +3,24 @@ import PropTypes from "prop-types"
 import KEYS from "../../engine/templates/KEYS"
 import HotKeysProvider from "./HotKeysProvider"
 
-export default function useHotKeys(props, listeners = []) {
-    let clicked = {}, target = typeof props.focusTarget === "string" ? document.getElementById(props.focusTarget) : props.focusTarget
+export default function useHotKeys(props) {
+    let clicked = {}
     const { setAllShortcuts, setActiveWindow, activeWindow, setActiveKeys } = useContext(HotKeysProvider)
     const focused = useRef(false)
 
     function handler(e){
         if(e.type === "mouseenter" || e.type === "mouseleave") {
             focused.current = e.type === "mouseenter"
-            if(focused.current  && activeWindow?.reference !== target) {
+            if(focused.current  && activeWindow?.reference !== e.target) {
                 setActiveWindow({
-                    reference: target,
+                    reference: e.target,
                     label: props.focusTargetLabel,
                     icon: props.focusTargetIcon
                 })
             }
             clicked = {}
         }
-        else if ((focused.current  || activeWindow?.reference === target) && document.activeElement === document.body) {
+        else if ((focused.current  || activeWindow?.reference === e.target) && document.activeElement === document.body) {
             const l = props.actions.length
             if (e.type === "keydown") {
                 if(e.ctrlKey) {
@@ -47,11 +47,12 @@ export default function useHotKeys(props, listeners = []) {
     }
 
     useEffect(() => {
+        const target =  typeof props.focusTarget === "object" ? props.focusTarget : document.getElementById(props.focusTarget)
         if (!props.disabled && target) {
             if(focused.current)
                 setAllShortcuts(props.actions)
-            target.addEventListener("mouseenter", handler)
-            target.addEventListener("mouseleave", handler)
+            target?.addEventListener("mouseenter", handler)
+            target?.addEventListener("mouseleave", handler)
             document.addEventListener("keydown", handler)
             document.addEventListener("keyup", handler)
         }
@@ -61,7 +62,7 @@ export default function useHotKeys(props, listeners = []) {
             document.removeEventListener("keyup", handler)
             document.removeEventListener("keydown", handler)
         }
-    }, [props.actions, props.disabled, listeners])
+    }, [props.actions, props.disabled])
 }
 
 useHotKeys.propTypes = {

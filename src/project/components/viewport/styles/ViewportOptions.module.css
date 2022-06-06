@@ -173,7 +173,7 @@
   position: absolute;
   right: 0;
   top: 35px;
-  z-index: 999;
+  z-index: 15;
   display: grid;
   align-content: flex-start;
   justify-items: center;

@@ -36,6 +36,7 @@ export default function ViewportOptions(props) {
         })
     }
 
+
     return (
         <div style={{display: props.executingAnimation || fullscreen ? "none" : undefined}}>
             {props.minimal ? null :

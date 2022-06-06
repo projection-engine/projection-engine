@@ -19,6 +19,10 @@ import MaterialView from "./components/blueprints/material/MaterialView"
 import refreshData from "./utils/refreshData"
 import PropTypes from "prop-types"
 import Shortcuts from "./components/shortcuts/Shortcuts"
+import ContextMenuProvider from "../components/context/hooks/ContextMenuProvider"
+import useContextMenu from "../components/context/hooks/useContextMenu"
+import ContextMenu from "../components/context/ContextMenu"
+import {ContextWrapper} from "@f-ui/core"
 
 const {shell} = window.require("electron")
 export default function Project(props) {
@@ -36,6 +40,7 @@ export default function Project(props) {
         openTab, setOpenTab
     } = useProjectWrapper(id, initialized, setInitialized, settings)
     const [openFiles, setOpenFiles] = useState([])
+    const contextMenuHook = useContextMenu()
     const options = useOptions(
         executingAnimation,
         setExecutingAnimation,
@@ -135,89 +140,95 @@ export default function Project(props) {
     }, [openFiles, openTab, engine.entities])
 
     return (
-        <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
-            <EntitiesProvider.Provider value={{
-                entities: entitiesWithMeshes, removeEntities: (entities) => {
-                    engine.setSelected([])
-                    engine.dispatchEntities({
-                        type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
-                    })
-                    entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
-                }, engine
-            }}>
-                <SettingsProvider.Provider value={settings}>
-                    <QuickAccessProvider.Provider value={quickAccess}>
-                        <Frame
-                            logoAction={true}
-                            options={[{
-                                label: "File", options: [{
-                                    label: "Save project",
-                                    icon: "save",
-                                    shortcut: "Ctrl + S",
-                                    onClick: () => serializer.save()
-                                }, {
-                                    label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
-                                        exporter.build({
-                                            entities: engine.entities,
-                                            meshes: engine.meshes,
-                                            materials: engine.materials,
-                                            scripts: engine.scripts
-                                        })
-                                            .then(() => {
-                                                setAlert({
-                                                    type: "success", message: "Successfully exported"
-                                                })
-                                                setTimeout(() => {
-                                                    shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
-                                                }, 2000)
+        <ContextMenuProvider.Provider value={contextMenuHook}>
+            <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
+                <EntitiesProvider.Provider value={{
+                    entities: entitiesWithMeshes, removeEntities: (entities) => {
+                        engine.setSelected([])
+                        engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
+                        })
+                        entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
+                    }, engine
+                }}>
+                    <SettingsProvider.Provider value={settings}>
+                        <QuickAccessProvider.Provider value={quickAccess}>
+                            <Frame
+                                logoAction={true}
+                                options={[{
+                                    label: "File", options: [{
+                                        label: "Save project",
+                                        icon: "save",
+                                        shortcut: "Ctrl + S",
+                                        onClick: () => serializer.save()
+                                    }, {
+                                        label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
+                                            exporter.build({
+                                                entities: engine.entities,
+                                                meshes: engine.meshes,
+                                                materials: engine.materials,
+                                                scripts: engine.scripts
                                             })
-                                            .catch(() => setAlert({
-                                                type: "error", message: "Error during packaging process"
-                                            }))
-                                    }
-                                }]
-                            }]}
-                            hasLogo={true}
-                            pageInfo={events}
-                            label={meta?.name}/>
+                                                .then(() => {
+                                                    setAlert({
+                                                        type: "success", message: "Successfully exported"
+                                                    })
+                                                    setTimeout(() => {
+                                                        shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
+                                                    }, 2000)
+                                                })
+                                                .catch(() => setAlert({
+                                                    type: "error", message: "Error during packaging process"
+                                                }))
+                                        }
+                                    }]
+                                }]}
+                                hasLogo={true}
+                                pageInfo={events}
+                                label={meta?.name}/>
+                            <ContextWrapper
+                                wrapperClassName={styles.context}
+                                triggers={contextMenuHook.triggers}
+                                className={styles.wrapper}
+                                content={(selected, close) => <ContextMenu options={contextMenuHook.options} engine={engine} close={close} selected={selected}/>}
+                            >
 
-                        <div className={styles.wrapper}>
-                            <Header options={options}/>
-                            <Editor
-                                setExecutingAnimation={setExecutingAnimation}
-                                executingAnimation={executingAnimation}
-                                engine={engine}
-                                id={id}
-                                load={load}
-                                setAlert={setAlert}
-                                settings={settings}
-                                serializer={serializer}
-                            />
-                            <Tabs
-                                open={openTab}
-                                setOpen={setOpenTab}
-                                orientation={"vertical"}
-                                tabs={[
-                                    {
-                                        label: "Files",
-                                        icon: "folder",
-                                        children: (
-                                            <FilesView
-                                                setAlert={setAlert}
-                                                id={id}
-                                            />
-                                        )
-                                    },
-                                    ...tabs
-                                ]}
-                            />
-
-                        </div>
-                        <Shortcuts/>
-                    </QuickAccessProvider.Provider>
-                </SettingsProvider.Provider>
-            </EntitiesProvider.Provider>
-        </OpenFileProvider.Provider>
+                                <Header options={options}/>
+                                <Editor
+                                    setExecutingAnimation={setExecutingAnimation}
+                                    executingAnimation={executingAnimation}
+                                    engine={engine}
+                                    id={id}
+                                    load={load}
+                                    setAlert={setAlert}
+                                    settings={settings}
+                                    serializer={serializer}
+                                />
+                                <Tabs
+                                    open={openTab}
+                                    setOpen={setOpenTab}
+                                    orientation={"vertical"}
+                                    tabs={[
+                                        {
+                                            label: "Files",
+                                            icon: "folder",
+                                            children: (
+                                                <FilesView
+                                                    setAlert={setAlert}
+                                                    id={id}
+                                                />
+                                            )
+                                        },
+                                        ...tabs
+                                    ]}
+                                />
+                            </ContextWrapper>
+                            <Shortcuts/>
+                        </QuickAccessProvider.Provider>
+                    </SettingsProvider.Provider>
+                </EntitiesProvider.Provider>
+            </OpenFileProvider.Provider>
+        </ContextMenuProvider.Provider>
     )
 }
 
