@@ -1,5 +1,5 @@
-import WindowEvents from "./events/WindowEvents"
-import FileSystemEvents from "./events/FileSystemEvents"
+import MainWrapper from "./events/MainWrapper"
+import FS from "./events/FS"
 import FSEvents from "./events/FSEvents"
 
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron")
@@ -20,10 +20,11 @@ const createWindow = () => {
             }
         })
     })
-    WindowEvents()
-    FSEvents()
-    FileSystemEvents()
 
+
+    MainWrapper()
+    FSEvents()
+    FS()
 }
 
 app.on("ready", createWindow)

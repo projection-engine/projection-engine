@@ -1,69 +1,95 @@
-import {Switcher,} from "@f-ui/core"
-import styles from "./styles/Home.module.css"
 import React, {useState} from "react"
-import Projects from "./components/Projects"
+import ReactDOM from "react-dom"
+import "../styles/globals.css"
+import {Fabric, Switcher} from "@f-ui/core"
+import shared from "../styles/App.module.css"
+import styles from "./styles/Home.module.css"
+import ThemeProvider from "../project/hooks/ThemeProvider"
+import useGlobalOptions from "../project/hooks/useGlobalOptions"
+import useLoader from "../components/loader/useLoader"
+import LoaderProvider from "../components/loader/LoaderProvider"
+import Frame from "../components/frame/Frame"
+import EN from "../static/locale/EN"
+import FRAME_EVENTS from "../../public/FRAME_EVENTS"
 import useProjects from "./hooks/useProjects"
 import SideBar from "./components/SideBar"
-import IssuesList from "./components/issues/IssuesList"
+import Projects from "./components/Projects"
 import AsyncFS from "../project/templates/AsyncFS"
 import FileSystem from "../project/utils/files/FileSystem"
-import EN from "../static/locale/EN"
-
+import IssuesList from "./components/issues/IssuesList"
 
 const pathResolve = window.require("path")
 
-export default function Home() {
+function Home() {
+    const global = useGlobalOptions()
+    const loader = useLoader(global.dark, global.accentColor)
     const {
         projects,
-        alert,
-        setAlert, refresh,
+        refresh,
         load,
         setProjects
     } = useProjects()
     const [open, setOpen] = useState(0)
 
     return (
-        <div className={styles.wrapper}>
-            <SideBar open={open} setOpen={setOpen}/>
-            <Switcher openChild={open} styles={{width: "100%"}}>
-                <Projects
-                    alert={alert}
-                    deleteProject={async pjID => {
-                        setAlert({message: EN.HOME.HOME.DELETE, type: "info"})
-                        await AsyncFS.rm(
-                            pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
-                            {recursive: true, force: true}
-                        )
-                        setProjects(prev => {
-                            return prev.filter(e => e.id !== pjID)
-                        })
-                    }}
-                    renameProject={async (newName, projectID) => {
-                        const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID + FileSystem.sep + ".meta")
-                        const [error, res] = await AsyncFS.read(pathName)
-                        if (res && !error) {
-                            const [e] = await AsyncFS.write(pathName, JSON.stringify({
-                                ...JSON.parse(res),
-                                name: newName
-                            }))
-                            if (!e)
-                                setAlert({
-                                    type: "success",
-                                    message: EN.HOME.HOME.RENAME
-                                })
-                            else
-                                setAlert({
-                                    type: "error",
-                                    message:  EN.HOME.HOME.RENAME_ERROR
-                                })
-                        }
-                    }}
-                    refresh={() => refresh()}
-                    load={load} projects={projects}
-                    setProjects={setProjects}/>
-                <IssuesList/>
-            </Switcher>
-        </div>
+        <Fabric
+            language={"en"}
+            theme={"dark"}
+            accentColor={global.accentColor}
+            className={[shared.wrapper, shared.dark].join(" ")}
+        >
+            <Frame
+                options={[]}
+                label={EN.HOME.ENTRY_POINT.TITLE}
+                hasLogo={false}
+                pageInfo={{
+                    closeEvent: FRAME_EVENTS.CLOSE,
+                    minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                    maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                }}/>
+            <LoaderProvider.Provider value={loader}>
+                <ThemeProvider.Provider value={{
+                    ...global, themeClass: shared.dark
+                }}>
+                    <div className={styles.wrapper}>
+                        <SideBar open={open} setOpen={setOpen}/>
+                        <Switcher openChild={open} styles={{width: "100%"}}>
+                            <Projects
+ 
+                                deleteProject={async pjID => {
+                                    await AsyncFS.rm(
+                                        pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
+                                        {recursive: true, force: true}
+                                    )
+                                    setProjects(prev => {
+                                        return prev.filter(e => e.id !== pjID)
+                                    })
+                                }}
+                                renameProject={async (newName, projectID) => {
+                                    const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID + FileSystem.sep + ".meta")
+                                    const [error, res] = await AsyncFS.read(pathName)
+                                    if (res && !error) 
+                                        await AsyncFS.write(pathName, JSON.stringify({
+                                            ...JSON.parse(res),
+                                            name: newName
+                                        }))
+                                }}
+                                refresh={() => refresh()}
+                                load={load} projects={projects}
+                                setProjects={setProjects}/>
+                            <IssuesList/>
+                        </Switcher>
+                    </div>
+                </ThemeProvider.Provider>
+            </LoaderProvider.Provider>
+        </Fabric>
     )
 }
 
+
+ReactDOM.render(
+    <React.StrictMode>
+        <Home/>
+    </React.StrictMode>,
+    document.getElementById("root")
+)

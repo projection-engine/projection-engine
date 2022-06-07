@@ -55,14 +55,19 @@
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
                 {
-                  "html": "./public/entry/home.html",
+                  "html": "./public/entry/window.html",
                   "js": "./public/entry/home.js",
                   "name": "main_window"
                 },
                 {
-                  "html": "./public/entry/project.html",
+                  "html": "./public/entry/window.html",
                   "js": "./public/entry/project.js",
                   "name": "project_window"
+                },
+                {
+                  "html": "./public/entry/window.html",
+                  "js": "./public/entry/shortcuts.js",
+                  "name": "shortcuts"
                 }
               ]
             }

@@ -13,6 +13,7 @@ import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./hooks/useSettings"
 import HotKeysProvider from "./hooks/hot-keys/HotKeysProvider"
 import useHotKeysHelper from "./hooks/hot-keys/useHotKeysHelper"
+import FRAME_EVENTS from "../../public/FRAME_EVENTS"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -55,7 +56,12 @@ function EntryPoint() {
                                 settings={settings}
                                 initialized={initialized}
                                 setInitialized={setInitialized}
-                                events={events}
+                                events={{
+                                    ...events,
+                                    closeEvent: FRAME_EVENTS.CLOSE,
+                                    minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                                    maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                                }}
                                 id={project.id}
                                 meta={project.meta}
                             /> : null}

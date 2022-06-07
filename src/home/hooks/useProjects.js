@@ -1,4 +1,4 @@
-import {AlertProvider} from "@f-ui/core"
+
 import {useContext, useEffect, useState} from "react"
 import LoaderProvider from "../../components/loader/LoaderProvider"
 import AsyncFS from "../../project/templates/AsyncFS"
@@ -11,11 +11,9 @@ export default function useProjects() {
     const [projects, setProjects] = useState([])
     const [startPath, setStartPath] = useState()
     const load = useContext(LoaderProvider)
-    const alert = useContext(AlertProvider)
+    const [loading, setLoading] = useState(true)
 
     async function refresh (path) {
-
-        alert.pushAlert(EN.HOME.HOME.LOADING, "info")
         const [e, res] = await AsyncFS.readdir(path)
         if (!(await AsyncFS.exists(path))) await AsyncFS.mkdir(path)
 
@@ -24,10 +22,10 @@ export default function useProjects() {
             for (let i in res) {
                 const f = res[i]
                 let filename = path + f
-                const [_, stat] = await AsyncFS.lstat(filename)
+                const [, stat] = await AsyncFS.lstat(filename)
                 if (stat && stat.isDirectory) {
-                    const [e1, meta] = await AsyncFS.read(filename + "/.meta")
-                    const [e2, settings] = await AsyncFS.read(filename + "/.settings")
+                    const [, meta] = await AsyncFS.read(filename + "/.meta")
+                    const [, settings] = await AsyncFS.read(filename + "/.settings")
                     const parts = filename.split(FileSystem.sep)
                     data.push({
                         id: parts.pop(),
@@ -44,6 +42,7 @@ export default function useProjects() {
                 if (!res.meta.name) res.meta.name = EN.FILE.NEW_PROJECT
                 return res
             }))
+            setLoading(false)
         }
     }
 
@@ -63,10 +62,10 @@ export default function useProjects() {
     }, [])
 
     return {
-        alert,
+        loading,
         projects,
         setProjects,
-        setAlert: ({type, message}) => alert.pushAlert(message, type),
+
         load,
         refresh,
         startPath,

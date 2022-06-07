@@ -1,0 +1,1 @@
+import "../../src/windows/Shortcuts.jsx"

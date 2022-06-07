@@ -5,46 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/context/ContextMenu.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/project/components/files/components/Files.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/V0.2.0.md" beforeDir="false" afterPath="$PROJECT_DIR$/V0.2.0.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components" beforeDir="false" afterPath="$PROJECT_DIR$/src/components" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/tree/TreeNode.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tree/TreeNode.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/tree/TreeView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tree/TreeView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/entry/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/entry/window.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/entry/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/entry/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/entry/project.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/FileSystemEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/FS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/FileSystemUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/WindowEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/MainWrapper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/EntryPoint.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/components/Projects.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/Projects.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/hooks/useProjects.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/hooks/useProjects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/styles/Home.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/styles/Home.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/EntryPoint.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/EntryPoint.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Board.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Context.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Context.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Group.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Group.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Node.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/components/Node.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/utils/getBoardOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/utils/getBoardOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/material/utils/AllNodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/material/utils/AllNodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/scripts/ScriptView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/scripts/ScriptView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/scripts/components/Structure.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/scripts/components/Structure.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/scripts/utils/AllNodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/scripts/utils/AllNodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/FilesView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/FilesView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/Item.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/File.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/SideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/SideBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/View.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/hooks/useItems.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/hooks/useItems.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/getDirectoryOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/getDirectoryOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/getFileOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/getFileOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/scene/SceneView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/scene/SceneView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/shortcuts/styles/Shortcuts.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/shortcuts/styles/Shortcuts.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/ViewportOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/ViewportOptions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/ContextMenu.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewportOptions.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewportOptions.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/hot-keys/useHotKeys.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/hot-keys/useHotKeys.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/App.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,8 +45,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/public/events/FS.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/public/events/FSEvents.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/public/events/FileSystemEvents.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/home/hooks/useProjects.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/project/components/files/FilesView.jsx" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/project/templates/AsyncFS.js" root0="FORCE_HIGHLIGHTING" />
@@ -84,30 +66,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/roque/Documents/GitHub/editor/src/project/components/blueprints/material/hooks&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.stylelint&quot;: &quot;/home/roque/Documents/GitHub/editor/node_modules/stylelint&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/roque/Documents/GitHub/editor/public/events",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.stylelint": "/home/roque/Documents/GitHub/editor/node_modules/stylelint",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "prettierjs.PrettierConfiguration.Package": "",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/events" />
+      <recent name="$PROJECT_DIR$/public/entry" />
       <recent name="$PROJECT_DIR$/src/project/components/blueprints/material/hooks" />
       <recent name="$PROJECT_DIR$/src/project/components/shortcuts" />
       <recent name="$PROJECT_DIR$/src/project/components/files/hooks" />
@@ -161,7 +145,8 @@
       <workItem from="1654447843156" duration="6659000" />
       <workItem from="1654457815407" duration="5584000" />
       <workItem from="1654536326183" duration="878000" />
-      <workItem from="1654537210028" duration="7367000" />
+      <workItem from="1654537210028" duration="8181000" />
+      <workItem from="1654560835653" duration="3288000" />
     </task>
     <servers />
   </component>

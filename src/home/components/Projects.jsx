@@ -2,13 +2,15 @@ import styles from "../styles/Projects.module.css"
 import PropTypes from "prop-types"
 import React, {useContext, useMemo, useState} from "react"
 import Card from "./Card"
-import {Dropdown, DropdownOptions, DropdownProvider, Masonry, TextField} from "@f-ui/core"
+import {AlertProvider, Dropdown, DropdownOptions, DropdownProvider, Masonry, TextField} from "@f-ui/core"
 import FileSystem from "../../project/utils/files/FileSystem"
 import EN from "../../static/locale/EN"
 
 
 export default function Projects(props) {
     const [searchString, setSearchString] = useState("")
+    const alert = useContext(AlertProvider)
+
     const projectsToShow = useMemo(() => {
         return props.projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
@@ -34,7 +36,7 @@ export default function Projects(props) {
                     <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>add</span>
                     {EN.HOME.PROJECTS.CREATE}
                     <DropdownOptions>
-                        <Create setProjects={props.setProjects} alert={props.alert}/>
+                        <Create setProjects={props.setProjects} alert={alert}/>
                     </DropdownOptions>
                 </Dropdown>
             </div>
@@ -54,6 +56,7 @@ export default function Projects(props) {
                                     props.renameProject(newName, p.id)
                                 }}
                                 onDelete={() => {
+                                    alert.pushAlert("Deleting project", "warning")
                                     props.deleteProject(p.id)
                                 }}/>
                         </React.Fragment>
@@ -66,7 +69,6 @@ export default function Projects(props) {
 }
 
 Projects.propTypes = {
-    alert: PropTypes.object,
     deleteProject: PropTypes.func.isRequired, 
     refresh: PropTypes.func,
     renameProject: PropTypes.func.isRequired,

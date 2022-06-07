@@ -24,7 +24,8 @@ import useContextMenu from "../components/context/hooks/useContextMenu"
 import ContextMenu from "../components/context/ContextMenu"
 import {ContextWrapper} from "@f-ui/core"
 
-const {shell} = window.require("electron")
+
+const {ipcRenderer, shell} = window.require("electron")
 export default function Project(props) {
     const {id, meta, events, initialized, setInitialized, settings} = props
     const {
@@ -155,39 +156,58 @@ export default function Project(props) {
                         <QuickAccessProvider.Provider value={quickAccess}>
                             <Frame
                                 logoAction={true}
-                                options={[{
-                                    label: "File", options: [{
-                                        label: "Save project",
-                                        icon: "save",
-                                        shortcut: "Ctrl + S",
-                                        onClick: () => serializer.save()
-                                    }, {
-                                        label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
-                                            exporter.build({
-                                                entities: engine.entities,
-                                                meshes: engine.meshes,
-                                                materials: engine.materials,
-                                                scripts: engine.scripts
-                                            })
-                                                .then(() => {
-                                                    setAlert({
-                                                        type: "success", message: "Successfully exported"
-                                                    })
-                                                    setTimeout(() => {
-                                                        shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
-                                                    }, 2000)
+                                options={[
+                                    {
+                                        label: "File", 
+                                        options: [{
+                                            label: "Save project",
+                                            icon: "save",
+                                            shortcut: "Ctrl + S",
+                                            onClick: () => serializer.save()
+                                        }, 
+                                        {
+                                            label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
+                                                exporter.build({
+                                                    entities: engine.entities,
+                                                    meshes: engine.meshes,
+                                                    materials: engine.materials,
+                                                    scripts: engine.scripts
                                                 })
-                                                .catch(() => setAlert({
-                                                    type: "error", message: "Error during packaging process"
-                                                }))
-                                        }
-                                    }]
-                                }]}
+                                                    .then(() => {
+                                                        setAlert({
+                                                            type: "success", message: "Successfully exported"
+                                                        })
+                                                        setTimeout(() => {
+                                                            shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
+                                                        }, 2000)
+                                                    })
+                                                    .catch(() => setAlert({
+                                                        type: "error", message: "Error during packaging process"
+                                                    }))
+                                            }
+                                        }]
+                                    },
+                                    {
+                                        label: "Help",
+                                        options: [
+                                            {
+                                                label: "Editor Shortcuts",
+                                                onClick: () => ipcRenderer.send("open-shortcuts", {})
+                                            },
+                                            {
+                                                label: "About",
+                                                icon: "help",
+                                                disabled: true
+                                            },
+
+                                        ]
+                                    }
+                                ]}
                                 hasLogo={true}
                                 pageInfo={events}
                                 label={meta?.name}/>
                             <ContextWrapper
-                                wrapperClassName={styles.context}
+                                wrapperClassName={styles.context} // TODO - CONTEXT CLASS
                                 triggers={contextMenuHook.triggers}
                                 className={styles.wrapper}
                                 content={(selected, close) => <ContextMenu options={contextMenuHook.options} engine={engine} close={close} selected={selected}/>}

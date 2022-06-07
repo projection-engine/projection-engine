@@ -1,7 +1,7 @@
 import glTF from "../project/glTF/glTF"
 import {readRegistry} from "../project/loader/FSOperations"
 import loader from "../project/loader/loader"
-import {parsePath} from "./FileSystemUtils"
+import {parsePath} from "./utils"
 import {directoryStructure} from "./FSEvents"
 
 const {dialog, ipcMain} = require("electron")
@@ -11,7 +11,7 @@ const si = require("systeminformation")
 
 
 
-export default function FileSystemEvents() {
+export default function FS() {
     ipcMain.on("read-file", async (event, {pathName, type, listenID}) => {
         const result = await new Promise(resolve => {
             fs.readFile(path.resolve(pathName), (e, res) => {
