@@ -5,7 +5,7 @@ import React, {useContext, useEffect, useRef} from "react"
 
 import Selector from "../../../../components/selector/Selector"
 import Range from "../../../../components/range/Range"
-import useDirectState from "../../../hooks/useDirectState"
+import useDirectState from "../../../../components/hooks/useDirectState"
 import ColorPicker from "../../../../components/color/ColorPicker"
 
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
@@ -37,17 +37,17 @@ export default function Material(props) {
         }
     }, [props.selected, props.entityID])
 
-    const loadFile = async (src, type = 'json') => {
+    const loadFile = async (src, type = "json") => {
 
         const rs = await fileSystem.readRegistryFile(src.registryID)
         if (rs) {
-            const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + rs.path, type)
+            const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
             if (file)
                 return file
             else {
                 props.setAlert({
-                    type: 'error',
-                    message: 'Error loading file.'
+                    type: "error",
+                    message: "Error loading file."
                 })
                 return null
             }
@@ -68,150 +68,150 @@ export default function Material(props) {
                         values[c.key] = c.value
                 })
 
-                props.submit(values, 'uniformValues')
+                props.submit(values, "uniformValues")
             }
 
             if (submitUniformList)
-                props.submit(copy, 'uniforms')
+                props.submit(copy, "uniforms")
         }
     }
     const getField = (obj) => {
         const {type, key, label, value} = obj
         switch (type) {
-            case DATA_TYPES.INT:
-            case DATA_TYPES.FLOAT:
+        case DATA_TYPES.INT:
+        case DATA_TYPES.FLOAT:
+            return (
+                <Range
+                    precision={type === DATA_TYPES.FLOAT ? 3 : 0}
+                    maxValue={obj.max}
+                    incrementPercentage={type === DATA_TYPES.FLOAT ? .001 : 1}
+                    minValue={obj.min}
+                    value={value ? value : 0}
+                    onFinish={(v) => updateUniforms(key, v, obj, true)}
+                    handleChange={v => updateUniforms(key, v, obj, false)}
+                    label={label}
+                />
+            )
+        case DATA_TYPES.VEC3:
+            if (!obj.normalized)
                 return (
-                    <Range
-                        precision={type === DATA_TYPES.FLOAT ? 3 : 0}
-                        maxValue={obj.max}
-                        incrementPercentage={type === DATA_TYPES.FLOAT ? .001 : 1}
-                        minValue={obj.min}
-                        value={value ? value : 0}
-                        onFinish={(v) => updateUniforms(key, v, obj, true)}
-                        handleChange={v => updateUniforms(key, v, obj, false)}
-                        label={label}
-                    />
+                    <div className={styles.formWrapper}>
+                        <Range
+                            accentColor={"red"}
+                            maxValue={obj.max}
+                            minValue={obj.min}
+                            onFinish={(v) => updateUniforms(key, [parseFloat(v), value[1], value[2]], obj, true)}
+                            handleChange={v => updateUniforms(key, [parseFloat(v), value[1], value[2]], obj, false)}
+                            value={value ? value[0] : 0}
+
+                            label={"X"}
+                        />
+                        <Range
+                            accentColor={"green"}
+                            onFinish={(v) => updateUniforms(key, [value[0], parseFloat(v), value[2]], obj, true)}
+                            handleChange={v => updateUniforms(key, [value[0], parseFloat(v), value[2]], obj, false)}
+                            value={value ? value[1] : 0}
+
+                            label={"Y"}
+                        />
+                        <Range
+                            accentColor={"blue"}
+                            maxValue={obj.max}
+                            minValue={obj.min}
+                            onFinish={(v) => updateUniforms(key, [value[0], value[1], parseFloat(v)], obj, true)}
+                            handleChange={v => updateUniforms(key, [value[0], value[1], parseFloat(v)], obj, false)}
+                            value={value ? value[2] : 0}
+
+                            label={"Z"}
+                        />
+                    </div>
                 )
-            case DATA_TYPES.VEC3:
-                if (!obj.normalized)
-                    return (
-                        <div className={styles.formWrapper}>
-                            <Range
-                                accentColor={'red'}
-                                maxValue={obj.max}
-                                minValue={obj.min}
-                                onFinish={(v) => updateUniforms(key, [parseFloat(v), value[1], value[2]], obj, true)}
-                                handleChange={v => updateUniforms(key, [parseFloat(v), value[1], value[2]], obj, false)}
-                                value={value ? value[0] : 0}
-
-                                label={'X'}
-                            />
-                            <Range
-                                accentColor={'green'}
-                                onFinish={(v) => updateUniforms(key, [value[0], parseFloat(v), value[2]], obj, true)}
-                                handleChange={v => updateUniforms(key, [value[0], parseFloat(v), value[2]], obj, false)}
-                                value={value ? value[1] : 0}
-
-                                label={'Y'}
-                            />
-                            <Range
-                                accentColor={'blue'}
-                                maxValue={obj.max}
-                                minValue={obj.min}
-                                onFinish={(v) => updateUniforms(key, [value[0], value[1], parseFloat(v)], obj, true)}
-                                handleChange={v => updateUniforms(key, [value[0], value[1], parseFloat(v)], obj, false)}
-                                value={value ? value[2] : 0}
-
-                                label={'Z'}
-                            />
-                        </div>
-                    )
-                else
-                    return (
-                        <ColorPicker
-                            submit={(_, v) => updateUniforms(key, v.map(vv => vv / 255), obj, true)}
-                            value={!value ? 'rgb(0,0,0)' : `rgb(${value[0] * 255},${value[1] * 255},${value[2] * 255})`}/>
-                    )
-
-            case DATA_TYPES.TEXTURE:
+            else
                 return (
-                    <Selector
-                        type={'image'}
-                        findData={true}
-                        handleChange={async src => {
-                            if (src) {
-                                const k = obj.format
-                                const file = await loadFile(src, 'string')
-                                if (file) {
-                                    let texture
-                                    await new Promise(resolve => {
-                                        texture = new TextureInstance(
-                                            file,
-                                            k.yFlip,
-                                            props.engine.gpu,
-                                            props.engine.gpu[k.internalFormat],
-                                            props.engine.gpu[k.format],
-                                            true,
-                                            false,
-                                            props.engine.gpu.UNSIGNED_BYTE,
-                                            undefined,
-                                            undefined,
-                                            0,
-                                            () => {
-                                                resolve()
-                                            }
-                                        )
+                    <ColorPicker
+                        submit={(_, v) => updateUniforms(key, v.map(vv => vv / 255), obj, true)}
+                        value={!value ? "rgb(0,0,0)" : `rgb(${value[0] * 255},${value[1] * 255},${value[2] * 255})`}/>
+                )
+
+        case DATA_TYPES.TEXTURE:
+            return (
+                <Selector
+                    type={"image"}
+                    findData={true}
+                    handleChange={async src => {
+                        if (src) {
+                            const k = obj.format
+                            const file = await loadFile(src, "string")
+                            if (file) {
+                                let texture
+                                await new Promise(resolve => {
+                                    texture = new TextureInstance(
+                                        file,
+                                        k.yFlip,
+                                        props.engine.gpu,
+                                        props.engine.gpu[k.internalFormat],
+                                        props.engine.gpu[k.format],
+                                        true,
+                                        false,
+                                        props.engine.gpu.UNSIGNED_BYTE,
+                                        undefined,
+                                        undefined,
+                                        0,
+                                        () => {
+                                            resolve()
+                                        }
+                                    )
+                                })
+
+                                let index = state.uniforms.findIndex(u => u.key === key)
+                                if (index > -1) {
+                                    const copy = [...state.uniforms]
+                                    copy[index] = {...obj, value: src.registryID}
+
+                                    state.uniforms = copy
+
+                                    const values = {}
+                                    copy.forEach(c => {
+                                        if (c.type !== DATA_TYPES.TEXTURE)
+                                            values[c.key] = c.value
+                                        else if (c.key === key)
+                                            values[c.key] = texture.texture
                                     })
 
-                                    let index = state.uniforms.findIndex(u => u.key === key)
+                                    index = state.uniforms.findIndex(u => u.key === key)
                                     if (index > -1) {
                                         const copy = [...state.uniforms]
-                                        copy[index] = {...obj, value: src.registryID}
+                                        copy[index] = {...obj, value: src.registryID, modified: true}
 
                                         state.uniforms = copy
-
-                                        const values = {}
-                                        copy.forEach(c => {
-                                            if (c.type !== DATA_TYPES.TEXTURE)
-                                                values[c.key] = c.value
-                                            else if (c.key === key)
-                                                values[c.key] = texture.texture
-                                        })
-
-                                        index = state.uniforms.findIndex(u => u.key === key)
-                                        if (index > -1) {
-                                            const copy = [...state.uniforms]
-                                            copy[index] = {...obj, value: src.registryID, modified: true}
-
-                                            state.uniforms = copy
-                                            props.submit(copy, 'uniforms')
-                                        }
-
-                                        // updateUniforms(key, src.registryID, obj, false, false)
-                                        // updateUniforms('modified', true, obj, false, true)
-
-
-                                        props.submit(values, 'uniformValues')
+                                        props.submit(copy, "uniforms")
                                     }
 
+                                    // updateUniforms(key, src.registryID, obj, false, false)
+                                    // updateUniforms('modified', true, obj, false, true)
+
+
+                                    props.submit(values, "uniformValues")
                                 }
+
                             }
-                        }}
-                        selected={value}
-                    />
-                )
-            default:
-                return null
+                        }
+                    }}
+                    selected={value}
+                />
+            )
+        default:
+            return null
         }
     }
 
-    const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider);
+    const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     return (
         <>
-            <AccordionTemplate title={'Material'} type={"grid"}>
+            <AccordionTemplate title={"Material"} type={"grid"}>
                 <Selector
                     selected={state.currentMaterial}
-                    type={'material'}
+                    type={"material"}
                     handleChange={async (src, clear)=> {
                         if (src) {
                             const file = await loadFile(src)
@@ -225,21 +225,21 @@ export default function Material(props) {
                                 state.currentMaterial = src
                             }
                             else {
-                                props.setAlert({message: 'Error loading material', type: 'error'})
+                                props.setAlert({message: "Error loading material", type: "error"})
                                 clear()
                             }
                         } else {
-                            props.setAlert({message: 'Error loading material', type: 'error'})
+                            props.setAlert({message: "Error loading material", type: "error"})
                             props.submit()
                             clear()
                         }
                     }}/>
                 {state.currentMaterial ? (
                     <Button
-                        styles={{background: 'var(--pj-background-primary'}}
+                        styles={{background: "var(--pj-background-primary"}}
                         className={styles.button}
                         onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
-                        <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>edit</span>
+                        <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>edit</span>
                         Edit material
                     </Button>
                 ) : null}
@@ -247,14 +247,14 @@ export default function Material(props) {
             {props.selected.uniforms?.length > 0 ? (
                 <Checkbox
                     noMargin={true}
-                    label={'Override material uniforms'}
-                    width={'100%'}
-                    height={'25px'}
+                    label={"Override material uniforms"}
+                    width={"100%"}
+                    height={"25px"}
                     checked={state.overrideMaterial}
                     handleCheck={() => {
                         const s = !state.overrideMaterial
                         state.overrideMaterial = s
-                        props.submit(s, 'overrideMaterial')
+                        props.submit(s, "overrideMaterial")
                     }}
                 />
             ) : null}
@@ -262,7 +262,7 @@ export default function Material(props) {
 
             {state.overrideMaterial && state.uniforms ?
                 state.uniforms?.map((u, i) => (
-                    <React.Fragment key={i + '-uniforms-mat'}>
+                    <React.Fragment key={i + "-uniforms-mat"}>
                         <AccordionTemplate title={u.label}>
                             {getField(u)}
                         </AccordionTemplate>

@@ -62,7 +62,6 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                     }))
             })
             ipcRenderer.once(CHANNELS.SCRIPTS + "-" + listenID, (ev, res) => {
-                console.trace(res)
                 engine.setScripts(prev => {
                     return [...prev, ...res.map(s => s.script)]
                 })

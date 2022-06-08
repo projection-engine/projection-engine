@@ -1,5 +1,4 @@
 self.onmessage = ({data: {entities, required, COMPONENTS}}) => {
-    console.log(entities, required, COMPONENTS)
     const toFilter = entities.filter(d => !d.linkedTo && !required || required && d.components.find(c => c === required) !== undefined)
 
     function getElementType(components, isBP) {

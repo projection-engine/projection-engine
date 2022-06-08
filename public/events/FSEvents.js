@@ -19,7 +19,7 @@ export async function rm(path, options) {
 
 export async function lstat(path, options) {
     return await new Promise(resolve => {
-        fs.lstat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
+        fs.lstat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory(), ...res} : undefined]))
     })
 }
 export async function readdir(path, options) {
@@ -92,7 +92,7 @@ export default function FSEvents() {
             path, options, listenID
         } = data
         const result = await new Promise(resolve => {
-            fs.stat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory()} : undefined]))
+            fs.stat(parse(path), options, (err, res) => resolve([err, res ? {isDirectory: res.isDirectory(), ...res} : undefined]))
         })
         event.sender.send("fs-stat-" + listenID, result)
     })

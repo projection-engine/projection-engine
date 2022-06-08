@@ -35,7 +35,6 @@ export default function useEditorShortcuts({engine, setAlert, settings, id, exec
     }
 
     function invertSelection(){
-        console.log('INVERTING')
         const newArr = []
         const notValid = {}
         for(let i in engine.selected){

@@ -21,23 +21,18 @@ export default function Editor(props) {
 
     return (
         <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
-            <div id={"fullscreen-element-" + props.id}
-                className={styles.container}>
-                <ViewportOptions
-                    engine={props.engine}
-                    executingAnimation={props.executingAnimation}
-                    id={props.id}
-                    fullscreenID={"fullscreen-element-" + props.id}
-                />
+
+
                 <Viewport
                     utils={utils}
                     id={props.id}
+                    executingAnimation={props.executingAnimation}
                     options={optionsViewport}
                     engine={props.engine}
                     allowDrop={true}
                     handleDrop={e => importData(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
                 />
-            </div>
+
             <ResizableBar type={"width"}/>
             <SceneView
                 executingAnimation={props.executingAnimation}

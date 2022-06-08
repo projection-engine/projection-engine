@@ -75,7 +75,6 @@ export default function useQuickAccess(projectID, load) {
 
                 Promise.all(promises)
                     .then(res => {
-                        console.log([...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")])
                         setMeshes(res.filter(f => f.type === "mesh"))
                         setMaterials(res.filter(f => f.type === "material"))
                         setImages(res.filter(f => f.type === "image"))

@@ -10,7 +10,7 @@ export default function VisualSettings(props) {
     const [iconSize, setIconSize] = useState(settingsContext.iconSize)
     return (
         <Dropdown
-            className={styles.optionWrapper}
+            className={styles.dropdown}
         >
             <div className={styles.summary}>
                 <span style={{fontSize: "1.1rem"}}
@@ -34,7 +34,13 @@ export default function VisualSettings(props) {
                         className={"material-icons-round"}>check</span> : undefined,
                     onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
                 }}/>
-
+                <DropdownOption option={{
+                    label: "Show FPS",
+                    icon: settingsContext.performanceMetrics ? <span style={{fontSize: "1.2rem"}}
+                        className={"material-icons-round"}>check</span> : undefined,
+                    onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
+                    shortcut: "Ctrl + shift + h"
+                }}/>
                 <div className={styles.rangeWrapper}>
                     <LabeledRange
                         label={"Icon size"}

@@ -141,7 +141,6 @@ export default function CameraEvents(c, canvas, onClick) {
             r.startTracking()
         },
         setCameraScrollDelay: (data) => {
-            console.log(data)
             r.stopTracking()
             cameraScrollDelay = data
             r.startTracking()

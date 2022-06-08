@@ -1,6 +1,6 @@
 import GIZMOS from "../../static/misc/GIZMOS"
 
-import useDirectState from "./useDirectState"
+import useDirectState from "../../components/hooks/useDirectState"
 import ROTATION_TYPES from "../../static/misc/ROTATION_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
 

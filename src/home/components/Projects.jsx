@@ -56,7 +56,6 @@ export default function Projects(props) {
                                     props.renameProject(newName, p.id)
                                 }}
                                 onDelete={() => {
-                                    alert.pushAlert("Deleting project", "warning")
                                     props.deleteProject(p.id)
                                 }}/>
                         </React.Fragment>

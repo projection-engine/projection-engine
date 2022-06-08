@@ -1,87 +1,71 @@
 .wrapper {
-    transition: 150ms linear;
-    padding: 4px;
-    display: grid;
-    overflow: hidden;
-    justify-items: center;
-
-    height: 100%;
-    max-width: 55px;
-    min-width: 55px;
-
-    background: var(--pj-background-tertiary);
-    border-right: var(--pj-border-primary) 1px solid;
-    gap: 8px;
+  transition: 150ms linear;
+  padding: 4px;
+  display: grid;
+  overflow: hidden;
+  justify-items: center;
+  height: 100%;
+  max-width: 55px;
+  min-width: 55px;
+  background: var(--pj-background-primary);
+  border-right: var(--pj-border-primary) 1px solid;
+  gap: 8px;
 }
 
-.wrapper[data-extended = 'true'] {
-   min-width: 250px;
+.wrapper[data-extended="true"] {
+  min-width: 250px;
 }
 
 .logoWrapper {
-    user-select: none;
-    display: flex;
-    overflow: hidden;
-    position: relative;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-
-    gap: 16px;
-
-
-    color: var(--pj-color-secondary);
-
+  user-select: none;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 16px;
+  color: var(--pj-color-secondary);
 }
 
 .logo {
-    height: 45px;
-    width: 45px;
-
-
-    border-radius: 5px;
-    display: flex;
-    place-content: center;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-
+  height: 45px;
+  width: 45px;
+  border-radius: 5px;
+  display: flex;
+  place-content: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-
 .button {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-
-    padding: 4px !important;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 4px !important;
 }
 
 .logoTitle {
-    position: relative;
-    z-index: 0;
-
-    font-size: 1.3rem;
-    font-weight: 550;
-    font-family: "Roboto" !important;
-
-    white-space: nowrap;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
+  position: relative;
+  z-index: 0;
+  font-size: 1.3rem;
+  font-weight: 550;
+  font-family: Roboto !important;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .block {
-    transform: translateY(8px);
-    transition: 150ms linear;
-    display: grid;
-    height: fit-content;
-    gap: 4px;
-
-    width: 100%;
-
+  transform: translateY(8px);
+  transition: 150ms linear;
+  display: grid;
+  height: fit-content;
+  gap: 4px;
+  width: 100%;
 }

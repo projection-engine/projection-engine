@@ -4,7 +4,7 @@ import Entity from "../../../engine/basic/Entity"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import PointLightComponent from "../../../engine/components/PointLightComponent"
 import TransformComponent from "../../../engine/components/TransformComponent"
-
+import React from 'react'
 import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
 import SkylightComponent from "../../../engine/components/SkyLightComponent"
 import CameraComponent from "../../../engine/components/CameraComponent"
@@ -18,21 +18,19 @@ import LightProbeComponent from "../../../engine/components/LightProbeComponent"
 export default function CreateEntity(props) {
     const {dispatchEntity, engine} = props
     return (
-        <Dropdown className={styles.optionWrapper} hideArrow={true} variant={'outlined'}>
-            <div className={styles.align}>
-                <span className={'material-icons-round'} style={{fontSize: '1.1rem'}}>add</span> Create
-            </div>
+        <Dropdown className={styles.dropdown}>
+            Add
             <DropdownOptions>
                 <div className={styles.dividerWrapper}>
                     Lights
                     <div className={styles.divider}/>
                 </div>
                 <DropdownOption option={{
-                    label: 'Point light',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.2rem'}}>lightbulb</span>,
+                    label: "Point light",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.2rem"}}>lightbulb</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Point light')
+                        const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
@@ -43,33 +41,33 @@ export default function CreateEntity(props) {
                 }}/>
                 <DropdownOption option={{
                     disabled: true,
-                    label: 'Spot light',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.2rem'}}>flashlight_on</span>,
+                    label: "Spot light",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.2rem"}}>flashlight_on</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Point light')
+                        const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new PointLightComponent()
                         dispatchEntity(actor)
                     }
                 }}/>
                 <DropdownOption option={{
 
-                    label: 'Directional light',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>light_mode</span>,
+                    label: "Directional light",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>light_mode</span>,
                     onClick: () => {
 
-                        const actor = new Entity(undefined, 'Directional light')
+                        const actor = new Entity(undefined, "Directional light")
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent()
                         dispatchEntity(actor)
                     }
                 }}/>
                 <DropdownOption option={{
-                    label: 'Skylight',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>wb_sunny</span>,
+                    label: "Skylight",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>wb_sunny</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Skylight')
+                        const actor = new Entity(undefined, "Skylight")
                         actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
                         dispatchEntity(actor)
                     }
@@ -80,22 +78,22 @@ export default function CreateEntity(props) {
                     <div className={styles.divider}/>
                 </div>
                 <DropdownOption option={{
-                    label: 'Skybox',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>cloud</span>,
+                    label: "Skybox",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>cloud</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Skybox')
+                        const actor = new Entity(undefined, "Skybox")
                         actor.components[COMPONENTS.SKYBOX] = new SkyboxComponent(undefined, engine.gpu)
                         dispatchEntity(actor)
                     }
                 }}/>
                 <DropdownOption option={{
-                    label: 'CubeMap',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>panorama_photosphere</span>,
+                    label: "CubeMap",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>panorama_photosphere</span>,
                     onClick: () => {
 
-                        const actor = new Entity(undefined, 'Cubemap')
+                        const actor = new Entity(undefined, "Cubemap")
                         actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
                         actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
@@ -106,11 +104,11 @@ export default function CreateEntity(props) {
                     }
                 }}/>
                 <DropdownOption option={{
-                    label: 'Light probe',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>lens_blur</span>,
+                    label: "Light probe",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>lens_blur</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Light probe')
+                        const actor = new Entity(undefined, "Light probe")
                         actor.components[COMPONENTS.PROBE] = new LightProbeComponent()
                         actor.components[COMPONENTS.PROBE].addProbe([-1, 1, -1])
                         actor.components[COMPONENTS.PROBE].addProbe([-1, -1, -1])
@@ -130,11 +128,11 @@ export default function CreateEntity(props) {
                     <div className={styles.divider}/>
                 </div>
                 <DropdownOption option={{
-                    label: 'Camera',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>videocam</span>,
+                    label: "Camera",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>videocam</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Camera')
+                        const actor = new Entity(undefined, "Camera")
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
@@ -147,11 +145,11 @@ export default function CreateEntity(props) {
                     }
                 }}/>
                 <DropdownOption option={{
-                    label: 'Line',
-                    icon: <span className={'material-icons-round'}
-                                style={{fontSize: '1.1rem'}}>arrow_right_alt</span>,
+                    label: "Line",
+                    icon: <span className={"material-icons-round"}
+                        style={{fontSize: "1.1rem"}}>arrow_right_alt</span>,
                     onClick: () => {
-                        const actor = new Entity(undefined, 'Line')
+                        const actor = new Entity(undefined, "Line")
                         actor.components[COMPONENTS.LINE] = new LineComponent()
 
                         dispatchEntity(actor)

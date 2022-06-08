@@ -2,13 +2,17 @@ import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core"
-import React, {useMemo, useState} from "react"
+import React, {useContext, useMemo, useState} from "react"
 import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
+import SettingsProvider from "../../../hooks/SettingsProvider"
 
 export default function CameraOptions(props) {
-    const {settingsContext, engine,  setCameraIsOrthographic, cameraIsOrthographic} = props
+    const  settingsContext = useContext(SettingsProvider)
+    const {engine} = props
+    const [cameraIsOrthographic, setCameraIsOrthographic] = useState(props.engine?.renderer?.camera?.ortho)
+
     const cameraIcon = useMemo(() => {
         if (!cameraIsOrthographic)
             return (
@@ -37,7 +41,7 @@ export default function CameraOptions(props) {
     const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
 
     return (
-        <div className={styles.floating}>
+        <div className={styles.floating} style={{top: 0}}>
             <div className={styles.cameraView}>
                 <div className={styles.cube} id={RENDER_TARGET + "-camera"}>
                     <div
@@ -241,10 +245,5 @@ export default function CameraOptions(props) {
 
 }
 CameraOptions.propTypes = {
-    minimal: PropTypes.bool,
-    engine: PropTypes.object,
-    settingsContext: PropTypes.object,
-    setCameraIsOrthographic: PropTypes.func,
-    cameraIsOrthographic: PropTypes.bool,
-
+    engine: PropTypes.object
 }

@@ -4,6 +4,8 @@ import React, {useContext, useEffect, useRef} from "react"
 import GPUContextProvider from "./hooks/GPUContextProvider"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
+import ViewportOptions from "./ViewportOptions"
+import SideBar from "./components/SideBar"
 
 const TRIGGERS = ["data-viewport"]
 export default function Viewport(props) {
@@ -23,34 +25,38 @@ export default function Viewport(props) {
     // }, [])
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, props.options, TRIGGERS)
     return (
-        <div
-            // attributes={{
-            //     onDragOver: e => {
-            //         if (props.allowDrop) {
-            //             e.preventDefault()
-            //             ref.current?.classList.add(styles.hovered)
-            //         }
-            //     },
-            //     onDragLeave: e => {
-            //         e.preventDefault()
-            //         ref.current?.classList.remove(styles.hovered)
-            //     },
-            //     onDrop: e => {
-            //         if (props.allowDrop) {
-            //             e.preventDefault()
-            //             ref.current?.classList.remove(styles.hovered)
-            //             props.handleDrop(e)
-            //         }
-            //     }
-            // }}
-            // triggers={["data-self"]}
-            data-viewport={RENDER_TARGET}
-            id={"viewport-wrapper"}
-            className={styles.viewport}
-            // content={(_, close) => <ContextMenu options={props.options} engine={props.engine} close={close}/>}
-        >
-            <span style={{display: "none"}} ref={ref}/>
-            {/*<SideBar/>*/}
+        <div className={styles.wrapper}>
+            <ViewportOptions
+                engine={props.engine}
+                executingAnimation={props.executingAnimation}
+                id={props.id}
+            />
+            <div
+                onDragOver={e => {
+                    if (props.allowDrop) {
+                        e.preventDefault()
+                        ref.current?.classList.add(styles.hovered)
+                    }
+                }}
+                onDragLeave={e => {
+                    e.preventDefault()
+                    ref.current?.classList.remove(styles.hovered)
+                }}
+                onDrop={e => {
+                    if (props.allowDrop) {
+                        e.preventDefault()
+                        ref.current?.classList.remove(styles.hovered)
+                        props.handleDrop(e)
+                    }
+                }}
+   
+                data-viewport={RENDER_TARGET}
+                id={"viewport-wrapper"}
+                className={styles.viewport}
+            >
+                <span style={{display: "none"}} ref={ref}/>
+                <SideBar engine={props.engine}/>
+            </div>
         </div>
     )
 }
@@ -59,6 +65,7 @@ Viewport.propTypes = {
     options: PropTypes.array,
     allowDrop: PropTypes.bool.isRequired,
     handleDrop: PropTypes.func,
+    executingAnimation: PropTypes.bool,
     engine: PropTypes.object,
     id: PropTypes.string,
     resolutionMultiplier: PropTypes.number

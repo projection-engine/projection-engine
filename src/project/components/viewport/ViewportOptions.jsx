@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useEffect, useRef, useState} from "react"
 import PropTypes from "prop-types"
 import styles from "./styles/ViewportOptions.module.css"
 import SettingsProvider from "../../hooks/SettingsProvider"
@@ -7,15 +7,13 @@ import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import ShadingTypes from "./components/ShadingTypes"
 import CreateEntity from "./components/CreateEntity"
 import VisualSettings from "./components/VisualSettings"
-import Visualization from "./components/Visualization"
-import CameraOptions from "./components/CameraOptions"
 import TransformationSettings from "./components/TransformationSettings"
+import {Button} from "@f-ui/core"
 
 
 export default function ViewportOptions(props) {
     const settingsContext = useContext(SettingsProvider)
     const [fullscreen, setFullscreen] = useState(false)
-    const [cameraIsOrthographic, setCameraIsOrthographic] = useState(props.engine?.renderer?.camera?.ortho)
 
     const handleFullscreen = () => {
         if (!document.fullscreenElement)
@@ -35,42 +33,38 @@ export default function ViewportOptions(props) {
             payload: [entity]
         })
     }
+    const ref = useRef()
 
-
+    if(props.executingAnimation || fullscreen )
+        return null
     return (
-        <div style={{display: props.executingAnimation || fullscreen ? "none" : undefined}}>
-            {props.minimal ? null :
-                <div className={styles.options} style={{display: fullscreen ? "none" : undefined}} draggable={false}>
-                    <div style={{justifyContent: "flex-start"}} className={styles.align}>
-                        <Visualization
-                            settingsContext={settingsContext}
-                            fullscreen={fullscreen}
-                            setFullscreen={setFullscreen}
-                            fullscreenID={props.fullscreenID}
-                        />
-                        <VisualSettings settingsContext={settingsContext}/>
-                        <CreateEntity dispatchEntity={dispatchEntity} engine={props.engine}/>
-                    </div>
+        <>
+            <div className={styles.options} ref={ref} style={{display: fullscreen ? "none" : undefined}} draggable={false}>
+                <div style={{justifyContent: "flex-start"}} className={styles.align}>
 
-                    <ShadingTypes settingsContext={settingsContext}/>
-                </div>}
+                    <Button className={styles.dropdown} onClick={() =>{
+                        if (!fullscreen) {
+                            ref.current.parentNode.requestFullscreen()
+                                .then(() => setFullscreen(true))
+                                .catch()
+                        } else
+                            document.exitFullscreen()
+                                .catch()
+                                .finally(() => setFullscreen(false))
+                    } }>
+                        <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>fullscreen</span>
+                    </Button>
+
+                    <VisualSettings settingsContext={settingsContext}/>
+                    <CreateEntity dispatchEntity={dispatchEntity} engine={props.engine}/>
+                </div>
+                <ShadingTypes settingsContext={settingsContext}/>
+            </div>
             <TransformationSettings settingsContext={settingsContext}/>
-            <CameraOptions 
-                minimal={props.minimal} 
-                id={props.id}
-                engine={props.engine}
-                setCameraIsOrthographic={setCameraIsOrthographic}
-                settingsContext={settingsContext}
-                cameraIsOrthographic={cameraIsOrthographic}
-            />
-        </div>
+        </>
     )
-
 }
 ViewportOptions.propTypes = {
     executingAnimation: PropTypes.bool,
-    minimal: PropTypes.bool,
-    fullscreenID: PropTypes.string,
-    engine: PropTypes.object,
-    id: PropTypes.string
+    engine: PropTypes.object
 }

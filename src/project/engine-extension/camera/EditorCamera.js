@@ -147,7 +147,6 @@ export default class EditorCamera {
     static update(pitch, yaw,  radius, centerOn){
         const position = []
         const cosPitch = Math.cos(pitch)
-        console.log(pitch, yaw)
         position[0] = radius * cosPitch * Math.cos(yaw) + centerOn[0]
         position[1] = radius * Math.sin(pitch) + centerOn[1]
         position[2] = radius * cosPitch * Math.sin(yaw) + centerOn[2]

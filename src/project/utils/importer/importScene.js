@@ -50,7 +50,7 @@ async function loopNodes(node, fileSystem, gpu, parent) {
         const reg = await fileSystem.readRegistryFile(primitive)
         if (reg) {
             const meshData = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
-            console.log(reg.id)
+
             const instance = new MeshInstance({
                 ...meshData,
                 id: reg.id,

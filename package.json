@@ -66,8 +66,18 @@
                 },
                 {
                   "html": "./public/entry/window.html",
-                  "js": "./public/entry/shortcuts.js",
-                  "name": "shortcuts"
+                  "js": "./public/entry/settings.js",
+                  "name": "settings"
+                },
+                {
+                  "html": "./public/entry/window.html",
+                  "js": "./public/entry/delete.js",
+                  "name": "delete"
+                },
+                {
+                  "html": "./public/entry/window.html",
+                  "js": "./public/entry/import.js",
+                  "name": "import"
                 }
               ]
             }

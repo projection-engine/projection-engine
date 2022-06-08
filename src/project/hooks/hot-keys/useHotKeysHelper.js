@@ -1,14 +1,7 @@
 import {useState} from "react"
+import useDirectState from "../../../components/hooks/useDirectState"
 
 export default function useHotKeysHelper(){
-    const [allShortcuts, setAllShortcuts] = useState([])
-    const [activeWindow, setActiveWindow] = useState()
-    const [activeKeys, setActiveKeys] = useState({})
-
-    return {
-        activeKeys, setActiveKeys,
-        allShortcuts,
-        setAllShortcuts,
-        activeWindow, setActiveWindow
-    }
+    const [shortcuts] = useDirectState({all: [], active: {}})
+    return shortcuts
 }

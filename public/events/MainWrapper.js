@@ -1,4 +1,4 @@
-import Shortcuts from "../windows/Shortcuts"
+import Settings from "../windows/Settings"
 import FRAME_EVENTS from "../FRAME_EVENTS"
 
 const {BrowserWindow, ipcMain} = require("electron")
@@ -61,7 +61,7 @@ export default function MainWrapper() {
         })
         currentListeners.close = ipcMain.on(FRAME_EVENTS.CLOSE, () => window.close())
         if(project)
-            currentListeners.shortcuts = new Shortcuts()
+            currentListeners.shortcuts = new Settings()
     }
 
 

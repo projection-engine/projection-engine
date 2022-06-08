@@ -19,69 +19,69 @@ export default function Skybox(props) {
     }, [])
 
     return (<>
-        <AccordionTemplate title={'Environment map'}>
+        <AccordionTemplate title={"Environment map"}>
             <Selector
-                type={'image'}
+                type={"image"}
                 selected={currentImage}
                 handleChange={async (src) => {
                     const rs = await fileSystem.readRegistryFile(src.registryID)
-                    const file = !rs ? null : await fileSystem.readFile(fileSystem.path + FileSystem.sep + 'assets' + FileSystem.sep + rs.path)
+                    const file = !rs ? null : await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path)
                     const res = !file ? null : await ImageProcessor.getImageBitmap(file)
                     if (res) {
                         props.submit({
                             blob: res, imageID: src.registryID
-                        }, 'blob')
+                        }, "blob")
                         setCurrentImage(props.quickAccess.images.find(i => i.registryID === src.registryID))
                     }
                 }}
             />
         </AccordionTemplate>
-        <AccordionTemplate title={'Resolution'}>
-            <Dropdown className={styles.dropdown} styles={{background: 'var(--pj-border-primary)'}}>
+        <AccordionTemplate title={"Resolution"}>
+            <Dropdown className={styles.dropdown} styles={{background: "var(--pj-border-primary)"}}>
                 {state.resolution}p
                 <DropdownOptions>
                     <DropdownOption option={{
-                        label: '512p',
-                        icon: state.resolution === 512 ? <span style={{fontSize: '1.2rem'}}
-                                                               className={'material-icons-round'}>check</span> : undefined,
+                        label: "512p",
+                        icon: state.resolution === 512 ? <span style={{fontSize: "1.2rem"}}
+                            className={"material-icons-round"}>check</span> : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 512
                             })
-                            props.submit(512, 'resolution')
+                            props.submit(512, "resolution")
                         }
                     }}/>
                     <DropdownOption option={{
-                        label: '1024p',
-                        icon: state.resolution === 1024 ? <span style={{fontSize: '1.2rem'}}
-                                                                className={'material-icons-round'}>check</span> : undefined,
+                        label: "1024p",
+                        icon: state.resolution === 1024 ? <span style={{fontSize: "1.2rem"}}
+                            className={"material-icons-round"}>check</span> : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 1024
                             })
-                            props.submit(1024, 'resolution')
+                            props.submit(1024, "resolution")
                         }
                     }}/>
                     <DropdownOption option={{
-                        label: '2048p',
-                        icon: state.resolution === 2048 ? <span style={{fontSize: '1.2rem'}}
-                                                                className={'material-icons-round'}>check</span> : undefined,
+                        label: "2048p",
+                        icon: state.resolution === 2048 ? <span style={{fontSize: "1.2rem"}}
+                            className={"material-icons-round"}>check</span> : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 2048
                             })
-                            props.submit(2048, 'resolution')
+                            props.submit(2048, "resolution")
                         }
                     }}/>
                     <DropdownOption option={{
-                        label: '4096p',
-                        icon: state.resolution === 4096 ? <span style={{fontSize: '1.2rem'}}
-                                                                className={'material-icons-round'}>check</span> : undefined,
+                        label: "4096p",
+                        icon: state.resolution === 4096 ? <span style={{fontSize: "1.2rem"}}
+                            className={"material-icons-round"}>check</span> : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 4096
                             })
-                            props.submit(4096, 'resolution')
+                            props.submit(4096, "resolution")
                         }
                     }}/>
                 </DropdownOptions>

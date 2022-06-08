@@ -9,10 +9,7 @@ const KEYS = EN.HOME.CARD.KEYS
 const {ipcRenderer} = window.require("electron")
 export default function Card(props) {
     const ref = useRef()
-    const [open, setOpen] = useState({
-        delete: false,
-        edit: false
-    })
+
     const [name, setName] = useState(props.data.meta.name)
     const object = useMemo(() => {
         return {...props.data.meta, preview: props.data.meta?.preview ? props.data.meta?.preview : logo, name}
@@ -32,44 +29,34 @@ export default function Card(props) {
                 selfContained={true}
             />
 
-            <div className={styles.section} style={{display: !open.delete && !open.edit ? undefined : "none"}}>
+            <div className={styles.section}>
                 <Dropdown
-                    styles={{"--pj-accent-color": "#ff5555"}}
+                    styles={{"--pj-accent-color": "#ff5555", "--fabric-accent-color": "#ff5555"}}
                     className={styles.button}
-                    onClick={() => setOpen({
-                        delete: true
-                    })}
                     hideArrow={true}>
                     <span className={"material-icons-round"} style={{fontSize: "1.2rem"}}>delete_forever</span>
                     <DropdownOptions>
-                        <div
-                            className={styles.onDelete}>
+                        <div className={styles.onDelete}>
                             {EN.HOME.CARD.CONFIRMATION}
-                            <div className={styles.buttonGroup}>
-                                <Button
-                                    onClick={() => props.onDelete()}
-                                    variant={"filled"}
-                                    styles={{"--pj-accent-color": "#ff5555", width: "100%"}}
-                                    className={styles.button}
-                                >
-                                    <span className={"material-icons-round"}
-                                        style={{fontSize: "1rem"}}>delete_forever</span>
-                                    {EN.HOME.CARD.DELETE}
-                                </Button>
-
-                            </div>
+                            <Button
+                                onClick={() => props.onDelete()}
+                                styles={{"--fabric-accent-color": "#ff5555", width: "100%"}}
+                                className={styles.button}
+                            >
+                                <span className={"material-icons-round"}
+                                    style={{fontSize: "1rem"}}>delete_forever</span>
+                                {EN.HOME.CARD.DELETE}
+                            </Button>
                         </div>
                     </DropdownOptions>
                 </Dropdown>
                 <Dropdown
                     className={styles.button}
                     wrapperClassname={styles.modalOptions}
-                    onClick={() => setOpen({
-                        edit: true
-                    })} hideArrow={true}>
+                    hideArrow={true}>
                     <span style={{fontSize: "1rem"}} className={"material-icons-round"}>edit</span>
                     <DropdownOptions>
-                        <Rename name={name} setName={setName} setOpen={setOpen} onRename={props.onRename}/>
+                        <Rename name={name} setName={setName} onRename={props.onRename}/>
                     </DropdownOptions>
                 </Dropdown>
                 <Button
@@ -78,8 +65,7 @@ export default function Card(props) {
                         data: props.data,
                         hasMain: false
                     })}
-                    variant={"filled"}
-                    className={styles.openButton}>
+                    className={styles.button}>
                     <span className={"material-icons-round"} style={{fontSize: "1rem"}}>open_in_new</span>
                     <label>
                         {EN.HOME.CARD.LOAD}
@@ -99,7 +85,8 @@ Card.propTypes = {
     variant: PropTypes.oneOf(["row", "cell"])
 }
 
-function Rename({setName, name, onRename, setOpen}) {
+function Rename(props) {
+    const {setName, name, onRename} = props
     const dropdownContext = useContext(DropdownProvider)
     return (
         <TextField
@@ -109,9 +96,12 @@ function Rename({setName, name, onRename, setOpen}) {
             value={name} height={"30px"}
             onEnter={() => {
                 onRename(name)
-                setOpen({})
                 dropdownContext.setOpen(false)
             }}
         />
     )
+}
+
+Rename.propTypes={
+    setName: PropTypes.func, name: PropTypes.string, onRename: PropTypes.func
 }

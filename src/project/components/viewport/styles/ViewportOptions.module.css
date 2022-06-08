@@ -4,8 +4,8 @@
   align-content: center;
   justify-content: space-between;
   width: 100%;
-  padding: 3px;
-  height: fit-content;
+  padding: 0 3px;
+  height: 25px;
   user-select: none;
 }
 
@@ -17,21 +17,10 @@
   gap: 4px;
 }
 
-.optionWrapper {
-  border-radius: 5px;
-  width: fit-content;
-  display: flex;
-  align-content: center;
-  align-items: center;
-  height: 25px;
-  transition: 150ms linear;
-  min-width: 25px;
-  font-size: 0.7rem !important;
-  padding: 4px !important;
-  position: relative !important;
-  color: var(--pj-color-secondary) !important;
-  overflow: hidden;
-  background: var(--pj-border-primary);
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: var(--pj-border-primary);
 }
 
 .highlighted {
@@ -70,11 +59,6 @@
   overflow: hidden;
 }
 
-.divider {
-  width: 100%;
-  height: 2px;
-  background-color: var(--pj-border-primary);
-}
 
 .summary {
   display: flex;
@@ -191,27 +175,28 @@
 
   --color-to-apply: white;
 
-  font-size: 0.75rem;
-  height: 25px;
+  font-size: 0.7rem;
+  font-weight: 550;
+  height: 20px;
+display: flex;
+  align-items: center;
   overflow: hidden;
   padding: 0 4px !important;
-  background: var(--pj-border-primary) !important;
+  background-color: var(--pj-border-primary) !important;
 }
 
 .shadedIcon {
   transition: 150ms linear;
-
-  /* background: -webkit-linear-gradient(top, #e72c83 0%,#a742c6 100%); */
   background: linear-gradient(to right bottom, var(--color-to-apply) 25%, #333 75%);
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
 }
 
 .flatIcon {
   transition: 150ms linear;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--color-to-apply);
 }
@@ -249,7 +234,8 @@
   align-items: center;
   justify-content: center;
   background: rgb(40 40 40 / 80%);
-  /*border: var(--pj-border-primary);*/
+
+  /* border: var(--pj-border-primary); */
   color: var(--pj-color-primary);
   height: 27px;
   width: 27px;
@@ -286,7 +272,7 @@
 }
 
 .button {
-  background: var(--pj-border-primary);
+  background-color: var(--pj-border-primary);
   padding: 4px 16px !important;
 }
 
@@ -319,7 +305,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--pj-border-primary);
+  background-color: var(--pj-border-primary);
   padding: 0 !important;
   border-radius: 0  5px  5px  0;
 }

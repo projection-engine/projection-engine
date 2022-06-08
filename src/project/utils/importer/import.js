@@ -9,6 +9,7 @@ import FileSystem from "../files/FileSystem"
 
 export default async function importData(event, fileSystem, engine, setAlert, load, asID) {
     const entities = [], meshes = []
+
     if (asID)
         entities.push(event)
     else
@@ -21,10 +22,13 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
     for (let i = 0; i < entities.length; i++) {
         const data = entities[i]
         const res = await fileSystem.readRegistryFile(data)
+        console.log(res, entities)
+
         if(res)
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
                 const meshData = await importMesh(await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data, fileSystem)
+                console.log(meshData)
                 if(meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else
@@ -45,9 +49,9 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
     }
 
     if (meshes.length > 0) {
-        engine.setMeshes(prev => [...prev, ...meshes
-            .map(m => !m.existsMesh ? m.mesh : undefined)
-            .filter(m => m !== undefined)])
+        const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
+        console.log(newMeshes)
+        engine.setMeshes(prev => [...prev, ...newMeshes])
         if (!asID) {
             const toLoad = meshes
                 .map(m => m.entity)

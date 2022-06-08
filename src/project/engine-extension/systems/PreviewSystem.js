@@ -149,7 +149,6 @@ export default class PreviewSystem {
         response= toBase64(this.gpu, this.frameBuffer)
         this.sphereMesh.finish()
         this.gpu.bindVertexArray(null)
-        console.log(response)
         return response
     }
 }

@@ -53,9 +53,7 @@ export default function Project(props) {
         },
         setAlert
     )
-
-
-    const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance) => {
+    const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance, isMaterial) => {
         if(!isLevel) {
             let p = previewImage
             if(matInstance)
@@ -63,9 +61,10 @@ export default function Project(props) {
             quickAccess.fileSystem
                 .updateAsset(registryID, pack, p)
                 .then(() => {
+
                     if (matInstance)
                         engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
-                    else {
+                    else if(!isMaterial){
                         setTimeout(() => {
                             setAlert({type: "warning", message: "Reloading script"})
                             refreshData(FILE_TYPES.SCRIPT, registryID, quickAccess.fileSystem, engine)
@@ -106,7 +105,7 @@ export default function Project(props) {
                             engine={engine}
                             open={i === openTab}
                             registryID={o.registryID}
-                            submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance)}
+                            submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance, true)}
                         />
                     ),
                     close: () => {
@@ -207,7 +206,7 @@ export default function Project(props) {
                                 pageInfo={events}
                                 label={meta?.name}/>
                             <ContextWrapper
-                                wrapperClassName={styles.context} // TODO - CONTEXT CLASS
+                                wrapperClassName={styles.context}
                                 triggers={contextMenuHook.triggers}
                                 className={styles.wrapper}
                                 content={(selected, close) => <ContextMenu options={contextMenuHook.options} engine={engine} close={close} selected={selected}/>}
@@ -255,7 +254,7 @@ export default function Project(props) {
 Project.propTypes={
     id: PropTypes.string,
     meta: PropTypes.object,
-    events: PropTypes.array,
+    events: PropTypes.object,
     initialized: PropTypes.bool,
     setInitialized: PropTypes.func,
     settings: PropTypes.object

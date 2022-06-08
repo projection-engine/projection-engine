@@ -58,7 +58,6 @@ export default function useGPU(canStart, resolution, projectID) {
     useEffect(() => {
 
         if (gpu && canStart && projectID && !init.current) {
-            console.trace(resolution)
             init.current = true
             setRenderer(
                 new Engine( 

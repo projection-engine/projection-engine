@@ -6,6 +6,7 @@ import FileSystem from "../../project/utils/files/FileSystem"
 import EN from "../../static/locale/EN"
 
 const path = window.require("path")
+const fs = window.require("fs")
 
 export default function useProjects() {
     const [projects, setProjects] = useState([])
@@ -14,6 +15,7 @@ export default function useProjects() {
     const [loading, setLoading] = useState(true)
 
     async function refresh (path) {
+
         const [e, res] = await AsyncFS.readdir(path)
         if (!(await AsyncFS.exists(path))) await AsyncFS.mkdir(path)
 
@@ -23,6 +25,7 @@ export default function useProjects() {
                 const f = res[i]
                 let filename = path + f
                 const [, stat] = await AsyncFS.lstat(filename)
+                console.log(stat)
                 if (stat && stat.isDirectory) {
                     const [, meta] = await AsyncFS.read(filename + "/.meta")
                     const [, settings] = await AsyncFS.read(filename + "/.settings")
@@ -53,9 +56,7 @@ export default function useProjects() {
             b = window.require("os").homedir() + path.sep + "ProjectionEngineProjects" + path.sep
             localStorage.setItem("basePath", b)
         }
-        AsyncFS.mkdir(b).then(res => {
-            console.log(res)
-        })
+        AsyncFS.mkdir(b).catch()
         setStartPath(b + "projects")
         refresh(b + "projects" + FileSystem.sep).catch()
 

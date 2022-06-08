@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react"
 import ReactDOM from "react-dom"
-import "../styles/globals.css"
+import "../../styles/globals.css"
 import {Fabric} from "@f-ui/core"
-import styles from "../styles/App.module.css"
-import Frame from "../components/frame/Frame"
-import FRAME_EVENTS from "../../public/FRAME_EVENTS"
+import styles from "../../styles/App.module.css"
+import Frame from "../../components/frame/Frame"
+import FRAME_EVENTS from "../../../public/FRAME_EVENTS"
 
-function Shortcuts() {
+function Import() {
     useEffect(() => {
         document.body.classList.add(styles.dark)
     }, [])
@@ -33,7 +33,7 @@ function Shortcuts() {
 
 ReactDOM.render(
     <React.StrictMode>
-        <Shortcuts/>
+        <Import/>
     </React.StrictMode>,
     document.getElementById("root")
 )

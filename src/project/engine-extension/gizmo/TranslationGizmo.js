@@ -105,7 +105,6 @@ export default class TranslationGizmo extends Gizmo {
                 t = this.target[0].components[COMPONENTS.SKYLIGHT]?.direction
             if (!t)
                 t = this.target[0].components[COMPONENTS.DIRECTIONAL_LIGHT]?.direction
-            console.log("HERE", this.started)
             this.renderTarget.render(t)
         }
     }

@@ -4,18 +4,17 @@ import styles from "./styles/Shortcuts.module.css"
 import KEYS from "../../../static/misc/LABELED_KEYS"
 
 export default function Shortcuts(){
-    const { allShortcuts, activeWindow, activeKeys } = useContext(HotKeysProvider)
-
+    const shortcuts = useContext(HotKeysProvider)
     const actions = useMemo(() => {
-        const clickedLen = Object.keys(activeKeys).length
-        return allShortcuts.filter(a => (a.require.length === 1 && clickedLen === 0 )|| a.require.find(e => activeKeys[e] === true) !== undefined)
-    }, [activeKeys, allShortcuts])
+        const clickedLen = Object.keys(shortcuts.active).length
+        return shortcuts.all.filter(a => (a.require.length === 1 && clickedLen === 0 )|| a.require.find(e => shortcuts.active[e] === true) !== undefined)
+    }, [shortcuts])
 
     return (
         <div className={styles.wrapper}>
-            {activeWindow ? <div className={[styles.item, styles.itemWrapper].join(" ")}>
-                <span style={{fontSize: "1rem"}} className={"material-icons-round"}>{activeWindow?.icon}</span>
-                <label>{activeWindow?.label}</label>
+            {shortcuts.window ? <div className={[styles.item, styles.itemWrapper].join(" ")}>
+                <span style={{fontSize: "1rem"}} className={"material-icons-round"}>{shortcuts.window.icon}</span>
+                <label>{shortcuts.window.label}</label>
             </div> :
                 <div className={styles.item}>
                     Nothing focused

@@ -1,4 +1,8 @@
 .wrapper{
+    position: relative;
+    display: flex;
+}
+.bar{
     width: 25px;
     background: var(--pj-background-tertiary);
     height: 100%;

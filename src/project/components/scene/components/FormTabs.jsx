@@ -68,10 +68,7 @@ export default function FormTabs(props) {
                 <Button
                     variant={props.currentTab === ENTITY_TAB ? "filled" : undefined}
                     className={styles.button}
-                    onClick={() => {
-                        console.log(props.currentTab)
-                        props.setCurrentTab(ENTITY_TAB)
-                    }}>
+                    onClick={() => props.setCurrentTab(ENTITY_TAB)}>
                     <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>code</span>
                     <ToolTip content={"Entity"} animation={"0ms"}/>
                 </Button>

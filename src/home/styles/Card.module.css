@@ -16,7 +16,6 @@
 .wrapper:hover .dataRow {
   background: var(--pj-background-primary);
 }
-
 .openButton,
 .button {
   display: flex;
@@ -29,26 +28,11 @@
   font-weight: 550;
   padding: 4px !important;
   gap: 4px;
-}
-
-.openButton {
-  --pj-accent-color: var(--pj-border-primary);
-
-  color: var(--pj-color-secondary);
-}
-
-.openButton:hover,
-.openButton:active {
-  --pj-accent-color: #0095ff;
-}
-
-.button:hover {
   background: var(--pj-border-primary) !important;
 }
-
-.button[data-highlight="true"] {
+.button:hover {
+  color: white;
   background: var(--pj-accent-color) !important;
-  color: white !important;
 }
 
 .overflow {
@@ -75,13 +59,13 @@
   padding: 4px;
   display: grid;
   align-items: flex-end;
-  gap: 32px;
+  gap: 16px;
   font-size: 0.8rem;
   font-weight: 550;
-  color: var(--pj-color-secondary);
+  color: var(--fabric-color-secondary);
+
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: var(--pj-boxshadow);
 }
 
 .section {

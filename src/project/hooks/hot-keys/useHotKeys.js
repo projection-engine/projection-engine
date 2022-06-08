@@ -5,44 +5,51 @@ import HotKeysProvider from "./HotKeysProvider"
 
 export default function useHotKeys(props) {
     let clicked = {}
-    const { setAllShortcuts, setActiveWindow, activeWindow, setActiveKeys } = useContext(HotKeysProvider)
+    const shortcuts = useContext(HotKeysProvider)
     const focused = useRef(false)
 
     function handler(e){
-        if(e.type === "mouseenter" || e.type === "mouseleave") {
-            focused.current = e.type === "mouseenter"
-            if(focused.current  && activeWindow?.reference !== e.target) {
-                setActiveWindow({
+        switch (e.type){
+        case "mouseleave":
+            focused.current = false
+            clicked = {}
+            break
+        case "mouseenter":
+            focused.current = true
+            if(shortcuts.window?.reference !== e.target)
+                shortcuts.window ={
                     reference: e.target,
                     label: props.focusTargetLabel,
                     icon: props.focusTargetIcon
-                })
-            }
+                }
             clicked = {}
-        }
-        else if ((focused.current  || activeWindow?.reference === e.target) && document.activeElement === document.body) {
-            const l = props.actions.length
-            if (e.type === "keydown") {
-                if(e.ctrlKey) {
-                    clicked[KEYS.ControlLeft] = true
-                    clicked[KEYS.ControlRight] = true
-                }
-
-                clicked[e.code] = true
-                for (let i = 0; i < l; i++) {
-                    const a = props.actions[i]
-                    let trigger = true
-                    a.require.forEach(r => {
-                        trigger = trigger && clicked[r]
-                    })
-                    if (trigger && !a.disabled && a.callback !== undefined) {
-                        a.callback()
+            break
+        default:
+            if ((focused.current  || shortcuts.window?.reference === e.target) && document.activeElement === document.body) {
+                const l = props.actions.length
+                if (e.type === "keydown") {
+                    if(e.ctrlKey) {
+                        clicked[KEYS.ControlLeft] = true
+                        clicked[KEYS.ControlRight] = true
                     }
-                }
-            } else
-                delete clicked[e.code]
 
-            setActiveKeys(clicked)
+                    clicked[e.code] = true
+                    for (let i = 0; i < l; i++) {
+                        const a = props.actions[i]
+                        let trigger = true
+                        a.require.forEach(r => {
+                            trigger = trigger && clicked[r]
+                        })
+                        if (trigger && !a.disabled && a.callback !== undefined) {
+                            a.callback()
+                        }
+                    }
+                } else
+                    delete clicked[e.code]
+
+                shortcuts.active = clicked
+            }
+            break
         }
     }
 
@@ -50,7 +57,7 @@ export default function useHotKeys(props) {
         const target =  typeof props.focusTarget === "object" ? props.focusTarget : document.getElementById(props.focusTarget)
         if (!props.disabled && target) {
             if(focused.current)
-                setAllShortcuts(props.actions)
+                shortcuts.all = props.actions
             target?.addEventListener("mouseenter", handler)
             target?.addEventListener("mouseleave", handler)
             document.addEventListener("keydown", handler)
@@ -62,7 +69,7 @@ export default function useHotKeys(props) {
             document.removeEventListener("keyup", handler)
             document.removeEventListener("keydown", handler)
         }
-    }, [props.actions, props.disabled])
+    }, [props.actions, props.disabled, shortcuts.window])
 }
 
 useHotKeys.propTypes = {
