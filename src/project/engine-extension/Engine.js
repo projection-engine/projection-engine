@@ -164,15 +164,10 @@ export default class Engine extends Renderer {
                 onGizmoStart,
                 onGizmoEnd,
                 camera,
-                lockCamera: (lock) => {
-                    if (lock) {
-                        this.cameraData.cameraEvents.stopTracking()
-                    } else this.cameraData.cameraEvents.startTracking()
-                },
                 dataChanged: this._changed,
                 setDataChanged: () => this._changed = false,
                 gizmo: this.gizmo,
-                isOrtho: camera.ortho
+                isOrtho: camera.ortho,
             },
             scripts,
             this.editorSystem,

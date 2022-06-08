@@ -59,7 +59,6 @@
   overflow: hidden;
 }
 
-
 .summary {
   display: flex;
   gap: 4px;
@@ -74,6 +73,20 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cubeWrapper {
+  border-radius: 50%;
+  padding: 4px;
+  transition: 150ms linear;
+}
+
+.cubeWrapper:hover {
+  background: rgb(255 255 255 / 40%);
+}
+.cubeWrapper:active {
+  cursor: none;
+  background: rgb(255 255 255 / 75%);
 }
 
 .cameraView {
@@ -178,7 +191,7 @@
   font-size: 0.7rem;
   font-weight: 550;
   height: 20px;
-display: flex;
+  display: flex;
   align-items: center;
   overflow: hidden;
   padding: 0 4px !important;

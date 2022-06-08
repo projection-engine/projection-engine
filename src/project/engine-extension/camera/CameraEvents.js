@@ -43,29 +43,19 @@ export default function CameraEvents(c, canvas, onClick) {
             break
         case "mousemove":
             positionChanged = true
-            if (isFocused) {
+            if (isFocused && doubleClick) {
+              
+   
                 if (!requested) {
                     requested = true
                     canvas.requestPointerLock()
                 }
-                if (!doubleClick) {
-                    if (event.movementY < 0)
-                        camera.pitch += .01 * Math.abs(event.movementY)
+                const newPosition = rotateY(camera.yaw, [ctrl ? 0 : cameraSpeed * event.movementY, 0, -cameraSpeed * event.movementX])
 
-                    else if (event.movementY > 0)
-                        camera.pitch -= .01 * Math.abs(event.movementY)
-
-                    if (event.movementX > 0 && camera instanceof EditorCamera)
-                        camera.yaw += .01 * Math.abs(event.movementX)
-                    else if (event.movementX < 0 && camera instanceof EditorCamera)
-                        camera.yaw -= .01 * Math.abs(event.movementX)
-                } else {
-                    const newPosition = rotateY(camera.yaw, [ctrl ? 0 : cameraSpeed * event.movementY, 0, -cameraSpeed * event.movementX])
-
-                    camera.centerOn[0] += newPosition[0]
-                    camera.centerOn[1] -= ctrl ? .1 * event.movementY : newPosition[1]
-                    camera.centerOn[2] += newPosition[2]
-                }
+                camera.centerOn[0] += newPosition[0]
+                camera.centerOn[1] -= ctrl ? .1 * event.movementY : newPosition[1]
+                camera.centerOn[2] += newPosition[2]
+            
                 camera.updateViewMatrix(ctrl)
             }
             break

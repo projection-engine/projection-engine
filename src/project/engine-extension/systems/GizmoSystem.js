@@ -115,7 +115,6 @@ export default class GizmoSystem extends System {
         selected,
         camera,
         pickSystem,
-        lockCamera,
         entities,
         gizmo,
         transformationType = ROTATION_TYPES.GLOBAL,
@@ -124,7 +123,8 @@ export default class GizmoSystem extends System {
         gridSize,
         gridRotationSize,
         gridScaleSize,
-        depthSystem
+        depthSystem,
+        setSelected
     ) {
         super.execute()
 
@@ -132,15 +132,15 @@ export default class GizmoSystem extends System {
             switch (gizmo) {
             case GIZMOS.TRANSLATION:
                 this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem)
+                this.translationGizmo.execute(meshes, meshSources, selected, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem, setSelected)
                 break
             case GIZMOS.ROTATION:
                 this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem)
+                this.rotationGizmo.execute(meshes, meshSources, selected, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem, setSelected)
                 break
             case GIZMOS.SCALE:
                 this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem)
+                this.scaleGizmo.execute(meshes, meshSources, selected, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem, setSelected)
                 break
             }
         else

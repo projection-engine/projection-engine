@@ -93,11 +93,11 @@ export default class RotationGizmo {
 
     }
 
-    onMouseUp() {
+    onMouseUp(force) {
         this.firstPick = true
-        if (this.tracking) {
+        if (this.tracking || force === true) {
             this.renderTarget.innerText = ""
-            this.onGizmoEnd()
+
             this.started = false
             this.distanceX = 0
             this.distanceY = 0
@@ -105,10 +105,11 @@ export default class RotationGizmo {
             this.tracking = false
             this.clickedAxis = -1
             this.currentCoord = undefined
-            this.gpu.canvas.removeEventListener("mousemove", this.handlerListener)
             document.exitPointerLock()
             this.currentRotation = [0, 0, 0]
             this.t = 0
+            if(force !== true)
+                this.onGizmoEnd()
         }
         this.renderTarget.style.display = "none"
     }
@@ -182,7 +183,7 @@ export default class RotationGizmo {
         }
     }
 
-    #testClick(el, depthSystem, camera, lockCamera, pickSystem, selected, entities, translation ) {
+    #testClick(el, depthSystem, camera,  pickSystem, selected, entities, translation ) {
         const r = el.components[COMPONENTS.TRANSFORM].rotationQuat
         const mX = this.#rotateMatrix(translation, r, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
         const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
@@ -203,11 +204,10 @@ export default class RotationGizmo {
         this.clickedAxis = pickID
 
         if (pickID === 0) {
-            lockCamera(false)
-            this.currentCoord = undefined
+            this.onMouseUp(true)
+            this.setSelected([])
         } else {
             this.tracking = true
-            lockCamera(true)
 
             this.renderTarget.style.left = this.currentCoord.clientX + "px"
             this.renderTarget.style.top = this.currentCoord.clientY + "px"
@@ -226,15 +226,17 @@ export default class RotationGizmo {
         selected,
         camera,
         pickSystem,
-        lockCamera,
         entities,
         transformationType,
         onGizmoStart,
         onGizmoEnd,
         gridSize,
-        depthSystem
+        depthSystem,
+        setSelected
     ) {
         if (selected.length > 0) {
+            this.setSelected = setSelected
+
             const el = entities[selected[0]]
             const parent = el ? entities[el.linkedTo] : undefined
             const currentTranslation = this.getTranslation(el),
@@ -252,7 +254,7 @@ export default class RotationGizmo {
                 this.onGizmoStart = onGizmoStart
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(el, depthSystem, camera, lockCamera, pickSystem, selected, entities, translation)
+                    this.#testClick(el, depthSystem, camera, pickSystem, selected, entities, translation)
                 this.#drawGizmo(translation, el.components[COMPONENTS.TRANSFORM].rotationQuat, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader)
             }
         }

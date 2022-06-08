@@ -7,6 +7,8 @@ import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 import SettingsProvider from "../../../hooks/SettingsProvider"
+import CAMERA_GIZMO from "../../../engine-extension/CAMERA_GIZMO"
+import CameraGizmo from "./CameraGizmo"
 
 export default function CameraOptions(props) {
     const  settingsContext = useContext(SettingsProvider)
@@ -26,55 +28,20 @@ export default function CameraOptions(props) {
         else
             return <span style={{fontSize: "1rem"}} className={"material-icons-round"}>grid_on</span>
     }, [cameraIsOrthographic])
-    const renderer = engine.renderer
-    const [cameraLocked, setCameraLocked] = useState(engine?.renderer?.camera?.locked)
 
-    function bind(yaw, pitch) {
-        renderer.camera.updateProjection()
-        renderer.camera.yaw = yaw
-        renderer.camera.pitch = pitch
-        renderer.camera.updateViewMatrix()
-        setCameraIsOrthographic(true)
-    }
+    const [cameraLocked, setCameraLocked] = useState(engine?.renderer?.camera?.locked)
     const [cameraSpeed, setCameraSpeed] = useState(settingsContext.cameraSpeed)
     const [cameraScrollDelay, setCameraScrollDelay] = useState(settingsContext.cameraScrollDelay)
     const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
-
+    function bind(yaw, pitch) {
+        engine.renderer.camera.updateProjection()
+        engine.renderer.camera.yaw = yaw
+        engine.renderer.camera.pitch = pitch
+        engine.renderer.camera.updateViewMatrix()
+    }
     return (
         <div className={styles.floating} style={{top: 0}}>
-            <div className={styles.cameraView}>
-                <div className={styles.cube} id={RENDER_TARGET + "-camera"}>
-                    <div
-                        className={[styles.face, styles.front].join(" ")}
-                        onClick={() => bind(Math.PI /2, 0)}
-                    >
-                        Front
-                    </div>
-                    <div className={[styles.face, styles.back].join(" ")}
-                        onClick={() => bind(Math.PI * 1.5, 0)}
-                    >
-                        Back
-                    </div>
-                    <div className={[styles.face, styles.right].join(" ")}
-                        onClick={() => bind(0,0)}
-                    >Right
-                    </div>
-                    <div
-                        className={[styles.face, styles.left].join(" ")}
-                        onClick={() => bind(Math.PI , 0)}
-                    >Left
-                    </div>
-                    <div className={[styles.face, styles.top].join(" ")}
-                        onClick={() => bind(0, Math.PI /2)}
-                    >Top
-                    </div>
-                    <div className={[styles.face, styles.bottom].join(" ")}
-                        onClick={() => bind(0, -Math.PI /2)}
-                    >Bottom
-                    </div>
-                </div>
-            </div>
-
+            <CameraGizmo  bind={bind} renderer={engine.renderer}/>
             <div className={styles.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown hideArrow={true}
                     className={styles.groupItemVert}

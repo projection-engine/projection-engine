@@ -25,7 +25,6 @@ export default class Wrapper extends System {
             meshSources
         } = data
         const {
-            lockCamera,
             selected,
             camera,
             rotationType,
@@ -36,7 +35,8 @@ export default class Wrapper extends System {
 
             gridSize,
             gridRotationSize,
-            gridScaleSize
+            gridScaleSize,
+            setSelected
         } = options
 
         if(!after) {
@@ -58,7 +58,6 @@ export default class Wrapper extends System {
                     selected,
                     camera,
                     systems[SYSTEMS.PICK],
-                    lockCamera,
                     entitiesMap,
                     gizmo,
                     rotationType,
@@ -67,7 +66,8 @@ export default class Wrapper extends System {
                     gridSize,
                     gridRotationSize,
                     gridScaleSize,
-                    systems[SYSTEMS.DEPTH_PRE_PASS]
+                    systems[SYSTEMS.DEPTH_PRE_PASS],
+                    setSelected
                 )
                 this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)
             }

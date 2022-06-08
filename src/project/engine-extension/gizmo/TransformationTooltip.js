@@ -5,29 +5,29 @@ export default class TransformationTooltip {
 
     start(label) {
         Object.assign(this.renderTarget.style, {
-            display: 'flex',
-            justifyContent: 'space-evenly',
+            display: "flex",
+            justifyContent: "space-evenly",
 
-            left: '50%',
-            transform: 'translateX(-50%)',
-            bottom: '4px',
-            top: 'unset',
-            width: '300px',
-            overflow: 'hidden'
-        });
+            left: "50%",
+            transform: "translateX(-50%)",
+            bottom: "4px",
+            top: "unset",
+            width: "300px",
+            overflow: "hidden"
+        })
     }
     stop(){
         Object.assign(this.renderTarget.style, {
-            display: 'none',
-            justifyContent: 'unset',
-            left: 'unset',
-            transform: 'unset',
-            bottom: 'unset',
-            top: 'unset',
-            width: 'fit-content'
-        });
+            display: "none",
+            justifyContent: "unset",
+            left: "unset",
+            transform: "unset",
+            bottom: "unset",
+            top: "unset",
+            width: "fit-content"
+        })
 
-        this.renderTarget.innerHTML = ''
+        this.renderTarget.innerHTML = ""
     }
 
     render([x, y, z]) {

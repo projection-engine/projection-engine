@@ -19,6 +19,7 @@ export default class Gizmo {
         this.resolution = resolution
         this.gpu = gpu
         this.gizmoShader = gizmoShader
+
     }
 
     onMouseDown(event) {
@@ -35,21 +36,22 @@ export default class Gizmo {
             this.firstPick = false
     }
 
-    onMouseUp() {
+    onMouseUp(force) {
         this.firstPick = true
-        if (this.tracking) {
+
+        if (this.tracking || force === true) {
+            console.log(force)
             this.tracking = false
             this.started = false
             this.distanceX = 0
             this.distanceY = 0
             this.distanceZ = 0
             this.currentCoord = undefined
-            this.gpu.canvas.removeEventListener("mousemove", this.handlerListener)
             document.exitPointerLock()
             this.clickedAxis = -1
             this.t = 0
-            this.onGizmoEnd()
-
+            if(force !== true)
+                this.onGizmoEnd()
         }
         this.renderTarget.stop()
     }
@@ -83,7 +85,7 @@ export default class Gizmo {
         }
     }
 
-    #testClick(depthSystem, camera, arrow, lockCamera, translation, pickSystem, onGizmoStart, selected, entities) {
+    #testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected, entities) {
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
         const mZ = this._translateMatrix(translation, this.zGizmo.components)
@@ -101,13 +103,12 @@ export default class Gizmo {
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
-
         if (pickID === 0) {
-            lockCamera(false)
-            this.currentCoord = undefined
-        } else {
+            this.onMouseUp(true)
+            this.setSelected([])
+        }
+        else {
             this.tracking = true
-            lockCamera(true)
             this.target = selected.map(e => entities[e])
             this.gpu.canvas.requestPointerLock()
             this.renderTarget.start()
@@ -122,16 +123,19 @@ export default class Gizmo {
         selected,
         camera,
         pickSystem,
-        lockCamera,
         entities,
         transformationType,
         onGizmoStart,
         onGizmoEnd,
         gridSize,
         arrow,
-        depthSystem
+        depthSystem,
+
+        setSelected
     ) {
+
         if (selected.length > 0) {
+            this.setSelected = setSelected
             const el = entities[selected[0]]
             const parent = el ? entities[el.linkedTo] : undefined
             const currentTranslation = this.getTranslation(el),
@@ -149,7 +153,7 @@ export default class Gizmo {
 
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(depthSystem, camera, arrow, lockCamera, translation, pickSystem, onGizmoStart, selected, entities)
+                    this.#testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected, entities)
                 const t = el.components[COMPONENTS.TRANSFORM]
                 this.rotationTarget = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
                 this._drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)

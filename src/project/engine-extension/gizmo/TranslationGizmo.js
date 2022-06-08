@@ -109,10 +109,9 @@ export default class TranslationGizmo extends Gizmo {
         }
     }
 
-    execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem) {
+    execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem, setSelected) {
         this.gridSize = gridSize
-        super.execute(meshes, meshSources, selected, camera, pickSystem, lockCamera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem)
-
+        super.execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem, setSelected)
     }
 
     transformElement(vec) {

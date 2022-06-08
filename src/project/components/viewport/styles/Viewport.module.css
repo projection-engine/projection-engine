@@ -20,10 +20,6 @@
   display: flex;
 }
 
-.viewport:active {
-  cursor: none;
-}
-
 .viewport > * {
   transition: opacity 150ms linear;
 }
