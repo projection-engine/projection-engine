@@ -39,11 +39,8 @@ export default class Wrapper extends System {
             setSelected
         } = options
 
-        if(!after) {
-            this.gpu.disable(this.gpu.DEPTH_TEST)
+        if(!after)
             this.gridSystem.execute(options)
-            this.gpu.enable(this.gpu.DEPTH_TEST)
-        }
         else {
             this.gpu.enable(this.gpu.BLEND)
             this.gpu.blendFunc(this.gpu.SRC_ALPHA, this.gpu.ONE_MINUS_SRC_ALPHA)

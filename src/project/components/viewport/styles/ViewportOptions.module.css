@@ -185,14 +185,17 @@
 }
 
 .floating {
+  width: 40px;
+  max-height: calc(100% - 35px);
   position: absolute;
-  right: 0;
+  left: 0;
+  padding-left: 4px;
   top: 35px;
   z-index: 15;
   display: grid;
   align-content: flex-start;
   justify-items: center;
-  gap: 4px;
+  gap: 8px;
   height: fit-content;
   transition: 150ms ease-in;
 }

@@ -41,10 +41,10 @@ export default function useSettings() {
         distortionStrength: 1,
         chromaticAberrationStrength: 1,
 
+        ortho: false,
         fov: 60 * toRad,
         zNear: .1,
         zFar: 100000,
-
         gridRotationSize: 1,
 
         pcfSamples: 3.,

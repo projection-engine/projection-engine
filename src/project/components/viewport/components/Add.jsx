@@ -15,7 +15,7 @@ import PropTypes from "prop-types"
 import LineComponent from "../../../engine/components/LineComponent"
 import LightProbeComponent from "../../../engine/components/LightProbeComponent"
 
-export default function CreateEntity(props) {
+export default function Add(props) {
     const {dispatchEntity, engine} = props
     return (
         <Dropdown className={styles.dropdown}>
@@ -160,7 +160,7 @@ export default function CreateEntity(props) {
     )
 }
 
-CreateEntity.propTypes = {
+Add.propTypes = {
     dispatchEntity: PropTypes.func,
     engine: PropTypes.object
 }

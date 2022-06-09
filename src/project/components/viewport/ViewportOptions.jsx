@@ -4,10 +4,10 @@ import styles from "./styles/ViewportOptions.module.css"
 import SettingsProvider from "../../hooks/SettingsProvider"
 import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
-import ShadingTypes from "./components/ShadingTypes"
-import CreateEntity from "./components/CreateEntity"
-import VisualSettings from "./components/VisualSettings"
-import TransformationSettings from "./components/TransformationSettings"
+import Shading from "./components/Shading"
+import Add from "./components/Add"
+import Visible from "./components/Visible"
+import Gizmo from "./components/Gizmo"
 import {Button} from "@f-ui/core"
 
 
@@ -55,12 +55,12 @@ export default function ViewportOptions(props) {
                         <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>fullscreen</span>
                     </Button>
 
-                    <VisualSettings settingsContext={settingsContext}/>
-                    <CreateEntity dispatchEntity={dispatchEntity} engine={props.engine}/>
+                    <Visible settingsContext={settingsContext}/>
+                    <Add dispatchEntity={dispatchEntity} engine={props.engine}/>
                 </div>
-                <ShadingTypes settingsContext={settingsContext}/>
+                <Shading settingsContext={settingsContext}/>
             </div>
-            <TransformationSettings settingsContext={settingsContext}/>
+            <Gizmo settingsContext={settingsContext}/>
         </>
     )
 }

@@ -9,6 +9,7 @@ export default function CameraEvents(c, canvas) {
     let positionChanged = false
     let requested = false
     let doubleClick = false
+    let holding = false
     let ctrl = false
     let camera = c
     let cameraSpeed = 0.01
@@ -44,7 +45,7 @@ export default function CameraEvents(c, canvas) {
             break
         case "mousemove":
             positionChanged = true
-            if (isFocused) {
+            if (isFocused || doubleClick) {
                 if (!requested) {
                     requested = true
                     canvas.requestPointerLock()
@@ -78,12 +79,16 @@ export default function CameraEvents(c, canvas) {
             }
             break
         case "mousedown":
-            if (isFocused)
+            if (holding)
                 doubleClick = true
-            if (event.button === BUTTON_MIDDLE)
+            if (event.button === BUTTON_MIDDLE) {
                 isFocused = true
+            }else
+                holding = true
+            console.log(holding, doubleClick)
             break
         case "mouseup":
+            holding = false
             ctrl = false
             requested = false
             isFocused = false

@@ -6,7 +6,7 @@ import GIZMOS from "../../../../static/misc/GIZMOS"
 import PropTypes from "prop-types"
 import React, {useState} from "react"
 
-export default function TransformationSettings(props){
+export default function Gizmo(props){
     const {settingsContext} = props
     const [gridSize, setGridSize] = useState(settingsContext.gridSize)
     const [hidden, setHidden] = useState(false)
@@ -14,18 +14,10 @@ export default function TransformationSettings(props){
     return (
         <div
             className={styles.floating}
-            style={{
-                left: hidden ? 0 : "4px",
-                right: "unset",
-                top: "36px",
-                gap: "8px",
-                maxHeight: "calc(100% - 35px)"
-            }}>
+        >
             <Button
                 className={styles.hideButton}
-                styles={{
-                    transform: hidden ? "translateX(0)" : undefined
-                }}
+
                 onClick={() => setHidden(!hidden)}>
                 <span className={"material-icons-round"} style={{
                     fontSize: "1.1rem",
@@ -248,6 +240,6 @@ export default function TransformationSettings(props){
     )
 }
 
-TransformationSettings.propTypes={
+Gizmo.propTypes={
     settingsContext: PropTypes.object
 }

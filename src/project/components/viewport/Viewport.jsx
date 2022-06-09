@@ -18,7 +18,6 @@ export default function Viewport(props) {
 
     function handler(event) {
         if(gpu.canvas === event.target) {
-            console.log("HERE")
             const camera = props.engine.renderer.camera
             const entities = props.engine.entities
             const p = props.engine.renderer.systems[SYSTEMS.PICK]
@@ -51,6 +50,7 @@ export default function Viewport(props) {
                 })
             } else
                 props.engine.setSelected([])
+     
         }
     }
 

@@ -23,9 +23,7 @@ import loadScript from "../utils/loadScript"
 import {ENTITY_TAB} from "../components/FormTabs"
 
 export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
-
     const entity = engine.entities.find(e => e.id === entityID)
-
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]
     component[key] = [
@@ -36,7 +34,7 @@ export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
 
     if (entity.components[COMPONENTS.POINT_LIGHT])
         entity.components[COMPONENTS.POINT_LIGHT].changed = true
-    if (entity.components[COMPONENTS.CUBE_MAP])
+    if (entity.components[COMPONENTS.CUBE_MAP] && setAlert)
         setAlert({message: "Reflection captures need to be rebuilt", type: "alert"})
     engine.dispatchEntities({
         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -118,9 +116,9 @@ export default function useForm(
                         engine={engine}
 
                         selected={selected.components[COMPONENTS.TRANSFORM]}
-                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, engine.selected[0], setAlert)}
-                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, engine.selected[0], setAlert)}
-                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, engine.selected[0], setAlert)}
+                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, selected.id, setAlert)}
+                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, selected.id, setAlert)}
+                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, selected.id, setAlert)}
                     />
                 )
             }

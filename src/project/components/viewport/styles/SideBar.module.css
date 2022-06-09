@@ -14,7 +14,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-end;
   gap: 4px;
 }
@@ -26,7 +26,7 @@
 .hideButton {
   width: 10px;
   height: 13px;
-  transform: translateX(-185%);
+  transform: translateX(-25px);
   position: absolute;
   color: white;
   display: flex;
@@ -40,7 +40,7 @@
 .button {
   width: 20px;
   height: fit-content;
-  border-radius: 3px;
+  border-radius: 3px 0 0 3px;
   background: var(--pj-border-primary);
   padding: 4px 0 !important;
   display: flex;
@@ -54,12 +54,18 @@
   transform: rotate(180deg);
 }
 
-.content{
+.content {
+  color: var(--pj-color-secondary);
+  padding: 8px;
   right: 40px;
   position: absolute;
   bottom: 4px;
-  background: var(--pj-border-primary);
-  border-radius: 5px;
+  background: rgb(63 63 63 / 90%);
+  border-radius: 3px;
   width: 250px;
+
+  display: grid;
+  gap: 4px;
+
   height: fit-content;
 }

@@ -2,20 +2,25 @@ import shared from "../styles/ViewportOptions.module.css"
 import styles from "../styles/CameraOptions.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core"
-import React, {useContext, useMemo, useState} from "react"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 import SettingsProvider from "../../../hooks/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
-export default function CameraOptions(props) {
+export default function Camera(props) {
     const  settingsContext = useContext(SettingsProvider)
     const {engine} = props
-    const [cameraIsOrthographic, setCameraIsOrthographic] = useState(props.engine?.renderer?.camera?.ortho)
 
+    useEffect(() => {
+        if(engine.renderer) {
+            engine.renderer.camera.ortho = settingsContext.ortho
+            engine.renderer.camera.updateProjection()
+        }
+    }, [engine.renderer])
     const cameraIcon = useMemo(() => {
-        if (!cameraIsOrthographic)
+        if (!settingsContext.ortho)
             return (
                 <div
                     style={{width: "20px", height: "20px", perspective: "40px", transformStyle: "preserve-3d"}}>
@@ -26,7 +31,7 @@ export default function CameraOptions(props) {
             )
         else
             return <span style={{fontSize: "1rem"}} className={"material-icons-round"}>grid_on</span>
-    }, [cameraIsOrthographic])
+    }, [settingsContext.ortho])
 
     const [cameraSpeed, setCameraSpeed] = useState(settingsContext.cameraSpeed)
     const [cameraScrollDelay, setCameraScrollDelay] = useState(settingsContext.cameraScrollDelay)
@@ -43,13 +48,7 @@ export default function CameraOptions(props) {
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown hideArrow={true}
                     className={shared.groupItemVert}
-                    onClick={() => {
-                        const engine = props.engine
-                        engine.renderer.camera.ortho = !engine.renderer.camera.ortho
-                        engine.renderer.camera.updateProjection()
-
-                        setCameraIsOrthographic(!cameraIsOrthographic)
-                    }}>
+                >
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                         Camera position
                     </ToolTip>
@@ -152,7 +151,7 @@ export default function CameraOptions(props) {
                         engine.renderer.camera.ortho = !engine.renderer.camera.ortho
                         engine.renderer.camera.updateProjection()
 
-                        setCameraIsOrthographic(!cameraIsOrthographic)
+                        settingsContext.ortho = !settingsContext.ortho
                     }}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                         <div>Switch between last Ortho/Perspective</div>
@@ -197,6 +196,6 @@ export default function CameraOptions(props) {
     )
 
 }
-CameraOptions.propTypes = {
+Camera.propTypes = {
     engine: PropTypes.object
 }

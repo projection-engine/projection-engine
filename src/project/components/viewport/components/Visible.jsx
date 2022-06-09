@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 import React, {useState} from "react"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 
-export default function VisualSettings(props) {
+export default function Visible(props) {
     const {settingsContext} = props
     const [iconSize, setIconSize] = useState(settingsContext.iconSize)
     return (
@@ -60,6 +60,6 @@ export default function VisualSettings(props) {
     )
 }
 
-VisualSettings.propTypes={
+Visible.propTypes={
     settingsContext: PropTypes.object
 }

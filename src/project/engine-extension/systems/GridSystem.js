@@ -28,7 +28,6 @@ export default class GridSystem extends System {
             })
 
             this.grid.draw()
-
         }
     }
 }
