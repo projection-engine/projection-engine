@@ -76,17 +76,19 @@
 }
 
 .cubeWrapper {
+  overflow: hidden;
   border-radius: 50%;
   padding: 4px;
   transition: 150ms linear;
 }
 
 .cubeWrapper:hover {
-  background: rgb(255 255 255 / 40%);
+  background: rgb(255 255 255 / 25%);
 }
+
 .cubeWrapper:active {
   cursor: none;
-  background: rgb(255 255 255 / 75%);
+  background: rgb(255 255 255 / 50%);
 }
 
 .cameraView {
@@ -103,67 +105,83 @@
   height: calc(var(--cubeSize) * 2);
   position: relative;
   transform-style: preserve-3d;
-  transform: translateZ(calc(var(--cubeSize) * -4));
+  transform: translateZ(calc(var(--cubeSize) * -3));
 }
 
 .face {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bolder !important;
+  border: transparent 1px solid;
   position: absolute;
-  width: calc(var(--cubeSize) * 2);
-  height: calc(var(--cubeSize) * 2);
-  border: 1px solid #555;
-  line-height: calc(var(--cubeSize) * 2);
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #333;
+  width: var(--cubeSize);
+  height: var(--cubeSize);
+  border-radius: 50%;
   text-align: center;
 }
 
-.front {
-  background: hsl(205deg 100% 50%);
+.front,
+.back {
+  background: #0095ff;
+  border-color: rgb(0 149 255 / 100%);
 }
 
-.right {
-  background: hsl(0deg 100% 50%);
+.front:hover,
+.back:hover {
+  border-color: darkorange;
+  border-width: 2px;
+}
+
+.right:hover,
+.left:hover {
+  border-color: darkorange;
+  border-width: 2px;
+}
+
+.right,
+.left {
+  background: red;
+  border-color: rgb(255 0 0 / 100%);
+}
+
+.top:hover,
+.bottom:hover {
+  border-color: darkorange;
+  border-width: 2px;
+}
+
+.top,
+.bottom {
+  background: rgb(14 222 14);
+  border-color: rgb(14 222 14 / 100%);
+}
+
+.front {
+  transform: rotateY(0deg) translateZ(var(--cubeSize)) translateX(50%) translateY(50%);
 }
 
 .back {
-  background: hsl(205deg 100% 50%);
+  transform: rotateY(180deg) translateZ(var(--cubeSize)) translateX(-50%) translateY(50%);
 }
 
 .left {
-  background: hsl(0deg 100% 50%);
-}
-
-.top {
-  background: hsl(130deg 100% 50%);
-}
-
-.bottom {
-  background: hsl(130deg 100% 50%);
-}
-
-.front {
-  transform: rotateY(0deg) translateZ(var(--cubeSize));
+  transform: rotateY(-90deg) translateZ(calc(var(--cubeSize) * 0.5)) translateY(50%);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(var(--cubeSize));
-}
-
-.back {
-  transform: rotateY(180deg) translateZ(var(--cubeSize));
-}
-
-.left {
-  transform: rotateY(-90deg) translateZ(var(--cubeSize));
+  transform: rotateY(90deg) translateZ(calc(var(--cubeSize) *1.5)) translateY(50%);
 }
 
 .bottom {
-  transform: rotateX(90deg) translateZ(var(--cubeSize));
+  transform: rotateX(90deg)  translateZ(calc(var(--cubeSize) * 0.5)) translateX(50%);
 }
 
 .top {
-  transform: rotateX(-90deg) translateZ(var(--cubeSize));
+  transform: rotateX(-90deg) translateZ(calc(var(--cubeSize) *1.5))  translateX(50%);
 }
 
 .floating {
@@ -310,15 +328,15 @@
 }
 
 .hideButton {
-  width: 15px;
-  height: 20px;
+  width: 10px;
+  height: 13px;
   position: relative;
-  transform: translateX(-15px);
+  transform: translateX(-18px);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--pj-border-primary);
   padding: 0 !important;
-  border-radius: 0  5px  5px  0;
+  border-radius: 0 3px 3px 0;
 }

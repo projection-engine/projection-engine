@@ -180,6 +180,10 @@ export default function useEditorShortcuts({engine, setAlert, settings, id, exec
                 disabled: toCopy.length === 0,
                 require: [KEYS.ControlLeft, KEYS.KeyV],
                 callback: paste
+            },
+            {
+                label: "Rotate camera",
+                require: [KEYS.Mouse1]
             }
         ]
     }, [

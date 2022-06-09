@@ -69,40 +69,6 @@ export default class Engine extends Renderer {
         this.systems[SYSTEMS.PROBE].step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    testClick(currentCoords, ctrlKey, always) {
-        const camera = this.camera
-        const params = this.params
-        const entities = this.filteredEntities
-        const p = this.systems[SYSTEMS.PICK]
-        const cameraMesh = this.editorSystem.billboardSystem.cameraMesh
-        const meshSources = this.data.meshSources
-
-        const pickID = p.pickElement((shader, proj) => {
-            for (let m = 0; m < entities.length; m++) {
-                const currentInstance = entities[m]
-                if (entities[m].active) {
-                    const t = currentInstance.components[COMPONENTS.TRANSFORM]
-                    if (currentInstance.components[COMPONENTS.MESH]) {
-                        const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
-                        if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, camera.viewMatrix, proj, t.transformationMatrix, shader, this.gpu)
-                    } else if (t) PickSystem.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : p.mesh, currentInstance, camera.viewMatrix, proj, t.transformationMatrix, shader, this.gpu)
-                }
-            }
-        }, currentCoords, camera)
-        if (pickID > 0) {
-            const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickID[0] * 255 === pickID)
-            if (entity) params.setSelected(prev => {
-                const i = prev.findIndex(e => e === entity.id)
-                if (i > -1) {
-                    prev.splice(i, 1)
-                    return prev
-                }
-                if (ctrlKey) return [...prev, entity.id]
-                else return [entity.id]
-            })
-        } else if (!always)
-            params.setSelected([])
-    }
 
     updateOverrideMaterial() {
         const entity = this.data.meshes.find(m => m.id === this.params.selected[0] || m.id === this.changedEntity?.id)
@@ -172,7 +138,7 @@ export default class Engine extends Renderer {
             scripts,
             this.editorSystem,
         )
-        if (typeof params.setSelected === "function") this.cameraData.onClick = (ck, c) => this.testClick(ck, c)
+
         this.start()
         this.updateOverrideMaterial()
 

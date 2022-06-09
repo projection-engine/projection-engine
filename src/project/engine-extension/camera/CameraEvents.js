@@ -1,9 +1,10 @@
 import EditorCamera from "./EditorCamera"
 import KEYS from "../../engine/templates/KEYS"
 import {rotateY} from "../../components/viewport/transformCamera"
+import CAMERA_GIZMO from "../CAMERA_GIZMO"
 
-const BUTTON_LEFT = 0
-export default function CameraEvents(c, canvas, onClick) {
+const BUTTON_MIDDLE = 1
+export default function CameraEvents(c, canvas) {
     let isFocused = false
     let positionChanged = false
     let requested = false
@@ -12,7 +13,7 @@ export default function CameraEvents(c, canvas, onClick) {
     let camera = c
     let cameraSpeed = 0.01
     let interval, increment = 0, scrollSpeed = .5, cameraScrollDelay = 100
-
+    const cameraGizmo = document.getElementById(CAMERA_GIZMO)
     function handleInput(event) {
         switch (event.type) {
         case "wheel":
@@ -43,29 +44,44 @@ export default function CameraEvents(c, canvas, onClick) {
             break
         case "mousemove":
             positionChanged = true
-            if (isFocused && doubleClick) {
-              
-   
+            if (isFocused) {
                 if (!requested) {
                     requested = true
                     canvas.requestPointerLock()
                 }
-                const newPosition = rotateY(camera.yaw, [ctrl ? 0 : cameraSpeed * event.movementY, 0, -cameraSpeed * event.movementX])
+                if (!doubleClick) {
+                    if (event.movementY < 0)
+                        camera.pitch += .01 * Math.abs(event.movementY)
 
-                camera.centerOn[0] += newPosition[0]
-                camera.centerOn[1] -= ctrl ? .1 * event.movementY : newPosition[1]
-                camera.centerOn[2] += newPosition[2]
-            
+                    else if (event.movementY > 0)
+                        camera.pitch -= .01 * Math.abs(event.movementY)
+
+                    if (event.movementX > 0 && camera instanceof EditorCamera)
+                        camera.yaw += .01 * Math.abs(event.movementX)
+                    else if (event.movementX < 0 && camera instanceof EditorCamera)
+                        camera.yaw -= .01 * Math.abs(event.movementX)
+
+                } else {
+                    const newPosition = rotateY(camera.yaw, [ctrl ? 0 : cameraSpeed * event.movementY, 0, -cameraSpeed * event.movementX])
+
+                    camera.centerOn[0] += newPosition[0]
+                    camera.centerOn[1] -= ctrl ? .1 * event.movementY : newPosition[1]
+                    camera.centerOn[2] += newPosition[2]
+                }
                 camera.updateViewMatrix(ctrl)
+
+                if(!doubleClick && cameraGizmo){
+                    const t = camera.getNotTranslatedViewMatrix()
+                    cameraGizmo.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
+                }
+
             }
             break
         case "mousedown":
             if (isFocused)
                 doubleClick = true
-            if (event.button === BUTTON_LEFT) {
+            if (event.button === BUTTON_MIDDLE)
                 isFocused = true
-                ctrl = event.ctrlKey
-            }
             break
         case "mouseup":
             ctrl = false
@@ -86,18 +102,11 @@ export default function CameraEvents(c, canvas, onClick) {
 
     }
 
-    function handleClick(event) {
-        if (!positionChanged && event.target === canvas) {
-            const target = canvas.getBoundingClientRect()
-            onClick(event.clientX - target.left, event.clientY - target.top, event.ctrlKey)
-        }
-    }
 
     const r = {
         startTracking: () => {
             document.addEventListener("keydown", handleInput)
             document.addEventListener("keyup", handleInput)
-            canvas.addEventListener("click", handleClick)
             canvas.addEventListener("mousedown", handleInput)
             document.addEventListener("mouseup", handleInput)
             document.addEventListener("mousemove", handleInput)
@@ -106,7 +115,6 @@ export default function CameraEvents(c, canvas, onClick) {
         stopTracking: () => {
             document.removeEventListener("keydown", handleInput)
             document.removeEventListener("keyup", handleInput)
-            canvas.removeEventListener("click", handleClick)
             canvas.removeEventListener("mousedown", handleInput)
             document.removeEventListener("mouseup", handleInput)
             document.removeEventListener("mousemove", handleInput)

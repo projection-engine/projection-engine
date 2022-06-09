@@ -6,23 +6,54 @@ import useContextTarget from "../../../components/context/hooks/useContextTarget
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import ViewportOptions from "./ViewportOptions"
 import SideBar from "./components/SideBar"
+import SYSTEMS from "../../engine/templates/SYSTEMS"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import PickSystem from "../../engine/systems/PickSystem"
 
 const TRIGGERS = ["data-viewport"]
 export default function Viewport(props) {
     const ref = useRef()
-    const {bindGPU} = useContext(GPUContextProvider)
-    // const [visible, setVisible] = useState(false)
+    const {bindGPU, gpu} = useContext(GPUContextProvider)
+    useEffect(() => bindGPU(ref.current), [])
 
-    useEffect(() => {
-        // if (visible)
-        bindGPU(ref.current)
-    }, [])
-    // visible])
-    // useEffect(() => {
-    //     const obs = new IntersectionObserver((e) => setVisible(e[0]?.isIntersecting))
-    //     obs.observe(ref.current.parentNode)
-    //     return () => obs.disconnect()
-    // }, [])
+    function handler(event) {
+        if(gpu.canvas === event.target) {
+            console.log("HERE")
+            const camera = props.engine.renderer.camera
+            const entities = props.engine.entities
+            const p = props.engine.renderer.systems[SYSTEMS.PICK]
+            const cameraMesh = props.engine.renderer.editorSystem.billboardSystem.cameraMesh
+            const meshSources = props.engine.renderer.data.meshSources
+            const target = event.currentTarget.getBoundingClientRect()
+            const coords = [event.clientX - target.left, event.clientY - target.top]
+            const pickID = p.pickElement((shader, proj) => {
+                for (let m = 0; m < entities.length; m++) {
+                    const currentInstance = entities[m]
+                    if (entities[m].active) {
+                        const t = currentInstance.components[COMPONENTS.TRANSFORM]
+                        if (currentInstance.components[COMPONENTS.MESH]) {
+                            const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
+                            if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, camera.viewMatrix, proj, t.transformationMatrix, shader, props.engine.gpu)
+                        } else if (t) PickSystem.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : p.mesh, currentInstance, camera.viewMatrix, proj, t.transformationMatrix, shader, props.engine.gpu)
+                    }
+                }
+            }, {x: coords[0], y: coords[1]}, camera)
+            if (pickID > 0) {
+                const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickID[0] * 255 === pickID)
+                if (entity) props.engine.setSelected(prev => {
+                    const i = prev.findIndex(e => e === entity.id)
+                    if (i > -1) {
+                        prev.splice(i, 1)
+                        return prev
+                    }
+                    if (event.ctrlKey) return [...prev, entity.id]
+                    else return [entity.id]
+                })
+            } else
+                props.engine.setSelected([])
+        }
+    }
+
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, props.options, TRIGGERS)
     return (
         <div className={styles.wrapper}>
@@ -32,6 +63,7 @@ export default function Viewport(props) {
                 id={props.id}
             />
             <div
+                onClick={handler}
                 onDragOver={e => {
                     if (props.allowDrop) {
                         e.preventDefault()

@@ -1,13 +1,12 @@
-import styles from "../styles/ViewportOptions.module.css"
+import shared from "../styles/ViewportOptions.module.css"
+import styles from "../styles/CameraOptions.module.css"
 import PropTypes from "prop-types"
-import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core"
 import React, {useContext, useMemo, useState} from "react"
 import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 import SettingsProvider from "../../../hooks/SettingsProvider"
-import CAMERA_GIZMO from "../../../engine-extension/CAMERA_GIZMO"
 import CameraGizmo from "./CameraGizmo"
 
 export default function CameraOptions(props) {
@@ -29,7 +28,6 @@ export default function CameraOptions(props) {
             return <span style={{fontSize: "1rem"}} className={"material-icons-round"}>grid_on</span>
     }, [cameraIsOrthographic])
 
-    const [cameraLocked, setCameraLocked] = useState(engine?.renderer?.camera?.locked)
     const [cameraSpeed, setCameraSpeed] = useState(settingsContext.cameraSpeed)
     const [cameraScrollDelay, setCameraScrollDelay] = useState(settingsContext.cameraScrollDelay)
     const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
@@ -40,11 +38,11 @@ export default function CameraOptions(props) {
         engine.renderer.camera.updateViewMatrix()
     }
     return (
-        <div className={styles.floating} style={{top: 0}}>
+        <div className={styles.wrapper}>
             <CameraGizmo  bind={bind} renderer={engine.renderer}/>
-            <div className={styles.buttonGroup} style={{display: "grid", gap: "2px"}}>
+            <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown hideArrow={true}
-                    className={styles.groupItemVert}
+                    className={shared.groupItemVert}
                     onClick={() => {
                         const engine = props.engine
                         engine.renderer.camera.ortho = !engine.renderer.camera.ortho
@@ -90,7 +88,7 @@ export default function CameraOptions(props) {
                     </DropdownOptions>
                 </Dropdown>
                 <Dropdown
-                    className={styles.groupItemVert}
+                    className={shared.groupItemVert}
                     hideArrow={true}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                        Camera sensitivity
@@ -98,8 +96,8 @@ export default function CameraOptions(props) {
                     <span className={"material-icons-round"}
                         style={{fontSize: "1rem"}}>directions_run</span>
                     <DropdownOptions>
-                        <div className={styles.rangeWrapper} style={{display: "grid"}}>
-                            <div className={styles.rangeLabel}>
+                        <div className={shared.rangeWrapper} style={{display: "grid"}}>
+                            <div className={shared.rangeLabel}>
                                 Movement sensitivity
                             </div>
                             <Range
@@ -114,8 +112,8 @@ export default function CameraOptions(props) {
                                 incrementPercentage={.0001}
                             />
                         </div>
-                        <div className={styles.rangeWrapper} style={{display: "grid"}}>
-                            <div className={styles.rangeLabel}>
+                        <div className={shared.rangeWrapper} style={{display: "grid"}}>
+                            <div className={shared.rangeLabel}>
                                 Zoom speed
                             </div>
                             <Range
@@ -130,8 +128,8 @@ export default function CameraOptions(props) {
                                 incrementPercentage={.0001}
                             />
                         </div>
-                        <div className={styles.rangeWrapper} style={{display: "grid"}}>
-                            <div className={styles.rangeLabel}>
+                        <div className={shared.rangeWrapper} style={{display: "grid"}}>
+                            <div className={shared.rangeLabel}>
                                 Zoom delay
                             </div>
                             <Range
@@ -149,7 +147,7 @@ export default function CameraOptions(props) {
                     </DropdownOptions>
                 </Dropdown>
                 <Button
-                    className={styles.groupItemVert}
+                    className={shared.groupItemVert}
                     onClick={() => {
                         engine.renderer.camera.ortho = !engine.renderer.camera.ortho
                         engine.renderer.camera.updateProjection()
@@ -163,27 +161,15 @@ export default function CameraOptions(props) {
                 </Button>
 
                 <div
-                    className={styles.buttonGroup}
+                    className={shared.buttonGroup}
                     style={{
                         display: engine.renderer?.camera instanceof EditorCamera ? "grid" : "none",
                         transform: "translateY(12px)",
                         gap: "2px"
                     }}>
-                    <Button
-                        className={styles.groupItemVert}
-                        variant={cameraLocked ? "filled" : undefined}
-                        onClick={() => {
-                            const original = engine.renderer.camera.locked
-                            engine.renderer.camera.locked = !original
-                            setCameraLocked(!original)
-                        }}>
-                        <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                            Lock camera rotation
-                        </ToolTip>
-                        <span className={"material-icons-round"} style={{fontSize: "1.1rem"}} >{cameraLocked ? "lock" : "lock_open"}</span>
-                    </Button>
+
                     <div
-                        className={[styles.groupItemVert, styles.dragInput].join(" ")}
+                        className={[shared.groupItemVert, shared.dragInput].join(" ")}
                         onMouseDown={e => handleGrab(e, engine.renderer.camera, 0)}
                     >
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
@@ -192,7 +178,7 @@ export default function CameraOptions(props) {
                         <span className={"material-icons-round"}>zoom_in</span>
                     </div>
                     <div
-                        className={[styles.groupItemVert, styles.dragInput].join(" ")}
+                        className={[shared.groupItemVert, shared.dragInput].join(" ")}
                         onMouseDown={e => handleGrab(e, engine.renderer.camera, 1)}
                         onDoubleClick={() => {
                             engine.renderer.camera.centerOn = [0, 0, 0]

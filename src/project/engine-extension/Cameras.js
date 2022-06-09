@@ -7,10 +7,7 @@ export default class Cameras {
     constructor(canvasRef, position = [0, 10, 30], fov = Math.PI / 2, zNear = .1, zFar = 10000, yaw, pitch) {
         this.#camera = new EditorCamera(position, fov, zNear, zFar, 1, yaw, pitch)
 
-        this.cameraEvents = new CameraEvents(
-            this.#camera,
-            canvasRef,
-            (x, y, ctrlKey) => this.onClick({x, y}, ctrlKey))
+        this.cameraEvents = new CameraEvents(this.#camera, canvasRef)
     }
 
     set cameraScrollDelay(data) {

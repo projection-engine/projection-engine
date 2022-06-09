@@ -21,17 +21,15 @@ export default function Editor(props) {
 
     return (
         <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
-
-
-                <Viewport
-                    utils={utils}
-                    id={props.id}
-                    executingAnimation={props.executingAnimation}
-                    options={optionsViewport}
-                    engine={props.engine}
-                    allowDrop={true}
-                    handleDrop={e => importData(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
-                />
+            <Viewport
+                utils={utils}
+                id={props.id}
+                executingAnimation={props.executingAnimation}
+                options={optionsViewport}
+                engine={props.engine}
+                allowDrop={true}
+                handleDrop={e => importData(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
+            />
 
             <ResizableBar type={"width"}/>
             <SceneView

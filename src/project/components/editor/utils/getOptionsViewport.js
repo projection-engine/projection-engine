@@ -113,6 +113,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
             icon: "delete_forever",
             label: "Delete",
             onClick: deleteSelected
-        }
+        },
+
     ]
 }
