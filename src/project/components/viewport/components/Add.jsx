@@ -4,7 +4,7 @@ import Entity from "../../../engine/basic/Entity"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import PointLightComponent from "../../../engine/components/PointLightComponent"
 import TransformComponent from "../../../engine/components/TransformComponent"
-import React from 'react'
+import React from "react"
 import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
 import SkylightComponent from "../../../engine/components/SkyLightComponent"
 import CameraComponent from "../../../engine/components/CameraComponent"

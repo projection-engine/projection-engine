@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
 import QuickAccessProvider from "./hooks/QuickAccessProvider"
-import {ENTITY_ACTIONS} from "./engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
 import SettingsProvider from "./hooks/SettingsProvider"
 import FilesView from "./components/files/FilesView"
 import Editor from "./components/editor/Editor"

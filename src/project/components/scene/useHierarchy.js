@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 
 const getHierarchy = (start, all) => {
     const result = []

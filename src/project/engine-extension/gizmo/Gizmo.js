@@ -130,7 +130,6 @@ export default class Gizmo {
         gridSize,
         arrow,
         depthSystem,
-
         setSelected
     ) {
 

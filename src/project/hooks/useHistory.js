@@ -1,4 +1,4 @@
-import {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import {useEffect, useReducer, useState} from "react"
 import historyReducer, {HISTORY_ACTIONS} from "./historyReducer"
 

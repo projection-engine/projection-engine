@@ -1,5 +1,4 @@
 import styles from "../../styles/Project.module.css"
-import ViewportOptions from "../viewport/ViewportOptions"
 import Viewport from "../viewport/Viewport"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import SceneView from "../scene/SceneView"

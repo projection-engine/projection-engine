@@ -1,9 +1,11 @@
 import PropTypes from "prop-types"
 import useDirectState from "../../../../components/hooks/useDirectState"
-import React,  {useContext} from "react"
+import React, {useContext} from "react"
 import SettingsProvider from "../../../hooks/SettingsProvider"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 import styles from "../../scene/styles/Forms.module.css"
+import Range from "../../../../components/range/Range"
+
 const  toDeg = 180/ Math.PI, toRad = Math.PI/180
 export default function CameraTab(props){
     const {engine} = props
@@ -12,17 +14,17 @@ export default function CameraTab(props){
         zFar: settings.zFar,
         zNear: settings.zNear,
         fov: settings.fov * toDeg,
-        radius: engine.renderer.camera.radius,
-        centerOn: engine.renderer.camera.centerOn,
-
+        radius: engine.renderer.camera.radius
     })
 
     return (
         <>
+
             <label className={styles.label}>Clipping planes</label>
             <LabeledRange
                 minLabelWidth={"30px"}
                 label={"Far"}
+                minValue={state.zNear + 1}
                 variant={"embedded"}
                 onFinish={(v) => {
                     settings.zFar = v
@@ -37,6 +39,7 @@ export default function CameraTab(props){
                 minLabelWidth={"30px"}
                 label={"Near"}
                 variant={"embedded"}
+                maxValue={state.zFar - 1}
                 onFinish={(v) => {
                     settings.zNear = v
                     state.zNear = v
@@ -52,6 +55,8 @@ export default function CameraTab(props){
             <LabeledRange
                 minLabelWidth={"30px"}
                 label={"Fov"}
+                minValue={10}
+                maxValue={110}
                 disabled={settings.ortho}
                 variant={"embedded"}
                 onFinish={(v) => {
@@ -64,43 +69,24 @@ export default function CameraTab(props){
                 handleChange={v => state.fov = v}
             />
 
-            <label className={styles.label}>Field of view</label>
-            <LabeledRange
-                minLabelWidth={"30px"}
-                label={"X"}
-                variant={"embedded"}
+
+            <label className={styles.label}>Radius/Zoom</label>
+            <Range
                 onFinish={(v) => {
-                    state.centerOn[0] = v
-                    engine.renderer.camera.centerOn[0] = v
+                    settings.radius = v
+                    state.radius = v
+                    engine.renderer.camera.radius = v
                     engine.renderer.camera.updateViewMatrix()
                 }}
-                value={state.centerOn[0]}
-                handleChange={v => state.centerOn[0] = v}
-            />
-            <LabeledRange
-                minLabelWidth={"30px"}
-                label={"Y"}
-                variant={"embedded"}
-                onFinish={(v) => {
-                    state.centerOn[1] = v
-                    engine.renderer.camera.centerOn[1] = v
+                hideValue={true}
+                value={state.radius}
+                handleChange={v => {
+                    state.radius = v
+                    engine.renderer.camera.radius = v
                     engine.renderer.camera.updateViewMatrix()
                 }}
-                value={state.centerOn[1]}
-                handleChange={v => state.centerOn[1] = v}
             />
-            <LabeledRange
-                minLabelWidth={"30px"}
-                label={"Z"}
-                variant={"embedded"}
-                onFinish={(v) => {
-                    state.centerOn[2] = v
-                    engine.renderer.camera.centerOn[2] = v
-                    engine.renderer.camera.updateViewMatrix()
-                }}
-                value={state.centerOn[2]}
-                handleChange={v => state.centerOn[2] = v}
-            />
+
         </>
     )
 }

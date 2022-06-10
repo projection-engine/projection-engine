@@ -33,6 +33,7 @@ export default function CameraEvents(c, canvas) {
                 interval = setInterval(() => {
                     if (s < 0 && increment <= 0 || s > 0 && increment >= 0) {
                         camera.radius -= increment * percentage
+                        camera.updateViewMatrix()
                         if (s > 0)
                             increment -= percentage
                         else
@@ -40,8 +41,10 @@ export default function CameraEvents(c, canvas) {
                     } else
                         clearInterval(interval)
                 }, 1)
-            } else
+            } else {
                 camera.radius -= distance
+                camera.updateViewMatrix()
+            }
             break
         case "mousemove":
             positionChanged = true

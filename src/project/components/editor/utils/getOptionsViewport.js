@@ -1,4 +1,4 @@
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
 export default function getOptionsViewport(engine, selected, selectedRef, utils) {

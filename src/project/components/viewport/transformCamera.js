@@ -3,12 +3,12 @@ export function rotateY(angle, vec) {
     for (let i = 0; i < 4; i++) {
         matrix[i] = new Array(4).fill(0)
     }
-    matrix[0][0] = Math.cos(angle);
-    matrix[0][2] = Math.sin(angle);
-    matrix[2][0] = -Math.sin(angle);
-    matrix[1][1] = 1;
-    matrix[2][2] = Math.cos(angle);
-    matrix[3][3] = 1;
+    matrix[0][0] = Math.cos(angle)
+    matrix[0][2] = Math.sin(angle)
+    matrix[2][0] = -Math.sin(angle)
+    matrix[1][1] = 1
+    matrix[2][2] = Math.cos(angle)
+    matrix[3][3] = 1
     return [
         vec[0] * matrix[0][0] + vec[1] * matrix[1][0] + vec[2] * matrix[2][0],
         vec[0] * matrix[0][1] + vec[1] * matrix[1][1] + vec[2] * matrix[2][1],
@@ -45,8 +45,8 @@ export function handleGrab(event, camera, type) {
     }
     const handleMouseUp = () => {
         document.exitPointerLock()
-        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener("mousemove", handleMouseMove)
     }
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp, {once: true})
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUp, {once: true})
 }

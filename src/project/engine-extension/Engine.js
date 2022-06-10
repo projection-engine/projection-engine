@@ -1,5 +1,4 @@
 import Renderer from "../engine/Renderer"
-import PickSystem from "../engine/systems/PickSystem"
 import SYSTEMS from "../engine/templates/SYSTEMS"
 import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
 import COMPONENTS from "../engine/templates/COMPONENTS"

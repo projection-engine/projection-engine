@@ -1,7 +1,7 @@
 import useHotKeys from "../../../hooks/hot-keys/useHotKeys"
 import GIZMOS from "../../../../static/misc/GIZMOS"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import cloneClass from "../../../engine/utils/cloneClass"
 import {v4 as uuidv4} from "uuid"
 import {useMemo, useState} from "react"

@@ -3,7 +3,7 @@ import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FolderComponent from "../../engine/components/FolderComponent"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../../engine/instances/MeshInstance"
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FileSystem from "../../utils/files/FileSystem"
 
 export default async function importScene(fileSystem, engine, reg, setAlert, onlyReturn) {

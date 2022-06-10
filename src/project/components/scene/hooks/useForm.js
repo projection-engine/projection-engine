@@ -8,7 +8,7 @@ import Mesh from "../components/Mesh"
 
 import styles from "../styles/Scene.module.css"
 import CubeMap from "../components/CubeMap"
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import cloneClass from "../../../engine/utils/cloneClass"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import Camera from "../components/Camera"

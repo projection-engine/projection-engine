@@ -1,28 +1,23 @@
-import {useCallback, useContext, useEffect, useState} from "react"
-import useEngineEssentials, {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
+import {useCallback, useContext, useEffect, useReducer, useState} from "react"
+import entityReducer, {ENTITY_ACTIONS} from "./entityReducer"
 import useHistory from "../hooks/useHistory"
 import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 
 
-export default function useEditorEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {
+export default function useEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {
+    const {gpu, renderer} = useContext(GPUContextProvider)
+    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities, setAlert)
+
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
-    const {
-        meshes, setMeshes,
-        materials, setMaterials,
-        entities, dispatchEntities,
-        scripts, setScripts
-    } = useEngineEssentials()
-    const {gpu, renderer} = useContext(GPUContextProvider)
-    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities, setAlert)
+    const [meshes, setMeshes] = useState([])
+    const [materials, setMaterials] = useState([])
+    const [entities, dispatchEntities] = useReducer(entityReducer, [])
+    const [scripts, setScripts] = useState([])
     const [updated, setUpdated] = useState(false)
-    useEffect(() => {
-        if (renderer && updated)
-            renderer.start()
-    }, [renderer, updated])
 
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])
@@ -71,21 +66,37 @@ export default function useEditorEngine(canExecutePhysicsAnimation, settings, ca
         renderer, updated
     ])
 
-    useEffect(update, [update])
-    return {
-        update,changes,
-        returnChanges, forwardChanges,
-        dispatchChanges,
-        lockedEntity, setLockedEntity,
-        entities, dispatchEntities,
-        meshes, setMeshes,
-        gpu, materials, setMaterials,
+    useEffect(() => {
+        if (renderer && updated)
+            renderer.start()
+    }, [renderer, updated])
 
-        selected,
-        setSelected,
-        canRender, setCanRender,
+    useEffect(update, [update])
+
+    return {
+        gpu,
+        update,
+        changes,
+        returnChanges,
+        forwardChanges,
+        dispatchChanges,
+        lockedEntity,
+
+        canRender,
         renderer,
-        scripts, setScripts
+        scripts,
+        entities,
+        meshes,
+        materials,
+        selected,
+
+        dispatchEntities,
+        setMaterials,
+        setMeshes,
+        setLockedEntity,
+        setSelected,
+        setCanRender,
+        setScripts,
     }
 }
 

@@ -1,12 +1,12 @@
 import {AlertProvider} from "@f-ui/core"
 import LoaderProvider from "../../components/loader/LoaderProvider"
-import useEditorEngine from "../engine-extension/useEditorEngine"
+import useEngine from "../engine-extension/useEngine"
 import useQuickAccess from "./useQuickAccess"
 import useSerializer from "./useSerializer"
 import {useContext, useEffect, useMemo, useState} from "react"
 import EVENTS from "../../static/misc/EVENTS"
 import ProjectLoader from "../templates/ProjectLoader"
-import {ENTITY_ACTIONS} from "../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import MeshInstance from "../engine/instances/MeshInstance"
@@ -23,7 +23,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
     const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(false)
-    const engine = useEditorEngine(executingAnimation, settings, initialized, setAlert)
+    const engine = useEngine(executingAnimation, settings, initialized, setAlert)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
     const serializer = useSerializer(engine, setAlert, settings, id, quickAccess)

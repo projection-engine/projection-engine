@@ -6,6 +6,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
 import LabeledRange from "../../../../components/templates/LabeledRange"
 import styles from "../styles/Forms.module.css"
+
 export default function Transform(props) {
     const [state, setState] = useState({})
     const getNewState = () => {

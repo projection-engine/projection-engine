@@ -4,7 +4,7 @@ import Entity from "../../engine/basic/Entity"
 import FolderComponent from "../../engine/components/FolderComponent"
 import ScriptComponent from "../../engine/components/ScriptComponent"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
-import {ENTITY_ACTIONS} from "../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 
 export default async function importScript(fileSystem, engine, res) {
     const script = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')

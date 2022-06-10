@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import FileSystem from "../../../utils/files/FileSystem"
-import {ENTITY_ACTIONS} from "../../../engine/useEngineEssentials"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 
 export default async function loadScript(setAlert, selected, engine, value, quickAccess, add){
     if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value)) {
