@@ -2,19 +2,15 @@ import useHotKeys from "../../../hooks/hot-keys/useHotKeys"
 import GIZMOS from "../../../../static/misc/GIZMOS"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
-import cloneClass from "../../../engine/utils/cloneClass"
-import {v4 as uuidv4} from "uuid"
 import {useMemo, useState} from "react"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import TransformComponent from "../../../engine/components/TransformComponent"
 import KEYS from "../../../engine/templates/KEYS"
 import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 
 export default function useEditorShortcuts({engine, setAlert, settings, id, executingAnimation, serializer, setExecutingAnimation}) {
     const [toCopy, setToCopy] = useState([])
 
-    function copy(single) {
-        setToCopy(single ? [engine.selected[0]] : engine.selected)
+    function copy(single, target) {
+        setToCopy(target ? target : (single ? [engine.selected[0]] : engine.selected))
         setAlert({
             type: "info",
             message: `Entities copied (${engine.selected.length}).`
@@ -47,40 +43,16 @@ export default function useEditorShortcuts({engine, setAlert, settings, id, exec
         }
         engine.setSelected(newArr)
     }
-    function paste() {
+    function paste(parent) {
         let block = []
         toCopy.forEach((t) => {
             const found = engine.entities.find(e => e.id === t)
             if (found) {
-                let clone = cloneClass(found)
-                clone.id = uuidv4()
-                clone.name = "_" + clone.name
-                let newComponents = {}
-                Object.keys(clone.components).forEach(c => {
-                    if (c === COMPONENTS.TRANSFORM) {
-                        newComponents[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        newComponents[COMPONENTS.TRANSFORM].rotation = [...clone.components[c].rotation]
-                        newComponents[COMPONENTS.TRANSFORM].rotationQuat = [...clone.components[c].rotationQuat]
-                        newComponents[COMPONENTS.TRANSFORM].translation = [...clone.components[c].translation]
-                        newComponents[COMPONENTS.TRANSFORM].scaling = [...clone.components[c].scaling]
-                        newComponents[COMPONENTS.TRANSFORM]._transformationMatrix = [...clone.components[c]._transformationMatrix]
-                        newComponents[COMPONENTS.TRANSFORM].baseTransformationMatrix = clone.components[c].baseTransformationMatrix
-                        newComponents[COMPONENTS.TRANSFORM].lockedRotation = clone.components[c].lockedRotation
-                        newComponents[COMPONENTS.TRANSFORM].lockedScaling = clone.components[c].lockedScaling
-                        newComponents[COMPONENTS.TRANSFORM].updateQuatOnEulerChange = clone.components.updateQuatOnEulerChange
-                    } else {
-                        const cClone = cloneClass(clone.components[c])
-                        cClone.id = uuidv4()
-                        newComponents[c] = cClone
-                    }
-                })
-                delete clone.components
-                clone.components = newComponents
+                const clone = found.clone()
+                clone.linkedTo = parent
                 block.push(clone)
             }
         })
-
-
         engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         engine.setSelected(block.map(b => b.id))
         setAlert({

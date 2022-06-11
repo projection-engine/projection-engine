@@ -109,7 +109,7 @@ export default class Gizmo {
         }
         else {
             this.tracking = true
-            this.target = selected.map(e => entities[e])
+            this.target = selected
             this.gpu.canvas.requestPointerLock()
             this.renderTarget.start()
             onGizmoStart()
@@ -135,8 +135,8 @@ export default class Gizmo {
 
         if (selected.length > 0) {
             this.setSelected = setSelected
-            const el = entities[selected[0]]
-            const parent = el ? entities[el.linkedTo] : undefined
+            const el = selected[0]
+            const parent = entities[el.linkedTo]
             const currentTranslation = this.getTranslation(el),
                 parentTranslation = parent ? this.getTranslation(parent) : {data: [0, 0, 0]},
                 translation = currentTranslation.valid ? [

@@ -214,7 +214,7 @@ export default class RotationGizmo {
             this.renderTarget.style.display = "block"
             this.renderTarget.style.width = "fit-content"
             this.renderTarget.innerText = "0 θ"
-            this.target = selected.map(e => entities[e])
+            this.target = selected
 
             this.gpu.canvas.requestPointerLock()
         }
@@ -236,9 +236,8 @@ export default class RotationGizmo {
     ) {
         if (selected.length > 0) {
             this.setSelected = setSelected
-
-            const el = entities[selected[0]]
-            const parent = el ? entities[el.linkedTo] : undefined
+            const el = selected[0]
+            const parent = entities[el.linkedTo]
             const currentTranslation = this.getTranslation(el),
                 parentTranslation = parent ? this.getTranslation(parent) : {data: [0, 0, 0]},
                 translation = currentTranslation.valid ? [

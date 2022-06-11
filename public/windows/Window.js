@@ -1,4 +1,3 @@
-import FRAME_EVENTS from "../FRAME_EVENTS"
 const  {v4} = require("uuid")
 const {BrowserWindow, ipcMain} = require("electron")
 

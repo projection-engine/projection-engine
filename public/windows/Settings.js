@@ -1,5 +1,6 @@
 import FRAME_EVENTS from "../FRAME_EVENTS"
 import Window from "./Window"
+
 export default class Settings extends Window{
     constructor() {
         super( "open-shortcuts")

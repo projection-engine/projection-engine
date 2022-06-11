@@ -33,9 +33,9 @@ export default function Editor(props) {
             <ResizableBar type={"width"}/>
             <SceneView
                 executingAnimation={props.executingAnimation}
-
                 setAlert={props.setAlert}
                 engine={props.engine}
+                operationUtils={utils}
             />
         </div>
     )

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
-import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 
 const getHierarchy = (start, all) => {
     const result = []
@@ -75,7 +75,8 @@ export default function useHierarchy(engine, required,  worker) {
                     children: toFilter.map(e => mapChildren(e)),
                     icon: <span className={"material-icons-round"} style={{fontSize: "1rem"}}>inventory_2</span>,
                     type: "Scene",
-                    phantomNode: true,
+                    draggable: false,
+                    disabled: true,
                     onHide: () => {
                         let newEntities
                         if (allHidden) {

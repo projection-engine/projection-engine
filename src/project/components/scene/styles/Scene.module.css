@@ -100,19 +100,7 @@
   font-weight: 550;
 }
 
-.mainHeader[data-hidden="true"] {
-  text-orientation: mixed;
-  writing-mode: vertical-rl;
-  display: flex;
-  align-items: center;
-  height: fit-content;
-  gap: 8px;
-  padding: 4px 0 !important;
-}
 
-.mainHeader[data-hidden="true"] > label {
-  transform: rotate(180deg);
-}
 
 .content {
   width: 100%;

@@ -1,37 +1,18 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Scene.module.css"
-import React, {useContext, useMemo, useState} from "react"
-import TreeView from "../../../components/tree/TreeView"
+import React, {useContext, useState} from "react"
 import useForm from "./hooks/useForm"
 import QuickAccessProvider from "../../hooks/QuickAccessProvider"
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
-import FolderComponent from "../../engine/components/FolderComponent"
-import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
-import Entity from "../../engine/basic/Entity"
+import {Button} from "@f-ui/core"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import FormTabs from "./components/FormTabs"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
-import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import LoaderProvider from "../../../components/loader/LoaderProvider"
-import getComponentInfo from "./utils/getComponentInfo"
-import useHierarchy from "./useHierarchy"
+import Hierarchy from "./components/Hierarchy"
 
-const getHierarchy = (start, all) => {
-    const result = []
-    const direct = all.filter(e => e.linkedTo === start.id)
-    direct.forEach(d => {
-        result.push(...getHierarchy(d, all))
-    })
-    result.push(...direct)
-    return result
-}
-const TRIGGERS = ["data-node", "data-self"]
-const worker = new Worker(new URL("./hooks/hierarchy.js", import.meta.url))
+
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState("-2")
-    const [required, setRequired] = useState()
-    const data = useHierarchy(props.engine, required,  worker)
     const load = useContext(LoaderProvider)
     const currentForm = useForm(
         props.engine,
@@ -41,154 +22,10 @@ export default function SceneView(props) {
         load,
         currentTab
     )
-    const createFolder = () => {
-        const newEntity = new Entity()
-        newEntity.name = "New folder"
-        newEntity.components[COMPONENTS.FOLDER] = new FolderComponent()
-        props.engine.dispatchEntities({
-            type: ENTITY_ACTIONS.ADD, payload: newEntity
-        })
-        props.engine.dispatchChanges({
-            type: HISTORY_ACTIONS.PUSHING_DATA, payload: [newEntity]
-        })
-    }
-    const options = useMemo(() => {
-        return Object.keys(COMPONENTS).map(e => {
-            const o = getComponentInfo(COMPONENTS[e])
-            if (Object.keys(o).length > 0)
-                return (
-                    <React.Fragment key={e}>
-                        <DropdownOption option={{
-                            onClick: () => setRequired(required === COMPONENTS[e] ? undefined : COMPONENTS[e]),
-                            ...o,
-                            icon: required !== COMPONENTS[e] ? undefined :
-                                <span className={"material-icons-round"} style={{fontSize: "1rem"}}>checked</span>
-                        }}/>
-                    </React.Fragment>
-                )
-        })
-    }, [required])
-    const treeOptions = useMemo(() => {
-        return [
-            {
-                requiredTrigger: "data-self",
-                label: "Create folder",
-                icon: "create_new_folder",
-                onClick: () => createFolder()
-            },
-            {
-                requiredTrigger: "data-node",
-                label: "Remove entity",
-                icon: "delete",
-                onClick: (node) => {
-                    const t = node.getAttribute("data-node")
-                    const toRemove = getHierarchy(props.engine.entities.find(e => e.id === t), props.engine.entities).map(e => e.id)
 
-                    props.engine.setSelected([])
-                    props.engine.dispatchEntities({
-                        type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
-                    })
-
-                }
-            },
-            {
-                requiredTrigger: "data-node",
-                label: "Focus",
-                onClick: (target) => {
-                    const entity = props.engine.entities.find(e => e.id === target.getAttribute("data-node"))
-                    const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
-                    if (entity && comp) {
-                        const t = comp.translation
-
-                        props.engine.renderer.camera.radius = 10
-                        props.engine.renderer.camera.centerOn = t
-
-                        props.engine.renderer.camera.updateViewMatrix()
-                    }
-                }
-            }
-        ]
-    }, [props.engine.entities, props.engine.selected])
     return (
         <div className={styles.wrapper}>
-            <div className={styles.wrapperContent} style={{overflow: "hidden"}}>
-                <div className={[styles.header, styles.mainHeader].join(" ")}
-                    style={{justifyContent: "space-between", padding: "0 4px"}}>
-                    <label className={styles.overflow}>
-                        Scene hierarchy
-                    </label>
-                    <div style={{display: "flex", gap: "2px"}}>
-                        <Button className={styles.button} onClick={() => createFolder()}>
-                            <span className={"material-icons-round"}
-                                style={{fontSize: "1rem"}}>create_new_folder</span>
-                        </Button>
-                        <Dropdown className={styles.button} hideArrow={true}>
-                            <span className={"material-icons-round"}
-                                style={{fontSize: "1rem"}}>filter_alt</span>
-                            <DropdownOptions>
-                                {options}
-                            </DropdownOptions>
-                        </Dropdown>
-                    </div>
-                </div>
-                <TreeView
-                    contextTriggers={TRIGGERS}
-                    onMultiSelect={(items) => props.engine.setSelected(items)}
-                    multiSelect={true}
-                    searchable={true}
-                    draggable={true}
-
-                    options={treeOptions}
-                    onDrop={(event, target) => {
-                        event.preventDefault()
-                        try {
-                            const entities = JSON.parse(event.dataTransfer.getData("text"))
-                            entities.forEach(entity => {
-                                const current = props.engine.entities.find(f => f.id === target)
-                                const dropTarget = props.engine.entities.find(f => f.id === entity)
-
-                                if (!current) {
-                                    dropTarget.components[COMPONENTS.TRANSFORM].changed = true
-                                    props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.UPDATE,
-                                        payload: {
-                                            entityID: dropTarget.id, key: "linkedTo", data: undefined
-                                        }
-                                    })
-                                } else if (dropTarget && dropTarget !== current && current.linkedTo !== dropTarget.id) {
-                                    dropTarget.components[COMPONENTS.TRANSFORM].changed = true
-
-                                    props.engine.dispatchEntities({
-                                        type: ENTITY_ACTIONS.UPDATE,
-                                        payload: {
-                                            entityID: dropTarget.id,
-                                            key: "linkedTo",
-                                            data: current.id
-                                        }
-                                    })
-                                }
-                            })
-                        } catch (e) {
-                            console.error(e)
-                        }
-                    }}
-                    onDragStart={e => {
-                        if (e.ctrlKey)
-                            e.dataTransfer.setData("text", JSON.stringify(props.engine.selected.includes(e.currentTarget.id) ? props.engine.selected : [...props.engine.selected, e.currentTarget.id]))
-                        else e.dataTransfer.setData("text", JSON.stringify([e.currentTarget.id]))
-                    }}
-
-                    ids={props.engine.entities}
-                    selected={props.engine.selected}
-                    nodes={data}
-                    handleRename={(treeNode, newName) => {
-                        props.engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.UPDATE, payload: {entityID: treeNode.id, key: "name", data: newName}
-                        })
-                    }}
-                />
-            </div>
-
+            <Hierarchy {...props}/>
             <ResizableBar type={"height"}/>
             <div className={styles.wrapperContent}>
 
@@ -235,5 +72,8 @@ export default function SceneView(props) {
 }
 
 SceneView.propTypes = {
-    executingAnimation: PropTypes.bool, setAlert: PropTypes.func.isRequired, engine: PropTypes.object,
+    executingAnimation: PropTypes.bool,
+    setAlert: PropTypes.func.isRequired,
+    engine: PropTypes.object,
+    operationUtils: PropTypes.object
 }

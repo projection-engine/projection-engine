@@ -112,7 +112,6 @@ export default class ScaleGizmo extends Gizmo {
     }
 
     execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem, setSelected) {
-        if (this.xyz && selected[0] && entities[selected[0]].components[COMPONENTS.TRANSFORM] )
-            super.execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem, setSelected)
+        super.execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem, setSelected)
     }
 }
