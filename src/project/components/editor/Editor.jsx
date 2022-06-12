@@ -27,7 +27,6 @@ export default function Editor(props) {
                 options={optionsViewport}
                 engine={props.engine}
                 allowDrop={true}
-                handleDrop={e => importData(e, quickAccess.fileSystem, props.engine, props.setAlert, props.load)}
             />
 
             <ResizableBar type={"width"}/>

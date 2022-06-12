@@ -27,7 +27,8 @@ export default function Gizmo(props){
             {hidden ? null : (
                 <>
                     <Button
-                        styles={{borderRadius: "5px"}}
+                        styles={{borderRadius: "3px"}}
+                        attributes={{title: `(${settingsContext.rotationType}) Toggle transformation type`}}
                         className={styles.transformationWrapper}
                         onClick={() => {
                             if (settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
@@ -36,19 +37,16 @@ export default function Gizmo(props){
                                 settingsContext.rotationType = ROTATION_TYPES.RELATIVE
                         }}
                     >
-
                         <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>
                             {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? "place" : "language"}
                         </span>
                     </Button>
                     <div className={styles.buttonGroup} style={{display: "grid"}}>
                         <Dropdown
-                            styles={{borderRadius: "5px 5px 0 0"}}
+                            styles={{borderRadius: "3px 3px 0 0"}}
                             className={styles.transformationWrapper}
                             hideArrow={true}>
-                            <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                                <div>Translation grid size</div>
-                            </ToolTip>
+                            <ToolTip content={"Translation grid size"}/>
                             <span className={"material-icons-round"} style={{fontSize: "1rem"}}>grid_4x4</span>
                             <DropdownOptions>
                                 <div className={styles.rangeWrapper} style={{display: "grid"}}>
@@ -72,9 +70,7 @@ export default function Gizmo(props){
                             className={styles.transformationWrapper}
                             styles={{flexDirection: "column", borderTop: "none"}}
                             hideArrow={true}>
-                            <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                                <div>Scale grid size</div>
-                            </ToolTip>
+                            <ToolTip content={"Scale grid size"}/>
                             <span
                                 className={"material-icons-round"}
                                 style={{transform: "rotate(-45deg)"}}>linear_scale</span>
@@ -131,11 +127,9 @@ export default function Gizmo(props){
                         </Dropdown>
                         <Dropdown
                             className={styles.transformationWrapper}
-                            styles={{borderRadius: "0 0 5px 5px", flexDirection: "column", borderTop: "none"}}
+                            styles={{borderRadius: "0 0 3px 3px", flexDirection: "column", borderTop: "none"}}
                             hideArrow={true}>
-                            <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                                <div> Rotation angle</div>
-                            </ToolTip>
+                            <ToolTip content={"Rotation angle"}/>
                             <svg viewBox="0 0 512 512" style={{width: "1rem"}}>
                                 <path
                                     fill={"var(--pj-color-secondary)"}
@@ -160,7 +154,7 @@ export default function Gizmo(props){
 
                                 <div style={{display: "flex", padding: "4px", gap: "4px"}}>
                                     <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                        {[5, 10, 15, 30].map(e => (
+                                        {[1, 5, 10, 15].map(e => (
                                             <React.Fragment key={e + "variable-rotation"}>
                                                 <Button
                                                     disabled={!settingsContext.gridRotationSize}
@@ -173,7 +167,7 @@ export default function Gizmo(props){
                                         ))}
                                     </div>
                                     <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                        {[45, 60, 90, 120].map(e => (
+                                        {[30, 45, 60, 90].map(e => (
                                             <React.Fragment key={e + "variable-rotation"}>
                                                 <Button
                                                     disabled={!settingsContext.gridRotationSize}
@@ -195,15 +189,30 @@ export default function Gizmo(props){
                         <Button
                             className={styles.transformationWrapper}
                             variant={settingsContext.gizmo === GIZMOS.NONE ? "filled" : undefined}
-                            styles={{borderRadius: "5px 5px 0  0"}}
+                            styles={{borderRadius: "3px 3px 0  0"}}
                             highlight={settingsContext.gizmo === GIZMOS.NONE}
                             onClick={() => {
                                 settingsContext.gizmo = GIZMOS.NONE
                             }}>
-                            <span className={"material-icons-round"}>mouse</span>
+                            <span className={"material-icons-round"}>highlight_alt</span>
+                            <ToolTip content={"Select box"}/>
                         </Button>
                         <Button
                             className={styles.transformationWrapper}
+                            variant={settingsContext.gizmo === GIZMOS.CURSOR ? "filled" : undefined}
+                            styles={{borderRadius: "0 0 3px 3px"}}
+                            highlight={settingsContext.gizmo === GIZMOS.CURSOR}
+                            onClick={() => {
+                                settingsContext.gizmo = GIZMOS.CURSOR
+                            }}>
+                            <span className={"material-icons-round"}>adjust</span>
+                            <ToolTip content={"3D cursor"}/>
+                        </Button>
+                    </div>
+                    <div className={styles.buttonGroup} style={{display: "grid"}}>
+                        <Button
+                            className={styles.transformationWrapper}
+                            styles={{borderRadius: "3px 3px 0  0"}}
                             variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
 
                             highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
@@ -225,7 +234,7 @@ export default function Gizmo(props){
                         <Button
                             className={styles.transformationWrapper}
                             variant={settingsContext.gizmo === GIZMOS.SCALE ? "filled" : undefined}
-                            styles={{borderRadius: "0 0 5px 5px", borderTop: "none"}}
+                            styles={{borderRadius: "0 0 3px 3px", borderTop: "none"}}
                             highlight={settingsContext.gizmo === GIZMOS.SCALE}
                             onClick={() => {
                                 settingsContext.gizmo = GIZMOS.SCALE

@@ -4,8 +4,21 @@ import useHistory from "../hooks/useHistory"
 import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
+import Entity from "../engine/basic/Entity"
+import TransformComponent from "../engine/components/TransformComponent"
+import Transformation from "../engine/templates/Transformation"
 
 
+function getCursor(){
+    const entity = new Entity()
+    const t = new TransformComponent()
+    t.lockedRotation = true
+    t.lockedScaling = true
+    t.transformationMatrix = Transformation.transform(t.translation, [0,0,0,1], t.scaling)
+    entity.components[COMPONENTS.TRANSFORM] = t
+
+    return entity
+}
 export default function useEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {
     const {gpu, renderer} = useContext(GPUContextProvider)
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities, setAlert)
@@ -18,6 +31,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const [scripts, setScripts] = useState([])
     const [updated, setUpdated] = useState(false)
+    const [cursor, setCursor] = useState(getCursor())
 
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])
@@ -46,6 +60,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
                 setUpdated(true)
             renderer.gizmo = settings.gizmo
             renderer?.updatePackage(
+                cursor,
                 entities,
                 materials,
                 meshes,
@@ -74,6 +89,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
     useEffect(update, [update])
 
     return {
+        cursor, setCursor,
         gpu,
         update,
         changes,

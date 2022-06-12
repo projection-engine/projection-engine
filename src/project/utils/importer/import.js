@@ -6,8 +6,10 @@ import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
 import importScript from "./importScript"
 import importScene from "./importScene"
 import FileSystem from "../files/FileSystem"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import {vec4} from "gl-matrix"
 
-export default async function importData(event, fileSystem, engine, setAlert, load, asID) {
+export default async function importData(event, fileSystem, engine, setAlert, asID) {
     const entities = [], meshes = []
 
     if (asID)
@@ -50,18 +52,28 @@ export default async function importData(event, fileSystem, engine, setAlert, lo
 
     if (meshes.length > 0) {
         const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
-        console.log(newMeshes)
         engine.setMeshes(prev => [...prev, ...newMeshes])
         if (!asID) {
             const toLoad = meshes
                 .map(m => m.entity)
                 .filter(m => m !== undefined)
+
+            const cursorPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+            toLoad.forEach(e => {
+                if(e.isMesh){
+                    const transform = e.components[COMPONENTS.TRANSFORM]
+                    const t = vec4.add([], transform.translation, cursorPoint)
+                    transform.translation = t
+                    console.log(transform.translation, t)
+                    transform.changed = true
+                }
+            })
             engine.dispatchChanges({
                 type: HISTORY_ACTIONS.PUSHING_DATA,
                 payload: toLoad
             })
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
+            setAlert({message: `Meshes loaded (${toLoad.length})`, type: "success"})
         }
-        load.finishEvent(EVENTS.LOADING_MESHES)
     }
 }

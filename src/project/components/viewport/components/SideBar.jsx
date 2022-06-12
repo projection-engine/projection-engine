@@ -7,6 +7,7 @@ import CameraTab from "./CameraTab"
 import Transform from "../../scene/components/Transform"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {updateTransform} from "../../scene/hooks/useForm"
+import ViewportTab from "./ViewportTab"
 
 export default function SideBar(props){
     const [open, setOpen] = useState(false)
@@ -21,6 +22,7 @@ export default function SideBar(props){
             setTab(0)
     }, [selected])
 
+
     return (
         <>
             <div className={styles.cameraOptions} style={{right: !open ? undefined : "0"}}>
@@ -29,8 +31,8 @@ export default function SideBar(props){
                 />
             </div>
             <div style={{display: tab === -1 ? "none" : undefined}} className={styles.content}>
-                {tab === 0 ? <CameraTab engine={engine}/> : null}
-                {tab === 1 ? "Viewport" : null}
+                {tab === 0 ? <CameraTab engine={props.engine}/> : null}
+                {tab === 1 ? <ViewportTab engine={props.engine}/> : null}
                 {tab === 2 && selected ?
                     <Transform
                         engine={engine} selected={selected.components[COMPONENTS.TRANSFORM]} entityID={selected.id}
@@ -63,7 +65,6 @@ export default function SideBar(props){
                     </label>
                 </Button>
                 <Button
-                    disabled={true}
                     variant={tab === 1 ? "filled" : undefined} 
                     className={styles.button}
                     onClick={() => {

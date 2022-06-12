@@ -1,19 +1,7 @@
-import {createVAO} from "../engine/utils/utils"
-import VBOInstance from "../engine/instances/VBOInstance"
-import * as shaderCode from "./shaders/ICON.glsl"
-import ShaderInstance from "../engine/instances/ShaderInstance"
-
-
 export default class Icon {
     constructor(gpu) {
         this.gpu = gpu
-        this.shader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment, gpu)
-        this.vao = createVAO(gpu)
-        this.vertexVBO = new VBOInstance(gpu, 0, new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0]), gpu.ARRAY_BUFFER, 3, gpu.FLOAT, false)
-
-        this.#prepareTransforms([])
         this.transformVBO = this.gpu.createBuffer()
-
     }
 
     #prepareTransforms(data) {
@@ -34,22 +22,21 @@ export default class Icon {
         this.gpu.vertexAttribDivisor(4, 1)
     }
 
-    start() {
-        this.gpu.bindVertexArray(this.vao)
-        this.vertexVBO.enable()
-        this.shader.use()
-        this.gpu.bindBuffer(this.gpu.ARRAY_BUFFER, this.transformVBO)
+    static start(VBO, VAO, shader, gpu) {
+        gpu.bindVertexArray(VAO)
+        VBO.enable()
+        shader.use()
     }
-    end() {
-        this.vertexVBO.disable()
-        this.gpu.bindVertexArray(null)
-        this.gpu.bindBuffer(this.gpu.ARRAY_BUFFER, null)
+    static end(VBO, gpu) {
+        VBO.disable()
+        gpu.bindVertexArray(null)
+        gpu.bindBuffer(gpu.ARRAY_BUFFER, null)
     }
-
-    draw(transformations, texture, camera, iconSize) {
+    draw(transformations, texture, camera, iconSize, shader) {
         if (transformations.length > 0) {
+            this.gpu.bindBuffer(this.gpu.ARRAY_BUFFER, this.transformVBO)
             this.#prepareTransforms(new Float32Array(transformations.flat()))
-            this.shader.bindForUse({
+            shader.bindForUse({
                 cameraPosition: camera.position,
                 iconSampler: texture,
                 viewMatrix: camera.viewMatrix,

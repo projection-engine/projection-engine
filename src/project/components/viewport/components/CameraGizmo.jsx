@@ -90,21 +90,22 @@ export default function CameraGizmo(props){
                     </div>
                     <div
                         className={[styles.face, styles.top].join(" ")}
-						 onClick={() => {
+                        onClick={() => {
+                            bind(0, -Math.PI / 2)
+                            updateCameraRotation()
+                        }}
+
+                    >
+                        Y-
+                    </div>
+                    <div
+                        className={[styles.face, styles.bottom].join(" ")}
+                        onClick={() => {
                             bind(0, Math.PI / 2)
                             updateCameraRotation()
                         }}
                     >
                         Y+
-                    </div>
-                    <div
-                        className={[styles.face, styles.bottom].join(" ")}
-						 onClick={() => {
-                            bind(0, -Math.PI / 2)
-                            updateCameraRotation()
-                        }}
-                    >
-                        Y-
                     </div>
                 </div>
             </div>

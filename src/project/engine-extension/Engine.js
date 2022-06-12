@@ -90,7 +90,7 @@ export default class Engine extends Renderer {
         return this.#overrideMaterial
     }
 
-    updatePackage(entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
+    updatePackage(cursor, entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
 
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
@@ -133,6 +133,7 @@ export default class Engine extends Renderer {
                 setDataChanged: () => this._changed = false,
                 gizmo: this.gizmo,
                 isOrtho: camera.ortho,
+                cursor
             },
             scripts,
             this.editorSystem,

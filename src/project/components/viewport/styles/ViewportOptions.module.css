@@ -291,7 +291,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(40 40 40 / 80%);
+  background: rgb(40 40 40 / 85%);
   height: 35px;
   width: 37px;
   padding: 0 !important;
@@ -303,6 +303,9 @@
   font-size: 1.2rem !important;
   color-rendering: optimizespeed !important;
   shape-rendering: optimizespeed !important;
+}
+.transformationWrapper[data-highlight="true"]{
+  border-color: #0095ff;
 }
 
 .button {

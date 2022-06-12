@@ -30,8 +30,6 @@ void main(){
     tt[3][1]  += t.y;
     tt[3][2]  += t.z;
     gl_Position =  projectionMatrix * viewMatrix * tt * sc * vec4(position,1.0);
-     
- 
 }
 `
 

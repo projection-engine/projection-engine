@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
 import QuickAccessProvider from "./hooks/QuickAccessProvider"
 import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
@@ -53,6 +53,7 @@ export default function Project(props) {
         },
         setAlert
     )
+
     const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance, isMaterial) => {
         if(!isLevel) {
             let p = previewImage

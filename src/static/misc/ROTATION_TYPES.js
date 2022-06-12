@@ -1,4 +1,4 @@
 export default {
-    RELATIVE: 0,
-    GLOBAL: 1
+    RELATIVE: "Local",
+    GLOBAL: "Global"
 }
