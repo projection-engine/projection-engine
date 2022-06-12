@@ -129,10 +129,7 @@ export default class Engine extends Renderer {
                 onGizmoStart,
                 onGizmoEnd,
                 camera,
-                dataChanged: this._changed,
-                setDataChanged: () => this._changed = false,
                 gizmo: this.gizmo,
-                isOrtho: camera.ortho,
                 cursor
             },
             scripts,

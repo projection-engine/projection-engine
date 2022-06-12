@@ -6,36 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/select-box/SelectBox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/select-box/SelectBox.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/editor/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/editor/Editor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/SideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/SideBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/Directories.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/Directories.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraGizmo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraGizmo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Gizmo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Gizmo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/SideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/SideBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewportOptions.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewportOptions.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/material/utils/compileShaders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/material/utils/compileShaders.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine-extension/Engine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/Engine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/Icon.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/Icon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/shaders/GIZMO.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/shaders/GIZMO.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/shaders/ICON.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/shaders/ICON.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/IconsSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/IconsSystem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/basic/Entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/basic/Entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/instances/TextureInstance.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/instances/TextureInstance.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/TransformSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/TransformSystem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/utils/Conversion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/utils/Conversion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/utils/image/ImageProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/utils/image/ImageProcessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/utils/importer/import.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/utils/importer/import.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/misc/GIZMOS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/misc/GIZMOS.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/static/misc/ROTATION_TYPES.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/misc/ROTATION_TYPES.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/GBufferSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/GBufferSystem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/RenderingWrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/RenderingWrapper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/ShadowMapSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/ShadowMapSystem.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +31,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/project/engine" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -166,7 +146,7 @@
       <workItem from="1654824418268" duration="2176000" />
       <workItem from="1654888213789" duration="1128000" />
       <workItem from="1654963135164" duration="14592000" />
-      <workItem from="1655044095400" duration="18284000" />
+      <workItem from="1655044095400" duration="20740000" />
     </task>
     <servers />
   </component>
