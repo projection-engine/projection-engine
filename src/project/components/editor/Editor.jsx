@@ -37,7 +37,6 @@ export default function Editor(props) {
 }
 
 Editor.propTypes = {
-    load: PropTypes.object,
     setExecutingAnimation: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     executingAnimation: PropTypes.bool,

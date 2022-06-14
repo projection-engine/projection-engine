@@ -49,7 +49,6 @@ export default function useForm(
     engine,
     executingAnimation,
     quickAccess,
-    load,
     currentTab
 ) {
     const [currentKey, setCurrentKey] = useState()
@@ -126,7 +125,6 @@ export default function useForm(
                 return (
                     <Mesh
                         quickAccess={quickAccess}
-                        load={load}
                         submit={(mesh, type) => {
                             if (!type)
                                 selected.components[COMPONENTS.MESH].meshID = mesh

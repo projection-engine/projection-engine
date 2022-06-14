@@ -6,19 +6,16 @@ import QuickAccessProvider from "../../hooks/QuickAccessProvider"
 import {Button, Icon} from "@f-ui/core"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import FormTabs from "./components/FormTabs"
-import LoaderProvider from "../../../components/loader/LoaderProvider"
 import Hierarchy from "./components/Hierarchy"
 
 
 export default function SceneView(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const [currentTab, setCurrentTab] = useState("-2")
-    const load = useContext(LoaderProvider)
     const currentForm = useForm(
         props.engine,
         props.executingAnimation,
         quickAccess,
-        load,
         currentTab
     )
 

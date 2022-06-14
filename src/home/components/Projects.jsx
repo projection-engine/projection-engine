@@ -70,7 +70,6 @@ Projects.propTypes = {
     deleteProject: PropTypes.func.isRequired, 
     refresh: PropTypes.func,
     renameProject: PropTypes.func.isRequired,
-    load: PropTypes.object,
     projects: PropTypes.array,
     setProjects: PropTypes.func
 }

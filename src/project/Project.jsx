@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
-import QuickAccessProvider from "./hooks/QuickAccessProvider"
 import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
 import SettingsProvider from "./hooks/SettingsProvider"
 import FilesView from "./components/files/FilesView"
@@ -27,18 +26,17 @@ import {ContextWrapper} from "@f-ui/core"
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function Project(props) {
-    const {id, meta, events, initialized, setInitialized, settings} = props
+    const {id, meta, events, initialized, setInitialized, settings, load} = props
     const {
         exporter,
         entitiesWithMeshes,
-        load,
         serializer,
         engine,
-        quickAccess,
+ 
         setExecutingAnimation,
         executingAnimation,
         openTab, setOpenTab
-    } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock)
+    } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock, load)
     const [openFiles, setOpenFiles] = useState([])
     const contextMenuHook = useContextMenu()
     const options = useOptions(
@@ -57,7 +55,7 @@ export default function Project(props) {
             let p = previewImage
             if(matInstance)
                 p = engine.renderer.generatePreview(matInstance)
-            quickAccess.fileSystem
+            document.fileSystem
                 .updateAsset(registryID, pack, p)
                 .then(() => {
 
@@ -66,7 +64,7 @@ export default function Project(props) {
                     else if(!isMaterial){
                         setTimeout(() => {
                             alert.pushAlert("Reloading script", "warning",)
-                            refreshData(FILE_TYPES.SCRIPT, registryID, quickAccess.fileSystem, engine)
+                            refreshData(FILE_TYPES.SCRIPT, registryID,  engine)
                         }, 1000)
                     }
                     alert.pushAlert(  "Saved", "success", )
@@ -76,13 +74,13 @@ export default function Project(props) {
                 })
         }
         else
-            quickAccess.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
+            document.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
                 .then(() => {
                     alert.pushAlert("success",  "Saved")
                     
                     setTimeout(() => {
                         alert.pushAlert(  "Reloading script", "warning")
-                        refreshData(undefined, undefined, quickAccess.fileSystem, engine)
+                        refreshData(undefined, undefined,   engine)
                     }, 1000)
                 })
                 .catch(() => {
@@ -109,7 +107,7 @@ export default function Project(props) {
                     close: () => {
                         engine.renderer.overrideMaterial = undefined
                         setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.MATERIAL, o.registryID, quickAccess.fileSystem, engine, load)
+                        refreshData(FILE_TYPES.MATERIAL, o.registryID, engine)
                     },
 
                 }
@@ -120,14 +118,16 @@ export default function Project(props) {
                     children: (
                         <ScriptView
                             name={o.label}
-                            engine={engine} isLevelBp={o.isLevelBlueprint}
+                            engine={engine}
+                            file={o}
+                            isLevelBp={o.isLevelBlueprint}
                             submitPackage={(pack, close, previewImage) => submitPackage(pack, close, previewImage, o.isLevelBlueprint, o.registryID)}
                             id={o.registryID}
                         />
                     ),
                     close: () => {
                         setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.SCRIPT, o.registryID, quickAccess.fileSystem, engine, load)
+                        refreshData(FILE_TYPES.SCRIPT, o.registryID, engine)
                     }
                 }
             default:
@@ -145,95 +145,95 @@ export default function Project(props) {
                         engine.dispatchEntities({
                             type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
                         })
-                        entities.forEach(entity => quickAccess.fileSystem.deleteEntity(entity))
+                        entities.forEach(entity => document.fileSystem.deleteEntity(entity))
                     }, engine
                 }}>
                     <SettingsProvider.Provider value={settings}>
-                        <QuickAccessProvider.Provider value={quickAccess}>
-                            <Frame
-                                logoAction={true}
-                                options={[
+                        
+                        <Frame
+                            logoAction={true}
+                            options={[
+                                {
+                                    label: "File", 
+                                    options: [{
+                                        label: "Save project",
+                                        icon: "save",
+                                        shortcut: "Ctrl + S",
+                                        onClick: () => serializer.save()
+                                    }, 
                                     {
-                                        label: "File", 
-                                        options: [{
-                                            label: "Save project",
-                                            icon: "save",
-                                            shortcut: "Ctrl + S",
-                                            onClick: () => serializer.save()
-                                        }, 
-                                        {
-                                            label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
-                                                exporter.build({
-                                                    entities: engine.entities,
-                                                    meshes: engine.meshes,
-                                                    materials: engine.materials,
-                                                    scripts: engine.scripts
+                                        label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
+                                            exporter.build({
+                                                entities: engine.entities,
+                                                meshes: engine.meshes,
+                                                materials: engine.materials,
+                                                scripts: engine.scripts
+                                            })
+                                                .then(() => {
+                                                    alert.pushAlert( "Successfully exported", "success")
+                                                    setTimeout(() => {
+                                                        shell.openPath(document.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
+                                                    }, 2000)
                                                 })
-                                                    .then(() => {
-                                                        alert.pushAlert( "Successfully exported", "success")
-                                                        setTimeout(() => {
-                                                            shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
-                                                        }, 2000)
-                                                    })
-                                                    .catch(() => alert.pushAlert("Error during packaging process", "error"))
-                                            }
-                                        }]
-                                    },
-                                    {
-                                        label: "Help",
-                                        options: [
-                                            {
-                                                label: "Editor Shortcuts",
-                                                onClick: () => ipcRenderer.send("open-shortcuts", {})
-                                            },
-                                            {
-                                                label: "About",
-                                                icon: "help",
-                                                disabled: true
-                                            },
-
-                                        ]
-                                    }
-                                ]}
-                                hasLogo={true}
-                                pageInfo={events}
-                                label={meta?.name}/>
-                            <ContextWrapper
-                                wrapperClassName={styles.context}
-                                triggers={contextMenuHook[0].triggers}
-                                className={styles.wrapper}
-                                content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
-                            >
-                                <Header options={options}/>
-                                <Editor
-                                    setExecutingAnimation={setExecutingAnimation}
-                                    executingAnimation={executingAnimation}
-                                    engine={engine}
-                                    id={id}
-                                    load={load}
-                                    settings={settings}
-                                    serializer={serializer}
-                                />
-                                <Tabs
-                                    open={openTab}
-                                    setOpen={setOpenTab}
-                                    orientation={"vertical"}
-                                    tabs={[
+                                                .catch(() => alert.pushAlert("Error during packaging process", "error"))
+                                        }
+                                    }]
+                                },
+                                {
+                                    label: "Help",
+                                    options: [
                                         {
-                                            label: "Files",
-                                            icon: "folder",
-                                            children: (
-                                                <FilesView
-                                                    id={id}
-                                                />
-                                            )
+                                            label: "Editor Shortcuts",
+                                            onClick: () => ipcRenderer.send("open-shortcuts", {})
                                         },
-                                        ...tabs
-                                    ]}
-                                />
-                            </ContextWrapper>
-                            <Shortcuts/>
-                        </QuickAccessProvider.Provider>
+                                        {
+                                            label: "About",
+                                            icon: "help",
+                                            disabled: true
+                                        },
+
+                                    ]
+                                }
+                            ]}
+                            hasLogo={true}
+                            pageInfo={events}
+                            label={meta?.name}/>
+                        <ContextWrapper
+                            wrapperClassName={styles.context}
+                            triggers={contextMenuHook[0].triggers}
+                            className={styles.wrapper}
+                            content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
+                        >
+                            <Header options={options}/>
+                            <Editor
+                                setExecutingAnimation={setExecutingAnimation}
+                                executingAnimation={executingAnimation}
+                                engine={engine}
+                                id={id}
+
+                                settings={settings}
+                                serializer={serializer}
+                            />
+                            <Tabs
+                                open={openTab}
+                                setOpen={setOpenTab}
+                                orientation={"vertical"}
+                                tabs={[
+                                    {
+                                        label: "Files",
+                                        icon: "folder",
+                                        children: (
+                                            <FilesView
+                                                id={id}
+                                            />
+                                        )
+                                    },
+                                    ...tabs
+                                ]}
+                            />
+                        </ContextWrapper>
+                        <Shortcuts/>
+         
                     </SettingsProvider.Provider>
                 </EntitiesProvider.Provider>
             </OpenFileProvider.Provider>
@@ -242,6 +242,8 @@ export default function Project(props) {
 }
 
 Project.propTypes={
+    load: PropTypes.object,
+    quickAccess: PropTypes.object,
     pushSettingsBlock: PropTypes.func,
     id: PropTypes.string,
     meta: PropTypes.object,

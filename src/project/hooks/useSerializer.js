@@ -1,17 +1,10 @@
 import {useCallback, useContext, useEffect} from "react"
-
-
-import EVENTS from "../../static/misc/EVENTS"
 import ProjectLoader from "../templates/ProjectLoader"
-import LoaderProvider from "../../components/loader/LoaderProvider"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import FileSystem from "../utils/files/FileSystem"
 
 
-export default function useSerializer(engine, settings, id, quickAccess) {
-
-    const load = useContext(LoaderProvider)
-    const fileSystem = quickAccess.fileSystem
+export default function useSerializer(engine, settings, id) {
     let interval
     const {renderer} = useContext(GPUContextProvider)
 
@@ -22,10 +15,10 @@ export default function useSerializer(engine, settings, id, quickAccess) {
         if (id) {
             const canvas = engine.gpu.canvas
             const preview = canvas.toDataURL()
-            const res = await fileSystem.readFile(fileSystem.path + FileSystem.sep + ".meta")
+            const res = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + ".meta")
             if (res) {
                 const old = JSON.parse(res.toString())
-                await fileSystem
+                await document.fileSystem
                     .updateProject(
                         {
                             ...old,
@@ -51,16 +44,16 @@ export default function useSerializer(engine, settings, id, quickAccess) {
         alert.pushAlert("Saving project", "info")
         if (id) {
             await saveSettings()
-            const all = await ProjectLoader.getEntities(fileSystem)
+            const all = await ProjectLoader.getEntities( )
             await Promise.all(all.map(a => {
                 if (a && !engine.entities.find(e => e.id === a.id))
-                    return fileSystem.deleteFile(fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + a.id + ".entity", true)
+                    return document.fileSystem.deleteFile(document.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + a.id + ".entity", true)
             }).filter(e => e))
 
             try {
                 await Promise.all(engine.entities.map(e => {
                     const str = JSON.stringify(e)
-                    return fileSystem.updateEntity(str, e.id)
+                    return document.fileSystem.updateEntity(str, e.id)
                 }))
             } catch (err) {
                 console.error(err)
@@ -69,7 +62,6 @@ export default function useSerializer(engine, settings, id, quickAccess) {
                 "Project saved.",
                 "success"
             )
-            load.finishEvent(EVENTS.PROJECT_SAVE)
         } else
             alert.pushAlert("Error saving project", "error")
     }, [engine.entities, settings, id, renderer])

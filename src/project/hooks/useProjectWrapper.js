@@ -1,6 +1,4 @@
-import LoaderProvider from "../../components/loader/LoaderProvider"
 import useEngine from "../engine-extension/useEngine"
-import useQuickAccess from "./useQuickAccess"
 import useSerializer from "./useSerializer"
 import {useContext, useEffect, useMemo, useState} from "react"
 import EVENTS from "../../static/misc/EVENTS"
@@ -12,15 +10,15 @@ import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
 import CHANNELS from "../../../public/project/loader/CHANNELS"
 
-export default function useProjectWrapper(id, initialized, setInitialized, settings, pushSettingsBlock) {
+export default function useProjectWrapper(id, initialized, setInitialized, settings, pushSettingsBlock, load) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const {gpu} = useContext(GPUContextProvider)
-    const load = useContext(LoaderProvider)
+  
     const [loading, setLoading] = useState(false)
     const engine = useEngine(executingAnimation, settings, initialized)
-    const quickAccess = useQuickAccess(id, load)
+
     const [filesLoaded, setFilesLoaded] = useState([])
-    const serializer = useSerializer(engine, settings, id, quickAccess)
+    const serializer = useSerializer(engine, settings, id)
     const [openTab, setOpenTab] = useState(0)
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
@@ -35,7 +33,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                         ...res.settings.data,
                         name: res.meta?.data?.name
                     })
-                const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data, gpu, quickAccess.fileSystem) : undefined).filter(e => e))
+                const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data, gpu) : undefined).filter(e => e))
                 engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
 
                 setInitialized(true)
@@ -59,7 +57,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                     return [...prev, ...res.map(s => s.script)]
                 })
             })
-            ipcRenderer.send(CHANNELS.SEND, {projectPath: quickAccess.fileSystem.path, projectID: id, listenID})
+            ipcRenderer.send(CHANNELS.SEND, {projectPath: document.fileSystem.path, projectID: id, listenID})
         }
     }, [gpu])
 
@@ -81,11 +79,11 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
     return {
         entitiesWithMeshes,
-        load, settings,
+        settings,
         setFilesLoaded,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
-        quickAccess, filesLoaded,
+        filesLoaded,
         openTab, setOpenTab
     }
 }

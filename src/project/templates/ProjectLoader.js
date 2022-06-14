@@ -26,18 +26,18 @@ import FileSystem from "../utils/files/FileSystem"
 export default class ProjectLoader {
 
 
-    static async getEntities(fileSystem) {
-        const entities = await fileSystem.fromDirectory(fileSystem.path + FileSystem.sep + "logic", ".entity")
-        return await Promise.all(entities.map(e => fileSystem.readFile(fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
+    static async getEntities() {
+        const entities = await document.fileSystem.fromDirectory(document.fileSystem.path + FileSystem.sep + "logic", ".entity")
+        return await Promise.all(entities.map(e =>document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
     }
 
-    static async readFromRegistry(fileID, fileSystem) {
+    static async readFromRegistry(fileID) {
         return new Promise(resolve => {
-            fileSystem.readRegistryFile(fileID)
+            document.fileSystem.readRegistryFile(fileID)
                 .then(lookUpTable => {
 
                     if (lookUpTable) {
-                        fileSystem.readFile(fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
+                        document.fileSystem.readFile(document.fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
                             .then(fileData => {
                                 if (fileData) resolve(fileData)
                                 else resolve(null)
@@ -49,10 +49,10 @@ export default class ProjectLoader {
 
 
 
-    static async loadMeshes(toLoad, fileSystem, gpu) {
+    static async loadMeshes(toLoad, gpu) {
         const promises = toLoad.map(m => {
             return new Promise(r => {
-                ProjectLoader.readFromRegistry(m, fileSystem)
+                ProjectLoader.readFromRegistry(m )
                     .then(fileData => {
                         if (fileData) {
                             const parsed = JSON.parse(fileData)
@@ -77,53 +77,34 @@ export default class ProjectLoader {
         return await Promise.all(promises)
     }
 
-    static async loadScripts(toLoad, fileSystem, meshesLoaded, mapEntities = true, gpu) {
-
-        const promises = toLoad.map(m => {
-            return new Promise(async r => {
-                const fileData = await ProjectLoader.readFromRegistry(m, fileSystem)
-
-                if (fileData) try {
-                    const d = JSON.parse(fileData)
-
-                    r({
-                        script: {
-                            id: m, executors: d.response, name: d.name
-                        }, entities: mapEntities ? await Promise.all(d.entities.map((e, i) => {
-                            return ProjectLoader.mapEntity(e, gpu, fileSystem)
-                        })) : []
-                    })
-                } catch (e) {
-                    r({
-                        script: {
-                            id: m, executors: fileData
-                        }, entities: []
-                    })
-                } else r()
-            })
-        })
-
-        return await Promise.all(promises)
-    }
-
-    static async loadMaterials(toLoad, fileSystem, gpu) {
+    static async loadScripts(toLoad,  meshesLoaded, mapEntities = true, gpu) {
         const result = []
-        for (let i in toLoad) {
+        for(let i in toLoad){
             const m = toLoad[i]
-            const fileData = await ProjectLoader.readFromRegistry(m, fileSystem)
-            if (fileData) {
-                let fileParsed
-                try {
-                    fileParsed = JSON.parse(fileData)
-                    if (fileParsed && Object.keys(fileParsed).length > 0)
-                        result.push(await ProjectLoader.mapMaterial(fileParsed.response, gpu, m))
-                } catch (e) {
-                }
-            }
+            const fileData = await ProjectLoader.readFromRegistry(m)
+
+            if (fileData) try {
+                const d = JSON.parse(fileData)
+
+                result.push({
+                    script: {
+                        id: m, executors: d.response, name: d.name
+                    }, entities: mapEntities ? await Promise.all(d.entities.map(e => {
+                        return ProjectLoader.mapEntity(e, gpu)
+                    })) : []
+                })
+            } catch (e) {
+                result.push({
+                    script: {
+                        id: m, executors: fileData
+                    }, entities: []
+                })
+            } 
         }
         return result
     }
 
+ 
     static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
         let newMat
         await new Promise(resolve => {
@@ -133,13 +114,13 @@ export default class ProjectLoader {
         return newMat
     }
 
-    static async mapEntity(entity, gpu, fileSystem) {
+    static async mapEntity(entity, gpu) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         parsedEntity.blueprintID = entity.blueprintID
 
         for (const k in entity.components) {
             if (typeof ENTITIES[k] === "function") {
-                let component = await ENTITIES[k](entity, k, gpu, fileSystem)
+                let component = await ENTITIES[k](entity, k, gpu)
                 if (component) {
 
                     if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
@@ -159,9 +140,9 @@ const ENTITIES = {
     [COMPONENTS.MESH]: async (entity, k) => new MeshComponent(entity.components[k].id),
 
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
-    [COMPONENTS.SKYBOX]: async (entity, k, gpu, fileSystem) => {
+    [COMPONENTS.SKYBOX]: async (entity, k, gpu) => {
         const component = new SkyboxComponent(entity.components[k].id, gpu)
-        const fileData = await ProjectLoader.readFromRegistry(entity.components[k].imageID, fileSystem)
+        const fileData = await ProjectLoader.readFromRegistry(entity.components[k].imageID)
         if (fileData) {
             const img = await ImageProcessor.getImageBitmap(fileData)
             component.imageID = entity.components[k].imageID
@@ -170,13 +151,13 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: async (entity, k, gpu, fileSystem) => {
+    [COMPONENTS.MATERIAL]: async (entity, k, gpu) => {
         const newMat = new MaterialComponent(entity.components[k].id)
 
         newMat.materialID = entity.components[k].materialID
         const toLoad = (entity.components[k].uniforms ? entity.components[k].uniforms : []).map(u => {
             if (u.type === DATA_TYPES.TEXTURE && u.modified) return new Promise(async resolve => {
-                const fileData = await ProjectLoader.readFromRegistry(u.value, fileSystem)
+                const fileData = await ProjectLoader.readFromRegistry(u.value)
                 if (fileData) {
                     let texture
                     await new Promise(r => {
@@ -211,6 +192,7 @@ const ENTITIES = {
             component.rotation = Transformation.getEuler(entity.components[k]._rotationQuat)
             component.updateQuatOnEulerChange = true
         } catch (e) {
+            console.error(e)
         }
         return component
     },

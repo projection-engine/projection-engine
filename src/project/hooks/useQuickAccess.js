@@ -1,21 +1,16 @@
-import {useMemo, useState} from "react"
+import {useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
-import EVENTS from "../../static/misc/EVENTS"
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
 
-export default function useQuickAccess(projectID, load) {
+export default function useQuickAccess( ) {
     const [state, setState] = useState({
         images: [],
         meshes: [],
         materials: [],
         scripts: []
     })
-
-    const fileSystem = useMemo(() => {
-        return new FileSystem(projectID)
-    }, [projectID])
     const refresh = () => {
-        fileSystem.readRegistry()
+        document.fileSystem.readRegistry()
             .then(reg => {
                 const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
                     meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
@@ -86,14 +81,10 @@ export default function useQuickAccess(projectID, load) {
                             materials: res.filter(f => f.type === "material"),
                             scripts: [...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")]
                         })
-                        load.finishEvent(EVENTS.REFRESHING)
                     })
             })
     }
 
-    return {
-        ...state,
-        fileSystem,
-        refresh
-    }
+
+    return [refresh, state]
 }

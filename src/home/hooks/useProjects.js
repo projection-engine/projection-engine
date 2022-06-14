@@ -1,16 +1,13 @@
 import {useContext, useEffect, useState} from "react"
-import LoaderProvider from "../../components/loader/LoaderProvider"
 import AsyncFS from "../../project/templates/AsyncFS"
 import FileSystem from "../../project/utils/files/FileSystem"
 import EN from "../../static/locale/EN"
 
 const path = window.require("path")
-const fs = window.require("fs")
 
 export default function useProjects() {
     const [projects, setProjects] = useState([])
     const [startPath, setStartPath] = useState()
-    const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(true)
 
     async function refresh (path) {
@@ -24,7 +21,6 @@ export default function useProjects() {
                 const f = res[i]
                 let filename = path + f
                 const [, stat] = await AsyncFS.lstat(filename)
-                console.log(stat)
                 if (stat && stat.isDirectory) {
                     const [, meta] = await AsyncFS.read(filename + "/.meta")
                     const [, settings] = await AsyncFS.read(filename + "/.settings")
@@ -65,8 +61,6 @@ export default function useProjects() {
         loading,
         projects,
         setProjects,
-
-        load,
         refresh,
         startPath,
         setStartPath

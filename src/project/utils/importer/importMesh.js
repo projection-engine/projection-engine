@@ -7,7 +7,7 @@ import MaterialComponent from "../../engine/components/MaterialComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FileSystem from "../files/FileSystem"
 
-export default async function importMesh(objLoaded, engine, id, fileSystem) {
+export default async function importMesh(objLoaded, engine, id) {
 
     let mesh,
         entity,
@@ -25,9 +25,9 @@ export default async function importMesh(objLoaded, engine, id, fileSystem) {
             })
 
             if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
-                const rs = await fileSystem.readRegistryFile(objLoaded.material)
+                const rs = await document.fileSystem.readRegistryFile(objLoaded.material)
                 if (rs) {
-                    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
+                    const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
                     if (file && file.response)
                         material = {
                             ...file.response,

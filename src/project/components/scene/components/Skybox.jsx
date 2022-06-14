@@ -13,7 +13,7 @@ export default function Skybox(props) {
         resolution: props.selected.resolution,
         // gamma: props.selected.gamma, exposure: props.selected.exposure
     })
-    const fileSystem = props.quickAccess.fileSystem
+
     useEffect(() => {
         if (props.selected.imageID) setCurrentImage(props.quickAccess.images.find(i => i.registryID === props.selected.imageID))
     }, [])
@@ -25,8 +25,8 @@ export default function Skybox(props) {
                 type={"image"}
                 selected={currentImage}
                 handleChange={async (src) => {
-                    const rs = await fileSystem.readRegistryFile(src.registryID)
-                    const file = !rs ? null : await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path)
+                    const rs = await document.fileSystem.readRegistryFile(src.registryID)
+                    const file = !rs ? null : await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path)
                     const res = !file ? null : await ImageProcessor.getImageBitmap(file)
                     if (res) {
                         props.submit({

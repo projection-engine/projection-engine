@@ -19,7 +19,6 @@ import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
 
 export default function Material(props) {
     const [state, clear] = useDirectState({})
-    const fileSystem = props.quickAccess.fileSystem
     const lastID = useRef()
 
     useEffect(() => {
@@ -39,9 +38,9 @@ export default function Material(props) {
 
     const loadFile = async (src, type = "json") => {
 
-        const rs = await fileSystem.readRegistryFile(src.registryID)
+        const rs = await document.fileSystem.readRegistryFile(src.registryID)
         if (rs) {
-            const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
+            const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
             if (file)
                 return file
             else {

@@ -6,8 +6,8 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FileSystem from "../../utils/files/FileSystem"
 
-export default async function importScene(fileSystem, engine, reg, onlyReturn) {
-    const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+export default async function importScene(  engine, reg, onlyReturn) {
+    const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
     const meshes = []
     const entities = []
     if (file) {
@@ -17,7 +17,7 @@ export default async function importScene(fileSystem, engine, reg, onlyReturn) {
 
 
         for (let i in file.nodes) {
-            const data = await loopNodes(file.nodes[i], fileSystem, engine.gpu, folder.id)
+            const data = await loopNodes(file.nodes[i],   engine.gpu, folder.id)
 
             meshes.push(...data.meshes)
             entities.push(...data.children)
@@ -37,7 +37,7 @@ export default async function importScene(fileSystem, engine, reg, onlyReturn) {
     return {meshes, entities}
 }
 
-async function loopNodes(node, fileSystem, gpu, parent) {
+async function loopNodes(node,   gpu, parent) {
     const meshes = [], children = []
 
 
@@ -47,9 +47,9 @@ async function loopNodes(node, fileSystem, gpu, parent) {
     entity.components[COMPONENTS.FOLDER] = new FolderComponent()
     for (let m in node.primitives) {
         const primitive = node.primitives[m]
-        const reg = await fileSystem.readRegistryFile(primitive)
+        const reg = await document.fileSystem.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+            const meshData = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
 
             const instance = new MeshInstance({
                 ...meshData,
@@ -63,7 +63,7 @@ async function loopNodes(node, fileSystem, gpu, parent) {
     children.push(entity)
 
     for (let i in node.children) {
-        const data = await loopNodes(node.children[i], fileSystem, gpu, entity.id)
+        const data = await loopNodes(node.children[i],   gpu, entity.id)
         meshes.push(...data.meshes)
         children.push(...data.children)
     }

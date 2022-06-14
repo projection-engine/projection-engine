@@ -5,11 +5,12 @@ import FolderComponent from "../../engine/components/FolderComponent"
 import ScriptComponent from "../../engine/components/ScriptComponent"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
+import FileSystem from "../files/FileSystem"
 
-export default async function importScript(fileSystem, engine, res) {
-    const script = await fileSystem.readFile(fileSystem.path + '\\assets\\' + res.path, 'json')
+export default async function importScript( engine, res) {
+    const script = await document.fileSystem.readFile(document.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
     const meshesToLoad = script.entities.map(e => e.components[COMPONENTS.MESH]?.meshID).filter(e => e)
-    const m = await ProjectLoader.loadMeshes(meshesToLoad, fileSystem, engine.gpu)
+    const m = await ProjectLoader.loadMeshes(meshesToLoad,  engine.gpu)
 
     const folder = new Entity()
     folder.id = res.id
@@ -19,7 +20,7 @@ export default async function importScript(fileSystem, engine, res) {
 
     const entities = []
     for (let i = 0; i < script.entities.length; i++) {
-        const ee = await ProjectLoader.mapEntity(script.entities[i], i, fileSystem, engine.gpu)
+        const ee = await ProjectLoader.mapEntity(script.entities[i],  engine.gpu)
         ee.id = script.entities[i].id
         ee.linkedTo = res.id
         if (ee.components[COMPONENTS.MESH])

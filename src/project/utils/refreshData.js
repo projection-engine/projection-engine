@@ -3,9 +3,9 @@ import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
 import FileSystem from "./files/FileSystem"
 
 
-export default async function refreshData(type, registryID, fileSystem, engine) {
+export default async function refreshData(type, registryID,  engine) {
     if(type === FILE_TYPES.SCRIPT) {
-        const newScript = await ProjectLoader.loadScripts([registryID], fileSystem, [], false)
+        const newScript = await ProjectLoader.loadScripts([registryID],  [], false)
         if (newScript[0])
             engine.setScripts(prev => {
                 return prev.map(p => {
@@ -16,12 +16,12 @@ export default async function refreshData(type, registryID, fileSystem, engine) 
             })
     }
     else {
-        const res = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, "json")
+        const res = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, "json")
         engine.setScripts(prev => {
             return prev.map(p => {
-                if (p.id === fileSystem.projectID)
+                if (p.id === document.fileSystem.projectID)
                     return {
-                        id: fileSystem.projectID,
+                        id: document.fileSystem.projectID,
                         executors: res.response,
                         name: res.name
                     }
