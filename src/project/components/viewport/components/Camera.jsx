@@ -1,7 +1,7 @@
 import shared from "../styles/ViewportOptions.module.css"
 import styles from "../styles/CameraOptions.module.css"
 import PropTypes from "prop-types"
-import {Button, Dropdown, DropdownOption, DropdownOptions, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
@@ -24,13 +24,13 @@ export default function Camera(props) {
             return (
                 <div
                     style={{width: "20px", height: "20px", perspective: "40px", transformStyle: "preserve-3d"}}>
-                    <span
-                        style={{fontSize: "1.1rem", transform: "rotateX(45deg)"}}
-                        className={"material-icons-round"}>grid_on</span>
+                    <Icon
+                        styles={{fontSize: "1.1rem", transform: "rotateX(45deg)"}}
+                        >grid_on</Icon>
                 </div>
             )
         else
-            return <span style={{fontSize: "1rem"}} className={"material-icons-round"}>grid_on</span>
+            return <Icon styles={{fontSize: "1rem"}} >grid_on</Icon>
     }, [settingsContext.ortho])
 
     const [cameraSpeed, setCameraSpeed] = useState(settingsContext.cameraSpeed)
@@ -52,7 +52,7 @@ export default function Camera(props) {
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                         Camera position
                     </ToolTip>
-                    <span style={{fontSize: "1.1rem"}} className={"material-icons-round"}>videocam</span>
+                    <Icon styles={{fontSize: "1.1rem"}} >videocam</Icon>
                     <DropdownOptions>
                         <DropdownOption
                             option={{
@@ -92,8 +92,8 @@ export default function Camera(props) {
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                        Camera sensitivity
                     </ToolTip>
-                    <span className={"material-icons-round"}
-                        style={{fontSize: "1rem"}}>directions_run</span>
+                    <Icon
+                        styles={{fontSize: "1rem"}}>directions_run</Icon>
                     <DropdownOptions>
                         <div className={shared.rangeWrapper} style={{display: "grid"}}>
                             <div className={shared.rangeLabel}>
@@ -174,7 +174,7 @@ export default function Camera(props) {
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
                             Drag X to zoom in/out
                         </ToolTip>
-                        <span className={"material-icons-round"}>zoom_in</span>
+                        <Icon >zoom_in</Icon>
                     </div>
                     <div
                         className={[shared.groupItemVert, shared.dragInput].join(" ")}
@@ -188,7 +188,7 @@ export default function Camera(props) {
                             <div>- Drag Y to move up/down</div>
                             <div>- Double click to center</div>
                         </ToolTip>
-                        <span className={"material-icons-round"}>back_hand</span>
+                        <Icon >back_hand</Icon>
                     </div>
                 </div>
             </div>

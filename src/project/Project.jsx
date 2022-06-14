@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
 import QuickAccessProvider from "./hooks/QuickAccessProvider"
 import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
@@ -29,7 +29,6 @@ const {ipcRenderer, shell} = window.require("electron")
 export default function Project(props) {
     const {id, meta, events, initialized, setInitialized, settings} = props
     const {
-        setAlert,
         exporter,
         entitiesWithMeshes,
         load,
@@ -50,8 +49,7 @@ export default function Project(props) {
         () => {
             setOpenTab(openFiles.length +1 )
             setOpenFiles(prev => [...prev, {name: "Level Blueprint", type: "flow", isLevelBlueprint: true}])
-        },
-        setAlert
+        }
     )
 
     const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance, isMaterial) => {
@@ -67,29 +65,28 @@ export default function Project(props) {
                         engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
                     else if(!isMaterial){
                         setTimeout(() => {
-                            setAlert({type: "warning", message: "Reloading script"})
+                            alert.pushAlert("Reloading script", "warning",)
                             refreshData(FILE_TYPES.SCRIPT, registryID, quickAccess.fileSystem, engine)
                         }, 1000)
                     }
-                    setAlert({type: "success", message: "Saved"})
+                    alert.pushAlert(  "Saved", "success", )
                 })
                 .catch(() => {
-                    setAlert({type: "error", message: "Some error occurred"})
+                    alert.pushAlert(  "Some error occurred", "error", )
                 })
         }
         else
             quickAccess.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
                 .then(() => {
-                    setAlert({type: "success", message: "Saved"})
+                    alert.pushAlert("success",  "Saved")
                     
                     setTimeout(() => {
-                        setAlert({type: "warning", message: "Reloading script"})
+                        alert.pushAlert(  "Reloading script", "warning")
                         refreshData(undefined, undefined, quickAccess.fileSystem, engine)
                     }, 1000)
                 })
                 .catch(() => {
-
-                    setAlert({type: "error", message: "Some error occurred"})
+                    alert.pushAlert(  "Some error occurred", "error")
                 })
     }
 
@@ -125,7 +122,6 @@ export default function Project(props) {
                             name={o.label}
                             engine={engine} isLevelBp={o.isLevelBlueprint}
                             submitPackage={(pack, close, previewImage) => submitPackage(pack, close, previewImage, o.isLevelBlueprint, o.registryID)}
-                            setAlert={setAlert}
                             id={o.registryID}
                         />
                     ),
@@ -174,16 +170,12 @@ export default function Project(props) {
                                                     scripts: engine.scripts
                                                 })
                                                     .then(() => {
-                                                        setAlert({
-                                                            type: "success", message: "Successfully exported"
-                                                        })
+                                                        alert.pushAlert( "Successfully exported", "success")
                                                         setTimeout(() => {
                                                             shell.openPath(quickAccess.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
                                                         }, 2000)
                                                     })
-                                                    .catch(() => setAlert({
-                                                        type: "error", message: "Error during packaging process"
-                                                    }))
+                                                    .catch(() => alert.pushAlert("Error during packaging process", "error"))
                                             }
                                         }]
                                     },
@@ -208,11 +200,10 @@ export default function Project(props) {
                                 label={meta?.name}/>
                             <ContextWrapper
                                 wrapperClassName={styles.context}
-                                triggers={contextMenuHook.triggers}
+                                triggers={contextMenuHook[0].triggers}
                                 className={styles.wrapper}
-                                content={(selected, close) => <ContextMenu options={contextMenuHook.options} engine={engine} close={close} selected={selected}/>}
+                                content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
                             >
-
                                 <Header options={options}/>
                                 <Editor
                                     setExecutingAnimation={setExecutingAnimation}
@@ -220,7 +211,6 @@ export default function Project(props) {
                                     engine={engine}
                                     id={id}
                                     load={load}
-                                    setAlert={setAlert}
                                     settings={settings}
                                     serializer={serializer}
                                 />
@@ -234,7 +224,6 @@ export default function Project(props) {
                                             icon: "folder",
                                             children: (
                                                 <FilesView
-                                                    setAlert={setAlert}
                                                     id={id}
                                                 />
                                             )

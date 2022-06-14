@@ -1,7 +1,9 @@
 import React, {useContext, useMemo} from "react"
-import HotKeysProvider from "../../hooks/hot-keys/HotKeysProvider"
+
 import styles from "./styles/Shortcuts.module.css"
 import KEYS from "../../../static/misc/LABELED_KEYS"
+import HotKeysProvider from "./hooks/HotKeysProvider"
+import {Icon} from "@f-ui/core"
 
 export default function Shortcuts(){
     const shortcuts = useContext(HotKeysProvider)
@@ -13,7 +15,7 @@ export default function Shortcuts(){
     return (
         <div className={styles.wrapper}>
             {shortcuts.window ? <div className={[styles.item, styles.itemWrapper].join(" ")}>
-                <span style={{fontSize: "1rem"}} className={"material-icons-round"}>{shortcuts.window.icon}</span>
+                <Icon styles={{fontSize: "1rem"}}>{shortcuts.window.icon}</Icon>
                 <label>{shortcuts.window.label}</label>
             </div> :
                 <div className={styles.item}>

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
-import {Button, Checkbox} from "@f-ui/core"
+import {Button, Checkbox, Icon} from "@f-ui/core"
 import React, {useContext, useEffect, useRef} from "react"
 
 import Selector from "../../../../components/selector/Selector"
@@ -45,10 +45,9 @@ export default function Material(props) {
             if (file)
                 return file
             else {
-                props.setAlert({
-                    type: "error",
-                    message: "Error loading file."
-                })
+                alert.pushAlert( "error",
+                    "Error loading file."
+                )
                 return null
             }
         }
@@ -225,11 +224,11 @@ export default function Material(props) {
                                 state.currentMaterial = src
                             }
                             else {
-                                props.setAlert({message: "Error loading material", type: "error"})
+                                alert.pushAlert("Error loading material", "error")
                                 clear()
                             }
                         } else {
-                            props.setAlert({message: "Error loading material", type: "error"})
+                            alert.pushAlert("Error loading material", "error")
                             props.submit()
                             clear()
                         }
@@ -239,7 +238,7 @@ export default function Material(props) {
                         styles={{background: "var(--pj-background-primary"}}
                         className={styles.button}
                         onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
-                        <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>edit</span>
+                        <Icon styles={{fontSize: "1.1rem"}}>edit</Icon>
                         Edit material
                     </Button>
                 ) : null}
@@ -278,8 +277,7 @@ Material.propTypes = {
     entityID: PropTypes.string,
 
 
-    quickAccess: PropTypes.object,
-    setAlert: PropTypes.func.isRequired,
+    quickAccess: PropTypes.object, 
     selected: PropTypes.object,
     submit: PropTypes.func,
 }

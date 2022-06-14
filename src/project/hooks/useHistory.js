@@ -2,7 +2,7 @@ import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import {useEffect, useReducer, useState} from "react"
 import historyReducer, {HISTORY_ACTIONS} from "./historyReducer"
 
-export default function useHistory(entities, dispatchEntities, setAlert) {
+export default function useHistory(entities, dispatchEntities) {
     const [currentChange, setCurrentChange] = useState()
     const [changes, dispatchChanges] = useReducer(historyReducer, [], () => [])
     useEffect(() => {
@@ -20,7 +20,7 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
         if (c >= 0 && c <= 10) {
             switch (changes[c].type) {
             case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
-                setAlert({type: "info", message: "Undo: Changing component"})
+                alert.pushAlert( "Undo: Changing component", "info")
                 dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                         entityID: changes[c].entityID,
@@ -30,11 +30,11 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
                 })
                 break
             case HISTORY_ACTIONS.PUSHING_DATA:
-                setAlert({type: "info", message: "Redo: Adding entities (" + changes[c].entities.length+ ")"})
+                alert.pushAlert("Redo: Adding entities (" + changes[c].entities.length+ ")", "info")
                 dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities})
                 break
             case HISTORY_ACTIONS.DELETING_ENTITIES:
-                setAlert({type: "info", message: "Redo: Deleting entities (" + changes[c].entities.length+ ")"})
+                alert.pushAlert("Redo: Deleting entities (" + changes[c].entities.length+ ")", "info")
                 dispatchEntities({
                     type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.flat().map(e => e.id)
                 })
@@ -54,7 +54,7 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
         if (c >= 0) {
             switch (changes[c].type) {
             case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
-                setAlert({type: "info", message: "Redo: Changing component"})
+                alert.pushAlert("Redo: Changing component", "info")
                 dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                         entityID: changes[c].entityID,
@@ -64,11 +64,11 @@ export default function useHistory(entities, dispatchEntities, setAlert) {
                 })
                 break
             case HISTORY_ACTIONS.PUSHING_DATA:
-                setAlert({type: "info", message: "Undo: Adding entities (" + changes[c].entities.length+ ")"})
+                alert.pushAlert( "Undo: Adding entities (" + changes[c].entities.length+ ")", "info")
                 dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: changes[c].entities.map(e => e.id)})
                 break
             case HISTORY_ACTIONS.DELETING_ENTITIES:
-                setAlert({type: "info", message: "Undo: Deleting entities (" + changes[c].entities.length+ ")"})
+                alert.pushAlert("Undo: Deleting entities (" + changes[c].entities.length+ ")", "info")
                 dispatchEntities({
                     type: ENTITY_ACTIONS.PUSH_BLOCK, payload: changes[c].entities.flat()
                 })

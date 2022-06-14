@@ -2,12 +2,13 @@ import styles from "../styles/SideBar.module.css"
 import React, {useEffect, useMemo, useState} from "react"
 import Camera from "./Camera"
 import PropTypes from "prop-types"
-import {Button} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 import CameraTab from "./CameraTab"
 import Transform from "../../scene/components/Transform"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {updateTransform} from "../../scene/hooks/useForm"
 import ViewportTab from "./ViewportTab"
+import ResizableBar from "../../../../components/resizable/ResizableBar"
 
 export default function SideBar(props){
     const [open, setOpen] = useState(false)
@@ -17,20 +18,20 @@ export default function SideBar(props){
     const selected = useMemo(() => {
         return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
     }, [engine.selected, engine.entities, engine.lockedEntity])
+    
     useEffect(() => {
         if(!selected && tab === 2)
             setTab(0)
     }, [selected])
 
 
-    return (
-        <>
-            <div className={styles.cameraOptions} style={{right: !open ? undefined : "0"}}>
-                <Camera
-                    engine={props.engine}
-                />
-            </div>
-            <div style={{display: tab === -1 ? "none" : undefined}} className={styles.content}>
+    const Content = () => (
+        <div style={{display: tab === -1 ? "none" : undefined}} className={styles.contentWrapper}>
+            <div style={{ maxWidth: "0px"}}/>
+            <ResizableBar
+                type={"width"}
+            />
+            <div className={styles.content} >
                 {tab === 0 ? <CameraTab engine={props.engine}/> : null}
                 {tab === 1 ? <ViewportTab engine={props.engine}/> : null}
                 {tab === 2 && selected ?
@@ -42,12 +43,23 @@ export default function SideBar(props){
                     />
                     : null}
             </div>
+        </div>
+    )
+    return (
+        <>
+            <div className={styles.cameraOptions} style={{right: !open ? undefined : "0"}}>
+                <Camera
+                    engine={props.engine}
+                />
+            </div>
+            
+            <Content/>
             <div className={styles.bar} data-hidden={`${!open}`}>
                 <Button onClick={() => {
                     setOpen(!open)
                     setTab(-1)
                 }} className={styles.hideButton}>
-                    <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</span>
+                    <Icon  styles={{fontSize: "1.1rem"}}>{open ? "navigate_next" : "chevron_left"}</Icon>
                 </Button>
                 <Button 
                     disabled={!engine.selected[0] && !engine.lockedEntity}

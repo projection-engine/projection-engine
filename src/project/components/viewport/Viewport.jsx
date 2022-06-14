@@ -17,14 +17,13 @@ import Transformation from "../../engine/templates/Transformation"
 import cloneClass from "../../engine/utils/cloneClass"
 import importData from "../../utils/importer/import"
 import QuickAccessProvider from "../../hooks/QuickAccessProvider"
-import {AlertProvider} from "@f-ui/core"
 
 const TRIGGERS = ["data-viewport"]
-const MAX_TIMESTAMP = 350, MAX_DELTA = 50
+const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./hooks/findEntities.js", import.meta.url))
 export default function Viewport(props) {
     const quickAccess = useContext(QuickAccessProvider)
-    const alert = useContext(AlertProvider)
+
     const ref = useRef()
     const settings = useContext(SettingsProvider)
     const {bindGPU, gpu} = useContext(GPUContextProvider)
@@ -92,7 +91,6 @@ export default function Viewport(props) {
         }else
             event.currentTarget.started = undefined
     }
-
     function updateCursor(coords){
         const t = props.engine.cursor.components[COMPONENTS.TRANSFORM]
         t.translation = coords
@@ -117,6 +115,23 @@ export default function Viewport(props) {
     }
 
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, props.options, TRIGGERS)
+
+    const rerenderCount = useRef({
+        alert: 0,
+        settings: 0,
+        gpu: 0,
+        quickAccess: 0
+    })
+    useEffect(() => {
+        rerenderCount.current.settings +=1
+    },[settings])
+    useEffect(() => {
+        rerenderCount.current.gpu +=1
+    },[gpu])
+    useEffect(() => {
+        rerenderCount.current.quickAccess +=1
+    },[quickAccess.fileSystem])
+    console.log(rerenderCount.current)
     return (
         <div className={styles.wrapper}>
             <ViewportOptions
@@ -128,15 +143,12 @@ export default function Viewport(props) {
                 onMouseDown={e => {
                     e.currentTarget.started = performance.now()
                     e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
-                    if(settings.gizmo === GIZMOS.CURSOR && e.target === gpu.canvas || e.target === e.currentTarget){
+                    if(e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === gpu.canvas || e.target === e.currentTarget){
                         latestTranslation = Conversion.toScreen(e.clientX, e.clientY, gpu.canvas, props.engine.renderer.camera, props.engine.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
                         updateCursor(latestTranslation)
                         document.addEventListener("mousemove", handleMouse)
                         document.addEventListener("mouseup", handleMouse, {once: true})
                     }
-                }}
-                onMouseUp={() => {
-
                 }}
                 onClick={handler}
                 onDragOver={e => {
@@ -153,7 +165,7 @@ export default function Viewport(props) {
                     if (props.allowDrop) {
                         e.preventDefault()
                         ref.current?.classList.remove(styles.hovered)
-                        importData(e, quickAccess.fileSystem, props.engine, ({message, type}) => alert.pushAlert(message, type))
+                        importData(e, quickAccess.fileSystem, props.engine)
                     }
                 }}
    

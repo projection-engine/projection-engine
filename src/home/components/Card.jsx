@@ -1,6 +1,6 @@
 import styles from "../styles/Card.module.css"
 import PropTypes from "prop-types"
-import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, TextField} from "@f-ui/core"
+import {Button, DataRow, Dropdown, DropdownOptions, DropdownProvider, Icon, TextField} from "@f-ui/core"
 import React, {useContext, useMemo, useRef, useState} from "react"
 import logo from "../../static/icons/logo.png"
 import EN from "../../static/locale/EN"
@@ -34,7 +34,7 @@ export default function Card(props) {
                     styles={{"--pj-accent-color": "#ff5555", "--fabric-accent-color": "#ff5555"}}
                     className={styles.button}
                     hideArrow={true}>
-                    <span className={"material-icons-round"} style={{fontSize: "1.2rem"}}>delete_forever</span>
+                    <Icon  styles={{fontSize: "1.2rem"}}>delete_forever</Icon>
                     <DropdownOptions>
                         <div className={styles.onDelete}>
                             {EN.HOME.CARD.CONFIRMATION}
@@ -43,8 +43,7 @@ export default function Card(props) {
                                 styles={{"--fabric-accent-color": "#ff5555", width: "100%"}}
                                 className={styles.button}
                             >
-                                <span className={"material-icons-round"}
-                                    style={{fontSize: "1rem"}}>delete_forever</span>
+                                <Icon styles={{fontSize: "1rem"}}>delete_forever</Icon>
                                 {EN.HOME.CARD.DELETE}
                             </Button>
                         </div>
@@ -54,7 +53,7 @@ export default function Card(props) {
                     className={styles.button}
                     wrapperClassname={styles.modalOptions}
                     hideArrow={true}>
-                    <span style={{fontSize: "1rem"}} className={"material-icons-round"}>edit</span>
+                    <Icon styles={{fontSize: "1rem"}}>edit</Icon>
                     <DropdownOptions>
                         <Rename name={name} setName={setName} onRename={props.onRename}/>
                     </DropdownOptions>
@@ -66,7 +65,7 @@ export default function Card(props) {
                         hasMain: false
                     })}
                     className={styles.button}>
-                    <span className={"material-icons-round"} style={{fontSize: "1rem"}}>open_in_new</span>
+                    <Icon styles={{fontSize: "1rem"}}>open_in_new</Icon>
                     <label>
                         {EN.HOME.CARD.LOAD}
                     </label>

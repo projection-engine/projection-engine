@@ -2,7 +2,7 @@ import styles from "../styles/Tabs.module.css"
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import {Button, ToolTip} from "@f-ui/core"
+import {Button, Icon, ToolTip} from "@f-ui/core"
 import getComponentInfo from "../utils/getComponentInfo"
 
 export const ENTITY_TAB = "entity"
@@ -43,7 +43,7 @@ export default function FormTabs(props) {
                 variant={props.currentTab === "-2" ? "filled" : undefined}
                 onClick={() => props.setCurrentTab("-2")}
             >
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>image</span>
+                <Icon styles={{fontWeight: "1rem"}}>image</Icon>
                 <ToolTip content={"Display"} animation={"0ms"}/>
             </Button>
             <Button
@@ -51,7 +51,7 @@ export default function FormTabs(props) {
                 variant={props.currentTab === "-3" ? "filled" : undefined}
                 onClick={() => props.setCurrentTab("-3")}
             >
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>videocam</span>
+                <Icon styles={{fontWeight: "1rem"}}>videocam</Icon>
                 <ToolTip content={"Editor camera"} animation={"0ms"}/>
             </Button>
 
@@ -60,7 +60,7 @@ export default function FormTabs(props) {
                 className={styles.button}
                 onClick={() => props.setCurrentTab("-1")}
             >
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>tv</span>
+                <Icon styles={{fontWeight: "1rem"}}>tv</Icon>
                 <ToolTip content={"Graphics"} animation={"0ms"}/>
             </Button>
             {props.entity ? <div className={styles.divider}/> : undefined}
@@ -69,7 +69,7 @@ export default function FormTabs(props) {
                     variant={props.currentTab === ENTITY_TAB ? "filled" : undefined}
                     className={styles.button}
                     onClick={() => props.setCurrentTab(ENTITY_TAB)}>
-                    <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>code</span>
+                    <Icon styles={{fontWeight: "1rem"}}>code</Icon>
                     <ToolTip content={"Entity"} animation={"0ms"}/>
                 </Button>
             }

@@ -93,12 +93,10 @@ void main() {
             grid(fragPos3D* .2, 2., true,  verticalAxisColor, horizontalAxisColor) +
             grid(fragPos3D * .2, 1., false,  verticalAxisColor, horizontalAxisColor)
          ) * float(t > 0.);
-    
-  
-  
+      
    
     finalColor.rgb = vec3(1.0) - exp(-finalColor.rgb * exposure * .75);
-    finalColor.rgb = pow(finalColor.rgb, vec3(1.0/(gamma * .25)));
+    finalColor.rgb = pow(finalColor.rgb, vec3(gamma));
     
     finalColor.a *= min(fading, .4);
 }

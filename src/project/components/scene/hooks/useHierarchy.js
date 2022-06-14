@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
+import {Icon} from "@f-ui/core"
 
 const getHierarchy = (start, all) => {
     const result = []
@@ -58,7 +59,7 @@ export default function useHierarchy(engine, required,  worker) {
                 })
             })
         }
-        node.icon = <span className={"material-icons-round"} style={{fontSize: "1rem"}}>{node.icon}</span>
+        node.icon = <Icon  styles={{fontSize: "1rem"}}>{node.icon}</Icon>
         if (node.children.length > 0)
             node.children = node.children.map(n => mapChildren(n))
         return node
@@ -73,7 +74,7 @@ export default function useHierarchy(engine, required,  worker) {
                     id: 0,
                     label: "Scene",
                     children: toFilter.map(e => mapChildren(e)),
-                    icon: <span className={"material-icons-round"} style={{fontSize: "1rem"}}>inventory_2</span>,
+                    icon: <Icon styles={{fontSize: "1rem"}}>inventory_2</Icon>,
                     type: "Scene",
                     draggable: false,
                     disabled: true,

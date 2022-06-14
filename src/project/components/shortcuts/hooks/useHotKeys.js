@@ -1,7 +1,7 @@
 import {useContext, useEffect, useRef} from "react"
 import PropTypes from "prop-types"
-import KEYS from "../../engine/templates/KEYS"
 import HotKeysProvider from "./HotKeysProvider"
+import KEYS from "../../../engine/templates/KEYS"
 
 export default function useHotKeys(props) {
     let clicked = {}

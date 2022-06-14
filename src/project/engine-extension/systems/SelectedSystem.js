@@ -7,7 +7,7 @@ import FramebufferInstance from "../../engine/instances/FramebufferInstance"
 export default class SelectedSystem extends System {
 
     constructor(gpu, resolution) {
-        super();
+        super()
         this.gpu = gpu
         this.shaderSilhouette = new ShaderInstance(
             shaderCode.vertexSilhouette,
@@ -23,7 +23,7 @@ export default class SelectedSystem extends System {
         this.frameBuffer
             .texture({
                 attachment: 0,
-                precision: this.gpu.R32F,
+                precision: this.gpu.R16F,
                 format: this.gpu.RED,
                 type: this.gpu.FLOAT
             })

@@ -1,5 +1,5 @@
 import styles from "../styles/ViewportOptions.module.css"
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import Entity from "../../../engine/basic/Entity"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import PointLightComponent from "../../../engine/components/PointLightComponent"
@@ -27,8 +27,8 @@ export default function Add(props) {
                 </div>
                 <DropdownOption option={{
                     label: "Point light",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.2rem"}}>lightbulb</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.2rem"}}>lightbulb</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
@@ -42,8 +42,8 @@ export default function Add(props) {
                 <DropdownOption option={{
                     disabled: true,
                     label: "Spot light",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.2rem"}}>flashlight_on</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.2rem"}}>flashlight_on</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new PointLightComponent()
@@ -53,8 +53,8 @@ export default function Add(props) {
                 <DropdownOption option={{
 
                     label: "Directional light",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>light_mode</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>light_mode</Icon>,
                     onClick: () => {
 
                         const actor = new Entity(undefined, "Directional light")
@@ -64,8 +64,8 @@ export default function Add(props) {
                 }}/>
                 <DropdownOption option={{
                     label: "Skylight",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>wb_sunny</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>wb_sunny</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Skylight")
                         actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
@@ -79,8 +79,8 @@ export default function Add(props) {
                 </div>
                 <DropdownOption option={{
                     label: "Skybox",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>cloud</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>cloud</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Skybox")
                         actor.components[COMPONENTS.SKYBOX] = new SkyboxComponent(undefined, engine.gpu)
@@ -89,8 +89,8 @@ export default function Add(props) {
                 }}/>
                 <DropdownOption option={{
                     label: "CubeMap",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>panorama_photosphere</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>panorama_photosphere</Icon>,
                     onClick: () => {
 
                         const actor = new Entity(undefined, "Cubemap")
@@ -105,8 +105,8 @@ export default function Add(props) {
                 }}/>
                 <DropdownOption option={{
                     label: "Light probe",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>lens_blur</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>lens_blur</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Light probe")
                         actor.components[COMPONENTS.PROBE] = new LightProbeComponent()
@@ -129,8 +129,8 @@ export default function Add(props) {
                 </div>
                 <DropdownOption option={{
                     label: "Camera",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>videocam</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>videocam</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Camera")
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
@@ -146,8 +146,8 @@ export default function Add(props) {
                 }}/>
                 <DropdownOption option={{
                     label: "Line",
-                    icon: <span className={"material-icons-round"}
-                        style={{fontSize: "1.1rem"}}>arrow_right_alt</span>,
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>arrow_right_alt</Icon>,
                     onClick: () => {
                         const actor = new Entity(undefined, "Line")
                         actor.components[COMPONENTS.LINE] = new LineComponent()

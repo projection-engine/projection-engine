@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react"
 import ReactDOM from "react-dom"
 import "../styles/globals.css"
-import {Fabric} from "@f-ui/core"
+import {ThemeProvider, useAlert} from "@f-ui/core"
 import styles from "../styles/App.module.css"
-import ThemeProvider from "../components/hooks/ThemeProvider"
 import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import LoaderProvider from "../components/loader/LoaderProvider"
@@ -11,9 +10,9 @@ import Project from "./Project"
 import useGPU from "./components/viewport/hooks/useGPU"
 import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./hooks/useSettings"
-import HotKeysProvider from "./hooks/hot-keys/HotKeysProvider"
-import useHotKeysHelper from "./hooks/hot-keys/useHotKeysHelper"
 import FRAME_EVENTS from "../../public/FRAME_EVENTS"
+import useHotKeysHelper from "./components/shortcuts/hooks/useHotKeysHelper"
+import HotKeysProvider from "./components/shortcuts/hooks/HotKeysProvider"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -33,14 +32,11 @@ function EntryPoint() {
             setProject(data.package)
             setEvents(data)
         })
-    }, [])
-    useEffect(() => {
-        // document.body.classList.remove(global.dark ? "light" : "dark")
         document.body.classList.add(styles.dark)
     }, [])
-
+    useAlert(true)
     return (
-        <Fabric
+        <ThemeProvider
             language={"en"}
             theme={"dark"}
             accentColor={global.accentColor}
@@ -48,28 +44,24 @@ function EntryPoint() {
         >
             <HotKeysProvider.Provider value={hotKeysHook}>
                 <LoaderProvider.Provider value={loader}>
-                    <ThemeProvider.Provider value={{
-                        ...global, themeClass: global.dark ? styles.dark : styles.light
-                    }}>
-                        <GPUContextProvider.Provider value={gpuContext}>
-                            {project ? <Project
-                                settings={settings}
-                                initialized={initialized}
-                                setInitialized={setInitialized}
-                                events={{
-                                    ...events,
-                                    closeEvent: FRAME_EVENTS.CLOSE,
-                                    minimizeEvent: FRAME_EVENTS.MINIMIZE,
-                                    maximizeEvent: FRAME_EVENTS.MAXIMIZE
-                                }}
-                                id={project.id}
-                                meta={project.meta}
-                            /> : null}
-                        </GPUContextProvider.Provider>
-                    </ThemeProvider.Provider>
+                    <GPUContextProvider.Provider value={gpuContext}>
+                        {project ? <Project
+                            settings={settings}
+                            initialized={initialized}
+                            setInitialized={setInitialized}
+                            events={{
+                                ...events,
+                                closeEvent: FRAME_EVENTS.CLOSE,
+                                minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                                maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                            }}
+                            id={project.id}
+                            meta={project.meta}
+                        /> : null}
+                    </GPUContextProvider.Provider>
                 </LoaderProvider.Provider>
             </HotKeysProvider.Provider>
-        </Fabric>)
+        </ThemeProvider>)
 }
 
 

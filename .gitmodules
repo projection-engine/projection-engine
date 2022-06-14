@@ -17,6 +17,3 @@
 [submodule "docs"]
 	path = docs
 	url = git@github.com:projection-engine/arquitecture-docs.git
-[submodule "src/project/components/ui"]
-	path = src/project/components/ui
-	url = git@github.com:projection-engine/ui-creator.git

@@ -21,8 +21,9 @@ import Line from "../components/Line"
 import LightProbe from "../components/LightProbe"
 import loadScript from "../utils/loadScript"
 import {ENTITY_TAB} from "../components/FormTabs"
+import {Icon} from "@f-ui/core"
 
-export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
+export function  updateTransform(axis, data, key, engine, entityID) {
     const entity = engine.entities.find(e => e.id === entityID)
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]
@@ -34,8 +35,8 @@ export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
 
     if (entity.components[COMPONENTS.POINT_LIGHT])
         entity.components[COMPONENTS.POINT_LIGHT].changed = true
-    if (entity.components[COMPONENTS.CUBE_MAP] && setAlert)
-        setAlert({message: "Reflection captures need to be rebuilt", type: "alert"})
+    if (entity.components[COMPONENTS.CUBE_MAP])
+        alert.pushAlert("Reflection captures need to be rebuilt",  "alert")
     engine.dispatchEntities({
         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
             entityID,
@@ -46,7 +47,6 @@ export function  updateTransform(axis, data, key, engine, entityID, setAlert) {
 }
 export default function useForm(
     engine,
-    setAlert,
     executingAnimation,
     quickAccess,
     load,
@@ -116,9 +116,9 @@ export default function useForm(
                         engine={engine}
 
                         selected={selected.components[COMPONENTS.TRANSFORM]}
-                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, selected.id, setAlert)}
-                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, selected.id, setAlert)}
-                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, selected.id, setAlert)}
+                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, selected.id)}
+                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, selected.id)}
+                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, selected.id)}
                     />
                 )
             }
@@ -126,7 +126,7 @@ export default function useForm(
                 return (
                     <Mesh
                         quickAccess={quickAccess}
-                        load={load} setAlert={setAlert}
+                        load={load}
                         submit={(mesh, type) => {
                             if (!type)
                                 selected.components[COMPONENTS.MESH].meshID = mesh
@@ -189,7 +189,6 @@ export default function useForm(
                                 })
                             }
                         }}
-                        setAlert={setAlert}
 
                     />
                 )
@@ -238,7 +237,7 @@ export default function useForm(
                         submit={(data, key) => {
                             submit(COMPONENTS.CUBE_MAP, key, data)
                             engine.renderer.refreshCubemaps()
-                            setAlert({message: "Reflection captures need to be rebuilt", type: "alert"})
+                            alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
                         }}
                     />
                 )
@@ -290,7 +289,7 @@ export default function useForm(
                                 quickAccess={quickAccess}
                                 entity={selected}
                                 selected={selected.components[COMPONENTS.SCRIPT]}
-                                submit={(value, add) => loadScript(setAlert, selected, engine, value, quickAccess, add).catch()}
+                                submit={(value, add) => loadScript(selected, engine, value, quickAccess, add).catch()}
                             />
                         }
                     </div>
@@ -305,12 +304,11 @@ export default function useForm(
                 open: false,
                 content: (
                     <div className={styles.emptyWrapper}>
-                        <div
-                            style={{
-                                fontSize: "140px"
-                            }}
-                            className={"material-icons-round"}>play_arrow
-                        </div>
+                        <Icon
+                            styles={{fontSize: "140px"}}
+                        >
+                            play_arrow
+                        </Icon>
                         Stop the simulation to change attributes.
                     </div>
                 )

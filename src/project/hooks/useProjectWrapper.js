@@ -1,4 +1,3 @@
-import {AlertProvider} from "@f-ui/core"
 import LoaderProvider from "../../components/loader/LoaderProvider"
 import useEngine from "../engine-extension/useEngine"
 import useQuickAccess from "./useQuickAccess"
@@ -15,18 +14,13 @@ import CHANNELS from "../../../public/project/loader/CHANNELS"
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
-    const alert = useContext(AlertProvider)
-    const setAlert = ({type, message}) => {
-        alert.pushAlert(message, type)
-    }
     const {gpu} = useContext(GPUContextProvider)
-
     const load = useContext(LoaderProvider)
     const [loading, setLoading] = useState(false)
-    const engine = useEngine(executingAnimation, settings, initialized, setAlert)
+    const engine = useEngine(executingAnimation, settings, initialized)
     const quickAccess = useQuickAccess(id, load)
     const [filesLoaded, setFilesLoaded] = useState([])
-    const serializer = useSerializer(engine, setAlert, settings, id, quickAccess)
+    const serializer = useSerializer(engine, settings, id, quickAccess)
     const [openTab, setOpenTab] = useState(0)
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
@@ -89,7 +83,7 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
     return {
         entitiesWithMeshes,
         load, settings,
-        setAlert, setFilesLoaded,
+        setFilesLoaded,
         serializer, engine,
         executingAnimation, setExecutingAnimation,
         quickAccess, filesLoaded,

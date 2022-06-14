@@ -2,14 +2,13 @@ import styles from "../styles/Projects.module.css"
 import PropTypes from "prop-types"
 import React, {useContext, useMemo, useState} from "react"
 import Card from "./Card"
-import {AlertProvider, Dropdown, DropdownOptions, DropdownProvider, Masonry, TextField} from "@f-ui/core"
+import {Dropdown, DropdownOptions, DropdownProvider, Icon, Masonry, TextField} from "@f-ui/core"
 import FileSystem from "../../project/utils/files/FileSystem"
 import EN from "../../static/locale/EN"
 
 
 export default function Projects(props) {
     const [searchString, setSearchString] = useState("")
-    const alert = useContext(AlertProvider)
 
     const projectsToShow = useMemo(() => {
         return props.projects
@@ -33,17 +32,17 @@ export default function Projects(props) {
                     variant={"filled"} hideArrow={true}
                     wrapperClassname={styles.createModal}
                 >
-                    <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>add</span>
+                    <Icon styles={{fontSize: "1.1rem"}}>add</Icon>
                     {EN.HOME.PROJECTS.CREATE}
                     <DropdownOptions>
-                        <Create setProjects={props.setProjects} alert={alert}/>
+                        <Create setProjects={props.setProjects}/>
                     </DropdownOptions>
                 </Dropdown>
             </div>
             {projectsToShow.length === 0 ?
 
                 <div className={styles.emptyWrapper}>
-                    <span className={"material-icons-round"} style={{fontSize: "100px"}}>folder</span>
+                    <Icon styles={{fontSize: "100px"}}>folder</Icon>
                     {EN.HOME.PROJECTS.EMPTY}
                 </div>
                 :
@@ -77,7 +76,7 @@ Projects.propTypes = {
 }
 
 function Create(props) {
-    const {setProjects, alert} = props
+    const {setProjects} = props
     const [projectName, setProjectName] = useState("")
     const dropdownContext = useContext(DropdownProvider)
 
@@ -108,6 +107,5 @@ function Create(props) {
 }
 
 Create.propTypes={
-    setProjects: PropTypes.func, 
-    alert: PropTypes.object
+    setProjects: PropTypes.func
 }

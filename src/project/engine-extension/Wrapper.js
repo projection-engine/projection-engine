@@ -5,6 +5,7 @@ import SYSTEMS from "../engine/templates/SYSTEMS"
 import GizmoSystem from "./systems/GizmoSystem"
 import SelectedSystem from "./systems/SelectedSystem"
 import PreviewSystem from "./systems/PreviewSystem"
+import BackgroundSystem from "./systems/BackgroundSystem"
 
 
 export default class Wrapper extends System {
@@ -16,6 +17,7 @@ export default class Wrapper extends System {
         this.gizmoSystem = new GizmoSystem(gpu, resolution)
         this.selectedSystem = new SelectedSystem(gpu, resolution)
         this.previewSystem = new PreviewSystem(gpu)
+        this.backgroundSystem = new BackgroundSystem(gpu)
     }
 
     execute(options, systems, data, entities, entitiesMap, after) {
@@ -39,14 +41,15 @@ export default class Wrapper extends System {
             setSelected
         } = options
 
-        if(!after)
+        if(!after) {
+            this.backgroundSystem.execute(data, options)
             this.gridSystem.execute(options)
+        }
         else {
             this.gpu.enable(this.gpu.BLEND)
             this.gpu.blendFunc(this.gpu.SRC_ALPHA, this.gpu.ONE_MINUS_SRC_ALPHA)
-            if (!canExecutePhysicsAnimation) {
-                this.billboardSystem.execute(data, options)
-            }
+            if (!canExecutePhysicsAnimation)
+                this.billboardSystem.execute(data, options, entitiesMap)
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
                 this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
                 this.gizmoSystem.execute(

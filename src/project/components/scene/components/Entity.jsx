@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
-import {Button} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 import React, {useMemo} from "react"
 import Selector from "../../../../components/selector/Selector"
 
@@ -16,7 +16,7 @@ export default function Entity(props) {
                         props.submit(d.registryID, true)
                 }}>
                 <div className={[styles.inline, styles.add].join(" ")}>
-                    <span className={"material-icons-round"}>add</span>
+                    <Icon>add</Icon>
                     Add new component
                 </div>
             </Selector>
@@ -31,7 +31,7 @@ export default function Entity(props) {
             ))
                 :
                 <div className={styles.empty}>
-                    <span style={{fontSize: "30px"}} className={"material-icons-round"}>folder</span>
+                    <Icon styles={{fontSize: "30px"}}>folder</Icon>
                 No linked blueprints
                 </div>
             }
@@ -55,7 +55,7 @@ function ScriptRow(props) {
                     {found.name}
                 </label>
                 <Button styles={{"--pj-accent-color": "#ff5555"}} className={styles.buttonScriptsList} onClick={() => submit(selected, false)}>
-                    <span style={{fontSize: "1.1rem"}} className={"material-icons-round"}>close</span>
+                    <Icon styles={{fontSize: "1.1rem"}}>close</Icon>
                 </Button>
             </div>
         )

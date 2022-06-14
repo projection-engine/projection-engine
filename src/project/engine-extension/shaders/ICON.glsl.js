@@ -72,7 +72,9 @@ uniform mat4 projectionMatrix;
 uniform vec3 camPos;
 uniform vec3 translation;
 
+uniform bool forceAsIcon;
 out vec2 uv;
+uniform float iconSize;
 
 
 void main(){
@@ -88,7 +90,7 @@ void main(){
     for ( int x = 0; x < 4; x++ )
         for ( int y = 0; y < 4; y++ )
             if ( x == y && x <= 2 )
-                sc[x][y] = len;
+                sc[x][y] =  len;
             else if ( x == y )
                 sc[x][y] = 1.;
             else
@@ -100,7 +102,9 @@ void main(){
     
     
     mat4 m =  viewMatrix * tt;
-    float d = .35; 
+
+    float d = forceAsIcon ?  .5 : .3; 
+ 
     m[0][0]  = d;
     m[0][1]  = 0.0;
     m[0][2]  = 0.0;
@@ -131,12 +135,12 @@ precision highp float;
 in vec2 uv; 
 uniform sampler2D sampler;
 out vec4 fragColor;
-
+uniform bool forceAsIcon;
 void main(){
 	vec4 color = texture(sampler, uv);
 	if(color.a == 0. || length(color) == .0)
 		discard;
 	else	
-		fragColor = vec4(color.rgb, 1.);
+		fragColor = vec4(forceAsIcon == true ? vec3(1., .5, 0.) : color.rgb, 1.);
 }
 `

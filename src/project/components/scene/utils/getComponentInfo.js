@@ -1,5 +1,6 @@
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import React from "react"
+import {Icon} from "@f-ui/core"
 
 export default function getComponentInfo(c) {
     const res = {}
@@ -8,75 +9,75 @@ export default function getComponentInfo(c) {
         res.key = c
         res.label = "Transform"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>transform</span>
+                <Icon styles={{fontWeight: "1rem"}}>transform</Icon>
         break
     case COMPONENTS.CUBE_MAP:
         res.key = c
         res.label = "CubeMap"
-        res.icon = <span className={"material-icons-round"}
-            style={{fontWeight: "1rem"}}>panorama_photosphere</span>
+        res.icon = <Icon
+            styles={{fontWeight: "1rem"}}>panorama_photosphere</Icon>
         break
     case COMPONENTS.MESH:
         res.key = c
         res.label = "Mesh"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>view_in_ar</span>
+                <Icon styles={{fontWeight: "1rem"}}>view_in_ar</Icon>
         break
     case COMPONENTS.MATERIAL:
         res.key = c
         res.label = "Material"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>texture</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>texture</Icon>
         break
     case COMPONENTS.POINT_LIGHT:
         res.key = c
         res.label = "PointLight"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>lightbulb</span>
+                <Icon styles={{fontWeight: "1rem"}}>lightbulb</Icon>
         break
     case COMPONENTS.SKYBOX:
         res.key = c
         res.label = "Skybox"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>cloud</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>cloud</Icon>
         break
     case COMPONENTS.DIRECTIONAL_LIGHT:
     case COMPONENTS.SKYLIGHT:
         res.key = c
         res.label = c === COMPONENTS.DIRECTIONAL_LIGHT ? "DirectionalLight" : "Skylight"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>light_mode</span>
+                <Icon styles={{fontWeight: "1rem"}}>light_mode</Icon>
         break
     case COMPONENTS.SPOT_LIGHT:
         res.key = c
         res.label = "Spotlight"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>flashlight_on</span>
+                <Icon styles={{fontWeight: "1rem"}}>flashlight_on</Icon>
         break
 
     case COMPONENTS.PHYSICS:
         res.key = c
         res.label = "Physics"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>public</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>public</Icon>
         break
     case COMPONENTS.COLLIDER:
         res.key = c
         res.label = "Collider"
         res.icon =
-                <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>compare_arrows</span>
+                <Icon styles={{fontWeight: "1rem"}}>compare_arrows</Icon>
         break
     case COMPONENTS.CAMERA:
         res.key = c
         res.label = "Camera"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>videocam</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>videocam</Icon>
         break
     case COMPONENTS.LINE:
         res.key = c
         res.label = "Line"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>arrow_right_alt</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>arrow_right_alt</Icon>
         break
     case COMPONENTS.PROBE:
         res.key = c
         res.label = "Light probe"
-        res.icon = <span className={"material-icons-round"} style={{fontWeight: "1rem"}}>lens_blur</span>
+        res.icon = <Icon styles={{fontWeight: "1rem"}}>lens_blur</Icon>
         break
     default:
         break

@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react"
 import PropTypes from "prop-types"
 import styles from "../styles/Scene.module.css"
-import {Button, Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import TreeView from "../../../../components/tree/TreeView"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
@@ -25,7 +25,7 @@ export default function Hierarchy(props){
                             onClick: () => setRequired(required === COMPONENTS[e] ? undefined : COMPONENTS[e]),
                             ...o,
                             icon: required !== COMPONENTS[e] ? undefined :
-                                <span className={"material-icons-round"} style={{fontSize: "1rem"}}>checked</span>
+                                <Icon  styles={{fontSize: "1rem"}}>checked</Icon>
                         }}/>
                     </React.Fragment>
                 )
@@ -149,15 +149,15 @@ export default function Hierarchy(props){
                 </label>
                 <div style={{display: "flex", gap: "2px"}}>
                     <Button className={styles.button} onClick={() => createFolder()}>
-                        <span
-                            className={"material-icons-round"}
-                            style={{fontSize: "1rem"}}>create_new_folder</span>
+                        <Icon
+
+                            styles={{fontSize: "1rem"}}>create_new_folder</Icon>
                     </Button>
                     <Dropdown className={styles.button} hideArrow={true}>
-                        <span
-                            className={"material-icons-round"}
-                            style={{fontSize: "1rem"}}
-                        >filter_alt</span>
+                        <Icon
+
+                            styles={{fontSize: "1rem"}}
+                        >filter_alt</Icon>
                         <DropdownOptions>
                             {options}
                         </DropdownOptions>
@@ -227,7 +227,6 @@ export default function Hierarchy(props){
 
 Hierarchy.propTypes={
     executingAnimation: PropTypes.bool,
-    setAlert: PropTypes.func.isRequired,
     engine: PropTypes.object,
     operationUtils: PropTypes.object
 }

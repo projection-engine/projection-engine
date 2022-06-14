@@ -1,38 +1,39 @@
 import React, {useMemo} from "react"
+import {Icon} from "@f-ui/core"
 
-export default function useOptions(executingAnimation, setExecutingAnimation, engine, save, openLevelBlueprint, setAlert) {
+export default function useOptions(executingAnimation, setExecutingAnimation, engine, save, openLevelBlueprint) {
     return useMemo(() => {
         return  [
             {
                 label: "Save",
-                icon: <span className={"material-icons-round"}
-                    style={{fontSize: "1.2rem"}}>save</span>,
+                icon: <Icon
+                    styles={{fontSize: "1.2rem"}}>save</Icon>,
                 onClick: () => save()
 
             },
             {
                 label: executingAnimation ? "Stop" : "Play",
-                icon: <span className={"material-icons-round"}
-                    style={{fontSize: "1.2rem"}}>{executingAnimation ? "pause" : "play_arrow"}</span>,
+                icon: <Icon
+                    styles={{fontSize: "1.2rem"}}>{executingAnimation ? "pause" : "play_arrow"}</Icon>,
                 onClick: () => setExecutingAnimation(prev => !prev)
             },
             {
                 group: "b",
                 label: "Rebuild cubemaps",
-                icon: <span className={"material-icons-round"}
-                    style={{fontSize: "1.2rem"}}>refresh</span>,
-                onClick: async () => {
+                icon: <Icon
+                    styles={{fontSize: "1.2rem"}}>refresh</Icon>,
+                onClick:() => {
 
-                    setAlert({message: "Recompiling cubemaps", type: "info"})
+                    alert.pushAlert( "Recompiling cubemaps",  "info")
                     engine.renderer.refreshCubemaps()
                 }
             },
             {
                 group: "c",
                 label: "Edit level blueprint",
-                icon: <span className={"material-icons-round"}
-                    style={{fontSize: "1.2rem"}}>foundation</span>,
-                onClick: async () => openLevelBlueprint()
+                icon: <Icon
+                    styles={{fontSize: "1.2rem"}}>foundation</Icon>,
+                onClick: () => openLevelBlueprint()
             }
         ]
     }, [engine.entities, engine.scripts, engine.meshes, engine, executingAnimation])

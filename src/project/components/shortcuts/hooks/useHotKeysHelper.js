@@ -1,4 +1,5 @@
-import useDirectState from "../../../components/hooks/useDirectState"
+import useDirectState from "../../../../components/hooks/useDirectState"
+
 
 export default function useHotKeysHelper(){
     const [shortcuts] = useDirectState({all: [], active: {}})

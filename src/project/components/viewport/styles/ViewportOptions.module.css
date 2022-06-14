@@ -185,19 +185,25 @@
 }
 
 .floating {
-  width: 40px;
+  width: fit-content;
   max-height: calc(100% - 35px);
   position: absolute;
   left: 0;
   padding-left: 4px;
   top: 35px;
   z-index: 15;
+  height: fit-content;
+  display: flex;
+}
+
+.contentWrapper {
+  max-width: 250px;
+  width: 37px;
+  min-width: 37px;
   display: grid;
   align-content: flex-start;
-  justify-items: center;
+
   gap: 8px;
-  height: fit-content;
-  transition: 150ms ease-in;
 }
 
 .buttonGroup {
@@ -293,10 +299,12 @@
   justify-content: center;
   background: rgb(40 40 40 / 85%);
   height: 35px;
-  width: 37px;
+  width: 100%;
   padding: 0 !important;
   border-radius: 0;
   border: var(--pj-border-primary) 1px solid;
+
+  gap: 8px;
 }
 
 .transformationWrapper > span {
@@ -304,8 +312,15 @@
   color-rendering: optimizespeed !important;
   shape-rendering: optimizespeed !important;
 }
-.transformationWrapper[data-highlight="true"]{
+
+.transformationWrapper[data-highlight="true"] {
   border-color: #0095ff;
+}
+
+.transformationWrapper[data-minimal="false"] {
+  justify-content: flex-start;
+  padding: 8px !important;
+  text-align: left;
 }
 
 .button {

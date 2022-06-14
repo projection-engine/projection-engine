@@ -8,7 +8,7 @@ import Shading from "./components/Shading"
 import Add from "./components/Add"
 import Visible from "./components/Visible"
 import Gizmo from "./components/Gizmo"
-import {Button} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 
 
 export default function ViewportOptions(props) {
@@ -52,7 +52,7 @@ export default function ViewportOptions(props) {
                                 .catch()
                                 .finally(() => setFullscreen(false))
                     } }>
-                        <span className={"material-icons-round"} style={{fontSize: "1.1rem"}}>fullscreen</span>
+                        <Icon styles={{fontSize: "1.1rem"}}>fullscreen</Icon>
                     </Button>
 
                     <Visible settingsContext={settingsContext}/>

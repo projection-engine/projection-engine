@@ -3,7 +3,7 @@ import styles from "./styles/Scene.module.css"
 import React, {useContext, useState} from "react"
 import useForm from "./hooks/useForm"
 import QuickAccessProvider from "../../hooks/QuickAccessProvider"
-import {Button} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import FormTabs from "./components/FormTabs"
 import LoaderProvider from "../../../components/loader/LoaderProvider"
@@ -16,7 +16,6 @@ export default function SceneView(props) {
     const load = useContext(LoaderProvider)
     const currentForm = useForm(
         props.engine,
-        props.setAlert,
         props.executingAnimation,
         quickAccess,
         load,
@@ -44,18 +43,17 @@ export default function SceneView(props) {
                                 className={styles.button}
                                 variant={props.engine.lockedEntity === currentForm.selected?.id ? "filled" : undefined}
                             >
-                                <span className={"material-icons-round"} style={{fontSize: "1rem"}}>push_pin</span>
+                                <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
                             </Button>
                         </div>) : props.engine.executingAnimation ? null : (
                             <div className={styles.header} style={{justifyContent: "flex-start"}}>
-                                <div
-                                    className={"material-icons-round"}
-                                    style={{fontSize: "1.2rem"}}
+                                <Icon
+                                    styles={{fontSize: "1.2rem"}}
                                 >
                                     {currentTab === "-1" ? "tv" : null}
                                     {currentTab === "-2" ? "image" : null}
                                     {currentTab === "-3" ? "videocam" : null}
-                                </div>
+                                </Icon>
                                 <label className={styles.overflow}>
                                     {currentTab === "-1" ? "Display" : null}
                                     {currentTab === "-2" ? "Rendering features" : null}
@@ -73,7 +71,6 @@ export default function SceneView(props) {
 
 SceneView.propTypes = {
     executingAnimation: PropTypes.bool,
-    setAlert: PropTypes.func.isRequired,
     engine: PropTypes.object,
     operationUtils: PropTypes.object
 }

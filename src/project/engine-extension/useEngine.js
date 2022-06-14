@@ -19,16 +19,17 @@ function getCursor(){
 
     return entity
 }
-export default function useEngine(canExecutePhysicsAnimation, settings, canStart, setAlert) {
+export default function useEngine(canExecutePhysicsAnimation, settings, canStart) {
     const {gpu, renderer} = useContext(GPUContextProvider)
-    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities, setAlert)
+    const [entities, dispatchEntities] = useReducer(entityReducer, [])
+    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
 
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-    const [entities, dispatchEntities] = useReducer(entityReducer, [])
+
     const [scripts, setScripts] = useState([])
     const [updated, setUpdated] = useState(false)
     const [cursor, setCursor] = useState(getCursor())

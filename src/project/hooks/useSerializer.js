@@ -8,7 +8,7 @@ import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import FileSystem from "../utils/files/FileSystem"
 
 
-export default function useSerializer(engine, setAlert, settings, id, quickAccess) {
+export default function useSerializer(engine, settings, id, quickAccess) {
 
     const load = useContext(LoaderProvider)
     const fileSystem = quickAccess.fileSystem
@@ -48,7 +48,7 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
     }
 
     const save = useCallback(async () => {
-        setAlert({message: "Saving project", type: "info"})
+        alert.pushAlert("Saving project", "info")
         if (id) {
             await saveSettings()
             const all = await ProjectLoader.getEntities(fileSystem)
@@ -65,13 +65,13 @@ export default function useSerializer(engine, setAlert, settings, id, quickAcces
             } catch (err) {
                 console.error(err)
             }
-            setAlert({
-                type: "success",
-                message: "Project saved."
-            })
+            alert.pushAlert(
+                "Project saved.",
+                "success"
+            )
             load.finishEvent(EVENTS.PROJECT_SAVE)
         } else
-            setAlert({message: "Error saving project", type: "error"})
+            alert.pushAlert("Error saving project", "error")
     }, [engine.entities, settings, id, renderer])
 
 

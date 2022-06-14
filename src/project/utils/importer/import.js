@@ -1,5 +1,4 @@
 import importMesh from "./importMesh"
-import EVENTS from "../../../static/misc/EVENTS"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
@@ -9,7 +8,7 @@ import FileSystem from "../files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import {vec4} from "gl-matrix"
 
-export default async function importData(event, fileSystem, engine, setAlert, asID) {
+export default async function importData(event, fileSystem, engine,  asID) {
     const entities = [], meshes = []
 
     if (asID)
@@ -30,11 +29,11 @@ export default async function importData(event, fileSystem, engine, setAlert, as
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
                 const meshData = await importMesh(await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data, fileSystem)
-                console.log(meshData)
+
                 if(meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else
-                    setAlert({type: "error", message: "Error importing mesh."})
+                    alert.pushAlert("Error importing mesh.", "error")
                 break
             case FILE_TYPES.TERRAIN:
                 break
@@ -42,10 +41,10 @@ export default async function importData(event, fileSystem, engine, setAlert, as
                 await importScript(fileSystem, engine, res)
                 break
             case FILE_TYPES.SCENE:
-                await importScene(fileSystem, engine, res, setAlert)
+                await importScene(fileSystem, engine, res)
                 break
             default:
-                setAlert({type: "error", message: "Error importing file."})
+                alert.pushAlert("Error importing file.", "error")
                 break
             }
     }
@@ -73,7 +72,7 @@ export default async function importData(event, fileSystem, engine, setAlert, as
                 payload: toLoad
             })
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
-            setAlert({message: `Meshes loaded (${toLoad.length})`, type: "success"})
+            alert.pushAlert( `Meshes loaded (${toLoad.length})`, "success")
         }
     }
 }

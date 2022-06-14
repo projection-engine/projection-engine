@@ -1,14 +1,19 @@
-import {useEffect, useState} from "react"
+import {useMemo, useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
 import EVENTS from "../../static/misc/EVENTS"
 import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
 
 export default function useQuickAccess(projectID, load) {
-    const [images, setImages] = useState([])
-    const [meshes, setMeshes] = useState([])
-    const [materials, setMaterials] = useState([])
-    const [scripts, setScripts] = useState([])
-    const fileSystem = new FileSystem(projectID)
+    const [state, setState] = useState({
+        images: [],
+        meshes: [],
+        materials: [],
+        scripts: []
+    })
+
+    const fileSystem = useMemo(() => {
+        return new FileSystem(projectID)
+    }, [projectID])
     const refresh = () => {
         fileSystem.readRegistry()
             .then(reg => {
@@ -75,24 +80,20 @@ export default function useQuickAccess(projectID, load) {
 
                 Promise.all(promises)
                     .then(res => {
-                        setMeshes(res.filter(f => f.type === "mesh"))
-                        setMaterials(res.filter(f => f.type === "material"))
-                        setImages(res.filter(f => f.type === "image"))
-                        setScripts([...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")])
+                        setState({
+                            images: res.filter(f => f.type === "image"),
+                            meshes: res.filter(f => f.type === "mesh"),
+                            materials: res.filter(f => f.type === "material"),
+                            scripts: [...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")]
+                        })
                         load.finishEvent(EVENTS.REFRESHING)
                     })
-
             })
     }
-    useEffect(() => {
-        refresh()
-    }, [])
+
     return {
+        ...state,
         fileSystem,
-        images,
-        meshes,
-        materials,
-        scripts,
         refresh
     }
 }

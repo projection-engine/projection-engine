@@ -23,7 +23,7 @@ export default function Mesh(props) {
                     handleChange={m => {
                         let data = props.engine.meshes.find(mesh => mesh.id === m.registryID)
                         if (!data)
-                            handleDrop(m.registryID, props.quickAccess.fileSystem, props.engine, props.setAlert, props.load, true)
+                            handleDrop(m.registryID, props.quickAccess.fileSystem, props.engine, props.load, true)
                                 .then(() => {
                                     props.submit(m.registryID)
                                 })
@@ -49,7 +49,6 @@ export default function Mesh(props) {
 }
 
 Mesh.propTypes = {
-    setAlert: PropTypes.func,
     quickAccess: PropTypes.object,
 
     engine: PropTypes.object,

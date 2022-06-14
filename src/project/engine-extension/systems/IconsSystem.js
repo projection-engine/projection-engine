@@ -10,7 +10,7 @@ import {fragmentForward, vertex} from "../../engine/shaders/mesh/FALLBACK.glsl"
 import {createVAO} from "../../engine/utils/utils"
 import VBOInstance from "../../engine/instances/VBOInstance"
 import ImageProcessor from "../../engine/utils/image/ImageProcessor"
-import {cursorFragment} from "../shaders/ICON.glsl"
+
 const PLANE =  new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, 1, 1, 0, -1, 1, 0, -1, -1, 0])
 export default class IconsSystem extends System {
     #ready = false
@@ -62,18 +62,59 @@ export default class IconsSystem extends System {
         })
     }
 
-    loop(ref, comp, key) {
+    loop(ref, comp, key, selectedMap) {
         const result = []
         const size = ref.length
 
         for (let i = 0; i < size; i++) {
-            result.push(ref[i].components[comp][key])
+            if(!selectedMap[ref[i].id])
+                result.push(ref[i].components[comp][key])
         }
 
         return result
     }
 
-    execute(data, options) {
+    drawHighlighted(transformComponent, camera, texture, forceAsIcon, iconSize){
+        this.gpu.disable(this.gpu.DEPTH_TEST)
+
+        this.cursorShader.use()
+        this.cursorShader.bindForUse({
+            viewMatrix: camera.viewMatrix,
+            transformMatrix: transformComponent.transformationMatrix,
+            projectionMatrix: camera.projectionMatrix,
+            sampler: texture,
+            camPos:  camera.position,
+            translation: transformComponent.translation ? transformComponent.translation : transformComponent.direction,
+            forceAsIcon,
+            iconSize
+        })
+        this.gpu.drawArrays(this.gpu.TRIANGLES, 0, 6)
+        this.gpu.enable(this.gpu.DEPTH_TEST)
+    }
+
+    getIcon(entity){
+        const c = entity.components
+        const isDLight = c[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined
+        const isPLight = c[COMPONENTS.POINT_LIGHT] !== undefined
+        const isCM = c[COMPONENTS.CUBE_MAP] !== undefined
+        const isProbe = c[COMPONENTS.PROBE] !== undefined
+
+        const isEntity  =isDLight || isPLight || isCM || isProbe
+        if(isEntity)
+            switch (true){
+            case isDLight:
+                return this.directionalLightTexture.texture
+            case isPLight:
+                return this.pointLightTexture.texture
+            case isCM:
+                return this.cubemapTexture.texture
+            case isProbe:
+                return this.probeTexture.texture
+            }
+
+        return undefined
+    }
+    execute(data, options, entitiesMap) {
         super.execute()
         const {
             pointLights,
@@ -83,11 +124,13 @@ export default class IconsSystem extends System {
             lightProbes
         } = data
         const {
+            selectedMap,
             camera,
             iconsVisibility,
             iconSize,
             brdf,
-            cursor
+            cursor,
+            selected
         } = options
 
         if (iconsVisibility && this.#ready) {
@@ -95,28 +138,28 @@ export default class IconsSystem extends System {
 
             Icon.start(this.vertexVBO, this.vao, this.iconShader, this.gpu)
             this.renderers.dLight.draw(
-                this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, "transformationMatrix"),
+                this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, "transformationMatrix", selectedMap),
                 this.directionalLightTexture.texture,
                 camera,
                 iconSize,
                 this.iconShader
             )
             this.renderers.pLight.draw(
-                this.loop(pointLights, COMPONENTS.TRANSFORM, "transformationMatrix"),
+                this.loop(pointLights, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
                 this.pointLightTexture.texture,
                 camera,
                 iconSize,
                 this.iconShader
             )
             this.renderers.cubeMap.draw(
-                this.loop(cubeMaps, COMPONENTS.TRANSFORM, "transformationMatrix"),
+                this.loop(cubeMaps, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
                 this.cubemapTexture.texture,
                 camera,
                 iconSize,
                 this.iconShader
             )
             this.renderers.probe.draw(
-                this.loop(lightProbes, COMPONENTS.TRANSFORM, "transformationMatrix"),
+                this.loop(lightProbes, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
                 this.probeTexture.texture,
                 camera,
                 iconSize,
@@ -124,22 +167,19 @@ export default class IconsSystem extends System {
             )
 
             // 3D cursor
-            this.gpu.disable(this.gpu.DEPTH_TEST)
-            const cursorT = cursor.components[COMPONENTS.TRANSFORM]
-            this.cursorShader.use()
-            this.cursorShader.bindForUse({
-                viewMatrix: camera.viewMatrix,
-                transformMatrix: cursorT.transformationMatrix,
-                projectionMatrix: camera.projectionMatrix,
-                sampler: this.checkerboardTexture.texture,
-                camPos:  camera.position,
-                translation: cursorT.translation
-            })
-            this.gpu.drawArrays(this.gpu.TRIANGLES, 0, 6)
-            this.gpu.enable(this.gpu.DEPTH_TEST)
+            this.drawHighlighted(cursor.components[COMPONENTS.TRANSFORM], camera, this.checkerboardTexture.texture)
             // 3D cursor
 
-
+            for(let i = 0; i<selected.length; i++){
+                const entity = entitiesMap[selected[i]]
+                const icon = entity.active ? this.getIcon(entity) : undefined
+                if(icon) {
+                    let t = entity.components[COMPONENTS.TRANSFORM]
+                    if(!t)
+                        t = entity.components[COMPONENTS.DIRECTIONAL_LIGHT]
+                    this.drawHighlighted(t, camera, icon, true, iconSize)
+                }
+            }
             Icon.end(this.vertexVBO, this.gpu)
 
             if (cameras.length > 0) {

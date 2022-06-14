@@ -130,7 +130,8 @@ export default class Engine extends Renderer {
                 onGizmoEnd,
                 camera,
                 gizmo: this.gizmo,
-                cursor
+                cursor,
+                selectedMap: this.arrayToObject(params.selected)
             },
             scripts,
             this.editorSystem,
@@ -140,7 +141,13 @@ export default class Engine extends Renderer {
         this.updateOverrideMaterial()
 
     }
-
+    arrayToObject(arr){
+        const obj = {}
+        arr.forEach(a => {
+            obj[a] = true
+        })
+        return obj
+    }
     stop() {
         super.stop()
         this.cameraData.cameraEvents.stopTracking()

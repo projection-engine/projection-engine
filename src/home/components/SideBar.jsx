@@ -1,5 +1,5 @@
 import styles from "../styles/SideBar.module.css"
-import {Button} from "@f-ui/core"
+import {Button, Icon} from "@f-ui/core"
 
 import PropTypes from "prop-types"
 import React, {useState} from "react"
@@ -17,9 +17,9 @@ export default function SideBar(props) {
                         variant={open === 0 ? "filled" : undefined}
                         styles={{justifyContent: !extended ? "center" : undefined}}
                     >
-                        <span
-                            style={{width: "30px"}}
-                            className={"material-icons-round"}>inventory_2</span>
+                        <Icon
+                            styles={{width: "30px"}}
+                        >inventory_2</Icon>
                         {extended ? EN.HOME.SIDE_BAR.PROJECTS : undefined}
                     </Button>
 
@@ -28,9 +28,9 @@ export default function SideBar(props) {
                         variant={open === 1 ? "filled" : undefined}
                         styles={{justifyContent: !extended ? "center" : undefined}}
                     >
-                        <span
-                            style={{width: "30px"}}
-                            className={"material-icons-round"}>chat_bubble</span>
+                        <Icon
+                            styles={{width: "30px"}}
+                        >chat_bubble</Icon>
                         {extended ? EN.HOME.SIDE_BAR.ISSUES : undefined}
                     </Button>
                 </div>
@@ -40,8 +40,9 @@ export default function SideBar(props) {
                     styles={{justifyContent: !extended ? "center" : undefined}}
                     className={styles.button}
                 >
-                    <span style={{width: "30px"}}
-                        className={"material-icons-round"}>{extended ? "chevron_right" : "chevron_left"}</span>
+                    <Icon
+                        styles={{width: "30px"}}
+                    >{extended ? "chevron_right" : "chevron_left"}</Icon>
                     {extended ? EN.HOME.SIDE_BAR.HIDE : undefined}
                 </Button>
             </div>

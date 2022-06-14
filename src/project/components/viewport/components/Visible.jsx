@@ -1,4 +1,4 @@
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
@@ -8,13 +8,13 @@ import LabeledRange from "../../../../components/templates/LabeledRange"
 export default function Visible(props) {
     const {settingsContext} = props
     const [iconSize, setIconSize] = useState(settingsContext.iconSize)
+    const checkIcon = <Icon style={{fontSize: "1.2rem"}}>check</Icon>
     return (
         <Dropdown
             className={styles.dropdown}
         >
             <div className={styles.summary}>
-                <span style={{fontSize: "1.1rem"}}
-                    className={"material-icons-round"}>visibility</span>
+                <Icon styles={{fontSize: "1.1rem"}}>visibility</Icon>
                 <div className={styles.overflow}>
                     View
                 </div>
@@ -23,21 +23,18 @@ export default function Visible(props) {
                 <DropdownOption option={{
                     label: "Grid",
                     keepAlive: true,
-                    icon: settingsContext.gridVisibility ? <span style={{fontSize: "1.2rem"}}
-                        className={"material-icons-round"}>check</span> : undefined,
+                    icon: settingsContext.gridVisibility ? checkIcon : undefined,
                     onClick: () => settingsContext.gridVisibility = !settingsContext.gridVisibility,
                 }}/>
                 <DropdownOption option={{
                     label: "Icons",
                     keepAlive: true,
-                    icon: settingsContext.iconsVisibility ? <span style={{fontSize: "1.2rem"}}
-                        className={"material-icons-round"}>check</span> : undefined,
+                    icon: settingsContext.iconsVisibility ? checkIcon : undefined,
                     onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
                 }}/>
                 <DropdownOption option={{
                     label: "Show FPS",
-                    icon: settingsContext.performanceMetrics ? <span style={{fontSize: "1.2rem"}}
-                        className={"material-icons-round"}>check</span> : undefined,
+                    icon: settingsContext.performanceMetrics ? checkIcon : undefined,
                     onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
                     shortcut: "Ctrl + shift + h"
                 }}/>

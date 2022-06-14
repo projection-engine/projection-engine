@@ -18,6 +18,7 @@ export default function Skybox(props) {
         if (props.selected.imageID) setCurrentImage(props.quickAccess.images.find(i => i.registryID === props.selected.imageID))
     }, [])
 
+    const checkIcon = "check"
     return (<>
         <AccordionTemplate title={"Environment map"}>
             <Selector
@@ -42,8 +43,7 @@ export default function Skybox(props) {
                 <DropdownOptions>
                     <DropdownOption option={{
                         label: "512p",
-                        icon: state.resolution === 512 ? <span style={{fontSize: "1.2rem"}}
-                            className={"material-icons-round"}>check</span> : undefined,
+                        icon: state.resolution === 512 ? checkIcon : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 512
@@ -53,8 +53,7 @@ export default function Skybox(props) {
                     }}/>
                     <DropdownOption option={{
                         label: "1024p",
-                        icon: state.resolution === 1024 ? <span style={{fontSize: "1.2rem"}}
-                            className={"material-icons-round"}>check</span> : undefined,
+                        icon: state.resolution === 1024 ?checkIcon: undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 1024
@@ -64,8 +63,7 @@ export default function Skybox(props) {
                     }}/>
                     <DropdownOption option={{
                         label: "2048p",
-                        icon: state.resolution === 2048 ? <span style={{fontSize: "1.2rem"}}
-                            className={"material-icons-round"}>check</span> : undefined,
+                        icon: state.resolution === 2048 ? checkIcon : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 2048
@@ -75,8 +73,7 @@ export default function Skybox(props) {
                     }}/>
                     <DropdownOption option={{
                         label: "4096p",
-                        icon: state.resolution === 4096 ? <span style={{fontSize: "1.2rem"}}
-                            className={"material-icons-round"}>check</span> : undefined,
+                        icon: state.resolution === 4096 ? checkIcon : undefined,
                         onClick: () => {
                             setState({
                                 ...state, resolution: 4096

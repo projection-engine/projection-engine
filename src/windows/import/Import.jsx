@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import ReactDOM from "react-dom"
 import "../../styles/globals.css"
-import {Fabric} from "@f-ui/core"
+import {ThemeProvider} from "@f-ui/core"
 import styles from "../../styles/App.module.css"
 import Frame from "../../components/frame/Frame"
 import FRAME_EVENTS from "../../../public/FRAME_EVENTS"
@@ -12,7 +12,7 @@ function Import() {
     }, [])
 
     return (
-        <Fabric
+        <ThemeProvider
             language={"en"}
             theme={"dark"}
             className={styles.wrapper}
@@ -26,7 +26,7 @@ function Import() {
                     maximizeEvent: FRAME_EVENTS.MAXIMIZE_SHORTCUTS
                 }}
             />
-        </Fabric>
+        </ThemeProvider>
     )
 }
 

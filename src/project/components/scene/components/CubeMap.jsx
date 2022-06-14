@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
-import {Dropdown, DropdownOption, DropdownOptions} from "@f-ui/core"
+import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useEffect, useState} from "react"
 import Range from "../../../../components/range/Range"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
@@ -24,88 +24,84 @@ export default function CubeMap(props) {
     useEffect(() => {
         setState(getNewState())
     }, [props.selected])
+    const checkIcon = <Icon styles={{fontSize: "1.2rem"}}>check</Icon>
+    return (
+        <>
+            <AccordionTemplate title={"Resolution"}>
+                <Dropdown className={styles.dropdown} styles={{background: "var(--pj-border-primary)"}}>
+                    {state.resolution}p
+                    <DropdownOptions>
+                        <DropdownOption option={{
+                            label: "128p",
+                            icon: state.resolution === 128 ?
+                                checkIcon : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 128
+                                })
+                                props.submit(128, "resolution")
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: "512p",
+                            icon: state.resolution === 512 ?
+                                checkIcon : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 512
+                                })
+                                props.submit(512, "resolution")
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: "1024p",
+                            icon: state.resolution === 1024 ?
+                                checkIcon : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 1024
+                                })
+                                props.submit(1024, "resolution")
+                            }
+                        }}/>
+                        <DropdownOption option={{
+                            label: "2048p",
+                            icon: state.resolution === 2048 ?
+                                checkIcon : undefined,
+                            onClick: () => {
+                                setState({
+                                    ...state,
+                                    resolution: 2048
+                                })
+                                props.submit(2048, "resolution")
+                            }
+                        }}/>
+                    </DropdownOptions>
+                </Dropdown>
+            </AccordionTemplate>
 
-        return (
-            <>
-                <AccordionTemplate title={'Resolution'}>
-                    <Dropdown className={styles.dropdown} styles={{background: 'var(--pj-border-primary)'}}>
-                        {state.resolution}p
-                        <DropdownOptions>
-                            <DropdownOption option={{
-                                label: '128p',
-                                icon: state.resolution === 128 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 128
-                                    })
-                                    props.submit(128, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '512p',
-                                icon: state.resolution === 512 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 512
-                                    })
-                                    props.submit(512, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '1024p',
-                                icon: state.resolution === 1024 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 1024
-                                    })
-                                    props.submit(1024, 'resolution')
-                                }
-                            }}/>
-                            <DropdownOption option={{
-                                label: '2048p',
-                                icon: state.resolution === 2048 ?
-                                    <span style={{fontSize: '1.2rem'}}
-                                          className={'material-icons-round'}>check</span> : undefined,
-                                onClick: () => {
-                                    setState({
-                                        ...state,
-                                        resolution: 2048
-                                    })
-                                    props.submit(2048, 'resolution')
-                                }
-                            }}/>
-                        </DropdownOptions>
-                    </Dropdown>
-                </AccordionTemplate>
+            <AccordionTemplate title={"LOD samples"}>
+                <Range
+                    accentColor={"blue"}
+                    integer={true}
+                    incrementPercentage={1}
+                    minValue={1}
+                    maxValue={10}
 
-                <AccordionTemplate title={'LOD samples'}>
-                    <Range
-                        accentColor={'blue'}
-                        integer={true}
-                        incrementPercentage={1}
-                        minValue={1}
-                        maxValue={10}
-
-                        onFinish={(v) => props.submit(v, 'prefilteredMipmaps')}
-                        value={state.prefilteredMipmaps}
-                        handleChange={e => {
-                            setState({...state, prefilteredMipmaps: parseInt(e)})
-                        }}
-                    />
-                </AccordionTemplate>
+                    onFinish={(v) => props.submit(v, "prefilteredMipmaps")}
+                    value={state.prefilteredMipmaps}
+                    handleChange={e => {
+                        setState({...state, prefilteredMipmaps: parseInt(e)})
+                    }}
+                />
+            </AccordionTemplate>
 
 
-            </>
-        )
+        </>
+    )
     // return (
     //     <AccordionTemplate type={'flex'} title={'Translation'}>
     //         <Range

@@ -2,15 +2,12 @@ import styles from "../../styles/Project.module.css"
 import Viewport from "../viewport/Viewport"
 import ResizableBar from "../../../components/resizable/ResizableBar"
 import SceneView from "../scene/SceneView"
-import React, {useContext, useMemo} from "react"
-import QuickAccessProvider from "../../hooks/QuickAccessProvider"
+import React, {useMemo} from "react"
 import PropTypes from "prop-types"
 import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import getOptionsViewport from "./utils/getOptionsViewport"
-import importData from "../../utils/importer/import"
 
 export default function Editor(props) {
-    const quickAccess = useContext(QuickAccessProvider)
     const utils = useEditorShortcuts(props)
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
@@ -32,7 +29,6 @@ export default function Editor(props) {
             <ResizableBar type={"width"}/>
             <SceneView
                 executingAnimation={props.executingAnimation}
-                setAlert={props.setAlert}
                 engine={props.engine}
                 operationUtils={utils}
             />
@@ -46,7 +42,6 @@ Editor.propTypes = {
     id: PropTypes.string.isRequired,
     executingAnimation: PropTypes.bool,
     engine: PropTypes.object.isRequired,
-    setAlert: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     serializer: PropTypes.object.isRequired
 }

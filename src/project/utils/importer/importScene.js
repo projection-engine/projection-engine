@@ -6,7 +6,7 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FileSystem from "../../utils/files/FileSystem"
 
-export default async function importScene(fileSystem, engine, reg, setAlert, onlyReturn) {
+export default async function importScene(fileSystem, engine, reg, onlyReturn) {
     const file = await fileSystem.readFile(fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
     const meshes = []
     const entities = []
@@ -31,7 +31,7 @@ export default async function importScene(fileSystem, engine, reg, setAlert, onl
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
         }
     } else
-        setAlert({message: "Error loading scene", type: "error"})
+        alert.pushAlert("Error loading scene",  "error")
 
 
     return {meshes, entities}

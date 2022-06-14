@@ -1,10 +1,9 @@
 import React, {useState} from "react"
 import ReactDOM from "react-dom"
 import "../styles/globals.css"
-import {Fabric, Switcher} from "@f-ui/core"
+import {Switcher, ThemeProvider, useAlert} from "@f-ui/core"
 import shared from "../styles/App.module.css"
 import styles from "./styles/Home.module.css"
-import ThemeProvider from "../components/hooks/ThemeProvider"
 import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import LoaderProvider from "../components/loader/LoaderProvider"
@@ -30,12 +29,11 @@ function Home() {
         setProjects
     } = useProjects()
     const [open, setOpen] = useState(0)
-
+    useAlert(true)
     return (
-        <Fabric
+        <ThemeProvider
             language={"en"}
             theme={"dark"}
-            accentColor={global.accentColor}
             className={[shared.wrapper, shared.dark].join(" ")}
         >
             <Frame
@@ -48,41 +46,37 @@ function Home() {
                     maximizeEvent: FRAME_EVENTS.MAXIMIZE
                 }}/>
             <LoaderProvider.Provider value={loader}>
-                <ThemeProvider.Provider value={{
-                    ...global, themeClass: shared.dark
-                }}>
-                    <div className={styles.wrapper}>
-                        <SideBar open={open} setOpen={setOpen}/>
-                        <Switcher openChild={open} styles={{width: "100%"}}>
-                            <Projects
+                <div className={styles.wrapper}>
+                    <SideBar open={open} setOpen={setOpen}/>
+                    <Switcher openChild={open} styles={{width: "100%"}}>
+                        <Projects
  
-                                deleteProject={async pjID => {
-                                    await AsyncFS.rm(
-                                        pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
-                                        {recursive: true, force: true}
-                                    )
-                                    setProjects(prev => {
-                                        return prev.filter(e => e.id !== pjID)
-                                    })
-                                }}
-                                renameProject={async (newName, projectID) => {
-                                    const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID + FileSystem.sep + ".meta")
-                                    const [error, res] = await AsyncFS.read(pathName)
-                                    if (res && !error) 
-                                        await AsyncFS.write(pathName, JSON.stringify({
-                                            ...JSON.parse(res),
-                                            name: newName
-                                        }))
-                                }}
-                                refresh={() => refresh()}
-                                load={load} projects={projects}
-                                setProjects={setProjects}/>
-                            <IssuesList/>
-                        </Switcher>
-                    </div>
-                </ThemeProvider.Provider>
+                            deleteProject={async pjID => {
+                                await AsyncFS.rm(
+                                    pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + pjID),
+                                    {recursive: true, force: true}
+                                )
+                                setProjects(prev => {
+                                    return prev.filter(e => e.id !== pjID)
+                                })
+                            }}
+                            renameProject={async (newName, projectID) => {
+                                const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID + FileSystem.sep + ".meta")
+                                const [error, res] = await AsyncFS.read(pathName)
+                                if (res && !error) 
+                                    await AsyncFS.write(pathName, JSON.stringify({
+                                        ...JSON.parse(res),
+                                        name: newName
+                                    }))
+                            }}
+                            refresh={() => refresh()}
+                            load={load} projects={projects}
+                            setProjects={setProjects}/>
+                        <IssuesList/>
+                    </Switcher>
+                </div>
             </LoaderProvider.Provider>
-        </Fabric>
+        </ThemeProvider>
     )
 }
 

@@ -2,7 +2,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import FileSystem from "../../../utils/files/FileSystem"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 
-export default async function loadScript(setAlert, selected, engine, value, quickAccess, add){
+export default async function loadScript(selected, engine, value, quickAccess, add){
     if (add && !selected.components[COMPONENTS.SCRIPT].scripts.find(s => s === value)) {
         selected.components[COMPONENTS.SCRIPT].scripts.push(value)
         if (!engine.scripts.find(s => s.id === value)) {
@@ -17,10 +17,10 @@ export default async function loadScript(setAlert, selected, engine, value, quic
                         }]
                     })
                 else {
-                    setAlert({
-                        type: "error",
-                        message: "Error loading file."
-                    })
+                    alert.pushAlert(
+                        "Error loading file.",
+                        "error"
+                    )
                     return null
                 }
             }

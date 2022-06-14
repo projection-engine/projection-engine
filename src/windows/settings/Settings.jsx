@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import ReactDOM from "react-dom"
 import "../../styles/globals.css"
-import {Fabric, Tab, VerticalTabs} from "@f-ui/core"
+import {Tab, ThemeProvider, VerticalTabs} from "@f-ui/core"
 import styles from "../../styles/App.module.css"
 import Frame from "../../components/frame/Frame"
 import FRAME_EVENTS from "../../../public/FRAME_EVENTS"
@@ -13,7 +13,7 @@ function Settings() {
     }, [])
     const [open, setOpen] = useState(0)
     return (
-        <Fabric
+        <ThemeProvider
             language={"en"}
             theme={"dark"}
             className={styles.wrapper}
@@ -49,7 +49,7 @@ function Settings() {
 
                 </Tab>
             </VerticalTabs>
-        </Fabric>
+        </ThemeProvider>
     )
 }
 
