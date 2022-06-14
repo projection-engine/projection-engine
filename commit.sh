@@ -51,10 +51,6 @@ git add --all
 git commit -m "$MESSAGE"
 git push origin v0.1.x-alpha
 
-cd ../ui
-git add --all
-git commit -m "$MESSAGE"
-git push origin main
 
 cd ../../../../
 git add --all
