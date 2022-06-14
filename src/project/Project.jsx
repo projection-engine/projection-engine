@@ -38,7 +38,7 @@ export default function Project(props) {
         setExecutingAnimation,
         executingAnimation,
         openTab, setOpenTab
-    } = useProjectWrapper(id, initialized, setInitialized, settings)
+    } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock)
     const [openFiles, setOpenFiles] = useState([])
     const contextMenuHook = useContextMenu()
     const options = useOptions(
@@ -242,6 +242,7 @@ export default function Project(props) {
 }
 
 Project.propTypes={
+    pushSettingsBlock: PropTypes.func,
     id: PropTypes.string,
     meta: PropTypes.object,
     events: PropTypes.object,

@@ -12,7 +12,7 @@ import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
 import CHANNELS from "../../../public/project/loader/CHANNELS"
 
-export default function useProjectWrapper(id, initialized, setInitialized, settings) {
+export default function useProjectWrapper(id, initialized, setInitialized, settings, pushSettingsBlock) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const {gpu} = useContext(GPUContextProvider)
     const load = useContext(LoaderProvider)
@@ -31,11 +31,10 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
 
             ipcRenderer.once(CHANNELS.META_DATA + "-" + listenID, async (ev, res) => {
                 if (res.settings && res.settings.data)
-                    Object.keys(res.settings.data).forEach(key => {
-                        settings[key] = res.settings.data[key]
+                    pushSettingsBlock({
+                        ...res.settings.data,
+                        name: res.meta?.data?.name
                     })
-                if (res.meta && res.meta.data)
-                    settings.name = res.meta.data.name
                 const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data, gpu, quickAccess.fileSystem) : undefined).filter(e => e))
                 engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
 

@@ -22,7 +22,7 @@ function EntryPoint() {
     const [project, setProject] = useState()
     const [events, setEvents] = useState({})
     const [initialized, setInitialized] = useState(false)
-    const settings = useSettings()
+    const [settings, clean, pushBlock] = useSettings()
     const gpuContext = useGPU(initialized, settings.resolution, project?.id)
     const hotKeysHook= useHotKeysHelper()
 
@@ -47,8 +47,10 @@ function EntryPoint() {
                     <GPUContextProvider.Provider value={gpuContext}>
                         {project ? <Project
                             settings={settings}
+                            pushSettingsBlock={pushBlock}
                             initialized={initialized}
                             setInitialized={setInitialized}
+
                             events={{
                                 ...events,
                                 closeEvent: FRAME_EVENTS.CLOSE,

@@ -6,7 +6,7 @@ import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
 
 const toRad = Math.PI / 180
 export default function useSettings() {
-    const [state] = useDirectState({
+    return useDirectState({
         projectCreationDate: (new Date()).toDateString(),
         timestamp: 30000,
 
@@ -62,5 +62,5 @@ export default function useSettings() {
         cameraScrollDelay: 100,
         shortcuts: []
     })
-    return state
+
 }

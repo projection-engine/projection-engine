@@ -116,22 +116,7 @@ export default function Viewport(props) {
 
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, props.options, TRIGGERS)
 
-    const rerenderCount = useRef({
-        alert: 0,
-        settings: 0,
-        gpu: 0,
-        quickAccess: 0
-    })
-    useEffect(() => {
-        rerenderCount.current.settings +=1
-    },[settings])
-    useEffect(() => {
-        rerenderCount.current.gpu +=1
-    },[gpu])
-    useEffect(() => {
-        rerenderCount.current.quickAccess +=1
-    },[quickAccess.fileSystem])
-    console.log(rerenderCount.current)
+
     return (
         <div className={styles.wrapper}>
             <ViewportOptions
