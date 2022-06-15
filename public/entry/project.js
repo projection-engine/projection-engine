@@ -1,1 +1,1 @@
-import "../../src/project/EntryPoint.jsx"
+import "../../src/project/Project.jsx"

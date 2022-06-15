@@ -4,11 +4,11 @@ import Camera from "./Camera"
 import PropTypes from "prop-types"
 import {Button, Icon} from "@f-ui/core"
 import CameraTab from "./CameraTab"
-import Transform from "../../scene/components/Transform"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import {updateTransform} from "../../scene/hooks/useForm"
 import ViewportTab from "./ViewportTab"
 import ResizableBar from "../../../../components/resizable/ResizableBar"
+import Transform from "../../component-editor/components/Transform"
+import {updateTransform} from "../../component-editor/hooks/useForm"
 
 export default function SideBar(props){
     const [open, setOpen] = useState(false)
@@ -34,7 +34,7 @@ export default function SideBar(props){
             <div className={styles.content} >
                 {tab === 0 ? <CameraTab engine={props.engine}/> : null}
                 {tab === 1 ? <ViewportTab engine={props.engine}/> : null}
-                {tab === 2 && selected ?
+                {tab === 2 && selected && selected.components[COMPONENTS.TRANSFORM] ?
                     <Transform
                         engine={engine} selected={selected.components[COMPONENTS.TRANSFORM]} entityID={selected.id}
                         submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, selected.id)}

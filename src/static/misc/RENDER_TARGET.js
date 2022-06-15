@@ -1,1 +1,1 @@
-export default 'canvas-render-target'
+export default "canvas-render-target"

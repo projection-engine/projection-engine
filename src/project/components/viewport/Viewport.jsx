@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useRef} from "react"
+import React, {useContext, useEffect, useMemo, useRef} from "react"
 import GPUContextProvider from "./hooks/GPUContextProvider"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
@@ -16,18 +16,23 @@ import SettingsProvider from "../../hooks/SettingsProvider"
 import Transformation from "../../engine/templates/Transformation"
 import cloneClass from "../../engine/utils/cloneClass"
 import importData from "../../utils/importer/import"
-import QuickAccessProvider from "../../hooks/QuickAccessProvider"
+import getOptionsViewport from "./getOptionsViewport"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./hooks/findEntities.js", import.meta.url))
 export default function Viewport(props) {
-    const quickAccess = useContext(QuickAccessProvider)
+
+    const optionsViewport = useMemo(() => {
+        const selected = props.engine.selected[0]
+        const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined
+        return getOptionsViewport(props.engine, selected, selectedRef, props.utils)
+    }, [props.engine.entities, props.engine.selected, props.utils.toCopy])
 
     const ref = useRef()
     const settings = useContext(SettingsProvider)
     const {bindGPU, gpu} = useContext(GPUContextProvider)
-    useEffect(() => bindGPU(ref.current), [])
+    useEffect(() => bindGPU(ref.current), [gpu])
     function pickIcon (entities, cameraMesh, pickSystem, camera, coords){
         return pickSystem.pickElement((shader, proj) => {
             for (let m = 0; m < entities.length; m++) {
@@ -114,7 +119,7 @@ export default function Viewport(props) {
         }
     }
 
-    useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, props.options, TRIGGERS)
+    useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, optionsViewport, TRIGGERS)
 
 
     return (
@@ -150,7 +155,7 @@ export default function Viewport(props) {
                     if (props.allowDrop) {
                         e.preventDefault()
                         ref.current?.classList.remove(styles.hovered)
-                        importData(e, quickAccess.fileSystem, props.engine)
+                        importData(e,  props.engine)
                     }
                 }}
    
@@ -158,6 +163,9 @@ export default function Viewport(props) {
                 id={"viewport-wrapper"}
                 className={styles.viewport}
             >
+
+                <span style={{display: "none"}} ref={ref}/>
+                <SideBar engine={props.engine}/>
                 <SelectBox
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
@@ -185,17 +193,13 @@ export default function Viewport(props) {
                     selected={[]}
                     nodes={[]}
                 />
-                <span style={{display: "none"}} ref={ref}/>
-                <SideBar engine={props.engine}/>
             </div>
         </div>
     )
 }
 
 Viewport.propTypes = {
-
-
-    options: PropTypes.array,
+    utils: PropTypes.object,
     allowDrop: PropTypes.bool.isRequired,
     executingAnimation: PropTypes.bool,
     engine: PropTypes.object,

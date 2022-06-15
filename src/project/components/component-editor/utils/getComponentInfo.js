@@ -1,6 +1,5 @@
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import React from "react"
-import {Icon} from "@f-ui/core"
+
 
 export default function getComponentInfo(c) {
     const res = {}
@@ -8,76 +7,69 @@ export default function getComponentInfo(c) {
     case COMPONENTS.TRANSFORM:
         res.key = c
         res.label = "Transform"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>transform</Icon>
+        res.icon = "transform"
         break
     case COMPONENTS.CUBE_MAP:
         res.key = c
         res.label = "CubeMap"
-        res.icon = <Icon
-            styles={{fontWeight: "1rem"}}>panorama_photosphere</Icon>
+        res.icon = "panorama_photosphere"
         break
     case COMPONENTS.MESH:
         res.key = c
         res.label = "Mesh"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>view_in_ar</Icon>
+        res.icon = "view_in_ar"
         break
     case COMPONENTS.MATERIAL:
         res.key = c
         res.label = "Material"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>texture</Icon>
+        res.icon = "texture"
         break
     case COMPONENTS.POINT_LIGHT:
         res.key = c
         res.label = "PointLight"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>lightbulb</Icon>
+        res.icon = "lightbulb"
         break
     case COMPONENTS.SKYBOX:
         res.key = c
         res.label = "Skybox"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>cloud</Icon>
+        res.icon = "cloud"
         break
     case COMPONENTS.DIRECTIONAL_LIGHT:
     case COMPONENTS.SKYLIGHT:
         res.key = c
         res.label = c === COMPONENTS.DIRECTIONAL_LIGHT ? "DirectionalLight" : "Skylight"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>light_mode</Icon>
+        res.icon = "light_mode"
         break
     case COMPONENTS.SPOT_LIGHT:
         res.key = c
         res.label = "Spotlight"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>flashlight_on</Icon>
+        res.icon = "flashlight_on"
         break
 
     case COMPONENTS.PHYSICS:
         res.key = c
         res.label = "Physics"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>public</Icon>
+        res.icon = "public"
         break
     case COMPONENTS.COLLIDER:
         res.key = c
         res.label = "Collider"
-        res.icon =
-                <Icon styles={{fontWeight: "1rem"}}>compare_arrows</Icon>
+        res.icon = "compare_arrows"
         break
     case COMPONENTS.CAMERA:
         res.key = c
         res.label = "Camera"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>videocam</Icon>
+        res.icon = "videocam"
         break
     case COMPONENTS.LINE:
         res.key = c
         res.label = "Line"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>arrow_right_alt</Icon>
+        res.icon = "arrow_right_alt"
         break
     case COMPONENTS.PROBE:
         res.key = c
         res.label = "Light probe"
-        res.icon = <Icon styles={{fontWeight: "1rem"}}>lens_blur</Icon>
+        res.icon = "lens_blur"
         break
     default:
         break

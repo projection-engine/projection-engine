@@ -218,8 +218,7 @@
   font-size: 0.7rem;
   font-weight: 550;
   height: 20px;
-  display: flex;
-  align-items: center;
+
   overflow: hidden;
   padding: 0 4px !important;
   background-color: var(--pj-border-primary) !important;

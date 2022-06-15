@@ -16,7 +16,7 @@ import Conversion from "../../engine/utils/Conversion"
 
 const toDeg = 57.29, toRad = 3.1415 / 180
 export default class RotationGizmo {
-
+    pivotPoint = [0,10,0,0]
     clickedAxis = -1
     tracking = false
     currentRotation = [0, 0, 0]
@@ -159,10 +159,17 @@ export default class RotationGizmo {
         if (vec[2] !== 0)
             quat.rotateZ(quatA, quatA, vec[2])
 
-        for (let i = 0; i < this.target.length; i++) {
+        const SIZE = this.target.length
+        for (let i = 0; i < SIZE; i++) {
             const target = this.target[i].components[COMPONENTS.TRANSFORM]
-            if (this.typeRot === ROTATION_TYPES.GLOBAL || this.target.length > 1)
+            if (this.typeRot === ROTATION_TYPES.GLOBAL || SIZE > 1) {
+                if(vec3.len(target.pivotPoint) > 0) {
+                    const rotationMatrix = mat4.fromQuat([], quatA),
+                        translated = vec3.sub([], target.translation, target.pivotPoint)
+                    target.translation = vec3.add([], vec3.transformMat4([], translated, rotationMatrix), target.pivotPoint)
+                }
                 target.rotationQuat = quat.multiply([], quatA, target.rotationQuat)
+            }
             else
                 target.rotationQuat = quat.multiply([], target.rotationQuat, quatA)
         }

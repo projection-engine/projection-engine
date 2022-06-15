@@ -3,7 +3,7 @@ import useDirectState from "../../../../components/hooks/useDirectState"
 import React, {useContext} from "react"
 import SettingsProvider from "../../../hooks/SettingsProvider"
 import LabeledRange from "../../../../components/templates/LabeledRange"
-import styles from "../../scene/styles/Forms.module.css"
+import styles from "../../component-editor/styles/Forms.module.css"
 import Range from "../../../../components/range/Range"
 
 const  toDeg = 180/ Math.PI, toRad = Math.PI/180

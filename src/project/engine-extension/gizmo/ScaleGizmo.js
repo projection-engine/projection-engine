@@ -1,4 +1,4 @@
-import {vec4} from "gl-matrix"
+import {vec3, vec4} from "gl-matrix"
 import Entity from "../../engine/basic/Entity"
 import TransformComponent from "../../engine/components/TransformComponent"
 import MeshInstance from "../../engine/instances/MeshInstance"
@@ -102,12 +102,19 @@ export default class ScaleGizmo extends Gizmo {
         else
             toApply = vec4.transformQuat([], vec, this.target[0].components[COMPONENTS.TRANSFORM].rotationQuat)
         for (let i = 0; i < this.target.length; i++) {
-            const target = this.target[i]
-            target.components[COMPONENTS.TRANSFORM].scaling = [
-                target.components[COMPONENTS.TRANSFORM].scaling[0] - toApply[0],
-                target.components[COMPONENTS.TRANSFORM].scaling[1] - toApply[1],
-                target.components[COMPONENTS.TRANSFORM].scaling[2] - toApply[2]
+            const comp = this.target[i].components[COMPONENTS.TRANSFORM]
+            const newScaling = [
+                comp.scaling[0] - toApply[0],
+                comp.scaling[1] - toApply[1],
+                comp.scaling[2] - toApply[2]
             ]
+            const A = comp.translation,
+                B = comp.pivotPoint,
+                C = vec3.sub([], A, B),
+                RS = newScaling[0]/comp.scaling[0]
+            
+            comp.translation = vec3.add([], B, vec3.scale([], C, RS))
+            comp.scaling = newScaling
         }
     }
 

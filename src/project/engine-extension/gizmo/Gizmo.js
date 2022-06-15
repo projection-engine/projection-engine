@@ -70,10 +70,10 @@ export default class Gizmo {
                     data: el.components[k[i]].direction
                 }
             case COMPONENTS.TRANSFORM:
-                const m = el.components[COMPONENTS.TRANSFORM]?.transformationMatrix
+                const m = el.components[COMPONENTS.TRANSFORM]
                 return {
                     valid: true,
-                    data: [m[12], m[13], m[14]]
+                    data: m.centerOrigin
                 }
             default:
                 break
@@ -85,7 +85,7 @@ export default class Gizmo {
         }
     }
 
-    #testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected, entities) {
+    #testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected) {
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
         const mZ = this._translateMatrix(translation, this.zGizmo.components)

@@ -1,254 +1,79 @@
-import React, {useMemo, useState} from "react"
-import styles from "./styles/Project.module.css"
-import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
-import SettingsProvider from "./hooks/SettingsProvider"
-import FilesView from "./components/files/FilesView"
-import Editor from "./components/editor/Editor"
-import EntitiesProvider from "./hooks/EntitiesProvider"
-import Frame from "../components/frame/Frame"
-import useProjectWrapper from "./hooks/useProjectWrapper"
+import React, {useEffect, useState} from "react"
+import ReactDOM from "react-dom"
+import "../styles/globals.css"
+import {ThemeProvider, useAlert} from "@f-ui/core"
+import styles from "../styles/App.module.css"
+import useGlobalOptions from "../components/hooks/useGlobalOptions"
+import useLoader from "../components/loader/useLoader"
+import Editor from "./Editor"
+import useGPU from "./components/viewport/hooks/useGPU"
+import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
+import useSettings from "./hooks/useSettings"
+import FRAME_EVENTS from "../../public/FRAME_EVENTS"
+import useHotKeysHelper from "./components/shortcuts/hooks/useHotKeysHelper"
+import HotKeysProvider from "./components/shortcuts/hooks/HotKeysProvider"
+import useQuickAccess from "./hooks/useQuickAccess"
+import QuickAccessProvider from "./hooks/QuickAccessProvider"
 import FileSystem from "./utils/files/FileSystem"
-import FILE_TYPES from "../../public/project/glTF/FILE_TYPES"
-import useOptions from "./components/editor/hooks/useOptions"
-import Header from "./components/header/Header"
-import Tabs from "../components/tabs/Tabs"
-import OpenFileProvider from "./hooks/OpenFileProvider"
-import ScriptView from "./components/blueprints/scripts/ScriptView"
-import MaterialView from "./components/blueprints/material/MaterialView"
-import refreshData from "./utils/refreshData"
-import PropTypes from "prop-types"
-import Shortcuts from "./components/shortcuts/Shortcuts"
-import ContextMenuProvider from "../components/context/hooks/ContextMenuProvider"
-import useContextMenu from "../components/context/hooks/useContextMenu"
-import ContextMenu from "../components/context/ContextMenu"
-import {ContextWrapper} from "@f-ui/core"
 
+const {ipcRenderer} = window.require("electron")
 
-const {ipcRenderer, shell} = window.require("electron")
-export default function Project(props) {
-    const {id, meta, events, initialized, setInitialized, settings, load} = props
-    const {
-        exporter,
-        entitiesWithMeshes,
-        serializer,
-        engine,
- 
-        setExecutingAnimation,
-        executingAnimation,
-        openTab, setOpenTab
-    } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock, load)
-    const [openFiles, setOpenFiles] = useState([])
-    const contextMenuHook = useContextMenu()
-    const options = useOptions(
-        executingAnimation,
-        setExecutingAnimation,
-        engine,
-        serializer.save,
-        () => {
-            setOpenTab(openFiles.length +1 )
-            setOpenFiles(prev => [...prev, {name: "Level Blueprint", type: "flow", isLevelBlueprint: true}])
-        }
-    )
+function Project() {
+    const global = useGlobalOptions()
+    const loader = useLoader(global.dark, global.accentColor)
 
-    const submitPackage = (pack, close, previewImage, isLevel, registryID, matInstance, isMaterial) => {
-        if(!isLevel) {
-            let p = previewImage
-            if(matInstance)
-                p = engine.renderer.generatePreview(matInstance)
-            document.fileSystem
-                .updateAsset(registryID, pack, p)
-                .then(() => {
+    const [project, setProject] = useState()
+    const [refresh, quickAccess] = useQuickAccess(project?.id)
+    const [events, setEvents] = useState({})
+    const [initialized, setInitialized] = useState(false)
+    const [settings,, pushBlock] = useSettings()
+    const gpuContext = useGPU(settings, project?.id)
+    const hotKeysHook= useHotKeysHelper()
 
-                    if (matInstance)
-                        engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
-                    else if(!isMaterial){
-                        setTimeout(() => {
-                            alert.pushAlert("Reloading script", "warning",)
-                            refreshData(FILE_TYPES.SCRIPT, registryID,  engine)
-                        }, 1000)
-                    }
-                    alert.pushAlert(  "Saved", "success", )
-                })
-                .catch(() => {
-                    alert.pushAlert(  "Some error occurred", "error", )
-                })
-        }
-        else
-            document.fileSystem.writeFile( FileSystem.sep + "levelBlueprint" + FILE_TYPES.SCRIPT, pack)
-                .then(() => {
-                    alert.pushAlert("success",  "Saved")
-                    
-                    setTimeout(() => {
-                        alert.pushAlert(  "Reloading script", "warning")
-                        refreshData(undefined, undefined,   engine)
-                    }, 1000)
-                })
-                .catch(() => {
-                    alert.pushAlert(  "Some error occurred", "error")
-                })
-    }
-
-    const tabs = useMemo(() => {
-        return openFiles.map((o, i)=> {
-            switch ("." + o.type) {
-            case FILE_TYPES.MATERIAL:
-                return {
-                    label: o.label,
-                    icon: "texture",
-                    children: (
-                        <MaterialView
-                            name={o.label}
-                            engine={engine}
-                            open={i === openTab}
-                            registryID={o.registryID}
-                            submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance, true)}
-                        />
-                    ),
-                    close: () => {
-                        engine.renderer.overrideMaterial = undefined
-                        setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.MATERIAL, o.registryID, engine)
-                    },
-
-                }
-            case FILE_TYPES.SCRIPT:
-                return {
-                    label: o.label,
-                    icon: o.isLevelBlueprint ? "foundation" : "code",
-                    children: (
-                        <ScriptView
-                            name={o.label}
-                            engine={engine}
-                            file={o}
-                            isLevelBp={o.isLevelBlueprint}
-                            submitPackage={(pack, close, previewImage) => submitPackage(pack, close, previewImage, o.isLevelBlueprint, o.registryID)}
-                            id={o.registryID}
-                        />
-                    ),
-                    close: () => {
-                        setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.SCRIPT, o.registryID, engine)
-                    }
-                }
-            default:
-                return undefined
-            }
-        }).filter(e => e)
-    }, [openFiles, openTab, engine.entities])
-
+    useEffect(() => {
+        ipcRenderer.send("load-page")
+        ipcRenderer.on("page-load-props", (ev, data) => {
+            document.fileSystem = new FileSystem(data.package.id)
+            document.fileSystem.refresh = refresh
+            setProject(data.package)
+            setEvents(data)
+        })
+        document.body.classList.add(styles.dark)
+    }, [])
+    useAlert(true)
     return (
-        <ContextMenuProvider.Provider value={contextMenuHook}>
-            <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
-                <EntitiesProvider.Provider value={{
-                    entities: entitiesWithMeshes, removeEntities: (entities) => {
-                        engine.setSelected([])
-                        engine.dispatchEntities({
-                            type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities
-                        })
-                        entities.forEach(entity => document.fileSystem.deleteEntity(entity))
-                    }, engine
-                }}>
-                    <SettingsProvider.Provider value={settings}>
-                        
-                        <Frame
-                            logoAction={true}
-                            options={[
-                                {
-                                    label: "File", 
-                                    options: [{
-                                        label: "Save project",
-                                        icon: "save",
-                                        shortcut: "Ctrl + S",
-                                        onClick: () => serializer.save()
-                                    }, 
-                                    {
-                                        label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
-                                            exporter.build({
-                                                entities: engine.entities,
-                                                meshes: engine.meshes,
-                                                materials: engine.materials,
-                                                scripts: engine.scripts
-                                            })
-                                                .then(() => {
-                                                    alert.pushAlert( "Successfully exported", "success")
-                                                    setTimeout(() => {
-                                                        shell.openPath(document.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
-                                                    }, 2000)
-                                                })
-                                                .catch(() => alert.pushAlert("Error during packaging process", "error"))
-                                        }
-                                    }]
-                                },
-                                {
-                                    label: "Help",
-                                    options: [
-                                        {
-                                            label: "Editor Shortcuts",
-                                            onClick: () => ipcRenderer.send("open-shortcuts", {})
-                                        },
-                                        {
-                                            label: "About",
-                                            icon: "help",
-                                            disabled: true
-                                        },
-
-                                    ]
-                                }
-                            ]}
-                            hasLogo={true}
-                            pageInfo={events}
-                            label={meta?.name}/>
-                        <ContextWrapper
-                            wrapperClassName={styles.context}
-                            triggers={contextMenuHook[0].triggers}
-                            className={styles.wrapper}
-                            content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
-                        >
-                            <Header options={options}/>
-                            <Editor
-                                setExecutingAnimation={setExecutingAnimation}
-                                executingAnimation={executingAnimation}
-                                engine={engine}
-                                id={id}
-
-                                settings={settings}
-                                serializer={serializer}
-                            />
-                            <Tabs
-                                open={openTab}
-                                setOpen={setOpenTab}
-                                orientation={"vertical"}
-                                tabs={[
-                                    {
-                                        label: "Files",
-                                        icon: "folder",
-                                        children: (
-                                            <FilesView
-                                                id={id}
-                                            />
-                                        )
-                                    },
-                                    ...tabs
-                                ]}
-                            />
-                        </ContextWrapper>
-                        <Shortcuts/>
-         
-                    </SettingsProvider.Provider>
-                </EntitiesProvider.Provider>
-            </OpenFileProvider.Provider>
-        </ContextMenuProvider.Provider>
-    )
+        <ThemeProvider
+            language={"en"}
+            theme={"dark"}
+            accentColor={global.accentColor}
+            className={styles.wrapper}
+        >
+            <HotKeysProvider.Provider value={hotKeysHook}>
+                <QuickAccessProvider.Provider value={quickAccess}>
+                    <GPUContextProvider.Provider value={gpuContext}>
+                        {project? <Editor
+                            settings={settings}
+                            load={loader}
+                            pushSettingsBlock={pushBlock}
+                            initialized={initialized}
+                            setInitialized={setInitialized}
+                            events={{
+                                ...events,
+                                closeEvent: FRAME_EVENTS.CLOSE,
+                                minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                                maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                            }}
+                            quickAccess={quickAccess}
+                            id={project.id}
+                            meta={project.meta}
+                        /> : null}
+                    </GPUContextProvider.Provider>
+                </QuickAccessProvider.Provider>
+            </HotKeysProvider.Provider>
+        </ThemeProvider>)
 }
 
-Project.propTypes={
-    load: PropTypes.object,
-    quickAccess: PropTypes.object,
-    pushSettingsBlock: PropTypes.func,
-    id: PropTypes.string,
-    meta: PropTypes.object,
-    events: PropTypes.object,
-    initialized: PropTypes.bool,
-    setInitialized: PropTypes.func,
-    settings: PropTypes.object
-}
+
+ReactDOM.render(<React.StrictMode>
+    <Project/>
+</React.StrictMode>, document.getElementById("root"))

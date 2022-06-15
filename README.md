@@ -92,7 +92,7 @@ Multiple features are already implemented or on the way to the editor, here is a
 - **Multi-tab system**
 - **Shared GPU context for fast tab switching**
 - **Parallel processing (IPC and workers)**
-    - Project loading
+    - Editor loading
     - glTF import
     - File system refreshes
     - Image processing

@@ -79,7 +79,7 @@ export default function FormTabs(props) {
                         variant={currentKey === t.key ? "filled" : undefined}
                         className={styles.button}
                         onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
-                        {t.icon}
+                        <Icon styles={{fontWeight: "1rem"}}>{t.icon}</Icon>
                         <ToolTip content={t.label} animation={"0ms"}/>
                     </Button>
                 </React.Fragment>

@@ -1,5 +1,5 @@
-import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
 
 export default function getOptionsViewport(engine, selected, selectedRef, utils) {
     const {
@@ -65,7 +65,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         },
         {divider: true},
         {
-            label: "Set geometry to origin",
+            label: "Apply current transformation",
             onClick: () => {
                 const comp = selectedRef.components[COMPONENTS.TRANSFORM]
                 comp.baseTransformationMatrix = comp.transformationMatrix
@@ -74,15 +74,34 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
                 comp.scaling = [1, 1, 1]
                 comp.rotationQuat = [0, 0, 0, 1]
 
-                comp.changed = true
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                     payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
                 })
-            },
-            icon: "place"
+            }
         },
-
+        {
+            label: "Center on 3D cursor",
+            onClick: () => {
+                const comp = selectedRef.components[COMPONENTS.TRANSFORM]
+                comp.translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                engine.dispatchEntities({
+                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+                    payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
+                })
+            }
+        },
+        {
+            label: "Origin to 3D cursor",
+            onClick: () => {
+                const comp = selectedRef.components[COMPONENTS.TRANSFORM]
+                comp.pivotPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                engine.dispatchEntities({
+                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+                    payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
+                })
+            }
+        },
         {divider: true},
         {
             label: "Rename active",

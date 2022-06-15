@@ -1,37 +1,16 @@
-import React, {useMemo, useState} from "react"
+import React, {useMemo} from "react"
 import PropTypes from "prop-types"
-import styles from "../styles/Scene.module.css"
-import {Button, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-import TreeView from "../../../../components/tree/TreeView"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
-import useHierarchy from "../hooks/useHierarchy"
-import getComponentInfo from "../utils/getComponentInfo"
+import TreeView from "../../../components/tree/TreeView"
+import COMPONENTS from "../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
+import useHierarchy from "./hooks/useHierarchy"
 
-import {createFolder, getHierarchy} from "../utils/hiearchyUtils"
+import {createFolder, getHierarchy} from "./utils/hiearchyUtils"
 
 const TRIGGERS = ["data-node", "data-self"]
-const WORKER = new Worker(new URL("../hooks/hierarchy.js", import.meta.url))
+const WORKER = new Worker(new URL("./hooks/hierarchy.js", import.meta.url))
 export default function Hierarchy(props){
-    const [required, setRequired] = useState()
-    const data = useHierarchy(props.engine, required,  WORKER)
-    const options = useMemo(() => {
-        return Object.keys(COMPONENTS).map(e => {
-            const o = getComponentInfo(COMPONENTS[e])
-            if (Object.keys(o).length > 0)
-                return (
-                    <React.Fragment key={e}>
-                        <DropdownOption option={{
-                            onClick: () => setRequired(required === COMPONENTS[e] ? undefined : COMPONENTS[e]),
-                            ...o,
-                            icon: required !== COMPONENTS[e] ? undefined :
-                                <Icon  styles={{fontSize: "1rem"}}>checked</Icon>
-                        }}/>
-                    </React.Fragment>
-                )
-        })
-    }, [required])
-
+    const data = useHierarchy(props.engine,  WORKER)
     const treeOptions = useMemo(() => {
         return [
             {
@@ -139,31 +118,7 @@ export default function Hierarchy(props){
 
 
     return (
-        <div className={styles.wrapperContent} style={{overflow: "hidden",   background: "var(--pj-background-secondary)"}}>
-            <div
-                className={styles.header}
-                style={{justifyContent: "space-between", padding: "0 4px"}}
-            >
-                <label className={styles.overflow}>
-					Scene hierarchy
-                </label>
-                <div style={{display: "flex", gap: "2px"}}>
-                    <Button className={styles.button} onClick={() => createFolder()}>
-                        <Icon
-
-                            styles={{fontSize: "1rem"}}>create_new_folder</Icon>
-                    </Button>
-                    <Dropdown className={styles.button} hideArrow={true}>
-                        <Icon
-
-                            styles={{fontSize: "1rem"}}
-                        >filter_alt</Icon>
-                        <DropdownOptions>
-                            {options}
-                        </DropdownOptions>
-                    </Dropdown>
-                </div>
-            </div>
+        <>
             <TreeView
                 contextTriggers={TRIGGERS}
                 onMultiSelect={(items) => props.engine.setSelected(items)}
@@ -221,7 +176,7 @@ export default function Hierarchy(props){
                     })
                 }}
             />
-        </div>
+        </>
     )
 }
 

@@ -10,7 +10,7 @@ import ResizableBar from "../../../../components/resizable/ResizableBar"
 export default function Gizmo(props){
     const {settingsContext} = props
     const [gridSize, setGridSize] = useState(settingsContext.gridSize)
-    const [hidden, setHidden] = useState(false)
+    
     const [minimal, setMinimal] = useState( true )
     const ref = useRef()
     const initialized = useRef(false)
@@ -26,253 +26,242 @@ export default function Gizmo(props){
     return (
         <div className={styles.floating}>
             <div className={styles.contentWrapper} ref={ref}>
+            
                 <Button
-                    className={styles.hideButton}
-                    onClick={() => setHidden(!hidden)}>
-                    <Icon  styles={{
-                        fontSize: "1.1rem",
-                        transform: !hidden ? "rotate(180deg)" : undefined
-                    }}>navigate_next</Icon>
+                    styles={{borderRadius: "3px"}}
+                    attributes={{title: `(${settingsContext.rotationType}) Toggle transformation type`, "data-minimal": `${minimal}`}}
+                    className={styles.transformationWrapper}
+                    onClick={() => {
+                        if (settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
+                            settingsContext.rotationType = ROTATION_TYPES.GLOBAL
+                        else
+                            settingsContext.rotationType = ROTATION_TYPES.RELATIVE
+                    }}
+                >
+                    <Icon  styles={{fontSize: "1.1rem"}}>
+                        {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? "place" : "language"}
+                    </Icon>
+                    {minimal ? null : <label className={styles.overflow}>{settingsContext.rotationType}</label>}
                 </Button>
-                {hidden ? null : (
-                    <>
-                        <Button
-                            styles={{borderRadius: "3px"}}
-                            attributes={{title: `(${settingsContext.rotationType}) Toggle transformation type`, "data-minimal": `${minimal}`}}
-                            className={styles.transformationWrapper}
-                            onClick={() => {
-                                if (settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
-                                    settingsContext.rotationType = ROTATION_TYPES.GLOBAL
-                                else
-                                    settingsContext.rotationType = ROTATION_TYPES.RELATIVE
-                            }}
-                        >
-                            <Icon  styles={{fontSize: "1.1rem"}}>
-                                {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? "place" : "language"}
-                            </Icon>
-                            {minimal ? null : <label className={styles.overflow}>{settingsContext.rotationType}</label>}
-                        </Button>
-                        <div className={styles.buttonGroup} style={{display: "grid"}}>
-                            <Dropdown
-                                styles={{borderRadius: "3px 3px 0 0"}}
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                hideArrow={true}>
-                                <ToolTip content={"Translation grid size"}/>
-                                <Icon  styles={{fontSize: "1rem"}}>grid_4x4</Icon>
-                                {minimal ? null : <label className={styles.overflow}>Translation grid</label>}
-                                <DropdownOptions>
-                                    <div className={styles.rangeWrapper} style={{display: "grid"}}>
-                                        <div className={styles.rangeLabel}>
+                <div className={styles.buttonGroup} style={{display: "grid"}}>
+                    <Dropdown
+                        styles={{borderRadius: "3px 3px 0 0"}}
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        hideArrow={true}>
+                        <ToolTip content={"Translation grid size"}/>
+                        <Icon  styles={{fontSize: "1rem"}}>grid_4x4</Icon>
+                        {minimal ? null : <label className={styles.overflow}>Translation grid</label>}
+                        <DropdownOptions>
+                            <div className={styles.rangeWrapper} style={{display: "grid"}}>
+                                <div className={styles.rangeLabel}>
                                             Translation grid size
-                                        </div>
-                                        <Range
-                                            onFinish={v => {
-                                                setGridSize(v)
-                                                settingsContext.gridSize = v
-                                            }} accentColor={"red"}
-                                            handleChange={(v) => setGridSize(v)}
-                                            value={gridSize}
-                                            precision={4}
-                                            incrementPercentage={.001}
-                                        />
-                                    </div>
-                                </DropdownOptions>
-                            </Dropdown>
-                            <Dropdown
-                                className={styles.transformationWrapper}
-                                styles={{borderTop: "none"}}
-                                hideArrow={true}
-                                attributes={{"data-minimal": `${minimal}`}}
-                            >
-
-                                <ToolTip content={"Scale grid size"}/>
-                                <Icon
-
-                                    styles={{transform: "rotate(-45deg)"}}>linear_scale</Icon>
-
-                                {minimal ? null : <label className={styles.overflow}>Scale grid</label>}
-                                <DropdownOptions>
-                                    <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
-                                        <Button
-                                            className={styles.enableButton}
-                                            styles={{color: settingsContext.gridScaleSize ? "var(--pj-accent-color)" : undefined}}
-                                            onClick={() => settingsContext.gridScaleSize = settingsContext.gridScaleSize ? undefined : 1}
-                                        >
-                                            <Icon
-
-                                                styles={{fontSize: ".9rem"}}
-                                            >{settingsContext.gridScaleSize ? "lens" : "panorama_fish_eye"}</Icon>
-                                        </Button>
-                                        Scale grid size
-                                    </div>
-
-                                    <div style={{display: "flex", padding: "4px", gap: "4px"}}>
-                                        <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                            {[1, .5, .25].map(e => (
-                                                <React.Fragment key={e + "variable-scale"}>
-                                                    <Button
-                                                        disabled={!settingsContext.gridScaleSize}
-                                                        styles={{width: "100%"}} className={styles.button}
-                                                        variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
-                                                        onClick={() => settingsContext.gridScaleSize = e}>
-                                                        {e}
-                                                    </Button>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                        <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                            {[.125, .0625, .03125].map(e => (
-                                                <React.Fragment key={e + "variable-scale"}>
-                                                    <Button
-                                                        disabled={!settingsContext.gridScaleSize}
-                                                        styles={{width: "100%"}} className={styles.button}
-                                                        variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
-                                                        onClick={() => settingsContext.gridScaleSize = e}>
-                                                        {e}
-                                                    </Button>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </DropdownOptions>
-                            </Dropdown>
-                            <Dropdown
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                styles={{borderRadius: "0 0 3px 3px",  borderTop: "none"}}
-                                hideArrow={true}
-                            >
-                                <ToolTip content={"Rotation angle"}/>
-                                <div style={{display: "flex", alignContent: "center", flexDirection: "column", fontSize: ".7rem"}}>
-                                    <svg viewBox="0 0 512 512" style={{width: "1rem"}}>
-                                        <path
-                                            fill={"var(--pj-color-secondary)"}
-                                            d="M495.304,425.738H255.417c-3.576-52.031-23.828-100.842-58.185-140.23L401.371,81.37c6.52-6.52,6.52-17.091,0-23.611    c-6.519-6.52-17.091-6.52-23.611,0L4.89,430.629c-3.282,3.282-4.984,7.702-4.886,12.172c0.018,0.813,0.095,1.627,0.233,2.436    c0.207,1.214,0.55,2.416,1.034,3.586c2.584,6.239,8.672,10.307,15.425,10.307h222.609h256c9.22,0,16.696-7.475,16.696-16.696    S504.525,425.738,495.304,425.738z M57.002,425.738l116.562-116.561c28.136,32.988,44.927,73.446,48.38,116.561H57.002z"/>
-                                    </svg>
-                                    {!settingsContext.gridRotationSize ? "" : settingsContext.gridRotationSize + "°"}
                                 </div>
-                                {minimal ? null : <label className={styles.overflow}>Rotation angle</label>}
+                                <Range
+                                    onFinish={v => {
+                                        setGridSize(v)
+                                        settingsContext.gridSize = v
+                                    }} accentColor={"red"}
+                                    handleChange={(v) => setGridSize(v)}
+                                    value={gridSize}
+                                    precision={4}
+                                    incrementPercentage={.001}
+                                />
+                            </div>
+                        </DropdownOptions>
+                    </Dropdown>
+                    <Dropdown
+                        className={styles.transformationWrapper}
+                        styles={{borderTop: "none"}}
+                        hideArrow={true}
+                        attributes={{"data-minimal": `${minimal}`}}
+                    >
 
-                                <DropdownOptions>
-                                    <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
-                                        <Button
+                        <ToolTip content={"Scale grid size"}/>
+                        <Icon
 
-                                            className={styles.enableButton}
-                                            styles={{color: settingsContext.gridRotationSize ? "var(--pj-accent-color)" : undefined}}
-                                            onClick={() => settingsContext.gridRotationSize = settingsContext.gridRotationSize ? undefined : 5}
-                                        >
-                                            <Icon
+                            styles={{transform: "rotate(-45deg)"}}>linear_scale</Icon>
 
-                                                styles={{fontSize: ".9rem"}}
-                                            >{settingsContext.gridRotationSize ? "lens" : "panorama_fish_eye"}</Icon>
-                                        </Button>
+                        {minimal ? null : <label className={styles.overflow}>Scale grid</label>}
+                        <DropdownOptions>
+                            <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
+                                <Button
+                                    className={styles.enableButton}
+                                    styles={{color: settingsContext.gridScaleSize ? "var(--pj-accent-color)" : undefined}}
+                                    onClick={() => settingsContext.gridScaleSize = settingsContext.gridScaleSize ? undefined : 1}
+                                >
+                                    <Icon
+
+                                        styles={{fontSize: ".9rem"}}
+                                    >{settingsContext.gridScaleSize ? "lens" : "panorama_fish_eye"}</Icon>
+                                </Button>
+                                        Scale grid size
+                            </div>
+
+                            <div style={{display: "flex", padding: "4px", gap: "4px"}}>
+                                <div style={{display: "grid", gap: "4px", width: "100%"}}>
+                                    {[1, .5, .25].map(e => (
+                                        <React.Fragment key={e + "variable-scale"}>
+                                            <Button
+                                                disabled={!settingsContext.gridScaleSize}
+                                                styles={{width: "100%"}} className={styles.button}
+                                                variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
+                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                                <div style={{display: "grid", gap: "4px", width: "100%"}}>
+                                    {[.125, .0625, .03125].map(e => (
+                                        <React.Fragment key={e + "variable-scale"}>
+                                            <Button
+                                                disabled={!settingsContext.gridScaleSize}
+                                                styles={{width: "100%"}} className={styles.button}
+                                                variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
+                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            </div>
+                        </DropdownOptions>
+                    </Dropdown>
+                    <Dropdown
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        styles={{borderRadius: "0 0 3px 3px",  borderTop: "none"}}
+                        hideArrow={true}
+                    >
+                        <ToolTip content={"Rotation angle"}/>
+                        <div style={{display: "flex", alignContent: "center", flexDirection: "column", fontSize: ".7rem"}}>
+                            <svg viewBox="0 0 512 512" style={{width: "1rem"}}>
+                                <path
+                                    fill={"var(--pj-color-secondary)"}
+                                    d="M495.304,425.738H255.417c-3.576-52.031-23.828-100.842-58.185-140.23L401.371,81.37c6.52-6.52,6.52-17.091,0-23.611    c-6.519-6.52-17.091-6.52-23.611,0L4.89,430.629c-3.282,3.282-4.984,7.702-4.886,12.172c0.018,0.813,0.095,1.627,0.233,2.436    c0.207,1.214,0.55,2.416,1.034,3.586c2.584,6.239,8.672,10.307,15.425,10.307h222.609h256c9.22,0,16.696-7.475,16.696-16.696    S504.525,425.738,495.304,425.738z M57.002,425.738l116.562-116.561c28.136,32.988,44.927,73.446,48.38,116.561H57.002z"/>
+                            </svg>
+                            {!settingsContext.gridRotationSize ? "" : settingsContext.gridRotationSize + "°"}
+                        </div>
+                        {minimal ? null : <label className={styles.overflow}>Rotation angle</label>}
+
+                        <DropdownOptions>
+                            <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
+                                <Button
+
+                                    className={styles.enableButton}
+                                    styles={{color: settingsContext.gridRotationSize ? "var(--pj-accent-color)" : undefined}}
+                                    onClick={() => settingsContext.gridRotationSize = settingsContext.gridRotationSize ? undefined : 5}
+                                >
+                                    <Icon
+
+                                        styles={{fontSize: ".9rem"}}
+                                    >{settingsContext.gridRotationSize ? "lens" : "panorama_fish_eye"}</Icon>
+                                </Button>
                                         Rotation angle
-                                    </div>
+                            </div>
 
-                                    <div style={{display: "flex", padding: "4px", gap: "4px"}}>
-                                        <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                            {[1, 5, 10, 15].map(e => (
-                                                <React.Fragment key={e + "variable-rotation"}>
-                                                    <Button
-                                                        disabled={!settingsContext.gridRotationSize}
-                                                        styles={{width: "100%"}} className={styles.button}
-                                                        variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
-                                                        onClick={() => settingsContext.gridRotationSize = e}>
-                                                        {e}
-                                                    </Button>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                        <div style={{display: "grid", gap: "4px", width: "100%"}}>
-                                            {[30, 45, 60, 90].map(e => (
-                                                <React.Fragment key={e + "variable-rotation"}>
-                                                    <Button
-                                                        disabled={!settingsContext.gridRotationSize}
-                                                        styles={{width: "100%"}} className={styles.button}
-                                                        variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
-                                                        onClick={() => settingsContext.gridRotationSize = e}>
-                                                        {e}
-                                                    </Button>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </DropdownOptions>
-                            </Dropdown>
-                        </div>
+                            <div style={{display: "flex", padding: "4px", gap: "4px"}}>
+                                <div style={{display: "grid", gap: "4px", width: "100%"}}>
+                                    {[1, 5, 10, 15].map(e => (
+                                        <React.Fragment key={e + "variable-rotation"}>
+                                            <Button
+                                                disabled={!settingsContext.gridRotationSize}
+                                                styles={{width: "100%"}} className={styles.button}
+                                                variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
+                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                                <div style={{display: "grid", gap: "4px", width: "100%"}}>
+                                    {[30, 45, 60, 90].map(e => (
+                                        <React.Fragment key={e + "variable-rotation"}>
+                                            <Button
+                                                disabled={!settingsContext.gridRotationSize}
+                                                styles={{width: "100%"}} className={styles.button}
+                                                variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
+                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                {e}
+                                            </Button>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            </div>
+                        </DropdownOptions>
+                    </Dropdown>
+                </div>
 
 
-                        <div className={styles.buttonGroup} style={{display: "grid"}}>
-                            <Button
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                variant={settingsContext.gizmo === GIZMOS.NONE ? "filled" : undefined}
-                                styles={{borderRadius: "3px 3px 0  0"}}
-                                highlight={settingsContext.gizmo === GIZMOS.NONE}
-                                onClick={() => {
-                                    settingsContext.gizmo = GIZMOS.NONE
-                                }}
-                            >
-                                <Icon >highlight_alt</Icon>
-                                <ToolTip content={"Select box"}/>
-                                {minimal ? null : <label className={styles.overflow}>Select box</label>}
-                            </Button>
-                            <Button
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                variant={settingsContext.gizmo === GIZMOS.CURSOR ? "filled" : undefined}
-                                styles={{borderRadius: "0 0 3px 3px"}}
-                                highlight={settingsContext.gizmo === GIZMOS.CURSOR}
-                                onClick={() => {
-                                    settingsContext.gizmo = GIZMOS.CURSOR
-                                }}>
-                                <Icon >adjust</Icon>
-                                <ToolTip content={"3D cursor"}/>
-                                {minimal ? null : <label className={styles.overflow}>3D cursor</label>}
-                            </Button>
-                        </div>
-                        <div className={styles.buttonGroup} style={{display: "grid"}}>
-                            <Button
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                styles={{borderRadius: "3px 3px 0  0"}}
-                                variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
+                <div className={styles.buttonGroup} style={{display: "grid"}}>
+                    <Button
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        variant={settingsContext.gizmo === GIZMOS.NONE ? "filled" : undefined}
+                        styles={{borderRadius: "3px 3px 0  0"}}
+                        highlight={settingsContext.gizmo === GIZMOS.NONE}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.NONE
+                        }}
+                    >
+                        <Icon >highlight_alt</Icon>
+                        <ToolTip content={"Select box"}/>
+                        {minimal ? null : <label className={styles.overflow}>Select box</label>}
+                    </Button>
+                    <Button
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        variant={settingsContext.gizmo === GIZMOS.CURSOR ? "filled" : undefined}
+                        styles={{borderRadius: "0 0 3px 3px"}}
+                        highlight={settingsContext.gizmo === GIZMOS.CURSOR}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.CURSOR
+                        }}>
+                        <Icon >adjust</Icon>
+                        <ToolTip content={"3D cursor"}/>
+                        {minimal ? null : <label className={styles.overflow}>3D cursor</label>}
+                    </Button>
+                </div>
+                <div className={styles.buttonGroup} style={{display: "grid"}}>
+                    <Button
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        styles={{borderRadius: "3px 3px 0  0"}}
+                        variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
 
-                                highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
-                                onClick={() => {
-                                    settingsContext.gizmo = GIZMOS.TRANSLATION
-                                }}>
-                                <Icon >open_with</Icon>
-                                {minimal ? null : <label className={styles.overflow}>Translation gizmo</label>}
-                            </Button>
-                            <Button
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                variant={settingsContext.gizmo === GIZMOS.ROTATION ? "filled" : undefined}
-                                highlight={settingsContext.gizmo === GIZMOS.ROTATION}
+                        highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.TRANSLATION
+                        }}>
+                        <Icon >open_with</Icon>
+                        {minimal ? null : <label className={styles.overflow}>Translation gizmo</label>}
+                    </Button>
+                    <Button
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        variant={settingsContext.gizmo === GIZMOS.ROTATION ? "filled" : undefined}
+                        highlight={settingsContext.gizmo === GIZMOS.ROTATION}
 
-                                onClick={() => {
-                                    settingsContext.gizmo = GIZMOS.ROTATION
-                                }}>
-                                <Icon >cached</Icon>
-                                {minimal ? null : <label className={styles.overflow}>Rotation gizmo</label>}
-                            </Button>
-                            <Button
-                                className={styles.transformationWrapper}
-                                attributes={{"data-minimal": `${minimal}`}}
-                                variant={settingsContext.gizmo === GIZMOS.SCALE ? "filled" : undefined}
-                                styles={{borderRadius: "0 0 3px 3px", borderTop: "none"}}
-                                highlight={settingsContext.gizmo === GIZMOS.SCALE}
-                                onClick={() => {
-                                    settingsContext.gizmo = GIZMOS.SCALE
-                                }}>
-                                <Icon >transform</Icon>
-                                {minimal ? null : <label className={styles.overflow}>Scale gizmo</label>}
-                            </Button>
-                        </div>
-                    </>
-                )}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.ROTATION
+                        }}>
+                        <Icon >cached</Icon>
+                        {minimal ? null : <label className={styles.overflow}>Rotation gizmo</label>}
+                    </Button>
+                    <Button
+                        className={styles.transformationWrapper}
+                        attributes={{"data-minimal": `${minimal}`}}
+                        variant={settingsContext.gizmo === GIZMOS.SCALE ? "filled" : undefined}
+                        styles={{borderRadius: "0 0 3px 3px", borderTop: "none"}}
+                        highlight={settingsContext.gizmo === GIZMOS.SCALE}
+                        onClick={() => {
+                            settingsContext.gizmo = GIZMOS.SCALE
+                        }}>
+                        <Icon >transform</Icon>
+                        {minimal ? null : <label className={styles.overflow}>Scale gizmo</label>}
+                    </Button>
+                </div>
             </div>
             <ResizableBar
                 type={"width"}

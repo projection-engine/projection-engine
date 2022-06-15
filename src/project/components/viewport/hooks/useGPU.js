@@ -1,8 +1,7 @@
-import {useCallback, useContext, useEffect, useRef, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import Engine from "../../../engine-extension/Engine"
 import SYSTEMS from "../../../engine/templates/SYSTEMS"
-import SettingsProvider from "../../../hooks/SettingsProvider"
 
 const callback = (e) => {
     const target = e[0]?.target
@@ -17,52 +16,38 @@ const callback = (e) => {
         }
     }
 }
-export default function useGPU(canStart, resolution, projectID) {
+export default function useGPU(settings, projectID) {
     const [gpu, setGpu] = useState()
-    const [obs, setObs] = useState(new ResizeObserver(callback))
-    const [target, setTarget] = useState()
-    const settings = useContext(SettingsProvider)
-    useEffect(() => {
-        const t = document.createElement("canvas")
-
-        t.id = RENDER_TARGET
-        const ctx = t.getContext("webgl2", {
-            antialias: false,
-            preserveDrawingBuffer: true,
-            premultipliedAlpha: false
-        })
-        ctx.getExtension("EXT_color_buffer_float")
-        ctx.getExtension("OES_texture_float")
-        ctx.getExtension("OES_texture_float_linear")
-        ctx.enable(ctx.BLEND)
-        ctx.blendFunc(ctx.SRC_ALPHA, ctx.ONE_MINUS_SRC_ALPHA)
-        ctx.enable(ctx.CULL_FACE)
-        ctx.cullFace(ctx.BACK)
-        ctx.enable(ctx.DEPTH_TEST)
-        ctx.depthFunc(ctx.LESS)
-        ctx.frontFace(ctx.CCW)
-        ctx.canvas.width = resolution[0]
-        ctx.canvas.height = resolution[1]
-
-        document.body.appendChild(t)
-        t.style.background = "transparent"
-        setGpu(ctx)
-
-        setTarget(document.body)
-        obs.observe(document.body)
-        callback(true)
-        return () => obs.disconnect()
-    }, [])
-    const init = useRef(false)
     const [renderer, setRenderer] = useState()
-    useEffect(() => {
 
-        if (gpu && canStart && projectID && !init.current) {
-            init.current = true
+    useEffect(() => {
+        console.log(projectID && !renderer, projectID, renderer)
+        if ( projectID && !renderer) {
+            const t = document.createElement("canvas")
+            t.id = RENDER_TARGET
+            const ctx = t.getContext("webgl2", {
+                antialias: false,
+                preserveDrawingBuffer: true,
+                premultipliedAlpha: false
+            })
+            ctx.getExtension("EXT_color_buffer_float")
+            ctx.getExtension("OES_texture_float")
+            ctx.getExtension("OES_texture_float_linear")
+            ctx.enable(ctx.BLEND)
+            ctx.blendFunc(ctx.SRC_ALPHA, ctx.ONE_MINUS_SRC_ALPHA)
+            ctx.enable(ctx.CULL_FACE)
+            ctx.cullFace(ctx.BACK)
+            ctx.enable(ctx.DEPTH_TEST)
+            ctx.depthFunc(ctx.LESS)
+            ctx.frontFace(ctx.CCW)
+
+            document.body.appendChild(t)
+            t.style.background = "transparent"
+            setGpu(ctx)
             setRenderer(
-                new Engine( 
-                    gpu, 
-                    {w: resolution[0], h: resolution[1]},
+                new Engine(
+                    ctx,
+                    {w: settings.resolution[0], h:settings.resolution[1]},
                     [
                         SYSTEMS.SCRIPT,
                         SYSTEMS.PERF,
@@ -74,28 +59,34 @@ export default function useGPU(canStart, resolution, projectID) {
                         SYSTEMS.AO,
                         SYSTEMS.DEPTH_PRE_PASS,
                         SYSTEMS.PROBE
-                    ], 
-                    settings, 
+                    ],
+                    settings,
                     projectID
                 )
             )
         }
-    }, [gpu, canStart, projectID])
+    }, [projectID])
+    useEffect(() => {
+        const obs = new ResizeObserver(callback)
+        if(gpu) {
+            console.log("HERE")
+            gpu.canvas.width = settings.resolution[0]
+            gpu.canvas.height = settings.resolution[1]
+            obs.observe(gpu.canvas.parentNode)
+            callback(true)
+        }
+        return () => obs.disconnect()
+    }, [settings, gpu])
 
     const bindGPU = useCallback((t) => {
         const currentTarget = t.parentNode
         if (gpu) {
-            const resizeObs = new ResizeObserver(callback)
-            obs.disconnect()
-            resizeObs.observe(currentTarget)
-            setTarget(currentTarget)
-            setObs(resizeObs)
             gpu.canvas.style.display = "block"
             currentTarget.insertBefore(gpu.canvas, t)
         }
     }, [gpu])
+
     return {
-        target,
         gpu,
         bindGPU,
         renderer

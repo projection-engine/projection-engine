@@ -7,15 +7,15 @@ import React, {useMemo} from "react"
 
 export default function Shading(props) {
     const {settingsContext} = props
-    const icon = <Icon styles={{fontSize: "1.1rem"}}>check</Icon>
-    const meshIcon = <Icon styles={{fontSize: "1.1rem"}}>view_in_ar</Icon>
-    const settingsIcon = <Icon styles={{fontSize: "1.1rem"}}>settings</Icon>
+    const icon = "check"
+    const meshIcon = "view_in_ar"
+    const settingsIcon = "settings"
 
     const shading = useMemo(() => {
         switch (settingsContext.shadingModel) {
         case SHADING_MODELS.LIGHT_ONLY:
             return {
-                icon: <Icon styles={{fontSize: "1.1rem"}}>light_bulb</Icon>,
+                icon: "light_bulb",
                 label: "Light only"
             }
         case SHADING_MODELS.ALBEDO:
@@ -60,71 +60,72 @@ export default function Shading(props) {
         }
     }, [settingsContext.shadingModel])
     return (
-        <div style={{justifyContent: "flex-end"}} className={styles.align}>
-            <Dropdown className={styles.dropdown}>
+        <Dropdown className={styles.dropdown}>
+            <Icon styles={{fontSize: "1.1rem", maxWidth: "1.1rem"}}>
                 {shading.icon}
-                <label className={styles.overflow}>{shading.label}</label>
-                <DropdownOptions>
-                    <DropdownOption
-                        option={{
-                            label: "Light only",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.LIGHT_ONLY ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.LIGHT_ONLY
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Unlit",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.ALBEDO ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.ALBEDO
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Details",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.DETAIL ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.DETAIL
-                        }}/>
-                    <label className={styles.label}>Rendering</label>
-                    <DropdownOption
-                        option={{
-                            label: "Ambient occlusion",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.AO ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.AO
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Depth",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.DEPTH ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.DEPTH
-                        }}/>
+            </Icon>
+            <div style={{whiteSpace: "nowrap"}}>{shading.label}</div>
+            <DropdownOptions>
+                <DropdownOption
+                    option={{
+                        label: "Light only",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.LIGHT_ONLY ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.LIGHT_ONLY
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Unlit",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.ALBEDO ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.ALBEDO
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Details",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.DETAIL ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.DETAIL
+                    }}/>
+                <label className={styles.label}>Rendering</label>
+                <DropdownOption
+                    option={{
+                        label: "Ambient occlusion",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.AO ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.AO
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Depth",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.DEPTH ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.DEPTH
+                    }}/>
 
-                    <label className={styles.label}>Mesh</label>
-                    <DropdownOption
-                        option={{
-                            label: "Normal",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.NORMAL ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.NORMAL
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Tangent",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.TANGENT ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.TANGENT
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Bi-Tangent",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.BI_TANGENT ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.BI_TANGENT
-                        }}/>
-                    <DropdownOption
-                        option={{
-                            label: "Texture coords",
-                            icon: settingsContext.shadingModel === SHADING_MODELS.TEX_COORD ? icon : undefined,
-                            onClick: () => settingsContext.shadingModel = SHADING_MODELS.TEX_COORD
-                        }}/>
-                </DropdownOptions>
-            </Dropdown>
-        </div>
+                <label className={styles.label}>Mesh</label>
+                <DropdownOption
+                    option={{
+                        label: "Normal",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.NORMAL ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.NORMAL
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Tangent",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.TANGENT ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.TANGENT
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Bi-Tangent",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.BI_TANGENT ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.BI_TANGENT
+                    }}/>
+                <DropdownOption
+                    option={{
+                        label: "Texture coords",
+                        icon: settingsContext.shadingModel === SHADING_MODELS.TEX_COORD ? icon : undefined,
+                        onClick: () => settingsContext.shadingModel = SHADING_MODELS.TEX_COORD
+                    }}/>
+            </DropdownOptions>
+        </Dropdown>
+
     )
 }
 

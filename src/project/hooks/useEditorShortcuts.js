@@ -1,12 +1,12 @@
-import GIZMOS from "../../../../static/misc/GIZMOS"
-import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
-import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
+import GIZMOS from "../../static/misc/GIZMOS"
+import {HISTORY_ACTIONS} from "./historyReducer"
+import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import {useMemo, useState} from "react"
-import KEYS from "../../../engine/templates/KEYS"
-import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
-import useHotKeys from "../../shortcuts/hooks/useHotKeys"
+import KEYS from "../engine/templates/KEYS"
+import RENDER_TARGET from "../../static/misc/RENDER_TARGET"
+import useHotKeys from "../components/shortcuts/hooks/useHotKeys"
 
-export default function useEditorShortcuts({engine, settings, id, executingAnimation, serializer, setExecutingAnimation}) {
+export default function useEditorShortcuts({engine, settings, id, serializer}) {
     const [toCopy, setToCopy] = useState([])
 
     function copy(single, target) {
@@ -165,7 +165,7 @@ export default function useEditorShortcuts({engine, settings, id, executingAnima
         focusTargetLabel: "Viewport",
         focusTargetIcon: "window",
         focusTarget: RENDER_TARGET,
-        disabled: executingAnimation === true,
+        disabled: engine.executingAnimation === true,
         actions
     })
 

@@ -47,7 +47,6 @@ export function  updateTransform(axis, data, key, engine, entityID) {
 }
 export default function useForm(
     engine,
-    executingAnimation,
     quickAccess,
     currentTab
 ) {
@@ -271,7 +270,7 @@ export default function useForm(
 
 
     return useMemo(() => {
-        if ((parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && selected && !executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
+        if ((parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && selected && !engine.executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
                 setCurrentKey(Object.keys(selected.components)[0])
             const data = getField(Object.keys(selected.components)[currentTab])
@@ -295,7 +294,7 @@ export default function useForm(
                 name: selected.name,
                 selected: selected
             }
-        } else if (executingAnimation) {
+        } else if (engine.executingAnimation) {
             if (currentKey)
                 setCurrentKey(undefined)
             return {
@@ -324,5 +323,5 @@ export default function useForm(
                 selected: selected
             }
 
-    }, [selected, currentKey, executingAnimation, currentTab, engine.selected[0], engine.entities])
+    }, [selected, currentKey, engine.executingAnimation, currentTab, engine.selected[0], engine.entities])
 }

@@ -1,5 +1,5 @@
-self.onmessage = ({data: {entities, required, COMPONENTS}}) => {
-    const toFilter = entities.filter(d => !d.linkedTo && !required || required && d.components.find(c => c === required) !== undefined)
+self.onmessage = ({data: {entities, COMPONENTS}}) => {
+    const toFilter = entities.filter(d => !d.linkedTo)
 
     function getElementType(components, isBP) {
         if (isBP) return "ScriptView"
@@ -57,7 +57,7 @@ self.onmessage = ({data: {entities, required, COMPONENTS}}) => {
     }
 
     function mapToView(current) {
-        const children =required ? [] :entities.filter(f => f.linkedTo === current.id)
+        const children = entities.filter(f => f.linkedTo === current.id)
 
         return {
             id: current.id,

@@ -26,3 +26,15 @@
   min-height: 35px;
   padding-bottom: 35px;
 }
+
+
+.button {
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  overflow: hidden;
+  background-color: var(--pj-border-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

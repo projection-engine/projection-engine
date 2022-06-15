@@ -11,12 +11,10 @@ import {v4} from "uuid"
 import CHANNELS from "../../../public/project/loader/CHANNELS"
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings, pushSettingsBlock, load) {
-    const [executingAnimation, setExecutingAnimation] = useState(false)
-    const {gpu} = useContext(GPUContextProvider)
-  
-    const [loading, setLoading] = useState(false)
-    const engine = useEngine(executingAnimation, settings, initialized)
 
+    const engine = useEngine(settings, initialized, id)
+    const {gpu} = useContext(GPUContextProvider)
+    const [loading, setLoading] = useState(false)
     const [filesLoaded, setFilesLoaded] = useState([])
     const serializer = useSerializer(engine, settings, id)
     const [openTab, setOpenTab] = useState(0)
@@ -82,7 +80,6 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
         settings,
         setFilesLoaded,
         serializer, engine,
-        executingAnimation, setExecutingAnimation,
         filesLoaded,
         openTab, setOpenTab
     }

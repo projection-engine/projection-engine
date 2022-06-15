@@ -19,7 +19,8 @@ function getCursor(){
 
     return entity
 }
-export default function useEngine(canExecutePhysicsAnimation, settings, canStart) {
+export default function useEngine(settings) {
+    const [executingAnimation, setExecutingAnimation] = useState(false)
     const {gpu, renderer} = useContext(GPUContextProvider)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
@@ -56,7 +57,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
     }
 
     const update = useCallback(() => {
-        if (renderer && canStart && canRender) {
+        if (renderer && canRender) {
             if(!updated)
                 setUpdated(true)
             renderer.gizmo = settings.gizmo
@@ -65,7 +66,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
                 entities,
                 materials,
                 meshes,
-                {canExecutePhysicsAnimation, selected, setSelected, ...settings},
+                {canExecutePhysicsAnimation: executingAnimation, selected, setSelected, ...settings},
                 scripts,
                 onGizmoStart,
                 onGizmoEnd,
@@ -74,11 +75,11 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
         }
     }, [
         canRender,
-        canExecutePhysicsAnimation,
+        executingAnimation,
         selected, setSelected,
         materials, meshes, scripts,
         entities, gpu,
-        settings, canStart,
+        settings,
         renderer, updated
     ])
 
@@ -90,6 +91,7 @@ export default function useEngine(canExecutePhysicsAnimation, settings, canStart
     useEffect(update, [update])
 
     return {
+        executingAnimation, setExecutingAnimation,
         cursor, setCursor,
         gpu,
         update,
