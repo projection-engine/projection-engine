@@ -206,42 +206,42 @@ export default function Material(props) {
     const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     return (
         <>
-            <AccordionTemplate title={"Material"} type={"grid"}>
-                <Selector
-                    selected={state.currentMaterial}
-                    type={"material"}
-                    handleChange={async (src, clear)=> {
-                        if (src) {
-                            const file = await loadFile(src)
-                            if (file && file.response) {
-                                props.submit({
-                                    blob: file.response,
-                                    id: src.registryID,
-                                    name: src.name
-                                })
-                                state.uniforms = file.response.uniforms
-                                state.currentMaterial = src
-                            }
-                            else {
-                                alert.pushAlert("Error loading material", "error")
-                                clear()
-                            }
-                        } else {
+          
+            <Selector
+                selected={state.currentMaterial}
+                type={"material"}
+                handleChange={async (src, clear)=> {
+                    if (src) {
+                        const file = await loadFile(src)
+                        if (file && file.response) {
+                            props.submit({
+                                blob: file.response,
+                                id: src.registryID,
+                                name: src.name
+                            })
+                            state.uniforms = file.response.uniforms
+                            state.currentMaterial = src
+                        }
+                        else {
                             alert.pushAlert("Error loading material", "error")
-                            props.submit()
                             clear()
                         }
-                    }}/>
-                {state.currentMaterial ? (
-                    <Button
-                        styles={{background: "var(--pj-background-primary"}}
-                        className={styles.button}
-                        onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
-                        <Icon styles={{fontSize: "1.1rem"}}>edit</Icon>
+                    } else {
+                        alert.pushAlert("Error loading material", "error")
+                        props.submit()
+                        clear()
+                    }
+                }}/>
+            {state.currentMaterial ? (
+                <Button
+                    styles={{background: "var(--pj-background-primary"}}
+                    className={styles.button}
+                    onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
+                    <Icon styles={{fontSize: "1.1rem"}}>edit</Icon>
                         Edit material
-                    </Button>
-                ) : null}
-            </AccordionTemplate>
+                </Button>
+            ) : null}
+    
             {props.selected.uniforms?.length > 0 ? (
                 <Checkbox
                     noMargin={true}

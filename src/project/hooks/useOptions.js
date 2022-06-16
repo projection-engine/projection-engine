@@ -1,27 +1,25 @@
 import React, {useMemo} from "react"
-import {Icon} from "@f-ui/core"
 
-export default function useOptions(executingAnimation, setExecutingAnimation, engine, save, openLevelBlueprint) {
+const {ipcRenderer, shell} = window.require("electron")
+export default function useOptions(executingAnimation, setExecutingAnimation, engine, openLevelBlueprint, serializer, exporter) {
     return useMemo(() => {
         return  [
+            {divider: true},
             {
                 label: "Save",
-                icon: <Icon
-                    styles={{fontSize: "1.2rem"}}>save</Icon>,
-                onClick: () => save()
+                icon: "save",
+                onClick: () => serializer.save()
 
             },
             {
                 label: executingAnimation ? "Stop" : "Play",
-                icon: <Icon
-                    styles={{fontSize: "1.2rem"}}>{executingAnimation ? "pause" : "play_arrow"}</Icon>,
+                icon: executingAnimation ? "pause" : "play_arrow",
                 onClick: () => setExecutingAnimation(prev => !prev)
             },
             {
                 group: "b",
                 label: "Rebuild cubemaps",
-                icon: <Icon
-                    styles={{fontSize: "1.2rem"}}>refresh</Icon>,
+                icon: "refresh",
                 onClick:() => {
 
                     alert.pushAlert( "Recompiling cubemaps",  "info")
@@ -31,10 +29,25 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
             {
                 group: "c",
                 label: "Edit level blueprint",
-                icon: <Icon
-                    styles={{fontSize: "1.2rem"}}>foundation</Icon>,
+                icon: "foundation",
                 onClick: () => openLevelBlueprint()
-            }
+            },
+            {divider: true},
+            {
+                label: "Help",
+                options: [
+                    {
+                        label: "Editor Shortcuts",
+                        onClick: () => ipcRenderer.send("open-shortcuts", {})
+                    },
+                    {
+                        label: "About",
+                        icon: "help",
+                        disabled: true
+                    },
+
+                ]
+            },
         ]
     }, [engine.entities, engine.scripts, engine.meshes, engine, executingAnimation])
 }

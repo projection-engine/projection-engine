@@ -4,8 +4,10 @@ import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import Cameras from "./Cameras"
 import Wrapper from "./Wrapper"
-import * as debugCode from "./shaders/DEBUG.glsl"
+
 import MaterialInstance from "../engine/instances/MaterialInstance"
+
+import * as debugCode from "./shaders/DEBUG.glsl"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
@@ -46,7 +48,6 @@ export default class Engine extends Renderer {
             undefined,
             "shading-models"
         )
-
     }
     generatePreview(material){
         return this.editorSystem.previewSystem.execute(this.params, this.data, material)
@@ -119,10 +120,19 @@ export default class Engine extends Renderer {
         const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
 
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
+
+        let materialsToRender = materials, fallbackMaterial = this.fallbackMaterial
+        if(params.shadingModel !== SHADING_MODELS.DETAIL || this.overrideMaterial) {
+            materialsToRender = []
+            // console.log(this.overrideMaterial)
+            fallbackMaterial = this.overrideMaterial ? this.overrideMaterial : this.debugMaterial
+        }
+        // console.log(fallbackMaterial, materialsToRender)
+
         super.updatePackage(
-            params.shadingModel !== SHADING_MODELS.DETAIL && params.shadingModel !== SHADING_MODELS.ALBEDO && params.shadingModel !== SHADING_MODELS.LIGHT_ONLY ? this.debugMaterial : this.fallbackMaterial,
+            fallbackMaterial,
             entities,
-            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : [...materials, this.overrideMaterial],
+            materialsToRender,
             meshes,
             {
                 ...params,
@@ -136,10 +146,8 @@ export default class Engine extends Renderer {
             scripts,
             this.editorSystem,
         )
-
         this.start()
         this.updateOverrideMaterial()
-
     }
     arrayToObject(arr){
         const obj = {}

@@ -4,9 +4,9 @@ The **Projection Engine** is a 3D graphics engine designed and written from grou
 
 ## 1. Screenshots
 
-|                                                  Simple scene                                                  |                                                  MaterialView editor                                                   |
+|                                                  Simple scene                                                  |                                                  ShaderEditor editor                                                   |
 |:--------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="Editor material"/> | <img src="https://github.com/projection-engine/.github/blob/main/MaterialView v2.png?raw=true" alt="Editor material"/> |
+| <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="Editor material"/> | <img src="https://github.com/projection-engine/.github/blob/main/ShaderEditor v2.png?raw=true" alt="Editor material"/> |
 
 |                                    Parallax occlusion mapping                               |                            Light propagation volumes global illumination (dev)                             |
 |:--------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|

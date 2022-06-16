@@ -3,7 +3,7 @@ import LabeledRange from "../../../../components/templates/LabeledRange"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import React, {useEffect} from "react"
-import styles from "../../component-editor/styles/Forms.module.css"
+import styles from "../../component/styles/Forms.module.css"
 
 export default function ViewportTab(props){
     const {engine} = props

@@ -2,18 +2,15 @@ import React, {useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
 import {ENTITY_ACTIONS} from "./engine-extension/entityReducer"
 import SettingsProvider from "./hooks/SettingsProvider"
-import FilesView from "./components/files/FilesView"
+import ContentBrowser from "./components/files/ContentBrowser"
 import EntitiesProvider from "./hooks/EntitiesProvider"
 import Frame from "../components/frame/Frame"
 import useProjectWrapper from "./hooks/useProjectWrapper"
-import FileSystem from "./utils/files/FileSystem"
 import FILE_TYPES from "../../public/project/glTF/FILE_TYPES"
-import useOptions from "./hooks/useOptions"
-import Header from "./components/header/Header"
-import Tabs from "../components/tabs/Tabs"
+import ViewTabs from "../components/view-tabs/ViewTabs"
 import OpenFileProvider from "./hooks/OpenFileProvider"
-import ScriptView from "./components/blueprints/scripts/ScriptView"
-import MaterialView from "./components/blueprints/material/MaterialView"
+import ScriptEditor from "./components/blueprints/script-editor/ScriptEditor"
+import ShaderEditor from "./components/blueprints/shader-editor/ShaderEditor"
 import refreshData from "./utils/refreshData"
 import PropTypes from "prop-types"
 import Shortcuts from "./components/shortcuts/Shortcuts"
@@ -22,16 +19,16 @@ import useContextMenu from "../components/context/hooks/useContextMenu"
 import ContextMenu from "../components/context/ContextMenu"
 import {Button, ContextWrapper, Icon} from "@f-ui/core"
 import Viewport from "./components/viewport/Viewport"
-import ResizableBar from "../components/resizable/ResizableBar"
 import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import submitPackage from "./utils/submitPackage"
 import Hierarchy from "./components/hierarchy/Hierarchy"
 import View from "../components/view/View"
-import ComponentEditor from "./components/component-editor/ComponentEditor"
+import ComponentEditor from "./components/component/ComponentEditor"
 import {createFolder} from "./components/hierarchy/utils/hiearchyUtils"
+import Search from "../components/search/Search"
+import useOptions from "./hooks/useOptions"
 
 
-const {ipcRenderer, shell} = window.require("electron")
 export default function Editor(props) {
     const {id, meta, events, initialized, setInitialized, settings, load} = props
     const {
@@ -42,19 +39,6 @@ export default function Editor(props) {
     } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock, load)
     const [openFiles, setOpenFiles] = useState([])
     const contextMenuHook = useContextMenu()
-    const options = useOptions(
-        engine.executingAnimation,
-        engine.setExecutingAnimation,
-        engine,
-        serializer.save,
-        () => {
-            setOpenTab(openFiles.length +1 )
-            setOpenFiles(prev => [...prev, {name: "Level Blueprint", type: "flow", isLevelBlueprint: true}])
-        }
-    )
-
-    
-
     const tabs = useMemo(() => {
         return openFiles.map((o, i)=> {
             switch ("." + o.type) {
@@ -63,7 +47,7 @@ export default function Editor(props) {
                     label: o.label,
                     icon: "texture",
                     children: (
-                        <MaterialView
+                        <ShaderEditor
                             name={o.label}
                             engine={engine}
                             open={i === openTab}
@@ -83,7 +67,7 @@ export default function Editor(props) {
                     label: o.label,
                     icon: o.isLevelBlueprint ? "foundation" : "code",
                     children: (
-                        <ScriptView
+                        <ScriptEditor
                             name={o.label}
                             engine={engine}
                             file={o}
@@ -101,9 +85,22 @@ export default function Editor(props) {
                 return undefined
             }
         }).filter(e => e)
-    }, [openFiles, openTab, engine.entities])
+    }, [openFiles, openTab, engine.entities, engine.selectedEntity])
 
     const utils = useEditorShortcuts({engine, settings, id, serializer})
+    const [searchedEntity, setSearchedEntity] = useState("")
+    const options = useOptions(
+        engine.executingAnimation,
+        engine.setExecutingAnimation,
+        engine,
+        () => {
+            setOpenTab(openFiles.length +1 )
+            setOpenFiles(prev => [...prev, {name: "Level Blueprint", type: "flow", isLevelBlueprint: true}])
+        },
+        serializer,
+        exporter
+    )
+
     return (
         <ContextMenuProvider.Provider value={contextMenuHook}>
             <OpenFileProvider.Provider value={{openFiles, setOpenFiles, openTab, setOpenTab}}>
@@ -121,59 +118,17 @@ export default function Editor(props) {
                     <SettingsProvider.Provider value={settings}>
                         <Frame
                             logoAction={true}
-                            options={[
-                                {
-                                    label: "File", 
-                                    options: [{
-                                        label: "Save project",
-                                        icon: "save",
-                                        shortcut: "Ctrl + S",
-                                        onClick: () => serializer.save()
-                                    }, 
-                                    {
-                                        label: "Export project", disabled: true, icon: "save_alt", onClick: () => {
-                                            exporter.build({
-                                                entities: engine.entities,
-                                                meshes: engine.meshes,
-                                                materials: engine.materials,
-                                                scripts: engine.scripts
-                                            })
-                                                .then(() => {
-                                                    alert.pushAlert( "Successfully exported", "success")
-                                                    setTimeout(() => {
-                                                        shell.openPath(document.fileSystem.path + FileSystem.sep + "out" + FileSystem.sep + "web").catch()
-                                                    }, 2000)
-                                                })
-                                                .catch(() => alert.pushAlert("Error during packaging process", "error"))
-                                        }
-                                    }]
-                                },
-                                {
-                                    label: "Help",
-                                    options: [
-                                        {
-                                            label: "Editor Shortcuts",
-                                            onClick: () => ipcRenderer.send("open-shortcuts", {})
-                                        },
-                                        {
-                                            label: "About",
-                                            icon: "help",
-                                            disabled: true
-                                        },
-
-                                    ]
-                                }
-                            ]}
+                            options={options}
                             hasLogo={true}
                             pageInfo={events}
-                            label={meta?.name}/>
+                            label={meta?.name}
+                        />
                         <ContextWrapper
                             wrapperClassName={styles.context}
                             triggers={contextMenuHook[0].triggers}
                             className={styles.wrapper}
                             content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
                         >
-                            <Header options={options}/>
                             <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
                                 <Viewport
                                     utils={utils}
@@ -189,30 +144,46 @@ export default function Editor(props) {
                                             title: "Hierarchy",
                                             icon: "account_tree",
                                             headerOptions:(
-                                                <Button className={styles.button} onClick={() => createFolder()}>
-                                                    <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
-                                                </Button>
+                                                <div style={{display: "flex", gap: "2px"}}>
+                                                    <Search
+                                                        width={"100%"}
+                                                        searchString={searchedEntity}
+                                                        setSearchString={setSearchedEntity}
+                                                    />
+                                                    <Button className={styles.button} onClick={() => createFolder()}>
+                                                        <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
+                                                    </Button>
+                                                </div>
                                             ),
 
                                             content: (
                                                 <Hierarchy
-                                                    executingAnimation={engine.executingAnimation}
+                                                    searchedEntity={searchedEntity}
                                                     engine={engine}
                                                     operationUtils={utils}
                                                 />
                                             )
                                         },
                                         {
-                                            title: "Component editor",
+                                            title: engine.selectedEntity ? engine.selectedEntity.name : "Component editor",
                                             icon: "category",
-                                            headerOptions:[],
+                                            headerOptions: engine.selectedEntity ?(
+                                                <Button
+                                                    styles={{minHeight: "25px", minWidth: "25px"}}
+                                                    onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity.id ? undefined : engine.selectedEntity.id)}
+                                                    className={styles.button}
+                                                    variant={engine.lockedEntity === engine.selectedEntity.id ? "filled" : undefined}
+                                                >
+                                                    <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
+                                                </Button>
+                                            ) : null,
                                             content: <ComponentEditor engine={engine}/>
                                         }
                                     ]}
                                     orientation={"vertical"}
                                 /> 
                             </div>
-                            <Tabs
+                            <ViewTabs
                                 open={openTab}
                                 setOpen={setOpenTab}
                                 orientation={"vertical"}
@@ -221,7 +192,7 @@ export default function Editor(props) {
                                         label: "Files",
                                         icon: "folder",
                                         children: (
-                                            <FilesView
+                                            <ContentBrowser
                                                 id={id}
                                             />
                                         )

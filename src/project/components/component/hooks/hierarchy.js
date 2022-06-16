@@ -5,8 +5,6 @@ self.onmessage = ({data: {entities, COMPONENTS}}) => {
         if (isBP) return "ScriptView"
 
         switch (true) {
-        case components.find(c => c === COMPONENTS.SKYBOX) !== undefined:
-            return "Skybox"
         case components.find(c => c === COMPONENTS.MESH) !== undefined:
             return "Mesh instance"
         case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:
@@ -31,8 +29,6 @@ self.onmessage = ({data: {entities, COMPONENTS}}) => {
 
     function getElementIcon(components) {
         switch (true) {
-        case components.find(c => c === COMPONENTS.SKYBOX) !== undefined:
-            return "cloud"
         case components.find(c => c === COMPONENTS.MESH) !== undefined:
             return "view_in_ar"
         case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:

@@ -1,7 +1,5 @@
 import React, {useMemo, useState} from "react"
 import Transform from "../components/Transform"
-
-import Skybox from "../components/Skybox"
 import Lights from "../components/Lights"
 import Material from "../components/Material"
 import Mesh from "../components/Mesh"
@@ -51,10 +49,7 @@ export default function useForm(
     currentTab
 ) {
     const [currentKey, setCurrentKey] = useState()
-    const selected = useMemo(() => {
-        setCurrentKey(undefined)
-        return engine.entities.find(e => !engine.lockedEntity && e.id === engine.selected[0] || engine.lockedEntity === e.id)
-    }, [engine.selected, engine.entities, engine.lockedEntity])
+    const selected = engine.selectedEntity
 
     const submit = (component, key, data) => {
         const clone = cloneClass(selected.components[component])
@@ -235,29 +230,6 @@ export default function useForm(
                             submit(COMPONENTS.CUBE_MAP, key, data)
                             engine.renderer.refreshCubemaps()
                             alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
-                        }}
-                    />
-                )
-            }
-            case COMPONENTS.SKYBOX: {
-                return (
-                    <Skybox
-                        quickAccess={quickAccess}
-                        selected={selected.components[COMPONENTS.SKYBOX]}
-                        submit={(data, key) => {
-                            if (key === "blob") {
-                                selected.components[COMPONENTS.SKYBOX].blob = data.blob
-                                selected.components[COMPONENTS.SKYBOX].imageID = data.imageID
-                            } else
-                                selected.components[COMPONENTS.SKYBOX][key] = data
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                                payload: {
-                                    entityID: engine.selected[0],
-                                    data: selected.components[COMPONENTS.SKYBOX],
-                                    key: COMPONENTS.SKYBOX
-                                }
-                            })
                         }}
                     />
                 )

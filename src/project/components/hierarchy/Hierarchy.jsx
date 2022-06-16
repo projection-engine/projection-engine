@@ -10,7 +10,7 @@ import {createFolder, getHierarchy} from "./utils/hiearchyUtils"
 const TRIGGERS = ["data-node", "data-self"]
 const WORKER = new Worker(new URL("./hooks/hierarchy.js", import.meta.url))
 export default function Hierarchy(props){
-    const data = useHierarchy(props.engine,  WORKER)
+    const data = useHierarchy(props.engine,  WORKER, props.searchedEntity)
     const treeOptions = useMemo(() => {
         return [
             {
@@ -181,7 +181,8 @@ export default function Hierarchy(props){
 }
 
 Hierarchy.propTypes={
-    executingAnimation: PropTypes.bool,
+    searchedEntity: PropTypes.string,
+
     engine: PropTypes.object,
     operationUtils: PropTypes.object
 }

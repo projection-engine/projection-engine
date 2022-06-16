@@ -1,10 +1,11 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Scene.module.css"
-import React, {useContext, useState} from "react"
+import React, {useContext, useMemo, useState} from "react"
 import useForm from "./hooks/useForm"
 import QuickAccessProvider from "../../hooks/QuickAccessProvider"
-import {Button, Icon} from "@f-ui/core"
+import {Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
+import getComponentInfo from "./utils/getComponentInfo"
 
 export default function ComponentEditor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -15,28 +16,30 @@ export default function ComponentEditor(props) {
         currentTab
     )
 
+    const tabs = useMemo(() => {
+        if (currentForm.selected) {
+            const components = Object.keys(currentForm.selected.components)
+            if (components[currentTab] === undefined && currentTab > 0) {
+                setCurrentTab(components.length - 1)
+                return []
+            }
+            return components.map(c => getComponentInfo(c)).filter(c => Object.keys(c).length > 0)
+        }
+        return []
+    }, [currentForm.selected, currentTab])
     return (
         <div className={styles.content}>
             <FormTabs
+                tabs={tabs}
                 entity={currentForm.selected}
                 currentTab={currentTab}
                 setCurrentTab={setCurrentTab}
             />
             <div style={{width: "100%", overflowX: "hidden"}}>
-                {currentForm.open ? (<div className={styles.header}>
-                    <label className={styles.overflow}>{currentForm.name}</label>
-                    <Button
-                        styles={{minHeight: "25px", minWidth: "25px"}}
-                        onClick={() => props.engine.setLockedEntity(props.engine.lockedEntity === currentForm.selected?.id ? undefined : currentForm.selected.id)}
-                        className={styles.button}
-                        variant={props.engine.lockedEntity === currentForm.selected?.id ? "filled" : undefined}
-                    >
-                        <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-                    </Button>
-                </div>) : props.engine.executingAnimation ? null : (
+                {props.engine.executingAnimation || currentForm.open ? null : (
                     <div className={styles.header} style={{justifyContent: "flex-start"}}>
                         <Icon
-                            styles={{fontSize: "1.2rem"}}
+                            styles={{fontSize: "1rem"}}
                         >
                             {currentTab === "-1" ? "tv" : null}
                             {currentTab === "-2" ? "image" : null}
@@ -49,6 +52,16 @@ export default function ComponentEditor(props) {
                         </label>
                     </div>
                 )}
+                {tabs[currentTab] ? (
+                    <div className={styles.header} style={{justifyContent: "flex-start"}}>
+                        <Icon styles={{fontSize: "1rem"}}>
+                            {tabs[currentTab].icon}
+                        </Icon>
+                        <label className={styles.overflow}>
+                            {tabs[currentTab].label}
+                        </label>
+                    </div>
+                ) : null}
                 {currentForm.content}
             </div>
         </div>

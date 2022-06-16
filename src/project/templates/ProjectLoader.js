@@ -2,7 +2,6 @@ import DirectionalLightComponent from "../engine/components/DirectionalLightComp
 
 import MeshComponent from "../engine/components/MeshComponent"
 import PointLightComponent from "../engine/components/PointLightComponent"
-import SkyboxComponent from "../engine/components/SkyboxComponent"
 import SpotLightComponent from "../engine/components/SpotLightComponent"
 import TransformComponent from "../engine/components/TransformComponent"
 import FolderComponent from "../engine/components/FolderComponent"
@@ -18,7 +17,6 @@ import COMPONENTS from "../engine/templates/COMPONENTS"
 import ScriptComponent from "../engine/components/ScriptComponent"
 import CameraComponent from "../engine/components/CameraComponent"
 import Transformation from "../engine/templates/Transformation"
-import ImageProcessor from "../engine/utils/image/ImageProcessor"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import TextureInstance from "../engine/instances/TextureInstance"
 import FileSystem from "../utils/files/FileSystem"
@@ -140,16 +138,6 @@ const ENTITIES = {
     [COMPONENTS.MESH]: async (entity, k) => new MeshComponent(entity.components[k].id),
 
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
-    [COMPONENTS.SKYBOX]: async (entity, k, gpu) => {
-        const component = new SkyboxComponent(entity.components[k].id, gpu)
-        const fileData = await ProjectLoader.readFromRegistry(entity.components[k].imageID)
-        if (fileData) {
-            const img = await ImageProcessor.getImageBitmap(fileData)
-            component.imageID = entity.components[k].imageID
-            component.blob = img
-        }
-        return component
-    },
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.MATERIAL]: async (entity, k, gpu) => {
         const newMat = new MaterialComponent(entity.components[k].id)

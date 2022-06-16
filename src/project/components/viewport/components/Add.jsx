@@ -8,7 +8,6 @@ import React from "react"
 import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
 import SkylightComponent from "../../../engine/components/SkyLightComponent"
 import CameraComponent from "../../../engine/components/CameraComponent"
-import SkyboxComponent from "../../../engine/components/SkyboxComponent"
 import CubeMapComponent from "../../../engine/components/CubeMapComponent"
 import CubeMapInstance from "../../../engine/instances/CubeMapInstance"
 import PropTypes from "prop-types"
@@ -77,16 +76,6 @@ export default function Add(props) {
                     Ambient
                     <div className={styles.divider}/>
                 </div>
-                <DropdownOption option={{
-                    label: "Skybox",
-                    icon: <Icon
-                        styles={{fontSize: "1.1rem"}}>cloud</Icon>,
-                    onClick: () => {
-                        const actor = new Entity(undefined, "Skybox")
-                        actor.components[COMPONENTS.SKYBOX] = new SkyboxComponent(undefined, engine.gpu)
-                        dispatchEntity(actor)
-                    }
-                }}/>
                 <DropdownOption option={{
                     label: "CubeMap",
                     icon: <Icon

@@ -1,12 +1,14 @@
-self.onmessage = ({data: {entities, COMPONENTS}}) => {
-    const toFilter = entities.filter(d => !d.linkedTo)
+self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
+    const parseStr = (str) => {
+        return str.toLowerCase().replace(/\s/g,"")
+    }
+    const search = parseStr(searchedEntity)
+    const toFilter =  !search ? entities.filter(d => !d.linkedTo) :entities
 
     function getElementType(components, isBP) {
         if (isBP) return "ScriptView"
 
         switch (true) {
-        case components.find(c => c === COMPONENTS.SKYBOX) !== undefined:
-            return "Skybox"
         case components.find(c => c === COMPONENTS.MESH) !== undefined:
             return "Mesh instance"
         case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:
@@ -57,12 +59,12 @@ self.onmessage = ({data: {entities, COMPONENTS}}) => {
     }
 
     function mapToView(current) {
-        const children = entities.filter(f => f.linkedTo === current.id)
+        const children =  !search ? entities.filter(f => f.linkedTo === current.id) : []
 
         return {
             id: current.id,
             label: current.name,
-            children: children.map(f => mapToView(f)),
+            children:children.map(f => mapToView(f)),
             icon: getElementIcon(current.components),
             type: getElementType(current.components),
             draggable: true,
@@ -72,6 +74,10 @@ self.onmessage = ({data: {entities, COMPONENTS}}) => {
         }
     }
 
-    console.log(toFilter)
-    self.postMessage(toFilter.map(t => mapToView(t)))
+    let response
+    if(!search)
+        response = toFilter.map(t => mapToView(t))
+    else
+        response = toFilter.filter(t => parseStr(t.name).includes(search)).map(t => mapToView(t))
+    self.postMessage(response)
 }

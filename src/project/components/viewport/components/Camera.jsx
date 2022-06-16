@@ -26,7 +26,7 @@ export default function Camera(props) {
                     style={{width: "20px", height: "20px", perspective: "40px", transformStyle: "preserve-3d"}}>
                     <Icon
                         styles={{fontSize: "1.1rem", transform: "rotateX(45deg)"}}
-                        >grid_on</Icon>
+                    >grid_on</Icon>
                 </div>
             )
         else

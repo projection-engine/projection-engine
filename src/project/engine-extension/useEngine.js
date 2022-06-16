@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useReducer, useState} from "react"
+import {useCallback, useContext, useEffect, useMemo, useReducer, useState} from "react"
 import entityReducer, {ENTITY_ACTIONS} from "./entityReducer"
 import useHistory from "../hooks/useHistory"
 import {HISTORY_ACTIONS} from "../hooks/historyReducer"
@@ -90,7 +90,13 @@ export default function useEngine(settings) {
 
     useEffect(update, [update])
 
+    const selectedEntity = useMemo(() => {
+        return entities.find(e => !lockedEntity && e.id === selected[0] || lockedEntity === e.id)
+    }, [selected, entities, lockedEntity])
+
+
     return {
+        selectedEntity,
         executingAnimation, setExecutingAnimation,
         cursor, setCursor,
         gpu,

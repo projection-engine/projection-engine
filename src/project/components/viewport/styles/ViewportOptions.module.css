@@ -202,7 +202,6 @@
   min-width: 37px;
   display: grid;
   align-content: flex-start;
-
   gap: 8px;
 }
 
@@ -218,7 +217,7 @@
   font-size: 0.7rem;
   font-weight: 550;
   height: 20px;
-
+  border-radius: 3px;
   overflow: hidden;
   padding: 0 4px !important;
   background-color: var(--pj-border-primary) !important;
@@ -302,7 +301,6 @@
   padding: 0 !important;
   border-radius: 0;
   border: var(--pj-border-primary) 1px solid;
-
   gap: 8px;
 }
 

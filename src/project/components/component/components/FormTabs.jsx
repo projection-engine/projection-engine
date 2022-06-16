@@ -3,22 +3,10 @@ import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef} from "react"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {Button, Icon, ToolTip} from "@f-ui/core"
-import getComponentInfo from "../utils/getComponentInfo"
 
 export const ENTITY_TAB = "entity"
 export default function FormTabs(props) {
 
-    const tabs = useMemo(() => {
-        if (props.entity) {
-            const components = Object.keys(props.entity.components)
-            if (components[props.currentTab] === undefined && props.currentTab > 0) {
-                props.setCurrentTab(components.length - 1)
-                return []
-            }
-            return components.map(c => getComponentInfo(c)).filter(c => Object.keys(c).length > 0)
-        }
-        return []
-    }, [props.entity, props.currentTab])
 
     const currentKey = useMemo(() => {
         if (props.entity)
@@ -73,7 +61,7 @@ export default function FormTabs(props) {
                     <ToolTip content={"Entity"} animation={"0ms"}/>
                 </Button>
             }
-            {tabs.map((t, i) => (
+            {props.tabs.map((t, i) => (
                 <React.Fragment key={i + "-component-tab"}>
                     <Button
                         variant={currentKey === t.key ? "filled" : undefined}
@@ -90,6 +78,7 @@ export default function FormTabs(props) {
 }
 
 FormTabs.propTypes = {
+    tabs: PropTypes.array,
     addComponent: PropTypes.func,
 
     entity: PropTypes.object,

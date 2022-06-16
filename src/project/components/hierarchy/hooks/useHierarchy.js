@@ -14,7 +14,7 @@ const getHierarchy = (start, all) => {
 }
 
 
-export default function useHierarchy(engine,  worker) {
+export default function useHierarchy(engine,  worker, searchedEntity) {
     const [allHidden, setAllHidden] = useState(false)
     const [hierarchy, setHierarchy] = useState([])
     const setSelected = (el, e) => {
@@ -67,7 +67,7 @@ export default function useHierarchy(engine,  worker) {
     useEffect(() => {
         worker.postMessage({entities: engine.entities.map(e => {
             return {...e, components: Object.keys(e.components)}
-        }), COMPONENTS})
+        }), COMPONENTS, searchedEntity})
         worker.onmessage = ({data: toFilter}) => {
             setHierarchy([
                 {
@@ -100,7 +100,7 @@ export default function useHierarchy(engine,  worker) {
                 }
             ])
         }
-    }, [engine.entities, allHidden])
+    }, [engine.entities, allHidden, searchedEntity])
 
     return hierarchy
 }

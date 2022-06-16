@@ -29,11 +29,6 @@ export default function getComponentInfo(c) {
         res.label = "PointLight"
         res.icon = "lightbulb"
         break
-    case COMPONENTS.SKYBOX:
-        res.key = c
-        res.label = "Skybox"
-        res.icon = "cloud"
-        break
     case COMPONENTS.DIRECTIONAL_LIGHT:
     case COMPONENTS.SKYLIGHT:
         res.key = c

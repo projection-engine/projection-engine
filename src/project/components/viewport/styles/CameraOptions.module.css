@@ -5,4 +5,9 @@
   gap: 4px;
   height: fit-content;
   transition: 150ms ease-in;
+
+  position: absolute;
+  right: 25px;
+  top: 0;
+  z-index: 15;
 }

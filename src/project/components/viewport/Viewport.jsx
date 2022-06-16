@@ -5,7 +5,7 @@ import GPUContextProvider from "./hooks/GPUContextProvider"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import ViewportOptions from "./ViewportOptions"
-import SideBar from "./components/SideBar"
+import VerticalTabs from "../../../components/vertical-tab/VerticalTabs"
 import SYSTEMS from "../../engine/templates/SYSTEMS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import PickSystem from "../../engine/systems/PickSystem"
@@ -17,6 +17,11 @@ import Transformation from "../../engine/templates/Transformation"
 import cloneClass from "../../engine/utils/cloneClass"
 import importData from "../../utils/importer/import"
 import getOptionsViewport from "./getOptionsViewport"
+import {updateTransform} from "../component/hooks/useForm"
+import Transform from "../component/components/Transform"
+import ViewportTab from "./components/ViewportTab"
+import CameraTab from "./components/CameraTab"
+import Camera from "./components/Camera"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
@@ -165,7 +170,37 @@ export default function Viewport(props) {
             >
 
                 <span style={{display: "none"}} ref={ref}/>
-                <SideBar engine={props.engine}/>
+                <Camera
+                    engine={props.engine}
+                />
+
+
+                <VerticalTabs
+                    absolute={true}
+                    tabs={[
+                        {
+                            label: "Camera",
+                            content: <CameraTab engine={props.engine}/>
+                        },
+                        {
+                            label: "Viewport",
+                            content: <ViewportTab engine={props.engine}/>
+                        },
+                        {
+                            label: "Active entity",
+                            disabled: !props.engine.selectedEntity,
+                            content: props.engine.selectedEntity ? (
+                                <Transform
+                                    engine={props.engine} selected={props.engine.selectedEntity.components[COMPONENTS.TRANSFORM]} entityID={props.engine.selectedEntity.id}
+                                    submitRotation={(axis, data) => updateTransform(axis, data, "rotation", props.engine, props.engine.selectedEntity.id)}
+                                    submitScaling={(axis, data) => updateTransform(axis, data, "scaling", props.engine, props.engine.selectedEntity.id)}
+                                    submitTranslation={(axis, data) => updateTransform(axis, data, "translation", props.engine, props.engine.selectedEntity.id)}
+                                />
+                            ) : null
+                        }
+                    ]}
+
+                />
                 <SelectBox
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
