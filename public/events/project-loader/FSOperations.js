@@ -1,6 +1,6 @@
-import FILE_TYPES from "../glTF/FILE_TYPES"
-import {lstat, readdir, readFile} from "../../events/FSEvents"
-import PathSep from "../../PathSep"
+import FILE_TYPES from "../../static/FILE_TYPES"
+import {lstat, readdir, readFile} from "../file-system/FSEvents"
+import PathSep from "../../static/PathSep"
 
 const pathRequire = require("path")
 const fs = require("fs")

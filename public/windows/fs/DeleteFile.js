@@ -1,4 +1,4 @@
-const Window = require("./Window")
+const Window = require("../Window")
 export default class Settings extends Window{
     constructor() {
         super( "open-delete")

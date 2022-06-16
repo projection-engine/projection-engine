@@ -30,7 +30,6 @@ export default function useEngine(settings) {
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-
     const [scripts, setScripts] = useState([])
     const [updated, setUpdated] = useState(false)
     const [cursor, setCursor] = useState(getCursor())
@@ -121,7 +120,7 @@ export default function useEngine(settings) {
         setLockedEntity,
         setSelected,
         setCanRender,
-        setScripts,
+        setScripts
     }
 }
 

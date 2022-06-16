@@ -6,12 +6,10 @@ import ContentBrowser from "./components/files/ContentBrowser"
 import EntitiesProvider from "./hooks/EntitiesProvider"
 import Frame from "../components/frame/Frame"
 import useProjectWrapper from "./hooks/useProjectWrapper"
-import FILE_TYPES from "../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../public/static/FILE_TYPES"
 import ViewTabs from "../components/view-tabs/ViewTabs"
 import OpenFileProvider from "./hooks/OpenFileProvider"
-import ScriptEditor from "./components/blueprints/script-editor/ScriptEditor"
-import ShaderEditor from "./components/blueprints/shader-editor/ShaderEditor"
-import refreshData from "./utils/refreshData"
+import ShaderEditor from "./components/blueprints/ShaderEditor"
 import PropTypes from "prop-types"
 import Shortcuts from "./components/shortcuts/Shortcuts"
 import ContextMenuProvider from "../components/context/hooks/ContextMenuProvider"
@@ -27,7 +25,11 @@ import ComponentEditor from "./components/component/ComponentEditor"
 import {createFolder} from "./components/hierarchy/utils/hiearchyUtils"
 import Search from "../components/search/Search"
 import useOptions from "./hooks/useOptions"
+import FileSystem from "./utils/files/FileSystem"
+import AsyncFS from "./templates/AsyncFS"
+import SCRIPT_TEMPLATE from "./templates/SCRIPT_TEMPLATE"
 
+const {shell} = window.require("electron")
 
 export default function Editor(props) {
     const {id, meta, events, initialized, setInitialized, settings, load} = props
@@ -39,53 +41,33 @@ export default function Editor(props) {
     } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock, load)
     const [openFiles, setOpenFiles] = useState([])
     const contextMenuHook = useContextMenu()
-    const tabs = useMemo(() => {
-        return openFiles.map((o, i)=> {
-            switch ("." + o.type) {
-            case FILE_TYPES.MATERIAL:
-                return {
-                    label: o.label,
-                    icon: "texture",
-                    children: (
-                        <ShaderEditor
-                            name={o.label}
-                            engine={engine}
-                            open={i === openTab}
-                            registryID={o.registryID}
-                            submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance, true, engine)}
-                        />
-                    ),
-                    close: () => {
-                        engine.renderer.overrideMaterial = undefined
-                        setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.MATERIAL, o.registryID, engine)
-                    },
-
-                }
-            case FILE_TYPES.SCRIPT:
-                return {
-                    label: o.label,
-                    icon: o.isLevelBlueprint ? "foundation" : "code",
-                    children: (
-                        <ScriptEditor
-                            name={o.label}
-                            engine={engine}
-                            file={o}
-                            isLevelBp={o.isLevelBlueprint}
-                            submitPackage={(pack, close, previewImage) => submitPackage(pack, close, previewImage, o.isLevelBlueprint, o.registryID, undefined, undefined, engine)}
-                            id={o.registryID}
-                        />
-                    ),
-                    close: () => {
-                        setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
-                        refreshData(FILE_TYPES.SCRIPT, o.registryID, engine)
-                    }
-                }
-            default:
-                return undefined
+    const tabs = useMemo(() => [
+        {
+            label: "Files",
+            icon: "folder",
+            children: (
+                <ContentBrowser
+                    id={id}
+                />
+            )
+        }, ...openFiles.map((o, i)=> ({
+            label: o.label,
+            icon: "texture",
+            children: (
+                <ShaderEditor
+                    name={o.label}
+                    engine={engine}
+                    open={i === openTab}
+                    registryID={o.registryID}
+                    submitPackage={(pack, close, previewImage, isLevel, matInstance) => submitPackage(pack, close, previewImage, isLevel, o.registryID, matInstance, true, engine)}
+                />
+            ),
+            close: () => {
+                engine.renderer.overrideMaterial = undefined
+                setOpenFiles(prev => prev.filter(p => p.registryID !== o.registryID))
             }
-        }).filter(e => e)
-    }, [openFiles, openTab, engine.entities, engine.selectedEntity])
+        }))
+    ], [openFiles, openTab, engine.entities, engine.selectedEntity])
 
     const utils = useEditorShortcuts({engine, settings, id, serializer})
     const [searchedEntity, setSearchedEntity] = useState("")
@@ -94,8 +76,22 @@ export default function Editor(props) {
         engine.setExecutingAnimation,
         engine,
         () => {
-            setOpenTab(openFiles.length +1 )
-            setOpenFiles(prev => [...prev, {name: "Level Blueprint", type: "flow", isLevelBlueprint: true}])
+            const path = document.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT
+            AsyncFS.exists(path)
+                .then(res=> {
+                    if(!res)
+                        document.fileSystem.writeFile(FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, SCRIPT_TEMPLATE)
+                            .then(res => {
+                                if(res) {
+                                    document.fileSystem.refresh()
+                                    shell.openPath(path).catch(error => console.error(error))
+                                }
+                                else
+                                    alert.pushAlert("Error creating file", "error")
+                            })
+                    else
+                        shell.openPath(path).catch(error => console.error(error))
+                })
         },
         serializer,
         exporter
@@ -187,18 +183,7 @@ export default function Editor(props) {
                                 open={openTab}
                                 setOpen={setOpenTab}
                                 orientation={"vertical"}
-                                tabs={[
-                                    {
-                                        label: "Files",
-                                        icon: "folder",
-                                        children: (
-                                            <ContentBrowser
-                                                id={id}
-                                            />
-                                        )
-                                    },
-                                    ...tabs
-                                ]}
+                                tabs={tabs}
                             />
                         </ContextWrapper>
                         <Shortcuts/>

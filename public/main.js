@@ -1,6 +1,6 @@
-import MainWrapper from "./events/MainWrapper"
-import FS from "./events/FS"
-import FSEvents from "./events/FSEvents"
+import Main from "./windows/Main.js"
+import FS from "./events/file-system/FS"
+import FSEvents from "./events/file-system/FSEvents"
 
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron")
 
@@ -22,7 +22,7 @@ const createWindow = () => {
     })
 
 
-    MainWrapper()
+    Main()
     FSEvents()
     FS()
 }

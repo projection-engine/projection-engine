@@ -1,12 +1,10 @@
 export default {
     MESH: ".mesh",
-    SCRIPT: ".flow",
-    RAW_SCRIPT: ".flowRaw",
+    LEVEL_SCRIPT: "LEVEL_SCRIPT.js",
+    SCRIPT: ".js",
     MATERIAL: ".material",
     IMAGE: ".pimg",
     REGISTRY: ".reg",
     SCENE: ".scene",
-    PREVIEW: ".preview",
-    TERRAIN: ".terrain",
-    UI: ".ui"
+    PREVIEW: ".preview"
 }

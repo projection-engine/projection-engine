@@ -20,16 +20,16 @@ export default function Mesh(props) {
                 <Selector
                     selected={currentMesh}
                     type={"mesh"}
-                    handleChange={m => {
-                        let data = props.engine.meshes.find(mesh => mesh.id === m.registryID)
+                    handleChange={(src) => {
+                        let data = props.engine.meshes.find(mesh => mesh.id === src.registryID)
                         if (!data)
-                            handleDrop(m.registryID,   props.engine,  true)
+                            handleDrop(src.registryID,   props.engine,  true)
                                 .then(() => {
-                                    props.submit(m.registryID)
+                                    props.submit(src.registryID)
                                 })
                         else {
 
-                            props.submit(m.registryID)
+                            props.submit(src.registryID)
                         }
                     }}/>
             </AccordionTemplate>

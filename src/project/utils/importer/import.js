@@ -1,8 +1,7 @@
 import importMesh from "./importMesh"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
-import FILE_TYPES from "../../../../public/project/glTF/FILE_TYPES"
-import importScript from "./importScript"
+import FILE_TYPES from "../../../../public/static/FILE_TYPES"
 import importScene from "./importScene"
 import FileSystem from "../files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
@@ -29,16 +28,10 @@ export default async function importData(event,   engine,  asID) {
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
                 const meshData = await importMesh(await document.fileSystem.readFile(document.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data)
-
                 if(meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else
                     alert.pushAlert("Error importing mesh.", "error")
-                break
-            case FILE_TYPES.TERRAIN:
-                break
-            case FILE_TYPES.SCRIPT:
-                await importScript(  engine, res)
                 break
             case FILE_TYPES.SCENE:
                 await importScene(  engine, res)

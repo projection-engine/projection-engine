@@ -8,7 +8,7 @@ import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
-import CHANNELS from "../../../public/project/loader/CHANNELS"
+import CHANNELS from "../../../public/static/CHANNELS"
 
 export default function useProjectWrapper(id, initialized, setInitialized, settings, pushSettingsBlock, load) {
 
@@ -50,11 +50,14 @@ export default function useProjectWrapper(id, initialized, setInitialized, setti
                         return [...prev, mat]
                     }))
             })
+
+            // TODO - CUSTOM EVENT FOR LOAD SCRIPTS (Load all on play [Refreshed])
             ipcRenderer.once(CHANNELS.SCRIPTS + "-" + listenID, (ev, res) => {
                 engine.setScripts(prev => {
                     return [...prev, ...res.map(s => s.script)]
                 })
             })
+
             ipcRenderer.send(CHANNELS.SEND, {projectPath: document.fileSystem.path, projectID: id, listenID})
         }
     }, [gpu])

@@ -1,6 +1,6 @@
 import {useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
-import FILE_TYPES from "../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../public/static/FILE_TYPES"
 
 export default function useQuickAccess( ) {
     const [state, setState] = useState({
@@ -15,15 +15,14 @@ export default function useQuickAccess( ) {
                 const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
                     meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
                     materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
-                    scriptReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.RAW_SCRIPT)),
-                    bpReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.SCRIPT) && !r.path.includes(FILE_TYPES.RAW_SCRIPT)),
+                    scriptReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.SCRIPT)),
                     promises = []
 
                 promises.push(...imagesReg.map(i => {
                     return new Promise(resolve => {
                         const split = i.path.split(FileSystem.sep)
                         resolve({
-                            type: "image",
+                            type: FILE_TYPES.IMAGE,
                             registryID: i.id,
                             name: split[split.length - 1]
                         })
@@ -34,7 +33,7 @@ export default function useQuickAccess( ) {
                     return new Promise(resolve => {
                         const split = i.path.split(FileSystem.sep)
                         resolve({
-                            type: "mesh",
+                            type: FILE_TYPES.MESH,
                             registryID: i.id,
                             name: split[split.length - 1]
                         })
@@ -45,7 +44,7 @@ export default function useQuickAccess( ) {
                     return new Promise(resolve => {
                         const split = i.path.split(FileSystem.sep )
                         resolve({
-                            type: "material",
+                            type: FILE_TYPES.MATERIAL,
                             registryID: i.id,
                             name: split[split.length - 1].split(".")[0]
                         })
@@ -55,31 +54,21 @@ export default function useQuickAccess( ) {
                     return new Promise(resolve => {
                         const split = i.path.split(FileSystem.sep)
                         resolve({
-                            type: "flowRaw",
+                            type: FILE_TYPES.SCRIPT,
                             registryID: i.id,
                             name: split[split.length - 1].split(".")[0]
                         })
                     })
                 }))
-                promises.push(...bpReg.map(i => {
-                    return new Promise(resolve => {
-                        const split = i.path.split(FileSystem.sep)
 
-                        resolve({
-                            type: "flow",
-                            registryID: i.id,
-                            name: split[split.length - 1].split(".")[0]
-                        })
-                    })
-                }))
 
                 Promise.all(promises)
                     .then(res => {
                         setState({
-                            images: res.filter(f => f.type === "image"),
-                            meshes: res.filter(f => f.type === "mesh"),
-                            materials: res.filter(f => f.type === "material"),
-                            scripts: [...res.filter(f => f.type === "flowRaw"), ...res.filter(f => f.type === "flow")]
+                            images: res.filter(f => f.type === FILE_TYPES.IMAGE),
+                            meshes: res.filter(f => f.type === FILE_TYPES.MESH),
+                            materials: res.filter(f => f.type ===  FILE_TYPES.MATERIAL),
+                            scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
                         })
                     })
             })

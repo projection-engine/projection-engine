@@ -1,4 +1,4 @@
-import FRAME_EVENTS from "../FRAME_EVENTS"
+import FRAME_EVENTS from "../static/FRAME_EVENTS"
 import Window from "./Window"
 
 export default class Settings extends Window{

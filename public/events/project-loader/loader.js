@@ -1,12 +1,12 @@
 import COMPONENTS from "../../../src/project/engine/templates/COMPONENTS"
-import FILE_TYPES from "../glTF/FILE_TYPES"
+import FILE_TYPES from "../../static/FILE_TYPES"
 import loadScripts from "./loadScripts"
 import loadMeshes from "./loadMeshes"
 import loadMaterials from "./loadMaterials"
-import {readFile} from "../../events/FSEvents"
+import {readFile} from "../file-system/FSEvents"
 import loadData from "./loadData"
-import CHANNELS from "./CHANNELS"
-import PathSep from "../../PathSep"
+import CHANNELS from "../../static/CHANNELS"
+import PathSep from "../../static/PathSep"
 
 export default async function loader(projectPath, projectID, listenID, sender) {
     // await cleanUpRegistry(projectPath)

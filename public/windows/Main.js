@@ -1,11 +1,11 @@
-import Settings from "../windows/Settings"
-import FRAME_EVENTS from "../FRAME_EVENTS"
+import Settings from "./Settings"
+import FRAME_EVENTS from "../static/FRAME_EVENTS"
 
 const {BrowserWindow, ipcMain} = require("electron")
 
 
 
-export default function MainWrapper() {
+export default function Main() {
     let project = null,
         mainWindow= null,
         currentListeners = {

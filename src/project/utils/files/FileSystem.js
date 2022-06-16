@@ -42,7 +42,7 @@ export default class FileSystem {
     }
 
     async findRegistry(p) {
-        const [e, res] = await AsyncFS.readdir(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry"))
+        const [, res] = await AsyncFS.readdir(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry"))
         if (res) {
             const registryData = await Promise.all(res.map(data => this.readRegistryFile(data.replace(".reg", ""))))
             const parsedPath = pathRequire.resolve(p)

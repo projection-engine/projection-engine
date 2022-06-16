@@ -14,7 +14,7 @@ import TextureInstance from "../../../engine/instances/TextureInstance"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
 import OpenFileProvider from "../../../hooks/OpenFileProvider"
-import FILE_TYPES from "../../../../../public/project/glTF/FILE_TYPES"
+import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 
 export default function Material(props) {
@@ -206,11 +206,10 @@ export default function Material(props) {
     const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     return (
         <>
-          
             <Selector
                 selected={state.currentMaterial}
                 type={"material"}
-                handleChange={async (src, clear)=> {
+                handleChange={async (src, clear) => {
                     if (src) {
                         const file = await loadFile(src)
                         if (file && file.response) {
@@ -219,6 +218,7 @@ export default function Material(props) {
                                 id: src.registryID,
                                 name: src.name
                             })
+                            alert.pushAlert("Material loaded", "success")
                             state.uniforms = file.response.uniforms
                             state.currentMaterial = src
                         }

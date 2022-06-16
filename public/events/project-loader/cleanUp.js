@@ -1,6 +1,6 @@
-import {rm} from "../../events/FSEvents"
+import {rm} from "../file-system/FSEvents"
 import {readRegistry} from "./FSOperations"
-import PathSep from "../../PathSep"
+import PathSep from "../../static/PathSep"
 
 const fs = require("fs")
 

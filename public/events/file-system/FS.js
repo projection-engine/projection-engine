@@ -1,7 +1,7 @@
-import glTF from "../project/glTF/glTF"
-import {readRegistry} from "../project/loader/FSOperations"
-import loader from "../project/loader/loader"
-import {parsePath} from "./utils"
+import glTF from "../gltf-loader/glTF"
+import {readRegistry} from "../project-loader/FSOperations"
+import loader from "../project-loader/loader"
+import {parsePath} from "../utils"
 import {directoryStructure} from "./FSEvents"
 
 const {dialog, ipcMain} = require("electron")

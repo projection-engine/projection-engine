@@ -17,7 +17,6 @@ import Display from "../components/Display"
 import Editor from "../components/Editor"
 import Line from "../components/Line"
 import LightProbe from "../components/LightProbe"
-import loadScript from "../utils/loadScript"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
 
@@ -120,11 +119,12 @@ export default function useForm(
                     <Mesh
                         quickAccess={quickAccess}
                         submit={(mesh, type) => {
+
+                            // TODO - Load mesh if not loaded
                             if (!type)
                                 selected.components[COMPONENTS.MESH].meshID = mesh
                             else
                                 selected.components[COMPONENTS.MESH].meshType = mesh
-
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
@@ -150,7 +150,6 @@ export default function useForm(
                         submit={async (val, key) => {
                             if (key) {
                                 submit(COMPONENTS.MATERIAL, key, val)
-
                             } else {
                                 if (val) {
                                     const exists = engine.materials.find(m => m.id === val.id)
@@ -179,6 +178,7 @@ export default function useForm(
                                         key: COMPONENTS.MATERIAL
                                     }
                                 })
+
                             }
                         }}
 
@@ -258,7 +258,9 @@ export default function useForm(
                                 quickAccess={quickAccess}
                                 entity={selected}
                                 selected={selected.components[COMPONENTS.SCRIPT]}
-                                submit={(value, add) => loadScript(selected, engine, value, quickAccess, add).catch()}
+                                submit={(value, add) => {
+                                    // TODO
+                                }}
                             />
                         }
                     </div>

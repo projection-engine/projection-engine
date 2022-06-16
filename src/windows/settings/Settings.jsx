@@ -4,7 +4,7 @@ import "../../styles/globals.css"
 import {Tab, ThemeProvider, VerticalTabs} from "@f-ui/core"
 import styles from "../../styles/App.module.css"
 import Frame from "../../components/frame/Frame"
-import FRAME_EVENTS from "../../../public/FRAME_EVENTS"
+import FRAME_EVENTS from "../../../public/static/FRAME_EVENTS"
 import AccordionTemplate from "../../components/templates/AccordionTemplate"
 
 function Settings() {
