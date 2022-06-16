@@ -7,7 +7,6 @@ export default {
     PROJECT_FILES: "Project files",
     PROJECT_IMPORT: "Importing project",
 
-    SKYBOX: "Skybox",
     MESH: "Mesh",
     MATERIAL: "Material",
 
