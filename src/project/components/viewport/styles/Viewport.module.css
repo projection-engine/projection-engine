@@ -36,10 +36,6 @@
 }
 
 .hovered {
-  outline: var(--pj-accent-color) 1px dashed !important;
-}
-
-.hovered > * {
   opacity: 0.5;
 }
 

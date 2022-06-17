@@ -25,12 +25,12 @@ export default function useEngine(settings) {
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
 
+    const [levelScript, setLevelScript] = useState()
     const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-    const [scripts, setScripts] = useState([])
     const [updated, setUpdated] = useState(false)
     const [cursor, setCursor] = useState(getCursor())
 
@@ -66,17 +66,16 @@ export default function useEngine(settings) {
                 materials,
                 meshes,
                 {canExecutePhysicsAnimation: executingAnimation, selected, setSelected, ...settings},
-                scripts,
                 onGizmoStart,
                 onGizmoEnd,
-                false
+                levelScript
             )
         }
     }, [
         canRender,
         executingAnimation,
         selected, setSelected,
-        materials, meshes, scripts,
+        materials, meshes,
         entities, gpu,
         settings,
         renderer, updated
@@ -102,7 +101,6 @@ export default function useEngine(settings) {
 
         canRender,
         renderer,
-        scripts,
         entities,
         meshes,
         materials,
@@ -114,7 +112,8 @@ export default function useEngine(settings) {
         setLockedEntity,
         setSelected,
         setCanRender,
-        setScripts
+        levelScript,
+        setLevelScript
     }
 }
 

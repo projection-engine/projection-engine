@@ -1,20 +1,40 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Button, Icon} from "@f-ui/core"
-import React, {useMemo} from "react"
+import React, {useEffect, useMemo, useRef, useState} from "react"
 import Selector from "../../../../components/selector/Selector"
 
 export default function Entity(props) {
+    const [state, setState] = useState([])
+    const previousID = useRef()
+    useEffect(() => {
+        if(previousID.current !== props.entity.id) {
+            console.log("ON INIT")
+            previousID.current = props.entity.id
+            setState([...props.entity.scriptsMap])
+        }
+    }, [props.entity])
     return (
-        <>
-
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            alignItems: "center"
+        }}>
             <Selector
                 type={"script"}
                 selected={undefined}
+                autoClose={true}
                 handleChange={d => {
-                    if (d)
-                        props.submit(d.registryID, true)
-                }}>
+                    if (d && !state.find(s => s === d.registryID)) {
+                        props.entity.scriptsMap.push(d.registryID)
+                        setState(prev => {
+                            return [...prev, d.registryID]
+                        })
+                    }else if(state.find(s => s === d.registryID))
+                        alert.pushAlert("Script already linked", "info")
+                }}
+            >
                 <div className={[styles.inline, styles.add].join(" ")}>
                     <Icon>add</Icon>
                     Add new component
@@ -24,25 +44,32 @@ export default function Entity(props) {
             <label className={styles.label}>
                 Linked scripts
             </label>
-            {props.selected.scripts.length > 0 ? props.selected.scripts.map(s => (
-                <React.Fragment key={s}>
-                    <ScriptRow selected={s} scripts={props.quickAccess.scripts} submit={props.submit}/>
+            {state.length > 0 ? state.map((s, index) => (
+                <React.Fragment key={s + "-script-" + index}>
+                    <ScriptRow
+                        selected={s}
+                        scripts={props.scripts} 
+                        submit={key => {
+                            const newScripts = state.filter(s => s !==key)
+                            props.entity.scripts = newScripts
+                            setState(newScripts)
+                        }}
+                    />
                 </React.Fragment>
             ))
                 :
                 <div className={styles.empty}>
                     <Icon styles={{fontSize: "30px"}}>folder</Icon>
-                No linked blueprints
+                    No linked blueprints
                 </div>
             }
-        </>
+        </div>
     )
 }
 
 Entity.propTypes = {
-    quickAccess: PropTypes.object,
-    selected: PropTypes.object,
-    submit: PropTypes.func
+    entity: PropTypes.object,
+    scripts: PropTypes.array
 }
 
 function ScriptRow(props) {
@@ -54,7 +81,7 @@ function ScriptRow(props) {
                 <label className={styles.overflow}>
                     {found.name}
                 </label>
-                <Button styles={{"--pj-accent-color": "#ff5555"}} className={styles.buttonScriptsList} onClick={() => submit(selected, false)}>
+                <Button styles={{"--pj-accent-color": "#ff5555"}} className={styles.buttonScriptsList} onClick={() => submit(selected)}>
                     <Icon styles={{fontSize: "1.1rem"}}>close</Icon>
                 </Button>
             </div>

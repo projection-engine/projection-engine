@@ -226,6 +226,7 @@
 .shadedIcon {
   transition: 150ms linear;
   background: linear-gradient(to right bottom, var(--color-to-apply) 25%, #333 75%);
+  min-width: 13px;
   width: 13px;
   height: 13px;
   border-radius: 50%;
@@ -233,6 +234,7 @@
 
 .flatIcon {
   transition: 150ms linear;
+  min-width: 13px;
   width: 13px;
   height: 13px;
   border-radius: 50%;

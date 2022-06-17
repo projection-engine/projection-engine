@@ -255,12 +255,8 @@ export default function useForm(
                             data
                             :
                             <Entity
-                                quickAccess={quickAccess}
+                                scripts={quickAccess.scripts}
                                 entity={selected}
-                                selected={selected.components[COMPONENTS.SCRIPT]}
-                                submit={(value, add) => {
-                                    // TODO
-                                }}
                             />
                         }
                     </div>

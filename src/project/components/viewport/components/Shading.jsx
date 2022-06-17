@@ -7,15 +7,15 @@ import React, {useMemo} from "react"
 
 export default function Shading(props) {
     const {settingsContext} = props
-    const icon = "check"
-    const meshIcon = "view_in_ar"
-    const settingsIcon = "settings"
+    const icon = <Icon styles={{fontSize: "1rem", maxWidth: "1.1rem"}}>check</Icon>
+    const meshIcon =  <Icon styles={{fontSize: "1rem", maxWidth: "1.1rem"}}>view_in_ar</Icon>
+    const settingsIcon =  <Icon styles={{fontSize: "1rem", maxWidth: "1.1rem"}}>settings</Icon>
 
     const shading = useMemo(() => {
         switch (settingsContext.shadingModel) {
         case SHADING_MODELS.LIGHT_ONLY:
             return {
-                icon: "light_bulb",
+                icon: <Icon styles={{fontSize: "1rem", maxWidth: "1.1rem"}}>light_bulb</Icon>,
                 label: "Light only"
             }
         case SHADING_MODELS.ALBEDO:
@@ -61,9 +61,9 @@ export default function Shading(props) {
     }, [settingsContext.shadingModel])
     return (
         <Dropdown className={styles.dropdown}>
-            <Icon styles={{fontSize: "1.1rem", maxWidth: "1.1rem"}}>
-                {shading.icon}
-            </Icon>
+
+            {shading.icon}
+
             <div style={{whiteSpace: "nowrap"}}>{shading.label}</div>
             <DropdownOptions>
                 <DropdownOption

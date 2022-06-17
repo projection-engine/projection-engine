@@ -47,13 +47,6 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                     }))
             })
 
-            // TODO - CUSTOM EVENT FOR LOAD SCRIPTS (Load all on play [Refreshed])
-            // ipcRenderer.once(CHANNELS.SCRIPTS + "-" + listenID, (ev, res) => {
-            //     engine.setScripts(prev => {
-            //         return [...prev, ...res.map(s => s.script)]
-            //     })
-            // })
-
             ipcRenderer.send(CHANNELS.SEND, {projectPath: document.fileSystem.path, projectID: id, listenID})
         }
     }, [gpu])

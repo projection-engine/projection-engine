@@ -135,10 +135,13 @@
 }
 
 .scriptsList {
+  border-radius: 3px;
+  background: var(--pj-border-primary);
+  width: 100%;
+
   display: flex;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 550;
+  font-size: 0.7rem;
   justify-content: space-between;
   height: 25px;
   padding-left: 4px;
@@ -158,10 +161,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 550;
-  border-radius: 5px;
+  font-size: 0.7rem;
+
+
   padding: 8px;
+  width: fit-content;
+  border-radius: 5px;
+  background: var(--pj-border-primary);
 }
 
 .overflow {

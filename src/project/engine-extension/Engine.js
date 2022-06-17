@@ -91,7 +91,7 @@ export default class Engine extends Renderer {
         return this.#overrideMaterial
     }
 
-    updatePackage(cursor, entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
+    updatePackage(cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
@@ -139,8 +139,8 @@ export default class Engine extends Renderer {
                 cursor,
                 selectedMap: this.arrayToObject(params.selected)
             },
-            scripts,
             this.editorSystem,
+            levelScript
         )
         this.start()
         this.updateOverrideMaterial()

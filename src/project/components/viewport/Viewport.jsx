@@ -154,17 +154,19 @@ export default function Viewport(props) {
                 onDragOver={e => {
                     if (props.allowDrop) {
                         e.preventDefault()
-                        ref.current?.classList.add(styles.hovered)
+                        e.currentTarget.classList.add(styles.hovered)
                     }
                 }}
                 onDragLeave={e => {
                     e.preventDefault()
-                    ref.current?.classList.remove(styles.hovered)
+                    e.currentTarget.classList.remove(styles.hovered)
                 }}
                 onDrop={e => {
+
+                    // TODO - APPLY MATERIAL BY DROPPING IT ON MESH (PICK MESH AND LOAD MATERIAL)
                     if (props.allowDrop) {
                         e.preventDefault()
-                        ref.current?.classList.remove(styles.hovered)
+                        e.currentTarget.classList.remove(styles.hovered)
                         importData(e,  props.engine)
                     }
                 }}

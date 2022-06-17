@@ -32,19 +32,14 @@
 .formsWrapper {
   display: flex;
   flex-direction: column;
-  height: fit-content;
   gap: 8px;
+
+  height: fit-content;
   width: 100%;
   max-width: 100%;
   padding: 4px 4px 32px;
   color: var(--pj-color-primary);
   overflow-x: hidden;
-}
-
-.formsWrapper > div {
-  border: none;
-  background-color: var(--pj-border-primary);
-  border-radius: 3px;
 }
 
 .tabs {
