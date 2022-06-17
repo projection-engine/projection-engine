@@ -57,6 +57,7 @@ export default function useSerializer(engine, settings, id) {
                 }))
             } catch (err) {
                 console.error(err)
+                alert.pushAlert("Error saving project", "error")
             }
             alert.pushAlert(
                 "Project saved.",

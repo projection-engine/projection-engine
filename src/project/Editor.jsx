@@ -84,13 +84,13 @@ export default function Editor(props) {
                             .then(res => {
                                 if(res) {
                                     document.fileSystem.refresh()
-                                    shell.openPath(path).catch(error => console.error(error))
+                                    shell.openPath(path).catch(() => alert.pushAlert("Error opening file", "error"))
                                 }
                                 else
                                     alert.pushAlert("Error creating file", "error")
                             })
                     else
-                        shell.openPath(path).catch(error => console.error(error))
+                        shell.openPath(path).catch(() => alert.pushAlert("Error loading file", "error"))
                 })
         },
         serializer,

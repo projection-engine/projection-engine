@@ -158,7 +158,7 @@ export default function Hierarchy(props){
                             }
                         })
                     } catch (e) {
-                        console.error(e)
+                        alert.pushAlert("Error linking entities", "error")
                     }
                 }}
                 onDragStart={e => {

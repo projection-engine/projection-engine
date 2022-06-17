@@ -40,7 +40,7 @@ export default async function importMesh(objLoaded, engine, id) {
             existsMesh = true
         entity = initializeEntity(objLoaded, mesh.id)
     } catch (e) {
-        console.error(e)
+        alert.pushAlert("Error loading mesh", "error")
     }
 
     return {
