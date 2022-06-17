@@ -7,7 +7,6 @@ import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import Shading from "./components/Shading"
 import Add from "./components/Add"
 import Visible from "./components/Visible"
-import Gizmo from "./components/Gizmo"
 import {Button, Icon} from "@f-ui/core"
 
 
@@ -35,7 +34,7 @@ export default function ViewportOptions(props) {
     }
     const ref = useRef()
 
-    if(props.executingAnimation || fullscreen )
+    if(fullscreen)
         return null
     return (
         <>
@@ -60,11 +59,10 @@ export default function ViewportOptions(props) {
                 </div>
                 <Shading settingsContext={settingsContext}/>
             </div>
-            <Gizmo settingsContext={settingsContext}/>
+
         </>
     )
 }
 ViewportOptions.propTypes = {
-    executingAnimation: PropTypes.bool,
     engine: PropTypes.object
 }

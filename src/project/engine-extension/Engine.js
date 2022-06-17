@@ -92,7 +92,6 @@ export default class Engine extends Renderer {
     }
 
     updatePackage(cursor, entities, materials, meshes, params, scripts = [], onGizmoStart, onGizmoEnd) {
-
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
@@ -124,11 +123,8 @@ export default class Engine extends Renderer {
         let materialsToRender = materials, fallbackMaterial = this.fallbackMaterial
         if(params.shadingModel !== SHADING_MODELS.DETAIL || this.overrideMaterial) {
             materialsToRender = []
-            // console.log(this.overrideMaterial)
             fallbackMaterial = this.overrideMaterial ? this.overrideMaterial : this.debugMaterial
         }
-        // console.log(fallbackMaterial, materialsToRender)
-
         super.updatePackage(
             fallbackMaterial,
             entities,

@@ -81,12 +81,6 @@ export default function useEngine(settings) {
         settings,
         renderer, updated
     ])
-
-    useEffect(() => {
-        if (renderer && updated)
-            renderer.start()
-    }, [renderer, updated])
-
     useEffect(update, [update])
 
     const selectedEntity = useMemo(() => {

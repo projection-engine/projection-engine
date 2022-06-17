@@ -1,30 +1,21 @@
 import {useCallback, useEffect, useState} from "react"
-import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import Engine from "../../../engine-extension/Engine"
 import SYSTEMS from "../../../engine/templates/SYSTEMS"
 
-const callback = (e) => {
-    const target = e[0]?.target
-    const canvas = document.getElementById(RENDER_TARGET)
-    if (target) {
-        if (target === document.body)
-            canvas.style.width = "100%"
-        else if(canvas?.parentNode){
-            const bBox = canvas.parentNode.getBoundingClientRect()
-            canvas.style.width = bBox.width + "px"
-            canvas.style.height = bBox.height + "px"
-        }
-    }
-}
+
 export default function useGPU(settings, projectID) {
     const [gpu, setGpu] = useState()
     const [renderer, setRenderer] = useState()
 
     useEffect(() => {
-        console.log(projectID && !renderer, projectID, renderer)
-        if ( projectID && !renderer) {
-            const t = document.createElement("canvas")
-            t.id = RENDER_TARGET
+        if(gpu){
+            gpu.canvas.width = settings.resolution[0]
+            gpu.canvas.height = settings.resolution[1]
+        }
+    }, [settings.resolution])
+
+    const bindGPU = useCallback((t) => {
+        if ( !renderer ) {
             const ctx = t.getContext("webgl2", {
                 antialias: false,
                 preserveDrawingBuffer: true,
@@ -40,8 +31,10 @@ export default function useGPU(settings, projectID) {
             ctx.enable(ctx.DEPTH_TEST)
             ctx.depthFunc(ctx.LESS)
             ctx.frontFace(ctx.CCW)
-
-            document.body.appendChild(t)
+            t.width = settings.resolution[0]
+            t.height = settings.resolution[1]
+            t.style.width = "100%"
+            t.style.height = "100%"
             t.style.background = "transparent"
             setGpu(ctx)
             setRenderer(
@@ -65,26 +58,7 @@ export default function useGPU(settings, projectID) {
                 )
             )
         }
-    }, [projectID])
-    useEffect(() => {
-        const obs = new ResizeObserver(callback)
-        if(gpu) {
-            console.log("HERE")
-            gpu.canvas.width = settings.resolution[0]
-            gpu.canvas.height = settings.resolution[1]
-            obs.observe(gpu.canvas.parentNode)
-            callback(true)
-        }
-        return () => obs.disconnect()
-    }, [settings, gpu])
-
-    const bindGPU = useCallback((t) => {
-        const currentTarget = t.parentNode
-        if (gpu) {
-            gpu.canvas.style.display = "block"
-            currentTarget.insertBefore(gpu.canvas, t)
-        }
-    }, [gpu])
+    }, [renderer])
 
     return {
         gpu,

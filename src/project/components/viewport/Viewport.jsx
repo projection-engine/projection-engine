@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useMemo, useRef} from "react"
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
 import GPUContextProvider from "./hooks/GPUContextProvider"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
@@ -22,6 +22,7 @@ import Transform from "../component/components/Transform"
 import ViewportTab from "./components/ViewportTab"
 import CameraTab from "./components/CameraTab"
 import Camera from "./components/Camera"
+import Gizmo from "./components/Gizmo"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
@@ -37,7 +38,7 @@ export default function Viewport(props) {
     const ref = useRef()
     const settings = useContext(SettingsProvider)
     const {bindGPU, gpu} = useContext(GPUContextProvider)
-    useEffect(() => bindGPU(ref.current), [gpu])
+    useEffect(() => bindGPU(ref.current), [])
     function pickIcon (entities, cameraMesh, pickSystem, camera, coords){
         return pickSystem.pickElement((shader, proj) => {
             for (let m = 0; m < entities.length; m++) {
@@ -51,6 +52,20 @@ export default function Viewport(props) {
                 }
             }
         }, {x: coords[0], y: coords[1]}, camera)
+    }
+    function pickMesh(meshSources, x, y){
+        return  props.engine.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
+            for (let m = 0; m < props.engine.entities.length; m++) {
+                const currentInstance = props.engine.entities[m]
+                if (props.engine.entities[m].active) {
+                    const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
+                    if (t && currentInstance.components[COMPONENTS.MESH]) {
+                        const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
+                        if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, props.engine.renderer.camera.viewMatrix, proj, t, shader, props.engine.gpu)
+                    }
+                }
+            }
+        }, {x, y}, props.engine.renderer.camera)
     }
     function handler(event) {
         if(settings.gizmo !== GIZMOS.CURSOR) {
@@ -68,20 +83,8 @@ export default function Viewport(props) {
                 const coords = [event.clientX - target.left, event.clientY - target.top]
 
                 let picked = pickIcon(entities, cameraMesh, p, camera, coords)
-                if (!picked) {
-                    picked = p.pickElement((shader, proj) => {
-                        for (let m = 0; m < entities.length; m++) {
-                            const currentInstance = entities[m]
-                            if (entities[m].active) {
-                                const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
-                                if (t && currentInstance.components[COMPONENTS.MESH]) {
-                                    const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
-                                    if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, camera.viewMatrix, proj, t, shader, props.engine.gpu)
-                                }
-                            }
-                        }
-                    }, {x: coords[0], y: coords[1]}, camera)
-                }
+                if (!picked)
+                    picked = pickMesh(meshSources, coords[0], coords[1])
                 if (picked > 0) {
                     const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
 
@@ -96,7 +99,6 @@ export default function Viewport(props) {
                     })
                 } else
                     props.engine.setSelected([])
-
             }
         }else
             event.currentTarget.started = undefined
@@ -123,17 +125,20 @@ export default function Viewport(props) {
             document.removeEventListener("mousemove", handleMouse)
         }
     }
-
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, optionsViewport, TRIGGERS)
-
+    const [openSideBar, setOpenSideBar] = useState(false)
 
     return (
         <div className={styles.wrapper}>
-            <ViewportOptions
-                engine={props.engine}
-                executingAnimation={props.executingAnimation}
-                id={props.id}
-            />
+            {props.engine.executingAnimation ?
+                null
+                :
+                <ViewportOptions
+                    engine={props.engine}
+                    executingAnimation={props.executingAnimation}
+                    id={props.id}
+                />
+            }
             <div
                 onMouseDown={e => {
                     e.currentTarget.started = performance.now()
@@ -168,14 +173,21 @@ export default function Viewport(props) {
                 id={"viewport-wrapper"}
                 className={styles.viewport}
             >
-
-                <span style={{display: "none"}} ref={ref}/>
-                <Camera
-                    engine={props.engine}
-                />
-
-
+                <canvas id={RENDER_TARGET} ref={ref} style={{width: "100%", height: "100%"}}/>
+                {props.engine.executingAnimation ?
+                    null
+                    :
+                    <>
+                        <Gizmo/>
+                        <Camera
+                            engine={props.engine}
+                            sideBarOpen={openSideBar}
+                        />
+                    </>
+                }
                 <VerticalTabs
+                    open={openSideBar}
+                    setOpen={setOpenSideBar}
                     absolute={true}
                     tabs={[
                         {

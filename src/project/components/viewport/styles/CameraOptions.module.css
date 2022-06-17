@@ -7,7 +7,7 @@
   transition: 150ms ease-in;
 
   position: absolute;
-  right: 25px;
+  right: 0;
   top: 0;
   z-index: 15;
 }

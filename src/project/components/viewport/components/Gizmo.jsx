@@ -4,24 +4,25 @@ import ROTATION_TYPES from "../../../../static/misc/ROTATION_TYPES"
 import Range from "../../../../components/range/Range"
 import GIZMOS from "../../../../static/misc/GIZMOS"
 import PropTypes from "prop-types"
-import React, {useEffect, useRef, useState} from "react"
+import React, {useContext, useEffect, useRef, useState} from "react"
 import ResizableBar from "../../../../components/resizable/ResizableBar"
+import SettingsProvider from "../../../hooks/SettingsProvider"
 
-export default function Gizmo(props){
-    const {settingsContext} = props
-    const [gridSize, setGridSize] = useState(settingsContext.gridSize)
+export default function Gizmo(){
+    const settings = useContext(SettingsProvider)
+    const [gridSize, setGridSize] = useState(settings.gridSize)
     
     const [minimal, setMinimal] = useState( true )
     const ref = useRef()
     const initialized = useRef(false)
 
     useEffect(() => {
-        if(!initialized.current && settingsContext.extendedGizmoView !== undefined && settingsContext.extendedGizmoView) {
+        if(!initialized.current && settings.extendedGizmoView !== undefined && settings.extendedGizmoView) {
             ref.current.style.width = "150px"
             setMinimal(false)
             initialized.current = true
         }
-    }, [settingsContext.extendedGizmoView])
+    }, [settings.extendedGizmoView])
 
     return (
         <div className={styles.floating}>
@@ -29,19 +30,19 @@ export default function Gizmo(props){
             
                 <Button
                     styles={{borderRadius: "3px"}}
-                    attributes={{title: `(${settingsContext.rotationType}) Toggle transformation type`, "data-minimal": `${minimal}`}}
+                    attributes={{title: `(${settings.rotationType}) Toggle transformation type`, "data-minimal": `${minimal}`}}
                     className={styles.transformationWrapper}
                     onClick={() => {
-                        if (settingsContext.rotationType !== ROTATION_TYPES.GLOBAL)
-                            settingsContext.rotationType = ROTATION_TYPES.GLOBAL
+                        if (settings.rotationType !== ROTATION_TYPES.GLOBAL)
+                            settings.rotationType = ROTATION_TYPES.GLOBAL
                         else
-                            settingsContext.rotationType = ROTATION_TYPES.RELATIVE
+                            settings.rotationType = ROTATION_TYPES.RELATIVE
                     }}
                 >
                     <Icon  styles={{fontSize: "1.1rem"}}>
-                        {settingsContext.rotationType === ROTATION_TYPES.RELATIVE ? "place" : "language"}
+                        {settings.rotationType === ROTATION_TYPES.RELATIVE ? "place" : "language"}
                     </Icon>
-                    {minimal ? null : <label className={styles.overflow}>{settingsContext.rotationType}</label>}
+                    {minimal ? null : <label className={styles.overflow}>{settings.rotationType}</label>}
                 </Button>
                 <div className={styles.buttonGroup} style={{display: "grid"}}>
                     <Dropdown
@@ -60,7 +61,7 @@ export default function Gizmo(props){
                                 <Range
                                     onFinish={v => {
                                         setGridSize(v)
-                                        settingsContext.gridSize = v
+                                        settings.gridSize = v
                                     }} accentColor={"red"}
                                     handleChange={(v) => setGridSize(v)}
                                     value={gridSize}
@@ -87,13 +88,13 @@ export default function Gizmo(props){
                             <div className={styles.rangeLabel} style={{padding: "8px", display: "flex", gap: "4px"}}>
                                 <Button
                                     className={styles.enableButton}
-                                    styles={{color: settingsContext.gridScaleSize ? "var(--pj-accent-color)" : undefined}}
-                                    onClick={() => settingsContext.gridScaleSize = settingsContext.gridScaleSize ? undefined : 1}
+                                    styles={{color: settings.gridScaleSize ? "var(--pj-accent-color)" : undefined}}
+                                    onClick={() => settings.gridScaleSize = settings.gridScaleSize ? undefined : 1}
                                 >
                                     <Icon
 
                                         styles={{fontSize: ".9rem"}}
-                                    >{settingsContext.gridScaleSize ? "lens" : "panorama_fish_eye"}</Icon>
+                                    >{settings.gridScaleSize ? "lens" : "panorama_fish_eye"}</Icon>
                                 </Button>
                                         Scale grid size
                             </div>
@@ -103,10 +104,10 @@ export default function Gizmo(props){
                                     {[1, .5, .25].map(e => (
                                         <React.Fragment key={e + "variable-scale"}>
                                             <Button
-                                                disabled={!settingsContext.gridScaleSize}
+                                                disabled={!settings.gridScaleSize}
                                                 styles={{width: "100%"}} className={styles.button}
-                                                variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
-                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                variant={settings.gridScaleSize === e ? "filled" : undefined}
+                                                onClick={() => settings.gridScaleSize = e}>
                                                 {e}
                                             </Button>
                                         </React.Fragment>
@@ -116,10 +117,10 @@ export default function Gizmo(props){
                                     {[.125, .0625, .03125].map(e => (
                                         <React.Fragment key={e + "variable-scale"}>
                                             <Button
-                                                disabled={!settingsContext.gridScaleSize}
+                                                disabled={!settings.gridScaleSize}
                                                 styles={{width: "100%"}} className={styles.button}
-                                                variant={settingsContext.gridScaleSize === e ? "filled" : undefined}
-                                                onClick={() => settingsContext.gridScaleSize = e}>
+                                                variant={settings.gridScaleSize === e ? "filled" : undefined}
+                                                onClick={() => settings.gridScaleSize = e}>
                                                 {e}
                                             </Button>
                                         </React.Fragment>
@@ -141,7 +142,7 @@ export default function Gizmo(props){
                                     fill={"var(--pj-color-secondary)"}
                                     d="M495.304,425.738H255.417c-3.576-52.031-23.828-100.842-58.185-140.23L401.371,81.37c6.52-6.52,6.52-17.091,0-23.611    c-6.519-6.52-17.091-6.52-23.611,0L4.89,430.629c-3.282,3.282-4.984,7.702-4.886,12.172c0.018,0.813,0.095,1.627,0.233,2.436    c0.207,1.214,0.55,2.416,1.034,3.586c2.584,6.239,8.672,10.307,15.425,10.307h222.609h256c9.22,0,16.696-7.475,16.696-16.696    S504.525,425.738,495.304,425.738z M57.002,425.738l116.562-116.561c28.136,32.988,44.927,73.446,48.38,116.561H57.002z"/>
                             </svg>
-                            {!settingsContext.gridRotationSize ? "" : settingsContext.gridRotationSize + "°"}
+                            {!settings.gridRotationSize ? "" : settings.gridRotationSize + "°"}
                         </div>
                         {minimal ? null : <label className={styles.overflow}>Rotation angle</label>}
 
@@ -150,13 +151,13 @@ export default function Gizmo(props){
                                 <Button
 
                                     className={styles.enableButton}
-                                    styles={{color: settingsContext.gridRotationSize ? "var(--pj-accent-color)" : undefined}}
-                                    onClick={() => settingsContext.gridRotationSize = settingsContext.gridRotationSize ? undefined : 5}
+                                    styles={{color: settings.gridRotationSize ? "var(--pj-accent-color)" : undefined}}
+                                    onClick={() => settings.gridRotationSize = settings.gridRotationSize ? undefined : 5}
                                 >
                                     <Icon
 
                                         styles={{fontSize: ".9rem"}}
-                                    >{settingsContext.gridRotationSize ? "lens" : "panorama_fish_eye"}</Icon>
+                                    >{settings.gridRotationSize ? "lens" : "panorama_fish_eye"}</Icon>
                                 </Button>
                                         Rotation angle
                             </div>
@@ -166,10 +167,10 @@ export default function Gizmo(props){
                                     {[1, 5, 10, 15].map(e => (
                                         <React.Fragment key={e + "variable-rotation"}>
                                             <Button
-                                                disabled={!settingsContext.gridRotationSize}
+                                                disabled={!settings.gridRotationSize}
                                                 styles={{width: "100%"}} className={styles.button}
-                                                variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
-                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                variant={settings.gridRotationSize === e ? "filled" : undefined}
+                                                onClick={() => settings.gridRotationSize = e}>
                                                 {e}
                                             </Button>
                                         </React.Fragment>
@@ -179,10 +180,10 @@ export default function Gizmo(props){
                                     {[30, 45, 60, 90].map(e => (
                                         <React.Fragment key={e + "variable-rotation"}>
                                             <Button
-                                                disabled={!settingsContext.gridRotationSize}
+                                                disabled={!settings.gridRotationSize}
                                                 styles={{width: "100%"}} className={styles.button}
-                                                variant={settingsContext.gridRotationSize === e ? "filled" : undefined}
-                                                onClick={() => settingsContext.gridRotationSize = e}>
+                                                variant={settings.gridRotationSize === e ? "filled" : undefined}
+                                                onClick={() => settings.gridRotationSize = e}>
                                                 {e}
                                             </Button>
                                         </React.Fragment>
@@ -198,11 +199,11 @@ export default function Gizmo(props){
                     <Button
                         className={styles.transformationWrapper}
                         attributes={{"data-minimal": `${minimal}`}}
-                        variant={settingsContext.gizmo === GIZMOS.NONE ? "filled" : undefined}
+                        variant={settings.gizmo === GIZMOS.NONE ? "filled" : undefined}
                         styles={{borderRadius: "3px 3px 0  0"}}
-                        highlight={settingsContext.gizmo === GIZMOS.NONE}
+                        highlight={settings.gizmo === GIZMOS.NONE}
                         onClick={() => {
-                            settingsContext.gizmo = GIZMOS.NONE
+                            settings.gizmo = GIZMOS.NONE
                         }}
                     >
                         <Icon >highlight_alt</Icon>
@@ -212,11 +213,11 @@ export default function Gizmo(props){
                     <Button
                         className={styles.transformationWrapper}
                         attributes={{"data-minimal": `${minimal}`}}
-                        variant={settingsContext.gizmo === GIZMOS.CURSOR ? "filled" : undefined}
+                        variant={settings.gizmo === GIZMOS.CURSOR ? "filled" : undefined}
                         styles={{borderRadius: "0 0 3px 3px"}}
-                        highlight={settingsContext.gizmo === GIZMOS.CURSOR}
+                        highlight={settings.gizmo === GIZMOS.CURSOR}
                         onClick={() => {
-                            settingsContext.gizmo = GIZMOS.CURSOR
+                            settings.gizmo = GIZMOS.CURSOR
                         }}>
                         <Icon >adjust</Icon>
                         <ToolTip content={"3D cursor"}/>
@@ -228,11 +229,11 @@ export default function Gizmo(props){
                         className={styles.transformationWrapper}
                         attributes={{"data-minimal": `${minimal}`}}
                         styles={{borderRadius: "3px 3px 0  0"}}
-                        variant={settingsContext.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
+                        variant={settings.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
 
-                        highlight={settingsContext.gizmo === GIZMOS.TRANSLATION}
+                        highlight={settings.gizmo === GIZMOS.TRANSLATION}
                         onClick={() => {
-                            settingsContext.gizmo = GIZMOS.TRANSLATION
+                            settings.gizmo = GIZMOS.TRANSLATION
                         }}>
                         <Icon >open_with</Icon>
                         {minimal ? null : <label className={styles.overflow}>Translation gizmo</label>}
@@ -240,11 +241,11 @@ export default function Gizmo(props){
                     <Button
                         className={styles.transformationWrapper}
                         attributes={{"data-minimal": `${minimal}`}}
-                        variant={settingsContext.gizmo === GIZMOS.ROTATION ? "filled" : undefined}
-                        highlight={settingsContext.gizmo === GIZMOS.ROTATION}
+                        variant={settings.gizmo === GIZMOS.ROTATION ? "filled" : undefined}
+                        highlight={settings.gizmo === GIZMOS.ROTATION}
 
                         onClick={() => {
-                            settingsContext.gizmo = GIZMOS.ROTATION
+                            settings.gizmo = GIZMOS.ROTATION
                         }}>
                         <Icon >cached</Icon>
                         {minimal ? null : <label className={styles.overflow}>Rotation gizmo</label>}
@@ -252,11 +253,11 @@ export default function Gizmo(props){
                     <Button
                         className={styles.transformationWrapper}
                         attributes={{"data-minimal": `${minimal}`}}
-                        variant={settingsContext.gizmo === GIZMOS.SCALE ? "filled" : undefined}
+                        variant={settings.gizmo === GIZMOS.SCALE ? "filled" : undefined}
                         styles={{borderRadius: "0 0 3px 3px", borderTop: "none"}}
-                        highlight={settingsContext.gizmo === GIZMOS.SCALE}
+                        highlight={settings.gizmo === GIZMOS.SCALE}
                         onClick={() => {
-                            settingsContext.gizmo = GIZMOS.SCALE
+                            settings.gizmo = GIZMOS.SCALE
                         }}>
                         <Icon >transform</Icon>
                         {minimal ? null : <label className={styles.overflow}>Scale gizmo</label>}
@@ -265,7 +266,7 @@ export default function Gizmo(props){
             </div>
             <ResizableBar
                 type={"width"}
-                onResizeEnd={() => settingsContext.extendedGizmoView = minimal}
+                onResizeEnd={() => settings.extendedGizmoView = minimal}
                 onResize={() => {
                     const bBox = ref.current.getBoundingClientRect()
                     if(bBox.width < 80)
@@ -278,8 +279,4 @@ export default function Gizmo(props){
         </div>
        
     )
-}
-
-Gizmo.propTypes={
-    settingsContext: PropTypes.object
 }

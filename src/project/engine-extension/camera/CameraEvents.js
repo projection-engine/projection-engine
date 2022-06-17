@@ -6,7 +6,6 @@ import CAMERA_GIZMO from "../CAMERA_GIZMO"
 const BUTTON_MIDDLE = 1
 export default function CameraEvents(c, canvas) {
     let isFocused = false
-    let positionChanged = false
     let requested = false
     let doubleClick = false
     let holding = false
@@ -15,6 +14,7 @@ export default function CameraEvents(c, canvas) {
     let cameraSpeed = 0.01
     let interval, increment = 0, scrollSpeed = .5, cameraScrollDelay = 100
     const cameraGizmo = document.getElementById(CAMERA_GIZMO)
+
     function handleInput(event) {
         switch (event.type) {
         case "wheel":
@@ -47,7 +47,6 @@ export default function CameraEvents(c, canvas) {
             }
             break
         case "mousemove":
-            positionChanged = true
             if (isFocused || doubleClick) {
                 if (!requested) {
                     requested = true
@@ -88,14 +87,12 @@ export default function CameraEvents(c, canvas) {
                 isFocused = true
             }else
                 holding = true
-            console.log(holding, doubleClick)
             break
         case "mouseup":
             holding = false
             ctrl = false
             requested = false
             isFocused = false
-            positionChanged = false
             document.exitPointerLock()
             doubleClick = false
             break

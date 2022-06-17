@@ -25,7 +25,6 @@ function Project() {
     const [project, setProject] = useState()
     const [refresh, quickAccess] = useQuickAccess(project?.id)
     const [events, setEvents] = useState({})
-    const [initialized, setInitialized] = useState(false)
     const [settings,, pushBlock] = useSettings()
     const gpuContext = useGPU(settings, project?.id)
     const hotKeysHook= useHotKeysHelper()
@@ -55,8 +54,7 @@ function Project() {
                             settings={settings}
                             load={loader}
                             pushSettingsBlock={pushBlock}
-                            initialized={initialized}
-                            setInitialized={setInitialized}
+
                             events={{
                                 ...events,
                                 closeEvent: FRAME_EVENTS.CLOSE,

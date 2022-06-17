@@ -18,8 +18,7 @@
   border-radius: 5px;
   transition: 150ms linear;
   position: relative;
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
 }
 
 .viewport > * {

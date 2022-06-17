@@ -43,7 +43,7 @@ export default function Camera(props) {
         engine.renderer.camera.updateViewMatrix()
     }
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
             <CameraGizmo  bind={bind} renderer={engine.renderer}/>
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown hideArrow={true}
@@ -197,5 +197,6 @@ export default function Camera(props) {
 
 }
 Camera.propTypes = {
+    sideBarOpen: PropTypes.bool,
     engine: PropTypes.object
 }

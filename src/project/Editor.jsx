@@ -32,13 +32,13 @@ import SCRIPT_TEMPLATE from "./templates/SCRIPT_TEMPLATE"
 const {shell} = window.require("electron")
 
 export default function Editor(props) {
-    const {id, meta, events, initialized, setInitialized, settings, load} = props
+    const {id, meta, events,  settings, load} = props
     const {
         exporter,
         entitiesWithMeshes,
         serializer,
         engine, openTab, setOpenTab
-    } = useProjectWrapper(id, initialized, setInitialized, settings, props.pushSettingsBlock, load)
+    } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load)
     const [openFiles, setOpenFiles] = useState([])
     const contextMenuHook = useContextMenu()
     const tabs = useMemo(() => [
@@ -201,7 +201,5 @@ Editor.propTypes={
     id: PropTypes.string,
     meta: PropTypes.object,
     events: PropTypes.object,
-    initialized: PropTypes.bool,
-    setInitialized: PropTypes.func,
     settings: PropTypes.object
 }
