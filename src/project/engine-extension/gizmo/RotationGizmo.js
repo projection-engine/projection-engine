@@ -80,7 +80,7 @@ export default class RotationGizmo {
 
     onMouseDown(event) {
         if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = this.resolution.w, h = this.resolution.h
+            const w = this.gpu.canvas.width, h = this.gpu.canvas.height
             const x = event.clientX
             const y = event.clientY
 
@@ -285,9 +285,9 @@ export default class RotationGizmo {
             default:
                 break
             }
-        } else if (axis !== undefined) {
+        } else if (axis !== undefined)
             return mat4.fromRotationTranslationScale([], quat.multiply([], rotation, comp.rotationQuat), t, comp.scaling)
-        }
+
         return matrix
     }
 
@@ -330,8 +330,8 @@ export default class RotationGizmo {
             camPos: this.camera.position,
             uID: [...id, 1],
             selectedAxis: this.clickedAxis,
-
-            circleSampler: this.texture.texture
+            circleSampler: this.texture.texture,
+            cameraIsOrthographic: this.camera.ortho
         })
         this.gpu.drawElements(this.gpu.TRIANGLES, this.xyz.verticesQuantity, this.gpu.UNSIGNED_INT, 0)
     }

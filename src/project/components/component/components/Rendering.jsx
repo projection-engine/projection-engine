@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react"
-import SettingsProvider from "../../../hooks/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
@@ -14,8 +14,6 @@ export default function Rendering() {
         state.FXAAReduceMin = settings.FXAAReduceMin ? settings.FXAAReduceMin : 1 / 128
         state.FXAAReduceMul = settings.FXAAReduceMul ? settings.FXAAReduceMul : 1 / 8
 
-        state.fxaa = settings.fxaa
-        state.ao = settings.ao
         state.shadowMapResolution = settings.shadowMapResolution
         state.shadowAtlasQuantity = settings.shadowAtlasQuantity
         state.pcfSamples = settings.pcfSamples
@@ -40,6 +38,14 @@ export default function Rendering() {
                 height={"25px"}
                 width={"100%"}/>
 
+            <Checkbox
+                noMargin={true}
+                checked={settings.ssr}
+                handleCheck={() => settings.ssr = !settings.ssr}
+                label={"Screen space reflections"}
+                height={"25px"}
+                width={"100%"}
+            />
 
             <AccordionTemplate title={"Shadows"}>
 

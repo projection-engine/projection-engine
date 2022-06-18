@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from "react"
 import PropTypes from "prop-types"
 import styles from "./styles/ViewportOptions.module.css"
-import SettingsProvider from "../../hooks/SettingsProvider"
+import SettingsProvider from "../../providers/SettingsProvider"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import Shading from "./components/Shading"

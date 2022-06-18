@@ -6,7 +6,7 @@ import React, {useContext, useEffect, useMemo, useState} from "react"
 import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
-import SettingsProvider from "../../../hooks/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
 export default function Camera(props) {

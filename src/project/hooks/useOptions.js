@@ -1,9 +1,10 @@
 import {useMemo} from "react"
 import FileSystem from "../utils/files/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
+import openLevelBlueprint from "../utils/openLevelBlueprint"
 
 const {ipcRenderer} = window.require("electron")
-export default function useOptions(executingAnimation, setExecutingAnimation, engine, openLevelBlueprint, serializer, exporter) {
+export default function useOptions(engine, serializer) {
     return useMemo(() => {
         return  [
             {divider: true},
@@ -11,13 +12,12 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
                 label: "Save",
                 icon: "save",
                 onClick: () => serializer.save()
-
             },
             {
-                label: executingAnimation ? "Stop" : "Play",
-                icon: executingAnimation ? "pause" : "play_arrow",
+                label: engine.executingAnimation ? "Stop" : "Play",
+                icon: engine.executingAnimation ? "pause" : "play_arrow",
                 onClick: async () => {
-                    const newValue = !executingAnimation
+                    const newValue = !engine.executingAnimation
                     try{
                         if (newValue) {
                             alert.pushAlert("Loading scripts", "info")
@@ -40,7 +40,7 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
                                 engine.setLevelScript(levelScript)
                             alert.pushAlert("Scripts loaded", "success")
                         }
-                        setExecutingAnimation(newValue)
+                        engine.setExecutingAnimation(newValue)
                     }catch (err){
                         if(newValue)
                             alert.pushAlert("Some error occurred", "error")
@@ -59,7 +59,7 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
             {
                 label: "Edit level blueprint",
                 icon: "foundation",
-                onClick: () => openLevelBlueprint()
+                onClick: openLevelBlueprint
             },
             {divider: true},
             {
@@ -78,5 +78,5 @@ export default function useOptions(executingAnimation, setExecutingAnimation, en
                 ]
             },
         ]
-    }, [engine.entities, engine.scripts, engine.meshes, engine, executingAnimation])
+    }, [engine.entities, engine.scripts, engine.meshes, engine, engine.executingAnimation])
 }

@@ -26,7 +26,6 @@ export default function useEngine(settings) {
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
 
     const [levelScript, setLevelScript] = useState()
-    const [canRender, setCanRender] = useState(true)
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
@@ -55,8 +54,10 @@ export default function useEngine(settings) {
             })
     }
 
+
+
     const update = useCallback(() => {
-        if (renderer && canRender) {
+        if (renderer) {
             if(!updated)
                 setUpdated(true)
             renderer.gizmo = settings.gizmo
@@ -72,13 +73,9 @@ export default function useEngine(settings) {
             )
         }
     }, [
-        canRender,
         executingAnimation,
-        selected, setSelected,
-        materials, meshes,
-        entities, gpu,
-        settings,
-        renderer, updated
+        selected, materials, meshes,
+        entities, settings, renderer
     ])
     useEffect(update, [update])
 
@@ -89,7 +86,8 @@ export default function useEngine(settings) {
 
     return {
         selectedEntity,
-        executingAnimation, setExecutingAnimation,
+        executingAnimation,
+        setExecutingAnimation,
         cursor, setCursor,
         gpu,
         update,
@@ -99,7 +97,7 @@ export default function useEngine(settings) {
         dispatchChanges,
         lockedEntity,
 
-        canRender,
+
         renderer,
         entities,
         meshes,
@@ -111,7 +109,6 @@ export default function useEngine(settings) {
         setMeshes,
         setLockedEntity,
         setSelected,
-        setCanRender,
         levelScript,
         setLevelScript
     }

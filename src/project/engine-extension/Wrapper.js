@@ -43,7 +43,9 @@ export default class Wrapper extends System {
 
         if(!after) {
             this.backgroundSystem.execute(data, options)
+            this.gpu.disable(this.gpu.DEPTH_TEST)
             this.gridSystem.execute(options)
+            this.gpu.enable(this.gpu.DEPTH_TEST)
         }
         else {
             this.gpu.enable(this.gpu.BLEND)

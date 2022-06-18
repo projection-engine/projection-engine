@@ -12,7 +12,7 @@ import PickSystem from "../../engine/systems/PickSystem"
 import SelectBox from "../../../components/select-box/SelectBox"
 import Conversion from "../../engine/utils/Conversion"
 import GIZMOS from "../../../static/misc/GIZMOS"
-import SettingsProvider from "../../hooks/SettingsProvider"
+import SettingsProvider from "../../providers/SettingsProvider"
 import Transformation from "../../engine/templates/Transformation"
 import cloneClass from "../../engine/utils/cloneClass"
 import importData from "../../utils/importer/import"
@@ -54,18 +54,22 @@ export default function Viewport(props) {
         }, {x: coords[0], y: coords[1]}, camera)
     }
     function pickMesh(meshSources, x, y){
-        return  props.engine.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
-            for (let m = 0; m < props.engine.entities.length; m++) {
-                const currentInstance = props.engine.entities[m]
-                if (props.engine.entities[m].active) {
-                    const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
-                    if (t && currentInstance.components[COMPONENTS.MESH]) {
-                        const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
-                        if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, props.engine.renderer.camera.viewMatrix, proj, t, shader, props.engine.gpu)
-                    }
-                }
-            }
-        }, {x, y}, props.engine.renderer.camera)
+        const w =  ref.current.width, h =  ref.current.height
+        const coords = Conversion.toQuadCoord({x, y}, {w, h}, ref.current)
+        const picked = props.engine.renderer.systems[SYSTEMS.PICK].depthPick(props.engine.renderer.systems[SYSTEMS.DEPTH_PRE_PASS].frameBuffer, coords)
+        return Math.round((picked[1] + picked[2])* 255)
+        // return  props.engine.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
+        //     for (let m = 0; m < props.engine.entities.length; m++) {
+        //         const currentInstance = props.engine.entities[m]
+        //         if (props.engine.entities[m].active) {
+        //             const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
+        //             if (t && currentInstance.components[COMPONENTS.MESH]) {
+        //                 const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
+        //                 if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, props.engine.renderer.camera.viewMatrix, proj, t, shader, props.engine.gpu)
+        //             }
+        //         }
+        //     }
+        // }, {x, y}, props.engine.renderer.camera)
     }
     function handler(event) {
         if(settings.gizmo !== GIZMOS.CURSOR) {
@@ -84,7 +88,7 @@ export default function Viewport(props) {
 
                 let picked = pickIcon(entities, cameraMesh, p, camera, coords)
                 if (!picked)
-                    picked = pickMesh(meshSources, coords[0], coords[1])
+                    picked = pickMesh(meshSources, event.clientX, event.clientY)
                 if (picked > 0) {
                     const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
 

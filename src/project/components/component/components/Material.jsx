@@ -13,7 +13,7 @@ import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"
 import FileSystem from "../../../utils/files/FileSystem"
 import openFile from "../../../utils/openFile"
-import OpenFileProvider from "../../../hooks/OpenFileProvider"
+import OpenFileProvider from "../../../providers/OpenFileProvider"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 

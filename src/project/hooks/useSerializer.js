@@ -41,7 +41,6 @@ export default function useSerializer(engine, settings, id) {
     }
 
     const save = useCallback(async () => {
-        alert.pushAlert("Saving project", "info")
         if (id) {
             await saveSettings()
             const all = await ProjectLoader.getEntities( )

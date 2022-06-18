@@ -24,13 +24,13 @@ export default class Gizmo {
 
     onMouseDown(event) {
         if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = this.resolution.w, h = this.resolution.h
+            const w = this.gpu.canvas.width, h = this.gpu.canvas.height
             const x = event.clientX
             const y = event.clientY
 
             this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, this.gpu.canvas)
-            this.currentCoord.clientX = event.clientX
-            this.currentCoord.clientY = event.clientY
+            this.currentCoord.clientX = x
+            this.currentCoord.clientY = y
         }
         if (this.firstPick)
             this.firstPick = false
@@ -40,7 +40,6 @@ export default class Gizmo {
         this.firstPick = true
 
         if (this.tracking || force === true) {
-            console.log(force)
             this.tracking = false
             this.started = false
             this.distanceX = 0
@@ -218,6 +217,7 @@ export default class Gizmo {
             axis: a,
             selectedAxis: this.clickedAxis,
             uID: [...id, 1],
+            cameraIsOrthographic: this.camera.ortho
         })
         this.gpu.drawElements(this.gpu.TRIANGLES, arrow.verticesQuantity, this.gpu.UNSIGNED_INT, 0)
     }

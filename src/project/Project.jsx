@@ -13,7 +13,7 @@ import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
 import useHotKeysHelper from "./components/shortcuts/hooks/useHotKeysHelper"
 import HotKeysProvider from "./components/shortcuts/hooks/HotKeysProvider"
 import useQuickAccess from "./hooks/useQuickAccess"
-import QuickAccessProvider from "./hooks/QuickAccessProvider"
+import QuickAccessProvider from "./providers/QuickAccessProvider"
 import FileSystem from "./utils/files/FileSystem"
 
 const {ipcRenderer} = window.require("electron")

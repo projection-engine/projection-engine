@@ -1,14 +1,14 @@
 import useEngine from "../engine-extension/useEngine"
 import useSerializer from "./useSerializer"
-import {useContext, useEffect, useMemo, useRef, useState} from "react"
+import {useContext, useEffect, useRef, useState} from "react"
 import EVENTS from "../../static/misc/EVENTS"
 import ProjectLoader from "../templates/ProjectLoader"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
-import COMPONENTS from "../engine/templates/COMPONENTS"
 import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
 import CHANNELS from "../../../public/static/CHANNELS"
+
 const {ipcRenderer} = window.require("electron")
 export default function useProjectWrapper(id,  settings, pushSettingsBlock, load) {
 
@@ -52,23 +52,10 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
     }, [gpu])
 
 
-    const entitiesWithMeshes = useMemo(() => {
-        return engine.entities.filter(e => {
-            return (e.components.MeshComponent)
-        }).map(e => {
-            return {
-                name: e.name,
-                entity: e.id,
-                mesh: e.components[COMPONENTS.MESH].meshID,
-                material: engine.meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)?.materialID
-            }
-        })
-    }, [engine.entities])
 
 
 
     return {
-        entitiesWithMeshes,
         settings,
         setFilesLoaded,
         serializer, engine,

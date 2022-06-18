@@ -26,8 +26,7 @@ layout (location = 1) in mat4 transformation;
 // UNIFORM
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-uniform float iconSize;
-
+uniform float iconSize; 
 
 out vec2 texCoord;
 
@@ -71,30 +70,22 @@ uniform mat4 transformMatrix;
 uniform mat4 projectionMatrix;
 uniform vec3 camPos;
 uniform vec3 translation;
+uniform float iconSize; 
+uniform bool cameraIsOrthographic;
 
 uniform bool forceAsIcon;
 out vec2 uv;
-uniform float iconSize;
 
 
 void main(){
- 
     uv = (position.xy) * 0.5 + 0.5;
-    vec3 t = translation - camPos;
-     
+    vec3 t = vec3(0.);
+    if(forceAsIcon == false){
+    	t = translation - camPos;
+    }
     float len = length(camPos - translation) * SIZE; 
     mat4 tt = transformMatrix;
-    
-     
-    mat4 sc;
-    for ( int x = 0; x < 4; x++ )
-        for ( int y = 0; y < 4; y++ )
-            if ( x == y && x <= 2 )
-                sc[x][y] =  len;
-            else if ( x == y )
-                sc[x][y] = 1.;
-            else
-                sc[x][y] = 0.;  
+
                 
     tt[3][0]  += t.x;
     tt[3][1]  += t.y;
@@ -103,7 +94,7 @@ void main(){
     
     mat4 m =  viewMatrix * tt;
 
-    float d = forceAsIcon ?  .5 : .3; 
+    float d = forceAsIcon ? .75 * iconSize : cameraIsOrthographic ? .15 : .3; 
  
     m[0][0]  = d;
     m[0][1]  = 0.0;
@@ -120,8 +111,22 @@ void main(){
     m[2][2] = d;
     m[2][3]  = 0.0;
 
-
-    vec4 transformed =projectionMatrix * m  * sc * vec4(position, 1.0);
+	vec4 transformed; 
+	if(forceAsIcon == false){
+		mat4 sc;
+		for ( int x = 0; x < 4; x++ )
+			for ( int y = 0; y < 4; y++ )
+				if ( x == y && x <= 2 )
+					sc[x][y] = forceAsIcon ? 1. :  len;
+				else if ( x == y )
+					sc[x][y] = 1.;
+				else
+					sc[x][y] = 0.;  
+		transformed =projectionMatrix * m  * sc * vec4(position, 1.0);
+    }
+    else{
+    	transformed = projectionMatrix * m * vec4(position, 1.0);
+	}
     transformed /= transformed.w;
 
     gl_Position = vec4(transformed.xyz, 1.0);   
@@ -138,9 +143,9 @@ out vec4 fragColor;
 uniform bool forceAsIcon;
 void main(){
 	vec4 color = texture(sampler, uv);
-	if(color.a == 0. || length(color) == .0)
+	if(color.a == 0. || length(color) <= .1)
 		discard;
 	else	
-		fragColor = vec4(forceAsIcon == true ? vec3(1., .5, 0.) : color.rgb, 1.);
+		fragColor = vec4(forceAsIcon == true ? vec3(1., 1., 0.) : color.rgb, 1.);
 }
 `

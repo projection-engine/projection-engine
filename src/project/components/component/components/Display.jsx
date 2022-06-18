@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react"
-import SettingsProvider from "../../../hooks/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import Range from "../../../../components/range/Range"
 

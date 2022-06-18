@@ -67,10 +67,8 @@ export default class GizmoSystem extends System {
             }
             break
         case "mouseup":
-
-            if (this.targetGizmo) {
+            if (this.targetGizmo)
                 this.targetGizmo.onMouseUp(event)
-            }
             this.targetGizmo = undefined
             this.gizmoTooltip.stop()
             this.gpu.canvas.removeEventListener("mousemove", move)
@@ -89,7 +87,7 @@ export default class GizmoSystem extends System {
         shader,
         camPos,
         translation) {
-        // DOESNT AFFECT AO BECAUSE IT IS AFTER
+        // DOESNT AFFECT AO BECAUSE IT IS DONE AFTER
         depthSystem.frameBuffer.startMapping()
         shader.use()
         mesh.use()
@@ -137,7 +135,7 @@ export default class GizmoSystem extends System {
                 this.lastGizmo = gizmo
                 this.selectedEntities = selected
                     .map(s => entities[s])
-                    .filter(c => gizmo === GIZMOS.TRANSLATION || ((gizmo === GIZMOS.ROTATION || gizmo === GIZMOS.SCALE) && c.components[COMPONENTS.TRANSFORM]))
+                    .filter(c => gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling))
                 this.selectedHash = JOINED
             }
 

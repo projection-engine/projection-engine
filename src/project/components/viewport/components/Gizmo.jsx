@@ -3,10 +3,9 @@ import {Button, Dropdown, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import ROTATION_TYPES from "../../../../static/misc/ROTATION_TYPES"
 import Range from "../../../../components/range/Range"
 import GIZMOS from "../../../../static/misc/GIZMOS"
-import PropTypes from "prop-types"
 import React, {useContext, useEffect, useRef, useState} from "react"
 import ResizableBar from "../../../../components/resizable/ResizableBar"
-import SettingsProvider from "../../../hooks/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 
 export default function Gizmo(){
     const settings = useContext(SettingsProvider)

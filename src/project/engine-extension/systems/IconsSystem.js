@@ -86,7 +86,8 @@ export default class IconsSystem extends System {
             camPos:  camera.position,
             translation: transformComponent.translation ? transformComponent.translation : transformComponent.direction,
             forceAsIcon,
-            iconSize
+            iconSize,
+            cameraIsOrthographic: camera.ortho,
         })
         this.gpu.drawArrays(this.gpu.TRIANGLES, 0, 6)
         this.gpu.enable(this.gpu.DEPTH_TEST)

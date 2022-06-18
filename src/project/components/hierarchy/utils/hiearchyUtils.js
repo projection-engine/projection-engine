@@ -4,14 +4,14 @@ import FolderComponent from "../../../engine/components/FolderComponent"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 
-export function createFolder(engine){
+export function createFolder(dispatchEntities, dispatchChanges){
     const newEntity = new Entity()
     newEntity.name = "New folder"
     newEntity.components[COMPONENTS.FOLDER] = new FolderComponent()
-    engine.dispatchEntities({
+    dispatchEntities({
         type: ENTITY_ACTIONS.ADD, payload: newEntity
     })
-    engine.dispatchChanges({
+    dispatchChanges({
         type: HISTORY_ACTIONS.PUSHING_DATA, payload: [newEntity]
     })
 }

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import React, {useContext} from "react"
-import SettingsProvider from "../../../hooks/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 import styles from "../../component/styles/Forms.module.css"
 import Range from "../../../../components/range/Range"

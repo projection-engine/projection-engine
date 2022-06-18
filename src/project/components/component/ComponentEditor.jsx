@@ -2,16 +2,19 @@ import PropTypes from "prop-types"
 import styles from "./styles/Scene.module.css"
 import React, {useContext, useMemo, useState} from "react"
 import useForm from "./hooks/useForm"
-import QuickAccessProvider from "../../hooks/QuickAccessProvider"
-import {Icon} from "@f-ui/core"
+import QuickAccessProvider from "../../providers/QuickAccessProvider"
+import {Button, Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
+import EngineProvider from "../../providers/EngineProvider"
+import ViewWrapper from "../../../components/view/ViewWrapper"
 
-export default function ComponentEditor(props) {
+export default function ComponentEditor( ) {
     const quickAccess = useContext(QuickAccessProvider)
+    const  [engine] = useContext(EngineProvider)
     const [currentTab, setCurrentTab] = useState("-2")
     const currentForm = useForm(
-        props.engine,
+        engine,
         quickAccess,
         currentTab
     )
@@ -28,46 +31,54 @@ export default function ComponentEditor(props) {
         return []
     }, [currentForm.selected, currentTab])
     return (
-        <div className={styles.content}>
-            <FormTabs
-                tabs={tabs}
-                entity={currentForm.selected}
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-            />
-            <div style={{width: "100%", overflowX: "hidden"}}>
-                {props.engine.executingAnimation || currentForm.open ? null : (
-                    <div className={styles.header} style={{justifyContent: "flex-start"}}>
-                        <Icon
-                            styles={{fontSize: "1rem"}}
-                        >
-                            {currentTab === "-1" ? "tv" : null}
-                            {currentTab === "-2" ? "image" : null}
-                            {currentTab === "-3" ? "videocam" : null}
-                        </Icon>
-                        <label className={styles.overflow}>
-                            {currentTab === "-1" ? "Display" : null}
-                            {currentTab === "-2" ? "Rendering features" : null}
-                            {currentTab === "-3" ? "Editor camera effects" : null}
-                        </label>
-                    </div>
-                )}
-                {tabs[currentTab] ? (
-                    <div className={styles.header} style={{justifyContent: "flex-start"}}>
-                        <Icon styles={{fontSize: "1rem"}}>
-                            {tabs[currentTab].icon}
-                        </Icon>
-                        <label className={styles.overflow}>
-                            {tabs[currentTab].label}
-                        </label>
-                    </div>
-                ) : null}
-                {currentForm.content}
+        <>
+            <ViewWrapper.Header icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
+                {engine.lockedEntity ? <Button
+                    styles={{minHeight: "25px", minWidth: "25px"}}
+                    onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
+                    className={styles.button}
+                    variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
+                >
+                    <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
+                </Button> : null}
+            </ViewWrapper.Header>
+            <div className={styles.content}>
+                <FormTabs
+                    tabs={tabs}
+                    entity={currentForm.selected}
+                    currentTab={currentTab}
+                    setCurrentTab={setCurrentTab}
+                />
+                <div style={{width: "100%", overflowX: "hidden"}}>
+                    {engine.executingAnimation || currentForm.open ? null : (
+                        <div className={styles.header} style={{justifyContent: "flex-start"}}>
+                            <Icon
+                                styles={{fontSize: "1rem"}}
+                            >
+                                {currentTab === "-1" ? "tv" : null}
+                                {currentTab === "-2" ? "image" : null}
+                                {currentTab === "-3" ? "videocam" : null}
+                            </Icon>
+                            <label className={styles.overflow}>
+                                {currentTab === "-1" ? "Display" : null}
+                                {currentTab === "-2" ? "Rendering features" : null}
+                                {currentTab === "-3" ? "Editor camera effects" : null}
+                            </label>
+                        </div>
+                    )}
+                    {tabs[currentTab] ? (
+                        <div className={styles.header} style={{justifyContent: "flex-start"}}>
+                            <Icon styles={{fontSize: "1rem"}}>
+                                {tabs[currentTab].icon}
+                            </Icon>
+                            <label className={styles.overflow}>
+                                {tabs[currentTab].label}
+                            </label>
+                        </div>
+                    ) : null}
+                    {currentForm.content}
+                </div>
             </div>
-        </div>
+        </>
     )
-}
-
-ComponentEditor.propTypes = {
-    engine: PropTypes.object
 }
