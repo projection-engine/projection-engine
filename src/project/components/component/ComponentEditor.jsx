@@ -8,17 +8,13 @@ import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
 import EngineProvider from "../../providers/EngineProvider"
 import ViewWrapper from "../../../components/view/ViewWrapper"
+import ViewHeader from "../../../components/view/ViewHeader"
 
-export default function ComponentEditor( ) {
+export default function ComponentEditor(props) {
     const quickAccess = useContext(QuickAccessProvider)
     const  [engine] = useContext(EngineProvider)
     const [currentTab, setCurrentTab] = useState("-2")
-    const currentForm = useForm(
-        engine,
-        quickAccess,
-        currentTab
-    )
-
+    const currentForm = useForm(engine, quickAccess, currentTab)
     const tabs = useMemo(() => {
         if (currentForm.selected) {
             const components = Object.keys(currentForm.selected.components)
@@ -30,55 +26,71 @@ export default function ComponentEditor( ) {
         }
         return []
     }, [currentForm.selected, currentTab])
+
     return (
         <>
-            <ViewWrapper.Header icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
-                {engine.lockedEntity ? <Button
-                    styles={{minHeight: "25px", minWidth: "25px"}}
-                    onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
-                    className={styles.button}
-                    variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
-                >
-                    <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-                </Button> : null}
-            </ViewWrapper.Header>
-            <div className={styles.content}>
-                <FormTabs
-                    tabs={tabs}
-                    entity={currentForm.selected}
-                    currentTab={currentTab}
-                    setCurrentTab={setCurrentTab}
-                />
-                <div style={{width: "100%", overflowX: "hidden"}}>
-                    {engine.executingAnimation || currentForm.open ? null : (
-                        <div className={styles.header} style={{justifyContent: "flex-start"}}>
-                            <Icon
-                                styles={{fontSize: "1rem"}}
-                            >
-                                {currentTab === "-1" ? "tv" : null}
-                                {currentTab === "-2" ? "image" : null}
-                                {currentTab === "-3" ? "videocam" : null}
-                            </Icon>
-                            <label className={styles.overflow}>
-                                {currentTab === "-1" ? "Display" : null}
-                                {currentTab === "-2" ? "Rendering features" : null}
-                                {currentTab === "-3" ? "Editor camera effects" : null}
-                            </label>
-                        </div>
-                    )}
-                    {tabs[currentTab] ? (
-                        <div className={styles.header} style={{justifyContent: "flex-start"}}>
-                            <Icon styles={{fontSize: "1rem"}}>
-                                {tabs[currentTab].icon}
-                            </Icon>
-                            <label className={styles.overflow}>
-                                {tabs[currentTab].label}
-                            </label>
-                        </div>
-                    ) : null}
-                    {currentForm.content}
+            <ViewHeader {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
+                {!props.hidden && engine.lockedEntity ?
+                    (
+                        <Button
+                            styles={{minHeight: "25px", minWidth: "25px"}}
+                            onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
+                            className={styles.button}
+                            variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
+                        >
+                            <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
+                        </Button>
+                    )
+                    :
+                    null
+                }
+            </ViewHeader>
+            {props.hidden ?
+                null
+                :
+                <div className={styles.content}>
+                    <FormTabs
+                        tabs={tabs}
+                        entity={currentForm.selected}
+                        currentTab={currentTab}
+                        setCurrentTab={setCurrentTab}
+                    />
+                    <div style={{width: "100%", overflowX: "hidden"}}>
+                        {engine.executingAnimation || currentForm.open ? null : (
+                            <div className={styles.header} style={{justifyContent: "flex-start"}}>
+                                <Icon
+                                    styles={{fontSize: "1rem"}}
+                                >
+                                    {currentTab === "-1" ? "tv" : null}
+                                    {currentTab === "-2" ? "image" : null}
+                                    {currentTab === "-3" ? "videocam" : null}
+                                </Icon>
+                                <label className={styles.overflow}>
+                                    {currentTab === "-1" ? "Display" : null}
+                                    {currentTab === "-2" ? "Rendering features" : null}
+                                    {currentTab === "-3" ? "Editor camera effects" : null}
+                                </label>
+                            </div>
+                        )}
+                        {tabs[currentTab] ? (
+                            <div className={styles.header} style={{justifyContent: "flex-start"}}>
+                                <Icon styles={{fontSize: "1rem"}}>
+                                    {tabs[currentTab].icon}
+                                </Icon>
+                                <label className={styles.overflow}>
+                                    {tabs[currentTab].label}
+                                </label>
+                            </div>
+                        ) : null}
+                        {currentForm.content}
+                    </div>
                 </div>
-            </div>
+            }
         </>
     )
+}
+
+ComponentEditor.propTypes={
+    hidden: PropTypes.bool,
+    switchView: PropTypes.func
 }

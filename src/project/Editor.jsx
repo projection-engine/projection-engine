@@ -104,30 +104,7 @@ export default function Editor(props) {
                                             allowDrop={true}
                                         />
                                         <ViewWrapper
-                                            content= {[
-                                                {
-                                                    title: "Hierarchy",
-                                                    icon: "account_tree",
-                                                    content: (
-                                                        <Hierarchy/>
-                                                    )
-                                                },
-                                                {
-                                                    title: engine.selectedEntity ? engine.selectedEntity.name : "Component editor",
-                                                    icon: "category",
-                                                    headerOptions: engine.selectedEntity ?(
-                                                        <Button
-                                                            styles={{minHeight: "25px", minWidth: "25px"}}
-                                                            onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity.id ? undefined : engine.selectedEntity.id)}
-                                                            className={styles.button}
-                                                            variant={engine.lockedEntity === engine.selectedEntity.id ? "filled" : undefined}
-                                                        >
-                                                            <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-                                                        </Button>
-                                                    ) : null,
-                                                    content: <ComponentEditor engine={engine}/>
-                                                }
-                                            ]}
+                                            content= {["hierarchy","component"]}
                                             orientation={"vertical"}
                                         /> 
                                     </div>
