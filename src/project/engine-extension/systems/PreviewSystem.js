@@ -1,5 +1,5 @@
 import FramebufferInstance from "../../engine/instances/FramebufferInstance"
-import ForwardSystem from "../../engine/systems/ForwardSystem"
+import Forward from "../../engine/systems/Forward"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
@@ -96,7 +96,7 @@ export default class PreviewSystem {
                 100, .1, 0, 0
             ]]
 
-            ForwardSystem.drawMesh({
+            Forward.drawMesh({
                 mesh: materialMesh,
                 camPosition: cam[1],
                 viewMatrix: cam[0],
@@ -122,7 +122,7 @@ export default class PreviewSystem {
         }
         else {
             const [ viewMatrix, camPosition ] = this.cameraData
-            ForwardSystem.drawMesh({
+            Forward.drawMesh({
                 mesh: this.sphereMesh,
                 camPosition,
                 viewMatrix,

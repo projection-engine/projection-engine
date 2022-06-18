@@ -31,7 +31,6 @@ export default class Engine extends Renderer {
             settings.yaw,
             settings.pitch
         )
-        this.initialized = true
         this.editorSystem = new Wrapper(gpu, resolution)
         this.debugMaterial = new MaterialInstance(
             gpu,

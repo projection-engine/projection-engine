@@ -14,8 +14,7 @@ uniform int shadingModel;
 
 out vec4 fragColor;
 
-float linearize_Z(float depth){
-    // TODO - Camera uniform
+float linearize_Z(float depth){ 
     float near = .1;
     float far = 1000.;
     return (2.*near ) / (far + near - depth*(far -near)) ;

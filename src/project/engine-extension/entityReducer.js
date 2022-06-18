@@ -1,6 +1,5 @@
 import PickComponent from "../engine/components/PickComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
-import ScriptComponent from "../engine/components/ScriptComponent"
 import Entity from "../engine/basic/Entity"
 
 
@@ -75,7 +74,6 @@ export default function entityReducer(state, {type, payload}) {
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
             entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.length + 2)
-            entity.components[COMPONENTS.SCRIPT] = new ScriptComponent()
             return [...state, entity]
         }
         case ENTITY_ACTIONS.DISPATCH_BLOCK: {
@@ -84,8 +82,6 @@ export default function entityReducer(state, {type, payload}) {
                 return block.map((entity, i) => {
                     if(entity instanceof Entity) {
                         entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.length + i + 1)
-                        if (!entity.components[COMPONENTS.SCRIPT] && !entity.isFolder)
-                            entity.components[COMPONENTS.SCRIPT] = new ScriptComponent()
                         return entity
                     }
                 }).filter(e => e)
@@ -105,8 +101,6 @@ export default function entityReducer(state, {type, payload}) {
                 return [...stateCopy, ...block.map((e, i) => {
                     const entity = e
                     entity.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
-                    if (!entity.components[COMPONENTS.SCRIPT] && !entity.isFolder)
-                        entity.components[COMPONENTS.SCRIPT] = new ScriptComponent()
                     return entity
                 })]
             else

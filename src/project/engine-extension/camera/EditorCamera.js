@@ -13,7 +13,7 @@ export default class EditorCamera {
     #fov = Math.PI / 2
     projectionMatrix = mat4.create()
     viewMatrix = mat4.create()
-
+    invViewMatrix =  mat4.create()
     constructor(origin = [0, 0, 0], fov, zNear, zFar, aspectRatio = 1, yaw, pitch) {
         this.#fov = 60 * toRad
         this.position = origin
@@ -75,6 +75,7 @@ export default class EditorCamera {
         this.position[1] = this.radius * Math.sin(this.pitch) + this.centerOn[1]
         this.position[2] = this.radius * cosPitch * Math.sin(this.yaw) + this.centerOn[2]
         mat4.lookAt(this.viewMatrix, this.position, this.centerOn, [0, 1, 0])
+        mat4.invert(this.invViewMatrix, this.viewMatrix)
         if (this.ortho)
             this.updateProjection()
     }

@@ -6,7 +6,6 @@ import PointLightComponent from "../../../engine/components/PointLightComponent"
 import TransformComponent from "../../../engine/components/TransformComponent"
 import React from "react"
 import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
-import SkylightComponent from "../../../engine/components/SkyLightComponent"
 import CameraComponent from "../../../engine/components/CameraComponent"
 import CubeMapComponent from "../../../engine/components/CubeMapComponent"
 import CubeMapInstance from "../../../engine/instances/CubeMapInstance"
@@ -32,6 +31,7 @@ export default function Add(props) {
                         const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
@@ -61,17 +61,6 @@ export default function Add(props) {
                         dispatchEntity(actor)
                     }
                 }}/>
-                <DropdownOption option={{
-                    label: "Skylight",
-                    icon: <Icon
-                        styles={{fontSize: "1.1rem"}}>wb_sunny</Icon>,
-                    onClick: () => {
-                        const actor = new Entity(undefined, "Skylight")
-                        actor.components[COMPONENTS.SKYLIGHT] = new SkylightComponent()
-                        dispatchEntity(actor)
-                    }
-                }}/>
-
                 <div className={styles.dividerWrapper}>
                     Ambient
                     <div className={styles.divider}/>
@@ -86,6 +75,7 @@ export default function Add(props) {
                         actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
                         actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
@@ -105,6 +95,7 @@ export default function Add(props) {
                         actor.components[COMPONENTS.PROBE].addProbe([1, -1, 1])
 
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
@@ -125,6 +116,7 @@ export default function Add(props) {
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
                         actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true

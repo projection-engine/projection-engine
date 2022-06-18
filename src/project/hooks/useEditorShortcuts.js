@@ -11,7 +11,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
 
     function copy(single, target) {
         setToCopy(target ? target : (single ? [engine.selected[0]] : engine.selected))
-        alert.pushAlert( "info", `Entities copied (${engine.selected.length}).`)
+        alert.pushAlert( `Entities copied (${engine.selected.length}).`, "info")
     }
     function deleteSelected(){
         const s = [...engine.selected]
@@ -52,7 +52,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
         })
         engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         engine.setSelected(block.map(b => b.id))
-        alert.pushAlert("info", `Pasted ${toCopy.length} entities.`)
+        alert.pushAlert(`Pasted ${toCopy.length} entities.`, "info")
     }
     function group() {
         setToCopy(engine.selected)

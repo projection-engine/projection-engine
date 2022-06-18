@@ -51,7 +51,8 @@ export default function useGPU(settings, projectID) {
                         SYSTEMS.CUBE_MAP,
                         SYSTEMS.AO,
                         SYSTEMS.DEPTH_PRE_PASS,
-                        SYSTEMS.PROBE
+                        SYSTEMS.PROBE,
+                        SYSTEMS.SSGI
                     ],
                     settings,
                     projectID

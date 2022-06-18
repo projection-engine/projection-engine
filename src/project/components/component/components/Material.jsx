@@ -209,7 +209,7 @@ export default function Material(props) {
             <Selector
                 selected={state.currentMaterial}
                 type={"material"}
-                handleChange={async (src, clear) => {
+                handleChange={async (src, clear, close) => {
                     if (src) {
                         const file = await loadFile(src)
                         if (file && file.response) {
@@ -227,9 +227,9 @@ export default function Material(props) {
                             clear()
                         }
                     } else {
-                        alert.pushAlert("Error loading material", "error")
                         props.submit()
                         clear()
+                        close()
                     }
                 }}/>
             {state.currentMaterial ? (

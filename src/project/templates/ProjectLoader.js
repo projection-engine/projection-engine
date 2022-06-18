@@ -10,11 +10,9 @@ import Entity from "../engine/basic/Entity"
 import MaterialInstance from "../engine/instances/MaterialInstance"
 import MeshInstance from "../engine/instances/MeshInstance"
 import MaterialComponent from "../engine/components/MaterialComponent"
-import SkylightComponent from "../engine/components/SkyLightComponent"
 import CubeMapComponent from "../engine/components/CubeMapComponent"
 import CubeMapInstance from "../engine/instances/CubeMapInstance"
 import COMPONENTS from "../engine/templates/COMPONENTS"
-import ScriptComponent from "../engine/components/ScriptComponent"
 import CameraComponent from "../engine/components/CameraComponent"
 import Transformation from "../engine/templates/Transformation"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
@@ -44,64 +42,6 @@ export default class ProjectLoader {
                 }).catch(() => resolve(null))
         })
     }
-
-
-
-    static async loadMeshes(toLoad, gpu) {
-        const promises = toLoad.map(m => {
-            return new Promise(r => {
-                ProjectLoader.readFromRegistry(m )
-                    .then(fileData => {
-                        if (fileData) {
-                            const parsed = JSON.parse(fileData)
-                            r(new MeshInstance({
-                                vertices: parsed.vertices,
-                                indices: parsed.indices,
-                                normals: parsed.normals,
-                                uvs: parsed.uvs,
-                                id: m,
-                                maxBoundingBox: parsed.maxBoundingBox,
-                                minBoundingBox: parsed.minBoundingBox,
-                                gpu: gpu,
-                                tangents: parsed.tangents,
-                                wireframeBuffer: true,
-                                material: parsed.material
-                            }))
-                        } else r(undefined)
-                    }).catch(() => r())
-            })
-        })
-
-        return await Promise.all(promises)
-    }
-
-    static async loadScripts(toLoad,  meshesLoaded, mapEntities = true, gpu) {
-        const result = []
-        for(let i in toLoad){
-            const m = toLoad[i]
-            const fileData = await ProjectLoader.readFromRegistry(m)
-
-            if (fileData) try {
-                const d = JSON.parse(fileData)
-
-                result.push({
-                    script: {
-                        id: m, executors: d.response, name: d.name
-                    }, entities: mapEntities ? await Promise.all(d.entities.map(e => {
-                        return ProjectLoader.mapEntity(e, gpu)
-                    })) : []
-                })
-            } catch (e) {
-                result.push({
-                    script: {
-                        id: m, executors: fileData
-                    }, entities: []
-                })
-            } 
-        }
-        return result
-    }
-
  
     static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
         let newMat
@@ -134,7 +74,6 @@ export default class ProjectLoader {
 
 const ENTITIES = {
     [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id),
-    [COMPONENTS.SKYLIGHT]: async (entity, k) => new SkylightComponent(entity.components[k].id),
     [COMPONENTS.MESH]: async (entity, k) => new MeshComponent(entity.components[k].id),
 
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
@@ -191,8 +130,8 @@ const ENTITIES = {
         component.cubeMap = new CubeMapInstance(gpu, component.resolution)
 
         return component
-    }, // [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
-    [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id),
-    [COMPONENTS.SCRIPT]: async (entity, k) => new ScriptComponent(entity.components[k].id),
+    },
+    // [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id)
 
 }
