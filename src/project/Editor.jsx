@@ -60,6 +60,12 @@ export default function Editor(props) {
                                 content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
                             >
                                 <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
+                                    <ViewWrapper
+                                        content= {[]}
+                                        orientation={"vertical"}
+                                        leftOffset={"10px"}
+                                        resizePosition={"bottom"}
+                                    />
                                     <Viewport
                                         utils={utils}
                                         id={id}
@@ -71,11 +77,14 @@ export default function Editor(props) {
                                     <ViewWrapper
                                         content= {["hierarchy","component"]}
                                         orientation={"vertical"}
+                                        leftOffset={"0%"}
+                                        resizePosition={"top"}
                                     /> 
                                 </div>
 
                                 <ViewWrapper
                                     content= {["files"]}
+                                    resizePosition={"top"}
                                     orientation={"horizontal"}
                                 />
                             </ContextWrapper>
