@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
-import {Button, Checkbox, Icon} from "@f-ui/core"
-import React, {useContext, useEffect, useRef} from "react"
+import {Checkbox} from "@f-ui/core"
+import React, {useEffect, useRef} from "react"
 
 import Selector from "../../../../components/selector/Selector"
 import Range from "../../../../components/range/Range"
@@ -12,9 +12,6 @@ import AccordionTemplate from "../../../../components/templates/AccordionTemplat
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"
 import FileSystem from "../../../utils/files/FileSystem"
-import openFile from "../../../utils/openFile"
-import OpenFileProvider from "../../../providers/OpenFileProvider"
-import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
 
 
 export default function Material(props) {
@@ -203,7 +200,6 @@ export default function Material(props) {
         }
     }
 
-    const {openFiles, setOpenFiles, setOpenTab} = useContext(OpenFileProvider)
     return (
         <>
             <Selector
@@ -232,16 +228,6 @@ export default function Material(props) {
                         close()
                     }
                 }}/>
-            {state.currentMaterial ? (
-                <Button
-                    styles={{background: "var(--pj-background-primary"}}
-                    className={styles.button}
-                    onClick={() => openFile(openFiles, setOpenTab, setOpenFiles, state.currentMaterial.registryID, state.currentMaterial.name, FILE_TYPES.MATERIAL)}>
-                    <Icon styles={{fontSize: "1.1rem"}}>edit</Icon>
-                        Edit material
-                </Button>
-            ) : null}
-    
             {props.selected.uniforms?.length > 0 ? (
                 <Checkbox
                     noMargin={true}

@@ -17,7 +17,6 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
     const {gpu} = useContext(GPUContextProvider)
     const [filesLoaded, setFilesLoaded] = useState([])
     const serializer = useSerializer(engine, settings, id)
-    const [openTab, setOpenTab] = useState(0)
 
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
@@ -59,7 +58,6 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
         settings,
         setFilesLoaded,
         serializer, engine,
-        filesLoaded,
-        openTab, setOpenTab
+        filesLoaded
     }
 }

@@ -60,10 +60,12 @@
   width: 25px;
   height: 25px;
   overflow: hidden;
-  background-color: var(--pj-border-primary);
+
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 25px;
+  min-width: 25px;
 }
 
 .emptyWrapper {

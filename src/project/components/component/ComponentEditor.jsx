@@ -7,7 +7,6 @@ import {Button, Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
 import EngineProvider from "../../providers/EngineProvider"
-import ViewWrapper from "../../../components/view/ViewWrapper"
 import ViewHeader from "../../../components/view/ViewHeader"
 
 export default function ComponentEditor(props) {
@@ -30,17 +29,14 @@ export default function ComponentEditor(props) {
     return (
         <>
             <ViewHeader {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
-                {!props.hidden && engine.lockedEntity ?
-                    (
-                        <Button
-                            styles={{minHeight: "25px", minWidth: "25px"}}
-                            onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
-                            className={styles.button}
-                            variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
-                        >
-                            <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-                        </Button>
-                    )
+                {engine.selectedEntity ?
+                    <Button
+                        onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
+                        className={styles.button}
+                        variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
+                    >
+                        <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
+                    </Button>
                     :
                     null
                 }
@@ -91,6 +87,7 @@ export default function ComponentEditor(props) {
 }
 
 ComponentEditor.propTypes={
+    orientation: PropTypes.string,
     hidden: PropTypes.bool,
     switchView: PropTypes.func
 }

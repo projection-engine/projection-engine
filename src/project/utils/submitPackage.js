@@ -1,18 +1,14 @@
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import FileSystem from "./files/FileSystem"
 
-export default function submitPackage (pack, close, previewImage, isLevel, registryID, matInstance, isMaterial, engine) {
+export default function submitPackage (pack, close, previewImage, isLevel, registryID, matInstance, renderer) {
     if(!isLevel) {
         let p = previewImage
         if(matInstance)
-            p = engine.renderer.generatePreview(matInstance)
+            p = renderer.generatePreview(matInstance)
         document.fileSystem
             .updateAsset(registryID, pack, p)
             .then(() => {
-
-                if (matInstance)
-                    engine.setMaterials(prev => prev.map(p => p.id === registryID ? matInstance : p))
-
                 alert.pushAlert(  "Saved", "success", )
             })
             .catch(() => {

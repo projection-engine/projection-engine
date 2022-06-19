@@ -24,13 +24,11 @@ export default function useEngine(settings) {
     const {gpu, renderer} = useContext(GPUContextProvider)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
-
     const [levelScript, setLevelScript] = useState()
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-    const [updated, setUpdated] = useState(false)
     const [cursor, setCursor] = useState(getCursor())
 
     const onGizmoStart = () => {
@@ -53,13 +51,8 @@ export default function useEngine(settings) {
                 payload: {key: COMPONENTS.TRANSFORM, entityID: selected[0], data: e.components[COMPONENTS.TRANSFORM]}
             })
     }
-
-
-
     const update = useCallback(() => {
         if (renderer) {
-            if(!updated)
-                setUpdated(true)
             renderer.gizmo = settings.gizmo
             renderer?.updatePackage(
                 cursor,
@@ -78,11 +71,7 @@ export default function useEngine(settings) {
         entities, settings, renderer
     ])
     useEffect(update, [update])
-
-    const selectedEntity = useMemo(() => {
-        return entities.find(e => !lockedEntity && e.id === selected[0] || lockedEntity === e.id)
-    }, [selected, entities, lockedEntity])
-
+    const selectedEntity = useMemo(() => entities.find(e => !lockedEntity && e.id === selected[0] || lockedEntity === e.id), [selected, entities, lockedEntity])
 
     return {
         selectedEntity,
@@ -96,7 +85,6 @@ export default function useEngine(settings) {
         forwardChanges,
         dispatchChanges,
         lockedEntity,
-
 
         renderer,
         entities,

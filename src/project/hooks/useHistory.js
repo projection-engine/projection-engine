@@ -1,5 +1,5 @@
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
-import {useEffect, useReducer, useState} from "react"
+import {useCallback, useEffect, useReducer, useState} from "react"
 import historyReducer, {HISTORY_ACTIONS} from "./historyReducer"
 
 export default function useHistory(entities, dispatchEntities) {
@@ -8,7 +8,7 @@ export default function useHistory(entities, dispatchEntities) {
     useEffect(() => {
         setCurrentChange(changes.length)
     }, [changes])
-    const forwardChanges = () => {
+    const forwardChanges = useCallback( () => {
         let c = currentChange
         if (currentChange === undefined) {
             setCurrentChange(changes.length)
@@ -43,8 +43,8 @@ export default function useHistory(entities, dispatchEntities) {
                 break
             }
         }
-    }
-    const returnChanges = () => {
+    }, [entities, currentChange, changes])
+    const returnChanges = useCallback( () => {
         let c = currentChange - 1
         if (currentChange === undefined) {
             setCurrentChange(changes.length)
@@ -77,7 +77,7 @@ export default function useHistory(entities, dispatchEntities) {
                 break
             }
         }
-    }
+    }, [entities, currentChange, changes])
     return {
         forwardChanges,
         returnChanges,

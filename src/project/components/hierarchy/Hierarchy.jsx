@@ -1,15 +1,13 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useContext, useState} from "react"
 import TreeView from "../../../components/tree/TreeView"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
-import HierarchyProvider from "../../providers/EngineProvider"
-import ViewWrapper from "../../../components/view/ViewWrapper"
+import EngineProvider from "../../providers/EngineProvider"
 import Search from "../../../components/search/Search"
 import {Button, Icon} from "@f-ui/core"
 import styles from "../../styles/Project.module.css"
 import {createFolder} from "./utils/hiearchyUtils"
 import useHierarchy from "../../hooks/useHierarchy"
-import EngineProvider from "../../providers/EngineProvider"
 import PropTypes from "prop-types"
 import ViewHeader from "../../../components/view/ViewHeader"
 
@@ -35,22 +33,16 @@ export default function Hierarchy(props){
     return (
         <>
             <ViewHeader {...props}  title={"Hierarchy"} icon={"account_tree"}>
-                {!props.hidden ?
-                    (
-                        <div style={{display: "flex", gap: "2px"}}>
-                            <Search
-                                width={"100%"}
-                                searchString={searchedEntity}
-                                setSearchString={setSearchedEntity}
-                            />
-                            <Button className={styles.button} onClick={() => createFolder()}>
-                                <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
-                            </Button>
-                        </div>
-                    )
-                    :
-                    null
-                }
+                <div style={{display: "flex", gap: "2px"}}>
+                    <Search
+                        width={"100%"}
+                        searchString={searchedEntity}
+                        setSearchString={setSearchedEntity}
+                    />
+                    <Button className={styles.button} onClick={() => createFolder()}>
+                        <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
+                    </Button>
+                </div>
             </ViewHeader>
             {props.hidden ?
                 null :
@@ -116,6 +108,7 @@ export default function Hierarchy(props){
 }
 
 Hierarchy.propTypes={
+    orientation: PropTypes.string,
     hidden: PropTypes.bool,
     switchView: PropTypes.func
 }
