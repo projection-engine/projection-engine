@@ -6,13 +6,10 @@ import {Button, Icon, ToolTip} from "@f-ui/core"
 
 export const ENTITY_TAB = "entity"
 export default function FormTabs(props) {
-
-
     const currentKey = useMemo(() => {
         if (props.entity)
             return Object.keys(props.entity.components)[props.currentTab]
-        else
-            return undefined
+        return undefined
     }, [props.currentTab, props.entity?.id])
     const initialized = useRef(false)
     useEffect(() => {
@@ -57,8 +54,8 @@ export default function FormTabs(props) {
                     variant={props.currentTab === ENTITY_TAB ? "filled" : undefined}
                     className={styles.button}
                     onClick={() => props.setCurrentTab(ENTITY_TAB)}>
-                    <Icon styles={{fontWeight: "1rem"}}>code</Icon>
-                    <ToolTip content={"Entity"} animation={"0ms"}/>
+                    <Icon styles={{fontWeight: "1rem"}}>terminal</Icon>
+                    <ToolTip content={"Scripts"} animationDelay={"0ms"}/>
                 </Button>
             }
             {props.tabs.map((t, i) => (
@@ -68,7 +65,7 @@ export default function FormTabs(props) {
                         className={styles.button}
                         onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
                         <Icon styles={{fontWeight: "1rem"}}>{t.icon}</Icon>
-                        <ToolTip content={t.label} animation={"0ms"}/>
+                        <ToolTip content={t.label} animationDelay={"0ms"}/>
                     </Button>
                 </React.Fragment>
 

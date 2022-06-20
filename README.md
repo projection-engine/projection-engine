@@ -47,7 +47,7 @@ Multiple features are already implemented or on the way to the editor, here is a
         - Rotation
         - Translation
         - Scaling
-    - Entity picking
+    - Scripts picking
     - Hot keys
     - Multi select
     - Transform for multiple entities
@@ -55,7 +55,7 @@ Multiple features are already implemented or on the way to the editor, here is a
     - Hierarchical transformation
 - **Visualization**
     - Rendering modes for debug and ease of use
-    - Entity highlight
+    - Scripts highlight
     - Icons
     - World grid
 
@@ -85,7 +85,7 @@ Multiple features are already implemented or on the way to the editor, here is a
     - Navigation shortcuts
     - Search
 - **Scene structure**
-    - Entity-component-system with hierarchical structure
+    - Scripts-component-system with hierarchical structure
     - Custom material uniforms editable via form
     - Folders and multi-select
     - Transformations and component attribute manipulation

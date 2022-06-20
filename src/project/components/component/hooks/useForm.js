@@ -11,7 +11,7 @@ import cloneClass from "../../../engine/utils/cloneClass"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
-import Entity from "../components/Entity"
+import Scripts from "../components/Scripts"
 import Rendering from "../components/Rendering"
 import Display from "../components/Display"
 import Editor from "../components/Editor"
@@ -254,7 +254,7 @@ export default function useForm(
                         {currentTab !== ENTITY_TAB ?
                             data
                             :
-                            <Entity
+                            <Scripts
                                 scripts={quickAccess.scripts}
                                 entity={selected}
                             />

@@ -4,7 +4,7 @@ import {Button, Icon} from "@f-ui/core"
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import Selector from "../../../../components/selector/Selector"
 
-export default function Entity(props) {
+export default function Scripts(props) {
     const [state, setState] = useState([])
     const previousID = useRef()
     useEffect(() => {
@@ -66,7 +66,7 @@ export default function Entity(props) {
     )
 }
 
-Entity.propTypes = {
+Scripts.propTypes = {
     entity: PropTypes.object,
     scripts: PropTypes.array
 }

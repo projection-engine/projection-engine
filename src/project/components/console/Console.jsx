@@ -10,9 +10,7 @@ export default function Console(props){
     useEffect(() => {
         console.pushTarget(ref.current)
         console.log("Console initialized")
-        return () => {
-            console.removeTarget(ref.current)
-        }
+        return () => console.removeTarget(ref.current)
     }, [])
     return (
         <>

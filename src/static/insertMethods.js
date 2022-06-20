@@ -1,7 +1,6 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 
 export default function insertMethods(fileSystem, pushEvent){
-
     // ALERT / FS
     alert.pushEvent = pushEvent
     document.fileSystem = fileSystem
@@ -13,9 +12,8 @@ export default function insertMethods(fileSystem, pushEvent){
     Math.vec3 = vec3
     Math.quat = quat
 
-
     // CONSOLE
-    const oldLog = console.log
+    // const oldLog = console.log
     console.targerts = []
     console.pushTarget = (ref) => {
         console.targerts.push(ref)
