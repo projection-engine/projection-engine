@@ -7,7 +7,7 @@ import {Button, Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
 import EngineProvider from "../../providers/EngineProvider"
-import ViewHeader from "../../../components/view/ViewHeader"
+import Header from "../../../components/view/components/Header"
 
 export default function ComponentEditor(props) {
     const quickAccess = useContext(QuickAccessProvider)
@@ -28,7 +28,7 @@ export default function ComponentEditor(props) {
 
     return (
         <>
-            <ViewHeader {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
+            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
                 {engine.selectedEntity ?
                     <Button
                         onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
@@ -40,7 +40,7 @@ export default function ComponentEditor(props) {
                     :
                     null
                 }
-            </ViewHeader>
+            </Header>
             {props.hidden ?
                 null
                 :

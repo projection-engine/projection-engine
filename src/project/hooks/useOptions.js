@@ -20,8 +20,7 @@ export default function useOptions(engine, serializer) {
                     const newValue = !engine.executingAnimation
                     try{
                         if (newValue) {
-                            alert.pushAlert("Loading scripts", "info")
-
+                            // alert.pushAlert("Loading scripts", "info")
                             for (let i = 0; i < engine.entities.length; i++) {
                                 const c = engine.entities[i]
                                 const scripts = []
@@ -38,7 +37,7 @@ export default function useOptions(engine, serializer) {
                             const levelScript = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
                             if(levelScript)
                                 engine.setLevelScript(levelScript)
-                            alert.pushAlert("Scripts loaded", "success")
+                            // alert.pushAlert("Scripts loaded", "success")
                         }
                         engine.setExecutingAnimation(newValue)
                     }catch (err){
@@ -53,6 +52,7 @@ export default function useOptions(engine, serializer) {
                 icon: "refresh",
                 onClick:() => {
                     alert.pushAlert( "Recompiling cube-maps and probes",  "info")
+                    console.log("Compiling cube-maps and probes")
                     engine.renderer.refreshCubemaps()
                 }
             },

@@ -12,7 +12,7 @@ import {ContextWrapper} from "@f-ui/core"
 import Viewport from "./components/viewport/Viewport"
 import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import submitPackage from "./utils/submitPackage"
-import ViewWrapper from "../components/view/ViewWrapper"
+import Views from "../components/view/Views"
 import useOptions from "./hooks/useOptions"
 import useFiles from "./hooks/useFiles"
 import FilesProvider from "./providers/FilesProvider"
@@ -60,8 +60,9 @@ export default function Editor(props) {
                                 content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
                             >
                                 <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
-                                    <ViewWrapper
-                                        content= {[]}
+                                    <Views
+                                        setTabs={(tabs) => settings.leftView = tabs}
+                                        tabs={settings.leftView}
                                         orientation={"vertical"}
                                         leftOffset={"10px"}
                                         resizePosition={"bottom"}
@@ -74,16 +75,18 @@ export default function Editor(props) {
                                         engine={engine}
                                         allowDrop={true}
                                     />
-                                    <ViewWrapper
-                                        content= {["hierarchy","component"]}
+                                    <Views
+                                        setTabs={(tabs) => settings.rightView = tabs}
+                                        tabs={settings.rightView}
                                         orientation={"vertical"}
                                         leftOffset={"0%"}
                                         resizePosition={"top"}
                                     /> 
                                 </div>
 
-                                <ViewWrapper
-                                    content= {["files"]}
+                                <Views
+                                    setTabs={(tabs) => settings.bottomView = tabs}
+                                    tabs={settings.bottomView}
                                     resizePosition={"top"}
                                     orientation={"horizontal"}
                                 />

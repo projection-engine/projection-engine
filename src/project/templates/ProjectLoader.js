@@ -53,7 +53,10 @@ export default class ProjectLoader {
 
     static async mapEntity(entity, gpu) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
-        parsedEntity.blueprintID = entity.blueprintID
+        Object.keys(entity).forEach(k => {
+            if(k !== "components")
+                parsedEntity[k] = entity[k]
+        })
 
         for (const k in entity.components) {
             if (typeof ENTITIES[k] === "function") {

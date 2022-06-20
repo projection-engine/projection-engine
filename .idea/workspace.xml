@@ -6,18 +6,29 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/frame/Frame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/Frame.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/frame/styles/Frame.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/styles/Frame.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/project-loader/loader.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/project-loader/loader.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/resizable/ResizableBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/resizable/ResizableBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/ViewHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/ViewHeader.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/ViewWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/ViewWrapper.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/view/ViewWrapper.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/ViewWrapper.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/selector/styles/Selector.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/selector/styles/Selector.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/ViewHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/ViewWrapper.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/Views.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/ViewWrapper.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/styles/Views.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Editor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/ShaderEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/ShaderEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/component/ComponentEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/ComponentEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Entity.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Entity.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/hierarchy/Hierarchy.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/hierarchy/Hierarchy.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/Renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/Renderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/hooks/useOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useOptions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/hooks/useSettings.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useSettings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/templates/ProjectLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/templates/ProjectLoader.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +44,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/components" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -88,11 +99,11 @@
       <recent name="$PROJECT_DIR$/src/core/src/inputs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/view/components" />
+      <recent name="$PROJECT_DIR$/src/components/view/styles" />
       <recent name="$PROJECT_DIR$/src/project/components/hierarchy/hooks" />
       <recent name="$PROJECT_DIR$/src/project/hooks" />
       <recent name="$PROJECT_DIR$/src/project/providers" />
-      <recent name="$PROJECT_DIR$/public/static" />
-      <recent name="$PROJECT_DIR$/public/windows/fs" />
     </key>
   </component>
   <component name="RunManager">
@@ -172,7 +183,8 @@
       <workItem from="1655555036954" duration="2339000" />
       <workItem from="1655566999220" duration="15763000" />
       <workItem from="1655640548425" duration="14353000" />
-      <workItem from="1655659682963" duration="5018000" />
+      <workItem from="1655659682963" duration="7128000" />
+      <workItem from="1655747829658" duration="4738000" />
     </task>
     <servers />
   </component>

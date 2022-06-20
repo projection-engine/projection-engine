@@ -15,6 +15,7 @@ import HotKeysProvider from "./components/shortcuts/hooks/HotKeysProvider"
 import useQuickAccess from "./hooks/useQuickAccess"
 import QuickAccessProvider from "./providers/QuickAccessProvider"
 import FileSystem from "./utils/files/FileSystem"
+import insertMethods from "../static/insertMethods"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -32,8 +33,10 @@ function Project() {
     useEffect(() => {
         ipcRenderer.send("load-page")
         ipcRenderer.on("page-load-props", (ev, data) => {
-            document.fileSystem = new FileSystem(data.package.id)
-            document.fileSystem.refresh = refresh
+            const fs =  new FileSystem(data.package.id)
+            fs.refresh = refresh
+            insertMethods(fs, loader.pushEvent)
+
             setProject(data.package)
             setEvents(data)
         })

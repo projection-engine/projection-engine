@@ -3,6 +3,7 @@ import GIZMOS from "../../static/misc/GIZMOS"
 import useDirectState from "../../components/hooks/useDirectState"
 import ROTATION_TYPES from "../../static/misc/ROTATION_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
+import VIEWS from "../../components/view/VIEWS"
 
 const toRad = Math.PI / 180
 export default function useSettings() {
@@ -46,11 +47,9 @@ export default function useSettings() {
         zNear: .1,
         zFar: 100000,
         gridRotationSize: 1,
-
         pcfSamples: 3.,
         shadowAtlasQuantity: 4,
         shadowMapResolution: 4096,
-
         total_strength: 3.5,
         base: 8,
         area: 12,
@@ -60,7 +59,13 @@ export default function useSettings() {
         cameraSpeed: .01,
         cameraScrollSpeed: .5,
         cameraScrollDelay: 100,
-        shortcuts: []
+        shortcuts: [],
+
+
+        // VIEWS
+        bottomView: [VIEWS.FILES],
+        leftView: [],
+        rightView: [VIEWS.HIERARCHY, VIEWS.COMPONENT],
     })
 
 }

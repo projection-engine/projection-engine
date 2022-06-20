@@ -9,7 +9,6 @@ export default function Entity(props) {
     const previousID = useRef()
     useEffect(() => {
         if(previousID.current !== props.entity.id) {
-            console.log("ON INIT")
             previousID.current = props.entity.id
             setState([...props.entity.scriptsMap])
         }

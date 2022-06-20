@@ -9,7 +9,7 @@ import styles from "../../styles/Project.module.css"
 import {createFolder} from "./utils/hiearchyUtils"
 import useHierarchy from "../../hooks/useHierarchy"
 import PropTypes from "prop-types"
-import ViewHeader from "../../../components/view/ViewHeader"
+import Header from "../../../components/view/components/Header"
 
 const TRIGGERS = ["data-node", "data-self"]
 const WORKER = new Worker(new URL("./hooks/hierarchyWorker.js", import.meta.url))
@@ -32,7 +32,7 @@ export default function Hierarchy(props){
 
     return (
         <>
-            <ViewHeader {...props}  title={"Hierarchy"} icon={"account_tree"}>
+            <Header {...props} title={"Hierarchy"} icon={"account_tree"}>
                 <div style={{display: "flex", gap: "2px"}}>
                     <Search
                         width={"100%"}
@@ -43,7 +43,7 @@ export default function Hierarchy(props){
                         <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
                     </Button>
                 </div>
-            </ViewHeader>
+            </Header>
             {props.hidden ?
                 null :
                 <TreeView
