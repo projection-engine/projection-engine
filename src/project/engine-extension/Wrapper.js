@@ -9,15 +9,14 @@ import BackgroundSystem from "./systems/BackgroundSystem"
 
 
 export default class Wrapper extends System {
-    constructor(gpu, resolution) {
+    constructor( resolution) {
         super()
-        this.gpu = gpu
-        this.gridSystem = new GridSystem(gpu)
-        this.billboardSystem = new IconsSystem(gpu)
-        this.gizmoSystem = new GizmoSystem(gpu, resolution)
-        this.selectedSystem = new SelectedSystem(gpu, resolution)
-        this.previewSystem = new PreviewSystem(gpu)
-        this.backgroundSystem = new BackgroundSystem(gpu)
+        this.gridSystem = new GridSystem()
+        this.billboardSystem = new IconsSystem()
+        this.gizmoSystem = new GizmoSystem(resolution)
+        this.selectedSystem = new SelectedSystem(resolution)
+        this.previewSystem = new PreviewSystem()
+        this.backgroundSystem = new BackgroundSystem()
     }
 
     execute(options, systems, data, entities, entitiesMap, after) {
@@ -43,17 +42,17 @@ export default class Wrapper extends System {
 
         if(!after) {
             this.backgroundSystem.execute(data, options)
-            this.gpu.disable(this.gpu.DEPTH_TEST)
+            window.gpu.disable(window.gpu.DEPTH_TEST)
             this.gridSystem.execute(options)
-            this.gpu.enable(this.gpu.DEPTH_TEST)
+            window.gpu.enable(window.gpu.DEPTH_TEST)
         }
         else {
-            this.gpu.enable(this.gpu.BLEND)
-            this.gpu.blendFunc(this.gpu.SRC_ALPHA, this.gpu.ONE_MINUS_SRC_ALPHA)
+            window.gpu.enable(window.gpu.BLEND)
+            window.gpu.blendFunc(window.gpu.SRC_ALPHA, window.gpu.ONE_MINUS_SRC_ALPHA)
             if (!canExecutePhysicsAnimation)
                 this.billboardSystem.execute(data, options, entitiesMap)
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
-                this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
+                window.gpu.clear(window.gpu.DEPTH_BUFFER_BIT)
                 this.gizmoSystem.execute(
                     meshes,
                     meshSources,

@@ -9,7 +9,6 @@ export default class FileSystem {
     static sep = pathRequire.sep
 
     constructor(projectID) {
-        this.projectID = projectID
         this._path = (localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID)
 
         new Promise(async resolve => {

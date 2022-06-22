@@ -6,26 +6,23 @@ import FramebufferInstance from "../../engine/instances/FramebufferInstance"
 
 export default class SelectedSystem extends System {
 
-    constructor(gpu, resolution) {
+    constructor(resolution) {
         super()
-        this.gpu = gpu
         this.shaderSilhouette = new ShaderInstance(
             shaderCode.vertexSilhouette,
-            shaderCode.fragmentSilhouette,
-            gpu
+            shaderCode.fragmentSilhouette
         )
         this.shader = new ShaderInstance(
             shaderCode.vertex,
-            shaderCode.fragment,
-            gpu
+            shaderCode.fragment
         )
-        this.frameBuffer = new FramebufferInstance(gpu, resolution.w, resolution.h)
+        this.frameBuffer = new FramebufferInstance( resolution.w, resolution.h)
         this.frameBuffer
             .texture({
                 attachment: 0,
-                precision: this.gpu.R16F,
-                format: this.gpu.RED,
-                type: this.gpu.FLOAT
+                precision: window.gpu.R16F,
+                format: window.gpu.RED,
+                type: window.gpu.FLOAT
             })
             .depthTest()
     }
@@ -57,7 +54,7 @@ export default class SelectedSystem extends System {
                 silhouette: this.frameBuffer.colors[0]
             })
             this.frameBuffer.draw()
-            this.gpu.bindVertexArray(null)
+            window.gpu.bindVertexArray(null)
         }
     }
 
@@ -74,7 +71,7 @@ export default class SelectedSystem extends System {
             viewMatrix
         })
 
-        this.gpu.drawElements(this.gpu.TRIANGLES, mesh.verticesQuantity, this.gpu.UNSIGNED_INT, 0)
+        window.gpu.drawElements(window.gpu.TRIANGLES, mesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
         mesh.finish()
     }
 }

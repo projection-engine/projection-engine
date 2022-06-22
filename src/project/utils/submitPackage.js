@@ -1,12 +1,12 @@
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import FileSystem from "./files/FileSystem"
 
-export default function submitPackage (pack, close, previewImage, isLevel, registryID, matInstance, renderer) {
+export default function submitPackage (pack, close, previewImage, isLevel, registryID, matInstance) {
     if(!isLevel) {
         let p = previewImage
         if(matInstance)
-            p = renderer.generatePreview(matInstance)
-        document.fileSystem
+            p = window.renderer.generatePreview(matInstance)
+        window.fileSystem
             .updateAsset(registryID, pack, p)
             .then(() => {
                 alert.pushAlert(  "Saved", "success", )
@@ -16,7 +16,7 @@ export default function submitPackage (pack, close, previewImage, isLevel, regis
             })
     }
     else
-        document.fileSystem.writeFile( FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, pack)
+        window.fileSystem.writeFile( FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, pack)
             .then(() => alert.pushAlert("success",  "Saved"))
             .catch(() => alert.pushAlert(  "Some error occurred", "error"))
 }

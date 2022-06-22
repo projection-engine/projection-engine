@@ -1,24 +1,20 @@
-import {useCallback, useContext, useEffect} from "react"
+import {useCallback, useEffect, useRef} from "react"
 import ProjectLoader from "../templates/ProjectLoader"
-import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import FileSystem from "../utils/files/FileSystem"
 
 
 export default function useSerializer(engine, settings, id) {
-    let interval
-    const {renderer} = useContext(GPUContextProvider)
-
-
+    const interval = useRef()
     const saveSettings = async () => {
         let promise = []
 
         if (id) {
             const canvas = engine.gpu.canvas
             const preview = canvas.toDataURL()
-            const res = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + ".meta")
+            const res = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
             if (res) {
                 const old = JSON.parse(res.toString())
-                await document.fileSystem
+                await window.fileSystem
                     .updateProject(
                         {
                             ...old,
@@ -31,9 +27,9 @@ export default function useSerializer(engine, settings, id) {
                         },
                         {
                             ...settings,
-                            cameraPosition: renderer.camera.position,
-                            yaw: renderer.camera.yaw,
-                            pitch: renderer.camera.pitch,
+                            cameraPosition: window.renderer.camera.position,
+                            yaw: window.renderer.camera.yaw,
+                            pitch: window.renderer.camera.pitch,
                         })
             }
         }
@@ -46,13 +42,13 @@ export default function useSerializer(engine, settings, id) {
             const all = await ProjectLoader.getEntities( )
             await Promise.all(all.map(a => {
                 if (a && !engine.entities.find(e => e.id === a.id))
-                    return document.fileSystem.deleteFile(document.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + a.id + ".entity", true)
+                    return window.fileSystem.deleteFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + a.id + ".entity", true)
             }).filter(e => e))
 
             try {
                 await Promise.all(engine.entities.map(e => {
                     const str = JSON.stringify(e)
-                    return document.fileSystem.updateEntity(str, e.id)
+                    return window.fileSystem.updateEntity(str, e.id)
                 }))
             } catch (err) {
                 console.error(err)
@@ -64,13 +60,14 @@ export default function useSerializer(engine, settings, id) {
             )
         } else
             alert.pushAlert("Error saving project", "error")
-    }, [engine.entities, settings, id, renderer])
+    }, [engine.entities, settings, id])
 
 
     useEffect(() => {
-        interval = setInterval(save, 300000)
+        interval.current = setInterval(save, 300000)
         return () => {
-            clearInterval(interval)
+            if(interval.current)
+                clearInterval(interval.current)
         }
     }, [settings.timestamp, engine.entities])
 

@@ -4,12 +4,10 @@ import ShaderInstance from "../../engine/instances/ShaderInstance"
 import QuadInstance from "../../engine/instances/QuadInstance"
 
 export default class GridSystem extends System {
-    constructor(gpu) {
-        super();
-        this.gpu = gpu
-
-        this.gridShader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment, gpu)
-        this.grid = new QuadInstance(gpu)
+    constructor() {
+        super()
+        this.gridShader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment)
+        this.grid = new QuadInstance()
     }
 
     execute(options) {

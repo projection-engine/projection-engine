@@ -1,9 +1,8 @@
-import {useCallback, useContext, useEffect, useMemo, useReducer, useState} from "react"
+import {useCallback, useEffect, useMemo, useReducer, useState} from "react"
 import entityReducer, {ENTITY_ACTIONS} from "./entityReducer"
 import useHistory from "../hooks/useHistory"
 import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
-import GPUContextProvider from "../components/viewport/hooks/GPUContextProvider"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 import Transformation from "../engine/templates/Transformation"
@@ -21,7 +20,7 @@ function getCursor(){
 }
 export default function useEngine(settings) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
-    const {gpu, renderer} = useContext(GPUContextProvider)
+    const [initialized, setInitialized] = useState(false)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
     const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
     const [levelScript, setLevelScript] = useState()
@@ -52,9 +51,9 @@ export default function useEngine(settings) {
             })
     }
     const update = useCallback(() => {
-        if (renderer) {
-            renderer.gizmo = settings.gizmo
-            renderer?.updatePackage(
+        if (initialized) {
+            window.renderer.gizmo = settings.gizmo
+            window.renderer.updatePackage(
                 cursor,
                 entities,
                 materials,
@@ -66,9 +65,10 @@ export default function useEngine(settings) {
             )
         }
     }, [
+        initialized,
         executingAnimation,
         selected, materials, meshes,
-        entities, settings, renderer
+        entities, settings
     ])
     useEffect(update, [update])
     const selectedEntity = useMemo(() => entities.find(e => !lockedEntity && e.id === selected[0] || lockedEntity === e.id), [selected, entities, lockedEntity])
@@ -78,7 +78,8 @@ export default function useEngine(settings) {
         executingAnimation,
         setExecutingAnimation,
         cursor, setCursor,
-        gpu,
+        initialized,
+        setInitialized,
         update,
         changes,
         returnChanges,
@@ -86,7 +87,6 @@ export default function useEngine(settings) {
         dispatchChanges,
         lockedEntity,
 
-        renderer,
         entities,
         meshes,
         materials,

@@ -1,41 +1,41 @@
 export default class Icon {
-    constructor(gpu) {
-        this.gpu = gpu
-        this.transformVBO = this.gpu.createBuffer()
+    constructor() {
+        this.transformVBO = window.gpu.createBuffer()
     }
 
-    #prepareTransforms(data) {
-        this.gpu.bufferData(this.gpu.ARRAY_BUFFER, data, this.gpu.STREAM_DRAW)
+    static prepareTransforms(data) {
+        const gpu = window.gpu
+        gpu.bufferData(gpu.ARRAY_BUFFER, data, gpu.STREAM_DRAW)
 
-        this.gpu.enableVertexAttribArray(1)
-        this.gpu.enableVertexAttribArray(2)
-        this.gpu.enableVertexAttribArray(3)
-        this.gpu.enableVertexAttribArray(4)
+        gpu.enableVertexAttribArray(1)
+        gpu.enableVertexAttribArray(2)
+        gpu.enableVertexAttribArray(3)
+        gpu.enableVertexAttribArray(4)
 
-        this.gpu.vertexAttribPointer(1, 4, this.gpu.FLOAT, false, 64, 0)
-        this.gpu.vertexAttribPointer(2, 4, this.gpu.FLOAT, false, 64, 16)
-        this.gpu.vertexAttribPointer(3, 4, this.gpu.FLOAT, false, 64, 32)
-        this.gpu.vertexAttribPointer(4, 4, this.gpu.FLOAT, false, 64, 48)
-        this.gpu.vertexAttribDivisor(1, 1)
-        this.gpu.vertexAttribDivisor(2, 1)
-        this.gpu.vertexAttribDivisor(3, 1)
-        this.gpu.vertexAttribDivisor(4, 1)
+        gpu.vertexAttribPointer(1, 4, gpu.FLOAT, false, 64, 0)
+        gpu.vertexAttribPointer(2, 4, gpu.FLOAT, false, 64, 16)
+        gpu.vertexAttribPointer(3, 4, gpu.FLOAT, false, 64, 32)
+        gpu.vertexAttribPointer(4, 4, gpu.FLOAT, false, 64, 48)
+        gpu.vertexAttribDivisor(1, 1)
+        gpu.vertexAttribDivisor(2, 1)
+        gpu.vertexAttribDivisor(3, 1)
+        gpu.vertexAttribDivisor(4, 1)
     }
 
-    static start(VBO, VAO, shader, gpu) {
-        gpu.bindVertexArray(VAO)
+    static start(VBO, VAO, shader) {
+        window.gpu.bindVertexArray(VAO)
         VBO.enable()
         shader.use()
     }
-    static end(VBO, gpu) {
+    static end(VBO) {
         VBO.disable()
-        gpu.bindVertexArray(null)
-        gpu.bindBuffer(gpu.ARRAY_BUFFER, null)
+        window.gpu.bindVertexArray(null)
+        window.gpu.bindBuffer(window.gpu.ARRAY_BUFFER, null)
     }
     draw(transformations, texture, camera, iconSize, shader) {
         if (transformations.length > 0) {
-            this.gpu.bindBuffer(this.gpu.ARRAY_BUFFER, this.transformVBO)
-            this.#prepareTransforms(new Float32Array(transformations.flat()))
+            window.gpu.bindBuffer(window.gpu.ARRAY_BUFFER, this.transformVBO)
+            Icon.prepareTransforms(new Float32Array(transformations.flat()))
             shader.bindForUse({
                 cameraPosition: camera.position,
                 iconSampler: texture,
@@ -43,7 +43,7 @@ export default class Icon {
                 projectionMatrix: camera.projectionMatrix,
                 iconSize
             })
-            this.gpu.drawArraysInstanced(this.gpu.TRIANGLES, 0, 6, transformations.length)
+            window.gpu.drawArraysInstanced(window.gpu.TRIANGLES, 0, 6, transformations.length)
         }
     }
 }

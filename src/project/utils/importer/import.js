@@ -21,13 +21,13 @@ export default async function importData(event,   engine,  asID) {
 
     for (let i = 0; i < entities.length; i++) {
         const data = entities[i]
-        const res = await document.fileSystem.readRegistryFile(data)
+        const res = await window.fileSystem.readRegistryFile(data)
         console.log(res, entities)
 
         if(res)
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
-                const meshData = await importMesh(await document.fileSystem.readFile(document.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data)
+                const meshData = await importMesh(await window.fileSystem.readFile(document.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data)
                 if(meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else

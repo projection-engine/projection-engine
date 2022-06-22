@@ -4,7 +4,7 @@ import {rotateY} from "../../components/viewport/transformCamera"
 import CAMERA_GIZMO from "../CAMERA_GIZMO"
 
 const BUTTON_MIDDLE = 1
-export default function CameraEvents(c, canvas) {
+export default function CameraEvents(c) {
     let isFocused = false
     let requested = false
     let doubleClick = false
@@ -50,7 +50,7 @@ export default function CameraEvents(c, canvas) {
             if (isFocused || doubleClick) {
                 if (!requested) {
                     requested = true
-                    canvas.requestPointerLock()
+                    window.gpu.canvas.requestPointerLock()
                 }
                 if (!doubleClick) {
                     if (event.movementY < 0)
@@ -112,27 +112,22 @@ export default function CameraEvents(c, canvas) {
         startTracking: () => {
             document.addEventListener("keydown", handleInput)
             document.addEventListener("keyup", handleInput)
-            canvas.addEventListener("mousedown", handleInput)
+            window.gpu.canvas.addEventListener("mousedown", handleInput)
             document.addEventListener("mouseup", handleInput)
             document.addEventListener("mousemove", handleInput)
-            canvas.addEventListener("wheel", handleInput, {passive: true})
+            window.gpu.canvas.addEventListener("wheel", handleInput, {passive: true})
         },
         stopTracking: () => {
             document.removeEventListener("keydown", handleInput)
             document.removeEventListener("keyup", handleInput)
-            canvas.removeEventListener("mousedown", handleInput)
+            window.gpu.canvas.removeEventListener("mousedown", handleInput)
             document.removeEventListener("mouseup", handleInput)
             document.removeEventListener("mousemove", handleInput)
-            canvas.removeEventListener("wheel", handleInput)
+            window.gpu.canvas.removeEventListener("wheel", handleInput)
         },
     }
     return {
         ...r,
-        changeCamera: (c) => {
-            r.stopTracking()
-            camera = c
-            r.startTracking()
-        },
         setCameraSpeed: (data) => {
             r.stopTracking()
             cameraSpeed = data

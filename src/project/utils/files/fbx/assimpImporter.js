@@ -3,11 +3,11 @@ import AssimpJS from "../AssimpJS"
 import Transformation from "../../../engine/templates/Transformation"
 import {mat4} from "gl-matrix"
 // import GLTF from "../gltf/GLTF";
-import {lzwEncode} from "../functions/lzString"
 import FILE_TYPES from "../../../../../public/static/FILE_TYPES"
+import FileSystem from "../FileSystem"
 
-const {fs} = window.require('fs')
-export default function assimpImporter(resolvePath, newRoot, file, options, createRegistryEntry, path, importImage) {
+const {fs} = window.require("fs")
+export default function assimpImporter(resolvePath, newRoot, file, options, createRegistryEntry, path) {
     return new Promise(resolve => {
         fs.mkdir(resolvePath(newRoot), async () => {
 
@@ -33,7 +33,7 @@ export default function assimpImporter(resolvePath, newRoot, file, options, crea
                                 // maxBoundingBox: b[1] ? b[1] : [0, 0, 0],
                                 // minBoundingBox: b[0] ? b[0] : [0, 0, 0],
                                 name: mesh.name,
-                                scaling: file.name.includes('.fbx') ? d.scaling.map(s => s / 100) : d.scaling,
+                                scaling: file.name.includes(".fbx") ? d.scaling.map(s => s / 100) : d.scaling,
                                 rotation: [0, 0, 0],
                                 translation: d.translation,
                                 rotationQuat: d.rotationQuat
@@ -42,18 +42,18 @@ export default function assimpImporter(resolvePath, newRoot, file, options, crea
                                 new Promise(r => {
 
                                     fs.writeFile(
-                                        resolvePath(newRoot + FileSystem.sep + `${mesh.name + ' - ' + m + FILE_TYPES.MESH}`),
-                                        lzwEncode(jsonText),
-                                        (err) => {
+                                        resolvePath(newRoot + FileSystem.sep + `${mesh.name + " - " + m + FILE_TYPES.MESH}`),
+                                        jsonText,
+                                        () => {
                                             r()
-                                        });
+                                        })
                                 }),
-                                createRegistryEntry(undefined, newRoot.replace(path + '\\assets\\', '') + FileSystem.sep + `${mesh.name + ' - ' + m + FILE_TYPES.MESH}`)
+                                createRegistryEntry(undefined, newRoot.replace(path + "\\assets\\", "") + FileSystem.sep + `${mesh.name + " - " + m + FILE_TYPES.MESH}`)
                             ]
                         } else if (mesh) {
                             rejectedMeshes.push({
                                 name: mesh.name,
-                                reason: 'No UV data'
+                                reason: "No UV data"
                             })
                             return []
                         } else

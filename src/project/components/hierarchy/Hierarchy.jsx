@@ -22,7 +22,6 @@ export default function Hierarchy(props){
         engine.dispatchEntities,
         engine.entities,
         engine.selected,
-        engine.renderer,
         engine.dispatchChanges,
         WORKER,
         searchedEntity,

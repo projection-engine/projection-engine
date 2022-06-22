@@ -3,7 +3,7 @@ import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 export default function insertMethods(fileSystem, pushEvent){
     // ALERT / FS
     alert.pushEvent = pushEvent
-    document.fileSystem = fileSystem
+    window.fileSystem = fileSystem
 
     // MATH
     Math.mat4 = mat4

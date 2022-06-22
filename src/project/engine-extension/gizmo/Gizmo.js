@@ -14,21 +14,20 @@ export default class Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, gizmoShader, renderTarget, resolution) {
+    constructor( gizmoShader, renderTarget, resolution) {
         this.renderTarget = renderTarget
         this.resolution = resolution
-        this.gpu = gpu
         this.gizmoShader = gizmoShader
 
     }
 
     onMouseDown(event) {
-        if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = this.gpu.canvas.width, h = this.gpu.canvas.height
+        if (event.target === window.gpu.canvas && !this.firstPick) {
+            const w = window.gpu.canvas.width, h = window.gpu.canvas.height
             const x = event.clientX
             const y = event.clientY
 
-            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, this.gpu.canvas)
+            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h})
             this.currentCoord.clientX = x
             this.currentCoord.clientY = y
         }
@@ -41,7 +40,6 @@ export default class Gizmo {
 
         if (this.tracking || force === true) {
             this.tracking = false
-            this.started = false
             this.distanceX = 0
             this.distanceY = 0
             this.distanceZ = 0
@@ -109,7 +107,7 @@ export default class Gizmo {
         else {
             this.tracking = true
             this.target = selected
-            this.gpu.canvas.requestPointerLock()
+            window.gpu.canvas.requestPointerLock()
             this.renderTarget.start()
             onGizmoStart()
         }
@@ -189,8 +187,8 @@ export default class Gizmo {
         const mZ = this._translateMatrix(translation, this.zGizmo.components)
 
         shader.use()
-        this.gpu.bindVertexArray(arrow.VAO)
-        this.gpu.bindBuffer(this.gpu.ELEMENT_ARRAY_BUFFER, arrow.indexVBO)
+        window.gpu.bindVertexArray(arrow.VAO)
+        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, arrow.indexVBO)
         arrow.vertexVBO.enable()
 
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
@@ -201,8 +199,8 @@ export default class Gizmo {
             this._draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, shader, translation, arrow)
 
         arrow.vertexVBO.disable()
-        this.gpu.bindVertexArray(null)
-        this.gpu.bindBuffer(this.gpu.ELEMENT_ARRAY_BUFFER, null)
+        window.gpu.bindVertexArray(null)
+        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
 
 
     }
@@ -219,6 +217,6 @@ export default class Gizmo {
             uID: [...id, 1],
             cameraIsOrthographic: this.camera.ortho
         })
-        this.gpu.drawElements(this.gpu.TRIANGLES, arrow.verticesQuantity, this.gpu.UNSIGNED_INT, 0)
+        window.gpu.drawElements(window.gpu.TRIANGLES, arrow.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
     }
 }

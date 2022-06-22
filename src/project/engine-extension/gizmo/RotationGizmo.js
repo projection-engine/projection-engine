@@ -25,9 +25,8 @@ export default class RotationGizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, renderTarget, resolution) {
+    constructor(renderTarget, resolution) {
         this.renderTarget = renderTarget
-        this.gpu = gpu
         this.resolution = resolution
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
         this.xGizmo = this._mapEntity(2, "x")
@@ -37,7 +36,6 @@ export default class RotationGizmo {
         import("../../../static/meshes/Circle.json")
             .then(res => {
                 this.xyz = new MeshInstance({
-                    gpu,
                     vertices: res.vertices,
                     indices: res.indices,
                     normals: [],
@@ -46,7 +44,7 @@ export default class RotationGizmo {
                 })
             })
 
-        this.texture = new TextureInstance(circle, false, this.gpu)
+        this.texture = new TextureInstance(circle, false)
     }
 
     _mapEntity(i, axis) {
@@ -79,12 +77,12 @@ export default class RotationGizmo {
     }
 
     onMouseDown(event) {
-        if (event.target === this.gpu.canvas && !this.firstPick) {
-            const w = this.gpu.canvas.width, h = this.gpu.canvas.height
+        if (event.target === window.gpu.canvas && !this.firstPick) {
+            const w = window.gpu.canvas.width, h = window.gpu.canvas.height
             const x = event.clientX
             const y = event.clientY
 
-            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, this.gpu.canvas)
+            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, window.gpu.canvas)
             this.currentCoord.clientX = event.clientX
             this.currentCoord.clientY = event.clientY
         }
@@ -223,7 +221,7 @@ export default class RotationGizmo {
             this.renderTarget.innerText = "0 θ"
             this.target = selected
 
-            this.gpu.canvas.requestPointerLock()
+            window.gpu.canvas.requestPointerLock()
         }
     }
 
@@ -293,16 +291,16 @@ export default class RotationGizmo {
 
     #drawGizmo(translation, rotation, view, proj, shader) {
         if (this.xyz) {
-            this.gpu.clear(this.gpu.DEPTH_BUFFER_BIT)
-            this.gpu.disable(this.gpu.CULL_FACE)
+            window.gpu.clear(window.gpu.DEPTH_BUFFER_BIT)
+            window.gpu.disable(window.gpu.CULL_FACE)
 
             const mX = this.#rotateMatrix(translation, rotation, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
             const mY = this.#rotateMatrix(translation, rotation, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
             const mZ = this.#rotateMatrix(translation, rotation, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
             shader.use()
-            this.gpu.bindVertexArray(this.xyz.VAO)
-            this.gpu.bindBuffer(this.gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
+            window.gpu.bindVertexArray(this.xyz.VAO)
+            window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
             this.xyz.vertexVBO.enable()
             this.xyz.uvVBO.enable()
 
@@ -314,9 +312,9 @@ export default class RotationGizmo {
                 this.#draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, shader, translation)
 
             this.xyz.vertexVBO.disable()
-            this.gpu.bindVertexArray(null)
-            this.gpu.bindBuffer(this.gpu.ELEMENT_ARRAY_BUFFER, null)
-            this.gpu.enable(this.gpu.CULL_FACE)
+            window.gpu.bindVertexArray(null)
+            window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
+            window.gpu.enable(window.gpu.CULL_FACE)
         }
     }
 
@@ -333,6 +331,6 @@ export default class RotationGizmo {
             circleSampler: this.texture.texture,
             cameraIsOrthographic: this.camera.ortho
         })
-        this.gpu.drawElements(this.gpu.TRIANGLES, this.xyz.verticesQuantity, this.gpu.UNSIGNED_INT, 0)
+        window.gpu.drawElements(window.gpu.TRIANGLES, this.xyz.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
     }
 }

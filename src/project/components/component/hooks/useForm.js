@@ -156,7 +156,7 @@ export default function useForm(
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
-                                            newMat = new MaterialInstance(engine.gpu, val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), val.id)
+                                            newMat = new MaterialInstance(val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), val.id)
                                         })
                                         engine.setMaterials(prev => {
                                             return [...prev, newMat]
@@ -228,7 +228,7 @@ export default function useForm(
                         selected={selected.components[key]}
                         submit={(data, key) => {
                             submit(COMPONENTS.CUBE_MAP, key, data)
-                            engine.renderer.refreshCubemaps()
+                            window.renderer.refreshCubemaps()
                             alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
                         }}
                     />

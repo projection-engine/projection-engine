@@ -3,7 +3,6 @@ import styles from "../styles/CameraOptions.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React, {useContext, useEffect, useMemo, useState} from "react"
-import EditorCamera from "../../../engine-extension/camera/EditorCamera"
 import {handleGrab} from "../transformCamera"
 import Range from "../../../../components/range/Range"
 import SettingsProvider from "../../../providers/SettingsProvider"
@@ -14,11 +13,11 @@ export default function Camera(props) {
     const {engine} = props
 
     useEffect(() => {
-        if(engine.renderer) {
-            engine.renderer.camera.ortho = settingsContext.ortho
-            engine.renderer.camera.updateProjection()
+        if(engine.initialized) {
+            window.renderer.camera.ortho = settingsContext.ortho
+            window.renderer.camera.updateProjection()
         }
-    }, [engine.renderer])
+    }, [engine.initialized])
     const cameraIcon = useMemo(() => {
         if (!settingsContext.ortho)
             return (
@@ -37,14 +36,14 @@ export default function Camera(props) {
     const [cameraScrollDelay, setCameraScrollDelay] = useState(settingsContext.cameraScrollDelay)
     const [cameraScrollSpeed, setCameraScrollSpeed] = useState(settingsContext.cameraScrollSpeed)
     function bind(yaw, pitch) {
-        engine.renderer.camera.updateProjection()
-        engine.renderer.camera.yaw = yaw
-        engine.renderer.camera.pitch = pitch
-        engine.renderer.camera.updateViewMatrix()
+        window.renderer.camera.updateProjection()
+        window.renderer.camera.yaw = yaw
+        window.renderer.camera.pitch = pitch
+        window.renderer.camera.updateViewMatrix()
     }
     return (
         <div className={styles.wrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
-            <CameraGizmo  bind={bind} renderer={engine.renderer}/>
+            <CameraGizmo  bind={bind} initialized={engine.initialized}/>
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown hideArrow={true}
                     className={shared.groupItemVert}
@@ -148,8 +147,8 @@ export default function Camera(props) {
                 <Button
                     className={shared.groupItemVert}
                     onClick={() => {
-                        engine.renderer.camera.ortho = !engine.renderer.camera.ortho
-                        engine.renderer.camera.updateProjection()
+                        window.renderer.camera.ortho = !window.renderer.camera.ortho
+                        window.renderer.camera.updateProjection()
 
                         settingsContext.ortho = !settingsContext.ortho
                     }}>
@@ -162,14 +161,14 @@ export default function Camera(props) {
                 <div
                     className={shared.buttonGroup}
                     style={{
-                        display: engine.renderer?.camera instanceof EditorCamera ? "grid" : "none",
+                        display: "grid",
                         transform: "translateY(12px)",
                         gap: "2px"
                     }}>
 
                     <div
                         className={[shared.groupItemVert, shared.dragInput].join(" ")}
-                        onMouseDown={e => handleGrab(e, engine.renderer.camera, 0)}
+                        onMouseDown={e => handleGrab(e, window.renderer.camera, 0)}
                     >
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
                             Drag X to zoom in/out
@@ -178,10 +177,10 @@ export default function Camera(props) {
                     </div>
                     <div
                         className={[shared.groupItemVert, shared.dragInput].join(" ")}
-                        onMouseDown={e => handleGrab(e, engine.renderer.camera, 1)}
+                        onMouseDown={e => handleGrab(e, window.renderer.camera, 1)}
                         onDoubleClick={() => {
-                            engine.renderer.camera.centerOn = [0, 0, 0]
-                            engine.renderer.camera.updateViewMatrix()
+                            window.renderer.camera.centerOn = [0, 0, 0]
+                            window.renderer.camera.updateViewMatrix()
                         }}>
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
                             <div>- Drag X to move forward/backwards</div>

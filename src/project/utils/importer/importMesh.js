@@ -20,14 +20,13 @@ export default async function importMesh(objLoaded, engine, id) {
             mesh = new MeshInstance({
                 ...objLoaded,
                 id: id,
-                gpu: engine.gpu,
                 wireframeBuffer: true
             })
 
             if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
-                const rs = await document.fileSystem.readRegistryFile(objLoaded.material)
+                const rs = await window.fileSystem.readRegistryFile(objLoaded.material)
                 if (rs) {
-                    const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
+                    const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
                     if (file && file.response)
                         material = {
                             ...file.response,

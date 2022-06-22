@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
-import GPUContextProvider from "./hooks/GPUContextProvider"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import ViewportOptions from "./ViewportOptions"
@@ -23,22 +22,24 @@ import ViewportTab from "./components/ViewportTab"
 import CameraTab from "./components/CameraTab"
 import Camera from "./components/Camera"
 import Gizmo from "./components/Gizmo"
+import RendererConstructor from "../../engine/RendererConstructor"
+import Engine from "../../engine-extension/Engine"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./hooks/findEntities.js", import.meta.url))
 export default function Viewport(props) {
+    useEffect(() => {
+        RendererConstructor(document.getElementById(RENDER_TARGET), settings.resolution, Engine)
+        props.engine.setInitialized(true)
+    }, [])
 
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
         const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined
         return getOptionsViewport(props.engine, selected, selectedRef, props.utils)
     }, [props.engine.entities, props.engine.selected, props.utils.toCopy])
-
-    const ref = useRef()
     const settings = useContext(SettingsProvider)
-    const {bindGPU, gpu} = useContext(GPUContextProvider)
-    useEffect(() => bindGPU(ref.current), [])
     function pickIcon (entities, cameraMesh, pickSystem, camera, coords){
         return pickSystem.pickElement((shader, proj) => {
             for (let m = 0; m < entities.length; m++) {
@@ -48,28 +49,28 @@ export default function Viewport(props) {
                     if(!t)
                         t = currentInstance.components[COMPONENTS.DIRECTIONAL_LIGHT]?.transformationMatrix
                     if (t && !currentInstance.components[COMPONENTS.MESH])
-                        PickSystem.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : pickSystem.mesh, currentInstance, camera.viewMatrix, proj, t, shader, props.engine.gpu)
+                        PickSystem.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : pickSystem.mesh, currentInstance, camera.viewMatrix, proj, t, shader)
                 }
             }
         }, {x: coords[0], y: coords[1]}, camera)
     }
     function pickMesh(meshSources, x, y){
-        const w =  ref.current.width, h =  ref.current.height
-        const coords = Conversion.toQuadCoord({x, y}, {w, h}, ref.current)
-        const picked = props.engine.renderer.systems[SYSTEMS.PICK].depthPick(props.engine.renderer.systems[SYSTEMS.DEPTH_PRE_PASS].frameBuffer, coords)
+        const w =  window.gpu.canvas.width, h =   window.gpu.canvas.height
+        const coords = Conversion.toQuadCoord({x, y}, {w, h})
+        const picked = window.renderer.systems[SYSTEMS.PICK].depthPick(window.renderer.systems[SYSTEMS.DEPTH_PRE_PASS].frameBuffer, coords)
         return Math.round((picked[1] + picked[2])* 255)
-        // return  props.engine.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
+        // return  window.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
         //     for (let m = 0; m < props.engine.entities.length; m++) {
         //         const currentInstance = props.engine.entities[m]
         //         if (props.engine.entities[m].active) {
         //             const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
         //             if (t && currentInstance.components[COMPONENTS.MESH]) {
         //                 const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
-        //                 if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, props.engine.renderer.camera.viewMatrix, proj, t, shader, props.engine.gpu)
+        //                 if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, window.renderer.camera.viewMatrix, proj, t, shader, props.engine.window.gpu)
         //             }
         //         }
         //     }
-        // }, {x, y}, props.engine.renderer.camera)
+        // }, {x, y}, window.renderer.camera)
     }
     function handler(event) {
         if(settings.gizmo !== GIZMOS.CURSOR) {
@@ -77,12 +78,12 @@ export default function Viewport(props) {
             const deltaY = Math.abs(event.currentTarget.startedCoords.y - event.clientY)
             const elapsed = (performance.now() - event.currentTarget.started)
 
-            if (gpu.canvas === event.target && elapsed <= MAX_TIMESTAMP && deltaX < MAX_DELTA && deltaY < MAX_DELTA) {
-                const camera = props.engine.renderer.camera
+            if (window.gpu.canvas === event.target && elapsed <= MAX_TIMESTAMP && deltaX < MAX_DELTA && deltaY < MAX_DELTA) {
+                const camera = window.renderer.camera
                 const entities = props.engine.entities
-                const p = props.engine.renderer.systems[SYSTEMS.PICK]
-                const cameraMesh = props.engine.renderer.editorSystem.billboardSystem.cameraMesh
-                const meshSources = props.engine.renderer.data.meshSources
+                const p = window.renderer.systems[SYSTEMS.PICK]
+                const cameraMesh = window.renderer.editorSystem.billboardSystem.cameraMesh
+                const meshSources = window.renderer.data.meshSources
                 const target = event.currentTarget.getBoundingClientRect()
                 const coords = [event.clientX - target.left, event.clientY - target.top]
 
@@ -115,8 +116,7 @@ export default function Viewport(props) {
     let latestTranslation
     function handleMouse(e){
         if(e.type === "mousemove"){
-            const t = props.engine.cursor.components[COMPONENTS.TRANSFORM]
-            latestTranslation =  Conversion.toScreen(e.clientX, e.clientY, gpu.canvas, props.engine.renderer.camera, t.translation).slice(0, 3)
+            latestTranslation =  Conversion.toScreen(e.clientX, e.clientY, window.renderer.camera).slice(0, 3)
             updateCursor(latestTranslation)
         }
         else{
@@ -147,8 +147,8 @@ export default function Viewport(props) {
                 onMouseDown={e => {
                     e.currentTarget.started = performance.now()
                     e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
-                    if(e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === gpu.canvas || e.target === e.currentTarget){
-                        latestTranslation = Conversion.toScreen(e.clientX, e.clientY, gpu.canvas, props.engine.renderer.camera, props.engine.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
+                    if(e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget){
+                        latestTranslation = Conversion.toScreen(e.clientX, e.clientY, window.renderer.camera, props.engine.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
                         updateCursor(latestTranslation)
                         document.addEventListener("mousemove", handleMouse)
                         document.addEventListener("mouseup", handleMouse, {once: true})
@@ -179,7 +179,12 @@ export default function Viewport(props) {
                 id={"viewport-wrapper"}
                 className={styles.viewport}
             >
-                <canvas id={RENDER_TARGET} ref={ref} style={{width: "100%", height: "100%"}}/>
+                <canvas 
+                    id={RENDER_TARGET} 
+                    style={{width: "100%", height: "100%", background: "transparent"}}
+                    width={settings.resolution[0]}
+                    height={settings.resolution[1]}
+                />
                 {props.engine.executingAnimation ?
                     null
                     :
@@ -198,7 +203,7 @@ export default function Viewport(props) {
                     tabs={[
                         {
                             label: "Camera",
-                            content: <CameraTab engine={props.engine}/>
+                            content: <CameraTab/>
                         },
                         {
                             label: "Viewport",
@@ -223,15 +228,15 @@ export default function Viewport(props) {
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
                         if(startCoords && endCoords) {
-                            const pickSystem = props.engine.renderer.systems[SYSTEMS.PICK]
-                            const depthSystem = props.engine.renderer.systems[SYSTEMS.DEPTH_PRE_PASS]
+                            const pickSystem = window.renderer.systems[SYSTEMS.PICK]
+                            const depthSystem = window.renderer.systems[SYSTEMS.DEPTH_PRE_PASS]
 
                             const size = {
                                 w: depthSystem.frameBuffer.width,
                                 h: depthSystem.frameBuffer.height
                             }
-                            const nStart = Conversion.toQuadCoord(startCoords, size, gpu.canvas)
-                            const nEnd = Conversion.toQuadCoord(endCoords, size, gpu.canvas)
+                            const nStart = Conversion.toQuadCoord(startCoords, size)
+                            const nEnd = Conversion.toQuadCoord(endCoords, size)
 
                             try{
                                 const data = pickSystem.readBlock(depthSystem.frameBuffer, nStart, nEnd)

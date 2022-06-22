@@ -6,7 +6,8 @@ import EditorCamera from "../camera/EditorCamera"
 import SHADING_MODELS from "../../engine/templates/SHADING_MODELS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 
-function toBase64(gpu, fbo) {
+function toBase64( fbo) {
+    const gpu = window.gpu
     const canvas = document.createElement("canvas")
     canvas.width = SIZE
     canvas.height = SIZE
@@ -34,18 +35,13 @@ function toBase64(gpu, fbo) {
 const SIZE = 300, RADIAN_60 =1.0472, RADIAN_90=1.57
 export default class PreviewSystem {
     identity = mat4.create()
-    constructor(gpu) {
-
-        this.gpu = gpu
-        this.frameBuffer = new FramebufferInstance(gpu, SIZE, SIZE)
+    constructor() {
+        this.frameBuffer = new FramebufferInstance( SIZE, SIZE)
         this.frameBuffer
-            .texture({precision: this.gpu.RGBA32F, format: this.gpu.RGBA, type: this.gpu.FLOAT})
+            .texture({precision: window.gpu.RGBA32F, format: window.gpu.RGBA, type: window.gpu.FLOAT})
 
         import("../../../static/meshes/Sphere.json").then(res => {
-            this.sphereMesh = new MeshInstance({
-                ...(res),
-                gpu
-            })
+            this.sphereMesh = new MeshInstance(res)
         })
         this.cameraData = EditorCamera.update(0, RADIAN_90, 2.5, [0,0,0])
         this.projection = mat4.perspective([], RADIAN_60, 1, .1, 10000)
@@ -114,7 +110,6 @@ export default class PreviewSystem {
                 elapsed,
                 ambient: {irradianceMultiplier: [1, 1, 1]},
 
-                gpu: this.gpu,
                 shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true
             })
@@ -140,15 +135,14 @@ export default class PreviewSystem {
                 elapsed,
                 ambient: {irradianceMultiplier: [1, 1, 1]},
 
-                gpu: this.gpu,
                 shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true
             })
         }
         this.frameBuffer.stopMapping()
-        response= toBase64(this.gpu, this.frameBuffer)
+        response= toBase64(this.frameBuffer)
         this.sphereMesh.finish()
-        this.gpu.bindVertexArray(null)
+        window.gpu.bindVertexArray(null)
         return response
     }
 }

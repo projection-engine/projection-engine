@@ -3,11 +3,10 @@ export default class TransformationTooltip {
         this.renderTarget = element
     }
 
-    start(label) {
+    start( ) {
         Object.assign(this.renderTarget.style, {
             display: "flex",
             justifyContent: "space-evenly",
-
             left: "50%",
             transform: "translateX(-50%)",
             bottom: "4px",

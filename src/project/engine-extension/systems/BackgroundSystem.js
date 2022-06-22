@@ -5,10 +5,10 @@ import {mat4} from "gl-matrix"
 
 
 export default class BackgroundSystem extends System {
-    constructor(gpu) {
+    constructor(
+    ) {
         super()
-        this.gpu = gpu
-        this.shader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment, gpu)
+        this.shader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment)
         this.projection=  mat4.perspective([], 1.57, 1, .1, 1000)
     }
 
@@ -19,7 +19,7 @@ export default class BackgroundSystem extends System {
         } = data
         const {camera, gamma} = options
         
-        this.gpu.depthMask(false)
+        window.gpu.depthMask(false)
         this.shader.use()
 
         cubeBuffer.enable()
@@ -29,10 +29,10 @@ export default class BackgroundSystem extends System {
             gamma: gamma
         })
 
-        this.gpu.drawArrays(this.gpu.TRIANGLES, 0, 36)
+        window.gpu.drawArrays(window.gpu.TRIANGLES, 0, 36)
         cubeBuffer.disable()
 
-        this.gpu.depthMask(true)
+        window.gpu.depthMask(true)
         
     }
 }

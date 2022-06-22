@@ -22,17 +22,17 @@ export default class ProjectLoader {
 
 
     static async getEntities() {
-        const entities = await document.fileSystem.fromDirectory(document.fileSystem.path + FileSystem.sep + "logic", ".entity")
-        return await Promise.all(entities.map(e =>document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
+        const entities = await window.fileSystem.fromDirectory(window.fileSystem.path + FileSystem.sep + "logic", ".entity")
+        return await Promise.all(entities.map(e =>window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
     }
 
     static async readFromRegistry(fileID) {
         return new Promise(resolve => {
-            document.fileSystem.readRegistryFile(fileID)
+            window.fileSystem.readRegistryFile(fileID)
                 .then(lookUpTable => {
 
                     if (lookUpTable) {
-                        document.fileSystem.readFile(document.fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
+                        window.fileSystem.readFile(window.fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
                             .then(fileData => {
                                 if (fileData) resolve(fileData)
                                 else resolve(null)
@@ -42,16 +42,16 @@ export default class ProjectLoader {
         })
     }
  
-    static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, gpu, id) {
+    static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, id) {
         let newMat
         await new Promise(resolve => {
-            newMat = new MaterialInstance(gpu, vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader?.code)
+            newMat = new MaterialInstance(vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader?.code)
         })
         newMat.uniforms = uniforms
         return newMat
     }
 
-    static async mapEntity(entity, gpu) {
+    static async mapEntity(entity) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
         Object.keys(entity).forEach(k => {
             if(k !== "components")
@@ -60,7 +60,7 @@ export default class ProjectLoader {
 
         for (const k in entity.components) {
             if (typeof ENTITIES[k] === "function") {
-                let component = await ENTITIES[k](entity, k, gpu)
+                let component = await ENTITIES[k](entity, k)
                 if (component) {
 
                     if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
@@ -80,7 +80,7 @@ const ENTITIES = {
 
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: async (entity, k, gpu) => {
+    [COMPONENTS.MATERIAL]: async (entity, k) => {
         const newMat = new MaterialComponent(entity.components[k].id)
 
         newMat.materialID = entity.components[k].materialID
@@ -91,7 +91,7 @@ const ENTITIES = {
                     let texture
                     await new Promise(r => {
                         const k = u.format
-                        texture = new TextureInstance(fileData, k.yFlip, gpu, gpu[k.internalFormat], gpu[k.format], true, false, gpu.UNSIGNED_BYTE, undefined, undefined, 0, () => {
+                        texture = new TextureInstance(fileData, k.yFlip, window.gpu[k.internalFormat], window.gpu[k.format], true, false, window.gpu.UNSIGNED_BYTE, undefined, undefined, 0, () => {
                             r()
                         })
                     })
@@ -127,9 +127,9 @@ const ENTITIES = {
     },
     [COMPONENTS.FOLDER]: async (entity, k) => new FolderComponent(entity.components[k].id),
     [COMPONENTS.PHYSICS]: async (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
-    [COMPONENTS.CUBE_MAP]: async (entity, k, gpu) => {
+    [COMPONENTS.CUBE_MAP]: async (entity, k) => {
         const component = new CubeMapComponent(entity.components[k].id)
-        component.cubeMap = new CubeMapInstance(gpu, component.resolution)
+        component.cubeMap = new CubeMapInstance(component.resolution)
 
         return component
     },

@@ -73,7 +73,7 @@ export default function Add(props) {
 
                         const actor = new Entity(undefined, "Cubemap")
                         actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
-                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(engine.gpu, actor.components[COMPONENTS.CUBE_MAP].resolution)
+                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(actor.components[COMPONENTS.CUBE_MAP].resolution)
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                         actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true

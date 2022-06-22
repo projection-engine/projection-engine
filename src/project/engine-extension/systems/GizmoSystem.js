@@ -23,36 +23,34 @@ export default class GizmoSystem extends System {
     selectedEntities = []
     selectedHash = ""
     lastGizmo = GIZMOS.TRANSLATION
-    constructor(gpu, resolution) {
-        super()
-        this.gpu = gpu
-        this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment, gpu)
-
+    constructor(resolution) {
+        super() 
+        this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
+        const gpu = window.gpu
         const canvas = gpu.canvas
-        if (gpu.canvas.id) {
-            const targetID = canvas.id + "-gizmo"
-            if (document.getElementById(targetID) !== null)
-                this.renderTarget = document.getElementById(targetID)
-            else {
-                this.renderTarget = document.createElement("div")
-                this.renderTarget.id = targetID
-                Object.assign(this.renderTarget.style, {
-                    backdropFilter: "blur(10px) brightness(70%)", borderRadius: "5px", width: "fit-content",
-                    height: "fit-content", position: "absolute", top: "4px", left: "4px", zIndex: "10",
-                    color: "white", padding: "8px", fontSize: ".75rem",
-                    display: "none"
-                })
-                document.body.appendChild(this.renderTarget)
-            }
-            this.gizmoTooltip = new TransformationTooltip(this.renderTarget)
-            this.translationGizmo = new TranslationGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
-            this.scaleGizmo = new ScaleGizmo(gpu, this.gizmoShader, this.gizmoTooltip, resolution)
-            this.rotationGizmo = new RotationGizmo(gpu, this.renderTarget, resolution)
+   
+        const targetID = canvas.id + "-gizmo"
+        if (document.getElementById(targetID) !== null)
+            this.renderTarget = document.getElementById(targetID)
+        else {
+            this.renderTarget = document.createElement("div")
+            this.renderTarget.id = targetID
+            Object.assign(this.renderTarget.style, {
+                backdropFilter: "blur(10px) brightness(70%)", borderRadius: "5px", width: "fit-content",
+                height: "fit-content", position: "absolute", top: "4px", left: "4px", zIndex: "10",
+                color: "white", padding: "8px", fontSize: ".75rem",
+                display: "none"
+            })
+            document.body.appendChild(this.renderTarget)
         }
+        this.gizmoTooltip = new TransformationTooltip(this.renderTarget)
+        this.translationGizmo = new TranslationGizmo( this.gizmoShader, this.gizmoTooltip, resolution)
+        this.scaleGizmo = new ScaleGizmo( this.gizmoShader, this.gizmoTooltip, resolution)
+        this.rotationGizmo = new RotationGizmo( this.renderTarget, resolution)
 
         this.handlerListener = this.handler.bind(this)
-        this.gpu.canvas.addEventListener("mouseup", this.handlerListener)
-        this.gpu.canvas.addEventListener("mousedown", this.handlerListener)
+        window.gpu.canvas.addEventListener("mouseup", this.handlerListener)
+        window.gpu.canvas.addEventListener("mousedown", this.handlerListener)
     }
 
     handler(event) {
@@ -61,9 +59,9 @@ export default class GizmoSystem extends System {
             if (event.button === LEFT_BUTTON) {
                 if (this.targetGizmo) {
                     this.targetGizmo.onMouseDown(event)
-                    this.gpu.canvas.addEventListener("mousemove", move)
+                    window.gpu.canvas.addEventListener("mousemove", move)
                 }
-                this.gpu.canvas.targetGizmo = this.targetGizmo
+                window.gpu.canvas.targetGizmo = this.targetGizmo
             }
             break
         case "mouseup":
@@ -71,7 +69,7 @@ export default class GizmoSystem extends System {
                 this.targetGizmo.onMouseUp(event)
             this.targetGizmo = undefined
             this.gizmoTooltip.stop()
-            this.gpu.canvas.removeEventListener("mousemove", move)
+            window.gpu.canvas.removeEventListener("mousemove", move)
             break
         default:
             break
@@ -91,7 +89,7 @@ export default class GizmoSystem extends System {
         depthSystem.frameBuffer.startMapping()
         shader.use()
         mesh.use()
-        depthSystem.gpu.disable(depthSystem.gpu.CULL_FACE)
+        window.gpu.disable(window.gpu.CULL_FACE)
         for (let i = 0; i < transforms.length; i++) {
             shader.bindForUse({
                 viewMatrix: view,
@@ -101,9 +99,9 @@ export default class GizmoSystem extends System {
                 camPos,
                 translation,
             })
-            depthSystem.gpu.drawElements(depthSystem.gpu.TRIANGLES, mesh.verticesQuantity, depthSystem.gpu.UNSIGNED_INT, 0)
+            window.gpu.drawElements(window.gpu.TRIANGLES, mesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
         }
-        depthSystem.gpu.enable(depthSystem.gpu.CULL_FACE)
+        window.gpu.enable(window.gpu.CULL_FACE)
         mesh.finish()
 
 

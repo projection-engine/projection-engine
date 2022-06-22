@@ -30,8 +30,9 @@ export default function Editor(props) {
     const filesHook = useFiles(engine)
 
     const submitMaterialPackage = useCallback((registryID, pack, matInstance) => {
-        submitPackage(pack, false, undefined, false, registryID, matInstance, engine.renderer)
-    }, [engine.renderer])
+        if(engine.initialized)
+            submitPackage(pack, false, undefined, false, registryID, matInstance)
+    }, [engine.initialized])
 
     return (
         <BlueprintProvider.Provider
@@ -83,7 +84,6 @@ export default function Editor(props) {
                                         resizePosition={"top"}
                                     /> 
                                 </div>
-
                                 <Views
                                     setTabs={(tabs) => settings.bottomView = tabs}
                                     tabs={settings.bottomView}

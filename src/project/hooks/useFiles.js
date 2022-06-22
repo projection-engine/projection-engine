@@ -6,18 +6,18 @@ import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 export default function useFiles(engine) {
     const [items, setItems] = useState([])
     const [bookmarks, setBookmarks] = useState([])
-    const path = useMemo(() => document.fileSystem.path + FileSystem.sep + "assets", [])
+    const path = useMemo(() => window.fileSystem.path + FileSystem.sep + "assets", [])
     const [loading, setLoading] = useState(false)
 
     async function refreshFiles(){
         setLoading(true)
-        document.fileSystem.refresh()
+        window.fileSystem.refresh()
         const done = await getCall("refresh-files", {pathName: path})
         setLoading(false)
         setItems(done)
     }
     useEffect(() => {
-        document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
+        window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
             .then(res => {
                 if (res)
                     setBookmarks(res)
@@ -29,7 +29,7 @@ export default function useFiles(engine) {
     const removeEntity=useCallback((entities) => {
         engine.setSelected([])
         engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities})
-        entities.forEach(entity => document.fileSystem.deleteEntity(entity))
+        entities.forEach(entity => window.fileSystem.deleteEntity(entity))
     }, [engine.entities])
 
 
@@ -46,7 +46,7 @@ export default function useFiles(engine) {
         removeBlock: (v) => {
             setBookmarks(prev => {
                 const n = prev.filter(i => !v.includes(i.path))
-                document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+                window.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
                 return n
             })
         },
@@ -56,14 +56,14 @@ export default function useFiles(engine) {
                     name: id.split(FileSystem.sep ).pop(),
                     path: id
                 }]
-                document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta",JSON.stringify(n)).catch()
+                window.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta",JSON.stringify(n)).catch()
                 return n
             })
         } ,
         removeBookmark: (id) => {
             setBookmarks(prev => {
                 const n = prev.filter(i => i.path !== id)
-                document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+                window.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
                 return n
             })
         } ,
@@ -74,7 +74,7 @@ export default function useFiles(engine) {
                     name: newPath.split(FileSystem.sep).pop(),
                     path: newPath
                 }]
-                document.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+                window.fileSystem.writeFile(FileSystem.sep + "bookmarks.meta", JSON.stringify(n)).catch()
                 return n
             })
         }

@@ -1,23 +1,25 @@
 import styles from "../styles/ViewportOptions.module.css"
 import CAMERA_GIZMO from "../../../engine-extension/CAMERA_GIZMO"
 import PropTypes from "prop-types"
-import React, {useEffect, useRef} from "react"
+import React, {useEffect, useMemo, useRef} from "react"
 
 
 export default function CameraGizmo(props){
-    const {bind, renderer} = props
+    const {bind, initialized} = props
     let requested = false
     const ref = useRef()
-
+    const camera = useMemo(() => {
+        return !initialized ? null : window.renderer.camera
+    }, [initialized])
     function updateCameraRotation(){
-        const camera = renderer.camera
-        const t = camera.getNotTranslatedViewMatrix()
-        ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
+        if(initialized) {
+            const t = camera.getNotTranslatedViewMatrix()
+            ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
+        }
     }
     useEffect(() => {
-        if(renderer)
-            updateCameraRotation()
-    }, [renderer])
+        updateCameraRotation()
+    }, [initialized])
     return (
         <div 
             className={styles.cubeWrapper}
@@ -28,7 +30,7 @@ export default function CameraGizmo(props){
             }}
             onMouseMove={({currentTarget, movementX, movementY}) => {
                 if(currentTarget.isFocused){
-                    const camera = renderer.camera
+
                     if (!requested) {
                         requested = true
                         currentTarget.requestPointerLock()
@@ -115,6 +117,6 @@ export default function CameraGizmo(props){
 }
 
 CameraGizmo.propTypes={
-    renderer: PropTypes.object,
-    bind: PropTypes.func
+    bind: PropTypes.func,
+    initialized: PropTypes.bool
 }

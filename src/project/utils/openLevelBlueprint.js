@@ -5,14 +5,14 @@ import SCRIPT_TEMPLATE from "../templates/SCRIPT_TEMPLATE"
 
 const {shell} = window.require("electron")
 export default function openLevelBlueprint(){
-    const path = document.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT
+    const path = window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT
     AsyncFS.exists(path)
         .then(res=> {
             if(!res)
-                document.fileSystem.writeFile(FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, SCRIPT_TEMPLATE)
+                window.fileSystem.writeFile(FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, SCRIPT_TEMPLATE)
                     .then(res => {
                         if(res) {
-                            document.fileSystem.refresh()
+                            window.fileSystem.refresh()
                             shell.openPath(path).catch(() => alert.pushAlert("Error opening file", "error"))
                         }
                         else

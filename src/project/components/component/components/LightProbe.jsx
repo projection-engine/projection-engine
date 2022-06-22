@@ -11,19 +11,16 @@ export default function LightProbe(props) {
     const [probeTranslation, setProbeTranslation] = useState({})
 
     useEffect(() => {
-
         state.resolution = props.selected.resolution
-
-
     }, [props.selected])
 
     return (
-        <AccordionTemplate type={'flex'} title={'Translation'}>
+        <AccordionTemplate type={"flex"} title={"Translation"}>
             <Range
                 disabled={!selectedProbe}
-                metric={'m'}
-                accentColor={'red'}
-                label={'x'}
+                metric={"m"}
+                accentColor={"red"}
+                label={"x"}
 
                 precision={3}
                 incrementPercentage={.01}
@@ -34,9 +31,9 @@ export default function LightProbe(props) {
             />
             <Range
                 disabled={!selectedProbe}
-                metric={'m'}
-                accentColor={'#00ff00'}
-                label={'y'}
+                metric={"m"}
+                accentColor={"#00ff00"}
+                label={"y"}
                 precision={3}
                 incrementPercentage={.01}
 
@@ -46,9 +43,9 @@ export default function LightProbe(props) {
             />
             <Range
                 disabled={!selectedProbe}
-                metric={'m'}
-                accentColor={'#0095ff'}
-                label={'z'}
+                metric={"m"}
+                accentColor={"#0095ff"}
+                label={"z"}
                 precision={3}
                 incrementPercentage={.01}
 

@@ -10,7 +10,7 @@ export default function useQuickAccess( ) {
         scripts: []
     })
     const refresh = () => {
-        document.fileSystem.readRegistry()
+        window.fileSystem.readRegistry()
             .then(reg => {
                 const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
                     meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),

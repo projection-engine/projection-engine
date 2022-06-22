@@ -25,16 +25,16 @@ export default function useOptions(engine, serializer) {
                                 const c = engine.entities[i]
                                 const scripts = []
                                 for (let s = 0; s < c.scriptsMap.length; s++) {
-                                    const reg = await document.fileSystem.readRegistryFile(c.scriptsMap[s])
+                                    const reg = await window.fileSystem.readRegistryFile(c.scriptsMap[s])
                                     if (reg) {
-                                        const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path)
+                                        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path)
                                         if (file)
                                             scripts.push(file)
                                     }
                                 }
                                 c.scripts = scripts
                             }
-                            const levelScript = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
+                            const levelScript = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
                             if(levelScript)
                                 engine.setLevelScript(levelScript)
                             // alert.pushAlert("Scripts loaded", "success")
@@ -53,7 +53,7 @@ export default function useOptions(engine, serializer) {
                 onClick:() => {
                     alert.pushAlert( "Recompiling cube-maps and probes",  "info")
                     console.log("Compiling cube-maps and probes")
-                    engine.renderer.refreshCubemaps()
+                    window.renderer.refreshCubemaps()
                 }
             },
             {

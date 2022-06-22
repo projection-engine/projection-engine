@@ -20,15 +20,14 @@ export default class TranslationGizmo extends Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, gizmoShader, renderTarget, resolution) {
-        super(gpu, gizmoShader, renderTarget, resolution)
+    constructor( gizmoShader, renderTarget, resolution) {
+        super( gizmoShader, renderTarget, resolution)
         this.xGizmo = this._mapEntity(2, "x")
         this.yGizmo = this._mapEntity(3, "y")
         this.zGizmo = this._mapEntity(4, "z")
         import("../../../static/meshes/Arrow.json")
             .then(res => {
                 this.xyz = new MeshInstance({
-                    gpu,
                     vertices: res.vertices,
                     indices: res.indices,
                     normals: res.normals,

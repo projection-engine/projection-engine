@@ -6,8 +6,6 @@ import styles from "../styles/App.module.css"
 import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import Editor from "./Editor"
-import useGPU from "./components/viewport/hooks/useGPU"
-import GPUContextProvider from "./components/viewport/hooks/GPUContextProvider"
 import useSettings from "./hooks/useSettings"
 import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
 import useHotKeysHelper from "./components/shortcuts/hooks/useHotKeysHelper"
@@ -26,8 +24,7 @@ function Project() {
     const [project, setProject] = useState()
     const [refresh, quickAccess] = useQuickAccess(project?.id)
     const [events, setEvents] = useState({})
-    const [settings,, pushBlock] = useSettings()
-    const gpuContext = useGPU(settings, project?.id)
+    const [settings,, pushBlock] = useSettings() 
     const hotKeysHook= useHotKeysHelper()
 
     useEffect(() => {
@@ -51,24 +48,22 @@ function Project() {
             className={styles.wrapper}
         >
             <HotKeysProvider.Provider value={hotKeysHook}>
-                <QuickAccessProvider.Provider value={quickAccess}>
-                    <GPUContextProvider.Provider value={gpuContext}>
-                        {project? <Editor
-                            settings={settings}
-                            load={loader}
-                            pushSettingsBlock={pushBlock}
+                <QuickAccessProvider.Provider value={quickAccess}> 
+                    {project? <Editor
+                        settings={settings}
+                        load={loader}
+                        pushSettingsBlock={pushBlock}
 
-                            events={{
-                                ...events,
-                                closeEvent: FRAME_EVENTS.CLOSE,
-                                minimizeEvent: FRAME_EVENTS.MINIMIZE,
-                                maximizeEvent: FRAME_EVENTS.MAXIMIZE
-                            }}
-                            quickAccess={quickAccess}
-                            id={project.id}
-                            meta={project.meta}
-                        /> : null}
-                    </GPUContextProvider.Provider>
+                        events={{
+                            ...events,
+                            closeEvent: FRAME_EVENTS.CLOSE,
+                            minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                            maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                        }}
+                        quickAccess={quickAccess}
+                        id={project.id}
+                        meta={project.meta}
+                    /> : null} 
                 </QuickAccessProvider.Provider>
             </HotKeysProvider.Provider>
         </ThemeProvider>)

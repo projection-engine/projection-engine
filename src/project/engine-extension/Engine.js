@@ -1,7 +1,6 @@
 import Renderer from "../engine/Renderer"
 import SYSTEMS from "../engine/templates/SYSTEMS"
 import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
-import COMPONENTS from "../engine/templates/COMPONENTS"
 import Cameras from "./Cameras"
 import Wrapper from "./Wrapper"
 
@@ -17,23 +16,12 @@ import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem"
 export default class Engine extends Renderer {
     gizmo
     cameraData = {}
-    #overrideMaterial
-    changedEntity = undefined
 
-    constructor(gpu, resolution, systems, settings, projectID) {
-        super(gpu, resolution, systems, projectID)
-        this.cameraData = new Cameras(
-            gpu.canvas,
-            settings.cameraPosition,
-            settings.fov,
-            settings.zNear,
-            settings.zFar,
-            settings.yaw,
-            settings.pitch
-        )
-        this.editorSystem = new Wrapper(gpu, resolution)
+    constructor( resolution, systems) {
+        super( resolution, systems)
+        this.cameraData = new Cameras()
+        this.editorSystem = new Wrapper(resolution)
         this.debugMaterial = new MaterialInstance(
-            gpu,
             shaderCode.vertex,
             debugCode.fragment,
             [{
@@ -69,27 +57,6 @@ export default class Engine extends Renderer {
     }
 
 
-    updateOverrideMaterial() {
-        const entity = this.data.meshes.find(m => m.id === this.params.selected[0] || m.id === this.changedEntity?.id)
-        const comp = entity ? entity.components[COMPONENTS.MATERIAL] : undefined
-        if (comp && this.params.selected[0] && this.overrideMaterial instanceof MaterialInstance && !this.changedEntity) {
-            this.changedEntity = {id: entity.id, previousMaterial: comp.materialID}
-            comp.materialID = this.overrideMaterial?.id
-        } else if (comp && this.changedEntity) {
-            comp.materialID = this.changedEntity.previousMaterial
-            this.changedEntity = undefined
-        }
-    }
-
-    set overrideMaterial(data) {
-        this.#overrideMaterial = data
-        this.updateOverrideMaterial()
-    }
-
-    get overrideMaterial() {
-        return this.#overrideMaterial
-    }
-
     updatePackage(cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
@@ -101,6 +68,9 @@ export default class Engine extends Renderer {
             this.cameraData.cameraEvents.stopTracking()
 
         this._changed = true
+
+        this.camera.zNear = params.zNear
+        this.camera.zFar = params.zFar
         this.camera.fov = params.fov
         this.camera.distortion = params.distortion
         this.camera.distortionStrength = params.distortionStrength
@@ -113,21 +83,12 @@ export default class Engine extends Renderer {
         this.camera.bloomThreshold = params.bloomThreshold
         this.camera.gamma = params.gamma
         this.camera.exposure = params.exposure
-
-
         const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
-
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
-
-        let materialsToRender = materials, fallbackMaterial = this.fallbackMaterial
-        if(params.shadingModel !== SHADING_MODELS.DETAIL || this.overrideMaterial) {
-            materialsToRender = []
-            fallbackMaterial = this.overrideMaterial ? this.overrideMaterial : this.debugMaterial
-        }
         super.updatePackage(
-            fallbackMaterial,
+            this.debugMaterial,
             entities,
-            materialsToRender,
+            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
             meshes,
             {
                 ...params,
@@ -142,7 +103,6 @@ export default class Engine extends Renderer {
             levelScript
         )
         this.start()
-        this.updateOverrideMaterial()
     }
     arrayToObject(arr){
         const obj = {}

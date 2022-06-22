@@ -7,6 +7,7 @@ import CHANNELS from "../../static/CHANNELS"
 export default async function loader(projectPath, projectID, listenID, sender) {
     // await cleanUpRegistry(projectPath)
     const {settings, meta, entities} = await loadData(projectPath)
+    console.trace("ENDING")
     sender.send(CHANNELS.META_DATA + "-" + listenID, {
         meta, settings, entities
     })

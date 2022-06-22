@@ -35,9 +35,9 @@ export default function Material(props) {
 
     const loadFile = async (src, type = "json") => {
 
-        const rs = await document.fileSystem.readRegistryFile(src.registryID)
+        const rs = await window.fileSystem.readRegistryFile(src.registryID)
         if (rs) {
-            const file = await document.fileSystem.readFile(document.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
+            const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
             if (file)
                 return file
             else {
@@ -143,12 +143,12 @@ export default function Material(props) {
                                     texture = new TextureInstance(
                                         file,
                                         k.yFlip,
-                                        props.engine.gpu,
-                                        props.engine.gpu[k.internalFormat],
-                                        props.engine.gpu[k.format],
+
+                                        window.gpu[k.internalFormat],
+                                        window.gpu[k.format],
                                         true,
                                         false,
-                                        props.engine.gpu.UNSIGNED_BYTE,
+                                        window.gpu.UNSIGNED_BYTE,
                                         undefined,
                                         undefined,
                                         0,

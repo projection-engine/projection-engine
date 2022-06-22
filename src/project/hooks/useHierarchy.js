@@ -20,7 +20,6 @@ export default function useHierarchy(
     dispatchEntities,
     entities,
     selected,
-    renderer,
     dispatchChanges,
     worker,
     searchedEntity,
@@ -209,10 +208,10 @@ export default function useHierarchy(
                     if (entity && comp) {
                         const t = comp.translation
 
-                        renderer.camera.radius = 10
-                        renderer.camera.centerOn = t
+                        window.renderer.camera.radius = 10
+                        window.renderer.camera.centerOn = t
 
-                        renderer.camera.updateViewMatrix()
+                        window.renderer.camera.updateViewMatrix()
                     }
                 }
             },

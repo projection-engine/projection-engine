@@ -18,8 +18,8 @@ export default class ScaleGizmo extends Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(gpu, gizmoShader, renderTarget, resolution) {
-        super(gpu, gizmoShader, renderTarget, resolution)
+    constructor( gizmoShader, renderTarget, resolution) {
+        super( gizmoShader, renderTarget, resolution)
         this.xGizmo = this._mapEntity(2, "x")
         this.yGizmo = this._mapEntity(3, "y")
         this.zGizmo = this._mapEntity(4, "z")
@@ -27,7 +27,7 @@ export default class ScaleGizmo extends Gizmo {
         import("../../../static/meshes/ScaleGizmo.json")
             .then(res => {
                 this.xyz = new MeshInstance({
-                    gpu,
+
                     vertices: res.vertices,
                     indices: res.indices
                 })
