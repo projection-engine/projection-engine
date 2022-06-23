@@ -11,25 +11,25 @@ uniform bool cameraIsOrthographic;
 
 void main(){
     vec3 t = translation - camPos;
-     
-    float len = length(camPos - translation) * SIZE;
-    if(cameraIsOrthographic)
-    	len *= .5; 
-    mat4 tt = transformMatrix;
-    mat4 sc;
-    for ( int x = 0; x < 4; x++ )
-        for ( int y = 0; y < 4; y++ )
-            if ( x == y && x <= 2 )
-                sc[x][y] = len;
-            else if ( x == y )
-                sc[x][y] = 1.;
-            else
-                sc[x][y] = 0.;
-        
-    tt[3][0]  += t.x;
-    tt[3][1]  += t.y;
-    tt[3][2]  += t.z;
-    gl_Position =  projectionMatrix * viewMatrix * tt * sc * vec4(position,1.0);
+
+		float len = length(camPos - translation) * SIZE;
+		mat4 tt = transformMatrix;
+		mat4 sc;
+		for ( int x = 0; x < 4; x++ )
+			for ( int y = 0; y < 4; y++ )
+				if ( x == y && x <= 2)
+					sc[x][y] = cameraIsOrthographic ? 1.75 : len;
+				else if ( x == y )
+					sc[x][y] = 1.;
+				else
+					sc[x][y] = 0.;
+		if(!cameraIsOrthographic){
+			tt[3][0]  += t.x;
+			tt[3][1]  += t.y;
+			tt[3][2]  += t.z;
+		}
+		gl_Position =  projectionMatrix * viewMatrix * tt * sc * vec4(position,1.0);
+   
 }
 `
 
@@ -40,6 +40,7 @@ in vec4 vPosition;
 uniform int axis;
 uniform int selectedAxis;
 out vec4 fragColor;
+ 
 
 void main(){
     vec3 color = vec3(1.);
@@ -96,15 +97,17 @@ void main(){
     for ( int x = 0; x < 4; x++ )
         for ( int y = 0; y < 4; y++ )
             if ( x == y && x <= 2 )
-                sc[x][y] = len;
+				sc[x][y] = cameraIsOrthographic ? 1.75 : len;
             else if ( x == y )
                 sc[x][y] = 1.;
             else
                 sc[x][y] = 0.;  
                 
-    tt[3][0]  += t.x;
-    tt[3][1]  += t.y;
-    tt[3][2]  += t.z;
+		if(!cameraIsOrthographic){
+			tt[3][0]  += t.x;
+			tt[3][1]  += t.y;
+			tt[3][2]  += t.z;
+		}
     
     gl_Position =  projectionMatrix * viewMatrix * tt * sc * vec4(position,1.0);   
 }

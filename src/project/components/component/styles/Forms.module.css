@@ -203,3 +203,11 @@
   font-weight: 550;
   font-size: 0.75rem;
 }
+
+.divider{
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 2px;
+  background: var(--pj-border-primary);
+}

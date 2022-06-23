@@ -13,7 +13,9 @@ export default class Gizmo {
     distanceX = 0
     distanceY = 0
     distanceZ = 0
-
+    xGizmo
+    yGizmo
+    zGizmo
     constructor( gizmoShader, renderTarget, resolution) {
         this.renderTarget = renderTarget
         this.resolution = resolution
@@ -67,10 +69,9 @@ export default class Gizmo {
                     data: el.components[k[i]].direction
                 }
             case COMPONENTS.TRANSFORM:
-                const m = el.components[COMPONENTS.TRANSFORM]
                 return {
                     valid: true,
-                    data: m.centerOrigin
+                    data: el.components[COMPONENTS.TRANSFORM].centerOrigin
                 }
             default:
                 break
@@ -82,19 +83,20 @@ export default class Gizmo {
         }
     }
 
-    #testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected) {
+    #testClick(depthSystem, arrow, translation, pickSystem, onGizmoStart, selected) {
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
         const mZ = this._translateMatrix(translation, this.zGizmo.components)
         GizmoSystem.drawToDepthSampler(
             depthSystem,
             arrow,
-            camera.viewMatrix,
-            camera.projectionMatrix,
+            this.camera.viewMatrix,
+            this.camera.projectionMatrix,
             [mX, mY, mZ],
             pickSystem.shaderSameSize,
-            camera.position,
-            translation
+            this.camera.position,
+            translation,
+            this.camera.ortho
         )
         const dd = pickSystem.depthPick(depthSystem.frameBuffer, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
@@ -149,10 +151,10 @@ export default class Gizmo {
 
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(depthSystem, camera, arrow, translation, pickSystem, onGizmoStart, selected, entities)
+                    this.#testClick(depthSystem, arrow, translation, pickSystem, onGizmoStart, selected, entities)
                 const t = el.components[COMPONENTS.TRANSFORM]
                 this.rotationTarget = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
-                this._drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)
+                this.#drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)
             }
         }
 
@@ -180,7 +182,7 @@ export default class Gizmo {
         return components[COMPONENTS.DIRECTIONAL_LIGHT] ? components[COMPONENTS.DIRECTIONAL_LIGHT][key] : components[COMPONENTS.SKYLIGHT][key]
     }
 
-    _drawGizmo(translation, view, proj, shader, arrow) {
+    #drawGizmo(translation, view, proj, shader, arrow) {
 
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
@@ -201,7 +203,6 @@ export default class Gizmo {
         arrow.vertexVBO.disable()
         window.gpu.bindVertexArray(null)
         window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
-
 
     }
 

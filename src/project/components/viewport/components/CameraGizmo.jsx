@@ -56,6 +56,7 @@ export default function CameraGizmo(props){
                 <div className={styles.cube} id={CAMERA_GIZMO} ref={ref}>
                     <div
                         className={[styles.face, styles.front].join(" ")}
+                        style={{background: "hsl(205, 100%, var(--brightness))"}}
                         onClick={() => {
                             bind(Math.PI / 2, 0)
                             updateCameraRotation()
@@ -64,8 +65,9 @@ export default function CameraGizmo(props){
 						Z+
                     </div>
                     <div 
-                        className={[styles.face, styles.back].join(" ")}
-					    onClick={() => {
+                        className={[styles.face, styles.back, styles.darker].join(" ")}
+                        style={{background: "hsl(205, 100%, var(--brightness))"}}
+                        onClick={() => {
                             bind(Math.PI * 1.5, 0)
                             updateCameraRotation()
                         }}
@@ -74,6 +76,7 @@ export default function CameraGizmo(props){
                     </div>
                     <div 
                         className={[styles.face, styles.right].join(" ")}
+                        style={{background: "hsl(0, 100%, var(--brightness))"}}
                         onClick={() => {
                             bind(0, 0)
                             updateCameraRotation()
@@ -82,7 +85,8 @@ export default function CameraGizmo(props){
                         X+
                     </div>
                     <div
-                        className={[styles.face, styles.left].join(" ")}
+                        className={[styles.face, styles.left, styles.darker].join(" ")}
+                        style={{background: "hsl(0, 100%, var(--brightness))"}}
                         onClick={() => {
                             bind(Math.PI, 0)
                             updateCameraRotation()
@@ -91,9 +95,10 @@ export default function CameraGizmo(props){
                         X-
                     </div>
                     <div
-                        className={[styles.face, styles.top].join(" ")}
+                        className={[styles.face, styles.top, styles.darker].join(" ")}
+                        style={{background: "hsl(120, 88%, var(--brightness))"}}
                         onClick={() => {
-                            bind(0, -Math.PI / 2)
+                            bind(0, Math.PI / 2)
                             updateCameraRotation()
                         }}
 
@@ -102,8 +107,9 @@ export default function CameraGizmo(props){
                     </div>
                     <div
                         className={[styles.face, styles.bottom].join(" ")}
+                        style={{background: "hsl(120, 88%, var(--brightness))"}}
                         onClick={() => {
-                            bind(0, Math.PI / 2)
+                            bind(0, -Math.PI / 2)
                             updateCameraRotation()
                         }}
                     >

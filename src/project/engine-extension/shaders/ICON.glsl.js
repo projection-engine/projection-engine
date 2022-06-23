@@ -86,11 +86,11 @@ void main(){
     float len = length(camPos - translation) * SIZE; 
     mat4 tt = transformMatrix;
 
-                
-    tt[3][0]  += t.x;
-    tt[3][1]  += t.y;
-    tt[3][2]  += t.z;
-    
+	if(!cameraIsOrthographic){
+		tt[3][0]  += t.x;
+		tt[3][1]  += t.y;
+		tt[3][2]  += t.z;
+    }
     
     mat4 m =  viewMatrix * tt;
 
@@ -117,7 +117,7 @@ void main(){
 		for ( int x = 0; x < 4; x++ )
 			for ( int y = 0; y < 4; y++ )
 				if ( x == y && x <= 2 )
-					sc[x][y] = forceAsIcon ? 1. :  len;
+					sc[x][y] = cameraIsOrthographic ? 1.75 : forceAsIcon ? 1. :  len;
 				else if ( x == y )
 					sc[x][y] = 1.;
 				else

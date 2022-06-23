@@ -9,7 +9,7 @@ export default function useSerializer(engine, settings, id) {
         let promise = []
 
         if (id) {
-            const canvas = engine.gpu.canvas
+            const canvas = window.gpu.canvas
             const preview = canvas.toDataURL()
             const res = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
             if (res) {

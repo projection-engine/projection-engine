@@ -14,10 +14,11 @@ export default function Camera(props) {
 
     useEffect(() => {
         if(engine.initialized) {
+            console.log("HERE")
             window.renderer.camera.ortho = settingsContext.ortho
             window.renderer.camera.updateProjection()
         }
-    }, [engine.initialized])
+    }, [engine.initialized, settingsContext.ortho])
     const cameraIcon = useMemo(() => {
         if (!settingsContext.ortho)
             return (
@@ -147,9 +148,6 @@ export default function Camera(props) {
                 <Button
                     className={shared.groupItemVert}
                     onClick={() => {
-                        window.renderer.camera.ortho = !window.renderer.camera.ortho
-                        window.renderer.camera.updateProjection()
-
                         settingsContext.ortho = !settingsContext.ortho
                     }}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>

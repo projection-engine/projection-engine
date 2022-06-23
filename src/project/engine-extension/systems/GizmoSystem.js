@@ -84,7 +84,9 @@ export default class GizmoSystem extends System {
         transforms,
         shader,
         camPos,
-        translation) {
+        translation,
+        camOrtho
+    ) {
         // DOESNT AFFECT AO BECAUSE IT IS DONE AFTER
         depthSystem.frameBuffer.startMapping()
         shader.use()
@@ -98,9 +100,12 @@ export default class GizmoSystem extends System {
                 uID: [...generateNextID(i + 1), 1.],
                 camPos,
                 translation,
+                cameraIsOrthographic: camOrtho
             })
+
             window.gpu.drawElements(window.gpu.TRIANGLES, mesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
         }
+        console.trace(camOrtho, shader)
         window.gpu.enable(window.gpu.CULL_FACE)
         mesh.finish()
 

@@ -16,10 +16,10 @@ import FileSystem from "../../../utils/files/FileSystem"
 
 export default function Material(props) {
     const [state, clear] = useDirectState({})
-    const lastID = useRef()
+    const lastID = useRef("")
 
     useEffect(() => {
-        if (!lastID.current || lastID.current !== props.entityID) {
+        if (!lastID.current || lastID.current !== props.entityID) { 
             clear()
             lastID.current = props.entityID
             const matSelected = props.engine?.materials.find(m => m.id === props.selected.materialID)
@@ -202,48 +202,54 @@ export default function Material(props) {
 
     return (
         <>
-            <Selector
-                selected={state.currentMaterial}
-                type={"material"}
-                handleChange={async (src, clear, close) => {
-                    if (src) {
-                        const file = await loadFile(src)
-                        if (file && file.response) {
-                            props.submit({
-                                blob: file.response,
-                                id: src.registryID,
-                                name: src.name
-                            })
-                            alert.pushAlert("Material loaded", "success")
-                            state.uniforms = file.response.uniforms
-                            state.currentMaterial = src
-                        }
-                        else {
-                            alert.pushAlert("Error loading material", "error")
+            <AccordionTemplate title={"Material instance"}>
+                <Selector
+                    selected={state.currentMaterial}
+                    type={"material"}
+                    handleChange={async (src, clear, close) => {
+                        if (src) {
+                            const file = await loadFile(src)
+                            if (file && file.response) {
+                                props.submit({
+                                    blob: file.response,
+                                    id: src.registryID,
+                                    name: src.name
+                                })
+                                alert.pushAlert("Material loaded", "success")
+                                state.uniforms = file.response.uniforms
+                                state.currentMaterial = src
+                            }
+                            else {
+                                alert.pushAlert("Error loading material", "error")
+                                clear()
+                            }
+                        } else {
+                            props.submit()
                             clear()
+                            close()
                         }
-                    } else {
-                        props.submit()
-                        clear()
-                        close()
-                    }
-                }}/>
-            {props.selected.uniforms?.length > 0 ? (
-                <Checkbox
-                    noMargin={true}
-                    label={"Override material uniforms"}
-                    width={"100%"}
-                    height={"25px"}
-                    checked={state.overrideMaterial}
-                    handleCheck={() => {
-                        const s = !state.overrideMaterial
-                        state.overrideMaterial = s
-                        props.submit(s, "overrideMaterial")
                     }}
                 />
-            ) : null}
+            </AccordionTemplate>
 
-
+            {state.uniforms?.length > 0 ? 
+                (
+                    <Checkbox
+                        noMargin={true}
+                        label={"Override material uniforms"}
+                        width={"100%"}
+                        height={"25px"}
+                        checked={state.overrideMaterial}
+                        handleCheck={() => {
+                            const s = !state.overrideMaterial
+                            state.overrideMaterial = s
+                            props.submit(s, "overrideMaterial")
+                        }} styles={{background: "var(--pj-border-primary)"}}
+                    />
+                ) 
+                : 
+                null}
+            {state.overrideMaterial && state.uniforms ? <div className={styles.divider}/> : undefined}
             {state.overrideMaterial && state.uniforms ?
                 state.uniforms?.map((u, i) => (
                     <React.Fragment key={i + "-uniforms-mat"}>

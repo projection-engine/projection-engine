@@ -105,7 +105,7 @@ export default class DevelopmentRenderer extends Renderer {
                 meshes,
                 params: p,
                 onWrap: this.editorSystem,
-                fallbackMaterial: this.debugMaterial,
+                fallbackMaterial: params.shadingModel !== SHADING_MODELS.DETAIL ?  this.debugMaterial : this.fallbackMaterial,
                 levelScript
             },
             this

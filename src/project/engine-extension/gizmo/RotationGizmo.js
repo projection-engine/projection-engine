@@ -202,7 +202,8 @@ export default class RotationGizmo {
             [mX, mY, mZ],
             pickSystem.shaderSameSize,
             camera.position,
-            translation
+            translation,
+            camera.ortho
         )
         const dd = pickSystem.depthPick(depthSystem.frameBuffer, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))

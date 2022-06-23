@@ -22,16 +22,11 @@
   --pj-color-quaternary: #777;
   --pj-color-quinary: #999;
   --pj-color-senary: white;
-
-    font-family: "Roboto";
-
   --pj-boxshadow: rgb(0 0 0 / 10%) 2px 4px 10px 2px;
   --background-input: #e7e7e7;
 }
 
 .dark {
-    font-family: "Roboto";
-
   --pj-accent-color: #0095ff;
   --pj-background-primary: #303030;
   --pj-background-secondary: #2b2b2b;
