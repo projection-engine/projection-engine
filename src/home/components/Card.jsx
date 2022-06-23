@@ -89,7 +89,7 @@ function Rename(props) {
     const dropdownContext = useContext(DropdownProvider)
     return (
         <TextField
-            handleChange={e => setName(e.target.value)}
+            handleChange={e => setName(e)}
             label={"New name"}
             placeholder={"New name"}
             value={name} height={"30px"}

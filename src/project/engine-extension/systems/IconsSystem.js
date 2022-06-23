@@ -1,6 +1,6 @@
 import System from "../../engine/basic/System"
 import TextureInstance from "../../engine/instances/TextureInstance"
-import Icon from "../Icon"
+import Icon from "../instances/Icon"
 import * as cameraShaderCode from "../shaders/GIZMO.glsl"
 import * as iconShaderCode from "../shaders/ICON.glsl"
 import ShaderInstance from "../../engine/instances/ShaderInstance"

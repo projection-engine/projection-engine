@@ -28,7 +28,6 @@ export default class Cameras {
         }
     }
 
-
     get camera() {
         return this.#camera
     }
@@ -36,9 +35,5 @@ export default class Cameras {
     set camera(data) {
         this.#camera = data
     }
-
-    onClick() {
-    }
-
 
 }

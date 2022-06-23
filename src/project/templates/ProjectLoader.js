@@ -45,7 +45,15 @@ export default class ProjectLoader {
     static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, id) {
         let newMat
         await new Promise(resolve => {
-            newMat = new MaterialInstance(vertexShader, shader, uniformData, settings, () => resolve(), id, cubeMapShader?.code)
+            newMat = new MaterialInstance({
+                vertex: vertexShader,
+                fragment: shader,
+                cubeMapShaderCode: cubeMapShader?.code,
+                onCompiled:  () => resolve(),
+                settings,
+                uniformData,
+                id
+            })
         })
         newMat.uniforms = uniforms
         return newMat

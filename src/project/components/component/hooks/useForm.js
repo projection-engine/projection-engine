@@ -156,7 +156,14 @@ export default function useForm(
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
-                                            newMat = new MaterialInstance(val.blob.vertexShader, val.blob.shader, val.blob.uniformData, val.blob.settings, () => resolve(), val.id)
+                                            newMat = new MaterialInstance({
+                                                id: val.id,
+                                                onCompiled:() => resolve(),
+                                                settings: val.blob.settings,
+                                                vertex: val.blob.vertexShader,
+                                                fragment: val.blob.shader,
+                                                uniformData: val.blob.uniformData
+                                            })
                                         })
                                         engine.setMaterials(prev => {
                                             return [...prev, newMat]

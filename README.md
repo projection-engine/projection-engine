@@ -1,6 +1,6 @@
 # Projection engine
 
-The **Projection Engine** is a 3D graphics engine designed and written from ground up to be multi-platform and easy to use.
+The **Projection DevelopmentRenderer** is a 3D graphics engine designed and written from ground up to be multi-platform and easy to use.
 
 ## 1. Screenshots
 
@@ -19,8 +19,8 @@ The **Projection Engine** is a 3D graphics engine designed and written from grou
 ## 2. History
 
 This engine started as a solo project on my vacation, but it quickly grew to something bigger. I was initially inspired by blender and already
-had some experience with Unreal Engine 4 and Unity, so I decided to invest some time creating my own game engine where I could build my projects on, so, december
-last year the Projection Engine was born, since then many big features came into existence and many more are coming.
+had some experience with Unreal DevelopmentRenderer 4 and Unity, so I decided to invest some time creating my own game engine where I could build my projects on, so, december
+last year the Projection DevelopmentRenderer was born, since then many big features came into existence and many more are coming.
 
 ### 2.1 Internal goals
 - Learn more about UI/UX
@@ -133,7 +133,7 @@ Multiple features are already implemented or on the way to the editor, here is a
   - Shaders
   
 ### 4.5. Licence
-The Projection Engine and all its modules are licenced under an MIT licence.
+The Projection DevelopmentRenderer and all its modules are licenced under an MIT licence.
 
 ### 5. Community
 - **Bugs - Feature request - Help**: [GitHub issues](https://github.com/projection-engine/editor/issues)

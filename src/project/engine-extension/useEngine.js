@@ -54,11 +54,12 @@ export default function useEngine(settings) {
         if (initialized) {
             window.renderer.gizmo = settings.gizmo
             window.renderer.updatePackage(
+                executingAnimation,
                 cursor,
                 entities,
                 materials,
                 meshes,
-                {canExecutePhysicsAnimation: executingAnimation, selected, setSelected, ...settings},
+                {selected, setSelected, ...settings},
                 onGizmoStart,
                 onGizmoEnd,
                 levelScript

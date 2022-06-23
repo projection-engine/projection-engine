@@ -1,11 +1,11 @@
-import System from "../engine/basic/System"
-import GridSystem from "./systems/GridSystem"
-import IconsSystem from "./systems/IconsSystem"
-import SYSTEMS from "../engine/templates/SYSTEMS"
-import GizmoSystem from "./systems/GizmoSystem"
-import SelectedSystem from "./systems/SelectedSystem"
-import PreviewSystem from "./systems/PreviewSystem"
-import BackgroundSystem from "./systems/BackgroundSystem"
+import System from "../../engine/basic/System"
+import GridSystem from "./GridSystem"
+import IconsSystem from "./IconsSystem"
+import SYSTEMS from "../../engine/templates/SYSTEMS"
+import GizmoSystem from "./GizmoSystem"
+import SelectedSystem from "./SelectedSystem"
+import PreviewSystem from "./PreviewSystem"
+import BackgroundSystem from "./BackgroundSystem"
 
 
 export default class Wrapper extends System {

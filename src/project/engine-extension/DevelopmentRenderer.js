@@ -2,7 +2,7 @@ import Renderer from "../engine/Renderer"
 import SYSTEMS from "../engine/templates/SYSTEMS"
 import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
 import Cameras from "./Cameras"
-import Wrapper from "./Wrapper"
+import Wrapper from "./systems/Wrapper"
 
 import MaterialInstance from "../engine/instances/MaterialInstance"
 
@@ -11,30 +11,35 @@ import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
 import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem"
+import Packager from "../engine/Packager"
+import ENVIRONMENT from "../engine/ENVIRONMENT"
 
 
-export default class Engine extends Renderer {
+export default class DevelopmentRenderer extends Renderer {
     gizmo
     cameraData = {}
 
     constructor( resolution, systems) {
         super( resolution, systems)
+        this.environment = ENVIRONMENT.DEV
         this.cameraData = new Cameras()
         this.editorSystem = new Wrapper(resolution)
-        this.debugMaterial = new MaterialInstance(
-            shaderCode.vertex,
-            debugCode.fragment,
-            [{
+        this.debugMaterial = new MaterialInstance({
+            vertex: shaderCode.vertex,
+            fragment: debugCode.fragment,
+            uniformData: [{
                 key: "shadingModel",
                 data: SHADING_MODELS.DEPTH,
                 type: DATA_TYPES.INT
-            }], {
+            }],
+            settings: {
                 isForwardShaded: true,
                 doubledSided: true
             },
-            undefined,
-            "shading-models"
-        )
+            id: "shading-models"
+        })
+
+        
     }
     generatePreview(material){
         return this.editorSystem.previewSystem.execute(this.params, this.data, material)
@@ -57,17 +62,15 @@ export default class Engine extends Renderer {
     }
 
 
-    updatePackage(cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
+    updatePackage(prodEnv, cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
         this.cameraData.cameraSpeed = params.cameraSpeed
         this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
         this.cameraData.cameraScrollDelay = params.cameraScrollDelay
-
-        if (!params.canExecutePhysicsAnimation)
+        this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
+        if (!prodEnv)
             this.cameraData.cameraEvents.startTracking()
         else
             this.cameraData.cameraEvents.stopTracking()
-
-        this._changed = true
 
         this.camera.zNear = params.zNear
         this.camera.zFar = params.zFar
@@ -83,26 +86,30 @@ export default class Engine extends Renderer {
         this.camera.bloomThreshold = params.bloomThreshold
         this.camera.gamma = params.gamma
         this.camera.exposure = params.exposure
-        const camera = params.canExecutePhysicsAnimation ? this.rootCamera : this.camera
+
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
-        super.updatePackage(
-            this.debugMaterial,
-            entities,
-            params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
-            meshes,
+
+        const p = {
+            ...params,
+            onGizmoStart,
+            onGizmoEnd,
+            camera: prodEnv ? this.rootCamera : this.camera,
+            gizmo: this.gizmo,
+            cursor,
+            selectedMap: this.arrayToObject(params.selected)
+        }
+        Packager(
             {
-                ...params,
-                onGizmoStart,
-                onGizmoEnd,
-                camera,
-                gizmo: this.gizmo,
-                cursor,
-                selectedMap: this.arrayToObject(params.selected)
+                entities,
+                materials: params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
+                meshes,
+                params: p,
+                onWrap: this.editorSystem,
+                fallbackMaterial: this.debugMaterial,
+                levelScript
             },
-            this.editorSystem,
-            levelScript
+            this
         )
-        this.start()
     }
     arrayToObject(arr){
         const obj = {}

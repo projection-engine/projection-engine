@@ -21,7 +21,7 @@ export default function Projects(props) {
                 <div className={styles.title}>
                     <label>{EN.HOME.PROJECTS.PROJECTS}</label>
                     <TextField
-                        handleChange={e => setSearchString(e.target.value)}
+                        handleChange={e => setSearchString(e)}
                         placeholder={EN.HOME.PROJECTS.SEARCH}
                         value={searchString}
                         height={"25px"}
@@ -81,7 +81,7 @@ function Create(props) {
 
     return (
         <TextField
-            handleChange={e => setProjectName(e.target.value)}
+            handleChange={e => setProjectName(e)}
             label={"New project"}
             placeholder={"New project"}
             value={projectName}

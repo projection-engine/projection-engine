@@ -63,7 +63,7 @@ function Home() {
                                 }))
                         }}
                         refresh={() => refresh()}
-                         projects={projects}
+                        projects={projects}
                         setProjects={setProjects}/>
                     <IssuesList/>
                 </Switcher>

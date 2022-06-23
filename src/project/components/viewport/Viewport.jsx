@@ -22,15 +22,15 @@ import ViewportTab from "./components/ViewportTab"
 import CameraTab from "./components/CameraTab"
 import Camera from "./components/Camera"
 import Gizmo from "./components/Gizmo"
-import RendererConstructor from "../../engine/RendererConstructor"
-import Engine from "../../engine-extension/Engine"
+import Constructor from "../../engine/Constructor"
+import DevelopmentRenderer from "../../engine-extension/DevelopmentRenderer"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./hooks/findEntities.js", import.meta.url))
 export default function Viewport(props) {
     useEffect(() => {
-        RendererConstructor(document.getElementById(RENDER_TARGET), settings.resolution, Engine)
+        Constructor(document.getElementById(RENDER_TARGET), settings.resolution, DevelopmentRenderer)
         props.engine.setInitialized(true)
     }, [])
 
