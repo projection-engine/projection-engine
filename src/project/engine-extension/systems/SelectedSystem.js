@@ -24,7 +24,6 @@ export default class SelectedSystem extends System {
                 format: window.gpu.RED,
                 type: window.gpu.FLOAT
             })
-            .depthTest()
     }
 
 

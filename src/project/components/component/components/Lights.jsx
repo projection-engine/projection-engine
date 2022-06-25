@@ -1,11 +1,9 @@
 import PropTypes from "prop-types"
-import styles from "../styles/Forms.module.css"
 import {Checkbox} from "@f-ui/core"
 import React, {useEffect, useState} from "react"
 import Range from "../../../../components/range/Range"
 import ColorPicker from "../../../../components/color/ColorPicker"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import LabeledRange from "../../../../components/templates/LabeledRange"
 
@@ -41,245 +39,146 @@ export default function Lights(props) {
     useEffect(() => {
         setState(getNewState())
     }, [props.selected])
-    const [hasChanged, setHasChanged] = useState(false)
-    const saveVersion = () => {
-        if (!hasChanged) {
-            setHasChanged(true)
-            props.engine.dispatchChanges({
-                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
-                payload: {
-                    key: props.selected.constructor.name,
-                    entityID: props.entityID,
-                    component: props.selected
-                }
-            })
-        }
-    }
 
+
+    const dirKey = props.type === COMPONENTS.POINT_LIGHT ? "position" : "direction"
     return (
         <>
             {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
                 <>
-
-                    <AccordionTemplate title={'Direction'} type={'flex'}>
-                        <Range
-                            accentColor={'red'}
-                            metric={'x'}
+                    <AccordionTemplate title={"Direction"} >
+                        <LabeledRange
+                            variant={"embedded"}
+                            label={"X"}
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.x}
                             onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit([v, state.placement.y, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                props.selected.direction = [parseFloat(e), state.placement.y, state.placement.z]
-                                props.selected.changed = false
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            x: parseFloat(e)
-                                        }
+                                props.submit([ v, state.placement.y, state.placement.z], dirKey)
+                                setState({
+                                    ...state,
+                                    placement: {
+                                        ...state.placement,
+                                        x: v
                                     }
                                 })
-                            }}/>
-                        <Range
-                            accentColor={'green'}
-                            metric={'y'}
+                            }}
+                            handleChange={e => props.selected[dirKey] = [e, state.placement.y, state.placement.z]}/>
+                        <LabeledRange
+                            label={"Y"}
+                            variant={"embedded"}
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.y}
                             onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit([state.placement.x, v, state.placement.z], props.type === 'PointLightComponent' ? 'position' : 'direction')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                props.selected.direction = [state.placement.x, parseFloat(e), state.placement.z]
-                                props.selected.changed = false
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            y: parseFloat(e)
-                                        }
+                                props.submit([state.placement.x,  v, state.placement.z], dirKey)
+                                setState({
+                                    ...state,
+                                    placement: {
+                                        ...state.placement,
+                                        y: v
                                     }
                                 })
-                            }}/>
-                        <Range
-                            accentColor={'blue'}
-                            metric={'z'}
+                            }}
+                            handleChange={e => props.selected[dirKey] = [state.placement.x, e, state.placement.z]}/>
+                        <LabeledRange
+                            label={"Z"}
+                            variant={"embedded"}
                             incrementPercentage={.01}
                             precision={2}
                             value={state.placement.z}
                             onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit([state.placement.x, state.placement.y, v], props.type === 'PointLightComponent' ? 'position' : 'direction')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                props.selected.direction = [state.placement.x, state.placement.y, parseFloat(e)]
-                                props.selected.changed = false
-
-                                setState(prev => {
-                                    return {
-                                        ...prev, placement: {
-                                            ...prev.placement,
-                                            z: parseFloat(e)
-                                        }
+                                props.submit([state.placement.x, state.placement.y, v], dirKey)
+                                setState({
+                                    ...state,
+                                    placement: {
+                                        ...state.placement,
+                                        z: v
                                     }
                                 })
-                            }}/>
+                            }}
+                            handleChange={e => props.selected[dirKey] = [state.placement.x, state.placement.y, e]}/>
                     </AccordionTemplate>
 
                 </>
                 :
                 null
             }
-
-
-            {props.type === COMPONENTS.SKYLIGHT ?
-                <>
-
-                    <AccordionTemplate title={'Global illumination'}>
-                        <label className={styles.label} style={{marginBottom: '4px'}}>Intensity</label>
-                        <Range
-                            accentColor={'red'}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.indirectAttenuation}
-                            minValue={0}
-                            onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit(v, 'attenuation')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                setState(prev => {
-                                    return {
-                                        ...prev,
-                                        indirectAttenuation: parseFloat(e)
-                                    }
-                                })
-                            }}/>
-
-                        <label className={styles.label} style={{marginBottom: '4px'}}>Samples</label>
-                        <Range
-                            integer={true}
-                            accentColor={'green'}
-                            value={state.lpvSamples}
-                            minValue={1}
-                            maxValue={128}
-                            onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit(v, 'lpvSamples')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                setState(prev => {
-                                    return {
-                                        ...prev,
-                                        lpvSamples: parseInt(e)
-                                    }
-                                })
-                            }}/>
-
-                    </AccordionTemplate>
-
-                </>
-                :
-                null
-            }
+            
             {props.type === COMPONENTS.POINT_LIGHT ?
-
-                <AccordionTemplate title={'Attenuation'} type={'flex'}>
+                <AccordionTemplate title={"Attenuation"} type={"flex"}>
                     <Range
-                        accentColor={'red'}
+                        accentColor={"red"}
                         incrementPercentage={.01}
                         minValue={.0001}
                         precision={2}
                         value={state.attenuation.x}
                         onFinish={(v) => {
-                            setHasChanged(false)
-                            props.submit([v, state.attenuation.y, state.attenuation.z], 'attenuation')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.attenuation[0] = parseFloat(e)
-                            setState(prev => {
-                                return {
-                                    ...prev, attenuation: {
-                                        ...prev.attenuation,
-                                        x: parseFloat(e)
-                                    }
+                            props.submit([v, state.attenuation.y, state.attenuation.z], "attenuation")
+                            setState(({
+                                ...state,
+                                attenuation:  {
+                                    ...state.attenuation,
+                                    x: v
                                 }
-                            })
-                        }}/>
+                            }))
+                        }}
+                        handleChange={e => props.selected.attenuation[0] = e}/>
                     <Range
-                        accentColor={'green'}
+                        accentColor={"green"}
                         incrementPercentage={.01}
                         minValue={.01}
                         precision={2}
                         value={state.attenuation.y}
                         onFinish={(v) => {
-                            setHasChanged(false)
-                            props.submit([state.attenuation.x, v, state.attenuation.z], 'attenuation')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.attenuation[1] = parseFloat(e)
-                            setState(prev => {
-                                return {
-                                    ...prev, attenuation: {
-                                        ...prev.attenuation,
-                                        y: parseFloat(e)
-                                    }
+                            props.submit([state.attenuation.x, v, state.attenuation.z], "attenuation")
+                            setState(({
+                                ...state,
+                                attenuation:  {
+                                    ...state.attenuation,
+                                    y: v
                                 }
-                            })
-                        }}/>
+                            }))
+                        }}
+                        handleChange={e => props.selected.attenuation[1] = e}/>
                     <Range
-                        accentColor={'blue'}
+                        accentColor={"blue"}
                         incrementPercentage={.01}
                         minValue={.01}
                         precision={2}
                         value={state.attenuation.z}
                         onFinish={(v) => {
-                            setHasChanged(false)
-                            props.submit([state.attenuation.x, state.attenuation.y, v], 'attenuation')
-                        }}
-                        handleChange={e => {
-                            saveVersion()
-                            props.selected.attenuation[2] = parseFloat(e)
-                            setState(prev => {
-                                return {
-                                    ...prev, attenuation: {
-                                        ...prev.attenuation,
-                                        z: parseFloat(e)
-                                    }
+                            props.submit([state.attenuation.x, state.attenuation.y, v], "attenuation")
+                            setState(({
+                                ...state,
+                                attenuation:  {
+                                    ...state.attenuation,
+                                    z: v
                                 }
-                            })
-                        }}/>
+                            }))
+                        }}
+                        handleChange={e => props.selected.attenuation[2] = e}/>
 
                 </AccordionTemplate>
                 :
                 null
             }
 
-            <AccordionTemplate title={'View planes'} type={'flex'}>
-                <Range
-                    accentColor={'red'}
+            <AccordionTemplate title={"View planes"} type={"grid"}>
+                <LabeledRange
+                    accentColor={"red"}
                     value={state.zFar}
-                    metric={'Far'}
+                    label={"Far"}
                     precision={3}
                     incrementPercentage={.01}
                     onFinish={(v) => {
-                        setHasChanged(false)
-                        props.submit(v, 'zFar')
+                        props.submit(v, "zFar")
+                        setState(({
+                            ...state,
+                            zFar: v
+                        }))
                     }}
                     handleChange={e => {
-                        saveVersion()
                         setState(prev => {
                             return {
                                 ...prev,
@@ -288,19 +187,20 @@ export default function Lights(props) {
                         })
                     }}
                 />
-                <Range
-                    accentColor={'green'}
+                <LabeledRange
+                    accentColor={"green"}
                     value={state.zNear}
-                    metric={'Near'}
+                    label={"Near"}
                     precision={3}
                     incrementPercentage={.01}
                     onFinish={(v) => {
-                        setHasChanged(false)
-                        props.submit(v, 'zNear')
+                        props.submit(v, "zNear")
+                        setState(({
+                            ...state,
+                            zNear: v
+                        }))
                     }}
                     handleChange={e => {
-                        saveVersion()
-
                         setState(prev => {
                             return {
                                 ...prev,
@@ -309,84 +209,68 @@ export default function Lights(props) {
                         })
                     }}/>
             </AccordionTemplate>
-            <AccordionTemplate title={'Intensity & color'}>
+            <AccordionTemplate title={"Intensity & color"}>
                 <ColorPicker
                     value={state.color}
                     submit={color => {
-                        saveVersion()
-                        setHasChanged(false)
                         const split = color.match(/[\d.]+/g)
                         const [r, g, b] = split.map(v => parseFloat(v))
-                        setState(prev => {
-                            return {
-                                ...prev,
-                                color: {r: r, g: g, b: b}
-                            }
+                        setState({
+                            ...state,
+                            color: {r: r, g: g, b: b}
                         })
-                        props.submit([r, g, b], 'color')
+                        props.submit([r, g, b], "color")
                     }}/>
                 <LabeledRange
-                    label={'Intensity'}
-                    accentColor={'red'}
+                    label={"Intensity"}
+                    accentColor={"red"}
                     value={state.intensity}
                     minValue={.0001}
                     incrementPercentage={.01}
                     precision={4}
-                    onFinish={(v) => {
-                        setHasChanged(false)
-                        props.submit(v, 'intensity')
+                    onFinish={(v) => { 
+                        props.submit(v, "intensity")
+                        setState(({
+                            ...state,
+                            intensity: v
+                        }))
                     }}
-                    handleChange={e => {
-                        saveVersion()
-                        props.selected.intensity = e
-                        setState(prev => {
-                            return {
-                                ...prev,
-                                intensity: e
-                            }
-                        })
-                    }}/>
+                    handleChange={e => props.selected.intensity = e}/>
             </AccordionTemplate>
-            <AccordionTemplate title={'Shadows'}>
-                <div className={styles.inline} style={{alignItems: 'flex-end'}}>
-                    <Checkbox
-                        noMargin={true}
-                        label={'Casts shadows'}
-                        width={'100%'}
-                        height={'25px'}
-                        checked={state.shadowMap}
-                        handleCheck={() => {
-                            saveVersion()
-                            setHasChanged(false)
+            <AccordionTemplate title={"Shadows"} type={"grid"}>
 
-                            setState({...state, shadowMap: !state.shadowMap})
-                            props.submit(!state.shadowMap, 'shadowMap')
+                <Checkbox
+                    noMargin={true}
+                    label={"Casts shadows"}
+                    width={"100%"}
+                    height={"25px"}
+                    checked={state.shadowMap}
+                    handleCheck={() => {
+                        setState({...state, shadowMap: !state.shadowMap})
+                        props.submit(!state.shadowMap, "shadowMap")
+                    }}/>
+                {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
+                    <LabeledRange
+                        label={"Size"}
+                        accentColor={"green"}
+                        value={state.size}
+                        minValue={1}
+                        incrementPercentage={1}
+                        precision={0}
+                        onFinish={(v) => {
+                            props.submit(v, "size")
+                            setState(({
+                                ...state,
+                                size: v
+                            }))
+                        }}
+                        handleChange={e => {
+                            props.selected.size = e
                         }}/>
-                    {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
-                        <LabeledRange
-                            label={'Size'}
-                            accentColor={'green'}
-                            value={state.size}
-                            minValue={1}
-                            incrementPercentage={1}
-                            precision={0}
-                            onFinish={(v) => {
-                                setHasChanged(false)
-                                props.submit(v, 'size')
-                            }}
-                            handleChange={e => {
-                                saveVersion()
-                                setState(prev => {
-                                    return {
-                                        ...prev,
-                                        size: parseFloat(e)
-                                    }
-                                })
-                            }}/>
-                        :
-                        null
-                    }
-                </div>
+                    :
+                    null
+                }
+
             </AccordionTemplate>
 
 
@@ -396,14 +280,8 @@ export default function Lights(props) {
 }
 
 Lights.propTypes = {
-    engine: PropTypes.object,
     entityID: PropTypes.string,
-
-
-    type: PropTypes.oneOf(['PointLightComponent', 'DirectionalLightComponent']),
+    type: PropTypes.oneOf([COMPONENTS.POINT_LIGHT, COMPONENTS.DIRECTIONAL_LIGHT ]),
     selected: PropTypes.object,
-
-    submitAttenuation: PropTypes.func,
-    submitPlacement: PropTypes.func,
-    submitColor: PropTypes.func
+    submit: PropTypes.func,    
 }

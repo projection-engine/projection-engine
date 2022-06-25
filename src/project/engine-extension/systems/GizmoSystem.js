@@ -9,6 +9,7 @@ import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 import TransformationTooltip from "../gizmo/TransformationTooltip"
 import generateNextID from "../../engine/utils/generateNextID"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
+import FramebufferInstance from "../../engine/instances/FramebufferInstance"
 
 function move(event) {
     const canvas = event.target
@@ -27,9 +28,10 @@ export default class GizmoSystem extends System {
         super() 
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
         const gpu = window.gpu
-        const canvas = gpu.canvas
-   
-        const targetID = canvas.id + "-gizmo"
+        this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h)
+            .texture()
+            .depthTest()
+        const targetID = gpu.canvas.id + "-gizmo"
         if (document.getElementById(targetID) !== null)
             this.renderTarget = document.getElementById(targetID)
         else {
@@ -44,13 +46,15 @@ export default class GizmoSystem extends System {
             document.body.appendChild(this.renderTarget)
         }
         this.gizmoTooltip = new TransformationTooltip(this.renderTarget)
-        this.translationGizmo = new TranslationGizmo( this.gizmoShader, this.gizmoTooltip, resolution)
-        this.scaleGizmo = new ScaleGizmo( this.gizmoShader, this.gizmoTooltip, resolution)
-        this.rotationGizmo = new RotationGizmo( this.renderTarget, resolution)
+        this.translationGizmo = new TranslationGizmo( this.gizmoShader, this.gizmoTooltip, resolution, this)
+        this.scaleGizmo = new ScaleGizmo( this.gizmoShader, this.gizmoTooltip, resolution, this)
+        this.rotationGizmo = new RotationGizmo( this.renderTarget, resolution, this)
 
         this.handlerListener = this.handler.bind(this)
         window.gpu.canvas.addEventListener("mouseup", this.handlerListener)
         window.gpu.canvas.addEventListener("mousedown", this.handlerListener)
+
+
     }
 
     handler(event) {
@@ -76,7 +80,7 @@ export default class GizmoSystem extends System {
         }
     }
 
-    static drawToDepthSampler(
+    drawToDepthSampler(
         depthSystem,
         mesh,
         view,
@@ -87,8 +91,7 @@ export default class GizmoSystem extends System {
         translation,
         camOrtho
     ) {
-        // DOESNT AFFECT AO BECAUSE IT IS DONE AFTER
-        depthSystem.frameBuffer.startMapping()
+        this.frameBuffer.startMapping()
         shader.use()
         mesh.use()
         window.gpu.disable(window.gpu.CULL_FACE)
@@ -107,9 +110,9 @@ export default class GizmoSystem extends System {
         }
         window.gpu.enable(window.gpu.CULL_FACE)
         mesh.finish()
+        this.frameBuffer.stopMapping()
 
-
-        depthSystem.frameBuffer.stopMapping()
+        return this.frameBuffer
     }
 
     execute(

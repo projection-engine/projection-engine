@@ -20,8 +20,8 @@ export default class TranslationGizmo extends Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor( gizmoShader, renderTarget, resolution) {
-        super( gizmoShader, renderTarget, resolution)
+    constructor( gizmoShader, renderTarget, resolution, sys) {
+        super( gizmoShader, renderTarget, resolution, sys)
         this.xGizmo = this._mapEntity(2, "x")
         this.yGizmo = this._mapEntity(3, "y")
         this.zGizmo = this._mapEntity(4, "z")
@@ -101,8 +101,6 @@ export default class TranslationGizmo extends Gizmo {
         if (this.target.length === 1) {
             let t = this.target[0].components[COMPONENTS.TRANSFORM]?.translation
             if (!t)
-                t = this.target[0].components[COMPONENTS.SKYLIGHT]?.direction
-            if (!t)
                 t = this.target[0].components[COMPONENTS.DIRECTIONAL_LIGHT]?.direction
             this.renderTarget.render(t)
         }
@@ -124,7 +122,7 @@ export default class TranslationGizmo extends Gizmo {
         for (let i = 0; i < this.target.length; i++) {
             const target = this.target[i]
             if (!target.components[COMPONENTS.TRANSFORM]) {
-                const key = target.components[COMPONENTS.SKYLIGHT] ? COMPONENTS.SKYLIGHT : COMPONENTS.DIRECTIONAL_LIGHT
+                const key = COMPONENTS.DIRECTIONAL_LIGHT
                 target.components[key].direction = [
                     target.components[key].direction[0] - toApply[0],
                     target.components[key].direction[1] - toApply[1],

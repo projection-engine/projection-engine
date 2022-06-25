@@ -16,11 +16,11 @@ export default class Gizmo {
     xGizmo
     yGizmo
     zGizmo
-    constructor( gizmoShader, renderTarget, resolution) {
+    constructor( gizmoShader, renderTarget, resolution, sys) {
+        this.sys = sys
         this.renderTarget = renderTarget
         this.resolution = resolution
         this.gizmoShader = gizmoShader
-
     }
 
     onMouseDown(event) {
@@ -62,7 +62,6 @@ export default class Gizmo {
         const k = Object.keys(el.components)
         for (let i = 0; i < k.length; i++) {
             switch (k[i]) {
-            case COMPONENTS.SKYLIGHT:
             case COMPONENTS.DIRECTIONAL_LIGHT:
                 return {
                     valid: true,
@@ -87,7 +86,7 @@ export default class Gizmo {
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
         const mZ = this._translateMatrix(translation, this.zGizmo.components)
-        GizmoSystem.drawToDepthSampler(
+        const FBO = this.sys.drawToDepthSampler(
             depthSystem,
             arrow,
             this.camera.viewMatrix,
@@ -98,7 +97,7 @@ export default class Gizmo {
             translation,
             this.camera.ortho
         )
-        const dd = pickSystem.depthPick(depthSystem.frameBuffer, this.currentCoord)
+        const dd = pickSystem.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
@@ -179,7 +178,10 @@ export default class Gizmo {
     }
 
     getLightData(key, components) {
-        return components[COMPONENTS.DIRECTIONAL_LIGHT] ? components[COMPONENTS.DIRECTIONAL_LIGHT][key] : components[COMPONENTS.SKYLIGHT][key]
+        const dir = components[COMPONENTS.DIRECTIONAL_LIGHT]
+        if(dir)
+            return dir[key]
+        return undefined
     }
 
     #drawGizmo(translation, view, proj, shader, arrow) {
@@ -203,7 +205,6 @@ export default class Gizmo {
         arrow.vertexVBO.disable()
         window.gpu.bindVertexArray(null)
         window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
-
     }
 
     _draw(view, t, proj, a, id, shader, tt, arrow) {

@@ -16,28 +16,7 @@
   min-width: 250px;
 }
 
-.logoWrapper {
-  user-select: none;
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  gap: 16px;
-  color: var(--pj-color-secondary);
-}
 
-.logo {
-  height: 45px;
-  width: 45px;
-  border-radius: 5px;
-  display: flex;
-  place-content: center;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
 
 .button {
   width: 100%;
@@ -47,17 +26,6 @@
   justify-content: flex-start;
   gap: 8px;
   padding: 4px !important;
-}
-
-.logoTitle {
-  position: relative;
-  z-index: 0;
-  font-size: 1.3rem;
-  font-weight: 550;
-  white-space: nowrap;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .block {

@@ -5,7 +5,6 @@ import AccordionTemplate from "../../../../components/templates/AccordionTemplat
 import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import LabeledRange from "../../../../components/templates/LabeledRange"
-import SYSTEMS from "../../../engine/templates/SYSTEMS"
 
 export default function Rendering() {
     const settings = useContext(SettingsProvider)
@@ -28,17 +27,19 @@ export default function Rendering() {
 
         state.ssgiQuality = settings.ssgiQuality
         state.ssgiBrightness = settings.ssgiBrightness
+        state.ssgiStepSize = settings.ssgiStepSize
+
     }, [])
 
 
     return (
-        <div className={styles.ppWrapper} style={{gap: "4px"}}>
+        <>
 
             <Checkbox
                 noMargin={true}
                 checked={settings.fxaa}
                 handleCheck={() => settings.fxaa = !settings.fxaa}
-                label={"FXAA anti-aliasing"}
+                label={"Anti-aliasing"}
                 height={"25px"}
                 width={"100%"}/>
 
@@ -63,7 +64,6 @@ export default function Rendering() {
                 <LabeledRange
                     disabled={!settings.ssgi}
                     label={"Quality"}
-                    accentColor={"green"}
                     onFinish={v => settings.ssgiQuality = v}
                     incrementPercentage={1}
                     precision={0}
@@ -72,10 +72,10 @@ export default function Rendering() {
                     handleChange={v => state.ssgiQuality = v}
                     value={state.ssgiQuality}
                 />
+
                 <LabeledRange
                     disabled={!settings.ssgi}
                     label={"Intensity"}
-                    accentColor={"green"}
                     onFinish={v => {
                         settings.ssgiBrightness = v
                         state.ssgiBrightness = v
@@ -89,6 +89,20 @@ export default function Rendering() {
                         window.renderer.params.ssgiBrightness = v
                     }}
                     value={state.ssgiBrightness}
+                />
+                <LabeledRange
+                    disabled={!settings.ssgi}
+                    label={"Sample size"}
+                    onFinish={v => {
+                        settings.ssgiStepSize = v
+                        state.ssgiStepSize = v
+                    }}
+                    incrementPercentage={.001}
+                    precision={4}
+                    minValue={.05}
+                    maxValue={1}
+                    handleChange={v => window.renderer.params.ssgiStepSize = v}
+                    value={state.ssgiStepSize}
                 />
             </AccordionTemplate>
             
@@ -214,6 +228,6 @@ export default function Rendering() {
                     />
                 </div>
             </AccordionTemplate>
-        </div>
+        </>
     )
 }

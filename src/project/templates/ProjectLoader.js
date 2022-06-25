@@ -76,6 +76,9 @@ export default class ProjectLoader {
                     })
                     parsedEntity.components[k] = component
                 }
+
+                if(k === COMPONENTS.DIRECTIONAL_LIGHT)
+                    component.update()
             }
         }
         return parsedEntity
@@ -90,30 +93,47 @@ const ENTITIES = {
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.MATERIAL]: async (entity, k) => {
         const newMat = new MaterialComponent(entity.components[k].id)
-
         newMat.materialID = entity.components[k].materialID
-        const toLoad = (entity.components[k].uniforms ? entity.components[k].uniforms : []).map(u => {
-            if (u.type === DATA_TYPES.TEXTURE && u.modified) return new Promise(async resolve => {
-                const fileData = await ProjectLoader.readFromRegistry(u.value)
-                if (fileData) {
-                    let texture
-                    await new Promise(r => {
-                        const k = u.format
-                        texture = new TextureInstance(fileData, k.yFlip, window.gpu[k.internalFormat], window.gpu[k.format], true, false, window.gpu.UNSIGNED_BYTE, undefined, undefined, 0, () => {
-                            r()
+        const toLoad = [],
+            toLoop = entity.components[k].uniforms ? entity.components[k].uniforms : []
+
+        for(let index= 0; index < toLoop.length; index++){
+            const u = toLoad[index]
+            if(u){
+                if (u.type === DATA_TYPES.TEXTURE && u.modified){
+                    const fileData = await ProjectLoader.readFromRegistry(u.value)
+                    if (fileData) {
+                        let texture
+                        await new Promise(r => {
+                            const k = u.format
+                            texture = new TextureInstance(
+                                fileData,
+                                k.yFlip,
+                                window.gpu[k.internalFormat],
+                                window.gpu[k.format],
+                                true,
+                                false,
+                                window.gpu.UNSIGNED_BYTE,
+                                undefined,
+                                undefined,
+                                0,
+                                () => r()
+                            )
                         })
-                    })
-                    resolve({key: u.key, value: texture.texture, changed: true})
+                        toLoad.push({key: u.key, value: texture.texture, changed: true})
+                    }
+                    else
+                        toLoad.push(u)
                 }
-            })
-            return new Promise(resolve => resolve(u))
-        })
+                else
+                    toLoad.push(u)
+            }
+        }
         newMat.uniforms = entity.components[k].uniforms
         newMat.overrideMaterial = entity.components[k].overrideMaterial
-        newMat.uniformValues = {}
-        const values = await Promise.all(toLoad)
         newMat.uniformValues = {...entity.components[k].uniformValues}
-        values.forEach(dd => {
+
+        toLoad.forEach(dd => {
             if (dd.changed) newMat.uniformValues[dd.key] = dd.value
         })
 

@@ -30,7 +30,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                             name: res.meta?.data?.name
                         })
                     try{
-                        const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data, gpu) : undefined).filter(e => e))
+                        const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data) : undefined).filter(e => e))
                         engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
                     }catch (err){
                         console.error(err)
@@ -52,9 +52,6 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
             ipcRenderer.send(CHANNELS.SEND, {projectPath: window.fileSystem.path, projectID: id, listenID})
         }
     }, [engine.initialized])
-
-
-
 
 
     return {

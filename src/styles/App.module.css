@@ -8,23 +8,23 @@
   background-color: var(--pj-background-primary);
 }
 
-.light {
-  --pj-accent-color: #0095ff;
-  --pj-background-primary: white;
-  --pj-background-secondary: #f8f6f6;
-  --pj-background-tertiary: #f6f4f4;
-  --pj-background-quaternary: #e8f0fe;
-  --pj-border-primary: #f1f1f5;
-  --pj-border-secondary: #e0e0e0;
-  --pj-color-primary: #333;
-  --pj-color-secondary: #555;
-  --pj-color-tertiary: #666;
-  --pj-color-quaternary: #777;
-  --pj-color-quinary: #999;
-  --pj-color-senary: white;
-  --pj-boxshadow: rgb(0 0 0 / 10%) 2px 4px 10px 2px;
-  --background-input: #e7e7e7;
-}
+/*.light {*/
+/*  --pj-accent-color: #0095ff;*/
+/*  --pj-background-primary: white;*/
+/*  --pj-background-secondary: #f8f6f6;*/
+/*  --pj-background-tertiary: #f6f4f4;*/
+/*  --pj-background-quaternary: #e8f0fe;*/
+/*  --pj-border-primary: #f1f1f5;*/
+/*  --pj-border-secondary: #e0e0e0;*/
+/*  --pj-color-primary: #333;*/
+/*  --pj-color-secondary: #555;*/
+/*  --pj-color-tertiary: #666;*/
+/*  --pj-color-quaternary: #777;*/
+/*  --pj-color-quinary: #999;*/
+/*  --pj-color-senary: white;*/
+/*  --pj-boxshadow: rgb(0 0 0 / 10%) 2px 4px 10px 2px;*/
+/*  --background-input: #e7e7e7;*/
+/*}*/
 
 .dark {
   --pj-accent-color: #0095ff;

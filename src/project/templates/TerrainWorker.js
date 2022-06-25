@@ -58,9 +58,9 @@ export default class TerrainWorker {
                 resolve({
                     vertices,
                     uvs,
-                    normals,
+                    // normals,
                     indices,
-                    tangents,
+                    // tangents,
                     heightMap: imgBlob
                 })
             }

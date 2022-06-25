@@ -192,38 +192,15 @@ export default function useForm(
                     />
                 )
             }
-            case COMPONENTS.SKYLIGHT:
             case COMPONENTS.DIRECTIONAL_LIGHT:
             case COMPONENTS.POINT_LIGHT: {
                 return (
                     <Lights
                         entityID={selected.id}
-                        engine={engine}
-
                         type={key}
                         selected={selected.components[key]}
-                        submit={(data, k) => {
-                            submit(key, k, data)
-                        }}
-
+                        submit={(data, k) => submit(key, k, data)}
                         quickAccess={quickAccess}
-                        submitPlacement={(axis, data) => {
-
-                            const component = selected.components[key]
-                            const prev = component.direction
-                            component.direction = [
-                                axis === "x" ? data : prev[0],
-                                axis === "y" ? data : prev[1],
-                                axis === "z" ? data : prev[2]
-                            ]
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    key: key,
-                                    data: component
-                                }
-                            })
-                        }}
                         submitColor={(data) => submit(key, "color", data)}
                     />
                 )

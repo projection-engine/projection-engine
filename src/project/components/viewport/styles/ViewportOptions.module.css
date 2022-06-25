@@ -23,15 +23,7 @@
   background-color: var(--pj-border-primary);
 }
 
-.highlighted {
-  background: var(--pj-background-tertiary);
-  border: var(--pj-border-primary) 1px solid;
-}
 
-.highlighted:active,
-.highlighted:hover {
-  border-color: var(--pj-accent-color);
-}
 
 .rangeWrapper {
   user-select: none;
@@ -236,17 +228,6 @@
   font-size: 1.1rem !important;
 }
 
-.floatingOption {
-  backdrop-filter: blur(20px) brightness(0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25px;
-  width: 25px;
-  padding: 0 !important;
-  color: var(--pj-color-secondary) !important;
-  transition: 150ms linear;
-}
 
 .groupItemVert {
   --color-to-apply: white;
@@ -323,22 +304,8 @@
 
 .label {
   padding-left: 8px;
-  /*font-weight: 550;*/
   margin-top: 4px;
   color: var(--pj-color-secondary);
   font-size: 0.8rem;
 }
 
-.hideButton {
-  width: 10px;
-  height: 13px;
-  position: relative;
-  transform: translateX(-18px);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--pj-border-primary);
-  padding: 0 !important;
-  border-radius: 0 3px 3px 0;
-}

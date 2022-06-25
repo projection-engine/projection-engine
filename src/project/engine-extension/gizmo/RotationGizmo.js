@@ -25,7 +25,8 @@ export default class RotationGizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor(renderTarget, resolution) {
+    constructor(renderTarget, resolution, sys) {
+        this.sys = sys
         this.renderTarget = renderTarget
         this.resolution = resolution
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
@@ -194,7 +195,7 @@ export default class RotationGizmo {
         const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
         const mZ = this.#rotateMatrix(translation, r, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
-        GizmoSystem.drawToDepthSampler(
+        const FBO = this.sys.drawToDepthSampler(
             depthSystem,
             this.xyz,
             camera.viewMatrix,
@@ -205,7 +206,7 @@ export default class RotationGizmo {
             translation,
             camera.ortho
         )
-        const dd = pickSystem.depthPick(depthSystem.frameBuffer, this.currentCoord)
+        const dd = pickSystem.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
