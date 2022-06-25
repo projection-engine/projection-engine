@@ -105,7 +105,6 @@ export default class GizmoSystem extends System {
 
             window.gpu.drawElements(window.gpu.TRIANGLES, mesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
         }
-        console.trace(camOrtho, shader)
         window.gpu.enable(window.gpu.CULL_FACE)
         mesh.finish()
 

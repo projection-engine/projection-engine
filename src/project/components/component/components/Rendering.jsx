@@ -5,6 +5,7 @@ import AccordionTemplate from "../../../../components/templates/AccordionTemplat
 import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import LabeledRange from "../../../../components/templates/LabeledRange"
+import SYSTEMS from "../../../engine/templates/SYSTEMS"
 
 export default function Rendering() {
     const settings = useContext(SettingsProvider)
@@ -24,6 +25,9 @@ export default function Rendering() {
         state.falloff = settings.falloff
         state.radius = settings.radius
         state.samples = settings.samples
+
+        state.ssgiQuality = settings.ssgiQuality
+        state.ssgiBrightness = settings.ssgiBrightness
     }, [])
 
 
@@ -47,6 +51,47 @@ export default function Rendering() {
                 width={"100%"}
             />
 
+            <AccordionTemplate title={"Global illumination"}>
+                <Checkbox
+                    noMargin={true}
+                    checked={settings.ssgi}
+                    handleCheck={() => settings.ssgi = !settings.ssgi}
+                    label={"Enabled"}
+                    height={"25px"}
+                    width={"100%"}
+                />
+                <LabeledRange
+                    disabled={!settings.ssgi}
+                    label={"Quality"}
+                    accentColor={"green"}
+                    onFinish={v => settings.ssgiQuality = v}
+                    incrementPercentage={1}
+                    precision={0}
+                    minValue={0}
+                    maxValue={100}
+                    handleChange={v => state.ssgiQuality = v}
+                    value={state.ssgiQuality}
+                />
+                <LabeledRange
+                    disabled={!settings.ssgi}
+                    label={"Intensity"}
+                    accentColor={"green"}
+                    onFinish={v => {
+                        settings.ssgiBrightness = v
+                        state.ssgiBrightness = v
+                    }}
+                    incrementPercentage={.001}
+                    precision={4}
+                    minValue={0}
+                    maxValue={10}
+                    handleChange={v => {
+                        // state.ssgiBrightness = v
+                        window.renderer.params.ssgiBrightness = v
+                    }}
+                    value={state.ssgiBrightness}
+                />
+            </AccordionTemplate>
+            
             <AccordionTemplate title={"Shadows"}>
 
                 <LabeledRange
@@ -90,7 +135,7 @@ export default function Rendering() {
                     noMargin={true}
                     checked={settings.ao}
                     handleCheck={() => settings.ao = !settings.ao}
-                    label={"Ambient occlusion"}
+                    label={"Enabled"}
                     height={"25px"}
                     width={"100%"}/>
                 <div className={styles.inline}>

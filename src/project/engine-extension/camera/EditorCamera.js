@@ -12,6 +12,7 @@ export default class EditorCamera {
     direction = {}
     #fov = Math.PI / 2
     projectionMatrix = mat4.create()
+    invProjectionMatrix = mat4.create()
     viewMatrix = mat4.create()
     invViewMatrix =  mat4.create()
     constructor(origin = [0, 0, 0], fov, zNear, zFar, aspectRatio = 1) {
@@ -56,6 +57,9 @@ export default class EditorCamera {
             mat4.ortho(this.projectionMatrix, -this.radius, this.radius, -this.radius / this.#aspectRatio, this.radius / this.#aspectRatio, this.zNear, this.zFar)
         else
             mat4.perspective(this.projectionMatrix, this.#fov, this.#aspectRatio, this.zNear, this.zFar)
+
+
+        mat4.invert(this.invProjectionMatrix, this.projectionMatrix)
     }
 
 

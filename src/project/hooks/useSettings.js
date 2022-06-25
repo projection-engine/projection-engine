@@ -34,6 +34,9 @@ export default function useSettings() {
         FXAAReduceMul: 1 / 8,
         filmGrainStrength: .01,
 
+        ssgiQuality: 50,
+        ssgiBrightness: 1,
+
         resolution: [window.screen.width, window.screen.height],
         frameRate: 75,
         distortion: false,
