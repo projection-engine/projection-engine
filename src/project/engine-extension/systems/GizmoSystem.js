@@ -81,22 +81,20 @@ export default class GizmoSystem extends System {
     }
 
     drawToDepthSampler(
-        depthSystem,
         mesh,
         view,
         projection,
         transforms,
-        shader,
         camPos,
         translation,
         camOrtho
     ) {
         this.frameBuffer.startMapping()
-        shader.use()
+        window.renderer.picking.shaderSameSize.use()
         mesh.use()
         window.gpu.disable(window.gpu.CULL_FACE)
         for (let i = 0; i < transforms.length; i++) {
-            shader.bindForUse({
+            window.renderer.picking.shaderSameSize.bindForUse({
                 viewMatrix: view,
                 transformMatrix: transforms[i],
                 projectionMatrix: projection,
@@ -120,7 +118,7 @@ export default class GizmoSystem extends System {
         meshSources,
         selected,
         camera,
-        pickSystem,
+
         entities,
         gizmo,
         transformationType = ROTATION_TYPES.GLOBAL,
@@ -129,7 +127,6 @@ export default class GizmoSystem extends System {
         gridSize,
         gridRotationSize,
         gridScaleSize,
-        depthSystem,
         setSelected
     ) {
         super.execute()
@@ -147,15 +144,15 @@ export default class GizmoSystem extends System {
             switch (gizmo) {
             case GIZMOS.TRANSLATION:
                 this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshSources, this.selectedEntities, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem, setSelected)
+                this.translationGizmo.execute(meshes, meshSources, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, setSelected)
                 break
             case GIZMOS.ROTATION:
                 this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshSources, this.selectedEntities, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, depthSystem, setSelected)
+                this.rotationGizmo.execute(meshes, meshSources, this.selectedEntities, camera,  entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, setSelected)
                 break
             case GIZMOS.SCALE:
                 this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshSources, this.selectedEntities, camera, pickSystem,  entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, depthSystem, setSelected)
+                this.scaleGizmo.execute(meshes, meshSources, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, setSelected)
                 break
             }
         }

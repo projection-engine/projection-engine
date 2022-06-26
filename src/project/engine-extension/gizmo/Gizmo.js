@@ -2,7 +2,6 @@ import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
 import Conversion from "../../engine/utils/Conversion"
-import GizmoSystem from "../systems/GizmoSystem"
 
 export default class Gizmo {
     target = []
@@ -82,22 +81,20 @@ export default class Gizmo {
         }
     }
 
-    #testClick(depthSystem, arrow, translation, pickSystem, onGizmoStart, selected) {
+    #testClick(arrow, translation, onGizmoStart, selected) {
         const mX = this._translateMatrix(translation, this.xGizmo.components)
         const mY = this._translateMatrix(translation, this.yGizmo.components)
         const mZ = this._translateMatrix(translation, this.zGizmo.components)
         const FBO = this.sys.drawToDepthSampler(
-            depthSystem,
             arrow,
             this.camera.viewMatrix,
             this.camera.projectionMatrix,
             [mX, mY, mZ],
-            pickSystem.shaderSameSize,
             this.camera.position,
             translation,
             this.camera.ortho
         )
-        const dd = pickSystem.depthPick(FBO, this.currentCoord)
+        const dd = window.renderer.picking.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
@@ -120,14 +117,13 @@ export default class Gizmo {
         meshSources,
         selected,
         camera,
-        pickSystem,
+
         entities,
         transformationType,
         onGizmoStart,
         onGizmoEnd,
         gridSize,
         arrow,
-        depthSystem,
         setSelected
     ) {
 
@@ -150,7 +146,7 @@ export default class Gizmo {
 
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(depthSystem, arrow, translation, pickSystem, onGizmoStart, selected, entities)
+                    this.#testClick(arrow, translation, onGizmoStart, selected, entities)
                 const t = el.components[COMPONENTS.TRANSFORM]
                 this.rotationTarget = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
                 this.#drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)

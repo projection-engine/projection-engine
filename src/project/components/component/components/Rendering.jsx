@@ -10,9 +10,9 @@ export default function Rendering() {
     const settings = useContext(SettingsProvider)
     const [state] = useDirectState({})
     useEffect(() => {
-        state.FXAASpanMax = settings.FXAASpanMax ? settings.FXAASpanMax : 8
-        state.FXAAReduceMin = settings.FXAAReduceMin ? settings.FXAAReduceMin : 1 / 128
-        state.FXAAReduceMul = settings.FXAAReduceMul ? settings.FXAAReduceMul : 1 / 8
+        state.FXAASpanMax = settings.FXAASpanMax
+        state.FXAAReduceMin = settings.FXAAReduceMin
+        state.FXAAReduceMul = settings.FXAAReduceMul
 
         state.shadowMapResolution = settings.shadowMapResolution
         state.shadowAtlasQuantity = settings.shadowAtlasQuantity
@@ -28,6 +28,7 @@ export default function Rendering() {
         state.ssgiQuality = settings.ssgiQuality
         state.ssgiBrightness = settings.ssgiBrightness
         state.ssgiStepSize = settings.ssgiStepSize
+        state.ssgiKernel = settings.ssgiKernel
 
     }, [])
 
@@ -90,6 +91,7 @@ export default function Rendering() {
                     }}
                     value={state.ssgiBrightness}
                 />
+
                 <LabeledRange
                     disabled={!settings.ssgi}
                     label={"Sample size"}
@@ -103,6 +105,20 @@ export default function Rendering() {
                     maxValue={1}
                     handleChange={v => window.renderer.params.ssgiStepSize = v}
                     value={state.ssgiStepSize}
+                />
+                <LabeledRange
+                    disabled={!settings.ssgi}
+                    label={"Blur kernel size"}
+                    onFinish={v => {
+                        settings.ssgiKernel = v
+                        state.ssgiKernel = v
+                    }}
+                    incrementPercentage={.001}
+                    precision={4}
+                    minValue={.05}
+                    maxValue={1}
+                    handleChange={v => window.renderer.params.ssgiKernel = v}
+                    value={state.ssgiKernel}
                 />
             </AccordionTemplate>
             

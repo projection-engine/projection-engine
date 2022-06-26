@@ -1,6 +1,6 @@
 import Renderer from "../engine/Renderer"
-import SYSTEMS from "../engine/templates/SYSTEMS"
-import {STEPS_CUBE_MAP} from "../engine/systems/CubeMapSystem"
+
+import {STEPS_CUBE_MAP} from "../engine/systems/passes/SpecularProbePass"
 import Cameras from "./Cameras"
 import Wrapper from "./systems/Wrapper"
 
@@ -10,7 +10,7 @@ import * as debugCode from "./shaders/DEBUG.glsl"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
-import {STEPS_LIGHT_PROBE} from "../engine/systems/LightProbeSystem"
+import {STEPS_LIGHT_PROBE} from "../engine/systems/passes/DiffuseProbePass"
 import Packager from "../engine/Packager"
 import ENVIRONMENT from "../engine/ENVIRONMENT"
 
@@ -19,8 +19,8 @@ export default class DevelopmentRenderer extends Renderer {
     gizmo
     cameraData = {}
 
-    constructor( resolution, systems) {
-        super( resolution, systems)
+    constructor( resolution) {
+        super( resolution)
         this.environment = ENVIRONMENT.DEV
         this.cameraData = new Cameras()
         this.editorSystem = new Wrapper(resolution)
@@ -57,10 +57,9 @@ export default class DevelopmentRenderer extends Renderer {
     }
 
     refreshCubemaps() {
-        this.systems[SYSTEMS.CUBE_MAP].step = STEPS_CUBE_MAP.BASE
-        this.systems[SYSTEMS.PROBE].step = STEPS_LIGHT_PROBE.GENERATION
+        this.renderingPass.diffuseProbe.step = STEPS_CUBE_MAP.BASE
+        this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
-
 
     updatePackage(prodEnv, cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
         this.cameraData.cameraSpeed = params.cameraSpeed

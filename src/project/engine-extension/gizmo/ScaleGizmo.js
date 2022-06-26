@@ -103,22 +103,21 @@ export default class ScaleGizmo extends Gizmo {
             toApply = vec4.transformQuat([], vec, this.target[0].components[COMPONENTS.TRANSFORM].rotationQuat)
         for (let i = 0; i < this.target.length; i++) {
             const comp = this.target[i].components[COMPONENTS.TRANSFORM]
-            const newScaling = [
-                comp.scaling[0] - toApply[0],
-                comp.scaling[1] - toApply[1],
-                comp.scaling[2] - toApply[2]
-            ]
             // const A = comp.translation,
             //     B = comp.pivotPoint,
             //     C = vec3.sub([], A, B),
             //     RS = newScaling[0]/comp.scaling[0]
             //
             // comp.translation = vec3.add([], B, vec3.scale([], C, RS))
-            comp.scaling = newScaling
+            comp.scaling = [
+                comp.scaling[0] - toApply[0],
+                comp.scaling[1] - toApply[1],
+                comp.scaling[2] - toApply[2]
+            ]
         }
     }
 
-    execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, depthSystem, setSelected) {
-        super.execute(meshes, meshSources, selected, camera, pickSystem, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, depthSystem, setSelected)
+    execute(meshes, meshSources, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize,  setSelected) {
+        super.execute(meshes, meshSources, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, setSelected)
     }
 }

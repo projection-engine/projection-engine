@@ -37,6 +37,9 @@ export default function useSettings() {
         ssgiQuality: 50,
         ssgiBrightness: 1,
         ssgiStepSize: .5,
+        ssr: true,
+        ssgi: true,
+        ssgiKernel: 5.,
 
         resolution: [window.screen.width, window.screen.height],
         frameRate: 75,

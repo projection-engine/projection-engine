@@ -11,7 +11,6 @@ import TextureInstance from "../../engine/instances/TextureInstance"
 import circle from "../../../static/icons/circle.png"
 import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import GizmoSystem from "../systems/GizmoSystem"
 import Conversion from "../../engine/utils/Conversion"
 
 const toDeg = 57.29, toRad = 3.1415 / 180
@@ -189,24 +188,22 @@ export default class RotationGizmo {
         }
     }
 
-    #testClick(el, depthSystem, camera,  pickSystem, selected, entities, translation ) {
+    #testClick(el, camera,  selected, entities, translation ) {
         const r = el.components[COMPONENTS.TRANSFORM].rotationQuat
         const mX = this.#rotateMatrix(translation, r, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
         const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
         const mZ = this.#rotateMatrix(translation, r, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
         const FBO = this.sys.drawToDepthSampler(
-            depthSystem,
             this.xyz,
             camera.viewMatrix,
             camera.projectionMatrix,
             [mX, mY, mZ],
-            pickSystem.shaderSameSize,
             camera.position,
             translation,
             camera.ortho
         )
-        const dd = pickSystem.depthPick(FBO, this.currentCoord)
+        const dd = window.renderer.picking.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
@@ -232,13 +229,11 @@ export default class RotationGizmo {
         meshSources,
         selected,
         camera,
-        pickSystem,
         entities,
         transformationType,
         onGizmoStart,
         onGizmoEnd,
         gridSize,
-        depthSystem,
         setSelected
     ) {
         if (selected.length > 0) {
@@ -260,7 +255,7 @@ export default class RotationGizmo {
                 this.onGizmoStart = onGizmoStart
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(el, depthSystem, camera, pickSystem, selected, entities, translation)
+                    this.#testClick(el,  camera, selected, entities, translation)
                 this.#drawGizmo(translation, el.components[COMPONENTS.TRANSFORM].rotationQuat, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader)
             }
         }

@@ -1,7 +1,6 @@
 import System from "../../engine/basic/System"
 import GridSystem from "./GridSystem"
 import IconsSystem from "./IconsSystem"
-import SYSTEMS from "../../engine/templates/SYSTEMS"
 import GizmoSystem from "./GizmoSystem"
 import SelectedSystem from "./SelectedSystem"
 import PreviewSystem from "./PreviewSystem"
@@ -20,7 +19,7 @@ export default class Wrapper extends System {
         this.backgroundSystem = new BackgroundSystem()
     }
 
-    execute(options, systems, data, entities, entitiesMap, after) {
+    execute(options, data, entities, entitiesMap, after) {
         super.execute()
         const {
             meshes,
@@ -58,7 +57,7 @@ export default class Wrapper extends System {
                     meshSources,
                     selected,
                     camera,
-                    systems[SYSTEMS.PICK],
+
                     entitiesMap,
                     gizmo,
                     rotationType,
@@ -67,7 +66,7 @@ export default class Wrapper extends System {
                     gridSize,
                     gridRotationSize,
                     gridScaleSize,
-                    systems[SYSTEMS.DEPTH_PRE_PASS],
+
                     setSelected
                 )
                 this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)

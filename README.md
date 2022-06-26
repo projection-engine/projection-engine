@@ -68,7 +68,7 @@ Multiple features are already implemented or on the way to the editor, here is a
     - Lens distortion
 - **Materials and PBR rendering**
     - Unlit
-    - Forward and deferred renderers
+    - ForwardPass and deferred renderers
     - Directional and omnidirectional shadows with PCF filtering
 - **GI**
     - Light probes

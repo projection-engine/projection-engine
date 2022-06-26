@@ -5,9 +5,8 @@ import useContextTarget from "../../../components/context/hooks/useContextTarget
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import ViewportOptions from "./ViewportOptions"
 import VerticalTabs from "../../../components/vertical-tab/VerticalTabs"
-import SYSTEMS from "../../engine/templates/SYSTEMS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import PickSystem from "../../engine/systems/PickSystem"
+import Picking from "../../engine/systems/misc/Picking"
 import SelectBox from "../../../components/select-box/SelectBox"
 import Conversion from "../../engine/utils/Conversion"
 import GIZMOS from "../../../static/misc/GIZMOS"
@@ -49,7 +48,7 @@ export default function Viewport(props) {
                     if(!t)
                         t = currentInstance.components[COMPONENTS.DIRECTIONAL_LIGHT]?.transformationMatrix
                     if (t && !currentInstance.components[COMPONENTS.MESH])
-                        PickSystem.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : pickSystem.mesh, currentInstance, camera.viewMatrix, proj, t, shader)
+                        Picking.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : pickSystem.mesh, currentInstance, camera.viewMatrix, proj, t, shader)
                 }
             }
         }, {x: coords[0], y: coords[1]}, camera)
@@ -57,7 +56,7 @@ export default function Viewport(props) {
     function pickMesh(meshSources, x, y){
         const w =  window.gpu.canvas.width, h =   window.gpu.canvas.height
         const coords = Conversion.toQuadCoord({x, y}, {w, h})
-        const picked = window.renderer.systems[SYSTEMS.PICK].depthPick(window.renderer.systems[SYSTEMS.DEPTH_PRE_PASS].frameBuffer, coords)
+        const picked = window.renderer.picking.depthPick(window.renderer.renderingPass.depthPrePass.frameBuffer, coords)
         return Math.round((picked[1] + picked[2])* 255)
         // return  window.renderer.systems[SYSTEMS.PICK].pickElement((shader, proj) => {
         //     for (let m = 0; m < props.engine.entities.length; m++) {
@@ -81,7 +80,7 @@ export default function Viewport(props) {
             if (window.gpu.canvas === event.target && elapsed <= MAX_TIMESTAMP && deltaX < MAX_DELTA && deltaY < MAX_DELTA) {
                 const camera = window.renderer.camera
                 const entities = props.engine.entities
-                const p = window.renderer.systems[SYSTEMS.PICK]
+                const p = window.renderer.picking
                 const cameraMesh = window.renderer.editorSystem.billboardSystem.cameraMesh
                 const meshSources = window.renderer.data.meshSources
                 const target = event.currentTarget.getBoundingClientRect()
@@ -228,8 +227,8 @@ export default function Viewport(props) {
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
                         if(startCoords && endCoords) {
-                            const pickSystem = window.renderer.systems[SYSTEMS.PICK]
-                            const depthSystem = window.renderer.systems[SYSTEMS.DEPTH_PRE_PASS]
+                            const pickSystem = window.renderer.picking
+                            const depthSystem = window.renderer.renderingPass.depthPrePass
 
                             const size = {
                                 w: depthSystem.frameBuffer.width,
