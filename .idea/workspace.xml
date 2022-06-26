@@ -6,52 +6,36 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs" beforeDir="false" afterPath="$PROJECT_DIR$/docs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/blueprint/material_loading.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/blueprint/material_loading.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/blueprint/script_execution.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/blueprint/script_execution.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/NodeEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/NodeEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/nodes/TextureSample.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/nodes/TextureSample.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Rendering.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Rendering.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/DevelopmentRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/DevelopmentRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/RotationGizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/RotationGizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/ScaleGizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/ScaleGizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/TranslationGizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/TranslationGizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/PreviewSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/PreviewSystem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/console/Console.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/console/Console.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/File.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/File.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ImportHandler.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ImportHandler.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/handleRename.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/handleRename.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Camera.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Camera.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/BackgroundSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/BackgroundSystem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/Wrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/Wrapper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/Constructor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/Constructor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/Packager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/Packager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/Renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/Renderer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/shaders/EFFECTS.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/shaders/EFFECTS.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/shaders/FXAA.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/shaders/FXAA.glsl.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/shaders/SCREEN_SPACE.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/shaders/SCREEN_SPACE.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/AOSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/AmbientOcclusionPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/CubeMapSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/SpecularProbePass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/CullingSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/Culling.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/Deferred.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/DeferredPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/Forward.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/ForwardPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/LightProbeSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/DiffuseProbePass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/LineSystem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/MetricsSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/PhysicsSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/Physics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/PickSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/Picking.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/PrePass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/DepthPrePass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/RenderingWrapper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/ScreenSpaceSystem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/ScriptSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/Scripting.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/ShadowMapSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/ShadowMapPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/TransformSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/Transformations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/shaders/mesh/DEFERRED.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/shaders/mesh/DEFERRED.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/PostProcessingPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/PostProcessingPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/RenderingPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/RenderingPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/passes/DeferredPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/DeferredPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/passes/DepthPrePass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/DepthPrePass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/passes/SSGIPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/SSGIPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/passes/SSRPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/passes/SSRPass.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/systems/postprocessing/CompositePass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/postprocessing/CompositePass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/postprocessing/PerPixelMotionBlur.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/postprocessing/PerPixelMotionBlur.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/postprocessing/PostProcessingWrapper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/templates/SYSTEMS.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/utils/systemInstance.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/hooks/useOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useOptions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/hooks/useSettings.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useSettings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/utils/importer/import.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/utils/importer/import.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,28 +75,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/roque/Documents/GitHub/editor/src/project/engine/systems/passes",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "/home/roque/Documents/GitHub/editor/node_modules/stylelint",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "prettierjs.PrettierConfiguration.Package": "",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/roque/Documents/GitHub/editor/src/project/engine/systems/passes&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;/home/roque/Documents/GitHub/editor/node_modules/stylelint&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/project/engine/systems/passes" />
@@ -216,7 +200,8 @@
       <workItem from="1656162871640" duration="8624000" />
       <workItem from="1656171709245" duration="180000" />
       <workItem from="1656177870162" duration="18862000" />
-      <workItem from="1656245307944" duration="7454000" />
+      <workItem from="1656245307944" duration="7770000" />
+      <workItem from="1656253245764" duration="7091000" />
     </task>
     <servers />
   </component>

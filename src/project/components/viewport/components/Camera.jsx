@@ -14,7 +14,6 @@ export default function Camera(props) {
 
     useEffect(() => {
         if(engine.initialized) {
-            console.log("HERE")
             window.renderer.camera.ortho = settingsContext.ortho
             window.renderer.camera.updateProjection()
         }

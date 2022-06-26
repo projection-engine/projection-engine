@@ -20,7 +20,6 @@ export default class Wrapper extends System {
     }
 
     execute(options, data, entities, entitiesMap, after) {
-        super.execute()
         const {
             meshes,
             meshSources
@@ -41,9 +40,7 @@ export default class Wrapper extends System {
 
         if(!after) {
             this.backgroundSystem.execute(data, options)
-            gpu.disable(gpu.DEPTH_TEST)
             this.gridSystem.execute(options)
-            gpu.enable(gpu.DEPTH_TEST)
         }
         else {
             gpu.enable(gpu.BLEND)

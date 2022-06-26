@@ -28,8 +28,9 @@ export default function Rendering() {
         state.ssgiQuality = settings.ssgiQuality
         state.ssgiBrightness = settings.ssgiBrightness
         state.ssgiStepSize = settings.ssgiStepSize
-        state.ssgiKernel = settings.ssgiKernel
 
+        state.ssrMaxSteps = settings.ssrMaxSteps
+        state.ssrStepSize = settings.ssrStepSize
     }, [])
 
 
@@ -44,14 +45,39 @@ export default function Rendering() {
                 height={"25px"}
                 width={"100%"}/>
 
-            <Checkbox
-                noMargin={true}
-                checked={settings.ssr}
-                handleCheck={() => settings.ssr = !settings.ssr}
-                label={"Screen space reflections"}
-                height={"25px"}
-                width={"100%"}
-            />
+            <AccordionTemplate title={"Screen space reflections"}>
+                <Checkbox
+                    noMargin={true}
+                    checked={settings.ssr}
+                    handleCheck={() => settings.ssr = !settings.ssr}
+                    label={"Enabled"}
+                    height={"25px"}
+                    width={"100%"}
+                />
+                <LabeledRange
+                    disabled={!settings.ssr}
+                    label={"Steps"}
+                    onFinish={v => settings.ssrMaxSteps = v}
+                    incrementPercentage={1}
+                    precision={0}
+                    minValue={0}
+                    maxValue={100}
+                    handleChange={v => window.renderer.params.ssrMaxSteps = v}
+                    value={state.ssrMaxSteps}
+                />
+                <LabeledRange
+                    disabled={!settings.ssr}
+                    label={"Step size"}
+                    onFinish={v => settings.ssrStepSize = v}
+                    incrementPercentage={.001}
+                    precision={4}
+                    minValue={.05}
+                    maxValue={1}
+                    handleChange={v => window.renderer.params.ssrStepSize = v}
+                    value={state.ssrStepSize}
+                />
+            </AccordionTemplate>
+
 
             <AccordionTemplate title={"Global illumination"}>
                 <Checkbox
@@ -64,13 +90,13 @@ export default function Rendering() {
                 />
                 <LabeledRange
                     disabled={!settings.ssgi}
-                    label={"Quality"}
+                    label={"Steps"}
                     onFinish={v => settings.ssgiQuality = v}
                     incrementPercentage={1}
                     precision={0}
                     minValue={0}
                     maxValue={100}
-                    handleChange={v => state.ssgiQuality = v}
+                    handleChange={v => window.renderer.params.ssgiQuality = v}
                     value={state.ssgiQuality}
                 />
 
@@ -94,7 +120,7 @@ export default function Rendering() {
 
                 <LabeledRange
                     disabled={!settings.ssgi}
-                    label={"Sample size"}
+                    label={"Step size"}
                     onFinish={v => {
                         settings.ssgiStepSize = v
                         state.ssgiStepSize = v
@@ -106,20 +132,7 @@ export default function Rendering() {
                     handleChange={v => window.renderer.params.ssgiStepSize = v}
                     value={state.ssgiStepSize}
                 />
-                <LabeledRange
-                    disabled={!settings.ssgi}
-                    label={"Blur kernel size"}
-                    onFinish={v => {
-                        settings.ssgiKernel = v
-                        state.ssgiKernel = v
-                    }}
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={.05}
-                    maxValue={1}
-                    handleChange={v => window.renderer.params.ssgiKernel = v}
-                    value={state.ssgiKernel}
-                />
+
             </AccordionTemplate>
             
             <AccordionTemplate title={"Shadows"}>

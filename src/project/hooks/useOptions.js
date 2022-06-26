@@ -52,7 +52,6 @@ export default function useOptions(engine, serializer) {
                 icon: "refresh",
                 onClick:() => {
                     alert.pushAlert( "Recompiling cube-maps and probes",  "info")
-                    console.log("Compiling cube-maps and probes")
                     window.renderer.refreshCubemaps()
                 }
             },

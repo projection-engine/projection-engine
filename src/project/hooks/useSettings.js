@@ -39,7 +39,8 @@ export default function useSettings() {
         ssgiStepSize: .5,
         ssr: true,
         ssgi: true,
-        ssgiKernel: 5.,
+        ssrStepSize: .1,
+        ssrMaxSteps: 50,
 
         resolution: [window.screen.width, window.screen.height],
         frameRate: 75,

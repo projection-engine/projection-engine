@@ -22,12 +22,14 @@ export default async function importData(event,   engine,  asID) {
     for (let i = 0; i < entities.length; i++) {
         const data = entities[i]
         const res = await window.fileSystem.readRegistryFile(data)
-        console.log(res, entities)
+        console.trace(res, entities)
 
         if(res)
             switch ("."+res.path.split(".").pop()){
             case FILE_TYPES.MESH:
-                const meshData = await importMesh(await window.fileSystem.readFile(document.path + FileSystem.sep + "assets" + FileSystem.sep +res.path, "json"), engine, data)
+                const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
+                console.dir(file)
+                const meshData = await importMesh(file, engine, data)
                 if(meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else
@@ -56,7 +58,7 @@ export default async function importData(event,   engine,  asID) {
                     const transform = e.components[COMPONENTS.TRANSFORM]
                     const t = vec4.add([], transform.translation, cursorPoint)
                     transform.translation = t
-                    console.log(transform.translation, t)
+                    console.dir(transform.translation, t)
                     transform.changed = true
                 }
             })

@@ -13,10 +13,7 @@ export default class BackgroundSystem extends System {
     }
 
     execute(data, options) {
-        super.execute()
-        const {
-            cubeBuffer
-        } = data
+        const {cubeBuffer} = data
         const {camera, gamma} = options
         
         window.gpu.depthMask(false)
