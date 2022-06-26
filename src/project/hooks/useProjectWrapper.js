@@ -9,21 +9,21 @@ import {v4} from "uuid"
 import CHANNELS from "../../../public/static/CHANNELS"
 
 const {ipcRenderer} = window.require("electron")
-export default function useProjectWrapper(id,  settings, pushSettingsBlock, load) {
+export default function useProjectWrapper(id,  settings, pushSettingsBlock, load, worker) {
 
-    const engine = useEngine(settings)
+    const engine = useEngine(settings, worker)
     const initialized = useRef(false)
-    const [filesLoaded, setFilesLoaded] = useState([])
     const serializer = useSerializer(engine, settings, id)
 
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
         if (engine.initialized && !initialized.current) {
             initialized.current = true
-            const listenID = v4().toString()
+            const listenID = v4()
             ipcRenderer.once(
                 CHANNELS.META_DATA + "-" + listenID, 
                 async (ev, res) => {
+
                     if (res.settings && res.settings.data)
                         pushSettingsBlock({
                             ...res.settings.data,
@@ -55,9 +55,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
 
 
     return {
-        settings,
-        setFilesLoaded,
-        serializer, engine,
-        filesLoaded
+        serializer,
+        engine,
     }
 }

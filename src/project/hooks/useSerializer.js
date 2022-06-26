@@ -4,41 +4,44 @@ import FileSystem from "../utils/files/FileSystem"
 
 
 export default function useSerializer(engine, settings, id) {
-    const interval = useRef()
-    const saveSettings = async () => {
-        let promise = []
-
-        if (id) {
-            const canvas = window.gpu.canvas
-            const preview = canvas.toDataURL()
-            const res = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
-            if (res) {
-                const old = JSON.parse(res.toString())
-                await window.fileSystem
-                    .updateProject(
-                        {
-                            ...old,
-                            preview: preview,
-                            entities: engine.entities.length,
-                            meshes: engine.meshes.length,
-                            materials: engine.materials.length,
-                            lastModification: (new Date()).toDateString(),
-                            creation: settings.creationDate
-                        },
-                        {
-                            ...settings,
-                            cameraPosition: window.renderer.camera.position,
-                            yaw: window.renderer.camera.yaw,
-                            pitch: window.renderer.camera.pitch,
-                        })
-            }
+    let interval
+    useEffect(() => {
+        interval = setInterval(save, 300000)
+        return () => {
+            if(interval)
+                clearInterval(interval)
         }
-        return Promise.all(promise)
-    }
+    }, [settings, engine.entities])
 
     const save = useCallback(async () => {
         if (id) {
-            await saveSettings()
+            let promise = []
+            if (id) {
+                const canvas = window.gpu.canvas
+                const preview = canvas.toDataURL()
+                const res = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
+                if (res) {
+                    const old = JSON.parse(res.toString())
+                    await window.fileSystem
+                        .updateProject(
+                            {
+                                ...old,
+                                preview: preview,
+                                entities: engine.entities.length,
+                                meshes: engine.meshes.length,
+                                materials: engine.materials.length,
+                                lastModification: (new Date()).toDateString(),
+                                creation: settings.creationDate
+                            },
+                            {
+                                ...settings,
+                                cameraPosition: window.renderer.camera.position,
+                                yaw: window.renderer.camera.yaw,
+                                pitch: window.renderer.camera.pitch,
+                            })
+                }
+            }
+            await Promise.all(promise)
             const all = await ProjectLoader.getEntities( )
             await Promise.all(all.map(a => {
                 if (a && !engine.entities.find(e => e.id === a.id))
@@ -60,20 +63,7 @@ export default function useSerializer(engine, settings, id) {
             )
         } else
             alert.pushAlert("Error saving project", "error")
-    }, [engine.entities, settings, id])
-
-
-    useEffect(() => {
-        interval.current = setInterval(save, 300000)
-        return () => {
-            if(interval.current)
-                clearInterval(interval.current)
-        }
-    }, [settings.timestamp, engine.entities])
-
-    return {
-        saveSettings,
-        save
-    }
+    }, [engine.entities, settings])
+    return save
 }
 

@@ -6,6 +6,8 @@ import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 import Transformation from "../engine/templates/Transformation"
+import {Icon} from "@f-ui/core"
+import toObject from "../engine/utils/toObject"
 
 
 function getCursor(){
@@ -18,7 +20,9 @@ function getCursor(){
 
     return entity
 }
-export default function useEngine(settings) {
+
+
+export default function useEngine(settings, worker) {
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const [initialized, setInitialized] = useState(false)
     const [entities, dispatchEntities] = useReducer(entityReducer, [])
@@ -29,6 +33,36 @@ export default function useEngine(settings) {
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
     const [cursor, setCursor] = useState(getCursor())
+
+    useEffect(() => {
+        worker.postMessage({entities, COMPONENTS, meshes: toObject(meshes, true), materials: toObject(materials, true)})
+        worker.onmessage = ({data: {meshesFiltered, materialsFiltered}}) => {
+            console.log([meshesFiltered, materialsFiltered])
+            if(Object.keys(meshesFiltered).length > 0)
+                setMeshes(prev => {
+                    const filtered = []
+                    for(let i = 0; i < prev.length; i++){
+                        if(!meshesFiltered[prev[i].id])
+                            filtered.push(prev[i])
+                        else
+                            prev[i].delete()
+                    }
+                    return filtered
+                })
+            if(Object.keys(materialsFiltered).length > 0)
+                setMaterials(prev => {
+                    const filtered = []
+                    for(let i = 0; i < prev.length; i++){
+                        if(!materialsFiltered[prev[i].id])
+                            filtered.push(prev[i])
+                        else
+                            prev[i].delete()
+                    }
+                    console.log(filtered)
+                    return filtered
+                })
+        }
+    }, [entities])
 
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])

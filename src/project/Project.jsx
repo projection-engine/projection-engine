@@ -6,7 +6,6 @@ import styles from "../styles/App.module.css"
 import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import Editor from "./Editor"
-import useSettings from "./hooks/useSettings"
 import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
 import useHotKeysHelper from "./components/shortcuts/hooks/useHotKeysHelper"
 import HotKeysProvider from "./components/shortcuts/hooks/HotKeysProvider"
@@ -14,6 +13,8 @@ import useQuickAccess from "./hooks/useQuickAccess"
 import QuickAccessProvider from "./providers/QuickAccessProvider"
 import FileSystem from "./utils/files/FileSystem"
 import insertMethods from "../static/insertMethods"
+import useDirectState from "../components/hooks/useDirectState"
+import SETTINGS from "./templates/SETTINGS"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -24,7 +25,7 @@ function Project() {
     const [project, setProject] = useState()
     const [refresh, quickAccess] = useQuickAccess(project?.id)
     const [events, setEvents] = useState({})
-    const [settings,, pushBlock] = useSettings() 
+    const [settings,, pushBlock] = useDirectState(SETTINGS)
     const hotKeysHook= useHotKeysHelper()
 
     useEffect(() => {

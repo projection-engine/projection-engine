@@ -1,17 +1,19 @@
-import {useMemo} from "react"
+import {useEffect, useMemo, useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import openLevelBlueprint from "../utils/openLevelBlueprint"
 
 const {ipcRenderer} = window.require("electron")
-export default function useOptions(engine, serializer) {
-    return useMemo(() => {
-        return  [
+export default function useOptions(engine, save) {
+    const [options, setOptions] = useState([])
+    useEffect(() => {
+        console.log("REFRESHED")
+        setOptions([
             {divider: true},
             {
                 label: "Save",
                 icon: "save",
-                onClick: () => serializer.save()
+                onClick: () => save().catch()
             },
             {
                 label: engine.executingAnimation ? "Stop" : "Play",
@@ -76,6 +78,8 @@ export default function useOptions(engine, serializer) {
 
                 ]
             },
-        ]
-    }, [engine.entities, engine.scripts, engine.meshes, engine, engine.executingAnimation])
+        ])
+    }, [save, engine.scripts, engine.meshes, engine.executingAnimation])
+
+    return options
 }

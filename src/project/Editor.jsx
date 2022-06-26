@@ -19,20 +19,21 @@ import FilesProvider from "./providers/FilesProvider"
 import EngineProvider from "./providers/EngineProvider"
 import BlueprintProvider from "./providers/BlueprintProvider"
 
-
+const WORKER = new Worker(new URL("./engine-extension/cleanupWorker.js", import.meta.url))
 export default function Editor(props) {
     const {id, meta, events,  settings, load} = props
-    const { exporter, serializer, engine } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load)
+    const { serializer, engine } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load, WORKER)
 
     const contextMenuHook = useContextMenu()
     const utils = useEditorShortcuts({engine, settings, id, serializer})
-    const options = useOptions(engine, serializer, exporter)
+    const options = useOptions(engine, serializer, settings)
     const filesHook = useFiles(engine)
 
     const submitMaterialPackage = useCallback((registryID, pack, matInstance) => {
         if(engine.initialized)
             submitPackage(pack, false, undefined, false, registryID, matInstance)
     }, [engine.initialized])
+
 
     return (
         <BlueprintProvider.Provider
