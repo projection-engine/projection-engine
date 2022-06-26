@@ -83,7 +83,7 @@ export default function Editor(props) {
                                         orientation={"vertical"}
                                         leftOffset={"0%"}
                                         resizePosition={"top"}
-                                    /> 
+                                    />
                                 </div>
                                 <Views
                                     setTabs={(tabs) => settings.bottomView = tabs}

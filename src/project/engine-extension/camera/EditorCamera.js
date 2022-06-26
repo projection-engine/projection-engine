@@ -15,6 +15,7 @@ export default class EditorCamera {
     invProjectionMatrix = mat4.create()
     viewMatrix = mat4.create()
     invViewMatrix =  mat4.create()
+    animated = true
     constructor(origin = [0, 0, 0], fov, zNear, zFar, aspectRatio = 1) {
         this.#fov = 60 * toRad
         this.position = origin

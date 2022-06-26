@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import LabeledRange from "../../../../components/templates/LabeledRange"
+import LabeledRange from "../../../../components/range/LabeledRange"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import React, {useEffect} from "react"

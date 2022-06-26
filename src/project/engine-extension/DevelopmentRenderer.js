@@ -62,15 +62,12 @@ export default class DevelopmentRenderer extends Renderer {
     }
 
     updatePackage(prodEnv, cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript) {
-        this.cameraData.cameraSpeed = params.cameraSpeed
-        this.cameraData.cameraScrollSpeed = params.cameraScrollSpeed
-        this.cameraData.cameraScrollDelay = params.cameraScrollDelay
         this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraData.cameraEvents.startTracking()
         else
             this.cameraData.cameraEvents.stopTracking()
-
+        
         this.camera.zNear = params.zNear
         this.camera.zFar = params.zFar
         this.camera.fov = params.fov
@@ -97,18 +94,15 @@ export default class DevelopmentRenderer extends Renderer {
             cursor,
             selectedMap: this.arrayToObject(params.selected)
         }
-        Packager(
-            {
-                entities,
-                materials: params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
-                meshes,
-                params: p,
-                onWrap: this.editorSystem,
-                fallbackMaterial: params.shadingModel !== SHADING_MODELS.DETAIL ?  this.debugMaterial : this.fallbackMaterial,
-                levelScript
-            },
-            this
-        )
+        Packager({
+            entities,
+            materials: params.shadingModel !== SHADING_MODELS.DETAIL ? [] : materials,
+            meshes,
+            params: p,
+            onWrap: this.editorSystem,
+            fallbackMaterial: params.shadingModel !== SHADING_MODELS.DETAIL ?  this.debugMaterial : this.fallbackMaterial,
+            levelScript
+        }, this)
     }
     arrayToObject(arr){
         const obj = {}

@@ -1,6 +1,6 @@
 import useEngine from "../engine-extension/useEngine"
 import useSerializer from "./useSerializer"
-import {useEffect, useRef, useState} from "react"
+import {useEffect, useRef} from "react"
 import EVENTS from "../../static/misc/EVENTS"
 import ProjectLoader from "../templates/ProjectLoader"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"

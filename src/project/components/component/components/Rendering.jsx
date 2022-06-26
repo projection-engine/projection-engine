@@ -4,7 +4,7 @@ import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../../components/hooks/useDirectState"
-import LabeledRange from "../../../../components/templates/LabeledRange"
+import LabeledRange from "../../../../components/range/LabeledRange"
 
 export default function Rendering() {
     const settings = useContext(SettingsProvider)
@@ -31,12 +31,37 @@ export default function Rendering() {
 
         state.ssrMaxSteps = settings.ssrMaxSteps
         state.ssrStepSize = settings.ssrStepSize
+
+
+        state.height = settings.resolution[1]
+        state.width = settings.resolution[0]
     }, [])
 
 
     return (
         <>
-
+            <AccordionTemplate title={"Resolution"}>
+                <LabeledRange
+                    label={"X"}
+                    variant={"embedded"}
+                    onFinish={v => settings.resolution = [settings.resolution[0], v]}
+                    incrementPercentage={1}
+                    precision={0}
+                    handleChange={() => null}
+                    value={settings.resolution[0]}
+                    minValue={1}
+                />
+                <LabeledRange
+                    label={"Y"}
+                    variant={"embedded"}
+                    onFinish={v => settings.resolution = [v, settings.resolution[1]]}
+                    incrementPercentage={1}
+                    precision={0}
+                    handleChange={() => null}
+                    value={settings.resolution[1]}
+                    minValue={1}
+                />
+            </AccordionTemplate>
             <Checkbox
                 noMargin={true}
                 checked={settings.fxaa}

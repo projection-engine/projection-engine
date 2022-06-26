@@ -19,9 +19,9 @@ export default function CameraEvents(c) {
         switch (event.type) {
         case "wheel":
             const forward = event.deltaY < 0
-            const distance = (forward ? 1 : -1) * scrollSpeed
+            const distance = (forward ? 1 : -1) * scrollSpeed * (camera.animated ? 1 : 3)
 
-            if (cameraScrollDelay > 0) {
+            if (camera.animated) {
                 const s = Math.sign(increment)
                 if (Math.sign(distance) !== s)
                     increment = 0
@@ -126,22 +126,5 @@ export default function CameraEvents(c) {
             window.gpu.canvas.removeEventListener("wheel", handleInput)
         },
     }
-    return {
-        ...r,
-        setCameraSpeed: (data) => {
-            r.stopTracking()
-            cameraSpeed = data
-            r.startTracking()
-        },
-        setCameraScrollSpeed: (data) => {
-            r.stopTracking()
-            scrollSpeed = data
-            r.startTracking()
-        },
-        setCameraScrollDelay: (data) => {
-            r.stopTracking()
-            cameraScrollDelay = data
-            r.startTracking()
-        }
-    }
+    return r
 }

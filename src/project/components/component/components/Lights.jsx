@@ -5,7 +5,7 @@ import Range from "../../../../components/range/Range"
 import ColorPicker from "../../../../components/color/ColorPicker"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
-import LabeledRange from "../../../../components/templates/LabeledRange"
+import LabeledRange from "../../../../components/range/LabeledRange"
 
 export default function Lights(props) {
     const getNewState = () => {

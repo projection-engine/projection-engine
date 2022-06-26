@@ -3,7 +3,6 @@ import Transform from "../components/Transform"
 import Lights from "../components/Lights"
 import Material from "../components/Material"
 import Mesh from "../components/Mesh"
-
 import styles from "../styles/Scene.module.css"
 import CubeMap from "../components/CubeMap"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
@@ -13,7 +12,6 @@ import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
 import Scripts from "../components/Scripts"
 import Rendering from "../components/Rendering"
-import Display from "../components/Display"
 import Editor from "../components/Editor"
 import Line from "../components/Line"
 import LightProbe from "../components/LightProbe"
@@ -269,7 +267,6 @@ export default function useForm(
                 open: false,
                 content: (
                     <div className={styles.formsWrapper}>
-                        {currentTab === "-1" ? <Display/> : null}
                         {currentTab === "-2" ? <Rendering/> : null}
                         {currentTab === "-3" ? <Editor/> : null}
                     </div>

@@ -2,6 +2,7 @@ import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
 import GIZMOS from "../../static/misc/GIZMOS"
 import ROTATION_TYPES from "../../static/misc/ROTATION_TYPES"
 import VIEWS from "../../components/view/VIEWS"
+
 const toRad = Math.PI / 180
 export default {
     projectCreationDate: (new Date()).toDateString(),
@@ -60,9 +61,8 @@ export default {
     falloff: 23,
     radius: 1,
     samples: 16,
-    cameraSpeed: .01,
-    cameraScrollSpeed: .5,
-    cameraScrollDelay: 100,
+
+    cameraAnimation: true,
     shortcuts: [],
 
 

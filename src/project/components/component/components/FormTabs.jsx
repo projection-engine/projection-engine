@@ -39,15 +39,6 @@ export default function FormTabs(props) {
                 <Icon styles={{fontWeight: "1rem"}}>videocam</Icon>
                 <ToolTip content={"Editor camera"} animation={"0ms"}/>
             </Button>
-
-            <Button
-                variant={props.currentTab === "-1" ? "filled" : undefined}
-                className={styles.button}
-                onClick={() => props.setCurrentTab("-1")}
-            >
-                <Icon styles={{fontWeight: "1rem"}}>tv</Icon>
-                <ToolTip content={"Graphics"} animation={"0ms"}/>
-            </Button>
             {props.entity ? <div className={styles.divider}/> : undefined}
             {props.entity === undefined || props.entity.isFolder ? null :
                 <Button

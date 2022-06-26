@@ -6,7 +6,6 @@ import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 import Transformation from "../engine/templates/Transformation"
-import {Icon} from "@f-ui/core"
 import toObject from "../engine/utils/toObject"
 
 
@@ -86,6 +85,7 @@ export default function useEngine(settings, worker) {
     }
     const update = useCallback(() => {
         if (initialized) {
+            window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
             window.renderer.updatePackage(
                 executingAnimation,

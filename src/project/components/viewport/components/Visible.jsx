@@ -3,7 +3,7 @@ import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import React, {useState} from "react"
-import LabeledRange from "../../../../components/templates/LabeledRange"
+import LabeledRange from "../../../../components/range/LabeledRange"
 
 export default function Visible(props) {
     const {settingsContext} = props
@@ -38,6 +38,16 @@ export default function Visible(props) {
                     onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
                     shortcut: "Ctrl + shift + h"
                 }}/>
+                <DropdownOption option={{
+                    label: "Camera animation",
+                    icon: settingsContext.cameraAnimation ? checkIcon : undefined,
+                    onClick: () => {
+                        const v = !settingsContext.cameraAnimation
+                        settingsContext.cameraAnimation = v
+                        window.renderer.camera.animated = v
+                    }
+                }}/>
+
                 <div className={styles.rangeWrapper}>
                     <LabeledRange
                         label={"Icon size"}

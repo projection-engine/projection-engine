@@ -4,7 +4,7 @@ import Transformation from "../../../engine/templates/Transformation"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
-import LabeledRange from "../../../../components/templates/LabeledRange"
+import LabeledRange from "../../../../components/range/LabeledRange"
 import styles from "../styles/Forms.module.css"
 
 export default function Transform(props) {
