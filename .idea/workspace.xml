@@ -6,41 +6,40 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/glTF.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/glTF.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/instances/Accessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/instances/Accessor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/instances/Node.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/instances/Node.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/instances/PrimitiveProcessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/instances/PrimitiveProcessor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/instances/Scene.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/instances/Scene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/utils/getPrimitive.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/utils/getPrimitive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/gltf-loader/utils/parseMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/gltf-loader/utils/parseMaterial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/events/project-loader/loader.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/events/project-loader/loader.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components" beforeDir="false" afterPath="$PROJECT_DIR$/src/components" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/color/ColorPicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/color/ColorPicker.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/color/styles/Color.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/color/styles/Color.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/ContextMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/ContextMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/ContextMenu.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/styles/ContextMenu.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/range/styles/Range.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/range/styles/Range.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/templates/LabeledRange.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/range/LabeledRange.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/templates/styles/Styles.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/styles/Styles.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/range/LabeledRange.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/range/LabeledRange.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/range/Range.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/range/Range.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/Issue.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/IssuesList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/Issue.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/issues/styles/IssuesList.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Editor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Display.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/FormTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/FormTabs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Lights.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Lights.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Rendering.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Rendering.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Transform.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Transform.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/component/hooks/useForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/hooks/useForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/File.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/File.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Camera.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Camera.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/ViewportTab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/ViewportTab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/DevelopmentRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/DevelopmentRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/camera/CameraEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/camera/CameraEvents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/camera/EditorCamera.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/camera/EditorCamera.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/RenderingPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/RenderingPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useProjectWrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useProjectWrapper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useSerializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useSerializer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/templates/SETTINGS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/templates/SETTINGS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/ShaderEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/ShaderEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/Board.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/Board.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/CompilationStatus.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/CompilationStatus.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/Group.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/Group.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/Node.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/Node.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/NodeEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/NodeEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/hooks/useGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/hooks/useGroup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/hooks/useNode.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/hooks/useNode.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/styles/NodeEditor.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/styles/NodeEditor.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/utils/compileShaders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/utils/compileShaders.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/utils/compiler/compiler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/utils/compiler/compiler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/utils/getNewInstance.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/utils/getNewInstance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/Files.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/Files.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/File.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/File.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/insertMethods.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/insertMethods.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +55,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/project/components/files" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -85,7 +84,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/roque/Documents/GitHub/editor/src/project/engine-extension",
+    "last_opened_file_path": "/home/roque/Documents/GitHub/editor/src/project/components/blueprints/nodes",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -105,11 +104,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/project/components/blueprints/nodes" />
       <recent name="$PROJECT_DIR$/src/project/engine-extension" />
       <recent name="$PROJECT_DIR$/src/project/engine/systems/passes" />
       <recent name="$PROJECT_DIR$/src/project/providers" />
       <recent name="$PROJECT_DIR$/src/project/hooks" />
-      <recent name="$PROJECT_DIR$/src/project/components/blueprints/shader-editor/utils/nodes/math" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/range" />
@@ -208,7 +207,9 @@
       <workItem from="1656177870162" duration="18862000" />
       <workItem from="1656245307944" duration="7770000" />
       <workItem from="1656253245764" duration="7249000" />
-      <workItem from="1656267116400" duration="8169000" />
+      <workItem from="1656267116400" duration="8349000" />
+      <workItem from="1656353930317" duration="6055000" />
+      <workItem from="1656361570121" duration="4017000" />
     </task>
     <servers />
   </component>

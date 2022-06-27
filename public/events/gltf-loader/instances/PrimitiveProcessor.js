@@ -6,12 +6,12 @@ export default class PrimitiveProcessor {
     static computeNormals(indices, vertices) {
         const faces = groupInto(3, indices)
         const positions = groupInto(3, vertices)
-        let quantity = positions.length;
-        let normals = (new Array(quantity));
+        let quantity = positions.length
+        let normals = (new Array(quantity))
 
 
         for (let i = 0; i < quantity; ++i) {
-            normals[i] = [0, 0, 0];
+            normals[i] = [0, 0, 0]
         }
         for (let i = 0; i < faces.length; ++i) {
             let f = faces[i], p = 0, c = f[f.length - 1], n = f[0]
@@ -32,15 +32,15 @@ export default class PrimitiveProcessor {
                 if (v0 && v1 && v2) {
                     vec3.sub(d01, v0, v1)
                     vec3.sub(d21, v2, v1)
-                    m01 = vec3.dot(d01, d01);
-                    m21 = vec3.dot(d21, d21);
+                    m01 = vec3.dot(d01, d01)
+                    m21 = vec3.dot(d21, d21)
 
                     if (m01 * m21 > 1e-6) {
-                        let norm = normals[c];
-                        let w = 1.0 / Math.sqrt(m01 * m21);
+                        let norm = normals[c]
+                        let w = 1.0 / Math.sqrt(m01 * m21)
                         for (let k = 0; k < 3; ++k) {
                             let u = (k + 1) % 3, v = (k + 2) % 3
-                            norm[k] += w * (d21[u] * d01[v] - d21[v] * d01[u]);
+                            norm[k] += w * (d21[u] * d01[v] - d21[v] * d01[u])
                         }
                     }
                 }
@@ -59,7 +59,7 @@ export default class PrimitiveProcessor {
             triangles = groupInto(3, indices)
 
         for (let i = 0; i < groupedVertices.length; ++i) {
-            tangents[i] = [0, 0, 0];
+            tangents[i] = [0, 0, 0]
         }
         for (let i = 0; i < triangles.length; i++) {
             let i0 = triangles[i][0],
@@ -106,13 +106,13 @@ export default class PrimitiveProcessor {
             let t0 = tangents[i],
                 n = norm[i]
 
-                let t = [0, 0, 0]
-                const nCop = [0, 0, 0]
-                vec3.scale(nCop, n, vec3.dot(n, t0))
-                vec3.sub(t, t0, nCop)
-                vec3.normalize(t, t)
+            let t = [0, 0, 0]
+            const nCop = [0, 0, 0]
+            vec3.scale(nCop, n, vec3.dot(n, t0))
+            vec3.sub(t, t0, nCop)
+            vec3.normalize(t, t)
 
-                tangentArray[i] = [t[0], t[1], t[2]]
+            tangentArray[i] = [t[0], t[1], t[2]]
         }
 
         return tangentArray.flat()

@@ -17,12 +17,12 @@ export default class Scene {
         this.allNodes = allNodes
     }
 
-    async load(projectPath, rootPath, meshes, accessors, options, idsToLoad) {
+    async load(projectPath, rootPath, meshes, accessors, options, idsToLoad, fileSourcePath, materials, textures, images) {
         const scenePath = rootPath + path.sep + getNormalizedName(this.scene.name) + path.sep
         const nodes = this.nodes.map(n => new Node(n, this.allNodes, undefined, projectPath))
         createDirectory(scenePath)
         createDirectory(scenePath + "primitives")
-        await Promise.all(nodes.map(n => n.write(scenePath + "primitives" + path.sep, meshes, accessors, options)))
+        await Promise.all(nodes.map(n => n.write(scenePath + "primitives" + path.sep, meshes, accessors, options, fileSourcePath, materials, textures, images)))
         const id = v4().toString()
         const data = {
             name: this.scene.name,

@@ -4,12 +4,14 @@ import PrimitiveProcessor from "./PrimitiveProcessor"
 import {v4} from "uuid"
 import FILE_TYPES from "../../../static/FILE_TYPES"
 import REG_PATH from "../../../static/REG_PATH"
+import parseMaterial from "../utils/parseMaterial"
 
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs")
+const path = require("path")
 
 export function getNormalizedName(name) {
-    return name.replaceAll(/((\s|<|>|\}|\\|\.|´|`|{|\/|\||\*|\?|'|")+)/g, '_')
+    const pName= !name || typeof name !== "string" ? "Scene-" + v4().toString() : name
+    return pName.replaceAll(/((\s|<|>|\}|\\|\.|´|`|{|\/|\||\*|\?|'|")+)/g, "_")
 }
 
 function getChildren(allNodes, node) {
@@ -51,14 +53,10 @@ export default class Node {
         }
         let transformationMatrix
         if (node.matrix) {
-            parsedNode = {
-                ...parsedNode,
-                translation: [0, 0, 0],
-                rotationQuat: [0, 0, 0, 1],
-                scaling: [1, 1, 1],
-                baseTransformationMatrix: Array.from(node.matrix)
-            }
-
+            parsedNode.translation = [0, 0, 0],
+            parsedNode.rotationQuat = [0, 0, 0, 1],
+            parsedNode.scaling = [1, 1, 1],
+            parsedNode.baseTransformationMatrix = Array.from(node.matrix)
             transformationMatrix = node.matrix
         } else {
             let translation = node.translation,
@@ -85,53 +83,57 @@ export default class Node {
                 parentTransform,
                 transformationMatrix
             )
-
-
-            parsedNode = {
-                ...parsedNode,
-                translation: [0, 0, 0],
-                rotationQuat: [0, 0, 0, 1],
-                scaling: [1, 1, 1],
-                baseTransformationMatrix: Array.from(transformationMatrix)
-            }
+            parsedNode.translation = [0, 0, 0]
+            parsedNode.rotationQuat = [0, 0, 0, 1]
+            parsedNode.scaling = [1, 1, 1]
+            parsedNode.baseTransformationMatrix = Array.from(transformationMatrix)
         }
 
         this.data = parsedNode
         this.transformationMatrix = transformationMatrix
     }
 
-    async write(partialPath, meshes, accessors, options) {
+    async write(partialPath, meshes, accessors, options, fileSourcePath, materials=[], textures=[], images=[]) {
 
         const mesh = meshes[this.data.meshIndex]
         if (mesh !== undefined) {
             const primitiveIDs = []
-            await Promise.all(mesh.primitives.map((p, i) => {
-                const primitivePath = partialPath + mesh.name + '-primitive-' + i + FILE_TYPES.MESH
+            for(let i =0; i < mesh.primitives.length; i++){
+                const p = mesh.primitives[i]
+                const primitivePath = partialPath + mesh.name + "-primitive-" + i + FILE_TYPES.MESH
                 const primitiveData = primitive(p)
-                const regID = v4().toString()
+                const regID = v4().toString(),matID= v4().toString()
                 const [min, max] = PrimitiveProcessor.computeBoundingBox(accessors[primitiveData.vertices].data)
                 const normals = !options.keepNormals || (primitiveData.normals === -1 || primitiveData.normals === undefined) ? PrimitiveProcessor.computeNormals(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data) : accessors[primitiveData.normals].data
                 const tangents = !options.keepTangents || (primitiveData.tangents === -1 || primitiveData.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data, accessors[primitiveData.uvs]?.data, normals) : accessors[primitiveData.tangents].data
-
+                if(p.material !== undefined){
+                    const matData = await parseMaterial(fileSourcePath, materials[p.material], textures, images)
+                    console.log(matData)
+                    if(matData)
+                        await Node.writeData(primitivePath, matData, matID, this.projectPath)
+                }
                 primitiveIDs.push(regID)
-                return Node.writeData(primitivePath, {
-                    ...this.data,
-                    indices: accessors[primitiveData.indices]?.data,
-                    vertices: accessors[primitiveData.vertices]?.data,
-                    tangents: tangents,
-                    normals: normals,
-                    uvs: accessors[primitiveData.uvs].data,
-                    maxBoundingBox: max,
-                    minBoundingBox: min,
-
-                }, regID, this.projectPath)
-            }))
-
+                await Node.writeData(
+                    primitivePath, 
+                    {
+                        ...this.data,
+                        indices: accessors[primitiveData.indices]?.data,
+                        vertices: accessors[primitiveData.vertices]?.data,
+                        tangents: tangents,
+                        normals: normals,
+                        uvs: accessors[primitiveData.uvs].data,
+                        maxBoundingBox: max,
+                        minBoundingBox: min,
+                        material: matID
+                    }, 
+                    regID,
+                    this.projectPath
+                )
+            }
             this.primitives = primitiveIDs
         }
         for (let i in this.children) {
             const child = this.children[i]
-
             await child.write(partialPath, meshes, accessors, options)
         }
     }
@@ -152,16 +154,14 @@ export default class Node {
             fs.writeFile(
                 pathName,
                 JSON.stringify(data),
-                (e1) => {
+                () => {
                     fs.writeFile(
                         projectPath + path.sep + REG_PATH + path.sep + regID + FILE_TYPES.REGISTRY,
                         JSON.stringify({
-                            path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + 'assets') + path.sep, ''),
+                            path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + "assets") + path.sep, ""),
                             id: regID
                         }),
-                        (e2) => {
-                            resolve()
-                        }
+                        () => resolve()
                     )
                 }
             )

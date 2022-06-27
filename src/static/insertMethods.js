@@ -23,7 +23,9 @@ export default function insertMethods(fileSystem, pushEvent){
     console.removeTarget = (ref) => {
         console.targerts = console.targerts.filter(r => r !== ref)
     }
-    console.log = (message) => {
+    console.log = (...comps) => {
+        console.dir(comps)
+        const message = comps.join(",\n")
         if(window.renderer.environment === ENVIRONMENT.PROD)
             for(let i = 0; i < console.targerts.length; i++){
                 const logger = console.targerts[i]
@@ -49,6 +51,6 @@ export default function insertMethods(fileSystem, pushEvent){
                 logger.lastContent = message
                 logger.scrollTop = logger.scrollHeight
             }
-        oldLog(message)
+        oldLog(...comps)
     }
 }
