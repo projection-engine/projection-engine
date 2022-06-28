@@ -37,7 +37,7 @@ export default function FS() {
                 else
                     ev.sender.send("dialog-response-" + listenID, [])
             })
-            .catch(err => console.log(err))
+            .catch(err => console.error(err))
     })
 
     // TODO - Implement better performance tracking
@@ -50,7 +50,6 @@ export default function FS() {
 
         const registryData = (await readRegistry(pathName + "Registry")).filter(reg => reg)
         const res = await directoryStructure(pathName)
-        console.log(registryData, pathName)
         for(let i in res){
             const e = await parsePath(res[i], registryData, pathName)
 

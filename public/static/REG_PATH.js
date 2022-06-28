@@ -1,1 +1,1 @@
-export default 'assetsRegistry'
+export default "assetsRegistry"

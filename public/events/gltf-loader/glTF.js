@@ -9,7 +9,7 @@ export function createDirectory(p){
     try {
         fs.mkdirSync(path.resolve(p))
     } catch (e) {
-        console.log(e)
+        console.error(e)
     }
 }
 export default async function glTF(root, fileSRC, projectPath, file, options, filePath) {

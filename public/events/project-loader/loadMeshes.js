@@ -1,7 +1,5 @@
 import {readFromRegistry} from "./FSOperations"
 
-const pathRequire = require('path')
-const fs = require('fs')
 
 export default async function loadMeshes(toLoad, projectPath, callback) {
     // const meshes = []
@@ -9,7 +7,6 @@ export default async function loadMeshes(toLoad, projectPath, callback) {
         const m = toLoad[i]
         const fileData = await readFromRegistry(m, projectPath)
 
-        console.log(fileData)
         if (fileData) {
             const parsed = JSON.parse(fileData)
             parsed.id = m
@@ -17,6 +14,4 @@ export default async function loadMeshes(toLoad, projectPath, callback) {
             // meshes.push(parsed)
         }
     }
-
-
 }

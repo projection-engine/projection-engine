@@ -5,6 +5,7 @@ import {v4} from "uuid"
 import FILE_TYPES from "../../../static/FILE_TYPES"
 import REG_PATH from "../../../static/REG_PATH"
 import parseMaterial from "../utils/parseMaterial"
+import PREVIEW_PATH from "../../../static/PREVIEW_PATH"
 
 const fs = require("fs")
 const path = require("path")
@@ -104,13 +105,13 @@ export default class Node {
                 const primitiveData = primitive(p)
                 const regID = v4().toString(),matID= v4().toString()
                 const [min, max] = PrimitiveProcessor.computeBoundingBox(accessors[primitiveData.vertices].data)
-                const normals = !options.keepNormals || (primitiveData.normals === -1 || primitiveData.normals === undefined) ? PrimitiveProcessor.computeNormals(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data) : accessors[primitiveData.normals].data
-                const tangents = !options.keepTangents || (primitiveData.tangents === -1 || primitiveData.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data, accessors[primitiveData.uvs]?.data, normals) : accessors[primitiveData.tangents].data
+                const normals = (primitiveData.normals === -1 || primitiveData.normals === undefined) ? PrimitiveProcessor.computeNormals(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data) : accessors[primitiveData.normals].data
+                const tangents = (primitiveData.tangents === -1 || primitiveData.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[primitiveData.indices]?.data, accessors[primitiveData.vertices]?.data, accessors[primitiveData.uvs]?.data, normals) : accessors[primitiveData.tangents].data
                 if(p.material !== undefined){
-                    const matData = await parseMaterial(fileSourcePath, materials[p.material], textures, images)
-                    console.log(matData)
+                    const matData = await parseMaterial(fileSourcePath, materials[p.material], textures, images, partialPath, this.projectPath)
+
                     if(matData)
-                        await Node.writeData(primitivePath, matData, matID, this.projectPath)
+                        await Node.writeData(partialPath + getNormalizedName(materials[p.material].name) + FILE_TYPES.MATERIAL, matData, matID, this.projectPath)
                 }
                 primitiveIDs.push(regID)
                 await Node.writeData(
@@ -149,7 +150,7 @@ export default class Node {
         }
     }
 
-    static async writeData(pathName, data, regID, projectPath) {
+    static async writeData(pathName, data, regID, projectPath, preview) {
         await new Promise(resolve => {
             fs.writeFile(
                 pathName,
@@ -161,7 +162,16 @@ export default class Node {
                             path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + "assets") + path.sep, ""),
                             id: regID
                         }),
-                        () => resolve()
+                        () => {
+                            if(preview)
+                                fs.writeFile(
+                                    projectPath + path.sep + PREVIEW_PATH + path.sep + regID + FILE_TYPES.PREVIEW,
+                                    preview,
+                                    () => resolve()
+                                )
+                            else
+                                resolve()
+                        }
                     )
                 }
             )

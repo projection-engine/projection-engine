@@ -76,7 +76,7 @@ export default class FileSystem {
         })
     }
 
-    async importFile(options, targetDir, filesToLoad) {
+    async importFile(targetDir, filesToLoad) {
         let result = []
         for (let i in filesToLoad) {
             const filePath = filesToLoad[i]
@@ -105,7 +105,7 @@ export default class FileSystem {
                         ipcRenderer.send("import-gltf", {
                             filePath: filePath,
                             newRoot,
-                            options,
+                           options: {},
                             projectPath: this.path,
                             listenID,
                             fileName: filePath.split(pathRequire.sep).pop()

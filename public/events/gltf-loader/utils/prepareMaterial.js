@@ -17,39 +17,59 @@ export default async function prepareMaterial({
     material.y = 100
     const nodes = []
     const links = []
-    let data
+    let data, index = 0
 
-    data = (typeof emissive === "number" ? newFactor : newTexture)(emissive, "emissive", material, 0)
-    nodes.push(data.node)
-    links.push(data.link)
-
-    data = (typeof albedo === "number" ? newFactor : newTexture)(albedo, "albedo", material, 1)
-    nodes.push(data.node)
-    links.push(data.link)
-
-    data = (typeof roughness === "number" ? newFactor : newTexture)(roughness, "roughness", material, 2)
-    nodes.push(data.node)
-    links.push(data.link)
-    
-    data = (typeof metallic === "number" ? newFactor : newTexture)(metallic, "metallic", material, 3)
-    nodes.push(data.node)
-    links.push(data.link)
-    
-    data = (typeof ao === "number" ? newFactor : newTexture)(ao, "ao", material, 4)
-    nodes.push(data.node)
-    links.push(data.link)
-
-    if(normal !== null){
-        data = newTexture(normal, "normal", material, 5)
+    if(emissive !== undefined) {
+        data = (typeof emissive === "number" ? newFactor : newTexture)(emissive, "emissive", material, index)
         nodes.push(data.node)
         links.push(data.link)
+        index++
     }
-    return await compiler(nodes, links)
+
+    if(albedo !== undefined) {
+        data = (typeof albedo === "number" ? newFactor : newTexture)(albedo, "al", material, index)
+        nodes.push(data.node)
+        links.push(data.link)
+        index++
+    }
+
+    if(roughness !== undefined) {
+        data = (typeof roughness === "number" ? newFactor : newTexture)(roughness, "roughness", material, index)
+        nodes.push(data.node)
+        links.push(data.link)
+        index++
+    }
+
+    if(metallic !== undefined) {
+        data = (typeof metallic === "number" ? newFactor : newTexture)(metallic, "metallic", material, index)
+        nodes.push(data.node)
+        links.push(data.link)
+        index++
+    }
+    if(ao !== undefined) {
+        data = (typeof ao === "number" ? newFactor : newTexture)(ao, "ao", material, index)
+        nodes.push(data.node)
+        links.push(data.link)
+        index++
+    }
+    if(normal !== undefined){
+        data = newTexture(normal, "normal", material, index)
+        nodes.push(data.node)
+        links.push(data.link)
+        index++
+    }
+    const compiled = await compiler(nodes, links)
+    return {
+        response: compiled,
+        nodes: nodes.map(n => ({...n, instance: n.constructor.name, texture: n instanceof EmbeddedTextureSample ? {registryID: n.samplerID} : undefined})),
+        links: links
+    }
 }
 
-function newTexture(val, key, material, index){
+function newTexture({base64, id}, key, material, index){
     const node = new EmbeddedTextureSample()
-    node.texture = val
+    node.texture = base64
+    node.samplerID = id
     node.y = index * 250
     return {
         node,
