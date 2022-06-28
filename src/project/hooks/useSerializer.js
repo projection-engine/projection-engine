@@ -18,7 +18,6 @@ export default function useSerializer(engine, settings, id) {
             let promise = []
             if (id) {
                 const canvas = window.gpu.canvas
-                const preview = canvas.toDataURL()
                 const res = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
                 if (res) {
                     const old = JSON.parse(res.toString())
@@ -26,7 +25,6 @@ export default function useSerializer(engine, settings, id) {
                         .updateProject(
                             {
                                 ...old,
-                                preview: preview,
                                 entities: engine.entities.length,
                                 meshes: engine.meshes.length,
                                 materials: engine.materials.length,

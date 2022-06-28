@@ -36,7 +36,6 @@ export default function useEngine(settings, worker) {
     useEffect(() => {
         worker.postMessage({entities, COMPONENTS, meshes: toObject(meshes, true), materials: toObject(materials, true)})
         worker.onmessage = ({data: {meshesFiltered, materialsFiltered}}) => {
-            console.log([meshesFiltered, materialsFiltered])
             if(Object.keys(meshesFiltered).length > 0)
                 setMeshes(prev => {
                     const filtered = []
@@ -57,7 +56,6 @@ export default function useEngine(settings, worker) {
                         else
                             prev[i].delete()
                     }
-                    console.log(filtered)
                     return filtered
                 })
         }

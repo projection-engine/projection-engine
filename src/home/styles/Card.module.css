@@ -2,11 +2,26 @@
   position: relative;
   width: 100%;
   background-color: var(--pj-background-tertiary);
-  border-radius: 5px;
+  border-radius: 3px;
   overflow: hidden;
   transition: 150ms linear;
-  border: var(--pj-border-primary) 1px solid;
   padding: 4px;
+  color: var(--pj-color-secondary);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: transparent 1px solid;
+}
+
+.wrapper:hover {
+  border-color: var(--pj-border-primary);
+}
+
+.divider {
+  height: 35px;
+  width: 1px;
+  background: var(--pj-border-primary);
 }
 
 .wrapper:hover {
@@ -16,6 +31,7 @@
 .wrapper:hover .dataRow {
   background: var(--pj-background-primary);
 }
+
 .openButton,
 .button {
   display: flex;
@@ -24,12 +40,13 @@
   overflow: hidden;
   height: 25px;
   min-width: 25px;
+  max-width: 25px;
   font-size: 0.7rem;
   font-weight: 550;
-  padding: 4px !important;
+  padding: 0 !important;
   gap: 4px;
-  background: var(--pj-border-primary) !important;
 }
+
 .button:hover {
   color: white;
   background: var(--pj-accent-color) !important;
@@ -63,19 +80,17 @@
   font-size: 0.8rem;
   font-weight: 550;
   color: var(--fabric-color-secondary);
-
   border-radius: 5px;
   overflow: hidden;
 }
 
 .section {
+  width: 100%;
   padding-top: 4px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  width: 100%;
-  max-width: 100%;
   overflow: hidden;
 }
 
@@ -87,9 +102,9 @@
 }
 
 .modalOptions {
-  padding: 4px;
+  padding: 0 4px 4px;
   max-width: unset;
-  width: 300px;
+  width: 250px;
 }
 
 .dataRow {
@@ -99,4 +114,28 @@
   border-radius: 0;
   transition: 150ms linear;
   border-bottom: var(--pj-background-tertiary) 1px solid;
+}
+
+
+.headers{
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  background: var(--pj-border-primary);
+  border-radius: 3px;
+  padding: 4px;
+  align-items: center;
+  width: 100%;
+  color: var(--pj-color-secondary);
+}
+.header{
+  width: 100%;
+  text-align: left;
+  padding-left: 4px;
+  font-size: .8rem;
+}
+.dividerHeaders {
+  height: 20px;
+  width: 1px;
+  background: var(--pj-background-tertiary);
 }

@@ -48,7 +48,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                         return [...prev, mat]
                     }))
             })
-
+            ipcRenderer.on(CHANNELS.CLEAN_UP + "-" + listenID, () => window.fileSystem.refresh())
             ipcRenderer.send(CHANNELS.SEND, {projectPath: window.fileSystem.path, projectID: id, listenID})
         }
     }, [engine.initialized])

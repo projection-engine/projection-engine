@@ -34,8 +34,10 @@ export default function Main() {
         }
         project = null
         const newWindow = new BrowserWindow({
-            width: 800,
-            height: 650,
+            width: 900,
+            height: 600,
+            minHeight: 600,
+            minWidth: 900,
             frame: false,
             webPreferences: {
                 webSecurity: false,

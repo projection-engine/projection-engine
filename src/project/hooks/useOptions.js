@@ -7,7 +7,6 @@ const {ipcRenderer} = window.require("electron")
 export default function useOptions(engine, save) {
     const [options, setOptions] = useState([])
     useEffect(() => {
-        console.log("REFRESHED")
         setOptions([
             {divider: true},
             {

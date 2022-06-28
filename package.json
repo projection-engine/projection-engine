@@ -22,7 +22,11 @@
       "packagerConfig": {
         "--asar": false
       },
-      "platforms": ["darwin", "linux", "win32"],
+      "platforms": [
+        "darwin",
+        "linux",
+        "win32"
+      ],
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -115,10 +119,10 @@
     "url-loader": "^4.1.1"
   },
   "dependencies": {
-    "@f-ui/core": "0.2.17-alpha",
-    "@f-ui/markdown": "^0.1.2-alpha",
-
-    "assimpjs": "https://github.com/kovacsv/assimpjs.git",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "@f-ui/core": "^0.2.18-alpha",
+    "@f-ui/markdown": "^0.2.0-alpha",
     "atob": "^2.1.2",
     "axios": "^0.27.2",
     "babel-runtime": "^6.26.0",
@@ -126,15 +130,11 @@
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",
+    "prop-types": "^15.7.2",
 
     "react-colorful": "^5.5.1",
 
-    "seed-random": "^2.2.0",
     "systeminformation": "^5.11.14",
-    "uuid": "^8.3.2",
-
-    "prop-types": "^15.7.2",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "uuid": "^8.3.2"
   }
 }

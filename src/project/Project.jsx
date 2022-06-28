@@ -38,6 +38,7 @@ function Project() {
             setProject(data.package)
             setEvents(data)
         })
+
         document.body.classList.add(styles.dark)
     }, [])
     useAlert(true)

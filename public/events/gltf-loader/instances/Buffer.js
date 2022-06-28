@@ -1,8 +1,8 @@
 import PathSep from "../../../static/PathSep"
 
-const fs = require('fs')
-const path = require('path')
-const atob = require('atob')
+const fs = require("fs")
+const path = require("path")
+const atob = require("atob")
 export default class Buffer {
     constructor(data, basePath) {
         this.data = data
@@ -10,14 +10,14 @@ export default class Buffer {
     }
 
     initialize(){
-        if (this.data.uri.includes('base64'))
+        if (this.data.uri.includes("base64"))
             return new Promise(resolve => {
                 this.data = this.#getBufferData(this.data.uri)
                 resolve()
             })
         else {
             return new Promise(resolve => {
-                fs.readFile(path.resolve(this.basePath + PathSep.sep +  this.data.uri),  {encoding: 'base64'}, (e, r) => {
+                fs.readFile(path.resolve(this.basePath + PathSep.sep +  this.data.uri),  {encoding: "base64"}, (e, r) => {
                     if(!e)
                         this.data = this.#getBufferData(r.toString())
                     resolve()
@@ -27,12 +27,12 @@ export default class Buffer {
     }
     #getBufferData(str) {
 
-        let byteCharacters = atob(str.replace('data:application/octet-stream;base64,', ''));
-        let dv = new DataView(new ArrayBuffer(byteCharacters.length));
+        let byteCharacters = atob(str.replace("data:application/octet-stream;base64,", ""))
+        let dv = new DataView(new ArrayBuffer(byteCharacters.length))
         Array.from(byteCharacters).forEach((char, i) => {
-            dv.setUint8(i, char.charCodeAt(0));
-        });
+            dv.setUint8(i, char.charCodeAt(0))
+        })
 
-        return dv;
+        return dv
     }
 }

@@ -3,5 +3,6 @@ export default {
     META_DATA: "meta-settings",
     MESH: "mesh",
     MATERIAL: "material",
-    SCRIPTS: "scripts"
+    SCRIPTS: "scripts",
+    CLEAN_UP: "clean-up"
 }

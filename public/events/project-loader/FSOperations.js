@@ -34,7 +34,7 @@ export async function readRegistry(pathName) {
     return new Promise(resolve => {
         fs.readdir(pathName, (e, res) => {
             if (!e) {
-                let promises = res.map(f => {
+                Promise.all(res.map(f => {
                     return new Promise(resolve1 => {
                         const registryPath = pathName + pathRequire.sep + f
                         fs.readFile(registryPath, (e, registryFile) => {
@@ -47,9 +47,7 @@ export async function readRegistry(pathName) {
                             } else resolve1()
                         })
                     })
-                })
-
-                Promise.all(promises).then(registryFiles => {
+                })).then(registryFiles => {
                     resolve(registryFiles
                         .filter(f => f !== undefined))
                 })

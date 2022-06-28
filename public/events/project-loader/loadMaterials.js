@@ -1,9 +1,5 @@
 import {readFromRegistry} from "./FSOperations"
 
-const pathRequire = require('path')
-const fs = require('fs')
-
-
 export default async function loadMaterials(toLoad, projectPath, callback) {
 
     for (let i in toLoad) {
@@ -17,6 +13,7 @@ export default async function loadMaterials(toLoad, projectPath, callback) {
                         result: fileParsed.response, id: m
                     })
             } catch (e) {
+                console.error(e)
             }
         }
     }

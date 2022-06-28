@@ -1,22 +1,17 @@
 .wrapper {
   transition: 150ms linear;
   padding: 4px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
   overflow: hidden;
-  justify-items: center;
   height: 100%;
-  max-width: 55px;
-  min-width: 55px;
-  background: var(--pj-background-primary);
+  width: 250px;
+  background: var(--pj-background-secondary);
   border-right: var(--pj-border-primary) 1px solid;
   gap: 8px;
 }
-
-.wrapper[data-extended="true"] {
-  min-width: 250px;
-}
-
-
 
 .button {
   width: 100%;
@@ -28,11 +23,3 @@
   padding: 4px !important;
 }
 
-.block {
-  transform: translateY(8px);
-  transition: 150ms linear;
-  display: grid;
-  height: fit-content;
-  gap: 4px;
-  width: 100%;
-}

@@ -26,3 +26,85 @@
 .submitButton {
   width: 100%;
 }
+
+.wrapperProjects {
+  width: 100%;
+  padding: 0 5%;
+  position: relative;
+  overflow-y: auto;
+  height: 100%;
+  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.titleWrapper {
+  color: var(--pj-color-secondary);
+  border-bottom: var(--pj-border-primary) 1px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4vh;
+  padding-bottom: 16px;
+
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.title > label {
+  font-size: 1.5rem;
+  font-weight: 550;
+}
+
+
+
+.content {
+  display: grid;
+  gap: 4px;
+  height: fit-content;
+  align-items: flex-start;
+}
+
+.button {
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px !important;
+  font-weight: 550;
+  overflow: hidden;
+  max-width: 100%;
+  background: var(--pj-border-primary) !important;
+}
+
+.button:hover {
+  background: var(--pj-accent-color) !important;
+}
+
+.emptyWrapper {
+  color: var(--pj-color-tertiary);
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 550;
+  font-size: 0.8rem;
+}
+
+.createModal {
+  padding: 8px;
+  width: 250px;
+}
