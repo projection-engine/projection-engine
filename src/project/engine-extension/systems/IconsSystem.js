@@ -6,7 +6,6 @@ import * as iconShaderCode from "../shaders/ICON.glsl"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import MeshInstance from "../../engine/instances/MeshInstance"
-import {fragmentForward, vertex} from "../../engine/shaders/mesh/FALLBACK.glsl"
 import {createVAO} from "../../engine/utils/utils"
 import VBOInstance from "../../engine/instances/VBOInstance"
 import ImageProcessor from "../../engine/utils/image/ImageProcessor"
@@ -27,7 +26,7 @@ export default class IconsSystem extends System {
 
         this.iconShader = new ShaderInstance(iconShaderCode.vertex, iconShaderCode.fragment)
         this.cameraShader = new ShaderInstance(cameraShaderCode.shadedVertex, cameraShaderCode.shadedFragment)
-        this.sphereShader = new ShaderInstance(vertex, fragmentForward)
+        // this.sphereShader = new ShaderInstance(vertex, fragmentForward)
         this.cursorShader = new ShaderInstance(iconShaderCode.cursorVertex, iconShaderCode.cursorFragment)
 
         this.vao = createVAO()
@@ -36,15 +35,13 @@ export default class IconsSystem extends System {
         Promise.all([
             import("../../../static/icons/point_light.png"),
             import("../../../static/icons/directional_light.png"),
-            import("../../../static/icons/cubemap.png"),
             import("../../../static/icons/probe.png"),
             import("../../../static/meshes/Camera.json"),
             import("../../../static/meshes/Sphere.json"),
         ]).then(res => {
-            const [pl, dl, cm, p, camera, sphere] = res
+            const [pl, dl, p, camera, sphere] = res
             this.pointLightTexture = new TextureInstance(pl.default, false)
             this.directionalLightTexture = new TextureInstance(dl.default, false)
-            this.cubemapTexture = new TextureInstance(cm.default, false)
             this.probeTexture = new TextureInstance(p.default, false)
             this.cameraMesh = new MeshInstance({
                 ...camera,
@@ -93,18 +90,15 @@ export default class IconsSystem extends System {
         const c = entity.components
         const isDLight = c[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined
         const isPLight = c[COMPONENTS.POINT_LIGHT] !== undefined
-        const isCM = c[COMPONENTS.CUBE_MAP] !== undefined
         const isProbe = c[COMPONENTS.PROBE] !== undefined
 
-        const isEntity  =isDLight || isPLight || isCM || isProbe
+        const isEntity  =isDLight || isPLight || isProbe
         if(isEntity)
             switch (true){
             case isDLight:
                 return this.directionalLightTexture.texture
             case isPLight:
                 return this.pointLightTexture.texture
-            case isCM:
-                return this.cubemapTexture.texture
             case isProbe:
                 return this.probeTexture.texture
             }
@@ -116,7 +110,6 @@ export default class IconsSystem extends System {
         const {
             pointLights,
             directionalLights,
-            cubeMaps,
             cameras,
             lightProbes
         } = data
@@ -125,7 +118,6 @@ export default class IconsSystem extends System {
             camera,
             iconsVisibility,
             iconSize,
-            brdf,
             cursor,
             selected
         } = options
@@ -148,13 +140,7 @@ export default class IconsSystem extends System {
                 iconSize,
                 this.iconShader
             )
-            this.renderers.cubeMap.draw(
-                this.loop(cubeMaps, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
-                this.cubemapTexture.texture,
-                camera,
-                iconSize,
-                this.iconShader
-            )
+
             this.renderers.probe.draw(
                 this.loop(lightProbes, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
                 this.probeTexture.texture,
@@ -165,7 +151,6 @@ export default class IconsSystem extends System {
 
             // 3D cursor
             this.drawHighlighted(cursor.components[COMPONENTS.TRANSFORM], camera, this.checkerboardTexture.texture)
-            // 3D cursor
 
             for(let i = 0; i<selected.length; i++){
                 const entity = entitiesMap[selected[i]]
@@ -201,27 +186,27 @@ export default class IconsSystem extends System {
 
 
             // Light probes
-            if (lightProbes.length > 0) {
-                this.sphereMesh.use()
-                this.sphereShader.use()
-                const probes = lightProbes.map(l => l.components[COMPONENTS.PROBE].probes).flat()
-                for (let i = 0; i < probes.length; i++) {
-                    const current = probes[i]
+            // if (lightProbes.length > 0) {
+            //     this.sphereMesh.use()
+            //     this.sphereShader.use()
+            //     const probes = lightProbes.map(l => l.components[COMPONENTS.PROBE].probes).flat()
+            //     for (let i = 0; i < probes.length; i++) {
+            //         const current = probes[i]
+            //
+            //         this.sphereShader.bindForUse({
+            //             viewMatrix: camera.viewMatrix,
+            //             transformMatrix: current.transformedMatrix,
+            //             projectionMatrix: camera.projectionMatrix,
+            //             irradiance0: current.cubeMap.irradianceTexture,
 
-                    this.sphereShader.bindForUse({
-                        viewMatrix: camera.viewMatrix,
-                        transformMatrix: current.transformedMatrix,
-                        projectionMatrix: camera.projectionMatrix,
-                        irradiance0: current.cubeMap.irradianceTexture,
-                        irradianceMultiplier: [10, 10, 10],
-                        brdfSampler: brdf,
-                        cameraVec: camera.position
-                    })
-                    window.gpu.drawElements(window.gpu.TRIANGLES, this.sphereMesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
-                }
-                this.sphereMesh.finish()
-            }
-
+            //             brdfSampler: brdf,
+            //             cameraVec: camera.position
+            //         })
+            //         window.gpu.drawElements(window.gpu.TRIANGLES, this.sphereMesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
+            //     }
+            //     this.sphereMesh.finish()
+            // }
+            //
             // Light probes
         }
 

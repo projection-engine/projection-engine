@@ -9,11 +9,7 @@ export default function getComponentInfo(c) {
         res.label = "Transform"
         res.icon = "transform"
         break
-    case COMPONENTS.CUBE_MAP:
-        res.key = c
-        res.label = "CubeMap"
-        res.icon = "panorama_photosphere"
-        break
+
     case COMPONENTS.MESH:
         res.key = c
         res.label = "Mesh"
@@ -30,9 +26,8 @@ export default function getComponentInfo(c) {
         res.icon = "lightbulb"
         break
     case COMPONENTS.DIRECTIONAL_LIGHT:
-    case COMPONENTS.SKYLIGHT:
         res.key = c
-        res.label = c === COMPONENTS.DIRECTIONAL_LIGHT ? "DirectionalLight" : "Skylight"
+        res.label = "DirectionalLight"
         res.icon = "light_mode"
         break
     case COMPONENTS.SPOT_LIGHT:

@@ -108,7 +108,7 @@ export default class PreviewSystem {
                 pointLightData: pointLightData,
                 materialComponent: {},
                 elapsed,
-                ambient: {irradianceMultiplier: [1, 1, 1]},
+                ambient: {},
 
                 shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true
@@ -133,7 +133,7 @@ export default class PreviewSystem {
                 pointLightData: this.pointLightData,
                 materialComponent: {},
                 elapsed,
-                ambient: {irradianceMultiplier: [1, 1, 1]},
+                ambient: {},
 
                 shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true

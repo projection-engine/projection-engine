@@ -52,10 +52,14 @@ export default class MainWindow{
     }
 
     removeEvents() {
-        this.currentListeners.minimize?.removeAllListeners(FRAME_EVENTS.MINIMIZE)
-        this.currentListeners.maximize?.removeAllListeners(FRAME_EVENTS.MAXIMIZE)
-        this.currentListeners.close?.removeAllListeners(FRAME_EVENTS.CLOSE)
-        this.currentListeners.shortcuts?.close()
+        if(this.currentListeners.minimize)
+            this.currentListeners.minimize.removeAllListeners(FRAME_EVENTS.MINIMIZE)
+        if(this.currentListeners.maximize)
+            this.currentListeners.maximize.removeAllListeners(FRAME_EVENTS.MAXIMIZE)
+        if(this.currentListeners.close)
+            this.currentListeners.close.removeAllListeners(FRAME_EVENTS.CLOSE)
+        if(this.currentListeners.shortcuts)
+            this.currentListeners.shortcuts.close()
     }
     prepareHomeWindow(){
         if (this.window) {

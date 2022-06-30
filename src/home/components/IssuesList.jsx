@@ -3,6 +3,7 @@ import {DataProvider, DataRow, Icon} from "@f-ui/core"
 import axios from "axios"
 import styles from "../styles/IssuesList.module.css"
 import Issue from "./Issue"
+
 const GIT = {name: "editor", owner: "projection-engine"}
 export default function IssuesList() {
 

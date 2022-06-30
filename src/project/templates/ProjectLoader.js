@@ -9,8 +9,7 @@ import PhysicsBodyComponent from "../engine/components/PhysicsBodyComponent"
 import Entity from "../engine/basic/Entity"
 import MaterialInstance from "../engine/instances/MaterialInstance"
 import MaterialComponent from "../engine/components/MaterialComponent"
-import CubeMapComponent from "../engine/components/CubeMapComponent"
-import CubeMapInstance from "../engine/instances/CubeMapInstance"
+import ProbeComponent from "../engine/components/ProbeComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import CameraComponent from "../engine/components/CameraComponent"
 import Transformation from "../engine/templates/Transformation"
@@ -155,13 +154,7 @@ const ENTITIES = {
     },
     [COMPONENTS.FOLDER]: async (entity, k) => new FolderComponent(entity.components[k].id),
     [COMPONENTS.PHYSICS]: async (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
-    [COMPONENTS.CUBE_MAP]: async (entity, k) => {
-        const component = new CubeMapComponent(entity.components[k].id)
-        component.cubeMap = new CubeMapInstance(component.resolution)
-
-        return component
-    },
-    // [COMPONENTS.COLLIDER]: (entity, k, meshes) => new ColliderComponent(entity.components[k].id, meshes.find(m => m.id === entity.components.MeshComponent.meshID)),
+    [COMPONENTS.PROBE]: async (entity, k) => new ProbeComponent(entity.components[k].id),
     [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id)
 
 }

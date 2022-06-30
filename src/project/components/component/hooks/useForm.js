@@ -4,7 +4,7 @@ import Lights from "../components/Lights"
 import Material from "../components/Material"
 import Mesh from "../components/Mesh"
 import styles from "../styles/Scene.module.css"
-import CubeMap from "../components/CubeMap"
+import Probe from "../components/Probe"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import cloneClass from "../../../engine/utils/cloneClass"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
@@ -14,7 +14,6 @@ import Scripts from "../components/Scripts"
 import Rendering from "../components/Rendering"
 import Editor from "../components/Editor"
 import Line from "../components/Line"
-import LightProbe from "../components/LightProbe"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
 
@@ -30,7 +29,7 @@ export function  updateTransform(axis, data, key, engine, entityID) {
 
     if (entity.components[COMPONENTS.POINT_LIGHT])
         entity.components[COMPONENTS.POINT_LIGHT].changed = true
-    if (entity.components[COMPONENTS.CUBE_MAP])
+    if (entity.components[COMPONENTS.PROBE])
         alert.pushAlert("Reflection captures need to be rebuilt",  "alert")
     engine.dispatchEntities({
         type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
@@ -62,26 +61,6 @@ export default function useForm(
     const getField = (key) => {
         if (selected.components[key])
             switch (key) {
-            case COMPONENTS.PROBE: {
-                return (
-                    <LightProbe
-                        selected={selected.components[COMPONENTS.PROBE]}
-                        submit={(key, value) => selected.components[COMPONENTS.PROBE][key] = value}
-                        addProbe={() => {
-                            selected.components[COMPONENTS.PROBE].addProbe()
-                            submit(COMPONENTS.PROBE, "probes", selected.components[COMPONENTS.PROBE].probes)
-                        }}
-                        removeProbe={(s) => {
-                            selected.components[COMPONENTS.PROBE].removeProbe(s)
-                            submit(COMPONENTS.PROBE, "probes", selected.components[COMPONENTS.PROBE].probes)
-                        }}
-                        submitProbe={(translation, s) => {
-                            selected.components[COMPONENTS.PROBE].updateProbe(s, "translation", translation)
-                            submit(COMPONENTS.PROBE, "probes", selected.components[COMPONENTS.PROBE].probes)
-                        }}
-                    />
-                )
-            }
             case COMPONENTS.LINE: {
                 return (
                     <Line
@@ -204,12 +183,12 @@ export default function useForm(
                 )
             }
 
-            case COMPONENTS.CUBE_MAP: {
+            case COMPONENTS.PROBE: {
                 return (
-                    <CubeMap
+                    <Probe
                         selected={selected.components[key]}
                         submit={(data, key) => {
-                            submit(COMPONENTS.CUBE_MAP, key, data)
+                            submit(COMPONENTS.PROBE, key, data)
                             window.renderer.refreshCubemaps()
                             alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
                         }}

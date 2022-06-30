@@ -19,12 +19,9 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
             return "Directional light"
         case components.find(c => c === COMPONENTS.FOLDER) !== undefined:
             return "Folder"
-        case components.find(c => c === COMPONENTS.CUBE_MAP) !== undefined:
-            return "Cube map"
-        case components.find(c => c === COMPONENTS.SKYLIGHT) !== undefined:
-            return "Skylight"
+
         case components.find(c => c === COMPONENTS.PROBE) !== undefined:
-            return "Light probe"
+            return "Probe"
 
         default:
             return
@@ -33,8 +30,7 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
 
     function getElementIcon(components) {
         switch (true) {
-        case components.find(c => c === COMPONENTS.SKYBOX) !== undefined:
-            return "cloud"
+
         case components.find(c => c === COMPONENTS.MESH) !== undefined:
             return "view_in_ar"
         case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:
@@ -45,8 +41,7 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
             return "light_mode"
         case components.find(c => c === COMPONENTS.FOLDER) !== undefined:
             return "inventory_2"
-        case components.find(c => c === COMPONENTS.CUBE_MAP) !== undefined:
-            return "panorama_photosphere"
+
         case components.find(c => c === COMPONENTS.CAMERA) !== undefined:
             return "videocam"
         case components.find(c => c === COMPONENTS.LINE) !== undefined:

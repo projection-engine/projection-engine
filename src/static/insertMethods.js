@@ -1,5 +1,4 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import ENVIRONMENT from "../project/engine/ENVIRONMENT"
 
 export default function insertMethods(fileSystem, pushEvent){
     // ALERT / FS

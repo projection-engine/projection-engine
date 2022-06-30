@@ -7,14 +7,24 @@ import TransformComponent from "../../../engine/components/TransformComponent"
 import React from "react"
 import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
 import CameraComponent from "../../../engine/components/CameraComponent"
-import CubeMapComponent from "../../../engine/components/CubeMapComponent"
-import CubeMapInstance from "../../../engine/instances/CubeMapInstance"
+import ProbeComponent from "../../../engine/components/ProbeComponent"
 import PropTypes from "prop-types"
 import LineComponent from "../../../engine/components/LineComponent"
-import LightProbeComponent from "../../../engine/components/LightProbeComponent"
 
 export default function Add(props) {
     const {dispatchEntity, engine} = props
+    const createCM = (asDiffuse) => {
+
+        const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
+        actor.components[COMPONENTS.PROBE] = new ProbeComponent()
+        actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
+        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
+        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+        dispatchEntity(actor)
+    }
     return (
         <Dropdown className={styles.dropdown}>
             Add
@@ -66,41 +76,16 @@ export default function Add(props) {
                     <div className={styles.divider}/>
                 </div>
                 <DropdownOption option={{
-                    label: "CubeMap",
-                    icon: <Icon
-                        styles={{fontSize: "1.1rem"}}>panorama_photosphere</Icon>,
-                    onClick: () => {
-
-                        const actor = new Entity(undefined, "Cubemap")
-                        actor.components[COMPONENTS.CUBE_MAP] = new CubeMapComponent()
-                        actor.components[COMPONENTS.CUBE_MAP].cubeMap = new CubeMapInstance(actor.components[COMPONENTS.CUBE_MAP].resolution)
-                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
-                        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
-                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-                        dispatchEntity(actor)
-                    }
-                }}/>
-                <DropdownOption option={{
-                    label: "Light probe",
+                    label: "Specular probe",
                     icon: <Icon
                         styles={{fontSize: "1.1rem"}}>lens_blur</Icon>,
-                    onClick: () => {
-                        const actor = new Entity(undefined, "Light probe")
-                        actor.components[COMPONENTS.PROBE] = new LightProbeComponent()
-                        actor.components[COMPONENTS.PROBE].addProbe([-1, 1, -1])
-                        actor.components[COMPONENTS.PROBE].addProbe([-1, -1, -1])
-                        actor.components[COMPONENTS.PROBE].addProbe([1, 1, 1])
-                        actor.components[COMPONENTS.PROBE].addProbe([1, -1, 1])
-
-                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
-                        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
-                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-                        dispatchEntity(actor)
-                    }
+                    onClick: () => createCM()
+                }}/>
+                <DropdownOption option={{
+                    label: "Diffuse probe",
+                    icon: <Icon
+                        styles={{fontSize: "1.1rem"}}>lens_blur</Icon>,
+                    onClick: () =>  createCM(true)
                 }}/>
 
                 <div className={styles.dividerWrapper}>

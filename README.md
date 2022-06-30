@@ -73,7 +73,7 @@ Multiple features are already implemented or on the way to the editor, here is a
 - **GI**
     - Light probes
     - Light propagation volumes (under development)
-    - CubeMap specular reflections
+    - Probe specular reflections
 - **Other**
     - SSAO with depth reconstruction for both forward a deferred shaded materials
     - Fully physically based pipeline with metallic workflow
