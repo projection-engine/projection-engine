@@ -1500,6 +1500,16 @@
     react-dom "^18.1.0"
     react-imask "^6.4.2"
 
+"@f-ui/core@^0.2.22-alpha":
+  version "0.2.22-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.2.22-alpha.tgz#29c1a4d8870383cd68704226506b415c9f2f8d70"
+  integrity sha512-KGhMUuksJ1Sk+Mqi3NcjxyXWlUQ3tmzB3XCxCHL+/cyEkM0V+EVoEVUwjNDrF1KqrIUcrZmOyLlq6qotWJG+Hg==
+  dependencies:
+    prop-types "^15.7.2"
+    react "^18.1.0"
+    react-dom "^18.1.0"
+    react-imask "^6.4.2"
+
 "@f-ui/markdown@^0.2.0-alpha":
   version "0.2.0-alpha"
   resolved "https://registry.yarnpkg.com/@f-ui/markdown/-/markdown-0.2.0-alpha.tgz#653227079eee747cd8de50f091cb0751a04170fc"

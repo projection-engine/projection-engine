@@ -75,13 +75,13 @@
                 },
                 {
                   "html": "./public/entry/window.html",
-                  "js": "./public/entry/delete.js",
-                  "name": "delete"
+                  "js": "./public/entry/file.js",
+                  "name": "file"
                 },
                 {
                   "html": "./public/entry/window.html",
-                  "js": "./public/entry/import.js",
-                  "name": "import"
+                  "js": "./public/entry/help.js",
+                  "name": "help"
                 }
               ]
             }
@@ -121,7 +121,7 @@
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "@f-ui/core": "^0.2.18-alpha",
+    "@f-ui/core": "^0.2.22-alpha",
     "@f-ui/markdown": "^0.2.0-alpha",
     "atob": "^2.1.2",
     "axios": "^0.27.2",

@@ -3,14 +3,13 @@ import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Icon, TextField} from "@f-ui/core"
 import React, {useContext, useRef, useState} from "react"
 import FileSystem from "../../project/utils/files/FileSystem"
+import ROUTES from "../../../public/static/ROUTES"
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function Card(props) {
     const {data} = props
     const ref = useRef()
     const [name, setName] = useState(data.meta.name)
-    console.log(data)
-
     return (
         <div
             className={styles.wrapper}
@@ -61,7 +60,7 @@ export default function Card(props) {
                 </Dropdown>
                 <Button
                     onClick={() => {
-                        ipcRenderer.send("switch-window", {
+                        ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW, {
                             windowID: props.data.id,
                             data: props.data,
                             hasMain: false

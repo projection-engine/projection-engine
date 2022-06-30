@@ -15,6 +15,7 @@ import FileSystem from "./utils/files/FileSystem"
 import insertMethods from "../static/insertMethods"
 import useDirectState from "../components/hooks/useDirectState"
 import SETTINGS from "./templates/SETTINGS"
+import ROUTES from "../../public/static/ROUTES"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -29,8 +30,8 @@ function Project() {
     const hotKeysHook= useHotKeysHelper()
 
     useEffect(() => {
-        ipcRenderer.send("load-page")
-        ipcRenderer.on("page-load-props", (ev, data) => {
+        ipcRenderer.send(ROUTES.LOAD_PROJECT)
+        ipcRenderer.on(ROUTES.PAGE_PROPS, (ev, data) => {
             const fs =  new FileSystem(data.package.id)
             fs.refresh = refresh
             insertMethods(fs, loader.pushEvent)

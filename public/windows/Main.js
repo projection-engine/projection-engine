@@ -1,39 +1,69 @@
 import Settings from "./Settings"
 import FRAME_EVENTS from "../static/FRAME_EVENTS"
+import ROUTES from "../static/ROUTES"
+import WindowManager from "./WindowManager"
 
-const {BrowserWindow, ipcMain} = require("electron")
+const {BrowserWindow, ipcMain, nativeTheme} = require("electron")
 
 
-
-export default function Main() {
-    let project = null,
-        mainWindow= null,
-        currentListeners = {
-            close: undefined,
-            minimize: undefined,
-            maximize: undefined,
-            shortcuts: undefined
-        }
-    function removeEvents() {
-
-        currentListeners.minimize?.removeAllListeners(FRAME_EVENTS.MINIMIZE)
-        currentListeners.maximize?.removeAllListeners(FRAME_EVENTS.MAXIMIZE)
-        currentListeners.close?.removeAllListeners(FRAME_EVENTS.CLOSE)
-        currentListeners.shortcuts?.close()
-      
+export default class MainWindow{
+    project = null
+    _window = null
+    currentListeners = {
+        close: undefined,
+        minimize: undefined,
+        maximize: undefined,
+        shortcuts: undefined
     }
 
-    prepareHomeWindow()
-    initEvents(mainWindow)
-    ipcMain.on("switch-window", onSwitchCall)
-    ipcMain.on("load-page", (ev) =>  ev.sender.send("page-load-props", project))
-    function prepareHomeWindow() {
-        if (mainWindow) {
-            removeEvents()
-            mainWindow.close()
+    get window(){
+        return this._window
+    }
+    set window(data){
+        this._window = data
+        this.manager.window = this._window
+    }
+    constructor(){
+        this.manager = new WindowManager()
+        this.prepareHomeWindow()
+        this.initEvents()
+        ipcMain.on(ROUTES.SWITCH_MAIN_WINDOW, (_,event) => {
+            if(this.project)
+                this.prepareHomeWindow()
+            else
+                this.prepareProjectWindow(event.data)
+            this.initEvents()
+        })
+        ipcMain.on(ROUTES.LOAD_PROJECT, (ev) =>  ev.sender.send(ROUTES.PAGE_PROPS, this.project))
+        nativeTheme.themeSource = "dark"
+
+    }
+    initEvents() {
+        this.currentListeners.minimize = ipcMain.on(FRAME_EVENTS.MINIMIZE, () => this.window.minimize())
+        this.currentListeners.maximize = ipcMain.on(FRAME_EVENTS.MAXIMIZE, () => {
+            if (this.window.isMaximized())
+                this.window.setSize(800, 650)
+            else
+                this.window.maximize()
+        })
+        this.currentListeners.close = ipcMain.on(FRAME_EVENTS.CLOSE, () => this.window.close())
+        if(this.project)
+            this.currentListeners.shortcuts = new Settings()
+    }
+
+    removeEvents() {
+        this.currentListeners.minimize?.removeAllListeners(FRAME_EVENTS.MINIMIZE)
+        this.currentListeners.maximize?.removeAllListeners(FRAME_EVENTS.MAXIMIZE)
+        this.currentListeners.close?.removeAllListeners(FRAME_EVENTS.CLOSE)
+        this.currentListeners.shortcuts?.close()
+    }
+    prepareHomeWindow(){
+        if (this.window) {
+            this.removeEvents()
+            this.window.close()
         }
-        project = null
-        const newWindow = new BrowserWindow({
+        this.project = null
+        this.window = new BrowserWindow({
             width: 900,
             height: 600,
             minHeight: 600,
@@ -49,28 +79,13 @@ export default function Main() {
             },
             autoHideMenuBar: true
         })
-        mainWindow = newWindow
-        newWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch()
-        return newWindow
-    }
-    function initEvents(window) {
-        currentListeners.minimize = ipcMain.on(FRAME_EVENTS.MINIMIZE, () => window.minimize())
-        currentListeners.maximize = ipcMain.on(FRAME_EVENTS.MAXIMIZE, () => {
-            if (window.isMaximized())
-                window.setSize(800, 650)
-            else
-                window.maximize()
-        })
-        currentListeners.close = ipcMain.on(FRAME_EVENTS.CLOSE, () => window.close())
-        if(project)
-            currentListeners.shortcuts = new Settings()
-    }
 
-
-    function prepareProjectWindow(data) {
-        removeEvents()
-        mainWindow.close()
-        const newWindow = new BrowserWindow({
+        this.window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY).catch(err => console.log(err))
+    }
+    prepareProjectWindow(data) {
+        this.removeEvents()
+        this.window.close()
+        this.window = new BrowserWindow({
             show: false,
             frame: false,
             webPreferences: {
@@ -83,21 +98,13 @@ export default function Main() {
             },
             autoHideMenuBar: true
         })
-        mainWindow = newWindow
-        newWindow.maximize()
-        newWindow.show()
 
-        newWindow.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY).catch()
-        project = {
+        this.window.maximize()
+        this.window.show()
+        this.window.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY).catch(err => console.error(err))
+
+        this.project = {
             package: data
         }
-        return newWindow
-    }
-
-
-    function onSwitchCall(_, d) {
-        const newWindow  = project ? prepareHomeWindow() : prepareProjectWindow(d.data)
-
-        initEvents(newWindow)
     }
 }

@@ -21,7 +21,6 @@ const pathResolve = window.require("path")
 function Home() {
     const {
         projects,
-        refresh,
         setProjects
     } = useProjects()
     const [open, setOpen] = useState(0)

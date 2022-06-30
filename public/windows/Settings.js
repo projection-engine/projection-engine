@@ -1,7 +1,7 @@
 import FRAME_EVENTS from "../static/FRAME_EVENTS"
-import Window from "./Window"
+import WindowManager from "./WindowManager"
 
-export default class Settings extends Window{
+export default class Settings extends WindowManager{
     constructor() {
         super( "open-shortcuts")
     }

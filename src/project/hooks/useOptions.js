@@ -2,6 +2,8 @@ import {useEffect, useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import openLevelBlueprint from "../utils/openLevelBlueprint"
+import ROUTES from "../../../public/static/ROUTES"
+import WINDOWS from "../../../public/static/WINDOWS"
 
 const {ipcRenderer} = window.require("electron")
 export default function useOptions(engine, save) {
@@ -66,8 +68,18 @@ export default function useOptions(engine, save) {
                 label: "Help",
                 options: [
                     {
-                        label: "Editor Shortcuts",
-                        onClick: () => ipcRenderer.send("open-shortcuts", {})
+                        label: "Help",
+                        onClick: () => ipcRenderer.send(ROUTES.OPEN_NEW_WINDOW, {
+                            type: WINDOWS.HELP,
+                            windowSettings: {
+                                width: 500,
+                                height: 900,
+                                maxWidth: 500,
+                                maxHeight: 900,
+                                minWidth: 500,
+                                minHeight: 900,
+                                modal: true
+                            }})
                     },
                     {
                         label: "About",

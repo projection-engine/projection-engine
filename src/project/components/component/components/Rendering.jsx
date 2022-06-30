@@ -33,8 +33,6 @@ export default function Rendering() {
         state.ssrStepSize = settings.ssrStepSize
 
 
-        state.height = settings.resolution[1]
-        state.width = settings.resolution[0]
     }, [])
 
 
@@ -44,7 +42,7 @@ export default function Rendering() {
                 <LabeledRange
                     label={"X"}
                     variant={"embedded"}
-                    onFinish={v => settings.resolution = [settings.resolution[0], v]}
+                    onFinish={v => settings.resolution = [v, settings.resolution[1]]}
                     incrementPercentage={1}
                     precision={0}
                     handleChange={() => null}
@@ -54,7 +52,7 @@ export default function Rendering() {
                 <LabeledRange
                     label={"Y"}
                     variant={"embedded"}
-                    onFinish={v => settings.resolution = [v, settings.resolution[1]]}
+                    onFinish={v => settings.resolution = [settings.resolution[0], v]}
                     incrementPercentage={1}
                     precision={0}
                     handleChange={() => null}

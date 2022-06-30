@@ -59,7 +59,10 @@ export default function Editor(props) {
                                 wrapperClassName={styles.context}
                                 triggers={contextMenuHook[0].triggers}
                                 className={styles.wrapper}
-                                content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected} target={contextMenuHook[0].target}/>}
+                                wrapperStyles={{
+                                    paddingBottom: contextMenuHook[0].options.length > 20 ? "35px" : undefined
+                                }}
+                                content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected}/>}
                             >
                                 <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
                                     <Views

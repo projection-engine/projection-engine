@@ -7,11 +7,10 @@ const path = window.require("path")
 
 export default function useProjects() {
     const [projects, setProjects] = useState([])
-    const [startPath, setStartPath] = useState()
+    const [startPath, setStartPath] = useState("")
     const [loading, setLoading] = useState(true)
 
     async function refresh (path) {
-
         const [e, res] = await AsyncFS.readdir(path)
         if (!(await AsyncFS.exists(path))) await AsyncFS.mkdir(path)
 
@@ -61,7 +60,6 @@ export default function useProjects() {
         loading,
         projects,
         setProjects,
-        refresh,
         startPath,
         setStartPath
     }
