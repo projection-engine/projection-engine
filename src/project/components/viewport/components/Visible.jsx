@@ -54,9 +54,7 @@ export default function Visible(props) {
                         accentColor={"red"}
                         value={iconSize}
                         maxValue={5} minValue={.1}
-                        onFinish={() => {
-                            settingsContext.iconSize = iconSize
-                        }}
+                        onFinish={() => settingsContext.iconSize = iconSize}
                         handleChange={e => {
                             setIconSize(e)
                         }}

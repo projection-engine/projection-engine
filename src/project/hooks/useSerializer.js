@@ -43,7 +43,7 @@ export default function useSerializer(engine, settings, id) {
             const all = await ProjectLoader.getEntities( )
             await Promise.all(all.map(a => {
                 if (a && !engine.entities.find(e => e.id === a.id))
-                    return window.fileSystem.deleteFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + a.id + ".entity", true)
+                    return window.fileSystem.deleteFile("logic" + FileSystem.sep + a.id + ".entity")
             }).filter(e => e))
 
             try {

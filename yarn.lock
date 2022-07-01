@@ -1500,10 +1500,10 @@
     react-dom "^18.1.0"
     react-imask "^6.4.2"
 
-"@f-ui/core@^0.2.22-alpha":
-  version "0.2.22-alpha"
-  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.2.22-alpha.tgz#29c1a4d8870383cd68704226506b415c9f2f8d70"
-  integrity sha512-KGhMUuksJ1Sk+Mqi3NcjxyXWlUQ3tmzB3XCxCHL+/cyEkM0V+EVoEVUwjNDrF1KqrIUcrZmOyLlq6qotWJG+Hg==
+"@f-ui/core@^0.2.23-alpha":
+  version "0.2.23-alpha"
+  resolved "https://registry.yarnpkg.com/@f-ui/core/-/core-0.2.23-alpha.tgz#75a3b6f386400b3d21f765eb4f98b8294b360142"
+  integrity sha512-eEWAB4vTDfIkdpDvtSA5hKE1BY4rDcWZ0+Stf49z3idAt6JsM8vebcBx9igKdat2Hi4kbvARAChi85XU/cYYDg==
   dependencies:
     prop-types "^15.7.2"
     react "^18.1.0"

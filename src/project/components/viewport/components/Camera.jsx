@@ -41,7 +41,8 @@ export default function Camera(props) {
         <div className={styles.wrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
             <CameraGizmo  bind={bind} initialized={engine.initialized}/>
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
-                <Dropdown hideArrow={true}
+                <Dropdown
+                    hideArrow={true}
                     className={shared.groupItemVert}
                 >
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>

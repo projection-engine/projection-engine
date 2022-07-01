@@ -7,6 +7,7 @@ const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
 export default class FileSystem {
     static sep = pathRequire.sep
+    static registry = []
 
     constructor(projectID) {
         this._path = (localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID)
@@ -49,9 +50,17 @@ export default class FileSystem {
         }
     }
 
-    async deleteFile(pathName, absolute, options) {
-        const currentPath = absolute ? pathName : (this._path + pathName)
+    async deleteFile(pathName, options) {
+        const p = pathName.replaceAll(FileSystem.sep + FileSystem.sep, FileSystem.sep)
+        const currentPath = this._path + FileSystem.sep + p
+        for(let i = 0; i < FileSystem.registry.length; i++){
+            const r = FileSystem.registry[i]
+            const rPath = "assets" +FileSystem.sep + r.path
+            if(rPath.includes(p))
+                await AsyncFS.rm(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry" + FileSystem.sep + r.id + ".reg"))
+        }
         await AsyncFS.rm(currentPath, options)
+        
         const rs = await this.findRegistry(currentPath)
         if (rs) await AsyncFS.rm(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry" + FileSystem.sep + rs.id + ".reg"))
     }
@@ -105,7 +114,7 @@ export default class FileSystem {
                         ipcRenderer.send("import-gltf", {
                             filePath: filePath,
                             newRoot,
-                           options: {},
+                            options: {},
                             projectPath: this.path,
                             listenID,
                             fileName: filePath.split(pathRequire.sep).pop()
@@ -158,7 +167,7 @@ export default class FileSystem {
     }
 
     async deleteEntity(entityID) {
-        await this.deleteFile(this.path + FileSystem.sep + "logic" + FileSystem.sep + entityID + ".entity", true)
+        await this.deleteFile("logic" + FileSystem.sep + entityID + ".entity")
     }
 
     async updateEntity(entity, id) {
@@ -237,15 +246,16 @@ export default class FileSystem {
     }
 
 
-    readRegistry() {
-        return new Promise(resolve => {
+    async readRegistry() {
+        const promise = await new Promise(resolve => {
             const listenID = v4().toString()
             ipcRenderer.once("read-registry-" + listenID, (ev, data) => {
                 resolve(data)
             })
             ipcRenderer.send("read-registry", {pathName: FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry"), listenID})
         })
-
+        FileSystem.registry = promise
+        return promise
     }
 
     async updateRegistry(from, to, registryData) {

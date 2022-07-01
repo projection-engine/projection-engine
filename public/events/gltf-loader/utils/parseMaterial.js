@@ -47,8 +47,8 @@ export default async function parseMaterial(basePath, data, textures, images, pa
                     materialData.roughness = roughnessFactor
             }
         }
-        if(emissiveFactor !== undefined)
-            materialData.emissive = emissiveFactor
+        // if(emissiveFactor !== undefined)
+        //     materialData.emissive = emissiveFactor
         if(emissiveTexture)
             materialData.emissive = await loadTexture(basePath, normalTexture, textures, images, partialPath, projectPath)
         if (normalTexture)
