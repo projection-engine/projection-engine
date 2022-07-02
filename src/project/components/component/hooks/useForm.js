@@ -16,6 +16,7 @@ import Editor from "../components/Editor"
 import Line from "../components/Line"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
+import FALLBACK_MATERIAL from "../../../../static/misc/FALLBACK_MATERIAL"
 
 export function  updateTransform(axis, data, key, engine, entityID) {
     const entity = engine.entities.find(e => e.id === entityID)
@@ -152,7 +153,7 @@ export default function useForm(
                                     clone.materialID = val.id
                                     clone.uniforms = val.blob.uniforms
                                 } else
-                                    clone.materialID = undefined
+                                    clone.materialID = FALLBACK_MATERIAL
 
                                 engine.dispatchEntities({
                                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,

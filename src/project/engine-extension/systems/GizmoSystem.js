@@ -115,7 +115,7 @@ export default class GizmoSystem extends System {
 
     execute(
         meshes,
-        meshSources,
+        meshesMap,
         selected,
         camera,
 
@@ -137,22 +137,22 @@ export default class GizmoSystem extends System {
                 this.lastGizmo = gizmo
                 this.selectedEntities = selected
                     .map(s => entities[s])
-                    .filter(c => gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling))
+                    .filter(c =>c &&( gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
                 this.selectedHash = JOINED
             }
 
             switch (gizmo) {
             case GIZMOS.TRANSLATION:
                 this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshSources, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, setSelected)
+                this.translationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, setSelected)
                 break
             case GIZMOS.ROTATION:
                 this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshSources, this.selectedEntities, camera,  entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, setSelected)
+                this.rotationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,  entities, transformationType, onGizmoStart, onGizmoEnd, gridRotationSize ? gridRotationSize : .1, setSelected)
                 break
             case GIZMOS.SCALE:
                 this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshSources, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, setSelected)
+                this.scaleGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd, gridScaleSize ? gridScaleSize : .0001, setSelected)
                 break
             }
         }

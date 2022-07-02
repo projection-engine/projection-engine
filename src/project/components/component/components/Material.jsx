@@ -202,36 +202,34 @@ export default function Material(props) {
 
     return (
         <>
-            <AccordionTemplate title={"Material instance"}>
-                <Selector
-                    selected={state.currentMaterial}
-                    type={"material"}
-                    handleChange={async (src, clear, close) => {
-                        if (src) {
-                            const file = await loadFile(src)
-                            if (file && file.response) {
-                                props.submit({
-                                    blob: file.response,
-                                    id: src.registryID,
-                                    name: src.name
-                                })
-                                alert.pushAlert("Material loaded", "success")
-                                state.uniforms = file.response.uniforms
-                                state.currentMaterial = src
-                            }
-                            else {
-                                alert.pushAlert("Error loading material", "error")
-                                clear()
-                            }
-                        } else {
-                            props.submit()
-                            clear()
-                            close()
+        
+            <Selector
+                selected={state.currentMaterial}
+                type={"material"}
+                handleChange={async (src, clear, close) => {
+                    if (src) {
+                        const file = await loadFile(src)
+                        if (file && file.response) {
+                            props.submit({
+                                blob: file.response,
+                                id: src.registryID,
+                                name: src.name
+                            })
+                            alert.pushAlert("Material loaded", "success")
+                            state.uniforms = file.response.uniforms
+                            state.currentMaterial = src
                         }
-                    }}
-                />
-            </AccordionTemplate>
-
+                        else {
+                            alert.pushAlert("Error loading material", "error")
+                            clear()
+                        }
+                    } else {
+                        props.submit()
+                        clear()
+                        close()
+                    }
+                }}
+            />
             {state.uniforms?.length > 0 ? 
                 (
                     <Checkbox

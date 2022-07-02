@@ -111,7 +111,7 @@ export default class IconsSystem extends System {
             pointLights,
             directionalLights,
             cameras,
-            lightProbes
+            diffuseProbes
         } = data
         const {
             selectedMap,
@@ -142,7 +142,7 @@ export default class IconsSystem extends System {
             )
 
             this.renderers.probe.draw(
-                this.loop(lightProbes, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
+                this.loop(diffuseProbes, COMPONENTS.TRANSFORM, "transformationMatrix", selectedMap),
                 this.probeTexture.texture,
                 camera,
                 iconSize,
@@ -154,6 +154,8 @@ export default class IconsSystem extends System {
 
             for(let i = 0; i<selected.length; i++){
                 const entity = entitiesMap[selected[i]]
+                if(!entity)
+                    continue
                 const icon = entity.active ? this.getIcon(entity) : undefined
                 if(icon) {
                     let t = entity.components[COMPONENTS.TRANSFORM]
@@ -186,10 +188,10 @@ export default class IconsSystem extends System {
 
 
             // Light probes
-            // if (lightProbes.length > 0) {
+            // if (diffuseProbes.length > 0) {
             //     this.sphereMesh.use()
             //     this.sphereShader.use()
-            //     const probes = lightProbes.map(l => l.components[COMPONENTS.PROBE].probes).flat()
+            //     const probes = diffuseProbes.map(l => l.components[COMPONENTS.PROBE].probes).flat()
             //     for (let i = 0; i < probes.length; i++) {
             //         const current = probes[i]
             //

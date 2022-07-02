@@ -22,7 +22,7 @@ export default class Wrapper extends System {
     execute(options, data, entities, entitiesMap, after) {
         const {
             meshes,
-            meshSources
+            meshesMap
         } = data
         const {
             selected,
@@ -51,7 +51,7 @@ export default class Wrapper extends System {
                 gpu.clear(gpu.DEPTH_BUFFER_BIT)
                 this.gizmoSystem.execute(
                     meshes,
-                    meshSources,
+                    meshesMap,
                     selected,
                     camera,
 
@@ -66,7 +66,7 @@ export default class Wrapper extends System {
 
                     setSelected
                 )
-                this.selectedSystem.execute(selected, meshSources, camera, entitiesMap)
+                this.selectedSystem.execute(selected, meshesMap, camera, entitiesMap)
             }
         }
 

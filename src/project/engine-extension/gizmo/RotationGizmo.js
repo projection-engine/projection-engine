@@ -226,7 +226,7 @@ export default class RotationGizmo {
 
     execute(
         meshes,
-        meshSources,
+        meshesMap,
         selected,
         camera,
         entities,

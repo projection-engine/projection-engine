@@ -1,4 +1,3 @@
-import Settings from "./Settings"
 import FRAME_EVENTS from "../static/FRAME_EVENTS"
 import ROUTES from "../static/ROUTES"
 import WindowManager from "./WindowManager"
@@ -12,8 +11,7 @@ export default class MainWindow{
     currentListeners = {
         close: undefined,
         minimize: undefined,
-        maximize: undefined,
-        shortcuts: undefined
+        maximize: undefined
     }
 
     get window(){
@@ -47,8 +45,7 @@ export default class MainWindow{
                 this.window.maximize()
         })
         this.currentListeners.close = ipcMain.on(FRAME_EVENTS.CLOSE, () => this.window.close())
-        if(this.project)
-            this.currentListeners.shortcuts = new Settings()
+
     }
 
     removeEvents() {
@@ -58,8 +55,6 @@ export default class MainWindow{
             this.currentListeners.maximize.removeAllListeners(FRAME_EVENTS.MAXIMIZE)
         if(this.currentListeners.close)
             this.currentListeners.close.removeAllListeners(FRAME_EVENTS.CLOSE)
-        if(this.currentListeners.shortcuts)
-            this.currentListeners.shortcuts.close()
     }
     prepareHomeWindow(){
         if (this.window) {
@@ -106,7 +101,6 @@ export default class MainWindow{
         this.window.maximize()
         this.window.show()
         this.window.loadURL(PROJECT_WINDOW_WEBPACK_ENTRY).catch(err => console.error(err))
-
         this.project = {
             package: data
         }

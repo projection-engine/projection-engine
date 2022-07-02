@@ -1,7 +1,7 @@
 import EditorCamera from "./EditorCamera"
 import KEYS from "../../engine/templates/KEYS"
 import {rotateY} from "../../components/viewport/transformCamera"
-import CAMERA_GIZMO from "../CAMERA_GIZMO"
+import CAMERA_GIZMO from "../../../static/misc/CAMERA_GIZMO"
 
 const BUTTON_MIDDLE = 1
 export default function CameraEvents(c) {

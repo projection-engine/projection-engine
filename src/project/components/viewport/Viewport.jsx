@@ -53,7 +53,7 @@ export default function Viewport(props) {
             }
         }, {x: coords[0], y: coords[1]}, camera)
     }
-    function pickMesh(meshSources, x, y){
+    function pickMesh(meshesMap, x, y){
         const w =  window.gpu.canvas.width, h =   window.gpu.canvas.height
         const coords = Conversion.toQuadCoord({x, y}, {w, h})
         const picked = window.renderer.picking.depthPick(window.renderer.renderingPass.depthPrePass.frameBuffer, coords)
@@ -64,7 +64,7 @@ export default function Viewport(props) {
         //         if (props.engine.entities[m].active) {
         //             const t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
         //             if (t && currentInstance.components[COMPONENTS.MESH]) {
-        //                 const mesh = meshSources[currentInstance.components[COMPONENTS.MESH]?.meshID]
+        //                 const mesh = meshesMap[currentInstance.components[COMPONENTS.MESH]?.meshID]
         //                 if (mesh !== undefined) PickSystem.drawMesh(mesh, currentInstance, window.renderer.camera.viewMatrix, proj, t, shader, props.engine.window.gpu)
         //             }
         //         }
@@ -82,13 +82,13 @@ export default function Viewport(props) {
                 const entities = props.engine.entities
                 const p = window.renderer.picking
                 const cameraMesh = window.renderer.editorSystem.billboardSystem.cameraMesh
-                const meshSources = window.renderer.data.meshSources
+                const meshesMap = window.renderer.data.meshesMap
                 const target = event.currentTarget.getBoundingClientRect()
                 const coords = [event.clientX - target.left, event.clientY - target.top]
 
                 let picked = pickIcon(entities, cameraMesh, p, camera, coords)
                 if (!picked)
-                    picked = pickMesh(meshSources, event.clientX, event.clientY)
+                    picked = pickMesh(meshesMap, event.clientX, event.clientY)
                 if (picked > 0) {
                     const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
 

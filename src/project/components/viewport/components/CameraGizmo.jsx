@@ -1,5 +1,5 @@
 import styles from "../styles/ViewportOptions.module.css"
-import CAMERA_GIZMO from "../../../engine-extension/CAMERA_GIZMO"
+import CAMERA_GIZMO from "../../../../static/misc/CAMERA_GIZMO"
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef} from "react"
 

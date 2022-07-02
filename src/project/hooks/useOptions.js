@@ -1,9 +1,10 @@
-import {useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import FileSystem from "../utils/files/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import openLevelBlueprint from "../utils/openLevelBlueprint"
 import ROUTES from "../../../public/static/ROUTES"
 import WINDOWS from "../../../public/static/WINDOWS"
+import {Icon} from "@f-ui/core"
 
 const {ipcRenderer} = window.require("electron")
 export default function useOptions(engine, save) {
@@ -66,9 +67,10 @@ export default function useOptions(engine, save) {
             {divider: true},
             {
                 label: "Help",
+
                 options: [
                     {
-                        label: "Help",
+                        label: "About",
                         onClick: () => ipcRenderer.send(ROUTES.OPEN_NEW_WINDOW, {
                             type: WINDOWS.HELP,
                             windowSettings: {
@@ -79,13 +81,9 @@ export default function useOptions(engine, save) {
                                 minWidth: 500,
                                 minHeight: 900,
                                 modal: true
-                            }})
-                    },
-                    {
-                        label: "About",
-                        icon: "help",
-                        disabled: true
-                    },
+                            }}),
+                        icon: <Icon styles={{fontSize: "1.1rem"}}>info</Icon>,
+                    }
 
                 ]
             },

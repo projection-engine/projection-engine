@@ -2,6 +2,7 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
     const parseStr = (str) => {
         return str.toLowerCase().replace(/\s/g,"")
     }
+    console.log(entities)
     const search = parseStr(searchedEntity)
     const toFilter =  !search ? entities.filter(d => !d.linkedTo) :entities
 
@@ -9,18 +10,17 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
         if (isBP) return "ScriptView"
 
         switch (true) {
-        case components.find(c => c === COMPONENTS.MESH) !== undefined:
+        case components[COMPONENTS.MESH] !== undefined:
             return "Mesh instance"
-        case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:
+        case components[COMPONENTS.POINT_LIGHT] !== undefined:
             return "Point light"
-        case components.find(c => c === COMPONENTS.SPOT_LIGHT) !== undefined:
+        case components[COMPONENTS.SPOT_LIGHT] !== undefined:
             return "Spot light"
-        case components.find(c => c === COMPONENTS.DIRECTIONAL_LIGHT) !== undefined:
+        case components[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined:
             return "Directional light"
-        case components.find(c => c === COMPONENTS.FOLDER) !== undefined:
+        case components[COMPONENTS.FOLDER] !== undefined:
             return "Folder"
-
-        case components.find(c => c === COMPONENTS.PROBE) !== undefined:
+        case components[COMPONENTS.PROBE] !== undefined:
             return "Probe"
 
         default:
@@ -31,22 +31,22 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
     function getElementIcon(components) {
         switch (true) {
 
-        case components.find(c => c === COMPONENTS.MESH) !== undefined:
+        case components[COMPONENTS.MESH] !== undefined:
             return "view_in_ar"
-        case components.find(c => c === COMPONENTS.POINT_LIGHT) !== undefined:
+        case components[COMPONENTS.POINT_LIGHT] !== undefined:
             return "lightbulb"
-        case components.find(c => c === COMPONENTS.SPOT_LIGHT) !== undefined:
+        case components[COMPONENTS.SPOT_LIGHT] !== undefined:
             return "flashlight_on"
-        case components.find(c => c === COMPONENTS.DIRECTIONAL_LIGHT) !== undefined:
+        case components[COMPONENTS.DIRECTIONAL_LIGHT] !== undefined:
             return "light_mode"
-        case components.find(c => c === COMPONENTS.FOLDER) !== undefined:
+        case components[COMPONENTS.FOLDER] !== undefined:
             return "inventory_2"
 
-        case components.find(c => c === COMPONENTS.CAMERA) !== undefined:
+        case components[COMPONENTS.CAMERA] !== undefined:
             return "videocam"
-        case components.find(c => c === COMPONENTS.LINE) !== undefined:
+        case components[COMPONENTS.LINE] !== undefined:
             return "arrow_right_alt"
-        case components.find(c => c === COMPONENTS.PROBE) !== undefined:
+        case components[COMPONENTS.PROBE] !== undefined:
             return "lens_blur"
         default:
             return

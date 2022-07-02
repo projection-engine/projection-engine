@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react"
+import React, {useEffect, useMemo, useRef, useState} from "react"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import {Icon} from "@f-ui/core"
@@ -27,6 +27,8 @@ export default function useHierarchy(
 ) {
     const [allHidden, setAllHidden] = useState(false)
     const [hierarchy, setHierarchy] = useState([])
+    const lastLength = useRef(entities.length)
+    const wasHidden = useRef(false)
     const setSelected = (el, e) => {
         if (e && e.ctrlKey) {
             setSelectedEntity(prev => {
@@ -45,11 +47,19 @@ export default function useHierarchy(
             setSelectedEntity(getHierarchy(el, entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
         }
     }
+
     const mapChildren = (node) => {
+        const entitiesMap = window.renderer.entitiesMap
         node.onClick = (e) => setSelected(node.entity, e)
         node.onHide = () => {
-            if (node.hidden && setAllHidden)
+            if (node.hidden)
                 setAllHidden(false)
+            node.children.forEach(c => {
+                const entity = entitiesMap[c.id]
+                if(entity)
+                    entity.active = c.hidden
+            })
+
             dispatchEntities({
                 type: ENTITY_ACTIONS.UPDATE,
                 payload: {
@@ -58,26 +68,16 @@ export default function useHierarchy(
                     key: "active"
                 }
             })
-            node.children.forEach(c => {
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE,
-                    payload: {
-                        entityID: c.id,
-                        data: c.hidden,
-                        key: "active"
-                    }
-                })
-            })
+            wasHidden.current = true
         }
         node.icon = <Icon  styles={{fontSize: "1rem"}}>{node.icon}</Icon>
         if (node.children.length > 0)
             node.children = node.children.map(n => mapChildren(n))
         return node
     }
-    useEffect(() => {
-        worker.postMessage({entities: entities.map(e => {
-            return {...e, components: Object.keys(e.components)}
-        }), COMPONENTS, searchedEntity})
+
+    function updateHierarchy(){
+        worker.postMessage({entities, COMPONENTS, searchedEntity})
         worker.onmessage = ({data: toFilter}) => {
             setHierarchy([
                 {
@@ -110,7 +110,21 @@ export default function useHierarchy(
                 }
             ])
         }
-    }, [entities, allHidden, searchedEntity])
+    }
+
+
+
+    useEffect(() => {
+        const currentLength = entities.length
+        if(currentLength !== lastLength.current || wasHidden.current){
+            wasHidden.current = false
+            lastLength.current = currentLength
+            updateHierarchy()
+        }
+    }, [entities])
+    useEffect(() => {
+        updateHierarchy()
+    }, [allHidden, searchedEntity])
 
 
     const treeOptions = useMemo(() => {

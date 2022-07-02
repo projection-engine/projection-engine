@@ -6,6 +6,7 @@ import MeshComponent from "../../engine/components/MeshComponent"
 import MaterialComponent from "../../engine/components/MaterialComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FileSystem from "../files/FileSystem"
+import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL"
 
 export default async function importMesh(objLoaded, engine, id) {
 
@@ -59,6 +60,7 @@ export function initializeEntity(data, meshID, parent){
     transformation.translation = data.translation
     transformation.baseTransformationMatrix = data.baseTransformationMatrix
     entity.components[COMPONENTS.MATERIAL] = new MaterialComponent()
+    entity.components[COMPONENTS.MATERIAL].materialID = FALLBACK_MATERIAL
     entity.components[COMPONENTS.MESH] = new MeshComponent()
     entity.components[COMPONENTS.MESH].meshID = meshID
     entity.components[COMPONENTS.TRANSFORM] = transformation

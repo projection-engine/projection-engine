@@ -32,16 +32,14 @@ export default function Hierarchy(props){
     return (
         <>
             <Header {...props} title={"Hierarchy"} icon={"account_tree"}>
-                <div style={{display: "flex", gap: "2px"}}>
-                    <Search
-                        width={"100%"}
-                        searchString={searchedEntity}
-                        setSearchString={setSearchedEntity}
-                    />
-                    <Button className={styles.button} onClick={() => createFolder()}>
-                        <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
-                    </Button>
-                </div>
+                <Search
+                    width={"100%"}
+                    searchString={searchedEntity}
+                    setSearchString={setSearchedEntity}
+                />
+                <Button className={styles.button} onClick={() => createFolder()}>
+                    <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
+                </Button>
             </Header>
             {props.hidden ?
                 null :

@@ -27,7 +27,7 @@ export default class SelectedSystem extends System {
     }
 
 
-    execute(selected, meshSources, camera, entitiesMap) {
+    execute(selected, meshesMap, camera, entitiesMap) {
         super.execute()
         const length = selected.length
         if (length > 0) {
@@ -35,16 +35,18 @@ export default class SelectedSystem extends System {
             this.frameBuffer.startMapping()
             for (let m = 0; m < length; m++) {
                 const current = entitiesMap[selected[m]]
-                const mesh = meshSources[current.components[COMPONENTS.MESH]?.meshID]
-                if (mesh !== undefined) {
-                    const t = current.components[COMPONENTS.TRANSFORM]
-                    this.drawMesh(
-                        mesh,
-                        camera.viewMatrix,
-                        camera.projectionMatrix,
-                        t.transformationMatrix
-                    )
-                }
+                if(!current)
+                    continue
+                const mesh = meshesMap[current.components[COMPONENTS.MESH]?.meshID]
+                if(!mesh)
+                    continue
+                const t = current.components[COMPONENTS.TRANSFORM]
+                this.drawMesh(
+                    mesh,
+                    camera.viewMatrix,
+                    camera.projectionMatrix,
+                    t.transformationMatrix
+                )
             }
             this.frameBuffer.stopMapping()
 

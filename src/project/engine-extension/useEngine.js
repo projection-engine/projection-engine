@@ -7,6 +7,10 @@ import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 import Transformation from "../engine/templates/Transformation"
 import toObject from "../engine/utils/toObject"
+import MaterialInstance from "../engine/instances/MaterialInstance"
+import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
+import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
+import {fallbackVertex} from "../engine/shaders/mesh/FALLBACK.glsl"
 
 
 function getCursor(){
@@ -32,7 +36,7 @@ export default function useEngine(settings, worker) {
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
     const [cursor, setCursor] = useState(getCursor())
-
+    const [fallbackMaterial, setFallbackMaterial] = useState()
     useEffect(() => {
         worker.postMessage({entities, COMPONENTS, meshes: toObject(meshes, true), materials: toObject(materials, true)})
         worker.onmessage = ({data: {meshesFiltered, materialsFiltered}}) => {
@@ -83,6 +87,17 @@ export default function useEngine(settings, worker) {
     }
     const update = useCallback(() => {
         if (initialized) {
+            let fMat = fallbackMaterial
+            if(!fallbackMaterial){
+                fMat = new MaterialInstance( {
+                    vertex: shaderCode.fallbackVertex,
+                    fragment: shaderCode.fragment,
+                    settings:{isForward: false},
+                    cubeMapShaderCode:  shaderCode.cubeMapShader,
+                    id: FALLBACK_MATERIAL
+                })
+                setFallbackMaterial(fMat)
+            }
             window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
             window.renderer.updatePackage(
@@ -94,10 +109,12 @@ export default function useEngine(settings, worker) {
                 {selected, setSelected, ...settings},
                 onGizmoStart,
                 onGizmoEnd,
-                levelScript
+                levelScript,
+                fMat
             )
         }
     }, [
+        fallbackMaterial,
         initialized,
         executingAnimation,
         selected, materials, meshes,

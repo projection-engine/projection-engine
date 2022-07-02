@@ -114,7 +114,7 @@ export default class Gizmo {
 
     execute(
         meshes,
-        meshSources,
+        meshesMap,
         selected,
         camera,
 
