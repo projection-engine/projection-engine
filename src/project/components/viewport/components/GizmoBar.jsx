@@ -7,7 +7,7 @@ import React, {useContext, useEffect, useRef, useState} from "react"
 import ResizableBar from "../../../../components/resizable/ResizableBar"
 import SettingsProvider from "../../../providers/SettingsProvider"
 
-export default function Gizmo(){
+export default function GizmoBar(){
     const settings = useContext(SettingsProvider)
     const [gridSize, setGridSize] = useState(settings.gridSize)
     

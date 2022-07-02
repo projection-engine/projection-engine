@@ -1,6 +1,6 @@
-import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
-import GIZMOS from "../../static/misc/GIZMOS"
-import ROTATION_TYPES from "../../static/misc/ROTATION_TYPES"
+import SHADING_MODELS from "../../project/engine/templates/SHADING_MODELS"
+import GIZMOS from "./GIZMOS"
+import ROTATION_TYPES from "./ROTATION_TYPES"
 import VIEWS from "../../components/view/VIEWS"
 
 const toRad = Math.PI / 180
@@ -67,7 +67,11 @@ export default {
 
 
     // VIEWS
-    bottomView: [VIEWS.FILES],
-    leftView: [],
-    rightView: [VIEWS.HIERARCHY, VIEWS.COMPONENT],
+    views: [{
+        name: "Default",
+        bottom: [VIEWS.FILES, VIEWS.CONSOLE],
+        left: [],
+        right: [VIEWS.HIERARCHY, VIEWS.COMPONENT] 
+    }],
+    currentView: 0
 }

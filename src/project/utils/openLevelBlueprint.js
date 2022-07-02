@@ -1,7 +1,7 @@
 import FileSystem from "./files/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
-import AsyncFS from "../templates/AsyncFS"
-import SCRIPT_TEMPLATE from "../templates/SCRIPT_TEMPLATE"
+import AsyncFS from "./AsyncFS"
+import SCRIPT_TEMPLATE from "../../static/misc/SCRIPT_TEMPLATE"
 
 const {shell} = window.require("electron")
 export default function openLevelBlueprint(){

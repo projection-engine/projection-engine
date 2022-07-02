@@ -14,7 +14,7 @@ import QuickAccessProvider from "./providers/QuickAccessProvider"
 import FileSystem from "./utils/files/FileSystem"
 import insertMethods from "../static/insertMethods"
 import useDirectState from "../components/hooks/useDirectState"
-import SETTINGS from "./templates/SETTINGS"
+import SETTINGS from "../static/misc/SETTINGS"
 import ROUTES from "../../public/static/ROUTES"
 
 const {ipcRenderer} = window.require("electron")

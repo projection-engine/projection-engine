@@ -1,14 +1,4 @@
-.wrapper {
-  position: relative;
-  border-radius: 5px;
-  background: var(--pj-background-secondary);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 
-}
 
 .viewport {
   width: 100%;

@@ -37,30 +37,27 @@ export default function ViewportOptions(props) {
     if(fullscreen)
         return null
     return (
-        <>
-            <div className={styles.options} ref={ref} style={{display: fullscreen ? "none" : undefined}} draggable={false}>
-                <div style={{justifyContent: "flex-start"}} className={styles.align}>
+        <div className={styles.options} ref={ref} style={{display: fullscreen ? "none" : undefined}} draggable={false}>
+            <div style={{justifyContent: "flex-start"}} className={styles.align}>
 
-                    <Button className={styles.dropdown} onClick={() =>{
-                        if (!fullscreen) {
-                            ref.current.parentNode.requestFullscreen()
-                                .then(() => setFullscreen(true))
-                                .catch()
-                        } else
-                            document.exitFullscreen()
-                                .catch()
-                                .finally(() => setFullscreen(false))
-                    } }>
-                        <Icon styles={{fontSize: "1.1rem"}}>fullscreen</Icon>
-                    </Button>
+                <Button className={styles.dropdown} onClick={() =>{
+                    if (!fullscreen) {
+                        ref.current.parentNode.requestFullscreen()
+                            .then(() => setFullscreen(true))
+                            .catch()
+                    } else
+                        document.exitFullscreen()
+                            .catch()
+                            .finally(() => setFullscreen(false))
+                } }>
+                    <Icon styles={{fontSize: "1.1rem"}}>fullscreen</Icon>
+                </Button>
 
-                    <Visible settingsContext={settingsContext}/>
-                    <Add dispatchEntity={dispatchEntity} engine={props.engine}/>
-                </div>
-                <Shading settingsContext={settingsContext}/>
+                <Visible settingsContext={settingsContext}/>
+                <Add dispatchEntity={dispatchEntity} engine={props.engine}/>
             </div>
-
-        </>
+            <Shading/>
+        </div>
     )
 }
 ViewportOptions.propTypes = {

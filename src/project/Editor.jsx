@@ -1,4 +1,4 @@
-import React, {useCallback} from "react"
+import React, {useCallback, useMemo, useState} from "react"
 import styles from "./styles/Project.module.css"
 import SettingsProvider from "./providers/SettingsProvider"
 import Frame from "../components/frame/Frame"
@@ -18,6 +18,7 @@ import useFiles from "./hooks/useFiles"
 import FilesProvider from "./providers/FilesProvider"
 import EngineProvider from "./providers/EngineProvider"
 import BlueprintProvider from "./providers/BlueprintProvider"
+import LayoutTabs from "./components/viewport/LayoutTabs"
 
 const WORKER = new Worker(new URL("./engine-extension/cleanupWorker.js", import.meta.url))
 export default function Editor(props) {
@@ -34,6 +35,14 @@ export default function Editor(props) {
             submitPackage(pack, false, undefined, false, registryID, matInstance)
     }, [engine.initialized])
 
+    const view = useMemo(() => {
+        return settings.views[settings.currentView]
+    }, [settings.views, settings.currentView])
+    const updateView = (key, newView) => {
+        const copy = [...settings.views]
+        copy[settings.currentView] = {...view, [key]: newView}
+        settings.views = copy
+    }
 
     return (
         <BlueprintProvider.Provider
@@ -64,33 +73,37 @@ export default function Editor(props) {
                                 }}
                                 content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected}/>}
                             >
-                                <div className={styles.viewportWrapper} id={props.id + "-editor-wrapper"}>
+                                <div className={styles.middle} id={props.id + "-editor-wrapper"}>
                                     <Views
-                                        setTabs={(tabs) => settings.leftView = tabs}
-                                        tabs={settings.leftView}
+                                        setTabs={(tabs) => updateView("left", tabs)}
+                                        tabs={view.left}
                                         orientation={"vertical"}
                                         leftOffset={"10px"}
                                         resizePosition={"bottom"}
                                     />
-                                    <Viewport
-                                        utils={utils}
-                                        id={id}
-                                        executingAnimation={engine.executingAnimation}
+                                    <div className={styles.viewportWrapper}>
+                                        <LayoutTabs/>
+                                        <Viewport
+                                            utils={utils}
+                                            id={id}
+                                            executingAnimation={engine.executingAnimation}
 
-                                        engine={engine}
-                                        allowDrop={true}
-                                    />
+                                            engine={engine}
+                                            allowDrop={true}
+                                        />
+                                    </div>
+
                                     <Views
-                                        setTabs={(tabs) => settings.rightView = tabs}
-                                        tabs={settings.rightView}
+                                        setTabs={(tabs) => updateView("right", tabs)}
+                                        tabs={view.right}
                                         orientation={"vertical"}
                                         leftOffset={"0%"}
                                         resizePosition={"top"}
                                     />
                                 </div>
                                 <Views
-                                    setTabs={(tabs) => settings.bottomView = tabs}
-                                    tabs={settings.bottomView}
+                                    setTabs={(tabs) => updateView("bottom", tabs)}
+                                    tabs={view.bottom}
                                     resizePosition={"top"}
                                     orientation={"horizontal"}
                                 />

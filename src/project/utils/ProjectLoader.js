@@ -15,7 +15,7 @@ import CameraComponent from "../engine/components/CameraComponent"
 import Transformation from "../engine/templates/Transformation"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import TextureInstance from "../engine/instances/TextureInstance"
-import FileSystem from "../utils/files/FileSystem"
+import FileSystem from "./files/FileSystem"
 
 export default class ProjectLoader {
 

@@ -4,9 +4,13 @@
   align-content: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0 3px;
+  padding: 0 4px;
   height: 25px;
   user-select: none;
+  position: absolute;
+  top: 20px;
+  z-index: 999;
+  background: rgba(0,0,0,.1);
 }
 
 .align {
@@ -22,8 +26,6 @@
   height: 2px;
   background-color: var(--pj-border-primary);
 }
-
-
 
 .rangeWrapper {
   user-select: none;
@@ -163,7 +165,7 @@
   position: absolute;
   left: 0;
   padding-left: 4px;
-  top: 4px;
+  top: 28px;
   z-index: 15;
   height: fit-content;
   display: flex;
@@ -188,7 +190,8 @@
   --color-to-apply: white;
 
   font-size: 0.7rem;
-  /*font-weight: 550;*/
+
+  /* font-weight: 550; */
   height: 20px;
   border-radius: 3px;
   overflow: hidden;
@@ -228,7 +231,6 @@
   font-size: 1.1rem !important;
 }
 
-
 .groupItemVert {
   --color-to-apply: white;
 
@@ -262,7 +264,7 @@
   background: rgb(40 40 40 / 85%);
   height: 35px;
   width: 100%;
-  font-size: .75rem;
+  font-size: 0.75rem;
   padding: 0 !important;
   border-radius: 0;
   border: var(--pj-border-primary) 1px solid;
@@ -308,4 +310,3 @@
   color: var(--pj-color-secondary);
   font-size: 0.8rem;
 }
-

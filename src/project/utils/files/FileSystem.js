@@ -1,6 +1,6 @@
 import ImageProcessor from "../../engine/utils/image/ImageProcessor"
 import {v4, v4 as uuidv4} from "uuid"
-import AsyncFS from "../../templates/AsyncFS"
+import AsyncFS from "../AsyncFS"
 
 const pathRequire = window.require("path")
 

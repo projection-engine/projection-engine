@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react"
-import AsyncFS from "../../project/templates/AsyncFS"
+import AsyncFS from "../../project/utils/AsyncFS"
 import FileSystem from "../../project/utils/files/FileSystem"
 import EN from "../../static/locale/EN"
 

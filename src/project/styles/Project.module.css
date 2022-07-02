@@ -9,13 +9,23 @@
   user-select: none;
 }
 
-.viewportWrapper {
+.middle {
   width: 100%;
   height: 100%;
   overflow: hidden;
   display: flex;
 }
+.viewportWrapper{
+  position: relative;
+  border-radius: 5px;
+  background: var(--pj-background-secondary);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
+}
 .context {
   width: 200px;
   display: grid;

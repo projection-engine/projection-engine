@@ -1,5 +1,5 @@
 import {useCallback, useEffect} from "react"
-import ProjectLoader from "../templates/ProjectLoader"
+import ProjectLoader from "../utils/ProjectLoader"
 import FileSystem from "../utils/files/FileSystem"
 
 

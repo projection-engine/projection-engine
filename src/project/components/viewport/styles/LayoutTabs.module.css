@@ -1,0 +1,40 @@
+.wrapper {
+  height: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.tab {
+  outline: none;
+  height: 17px;
+  font-size: 0.7rem;
+  border: none;
+  color: var(--pj-color-secondary);
+  border-radius: 3px;
+  padding: 0 8px;
+  cursor: pointer;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab[data-highlight="true"] {
+  background: var(--pj-border-primary);
+  cursor: default;
+  font-weight: 550;
+}
+
+.tab[data-highlight="false"]:active {
+  color: var(--pj-accent-color);
+  background: var(--pj-background-tertiary);
+}
+
+.tab[data-highlight="false"]:hover {
+  color: var(--pj-accent-color);
+}

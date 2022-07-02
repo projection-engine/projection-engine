@@ -7,7 +7,7 @@ import {handleGrab} from "../transformCamera"
 import SettingsProvider from "../../../providers/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
-export default function Camera(props) {
+export default function CameraBar(props) {
     const  settingsContext = useContext(SettingsProvider)
     const {engine} = props
 
@@ -131,7 +131,7 @@ export default function Camera(props) {
     )
 
 }
-Camera.propTypes = {
+CameraBar.propTypes = {
     sideBarOpen: PropTypes.bool,
     engine: PropTypes.object
 }

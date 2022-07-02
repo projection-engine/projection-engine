@@ -19,8 +19,8 @@ import {updateTransform} from "../component/hooks/useForm"
 import Transform from "../component/components/Transform"
 import ViewportTab from "./components/ViewportTab"
 import CameraTab from "./components/CameraTab"
-import Camera from "./components/Camera"
-import Gizmo from "./components/Gizmo"
+import CameraBar from "./components/CameraBar"
+import GizmoBar from "./components/GizmoBar"
 import Constructor from "../../engine/Constructor"
 import DevelopmentRenderer from "../../engine-extension/DevelopmentRenderer"
 
@@ -132,15 +132,11 @@ export default function Viewport(props) {
     const [openSideBar, setOpenSideBar] = useState(false)
 
     return (
-        <div className={styles.wrapper}>
+        <>
             {props.engine.executingAnimation ?
                 null
                 :
-                <ViewportOptions
-                    engine={props.engine}
-                    executingAnimation={props.executingAnimation}
-                    id={props.id}
-                />
+                <ViewportOptions engine={props.engine}/>
             }
             <div
                 onMouseDown={e => {
@@ -188,8 +184,8 @@ export default function Viewport(props) {
                     null
                     :
                     <>
-                        <Gizmo/>
-                        <Camera
+                        <GizmoBar/>
+                        <CameraBar
                             engine={props.engine}
                             sideBarOpen={openSideBar}
                         />
@@ -251,7 +247,7 @@ export default function Viewport(props) {
                     nodes={[]}
                 />
             </div>
-        </div>
+        </>
     )
 }
 
