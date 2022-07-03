@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react"
+import React, {useCallback, useMemo} from "react"
 import styles from "./styles/Project.module.css"
 import SettingsProvider from "./providers/SettingsProvider"
 import Frame from "../components/frame/Frame"
@@ -9,7 +9,7 @@ import ContextMenuProvider from "../components/context/hooks/ContextMenuProvider
 import useContextMenu from "../components/context/hooks/useContextMenu"
 import ContextMenu from "../components/context/ContextMenu"
 import {ContextWrapper} from "@f-ui/core"
-import Viewport from "./components/viewport/Viewport"
+import Viewport from "./components/viewport/wrapper/Viewport"
 import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import submitPackage from "./utils/submitPackage"
 import Views from "../components/view/Views"
@@ -18,7 +18,7 @@ import useFiles from "./hooks/useFiles"
 import FilesProvider from "./providers/FilesProvider"
 import EngineProvider from "./providers/EngineProvider"
 import BlueprintProvider from "./providers/BlueprintProvider"
-import LayoutTabs from "./components/viewport/LayoutTabs"
+import LayoutTabs from "./components/viewport/tabs/LayoutTabs"
 
 const WORKER = new Worker(new URL("./engine-extension/cleanupWorker.js", import.meta.url))
 export default function Editor(props) {

@@ -1,28 +1,22 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useMemo, useState} from "react"
-import useContextTarget from "../../../components/context/hooks/useContextTarget"
-import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
-import ViewportOptions from "./ViewportOptions"
-import VerticalTabs from "../../../components/vertical-tab/VerticalTabs"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
-import Picking from "../../engine/systems/misc/Picking"
-import SelectBox from "../../../components/select-box/SelectBox"
-import Conversion from "../../engine/utils/Conversion"
-import GIZMOS from "../../../static/misc/GIZMOS"
-import SettingsProvider from "../../providers/SettingsProvider"
-import Transformation from "../../engine/templates/Transformation"
-import cloneClass from "../../engine/utils/cloneClass"
-import importData from "../../utils/importer/import"
-import getOptionsViewport from "./getOptionsViewport"
-import {updateTransform} from "../component/hooks/useForm"
-import Transform from "../component/components/Transform"
-import ViewportTab from "./components/ViewportTab"
-import CameraTab from "./components/CameraTab"
-import CameraBar from "./components/CameraBar"
-import GizmoBar from "./components/GizmoBar"
-import Constructor from "../../engine/Constructor"
-import DevelopmentRenderer from "../../engine-extension/DevelopmentRenderer"
+import React, {useContext, useEffect, useMemo} from "react"
+import useContextTarget from "../../../../components/context/hooks/useContextTarget"
+import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
+import ViewportOptions from "../options/ViewportOptions"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import Picking from "../../../engine/systems/misc/Picking"
+import SelectBox from "../../../../components/select-box/SelectBox"
+import Conversion from "../../../engine/utils/Conversion"
+import GIZMOS from "../../../../static/misc/GIZMOS"
+import SettingsProvider from "../../../providers/SettingsProvider"
+import Transformation from "../../../engine/utils/Transformation"
+import cloneClass from "../../../engine/utils/cloneClass"
+import importData from "../../../utils/importer/import"
+import getOptionsViewport from "./hooks/getOptionsViewport"
+import Constructor from "../../../engine/Constructor"
+import DevelopmentRenderer from "../../../engine-extension/DevelopmentRenderer"
+import ViewportSideBar from "../side-bar/ViewportSideBar"
 
 const TRIGGERS = ["data-viewport"]
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
@@ -129,7 +123,6 @@ export default function Viewport(props) {
         }
     }
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, optionsViewport, TRIGGERS)
-    const [openSideBar, setOpenSideBar] = useState(false)
 
     return (
         <>
@@ -180,45 +173,7 @@ export default function Viewport(props) {
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
-                {props.engine.executingAnimation ?
-                    null
-                    :
-                    <>
-                        <GizmoBar/>
-                        <CameraBar
-                            engine={props.engine}
-                            sideBarOpen={openSideBar}
-                        />
-                    </>
-                }
-                <VerticalTabs
-                    open={openSideBar}
-                    setOpen={setOpenSideBar}
-                    absolute={true}
-                    tabs={[
-                        {
-                            label: "Camera",
-                            content: <CameraTab/>
-                        },
-                        {
-                            label: "Viewport",
-                            content: <ViewportTab engine={props.engine}/>
-                        },
-                        {
-                            label: "Active entity",
-                            disabled: !props.engine.selectedEntity,
-                            content: props.engine.selectedEntity ? (
-                                <Transform
-                                    engine={props.engine} selected={props.engine.selectedEntity.components[COMPONENTS.TRANSFORM]} entityID={props.engine.selectedEntity.id}
-                                    submitRotation={(axis, data) => updateTransform(axis, data, "rotation", props.engine, props.engine.selectedEntity.id)}
-                                    submitScaling={(axis, data) => updateTransform(axis, data, "scaling", props.engine, props.engine.selectedEntity.id)}
-                                    submitTranslation={(axis, data) => updateTransform(axis, data, "translation", props.engine, props.engine.selectedEntity.id)}
-                                />
-                            ) : null
-                        }
-                    ]}
-
-                />
+                <ViewportSideBar engine={props.engine}/>
                 <SelectBox
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {

@@ -1,10 +1,8 @@
 import styles from "../styles/ViewportOptions.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-
-import PropTypes from "prop-types"
-import SHADING_MODELS from "../../../engine/templates/SHADING_MODELS"
+import SHADING_MODELS from "../../../../engine/templates/SHADING_MODELS"
 import React, {useContext, useEffect, useMemo, useState} from "react"
-import SettingsProvider from "../../../providers/SettingsProvider"
+import SettingsProvider from "../../../../providers/SettingsProvider"
 
 export default function Shading() {
     const [shadingModel, setShadingModel] = useState(SHADING_MODELS.DETAIL)

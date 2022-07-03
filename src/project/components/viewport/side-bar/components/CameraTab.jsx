@@ -1,9 +1,9 @@
-import useDirectState from "../../../../components/hooks/useDirectState"
+import useDirectState from "../../../../../components/hooks/useDirectState"
 import React, {useContext} from "react"
-import SettingsProvider from "../../../providers/SettingsProvider"
-import LabeledRange from "../../../../components/range/LabeledRange"
-import styles from "../../component/styles/Forms.module.css"
-import Range from "../../../../components/range/Range"
+import SettingsProvider from "../../../../providers/SettingsProvider"
+import LabeledRange from "../../../../../components/range/LabeledRange"
+import styles from "../../../component/styles/Forms.module.css"
+import Range from "../../../../../components/range/Range"
 
 const  toDeg = 180/ Math.PI, toRad = Math.PI/180
 export default function CameraTab(){

@@ -10,7 +10,7 @@
   position: absolute;
   top: 20px;
   z-index: 999;
-  background: rgba(0,0,0,.1);
+  background: rgb(0 0 0 / 10%);
 }
 
 .align {
@@ -309,4 +309,17 @@
   margin-top: 4px;
   color: var(--pj-color-secondary);
   font-size: 0.8rem;
+}
+
+.cameraWrapper {
+  display: grid;
+  align-content: flex-start;
+  justify-items: center;
+  gap: 4px;
+  height: fit-content;
+  transition: 150ms ease-in;
+  position: absolute;
+  right: 0;
+  top: 28px;
+  z-index: 15;
 }

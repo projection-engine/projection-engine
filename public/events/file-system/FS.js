@@ -16,8 +16,20 @@ export default function FS() {
         const result = await new Promise(resolve => {
             fs.readFile(path.resolve(pathName), (e, res) => {
                 try {
-                    let d = type === "buffer" ? res : (res ? res.toString() : undefined)
-                    resolve(type === "json" && d ? JSON.parse(d) : d)
+                    switch (type){
+                    case "buffer":
+                        resolve(res)
+                        break
+                    case "json":
+                        resolve(JSON.parse(res.toString()))
+                        break
+                    case "base64":
+                        resolve(new Buffer(res).toString("base64"))
+                        break
+                    default:
+                        resolve(res.toString())
+                        break
+                    }
                 } catch (e) {
                     resolve()
                 }

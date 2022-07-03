@@ -119,21 +119,20 @@
     "url-loader": "^4.1.1"
   },
   "dependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
     "@f-ui/core": "^0.2.23-alpha",
     "@f-ui/markdown": "^0.2.0-alpha",
     "atob": "^2.1.2",
     "axios": "^0.27.2",
     "babel-runtime": "^6.26.0",
+    "buffer": "^6.0.3",
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "pj-math": "^0.0.6-alpha",
     "prop-types": "^15.7.2",
-
+    "react": "^18.1.0",
     "react-colorful": "^5.5.1",
-
+    "react-dom": "^18.1.0",
     "systeminformation": "^5.11.14",
     "uuid": "^8.3.2"
   }

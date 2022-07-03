@@ -1,8 +1,9 @@
 import React, {useContext} from "react"
-import SettingsProvider from "../../providers/SettingsProvider"
+import SettingsProvider from "../../../providers/SettingsProvider"
 import styles from "./styles/LayoutTabs.module.css"
 import {ContextMenu, Icon} from "@f-ui/core"
-import VIEWS from "../../../components/view/VIEWS"
+import VIEWS from "../../../../components/view/VIEWS"
+
 export default function LayoutTabs(){
     const settings = useContext(SettingsProvider)
 

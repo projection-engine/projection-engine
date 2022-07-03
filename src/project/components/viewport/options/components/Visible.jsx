@@ -3,7 +3,7 @@ import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import React, {useState} from "react"
-import LabeledRange from "../../../../components/range/LabeledRange"
+import LabeledRange from "../../../../../components/range/LabeledRange"
 
 export default function Visible(props) {
     const {settingsContext} = props

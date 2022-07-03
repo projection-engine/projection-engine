@@ -1,9 +1,9 @@
 import PropTypes from "prop-types"
-import LabeledRange from "../../../../components/range/LabeledRange"
-import useDirectState from "../../../../components/hooks/useDirectState"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import LabeledRange from "../../../../../components/range/LabeledRange"
+import useDirectState from "../../../../../components/hooks/useDirectState"
+import COMPONENTS from "../../../../engine/templates/COMPONENTS"
 import React, {useEffect} from "react"
-import styles from "../../component/styles/Forms.module.css"
+import styles from "../../../component/styles/Forms.module.css"
 
 export default function ViewportTab(props){
     const {engine} = props

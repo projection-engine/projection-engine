@@ -12,7 +12,7 @@ import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
 import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
 import {STEPS_LIGHT_PROBE} from "../engine/systems/passes/DiffuseProbePass"
 import Packager from "../engine/Packager"
-import ENVIRONMENT from "../engine/ENVIRONMENT"
+import ENVIRONMENT from "../engine/templates/ENVIRONMENT"
 
 
 export default class DevelopmentRenderer extends Renderer {
@@ -20,7 +20,7 @@ export default class DevelopmentRenderer extends Renderer {
     cameraData = {}
 
     constructor( resolution) {
-        super( resolution)
+        super( resolution )
         this.environment = ENVIRONMENT.DEV
         this.cameraData = new Cameras()
         this.editorSystem = new Wrapper(resolution)

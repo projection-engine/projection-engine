@@ -5,12 +5,11 @@ import {HISTORY_ACTIONS} from "../hooks/historyReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
-import Transformation from "../engine/templates/Transformation"
+import Transformation from "../engine/utils/Transformation"
 import toObject from "../engine/utils/toObject"
 import MaterialInstance from "../engine/instances/MaterialInstance"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
-import {fallbackVertex} from "../engine/shaders/mesh/FALLBACK.glsl"
 
 
 function getCursor(){

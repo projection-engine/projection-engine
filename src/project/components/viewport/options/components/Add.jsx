@@ -1,15 +1,15 @@
 import styles from "../styles/ViewportOptions.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-import Entity from "../../../engine/basic/Entity"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
-import PointLightComponent from "../../../engine/components/PointLightComponent"
-import TransformComponent from "../../../engine/components/TransformComponent"
+import Entity from "../../../../engine/basic/Entity"
+import COMPONENTS from "../../../../engine/templates/COMPONENTS"
+import PointLightComponent from "../../../../engine/components/PointLightComponent"
+import TransformComponent from "../../../../engine/components/TransformComponent"
 import React from "react"
-import DirectionalLightComponent from "../../../engine/components/DirectionalLightComponent"
-import CameraComponent from "../../../engine/components/CameraComponent"
-import ProbeComponent from "../../../engine/components/ProbeComponent"
+import DirectionalLightComponent from "../../../../engine/components/DirectionalLightComponent"
+import CameraComponent from "../../../../engine/components/CameraComponent"
+import ProbeComponent from "../../../../engine/components/ProbeComponent"
 import PropTypes from "prop-types"
-import LineComponent from "../../../engine/components/LineComponent"
+import LineComponent from "../../../../engine/components/LineComponent"
 
 export default function Add(props) {
     const {dispatchEntity, engine} = props

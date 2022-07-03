@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import React, {useEffect, useState} from "react"
-import Transformation from "../../../engine/templates/Transformation"
+import Transformation from "../../../engine/utils/Transformation"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 

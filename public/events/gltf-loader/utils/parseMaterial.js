@@ -23,7 +23,6 @@ export default async function parseMaterial(basePath, data, textures, images, pa
             occlusionTexture,
             emissiveTexture
         } = PBR ? {...PBR, ...data} : data
-        console.log(PBR)
         const materialData = {
             emissive: 0,
             albedo: .5,
@@ -72,7 +71,15 @@ async function loadTexture(basePath, texture, textures, images, partialPath, pro
         if (typeof imgURI.uri === "string" && imgURI.uri.includes("data:image"))
             file = imgURI.uri
         else {
-            file = await new Promise(resolve => fs.readFile(path.resolve(basePath + PathSep.sep + imgURI.uri), {encoding: "base64"}, (_, data) => resolve(data)))
+            file = await new Promise(resolve => {
+                const imgPath = path.resolve(basePath + PathSep.sep + imgURI.uri)
+                fs.readFile(
+                    imgPath,
+                    (_, buffer) => {
+                        resolve(new Buffer(buffer).toString("base64"))
+                    }
+                )
+            })
             fetched = true
         }
         if (file) {

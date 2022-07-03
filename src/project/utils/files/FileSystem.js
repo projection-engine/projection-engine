@@ -1,6 +1,6 @@
-import ImageProcessor from "../../engine/utils/image/ImageProcessor"
 import {v4, v4 as uuidv4} from "uuid"
 import AsyncFS from "../AsyncFS"
+import IMAGE_WORKER_ACTIONS from "../../engine/templates/IMAGE_WORKER_ACTIONS"
 
 const pathRequire = window.require("path")
 
@@ -65,16 +65,6 @@ export default class FileSystem {
         if (rs) await AsyncFS.rm(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry" + FileSystem.sep + rs.id + ".reg"))
     }
 
-    async importImage(newRoot, res, fileID) {
-        if (res && !(await AsyncFS.exists(newRoot + ".pimg"))) {
-
-            await AsyncFS.write(newRoot + ".pimg", res)
-            const reduced = await ImageProcessor.resizeImage(res, 256, 256)
-            await AsyncFS.write(FileSystem.resolvePath(this.path + FileSystem.sep + "previews" + FileSystem.sep + fileID + ".preview"), reduced)
-            await this.createRegistryEntry(fileID, newRoot.replace(this.path + FileSystem.sep + "assets" + FileSystem.sep, "") + ".pimg")
-        }
-    }
-
     async openDialog() {
         return await new Promise(resolve => {
             const listenID = v4().toString()
@@ -98,8 +88,23 @@ export default class FileSystem {
             case "png":
             case "jpg":
             case "jpeg": {
-                const file = await this.readFile(filePath, "buffer")
-                await this.importImage(newRoot, `data:image/${type};base64,` + new Buffer(file).toString("base64"), fileID)
+                if(!(await AsyncFS.exists(newRoot + ".pimg"))) {
+                    const res = `data:image/${type};base64,` + (await this.readFile(filePath, "base64"))
+                    if (res) {
+                        await AsyncFS.write(newRoot + ".pimg", res)
+                        const reduced = await window.imageWorker(IMAGE_WORKER_ACTIONS.RESIZE_IMAGE, {
+                            image: res,
+                            width: 256,
+                            height: 256
+                        })
+                        await AsyncFS.write(FileSystem.resolvePath(this.path + FileSystem.sep + "previews" + FileSystem.sep + fileID + ".preview"), reduced)
+                        await this.createRegistryEntry(fileID, newRoot.replace(this.path + FileSystem.sep + "assets" + FileSystem.sep, "") + ".pimg")
+                    }
+                    else
+                        alert.pushAlert("Error importing image", "error")
+                }
+                else
+                    alert.pushAlert("Image already exists", "error")
                 break
             }
             case "gltf":

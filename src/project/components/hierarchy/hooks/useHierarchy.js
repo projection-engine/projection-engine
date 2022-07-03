@@ -1,8 +1,8 @@
 import React, {useEffect, useMemo, useRef, useState} from "react"
-import COMPONENTS from "../engine/templates/COMPONENTS"
-import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
+import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import {Icon} from "@f-ui/core"
-import {createFolder} from "../components/hierarchy/utils/hiearchyUtils"
+import {createFolder} from "../utils/hiearchyUtils"
 
 const getHierarchy = (start, all) => {
     const result = []

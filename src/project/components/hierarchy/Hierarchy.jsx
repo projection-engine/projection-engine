@@ -7,7 +7,7 @@ import Search from "../../../components/search/Search"
 import {Button, Icon} from "@f-ui/core"
 import styles from "../../styles/Project.module.css"
 import {createFolder} from "./utils/hiearchyUtils"
-import useHierarchy from "../../hooks/useHierarchy"
+import useHierarchy from "./hooks/useHierarchy"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
 

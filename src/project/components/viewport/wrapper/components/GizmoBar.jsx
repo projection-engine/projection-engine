@@ -1,11 +1,11 @@
-import styles from "../styles/ViewportOptions.module.css"
+import styles from "../../options/styles/ViewportOptions.module.css"
 import {Button, Dropdown, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import ROTATION_TYPES from "../../../../static/misc/ROTATION_TYPES"
-import Range from "../../../../components/range/Range"
-import GIZMOS from "../../../../static/misc/GIZMOS"
+import ROTATION_TYPES from "../../../../../static/misc/ROTATION_TYPES"
+import Range from "../../../../../components/range/Range"
+import GIZMOS from "../../../../../static/misc/GIZMOS"
 import React, {useContext, useEffect, useRef, useState} from "react"
-import ResizableBar from "../../../../components/resizable/ResizableBar"
-import SettingsProvider from "../../../providers/SettingsProvider"
+import ResizableBar from "../../../../../components/resizable/ResizableBar"
+import SettingsProvider from "../../../../providers/SettingsProvider"
 
 export default function GizmoBar(){
     const settings = useContext(SettingsProvider)

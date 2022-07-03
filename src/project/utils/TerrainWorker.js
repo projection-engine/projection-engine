@@ -69,9 +69,7 @@ export default class TerrainWorker {
     }
 
     static sampleTexture(x, y, ctx, heightScale) {
-        const [
-            r
-        ] = ImageProcessor.getPixel(ctx, x, y)
+        const r = ctx.getImageData(x, y, 1, 1).data[0]
         let height = (r / 255)
         return height * heightScale
     }
