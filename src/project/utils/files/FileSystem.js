@@ -9,6 +9,10 @@ export default class FileSystem {
     static sep = pathRequire.sep
     static registry = []
 
+    static fixPath(p){
+        return pathRequire.resolve(p)
+    }
+
     constructor(projectID) {
         this._path = (localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID)
 

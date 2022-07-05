@@ -154,7 +154,6 @@ export default function Viewport(props) {
                     e.currentTarget.classList.remove(styles.hovered)
                 }}
                 onDrop={e => {
-
                     // TODO - APPLY MATERIAL BY DROPPING IT ON MESH (PICK MESH AND LOAD MATERIAL)
                     if (props.allowDrop) {
                         e.preventDefault()

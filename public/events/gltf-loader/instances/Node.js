@@ -75,6 +75,7 @@ export default class Node {
 
             parsedNode.scaling = scale
             parsedNode.translation = translation
+            parsedNode.pivotPoint = translation
             transformationMatrix = mat4.fromRotationTranslationScale([], parsedNode.rotationQuat, parsedNode.translation, parsedNode.scaling)
         }
 
@@ -88,6 +89,8 @@ export default class Node {
             parsedNode.rotationQuat = [0, 0, 0, 1]
             parsedNode.scaling = [1, 1, 1]
             parsedNode.baseTransformationMatrix = Array.from(transformationMatrix)
+
+            parsedNode.pivotPoint = mat4.getTranslation([], parsedNode.baseTransformationMatrix)
         }
 
         this.data = parsedNode

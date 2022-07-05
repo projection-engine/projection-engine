@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from "react"
+import React, {useCallback, useMemo, useRef} from "react"
 import styles from "./styles/Project.module.css"
 import SettingsProvider from "./providers/SettingsProvider"
 import Frame from "../components/frame/Frame"
@@ -43,7 +43,6 @@ export default function Editor(props) {
         copy[settings.currentView] = {...view, [key]: newView}
         settings.views = copy
     }
-
     return (
         <BlueprintProvider.Provider
             value={{
@@ -65,12 +64,12 @@ export default function Editor(props) {
                                 label={meta?.name}
                             />
                             <ContextWrapper
+                                attributes={{
+                                    id: "context-menu-element"
+                                }}
                                 wrapperClassName={styles.context}
                                 triggers={contextMenuHook[0].triggers}
                                 className={styles.wrapper}
-                                wrapperStyles={{
-                                    paddingBottom: contextMenuHook[0].options.length > 20 ? "35px" : undefined
-                                }}
                                 content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected}/>}
                             >
                                 <div className={styles.middle} id={props.id + "-editor-wrapper"}>

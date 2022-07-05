@@ -59,6 +59,9 @@ export function initializeEntity(data, meshID, parent){
     transformation.rotationQuat = data.rotationQuat
     transformation.translation = data.translation
     transformation.baseTransformationMatrix = data.baseTransformationMatrix
+    if(data.pivotPoint)
+        transformation.pivotPoint = data.pivotPoint
+
     entity.components[COMPONENTS.MATERIAL] = new MaterialComponent()
     entity.components[COMPONENTS.MATERIAL].materialID = FALLBACK_MATERIAL
     entity.components[COMPONENTS.MESH] = new MeshComponent()
