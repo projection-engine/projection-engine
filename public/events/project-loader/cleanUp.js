@@ -1,4 +1,3 @@
-import {rm} from "../file-system/FSEvents"
 import {readRegistry} from "./FSOperations"
 import PathSep from "../../static/PathSep"
 import REG_PATH from "../../static/REG_PATH"

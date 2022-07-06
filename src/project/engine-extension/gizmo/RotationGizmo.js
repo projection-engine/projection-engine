@@ -239,7 +239,7 @@ export default class RotationGizmo {
         if (selected.length > 0) {
             this.setSelected = setSelected
             const el = selected[0]
-            const parent = entities[el.linkedTo]
+            const parent = el.parent
             const currentTranslation = this.getTranslation(el),
                 parentTranslation = parent ? this.getTranslation(parent) : {data: [0, 0, 0]},
                 translation = currentTranslation.valid ? [

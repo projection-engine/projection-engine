@@ -1,7 +1,5 @@
 import PickComponent from "../engine/components/PickComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
-import Entity from "../engine/basic/Entity"
-
 
 export const ENTITY_ACTIONS = {
     ADD: 0,
@@ -17,36 +15,20 @@ export const ENTITY_ACTIONS = {
     LINK_MULTIPLE: 10
 }
 
-function deleteEntity(entity, entities) {
-    let copy = [...entities].filter(e => e.id !== entity.id)
-    for (let i = 0; i < copy.length; i++) {
-        if (copy[i].linkedTo === entity.id)
-            copy = deleteEntity(copy[i], copy)
-    }
-    return copy
-}
 
 export default function entityReducer(state, {type, payload}) {
-    let stateCopy = [...state]
-    const entityIndex = state.findIndex(e => e.id === payload?.entityID)
-
-    if (entityIndex > -1) {
-        const entity = stateCopy[entityIndex]
+    if (payload?.entityID > -1) {
+        const entity = state.get(payload.entityID)
         switch (type) {
         case ENTITY_ACTIONS.UPDATE: {
-            const {
-                key,
-                data,
-            } = payload
-
+            const {key, data} = payload
             entity[key] = data
-            stateCopy[entityIndex] = entity
-            return stateCopy
+            state.set(entity.id, entity)
+            break
         }
         case ENTITY_ACTIONS.REMOVE:
-            return deleteEntity(stateCopy[entityIndex], stateCopy)
-
-
+            state.delete(entity.id)
+            break
         case ENTITY_ACTIONS.UPDATE_COMPONENT: {
             const {
                 key,
@@ -54,60 +36,72 @@ export default function entityReducer(state, {type, payload}) {
             } = payload
             entity.components[key] = data
 
-            stateCopy[entityIndex] = entity
-            return stateCopy
+            state.set(entity.id, entity)
+            break
         }
         default:
-            return stateCopy
+            break
         }
     } else
         switch (type) {
-        case ENTITY_ACTIONS.LINK_MULTIPLE:
-            return state.map(s => {
+        case ENTITY_ACTIONS.LINK_MULTIPLE: {
+            const values = state.values()
+            for (let i = 0; i < values.length; i++) {
+                const s = values[i]
                 if (payload.indexOf(s.id) > 0) {
-                    s.linkedTo = payload[0]
+                    const found = state.get(payload[0])
+                    s.parent = found
+                    found.children.push(s)
                 }
-                return s
-            })
+            }
+            break
+        }
         case ENTITY_ACTIONS.CLEAR:
-            return []
+            state.clear()
+            break
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
             entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.length + 2)
-            return [...state, entity]
+            state.set(entity.id, entity)
+            break
         }
         case ENTITY_ACTIONS.DISPATCH_BLOCK: {
-            const block = payload
-            if (Array.isArray(block))
-                return block.map((entity, i) => {
-                    if(entity instanceof Entity) {
-                        entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.length + i + 1)
-                        return entity
-                    }
-                }).filter(e => e)
-            else
-                return stateCopy
+            const block = payload, newState = new Map()
+            if (Array.isArray(block)) {
+                for (let i = 0; i < block.length; i++) {
+                    const e = block[i]
+                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
+                    newState.set(e.id, e)
+                }
+                return newState
+            }
+            break
         }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             const block = payload
-            if (Array.isArray(block))
-                return stateCopy.filter(e => !block.includes(e.id) && !block.includes(e.linkedTo))
-            else
-                return stateCopy
+            if (Array.isArray(block)) {
+                for (let i = 0; i < block.length; i++)
+                    state.delete(block[i])
+                const values = state.values()
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i]?.parent)
+                        state.delete(values[i].parent.id)
+                }
+            }
+            break
         }
         case ENTITY_ACTIONS.PUSH_BLOCK: {
             const block = payload
             if (Array.isArray(block))
-                return [...stateCopy, ...block.map((e, i) => {
-                    const entity = e
-                    entity.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
-                    return entity
-                })]
-            else
-                return stateCopy
+                for (let i = 0; i < block.length; i++) {
+                    const e = block[i]
+                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
+                    state.set(e.id, e)
+                }
+            break
         }
         default:
-            return stateCopy
+            break
         }
-
+    return state
 }

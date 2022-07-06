@@ -59,7 +59,7 @@ export default class ProjectLoader {
     }
 
     static async mapEntity(entity) {
-        const parsedEntity = new Entity(entity.id, entity.name, entity.active, entity.linkedTo)
+        const parsedEntity = new Entity(entity.id, entity.name, entity.active)
         Object.keys(entity).forEach(k => {
             if(k !== "components")
                 parsedEntity[k] = entity[k]

@@ -29,12 +29,13 @@ export default function Viewport(props) {
 
     const optionsViewport = useMemo(() => {
         const selected = props.engine.selected[0]
-        const selectedRef = selected ? props.engine.entities.find(e => e.id === selected) : undefined
+        const selectedRef = selected ? props.engine.entities.get(selected) : undefined
         return getOptionsViewport(props.engine, selected, selectedRef, props.utils)
     }, [props.engine.entities, props.engine.selected, props.utils.toCopy])
     const settings = useContext(SettingsProvider)
-    function pickIcon (entities, cameraMesh, pickSystem, camera, coords){
+    function pickIcon (e, cameraMesh, pickSystem, camera, coords){
         return pickSystem.pickElement((shader, proj) => {
+            const entities = e.values()
             for (let m = 0; m < entities.length; m++) {
                 const currentInstance = entities[m]
                 if (entities[m].active) {
@@ -84,6 +85,7 @@ export default function Viewport(props) {
                 if (!picked)
                     picked = pickMesh(meshesMap, event.clientX, event.clientY)
                 if (picked > 0) {
+                    // TODO - FIX
                     const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
 
                     if (entity) props.engine.setSelected(prev => {
@@ -189,7 +191,7 @@ export default function Viewport(props) {
 
                             try{
                                 const data = pickSystem.readBlock(depthSystem.frameBuffer, nStart, nEnd)
-                                WORKER.postMessage({entities: props.engine.entities.map(e => e.pickerInfo()), data})
+                                WORKER.postMessage({entities: props.engine.entities, data})
                                 WORKER.onmessage = ({data: selected}) => props.engine.setSelected(selected)
                             }catch (err){
                                 console.error(err, startCoords, nStart)

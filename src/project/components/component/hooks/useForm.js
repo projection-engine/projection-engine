@@ -19,7 +19,7 @@ import {Icon} from "@f-ui/core"
 import FALLBACK_MATERIAL from "../../../../static/misc/FALLBACK_MATERIAL"
 
 export function  updateTransform(axis, data, key, engine, entityID) {
-    const entity = engine.entities.find(e => e.id === entityID)
+    const entity = engine.entities.get(entityID)
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]
     component[key] = [

@@ -42,11 +42,11 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
     }
     function paste(parent) {
         let block = []
-        toCopy.forEach((t) => {
-            const found = engine.entities.find(e => e.id === t)
+        toCopy.forEach(t => {
+            const found = engine.entities.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.linkedTo = parent
+                clone.parent = engine.entities.get(parent)
                 block.push(clone)
             }
         })

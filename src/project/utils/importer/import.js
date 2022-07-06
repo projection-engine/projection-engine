@@ -7,36 +7,35 @@ import FileSystem from "../files/FileSystem"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import {vec4} from "gl-matrix"
 
-export default async function importData(event,   engine,  asID) {
-    const entities = [], meshes = []
+export default async function importData(event, engine, asID) {
+    const items = [], meshes = []
 
     if (asID)
-        entities.push(event)
+        items.push(event)
     else
         try {
-            entities.push(...JSON.parse(event.dataTransfer.getData("text")))
+            items.push(...JSON.parse(event.dataTransfer.getData("text")))
         } catch (e) {
             alert.pushAlert("Error importing file", "error")
         }
 
-    for (let i = 0; i < entities.length; i++) {
-        const data = entities[i]
+    for (let i = 0; i < items.length; i++) {
+        const data = items[i]
         const res = await window.fileSystem.readRegistryFile(data)
-        console.trace(res, entities)
-
-        if(res)
-            switch ("."+res.path.split(".").pop()){
-            case FILE_TYPES.MESH:
+        if (res)
+            switch ("." + res.path.split(".").pop()) {
+            case FILE_TYPES.MESH: {
                 const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
                 console.dir(file)
                 const meshData = await importMesh(file, engine, data)
-                if(meshData.mesh !== undefined)
+                if (meshData.mesh !== undefined)
                     meshes.push(meshData)
                 else
                     alert.pushAlert("Error importing mesh.", "error")
                 break
+            }
             case FILE_TYPES.SCENE:
-                await importScene(  engine, res)
+                await importScene(engine, res)
                 break
             default:
                 alert.pushAlert("Error importing file.", "error")
@@ -54,7 +53,7 @@ export default async function importData(event,   engine,  asID) {
 
             const cursorPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
             toLoad.forEach(e => {
-                if(e.isMesh){
+                if (e.isMesh) {
                     const transform = e.components[COMPONENTS.TRANSFORM]
                     const t = vec4.add([], transform.translation, cursorPoint)
                     transform.translation = t
@@ -67,7 +66,7 @@ export default async function importData(event,   engine,  asID) {
                 payload: toLoad
             })
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
-            alert.pushAlert( `Meshes loaded (${toLoad.length})`, "success")
+            alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
         }
     }
 }

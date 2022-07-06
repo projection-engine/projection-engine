@@ -7,16 +7,11 @@ import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
 import CHANNELS from "../../../public/static/CHANNELS"
-import Entity from "../engine/basic/Entity"
-import COMPONENTS from "../engine/templates/COMPONENTS"
-import MeshComponent from "../engine/components/MeshComponent"
-import TransformComponent from "../engine/components/TransformComponent"
-import MaterialComponent from "../engine/components/MaterialComponent"
 
 const {ipcRenderer} = window.require("electron")
-export default function useProjectWrapper(id,  settings, pushSettingsBlock, load, worker) {
+export default function useProjectWrapper(id,  settings, pushSettingsBlock, load) {
 
-    const engine = useEngine(settings, worker)
+    const engine = useEngine(settings)
     const initialized = useRef(false)
     const serializer = useSerializer(engine, settings, id)
 
@@ -35,20 +30,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                             name: res.meta?.data?.name
                         })
                     try{
-                        let entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data) : undefined).filter(e => e))
-
-                        // TEMP - DESENV
-                        entities = []
-                        for(let i =0; i < 2000; i++){
-                            const e = new Entity()
-                            e.name = i  + "- ENTITY"
-                            e.components[COMPONENTS.MESH] = new MeshComponent()
-                            e.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                            e.components[COMPONENTS.MATERIAL] = new MaterialComponent()
-                            entities.push(e)
-                        }
-                        // TEMP - DESENV
-                        
+                        const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data) : undefined).filter(e => e))
                         engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
                     }catch (err){
                         console.error(err)

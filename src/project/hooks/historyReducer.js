@@ -36,7 +36,7 @@ export default function historyReducer(state, {type, payload}) {
         stateCopy.push({
             type: type,
             entities: payload.entitiesToDelete.map(e => {
-                return payload.entities.filter(ee => ee.id === e || ee.linkedTo === e)
+                return payload.entities.filter(ee => ee.id === e || ee.parent?.id === e)
             })
         })
         return stateCopy

@@ -18,7 +18,7 @@ import SETTINGS from "../static/misc/SETTINGS"
 import ROUTES from "../../public/static/ROUTES"
 
 const {ipcRenderer} = window.require("electron")
-
+const DARK = "dark"
 function Project() {
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
@@ -46,7 +46,7 @@ function Project() {
     return (
         <ThemeProvider
             language={"en"}
-            theme={"dark"}
+            theme={DARK}
             accentColor={global.accentColor}
             className={styles.wrapper}
         >

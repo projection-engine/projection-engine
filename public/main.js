@@ -1,7 +1,6 @@
 import FS from "./events/file-system/FS"
 import FSEvents from "./events/file-system/FSEvents"
 import MainWindow from "./windows/Main.js"
-import WindowManager from "./windows/WindowManager"
 
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require("electron")
 

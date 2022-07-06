@@ -17,7 +17,7 @@ export default async function importScene(  engine, reg, onlyReturn) {
 
 
         for (let i in file.nodes) {
-            const data = await loopNodes(file.nodes[i], folder.id)
+            const data = await loopNodes(file.nodes[i], folder)
 
             meshes.push(...data.meshes)
             entities.push(...data.children)
@@ -37,13 +37,14 @@ export default async function importScene(  engine, reg, onlyReturn) {
     return {meshes, entities}
 }
 
-async function loopNodes(node,   parent) {
+async function loopNodes(node, parent) {
     const meshes = [], children = []
 
 
     const entity = new Entity(node.id)
     entity.name = node.name
-    entity.linkedTo = parent
+    entity.parent = parent
+    parent.children.push(entity)
     entity.components[COMPONENTS.FOLDER] = new FolderComponent()
     for (let m in node.primitives) {
         const primitive = node.primitives[m]
@@ -56,13 +57,13 @@ async function loopNodes(node,   parent) {
                 id: reg.id
             })
             meshes.push(instance)
-            children.push(initializeEntity(meshData, instance.id, entity.id))
+            children.push(initializeEntity(meshData, instance.id, entity))
         }
     }
     children.push(entity)
 
     for (let i in node.children) {
-        const data = await loopNodes(node.children[i], entity.id)
+        const data = await loopNodes(node.children[i], entity)
         meshes.push(...data.meshes)
         children.push(...data.children)
     }

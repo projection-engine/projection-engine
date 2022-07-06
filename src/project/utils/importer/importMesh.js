@@ -53,7 +53,8 @@ export default async function importMesh(objLoaded, engine, id) {
 
 export function initializeEntity(data, meshID, parent){
     const entity = new Entity(undefined, data.name)
-    entity.linkedTo = parent
+    entity.parent = parent
+    parent.children.push(entity)
     const transformation = new TransformComponent()
     transformation.scaling = data.scaling
     transformation.rotationQuat = data.rotationQuat

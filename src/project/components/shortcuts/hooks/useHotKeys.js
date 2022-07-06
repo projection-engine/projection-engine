@@ -1,5 +1,4 @@
 import {useContext, useEffect, useRef} from "react"
-import PropTypes from "prop-types"
 import HotKeysProvider from "./HotKeysProvider"
 import KEYS from "../../../engine/templates/KEYS"
 

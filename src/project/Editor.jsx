@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from "react"
+import React, {useCallback, useMemo} from "react"
 import styles from "./styles/Project.module.css"
 import SettingsProvider from "./providers/SettingsProvider"
 import Frame from "../components/frame/Frame"
@@ -20,10 +20,10 @@ import EngineProvider from "./providers/EngineProvider"
 import BlueprintProvider from "./providers/BlueprintProvider"
 import LayoutTabs from "./components/viewport/tabs/LayoutTabs"
 
-const WORKER = new Worker(new URL("./engine-extension/cleanupWorker.js", import.meta.url))
+
 export default function Editor(props) {
     const {id, meta, events,  settings, load} = props
-    const { serializer, engine } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load, WORKER)
+    const { serializer, engine } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load)
 
     const contextMenuHook = useContextMenu()
     const utils = useEditorShortcuts({engine, settings, id, serializer})
