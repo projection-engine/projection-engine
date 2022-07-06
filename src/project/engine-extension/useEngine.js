@@ -64,6 +64,9 @@ export default function useEngine(settings, worker) {
         }
     }, [entities])
 
+
+
+
     const onGizmoStart = () => {
         const e = entities.find(e => e.id === selected[0])
         if (e)

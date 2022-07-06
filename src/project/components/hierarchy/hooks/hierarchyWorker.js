@@ -4,7 +4,7 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
     }
     console.log(entities)
     const search = parseStr(searchedEntity)
-    const toFilter =  !search ? entities.filter(d => !d.linkedTo) :entities
+
 
     function getElementType(components, isBP) {
         if (isBP) return "ScriptView"
@@ -54,12 +54,9 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
     }
 
     function mapToView(current) {
-        const children =  !search ? entities.filter(f => f.linkedTo === current.id) : []
-
         return {
             id: current.id,
             label: current.name,
-            children:children.map(f => mapToView(f)),
             icon: getElementIcon(current.components),
             type: getElementType(current.components),
             draggable: true,
@@ -71,8 +68,8 @@ self.onmessage = ({data: {entities, COMPONENTS, searchedEntity}}) => {
 
     let response
     if(!search)
-        response = toFilter.map(t => mapToView(t))
+        response = entities.map(t => mapToView(t))
     else
-        response = toFilter.filter(t => parseStr(t.name).includes(search)).map(t => mapToView(t))
+        response = entities.filter(t => parseStr(t.name).includes(search)).map(t => mapToView(t))
     self.postMessage(response)
 }

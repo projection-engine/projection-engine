@@ -1,5 +1,5 @@
-import React, {useContext, useState} from "react"
-import TreeView from "../../../components/tree/TreeView"
+import React, {useContext, useRef, useState} from "react"
+import Tree from "../../../components/tree/Tree"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import EngineProvider from "../../providers/EngineProvider"
@@ -10,6 +10,7 @@ import {createFolder} from "./utils/hiearchyUtils"
 import useHierarchy from "./hooks/useHierarchy"
 import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
+import EntityProvider from "../../../components/tree/EntityProvider"
 
 const TRIGGERS = ["data-node", "data-self"]
 const WORKER = new Worker(new URL("./hooks/hierarchyWorker.js", import.meta.url))
@@ -17,7 +18,7 @@ const WORKER = new Worker(new URL("./hooks/hierarchyWorker.js", import.meta.url)
 export default function Hierarchy(props){
     const  [engine, utils] = useContext(EngineProvider)
     const [searchedEntity, setSearchedEntity] = useState("")
-    const [data, treeOptions] = useHierarchy(
+    const [treeOptions, setSelected,setAllHidden] = useHierarchy(
         engine.setSelected,
         engine.dispatchEntities,
         engine.entities,
@@ -28,9 +29,23 @@ export default function Hierarchy(props){
         utils
     )
 
+    const wasHidden = useRef(false)
 
     return (
-        <>
+        <EntityProvider.Provider value={{
+            selected: engine.selected,
+            entities: engine.entities,
+            setSelected: (entity, ctrlKey) => {
+                if(ctrlKey ) {
+                    if (!engine.selected.includes(entity))
+                        engine.setSelected([...engine.selected, entity])
+                    else
+                        engine.setSelected(engine.selected.filter(e => e !== entity))
+                }
+                else
+                    engine.setSelected([entity])
+            }
+        }}>
             <Header {...props} title={"Hierarchy"} icon={"account_tree"}>
                 <Search
                     width={"100%"}
@@ -43,13 +58,30 @@ export default function Hierarchy(props){
             </Header>
             {props.hidden ?
                 null :
-                <TreeView
+                <Tree
                     contextTriggers={TRIGGERS}
                     onMultiSelect={(items) => engine.setSelected(items)}
-                    multiSelect={true}
-                    searchable={true}
-                    draggable={true}
                     options={treeOptions}
+                    onClick={(event, node) => setSelected(node.entity, event)}
+                    onHide={node => {
+                        const entitiesMap = window.renderer.entitiesMap
+                        if (node.hidden)
+                            setAllHidden(false)
+                        node.children.forEach(c => {
+                            const entity = entitiesMap[c.id]
+                            if(entity)
+                                entity.active = c.hidden
+                        })
+                        engine.dispatchEntities({
+                            type: ENTITY_ACTIONS.UPDATE,
+                            payload: {
+                                entityID: node.id,
+                                data: node.hidden,
+                                key: "active"
+                            }
+                        })
+                        wasHidden.current = true
+                    }}
                     onDrop={(event, target) => {
                         event.preventDefault()
                         try {
@@ -90,17 +122,13 @@ export default function Hierarchy(props){
                             e.dataTransfer.setData("text", JSON.stringify(engine.selected.includes(e.currentTarget.id) ? engine.selected : [...engine.selected, e.currentTarget.id]))
                         else e.dataTransfer.setData("text", JSON.stringify([e.currentTarget.id]))
                     }}
-
-                    ids={engine.entities}
-                    selected={engine.selected}
-                    nodes={data}
                     handleRename={(treeNode, newName) => engine.dispatchEntities({
                         type: ENTITY_ACTIONS.UPDATE,
                         payload: {entityID: treeNode.id, key: "name", data: newName}
                     })}
                 />
             }
-        </>
+        </EntityProvider.Provider>
     )
 }
 

@@ -29,87 +29,60 @@ export default function useHierarchy(
     const [hierarchy, setHierarchy] = useState([])
     const lastLength = useRef(entities.length)
     const wasHidden = useRef(false)
-    const setSelected = (el, e) => {
-        if (e && e.ctrlKey) {
+    const setSelected = (entity, event) => {
+        if (event.ctrlKey) {
             setSelectedEntity(prev => {
-                const indexFound = prev.findIndex(f => f === el.id)
-                if (indexFound === -1) return [...prev, el.id]
+                const indexFound = prev.findIndex(f => f === entity.id)
+                if (indexFound === -1) return [...prev, entity.id]
                 else {
                     let n = [...prev]
                     n.splice(indexFound, 1)
                     return n
                 }
             })
+        } else if (!entity.components[COMPONENTS.FOLDER])
+            setSelectedEntity([entity.id])
+        else if (entity.components[COMPONENTS.FOLDER])
+            setSelectedEntity(getHierarchy(entity, entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
 
-        } else if (!el.components[COMPONENTS.FOLDER])
-            setSelectedEntity([el.id])
-        else if (el.components[COMPONENTS.FOLDER]) {
-            setSelectedEntity(getHierarchy(el, entities).filter(e => !e.components[COMPONENTS.FOLDER]).map(e => e.id))
-        }
     }
 
-    const mapChildren = (node) => {
-        const entitiesMap = window.renderer.entitiesMap
-        node.onClick = (e) => setSelected(node.entity, e)
-        node.onHide = () => {
-            if (node.hidden)
-                setAllHidden(false)
-            node.children.forEach(c => {
-                const entity = entitiesMap[c.id]
-                if(entity)
-                    entity.active = c.hidden
-            })
 
-            dispatchEntities({
-                type: ENTITY_ACTIONS.UPDATE,
-                payload: {
-                    entityID: node.id,
-                    data: node.hidden,
-                    key: "active"
-                }
-            })
-            wasHidden.current = true
-        }
-        node.icon = <Icon  styles={{fontSize: "1rem"}}>{node.icon}</Icon>
-        if (node.children.length > 0)
-            node.children = node.children.map(n => mapChildren(n))
-        return node
-    }
 
     function updateHierarchy(){
-        worker.postMessage({entities, COMPONENTS, searchedEntity})
-        worker.onmessage = ({data: toFilter}) => {
-            setHierarchy([
-                {
-                    id: 0,
-                    label: "Scene",
-                    children: toFilter.map(e => mapChildren(e)),
-                    icon: <Icon styles={{fontSize: "1rem"}}>inventory_2</Icon>,
-                    type: "Scene",
-                    draggable: false,
-                    disabled: true,
-                    onHide: () => {
-                        let newEntities
-                        if (allHidden) {
-                            setAllHidden(false)
-                            newEntities = entities.map(e => {
-                                e.active = true
-                                return e
-                            })
-                        } else {
-                            setAllHidden(true)
-                            newEntities = entities.map(e => {
-                                e.active = false
-                                return e
-                            })
-                        }
-                        dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
-                    },
-                    canBeHidden: true,
-                    hidden: allHidden
-                }
-            ])
-        }
+        // worker.postMessage({entities, COMPONENTS, searchedEntity})
+        // worker.onmessage = ({data: toFilter}) => {
+        //     setHierarchy([
+        //         {
+        //             id: 0,
+        //             label: "Scene",
+        //             children: toFilter,
+        //             icon:"inventory_2",
+        //             type: "Scene",
+        //             draggable: false,
+        //             disabled: true,
+        //             onHide: () => {
+        //                 let newEntities
+        //                 if (allHidden) {
+        //                     setAllHidden(false)
+        //                     newEntities = entities.map(e => {
+        //                         e.active = true
+        //                         return e
+        //                     })
+        //                 } else {
+        //                     setAllHidden(true)
+        //                     newEntities = entities.map(e => {
+        //                         e.active = false
+        //                         return e
+        //                     })
+        //                 }
+        //                 dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: newEntities})
+        //             },
+        //             canBeHidden: true,
+        //             hidden: allHidden
+        //         }
+        //     ])
+        // }
     }
 
 
@@ -233,5 +206,5 @@ export default function useHierarchy(
     }, [entities])
 
 
-    return [hierarchy, treeOptions]
+    return [hierarchy, treeOptions, setSelected, setAllHidden]
 }
