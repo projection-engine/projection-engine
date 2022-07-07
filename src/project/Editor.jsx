@@ -22,19 +22,13 @@ import LayoutTabs from "./components/viewport/tabs/LayoutTabs"
 
 
 export default function Editor(props) {
-    const {id, meta, events,  settings, load} = props
-    const { serializer, engine } = useProjectWrapper(id,   settings, props.pushSettingsBlock, load)
+    const {id, meta, events, settings, load} = props
+    const {serializer, engine} = useProjectWrapper(id, settings, props.pushSettingsBlock, load)
 
     const contextMenuHook = useContextMenu()
     const utils = useEditorShortcuts({engine, settings, id, serializer})
     const options = useOptions(engine, serializer, settings)
     const filesHook = useFiles(engine)
-
-    const submitMaterialPackage = useCallback((registryID, pack, matInstance) => {
-        if(engine.initialized)
-            submitPackage(pack, false, undefined, false, registryID, matInstance)
-    }, [engine.initialized])
-
     const view = useMemo(() => {
         return settings.views[settings.currentView]
     }, [settings.views, settings.currentView])
@@ -43,17 +37,18 @@ export default function Editor(props) {
         copy[settings.currentView] = {...view, [key]: newView}
         settings.views = copy
     }
+
     return (
         <BlueprintProvider.Provider
             value={{
                 selectedEntity: engine.selectedEntity,
                 materials: engine.materials,
                 setMaterials: engine.setMaterials,
-                submitPackage: submitMaterialPackage
+                submitPackage
             }}
         >
             <EngineProvider.Provider value={[engine, utils]}>
-                <FilesProvider.Provider  value={filesHook}>
+                <FilesProvider.Provider value={filesHook}>
                     <ContextMenuProvider.Provider value={contextMenuHook}>
                         <SettingsProvider.Provider value={settings}>
                             <Frame
@@ -70,7 +65,13 @@ export default function Editor(props) {
                                 wrapperClassName={styles.context}
                                 triggers={contextMenuHook[0].triggers}
                                 className={styles.wrapper}
-                                content={(selected, close) => <ContextMenu options={contextMenuHook[0].options} engine={engine} close={close} selected={selected}/>}
+                                content={(selected, close) => (
+                                    <ContextMenu
+                                        options={contextMenuHook[0].options}
+                                        engine={engine} close={close}
+                                        selected={selected}
+                                    />
+                                )}
                             >
                                 <div className={styles.middle} id={props.id + "-editor-wrapper"}>
                                     <Views
@@ -116,7 +117,7 @@ export default function Editor(props) {
     )
 }
 
-Editor.propTypes={
+Editor.propTypes = {
     load: PropTypes.object,
     quickAccess: PropTypes.object,
     pushSettingsBlock: PropTypes.func,

@@ -8,12 +8,10 @@ export default function CameraGizmo(props){
     const {bind, initialized} = props
     let requested = false
     const ref = useRef()
-    const camera = useMemo(() => {
-        return !initialized ? null : window.renderer.camera
-    }, [initialized])
+
     function updateCameraRotation(){
         if(initialized) {
-            const t = camera.getNotTranslatedViewMatrix()
+            const t = window.renderer.camera.getNotTranslatedViewMatrix()
             ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
         }
     }
@@ -37,17 +35,17 @@ export default function CameraGizmo(props){
                     }
 
                     if (movementY < 0)
-                        camera.pitch += .01 * Math.abs(movementY)
+                        window.renderer.camera.pitch += .01 * Math.abs(movementY)
 
                     else if (movementY > 0)
-                        camera.pitch -= .01 * Math.abs(movementY)
+                        window.renderer.camera.pitch -= .01 * Math.abs(movementY)
 
                     if (movementX > 0)
-                        camera.yaw += .01 * Math.abs(movementX)
+                        window.renderer.camera.yaw += .01 * Math.abs(movementX)
                     else if (movementX < 0)
-                        camera.yaw -= .01 * Math.abs(movementX)
-             
-                    camera.updateViewMatrix()
+                        window.renderer.camera.yaw -= .01 * Math.abs(movementX)
+
+                    window.renderer.camera.updateViewMatrix()
                     updateCameraRotation()
                 }
             }}
@@ -123,6 +121,5 @@ export default function CameraGizmo(props){
 }
 
 CameraGizmo.propTypes={
-    bind: PropTypes.func,
-    initialized: PropTypes.bool
+    bind: PropTypes.func
 }

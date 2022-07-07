@@ -16,90 +16,90 @@ export default function Line(props) {
 
     return (
         <>
-            <AccordionTemplate type={'flex'} title={'Origin'}>
+            <AccordionTemplate type={"flex"} title={"Origin"}>
                 <Range
-                    metric={'m'}
-                    accentColor={'red'}
-                    label={'x'}
+                    metric={"m"}
+                    accentColor={"red"}
+                    label={"x"}
                     value={state.origin[0]}
                     precision={3}
                     incrementPercentage={.01}
 
                     onFinish={(v) => {
-                        props.submit('origin', [parseFloat(v), state.origin[1], state.origin[2]])
+                        props.submit("origin", [parseFloat(v), state.origin[1], state.origin[2]])
                     }}
                     handleChange={e => {
                         state.origin = [parseFloat(e), state.origin[1], state.origin[2]]
                     }}
                 />
                 <Range
-                    metric={'m'}
-                    accentColor={'#00ff00'}
-                    label={'y'}
+                    metric={"m"}
+                    accentColor={"#00ff00"}
+                    label={"y"}
                     precision={3}
                     incrementPercentage={.01}
                     value={state.origin[1]}
                     onFinish={(v) => {
-                        props.submit('origin', [state.origin[0], parseFloat(v), state.origin[2]])
+                        props.submit("origin", [state.origin[0], parseFloat(v), state.origin[2]])
                     }}
                     handleChange={e => {
                         state.origin = [state.origin[0], parseFloat(e), state.origin[2]]
                     }}
                 />
                 <Range
-                    metric={'m'}
-                    accentColor={'#0095ff'}
-                    label={'z'}
+                    metric={"m"}
+                    accentColor={"#0095ff"}
+                    label={"z"}
                     precision={3}
                     incrementPercentage={.01}
                     value={state.origin[2]}
                     onFinish={(v) => {
-                        props.submit('origin', [state.origin[0], state.origin[1], parseFloat(v)])
+                        props.submit("origin", [state.origin[0], state.origin[1], parseFloat(v)])
                     }}
                     handleChange={e => {
                         state.origin = [state.origin[0], state.origin[1], parseFloat(e)]
                     }}
                 />
             </AccordionTemplate>
-            <AccordionTemplate type={'flex'} title={'Destination'}>
+            <AccordionTemplate type={"flex"} title={"Destination"}>
                 <Range
-                    metric={'m'}
-                    accentColor={'red'}
-                    label={'x'}
+                    metric={"m"}
+                    accentColor={"red"}
+                    label={"x"}
                     value={state.destination[0]}
                     precision={3}
                     incrementPercentage={.01}
 
                     onFinish={(v) => {
-                        props.submit('destination', [parseFloat(v), state.destination[1], state.destination[2]])
+                        props.submit("destination", [parseFloat(v), state.destination[1], state.destination[2]])
                     }}
                     handleChange={e => {
                         state.destination = [parseFloat(e), state.destination[1], state.destination[2]]
                     }}
                 />
                 <Range
-                    metric={'m'}
-                    accentColor={'#00ff00'}
-                    label={'y'}
+                    metric={"m"}
+                    accentColor={"#00ff00"}
+                    label={"y"}
                     precision={3}
                     incrementPercentage={.01}
                     value={state.destination[1]}
                     onFinish={(v) => {
-                        props.submit('destination', [state.destination[0], parseFloat(v), state.destination[2]])
+                        props.submit("destination", [state.destination[0], parseFloat(v), state.destination[2]])
                     }}
                     handleChange={e => {
                         state.destination = [state.destination[0], parseFloat(e), state.destination[2]]
                     }}
                 />
                 <Range
-                    metric={'m'}
-                    accentColor={'#0095ff'}
-                    label={'z'}
+                    metric={"m"}
+                    accentColor={"#0095ff"}
+                    label={"z"}
                     precision={3}
                     incrementPercentage={.01}
                     value={state.destination[2]}
                     onFinish={(v) => {
-                        props.submit('destination', [state.destination[0], state.destination[1], parseFloat(v)])
+                        props.submit("destination", [state.destination[0], state.destination[1], parseFloat(v)])
                     }}
                     handleChange={e => {
                         state.destination = [state.destination[0], state.destination[1], parseFloat(e)]

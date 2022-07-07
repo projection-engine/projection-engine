@@ -4,17 +4,18 @@ import Entity from "../../../../engine/basic/Entity"
 import COMPONENTS from "../../../../engine/templates/COMPONENTS"
 import PointLightComponent from "../../../../engine/components/PointLightComponent"
 import TransformComponent from "../../../../engine/components/TransformComponent"
-import React from "react"
+import React, {useContext} from "react"
 import DirectionalLightComponent from "../../../../engine/components/DirectionalLightComponent"
 import CameraComponent from "../../../../engine/components/CameraComponent"
 import ProbeComponent from "../../../../engine/components/ProbeComponent"
 import PropTypes from "prop-types"
 import LineComponent from "../../../../engine/components/LineComponent"
+import {ENTITY_ACTIONS} from "../../../../engine-extension/entityReducer"
+import EngineProvider from "../../../../providers/EngineProvider"
 
-export default function Add(props) {
-    const {dispatchEntity, engine} = props
+export default function Add() {
+    const [engine] = useContext(EngineProvider)
     const createCM = (asDiffuse) => {
-
         const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
@@ -23,7 +24,7 @@ export default function Add(props) {
         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
-        dispatchEntity(actor)
+        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
     return (
         <Dropdown className={styles.dropdown}>
@@ -45,7 +46,7 @@ export default function Add(props) {
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
-                        dispatchEntity(actor)
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>
                 <DropdownOption option={{
@@ -56,7 +57,7 @@ export default function Add(props) {
                     onClick: () => {
                         const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new PointLightComponent()
-                        dispatchEntity(actor)
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>
                 <DropdownOption option={{
@@ -68,7 +69,7 @@ export default function Add(props) {
 
                         const actor = new Entity(undefined, "Directional light")
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent()
-                        dispatchEntity(actor)
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>
                 <div className={styles.dividerWrapper}>
@@ -107,7 +108,7 @@ export default function Add(props) {
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
 
-                        dispatchEntity(actor)
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>
                 <DropdownOption option={{
@@ -118,15 +119,10 @@ export default function Add(props) {
                         const actor = new Entity(undefined, "Line")
                         actor.components[COMPONENTS.LINE] = new LineComponent()
 
-                        dispatchEntity(actor)
+                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>
             </DropdownOptions>
         </Dropdown>
     )
-}
-
-Add.propTypes = {
-    dispatchEntity: PropTypes.func,
-    engine: PropTypes.object
 }

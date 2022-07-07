@@ -18,8 +18,7 @@ import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
 import FALLBACK_MATERIAL from "../../../../static/misc/FALLBACK_MATERIAL"
 
-export function  updateTransform(axis, data, key, engine, entityID) {
-    const entity = engine.entities.get(entityID)
+export function  updateTransform(axis, data, key, entity, dispatchEntities) {
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]
     component[key] = [
@@ -32,9 +31,10 @@ export function  updateTransform(axis, data, key, engine, entityID) {
         entity.components[COMPONENTS.POINT_LIGHT].changed = true
     if (entity.components[COMPONENTS.PROBE])
         alert.pushAlert("Reflection captures need to be rebuilt",  "alert")
-    engine.dispatchEntities({
-        type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-            entityID,
+    dispatchEntities({
+        type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+        payload: {
+            entityID: entity.id,
             key: COMPONENTS.TRANSFORM,
             data: component
         }
@@ -46,49 +46,46 @@ export default function useForm(
     currentTab
 ) {
     const [currentKey, setCurrentKey] = useState()
-    const selected = engine.selectedEntity
-
     const submit = (component, key, data) => {
-        const clone = cloneClass(selected.components[component])
+        const clone = cloneClass(engine.selectedEntity.components[component])
         clone[key] = data
         engine.dispatchEntities({
             type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                entityID: engine.selected[0],
+                entityID: engine.selectedEntity[0],
                 data: clone,
                 key: component
             }
         })
     }
     const getField = (key) => {
-        if (selected.components[key])
+        if (engine.selectedEntity.components[key])
             switch (key) {
             case COMPONENTS.LINE: {
                 return (
                     <Line
-                        selected={selected.components[COMPONENTS.LINE]}
-                        submit={(key, value) => selected.components[COMPONENTS.LINE][key] = value}
+                        selected={engine.selectedEntity.components[COMPONENTS.LINE]}
+                        submit={(key, value) => engine.selectedEntity.components[COMPONENTS.LINE][key] = value}
                     />
                 )
             }
-
             case COMPONENTS.CAMERA: {
                 return (
                     <Camera
-                        selected={selected.components[COMPONENTS.CAMERA]}
-                        submit={(key, value) => selected.components[COMPONENTS.CAMERA][key] = value}
+                        selected={engine.selectedEntity.components[COMPONENTS.CAMERA]}
+                        submit={(key, value) => engine.selectedEntity.components[COMPONENTS.CAMERA][key] = value}
                     />
                 )
             }
             case COMPONENTS.TRANSFORM: {
                 return (
                     <Transform
-                        entityID={selected.id}
+                        entityID={engine.selectedEntity.id}
                         engine={engine}
 
-                        selected={selected.components[COMPONENTS.TRANSFORM]}
-                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, selected.id)}
-                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, selected.id)}
-                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, selected.id)}
+                        selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
+                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", selected, engine.dispatchEntities)}
+                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", selected, engine.dispatchEntities)}
+                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", selected, engine.dispatchEntities)}
                     />
                 )
             }
@@ -100,30 +97,30 @@ export default function useForm(
 
                             // TODO - Load mesh if not loaded
                             if (!type)
-                                selected.components[COMPONENTS.MESH].meshID = mesh
+                                engine.selectedEntity.components[COMPONENTS.MESH].meshID = mesh
                             else
-                                selected.components[COMPONENTS.MESH].meshType = mesh
+                                engine.selectedEntity.components[COMPONENTS.MESH].meshType = mesh
                             engine.dispatchEntities({
                                 type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
                                     entityID: engine.selected[0],
-                                    data: selected.components[COMPONENTS.MESH],
+                                    data: engine.selectedEntity.components[COMPONENTS.MESH],
                                     key: COMPONENTS.MESH
                                 }
                             })
                         }}
                         engine={engine}
-                        selected={selected.components[COMPONENTS.MESH]}
+                        selected={engine.selectedEntity.components[COMPONENTS.MESH]}
                     />
                 )
             }
             case COMPONENTS.MATERIAL: {
                 return (
                     <Material
-                        entityID={selected.id}
+                        entityID={engine.selectedEntity.id}
                         engine={engine}
                         submitRadius={r => submit(COMPONENTS.MATERIAL, "radius", r)}
                         quickAccess={quickAccess}
-                        selected={selected.components[COMPONENTS.MATERIAL]}
+                        selected={engine.selectedEntity.components[COMPONENTS.MATERIAL]}
 
                         submit={async (val, key) => {
                             if (key) {
@@ -148,7 +145,7 @@ export default function useForm(
                                         })
                                     }
                                 }
-                                const clone = cloneClass(selected.components[COMPONENTS.MATERIAL])
+                                const clone = cloneClass(engine.selectedEntity.components[COMPONENTS.MATERIAL])
                                 if (val) {
                                     clone.materialID = val.id
                                     clone.uniforms = val.blob.uniforms
@@ -174,9 +171,9 @@ export default function useForm(
             case COMPONENTS.POINT_LIGHT: {
                 return (
                     <Lights
-                        entityID={selected.id}
+                        entityID={engine.selectedEntity.id}
                         type={key}
-                        selected={selected.components[key]}
+                        selected={engine.selectedEntity.components[key]}
                         submit={(data, k) => submit(key, k, data)}
                         quickAccess={quickAccess}
                         submitColor={(data) => submit(key, "color", data)}
@@ -187,7 +184,7 @@ export default function useForm(
             case COMPONENTS.PROBE: {
                 return (
                     <Probe
-                        selected={selected.components[key]}
+                        selected={engine.selectedEntity.components[key]}
                         submit={(data, key) => {
                             submit(COMPONENTS.PROBE, key, data)
                             window.renderer.refreshCubemaps()
@@ -204,10 +201,10 @@ export default function useForm(
 
 
     return useMemo(() => {
-        if ((parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && selected && !engine.executingAnimation && selected.components && !selected.components[COMPONENTS.FOLDER]) {
+        if ((parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation  && !engine.selectedEntity.components[COMPONENTS.FOLDER]) {
             if (!currentKey)
-                setCurrentKey(Object.keys(selected.components)[0])
-            const data = getField(Object.keys(selected.components)[currentTab])
+                setCurrentKey(Object.keys(engine.selectedEntity.components)[0])
+            const data = getField(Object.keys(engine.selectedEntity.components)[currentTab])
 
             return {
                 open: true,
@@ -218,13 +215,12 @@ export default function useForm(
                             :
                             <Scripts
                                 scripts={quickAccess.scripts}
-                                entity={selected}
+                                entity={engine.selectedEntity}
                             />
                         }
                     </div>
                 ),
-                name: selected.name,
-                selected: selected
+                name: engine.selectedEntity.name
             }
         } else if (engine.executingAnimation) {
             if (currentKey)
@@ -250,9 +246,13 @@ export default function useForm(
                         {currentTab === "-2" ? <Rendering/> : null}
                         {currentTab === "-3" ? <Editor/> : null}
                     </div>
-                ),
-                selected: selected
+                )
             }
 
-    }, [selected, currentKey, engine.executingAnimation, currentTab, engine.selected[0], engine.entities])
+    }, [
+        engine.selectedEntity,
+        currentKey,
+        engine.executingAnimation,
+        currentTab
+    ])
 }

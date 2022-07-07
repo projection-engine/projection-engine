@@ -61,7 +61,7 @@ export default function entityReducer(state, {type, payload}) {
             break
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
-            entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.length + 2)
+            entity.components[COMPONENTS.PICK] = new PickComponent(undefined, state.size + 2)
             state.set(entity.id, entity)
             break
         }
@@ -70,7 +70,7 @@ export default function entityReducer(state, {type, payload}) {
             if (Array.isArray(block)) {
                 for (let i = 0; i < block.length; i++) {
                     const e = block[i]
-                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
+                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.size + 2)
                     newState.set(e.id, e)
                 }
                 return newState
@@ -95,7 +95,7 @@ export default function entityReducer(state, {type, payload}) {
             if (Array.isArray(block))
                 for (let i = 0; i < block.length; i++) {
                     const e = block[i]
-                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.length + 2)
+                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.size + 2)
                     state.set(e.id, e)
                 }
             break

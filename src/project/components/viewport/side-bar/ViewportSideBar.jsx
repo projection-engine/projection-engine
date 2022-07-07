@@ -6,8 +6,8 @@ import {updateTransform} from "../../component/hooks/useForm"
 import VerticalTabs from "../../../../components/vertical-tab/VerticalTabs"
 import React, {useState} from "react"
 import PropTypes from "prop-types"
-import GizmoBar from "../wrapper/components/GizmoBar"
-import CameraBar from "../wrapper/components/CameraBar"
+import GizmoBar from "./components/GizmoBar"
+import CameraBar from "./components/CameraBar"
 
 export default function ViewportSideBar(props){
     const {engine} = props
@@ -20,13 +20,9 @@ export default function ViewportSideBar(props){
                 :
                 <>
                     <GizmoBar/>
-                    <CameraBar
-                        engine={engine}
-                        sideBarOpen={openSideBar}
-                    />
+                    <CameraBar sideBarOpen={openSideBar}/>
                 </>
             }
-
             <VerticalTabs
                 open={openSideBar}
                 setOpen={setOpenSideBar}
@@ -45,10 +41,12 @@ export default function ViewportSideBar(props){
                         disabled: !engine.selectedEntity,
                         content: engine.selectedEntity ? (
                             <Transform
-                                engine={engine} selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]} entityID={engine.selectedEntity.id}
-                                submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine, engine.selectedEntity.id)}
-                                submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine, engine.selectedEntity.id)}
-                                submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine, engine.selectedEntity.id)}
+                                engine={engine}
+                                selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
+                                entityID={engine.selectedEntity.id}
+                                submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine.selectedEntity, engine.dispatchEntities)}
+                                submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine.selectedEntity, engine.dispatchEntities)}
+                                submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine.selectedEntity, engine.dispatchEntities)}
                             />
                         ) : null
                     }

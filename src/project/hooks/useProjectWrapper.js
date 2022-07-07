@@ -13,11 +13,11 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
 
     const engine = useEngine(settings)
     const initialized = useRef(false)
-    const serializer = useSerializer(engine, settings, id)
+    const serializer = useSerializer(settings, id)
 
     useEffect(() => {
         load.pushEvent(EVENTS.PROJECT_DATA)
-        if (engine.initialized && !initialized.current) {
+        if (engine.viewportInitialized && !initialized.current) {
             initialized.current = true
             const listenID = v4()
             ipcRenderer.once(
@@ -51,7 +51,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
             ipcRenderer.on(CHANNELS.CLEAN_UP + "-" + listenID, () => window.fileSystem.refresh())
             ipcRenderer.send(CHANNELS.SEND, {projectPath: window.fileSystem.path, projectID: id, listenID})
         }
-    }, [engine.initialized])
+    }, [engine.viewportInitialized])
 
 
     return {

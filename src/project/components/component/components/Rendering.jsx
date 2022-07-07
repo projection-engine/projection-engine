@@ -4,7 +4,7 @@ import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../../components/hooks/useDirectState"
-import LabeledRange from "../../../../components/range/LabeledRange"
+import Range from "../../../../components/range/Range"
 
 export default function Rendering() {
     const settings = useContext(SettingsProvider)
@@ -39,7 +39,7 @@ export default function Rendering() {
     return (
         <>
             <AccordionTemplate title={"Resolution"}>
-                <LabeledRange
+                <Range
                     label={"X"}
                     variant={"embedded"}
                     onFinish={v => settings.resolution = [v, settings.resolution[1]]}
@@ -49,7 +49,7 @@ export default function Rendering() {
                     value={settings.resolution[0]}
                     minValue={1}
                 />
-                <LabeledRange
+                <Range
                     label={"Y"}
                     variant={"embedded"}
                     onFinish={v => settings.resolution = [settings.resolution[0], v]}
@@ -77,7 +77,7 @@ export default function Rendering() {
                     height={"25px"}
                     width={"100%"}
                 />
-                <LabeledRange
+                <Range
                     disabled={!settings.ssr}
                     label={"Steps"}
                     onFinish={v => settings.ssrMaxSteps = v}
@@ -88,7 +88,7 @@ export default function Rendering() {
                     handleChange={v => window.renderer.params.ssrMaxSteps = v}
                     value={state.ssrMaxSteps}
                 />
-                <LabeledRange
+                <Range
                     disabled={!settings.ssr}
                     label={"Step size"}
                     onFinish={v => settings.ssrStepSize = v}
@@ -111,7 +111,7 @@ export default function Rendering() {
                     height={"25px"}
                     width={"100%"}
                 />
-                <LabeledRange
+                <Range
                     disabled={!settings.ssgi}
                     label={"Steps"}
                     onFinish={v => settings.ssgiQuality = v}
@@ -123,7 +123,7 @@ export default function Rendering() {
                     value={state.ssgiQuality}
                 />
 
-                <LabeledRange
+                <Range
                     disabled={!settings.ssgi}
                     label={"Intensity"}
                     onFinish={v => {
@@ -141,7 +141,7 @@ export default function Rendering() {
                     value={state.ssgiBrightness}
                 />
 
-                <LabeledRange
+                <Range
                     disabled={!settings.ssgi}
                     label={"Step size"}
                     onFinish={v => {
@@ -160,7 +160,7 @@ export default function Rendering() {
             
             <AccordionTemplate title={"Shadows"}>
 
-                <LabeledRange
+                <Range
                     label={"Atlas resolution"}
                     accentColor={"red"}
                     onFinish={v => settings.shadowMapResolution = v}
@@ -171,7 +171,7 @@ export default function Rendering() {
                     value={state.shadowMapResolution}
                 />
                 <div className={styles.inline}>
-                    <LabeledRange
+                    <Range
                         label={"Lights"}
                         accentColor={"red"}
                         onFinish={v => settings.shadowAtlasQuantity = v}
@@ -182,7 +182,7 @@ export default function Rendering() {
                         value={state.shadowAtlasQuantity}
                     />
 
-                    <LabeledRange
+                    <Range
                         label={"Smoothing samples"}
                         accentColor={"green"}
                         onFinish={v => settings.pcfSamples = v}
@@ -205,7 +205,7 @@ export default function Rendering() {
                     height={"25px"}
                     width={"100%"}/>
                 <div className={styles.inline}>
-                    <LabeledRange
+                    <Range
                         disabled={!settings.ao}
                         label={"Strength"}
                         accentColor={"red"}
@@ -216,7 +216,7 @@ export default function Rendering() {
                         handleChange={v => state.total_strength = v}
                         value={state.total_strength}
                     />
-                    <LabeledRange
+                    <Range
                         disabled={!settings.ao}
                         label={"Base"}
                         accentColor={"green"}
@@ -230,7 +230,7 @@ export default function Rendering() {
                 </div>
 
                 <div className={styles.inline}>
-                    <LabeledRange
+                    <Range
                         disabled={!settings.ao}
                         label={"Area"}
                         accentColor={"red"}
@@ -241,7 +241,7 @@ export default function Rendering() {
                         handleChange={v => state.area = v}
                         value={state.area}
                     />
-                    <LabeledRange
+                    <Range
                         disabled={!settings.ao}
                         label={"Falloff"}
                         accentColor={"green"}
@@ -255,7 +255,7 @@ export default function Rendering() {
                 </div>
 
                 <div className={styles.inline}>
-                    <LabeledRange
+                    <Range
                         disabled={!settings.ao}
                         label={"Radius"}
                         accentColor={"red"}
@@ -267,7 +267,7 @@ export default function Rendering() {
                         value={state.radius}
                     />
 
-                    <LabeledRange
+                    <Range
                         label={"Samples"}
                         accentColor={"red"}
                         onFinish={v => settings.samples = v}

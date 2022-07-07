@@ -2,11 +2,12 @@ import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 
 import styles from "../styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
-import React, {useState} from "react"
-import LabeledRange from "../../../../../components/range/LabeledRange"
+import React, {useContext, useState} from "react"
+import Range from "../../../../../components/range/Range"
+import SettingsProvider from "../../../../providers/SettingsProvider"
 
-export default function Visible(props) {
-    const {settingsContext} = props
+export default function Visible() {
+    const settingsContext = useContext(SettingsProvider)
     const [iconSize, setIconSize] = useState(settingsContext.iconSize)
     const checkIcon = <Icon style={{fontSize: "1.2rem"}}>check</Icon>
     return (
@@ -49,7 +50,7 @@ export default function Visible(props) {
                 }}/>
 
                 <div className={styles.rangeWrapper}>
-                    <LabeledRange
+                    <Range
                         label={"Icon size"}
                         accentColor={"red"}
                         value={iconSize}
@@ -63,8 +64,4 @@ export default function Visible(props) {
             </DropdownOptions>
         </Dropdown>
     )
-}
-
-Visible.propTypes={
-    settingsContext: PropTypes.object
 }

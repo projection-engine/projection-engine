@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import LabeledRange from "../../../../../components/range/LabeledRange"
+import Range from "../../../../../components/range/Range"
 import useDirectState from "../../../../../components/hooks/useDirectState"
 import COMPONENTS from "../../../../engine/templates/COMPONENTS"
 import React, {useEffect} from "react"
@@ -18,7 +18,7 @@ export default function ViewportTab(props){
     return (
         <>
             <label className={styles.label}>3D cursor position</label>
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"red"}
                 variant={"embedded"}
@@ -32,7 +32,7 @@ export default function ViewportTab(props){
                     t.translation = [e, t.translation[1], t.translation[2]] 
                 }}
             />
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"#00ff00"}
                 label={"Y"}
@@ -46,7 +46,7 @@ export default function ViewportTab(props){
                     t.translation = [t.translation[0], e, t.translation[2]]
                 }}
             />
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"blue"}
                 label={"Z"}

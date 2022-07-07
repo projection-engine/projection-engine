@@ -43,11 +43,7 @@
 /* } */
 
 .dark {
-  --pj-accent-color-secondary-lighter: #ff6126;
-  --pj-accent-color-secondary-darker: #b43500;
-  --pj-accent-color-secondary: #ff4500;
-
-  --pj-accent-color-lighter: #2aa0ff;
+  --pj-accent-color-light: rgb(0 149 255 / 50%);
   --pj-accent-color-darker: #006cb9;
   --pj-accent-color: #0095ff;
   --pj-background-primary: #303030;

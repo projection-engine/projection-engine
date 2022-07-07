@@ -1,6 +1,7 @@
 import COMPONENTS from "../../../../engine/templates/COMPONENTS"
+import {ENTITY_ACTIONS} from "../../../../engine-extension/entityReducer"
 
-export default function getOptionsViewport(engine, selected, selectedRef, utils) {
+export default function getOptionsViewport(engine, utils) {
     const {
         group,
         copy,
@@ -13,7 +14,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Select all",
             onClick: () => {
-                engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
+                engine.setSelected(window.renderer.allEntities.filter(e => !e.isFolder).map(e => e.id))
             },
             shortcut: ["A"]
         },
@@ -23,7 +24,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
             shortcut: ["Alt", "A"]
         }
     ]
-    if(!selected)
+    if (!engine.selectedEntity)
         return base
     return [
         ...base,
@@ -43,7 +44,6 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Group entities",
             onClick: group,
-            disabled: engine.selected.length === 1,
             shortcut: ["Ctrl", "P"]
         },
         {divider: true},
@@ -58,7 +58,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Duplicate entities",
             onClick: () => {
-                engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: {entityID: selected}})
+
             },
             disabled: true
         },
@@ -66,7 +66,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Apply current transformation",
             onClick: () => {
-                const comp = selectedRef.components[COMPONENTS.TRANSFORM]
+                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.baseTransformationMatrix = comp.transformationMatrix
 
                 comp.translation = [0, 0, 0]
@@ -75,30 +75,31 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
 
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
+                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
                 })
             }
         },
         {
             label: "Center on 3D cursor",
             onClick: () => {
-                const comp = selectedRef.components[COMPONENTS.TRANSFORM]
+                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
+                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
                 })
             }
         },
         {
             label: "Origin to 3D cursor",
             onClick: () => {
-                const comp = selectedRef.components[COMPONENTS.TRANSFORM]
+                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.pivotPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: selected, data: comp, key: COMPONENTS.TRANSFORM}
+                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
                 })
+           
             }
         },
         {divider: true},
@@ -113,7 +114,7 @@ export default function getOptionsViewport(engine, selected, selectedRef, utils)
         {
             label: "Fixate active",
             onClick: () => {
-                engine.setLockedEntity(selected)
+                engine.setLockedEntity(engine.selectedEntity.id)
             },
             icon: "push_pin",
             shortcut: ["Ctrl", "F"]

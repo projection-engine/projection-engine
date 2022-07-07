@@ -1,11 +1,10 @@
 import PropTypes from "prop-types"
 import {Checkbox} from "@f-ui/core"
 import React, {useEffect, useState} from "react"
-import Range from "../../../../components/range/Range"
 import ColorPicker from "../../../../components/color/ColorPicker"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
-import LabeledRange from "../../../../components/range/LabeledRange"
+import Range from "../../../../components/range/Range"
 
 export default function Lights(props) {
     const getNewState = () => {
@@ -47,7 +46,7 @@ export default function Lights(props) {
             {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
                 <>
                     <AccordionTemplate title={"Direction"} >
-                        <LabeledRange
+                        <Range
                             variant={"embedded"}
                             label={"X"}
                             incrementPercentage={.01}
@@ -64,7 +63,7 @@ export default function Lights(props) {
                                 })
                             }}
                             handleChange={e => props.selected[dirKey] = [e, state.placement.y, state.placement.z]}/>
-                        <LabeledRange
+                        <Range
                             label={"Y"}
                             variant={"embedded"}
                             incrementPercentage={.01}
@@ -81,7 +80,7 @@ export default function Lights(props) {
                                 })
                             }}
                             handleChange={e => props.selected[dirKey] = [state.placement.x, e, state.placement.z]}/>
-                        <LabeledRange
+                        <Range
                             label={"Z"}
                             variant={"embedded"}
                             incrementPercentage={.01}
@@ -165,7 +164,7 @@ export default function Lights(props) {
             }
 
             <AccordionTemplate title={"View planes"} type={"grid"}>
-                <LabeledRange
+                <Range
                     accentColor={"red"}
                     value={state.zFar}
                     label={"Far"}
@@ -187,7 +186,7 @@ export default function Lights(props) {
                         })
                     }}
                 />
-                <LabeledRange
+                <Range
                     accentColor={"green"}
                     value={state.zNear}
                     label={"Near"}
@@ -221,7 +220,7 @@ export default function Lights(props) {
                         })
                         props.submit([r, g, b], "color")
                     }}/>
-                <LabeledRange
+                <Range
                     label={"Intensity"}
                     accentColor={"red"}
                     value={state.intensity}
@@ -250,7 +249,7 @@ export default function Lights(props) {
                         props.submit(!state.shadowMap, "shadowMap")
                     }}/>
                 {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
-                    <LabeledRange
+                    <Range
                         label={"Size"}
                         accentColor={"green"}
                         value={state.size}

@@ -1,7 +1,6 @@
 import useDirectState from "../../../../../components/hooks/useDirectState"
 import React, {useContext} from "react"
 import SettingsProvider from "../../../../providers/SettingsProvider"
-import LabeledRange from "../../../../../components/range/LabeledRange"
 import styles from "../../../component/styles/Forms.module.css"
 import Range from "../../../../../components/range/Range"
 
@@ -19,7 +18,7 @@ export default function CameraTab(){
         <>
 
             <label className={styles.label}>Clipping planes</label>
-            <LabeledRange
+            <Range
                 minLabelWidth={"30px"}
                 label={"Far"}
                 minValue={state.zNear + 1}
@@ -33,7 +32,7 @@ export default function CameraTab(){
                 value={state.zFar}
                 handleChange={v => state.zFar = v}
             />
-            <LabeledRange
+            <Range
                 minLabelWidth={"30px"}
                 label={"Near"}
                 variant={"embedded"}
@@ -50,7 +49,7 @@ export default function CameraTab(){
 
 
             <label className={styles.label}>Field of view</label>
-            <LabeledRange
+            <Range
                 minLabelWidth={"30px"}
                 label={"Fov"}
                 minValue={10}

@@ -26,17 +26,14 @@ export default function useFiles(engine) {
     useEffect(() => {
         refreshFiles().catch()
     }, [])
-    const removeEntity=useCallback((entities) => {
+    const removeEntity = useCallback(() => {
         engine.setSelected([])
-        engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities})
-        entities.forEach(entity => window.fileSystem.deleteEntity(entity))
+        engine.entities.forEach(entity => window.fileSystem.deleteEntity(entity.id))
+        engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: engine.entities})
     }, [engine.entities])
-
 
     return {
         removeEntity,
-        entities: engine.entities,
-
         refreshFiles,
         loading,
         path,

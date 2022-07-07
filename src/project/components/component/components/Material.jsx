@@ -2,12 +2,10 @@ import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Checkbox} from "@f-ui/core"
 import React, {useEffect, useRef} from "react"
-
 import Selector from "../../../../components/selector/Selector"
 import Range from "../../../../components/range/Range"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import ColorPicker from "../../../../components/color/ColorPicker"
-
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"

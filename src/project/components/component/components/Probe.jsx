@@ -3,7 +3,7 @@ import styles from "../styles/Forms.module.css"
 import {Checkbox, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useEffect} from "react"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
-import LabeledRange from "../../../../components/range/LabeledRange"
+import Range from "../../../../components/range/Range"
 import useDirectState from "../../../../components/hooks/useDirectState"
 
 
@@ -82,7 +82,7 @@ export default function Probe(props) {
                 </Dropdown>
             </AccordionTemplate>
             
-            <LabeledRange
+            <Range
                 label={"LOD"}
                 integer={true}
                 disabled={!state.specularProbe}
@@ -97,7 +97,7 @@ export default function Probe(props) {
             />
     
             <AccordionTemplate title={"Multiplier"}>
-                <LabeledRange
+                <Range
                     label={"R"}
                     variant={"embedded"}
                     minValue={0}
@@ -108,7 +108,7 @@ export default function Probe(props) {
                     handleChange={v => props.selected.multiplier[0] = v}
                     value={state.xR}
                 />
-                <LabeledRange
+                <Range
                     label={"G"}
                     variant={"embedded"}
                     minValue={0}
@@ -119,7 +119,7 @@ export default function Probe(props) {
                     handleChange={v => props.selected.multiplier[1] = v}
                     value={state.yR}
                 />
-                <LabeledRange
+                <Range
                     label={"B"}
                     variant={"embedded"}
                     minValue={0}

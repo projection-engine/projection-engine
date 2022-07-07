@@ -1,7 +1,5 @@
 import {useCallback, useEffect, useMemo, useReducer, useState} from "react"
-import entityReducer, {ENTITY_ACTIONS} from "./entityReducer"
-import useHistory from "../hooks/useHistory"
-import {HISTORY_ACTIONS} from "../hooks/historyReducer"
+import entityReducer from "./entityReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
@@ -28,9 +26,8 @@ export default function useEngine(settings) {
 
     const [entities, dispatchEntities] = useReducer(entityReducer, new Map())
     const [executingAnimation, setExecutingAnimation] = useState(false)
-    const [initialized, setInitialized] = useState(false)
-
-    const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
+    const [viewportInitialized, setViewportInitialized] = useState(false)
+    // const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
     const [levelScript, setLevelScript] = useState()
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
@@ -38,9 +35,10 @@ export default function useEngine(settings) {
     const [materials, setMaterials] = useState([])
     const [cursor, setCursor] = useState(getCursor())
     const [fallbackMaterial, setFallbackMaterial] = useState()
+
     useEffect(() => {
         WORKER.postMessage({
-            entities: entities,
+            entities,
             COMPONENTS,
             meshes: toObject(meshes, true),
             materials: toObject(materials, true)
@@ -67,22 +65,22 @@ export default function useEngine(settings) {
 
 
     const onGizmoStart = () => {
-        const e = entities.get(selected[0])
-        if (e) dispatchChanges({
-            type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE, payload: {
-                key: COMPONENTS.TRANSFORM, entityID: e.id, component: e.components[COMPONENTS.TRANSFORM]
-            }
-        })
+        // const e = entities.get(selected[0])
+        // if (e) dispatchChanges({
+        //     type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE, payload: {
+        //         key: COMPONENTS.TRANSFORM, entityID: e.id, component: e.components[COMPONENTS.TRANSFORM]
+        //     }
+        // })
     }
     const onGizmoEnd = () => {
-        const e = entities.get(selected[0])
-        if (e) dispatchEntities({
-            type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-            payload: {key: COMPONENTS.TRANSFORM, entityID: e.id, data: e.components[COMPONENTS.TRANSFORM]}
-        })
+        // const e = entities.get(selected[0])
+        // if (e) dispatchEntities({
+        //     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
+        //     payload: {key: COMPONENTS.TRANSFORM, entityID: e.id, data: e.components[COMPONENTS.TRANSFORM]}
+        // })
     }
     const update = useCallback(() => {
-        if (initialized) {
+        if (viewportInitialized) {
             let fMat = fallbackMaterial
             if (!fallbackMaterial) {
                 fMat = new MaterialInstance({
@@ -94,25 +92,26 @@ export default function useEngine(settings) {
                 })
                 setFallbackMaterial(fMat)
             }
+
+            window.renderer.camera.ortho = selected.ortho
+            window.renderer.camera.updateProjection()
+            window.renderer.entitiesMap = entities
+            window.renderer.meshes = meshes
+            window.renderer.materials = materials
             window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
+
             window.renderer.updatePackage(
                 executingAnimation,
                 cursor,
-                entities,
-                materials,
-                meshes,
-                {
-                    selected,
-                    setSelected, ...settings
-                },
+                {selected, setSelected, ...settings},
                 onGizmoStart,
                 onGizmoEnd,
                 levelScript,
                 fMat
             )
         }
-    }, [fallbackMaterial, initialized, executingAnimation, selected, materials, meshes, entities, settings])
+    }, [fallbackMaterial, viewportInitialized, executingAnimation, selected, materials, meshes, settings])
     useEffect(update, [update])
     const selectedEntity = useMemo(() => {
         if (lockedEntity)
@@ -127,13 +126,13 @@ export default function useEngine(settings) {
         setExecutingAnimation,
         cursor,
         setCursor,
-        initialized,
-        setInitialized,
+        viewportInitialized,
+        setViewportInitialized,
         update,
-        changes,
-        returnChanges,
-        forwardChanges,
-        dispatchChanges,
+
+        returnChanges: () => null,
+        forwardChanges: () => null,
+        dispatchChanges: () => null,
         lockedEntity,
 
         entities,

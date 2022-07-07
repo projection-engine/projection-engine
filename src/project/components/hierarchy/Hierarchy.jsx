@@ -26,7 +26,7 @@ function createFolder(dispatchEntities, dispatchChanges){
 }
 
 export default function Hierarchy(props){
-    const  [engine, utils] = useContext(EngineProvider)
+    const  [engine] = useContext(EngineProvider)
     const [searchedEntity, setSearchedEntity] = useState("")
 
     return (

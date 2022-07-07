@@ -61,7 +61,7 @@ export default class DevelopmentRenderer extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, cursor, entities, materials, meshes, params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
+    updatePackage(prodEnv, cursor,  params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
         this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraData.cameraEvents.startTracking()
@@ -95,9 +95,6 @@ export default class DevelopmentRenderer extends Renderer {
             selectedMap: this.arrayToObject(params.selected)
         }
         Packager({
-            entities,
-            materials,
-            meshes,
             params: p,
             onWrap: this.editorSystem,
             fallbackMaterial,

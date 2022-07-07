@@ -88,13 +88,11 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
             {label: "Scale", require: [KEYS.KeyS], callback: () => settings.gizmo = GIZMOS.SCALE},
             {label: "Rotate", require: [KEYS.KeyR], callback: () => settings.gizmo = GIZMOS.ROTATION},
             {
-                disabled: engine.changes.length === 0,
                 label: "Undo",
                 require: [KEYS.ControlLeft, KEYS.KeyZ],
                 callback: () => engine.returnChanges()
             },
             {
-                disabled: engine.changes.length === 0,
                 label: "Redo",
                 require: [KEYS.ControlLeft, KEYS.KeyY],
                 callback: () => engine.forwardChanges()

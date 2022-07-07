@@ -15,24 +15,23 @@ export default function Mesh(props) {
     }, [props.quickAccess.meshes, props.selected])
 
     return (
-        <>
-            <AccordionTemplate title={"Mesh instance"}>
-                <Selector
-                    selected={currentMesh}
-                    type={"mesh"}
-                    handleChange={(src) => {
-                        let data = props.engine.meshes.find(mesh => mesh.id === src.registryID)
-                        if (!data)
-                            handleDrop(src.registryID,   props.engine,  true)
-                                .then(() => {
-                                    props.submit(src.registryID)
-                                })
-                        else {
+        <> 
+            <Selector
+                selected={currentMesh}
+                type={"mesh"}
+                handleChange={(src) => {
+                    let data = props.engine.meshes.find(mesh => mesh.id === src.registryID)
+                    if (!data)
+                        handleDrop(src.registryID,   props.engine,  true)
+                            .then(() => {
+                                props.submit(src.registryID)
+                            })
+                    else {
 
-                            props.submit(src.registryID)
-                        }
-                    }}/>
-            </AccordionTemplate>
+                        props.submit(src.registryID)
+                    }
+                }}
+            />
             <Checkbox
                 noMargin={true}
                 label={"Static mesh"}

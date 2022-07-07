@@ -2,20 +2,12 @@ import shared from "../../options/styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React, {useContext, useEffect, useMemo} from "react"
-import {handleGrab} from "../hooks/transformCamera"
+import {handleGrab} from "../../wrapper/hooks/transformCamera"
 import SettingsProvider from "../../../../providers/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
 export default function CameraBar(props) {
     const  settingsContext = useContext(SettingsProvider)
-    const {engine} = props
-
-    useEffect(() => {
-        if(engine.initialized) {
-            window.renderer.camera.ortho = settingsContext.ortho
-            window.renderer.camera.updateProjection()
-        }
-    }, [engine.initialized, settingsContext.ortho])
     const cameraIcon = useMemo(() => {
         if (!settingsContext.ortho)
             return (
@@ -38,7 +30,7 @@ export default function CameraBar(props) {
     }
     return (
         <div className={shared.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
-            <CameraGizmo  bind={bind} initialized={engine.initialized}/>
+            <CameraGizmo  bind={bind}/>
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown
                     hideArrow={true}
@@ -131,6 +123,5 @@ export default function CameraBar(props) {
 
 }
 CameraBar.propTypes = {
-    sideBarOpen: PropTypes.bool,
-    engine: PropTypes.object
+    sideBarOpen: PropTypes.bool
 }

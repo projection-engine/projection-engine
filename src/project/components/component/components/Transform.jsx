@@ -4,7 +4,7 @@ import Transformation from "../../../engine/utils/Transformation"
 import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
-import LabeledRange from "../../../../components/range/LabeledRange"
+import Range from "../../../../components/range/Range"
 import styles from "../styles/Forms.module.css"
 
 export default function Transform(props) {
@@ -23,7 +23,6 @@ export default function Transform(props) {
             xR: euler[0] * 180 / Math.PI,
             yR: euler[1] * 180 / Math.PI,
             zR: euler[2] * 180 / Math.PI,
-
         }
     }
     useEffect(() => {
@@ -58,7 +57,7 @@ export default function Transform(props) {
     return (
         <>
             <label className={styles.label}>Translation</label>
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"red"}
                 variant={"embedded"}
@@ -76,7 +75,7 @@ export default function Transform(props) {
                     translate([parseFloat(e), state.yT, state.zT])
                 }}
             />
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"#00ff00"}
                 label={"Y"}
@@ -93,7 +92,7 @@ export default function Transform(props) {
                     translate([state.xT, parseFloat(e), state.zT])
                 }}
             />
-            <LabeledRange
+            <Range
                 metric={"m"}
                 accentColor={"blue"}
                 label={"Z"}
@@ -112,7 +111,7 @@ export default function Transform(props) {
             />
 
             <label className={styles.label} style={{marginTop: "4px"}}>Scaling</label>
-            <LabeledRange
+            <Range
                 disabled={props.selected.lockedScaling}
                 accentColor={"red"}
                 label={"X"}
@@ -133,7 +132,7 @@ export default function Transform(props) {
 
                 }}
             />
-            <LabeledRange
+            <Range
                 disabled={props.selected.lockedScaling}
                 accentColor={"#00ff00"}
                 label={"Y"}
@@ -152,7 +151,7 @@ export default function Transform(props) {
                     setState({...state, yS: e})
 
                 }}/>
-            <LabeledRange
+            <Range
                 disabled={props.selected.lockedScaling}
                 accentColor={"blue"}
                 label={"Z"}
@@ -174,7 +173,7 @@ export default function Transform(props) {
             />
 
             <label className={styles.label} style={{marginTop: "4px"}}>Rotation</label>
-            <LabeledRange
+            <Range
                 disabled={props.selected.lockedRotation}
                 accentColor={"red"}
                 label={"X"}
@@ -190,7 +189,7 @@ export default function Transform(props) {
                     props.selected.rotation = [parseFloat(e) * Math.PI / 180, props.selected.rotation[1], props.selected.rotation[2]]
                     setState({...state, xR: parseFloat(e)})
                 }}/>
-            <LabeledRange
+            <Range
                 disabled={props.selected.lockedRotation}
                 metric={"angle"}
                 accentColor={"#00ff00"}
@@ -206,7 +205,7 @@ export default function Transform(props) {
                     props.selected.rotation = [props.selected.rotation[0], parseFloat(e) * Math.PI / 180, props.selected.rotation[2]]
                     setState({...state, yR: parseFloat(e)})
                 }}/>
-            <LabeledRange
+            <Range
                 accentColor={"blue"}
                 disabled={props.selected.lockedRotation}
                 metric={"angle"}

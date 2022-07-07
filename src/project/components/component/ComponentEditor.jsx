@@ -15,8 +15,8 @@ export default function ComponentEditor(props) {
     const [currentTab, setCurrentTab] = useState("-2")
     const currentForm = useForm(engine, quickAccess, currentTab)
     const tabs = useMemo(() => {
-        if (currentForm.selected) {
-            const components = Object.keys(currentForm.selected.components)
+        if (engine.selectedEntity) {
+            const components = Object.keys(engine.selectedEntity.components)
             if (components[currentTab] === undefined && currentTab > 0) {
                 setCurrentTab(components.length - 1)
                 return []
@@ -24,7 +24,7 @@ export default function ComponentEditor(props) {
             return components.map(c => getComponentInfo(c)).filter(c => Object.keys(c).length > 0)
         }
         return []
-    }, [currentForm.selected, currentTab])
+    }, [engine.selected, currentTab])
 
     return (
         <>
@@ -47,7 +47,7 @@ export default function ComponentEditor(props) {
                 <div className={styles.content}>
                     <FormTabs
                         tabs={tabs}
-                        entity={currentForm.selected}
+                        entity={engine.selectedEntity}
                         currentTab={currentTab}
                         setCurrentTab={setCurrentTab}
                     />
