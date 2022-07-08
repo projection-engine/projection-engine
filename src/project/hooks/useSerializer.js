@@ -39,8 +39,10 @@ export default function useSerializer( settings, id) {
             try {
                 for(let i = 0; i < entities.length; i++){
                     const entity = entities[i]
-                    const str = JSON.stringify(entity)
-                    await window.fileSystem.updateEntity(str, entity.id)
+                    const parsedData = JSON.parse(JSON.stringify(entity))
+                    delete parsedData.children
+                    parsedData.parent = parsedData.parent?.id
+                    await window.fileSystem.updateEntity(JSON.stringify(parsedData), entity.id)
                 }
             } catch (err) {
                 console.error(err)

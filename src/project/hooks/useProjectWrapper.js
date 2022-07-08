@@ -25,10 +25,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                 async (ev, res) => {
 
                     if (res.settings && res.settings.data)
-                        pushSettingsBlock({
-                            ...res.settings.data,
-                            name: res.meta?.data?.name
-                        })
+                        pushSettingsBlock(res.settings.data)
                     try{
                         const entities = await Promise.all(res.entities.map(e => e ? ProjectLoader.mapEntity(e.data) : undefined).filter(e => e))
                         engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})

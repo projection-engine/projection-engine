@@ -10,7 +10,7 @@ export default function FormTabs(props) {
         if (props.entity)
             return Object.keys(props.entity.components)[props.currentTab]
         return undefined
-    }, [props.currentTab, props.entity?.id])
+    }, [props.currentTab, props.entity])
     const initialized = useRef(false)
     useEffect(() => {
         if (!props.entity) {

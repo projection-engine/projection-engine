@@ -18,6 +18,7 @@ import ENVIRONMENT from "../engine/templates/ENVIRONMENT"
 export default class DevelopmentRenderer extends Renderer {
     gizmo
     cameraData = {}
+    cursor
 
     constructor( resolution) {
         super( resolution )
@@ -61,7 +62,7 @@ export default class DevelopmentRenderer extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, cursor,  params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
+    updatePackage(prodEnv, params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
         this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraData.cameraEvents.startTracking()
@@ -85,21 +86,20 @@ export default class DevelopmentRenderer extends Renderer {
 
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
 
-        const p = {
-            ...params,
-            onGizmoStart,
-            onGizmoEnd,
-            camera: prodEnv ? this.rootCamera : this.camera,
-            gizmo: this.gizmo,
-            cursor,
-            selectedMap: this.arrayToObject(params.selected)
-        }
         Packager({
-            params: p,
+            params: {
+                ...params,
+                onGizmoStart,
+                onGizmoEnd,
+                camera: prodEnv ? this.rootCamera : this.camera,
+                gizmo: this.gizmo,
+                selectedMap: this.arrayToObject(params.selected),
+                cursor: this.cursor
+            },
             onWrap: this.editorSystem,
             fallbackMaterial,
             levelScript,
-        }, this)
+        })
     }
     arrayToObject(arr){
         const obj = {}

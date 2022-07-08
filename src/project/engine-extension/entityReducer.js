@@ -1,5 +1,6 @@
 import PickComponent from "../engine/components/PickComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
+import {v4} from "uuid"
 
 export const ENTITY_ACTIONS = {
     ADD: 0,
@@ -16,7 +17,8 @@ export const ENTITY_ACTIONS = {
 }
 
 
-export default function entityReducer(state, {type, payload}) {
+export default function entityReducer({type, payload}, state, setChangeID) {
+    setChangeID(v4())
     if (payload?.entityID > -1) {
         const entity = state.get(payload.entityID)
         switch (type) {
@@ -65,18 +67,6 @@ export default function entityReducer(state, {type, payload}) {
             state.set(entity.id, entity)
             break
         }
-        case ENTITY_ACTIONS.DISPATCH_BLOCK: {
-            const block = payload, newState = new Map()
-            if (Array.isArray(block)) {
-                for (let i = 0; i < block.length; i++) {
-                    const e = block[i]
-                    e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.size + 2)
-                    newState.set(e.id, e)
-                }
-                return newState
-            }
-            break
-        }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             const block = payload
             if (Array.isArray(block)) {
@@ -90,6 +80,7 @@ export default function entityReducer(state, {type, payload}) {
             }
             break
         }
+        case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
             const block = payload
             if (Array.isArray(block))
@@ -98,10 +89,21 @@ export default function entityReducer(state, {type, payload}) {
                     e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.size + 2)
                     state.set(e.id, e)
                 }
+            for (let i = 0; i < block.length; i++) {
+                const entity = block[i]
+                if(typeof entity.parent === "string") {
+                    const parent = state.get(entity.parent)
+                    if(parent) {
+                        entity.parent = parent
+                        parent.children.push(entity)
+                    }
+                }
+            }
+
+            console.log(state)
             break
         }
         default:
             break
         }
-    return state
 }

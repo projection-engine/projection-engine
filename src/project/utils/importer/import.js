@@ -51,7 +51,7 @@ export default async function importData(event, engine, asID) {
                 .map(m => m.entity)
                 .filter(m => m !== undefined)
 
-            const cursorPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+            const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
             toLoad.forEach(e => {
                 if (e.isMesh) {
                     const transform = e.components[COMPONENTS.TRANSFORM]

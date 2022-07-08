@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useReducer, useState} from "react"
+import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from "react"
 import entityReducer from "./entityReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
@@ -8,6 +8,7 @@ import toObject from "../engine/utils/toObject"
 import MaterialInstance from "../engine/instances/MaterialInstance"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
+import {v4} from "uuid"
 
 
 function getCursor() {
@@ -23,8 +24,7 @@ function getCursor() {
 
 const WORKER = new Worker(new URL("./cleanupWorker.js", import.meta.url))
 export default function useEngine(settings) {
-
-    const [entities, dispatchEntities] = useReducer(entityReducer, new Map())
+    const entities = useRef(new Map())
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const [viewportInitialized, setViewportInitialized] = useState(false)
     // const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
@@ -33,12 +33,12 @@ export default function useEngine(settings) {
     const [lockedEntity, setLockedEntity] = useState()
     const [meshes, setMeshes] = useState([])
     const [materials, setMaterials] = useState([])
-    const [cursor, setCursor] = useState(getCursor())
     const [fallbackMaterial, setFallbackMaterial] = useState()
+    const [entitiesChangeID, setChangeID] = useState(v4())
 
     useEffect(() => {
         WORKER.postMessage({
-            entities,
+            entities: entities.current,
             COMPONENTS,
             meshes: toObject(meshes, true),
             materials: toObject(materials, true)
@@ -61,7 +61,7 @@ export default function useEngine(settings) {
                 return filtered
             })
         }
-    }, [entities])
+    }, [entitiesChangeID])
 
 
     const onGizmoStart = () => {
@@ -95,15 +95,16 @@ export default function useEngine(settings) {
 
             window.renderer.camera.ortho = selected.ortho
             window.renderer.camera.updateProjection()
-            window.renderer.entitiesMap = entities
+            window.renderer.entitiesMap = entities.current
             window.renderer.meshes = meshes
             window.renderer.materials = materials
             window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
+            if(!window.renderer.cursor)
+                window.renderer.cursor = getCursor()
 
             window.renderer.updatePackage(
                 executingAnimation,
-                cursor,
                 {selected, setSelected, ...settings},
                 onGizmoStart,
                 onGizmoEnd,
@@ -111,43 +112,45 @@ export default function useEngine(settings) {
                 fMat
             )
         }
-    }, [fallbackMaterial, viewportInitialized, executingAnimation, selected, materials, meshes, settings])
+    }, [
+        fallbackMaterial, viewportInitialized,
+        executingAnimation,
+        selected, materials, meshes,
+        settings, entitiesChangeID
+    ])
+
     useEffect(update, [update])
+
     const selectedEntity = useMemo(() => {
-        if (lockedEntity)
-            return entities.get(lockedEntity)
-        return entities.get(selected[0])
-    }, [selected, entities, lockedEntity])
+        if (selected[0])
+            return entities.current.get(selected[0])
+        return entities.current.get(lockedEntity)
+    }, [selected, entitiesChangeID, lockedEntity])
 
 
     return {
         selectedEntity,
         executingAnimation,
         setExecutingAnimation,
-        cursor,
-        setCursor,
         viewportInitialized,
         setViewportInitialized,
         update,
-
         returnChanges: () => null,
         forwardChanges: () => null,
         dispatchChanges: () => null,
         lockedEntity,
-
-        entities,
-        entitiesMap: entities,
+        entitiesChangeID,
         meshes,
         materials,
         selected,
-
-        dispatchEntities,
         setMaterials,
         setMeshes,
         setLockedEntity,
         setSelected,
-        levelScript,
-        setLevelScript
+        setLevelScript,
+
+        dispatchEntities: packageData => entityReducer(packageData, entities.current, setChangeID),
+
     }
 }
 

@@ -92,7 +92,7 @@ export default function Viewport(props) {
             event.currentTarget.started = undefined
     }
     function updateCursor(coords){
-        const t = props.engine.cursor.components[COMPONENTS.TRANSFORM]
+        const t = renderer.cursor.components[COMPONENTS.TRANSFORM]
         t.translation = coords
         t.transformationMatrix = Transformation.transform(t.translation, [0,0,0,1], t.scaling)
     }
@@ -126,7 +126,7 @@ export default function Viewport(props) {
                     e.currentTarget.started = performance.now()
                     e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
                     if(e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget){
-                        latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, props.engine.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
+                        latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
                         updateCursor(latestTranslation)
                         document.addEventListener("mousemove", handleMouse)
                         document.addEventListener("mouseup", handleMouse, {once: true})

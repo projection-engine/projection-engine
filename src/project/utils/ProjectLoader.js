@@ -22,7 +22,7 @@ export default class ProjectLoader {
 
     static async getEntities() {
         const entities = await window.fileSystem.fromDirectory(window.fileSystem.path + FileSystem.sep + "logic", ".entity")
-        return await Promise.all(entities.map(e =>window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep +  "logic" +  FileSystem.sep + e, "json", true)))
+        return await Promise.all(entities.map(e => window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + e, "json", true)))
     }
 
     static async readFromRegistry(fileID) {
@@ -31,7 +31,7 @@ export default class ProjectLoader {
                 .then(lookUpTable => {
 
                     if (lookUpTable) {
-                        window.fileSystem.readFile(window.fileSystem.path +  FileSystem.sep + "assets" + FileSystem.sep +  lookUpTable.path)
+                        window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + lookUpTable.path)
                             .then(fileData => {
                                 if (fileData) resolve(fileData)
                                 else resolve(null)
@@ -40,7 +40,7 @@ export default class ProjectLoader {
                 }).catch(() => resolve(null))
         })
     }
- 
+
     static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, id) {
         let newMat
         await new Promise(resolve => {
@@ -48,7 +48,7 @@ export default class ProjectLoader {
                 vertex: vertexShader,
                 fragment: shader,
                 cubeMapShaderCode: cubeMapShader?.code,
-                onCompiled:  () => resolve(),
+                onCompiled: () => resolve(),
                 settings,
                 uniformData,
                 id
@@ -60,23 +60,23 @@ export default class ProjectLoader {
 
     static async mapEntity(entity) {
         const parsedEntity = new Entity(entity.id, entity.name, entity.active)
-        Object.keys(entity).forEach(k => {
-            if(k !== "components")
-                parsedEntity[k] = entity[k]
-        })
+        Object.keys(entity)
+            .forEach(k => {
+                if (k !== "components")
+                    parsedEntity[k] = entity[k]
+            })
 
         for (const k in entity.components) {
             if (typeof ENTITIES[k] === "function") {
                 let component = await ENTITIES[k](entity, k)
                 if (component) {
-
                     if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
                         if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
                     })
                     parsedEntity.components[k] = component
                 }
 
-                if(k === COMPONENTS.DIRECTIONAL_LIGHT)
+                if (k === COMPONENTS.DIRECTIONAL_LIGHT)
                     component.update()
             }
         }
@@ -96,10 +96,10 @@ const ENTITIES = {
         const toLoad = [],
             toLoop = entity.components[k].uniforms ? entity.components[k].uniforms : []
 
-        for(let index= 0; index < toLoop.length; index++){
+        for (let index = 0; index < toLoop.length; index++) {
             const u = toLoad[index]
-            if(u){
-                if (u.type === DATA_TYPES.TEXTURE && u.modified){
+            if (u) {
+                if (u.type === DATA_TYPES.TEXTURE && u.modified) {
                     const fileData = await ProjectLoader.readFromRegistry(u.value)
                     if (fileData) {
                         let texture
@@ -120,11 +120,9 @@ const ENTITIES = {
                             )
                         })
                         toLoad.push({key: u.key, value: texture.texture, changed: true})
-                    }
-                    else
+                    } else
                         toLoad.push(u)
-                }
-                else
+                } else
                     toLoad.push(u)
             }
         }

@@ -20,7 +20,7 @@ export default function Add() {
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+        actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
@@ -42,7 +42,7 @@ export default function Add() {
                         const actor = new Entity(undefined, "Point light")
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                        actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
@@ -102,7 +102,7 @@ export default function Add() {
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
                         actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                        actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
                         actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
                         actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true

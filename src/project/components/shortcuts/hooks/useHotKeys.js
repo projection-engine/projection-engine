@@ -1,5 +1,4 @@
 import {useContext, useEffect, useRef} from "react"
-import HotKeysProvider from "./HotKeysProvider"
 import KEYS from "../../../engine/templates/KEYS"
 
 export default function useHotKeys({
@@ -10,7 +9,6 @@ export default function useHotKeys({
     disabled
 }) {
     let clicked = {}
-    const shortcuts = useContext(HotKeysProvider)
     const focused = useRef(false)
     let mousedown = false
     function handler(e){
@@ -31,17 +29,19 @@ export default function useHotKeys({
             if(!mousedown) {
                 focused.current = true
 
-                if (shortcuts.window?.reference !== e.target)
-                    shortcuts.window = {
+                if (window.shortcuts.window?.reference !== e.target) {
+                    window.shortcuts.window = {
                         reference: e.target,
                         label: focusTargetLabel,
                         icon: focusTargetIcon
                     }
+                    window.shortcuts.updateShortcuts()
+                }
                 clicked = {}
             }
             break
         default:
-            if ((focused.current  || shortcuts.window?.reference === e.target) && document.activeElement === document.body) {
+            if ((focused.current  || window.shortcuts.window?.reference === e.target) && document.activeElement === document.body) {
                 const l = actions.length
                 if (e.type === "keydown") {
                     if(e.ctrlKey) {
@@ -63,7 +63,8 @@ export default function useHotKeys({
                 } else
                     delete clicked[e.code]
 
-                shortcuts.active = clicked
+                window.shortcuts.active = clicked
+                window.shortcuts.updateShortcuts()
             }
             break
         }
@@ -72,8 +73,10 @@ export default function useHotKeys({
     useEffect(() => {
         const target =  typeof focusTarget === "object" ? focusTarget : document.getElementById(focusTarget)
         if (!disabled && target) {
-            if(focused.current)
-                shortcuts.all = actions
+            if(focused.current) {
+                window.shortcuts.all = actions
+                window.shortcuts.updateShortcuts()
+            }
             target?.addEventListener("mouseenter", handler)
             target?.addEventListener("mouseleave", handler)
 
@@ -91,6 +94,6 @@ export default function useHotKeys({
             document.removeEventListener("keyup", handler)
             document.removeEventListener("keydown", handler)
         }
-    }, [actions, disabled, shortcuts.window])
+    }, [actions, disabled])
 }
 

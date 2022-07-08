@@ -83,7 +83,7 @@ export default function getOptionsViewport(engine, utils) {
             label: "Center on 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
-                comp.translation = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                comp.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                     payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
@@ -94,7 +94,7 @@ export default function getOptionsViewport(engine, utils) {
             label: "Origin to 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
-                comp.pivotPoint = engine.cursor.components[COMPONENTS.TRANSFORM].translation
+                comp.pivotPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
                 engine.dispatchEntities({
                     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
                     payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}

@@ -12,6 +12,7 @@ import EntityProvider from "../../../components/tree/EntityProvider"
 import Entity from "../../engine/basic/Entity"
 import FolderComponent from "../../engine/components/FolderComponent"
 import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
+import HierarchyProvider from "../../providers/HierarchyProvider"
 
 function createFolder(dispatchEntities, dispatchChanges){
     const newEntity = new Entity()
@@ -26,24 +27,27 @@ function createFolder(dispatchEntities, dispatchChanges){
 }
 
 export default function Hierarchy(props){
-    const  [engine] = useContext(EngineProvider)
+    const {worker, setSelected, lockedEntity, setLockedEntity, selected, entitiesChangeID} = useContext(HierarchyProvider)
     const [searchedEntity, setSearchedEntity] = useState("")
 
     return (
-        <EntityProvider.Provider value={{
-            selected: engine.selected,
-            entities: engine.entities,
-            setSelected: (entity, ctrlKey) => {
-                if(ctrlKey ) {
-                    if (!engine.selected.includes(entity))
-                        engine.setSelected([...engine.selected, entity])
+        <EntityProvider.Provider 
+            value={{
+                lockedEntity,
+                setLockedEntity,
+                selected,
+                setSelected: (entity, ctrlKey) => {
+                    if(ctrlKey ) {
+                        if (!selected.includes(entity))
+                            setSelected([...selected, entity])
+                        else
+                            setSelected(selected.filter(e => e !== entity))
+                    }
                     else
-                        engine.setSelected(engine.selected.filter(e => e !== entity))
+                        setSelected([entity])
                 }
-                else
-                    engine.setSelected([entity])
-            }
-        }}>
+            }}
+        >
             <Header {...props} title={"Hierarchy"} icon={"account_tree"}>
                 <Search
                     width={"100%"}
@@ -54,10 +58,7 @@ export default function Hierarchy(props){
                     <Icon styles={{fontSize: "1rem"}}>create_new_folder</Icon>
                 </Button>
             </Header>
-            {props.hidden ?
-                null :
-                <Tree entities={engine.entities}/>
-            }
+            {props.hidden ? null : <Tree entitiesChangeID={entitiesChangeID}/>}
         </EntityProvider.Provider>
     )
 }

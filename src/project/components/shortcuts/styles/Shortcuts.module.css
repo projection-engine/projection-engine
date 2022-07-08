@@ -9,7 +9,7 @@
   padding: 0 2px;
 }
 
-.item {
+.wrapper > *[data-item="-"], .wrapper > *[data-action="-"] > *[data-item="-"] {
   padding: 2px 8px;
   background: var(--pj-background-primary);
   border-radius: 3px;
@@ -18,13 +18,13 @@
   font-size: 0.7rem;
 }
 
-.itemWrapper {
+.wrapper > *[data-action="-"] {
   font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 2px;
 }
 
-.itemWrapper > * {
+.wrapper > *[data-action="-"] > * {
   white-space: nowrap;
 }

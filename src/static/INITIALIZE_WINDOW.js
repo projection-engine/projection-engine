@@ -1,6 +1,11 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
+import * as DOM from "react-dom/client"
+import SHORTCUTS_ID from "./misc/SHORTCUTS_ID"
+import React from "react"
+import {Icon} from "@f-ui/core"
+import KEYS from "../project/engine/templates/KEYS"
 
-export default function insertMethods(fileSystem, pushEvent){
+export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     // ALERT / FS
     alert.pushEvent = pushEvent
     window.fileSystem = fileSystem
@@ -11,6 +16,42 @@ export default function insertMethods(fileSystem, pushEvent){
     Math.vec4 = vec4
     Math.vec3 = vec3
     Math.quat = quat
+
+    // SHORTCUTS
+    const shortcutsRoot = DOM.createRoot(document.getElementById(SHORTCUTS_ID))
+    window.shortcuts = {all: [], active: {}}
+    window.shortcuts.updateShortcuts = () => {
+        const clickedLen = Object.keys(window.shortcuts.active).length
+        const actions = window.shortcuts.all.filter(a => (a.require.length === 1 && clickedLen === 0) || a.require.find(e => window.shortcuts.active[e] === true) !== undefined)
+        shortcutsRoot.render(
+            <>
+                {window.shortcuts.window ?
+                    <div data-item={"-"} data-action={"-"}>
+                        <Icon styles={{fontSize: "1rem"}}>{window.shortcuts.window.icon}</Icon>
+                        <label>{window.shortcuts.window.label}</label>
+                    </div>
+                    :
+                    <div data-item={"-"}>
+						Nothing focused
+                    </div>}
+
+                {actions.map((a, i) => (
+                    <div 
+                        data-action={"-"} 
+					 	key={"short-cut-" + a.label + "-" + i}
+					 	style={{display: a.disabled ? "none" : undefined}}
+                    >
+                        <div data-item={"-"}>
+                            {a.require.map((e, i) => KEYS[e] + (i < a.require.length - 1 ? " + " : ""))}
+                        </div>
+                        <div>
+                            {a.label}
+                        </div>
+                    </div>
+                ))}
+            </>
+        )
+    }
 
     // CONSOLE
     const oldLog = console.log

@@ -34,7 +34,7 @@ export default function ViewportSideBar(props){
                     },
                     {
                         label: "Viewport",
-                        content: <ViewportTab engine={engine}/>
+                        content: <ViewportTab/>
                     },
                     {
                         label: "Active entity",

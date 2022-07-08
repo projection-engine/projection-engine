@@ -19,6 +19,7 @@ import FilesProvider from "./providers/FilesProvider"
 import EngineProvider from "./providers/EngineProvider"
 import BlueprintProvider from "./providers/BlueprintProvider"
 import LayoutTabs from "./components/viewport/tabs/LayoutTabs"
+import HierarchyProvider from "./providers/HierarchyProvider"
 
 
 export default function Editor(props) {
@@ -47,72 +48,81 @@ export default function Editor(props) {
                 submitPackage
             }}
         >
-            <EngineProvider.Provider value={[engine, utils]}>
-                <FilesProvider.Provider value={filesHook}>
-                    <ContextMenuProvider.Provider value={contextMenuHook}>
-                        <SettingsProvider.Provider value={settings}>
-                            <Frame
-                                logoAction={true}
-                                options={options}
-                                hasLogo={true}
-                                pageInfo={events}
-                                label={meta?.name}
-                            />
-                            <ContextWrapper
-                                attributes={{
-                                    id: "context-menu-element"
-                                }}
-                                wrapperClassName={styles.context}
-                                triggers={contextMenuHook[0].triggers}
-                                className={styles.wrapper}
-                                content={(selected, close) => (
-                                    <ContextMenu
-                                        options={contextMenuHook[0].options}
-                                        engine={engine} close={close}
-                                        selected={selected}
-                                    />
-                                )}
-                            >
-                                <div className={styles.middle} id={props.id + "-editor-wrapper"}>
-                                    <Views
-                                        setTabs={(tabs) => updateView("left", tabs)}
-                                        tabs={view.left}
-                                        orientation={"vertical"}
-                                        leftOffset={"10px"}
-                                        resizePosition={"bottom"}
-                                    />
-                                    <div className={styles.viewportWrapper}>
-                                        <LayoutTabs/>
-                                        <Viewport
-                                            utils={utils}
-                                            id={id}
-                                            executingAnimation={engine.executingAnimation}
+            <HierarchyProvider.Provider value={{
+                // worker,
+                setSelected: engine.setSelected,
+                lockedEntity: engine.lockedEntity,
+                setLockedEntity: engine.setLockedEntity,
+                selected: engine.selected,
+                entitiesChangeID: engine.entitiesChangeID
+            }}>
+                <EngineProvider.Provider value={[engine, utils]}>
+                    <FilesProvider.Provider value={filesHook}>
+                        <ContextMenuProvider.Provider value={contextMenuHook}>
+                            <SettingsProvider.Provider value={settings}>
+                                <Frame
+                                    logoAction={true}
+                                    options={options}
+                                    hasLogo={true}
+                                    pageInfo={events}
+                                    label={meta?.name}
+                                />
+                                <ContextWrapper
+                                    attributes={{
+                                        id: "context-menu-element"
+                                    }}
+                                    wrapperClassName={styles.context}
+                                    triggers={contextMenuHook[0].triggers}
+                                    className={styles.wrapper}
+                                    content={(selected, close) => (
+                                        <ContextMenu
+                                            options={contextMenuHook[0].options}
+                                            engine={engine} close={close}
+                                            selected={selected}
+                                        />
+                                    )}
+                                >
+                                    <div className={styles.middle} id={props.id + "-editor-wrapper"}>
+                                        <Views
+                                            setTabs={(tabs) => updateView("left", tabs)}
+                                            tabs={view.left}
+                                            orientation={"vertical"}
+                                            leftOffset={"10px"}
+                                            resizePosition={"bottom"}
+                                        />
+                                        <div className={styles.viewportWrapper}>
+                                            <LayoutTabs/>
+                                            <Viewport
+                                                utils={utils}
+                                                id={id}
+                                                executingAnimation={engine.executingAnimation}
 
-                                            engine={engine}
-                                            allowDrop={true}
+                                                engine={engine}
+                                                allowDrop={true}
+                                            />
+                                        </div>
+
+                                        <Views
+                                            setTabs={(tabs) => updateView("right", tabs)}
+                                            tabs={view.right}
+                                            orientation={"vertical"}
+                                            leftOffset={"0%"}
+                                            resizePosition={"top"}
                                         />
                                     </div>
-
                                     <Views
-                                        setTabs={(tabs) => updateView("right", tabs)}
-                                        tabs={view.right}
-                                        orientation={"vertical"}
-                                        leftOffset={"0%"}
+                                        setTabs={(tabs) => updateView("bottom", tabs)}
+                                        tabs={view.bottom}
                                         resizePosition={"top"}
+                                        orientation={"horizontal"}
                                     />
-                                </div>
-                                <Views
-                                    setTabs={(tabs) => updateView("bottom", tabs)}
-                                    tabs={view.bottom}
-                                    resizePosition={"top"}
-                                    orientation={"horizontal"}
-                                />
-                            </ContextWrapper>
-                            <Shortcuts/>
-                        </SettingsProvider.Provider>
-                    </ContextMenuProvider.Provider>
-                </FilesProvider.Provider>
-            </EngineProvider.Provider>
+                                </ContextWrapper>
+
+                            </SettingsProvider.Provider>
+                        </ContextMenuProvider.Provider>
+                    </FilesProvider.Provider>
+                </EngineProvider.Provider>
+            </HierarchyProvider.Provider>
         </BlueprintProvider.Provider>
     )
 }
