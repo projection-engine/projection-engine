@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Checkbox} from "@f-ui/core"
-import React, {useEffect, useRef} from "react"
+import React, {useContext, useEffect, useRef} from "react"
 import Selector from "../../../../components/selector/Selector"
 import Range from "../../../../components/range/Range"
 import useDirectState from "../../../../components/hooks/useDirectState"
@@ -10,12 +10,14 @@ import AccordionTemplate from "../../../../components/templates/AccordionTemplat
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"
 import FileSystem from "../../../utils/files/FileSystem"
+import QuickAccessProvider from "../../../providers/QuickAccessProvider"
 
 
 export default function Material(props) {
     const [state, clear] = useDirectState({})
     const lastID = useRef("")
 
+    const quickAccess = useContext(QuickAccessProvider)
     useEffect(() => {
         if (!lastID.current || lastID.current !== props.entityID) { 
             clear()
@@ -27,7 +29,7 @@ export default function Material(props) {
             state.uniforms = matSelected && matSelected.uniforms ? matSelected.uniforms.map(u => {
                 return {...u, value: props.selected.uniformValues[u.key]}
             }) : []
-            state.currentMaterial = props.quickAccess.materials.find(i => i.registryID === props.selected.materialID)
+            state.currentMaterial = quickAccess.materials.find(i => i.registryID === props.selected.materialID)
         }
     }, [props.selected, props.entityID])
 
@@ -262,9 +264,6 @@ export default function Material(props) {
 Material.propTypes = {
     engine: PropTypes.object,
     entityID: PropTypes.string,
-
-
-    quickAccess: PropTypes.object, 
     selected: PropTypes.object,
     submit: PropTypes.func,
 }

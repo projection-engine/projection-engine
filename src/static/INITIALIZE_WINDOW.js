@@ -3,7 +3,8 @@ import * as DOM from "react-dom/client"
 import SHORTCUTS_ID from "./misc/SHORTCUTS_ID"
 import React from "react"
 import {Icon} from "@f-ui/core"
-import KEYS from "../project/engine/templates/KEYS"
+import LABELED_KEYS from "./misc/LABELED_KEYS"
+
 
 export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     // ALERT / FS
@@ -17,6 +18,8 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     Math.vec3 = vec3
     Math.quat = quat
 
+    // BLUEPRINTS
+    window.blueprints = {scale: 1}
 
     // ENTITY WORKER
     const listeners = {}
@@ -54,7 +57,7 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
 					 	style={{display: a.disabled ? "none" : undefined}}
                     >
                         <div data-item={"-"}>
-                            {a.require.map((e, i) => KEYS[e] + (i < a.require.length - 1 ? " + " : ""))}
+                            {a.require.map((e, i) => LABELED_KEYS[e] + (i < a.require.length - 1 ? " + " : ""))}
                         </div>
                         <div>
                             {a.label}

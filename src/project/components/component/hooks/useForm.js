@@ -18,7 +18,7 @@ import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
 import FALLBACK_MATERIAL from "../../../../static/misc/FALLBACK_MATERIAL"
 
-export function  updateTransform(axis, data, key, entity, dispatchEntities) {
+export function  updateTransform(axis, data, key, entity) {
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]
     component[key] = [
@@ -31,31 +31,14 @@ export function  updateTransform(axis, data, key, entity, dispatchEntities) {
         entity.components[COMPONENTS.POINT_LIGHT].changed = true
     if (entity.components[COMPONENTS.PROBE])
         alert.pushAlert("Reflection captures need to be rebuilt",  "alert")
-    dispatchEntities({
-        type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-        payload: {
-            entityID: entity.id,
-            key: COMPONENTS.TRANSFORM,
-            data: component
-        }
-    })
 }
 export default function useForm(
     engine,
-    quickAccess,
     currentTab
 ) {
     const [currentKey, setCurrentKey] = useState()
     const submit = (component, key, data) => {
-        const clone = cloneClass(engine.selectedEntity.components[component])
-        clone[key] = data
-        engine.dispatchEntities({
-            type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                entityID: engine.selectedEntity[0],
-                data: clone,
-                key: component
-            }
-        })
+        engine.selectedEntity.components[component][key] = data
     }
     const getField = (key) => {
         if (engine.selectedEntity.components[key])
@@ -83,30 +66,21 @@ export default function useForm(
                         engine={engine}
 
                         selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
-                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", selected, engine.dispatchEntities)}
-                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", selected, engine.dispatchEntities)}
-                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", selected, engine.dispatchEntities)}
+                        submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine.selectedEntity,)}
+                        submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine.selectedEntity,)}
+                        submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine.selectedEntity)}
                     />
                 )
             }
             case COMPONENTS.MESH: {
                 return (
                     <Mesh
-                        quickAccess={quickAccess}
                         submit={(mesh, type) => {
-
                             // TODO - Load mesh if not loaded
                             if (!type)
                                 engine.selectedEntity.components[COMPONENTS.MESH].meshID = mesh
                             else
                                 engine.selectedEntity.components[COMPONENTS.MESH].meshType = mesh
-                            engine.dispatchEntities({
-                                type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                                    entityID: engine.selected[0],
-                                    data: engine.selectedEntity.components[COMPONENTS.MESH],
-                                    key: COMPONENTS.MESH
-                                }
-                            })
                         }}
                         engine={engine}
                         selected={engine.selectedEntity.components[COMPONENTS.MESH]}
@@ -118,16 +92,13 @@ export default function useForm(
                     <Material
                         entityID={engine.selectedEntity.id}
                         engine={engine}
-                        submitRadius={r => submit(COMPONENTS.MATERIAL, "radius", r)}
-                        quickAccess={quickAccess}
                         selected={engine.selectedEntity.components[COMPONENTS.MATERIAL]}
-
                         submit={async (val, key) => {
-                            if (key) {
+                            if (key) 
                                 submit(COMPONENTS.MATERIAL, key, val)
-                            } else {
+                            else {
                                 if (val) {
-                                    const exists = engine.materials.find(m => m.id === val.id)
+                                    const exists = window.renderer.materials.find(m => m.id === val.id)
                                     if (!exists) {
                                         let newMat
                                         await new Promise(resolve => {
@@ -145,22 +116,12 @@ export default function useForm(
                                         })
                                     }
                                 }
-                                const clone = cloneClass(engine.selectedEntity.components[COMPONENTS.MATERIAL])
+                                const component = engine.selectedEntity.components[COMPONENTS.MATERIAL]
                                 if (val) {
-                                    clone.materialID = val.id
-                                    clone.uniforms = val.blob.uniforms
+                                    component.materialID = val.id
+                                    component.uniforms = val.blob.uniforms
                                 } else
-                                    clone.materialID = FALLBACK_MATERIAL
-
-                                engine.dispatchEntities({
-                                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                                    payload: {
-                                        entityID: engine.selected[0],
-                                        data: clone,
-                                        key: COMPONENTS.MATERIAL
-                                    }
-                                })
-
+                                    component.materialID = FALLBACK_MATERIAL
                             }
                         }}
 
@@ -175,7 +136,6 @@ export default function useForm(
                         type={key}
                         selected={engine.selectedEntity.components[key]}
                         submit={(data, k) => submit(key, k, data)}
-                        quickAccess={quickAccess}
                         submitColor={(data) => submit(key, "color", data)}
                     />
                 )
@@ -214,7 +174,6 @@ export default function useForm(
                             data
                             :
                             <Scripts
-                                scripts={quickAccess.scripts}
                                 entity={engine.selectedEntity}
                             />
                         }

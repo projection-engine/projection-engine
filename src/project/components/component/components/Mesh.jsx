@@ -1,18 +1,21 @@
 import PropTypes from "prop-types"
-import React, {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {Checkbox} from "@f-ui/core"
 import handleDrop from "../../../utils/importer/import"
 import Selector from "../../../../components/selector/Selector"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import MESH_TYPES from "../../../engine/templates/MESH_TYPES"
+import QuickAccessProvider from "../../../providers/QuickAccessProvider"
 
 
 export default function Mesh(props) {
+
+    const quickAccess = useContext(QuickAccessProvider)
     const [meshType, setMeshType] = useState(props.selected.meshType)
     const [currentMesh, setCurrentMesh] = useState()
     useEffect(() => {
-        setCurrentMesh(props.quickAccess.meshes.find(mesh => mesh.registryID === props.selected.meshID))
-    }, [props.quickAccess.meshes, props.selected])
+        setCurrentMesh(quickAccess.meshes.find(mesh => mesh.registryID === props.selected.meshID))
+    }, [quickAccess.meshes, props.selected])
 
     return (
         <> 
@@ -48,8 +51,6 @@ export default function Mesh(props) {
 }
 
 Mesh.propTypes = {
-    quickAccess: PropTypes.object,
-
     engine: PropTypes.object,
 
     submit: PropTypes.func,

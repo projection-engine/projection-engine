@@ -2,7 +2,6 @@ import PropTypes from "prop-types"
 import styles from "./styles/Scene.module.css"
 import React, {useContext, useMemo, useState} from "react"
 import useForm from "./hooks/useForm"
-import QuickAccessProvider from "../../providers/QuickAccessProvider"
 import {Button, Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
@@ -10,10 +9,9 @@ import EngineProvider from "../../providers/EngineProvider"
 import Header from "../../../components/view/components/Header"
 
 export default function ComponentEditor(props) {
-    const quickAccess = useContext(QuickAccessProvider)
     const  [engine] = useContext(EngineProvider)
     const [currentTab, setCurrentTab] = useState("-2")
-    const currentForm = useForm(engine, quickAccess, currentTab)
+    const currentForm = useForm(engine, currentTab)
     const tabs = useMemo(() => {
         if (engine.selectedEntity) {
             const components = Object.keys(engine.selectedEntity.components)

@@ -1,10 +1,12 @@
 import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Button, Icon} from "@f-ui/core"
-import React, {useEffect, useMemo, useRef, useState} from "react"
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
 import Selector from "../../../../components/selector/Selector"
+import QuickAccessProvider from "../../../providers/QuickAccessProvider"
 
 export default function Scripts(props) {
+    const quickAccess = useContext(QuickAccessProvider)
     const [state, setState] = useState([])
     const previousID = useRef()
     useEffect(() => {
@@ -47,7 +49,7 @@ export default function Scripts(props) {
                 <React.Fragment key={s + "-script-" + index}>
                     <ScriptRow
                         selected={s}
-                        scripts={props.scripts} 
+                        scripts={quickAccess.scripts}
                         submit={key => {
                             const newScripts = state.filter(s => s !==key)
                             props.entity.scripts = newScripts
@@ -67,8 +69,7 @@ export default function Scripts(props) {
 }
 
 Scripts.propTypes = {
-    entity: PropTypes.object,
-    scripts: PropTypes.array
+    entity: PropTypes.object
 }
 
 function ScriptRow(props) {
