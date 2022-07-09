@@ -26,7 +26,6 @@ export default async function importData(event, engine, asID) {
             switch ("." + res.path.split(".").pop()) {
             case FILE_TYPES.MESH: {
                 const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
-                console.dir(file)
                 const meshData = await importMesh(file, engine, data)
                 if (meshData.mesh !== undefined)
                     meshes.push(meshData)
@@ -53,17 +52,12 @@ export default async function importData(event, engine, asID) {
 
             const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
             toLoad.forEach(e => {
-                if (e.isMesh) {
+                if (e.components && e.components[COMPONENTS.TRANSFORM]) {
                     const transform = e.components[COMPONENTS.TRANSFORM]
-                    const t = vec4.add([], transform.translation, cursorPoint)
-                    transform.translation = t
-                    console.dir(transform.translation, t)
+                    vec4.add(transform.translation, transform.translation, cursorPoint)
+                    console.dir(transform.translation)
                     transform.changed = true
                 }
-            })
-            engine.dispatchChanges({
-                type: HISTORY_ACTIONS.PUSHING_DATA,
-                payload: toLoad
             })
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
             alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")

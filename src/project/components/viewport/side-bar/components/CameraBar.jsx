@@ -30,7 +30,7 @@ export default function CameraBar(props) {
     }
     return (
         <div className={shared.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
-            <CameraGizmo  bind={bind}/>
+            <CameraGizmo  bind={bind} />
             <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
                 <Dropdown
                     hideArrow={true}

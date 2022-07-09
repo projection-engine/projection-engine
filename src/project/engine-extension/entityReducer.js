@@ -18,7 +18,7 @@ export const ENTITY_ACTIONS = {
 
 
 export default function entityReducer({type, payload}, state, setChangeID) {
-    setChangeID(v4())
+    const initialSize = state.size
     if (payload?.entityID > -1) {
         const entity = state.get(payload.entityID)
         switch (type) {
@@ -99,11 +99,11 @@ export default function entityReducer({type, payload}, state, setChangeID) {
                     }
                 }
             }
-
-            console.log(state)
             break
         }
         default:
             break
         }
+    if(initialSize !== state.size)
+        setChangeID(v4())
 }

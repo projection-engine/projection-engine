@@ -28,19 +28,7 @@ export default function ComponentEditor(props) {
 
     return (
         <>
-            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"} >
-                {engine.selectedEntity ?
-                    <Button
-                        onClick={() => engine.setLockedEntity(engine.lockedEntity === engine.selectedEntity?.id ? undefined : engine.selectedEntity.id)}
-                        className={styles.button}
-                        variant={engine.lockedEntity === engine.selectedEntity?.id ? "filled" : undefined}
-                    >
-                        <Icon styles={{fontSize: "1rem"}}>push_pin</Icon>
-                    </Button>
-                    :
-                    null
-                }
-            </Header>
+            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"}/>
             {props.hidden ?
                 null
                 :

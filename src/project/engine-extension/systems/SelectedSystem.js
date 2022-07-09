@@ -34,8 +34,8 @@ export default class SelectedSystem extends System {
             this.shader.use()
             this.frameBuffer.startMapping()
             for (let m = 0; m < length; m++) {
-                const current = entitiesMap[selected[m]]
-                if(!current)
+                const current = entitiesMap.get(selected[m])
+                if(!current || !current.active)
                     continue
                 const mesh = meshesMap[current.components[COMPONENTS.MESH]?.meshID]
                 if(!mesh)

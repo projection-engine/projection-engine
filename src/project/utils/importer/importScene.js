@@ -5,6 +5,7 @@ import {initializeEntity} from "./importMesh"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FileSystem from "../../utils/files/FileSystem"
+import {vec4} from "gl-matrix"
 
 export default async function importScene(  engine, reg, onlyReturn) {
     const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
@@ -14,19 +15,24 @@ export default async function importScene(  engine, reg, onlyReturn) {
         const folder = new Entity()
         folder.name = file.name
         folder.components[COMPONENTS.FOLDER] = new FolderComponent()
-
-
         for (let i in file.nodes) {
             const data = await loopNodes(file.nodes[i], folder)
-
             meshes.push(...data.meshes)
             entities.push(...data.children)
-
         }
         entities.push(folder)
         if(!onlyReturn) {
             engine.setMeshes(prev => {
                 return [...prev, ...meshes]
+            })
+            const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+            entities.forEach(e => {
+                if (e.components && e.components[COMPONENTS.TRANSFORM]) {
+                    const transform = e.components[COMPONENTS.TRANSFORM]
+                    vec4.add(transform.translation, transform.translation, cursorPoint)
+                    console.dir(transform.translation)
+                    transform.changed = true
+                }
             })
             engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
         }

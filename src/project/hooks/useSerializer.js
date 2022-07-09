@@ -7,7 +7,7 @@ export default function useSerializer( settings, id) {
 
     const save = useCallback(async () => {
         if (id) {
-            const entities = window.renderer.allEntities
+            const entities = window.renderer.entities
             const meshes = window.renderer.meshes
             const materials = window.renderer.materials
             const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")

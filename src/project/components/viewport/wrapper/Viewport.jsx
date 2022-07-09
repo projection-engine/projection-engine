@@ -36,7 +36,7 @@ export default function Viewport(props) {
 
     function pickIcon (cameraMesh, pickSystem, camera, coords){
         return pickSystem.pickElement((shader, proj) => {
-            const entities = renderer.allEntities
+            const entities = renderer.entities
             for (let m = 0; m < entities.length; m++) {
                 const currentInstance = entities[m]
                 if (entities[m].active) {
@@ -75,7 +75,7 @@ export default function Viewport(props) {
                 if (!picked)
                     picked = pickMesh(meshesMap, event.clientX, event.clientY)
                 if (picked > 0) {
-                    const entity = renderer.allEntities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
+                    const entity = renderer.entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
                     if (entity) props.engine.setSelected(prev => {
                         const i = prev.findIndex(e => e === entity.id)
                         if (i > -1) {
@@ -102,15 +102,8 @@ export default function Viewport(props) {
             latestTranslation =  Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
             updateCursor(latestTranslation)
         }
-        else{
-            props.engine.setCursor(prev => {
-                const clone = cloneClass(prev)
-                clone.components[COMPONENTS.TRANSFORM].translation = latestTranslation
-                clone.components[COMPONENTS.TRANSFORM].transformationMatrix = Transformation.transform(prev.components[COMPONENTS.TRANSFORM].translation, [0,0,0,1], [1,1,1])
-                return clone
-            })
+        else
             document.removeEventListener("mousemove", handleMouse)
-        }
     }
     useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, optionsViewport, TRIGGERS)
 
@@ -167,20 +160,17 @@ export default function Viewport(props) {
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
                         if(startCoords && endCoords) {
-                            const pickSystem = renderer.picking
-                            const depthSystem = renderer.renderingPass.depthPrePass
-
+                            const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer
                             const size = {
-                                w: depthSystem.frameBuffer.width,
-                                h: depthSystem.frameBuffer.height
+                                w: depthFBO.width,
+                                h: depthFBO.height
                             }
                             const nStart = Conversion.toQuadCoord(startCoords, size)
                             const nEnd = Conversion.toQuadCoord(endCoords, size)
 
                             try{
-                                const data = pickSystem.readBlock(depthSystem.frameBuffer, nStart, nEnd)
-
-                                WORKER.postMessage({entities: renderer.allEntities, data})
+                                const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)
+                                WORKER.postMessage({entities: renderer.entities, data})
                                 WORKER.onmessage = ({data: selected}) => props.engine.setSelected(selected)
                             }catch (err){
                                 console.error(err, startCoords, nStart)

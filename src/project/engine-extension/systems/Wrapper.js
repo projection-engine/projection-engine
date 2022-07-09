@@ -63,7 +63,6 @@ export default class Wrapper extends System {
                     gridSize,
                     gridRotationSize,
                     gridScaleSize,
-
                     setSelected
                 )
                 this.selectedSystem.execute(selected, meshesMap, camera, entitiesMap)

@@ -14,7 +14,7 @@ export default function getOptionsViewport(engine, utils) {
         {
             label: "Select all",
             onClick: () => {
-                engine.setSelected(window.renderer.allEntities.filter(e => !e.isFolder).map(e => e.id))
+                engine.setSelected(window.renderer.entities.filter(e => !e.isFolder).map(e => e.id))
             },
             shortcut: ["A"]
         },

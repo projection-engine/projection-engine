@@ -9,6 +9,7 @@ import MaterialInstance from "../engine/instances/MaterialInstance"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
 import {v4} from "uuid"
+import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
 
 
 function getCursor() {
@@ -22,7 +23,7 @@ function getCursor() {
     return entity
 }
 
-const WORKER = new Worker(new URL("./cleanupWorker.js", import.meta.url))
+const localActionID = v4()
 export default function useEngine(settings) {
     const entities = useRef(new Map())
     const [executingAnimation, setExecutingAnimation] = useState(false)
@@ -31,38 +32,58 @@ export default function useEngine(settings) {
     const [levelScript, setLevelScript] = useState()
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
+
+    // TODO - USE MAP
     const [meshes, setMeshes] = useState([])
+    // TODO - USE MAP
     const [materials, setMaterials] = useState([])
+
+
     const [fallbackMaterial, setFallbackMaterial] = useState()
     const [entitiesChangeID, setChangeID] = useState(v4())
 
+    const workerListener = ( payload ) => {
+        const {meshesFiltered, materialsFiltered} = payload
+        // if (Object.keys(meshesFiltered).length > 0)
+        //     setMeshes(prev => {
+        //         const filtered = []
+        //         for (let i = 0; i < prev.length; i++) {
+        //             if (!meshesFiltered[prev[i].id]) filtered.push(prev[i])
+        //             else prev[i].delete()
+        //         }
+        //
+        //         return filtered
+        //     })
+        // if (Object.keys(materialsFiltered).length > 0)
+        //     setMaterials(prev => {
+        //         const filtered = []
+        //         for (let i = 0; i < prev.length; i++) {
+        //             if (!materialsFiltered[prev[i].id]) filtered.push(prev[i])
+        //             else prev[i].delete()
+        //         }
+        //         return filtered
+        //     })
+    }
     useEffect(() => {
-        WORKER.postMessage({
-            entities: entities.current,
-            COMPONENTS,
-            meshes: toObject(meshes, true),
-            materials: toObject(materials, true)
-        })
-        WORKER.onmessage = ({data: {meshesFiltered, materialsFiltered}}) => {
-            if (Object.keys(meshesFiltered).length > 0) setMeshes(prev => {
-                const filtered = []
-                for (let i = 0; i < prev.length; i++) {
-                    if (!meshesFiltered[prev[i].id]) filtered.push(prev[i])
-                    else prev[i].delete()
-                }
-                return filtered
-            })
-            if (Object.keys(materialsFiltered).length > 0) setMaterials(prev => {
-                const filtered = []
-                for (let i = 0; i < prev.length; i++) {
-                    if (!materialsFiltered[prev[i].id]) filtered.push(prev[i])
-                    else prev[i].delete()
-                }
-                return filtered
-            })
-        }
-    }, [entitiesChangeID])
 
+        window.entityWorker.postMessage({
+            type: ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA,
+            actionID: localActionID,
+            payload: {
+                meshes: toObject(meshes, true),
+                materials: toObject(materials, true)
+            }
+        })
+        window.addEntityWorkerListener(workerListener, localActionID)
+    }, [meshes, materials])
+
+
+    useEffect(() => {
+        window.entityWorker.postMessage({
+            type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
+            payload: entities.current
+        })
+    }, [entitiesChangeID])
 
     const onGizmoStart = () => {
         // const e = entities.get(selected[0])
@@ -100,7 +121,7 @@ export default function useEngine(settings) {
             window.renderer.materials = materials
             window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
-            if(!window.renderer.cursor)
+            if (!window.renderer.cursor)
                 window.renderer.cursor = getCursor()
 
             window.renderer.updatePackage(

@@ -17,6 +17,18 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     Math.vec3 = vec3
     Math.quat = quat
 
+
+    // ENTITY WORKER
+    const listeners = {}
+    window.entityWorker =  new Worker(new URL("./EntityWorker.js", import.meta.url))
+    window.addEntityWorkerListener = (callback, id) => {
+        listeners[id] = callback
+    }
+    window.entityWorker.onmessage = ({data: {actionID, payload}}) => {
+        if(listeners[actionID])
+            listeners[actionID](payload)
+    }
+
     // SHORTCUTS
     const shortcutsRoot = DOM.createRoot(document.getElementById(SHORTCUTS_ID))
     window.shortcuts = {all: [], active: {}}

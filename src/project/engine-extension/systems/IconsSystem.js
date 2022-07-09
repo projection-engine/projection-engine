@@ -60,8 +60,10 @@ export default class IconsSystem extends System {
         const size = ref.length
 
         for (let i = 0; i < size; i++) {
-            if(!selectedMap[ref[i].id])
-                result.push(ref[i].components[comp][key])
+            const current = ref[i]
+            if(!current.active || selectedMap[current.id])
+                continue
+            result.push(current.components[comp][key])
         }
 
         return result
@@ -123,8 +125,6 @@ export default class IconsSystem extends System {
         } = options
 
         if (iconsVisibility && this.#ready) {
-
-
             Icon.start(this.vertexVBO, this.vao, this.iconShader)
             this.renderers.dLight.draw(
                 this.loop(directionalLights, COMPONENTS.DIRECTIONAL_LIGHT, "transformationMatrix", selectedMap),
@@ -153,7 +153,7 @@ export default class IconsSystem extends System {
             this.drawHighlighted(cursor.components[COMPONENTS.TRANSFORM], camera, this.checkerboardTexture.texture)
 
             for(let i = 0; i<selected.length; i++){
-                const entity = entitiesMap[selected[i]]
+                const entity = entitiesMap.get(selected[i])
                 if(!entity)
                     continue
                 const icon = entity.active ? this.getIcon(entity) : undefined

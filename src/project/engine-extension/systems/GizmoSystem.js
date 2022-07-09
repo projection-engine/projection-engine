@@ -136,7 +136,7 @@ export default class GizmoSystem extends System {
             if(this.selectedHash !== JOINED || this.lastGizmo !== gizmo) {
                 this.lastGizmo = gizmo
                 this.selectedEntities = selected
-                    .map(s => entities[s])
+                    .map(s => entities.get(s))
                     .filter(c =>c &&( gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
                 this.selectedHash = JOINED
             }

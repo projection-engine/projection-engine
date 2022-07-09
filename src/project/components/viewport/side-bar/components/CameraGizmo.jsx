@@ -1,23 +1,25 @@
 import styles from "../../options/styles/ViewportOptions.module.css"
 import CAMERA_GIZMO from "../../../../../static/misc/CAMERA_GIZMO"
 import PropTypes from "prop-types"
-import React, {useEffect, useMemo, useRef} from "react"
+import React, {useContext, useEffect, useMemo, useRef} from "react"
+import EngineProvider from "../../../../providers/EngineProvider"
 
 
 export default function CameraGizmo(props){
-    const {bind, initialized} = props
+    const {bind} = props
+    const [engine] = useContext(EngineProvider)
     let requested = false
     const ref = useRef()
 
     function updateCameraRotation(){
-        if(initialized) {
-            const t = window.renderer.camera.getNotTranslatedViewMatrix()
-            ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
-        }
+        const t = window.renderer.camera.getNotTranslatedViewMatrix()
+        ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
     }
     useEffect(() => {
-        updateCameraRotation()
-    }, [initialized])
+        console.log(engine)
+        if(engine.viewportInitialized)
+            updateCameraRotation()
+    }, [engine.viewportInitialized])
     return (
         <div 
             className={styles.cubeWrapper}
@@ -28,15 +30,12 @@ export default function CameraGizmo(props){
             }}
             onMouseMove={({currentTarget, movementX, movementY}) => {
                 if(currentTarget.isFocused){
-
                     if (!requested) {
                         requested = true
                         currentTarget.requestPointerLock()
                     }
-
                     if (movementY < 0)
                         window.renderer.camera.pitch += .01 * Math.abs(movementY)
-
                     else if (movementY > 0)
                         window.renderer.camera.pitch -= .01 * Math.abs(movementY)
 
