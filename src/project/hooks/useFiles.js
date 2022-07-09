@@ -17,8 +17,11 @@ export default function useFiles(engine) {
         setItems(done)
     }
     useEffect(() => {
-        window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
+        window
+            .fileSystem
+            .readFile(window.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
             .then(res => {
+                console.log(res)
                 if (res)
                     setBookmarks(res)
             })

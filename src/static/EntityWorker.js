@@ -30,7 +30,12 @@ self.onmessage = ({data: {type, payload, actionID}}) => {
     case ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA: {
         if(updated) {
             const {materials, meshes} = payload
-            const meshesFiltered = {...meshes}, materialsFiltered = {...materials}
+            const meshesFiltered = meshes.reduce((obj, currentValue) => {
+                    obj[currentValue] = currentValue
+                    return obj
+                }, {}),
+                materialsFiltered = {...materials}
+            console.log(meshesFiltered)
             const values = entities.values()
 
             for (let i = 0; i < values.length; i++) {
@@ -39,11 +44,11 @@ self.onmessage = ({data: {type, payload, actionID}}) => {
 
                 if (meshComp !== undefined)
                     delete meshesFiltered[meshComp.meshID]
-
+                
                 if (matComp !== undefined)
                     delete materialsFiltered[matComp.materialID]
             }
-            console.log(meshesFiltered, materialsFiltered)
+             
             self.postMessage({actionID, payload: {meshesFiltered, materialsFiltered}})
         }
         else

@@ -22,9 +22,7 @@ export default async function importScene(  engine, reg, onlyReturn) {
         }
         entities.push(folder)
         if(!onlyReturn) {
-            engine.setMeshes(prev => {
-                return [...prev, ...meshes]
-            })
+            engine.dispatchMeshes(meshes)
             const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
             entities.forEach(e => {
                 if (e.components && e.components[COMPONENTS.TRANSFORM]) {

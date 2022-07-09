@@ -16,7 +16,6 @@ export default function CameraGizmo(props){
         ref.current.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
     }
     useEffect(() => {
-        console.log(engine)
         if(engine.viewportInitialized)
             updateCameraRotation()
     }, [engine.viewportInitialized])

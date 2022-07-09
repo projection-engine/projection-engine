@@ -44,7 +44,7 @@ export default async function importData(event, engine, asID) {
 
     if (meshes.length > 0) {
         const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
-        engine.setMeshes(prev => [...prev, ...newMeshes])
+        engine.dispatchMeshes(newMeshes)
         if (!asID) {
             const toLoad = meshes
                 .map(m => m.entity)

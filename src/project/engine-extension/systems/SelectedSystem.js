@@ -37,7 +37,7 @@ export default class SelectedSystem extends System {
                 const current = entitiesMap.get(selected[m])
                 if(!current || !current.active)
                     continue
-                const mesh = meshesMap[current.components[COMPONENTS.MESH]?.meshID]
+                const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)
                 if(!mesh)
                     continue
                 const t = current.components[COMPONENTS.TRANSFORM]

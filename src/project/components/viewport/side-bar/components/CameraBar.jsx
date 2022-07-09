@@ -1,15 +1,15 @@
 import shared from "../../options/styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import React, {useContext, useEffect, useMemo} from "react"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import {handleGrab} from "../../wrapper/hooks/transformCamera"
 import SettingsProvider from "../../../../providers/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
 export default function CameraBar(props) {
-    const  settingsContext = useContext(SettingsProvider)
+    const [cameraIsOrtho, setCameraIsOrtho] = useState(false)
     const cameraIcon = useMemo(() => {
-        if (!settingsContext.ortho)
+        if (!cameraIsOrtho)
             return (
                 <div
                     style={{width: "20px", height: "20px", perspective: "40px", transformStyle: "preserve-3d"}}>
@@ -20,7 +20,7 @@ export default function CameraBar(props) {
             )
         else
             return <Icon styles={{fontSize: "1rem"}} >grid_on</Icon>
-    }, [settingsContext.ortho])
+    }, [cameraIsOrtho])
 
     function bind(yaw, pitch) {
         window.renderer.camera.updateProjection()
@@ -77,7 +77,10 @@ export default function CameraBar(props) {
                 <Button
                     className={shared.groupItemVert}
                     onClick={() => {
-                        settingsContext.ortho = !settingsContext.ortho
+                        const negated = !window.renderer.camera.ortho
+                        window.renderer.camera.ortho = negated
+                        window.renderer.camera.updateProjection()
+                        setCameraIsOrtho(negated)
                     }}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                         <div>Switch between last Ortho/Perspective</div>

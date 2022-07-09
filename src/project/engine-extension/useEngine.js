@@ -26,6 +26,8 @@ function getCursor() {
 const localActionID = v4()
 export default function useEngine(settings) {
     const entities = useRef(new Map())
+    const meshes = useRef(new Map())
+
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const [viewportInitialized, setViewportInitialized] = useState(false)
     // const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
@@ -33,8 +35,6 @@ export default function useEngine(settings) {
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
 
-    // TODO - USE MAP
-    const [meshes, setMeshes] = useState([])
     // TODO - USE MAP
     const [materials, setMaterials] = useState([])
 
@@ -65,12 +65,11 @@ export default function useEngine(settings) {
         //     })
     }
     useEffect(() => {
-
         window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA,
             actionID: localActionID,
             payload: {
-                meshes: toObject(meshes, true),
+                meshes: Array.from(meshes.current.keys()),
                 materials: toObject(materials, true)
             }
         })
@@ -114,10 +113,9 @@ export default function useEngine(settings) {
                 setFallbackMaterial(fMat)
             }
 
-            window.renderer.camera.ortho = selected.ortho
             window.renderer.camera.updateProjection()
             window.renderer.entitiesMap = entities.current
-            window.renderer.meshes = meshes
+            window.renderer.meshes = meshes.current
             window.renderer.materials = materials
             window.renderer.camera.animated = settings.cameraAnimation
             window.renderer.gizmo = settings.gizmo
@@ -136,7 +134,7 @@ export default function useEngine(settings) {
     }, [
         fallbackMaterial, viewportInitialized,
         executingAnimation,
-        selected, materials, meshes,
+        selected, materials,
         settings, entitiesChangeID
     ])
 
@@ -161,11 +159,14 @@ export default function useEngine(settings) {
         dispatchChanges: () => null,
         lockedEntity,
         entitiesChangeID,
-        meshes,
+
         materials,
         selected,
         setMaterials,
-        setMeshes,
+        dispatchMeshes: (newMeshes) => {
+            for(let i = 0; i < newMeshes.length; i++)
+                meshes.current.set(newMeshes[i].id, newMeshes[i])
+        },
         setLockedEntity,
         setSelected,
         setLevelScript,
