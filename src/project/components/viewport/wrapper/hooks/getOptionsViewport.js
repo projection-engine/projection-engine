@@ -72,11 +72,6 @@ export default function getOptionsViewport(engine, utils) {
                 comp.translation = [0, 0, 0]
                 comp.scaling = [1, 1, 1]
                 comp.rotationQuat = [0, 0, 0, 1]
-
-                engine.dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
-                })
             }
         },
         {
@@ -84,10 +79,6 @@ export default function getOptionsViewport(engine, utils) {
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                engine.dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
-                })
             }
         },
         {
@@ -95,11 +86,6 @@ export default function getOptionsViewport(engine, utils) {
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.pivotPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                engine.dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-                    payload: {entityID: engine.selectedEntity.id, data: comp, key: COMPONENTS.TRANSFORM}
-                })
-           
             }
         },
         {divider: true},

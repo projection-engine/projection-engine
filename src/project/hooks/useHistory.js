@@ -21,13 +21,7 @@ export default function useHistory(entities, dispatchEntities) {
             switch (changes[c].type) {
             case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
                 alert.pushAlert( "Undo: Changing component", "info")
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                        entityID: changes[c].entityID,
-                        data: changes[c].component,
-                        key: changes[c].componentKey
-                    }
-                })
+
                 break
             case HISTORY_ACTIONS.PUSHING_DATA:
                 alert.pushAlert("Redo: Adding entities (" + changes[c].entities.length+ ")", "info")
@@ -55,13 +49,7 @@ export default function useHistory(entities, dispatchEntities) {
             switch (changes[c].type) {
             case HISTORY_ACTIONS.SAVE_COMPONENT_STATE:
                 alert.pushAlert("Redo: Changing component", "info")
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.UPDATE_COMPONENT, payload: {
-                        entityID: changes[c].entityID,
-                        data: changes[c].component,
-                        key: changes[c].componentKey
-                    }
-                })
+
                 break
             case HISTORY_ACTIONS.PUSHING_DATA:
                 alert.pushAlert( "Undo: Adding entities (" + changes[c].entities.length+ ")", "info")

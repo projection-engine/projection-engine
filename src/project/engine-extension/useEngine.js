@@ -94,10 +94,6 @@ export default function useEngine(settings) {
     }
     const onGizmoEnd = () => {
         // const e = entities.get(selected[0])
-        // if (e) dispatchEntities({
-        //     type: ENTITY_ACTIONS.UPDATE_COMPONENT,
-        //     payload: {key: COMPONENTS.TRANSFORM, entityID: e.id, data: e.components[COMPONENTS.TRANSFORM]}
-        // })
     }
     const update = useCallback(() => {
         if (viewportInitialized) {

@@ -3,48 +3,22 @@ import COMPONENTS from "../engine/templates/COMPONENTS"
 import {v4} from "uuid"
 
 export const ENTITY_ACTIONS = {
-    ADD: 0,
+    ADD: "ADD",
 
-    UPDATE: 2,
-    UPDATE_COMPONENT: 3,
-
-    REMOVE: 4,
-    DISPATCH_BLOCK: 6,
-    PUSH_BLOCK: 7,
-    REMOVE_BLOCK: 8,
-    CLEAR: 9,
-    LINK_MULTIPLE: 10
+    REMOVE: "REMOVE",
+    DISPATCH_BLOCK: "DISPATCH_BLOCK",
+    PUSH_BLOCK: "PUSH_BLOCK",
+    REMOVE_BLOCK: "REMOVE_BLOCK",
+    CLEAR: "CLEAR",
+    LINK_MULTIPLE: "LINK_MULTIPLE"
 }
 
 
 export default function entityReducer({type, payload}, state, setChangeID) {
     const initialSize = state.size
-    if (payload?.entityID > -1) {
-        const entity = state.get(payload.entityID)
-        switch (type) {
-        case ENTITY_ACTIONS.UPDATE: {
-            const {key, data} = payload
-            entity[key] = data
-            state.set(entity.id, entity)
-            break
-        }
-        case ENTITY_ACTIONS.REMOVE:
-            state.delete(entity.id)
-            break
-        case ENTITY_ACTIONS.UPDATE_COMPONENT: {
-            const {
-                key,
-                data,
-            } = payload
-            entity.components[key] = data
-
-            state.set(entity.id, entity)
-            break
-        }
-        default:
-            break
-        }
-    } else
+    if (type === ENTITY_ACTIONS.REMOVE) 
+        state.delete(payload.entityID)
+    else
         switch (type) {
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
             const values = state.values()
