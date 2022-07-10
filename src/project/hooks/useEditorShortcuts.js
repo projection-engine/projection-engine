@@ -73,7 +73,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
             {
                 label: "Select all",
                 require: [KEYS.KeyA],
-                callback: () => engine.setSelected(engine.entities.filter(e => !e.isFolder).map(e => e.id))
+                callback: () => engine.setSelected(window.renderer.entities.filter(e => !e.isFolder).map(e => e.id))
             },
             {
                 label: "Select",
@@ -111,8 +111,9 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
                 }
             },
 
-            {label: "Copy",
-                disabled: engine.selected.length === 0,
+            {
+                label: "Copy",
+                disabled: !engine.selectedEntity,
                 require: [KEYS.ControlLeft, KEYS.KeyC],
                 callback: copy
             },
@@ -135,7 +136,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
             },
             {
                 label: "Delete",
-                disabled: engine.selected.length === 0,
+                disabled: !engine.selectedEntity,
                 require: [KEYS.Delete],
                 callback:  deleteSelected
             },
@@ -171,8 +172,6 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
         toCopy,
         group,
         copy,
-        paste,
-        invertSelection,
-        deleteSelected
+        paste
     }
 }

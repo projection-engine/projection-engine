@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useMemo} from "react"
+import React, {useContext, useEffect, useId, useMemo} from "react"
 import useContextTarget from "../../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
 import ViewportOptions from "../options/ViewportOptions"
@@ -23,6 +23,8 @@ const WORKER = new Worker(new URL("./hooks/findEntities.js", import.meta.url))
 export default function Viewport(props) {
     const renderer = window.renderer
     const settings = useContext(SettingsProvider)
+    const internalID = useId()
+
     const optionsViewport = useMemo(
         () => getOptionsViewport(props.engine, props.utils),
         [props.engine.selectedEntity, props.utils.toCopy]
@@ -104,15 +106,12 @@ export default function Viewport(props) {
         else
             document.removeEventListener("mousemove", handleMouse)
     }
-    useContextTarget({id: "viewport-wrapper", label: "Viewport", icon: "window"}, optionsViewport, TRIGGERS)
+
+    useContextTarget(internalID, optionsViewport, TRIGGERS)
 
     return (
         <>
-            {props.engine.executingAnimation ?
-                null
-                :
-                <ViewportOptions/>
-            }
+            {props.engine.executingAnimation ? null : <ViewportOptions/>}
             <div
                 onMouseDown={e => {
                     e.currentTarget.started = performance.now()
@@ -145,7 +144,7 @@ export default function Viewport(props) {
                 }}
    
                 data-viewport={RENDER_TARGET}
-                id={"viewport-wrapper"}
+                id={internalID}
                 className={styles.viewport}
             >
                 <canvas 

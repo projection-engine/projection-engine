@@ -21,6 +21,8 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     // BLUEPRINTS
     window.blueprints = {scale: 1}
 
+    // CONTEXT MENU
+    window.contextMenu = {triggers: [], options: [], target: undefined}
     // ENTITY WORKER
     const listeners = {}
     window.entityWorker =  new Worker(new URL("./EntityWorker.js", import.meta.url))
