@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from "react"
+import React from "react"
 
 import styles from "./styles/Shortcuts.module.css"
 import SHORTCUTS_ID from "../../../static/misc/SHORTCUTS_ID"

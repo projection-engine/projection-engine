@@ -1,5 +1,4 @@
 import COMPONENTS from "../../../../engine/templates/COMPONENTS"
-import {ENTITY_ACTIONS} from "../../../../engine-extension/entityReducer"
 
 export default function getOptionsViewport(engine, utils) {
     const {

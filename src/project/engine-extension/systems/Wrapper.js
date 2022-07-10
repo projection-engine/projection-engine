@@ -1,4 +1,3 @@
-import System from "../../engine/basic/System"
 import GridSystem from "./GridSystem"
 import IconsSystem from "./IconsSystem"
 import GizmoSystem from "./GizmoSystem"
@@ -7,9 +6,8 @@ import PreviewSystem from "./PreviewSystem"
 import BackgroundSystem from "./BackgroundSystem"
 
 let gpu
-export default class Wrapper extends System {
+export default class Wrapper {
     constructor( resolution) {
-        super()
         gpu = window.gpu
         this.gridSystem = new GridSystem()
         this.billboardSystem = new IconsSystem()

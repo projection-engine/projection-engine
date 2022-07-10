@@ -1,6 +1,7 @@
 import PickComponent from "../engine/components/PickComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import {v4} from "uuid"
+import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -63,21 +64,30 @@ export default function entityReducer({type, payload}, state, setChangeID) {
                     e.components[COMPONENTS.PICK] = new PickComponent(undefined, i + state.size + 2)
                     state.set(e.id, e)
                 }
-            for (let i = 0; i < block.length; i++) {
-                const entity = block[i]
-                if(typeof entity.parent === "string") {
-                    const parent = state.get(entity.parent)
-                    if(parent) {
-                        entity.parent = parent
-                        parent.children.push(entity)
-                    }
-                }
-            }
+
             break
         }
         default:
             break
         }
-    if(initialSize !== state.size)
+
+    if(initialSize !== state.size) {
+        const arr = Array.from(state.values())
+        for (let i = 0; i < arr.length; i++) {
+            const entity = arr[i]
+            if(typeof entity.parent === "string") {
+                const parent = state.get(entity.parent)
+                if(parent) {
+                    entity.parent = parent
+                    parent.children.push(entity)
+                }
+            }
+        }
+        window.entityWorker.postMessage({
+            type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
+            payload: state
+        })
+
         setChangeID(v4())
+    }
 }

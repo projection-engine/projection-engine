@@ -1,4 +1,3 @@
-import System from "../../engine/basic/System"
 import TranslationGizmo from "../gizmo/TranslationGizmo"
 import RotationGizmo from "../gizmo/RotationGizmo"
 import GIZMOS from "../../../static/misc/GIZMOS"
@@ -19,13 +18,12 @@ function move(event) {
 
 const LEFT_BUTTON = 0
 
-export default class GizmoSystem extends System {
+export default class GizmoSystem {
     targetGizmo
     selectedEntities = []
     selectedHash = ""
     lastGizmo = GIZMOS.TRANSLATION
     constructor(resolution) {
-        super() 
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
         const gpu = window.gpu
         this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h)
@@ -129,7 +127,6 @@ export default class GizmoSystem extends System {
         gridScaleSize,
         setSelected
     ) {
-        super.execute()
 
         if (selected.length > 0){
             const JOINED = selected.join("-")

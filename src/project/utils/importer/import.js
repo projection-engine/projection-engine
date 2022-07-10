@@ -1,6 +1,5 @@
 import importMesh from "./importMesh"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
-import {HISTORY_ACTIONS} from "../../hooks/historyReducer"
 import FILE_TYPES from "../../../../public/static/FILE_TYPES"
 import importScene from "./importScene"
 import FileSystem from "../files/FileSystem"

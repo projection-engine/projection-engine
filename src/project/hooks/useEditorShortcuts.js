@@ -83,7 +83,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
                 label: "Select Multiple",
                 require: [KEYS.ControlLeft, KEYS.Mouse0]
             },
-            {label: "Save", require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => serializer.save()},
+            {label: "Save", require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => serializer()},
             {label: "Translate", require: [KEYS.KeyG], callback: () => settings.gizmo = GIZMOS.TRANSLATION},
             {label: "Scale", require: [KEYS.KeyS], callback: () => settings.gizmo = GIZMOS.SCALE},
             {label: "Rotate", require: [KEYS.KeyR], callback: () => settings.gizmo = GIZMOS.ROTATION},

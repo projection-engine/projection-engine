@@ -1,7 +1,6 @@
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 
 import styles from "../styles/ViewportOptions.module.css"
-import PropTypes from "prop-types"
 import React, {useContext, useState} from "react"
 import Range from "../../../../../components/range/Range"
 import SettingsProvider from "../../../../providers/SettingsProvider"

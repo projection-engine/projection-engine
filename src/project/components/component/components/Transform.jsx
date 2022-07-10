@@ -29,54 +29,29 @@ export default function Transform(props) {
         setState(getNewState())
     }, [props])
 
-    const [hasChanged, setHasChanged] = useState(false)
-    const translate = (newValue) => {
-        let t = newValue
-        props.selected.translation = t
-        setState({
-            ...state,
-            xT: t[0],
-            yT: t[1],
-            zT: t[2],
-        })
-    }
-    const saveVersion = () => {
-        if (!hasChanged) {
-            setHasChanged(true)
-            props.engine.dispatchChanges({
-                type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE,
-                payload: {
-                    key: COMPONENTS.TRANSFORM,
-                    entityID: props.entityID,
-                    component: props.selected
-                }
-            })
-        }
-    }
 
     return (
         <>
             <label className={styles.label}>Translation</label>
             <Range
-                metric={"m"}
                 accentColor={"red"}
                 variant={"embedded"}
                 label={"X"}
                 value={state.xT}
                 precision={3}
                 incrementPercentage={.01}
-
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
-                    props.submitTranslation("x", v)
+                    setState({
+                        ...state,
+                        xT: v
+                    })
                 }}
                 handleChange={e => {
-                    translate([parseFloat(e), state.yT, state.zT])
+                    props.selected.translation[0] = e
+                    props.selected.changed = true
                 }}
             />
             <Range
-                metric={"m"}
                 accentColor={"#00ff00"}
                 label={"Y"}
                 variant={"embedded"}
@@ -84,16 +59,17 @@ export default function Transform(props) {
                 incrementPercentage={.01}
                 value={state.yT}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
-                    props.submitTranslation("y", v)
+                    setState({
+                        ...state,
+                        yT: v
+                    })
                 }}
                 handleChange={e => {
-                    translate([state.xT, parseFloat(e), state.zT])
+                    props.selected.translation[1] = e
+                    props.selected.changed = true
                 }}
             />
             <Range
-                metric={"m"}
                 accentColor={"blue"}
                 label={"Z"}
                 variant={"embedded"}
@@ -101,12 +77,16 @@ export default function Transform(props) {
                 incrementPercentage={.01}
                 value={state.zT}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
-                    props.submitTranslation("z", v)
+                    setState({
+                        ...state,
+                        zT: v
+                    })
+                    // window.renderer.
                 }}
                 handleChange={e => {
-                    translate([state.xT, state.yT, parseFloat(e)])
+                    props.selected.translation[2] = e
+                    props.selected.changed = true
+
                 }}
             />
 
@@ -122,8 +102,6 @@ export default function Transform(props) {
 
                 incrementPercentage={.01}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitScaling("x", v)
                 }}
                 handleChange={e => {
@@ -142,8 +120,6 @@ export default function Transform(props) {
                 precision={3}
                 incrementPercentage={.01}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitScaling("y", v)
                 }}
                 handleChange={e => {
@@ -161,8 +137,6 @@ export default function Transform(props) {
                 precision={3}
                 incrementPercentage={.01}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitScaling("z", v)
                 }}
                 handleChange={e => {
@@ -181,8 +155,6 @@ export default function Transform(props) {
                 metric={"angle"}
                 value={state.xR}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitRotation("x", v * Math.PI / 180)
                 }}
                 handleChange={e => {
@@ -197,8 +169,6 @@ export default function Transform(props) {
                 variant={"embedded"}
                 value={state.yR}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitRotation("y", v * Math.PI / 180)
                 }}
                 handleChange={e => {
@@ -213,8 +183,6 @@ export default function Transform(props) {
                 variant={"embedded"}
                 value={state.zR}
                 onFinish={(v) => {
-                    setHasChanged(false)
-                    saveVersion()
                     props.submitRotation("z", v * Math.PI / 180)
                 }}
                 handleChange={e => {

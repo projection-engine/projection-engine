@@ -3,7 +3,7 @@ import ProjectLoader from "../utils/ProjectLoader"
 import FileSystem from "../utils/files/FileSystem"
 
 
-export default function useSerializer( settings, id) {
+export default function useSerializer(settings, id) {
 
     const save = useCallback(async () => {
         if (id) {
@@ -37,12 +37,23 @@ export default function useSerializer( settings, id) {
                     await window.fileSystem.deleteFile("logic" + FileSystem.sep + entity.id + ".entity")
             }
             try {
-                for(let i = 0; i < entities.length; i++){
-                    const entity = entities[i]
-                    const parsedData = JSON.parse(JSON.stringify(entity))
-                    delete parsedData.children
-                    parsedData.parent = parsedData.parent?.id
-                    await window.fileSystem.updateEntity(JSON.stringify(parsedData), entity.id)
+                for (let i = 0; i < entities.length; i++) {
+
+                    const jsonStr = JSON.stringify(entities[i].serializable(), (key, value) => {
+                        if (value instanceof Int8Array ||
+							value instanceof Uint8Array ||
+							value instanceof Uint8ClampedArray ||
+							value instanceof Int16Array ||
+							value instanceof Uint16Array ||
+							value instanceof Int32Array ||
+							value instanceof Uint32Array ||
+							value instanceof Float32Array ||
+							value instanceof Float64Array)
+                            return Array.from(value)
+
+                        return value
+                    })
+                    await window.fileSystem.updateEntity(jsonStr, entities[i].id)
                 }
             } catch (err) {
                 console.error(err)

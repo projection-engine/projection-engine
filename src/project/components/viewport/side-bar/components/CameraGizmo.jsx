@@ -1,7 +1,7 @@
 import styles from "../../options/styles/ViewportOptions.module.css"
 import CAMERA_GIZMO from "../../../../../static/misc/CAMERA_GIZMO"
 import PropTypes from "prop-types"
-import React, {useContext, useEffect, useMemo, useRef} from "react"
+import React, {useContext, useEffect, useRef} from "react"
 import EngineProvider from "../../../../providers/EngineProvider"
 
 

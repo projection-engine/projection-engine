@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useReducer, useRef, useState} from "react"
+import {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import entityReducer from "./entityReducer"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import Entity from "../engine/basic/Entity"
@@ -38,7 +38,6 @@ export default function useEngine(settings) {
     // TODO - USE MAP
     const [materials, setMaterials] = useState([])
 
-
     const [fallbackMaterial, setFallbackMaterial] = useState()
     const [entitiesChangeID, setChangeID] = useState(v4())
 
@@ -77,13 +76,6 @@ export default function useEngine(settings) {
     }, [meshes, materials])
 
 
-    useEffect(() => {
-        window.entityWorker.postMessage({
-            type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-            payload: entities.current
-        })
-    }, [entitiesChangeID])
-
     const onGizmoStart = () => {
         // const e = entities.get(selected[0])
         // if (e) dispatchChanges({
@@ -96,6 +88,7 @@ export default function useEngine(settings) {
         // const e = entities.get(selected[0])
     }
     const update = useCallback(() => {
+
         if (viewportInitialized) {
             let fMat = fallbackMaterial
             if (!fallbackMaterial) {

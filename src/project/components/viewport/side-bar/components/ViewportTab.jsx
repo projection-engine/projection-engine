@@ -1,4 +1,3 @@
-import PropTypes from "prop-types"
 import Range from "../../../../../components/range/Range"
 import useDirectState from "../../../../../components/hooks/useDirectState"
 import COMPONENTS from "../../../../engine/templates/COMPONENTS"

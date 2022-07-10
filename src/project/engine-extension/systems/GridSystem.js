@@ -1,17 +1,14 @@
-import System from "../../engine/basic/System"
 import * as shaderCode from "../shaders/GRID.glsl"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import QuadInstance from "../../engine/instances/QuadInstance"
 
-export default class GridSystem extends System {
+export default class GridSystem {
     constructor() {
-        super()
         this.gridShader = new ShaderInstance(shaderCode.vertex, shaderCode.fragment)
         this.grid = new QuadInstance()
     }
 
     execute(options) {
-        super.execute()
         const {
             gridVisibility,
             camera

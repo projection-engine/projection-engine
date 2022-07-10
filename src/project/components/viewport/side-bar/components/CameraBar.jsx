@@ -1,9 +1,8 @@
 import shared from "../../options/styles/ViewportOptions.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import React, {useContext, useEffect, useMemo, useState} from "react"
+import React, {useMemo, useState} from "react"
 import {handleGrab} from "../../wrapper/hooks/transformCamera"
-import SettingsProvider from "../../../../providers/SettingsProvider"
 import CameraGizmo from "./CameraGizmo"
 
 export default function CameraBar(props) {

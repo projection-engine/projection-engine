@@ -1,4 +1,4 @@
-import {useContext, useEffect, useRef} from "react"
+import {useEffect, useRef} from "react"
 import KEYS from "../../../engine/templates/KEYS"
 
 export default function useHotKeys({

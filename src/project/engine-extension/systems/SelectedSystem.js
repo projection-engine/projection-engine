@@ -1,13 +1,11 @@
-import System from "../../engine/basic/System"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as shaderCode from "../shaders/SELECTED.glsl"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FramebufferInstance from "../../engine/instances/FramebufferInstance"
 
-export default class SelectedSystem extends System {
+export default class SelectedSystem {
 
     constructor(resolution) {
-        super()
         this.shaderSilhouette = new ShaderInstance(
             shaderCode.vertexSilhouette,
             shaderCode.fragmentSilhouette
@@ -28,7 +26,6 @@ export default class SelectedSystem extends System {
 
 
     execute(selected, meshesMap, camera, entitiesMap) {
-        super.execute()
         const length = selected.length
         if (length > 0) {
             this.shader.use()

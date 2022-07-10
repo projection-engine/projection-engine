@@ -16,11 +16,11 @@ export default class Icon {
 
     updateBuffer(data){
         const gpu = window.gpu
-        const temp = new Float32Array(data.length * 16)
-        for(let i = 0; i < data.length; i++){
-            for(let j = 0; j < 16; j++)
-                temp[i+j] = data[i][j]
-        }
+        const temp = new Float32Array(data.flat())
+        // for(let i = 0; i < data.length; i++){
+        //     for(let j = 0; j < 16; j++)
+        //         temp[i+j] = data[i][j]
+        // } 
         gpu.bindBuffer(gpu.ARRAY_BUFFER, this.transformVBO)
         gpu.bufferData(gpu.ARRAY_BUFFER, temp, gpu.STREAM_DRAW)
 
