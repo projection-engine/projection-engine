@@ -108,7 +108,7 @@ export default function CameraEvents(c) {
     }
 
 
-    const r = {
+    return {
         startTracking: () => {
             document.addEventListener("keydown", handleInput)
             document.addEventListener("keyup", handleInput)
@@ -126,5 +126,4 @@ export default function CameraEvents(c) {
             window.gpu.canvas.removeEventListener("wheel", handleInput)
         },
     }
-    return r
 }

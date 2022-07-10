@@ -1,8 +1,6 @@
 import PropTypes from "prop-types"
 import React, {useEffect, useState} from "react"
 import Transformation from "../../../engine/utils/Transformation"
-import {HISTORY_ACTIONS} from "../../../hooks/historyReducer"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
 
 import Range from "../../../../components/range/Range"
 import styles from "../styles/Forms.module.css"

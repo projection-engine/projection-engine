@@ -12,13 +12,8 @@ export default function getComponentInfo(c) {
 
     case COMPONENTS.MESH:
         res.key = c
-        res.label = "Mesh"
-        res.icon = "view_in_ar"
-        break
-    case COMPONENTS.MATERIAL:
-        res.key = c
-        res.label = "Material"
-        res.icon = "texture"
+        res.label = "Mesh & Material"
+        res.icon = "category"
         break
     case COMPONENTS.POINT_LIGHT:
         res.key = c

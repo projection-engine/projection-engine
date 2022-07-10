@@ -8,7 +8,6 @@ import FolderComponent from "../engine/components/FolderComponent"
 import PhysicsBodyComponent from "../engine/components/PhysicsBodyComponent"
 import Entity from "../engine/basic/Entity"
 import MaterialInstance from "../engine/instances/MaterialInstance"
-import MaterialComponent from "../engine/components/MaterialComponent"
 import ProbeComponent from "../engine/components/ProbeComponent"
 import COMPONENTS from "../engine/templates/COMPONENTS"
 import CameraComponent from "../engine/components/CameraComponent"
@@ -70,9 +69,10 @@ export default class ProjectLoader {
             if (typeof ENTITIES[k] === "function") {
                 let component = await ENTITIES[k](entity, k)
                 if (component) {
-                    if (k !== COMPONENTS.MATERIAL) Object.keys(entity.components[k]).forEach(oK => {
-                        if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
-                    })
+                    if (k !== COMPONENTS.MESH)
+                        Object.keys(entity.components[k]).forEach(oK => {
+                            if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
+                        })
                     parsedEntity.components[k] = component
                 }
 
@@ -86,13 +86,9 @@ export default class ProjectLoader {
 
 const ENTITIES = {
     [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id),
-    [COMPONENTS.MESH]: async (entity, k) => new MeshComponent(entity.components[k].id),
-
-    [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
-    [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
-    [COMPONENTS.MATERIAL]: async (entity, k) => {
-        const newMat = new MaterialComponent(entity.components[k].id)
-        newMat.materialID = entity.components[k].materialID
+    [COMPONENTS.MESH]: async (entity, k) => {
+        const component = new MeshComponent(entity.components[k].id, entity.components[k].id)
+        component.materialID = entity.components[k].materialID
         const toLoad = [],
             toLoop = entity.components[k].uniforms ? entity.components[k].uniforms : []
 
@@ -126,18 +122,21 @@ const ENTITIES = {
                     toLoad.push(u)
             }
         }
-        newMat.uniforms = entity.components[k].uniforms
-        newMat.overrideMaterial = entity.components[k].overrideMaterial
-        newMat.uniformValues = {...entity.components[k].uniformValues}
+        component.uniforms = entity.components[k].uniforms
+        component.overrideMaterial = entity.components[k].overrideMaterial
+        component.uniformValues = {...entity.components[k].uniformValues}
 
         toLoad.forEach(dd => {
-            if (dd.changed) newMat.uniformValues[dd.key] = dd.value
+            if (dd.changed) component.uniformValues[dd.key] = dd.value
         })
 
-        newMat.doubleSided = entity.components[k].doubleSided
-        newMat.overrideMaterial = entity.components[k].overrideMaterial
-        return newMat
+        component.doubleSided = entity.components[k].doubleSided
+        component.overrideMaterial = entity.components[k].overrideMaterial
+        return component
     },
+
+    [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
+    [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.TRANSFORM]: async (entity, k) => {
         const component = new TransformComponent(entity.components[k].id, true)
         component.changed = true

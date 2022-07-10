@@ -2,7 +2,6 @@ import React, {useMemo, useState} from "react"
 import Transform from "../components/Transform"
 import Lights from "../components/Lights"
 import Material from "../components/Material"
-import Mesh from "../components/Mesh"
 import styles from "../styles/Scene.module.css"
 import Probe from "../components/Probe"
 import COMPONENTS from "../../../engine/templates/COMPONENTS"
@@ -72,28 +71,14 @@ export default function useForm(
             }
             case COMPONENTS.MESH: {
                 return (
-                    <Mesh
-                        submit={(mesh, type) => {
-                            // TODO - Load mesh if not loaded
-                            if (!type)
-                                engine.selectedEntity.components[COMPONENTS.MESH].meshID = mesh
-                            else
-                                engine.selectedEntity.components[COMPONENTS.MESH].meshType = mesh
-                        }}
-                        engine={engine}
-                        selected={engine.selectedEntity.components[COMPONENTS.MESH]}
-                    />
-                )
-            }
-            case COMPONENTS.MATERIAL: {
-                return (
                     <Material
+
                         entityID={engine.selectedEntity.id}
                         engine={engine}
-                        selected={engine.selectedEntity.components[COMPONENTS.MATERIAL]}
+                        selected={engine.selectedEntity.components[COMPONENTS.MESH]}
                         submit={async (val, key) => {
-                            if (key) 
-                                submit(COMPONENTS.MATERIAL, key, val)
+                            if (key)
+                                submit(COMPONENTS.MESH, key, val)
                             else {
                                 if (val) {
                                     const exists = window.renderer.materials.find(m => m.id === val.id)
@@ -114,7 +99,7 @@ export default function useForm(
                                         })
                                     }
                                 }
-                                const component = engine.selectedEntity.components[COMPONENTS.MATERIAL]
+                                const component = engine.selectedEntity.components[COMPONENTS.MESH]
                                 if (val) {
                                     component.materialID = val.id
                                     component.uniforms = val.blob.uniforms

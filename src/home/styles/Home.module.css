@@ -29,11 +29,10 @@
 
 .wrapperProjects {
   width: 100%;
-  padding: 0 5%;
   position: relative;
   overflow-y: auto;
   height: 100%;
-  padding-bottom: 32px;
+  padding: 0 5% 32px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

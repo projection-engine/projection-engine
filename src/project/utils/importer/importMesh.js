@@ -3,7 +3,6 @@ import Entity from "../../engine/basic/Entity"
 import TransformComponent from "../../engine/components/TransformComponent"
 
 import MeshComponent from "../../engine/components/MeshComponent"
-import MaterialComponent from "../../engine/components/MaterialComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FileSystem from "../files/FileSystem"
 import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL"
@@ -63,9 +62,8 @@ export function initializeEntity(data, meshID, parent){
     if(data.pivotPoint)
         transformation.pivotPoint = data.pivotPoint
 
-    entity.components[COMPONENTS.MATERIAL] = new MaterialComponent()
-    entity.components[COMPONENTS.MATERIAL].materialID = FALLBACK_MATERIAL
     entity.components[COMPONENTS.MESH] = new MeshComponent()
+    entity.components[COMPONENTS.MESH].materialID = FALLBACK_MATERIAL
     entity.components[COMPONENTS.MESH].meshID = meshID
     entity.components[COMPONENTS.TRANSFORM] = transformation
 

@@ -13,7 +13,7 @@ export default function Mesh(props) {
     const [meshType, setMeshType] = useState(props.selected.meshType)
     const [currentMesh, setCurrentMesh] = useState()
     useEffect(() => {
-        setCurrentMesh(quickAccess.meshes.find(mesh => mesh.registryID === props.selected.meshID))
+        setCurrentMesh()
     }, [quickAccess.meshes, props.selected])
 
     return (

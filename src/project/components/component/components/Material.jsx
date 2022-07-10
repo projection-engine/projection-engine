@@ -11,18 +11,20 @@ import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"
 import FileSystem from "../../../utils/files/FileSystem"
 import QuickAccessProvider from "../../../providers/QuickAccessProvider"
+import handleDrop from "../../../utils/importer/import"
 
 
 export default function Material(props) {
     const [state, clear] = useDirectState({})
     const lastID = useRef("")
-
     const quickAccess = useContext(QuickAccessProvider)
+
     useEffect(() => {
-        if (!lastID.current || lastID.current !== props.entityID) { 
+        if (!lastID.current || lastID.current !== props.entityID) {
             clear()
+            state.currentMesh = quickAccess.meshes.find(mesh => mesh.registryID === props.selected.meshID)
             lastID.current = props.entityID
-            const matSelected = props.engine?.materials.find(m => m.id === props.selected.materialID)
+            const matSelected = props.engine.materials.find(m => m.id === props.selected.materialID)
 
             state.overrideMaterial = props.selected.overrideMaterial
 
@@ -34,7 +36,6 @@ export default function Material(props) {
     }, [props.selected, props.entityID])
 
     const loadFile = async (src, type = "json") => {
-
         const rs = await window.fileSystem.readRegistryFile(src.registryID)
         if (rs) {
             const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
@@ -47,7 +48,6 @@ export default function Material(props) {
                 return null
             }
         }
-
     }
     const updateUniforms = (key, value, obj, submit, submitUniformList) => {
         const index = state.uniforms.findIndex(u => u.key === key)
@@ -202,7 +202,21 @@ export default function Material(props) {
 
     return (
         <>
-        
+            <Selector
+                selected={state.currentMesh}
+                type={"mesh"}
+                handleChange={(src) => {
+                    let data = window.renderer.meshes.get(src.registryID)
+                    if (!data)
+                        handleDrop(src.registryID,   props.engine,  true)
+                            .then(() => {
+                                props.submit(src.registryID, "meshID")
+                            })
+                    else {
+                        props.submit(src.registryID, "meshID")
+                    }
+                }}
+            />
             <Selector
                 selected={state.currentMaterial}
                 type={"material"}

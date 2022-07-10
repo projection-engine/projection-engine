@@ -35,20 +35,17 @@ self.onmessage = ({data: {type, payload, actionID}}) => {
                     return obj
                 }, {}),
                 materialsFiltered = {...materials}
-            console.log(meshesFiltered)
             const values = entities.values()
 
             for (let i = 0; i < values.length; i++) {
                 const meshComp = values[i].components[COMPONENTS.MESH]
-                const matComp = values[i].components[COMPONENTS.MATERIAL]
 
-                if (meshComp !== undefined)
+                if (meshComp !== undefined) {
                     delete meshesFiltered[meshComp.meshID]
-                
-                if (matComp !== undefined)
-                    delete materialsFiltered[matComp.materialID]
+                    delete materialsFiltered[meshComp.materialID]
+                }
             }
-             
+
             self.postMessage({actionID, payload: {meshesFiltered, materialsFiltered}})
         }
         else

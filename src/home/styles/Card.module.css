@@ -28,7 +28,16 @@
   background: var(--pj-background-primary);
 }
 
-.wrapper:hover .dataRow {
+.dataRow {
+  background-color: var(--pj-background-tertiary);
+  border: none;
+  width: 100%;
+  border-radius: 0;
+  transition: 150ms linear;
+  border-bottom: var(--pj-background-tertiary) 1px solid;
+}
+
+.wrapper:hover > .dataRow {
   background: var(--pj-background-primary);
 }
 
@@ -79,7 +88,7 @@
   gap: 16px;
   font-size: 0.8rem;
   font-weight: 550;
-  color: var(--fabric-color-secondary);
+  color: var(--pj-color-secondary);
   border-radius: 5px;
   overflow: hidden;
 }
@@ -107,17 +116,7 @@
   width: 250px;
 }
 
-.dataRow {
-  background-color: var(--pj-background-tertiary);
-  border: none;
-  width: 100%;
-  border-radius: 0;
-  transition: 150ms linear;
-  border-bottom: var(--pj-background-tertiary) 1px solid;
-}
-
-
-.headers{
+.headers {
   display: flex;
   justify-content: space-between;
   height: 30px;
@@ -128,12 +127,14 @@
   width: 100%;
   color: var(--pj-color-secondary);
 }
-.header{
+
+.header {
   width: 100%;
   text-align: left;
   padding-left: 4px;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
+
 .dividerHeaders {
   height: 20px;
   width: 1px;
