@@ -7,8 +7,6 @@ import {directoryStructure} from "./FSEvents"
 const {dialog, ipcMain} = require("electron")
 const fs = require("fs")
 const path = require("path")
-const si = require("systeminformation")
-
 
 
 export default function FS() {
@@ -52,11 +50,6 @@ export default function FS() {
             .catch(err => console.error(err))
     })
 
-    // TODO - Implement better performance tracking
-    ipcMain.on("get-current-load", async (event) => {
-        const load = await si.currentLoad()
-        event.sender.send("current-load", load)
-    })
     ipcMain.on("refresh-files", async (event, {pathName, listenID}) => {
         const promiseRes = []
 

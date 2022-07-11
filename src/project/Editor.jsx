@@ -35,9 +35,9 @@ export default function Editor(props) {
     }
 
     useEffect(() => {
-        document.body.addEventListener("keydown", e => {
-            e.preventDefault()
-        })
+        // document.body.addEventListener("keydown", e => {
+        //     e.preventDefault()
+        // })
     }, [])
 
     return (
@@ -50,7 +50,8 @@ export default function Editor(props) {
             }}
         >
             <HierarchyProvider.Provider value={{
-                // worker,
+                dispatchEntities: engine.dispatchEntities,
+                operationUtils: utils,
                 setSelected: engine.setSelected,
                 lockedEntity: engine.lockedEntity,
                 setLockedEntity: engine.setLockedEntity,

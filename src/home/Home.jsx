@@ -19,17 +19,16 @@ import Headers from "./components/Headers"
 const pathResolve = window.require("path")
 
 function Home() {
-    const {
-        projects,
-        setProjects
-    } = useProjects()
+    const {projects, setProjects} = useProjects()
     const [open, setOpen] = useState(0)
-    useAlert(true)
     const [searchString, setSearchString] = useState("")
     const projectsToShow = useMemo(() => {
         return projects
             .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
     }, [searchString, projects])
+
+    useAlert(true)
+
     return (
         <ThemeProvider
             language={"en"}

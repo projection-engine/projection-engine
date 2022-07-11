@@ -4,7 +4,7 @@ import axios from "axios"
 import styles from "../styles/Issue.module.css"
 import stylesIssues from "../styles/IssuesList.module.css"
 import PropTypes from "prop-types"
-import {MarkdownMinimal, useMarkdown} from "@f-ui/markdown"
+import {Markdown, useMarkdown} from "@f-ui/markdown"
 
 export default function Issue(props) {
     const [comments, setComments] = useState([])
@@ -78,7 +78,7 @@ function Comment(props) {
                 </ToolTip>
             </div>
             <div className={styles.commentWrapper}>
-                <MarkdownMinimal hook={hook}/>
+                <Markdown hook={hook}/>
             </div>
         </div>
     )
