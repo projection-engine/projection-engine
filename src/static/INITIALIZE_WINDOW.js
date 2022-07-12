@@ -19,7 +19,7 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     Math.quat = quat
 
     // BLUEPRINTS
-    window.blueprints = {scale: 1}
+    window.blueprints = {scale: 1, grid: 1}
 
     // CONTEXT MENU
     window.contextMenu = {triggers: [], options: [], target: undefined}

@@ -18,6 +18,7 @@ import Shortcuts from "./components/shortcuts/Shortcuts"
 
 const {ipcRenderer} = window.require("electron")
 const DARK = "dark"
+
 function Project() {
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
@@ -25,12 +26,12 @@ function Project() {
     const [project, setProject] = useState()
     const [refresh, quickAccess] = useQuickAccess(project?.id)
     const [events, setEvents] = useState({})
-    const [settings,, pushBlock] = useDirectState(SETTINGS) 
+    const [settings, , pushBlock] = useDirectState(SETTINGS)
 
     useEffect(() => {
         ipcRenderer.send(ROUTES.LOAD_PROJECT)
         ipcRenderer.on(ROUTES.PAGE_PROPS, (ev, data) => {
-            const fs =  new FileSystem(data.package.id)
+            const fs = new FileSystem(data.package.id)
             fs.refresh = refresh
             INITIALIZE_WINDOW(fs, loader.pushEvent)
 
@@ -47,25 +48,26 @@ function Project() {
             theme={DARK}
             accentColor={global.accentColor}
             className={styles.wrapper}
-        > 
-            <QuickAccessProvider.Provider value={quickAccess}> 
-                {project? <Editor
-                    settings={settings}
-                    load={loader}
-                    pushSettingsBlock={pushBlock}
+        >
+            <QuickAccessProvider.Provider value={quickAccess}>
+                {project ?
+                    <Editor
+                        settings={settings}
+                        load={loader}
+                        pushSettingsBlock={pushBlock}
 
-                    events={{
-                        ...events,
-                        closeEvent: FRAME_EVENTS.CLOSE,
-                        minimizeEvent: FRAME_EVENTS.MINIMIZE,
-                        maximizeEvent: FRAME_EVENTS.MAXIMIZE
-                    }}
-                    quickAccess={quickAccess}
-                    id={project.id}
-                    meta={project.meta}
-                /> : null}
+                        events={{
+                            ...events,
+                            closeEvent: FRAME_EVENTS.CLOSE,
+                            minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                            maximizeEvent: FRAME_EVENTS.MAXIMIZE
+                        }}
+                        quickAccess={quickAccess}
+                        id={project.id}
+                        meta={project.meta}
+                    /> : null}
                 <Shortcuts/>
-            </QuickAccessProvider.Provider> 
+            </QuickAccessProvider.Provider>
         </ThemeProvider>
     )
 }

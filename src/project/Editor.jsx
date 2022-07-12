@@ -46,7 +46,8 @@ export default function Editor(props) {
                 selectedEntity: engine.selectedEntity,
                 materials: engine.materials,
                 setMaterials: engine.setMaterials,
-                submitPackage
+                submitPackage,
+                quickAccessMaterials: props.quickAccess.materials
             }}
         >
             <HierarchyProvider.Provider value={{

@@ -48,7 +48,7 @@ export default function ComponentEditor(props) {
                                 <label className={styles.overflow}>
                                     {currentTab === "-1" ? "Display" : null}
                                     {currentTab === "-2" ? "Rendering features" : null}
-                                    {currentTab === "-3" ? "Editor camera" : null}
+                                    {currentTab === "-3" ? "EditorCamera camera" : null}
                                 </label>
                             </div>
                         )}

@@ -9,7 +9,7 @@ import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
 import Scripts from "../components/Scripts"
 import Rendering from "../components/Rendering"
-import Editor from "../components/Editor"
+import EditorCamera from "../components/EditorCamera"
 import Line from "../components/Line"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
@@ -186,7 +186,7 @@ export default function useForm(
                 content: (
                     <div className={styles.formsWrapper}>
                         {currentTab === "-2" ? <Rendering/> : null}
-                        {currentTab === "-3" ? <Editor/> : null}
+                        {currentTab === "-3" ? <EditorCamera/> : null}
                     </div>
                 )
             }

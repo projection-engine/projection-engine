@@ -25,7 +25,7 @@ export default function SideBar(props) {
             >
                 <Icon
                     styles={{width: "30px"}}
-                >chat_bubble</Icon>
+                >report_bug</Icon>
                 {EN.HOME.SIDE_BAR.ISSUES}
             </Button>
         </div>

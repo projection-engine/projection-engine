@@ -11,10 +11,20 @@ export default async function loader(projectPath, projectID, listenID, sender) {
     sender.send(CHANNELS.META_DATA + "-" + listenID, {
         meta, settings, entities
     })
-    const meshes = [...new Set(entities.filter(e => e.data.components[COMPONENTS.MESH]).map(e => e.data.components[COMPONENTS.MESH].meshID))],
-        materials = [...new Set(entities.map(e => e.data.components[COMPONENTS.MATERIAL]?.materialID).filter(e => e !== undefined))]
+    const toLoadData = {
+        meshes: new Set(),
+        materials: new Set()
+    }
+    for(let i =0; i < entities.length; i++){
+        const {data: current} = entities[i]
 
-    loadMeshes(meshes, projectPath, (data) => sender.send(CHANNELS.MESH + "-" + listenID, data)).catch()
-    loadMaterials(materials, projectPath, (data) => sender.send(CHANNELS.MATERIAL + "-" + listenID, data)).catch()
+        if(!current.components || !current.components[COMPONENTS.MESH])
+            continue
+        toLoadData.materials.add(current.components[COMPONENTS.MESH].materialID)
+        toLoadData.meshes.add(current.components[COMPONENTS.MESH].meshID)
+    }
+
+    loadMeshes(Array.from(toLoadData.meshes), projectPath, (data) => sender.send(CHANNELS.MESH + "-" + listenID, data)).catch()
+    loadMaterials(Array.from(toLoadData.materials), projectPath, (data) => sender.send(CHANNELS.MATERIAL + "-" + listenID, data)).catch()
 
 }

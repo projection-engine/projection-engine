@@ -35,6 +35,7 @@ export default function useProjectWrapper(id,  settings, pushSettingsBlock, load
                     load.finishEvent(EVENTS.PROJECT_DATA)
                 })
             ipcRenderer.on(CHANNELS.MESH + "-" + listenID, (ev, res) => {
+
                 engine.dispatchMeshes([new MeshInstance(res)])
             })
             ipcRenderer.on(CHANNELS.MATERIAL + "-" + listenID, (ev, res) => {

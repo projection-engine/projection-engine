@@ -6,15 +6,15 @@ The **Projection DevelopmentRenderer** is a 3D graphics engine designed and writ
 
 |                                                  Simple scene                                                  |                                                  ShaderEditor editor                                                   |
 |:--------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="Editor material"/> | <img src="https://github.com/projection-engine/.github/blob/main/ShaderEditor v2.png?raw=true" alt="Editor material"/> |
+| <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="EditorCamera material"/> | <img src="https://github.com/projection-engine/.github/blob/main/ShaderEditor v2.png?raw=true" alt="EditorCamera material"/> |
 
 |                                    Parallax occlusion mapping                               |                            Light propagation volumes global illumination (dev)                             |
 |:--------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
-|  <img src="https://github.com/projection-engine/.github/blob/main/True parallax.png?raw=true"  title="Parallax occlusion mapping" alt="demo"/> | <img src="https://github.com/projection-engine/.github/blob/main/EEE.png?raw=true" alt="Editor material"/> |
+|  <img src="https://github.com/projection-engine/.github/blob/main/True parallax.png?raw=true"  title="Parallax occlusion mapping" alt="demo"/> | <img src="https://github.com/projection-engine/.github/blob/main/EEE.png?raw=true" alt="EditorCamera material"/> |
 
 |                                    Directional and omnidirectional shadows                                     |                            Node-based Scripting                        |
 |:--------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/projection-engine/.github/blob/main/OMNI.png?raw=true" alt="Editor material"/> | <img src="https://github.com/projection-engine/.github/blob/main/scripting.png?raw=true" alt="Editor material"/> |
+| <img src="https://github.com/projection-engine/.github/blob/main/OMNI.png?raw=true" alt="EditorCamera material"/> | <img src="https://github.com/projection-engine/.github/blob/main/scripting.png?raw=true" alt="EditorCamera material"/> |
 
 ## 2. History
 
@@ -78,7 +78,7 @@ Multiple features are already implemented or on the way to the editor, here is a
     - SSAO with depth reconstruction for both forward a deferred shaded materials
     - Fully physically based pipeline with metallic workflow
 
-### 3.3 Editor
+### 3.3 EditorCamera
 - **File system**
     - Folders and files management
     - Bookmarks
@@ -92,7 +92,7 @@ Multiple features are already implemented or on the way to the editor, here is a
 - **Multi-tab system**
 - **Shared GPU context for fast tab switching**
 - **Parallel processing (IPC and workers)**
-    - Editor loading
+    - EditorCamera loading
     - glTF import
     - File system refreshes
     - Image processing

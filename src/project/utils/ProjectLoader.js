@@ -87,8 +87,7 @@ export default class ProjectLoader {
 const ENTITIES = {
     [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id),
     [COMPONENTS.MESH]: async (entity, k) => {
-        const component = new MeshComponent(entity.components[k].id, entity.components[k].id)
-        component.materialID = entity.components[k].materialID
+        const component = new MeshComponent(entity.components[k].id, entity.components[k].meshID, entity.components[k].materialID )
         const toLoad = [],
             toLoop = entity.components[k].uniforms ? entity.components[k].uniforms : []
 
