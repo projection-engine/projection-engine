@@ -18,7 +18,13 @@ a {
   box-sizing: border-box;
   text-rendering: optimizeSpeed;
 }
+*:focus{
+  outline: none;
+}
 
+*:not(input){
+  user-select: none;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 5px;

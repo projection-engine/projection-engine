@@ -22,15 +22,15 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
     window.blueprints = {scale: 1, grid: 1}
 
     // CONTEXT MENU
-    window.contextMenu = {triggers: [], options: [], target: undefined}
+    window.contextMenu = {targets: {}, focused: undefined}
     // ENTITY WORKER
     const listeners = {}
-    window.entityWorker =  new Worker(new URL("./EntityWorker.js", import.meta.url))
+    window.entityWorker = new Worker(new URL("./EntityWorker.js", import.meta.url))
     window.addEntityWorkerListener = (callback, id) => {
         listeners[id] = callback
     }
     window.entityWorker.onmessage = ({data: {actionID, payload}}) => {
-        if(listeners[actionID])
+        if (listeners[actionID])
             listeners[actionID](payload)
     }
 
@@ -53,10 +53,10 @@ export default function INITIALIZE_WINDOW(fileSystem, pushEvent) {
                     </div>}
 
                 {actions.map((a, i) => (
-                    <div 
-                        data-action={"-"} 
-					 	key={"short-cut-" + a.label + "-" + i}
-					 	style={{display: a.disabled ? "none" : undefined}}
+                    <div
+                        data-action={"-"}
+                        key={"short-cut-" + a.label + "-" + i}
+                        style={{display: a.disabled ? "none" : undefined}}
                     >
                         <div data-item={"-"}>
                             {a.require.map((e, i) => LABELED_KEYS[e] + (i < a.require.length - 1 ? " + " : ""))}

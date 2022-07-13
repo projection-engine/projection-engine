@@ -3,16 +3,18 @@ import {getCall} from "../utils/AsyncFS"
 import FileSystem from "../utils/files/FileSystem"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 
+
 export default function useFiles(engine) {
+    const  PATH = window.fileSystem.path + FileSystem.sep + "assets"
     const [items, setItems] = useState([])
     const [bookmarks, setBookmarks] = useState([])
-    const path = useMemo(() => window.fileSystem.path + FileSystem.sep + "assets", [])
+
     const [loading, setLoading] = useState(false)
 
     async function refreshFiles(){
         setLoading(true)
         window.fileSystem.refresh()
-        const done = await getCall("refresh-files", {pathName: path})
+        const done = await getCall("refresh-files", {pathName: PATH})
         setLoading(false)
         setItems(done)
     }
@@ -25,11 +27,8 @@ export default function useFiles(engine) {
                 if (res)
                     setBookmarks(res)
             })
-    }, [])
-    useEffect(() => {
         refreshFiles().catch()
     }, [])
-
 
     return {
         removeEntity:(entities) => {
@@ -39,7 +38,7 @@ export default function useFiles(engine) {
         },
         refreshFiles,
         loading,
-        path,
+        path: PATH,
         items,
         setItems,
         bookmarks,
