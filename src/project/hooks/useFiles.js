@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import {getCall} from "../utils/AsyncFS"
 import FileSystem from "../utils/files/FileSystem"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
@@ -29,14 +29,14 @@ export default function useFiles(engine) {
     useEffect(() => {
         refreshFiles().catch()
     }, [])
-    const removeEntity = useCallback(() => {
-        engine.setSelected([])
-        engine.entities.forEach(entity => window.fileSystem.deleteEntity(entity.id))
-        engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: engine.entities})
-    }, [engine.entities])
+
 
     return {
-        removeEntity,
+        removeEntity:(entities) => {
+            engine.setSelected([])
+            entities.forEach(entity => window.fileSystem.deleteEntity(entity))
+            engine.dispatchEntities({type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: entities})
+        },
         refreshFiles,
         loading,
         path,

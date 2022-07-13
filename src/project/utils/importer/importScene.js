@@ -7,7 +7,7 @@ import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FileSystem from "../../utils/files/FileSystem"
 import {vec4} from "gl-matrix"
 
-export default async function importScene(  engine, reg, onlyReturn) {
+export default async function importScene(engine, reg, onlyReturn) {
     const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
     const meshes = []
     const entities = []
@@ -36,8 +36,6 @@ export default async function importScene(  engine, reg, onlyReturn) {
         }
     } else
         alert.pushAlert("Error loading scene",  "error")
-
-
     return {meshes, entities}
 }
 
