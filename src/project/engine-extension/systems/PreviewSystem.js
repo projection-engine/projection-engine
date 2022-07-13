@@ -3,7 +3,7 @@ import ForwardPass from "../../engine/systems/passes/ForwardPass"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
-import SHADING_MODELS from "../../engine/templates/SHADING_MODELS"
+import SHADING_MODELS from "../../../static/misc/SHADING_MODELS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 
 function toBase64( fbo) {

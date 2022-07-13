@@ -5,10 +5,10 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import Transformation from "../../engine/utils/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
+import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 
-export default class TranslationGizmo extends Gizmo {
+export default class Translation extends Gizmo {
     target = []
     clickedAxis = -1
     tracking = false
@@ -20,11 +20,11 @@ export default class TranslationGizmo extends Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor( gizmoShader, renderTarget, resolution, sys) {
-        super( gizmoShader, renderTarget, resolution, sys)
-        this.xGizmo = this._mapEntity(2, "x")
-        this.yGizmo = this._mapEntity(3, "y")
-        this.zGizmo = this._mapEntity(4, "z")
+    constructor(resolution, sys) {
+        super(resolution, sys)
+        this.xGizmo = Translation.#mapEntity(2, "x")
+        this.yGizmo = Translation.#mapEntity(3, "y")
+        this.zGizmo = Translation.#mapEntity(4, "z")
         import("../../../static/meshes/Arrow.json")
             .then(res => {
                 this.xyz = new MeshInstance({
@@ -37,7 +37,7 @@ export default class TranslationGizmo extends Gizmo {
             })
     }
 
-    _mapEntity(i, axis) {
+    static #mapEntity(i, axis) {
         const e = new Entity(undefined)
         e.components[COMPONENTS.PICK] = new PickComponent(undefined, i - 3)
         e.components[COMPONENTS.TRANSFORM] = new TransformComponent()
@@ -71,7 +71,6 @@ export default class TranslationGizmo extends Gizmo {
     }
 
     onMouseMove(event) {
-
         const s = Math.abs(event.movementX *this.gridSize)
         const sign  =Math.sign(event.movementX)
         switch (this.clickedAxis) {
@@ -102,19 +101,14 @@ export default class TranslationGizmo extends Gizmo {
             let t = this.target[0].components[COMPONENTS.TRANSFORM]?.translation
             if (!t)
                 t = this.target[0].components[COMPONENTS.DIRECTIONAL_LIGHT]?.direction
-            this.renderTarget.render(t)
+            this.tooltip.render(t)
         }
-    }
-
-    execute(meshes, meshesMap, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize,  setSelected) {
-        this.gridSize = gridSize
-        super.execute(meshes, meshesMap, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz,  setSelected)
     }
 
     transformElement(vec) {
         super.transformElement()
         let toApply
-        if (this.typeRot === ROTATION_TYPES.GLOBAL || !this.target[0].components[COMPONENTS.TRANSFORM] || this.target.length > 1)
+        if (this.typeRot === TRANSFORMATION_TYPE.GLOBAL || !this.target[0].components[COMPONENTS.TRANSFORM] || this.target.length > 1)
             toApply = vec
         else
             toApply = vec4.transformQuat([], vec, this.target[0].components[COMPONENTS.TRANSFORM].rotationQuat)

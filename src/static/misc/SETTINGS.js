@@ -1,31 +1,25 @@
-import SHADING_MODELS from "../../project/engine/templates/SHADING_MODELS"
+import SHADING_MODELS from "./SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
-import ROTATION_TYPES from "./ROTATION_TYPES"
+import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../components/view/VIEWS"
 
 const toRad = Math.PI / 180
 export default {
     projectCreationDate: (new Date()).toDateString(),
-    timestamp: 30000,
 
     iconsVisibility: true,
     gridVisibility: true,
     shadingModel: SHADING_MODELS.DETAIL,
 
-    resolutionMultiplier: 1,
-    fullscreen: false,
     gizmo: GIZMOS.TRANSLATION,
-    viewPreferences: false,
-    filesVisibility: true,
-    sceneVisibility: true,
-    viewportOptionsVisibility: true,
+
     gamma: 2.2,
     exposure: 1,
-    gridSize: .01,
-    rotationType: ROTATION_TYPES.GLOBAL,
+    transformationType: TRANSFORMATION_TYPE.GLOBAL,
     iconSize: 1,
     bloomStrength: .3,
     bloomThreshold: .85,
+
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
@@ -47,11 +41,9 @@ export default {
     distortionStrength: 1,
     chromaticAberrationStrength: 1,
 
-    ortho: false,
     fov: 60 * toRad,
     zNear: .1,
     zFar: 100000,
-    gridRotationSize: 1,
     pcfSamples: 3.,
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
@@ -63,8 +55,6 @@ export default {
     samples: 16,
 
     cameraAnimation: true,
-    shortcuts: [],
-
 
     // VIEWS
     views: [{

@@ -1,4 +1,4 @@
-import shared from "../../options/styles/ViewportOptions.module.css"
+import styles from "../styles/SideBar.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import React, {useMemo, useState} from "react"
@@ -28,12 +28,16 @@ export default function CameraBar(props) {
         window.renderer.camera.updateViewMatrix()
     }
     return (
-        <div className={shared.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
+        <div className={styles.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
             <CameraGizmo  bind={bind} />
-            <div className={shared.buttonGroup} style={{display: "grid", gap: "2px"}}>
+            <div
+                style={{
+                    display: "grid",
+                    gap: "2px"
+                }}>
                 <Dropdown
                     hideArrow={true}
-                    className={shared.groupItemVert}
+                    className={styles.groupItemVert}
                 >
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
                         Camera position
@@ -74,7 +78,7 @@ export default function CameraBar(props) {
                 </Dropdown>
 
                 <Button
-                    className={shared.groupItemVert}
+                    className={styles.groupItemVert}
                     onClick={() => {
                         const negated = !window.renderer.camera.ortho
                         window.renderer.camera.ortho = negated
@@ -88,15 +92,15 @@ export default function CameraBar(props) {
                 </Button>
 
                 <div
-                    className={shared.buttonGroup}
                     style={{
                         display: "grid",
                         transform: "translateY(12px)",
                         gap: "2px"
-                    }}>
+                    }}
+                >
 
                     <div
-                        className={[shared.groupItemVert, shared.dragInput].join(" ")}
+                        className={[styles.groupItemVert, styles.dragInput].join(" ")}
                         onMouseDown={e => handleGrab(e, window.renderer.camera, 0)}
                     >
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
@@ -105,7 +109,7 @@ export default function CameraBar(props) {
                         <Icon >zoom_in</Icon>
                     </div>
                     <div
-                        className={[shared.groupItemVert, shared.dragInput].join(" ")}
+                        className={[styles.groupItemVert, styles.dragInput].join(" ")}
                         onMouseDown={e => handleGrab(e, window.renderer.camera, 1)}
                         onDoubleClick={() => {
                             window.renderer.camera.centerOn = [0, 0, 0]

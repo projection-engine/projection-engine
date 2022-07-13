@@ -1,6 +1,29 @@
-export default class TransformationTooltip {
-    constructor(element) {
-        this.renderTarget = element
+const CSS = {
+    backdropFilter: "blur(10px) brightness(70%)",
+    borderRadius: "5px",
+    width: "fit-content",
+    height: "fit-content",
+    position: "absolute",
+    top: "4px",
+    left: "4px",
+    zIndex: "10",
+    color: "white",
+    padding: "8px",
+    fontSize: ".75rem",
+    display: "none"
+}
+
+export default class Tooltip {
+    constructor() {
+        const targetID = window.gpu.canvas.id + "-gizmo"
+        if (document.getElementById(targetID) !== null)
+            this.renderTarget = document.getElementById(targetID)
+        else {
+            this.renderTarget = document.createElement("div")
+            this.renderTarget.id = targetID
+            Object.assign(this.renderTarget.style, CSS)
+            document.body.appendChild(this.renderTarget)
+        }
     }
 
     start( ) {
@@ -44,3 +67,4 @@ export default class TransformationTooltip {
     }
 
 }
+

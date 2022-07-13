@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import Tree from "../../../components/tree/Tree"
+import Tree from "./components/Tree"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import Search from "../../../components/search/Search"

@@ -9,7 +9,7 @@ import MaterialInstance from "../engine/instances/MaterialInstance"
 import * as debugCode from "./shaders/DEBUG.glsl"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
-import SHADING_MODELS from "../engine/templates/SHADING_MODELS"
+import SHADING_MODELS from "../../static/misc/SHADING_MODELS"
 import {STEPS_LIGHT_PROBE} from "../engine/systems/passes/DiffuseProbePass"
 import Packager from "../engine/Packager"
 import ENVIRONMENT from "../engine/templates/ENVIRONMENT"
@@ -19,6 +19,9 @@ export default class DevelopmentRenderer extends Renderer {
     gizmo
     cameraData = {}
     cursor
+    selected = []
+    setSelected = () => null
+
 
     constructor( resolution) {
         super( resolution )
@@ -55,6 +58,13 @@ export default class DevelopmentRenderer extends Renderer {
 
     set camera(data) {
         this.cameraData.camera = data
+    }
+    get gizmos(){
+        return {
+            rotation: this.editorSystem.gizmoSystem.rotationGizmo,
+            translation: this.editorSystem.gizmoSystem.translationGizmo,
+            scale: this.editorSystem.gizmoSystem.scaleGizmo
+        }
     }
 
     refreshCubemaps() {

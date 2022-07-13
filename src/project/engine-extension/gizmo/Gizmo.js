@@ -1,6 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
+import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../engine/utils/Conversion"
 
 export default class Gizmo {
@@ -15,11 +15,13 @@ export default class Gizmo {
     xGizmo
     yGizmo
     zGizmo
-    constructor( gizmoShader, renderTarget, resolution, sys) {
-        this.sys = sys
-        this.renderTarget = renderTarget
-        this.resolution = resolution
-        this.gizmoShader = gizmoShader
+    xyz
+	gridSize
+
+    constructor(sys) {
+        this.drawID = (...params) => sys.drawToDepthSampler(...params)
+        this.tooltip = sys.tooltip
+        this.gizmoShader = sys.gizmoShader
     }
 
     onMouseDown(event) {
@@ -48,10 +50,10 @@ export default class Gizmo {
             document.exitPointerLock()
             this.clickedAxis = -1
             this.t = 0
-            if(force !== true)
+            if (force !== true)
                 this.onGizmoEnd()
         }
-        this.renderTarget.stop()
+        this.tooltip.stop()
     }
 
     transformElement() {
@@ -81,12 +83,12 @@ export default class Gizmo {
         }
     }
 
-    #testClick(arrow, translation, onGizmoStart, selected) {
-        const mX = this._translateMatrix(translation, this.xGizmo.components)
-        const mY = this._translateMatrix(translation, this.yGizmo.components)
-        const mZ = this._translateMatrix(translation, this.zGizmo.components)
-        const FBO = this.sys.drawToDepthSampler(
-            arrow,
+    #testClick(translation, onGizmoStart, selected) {
+        const mX = this.#translateMatrix(translation, this.xGizmo.components)
+        const mY = this.#translateMatrix(translation, this.yGizmo.components)
+        const mZ = this.#translateMatrix(translation, this.zGizmo.components)
+        const FBO = this.drawID(
+            this.xyz,
             this.camera.viewMatrix,
             this.camera.projectionMatrix,
             [mX, mY, mZ],
@@ -100,13 +102,12 @@ export default class Gizmo {
 
         if (pickID === 0) {
             this.onMouseUp(true)
-            this.setSelected([])
-        }
-        else {
+            window.renderer.setSelected([])
+        } else {
             this.tracking = true
             this.target = selected
             window.gpu.canvas.requestPointerLock()
-            this.renderTarget.start()
+            this.tooltip.start()
             onGizmoStart()
         }
     }
@@ -117,18 +118,13 @@ export default class Gizmo {
         meshesMap,
         selected,
         camera,
-
         entities,
         transformationType,
         onGizmoStart,
-        onGizmoEnd,
-        gridSize,
-        arrow,
-        setSelected
+        onGizmoEnd
     ) {
 
         if (selected.length > 0) {
-            this.setSelected = setSelected
             const el = selected[0]
             const parent = el.parent
             const currentTranslation = this.getTranslation(el),
@@ -139,32 +135,31 @@ export default class Gizmo {
                     currentTranslation.data[2] + parentTranslation.data[2]
                 ] : undefined
             if (translation) {
-                this.gridSize = gridSize
                 this.firstPick = false
                 this.camera = camera
                 this.typeRot = transformationType
-
                 this.onGizmoEnd = onGizmoEnd
+
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(arrow, translation, onGizmoStart, selected, entities)
+                    this.#testClick(translation, onGizmoStart, selected, entities)
                 const t = el.components[COMPONENTS.TRANSFORM]
                 this.rotationTarget = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
-                this.#drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader, arrow)
+                this.#drawGizmo(translation, camera.viewMatrix, camera.projectionMatrix)
             }
         }
 
     }
 
-    _translateMatrix(t, components) {
+    #translateMatrix(t, components) {
         const comp = components[COMPONENTS.TRANSFORM]
         const matrix = comp ? [...comp.transformationMatrix] : this.getLightData("transformationMatrix", components)
 
         const translation = comp ? comp.translation : this.getLightData("direction", components),
             rotationQuat = comp ? comp.rotationQuat : [0, 0, 0, 1],
             scale = comp ? comp.scaling : [1, 1, 1]
-        if (this.typeRot === ROTATION_TYPES.RELATIVE) {
+        if (this.typeRot === TRANSFORMATION_TYPE.RELATIVE)
             mat4.fromRotationTranslationScaleOrigin(matrix, quat.multiply([], this.rotationTarget, rotationQuat), vec3.add([], t, translation), scale, translation)
-        } else {
+        else {
             matrix[12] += t[0]
             matrix[13] += t[1]
             matrix[14] += t[2]
@@ -175,36 +170,35 @@ export default class Gizmo {
 
     getLightData(key, components) {
         const dir = components[COMPONENTS.DIRECTIONAL_LIGHT]
-        if(dir)
+        if (dir)
             return dir[key]
         return undefined
     }
 
-    #drawGizmo(translation, view, proj, shader, arrow) {
+    #drawGizmo(translation, view, proj) {
 
-        const mX = this._translateMatrix(translation, this.xGizmo.components)
-        const mY = this._translateMatrix(translation, this.yGizmo.components)
-        const mZ = this._translateMatrix(translation, this.zGizmo.components)
+        const mX = this.#translateMatrix(translation, this.xGizmo.components)
+        const mY = this.#translateMatrix(translation, this.yGizmo.components)
+        const mZ = this.#translateMatrix(translation, this.zGizmo.components)
 
-        shader.use()
-        window.gpu.bindVertexArray(arrow.VAO)
-        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, arrow.indexVBO)
-        arrow.vertexVBO.enable()
-
+        this.gizmoShader.use()
+        window.gpu.bindVertexArray(this.xyz.VAO)
+        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
+        this.xyz.vertexVBO.enable()
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
-            this._draw(view, mX, proj, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, shader, translation, arrow)
+            this.#draw(view, mX, proj, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, translation)
         if (this.tracking && this.clickedAxis === 2 || !this.tracking)
-            this._draw(view, mY, proj, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, shader, translation, arrow)
+            this.#draw(view, mY, proj, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, translation)
         if (this.tracking && this.clickedAxis === 3 || !this.tracking)
-            this._draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, shader, translation, arrow)
+            this.#draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, translation)
 
-        arrow.vertexVBO.disable()
+        this.xyz.vertexVBO.disable()
         window.gpu.bindVertexArray(null)
         window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
     }
 
-    _draw(view, t, proj, a, id, shader, tt, arrow) {
-        shader.bindForUse({
+    #draw(view, t, proj, a, id, tt) {
+        this.gizmoShader.bindForUse({
             viewMatrix: view,
             transformMatrix: t,
             projectionMatrix: proj,
@@ -215,6 +209,6 @@ export default class Gizmo {
             uID: [...id, 1],
             cameraIsOrthographic: this.camera.ortho
         })
-        window.gpu.drawElements(window.gpu.TRIANGLES, arrow.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
+        window.gpu.drawElements(window.gpu.TRIANGLES, this.xyz.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
     }
 }

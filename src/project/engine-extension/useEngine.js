@@ -101,7 +101,7 @@ export default function useEngine(settings) {
                 })
                 setFallbackMaterial(fMat)
             }
-
+            window.renderer.setSelected = setSelected
             window.renderer.camera.updateProjection()
             window.renderer.entitiesMap = entities.current
             window.renderer.meshes = meshes.current
@@ -113,7 +113,7 @@ export default function useEngine(settings) {
 
             window.renderer.updatePackage(
                 executingAnimation,
-                {selected, setSelected, ...settings},
+                {selected, ...settings},
                 onGizmoStart,
                 onGizmoEnd,
                 levelScript,

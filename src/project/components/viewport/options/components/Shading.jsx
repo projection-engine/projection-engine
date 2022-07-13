@@ -1,6 +1,6 @@
 import styles from "../styles/ViewportOptions.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
-import SHADING_MODELS from "../../../../engine/templates/SHADING_MODELS"
+import SHADING_MODELS from "../../../../../static/misc/SHADING_MODELS"
 import React, {useContext, useEffect, useMemo, useState} from "react"
 import SettingsProvider from "../../../../providers/SettingsProvider"
 

@@ -9,25 +9,27 @@ import Transformation from "../../engine/utils/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
 import TextureInstance from "../../engine/instances/TextureInstance"
 import circle from "../../../static/icons/circle.png"
-import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
+import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import Conversion from "../../engine/utils/Conversion"
 
+let gpu
 const toDeg = 57.29, toRad = 3.1415 / 180
-export default class RotationGizmo {
-    pivotPoint = [0,10,0,0]
+export default class Rotation {
+    pivotPoint = [0, 10, 0, 0]
     clickedAxis = -1
     tracking = false
     currentRotation = [0, 0, 0]
-    gridSize = .01
+    gridSize = .1
     distanceX = 0
     distanceY = 0
     distanceZ = 0
 
-    constructor(renderTarget, resolution, sys) {
-        this.sys = sys
-        this.renderTarget = renderTarget
-        this.resolution = resolution
+
+    constructor(sys) {
+        gpu = window.gpu
+		this.drawID = (...params) => sys.drawToDepthSampler(...params)
+        this.renderTarget = sys.tooltip.renderTarget
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
         this.xGizmo = this._mapEntity(2, "x")
         this.yGizmo = this._mapEntity(3, "y")
@@ -77,12 +79,12 @@ export default class RotationGizmo {
     }
 
     onMouseDown(event) {
-        if (event.target === window.gpu.canvas && !this.firstPick) {
-            const w = window.gpu.canvas.width, h = window.gpu.canvas.height
+        if (event.target === gpu.canvas && !this.firstPick) {
+            const w = gpu.canvas.width, h = gpu.canvas.height
             const x = event.clientX
             const y = event.clientY
 
-            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, window.gpu.canvas)
+            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, gpu.canvas)
             this.currentCoord.clientX = event.clientX
             this.currentCoord.clientY = event.clientY
         }
@@ -106,7 +108,7 @@ export default class RotationGizmo {
             document.exitPointerLock()
             this.currentRotation = [0, 0, 0]
             this.t = 0
-            if(force !== true)
+            if (force !== true)
                 this.onGizmoEnd()
         }
         this.renderTarget.style.display = "none"
@@ -160,15 +162,14 @@ export default class RotationGizmo {
         const SIZE = this.target.length
         for (let i = 0; i < SIZE; i++) {
             const target = this.target[i].components[COMPONENTS.TRANSFORM]
-            if (this.typeRot === ROTATION_TYPES.GLOBAL || SIZE > 1) {
-                if(vec3.len(target.pivotPoint) > 0) {
+            if (this.typeRot === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1) {
+                if (vec3.len(target.pivotPoint) > 0) {
                     const rotationMatrix = mat4.fromQuat([], quatA),
                         translated = vec3.sub([], target.translation, target.pivotPoint)
                     target.translation = vec3.add([], vec3.transformMat4([], translated, rotationMatrix), target.pivotPoint)
                 }
                 target.rotationQuat = quat.multiply([], quatA, target.rotationQuat)
-            }
-            else
+            } else
                 target.rotationQuat = quat.multiply([], target.rotationQuat, quatA)
         }
     }
@@ -188,13 +189,13 @@ export default class RotationGizmo {
         }
     }
 
-    #testClick(el, camera,  selected, entities, translation ) {
+    #testClick(el, camera, selected, entities, translation) {
         const r = el.components[COMPONENTS.TRANSFORM].rotationQuat
         const mX = this.#rotateMatrix(translation, r, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
         const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
         const mZ = this.#rotateMatrix(translation, r, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
-        const FBO = this.sys.drawToDepthSampler(
+        const FBO = this.drawID(
             this.xyz,
             camera.viewMatrix,
             camera.projectionMatrix,
@@ -209,7 +210,7 @@ export default class RotationGizmo {
 
         if (pickID === 0) {
             this.onMouseUp(true)
-            this.setSelected([])
+            window.renderer.setSelected([])
         } else {
             this.tracking = true
 
@@ -220,7 +221,7 @@ export default class RotationGizmo {
             this.renderTarget.innerText = "0 θ"
             this.target = selected
 
-            window.gpu.canvas.requestPointerLock()
+            gpu.canvas.requestPointerLock()
         }
     }
 
@@ -232,12 +233,9 @@ export default class RotationGizmo {
         entities,
         transformationType,
         onGizmoStart,
-        onGizmoEnd,
-        gridSize,
-        setSelected
+        onGizmoEnd
     ) {
         if (selected.length > 0) {
-            this.setSelected = setSelected
             const el = selected[0]
             const parent = el.parent
             const currentTranslation = this.getTranslation(el),
@@ -248,15 +246,14 @@ export default class RotationGizmo {
                     currentTranslation.data[2] + parentTranslation.data[2]
                 ] : undefined
             if (translation) {
-                this.gridSize = gridSize
                 this.firstPick = false
                 this.typeRot = transformationType
                 this.camera = camera
                 this.onGizmoStart = onGizmoStart
                 this.onGizmoEnd = onGizmoEnd
                 if (this.currentCoord && !this.tracking)
-                    this.#testClick(el,  camera, selected, entities, translation)
-                this.#drawGizmo(translation, el.components[COMPONENTS.TRANSFORM].rotationQuat, camera.viewMatrix, camera.projectionMatrix, this.gizmoShader)
+                    this.#testClick(el, camera, selected, entities, translation)
+                this.#drawGizmo(translation, el.components[COMPONENTS.TRANSFORM].rotationQuat, camera.viewMatrix, camera.projectionMatrix)
             }
         }
     }
@@ -266,7 +263,7 @@ export default class RotationGizmo {
         matrix[12] += t[0]
         matrix[13] += t[1]
         matrix[14] += t[2]
-        if (this.typeRot === ROTATION_TYPES.GLOBAL && axis !== undefined) {
+        if (this.typeRot === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
             switch (axis) {
             case "x":
                 mat4.rotateY(matrix, matrix, -this.currentRotation[0])
@@ -286,37 +283,36 @@ export default class RotationGizmo {
         return matrix
     }
 
-    #drawGizmo(translation, rotation, view, proj, shader) {
-        if (this.xyz) {
-            window.gpu.clear(window.gpu.DEPTH_BUFFER_BIT)
-            window.gpu.disable(window.gpu.CULL_FACE)
+    #drawGizmo(translation, rotation, view, proj) {
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        gpu.disable(gpu.CULL_FACE)
 
-            const mX = this.#rotateMatrix(translation, rotation, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
-            const mY = this.#rotateMatrix(translation, rotation, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
-            const mZ = this.#rotateMatrix(translation, rotation, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
+        const mX = this.#rotateMatrix(translation, rotation, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = this.#rotateMatrix(translation, rotation, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = this.#rotateMatrix(translation, rotation, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
-            shader.use()
-            window.gpu.bindVertexArray(this.xyz.VAO)
-            window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
-            this.xyz.vertexVBO.enable()
-            this.xyz.uvVBO.enable()
+        this.gizmoShader.use()
+        gpu.bindVertexArray(this.xyz.VAO)
+        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
+        this.xyz.vertexVBO.enable()
+        this.xyz.uvVBO.enable()
 
-            if (this.tracking && this.clickedAxis === 1 || !this.tracking)
-                this.#draw(view, mX, proj, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, shader, translation)
-            if (this.tracking && this.clickedAxis === 2 || !this.tracking)
-                this.#draw(view, mY, proj, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, shader, translation)
-            if (this.tracking && this.clickedAxis === 3 || !this.tracking)
-                this.#draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, shader, translation)
+        if (this.tracking && this.clickedAxis === 1 || !this.tracking)
+            this.#draw(view, mX, proj, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, translation)
+        if (this.tracking && this.clickedAxis === 2 || !this.tracking)
+            this.#draw(view, mY, proj, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, translation)
+        if (this.tracking && this.clickedAxis === 3 || !this.tracking)
+            this.#draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, translation)
 
-            this.xyz.vertexVBO.disable()
-            window.gpu.bindVertexArray(null)
-            window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
-            window.gpu.enable(window.gpu.CULL_FACE)
-        }
+        this.xyz.vertexVBO.disable()
+        gpu.bindVertexArray(null)
+        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, null)
+        gpu.enable(gpu.CULL_FACE)
+
     }
 
-    #draw(view, t, proj, a, id, shader, tt) {
-        shader.bindForUse({
+    #draw(view, t, proj, a, id, tt) {
+        this.gizmoShader.bindForUse({
             viewMatrix: view,
             transformMatrix: t,
             projectionMatrix: proj,
@@ -328,6 +324,6 @@ export default class RotationGizmo {
             circleSampler: this.texture.texture,
             cameraIsOrthographic: this.camera.ortho
         })
-        window.gpu.drawElements(window.gpu.TRIANGLES, this.xyz.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
+        gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }
 }

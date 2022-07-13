@@ -25,15 +25,11 @@ export default class Wrapper {
         const {
             selected,
             camera,
-            rotationType,
+            transformationType,
             onGizmoStart,
             onGizmoEnd,
             gizmo,
-            canExecutePhysicsAnimation,
-            gridSize,
-            gridRotationSize,
-            gridScaleSize,
-            setSelected
+            canExecutePhysicsAnimation
         } = options
 
         if(!after) {
@@ -52,16 +48,11 @@ export default class Wrapper {
                     meshesMap,
                     selected,
                     camera,
-
                     entitiesMap,
                     gizmo,
-                    rotationType,
+                    transformationType,
                     onGizmoStart,
-                    onGizmoEnd,
-                    gridSize,
-                    gridRotationSize,
-                    gridScaleSize,
-                    setSelected
+                    onGizmoEnd
                 )
                 this.selectedSystem.execute(selected, meshesMap, camera, entitiesMap)
             }

@@ -5,36 +5,36 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import Transformation from "../../engine/utils/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import ROTATION_TYPES from "../../../static/misc/ROTATION_TYPES"
+import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 
-export default class ScaleGizmo extends Gizmo {
+export default class Scale extends Gizmo {
     target = []
     clickedAxis = -1
     tracking = false
     rotationTarget = [0, 0, 0, 1]
 
+    gridSize = .01
     distanceX = 0
     distanceY = 0
     distanceZ = 0
 
-    constructor( gizmoShader, renderTarget, resolution, sys) {
-        super( gizmoShader, renderTarget, resolution, sys)
-        this.xGizmo = this._mapEntity(2, "x")
-        this.yGizmo = this._mapEntity(3, "y")
-        this.zGizmo = this._mapEntity(4, "z")
+    constructor( sys) {
+        super( sys)
+        this.xGizmo = Scale.#mapEntity(2, "x")
+        this.yGizmo = Scale.#mapEntity(3, "y")
+        this.zGizmo = Scale.#mapEntity(4, "z")
 
         import("../../../static/meshes/ScaleGizmo.json")
             .then(res => {
                 this.xyz = new MeshInstance({
-
                     vertices: res.vertices,
                     indices: res.indices
                 })
             })
     }
 
-    _mapEntity(i, axis) {
+    static #mapEntity(i, axis) {
         const e = new Entity(undefined)
         e.components[COMPONENTS.PICK] = new PickComponent(undefined, i - 3)
         e.components[COMPONENTS.TRANSFORM] = new TransformComponent()
@@ -62,7 +62,7 @@ export default class ScaleGizmo extends Gizmo {
 
     onMouseMove(event) {
         if (!this.started) {
-            this.renderTarget.start()
+            this.tooltip.start()
             this.started = true
             if(this.onGizmoStart)
                 this.onGizmoStart()
@@ -92,32 +92,22 @@ export default class ScaleGizmo extends Gizmo {
             break
         }
         if (this.target.length === 1)
-            this.renderTarget.render(this.target[0].components[COMPONENTS.TRANSFORM].scaling)
+            this.tooltip.render(this.target[0].components[COMPONENTS.TRANSFORM].scaling)
     }
 
     transformElement(vec) {
         let toApply
-        if (this.typeRot === ROTATION_TYPES.RELATIVE || this.target.length > 1)
+        if (this.typeRot === TRANSFORMATION_TYPE.RELATIVE || this.target.length > 1)
             toApply = vec
         else
             toApply = vec4.transformQuat([], vec, this.target[0].components[COMPONENTS.TRANSFORM].rotationQuat)
         for (let i = 0; i < this.target.length; i++) {
             const comp = this.target[i].components[COMPONENTS.TRANSFORM]
-            // const A = comp.translation,
-            //     B = comp.pivotPoint,
-            //     C = vec3.sub([], A, B),
-            //     RS = newScaling[0]/comp.scaling[0]
-            //
-            // comp.translation = vec3.add([], B, vec3.scale([], C, RS))
             comp.scaling = [
                 comp.scaling[0] - toApply[0],
                 comp.scaling[1] - toApply[1],
                 comp.scaling[2] - toApply[2]
             ]
         }
-    }
-
-    execute(meshes, meshesMap, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize,  setSelected) {
-        super.execute(meshes, meshesMap, selected, camera, entities, transformationType, onGizmoStart, onGizmoEnd, gridSize, this.xyz, setSelected)
     }
 }

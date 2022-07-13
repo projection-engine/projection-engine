@@ -16,7 +16,6 @@ export default function CameraTab(){
 
     return (
         <>
-
             <label className={styles.label}>Clipping planes</label>
             <Range
                 minLabelWidth={"30px"}

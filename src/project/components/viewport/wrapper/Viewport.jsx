@@ -189,6 +189,5 @@ Viewport.propTypes = {
     allowDrop: PropTypes.bool.isRequired,
     executingAnimation: PropTypes.bool,
     engine: PropTypes.object,
-    id: PropTypes.string,
-    resolutionMultiplier: PropTypes.number
+    id: PropTypes.string
 }
