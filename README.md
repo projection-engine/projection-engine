@@ -1,143 +1,53 @@
-# Projection engine
+# 1.0 alpha
+This release will mark the start of a new release schedule, new builds will come out weakly from now on.
 
-The **Projection DevelopmentRenderer** is a 3D graphics engine designed and written from ground up to be multi-platform and easy to use.
+This version is focused primarily on establishing a good and more optimized code structure for future releases.
 
-## 1. Screenshots
+With version 1.0 alpha many things were completely reworked and optimized, you can read through the list here:
 
-|                                                  Simple scene                                                  |                                                  ShaderEditor editor                                                   |
-|:--------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/projection-engine/.github/blob/main/SCENE 2.png?raw=true" alt="EditorCamera material"/> | <img src="https://github.com/projection-engine/.github/blob/main/ShaderEditor v2.png?raw=true" alt="EditorCamera material"/> |
+## Reworks
+### Scripting
+  - Removed support for node based scripting due to increased complexity and poor performance on execution
+  - JS scripting will now receive full attention, with APIs for working with network, transformation and other functionalities.
+### Hotkeys
+  - Under the hood everything was reworked to be much faster and efficient.
+  - Mouse position context now works as intended
+### Context menu
+  - Better mouse capture
+  - Reworked structure to be more efficient and fast
+### Rendering loop
+  - Reworked call structure and order to be faster and more reliable.
+  - Transformations done on scripts will now apply on same frame instead of being spread across multiple
+### Hierarchy 
+  - Complete rewrite of hierarchy component, sorting and parenting is now done on separate thread.
+  - DOM Element culling added to list to prevent slow-downs with multiple entities
+  - Child entities and parent entity are now accessible from current entity instead of an ID reference.
+### Entities and data structure
+  - After benchmarks and multiple tests all entities are now stored on a `map` instead of an array.
+  - All entities are available to be accessed from anywhere via `window.renderer.entities` or `window.renderer.entitiesMap`.
+  - Meshes moved to a map too.
+  - Due to this change less re-renders will occur on the editor increasing the performance in general
+  - Light packaging completely changed to use a typed array, now every refresh will no longer re-allocate a buffer and will use the current one if available
+### Skybox
+  - Removed old skybox structure
+  - Skybox focused material will be added on following versions
+  - Added background to editor (following versions will add support to color change)
+ 
+## Additions
+### VIEWS:
 
-|                                    Parallax occlusion mapping                               |                            Light propagation volumes global illumination (dev)                             |
-|:--------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
-|  <img src="https://github.com/projection-engine/.github/blob/main/True parallax.png?raw=true"  title="Parallax occlusion mapping" alt="demo"/> | <img src="https://github.com/projection-engine/.github/blob/main/EEE.png?raw=true" alt="EditorCamera material"/> |
+Views will add support for hot-swap and creation of views on the editor, this functionality was inspired by blender and adds a new layer of flexibility to the editor.
 
-|                                    Directional and omnidirectional shadows                                     |                            Node-based Scripting                        |
-|:--------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/projection-engine/.github/blob/main/OMNI.png?raw=true" alt="EditorCamera material"/> | <img src="https://github.com/projection-engine/.github/blob/main/scripting.png?raw=true" alt="EditorCamera material"/> |
+### Tabs:
 
-## 2. History
+Tabs add support for serialization of your layout of views.
 
-This engine started as a solo project on my vacation, but it quickly grew to something bigger. I was initially inspired by blender and already
-had some experience with Unreal DevelopmentRenderer 4 and Unity, so I decided to invest some time creating my own game engine where I could build my projects on, so, december
-last year the Projection DevelopmentRenderer was born, since then many big features came into existence and many more are coming.
+### Global illumination:
 
-### 2.1 Internal goals
-- Learn more about UI/UX
-- Better myself with code optimization
-- Learn deeply openGL/WebGL
-- Apply the mathematical theory I learned in college
-- Create something usable for more people
+***Specular reflections*** via screen space reflections were added ( this feature is not working 100% as intended and will receive more updates ).
 
-### 2.2 Current goals
-- Ability to craft and distribute scenes and interactive experiences on the Web or as an application.
-- Build a community around development with this tool and for it.
-- Fast way to prototype and test scenes.
-- Take in consideration what isn't as good or easy to work with in other tools and make it better if possible.
+***Diffuse illumination*** are now possible via ***SSGI***. this is a scene independent method of capturing the bounce of light in screen space and works really well for colorful and vibrant scenes.
 
+### Console 
 
-## 3. Features
-
-Multiple features are already implemented or on the way to the editor, here is a list of some of those features:
-
-### 3.1 Viewport
-
-- **Manipulation**:
-    - Transform gizmos:
-        - Rotation
-        - Translation
-        - Scaling
-    - Scripts picking
-    - Hot keys
-    - Multi select
-    - Transform for multiple entities
-    - Individual manipulation grid for rotation, scaling and translation
-    - Hierarchical transformation
-- **Visualization**
-    - Rendering modes for debug and ease of use
-    - Scripts highlight
-    - Icons
-    - World grid
-
-### 3.2 Rendering
-- **Post processing**
-    - FXAA
-    - Film grain
-    - Chromatic aberration
-    - Multi-step bloom
-    - Lens distortion
-- **Materials and PBR rendering**
-    - Unlit
-    - ForwardPass and deferred renderers
-    - Directional and omnidirectional shadows with PCF filtering
-- **GI**
-    - Light probes
-    - Light propagation volumes (under development)
-    - Probe specular reflections
-- **Other**
-    - SSAO with depth reconstruction for both forward a deferred shaded materials
-    - Fully physically based pipeline with metallic workflow
-
-### 3.3 EditorCamera
-- **File system**
-    - Folders and files management
-    - Bookmarks
-    - Navigation shortcuts
-    - Search
-- **Scene structure**
-    - Scripts-component-system with hierarchical structure
-    - Custom material uniforms editable via form
-    - Folders and multi-select
-    - Transformations and component attribute manipulation
-- **Multi-tab system**
-- **Shared GPU context for fast tab switching**
-- **Parallel processing (IPC and workers)**
-    - EditorCamera loading
-    - glTF import
-    - File system refreshes
-    - Image processing
-
-### 3.4 Blueprints
-- **Scripts**
-    - Multiple nodes for custom scripts
-    - Compiled down to native language
-- **Groups**
-    - Color customization
-    - Label
-- **Materials**
-    - Custom material/shader creation with nodes
-    - Multiple pre-crafted functions
-    - Compiled down to glsl
-    - Custom program generator
-    - Multiple rendering methods.
-- **Custom scripts written in JS**
-
-### 3.5 Under development
-- **UI creation with raw html and css with visual scripting and JS scripting**
-- **Performance optimizations**
-  - Mesh culling
-  - Light culling
-  - Frustum culling
-- **Physics with bullet**
-- **Dynamic file streaming in production env**
-- **GI methods**
-  - LVP 
-  - Pre-calculated irradiance probes
-  - DSSDO (Deferred screen space direct occlusion)
-- **Dynamic material vertex shader**
-- **Ability to create custom system level implementations**
-  - FrameBuffers
-  - CubeMaps
-  - Textures
-  - Meshes
-  - Shaders
-  
-### 4.5. Licence
-The Projection DevelopmentRenderer and all its modules are licenced under an MIT licence.
-
-### 5. Community
-- **Bugs - Feature request - Help**: [GitHub issues](https://github.com/projection-engine/editor/issues)
-- **My personal discord**: morshu_non_rtx#8805
-
-
-
+Console window is now available as a view and adds support for `console.log` inside scripts.

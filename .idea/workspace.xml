@@ -6,19 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/Context.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/Context.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/Options.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/Options.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/hooks/useContextTarget.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/hooks/useContextTarget.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/hooks/useShortcuts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/hooks/useShortcuts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/Control.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/Control.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/shortcuts/Shortcuts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/shortcuts/Shortcuts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/shortcuts/hooks/useHotKeys.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/shortcuts/hooks/useHotKeys.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/shortcuts/styles/Shortcuts.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/shortcuts/styles/Shortcuts.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useFiles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useFiles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/static/INITIALIZE_WINDOW.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/INITIALIZE_WINDOW.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +23,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/components" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -229,7 +218,7 @@
       <workItem from="1657656122914" duration="334000" />
       <workItem from="1657656560970" duration="4438000" />
       <workItem from="1657670284231" duration="4042000" />
-      <workItem from="1657717330497" duration="7903000" />
+      <workItem from="1657717330497" duration="10883000" />
     </task>
     <servers />
   </component>
