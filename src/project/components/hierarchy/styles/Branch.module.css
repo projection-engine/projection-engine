@@ -26,9 +26,22 @@
   display: flex;
 }
 
-.wrapper[data-open="-"] {
-  height: auto;
+.wrapper[data-open="-"], .wrapper[data-parentopen="-"] {
   border-left-color: var(--pj-accent-color);
+}
+
+.wrapper[data-selected="-"] {
+  background: var(--pj-accent-color-light);
+  color: white;
+}
+
+.wrapper[data-selected="-"]:hover{
+  background: var(--pj-accent-color-light);
+  color: white;
+}
+
+.wrapper:hover{
+  background: var(--pj-border-primary);
 }
 
 .summary {
@@ -38,19 +51,8 @@
   width: 100%;
 }
 
-.summary:hover {
-  background: var(--pj-border-primary);
-}
 
-.wrapper[data-selected="-"] > .summary {
-  background: var(--pj-accent-color-light);
-  color: white;
-}
 
-.wrapper[data-selected="-"] > .summary:hover {
-  background: var(--pj-accent-color-light);
-  color: white;
-}
 
 .buttonSmall {
   height: 23px;
@@ -64,6 +66,8 @@
   justify-content: center;
   color: inherit;
   opacity: 0.7;
+
+  cursor: pointer;
 }
 
 .buttonSmall:hover {
@@ -92,7 +96,7 @@
 }
 
 .buttonIcon {
-  width: 25px;
+  width: 23px;
   height: 23px;
   color: rgb(203 158 53 / 87%);
   border: none;
@@ -101,11 +105,13 @@
   align-items: center;
   justify-content: center;
   border-radius: 3px;
+
+  cursor: pointer;
 }
 
 .buttonIcon[data-locked="-"] {
-  background: var(--pj-border-secondary);
-  color: rgb(203 110 53);
+
+  color:   orangered;
 }
 
 .buttonIcon:active {
@@ -113,7 +119,7 @@
 }
 
 .label {
-  cursor: pointer;
+  cursor: grab;
   width: 100%;
   height: 23px;
   display: flex;
@@ -128,5 +134,5 @@
 }
 
 .draggedOver {
-  background: rgb(203 110 53 / 50%);
+  background: rgb(203 110 53 / 50%) !important;
 }

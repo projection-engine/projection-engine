@@ -148,13 +148,14 @@ export default function Viewport(props) {
                 className={styles.viewport}
             >
                 <canvas 
-                    id={RENDER_TARGET} 
+                    id={RENDER_TARGET}
                     style={{width: "100%", height: "100%", background: "transparent"}}
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
                 <SideOptions engine={props.engine}/>
                 <SelectBox
+                    targetElementID={RENDER_TARGET}
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
                         if(startCoords && endCoords) {

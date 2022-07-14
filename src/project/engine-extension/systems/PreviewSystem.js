@@ -5,6 +5,7 @@ import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
 import SHADING_MODELS from "../../../static/misc/SHADING_MODELS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
+import MaterialInstance from "../../engine/instances/MaterialInstance"
 
 function toBase64( fbo) {
     const gpu = window.gpu
@@ -115,7 +116,7 @@ export default class PreviewSystem {
             })
             materialMesh.finish()
         }
-        else {
+        else if (materialMesh instanceof MaterialInstance){
             const [ viewMatrix, camPosition ] = this.cameraData
             ForwardPass.drawMesh({
                 mesh: this.sphereMesh,

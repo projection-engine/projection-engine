@@ -51,7 +51,11 @@ export default function Editor(props) {
                 lockedEntity: engine.lockedEntity,
                 setLockedEntity: engine.setLockedEntity,
                 selected: engine.selected,
-                entitiesChangeID: engine.entitiesChangeID
+                entitiesChangeID: engine.entitiesChangeID,
+                update: () => {
+                    engine.update()
+                    engine.updateHierarchy()
+                }
             }}>
                 <EngineProvider.Provider value={[engine, utils]}>
                     <FilesProvider.Provider value={filesHook}>

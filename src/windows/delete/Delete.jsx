@@ -18,7 +18,7 @@ function Delete() {
             className={styles.wrapper}
         >
             <Frame 
-                label={"EditorCamera shortcuts"}
+                label={"Editor shortcuts"}
                 options={[]}
                 pageInfo={{
                     closeEvent: FRAME_EVENTS.CLOSE_SHORTCUTS,

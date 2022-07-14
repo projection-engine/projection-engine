@@ -40,7 +40,7 @@ export default function useEngine(settings) {
     const [fallbackMaterial, setFallbackMaterial] = useState()
     const [entitiesChangeID, setChangeID] = useState(v4())
 
-    const workerListener = ( payload ) => {
+    const workerListener = (payload) => {
         const {meshesFiltered, materialsFiltered} = payload
         // if (Object.keys(meshesFiltered).length > 0)
         //     setMeshes(prev => {
@@ -62,6 +62,7 @@ export default function useEngine(settings) {
         //         return filtered
         //     })
     }
+
     useEffect(() => {
         window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA,
@@ -86,8 +87,8 @@ export default function useEngine(settings) {
     const onGizmoEnd = () => {
         // const e = entities.get(selected[0])
     }
-    const update = useCallback(() => {
 
+    const update = useCallback(() => {
         if (viewportInitialized) {
             let fMat = fallbackMaterial
             if (!fallbackMaterial) {
@@ -142,6 +143,13 @@ export default function useEngine(settings) {
         viewportInitialized,
         setViewportInitialized,
         update,
+        updateHierarchy: () => {
+            window.entityWorker.postMessage({
+                type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
+                payload: window.renderer.entitiesMap
+            })
+            setChangeID(v4())
+        },
         lockedEntity,
         entitiesChangeID,
 
@@ -149,7 +157,7 @@ export default function useEngine(settings) {
         selected,
         setMaterials,
         dispatchMeshes: (newMeshes) => {
-            for(let i = 0; i < newMeshes.length; i++)
+            for (let i = 0; i < newMeshes.length; i++)
                 meshes.current.set(newMeshes[i].id, newMeshes[i])
         },
         setLockedEntity,

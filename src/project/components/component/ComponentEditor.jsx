@@ -41,14 +41,12 @@ export default function ComponentEditor(props) {
                         {engine.executingAnimation || currentForm.open ? null : (
                             <div className={styles.header} style={{justifyContent: "flex-start"}}>
                                 <Icon styles={{fontSize: "1rem"}}>
-                                    {currentTab === "-1" ? "tv" : null}
                                     {currentTab === "-2" ? "image" : null}
                                     {currentTab === "-3" ? "videocam" : null}
                                 </Icon>
                                 <label className={styles.overflow}>
-                                    {currentTab === "-1" ? "Display" : null}
                                     {currentTab === "-2" ? "Rendering features" : null}
-                                    {currentTab === "-3" ? "EditorCamera camera" : null}
+                                    {currentTab === "-3" ? "Editor post-processing" : null}
                                 </label>
                             </div>
                         )}

@@ -13,7 +13,6 @@
 // `
 
 
-
 export const vertex = `#version 300 es
 
 layout (location = 1) in vec3 position; 
@@ -26,13 +25,14 @@ void main(){
     gl_Position = projectionMatrix * viewMatrix * transformMatrix * vec4(position, 1.0);
 }
 `
+
 export const fragment = `#version 300 es
 precision mediump float;
- 
-layout (location = 0) out vec4 fragColor;
+uniform bool yellow;
+out vec4 fragColor;
 
 void main(){ 
-    fragColor = vec4(1.);
+    fragColor = yellow ? vec4(1., .5, 0., 1.) : vec4(1.);
 }
 `
 

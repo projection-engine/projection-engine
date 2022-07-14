@@ -27,7 +27,7 @@ const getHierarchy = (start) => {
     direct.forEach(d => {
         result.push(...getHierarchy(d))
     })
-    result.push(...direct)
+    result.push(...direct.map(c => c.id))
     return result
 }
 
@@ -43,7 +43,8 @@ export default function Tree( ) {
         operationUtils,
         lockedEntity,
         setLockedEntity,
-        selected
+        selected,
+        update
     } = useContext(HierarchyProvider)
     const [open, setOpen] = useState({})
     const [toRender, setToRender] = useState([])
@@ -109,7 +110,7 @@ export default function Tree( ) {
                 label: "Deselect hierarchy",
                 onClick: (target) => {
                     const t = target.getAttribute("data-node")
-                    const toDeselect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t)).map(e => e.id)]
+                    const toDeselect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
                     setSelected(prev => prev.filter(s => toDeselect.includes(s)))
                 }
             },
@@ -127,7 +128,8 @@ export default function Tree( ) {
                 label: "Select hierarchy",
                 onClick: (target) => {
                     const t = target.getAttribute("data-node")
-                    const toSelect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t)).map(e => e.id)]
+                    console.log(getHierarchy(window.renderer.entitiesMap.get(t)))
+                    const toSelect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
                     setSelected(prev => [...prev, ...toSelect])
                 }
             },
@@ -168,10 +170,11 @@ export default function Tree( ) {
             payload => {
                 const data = []
                 for (let i = 0; i < payload.length; i++) {
-                    if (!payload[i].parent || open[payload[i].parent.id])
-                        data.push(payload[i].parent)
+                    if (!payload[i].node.parent || open[payload[i].node.parent.id])
+                        data.push(payload[i])
                 }
-                setToRender(payload)
+                console.log(data)
+                setToRender(data)
             },
             localActionID
         )
@@ -189,7 +192,8 @@ export default function Tree( ) {
                 {toRender.map((e, i) => i < maxDepth ? (
                     <React.Fragment key={i + "-branch-" + ID}>
                         <Branch
-                            {...toRender[i + offset]}
+                            node={toRender[i + offset].node}
+                            depth={toRender[i + offset].depth}
                             selected={selected}
                             setSelected={(entity, ctrlKey) => {
                                 if (ctrlKey) {
@@ -205,6 +209,7 @@ export default function Tree( ) {
                             internalID={ID}
                             open={open}
                             setOpen={setOpen}
+                            update={update}
 
                         />
                     </React.Fragment>

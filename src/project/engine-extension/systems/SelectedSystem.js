@@ -14,10 +14,9 @@ export default class SelectedSystem {
             shaderCode.vertex,
             shaderCode.fragment
         )
-        this.frameBuffer = new FramebufferInstance( resolution.w, resolution.h)
-        this.frameBuffer
+
+        this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h)
             .texture({
-                attachment: 0,
                 precision: window.gpu.R16F,
                 format: window.gpu.RED,
                 type: window.gpu.FLOAT
@@ -32,10 +31,10 @@ export default class SelectedSystem {
             this.frameBuffer.startMapping()
             for (let m = 0; m < length; m++) {
                 const current = entitiesMap.get(selected[m])
-                if(!current || !current.active)
+                if (!current || !current.active)
                     continue
                 const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)
-                if(!mesh)
+                if (!mesh)
                     continue
                 const t = current.components[COMPONENTS.TRANSFORM]
                 this.drawMesh(
@@ -47,11 +46,13 @@ export default class SelectedSystem {
             }
             this.frameBuffer.stopMapping()
 
+
             this.shaderSilhouette.use()
             this.shaderSilhouette.bindForUse({
                 silhouette: this.frameBuffer.colors[0]
             })
             this.frameBuffer.draw()
+
             window.gpu.bindVertexArray(null)
         }
     }
