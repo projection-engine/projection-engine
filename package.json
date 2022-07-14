@@ -119,7 +119,7 @@
     "url-loader": "^4.1.1"
   },
   "dependencies": {
-    "@f-ui/core": "^0.2.24-alpha",
+    "@f-ui/core": "^0.2.25-alpha",
     "@f-ui/markdown": "^0.2.11-alpha",
     "atob": "^2.1.2",
     "axios": "^0.27.2",

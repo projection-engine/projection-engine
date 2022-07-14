@@ -4,6 +4,8 @@ import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
 import React from "react"
 import {Icon} from "@f-ui/core"
 import LABELED_KEYS from "../../static/misc/LABELED_KEYS"
+import compiler from "../components/blueprints/libs/compiler/compiler"
+import BOARD_SIZE from "../components/blueprints/data/BOARD_SIZE"
 
 
 export default function WindowInitializer(fileSystem, pushEvent) {
@@ -19,10 +21,58 @@ export default function WindowInitializer(fileSystem, pushEvent) {
     Math.quat = quat
 
     // BLUEPRINTS
-    window.blueprints = {scale: 1, grid: 1}
+    window.blueprints = {
+        scale: 1,
+        grid: 1,
+        async compile(nodes, links) {
+            const parsedNodes = nodes.map(n => {
+                const docNode = document.getElementById(n.id).parentNode
+                const transformation = docNode
+                    .getAttribute("transform")
+                    .replace("translate(", "")
+                    .replace(")", "")
+                    .split(" ")
+
+                return {
+                    ...n,
+                    x: parseFloat(transformation[0]) - BOARD_SIZE / 2,
+                    y: parseFloat(transformation[1]) - BOARD_SIZE / 2,
+                    instance: n.constructor.name,
+                    texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
+                }
+            })
+            const compiled = await compiler(nodes.filter(n => !n.isComment), links)
+            const preview = window.renderer.generatePreview(true)
+
+            return {
+                compiled, preview, parsedNodes
+            }
+        },
+        async save(hook) {
+            const {
+                compiled, preview, parsedNodes
+            } = await this.compile(hook.nodes, hook.links)
+            window.fileSystem
+                .updateAsset(
+                    hook.openFile.registryID,
+                    JSON.stringify({
+                        nodes: parsedNodes,
+                        links: hook.links,
+                        response: compiled,
+                        type: compiled.variant
+                    }),
+                    preview
+                )
+                .then(() => alert.pushAlert("Saved", "success",))
+                .catch(() => alert.pushAlert("Some error occurred", "error",))
+            hook.setChanged(false)
+            hook.setImpactingChange(false)
+        }
+    }
 
     // CONTEXT MENU
     window.contextMenu = {targets: {}, focused: undefined}
+
     // ENTITY WORKER
     const listeners = {}
     window.entityWorker = new Worker(new URL("./EntityWorker.js", import.meta.url))

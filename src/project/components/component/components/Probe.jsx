@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import styles from "../styles/Forms.module.css"
 import {Checkbox, Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import React, {useEffect} from "react"
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import Range from "../../../../components/range/Range"
 import useDirectState from "../../../../components/hooks/useDirectState"
 

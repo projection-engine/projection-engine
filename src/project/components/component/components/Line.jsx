@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import React, {useEffect} from "react"
 import Range from "../../../../components/range/Range"
-import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
+import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import useDirectState from "../../../../components/hooks/useDirectState"
 
 

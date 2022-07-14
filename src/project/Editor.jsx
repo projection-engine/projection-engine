@@ -6,7 +6,6 @@ import useProjectWrapper from "./hooks/useProjectWrapper"
 import PropTypes from "prop-types"
 import Viewport from "./components/viewport/Viewport"
 import useEditorShortcuts from "./components/viewport/hooks/useEditorShortcuts"
-import submitPackage from "./utils/submitPackage"
 import Views from "../components/view/Views"
 import useOptions from "./hooks/useOptions"
 import useFiles from "./hooks/useFiles"
@@ -40,7 +39,6 @@ export default function Editor(props) {
                 selectedEntity: engine.selectedEntity,
                 materials: engine.materials,
                 setMaterials: engine.setMaterials,
-                submitPackage,
                 quickAccessMaterials: props.quickAccess.materials
             }}
         >

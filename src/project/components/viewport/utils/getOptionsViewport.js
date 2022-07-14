@@ -41,7 +41,7 @@ export default function getOptionsViewport(engine, utils) {
         },
         {divider: true},
         {
-            label: "Group entities",
+            label: "Comment entities",
             onClick: group,
             shortcut: ["Ctrl", "P"]
         },
