@@ -1,20 +1,20 @@
-import React, {useEffect, useMemo} from "react"
+import React, {useMemo} from "react"
 import styles from "./styles/Project.module.css"
-import SettingsProvider from "./providers/SettingsProvider"
+import SettingsProvider from "./context/SettingsProvider"
 import Frame from "../components/frame/Frame"
 import useProjectWrapper from "./hooks/useProjectWrapper"
 import PropTypes from "prop-types"
-import Viewport from "./components/viewport/wrapper/Viewport"
-import useEditorShortcuts from "./hooks/useEditorShortcuts"
+import Viewport from "./components/viewport/Viewport"
+import useEditorShortcuts from "./components/viewport/hooks/useEditorShortcuts"
 import submitPackage from "./utils/submitPackage"
 import Views from "../components/view/Views"
 import useOptions from "./hooks/useOptions"
 import useFiles from "./hooks/useFiles"
-import FilesProvider from "./providers/FilesProvider"
-import EngineProvider from "./providers/EngineProvider"
-import BlueprintProvider from "./providers/BlueprintProvider"
-import LayoutTabs from "./components/viewport/tabs/LayoutTabs"
-import HierarchyProvider from "./providers/HierarchyProvider"
+import FilesProvider from "./context/FilesProvider"
+import EngineProvider from "./context/EngineProvider"
+import BlueprintProvider from "./context/BlueprintProvider"
+import ViewTabs from "./components/viewport/views/ViewTabs"
+import HierarchyProvider from "./context/HierarchyProvider"
 import Context from "../components/context/Context"
 
 
@@ -33,12 +33,6 @@ export default function Editor(props) {
         copy[settings.currentView] = {...view, [key]: newView}
         settings.views = copy
     }
-
-    useEffect(() => {
-        // document.body.addEventListener("keydown", e => {
-        //     e.preventDefault()
-        // })
-    }, [])
 
     return (
         <BlueprintProvider.Provider
@@ -80,7 +74,7 @@ export default function Editor(props) {
                                         resizePosition={"bottom"}
                                     />
                                     <div className={styles.viewportWrapper}>
-                                        <LayoutTabs/>
+                                        <ViewTabs/>
                                         <Viewport
                                             utils={utils}
                                             id={id}

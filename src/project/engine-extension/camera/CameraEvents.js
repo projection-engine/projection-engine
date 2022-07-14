@@ -1,6 +1,6 @@
 import EditorCamera from "./EditorCamera"
 import KEYS from "../../engine/templates/KEYS"
-import {rotateY} from "../../components/viewport/wrapper/hooks/transformCamera"
+import {rotateY} from "../../components/viewport/utils/transformCamera"
 import CAMERA_GIZMO from "../../../static/misc/CAMERA_GIZMO"
 
 const BUTTON_MIDDLE = 1

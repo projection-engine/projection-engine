@@ -9,7 +9,7 @@ import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import useContextTarget from "../../../../components/context/hooks/useContextTarget"
 import Entity from "../../../engine/basic/Entity"
 import FolderComponent from "../../../engine/components/FolderComponent"
-import HierarchyProvider from "../../../providers/HierarchyProvider"
+import HierarchyProvider from "../../../context/HierarchyProvider"
 
 
 function createFolder(dispatchEntities) {

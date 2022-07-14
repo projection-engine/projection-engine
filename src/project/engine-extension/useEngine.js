@@ -30,7 +30,6 @@ export default function useEngine(settings) {
 
     const [executingAnimation, setExecutingAnimation] = useState(false)
     const [viewportInitialized, setViewportInitialized] = useState(false)
-    // const {returnChanges, forwardChanges, dispatchChanges, changes} = useHistory(entities, dispatchEntities)
     const [levelScript, setLevelScript] = useState()
     const [selected, setSelected] = useState([])
     const [lockedEntity, setLockedEntity] = useState()
@@ -143,9 +142,6 @@ export default function useEngine(settings) {
         viewportInitialized,
         setViewportInitialized,
         update,
-        returnChanges: () => null,
-        forwardChanges: () => null,
-        dispatchChanges: () => null,
         lockedEntity,
         entitiesChangeID,
 

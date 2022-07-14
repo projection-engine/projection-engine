@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
-import {getCall} from "../utils/AsyncFS"
-import FileSystem from "../utils/files/FileSystem"
+import {getCall} from "../libs/AsyncFS"
+import FileSystem from "../libs/FileSystem"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 
 

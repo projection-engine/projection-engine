@@ -1,6 +1,6 @@
 import {useCallback, useEffect} from "react"
-import ProjectLoader from "../utils/ProjectLoader"
-import FileSystem from "../utils/files/FileSystem"
+import ProjectLoader from "../libs/ProjectLoader"
+import FileSystem from "../libs/FileSystem"
 
 
 export default function useSerializer(settings, id) {

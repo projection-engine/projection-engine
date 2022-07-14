@@ -1,7 +1,7 @@
-import Float from "../../../../src/project/components/blueprints/nodes/math/Float"
-import Material from "../../../../src/project/components/blueprints/nodes/Material"
-import EmbeddedTextureSample from "../../../../src/project/components/blueprints/nodes/EmbeddedTextureSample"
-import Vec3 from "../../../../src/project/components/blueprints/nodes/vec/Vec3"
+import Float from "../../../../src/project/components/blueprints/templates/nodes/math/Float"
+import Material from "../../../../src/project/components/blueprints/templates/nodes/Material"
+import EmbeddedTextureSample from "../../../../src/project/components/blueprints/templates/nodes/EmbeddedTextureSample"
+import Vec3 from "../../../../src/project/components/blueprints/templates/nodes/vec/Vec3"
 
 function check(val){
     return typeof val === "number" || Array.isArray(val) ? newFactor : newTexture

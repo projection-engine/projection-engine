@@ -1,5 +1,5 @@
 import {useState} from "react"
-import FileSystem from "../utils/files/FileSystem"
+import FileSystem from "../libs/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 
 export default function useQuickAccess( ) {

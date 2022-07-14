@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import SettingsProvider from "../../../providers/SettingsProvider"
+import SettingsProvider from "../../../context/SettingsProvider"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import Range from "../../../../components/range/Range"

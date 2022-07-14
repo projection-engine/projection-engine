@@ -9,9 +9,9 @@ import ColorPicker from "../../../../components/color/ColorPicker"
 import AccordionTemplate from "../../../../components/templates/AccordionTemplate"
 import {DATA_TYPES} from "../../../engine/templates/DATA_TYPES"
 import TextureInstance from "../../../engine/instances/TextureInstance"
-import FileSystem from "../../../utils/files/FileSystem"
-import QuickAccessProvider from "../../../providers/QuickAccessProvider"
-import handleDrop from "../../../utils/importer/import"
+import FileSystem from "../../../libs/FileSystem"
+import QuickAccessProvider from "../../../context/QuickAccessProvider"
+import handleDrop from "../../../libs/importer/import"
 
 
 export default function Material(props) {

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import React, {useContext, useState} from "react"
 import {DropdownProvider, TextField} from "@f-ui/core"
-import FileSystem from "../../project/utils/files/FileSystem"
+import FileSystem from "../../project/libs/FileSystem"
 
 export default function Create(props) {
     const {setProjects} = props

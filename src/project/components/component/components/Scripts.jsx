@@ -3,7 +3,7 @@ import styles from "../styles/Forms.module.css"
 import {Button, Icon} from "@f-ui/core"
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
 import Selector from "../../../../components/selector/Selector"
-import QuickAccessProvider from "../../../providers/QuickAccessProvider"
+import QuickAccessProvider from "../../../context/QuickAccessProvider"
 
 export default function Scripts(props) {
     const quickAccess = useContext(QuickAccessProvider)

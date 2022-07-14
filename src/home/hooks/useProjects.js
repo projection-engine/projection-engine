@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
-import AsyncFS from "../../project/utils/AsyncFS"
-import FileSystem from "../../project/utils/files/FileSystem"
+import AsyncFS from "../../project/libs/AsyncFS"
+import FileSystem from "../../project/libs/FileSystem"
 import EN from "../../static/locale/EN"
 
 const path = window.require("path")

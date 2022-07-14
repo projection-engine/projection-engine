@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import FileSystem from "../utils/files/FileSystem"
+import FileSystem from "../libs/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import openLevelBlueprint from "../utils/openLevelBlueprint"
 import ROUTES from "../../../public/static/ROUTES"

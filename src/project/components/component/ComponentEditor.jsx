@@ -5,7 +5,7 @@ import useForm from "./hooks/useForm"
 import {Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
-import EngineProvider from "../../providers/EngineProvider"
+import EngineProvider from "../../context/EngineProvider"
 import Header from "../../../components/view/components/Header"
 
 export default function ComponentEditor(props) {

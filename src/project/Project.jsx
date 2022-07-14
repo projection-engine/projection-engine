@@ -8,9 +8,9 @@ import useLoader from "../components/loader/useLoader"
 import Editor from "./Editor"
 import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
 import useQuickAccess from "./hooks/useQuickAccess"
-import QuickAccessProvider from "./providers/QuickAccessProvider"
-import FileSystem from "./utils/files/FileSystem"
-import INITIALIZE_WINDOW from "../static/INITIALIZE_WINDOW"
+import QuickAccessProvider from "./context/QuickAccessProvider"
+import FileSystem from "./libs/FileSystem"
+import WindowInitializer from "./libs/windowInitializer"
 import useDirectState from "../components/hooks/useDirectState"
 import SETTINGS from "../static/misc/SETTINGS"
 import ROUTES from "../../public/static/ROUTES"
@@ -33,12 +33,15 @@ function Project() {
         ipcRenderer.on(ROUTES.PAGE_PROPS, (ev, data) => {
             const fs = new FileSystem(data.package.id)
             fs.refresh = refresh
-            INITIALIZE_WINDOW(fs, loader.pushEvent)
+            WindowInitializer(fs, loader.pushEvent)
 
             setProject(data.package)
             setEvents(data)
         })
         document.body.classList.add(styles.dark)
+        // document.body.addEventListener("keydown", e => {
+        //     e.preventDefault()
+        // })
     }, [])
     useAlert(true)
 
