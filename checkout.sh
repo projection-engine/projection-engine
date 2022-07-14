@@ -1,19 +1,19 @@
 cd docs
-git checkout main
+git checkout -b v1.0.x-alpha
 
 cd ../src/components
-git checkout v0.1.x-alpha
+git checkout -b v1.0.x-alpha
 
 cd ../project/engine
-git checkout v0.1.x-alpha
+git checkout -b v1.0.x-alpha
 
 cd ../components/blueprints
-git checkout v0.1.x-alpha
+git checkout -b v1.0.x-alpha
 
 cd ../files
-git checkout v0.1.x-alpha
+git checkout -b v1.0.x-alpha
 
-cd ../ui
-git checkout main
+cd ../../../../
+git checkout -b v1.0.x-alpha
 
-sleep 10s
+sleep 5s
