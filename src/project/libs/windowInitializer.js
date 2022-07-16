@@ -4,7 +4,7 @@ import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
 import React from "react"
 import {Icon} from "@f-ui/core"
 import LABELED_KEYS from "../../static/misc/LABELED_KEYS"
-import compiler from "../components/blueprints/libs/compiler/compiler"
+import compiler from "../components/blueprints/libs/compiler"
 import BOARD_SIZE from "../components/blueprints/data/BOARD_SIZE"
 
 
@@ -33,10 +33,13 @@ export default function WindowInitializer(fileSystem, pushEvent) {
                     .replace(")", "")
                     .split(" ")
 
+                const bBox = docNode.getBoundingClientRect()
                 return {
                     ...n,
                     x: parseFloat(transformation[0]) - BOARD_SIZE / 2,
                     y: parseFloat(transformation[1]) - BOARD_SIZE / 2,
+                    width: bBox.width,
+                    height: bBox.height,
                     instance: n.constructor.name,
                     texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
                 }

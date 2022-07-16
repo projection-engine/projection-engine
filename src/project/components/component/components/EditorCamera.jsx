@@ -19,7 +19,7 @@ export default function EditorCamera() {
     })
 
     return (
-        <div className={styles.ppWrapper}>
+        <>
             <AccordionTemplate title={"Lens distortion"}>
                 <Checkbox
                     noMargin={true}
@@ -141,6 +141,6 @@ export default function EditorCamera() {
                 />
             </AccordionTemplate>
 
-        </div>
+        </>
     )
 }

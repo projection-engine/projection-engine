@@ -61,7 +61,6 @@ export default async function prepareMaterial({
         index++
     }
 
-    console.log(links)
     return {
         nodes: nodes.map(n => ({...n, instance: n.constructor.name})),
         links: links
