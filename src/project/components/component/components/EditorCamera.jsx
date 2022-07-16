@@ -3,7 +3,6 @@ import SettingsProvider from "../../../context/SettingsProvider"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import Range from "../../../../components/range/Range"
-import styles from "../styles/Forms.module.css"
 
 export default function EditorCamera() {
     const settings = useContext(SettingsProvider)
