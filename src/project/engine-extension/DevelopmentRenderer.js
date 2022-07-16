@@ -67,7 +67,7 @@ export default class DevelopmentRenderer extends Renderer {
         }
     }
 
-    refreshCubemaps() {
+    refreshProbes() {
         this.renderingPass.diffuseProbe.step = STEPS_CUBE_MAP.BASE
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }

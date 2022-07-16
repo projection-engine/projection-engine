@@ -22,11 +22,11 @@ export default function useOptions(engine, save) {
                 icon: engine.executingAnimation ? "pause" : "play_arrow",
                 onClick: async () => {
                     const newValue = !engine.executingAnimation
+                    const entities = window.renderer.entities
                     try{
                         if (newValue) {
-                            // alert.pushAlert("Loading scripts", "info")
-                            for (let i = 0; i < engine.entities.length; i++) {
-                                const c = engine.entities[i]
+                            for (let i = 0; i < entities.length; i++) {
+                                const c = entities[i]
                                 const scripts = []
                                 for (let s = 0; s < c.scriptsMap.length; s++) {
                                     const reg = await window.fileSystem.readRegistryFile(c.scriptsMap[s])
@@ -41,7 +41,6 @@ export default function useOptions(engine, save) {
                             const levelScript = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
                             if(levelScript)
                                 engine.setLevelScript(levelScript)
-                            // alert.pushAlert("Scripts loaded", "success")
                         }
                         engine.setExecutingAnimation(newValue)
                     }catch (err){
@@ -52,11 +51,11 @@ export default function useOptions(engine, save) {
             },
             {divider: true},
             {
-                label: "Rebuild cubemaps",
+                label: "Recompile probes",
                 icon: "refresh",
                 onClick:() => {
-                    alert.pushAlert( "Recompiling cube-maps and probes",  "info")
-                    window.renderer.refreshCubemaps()
+                    alert.pushAlert( "Recompiling probes",  "info")
+                    window.renderer.refreshProbes()
                 }
             },
             {
@@ -88,7 +87,7 @@ export default function useOptions(engine, save) {
                 ]
             },
         ])
-    }, [save, engine.scripts, engine.meshes, engine.executingAnimation])
+    }, [save, engine.executingAnimation])
 
     return options
 }
