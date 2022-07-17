@@ -80,7 +80,7 @@ export default class FileSystem {
 
     async importFile(targetDir, filesToLoad) {
         let result = []
-        for (let i in filesToLoad) {
+        for (let i = 0; i < filesToLoad.length; i++) {
             const filePath = filesToLoad[i]
             const name = filePath.split(pathRequire.sep).pop()
 
