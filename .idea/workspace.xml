@@ -6,18 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/context/hooks/useContextTarget.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/context/hooks/useContextTarget.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/ContentBrowser.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/DeleteConfirmation.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/components/Files.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/Files.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/hooks/useContentBrowser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/hooks/useContentBrowser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/Control.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/ControlBar.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/DeleteConfirmation.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/styles/File.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/styles/File.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/handleDelete.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/handleDelete.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/importFile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/importFile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/libs/FileSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/libs/FileSystem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/selector/Selector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/selector/Selector.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/selector/components/Option.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/selector/components/Option.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/node/Input.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/node/Input.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/components/node/Node.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/components/node/Node.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/libs/compileShaders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/libs/compileShaders.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/styles/Node.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/styles/Node.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/blueprints/utils/getNodeInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/blueprints/utils/getNodeInput.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/component/components/Material.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/components/Mesh.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/component/hooks/useForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/hooks/useForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/component/utils/getComponentInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/component/utils/getComponentInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/files/utils/getFileOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/utils/getFileOptions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +34,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/project/components/files" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/components" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -245,7 +246,7 @@
       <workItem from="1657992485183" duration="3924000" />
       <workItem from="1658005001051" duration="992000" />
       <workItem from="1658058676083" duration="10049000" />
-      <workItem from="1658082537035" duration="7946000" />
+      <workItem from="1658082537035" duration="10254000" />
     </task>
     <servers />
   </component>

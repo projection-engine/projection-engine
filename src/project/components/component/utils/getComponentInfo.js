@@ -12,7 +12,7 @@ export default function getComponentInfo(c) {
 
     case COMPONENTS.MESH:
         res.key = c
-        res.label = "Mesh & Material"
+        res.label = "Mesh & Mesh"
         res.icon = "category"
         break
     case COMPONENTS.POINT_LIGHT:

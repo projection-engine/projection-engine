@@ -14,7 +14,7 @@ import QuickAccessProvider from "../../../context/QuickAccessProvider"
 import handleDrop from "../../../libs/importer/import"
 
 
-export default function Material(props) {
+export default function Mesh(props) {
     const [state, clear] = useDirectState({})
     const lastID = useRef("")
     const quickAccess = useContext(QuickAccessProvider)
@@ -223,13 +223,14 @@ export default function Material(props) {
                 handleChange={async (src, clear, close) => {
                     if (src) {
                         const file = await loadFile(src)
+                        console.log(file)
                         if (file && file.response) {
                             props.submit({
                                 blob: file.response,
                                 id: src.registryID,
                                 name: src.name
                             })
-                            alert.pushAlert("Material loaded", "success")
+                            alert.pushAlert("Mesh loaded", "success")
                             state.uniforms = file.response.uniforms
                             state.currentMaterial = src
                         }
@@ -275,7 +276,7 @@ export default function Material(props) {
 
     )
 }
-Material.propTypes = {
+Mesh.propTypes = {
     engine: PropTypes.object,
     entityID: PropTypes.string,
     selected: PropTypes.object,

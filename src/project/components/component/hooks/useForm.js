@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from "react"
 import Transform from "../components/Transform"
 import Lights from "../components/Lights"
-import Material from "../components/Material"
+import Mesh from "../components/Mesh"
 import styles from "../styles/Scene.module.css"
 import Probe from "../components/Probe"
 import COMPONENTS from "../../../engine/data/COMPONENTS"
@@ -73,8 +73,7 @@ export default function useForm(
             }
             case COMPONENTS.MESH: {
                 return (
-                    <Material
-
+                    <Mesh
                         entityID={engine.selectedEntity.id}
                         engine={engine}
                         selected={engine.selectedEntity.components[COMPONENTS.MESH]}
