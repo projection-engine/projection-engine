@@ -15,7 +15,7 @@ export default async function importMesh(objLoaded, engine, id) {
         material
 
     try {
-        mesh = engine.meshes.find(m => m.id === objLoaded.id)
+        mesh = window.renderer.meshes.get(objLoaded.id)
         if (!mesh) {
             mesh = new MeshInstance({
                 ...objLoaded,

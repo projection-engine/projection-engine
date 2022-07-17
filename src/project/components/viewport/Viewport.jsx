@@ -16,6 +16,7 @@ import EditorEngine from "../../engine-extension/EditorEngine"
 import SideOptions from "./views/SideOptions"
 import updateCursor from "./utils/updateCursor"
 import onViewportClick from "./utils/onViewportClick"
+import drawIconsToDepth from "./utils/drawIconsToDepth"
 
 const TRIGGERS = ["data-viewport"]
 const LEFT_BUTTON = 0
@@ -88,12 +89,13 @@ export default function Viewport(props) {
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
-                <SideOptions engine={props.engine}/>
+                <SideOptions selectedEntity={props.engine.selectedEntity} executingAnimation={props.engine.executingAnimation}/>
                 <SelectBox
                     targetElementID={RENDER_TARGET}
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
                         if(startCoords && endCoords) {
+                            drawIconsToDepth()
                             const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer
                             const size = {
                                 w: depthFBO.width,

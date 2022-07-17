@@ -1,4 +1,5 @@
 import COMPONENTS from "../../../engine/data/COMPONENTS"
+import updateCursor from "./updateCursor"
 
 export default function getOptionsViewport(engine, utils) {
     const {
@@ -41,7 +42,7 @@ export default function getOptionsViewport(engine, utils) {
         },
         {divider: true},
         {
-            label: "Comment entities",
+            label: "Group entities",
             onClick: group,
             shortcut: ["Ctrl", "P"]
         },
@@ -74,17 +75,26 @@ export default function getOptionsViewport(engine, utils) {
             }
         },
         {
-            label: "Center on 3D cursor",
+            label: "Move to 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
             }
         },
         {
-            label: "Origin to 3D cursor",
+            label: "Pivot on 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
                 comp.pivotPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+            }
+        },
+        {
+            label: "3D cursor to origin",
+            onClick: () => {
+                let translation = engine.selectedEntity.components[COMPONENTS.TRANSFORM]?.translation
+                if(!translation)
+                    translation = engine.selectedEntity.components[COMPONENTS.DIRECTIONAL_LIGHT].direction
+                updateCursor([...translation].slice(0, 3))
             }
         },
         {divider: true},
@@ -95,6 +105,23 @@ export default function getOptionsViewport(engine, utils) {
             icon: "edit",
             disabled: true,
             shortcut: ["F2"]
+        },
+        {
+            label: "Focus",
+            icon: "place",
+            onClick: () => {
+
+                const entity = engine.selectedEntity
+                const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
+                if (entity && comp) {
+                    const t = comp.translation
+
+                    window.renderer.camera.radius = 10
+                    window.renderer.camera.centerOn = t
+
+                    window.renderer.camera.updateViewMatrix()
+                }
+            }
         },
         {
             label: "Fixate active",

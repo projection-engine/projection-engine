@@ -11,6 +11,7 @@ export default function openLevelBlueprint(){
             if(!res)
                 window.fileSystem.writeFile(FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT, SCRIPT_TEMPLATE)
                     .then(res => {
+                        console.log(res)
                         if(res) {
                             window.fileSystem.refresh()
                             shell.openPath(path).catch(() => alert.pushAlert("Error opening file", "error"))

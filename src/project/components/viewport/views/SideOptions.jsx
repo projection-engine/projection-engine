@@ -11,14 +11,14 @@ import CameraBar from "../components/CameraBar"
 import useLocalization from "../../../../global/useLocalization"
 
 export default function SideOptions(props){
-    const {engine} = props
+    const {executingAnimation, selectedEntity} = props
     const [openSideBar, setOpenSideBar] = useState(false)
 
     const translate = useLocalization("PROJECT", "VIEWPORT")
 
     return (
         <>
-            {engine.executingAnimation ?
+            {executingAnimation ?
                 null
                 :
                 <>
@@ -41,15 +41,14 @@ export default function SideOptions(props){
                     },
                     {
                         label: translate("ACTIVE_ENTITY"),
-                        disabled: !engine.selectedEntity,
-                        content: engine.selectedEntity ? (
+                        disabled: !selectedEntity,
+                        content: selectedEntity ? (
                             <Transform
-                                engine={engine}
-                                selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
-                                entityID={engine.selectedEntity.id}
-                                submitRotation={(axis, data) => updateTransform(axis, data, "rotation", engine.selectedEntity)}
-                                submitScaling={(axis, data) => updateTransform(axis, data, "scaling", engine.selectedEntity)}
-                                submitTranslation={(axis, data) => updateTransform(axis, data, "translation", engine.selectedEntity)}
+                                selected={selectedEntity.components[COMPONENTS.TRANSFORM]}
+                                entityID={selectedEntity.id}
+                                submitRotation={(axis, data) => updateTransform(axis, data, "rotation", selectedEntity)}
+                                submitScaling={(axis, data) => updateTransform(axis, data, "scaling", selectedEntity)}
+                                submitTranslation={(axis, data) => updateTransform(axis, data, "translation", selectedEntity)}
                             />
                         ) : null
                     }
@@ -59,5 +58,6 @@ export default function SideOptions(props){
     )
 }
 SideOptions.propTypes={
-    engine: PropTypes.object
+    selectedEntity: PropTypes.object,
+    executingAnimation: PropTypes.bool
 }

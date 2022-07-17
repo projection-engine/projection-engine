@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react"
+import React, {useContext, useMemo, useState} from "react"
 import Transform from "../components/Transform"
 import Lights from "../components/Lights"
 import Material from "../components/Material"
@@ -9,11 +9,12 @@ import Camera from "../components/Camera"
 import MaterialInstance from "../../../engine/instances/MaterialInstance"
 import Scripts from "../components/Scripts"
 import Rendering from "../components/Rendering"
-import EditorCamera from "../components/EditorCamera"
+import CameraPostProcessing from "../components/CameraPostProcessing"
 import Line from "../components/Line"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
 import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL"
+import SettingsProvider from "../../../context/SettingsProvider"
 
 export function  updateTransform(axis, data, key, entity) {
     const component = entity.components[COMPONENTS.TRANSFORM]
@@ -33,6 +34,7 @@ export default function useForm(
     engine,
     currentTab
 ) {
+    const settings = useContext(SettingsProvider)
     const [currentKey, setCurrentKey] = useState()
     const submit = (component, key, data) => {
         engine.selectedEntity.components[component][key] = data
@@ -186,7 +188,7 @@ export default function useForm(
                 content: (
                     <div className={styles.formsWrapper}>
                         {currentTab === "-2" ? <Rendering/> : null}
-                        {currentTab === "-3" ? <EditorCamera/> : null}
+                        {currentTab === "-3" ? <CameraPostProcessing selected={settings}/> : null}
                     </div>
                 )
             }

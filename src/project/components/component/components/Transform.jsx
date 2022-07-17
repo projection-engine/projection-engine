@@ -193,7 +193,6 @@ export default function Transform(props) {
 }
 
 Transform.propTypes = {
-    engine: PropTypes.object,
     entityID: PropTypes.string,
 
     selected: PropTypes.object,

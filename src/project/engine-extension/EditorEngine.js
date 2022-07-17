@@ -12,6 +12,7 @@ import ENVIRONMENT from "../engine/data/ENVIRONMENT"
 import MeshInstance from "../engine/instances/MeshInstance"
 import EditorCamera from "./camera/EditorCamera"
 import CameraEvents from "./camera/CameraEvents"
+import COMPONENTS from "../engine/data/COMPONENTS"
 
 export default class EditorEngine extends Renderer {
     gizmo
@@ -20,8 +21,8 @@ export default class EditorEngine extends Renderer {
     setSelected = () => null
 
 
-    constructor( resolution ) {
-        super( resolution )
+    constructor(resolution) {
+        super(resolution)
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 
@@ -41,18 +42,33 @@ export default class EditorEngine extends Renderer {
             },
             id: "shading-models"
         })
-        import("./data/SPHERE.json").then(res => {
-            this.sphereMesh = new MeshInstance(res)
+        Promise.all(
+            [
+                import("./data/SPHERE.json"),
+                import("./data/Camera.json")]
+        ).then(([sphere, camera]) => {
+            this.sphereMesh = new MeshInstance(sphere)
+            this.cameraMesh = new MeshInstance({
+                ...camera,
+                uvs: [],
+                tangents: [],
+            })
+            this.cubeMesh = new MeshInstance({
+                vertices: [-1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1],
+                indices: [0, 3, 9, 0, 9, 6, 8, 10, 21, 8, 21, 19, 20, 23, 17, 20, 17, 14, 13, 15, 4, 13, 4, 2, 7, 18, 12, 7, 12, 1, 22, 11, 5, 22, 5, 16]
+            })
         })
     }
-    generatePreview(material){
+
+    generatePreview(material) {
         return this.editorSystem.previewSystem.execute(this.params, this.data, material)
     }
-    generateMeshPreview(entity, mesh){
+
+    generateMeshPreview(entity, mesh) {
         return this.editorSystem.previewSystem.execute(this.params, this.data, mesh, entity)
     }
 
-    get gizmos(){
+    get gizmos() {
         return {
             rotation: this.editorSystem.gizmoSystem.rotationGizmo,
             translation: this.editorSystem.gizmoSystem.translationGizmo,
@@ -66,12 +82,12 @@ export default class EditorEngine extends Renderer {
     }
 
     updatePackage(prodEnv, params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
-        this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
+        this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
         else
             this.cameraEvents.stopTracking()
-        
+
         this.camera.zNear = params.zNear
         this.camera.zFar = params.zFar
         this.camera.fov = params.fov
@@ -104,16 +120,19 @@ export default class EditorEngine extends Renderer {
             levelScript,
         })
     }
-    arrayToObject(arr){
+
+    arrayToObject(arr) {
         const obj = {}
         arr.forEach(a => {
             obj[a] = true
         })
         return obj
     }
+
     stop() {
         super.stop()
         this.cameraEvents.stopTracking()
     }
+
 }
 

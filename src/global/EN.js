@@ -102,7 +102,8 @@ export default class EnglishLocalization {
             ERRORS: "Errors",
             NO_ERRORS: "No errors were found.",
             NODE: "Node",
-            STATUS: "Status"
+            STATUS: "Status",
+            SOURCE: "Source code"
         },
         COMPONENT_EDITOR: {
             ENABLED: "Enabled",

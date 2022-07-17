@@ -3,17 +3,19 @@ import SettingsProvider from "../../../context/SettingsProvider"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import Range from "../../../../components/range/Range"
+import PropTypes from "prop-types"
 
-export default function EditorCamera() {
-    const settings = useContext(SettingsProvider)
+export default function CameraPostProcessing(props) {
+    const {selected} = props
     const [state, setState] = useState({
-        bloomStrength: settings.bloomStrength,
-        bloomThreshold: settings.bloomThreshold,
-        gamma: settings.gamma,
-        exposure: settings.exposure,
-        filmGrainStrength: settings.filmGrainStrength,
-        distortionStrength: settings.distortionStrength,
-        chromaticAberrationStrength: settings.chromaticAberrationStrength
+        bloomStrength: selected.bloomStrength ? selected.bloomStrength : .3,
+        bloomThreshold: selected.bloomThreshold ? selected.bloomThreshold : .85,
+
+        gamma: selected.gamma,
+        exposure: selected.exposure,
+        filmGrainStrength: selected.filmGrainStrength ? selected.filmGrainStrength : .01,
+        distortionStrength: selected.distortionStrength ? selected.distortionStrength : 1,
+        chromaticAberrationStrength: selected.chromaticAberrationStrength ? selected.chromaticAberrationStrength : 1,
     })
 
     return (
@@ -21,16 +23,16 @@ export default function EditorCamera() {
             <AccordionTemplate title={"Lens distortion"}>
                 <Checkbox
                     noMargin={true}
-                    checked={settings.distortion}
-                    handleCheck={() => settings.distortion = !settings.distortion}
+                    checked={selected.distortion}
+                    handleCheck={() => selected.distortion = !selected.distortion}
                     label={"Enabled"}
                     height={"25px"}
                     width={"100%"}
                 />
                 <Range
                     label={"Strength"}
-                    disabled={!settings.distortion}
-                    onFinish={v => settings.distortionStrength = v}
+                    disabled={!selected.distortion}
+                    onFinish={v => selected.distortionStrength = v}
                     incrementPercentage={.01}
                     precision={3}
                     handleChange={v => setState({...state, distortionStrength: v})}
@@ -41,16 +43,16 @@ export default function EditorCamera() {
             <AccordionTemplate title={"Chromatic aberration"}>
                 <Checkbox
                     noMargin={true}
-                    checked={settings.chromaticAberration}
-                    handleCheck={() => settings.chromaticAberration = !settings.chromaticAberration}
+                    checked={selected.chromaticAberration}
+                    handleCheck={() => selected.chromaticAberration = !selected.chromaticAberration}
                     label={"Chromatic aberration"}
                     height={"25px"}
                     width={"100%"}
                 />
                 <Range
                     label={"Strength"}
-                    disabled={!settings.chromaticAberration}
-                    onFinish={v => settings.chromaticAberrationStrength = v}
+                    disabled={!selected.chromaticAberration}
+                    onFinish={v => selected.chromaticAberrationStrength = v}
                     incrementPercentage={.01}
                     precision={3}
                     handleChange={v => setState({...state, chromaticAberrationStrength: v})}
@@ -60,8 +62,8 @@ export default function EditorCamera() {
             <AccordionTemplate title={"Film grain"}>
                 <Checkbox
                     noMargin={true}
-                    checked={settings.filmGrain}
-                    handleCheck={() => settings.filmGrain = !settings.filmGrain}
+                    checked={selected.filmGrain}
+                    handleCheck={() => selected.filmGrain = !selected.filmGrain}
                     label={"Enabled"}
                     height={"25px"}
                     width={"100%"}
@@ -69,8 +71,8 @@ export default function EditorCamera() {
 				
                 <Range
                     label={"Strength"}
-                    disabled={!settings.filmGrain}
-                    onFinish={v => settings.filmGrainStrength = v}
+                    disabled={!selected.filmGrain}
+                    onFinish={v => selected.filmGrainStrength = v}
                     incrementPercentage={.001}
                     precision={3}
                     handleChange={v => setState({...state, filmGrainStrength: v})}
@@ -81,8 +83,8 @@ export default function EditorCamera() {
             <AccordionTemplate title={"Bloom"}>
                 <Checkbox
                     noMargin={true}
-                    checked={settings.bloom}
-                    handleCheck={() => settings.bloom = !settings.bloom}
+                    checked={selected.bloom}
+                    handleCheck={() => selected.bloom = !selected.bloom}
                     label={"Enabled"}
                     height={"25px"}
                     width={"100%"}/>
@@ -90,8 +92,8 @@ export default function EditorCamera() {
                 <Range
                     label={"Strength"}
 
-                    disabled={!settings.bloom}
-                    onFinish={v => settings.bloomStrength = v}
+                    disabled={!selected.bloom}
+                    onFinish={v => selected.bloomStrength = v}
                     incrementPercentage={.001}
                     precision={3}
                     handleChange={v => setState({...state, bloomStrength: v})}
@@ -100,11 +102,11 @@ export default function EditorCamera() {
                 <Range
                     label={"Threshold"}
 
-                    disabled={!settings.bloom}
+                    disabled={!selected.bloom}
                     incrementPercentage={.001}
                     precision={3}
 
-                    onFinish={v => settings.bloomThreshold = v}
+                    onFinish={v => selected.bloomThreshold = v}
                     handleChange={v => setState({...state, bloomThreshold: v})}
                     value={state.bloomThreshold}
 
@@ -120,7 +122,7 @@ export default function EditorCamera() {
                     precision={3}
                     minValue={.1}
                     maxValue={10}
-                    onFinish={v => settings.gamma = v}
+                    onFinish={v => selected.gamma = v}
                     handleChange={v => setState({...state, gamma: v})}
                     value={state.gamma}
 
@@ -133,7 +135,7 @@ export default function EditorCamera() {
                     incrementPercentage={.001}
                     precision={3}
                     maxValue={10}
-                    onFinish={v => settings.exposure = v}
+                    onFinish={v => selected.exposure = v}
                     handleChange={v => setState({...state, exposure: v})}
                     value={state.exposure}
                 />
@@ -141,4 +143,8 @@ export default function EditorCamera() {
 
         </>
     )
+}
+
+CameraPostProcessing.propTypes={
+    selected: PropTypes.object
 }

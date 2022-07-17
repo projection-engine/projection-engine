@@ -178,7 +178,7 @@ in vec4 vPosition;
 in vec3 normalVec;
 
 uniform int axis;
-uniform int selectedAxis;
+uniform int selectedAxis; 
 out vec4 fragColor;
 
 

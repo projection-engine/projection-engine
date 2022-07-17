@@ -14,9 +14,12 @@ export default class FileSystem {
     }
 
     constructor(projectID) {
-        this._path = (localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID)
+        this.path = (localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID)
+        this.temp = localStorage.getItem("basePath") + "temp"
 
         new Promise(async resolve => {
+            console.log(this.temp)
+            await AsyncFS.mkdir(this.temp)
             if (!await AsyncFS.exists(this.path + FileSystem.sep + "previews")) await AsyncFS.mkdir(this.path + FileSystem.sep + "previews")
             if (!await AsyncFS.exists(this.path + FileSystem.sep + "assets")) await AsyncFS.mkdir(this.path + FileSystem.sep + "assets")
             if (!await AsyncFS.exists(this.path + FileSystem.sep + "assetsRegistry")) await AsyncFS.mkdir(this.path + FileSystem.sep + "assetsRegistry")
@@ -26,12 +29,8 @@ export default class FileSystem {
         }).catch(err => console.error(err))
     }
 
-    get path() {
-        return this._path
-    }
-
-    async writeFile(pathName, data) {
-        const result = await AsyncFS.write(FileSystem.resolvePath(this.path + pathName), typeof data === "object" ? JSON.stringify(data) : data)
+    async writeFile(pathName, data, absolute) {
+        const result = await AsyncFS.write(FileSystem.resolvePath(!absolute ? this.path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
 
         if(result[0])
             throw Error(result[0])
@@ -56,7 +55,7 @@ export default class FileSystem {
 
     async deleteFile(pathName, options) {
         const p = pathName.replaceAll(FileSystem.sep + FileSystem.sep, FileSystem.sep)
-        const currentPath = this._path + FileSystem.sep + p
+        const currentPath = this.path + FileSystem.sep + p
         for(let i = 0; i < FileSystem.registry.length; i++){
             const r = FileSystem.registry[i]
             const rPath = "assets" +FileSystem.sep + r.path
