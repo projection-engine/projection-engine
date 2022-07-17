@@ -1,7 +1,6 @@
 .wrapper {
   position: relative;
   width: 100%;
-  background-color: var(--pj-background-tertiary);
   border-radius: 3px;
   overflow: hidden;
   transition: 150ms linear;

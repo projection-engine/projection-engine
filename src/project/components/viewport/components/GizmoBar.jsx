@@ -1,19 +1,18 @@
 import styles from "../styles/SideOptions.module.css"
 import {Button, Icon, ToolTip} from "@f-ui/core"
-import TRANSFORMATION_TYPE from "../../../../static/misc/TRANSFORMATION_TYPE"
-import GIZMOS from "../../../../static/misc/GIZMOS"
+import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
+import GIZMOS from "../../../static/misc/GIZMOS"
 import React, {useContext, useEffect, useRef, useState} from "react"
 import ResizableBar from "../../../../components/resizable/ResizableBar"
 import SettingsProvider from "../../../context/SettingsProvider"
 import GridSizeSelector from "./GridSizeSelector"
+import useLocalization from "../../../../global/useLocalization"
 
 const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
 const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
 const DEFAULT_TRANSLATION = .001, TRANSLATION_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
 export default function GizmoBar() {
     const settings = useContext(SettingsProvider)
-
-
     const [minimal, setMinimal] = useState(true)
     const ref = useRef()
     const initialized = useRef(false)
@@ -25,6 +24,9 @@ export default function GizmoBar() {
             initialized.current = true
         }
     }, [settings.extendedGizmoView])
+
+    const translate = useLocalization("PROJECT", "VIEWPORT")
+
 
     return (
         <div className={styles.floating}>
@@ -48,7 +50,7 @@ export default function GizmoBar() {
                 </Button>
                 <div className={styles.buttonGroup}>
                     <GridSizeSelector
-                        label={"Translation grid"}
+                        label={translate("TRANSLATION_GRID")}
                         minimal={minimal}
                         icon={<Icon styles={{fontSize: "1rem"}}>grid_4x4</Icon>}
                         initialValue={DEFAULT_TRANSLATION}
@@ -58,7 +60,8 @@ export default function GizmoBar() {
                         }}
                     />
                     <GridSizeSelector
-                        label={"Scale grid"}
+
+                        label={translate("SCALE_GRID")}
                         minimal={minimal}
                         icon={<Icon>linear_scale</Icon>}
                         initialValue={DEFAULT_SCALE}
@@ -68,7 +71,7 @@ export default function GizmoBar() {
                         }}
                     />
                     <GridSizeSelector
-                        label={"Rotation Grid"}
+                        label={translate("ROTATION_GRID")}
                         minimal={minimal}
                         icon={<Icon>rotate_right</Icon>}
                         initialValue={DEFAULT_ROTATION}
@@ -85,8 +88,8 @@ export default function GizmoBar() {
                         variant={settings.gizmo === GIZMOS.NONE ? "filled" : undefined}
                         onClick={() => settings.gizmo = GIZMOS.NONE}>
                         <Icon>highlight_alt</Icon>
-                        <ToolTip content={"Select box"}/>
-                        {minimal ? null : <label className={styles.overflow}>Select box</label>}
+                        <ToolTip content={translate("SELECTION")}/>
+                        {minimal ? null : <label className={styles.overflow}>{translate("SELECTION")}</label>}
                     </Button>
                     <Button
                         className={styles.transformationWrapper}
@@ -95,8 +98,8 @@ export default function GizmoBar() {
                         styles={{borderTop: "var(--pj-border-primary) 1px solid"}}
                         onClick={() => settings.gizmo = GIZMOS.CURSOR}>
                         <Icon>adjust</Icon>
-                        <ToolTip content={"3D cursor"}/>
-                        {minimal ? null : <label className={styles.overflow}>3D cursor</label>}
+                        <ToolTip content={translate("CURSOR")}/>
+                        {minimal ? null : <label className={styles.overflow}>{translate("CURSOR")}</label>}
                     </Button>
                 </div>
                 <div className={styles.buttonGroup}>
@@ -106,7 +109,7 @@ export default function GizmoBar() {
                         variant={settings.gizmo === GIZMOS.TRANSLATION ? "filled" : undefined}
                         onClick={() => settings.gizmo = GIZMOS.TRANSLATION}>
                         <Icon>open_with</Icon>
-                        {minimal ? null : <label className={styles.overflow}>Translation gizmo</label>}
+                        {minimal ? null : <label className={styles.overflow}>{translate("T_GIZMO")}</label>}
                     </Button>
                     <Button
                         className={styles.transformationWrapper}
@@ -114,7 +117,7 @@ export default function GizmoBar() {
                         variant={settings.gizmo === GIZMOS.ROTATION ? "filled" : undefined}
                         onClick={() => settings.gizmo = GIZMOS.ROTATION}>
                         <Icon>360</Icon>
-                        {minimal ? null : <label className={styles.overflow}>Rotation gizmo</label>}
+                        {minimal ? null : <label className={styles.overflow}>{translate("R_GIZMO")}</label>}
                     </Button>
                     <Button
                         className={styles.transformationWrapper}
@@ -122,7 +125,7 @@ export default function GizmoBar() {
                         variant={settings.gizmo === GIZMOS.SCALE ? "filled" : undefined}
                         onClick={() => settings.gizmo = GIZMOS.SCALE}>
                         <Icon>open_in_full</Icon>
-                        {minimal ? null : <label className={styles.overflow}>Scale gizmo</label>}
+                        {minimal ? null : <label className={styles.overflow}>{translate("S_GIZMO")}</label>}
                     </Button>
                 </div>
             </div>

@@ -13,7 +13,7 @@ import EditorCamera from "../components/EditorCamera"
 import Line from "../components/Line"
 import {ENTITY_TAB} from "../components/FormTabs"
 import {Icon} from "@f-ui/core"
-import FALLBACK_MATERIAL from "../../../../static/misc/FALLBACK_MATERIAL"
+import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL"
 
 export function  updateTransform(axis, data, key, entity) {
     const component = entity.components[COMPONENTS.TRANSFORM]

@@ -1,11 +1,8 @@
-import React, {useMemo, useState} from "react"
-import ReactDOM from "react-dom"
-import "../styles/globals.css"
+import React, {useContext, useMemo, useState} from "react"
 import {Dropdown, DropdownOptions, Icon, TextField, ThemeProvider, useAlert} from "@f-ui/core"
-import shared from "../styles/App.module.css"
 import styles from "./styles/Home.module.css"
 import Frame from "../components/frame/Frame"
-import EN from "../static/locale/EN"
+import EN from "../global/EN"
 import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
 import useProjects from "./hooks/useProjects"
 import Create from "./components/Create"
@@ -13,27 +10,25 @@ import AsyncFS from "../project/libs/AsyncFS"
 import FileSystem from "../project/libs/FileSystem"
 import Card from "./components/Card"
 import Headers from "./components/Headers"
+import LocalizationProvider from "../global/LocalizationProvider"
+import useLocalization from "../global/useLocalization"
+import Search from "../components/search/Search"
 
 const pathResolve = window.require("path")
 
-function Home() {
-    const {projects, setProjects} = useProjects()
-    const [searchString, setSearchString] = useState("")
-    const projectsToShow = useMemo(() => {
-        return projects
-            .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
-    }, [searchString, projects])
-    useAlert(true)
+export default function Home() {
+    const {searchString, setSearchString, projectsToShow, setProjects} = useProjects()
+    const {localization} = useContext(LocalizationProvider)
+    const translate = useLocalization("HOME", "HOME")
     return (
         <ThemeProvider
-            language={"en"}
+            language={localization}
             theme={"dark"}
-            className={[shared.wrapper, shared.dark].join(" ")}
+            className={"wrapper"}
         >
             <Frame
                 options={[]}
-                label={EN.HOME.ENTRY_POINT.TITLE}
-                hasLogo={false}
+                label={translate("TITLE")}
                 pageInfo={{
                     closeEvent: FRAME_EVENTS.CLOSE,
                     minimizeEvent: FRAME_EVENTS.MINIMIZE,
@@ -43,13 +38,8 @@ function Home() {
                 <div className={styles.wrapperProjects}>
                     <div className={styles.titleWrapper}>
                         <div className={styles.title}>
-                            <label>{EN.HOME.PROJECTS.PROJECTS}</label>
-                            <TextField
-                                handleChange={e => setSearchString(e)}
-                                placeholder={EN.HOME.PROJECTS.SEARCH}
-                                value={searchString}
-                                height={"25px"}
-                            />
+                            <label>{translate("PROJECTS")}</label>
+                            <Search setSearchString={setSearchString} searchString={searchString}/>
                         </div>
                         <Dropdown
                             className={styles.button}
@@ -57,7 +47,7 @@ function Home() {
                             wrapperClassname={styles.createModal}
                         >
                             <Icon styles={{fontSize: "1.1rem"}}>add</Icon>
-                            {EN.HOME.PROJECTS.CREATE}
+                            {translate("CREATE")}
                             <DropdownOptions>
                                 <Create setProjects={setProjects}/>
                             </DropdownOptions>
@@ -67,7 +57,7 @@ function Home() {
                     {projectsToShow.length === 0 ?
                         <div className={styles.emptyWrapper}>
                             <Icon styles={{fontSize: "100px"}}>folder</Icon>
-                            {EN.HOME.PROJECTS.EMPTY}
+                            {translate("EMPTY")}
                         </div>
                         :
                         <div className={styles.content}>
@@ -102,9 +92,4 @@ function Home() {
 }
 
 
-ReactDOM.render(
-    <React.StrictMode>
-        <Home/>
-    </React.StrictMode>,
-    document.getElementById("root")
-)
+

@@ -3,7 +3,7 @@ import ForwardPass from "../../engine/systems/passes/ForwardPass"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
-import SHADING_MODELS from "../../../static/misc/SHADING_MODELS"
+import SHADING_MODELS from "../../static/misc/SHADING_MODELS"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import MaterialInstance from "../../engine/instances/MaterialInstance"
 
@@ -41,7 +41,7 @@ export default class PreviewSystem {
         this.frameBuffer
             .texture({precision: window.gpu.RGBA32F, format: window.gpu.RGBA, type: window.gpu.FLOAT})
 
-        import("../../../static/meshes/Sphere.json").then(res => {
+        import("../../static/meshes/Sphere.json").then(res => {
             this.sphereMesh = new MeshInstance(res)
         })
         this.cameraData = EditorCamera.update(0, RADIAN_90, 2.5, [0,0,0])

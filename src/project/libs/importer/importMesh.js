@@ -5,7 +5,7 @@ import TransformComponent from "../../engine/components/TransformComponent"
 import MeshComponent from "../../engine/components/MeshComponent"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
 import FileSystem from "../FileSystem"
-import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL"
+import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
 
 export default async function importMesh(objLoaded, engine, id) {
 

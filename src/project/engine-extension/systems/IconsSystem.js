@@ -35,11 +35,11 @@ export default class IconsSystem {
         this.vertexVBO = new VBOInstance( 0, PLANE, gpu.ARRAY_BUFFER, 3, gpu.FLOAT, false)
 
         Promise.all([
-            import("../../../static/icons/point_light.png"),
-            import("../../../static/icons/directional_light.png"),
-            import("../../../static/icons/probe.png"),
-            import("../../../static/meshes/Camera.json"),
-            import("../../../static/meshes/Sphere.json"),
+            import("../../static/icons/point_light.png"),
+            import("../../static/icons/directional_light.png"),
+            import("../../static/icons/probe.png"),
+            import("../../static/meshes/Camera.json"),
+            import("../../static/meshes/Sphere.json"),
         ]).then(res => {
             const [pl, dl, p, camera, sphere] = res
             this.pointLightTexture = new TextureInstance(pl.default, false)

@@ -3,16 +3,18 @@ import SettingsProvider from "../../../context/SettingsProvider"
 import styles from "../styles/ViewTabs.module.css"
 import {ContextMenu, Icon} from "@f-ui/core"
 import VIEWS from "../../../../components/view/VIEWS"
+import useLocalization from "../../../../global/useLocalization"
 
 export default function ViewTabs(){
     const settings = useContext(SettingsProvider)
+    const translate = useLocalization("PROJECT", "VIEWPORT")
 
     return (
         <ContextMenu 
             className={styles.wrapper}
             options={[
                 {
-                    label: "Delete view",
+                    label: translate("DELETE_VIEW"),
                     onClick: (node) => {
                         const attr = parseInt(node.getAttribute("data-view"))
                         if(attr){
@@ -39,7 +41,7 @@ export default function ViewTabs(){
             ))}
             {settings.views.length < 10 ?
                 <button
-                    onClick={() => settings.views = [...settings.views, {name: "New Tab" + settings.views.length, bottom: [VIEWS.CONSOLE], right: [VIEWS.HIERARCHY], left: []}]}
+                    onClick={() => settings.views = [...settings.views, {name: translate("NEW_TAB")+ settings.views.length, bottom: [VIEWS.CONSOLE], right: [VIEWS.HIERARCHY], left: []}]}
                     className={styles.tab}
                     style={{padding: "0", width: "17px"}}
                     data-highlight={"false"}

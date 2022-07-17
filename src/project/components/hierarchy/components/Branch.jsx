@@ -142,14 +142,14 @@ export default function Branch(props) {
                     </Icon>
                 </button>
             </div>
-            <div className={styles.content}>
-                {nodeRef.components[COMPONENTS.MESH] ? (
-                    <>
-                        <Icon>view_in_ar</Icon>
-						Mesh
-                    </>
-                ) : null}
-            </div>
+            {/*<div className={styles.content}>*/}
+            {/*    {nodeRef.components[COMPONENTS.MESH] ? (*/}
+            {/*        <>*/}
+            {/*            <Icon>view_in_ar</Icon>*/}
+            {/*			Mesh*/}
+            {/*        </>*/}
+            {/*    ) : null}*/}
+            {/*</div>*/}
         </div>
     )
 }

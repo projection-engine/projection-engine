@@ -3,9 +3,10 @@ import React, {useContext} from "react"
 import SettingsProvider from "../../../context/SettingsProvider"
 import styles from "../../component/styles/Forms.module.css"
 import Range from "../../../../components/range/Range"
+import useLocalization from "../../../../global/useLocalization"
 
-const  toDeg = 180/ Math.PI, toRad = Math.PI/180
-export default function CameraTab(){
+const toDeg = 180 / Math.PI, toRad = Math.PI / 180
+export default function CameraTab() {
     const settings = useContext(SettingsProvider)
     const [state] = useDirectState({
         zFar: settings.zFar,
@@ -14,12 +15,14 @@ export default function CameraTab(){
         radius: window.renderer.camera.radius
     })
 
+    const translate = useLocalization("PROJECT", "VIEWPORT")
+
     return (
         <>
             <label className={styles.label}>Clipping planes</label>
             <Range
                 minLabelWidth={"30px"}
-                label={"Far"}
+                label={translate("FAR")}
                 minValue={state.zNear + 1}
                 variant={"embedded"}
                 onFinish={(v) => {
@@ -33,7 +36,7 @@ export default function CameraTab(){
             />
             <Range
                 minLabelWidth={"30px"}
-                label={"Near"}
+                label={translate("NEAR")}
                 variant={"embedded"}
                 maxValue={state.zFar - 1}
                 onFinish={(v) => {
@@ -50,7 +53,7 @@ export default function CameraTab(){
             <label className={styles.label}>Field of view</label>
             <Range
                 minLabelWidth={"30px"}
-                label={"Fov"}
+                label={translate("FOV")}
                 minValue={10}
                 maxValue={110}
                 disabled={settings.ortho}
@@ -64,10 +67,8 @@ export default function CameraTab(){
                 value={state.fov}
                 handleChange={v => state.fov = v}
             />
-
-
-            <label className={styles.label}>Radius/Zoom</label>
             <Range
+                label={translate("ZOOM")}
                 onFinish={(v) => {
                     settings.radius = v
                     state.radius = v

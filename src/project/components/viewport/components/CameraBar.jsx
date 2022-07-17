@@ -4,6 +4,7 @@ import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "
 import React, {useMemo, useState} from "react"
 import {handleGrab} from "../utils/transformCamera"
 import CameraGizmo from "./CameraGizmo"
+import useLocalization from "../../../../global/useLocalization"
 
 export default function CameraBar(props) {
     const [cameraIsOrtho, setCameraIsOrtho] = useState(false)
@@ -27,6 +28,10 @@ export default function CameraBar(props) {
         window.renderer.camera.pitch = pitch
         window.renderer.camera.updateViewMatrix()
     }
+
+    const translate = useLocalization("PROJECT", "VIEWPORT")
+
+
     return (
         <div className={styles.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
             <CameraGizmo  bind={bind} />
@@ -46,32 +51,32 @@ export default function CameraBar(props) {
                     <DropdownOptions>
                         <DropdownOption
                             option={{
-                                label: "Top",
+                                label: translate("TOP"),
                                 onClick: () => bind(0, Math.PI /2)
                             }}/>
                         <DropdownOption
                             option={{
-                                label: "Bottom",
+                                label: translate("BOTTOM"),
                                 onClick: () => bind(0, -Math.PI /2)
                             }}/>
                         <DropdownOption
                             option={{
-                                label: "Left",
+                                label: translate("LEFT"),
                                 onClick: () => bind(Math.PI , 0)
                             }}/>
                         <DropdownOption
                             option={{
-                                label: "Right",
+                                label: translate("RIGHT"),
                                 onClick: () => bind(0,0)
                             }}/>
                         <DropdownOption
                             option={{
-                                label: "Front",
+                                label: translate("FRONT"),
                                 onClick: () =>  bind(Math.PI /2, 0)
                             }}/>
                         <DropdownOption
                             option={{
-                                label: "Back",
+                                label: translate("BACK"),
                                 onClick: () =>  bind(Math.PI * 1.5, 0)
                             }}/>
                     </DropdownOptions>
@@ -86,7 +91,7 @@ export default function CameraBar(props) {
                         setCameraIsOrtho(negated)
                     }}>
                     <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                        <div>Switch between last Ortho/Perspective</div>
+                        {translate("SWITCH_PROJECTION")}
                     </ToolTip>
                     {cameraIcon}
                 </Button>
@@ -104,7 +109,7 @@ export default function CameraBar(props) {
                         onMouseDown={e => handleGrab(e, window.renderer.camera, 0)}
                     >
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                            Drag X to zoom in/out
+                            {translate("DRAG_X_ZOOM")}
                         </ToolTip>
                         <Icon >zoom_in</Icon>
                     </div>
@@ -116,9 +121,9 @@ export default function CameraBar(props) {
                             window.renderer.camera.updateViewMatrix()
                         }}>
                         <ToolTip styles={{textAlign: "left", display: "grid"}}>
-                            <div>- Drag X to move forward/backwards</div>
-                            <div>- Drag Y to move up/down</div>
-                            <div>- Double click to center</div>
+                            <div>{translate("DRAG_X_DIR")}</div>
+                            <div>{translate("DRAG_Y_DIR")}</div>
+                            <div>{translate("DOUBLE_CLICK")}</div>
                         </ToolTip>
                         <Icon >back_hand</Icon>
                     </div>

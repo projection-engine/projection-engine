@@ -2,17 +2,18 @@ import PropTypes from "prop-types"
 import React, {useContext, useState} from "react"
 import {DropdownProvider, TextField} from "@f-ui/core"
 import FileSystem from "../../project/libs/FileSystem"
+import useLocalization from "../../global/useLocalization"
 
 export default function Create(props) {
     const {setProjects} = props
     const [projectName, setProjectName] = useState("")
     const dropdownContext = useContext(DropdownProvider)
-
+    const translate = useLocalization("HOME", "CREATE")
     return (
         <TextField
             handleChange={setProjectName}
             noMargin={true}
-            placeholder={"New project"}
+            placeholder={translate("NEW_PROJECT")}
             value={projectName}
             onEnter={async () => {
                 const res = await FileSystem.createProject(projectName)
@@ -22,7 +23,7 @@ export default function Create(props) {
                 }]))
 
                 dropdownContext.setOpen(false)
-                alert.pushAlert("Project created", "success")
+                alert.pushAlert(translate("PROJECT_CREATED"), "success")
                 setProjectName("")
             }}
             height={"30px"}

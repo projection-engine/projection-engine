@@ -1,6 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../engine/templates/COMPONENTS"
-import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../engine/utils/Conversion"
 
 export default class Gizmo {

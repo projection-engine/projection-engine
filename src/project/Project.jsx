@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from "react"
-import ReactDOM from "react-dom"
-import "../styles/globals.css"
+import React, {useContext, useEffect, useState} from "react"
 import {ThemeProvider, useAlert} from "@f-ui/core"
-import styles from "../styles/App.module.css"
 import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import Editor from "./Editor"
@@ -12,14 +9,16 @@ import QuickAccessProvider from "./context/QuickAccessProvider"
 import FileSystem from "./libs/FileSystem"
 import WindowInitializer from "./libs/windowInitializer"
 import useDirectState from "../components/hooks/useDirectState"
-import SETTINGS from "../static/misc/SETTINGS"
+import SETTINGS from "./static/misc/SETTINGS"
 import ROUTES from "../../public/static/ROUTES"
 import Shortcuts from "./components/shortcuts/Shortcuts"
+import loadGlobalLocalization from "../global/loadGlobalLocalization"
+import LocalizationProvider from "../global/LocalizationProvider"
 
 const {ipcRenderer} = window.require("electron")
 const DARK = "dark"
 
-function Project() {
+export default function Project() {
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
 
@@ -29,6 +28,7 @@ function Project() {
     const [settings, , pushBlock] = useDirectState(SETTINGS)
 
     useEffect(() => {
+        loadGlobalLocalization()
         ipcRenderer.send(ROUTES.LOAD_PROJECT)
         ipcRenderer.on(ROUTES.PAGE_PROPS, (ev, data) => {
             const fs = new FileSystem(data.package.id)
@@ -38,19 +38,19 @@ function Project() {
             setProject(data.package)
             setEvents(data)
         })
-        document.body.classList.add(styles.dark)
         // document.body.addEventListener("keydown", e => {
         //     e.preventDefault()
         // })
     }, [])
     useAlert(true)
+    const {localization} = useContext(LocalizationProvider)
 
     return (
         <ThemeProvider
-            language={"en"}
+            language={localization}
             theme={DARK}
             accentColor={global.accentColor}
-            className={styles.wrapper}
+            className={"wrapper"}
         >
             <QuickAccessProvider.Provider value={quickAccess}>
                 {project ?
@@ -74,8 +74,3 @@ function Project() {
         </ThemeProvider>
     )
 }
-
-
-ReactDOM.render(<React.StrictMode>
-    <Project/>
-</React.StrictMode>, document.getElementById("root"))

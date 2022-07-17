@@ -4,12 +4,15 @@ import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Ico
 import React, {useContext, useRef, useState} from "react"
 import FileSystem from "../../project/libs/FileSystem"
 import ROUTES from "../../../public/static/ROUTES"
+import useLocalization from "../../global/useLocalization"
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function Card(props) {
     const {data} = props
     const ref = useRef()
     const [name, setName] = useState(data.meta.name)
+    const translate = useLocalization("HOME", "CARD")
+
     return (
         <div
             className={styles.wrapper}
@@ -21,7 +24,7 @@ export default function Card(props) {
             </div>
             <div className={styles.divider}/>
             <div style={{width: "100%", paddingLeft: "4px"}}>
-                {data.meta.lastModification ? data.meta.lastModification : "Not modified"}
+                {data.meta.lastModification ? data.meta.lastModification : translate("NEVER")}
             </div>
             <div className={styles.divider}/>
             <div style={{width: "100%", paddingLeft: "4px"}}>
@@ -35,7 +38,7 @@ export default function Card(props) {
                     hideArrow={true}>
                     <Icon styles={{fontSize: "1rem"}}>edit</Icon>
                     <DropdownOptions>
-                        <Rename name={name} setName={setName} onRename={props.onRename}/>
+                        <Rename name={name} setName={setName} onRename={props.onRename} translate={translate}/>
                     </DropdownOptions>
                 </Dropdown>
                 <Dropdown
@@ -47,12 +50,12 @@ export default function Card(props) {
                     </Icon>
                     <DropdownOptions>
                         <DropdownOption option={{
-                            label: "Show in explorer",
+                            label: translate("SHOW_IN_EXPLORER"),
                             icon: <Icon styles={{fontSize: "1.1rem"}}>folder</Icon>,
                             onClick: () => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FileSystem.sep + data.id)
                         }}/>
                         <DropdownOption option={{
-                            label: "Delete",
+                            label: translate("DELETE"),
                             icon: <Icon styles={{fontSize: "1.1rem"}}>delete_forever</Icon>,
                             onClick: () => props.onDelete()
                         }}/>
@@ -85,13 +88,13 @@ Card.propTypes = {
 }
 
 function Rename(props) {
-    const {setName, name, onRename} = props
+    const {setName, name, onRename, translate} = props
     const dropdownContext = useContext(DropdownProvider)
     return (
         <TextField
             handleChange={e => setName(e)}
             noMargin={true}
-            placeholder={"New name"}
+            placeholder={translate("NEW_NAME")}
             value={name} height={"30px"}
             onEnter={() => {
                 onRename(name)
@@ -103,5 +106,5 @@ function Rename(props) {
 }
 
 Rename.propTypes={
-    setName: PropTypes.func, name: PropTypes.string, onRename: PropTypes.func
+    setName: PropTypes.func, name: PropTypes.string, onRename: PropTypes.func, translate: PropTypes.func
 }

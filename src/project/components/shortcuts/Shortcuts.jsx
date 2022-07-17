@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 
 import styles from "./styles/Shortcuts.module.css"
-import SHORTCUTS_ID from "../../../static/misc/SHORTCUTS_ID"
+import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
 import KEYS from "../../engine/templates/KEYS"
 
 export default function Shortcuts() {

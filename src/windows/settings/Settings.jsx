@@ -1,22 +1,18 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import ReactDOM from "react-dom"
-import "../../styles/globals.css"
+import "../../global/global.css"
 import {Tab, ThemeProvider, VerticalTabs} from "@f-ui/core"
-import styles from "../../styles/App.module.css"
 import Frame from "../../components/frame/Frame"
 import FRAME_EVENTS from "../../../public/static/FRAME_EVENTS"
 import AccordionTemplate from "../../components/accordion/AccordionTemplate"
 
 function Settings() {
-    useEffect(() => {
-        document.body.classList.add(styles.dark)
-    }, [])
     const [open, setOpen] = useState(0)
     return (
         <ThemeProvider
             language={"en"}
             theme={"dark"}
-            className={styles.wrapper}
+            className={"wrapper"}
         >
             <Frame 
                 label={"Project settings"}

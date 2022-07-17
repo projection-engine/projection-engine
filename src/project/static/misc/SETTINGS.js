@@ -1,7 +1,7 @@
 import SHADING_MODELS from "./SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
-import VIEWS from "../../components/view/VIEWS"
+import VIEWS from "../../../components/view/VIEWS"
 
 const toRad = Math.PI / 180
 export default {

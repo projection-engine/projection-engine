@@ -9,6 +9,7 @@ import PropTypes from "prop-types"
 import Header from "../../../components/view/components/Header"
 import Entity from "../../engine/basic/Entity"
 import FolderComponent from "../../engine/components/FolderComponent"
+import useLocalization from "../../../global/useLocalization"
 
 function createFolder(dispatchEntities){
     const newEntity = new Entity()
@@ -20,12 +21,12 @@ function createFolder(dispatchEntities){
 }
 
 export default function Hierarchy(props){
-
     const [searchedEntity, setSearchedEntity] = useState("")
+    const translate = useLocalization("PROJECT", "HIERARCHY")
 
     return (
         <>
-            <Header {...props} title={"Hierarchy"} icon={"account_tree"}>
+            <Header {...props} title={translate("TITLE")} icon={"account_tree"}>
                 <Search
                     width={"100%"}
                     searchString={searchedEntity}

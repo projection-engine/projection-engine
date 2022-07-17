@@ -1,1 +1,1 @@
-import "../../src/home/Home.jsx"
+import "../../src/home/Root.jsx"

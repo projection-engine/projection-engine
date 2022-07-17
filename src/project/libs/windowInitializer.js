@@ -1,9 +1,9 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 import * as DOM from "react-dom/client"
-import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
+import SHORTCUTS_ID from "../static/misc/SHORTCUTS_ID"
 import React from "react"
 import {Icon} from "@f-ui/core"
-import LABELED_KEYS from "../../static/misc/LABELED_KEYS"
+import LABELED_KEYS from "../static/misc/LABELED_KEYS"
 import compiler from "../components/blueprints/libs/compiler"
 import BOARD_SIZE from "../components/blueprints/data/BOARD_SIZE"
 

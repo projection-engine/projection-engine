@@ -3,7 +3,7 @@
   width: 100vw;
   display: flex;
   overflow: hidden;
-  background-color: var(--pj-background-tertiary) !important;
+  background-color: var(--pj-background-secondary) !important;
 }
 
 .modal {
@@ -56,6 +56,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  white-space: nowrap;
 }
 
 .title > label {

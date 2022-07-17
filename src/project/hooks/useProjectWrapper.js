@@ -1,7 +1,7 @@
 import useEngine from "../engine-extension/useEngine"
 import useSerializer from "./useSerializer"
 import {useEffect, useRef} from "react"
-import EVENTS from "../../static/misc/EVENTS"
+import EVENTS from "../static/misc/EVENTS"
 import ProjectLoader from "../libs/ProjectLoader"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import MeshInstance from "../engine/instances/MeshInstance"

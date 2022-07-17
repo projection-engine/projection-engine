@@ -7,9 +7,9 @@ import Transformation from "../engine/utils/Transformation"
 import toObject from "../engine/utils/toObject"
 import MaterialInstance from "../engine/instances/MaterialInstance"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
-import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
+import FALLBACK_MATERIAL from "../static/misc/FALLBACK_MATERIAL"
 import {v4} from "uuid"
-import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
+import ENTITY_WORKER_ACTIONS from "../static/misc/ENTITY_WORKER_ACTIONS"
 
 
 function getCursor() {

@@ -3,6 +3,7 @@ import React, {useEffect, useRef} from "react"
 import Header from "../../../components/view/components/Header"
 import styles from "./styles/Console.module.css"
 import {Button, Icon} from "@f-ui/core"
+import useLocalization from "../../../global/useLocalization"
 
 export default function Console(props){
     const ref = useRef()
@@ -11,9 +12,13 @@ export default function Console(props){
         console.pushTarget(ref.current)
         return () => console.removeTarget(ref.current)
     }, [])
+
+
+    const translate = useLocalization("PROJECT", "CONSOLE")
+
     return (
         <>
-            <Header {...props} title={"Console"} icon={"terminal"}>
+            <Header {...props} title={translate("TITLE")} icon={"terminal"}>
                 <Button
                     onClick={() => {
                         ref.current.textContent = ""
@@ -26,7 +31,7 @@ export default function Console(props){
                     <Icon styles={{fontSize: "1rem"}}>
                         clear_all
                     </Icon>
-                    Clear
+                    {translate("CLEAR")}
                 </Button>
             </Header>
             <div className={styles.wrapper}>

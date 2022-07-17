@@ -1,8 +1,8 @@
-import GIZMOS from "../../../../static/misc/GIZMOS"
+import GIZMOS from "../../../static/misc/GIZMOS"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import {useMemo, useState} from "react"
 import KEYS from "../../../engine/templates/KEYS"
-import RENDER_TARGET from "../../../../static/misc/RENDER_TARGET"
+import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 
 export default function useEditorShortcuts({engine, settings, id, serializer}) {

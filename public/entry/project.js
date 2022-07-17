@@ -1,1 +1,1 @@
-import "../../src/project/Project.jsx"
+import "../../src/project/Root.jsx"

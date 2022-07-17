@@ -1,21 +1,17 @@
-import React, {useEffect} from "react"
+import React from "react"
 import ReactDOM from "react-dom"
-import "../../styles/globals.css"
+import "../../global/global.css"
 import {ThemeProvider} from "@f-ui/core"
-import styles from "../../styles/App.module.css"
 import Frame from "../../components/frame/Frame"
 import FRAME_EVENTS from "../../../public/static/FRAME_EVENTS"
 
 function Delete() {
-    useEffect(() => {
-        document.body.classList.add(styles.dark)
-    }, [])
 
     return (
         <ThemeProvider
             language={"en"}
             theme={"dark"}
-            className={styles.wrapper}
+            className={"wrapper"}
         >
             <Frame 
                 label={"Editor shortcuts"}

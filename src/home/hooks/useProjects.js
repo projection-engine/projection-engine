@@ -1,7 +1,9 @@
-import {useEffect, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import AsyncFS from "../../project/libs/AsyncFS"
 import FileSystem from "../../project/libs/FileSystem"
-import EN from "../../static/locale/EN"
+import EN from "../../global/EN"
+import loadGlobalLocalization from "../../global/loadGlobalLocalization"
+import {useAlert} from "@f-ui/core"
 
 const path = window.require("path")
 
@@ -9,6 +11,9 @@ export default function useProjects() {
     const [projects, setProjects] = useState([])
     const [startPath, setStartPath] = useState("")
     const [loading, setLoading] = useState(true)
+    const [searchString, setSearchString] = useState("")
+    useAlert(true)
+
 
     async function refresh (path) {
         const [e, res] = await AsyncFS.readdir(path)
@@ -44,7 +49,7 @@ export default function useProjects() {
     }
 
     useEffect(() => {
-
+        loadGlobalLocalization()
         let b = localStorage.getItem("basePath")
         if (localStorage.getItem("basePath") === null) {
             b = window.require("os").homedir() + path.sep + "ProjectionEngineProjects" + path.sep
@@ -55,12 +60,14 @@ export default function useProjects() {
         refresh(b + "projects" + FileSystem.sep).catch()
 
     }, [])
-
+    const projectsToShow = useMemo(() => {
+        return projects
+            .filter(p => p.meta.name?.toLowerCase().includes(searchString.toLowerCase()))
+    }, [searchString, projects])
     return {
-        loading,
-        projects,
+        projectsToShow,
+        searchString,
+        setSearchString,
         setProjects,
-        startPath,
-        setStartPath
     }
 }
