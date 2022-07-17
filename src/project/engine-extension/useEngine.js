@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import entityReducer from "./entityReducer"
-import COMPONENTS from "../engine/templates/COMPONENTS"
+import COMPONENTS from "../engine/data/COMPONENTS"
 import Entity from "../engine/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 import Transformation from "../engine/utils/Transformation"
@@ -88,6 +88,7 @@ export default function useEngine(settings) {
         // const e = entities.get(selected[0])
     }
 
+    const cameraInitialized = useRef(false)
     const update = useCallback(() => {
         if (viewportInitialized) {
             let fMat = fallbackMaterial
@@ -100,6 +101,18 @@ export default function useEngine(settings) {
                     id: FALLBACK_MATERIAL
                 })
                 setFallbackMaterial(fMat)
+
+            }
+            if(settings.INITIALIZED && !cameraInitialized.current) {
+                cameraInitialized.current = true
+                if (settings.cameraPosition)
+                    window.renderer.camera.centerOn = settings.cameraPosition
+                if (typeof settings.yaw === "number")
+                    window.renderer.camera.yaw = settings.yaw
+                if (typeof settings.pitch === "number")
+                    window.renderer.camera.pitch = settings.pitch
+
+                window.renderer.camera.updateViewMatrix()
             }
             window.renderer.setSelected = setSelected
             window.renderer.camera.updateProjection()

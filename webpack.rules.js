@@ -34,7 +34,7 @@ module.exports = [
                 loader: 'url-loader',
                 options: {
                     limit: 1000,
-                    name: 'meshes/img/[name].[ext]'
+                    name: 'data/img/[name].[ext]'
                 }
             }
         ]

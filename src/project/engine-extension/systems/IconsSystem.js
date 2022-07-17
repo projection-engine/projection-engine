@@ -3,7 +3,7 @@ import Icon from "../instances/Icon"
 import * as cameraShaderCode from "../shaders/GIZMO.glsl"
 import * as iconShaderCode from "../shaders/ICON.glsl"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import {createVAO} from "../../engine/utils/utils"
 import VBOInstance from "../../engine/instances/VBOInstance"
@@ -28,7 +28,6 @@ export default class IconsSystem {
 
         this.iconShader = new ShaderInstance(iconShaderCode.vertex, iconShaderCode.fragment)
         this.cameraShader = new ShaderInstance(cameraShaderCode.shadedVertex, cameraShaderCode.shadedFragment)
-        // this.sphereShader = new ShaderInstance(vertex, fragmentForward)
         this.cursorShader = new ShaderInstance(iconShaderCode.cursorVertex, iconShaderCode.cursorFragment)
 
         this.vao = createVAO()
@@ -38,19 +37,17 @@ export default class IconsSystem {
             import("../../static/icons/point_light.png"),
             import("../../static/icons/directional_light.png"),
             import("../../static/icons/probe.png"),
-            import("../../static/meshes/Camera.json"),
-            import("../../static/meshes/Sphere.json"),
+            import("../data/Camera.json"),
         ]).then(res => {
-            const [pl, dl, p, camera, sphere] = res
-            this.pointLightTexture = new TextureInstance(pl.default, false)
-            this.directionalLightTexture = new TextureInstance(dl.default, false)
-            this.probeTexture = new TextureInstance(p.default, false)
+            const [point_light, directional_light, probe, camera] = res
+            this.pointLightTexture = new TextureInstance(point_light.default, false)
+            this.directionalLightTexture = new TextureInstance(directional_light.default, false)
+            this.probeTexture = new TextureInstance(probe.default, false)
             this.cameraMesh = new MeshInstance({
                 ...camera,
                 uvs: [],
                 tangents: [],
             })
-            this.sphereMesh = new MeshInstance(sphere)
             this.checkerboardTexture = new TextureInstance(CURSOR)
             this.#ready = true
         })

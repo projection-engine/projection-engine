@@ -1,5 +1,5 @@
 import Entity from "../../engine/basic/Entity"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import FolderComponent from "../../engine/components/FolderComponent"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../../engine/instances/MeshInstance"

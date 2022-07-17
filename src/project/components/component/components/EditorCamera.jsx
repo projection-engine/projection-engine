@@ -7,14 +7,13 @@ import Range from "../../../../components/range/Range"
 export default function EditorCamera() {
     const settings = useContext(SettingsProvider)
     const [state, setState] = useState({
-        bloomStrength: settings.bloomStrength ? settings.bloomStrength : .3,
-        bloomThreshold: settings.bloomThreshold ? settings.bloomThreshold : .85,
-
+        bloomStrength: settings.bloomStrength,
+        bloomThreshold: settings.bloomThreshold,
         gamma: settings.gamma,
         exposure: settings.exposure,
-        filmGrainStrength: settings.filmGrainStrength ? settings.filmGrainStrength : .01,
-        distortionStrength: settings.distortionStrength ? settings.distortionStrength : 1,
-        chromaticAberrationStrength: settings.chromaticAberrationStrength ? settings.chromaticAberrationStrength : 1,
+        filmGrainStrength: settings.filmGrainStrength,
+        distortionStrength: settings.distortionStrength,
+        chromaticAberrationStrength: settings.chromaticAberrationStrength
     })
 
     return (

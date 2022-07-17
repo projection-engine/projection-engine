@@ -1,60 +1,61 @@
 import styles from "../styles/Tabs.module.css"
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef} from "react"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
 import {Button, Icon, ToolTip} from "@f-ui/core"
 
 export const ENTITY_TAB = "entity"
 export default function FormTabs(props) {
+    const {translate, entity, currentTab, setCurrentTab, tabs} = props
     const currentKey = useMemo(() => {
-        if (props.entity)
-            return Object.keys(props.entity.components)[props.currentTab]
+        if (entity)
+            return Object.keys(entity.components)[currentTab]
         return undefined
-    }, [props.currentTab, props.entity])
+    }, [currentTab, entity])
     const initialized = useRef(false)
     useEffect(() => {
-        if (!props.entity) {
-            props.setCurrentTab("-2")
+        if (!entity) {
+            setCurrentTab("-2")
             initialized.current = false
-        } else if (!initialized.current && !props.entity.components[COMPONENTS.FOLDER]) {
-            props.setCurrentTab("0")
+        } else if (!initialized.current && !entity.isFolder) {
+            setCurrentTab("0")
             initialized.current = true
         }
-    }, [props.entity])
+    }, [entity])
+
     return (
         <div className={styles.wrapper}>
             <Button
                 className={styles.button}
-                variant={props.currentTab === "-2" ? "filled" : undefined}
-                onClick={() => props.setCurrentTab("-2")}
+                variant={currentTab === "-2" ? "filled" : undefined}
+                onClick={() => setCurrentTab("-2")}
             >
                 <Icon styles={{fontWeight: "1rem"}}>image</Icon>
-                <ToolTip content={"Display"} animation={"0ms"}/>
+                <ToolTip content={translate("RENDERING")} animation={"0ms"}/>
             </Button>
             <Button
                 className={styles.button}
-                variant={props.currentTab === "-3" ? "filled" : undefined}
-                onClick={() => props.setCurrentTab("-3")}
+                variant={currentTab === "-3" ? "filled" : undefined}
+                onClick={() => setCurrentTab("-3")}
             >
                 <Icon styles={{fontWeight: "1rem"}}>videocam</Icon>
-                <ToolTip content={"Editor post-processing"} animation={"0ms"}/>
+                <ToolTip content={translate("POST_PROCESSING")} animation={"0ms"}/>
             </Button>
-            {props.entity ? <div className={styles.divider}/> : undefined}
-            {props.entity === undefined || props.entity.isFolder ? null :
+            {entity !== undefined && !entity.isFolder  ? <div className={styles.divider}/> : undefined}
+            {entity === undefined || entity.isFolder ? null :
                 <Button
-                    variant={props.currentTab === ENTITY_TAB ? "filled" : undefined}
+                    variant={currentTab === ENTITY_TAB ? "filled" : undefined}
                     className={styles.button}
-                    onClick={() => props.setCurrentTab(ENTITY_TAB)}>
+                    onClick={() => setCurrentTab(ENTITY_TAB)}>
                     <Icon styles={{fontWeight: "1rem"}}>terminal</Icon>
-                    <ToolTip content={"Scripts"} animationDelay={"0ms"}/>
+                    <ToolTip content={translate("SCRIPTS")} animationDelay={"0ms"}/>
                 </Button>
             }
-            {props.tabs.map((t, i) => (
+            {tabs.map((t, i) => (
                 <React.Fragment key={i + "-component-tab"}>
                     <Button
                         variant={currentKey === t.key ? "filled" : undefined}
                         className={styles.button}
-                        onClick={() => props.setCurrentTab(Object.keys(props.entity.components).findIndex(e => e === t.key))}>
+                        onClick={() => setCurrentTab(Object.keys(entity.components).findIndex(e => e === t.key))}>
                         <Icon styles={{fontWeight: "1rem"}}>{t.icon}</Icon>
                         <ToolTip content={t.label} animationDelay={"0ms"}/>
                     </Button>
@@ -66,6 +67,7 @@ export default function FormTabs(props) {
 }
 
 FormTabs.propTypes = {
+    translate: PropTypes.func,
     tabs: PropTypes.array,
     addComponent: PropTypes.func,
 

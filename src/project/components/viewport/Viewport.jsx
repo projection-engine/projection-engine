@@ -4,99 +4,35 @@ import React, {useContext, useEffect, useId, useMemo} from "react"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../static/misc/RENDER_TARGET"
 import HeaderOptions from "./views/HeaderOptions"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
-import Picking from "../../engine/systems/misc/Picking"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import SelectBox from "../../../components/select-box/SelectBox"
 import Conversion from "../../engine/utils/Conversion"
 import GIZMOS from "../../static/misc/GIZMOS"
 import SettingsProvider from "../../context/SettingsProvider"
-import Transformation from "../../engine/utils/Transformation"
 import importData from "../../libs/importer/import"
 import getOptionsViewport from "./utils/getOptionsViewport"
 import windowBuilder from "../../engine/windowBuilder"
-import DevelopmentRenderer from "../../engine-extension/DevelopmentRenderer"
+import EditorEngine from "../../engine-extension/EditorEngine"
 import SideOptions from "./views/SideOptions"
+import updateCursor from "./utils/updateCursor"
+import onViewportClick from "./utils/onViewportClick"
 
 const TRIGGERS = ["data-viewport"]
-const MAX_TIMESTAMP = 350, MAX_DELTA = 50, LEFT_BUTTON = 0
+const LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./utils/findEntities.js", import.meta.url))
 export default function Viewport(props) {
     const renderer = window.renderer
     const settings = useContext(SettingsProvider)
     const internalID = useId()
-
     const optionsViewport = useMemo(
         () => getOptionsViewport(props.engine, props.utils),
         [props.engine.selectedEntity, props.utils.toCopy]
     )
     useEffect(() => {
-        windowBuilder(document.getElementById(RENDER_TARGET), settings.resolution, DevelopmentRenderer)
+        windowBuilder(document.getElementById(RENDER_TARGET), settings.resolution, EditorEngine)
         props.engine.setViewportInitialized(true)
     }, [])
 
-
-    function pickIcon (cameraMesh, pickSystem, camera, coords){
-        return pickSystem.pickElement((shader, proj) => {
-            const entities = renderer.entities
-            for (let m = 0; m < entities.length; m++) {
-                const currentInstance = entities[m]
-                if (entities[m].active) {
-                    let t = currentInstance.components[COMPONENTS.TRANSFORM]?.transformationMatrix
-                    if(!t)
-                        t = currentInstance.components[COMPONENTS.DIRECTIONAL_LIGHT]?.transformationMatrix
-                    if (t && !currentInstance.components[COMPONENTS.MESH])
-                        Picking.drawMesh(currentInstance.components[COMPONENTS.CAMERA] ? cameraMesh : pickSystem.mesh, currentInstance, camera.viewMatrix, proj, t, shader)
-                }
-            }
-        }, {x: coords[0], y: coords[1]}, camera)
-    }
-
-    function pickMesh(meshesMap, x, y){
-        const w =  window.gpu.canvas.width, h =  window.gpu.canvas.height
-        const coords = Conversion.toQuadCoord({x, y}, {w, h})
-        const picked = renderer.picking.depthPick(renderer.renderingPass.depthPrePass.frameBuffer, coords)
-        return Math.round((picked[1] + picked[2])* 255)
-    }
-
-    function handler(event) {
-        if(settings.gizmo !== GIZMOS.CURSOR) {
-            const deltaX = Math.abs(event.currentTarget.startedCoords.x - event.clientX)
-            const deltaY = Math.abs(event.currentTarget.startedCoords.y - event.clientY)
-            const elapsed = (performance.now() - event.currentTarget.started)
-
-            if (window.gpu.canvas === event.target && elapsed <= MAX_TIMESTAMP && deltaX < MAX_DELTA && deltaY < MAX_DELTA) {
-                const camera = renderer.camera
-                const p = renderer.picking
-                const cameraMesh = renderer.editorSystem.billboardSystem.cameraMesh
-                const meshesMap = renderer.data.meshesMap
-                const target = event.currentTarget.getBoundingClientRect()
-                const coords = [event.clientX - target.left, event.clientY - target.top]
-
-                let picked = pickIcon( cameraMesh, p, camera, coords)
-                if (!picked)
-                    picked = pickMesh(meshesMap, event.clientX, event.clientY)
-                if (picked > 0) {
-                    const entity = renderer.entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
-                    if (entity) props.engine.setSelected(prev => {
-                        const i = prev.findIndex(e => e === entity.id)
-                        if (i > -1) {
-                            prev.splice(i, 1)
-                            return prev
-                        }
-                        if (event.ctrlKey) return [...prev, entity.id]
-                        else return [entity.id]
-                    })
-                } else
-                    props.engine.setSelected([])
-            }
-        }else
-            event.currentTarget.started = undefined
-    }
-    function updateCursor(coords){
-        const t = renderer.cursor.components[COMPONENTS.TRANSFORM]
-        t.translation = coords
-        t.transformationMatrix = Transformation.transform(t.translation, [0,0,0,1], t.scaling)
-    }
     let latestTranslation
     function handleMouse(e){
         if(e.type === "mousemove"){
@@ -106,7 +42,6 @@ export default function Viewport(props) {
         else
             document.removeEventListener("mousemove", handleMouse)
     }
-
     useContextTarget(internalID, optionsViewport, TRIGGERS)
 
     return (
@@ -123,7 +58,7 @@ export default function Viewport(props) {
                         document.addEventListener("mouseup", handleMouse, {once: true})
                     }
                 }}
-                onClick={handler}
+                onClick={event => onViewportClick(event, settings, props.engine.setSelected)}
                 onDragOver={e => {
                     if (props.allowDrop) {
                         e.preventDefault()

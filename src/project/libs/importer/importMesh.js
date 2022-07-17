@@ -3,7 +3,7 @@ import Entity from "../../engine/basic/Entity"
 import TransformComponent from "../../engine/components/TransformComponent"
 
 import MeshComponent from "../../engine/components/MeshComponent"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import FileSystem from "../FileSystem"
 import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
 

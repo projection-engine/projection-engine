@@ -14,9 +14,9 @@ export default {
     LOADING_VIEWPORT: "Loading viewport",
     PACKAGING_DATA: "Packaging data for download.",
     LOADING_MATERIAL: "Loading material",
-    LOAD_FILES: "Loading meshes",
+    LOAD_FILES: "Loading data",
     COMPILING: "Compiling",
     UPDATING_SYSTEMS: "Compiling systems",
-    LOADING_MESHES: "Loading meshes",
+    LOADING_MESHES: "Loading data",
     SAVING_MESH: "Saving mesh"
 }

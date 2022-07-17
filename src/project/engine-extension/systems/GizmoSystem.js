@@ -7,7 +7,7 @@ import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 import Tooltip from "../gizmo/Tooltip"
 import generateNextID from "../../engine/utils/generateNextID"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import * as shaderCode from "../../engine/shaders/PICK.glsl"
 
 function move(event) {

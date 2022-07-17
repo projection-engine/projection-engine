@@ -1,6 +1,6 @@
 import Range from "../../../../components/range/Range"
 import useDirectState from "../../../../components/hooks/useDirectState"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 import React, {useEffect} from "react"
 import styles from "../../component/styles/Forms.module.css"
 

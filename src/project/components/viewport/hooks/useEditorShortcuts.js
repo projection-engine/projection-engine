@@ -1,7 +1,7 @@
 import GIZMOS from "../../../static/misc/GIZMOS"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
 import {useMemo, useState} from "react"
-import KEYS from "../../../engine/templates/KEYS"
+import KEYS from "../../../engine/data/KEYS"
 import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
 import useHotKeys from "../../shortcuts/hooks/useHotKeys"
 

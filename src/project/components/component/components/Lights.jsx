@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import {Checkbox} from "@f-ui/core"
 import React, {useEffect, useState} from "react"
 import ColorPicker from "../../../../components/color/ColorPicker"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import Range from "../../../../components/range/Range"
 

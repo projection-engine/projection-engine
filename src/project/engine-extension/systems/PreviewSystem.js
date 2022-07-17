@@ -4,7 +4,7 @@ import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
 import SHADING_MODELS from "../../static/misc/SHADING_MODELS"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import MaterialInstance from "../../engine/instances/MaterialInstance"
 
 function toBase64( fbo) {
@@ -38,12 +38,8 @@ export default class PreviewSystem {
     identity = mat4.create()
     constructor() {
         this.frameBuffer = new FramebufferInstance( SIZE, SIZE)
-        this.frameBuffer
             .texture({precision: window.gpu.RGBA32F, format: window.gpu.RGBA, type: window.gpu.FLOAT})
 
-        import("../../static/meshes/Sphere.json").then(res => {
-            this.sphereMesh = new MeshInstance(res)
-        })
         this.cameraData = EditorCamera.update(0, RADIAN_90, 2.5, [0,0,0])
         this.projection = mat4.perspective([], RADIAN_60, 1, .1, 10000)
         this.pointLightData =[
@@ -119,7 +115,7 @@ export default class PreviewSystem {
         else if (materialMesh instanceof MaterialInstance){
             const [ viewMatrix, camPosition ] = this.cameraData
             ForwardPass.drawMesh({
-                mesh: this.sphereMesh,
+                mesh: window.renderer.sphereMesh,
                 camPosition,
                 viewMatrix,
                 projectionMatrix: this.projection,
@@ -142,7 +138,7 @@ export default class PreviewSystem {
         }
         this.frameBuffer.stopMapping()
         response= toBase64(this.frameBuffer)
-        this.sphereMesh.finish()
+        window.renderer.sphereMesh.finish()
         window.gpu.bindVertexArray(null)
         return response
     }

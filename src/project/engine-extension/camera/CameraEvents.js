@@ -1,5 +1,5 @@
 import EditorCamera from "./EditorCamera"
-import KEYS from "../../engine/templates/KEYS"
+import KEYS from "../../engine/data/KEYS"
 import {rotateY} from "../../components/viewport/utils/transformCamera"
 import CAMERA_GIZMO from "../../static/misc/CAMERA_GIZMO"
 
@@ -17,7 +17,7 @@ export default function CameraEvents(c) {
 
     function handleInput(event) {
         switch (event.type) {
-        case "wheel":
+        case "wheel": {
             const forward = event.deltaY < 0
             const distance = (forward ? 1 : -1) * scrollSpeed * (camera.animated ? 1 : 3)
 
@@ -46,7 +46,8 @@ export default function CameraEvents(c) {
                 camera.updateViewMatrix()
             }
             break
-        case "mousemove":
+        }
+        case "mousemove": {
             if (isFocused || doubleClick) {
                 if (!requested) {
                     requested = true
@@ -73,13 +74,14 @@ export default function CameraEvents(c) {
                 }
                 camera.updateViewMatrix(ctrl)
 
-                if(!doubleClick && cameraGizmo){
+                if (!doubleClick && cameraGizmo) {
                     const t = camera.getNotTranslatedViewMatrix()
                     cameraGizmo.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
                 }
 
             }
             break
+        }
         case "mousedown":
             if (holding)
                 doubleClick = true

@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import Tree from "./components/Tree"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import Search from "../../../components/search/Search"
 import {Button, Icon} from "@f-ui/core"
@@ -13,7 +13,7 @@ import useLocalization from "../../../global/useLocalization"
 
 function createFolder(dispatchEntities){
     const newEntity = new Entity()
-    newEntity.name = "New folder"
+    newEntity.name = window.localization.translate("PROJECT", "HIERARCHY", "NEW_FOLDER")
     newEntity.components[COMPONENTS.FOLDER] = new FolderComponent()
     dispatchEntities({
         type: ENTITY_ACTIONS.ADD, payload: newEntity

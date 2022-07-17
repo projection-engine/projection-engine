@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 
 
 export default function getComponentInfo(c) {

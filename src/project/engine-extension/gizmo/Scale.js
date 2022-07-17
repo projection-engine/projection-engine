@@ -4,7 +4,7 @@ import TransformComponent from "../../engine/components/TransformComponent"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import Transformation from "../../engine/utils/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 
@@ -25,7 +25,7 @@ export default class Scale extends Gizmo {
         this.yGizmo = Scale.#mapEntity(3, "y")
         this.zGizmo = Scale.#mapEntity(4, "z")
 
-        import("../../static/meshes/ScaleGizmo.json")
+        import("../data/ScaleGizmo.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     vertices: res.vertices,

@@ -1,6 +1,6 @@
 import {v4, v4 as uuidv4} from "uuid"
 import AsyncFS from "./AsyncFS"
-import IMAGE_WORKER_ACTIONS from "../engine/templates/IMAGE_WORKER_ACTIONS"
+import IMAGE_WORKER_ACTIONS from "../engine/data/IMAGE_WORKER_ACTIONS"
 
 const pathRequire = window.require("path")
 

@@ -3,7 +3,7 @@ import {ENTITY_ACTIONS} from "../../engine-extension/entityReducer"
 import FILE_TYPES from "../../../../public/static/FILE_TYPES"
 import importScene from "./importScene"
 import FileSystem from "../FileSystem"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
 
 export default async function importData(event, engine, asID) {

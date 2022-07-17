@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 
 self.onmessage = ({data: {entities, data}}) => {
     const selected = [], ids = []

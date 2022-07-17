@@ -4,7 +4,7 @@ import TransformComponent from "../../engine/components/TransformComponent"
 import MeshInstance from "../../engine/instances/MeshInstance"
 import Transformation from "../../engine/utils/Transformation"
 import PickComponent from "../../engine/components/PickComponent"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 
@@ -25,7 +25,7 @@ export default class Translation extends Gizmo {
         this.xGizmo = Translation.#mapEntity(2, "x")
         this.yGizmo = Translation.#mapEntity(3, "y")
         this.zGizmo = Translation.#mapEntity(4, "z")
-        import("../../static/meshes/Arrow.json")
+        import("../data/TranslationGizmo.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     vertices: res.vertices,

@@ -1,7 +1,7 @@
 import CameraTab from "../components/CameraTab"
 import ViewportTab from "../components/ViewportTab"
 import Transform from "../../component/components/Transform"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 import {updateTransform} from "../../component/hooks/useForm"
 import VerticalTabs from "../../../../components/vertical-tab/VerticalTabs"
 import React, {useState} from "react"

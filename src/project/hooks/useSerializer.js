@@ -25,7 +25,7 @@ export default function useSerializer(settings, id) {
                         },
                         {
                             ...settings,
-                            cameraPosition: window.renderer.camera.position,
+                            cameraPosition: window.renderer.camera.centerOn,
                             yaw: window.renderer.camera.yaw,
                             pitch: window.renderer.camera.pitch,
                         })

@@ -7,6 +7,7 @@ import FormTabs from "./components/FormTabs"
 import getComponentInfo from "./utils/getComponentInfo"
 import EngineProvider from "../../context/EngineProvider"
 import Header from "../../../components/view/components/Header"
+import useLocalization from "../../../global/useLocalization"
 
 export default function ComponentEditor(props) {
     const  [engine] = useContext(EngineProvider)
@@ -23,15 +24,16 @@ export default function ComponentEditor(props) {
         }
         return []
     }, [engine.selected, currentTab])
-
+    const translate = useLocalization("PROJECT", "COMPONENT_EDITOR")
     return (
         <>
-            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : "Component editor"}/>
+            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : translate("TITLE")}/>
             {props.hidden ?
                 null
                 :
                 <div className={styles.content}>
                     <FormTabs
+                        translate={translate}
                         tabs={tabs}
                         entity={engine.selectedEntity}
                         currentTab={currentTab}
@@ -45,8 +47,8 @@ export default function ComponentEditor(props) {
                                     {currentTab === "-3" ? "videocam" : null}
                                 </Icon>
                                 <label className={styles.overflow}>
-                                    {currentTab === "-2" ? "Rendering features" : null}
-                                    {currentTab === "-3" ? "Editor post-processing" : null}
+                                    {currentTab === "-2" ? translate("RENDERING"): null}
+                                    {currentTab === "-3" ? translate("POST_PROCESSING") : null}
                                 </label>
                             </div>
                         )}

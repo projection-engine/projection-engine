@@ -80,7 +80,8 @@ export default class EnglishLocalization {
             S_GIZMO: "Scale gizmo",
         },
         HIERARCHY: {
-            TITLE: "Hierarchy"
+            TITLE: "Hierarchy",
+            NEW_FOLDER: "New Folder"
         },
         CONSOLE: {
             TITLE: "Console",
@@ -102,6 +103,19 @@ export default class EnglishLocalization {
             NO_ERRORS: "No errors were found.",
             NODE: "Node",
             STATUS: "Status"
+        },
+        COMPONENT_EDITOR: {
+            ENABLED: "Enabled",
+            RENDERING: "Rendering features",
+            POST_PROCESSING: "Editor post-processing",
+            TITLE: "Component editor",
+            SCRIPTS: "Scripts",
+            ORTHO_PROJECTION: "Orthographic projection",
+            PROJECTION_SIZE: "Orthographic size",
+            FOV: "Field Of View",
+            VIEW_PLANES: "View Planes",
+            FAR: "Far",
+            NEAR: "Near"
         }
     }
     static COMPONENTS = {

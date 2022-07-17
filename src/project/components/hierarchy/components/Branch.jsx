@@ -2,7 +2,7 @@ import styles from "../styles/Branch.module.css"
 import PropTypes from "prop-types"
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import {Icon} from "@f-ui/core"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 import Packager from "../../../engine/Packager"
 
 const LEFT_BUTTON = 0

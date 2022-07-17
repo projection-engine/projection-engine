@@ -10,7 +10,7 @@ import PickComponent from "../../engine/components/PickComponent"
 import TextureInstance from "../../engine/instances/TextureInstance"
 import circle from "../../static/icons/circle.png"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
-import COMPONENTS from "../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../engine/data/COMPONENTS"
 import Conversion from "../../engine/utils/Conversion"
 
 let gpu
@@ -35,7 +35,7 @@ export default class Rotation {
         this.yGizmo = this._mapEntity(3, "y")
         this.zGizmo = this._mapEntity(4, "z")
 
-        import("../../static/meshes/Circle.json")
+        import("../data/Plane.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     vertices: res.vertices,

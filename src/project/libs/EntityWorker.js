@@ -1,5 +1,5 @@
 import ENTITY_WORKER_ACTIONS from "../static/misc/ENTITY_WORKER_ACTIONS"
-import COMPONENTS from "../engine/templates/COMPONENTS"
+import COMPONENTS from "../engine/data/COMPONENTS"
 
 let entities = new Map(), updated = false, hierarchy = []
 

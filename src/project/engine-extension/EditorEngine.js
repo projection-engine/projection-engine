@@ -1,32 +1,31 @@
 import Renderer from "../engine/Renderer"
-
 import {STEPS_CUBE_MAP} from "../engine/systems/passes/SpecularProbePass"
-import Cameras from "./Cameras"
 import Wrapper from "./systems/Wrapper"
-
 import MaterialInstance from "../engine/instances/MaterialInstance"
-
 import * as debugCode from "./shaders/DEBUG.glsl"
 import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
-import {DATA_TYPES} from "../engine/templates/DATA_TYPES"
+import {DATA_TYPES} from "../engine/data/DATA_TYPES"
 import SHADING_MODELS from "../static/misc/SHADING_MODELS"
 import {STEPS_LIGHT_PROBE} from "../engine/systems/passes/DiffuseProbePass"
 import Packager from "../engine/Packager"
-import ENVIRONMENT from "../engine/templates/ENVIRONMENT"
+import ENVIRONMENT from "../engine/data/ENVIRONMENT"
+import MeshInstance from "../engine/instances/MeshInstance"
+import EditorCamera from "./camera/EditorCamera"
+import CameraEvents from "./camera/CameraEvents"
 
-
-export default class DevelopmentRenderer extends Renderer {
+export default class EditorEngine extends Renderer {
     gizmo
-    cameraData = {}
     cursor
     selected = []
     setSelected = () => null
 
 
-    constructor( resolution) {
+    constructor( resolution ) {
         super( resolution )
+        this.camera = new EditorCamera()
+        this.cameraEvents = new CameraEvents(this.camera)
+
         this.environment = ENVIRONMENT.DEV
-        this.cameraData = new Cameras()
         this.editorSystem = new Wrapper(resolution)
         this.debugMaterial = new MaterialInstance({
             vertex: shaderCode.vertex,
@@ -42,8 +41,9 @@ export default class DevelopmentRenderer extends Renderer {
             },
             id: "shading-models"
         })
-
-        
+        import("./data/SPHERE.json").then(res => {
+            this.sphereMesh = new MeshInstance(res)
+        })
     }
     generatePreview(material){
         return this.editorSystem.previewSystem.execute(this.params, this.data, material)
@@ -52,13 +52,6 @@ export default class DevelopmentRenderer extends Renderer {
         return this.editorSystem.previewSystem.execute(this.params, this.data, mesh, entity)
     }
 
-    get camera() {
-        return this.cameraData.camera
-    }
-
-    set camera(data) {
-        this.cameraData.camera = data
-    }
     get gizmos(){
         return {
             rotation: this.editorSystem.gizmoSystem.rotationGizmo,
@@ -75,9 +68,9 @@ export default class DevelopmentRenderer extends Renderer {
     updatePackage(prodEnv, params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
         this.environment = prodEnv ?  ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
-            this.cameraData.cameraEvents.startTracking()
+            this.cameraEvents.startTracking()
         else
-            this.cameraData.cameraEvents.stopTracking()
+            this.cameraEvents.stopTracking()
         
         this.camera.zNear = params.zNear
         this.camera.zFar = params.zFar
@@ -120,7 +113,7 @@ export default class DevelopmentRenderer extends Renderer {
     }
     stop() {
         super.stop()
-        this.cameraData.cameraEvents.stopTracking()
+        this.cameraEvents.stopTracking()
     }
 }
 

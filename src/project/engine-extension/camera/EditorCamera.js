@@ -1,6 +1,5 @@
 import {mat4, quat} from "gl-matrix"
 
-const toRad = Math.PI / 180
 export default class EditorCamera {
     radius = 25
     centerOn = [0, 0, 0]
@@ -16,12 +15,7 @@ export default class EditorCamera {
     viewMatrix = mat4.create()
     invViewMatrix =  mat4.create()
     animated = true
-    constructor(origin = [0, 0, 0], fov, zNear, zFar, aspectRatio = 1) {
-        this.#fov = 60 * toRad
-        this.position = origin
-        this.zNear = zNear
-        this.zFar = zFar
-        this.aspectRatio = aspectRatio
+    constructor() {
         this.pitch = .5
         this.yaw = .5
         this.updateViewMatrix()

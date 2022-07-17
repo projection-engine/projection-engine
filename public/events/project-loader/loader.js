@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../src/project/engine/templates/COMPONENTS"
+import COMPONENTS from "../../../src/project/engine/data/COMPONENTS"
 import loadMeshes from "./loadMeshes"
 import loadMaterials from "./loadMaterials"
 import loadData from "./loadData"

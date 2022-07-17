@@ -1,7 +1,7 @@
 import styles from "../styles/HeaderOptions.module.css"
 import {Dropdown, DropdownOption, DropdownOptions, Icon} from "@f-ui/core"
 import Entity from "../../../engine/basic/Entity"
-import COMPONENTS from "../../../engine/templates/COMPONENTS"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
 import PointLightComponent from "../../../engine/components/PointLightComponent"
 import TransformComponent from "../../../engine/components/TransformComponent"
 import React, {useContext} from "react"
