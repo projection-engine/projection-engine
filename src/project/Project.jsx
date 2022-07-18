@@ -38,9 +38,9 @@ export default function Project() {
             setProject(data.package)
             setEvents(data)
         })
-        // document.body.addEventListener("keydown", e => {
-        //     e.preventDefault()
-        // })
+        document.body.addEventListener("keydown", e => {
+            e.preventDefault()
+        })
     }, [])
     useAlert(true)
     const {localization} = useContext(LocalizationProvider)

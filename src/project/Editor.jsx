@@ -24,9 +24,9 @@ export default function Editor(props) {
     const utils = useEditorShortcuts({engine, settings, id, serializer})
     const options = useOptions(engine, serializer, settings)
     const filesHook = useFiles(engine)
-    const view = useMemo(() => {
-        return settings.views[settings.currentView]
-    }, [settings.views, settings.currentView])
+    const view = useMemo(
+        () => settings.views[settings.currentView],
+        [settings.views, settings.currentView])
     const updateView = (key, newView) => {
         const copy = [...settings.views]
         copy[settings.currentView] = {...view, [key]: newView}

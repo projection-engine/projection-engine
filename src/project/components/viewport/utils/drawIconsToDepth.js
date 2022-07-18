@@ -1,4 +1,5 @@
 import COMPONENTS from "../../../engine/data/COMPONENTS"
+
 let gpu
 export default function drawIconsToDepth() {
     gpu = window.gpu

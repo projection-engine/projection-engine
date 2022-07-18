@@ -1,6 +1,5 @@
 import GIZMOS from "../../../static/misc/GIZMOS"
 import COMPONENTS from "../../../engine/data/COMPONENTS"
-import Picking from "../../../engine/systems/misc/Picking"
 import Conversion from "../../../engine/utils/Conversion"
 import drawIconsToDepth from "./drawIconsToDepth"
 

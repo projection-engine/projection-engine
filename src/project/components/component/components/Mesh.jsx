@@ -223,7 +223,6 @@ export default function Mesh(props) {
                 handleChange={async (src, clear, close) => {
                     if (src) {
                         const file = await loadFile(src)
-                        console.log(file)
                         if (file && file.response) {
                             props.submit({
                                 blob: file.response,

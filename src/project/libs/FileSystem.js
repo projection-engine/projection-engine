@@ -18,7 +18,6 @@ export default class FileSystem {
         this.temp = localStorage.getItem("basePath") + "temp"
 
         new Promise(async resolve => {
-            console.log(this.temp)
             await AsyncFS.mkdir(this.temp)
             if (!await AsyncFS.exists(this.path + FileSystem.sep + "previews")) await AsyncFS.mkdir(this.path + FileSystem.sep + "previews")
             if (!await AsyncFS.exists(this.path + FileSystem.sep + "assets")) await AsyncFS.mkdir(this.path + FileSystem.sep + "assets")

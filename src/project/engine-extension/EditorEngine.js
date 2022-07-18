@@ -12,7 +12,6 @@ import ENVIRONMENT from "../engine/data/ENVIRONMENT"
 import MeshInstance from "../engine/instances/MeshInstance"
 import EditorCamera from "./camera/EditorCamera"
 import CameraEvents from "./camera/CameraEvents"
-import COMPONENTS from "../engine/data/COMPONENTS"
 
 export default class EditorEngine extends Renderer {
     gizmo

@@ -23,7 +23,6 @@ export default function useFiles(engine) {
             .fileSystem
             .readFile(window.fileSystem.path + FileSystem.sep + "bookmarks.meta", "json")
             .then(res => {
-                console.log(res)
                 if (res)
                     setBookmarks(res)
             })

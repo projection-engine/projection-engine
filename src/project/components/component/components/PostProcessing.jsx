@@ -1,5 +1,4 @@
-import React, {useContext, useState} from "react"
-import SettingsProvider from "../../../context/SettingsProvider"
+import React from "react"
 import {Checkbox} from "@f-ui/core"
 import AccordionTemplate from "../../../../components/accordion/AccordionTemplate"
 import Range from "../../../../components/range/Range"
@@ -7,7 +6,6 @@ import PropTypes from "prop-types"
 
 export default function PostProcessing(props) {
     const {selected} = props
-    console.log("RERENDER", selected)
     return (
         <>
             <AccordionTemplate title={"Lens distortion"}>

@@ -2,7 +2,6 @@ import COMPONENTS from "../../../engine/data/COMPONENTS"
 
 self.onmessage = ({data: {entities, data}}) => {
     const selected = [], ids = []
-    console.log(entities, entities[0].components[COMPONENTS.PICK])
     for (let i = 0; i < data.length; i += 4) {
         const ID =  Math.round((data[i + 1] + data[i + 2]) * 255)
         if(ID > 0 && !selected.includes(ID)) {

@@ -128,7 +128,6 @@ export default function Tree( ) {
                 label: "Select hierarchy",
                 onClick: (target) => {
                     const t = target.getAttribute("data-node")
-                    console.log(getHierarchy(window.renderer.entitiesMap.get(t)))
                     const toSelect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
                     setSelected(prev => [...prev, ...toSelect])
                 }
@@ -173,7 +172,6 @@ export default function Tree( ) {
                     if (!payload[i].node.parent || open[payload[i].node.parent.id])
                         data.push(payload[i])
                 }
-                console.log(data)
                 setToRender(data)
             },
             localActionID
