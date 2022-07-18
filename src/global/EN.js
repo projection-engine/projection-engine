@@ -78,6 +78,7 @@ export default class EnglishLocalization {
             T_GIZMO: "Translation gizmo",
             R_GIZMO: "Rotation gizmo",
             S_GIZMO: "Scale gizmo",
+            BACKGROUND: "Background"
         },
         HIERARCHY: {
             TITLE: "Hierarchy",

@@ -173,8 +173,7 @@ void main(){
 
 export const shadedFragment = `#version 300 es
 precision highp float;
-
-in vec4 vPosition;
+ 
 in vec3 normalVec;
 
 uniform int axis;

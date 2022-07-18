@@ -25,23 +25,23 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
     function invertSelection(){
         const newArr = []
         const notValid = {}
-        for(let i in engine.selected){
+        for(let i in engine.selected)
             notValid[engine.selected[i]] = true
-        }
-        for(let i in engine.entities){
-            const id =engine.entities[i].id
-            if(!notValid[id])
-                newArr.push(id)
+        const entities = window.renderer.entities
+
+        for(let i = 0; i < entities.length; i++ ){
+            if(!notValid[entities[i].id])
+                newArr.push(entities[i].id)
         }
         engine.setSelected(newArr)
     }
     function paste(parent) {
         let block = []
         toCopy.forEach(t => {
-            const found = engine.entities.get(t)
+            const found = window.renderer.entitiesMap.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.parent = engine.entities.get(parent)
+                clone.parent = window.renderer.entitiesMap.get(parent)
                 block.push(clone)
             }
         })
@@ -149,9 +149,7 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
     }, [
         toCopy,
         engine.selected,
-        engine.entities,
-        settings.performanceMetrics,
-        engine.changes
+        settings
     ])
 
 
@@ -167,6 +165,8 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
         toCopy,
         group,
         copy,
-        paste
+        paste,
+        invertSelection,
+
     }
 }

@@ -5,19 +5,9 @@ import AccordionTemplate from "../../../../components/accordion/AccordionTemplat
 import Range from "../../../../components/range/Range"
 import PropTypes from "prop-types"
 
-export default function CameraPostProcessing(props) {
+export default function PostProcessing(props) {
     const {selected} = props
-    const [state, setState] = useState({
-        bloomStrength: selected.bloomStrength ? selected.bloomStrength : .3,
-        bloomThreshold: selected.bloomThreshold ? selected.bloomThreshold : .85,
-
-        gamma: selected.gamma,
-        exposure: selected.exposure,
-        filmGrainStrength: selected.filmGrainStrength ? selected.filmGrainStrength : .01,
-        distortionStrength: selected.distortionStrength ? selected.distortionStrength : 1,
-        chromaticAberrationStrength: selected.chromaticAberrationStrength ? selected.chromaticAberrationStrength : 1,
-    })
-
+    console.log("RERENDER", selected)
     return (
         <>
             <AccordionTemplate title={"Lens distortion"}>
@@ -32,11 +22,13 @@ export default function CameraPostProcessing(props) {
                 <Range
                     label={"Strength"}
                     disabled={!selected.distortion}
-                    onFinish={v => selected.distortionStrength = v}
+                    onFinish={v => {
+                        selected.distortionStrength = v
+                    }}
                     incrementPercentage={.01}
                     precision={3}
-                    handleChange={v => setState({...state, distortionStrength: v})}
-                    value={state.distortionStrength} maxValue={10} minValue={0}
+
+                    value={selected.distortionStrength} maxValue={10} minValue={0}
                 />
             </AccordionTemplate>
 
@@ -52,11 +44,15 @@ export default function CameraPostProcessing(props) {
                 <Range
                     label={"Strength"}
                     disabled={!selected.chromaticAberration}
-                    onFinish={v => selected.chromaticAberrationStrength = v}
+                    onFinish={v => {
+                        selected.chromaticAberrationStrength = v
+                    }}
                     incrementPercentage={.01}
                     precision={3}
-                    handleChange={v => setState({...state, chromaticAberrationStrength: v})}
-                    value={state.chromaticAberrationStrength} maxValue={10} minValue={0}/>
+                    value={selected.chromaticAberrationStrength}
+                    maxValue={10}
+                    minValue={0}
+                />
             </AccordionTemplate>
 
             <AccordionTemplate title={"Film grain"}>
@@ -72,11 +68,12 @@ export default function CameraPostProcessing(props) {
                 <Range
                     label={"Strength"}
                     disabled={!selected.filmGrain}
-                    onFinish={v => selected.filmGrainStrength = v}
+                    onFinish={v => {
+                        selected.filmGrainStrength = v
+                    }}
                     incrementPercentage={.001}
                     precision={3}
-                    handleChange={v => setState({...state, filmGrainStrength: v})}
-                    value={state.filmGrainStrength} maxValue={10} minValue={0}
+                    value={selected.filmGrainStrength} maxValue={10} minValue={0}
                 />
             </AccordionTemplate>
 
@@ -93,11 +90,12 @@ export default function CameraPostProcessing(props) {
                     label={"Strength"}
 
                     disabled={!selected.bloom}
-                    onFinish={v => selected.bloomStrength = v}
+                    onFinish={v => {
+                        selected.bloomStrength = v
+                    }}
                     incrementPercentage={.001}
                     precision={3}
-                    handleChange={v => setState({...state, bloomStrength: v})}
-                    value={state.bloomStrength} maxValue={10} minValue={0}/>
+                    value={selected.bloomStrength} maxValue={10} minValue={0}/>
 
                 <Range
                     label={"Threshold"}
@@ -105,10 +103,10 @@ export default function CameraPostProcessing(props) {
                     disabled={!selected.bloom}
                     incrementPercentage={.001}
                     precision={3}
-
-                    onFinish={v => selected.bloomThreshold = v}
-                    handleChange={v => setState({...state, bloomThreshold: v})}
-                    value={state.bloomThreshold}
+                    onFinish={v => {
+                        selected.bloomThreshold = v
+                    }}
+                    value={selected.bloomThreshold}
 
                     maxValue={1} minValue={0}
                 />
@@ -122,10 +120,10 @@ export default function CameraPostProcessing(props) {
                     precision={3}
                     minValue={.1}
                     maxValue={10}
-                    onFinish={v => selected.gamma = v}
-                    handleChange={v => setState({...state, gamma: v})}
-                    value={state.gamma}
-
+                    onFinish={v => {
+                        selected.gamma = v
+                    }}
+                    value={selected.gamma}
                 />
 
                 <Range
@@ -135,9 +133,10 @@ export default function CameraPostProcessing(props) {
                     incrementPercentage={.001}
                     precision={3}
                     maxValue={10}
-                    onFinish={v => selected.exposure = v}
-                    handleChange={v => setState({...state, exposure: v})}
-                    value={state.exposure}
+                    onFinish={v => {
+                        selected.exposure = v
+                    }}
+                    value={selected.exposure}
                 />
             </AccordionTemplate>
 
@@ -145,6 +144,6 @@ export default function CameraPostProcessing(props) {
     )
 }
 
-CameraPostProcessing.propTypes={
+PostProcessing.propTypes={
     selected: PropTypes.object
 }

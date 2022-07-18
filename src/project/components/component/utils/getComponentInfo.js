@@ -6,23 +6,23 @@ export default function getComponentInfo(c) {
     switch (c) {
     case COMPONENTS.TRANSFORM:
         res.key = c
-        res.label = "Transform"
+        res.label = "Transformation"
         res.icon = "transform"
         break
 
     case COMPONENTS.MESH:
         res.key = c
-        res.label = "Mesh & Mesh"
+        res.label = "Mesh"
         res.icon = "category"
         break
     case COMPONENTS.POINT_LIGHT:
         res.key = c
-        res.label = "PointLight"
+        res.label = "Point Light"
         res.icon = "lightbulb"
         break
     case COMPONENTS.DIRECTIONAL_LIGHT:
         res.key = c
-        res.label = "DirectionalLight"
+        res.label = "Directional Light"
         res.icon = "light_mode"
         break
     case COMPONENTS.SPOT_LIGHT:

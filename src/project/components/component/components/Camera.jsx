@@ -6,17 +6,29 @@ import styles from "../styles/Forms.module.css"
 import useDirectState from "../../../../components/hooks/useDirectState"
 import {Checkbox} from "@f-ui/core"
 import useLocalization from "../../../../global/useLocalization"
-import CameraPostProcessing from "./CameraPostProcessing"
+import PostProcessing from "./PostProcessing"
 
 const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 export default function Camera(props) {
-    const [state, , dispatchBlock] = useDirectState({})
+    const [
+        state,
+        clear,
+        dispatchBlock
+    ] = useDirectState(
+        {},
+        (key, value) => {
+            props.selected[key] = value
+        }
+    )
     const translate = useLocalization("PROJECT", "COMPONENT_EDITOR")
     useEffect(() => {
+        if (state.id !== props.selected.id)
+            clear()
         const newState = {...props.selected}
         newState.fov = Math.round(props.selected.fov * toDeg)
         dispatchBlock(newState)
     }, [props.selected])
+
 
     return (
         <>
@@ -29,8 +41,8 @@ export default function Camera(props) {
                 incrementPercentage={.1}
                 onFinish={(v) => {
                     props.submit("fov", v * toRad)
+                    state.fov = v
                 }}
-                handleChange={e => state.fov = e}
             />
             <AccordionTemplate title={translate("ORTHO_PROJECTION")}>
                 <Checkbox
@@ -46,10 +58,12 @@ export default function Camera(props) {
                 <Range
                     label={translate("PROJECTION_SIZE")}
                     disabled={!state.ortho}
-                    onFinish={v => props.submit("size", v)}
+                    onFinish={v => {
+                        props.submit("size", v)
+                        state.size = v
+                    }}
                     incrementPercentage={.01}
                     precision={3}
-                    handleChange={v => state.size = v}
                     value={state.size}
                     minValue={0}
                 />
@@ -76,8 +90,7 @@ export default function Camera(props) {
                     }}
                 />
             </AccordionTemplate>
-
-            <CameraPostProcessing selected={state}/>
+            <PostProcessing selected={state}/>
         </>
     )
 }

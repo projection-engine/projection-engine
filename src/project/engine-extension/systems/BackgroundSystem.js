@@ -11,22 +11,22 @@ export default class BackgroundSystem {
 
     execute(data, options) {
         const {cubeBuffer} = data
-        const {camera, gamma} = options
-        
-        window.gpu.depthMask(false)
-        this.shader.use()
+        const {camera, gamma, background} = options
+        if(background) {
+            window.gpu.depthMask(false)
+            this.shader.use()
 
-        cubeBuffer.enable()
-        this.shader.bindForUse({
-            projectionMatrix: this.projection,
-            viewMatrix: camera.viewMatrix,
-            gamma: gamma
-        })
+            cubeBuffer.enable()
+            this.shader.bindForUse({
+                projectionMatrix: this.projection,
+                viewMatrix: camera.viewMatrix,
+                gamma: gamma
+            })
 
-        window.gpu.drawArrays(window.gpu.TRIANGLES, 0, 36)
-        cubeBuffer.disable()
+            window.gpu.drawArrays(window.gpu.TRIANGLES, 0, 36)
+            cubeBuffer.disable()
 
-        window.gpu.depthMask(true)
-        
+            window.gpu.depthMask(true)
+        }
     }
 }

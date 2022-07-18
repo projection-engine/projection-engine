@@ -27,7 +27,7 @@ export default function Viewport(props) {
     const internalID = useId()
     const optionsViewport = useMemo(
         () => getOptionsViewport(props.engine, props.utils),
-        [props.engine.selectedEntity, props.utils.toCopy]
+        [props.engine.selected, props.utils]
     )
     useEffect(() => {
         windowBuilder(document.getElementById(RENDER_TARGET), settings.resolution, EditorEngine)
@@ -35,14 +35,15 @@ export default function Viewport(props) {
     }, [])
 
     let latestTranslation
-    function handleMouse(e){
-        if(e.type === "mousemove"){
-            latestTranslation =  Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
+
+    function handleMouse(e) {
+        if (e.type === "mousemove") {
+            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
             updateCursor(latestTranslation)
-        }
-        else
+        } else
             document.removeEventListener("mousemove", handleMouse)
     }
+
     useContextTarget(internalID, optionsViewport, TRIGGERS)
 
     return (
@@ -52,7 +53,7 @@ export default function Viewport(props) {
                 onMouseDown={e => {
                     e.currentTarget.started = performance.now()
                     e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
-                    if(e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget){
+                    if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
                         latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
                         updateCursor(latestTranslation)
                         document.addEventListener("mousemove", handleMouse)
@@ -61,10 +62,8 @@ export default function Viewport(props) {
                 }}
                 onClick={event => onViewportClick(event, settings, props.engine.setSelected)}
                 onDragOver={e => {
-                    if (props.allowDrop) {
-                        e.preventDefault()
-                        e.currentTarget.classList.add(styles.hovered)
-                    }
+                    e.preventDefault()
+                    e.currentTarget.classList.add(styles.hovered)
                 }}
                 onDragLeave={e => {
                     e.preventDefault()
@@ -72,29 +71,30 @@ export default function Viewport(props) {
                 }}
                 onDrop={e => {
                     // TODO - APPLY MATERIAL BY DROPPING IT ON MESH (PICK MESH AND LOAD MATERIAL)
-                    if (props.allowDrop) {
-                        e.preventDefault()
-                        e.currentTarget.classList.remove(styles.hovered)
-                        importData(e,  props.engine)
-                    }
+                    e.preventDefault()
+                    e.currentTarget.classList.remove(styles.hovered)
+                    importData(e, props.engine)
                 }}
-   
+
                 data-viewport={RENDER_TARGET}
                 id={internalID}
                 className={styles.viewport}
             >
-                <canvas 
+                <canvas
                     id={RENDER_TARGET}
                     style={{width: "100%", height: "100%", background: "transparent"}}
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
-                <SideOptions selectedEntity={props.engine.selectedEntity} executingAnimation={props.engine.executingAnimation}/>
+                <SideOptions
+                    selectedEntity={props.engine.selectedEntity}
+                    executingAnimation={props.engine.executingAnimation}
+                />
                 <SelectBox
                     targetElementID={RENDER_TARGET}
                     disabled={settings.gizmo === GIZMOS.CURSOR}
                     setSelected={(_, startCoords, endCoords) => {
-                        if(startCoords && endCoords) {
+                        if (startCoords && endCoords) {
                             drawIconsToDepth()
                             const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer
                             const size = {
@@ -104,11 +104,11 @@ export default function Viewport(props) {
                             const nStart = Conversion.toQuadCoord(startCoords, size)
                             const nEnd = Conversion.toQuadCoord(endCoords, size)
 
-                            try{
+                            try {
                                 const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)
                                 WORKER.postMessage({entities: renderer.entities, data})
                                 WORKER.onmessage = ({data: selected}) => props.engine.setSelected(selected)
-                            }catch (err){
+                            } catch (err) {
                                 console.error(err, startCoords, nStart)
                             }
                         }
@@ -124,7 +124,6 @@ export default function Viewport(props) {
 
 Viewport.propTypes = {
     utils: PropTypes.object,
-    allowDrop: PropTypes.bool.isRequired,
     executingAnimation: PropTypes.bool,
     engine: PropTypes.object,
     id: PropTypes.string

@@ -60,7 +60,7 @@ void main(){
 `
 
 
-export const cursorVertex = `#version 300 es
+export const selectedVertex = `#version 300 es
 
 #define SIZE .2
 layout (location = 0) in vec3 position; 
@@ -134,7 +134,7 @@ void main(){
 `
 
 
-export const cursorFragment =`#version 300 es
+export const selectedFragment =`#version 300 es
 precision highp float;
 
 in vec2 uv; 
@@ -149,3 +149,5 @@ void main(){
 		fragColor = vec4(forceAsIcon == true ? vec3(1., 1., 0.) : color.rgb, 1.);
 }
 `
+
+

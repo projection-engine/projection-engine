@@ -47,7 +47,11 @@ export default class EditorEngine extends Renderer {
                 import("./data/SPHERE.json"),
                 import("./data/Camera.json")]
         ).then(([sphere, camera]) => {
-            this.sphereMesh = new MeshInstance(sphere)
+            this.sphereMesh = new MeshInstance({
+                ...sphere,
+                uvs: [],
+                tangents: [],
+            })
             this.cameraMesh = new MeshInstance({
                 ...camera,
                 uvs: [],

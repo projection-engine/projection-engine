@@ -48,6 +48,13 @@ export default function Visible() {
                         window.renderer.camera.animated = v
                     }
                 }}/>
+                <DropdownOption option={{
+                    label: translate("BACKGROUND"),
+                    icon: settingsContext.background ? checkIcon : undefined,
+                    onClick: () => {
+                        settingsContext.background = !settingsContext.background
+                    }
+                }}/>
 
                 <div className={styles.rangeWrapper}>
                     <Range

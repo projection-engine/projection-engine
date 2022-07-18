@@ -55,7 +55,7 @@ export default {
     samples: 16,
 
     cameraAnimation: true,
-
+    background: true,
     // VIEWS
     views: [{
         name: "Default",

@@ -8,7 +8,6 @@ export default function getOptionsViewport(engine, utils) {
         paste,
         invertSelection,
         deleteSelected
-
     } = utils
     const base = [
         {
@@ -21,7 +20,7 @@ export default function getOptionsViewport(engine, utils) {
         {
             label: "Invert selection",
             onClick: invertSelection,
-            shortcut: ["Alt", "A"]
+            shortcut: ["Ctrl", "I"]
         }
     ]
     if (!engine.selectedEntity)

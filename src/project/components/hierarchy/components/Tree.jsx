@@ -179,7 +179,19 @@ export default function Tree( ) {
             localActionID
         )
     }, [entitiesChangeID, maxDepth, open])
-
+    useEffect(() => {
+        const newOpen = {...open}
+        const openStructure = (entity) => {
+            if(entity.parent)
+                openStructure(entity.parent)
+            newOpen[entity.id] = true
+        }
+        for(let i =0; i < selected.length; i++){
+            const entity = window.renderer.entitiesMap.get(selected[i])
+            openStructure(entity)
+        }
+        setOpen(newOpen)
+    }, [ selected ])
     return (
         <div
             ref={ref}

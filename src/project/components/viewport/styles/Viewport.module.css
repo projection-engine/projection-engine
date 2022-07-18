@@ -9,6 +9,7 @@
   transition: 150ms linear;
   position: relative;
   display: flex;
+  cursor: pointer;
 }
 
 .viewport > * {
