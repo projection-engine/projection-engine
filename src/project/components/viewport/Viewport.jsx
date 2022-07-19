@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Viewport.module.css"
-import React, {useContext, useEffect, useId, useMemo} from "react"
+import React, {useContext, useEffect, useId, useMemo, useState} from "react"
 import useContextTarget from "../../../components/context/hooks/useContextTarget"
 import RENDER_TARGET from "../../static/misc/RENDER_TARGET"
 import HeaderOptions from "./views/HeaderOptions"
@@ -29,13 +29,26 @@ export default function Viewport(props) {
         () => getOptionsViewport(props.engine, props.utils),
         [props.engine.selected, props.utils]
     )
+    const [rendererIsReady, setRendererIsReady] = useState(false)
+    useContextTarget(internalID, optionsViewport, TRIGGERS)
+
     useEffect(() => {
-        windowBuilder(document.getElementById(RENDER_TARGET), settings.resolution, EditorEngine)
-        props.engine.setViewportInitialized(true)
-    }, [])
+        if (!props.engine.viewportInitialized) {
+            const {
+                gpu,
+                imageWorker
+            } = windowBuilder(document.getElementById(RENDER_TARGET), settings.resolution, EditorEngine)
+            window.gpu = gpu
+            window.imageWorker = imageWorker
+            props.engine.setViewportInitialized(true)
+        } else if (settings.INITIALIZED && !window.renderer) {
+            window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]})
+            setRendererIsReady(true)
+        }
+    }, [settings])
+
 
     let latestTranslation
-
     function handleMouse(e) {
         if (e.type === "mousemove") {
             latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
@@ -44,14 +57,11 @@ export default function Viewport(props) {
             document.removeEventListener("mousemove", handleMouse)
     }
 
-    useContextTarget(internalID, optionsViewport, TRIGGERS)
-
     return (
         <>
             {props.engine.executingAnimation ? null : <HeaderOptions/>}
             <div
                 onMouseDown={e => {
-                    e.currentTarget.started = performance.now()
                     e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
                     if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
                         latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
@@ -60,7 +70,7 @@ export default function Viewport(props) {
                         document.addEventListener("mouseup", handleMouse, {once: true})
                     }
                 }}
-                onClick={event => onViewportClick(event, settings, props.engine.setSelected)}
+                onClick={event => onViewportClick(event, settings, props.engine.setSelected, props.engine.selected)}
                 onDragOver={e => {
                     e.preventDefault()
                     e.currentTarget.classList.add(styles.hovered)
@@ -86,10 +96,13 @@ export default function Viewport(props) {
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
-                <SideOptions
-                    selectedEntity={props.engine.selectedEntity}
-                    executingAnimation={props.engine.executingAnimation}
-                />
+                {rendererIsReady ? (
+                    <SideOptions
+                        selectedEntity={props.engine.selectedEntity}
+                        executingAnimation={props.engine.executingAnimation}
+                    />
+                ) : null}
+
                 <SelectBox
                     targetElementID={RENDER_TARGET}
                     disabled={settings.gizmo === GIZMOS.CURSOR}

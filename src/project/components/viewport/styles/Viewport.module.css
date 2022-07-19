@@ -6,14 +6,8 @@
   overflow: hidden;
   background-color: var(--pj-background-primary);
   border-radius: 5px;
-  transition: 150ms linear;
   position: relative;
   display: flex;
-  cursor: pointer;
-}
-
-.viewport > * {
-  transition: opacity 150ms linear;
 }
 
 .button {

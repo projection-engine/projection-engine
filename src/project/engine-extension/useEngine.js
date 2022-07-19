@@ -76,21 +76,11 @@ export default function useEngine(settings) {
     }, [meshes, materials])
 
 
-    const onGizmoStart = () => {
-        // const e = entities.get(selected[0])
-        // if (e) dispatchChanges({
-        //     type: HISTORY_ACTIONS.SAVE_COMPONENT_STATE, payload: {
-        //         key: COMPONENTS.TRANSFORM, entityID: e.id, component: e.components[COMPONENTS.TRANSFORM]
-        //     }
-        // })
-    }
-    const onGizmoEnd = () => {
-        // const e = entities.get(selected[0])
-    }
-
     const cameraInitialized = useRef(false)
     const update = useCallback(() => {
-        if (viewportInitialized) {
+        const renderer = window.renderer
+
+        if (viewportInitialized && renderer) {
             let fMat = fallbackMaterial
             if (!fallbackMaterial) {
                 fMat = new MaterialInstance({
@@ -106,29 +96,26 @@ export default function useEngine(settings) {
             if(settings.INITIALIZED && !cameraInitialized.current) {
                 cameraInitialized.current = true
                 if (settings.cameraPosition)
-                    window.renderer.camera.centerOn = settings.cameraPosition
+                    renderer.camera.centerOn = settings.cameraPosition
                 if (typeof settings.yaw === "number")
-                    window.renderer.camera.yaw = settings.yaw
+                    renderer.camera.yaw = settings.yaw
                 if (typeof settings.pitch === "number")
-                    window.renderer.camera.pitch = settings.pitch
+                    renderer.camera.pitch = settings.pitch
 
-                window.renderer.camera.updateViewMatrix()
+                renderer.camera.updateViewMatrix()
             }
-            window.renderer.setSelected = setSelected
-            window.renderer.camera.updateProjection()
-            window.renderer.entitiesMap = entities.current
-            window.renderer.meshes = meshes.current
-            window.renderer.materials = materials
-            window.renderer.camera.animated = settings.cameraAnimation
-            window.renderer.gizmo = settings.gizmo
-            if (!window.renderer.cursor)
-                window.renderer.cursor = getCursor()
+            renderer.camera.updateProjection()
+            renderer.entitiesMap = entities.current
+            renderer.meshes = meshes.current
+            renderer.materials = materials
+            renderer.camera.animated = settings.cameraAnimation
+            renderer.gizmo = settings.gizmo
+            if (!renderer.cursor)
+                renderer.cursor = getCursor()
 
-            window.renderer.updatePackage(
+            renderer.updatePackage(
                 executingAnimation,
                 {selected, ...settings},
-                onGizmoStart,
-                onGizmoEnd,
                 levelScript,
                 fMat
             )

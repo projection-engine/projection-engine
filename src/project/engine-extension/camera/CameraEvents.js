@@ -13,7 +13,7 @@ export default function CameraEvents(c) {
     let camera = c
     let cameraSpeed = 0.01
     let interval, increment = 0, scrollSpeed = .5, cameraScrollDelay = 100
-    const cameraGizmo = document.getElementById(CAMERA_GIZMO)
+
 
     function handleInput(event) {
         switch (event.type) {
@@ -74,9 +74,9 @@ export default function CameraEvents(c) {
                 }
                 camera.updateViewMatrix(ctrl)
 
-                if (!doubleClick && cameraGizmo) {
+                if (!doubleClick && camera.gizmoReference) {
                     const t = camera.getNotTranslatedViewMatrix()
-                    cameraGizmo.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
+                    camera.gizmoReference.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
                 }
 
             }

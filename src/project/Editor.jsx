@@ -15,12 +15,12 @@ import BlueprintProvider from "./context/BlueprintProvider"
 import ViewTabs from "./components/viewport/views/ViewTabs"
 import HierarchyProvider from "./context/HierarchyProvider"
 import Context from "../components/context/Context"
-
+import useSerializer from "./hooks/useSerializer"
 
 export default function Editor(props) {
     const {id, meta, events, settings, load} = props
-    const {serializer, engine} = useProjectWrapper(id, settings, props.pushSettingsBlock, load)
-
+    const engine = useProjectWrapper(id, settings, props.pushSettingsBlock, load)
+    const serializer = useSerializer(settings)
     const utils = useEditorShortcuts({engine, settings, id, serializer})
     const options = useOptions(engine, serializer, settings)
     const filesHook = useFiles(engine)
@@ -81,7 +81,6 @@ export default function Editor(props) {
                                             utils={utils}
                                             id={id}
                                             executingAnimation={engine.executingAnimation}
-
                                             engine={engine}
                                             allowDrop={true}
                                         />

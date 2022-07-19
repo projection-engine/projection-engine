@@ -55,7 +55,6 @@ export default class GizmoSystem {
         case "mouseup":
             if (this.targetGizmo)
                 this.targetGizmo.onMouseUp(event)
-            this.targetGizmo = undefined
             this.tooltip.stop()
             gpu.canvas.removeEventListener("mousemove", move)
             break
@@ -102,38 +101,37 @@ export default class GizmoSystem {
         camera,
         entities,
         gizmo,
-        transformationType = TRANSFORMATION_TYPE.GLOBAL,
-        onGizmoStart,
-        onGizmoEnd
+        transformationType = TRANSFORMATION_TYPE.GLOBAL
     ) {
         if(!depthSystem)
             depthSystem = window.renderer.renderingPass.depthPrePass
-        if (selected.length > 0){
+        selectedIF: if (selected.length > 0){
             const JOINED = selected.join("-")
             if(this.selectedHash !== JOINED || this.lastGizmo !== gizmo) {
                 this.lastGizmo = gizmo
                 this.selectedEntities = selected
                     .map(s => entities.get(s))
-                    .filter(c =>c &&( gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
+                    .filter(c => c.active &&( gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
                 this.selectedHash = JOINED
             }
-
+            if(this.selectedEntities.length === 0)
+                break selectedIF
             switch (gizmo) {
             case GIZMOS.TRANSLATION:
                 this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd)
+                this.translationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType)
                 break
             case GIZMOS.ROTATION:
                 this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,  entities, transformationType, onGizmoStart, onGizmoEnd)
+                this.rotationGizmo.execute(meshes, meshesMap, this.selectedEntities,  transformationType)
                 break
             case GIZMOS.SCALE:
                 this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType, onGizmoStart, onGizmoEnd)
+                this.scaleGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType)
                 break
             }
         }
-        else if(this.targetGizmo || this.selectedEntities.length > 0) {
+        else if(this.targetGizmo) {
             this.targetGizmo = undefined
             this.selectedHash = ""
             this.selectedEntities = []

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useId, useMemo, useState} from "react"
 import styles from "../styles/Tree.module.css"
 import Branch from "./Branch"
-import useInfiniteScroll from "../useInfiniteScroll"
+import useInfiniteScroll from "../../../../components/hooks/useInfiniteScroll"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../../../static/misc/ENTITY_WORKER_ACTIONS"
 import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"

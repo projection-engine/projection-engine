@@ -40,9 +40,7 @@ export default class WindowManager {
         case WINDOWS.SETTINGS:
             this.windows[type].loadURL(SETTINGS_WEBPACK_ENTRY).catch()
             break
-        case WINDOWS.FILES:
-            this.windows[type].loadURL(FILE_WEBPACK_ENTRY).catch()
-            break
+
         default:
             this.windows[type].close()
             delete this.windows[type]

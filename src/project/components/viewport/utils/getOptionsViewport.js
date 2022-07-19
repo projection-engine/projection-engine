@@ -90,10 +90,9 @@ export default function getOptionsViewport(engine, utils) {
         {
             label: "3D cursor to origin",
             onClick: () => {
-                let translation = engine.selectedEntity.components[COMPONENTS.TRANSFORM]?.translation
-                if(!translation)
-                    translation = engine.selectedEntity.components[COMPONENTS.DIRECTIONAL_LIGHT].direction
-                updateCursor([...translation].slice(0, 3))
+                const component = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
+                if (component)
+                    updateCursor(component.translation.slice(0, 3))
             }
         },
         {divider: true},

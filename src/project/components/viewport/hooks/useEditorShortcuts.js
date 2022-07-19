@@ -167,6 +167,6 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
         copy,
         paste,
         invertSelection,
-
+        deleteSelected
     }
 }

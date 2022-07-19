@@ -3,33 +3,32 @@ import ProjectLoader from "../libs/ProjectLoader"
 import FileSystem from "../libs/FileSystem"
 
 
-export default function useSerializer(settings, id) {
+export default function useSerializer(settings) {
 
     const save = useCallback(async () => {
-        if (id) {
-            const entities = window.renderer.entities
-            const meshes = window.renderer.meshes
-            const materials = window.renderer.materials
-            const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
-            if (metaData) {
-                const old = JSON.parse(metaData.toString())
-                await window.fileSystem
-                    .updateProject(
-                        {
-                            ...old,
-                            entities: entities.length,
-                            meshes: meshes.length,
-                            materials: materials.length,
-                            lastModification: (new Date()).toDateString(),
-                            creation: settings.creationDate
-                        },
-                        {
-                            ...settings,
-                            cameraPosition: window.renderer.camera.centerOn,
-                            yaw: window.renderer.camera.yaw,
-                            pitch: window.renderer.camera.pitch,
-                        })
-            }
+        const entities = window.renderer.entities
+        const meshes = window.renderer.meshes
+        const materials = window.renderer.materials
+        const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
+        if (metaData) {
+            const old = JSON.parse(metaData.toString())
+            await window.fileSystem
+                .updateProject(
+                    {
+                        ...old,
+                        entities: entities.length,
+                        meshes: meshes.length,
+                        materials: materials.length,
+                        lastModification: (new Date()).toDateString(),
+                        creation: settings.creationDate
+                    },
+                    {
+                        ...settings,
+                        cameraPosition: window.renderer.camera.centerOn,
+                        yaw: window.renderer.camera.yaw,
+                        pitch: window.renderer.camera.pitch,
+                    })
+      
             const all = await ProjectLoader.getEntities()
             for (let i = 0; i < all.length; i++) {
                 const entity = all[i]

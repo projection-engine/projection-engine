@@ -9,12 +9,6 @@ import Range from "../../../../components/range/Range"
 export default function Lights(props) {
     const getNewState = () => {
         return {
-            placement: props.selected.direction ? {
-                x: props.selected.direction[0],
-                y: props.selected.direction[1],
-                z: props.selected.direction[2]
-            } : {},
-
             attenuation: props.selected.attenuation ? {
                 x: props.selected.attenuation[0],
                 y: props.selected.attenuation[1],
@@ -43,67 +37,6 @@ export default function Lights(props) {
     const dirKey = props.type === COMPONENTS.POINT_LIGHT ? "position" : "direction"
     return (
         <>
-            {props.type === COMPONENTS.DIRECTIONAL_LIGHT || props.type === COMPONENTS.SKYLIGHT ?
-                <>
-                    <AccordionTemplate title={"Direction"} >
-                        <Range
-                            variant={"embedded"}
-                            label={"X"}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.x}
-                            onFinish={(v) => {
-                                props.submit([ v, state.placement.y, state.placement.z], dirKey)
-                                setState({
-                                    ...state,
-                                    placement: {
-                                        ...state.placement,
-                                        x: v
-                                    }
-                                })
-                            }}
-                            handleChange={e => props.selected[dirKey] = [e, state.placement.y, state.placement.z]}/>
-                        <Range
-                            label={"Y"}
-                            variant={"embedded"}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.y}
-                            onFinish={(v) => {
-                                props.submit([state.placement.x,  v, state.placement.z], dirKey)
-                                setState({
-                                    ...state,
-                                    placement: {
-                                        ...state.placement,
-                                        y: v
-                                    }
-                                })
-                            }}
-                            handleChange={e => props.selected[dirKey] = [state.placement.x, e, state.placement.z]}/>
-                        <Range
-                            label={"Z"}
-                            variant={"embedded"}
-                            incrementPercentage={.01}
-                            precision={2}
-                            value={state.placement.z}
-                            onFinish={(v) => {
-                                props.submit([state.placement.x, state.placement.y, v], dirKey)
-                                setState({
-                                    ...state,
-                                    placement: {
-                                        ...state.placement,
-                                        z: v
-                                    }
-                                })
-                            }}
-                            handleChange={e => props.selected[dirKey] = [state.placement.x, state.placement.y, e]}/>
-                    </AccordionTemplate>
-
-                </>
-                :
-                null
-            }
-            
             {props.type === COMPONENTS.POINT_LIGHT ?
                 <AccordionTemplate title={"Attenuation"} type={"flex"}>
                     <Range

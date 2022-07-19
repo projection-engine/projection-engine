@@ -68,7 +68,15 @@ export default function Add() {
                     onClick: () => {
 
                         const actor = new Entity(undefined,  translate("DIRECTIONAL_LIGHT"))
-                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent()
+
+                        const transformComponent = new TransformComponent()
+                        transformComponent.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                        transformComponent.lockedRotation = true
+                        transformComponent.lockedScaling = true
+                        actor.components[COMPONENTS.TRANSFORM] = transformComponent
+                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
+
+
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }
                 }}/>

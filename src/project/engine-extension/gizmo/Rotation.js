@@ -12,11 +12,12 @@ import circle from "../../static/icons/circle.png"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import Conversion from "../../engine/utils/Conversion"
+import getEntityTranslation from "./getEntityTranslation"
+import mapEntity from "./mapEntity"
 
 let gpu
 const toDeg = 57.29, toRad = 3.1415 / 180
 export default class Rotation {
-    pivotPoint = [0, 10, 0, 0]
     clickedAxis = -1
     tracking = false
     currentRotation = [0, 0, 0]
@@ -24,16 +25,20 @@ export default class Rotation {
     distanceX = 0
     distanceY = 0
     distanceZ = 0
-
+    translation = undefined
+    targetRotation = undefined
+    mainEntity = undefined
+    targetEntities = []
 
     constructor(sys) {
         gpu = window.gpu
-		this.drawID = (...params) => sys.drawToDepthSampler(...params)
+
+        this.drawID = (...params) => sys.drawToDepthSampler(...params)
         this.renderTarget = sys.tooltip.renderTarget
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
-        this.xGizmo = this._mapEntity(2, "x")
-        this.yGizmo = this._mapEntity(3, "y")
-        this.zGizmo = this._mapEntity(4, "z")
+        this.xGizmo = mapEntity("x",  "ROTATION")
+        this.yGizmo = mapEntity("y",  "ROTATION")
+        this.zGizmo = mapEntity("z",  "ROTATION")
 
         import("../data/Plane.json")
             .then(res => {
@@ -49,55 +54,20 @@ export default class Rotation {
         this.texture = new TextureInstance(circle, false)
     }
 
-    _mapEntity(i, axis) {
-        const e = new Entity(undefined)
-        e.components[COMPONENTS.PICK] = new PickComponent(undefined, i - 3)
-        e.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-        let s, t = [0, 0, 0], r
-        switch (axis) {
-        case "x":
-            s = [1, .1, 1]
-            r = [0, 0, 1.57]
-            break
-        case "y":
-            s = [1, .1, 1]
-            r = [0, 0, 0]
-            break
-        case "z":
-            s = [1, .1, 1]
-            r = [1.57, 0, 0]
-            break
-
-        default:
-            break
-        }
-        e.components[COMPONENTS.TRANSFORM].translation = t
-        e.components[COMPONENTS.TRANSFORM].rotation = r
-        e.components[COMPONENTS.TRANSFORM].transformationMatrix = Transformation.transform(t, r, s)
-
-        return e
-    }
-
     onMouseDown(event) {
-        if (event.target === gpu.canvas && !this.firstPick) {
-            const w = gpu.canvas.width, h = gpu.canvas.height
-            const x = event.clientX
-            const y = event.clientY
+        const w = gpu.canvas.width, h = gpu.canvas.height
+        const x = event.clientX
+        const y = event.clientY
 
-            this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, gpu.canvas)
-            this.currentCoord.clientX = event.clientX
-            this.currentCoord.clientY = event.clientY
-        }
-        if (this.firstPick)
-            this.firstPick = false
-
+        this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, gpu.canvas)
+        this.currentCoord.clientX = event.clientX
+        this.currentCoord.clientY = event.clientY
+        this.#testClick()
     }
 
     onMouseUp(force) {
-        this.firstPick = true
         if (this.tracking || force === true) {
             this.renderTarget.innerText = ""
-
             this.started = false
             this.distanceX = 0
             this.distanceY = 0
@@ -107,9 +77,11 @@ export default class Rotation {
             this.currentCoord = undefined
             document.exitPointerLock()
             this.currentRotation = [0, 0, 0]
-            this.t = 0
-            if (force !== true)
-                this.onGizmoEnd()
+
+            this.targetEntities = []
+            this.mainEntity = undefined
+            this.translation = undefined
+            this.targetRotation = undefined
         }
         this.renderTarget.style.display = "none"
     }
@@ -117,7 +89,6 @@ export default class Rotation {
     onMouseMove(event) {
         if (!this.started) {
             this.started = true
-            this.onGizmoStart()
         }
 
         switch (this.clickedAxis) {
@@ -150,7 +121,7 @@ export default class Rotation {
     }
 
     rotateElement(vec) {
-        let quatA = [0, 0, 0, 1]
+        const quatA = [0, 0, 0, 1]
         vec3.add(this.currentRotation, this.currentRotation, vec)
         if (vec[0] !== 0)
             quat.rotateX(quatA, quatA, vec[0])
@@ -159,10 +130,10 @@ export default class Rotation {
         if (vec[2] !== 0)
             quat.rotateZ(quatA, quatA, vec[2])
 
-        const SIZE = this.target.length
+        const SIZE = this.targetEntities.length
         for (let i = 0; i < SIZE; i++) {
-            const target = this.target[i].components[COMPONENTS.TRANSFORM]
-            if (this.typeRot === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1) {
+            const target = this.targetEntities[i].components[COMPONENTS.TRANSFORM]
+            if (this.transformationType === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1) {
                 if (vec3.len(target.pivotPoint) > 0) {
                     const rotationMatrix = mat4.fromQuat([], quatA),
                         translated = vec3.sub([], target.translation, target.pivotPoint)
@@ -174,26 +145,12 @@ export default class Rotation {
         }
     }
 
-    getTranslation(el) {
-        const comp = el.components[COMPONENTS.TRANSFORM]
-        if (comp) {
-            const m = comp.transformationMatrix
-            return {
-                valid: true,
-                data: [m[12], m[13], m[14]]
-            }
-        }
-        return {
-            valid: false,
-            data: [0, 0, 0]
-        }
-    }
 
-    #testClick(el, camera, selected, entities, translation) {
-        const r = el.components[COMPONENTS.TRANSFORM].rotationQuat
-        const mX = this.#rotateMatrix(translation, r, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
-        const mY = this.#rotateMatrix(translation, r, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
-        const mZ = this.#rotateMatrix(translation, r, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
+    #testClick() {
+        const camera = window.renderer.camera
+        const mX = this.#rotateMatrix("x", this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = this.#rotateMatrix("y", this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = this.#rotateMatrix("z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
         const FBO = this.drawID(
             this.xyz,
@@ -201,17 +158,16 @@ export default class Rotation {
             camera.projectionMatrix,
             [mX, mY, mZ],
             camera.position,
-            translation,
+            this.translation,
             camera.ortho
         )
         const dd = window.renderer.picking.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 
-        if (pickID === 0) {
+        if (pickID === 0)
             this.onMouseUp(true)
-            window.renderer.setSelected([])
-        } else {
+        else if (pickID > 0) {
             this.tracking = true
 
             this.renderTarget.style.left = this.currentCoord.clientX + "px"
@@ -219,7 +175,6 @@ export default class Rotation {
             this.renderTarget.style.display = "block"
             this.renderTarget.style.width = "fit-content"
             this.renderTarget.innerText = "0 θ"
-            this.target = selected
 
             gpu.canvas.requestPointerLock()
         }
@@ -229,41 +184,26 @@ export default class Rotation {
         meshes,
         meshesMap,
         selected,
-        camera,
-        entities,
-        transformationType,
-        onGizmoStart,
-        onGizmoEnd
+        transformationType
     ) {
-        if (selected.length > 0) {
-            const el = selected[0]
-            const parent = el.parent
-            const currentTranslation = this.getTranslation(el),
-                parentTranslation = parent ? this.getTranslation(parent) : {data: [0, 0, 0]},
-                translation = currentTranslation.valid ? [
-                    currentTranslation.data[0] + parentTranslation.data[0],
-                    currentTranslation.data[1] + parentTranslation.data[1],
-                    currentTranslation.data[2] + parentTranslation.data[2]
-                ] : undefined
-            if (translation) {
-                this.firstPick = false
-                this.typeRot = transformationType
-                this.camera = camera
-                this.onGizmoStart = onGizmoStart
-                this.onGizmoEnd = onGizmoEnd
-                if (this.currentCoord && !this.tracking)
-                    this.#testClick(el, camera, selected, entities, translation)
-                this.#drawGizmo(translation, el.components[COMPONENTS.TRANSFORM].rotationQuat, camera.viewMatrix, camera.projectionMatrix)
-            }
-        }
+
+        this.transformationType = transformationType
+        if (!this.translation || this.mainEntity !== selected[0]) {
+            this.targetEntities = selected
+            this.mainEntity = selected[0]
+            this.translation = getEntityTranslation(this.mainEntity)
+            if (this.translation)
+                this.targetRotation = this.mainEntity.components[COMPONENTS.TRANSFORM].rotationQuat
+        } else
+            this.#drawGizmo()
     }
 
-    #rotateMatrix(t, rotation, axis, comp) {
-        const matrix = [...comp.transformationMatrix]
-        matrix[12] += t[0]
-        matrix[13] += t[1]
-        matrix[14] += t[2]
-        if (this.typeRot === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
+    #rotateMatrix(axis, comp) {
+        const matrix = comp.transformationMatrix.slice(0)
+        matrix[12] += this.translation[0]
+        matrix[13] += this.translation[1]
+        matrix[14] += this.translation[2]
+        if (this.transformationType === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
             switch (axis) {
             case "x":
                 mat4.rotateY(matrix, matrix, -this.currentRotation[0])
@@ -278,18 +218,18 @@ export default class Rotation {
                 break
             }
         } else if (axis !== undefined)
-            return mat4.fromRotationTranslationScale([], quat.multiply([], rotation, comp.rotationQuat), t, comp.scaling)
+            return mat4.fromRotationTranslationScale([], quat.multiply([], this.targetRotation, comp.rotationQuat), this.translation, comp.scaling)
 
         return matrix
     }
 
-    #drawGizmo(translation, rotation, view, proj) {
+    #drawGizmo() {
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         gpu.disable(gpu.CULL_FACE)
 
-        const mX = this.#rotateMatrix(translation, rotation, "x", this.xGizmo.components[COMPONENTS.TRANSFORM])
-        const mY = this.#rotateMatrix(translation, rotation, "y", this.yGizmo.components[COMPONENTS.TRANSFORM])
-        const mZ = this.#rotateMatrix(translation, rotation, "z", this.zGizmo.components[COMPONENTS.TRANSFORM])
+        const mX = this.#rotateMatrix("x", this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = this.#rotateMatrix("y", this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = this.#rotateMatrix("z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
         this.gizmoShader.use()
         gpu.bindVertexArray(this.xyz.VAO)
@@ -298,31 +238,31 @@ export default class Rotation {
         this.xyz.uvVBO.enable()
 
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
-            this.#draw(view, mX, proj, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, translation)
+            this.#draw(mX, 1, this.xGizmo.components[COMPONENTS.PICK].pickID)
         if (this.tracking && this.clickedAxis === 2 || !this.tracking)
-            this.#draw(view, mY, proj, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, translation)
+            this.#draw(mY, 2, this.yGizmo.components[COMPONENTS.PICK].pickID)
         if (this.tracking && this.clickedAxis === 3 || !this.tracking)
-            this.#draw(view, mZ, proj, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, translation)
+            this.#draw(mZ, 3, this.zGizmo.components[COMPONENTS.PICK].pickID)
 
         this.xyz.vertexVBO.disable()
         gpu.bindVertexArray(null)
         gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, null)
         gpu.enable(gpu.CULL_FACE)
-
     }
 
-    #draw(view, t, proj, a, id, tt) {
+    #draw(t, axis, id) {
+        const camera = window.renderer.camera
         this.gizmoShader.bindForUse({
-            viewMatrix: view,
+            viewMatrix: camera.viewMatrix,
             transformMatrix: t,
-            projectionMatrix: proj,
-            axis: a,
-            translation: tt,
-            camPos: this.camera.position,
+            projectionMatrix: camera.projectionMatrix,
+            axis,
+            translation: this.translation,
+            camPos: camera.position,
             uID: [...id, 1],
             selectedAxis: this.clickedAxis,
             circleSampler: this.texture.texture,
-            cameraIsOrthographic: this.camera.ortho
+            cameraIsOrthographic: camera.ortho
         })
         gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }

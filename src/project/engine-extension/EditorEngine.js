@@ -17,7 +17,6 @@ export default class EditorEngine extends Renderer {
     gizmo
     cursor
     selected = []
-    setSelected = () => null
 
 
     constructor(resolution) {
@@ -84,7 +83,7 @@ export default class EditorEngine extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, params, onGizmoStart, onGizmoEnd, levelScript, fallbackMaterial) {
+    updatePackage(prodEnv, params,   levelScript, fallbackMaterial) {
         this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
@@ -111,8 +110,6 @@ export default class EditorEngine extends Renderer {
         Packager({
             params: {
                 ...params,
-                onGizmoStart,
-                onGizmoEnd,
                 camera: prodEnv ? this.rootCamera : this.camera,
                 gizmo: this.gizmo,
                 selectedMap: this.arrayToObject(params.selected),

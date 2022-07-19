@@ -66,16 +66,20 @@ export default class ProjectLoader {
         for (const k in entity.components) {
             if (typeof ENTITIES[k] === "function") {
                 let component = await ENTITIES[k](entity, k)
-                if (component) {
-                    if (k !== COMPONENTS.MESH)
-                        Object.keys(entity.components[k]).forEach(oK => {
-                            if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
-                        })
-                    parsedEntity.components[k] = component
-                }
 
-                if (k === COMPONENTS.DIRECTIONAL_LIGHT)
-                    component.update()
+                if (component) {
+                    const keys = Object.keys(entity.components[k])
+                    for (let i = 0; i < keys.length; i++) {
+                        const oK = keys[i]
+
+                        if (k === COMPONENTS.TRANSFORM && oK === "_transformationMatrix")
+                            continue
+                        if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
+                    }
+                    parsedEntity.components[k] = component
+					if(k === COMPONENTS.TRANSFORM || k === COMPONENTS.DIRECTIONAL_LIGHT)
+						component.changed = true
+                }
             }
         }
         return parsedEntity
@@ -83,9 +87,9 @@ export default class ProjectLoader {
 }
 
 const ENTITIES = {
-    [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id),
+    [COMPONENTS.DIRECTIONAL_LIGHT]: async (entity, k) => new DirectionalLightComponent(entity.components[k].id, entity),
     [COMPONENTS.MESH]: async (entity, k) => {
-        const component = new MeshComponent(entity.components[k].id, entity.components[k].meshID, entity.components[k].materialID )
+        const component = new MeshComponent(entity.components[k].id, entity.components[k].meshID, entity.components[k].materialID)
         const toLoad = [],
             toLoop = entity.components[k].uniforms ? entity.components[k].uniforms : []
 
@@ -136,7 +140,7 @@ const ENTITIES = {
     [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.TRANSFORM]: async (entity, k) => {
         const component = new TransformComponent(entity.components[k].id, true)
-        component.changed = true
+
         try {
             component.updateQuatOnEulerChange = false
             component.rotation = Transformation.getEuler(entity.components[k]._rotationQuat)

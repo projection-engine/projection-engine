@@ -14,9 +14,7 @@ export default function drawIconsToDepth() {
         const entity = entities[i]
         if (entity.active) {
 
-            let transformationMatrix = entity.components[COMPONENTS.TRANSFORM]?.transformationMatrix
-            if (!transformationMatrix)
-                transformationMatrix = entity.components[COMPONENTS.DIRECTIONAL_LIGHT]?.transformationMatrix
+            const transformationMatrix = entity.components[COMPONENTS.TRANSFORM]?.transformationMatrix
             if (transformationMatrix && !entity.components[COMPONENTS.MESH])
                 drawIcon(
                     entity.components[COMPONENTS.CAMERA] ? cameraMesh : window.renderer.cubeMesh,

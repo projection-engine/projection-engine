@@ -75,11 +75,6 @@
                 },
                 {
                   "html": "./public/entry/window.html",
-                  "js": "./public/entry/file.js",
-                  "name": "file"
-                },
-                {
-                  "html": "./public/entry/window.html",
                   "js": "./public/entry/help.js",
                   "name": "help"
                 }

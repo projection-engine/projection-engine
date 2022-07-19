@@ -135,13 +135,13 @@ void main(){
     vec3 color = vec3(1.);
     switch (axis) {
         case 1:
-            color = vec3(1., 0., 0.);
+            color = vec3(0., 0., 1.);
             break;
         case 2:
             color = vec3(0., 1., 0.);
             break;
         case 3:
-            color = vec3(0., 0., 1.);
+            color = vec3(1., 0., 0.);
             break;
         default:
             break;

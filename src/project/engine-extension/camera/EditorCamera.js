@@ -15,6 +15,8 @@ export default class EditorCamera {
     viewMatrix = mat4.create()
     invViewMatrix =  mat4.create()
     animated = true
+    gizmoReference
+
     constructor() {
         this.pitch = .5
         this.yaw = .5

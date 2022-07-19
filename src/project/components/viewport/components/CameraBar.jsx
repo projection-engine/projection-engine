@@ -5,6 +5,7 @@ import React, {useMemo, useState} from "react"
 import {handleGrab} from "../utils/transformCamera"
 import CameraGizmo from "./CameraGizmo"
 import useLocalization from "../../../../global/useLocalization"
+import updateCameraPlacement from "../utils/updateCameraPlacement"
 
 export default function CameraBar(props) {
     const [cameraIsOrtho, setCameraIsOrtho] = useState(false)
@@ -22,19 +23,12 @@ export default function CameraBar(props) {
             return <Icon styles={{fontSize: "1rem"}} >grid_on</Icon>
     }, [cameraIsOrtho])
 
-    function bind(yaw, pitch) {
-        window.renderer.camera.updateProjection()
-        window.renderer.camera.yaw = yaw
-        window.renderer.camera.pitch = pitch
-        window.renderer.camera.updateViewMatrix()
-    }
 
     const translate = useLocalization("PROJECT", "VIEWPORT")
 
-
     return (
         <div className={styles.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
-            <CameraGizmo  bind={bind} />
+            <CameraGizmo />
             <div
                 style={{
                     display: "grid",
@@ -52,32 +46,32 @@ export default function CameraBar(props) {
                         <DropdownOption
                             option={{
                                 label: translate("TOP"),
-                                onClick: () => bind(0, Math.PI /2)
+                                onClick: () => updateCameraPlacement(0, Math.PI /2)
                             }}/>
                         <DropdownOption
                             option={{
                                 label: translate("BOTTOM"),
-                                onClick: () => bind(0, -Math.PI /2)
+                                onClick: () => updateCameraPlacement(0, -Math.PI /2)
                             }}/>
                         <DropdownOption
                             option={{
                                 label: translate("LEFT"),
-                                onClick: () => bind(Math.PI , 0)
+                                onClick: () => updateCameraPlacement(Math.PI , 0)
                             }}/>
                         <DropdownOption
                             option={{
                                 label: translate("RIGHT"),
-                                onClick: () => bind(0,0)
+                                onClick: () => updateCameraPlacement(0,0)
                             }}/>
                         <DropdownOption
                             option={{
                                 label: translate("FRONT"),
-                                onClick: () =>  bind(Math.PI /2, 0)
+                                onClick: () =>  updateCameraPlacement(Math.PI /2, 0)
                             }}/>
                         <DropdownOption
                             option={{
                                 label: translate("BACK"),
-                                onClick: () =>  bind(Math.PI * 1.5, 0)
+                                onClick: () =>  updateCameraPlacement(Math.PI * 1.5, 0)
                             }}/>
                     </DropdownOptions>
                 </Dropdown>

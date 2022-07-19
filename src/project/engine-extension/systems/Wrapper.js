@@ -26,8 +26,6 @@ export default class Wrapper {
             selected,
             camera,
             transformationType,
-            onGizmoStart,
-            onGizmoEnd,
             gizmo,
             canExecutePhysicsAnimation
         } = options
@@ -50,9 +48,7 @@ export default class Wrapper {
                     camera,
                     entitiesMap,
                     gizmo,
-                    transformationType,
-                    onGizmoStart,
-                    onGizmoEnd
+                    transformationType
                 )
                 this.selectedSystem.execute(selected, meshesMap, camera, entitiesMap)
             }
