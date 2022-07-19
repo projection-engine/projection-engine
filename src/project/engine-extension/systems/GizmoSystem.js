@@ -1,68 +1,27 @@
 import Translation from "../gizmo/Translation"
 import Rotation from "../gizmo/Rotation"
-import GIZMOS from "../../static/misc/GIZMOS"
 import Scale from "../gizmo/Scale"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 import Tooltip from "../gizmo/Tooltip"
 import generateNextID from "../../engine/utils/generateNextID"
-import COMPONENTS from "../../engine/data/COMPONENTS"
 import * as shaderCode from "../../engine/shaders/PICK.glsl"
 
-function move(event) {
-    const canvas = event.target
-    if (canvas.targetGizmo)
-        canvas.targetGizmo.onMouseMove(event)
-}
-
-const LEFT_BUTTON = 0
 let gpu, depthSystem
 export default class GizmoSystem {
     targetGizmo
     selectedEntities = []
-    selectedHash = ""
-    lastGizmo = GIZMOS.TRANSLATION
+
     constructor() {
         gpu = window.gpu
-
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
         this.tooltip = new Tooltip()
-
         this.translationGizmo = new Translation(this)
         this.scaleGizmo = new Scale(this)
         this.rotationGizmo = new Rotation(this)
-
-        this.handlerListener = this.handler.bind(this)
-        gpu.canvas.addEventListener("mouseup", this.handlerListener)
-        gpu.canvas.addEventListener("mousedown", this.handlerListener)
-
         this.shaderSameSize = new ShaderInstance(shaderCode.sameSizeVertex, shaderCode.fragment)
-
     }
-
-    handler(event) {
-        switch (event.type) {
-        case "mousedown":
-            if (event.button === LEFT_BUTTON) {
-                if (this.targetGizmo) {
-                    this.targetGizmo.onMouseDown(event)
-                    gpu.canvas.addEventListener("mousemove", move)
-                }
-                gpu.canvas.targetGizmo = this.targetGizmo
-            }
-            break
-        case "mouseup":
-            if (this.targetGizmo)
-                this.targetGizmo.onMouseUp(event)
-            this.tooltip.stop()
-            gpu.canvas.removeEventListener("mousemove", move)
-            break
-        default:
-            break
-        }
-    }
-
     drawToDepthSampler(
         mesh,
         view,
@@ -103,37 +62,12 @@ export default class GizmoSystem {
         gizmo,
         transformationType = TRANSFORMATION_TYPE.GLOBAL
     ) {
-        if(!depthSystem)
+        if (!depthSystem)
             depthSystem = window.renderer.renderingPass.depthPrePass
-        selectedIF: if (selected.length > 0){
-            const JOINED = selected.join("-")
-            if(this.selectedHash !== JOINED || this.lastGizmo !== gizmo) {
-                this.lastGizmo = gizmo
-                this.selectedEntities = selected
-                    .map(s => entities.get(s))
-                    .filter(c => c.active &&( gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
-                this.selectedHash = JOINED
-            }
-            if(this.selectedEntities.length === 0)
-                break selectedIF
-            switch (gizmo) {
-            case GIZMOS.TRANSLATION:
-                this.targetGizmo = this.translationGizmo
-                this.translationGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType)
-                break
-            case GIZMOS.ROTATION:
-                this.targetGizmo = this.rotationGizmo
-                this.rotationGizmo.execute(meshes, meshesMap, this.selectedEntities,  transformationType)
-                break
-            case GIZMOS.SCALE:
-                this.targetGizmo = this.scaleGizmo
-                this.scaleGizmo.execute(meshes, meshesMap, this.selectedEntities, camera,   entities, transformationType)
-                break
-            }
-        }
-        else if(this.targetGizmo) {
+        if (selected.length > 0 && this.selectedEntities.length > 0 && this.targetGizmo)
+            this.targetGizmo.execute(meshes, meshesMap, this.selectedEntities, transformationType)
+        else if (this.targetGizmo) {
             this.targetGizmo = undefined
-            this.selectedHash = ""
             this.selectedEntities = []
         }
     }

@@ -1,5 +1,4 @@
 import useEngine from "../engine-extension/useEngine"
-import useSerializer from "./useSerializer"
 import {useEffect, useRef} from "react"
 import EVENTS from "../static/misc/EVENTS"
 import ProjectLoader from "../libs/ProjectLoader"

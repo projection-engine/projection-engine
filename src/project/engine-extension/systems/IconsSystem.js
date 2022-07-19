@@ -46,19 +46,7 @@ export default class IconsSystem {
         })
     }
 
-    loop(ref, selectedMap) {
-        const result = []
-        const size = ref.length
 
-        for (let i = 0; i < size; i++) {
-            const current = ref[i]
-            if (!current.active || selectedMap[current.id])
-                continue
-            result.push(Array.from(current.components[COMPONENTS.TRANSFORM].transformationMatrix))
-        }
-
-        return result
-    }
 
     drawHighlighted(transformComponent, camera, texture, forceAsIcon, iconSize) {
         gpu.disable(gpu.DEPTH_TEST)
@@ -161,7 +149,19 @@ export default class IconsSystem {
         }
 
     }
+    loop(ref) {
+        const result = []
+        const size = ref.length
 
+        for (let i = 0; i < size; i++) {
+            const current = ref[i]
+            if (!current.active)
+                continue
+            result.push(current.components[COMPONENTS.TRANSFORM].transformationMatrix)
+        }
+
+        return result
+    }
     execute(data, options, entitiesMap) {
         const {
             pointLights,
@@ -171,7 +171,6 @@ export default class IconsSystem {
             specularProbes
         } = data
         const {
-            selectedMap,
             camera,
             iconsVisibility,
             iconSize,
@@ -181,15 +180,13 @@ export default class IconsSystem {
 
         if(!transformationSystem)
             transformationSystem = window.renderer.miscellaneousPass.transformations
-        if (window.renderer.activeEntitiesSize !== this.lastSize || transformationSystem.hasUpdatedItem) {
-            this.lastSize = window.renderer.activeEntitiesSize
-            Icon.start(this.vertexVBO, this.vao, this.iconShader)
 
-            this.renderers.directionalLights.updateBuffer(this.loop(directionalLights, selectedMap))
-            this.renderers.pointLights.updateBuffer(this.loop(pointLights, selectedMap))
-            this.renderers.probe.updateBuffer(this.loop([...diffuseProbes, ...specularProbes], selectedMap))
+        if (window.renderer.entities.length !== this.lastSize || transformationSystem.hasUpdatedItem) {
+            this.lastSize = window.renderer.entities.length
 
-            Icon.end(this.vertexVBO)
+            this.renderers.directionalLights.updateBuffer(this.loop(directionalLights))
+            this.renderers.pointLights.updateBuffer(this.loop(pointLights))
+            this.renderers.probe.updateBuffer(this.loop([...diffuseProbes, ...specularProbes]))
         }
 
         if (!cameraMesh)

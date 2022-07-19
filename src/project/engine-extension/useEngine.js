@@ -10,6 +10,7 @@ import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
 import FALLBACK_MATERIAL from "../static/misc/FALLBACK_MATERIAL"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../static/misc/ENTITY_WORKER_ACTIONS"
+import GIZMOS from "../static/misc/GIZMOS"
 
 
 function getCursor() {
@@ -75,6 +76,26 @@ export default function useEngine(settings) {
         window.addEntityWorkerListener(workerListener, localActionID)
     }, [meshes, materials])
 
+    function bindGizmo() {
+        const gizmoSystem = window.renderer.editorSystem.gizmoSystem
+        gizmoSystem.selectedEntities = selected
+            .map(s => entities.current.get(s))
+            .filter(c => (settings.gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (settings.gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || settings.gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
+
+        if (gizmoSystem.selectedEntities.length > 0) {
+            switch (settings.gizmo) {
+            case GIZMOS.TRANSLATION:
+                gizmoSystem.targetGizmo = gizmoSystem.translationGizmo
+                break
+            case GIZMOS.ROTATION:
+                gizmoSystem.targetGizmo = gizmoSystem.rotationGizmo
+                break
+            case GIZMOS.SCALE:
+                gizmoSystem.targetGizmo = gizmoSystem.scaleGizmo
+                break
+            }
+        }
+    }
 
     const cameraInitialized = useRef(false)
     const update = useCallback(() => {
@@ -93,7 +114,7 @@ export default function useEngine(settings) {
                 setFallbackMaterial(fMat)
 
             }
-            if(settings.INITIALIZED && !cameraInitialized.current) {
+            if (settings.INITIALIZED && !cameraInitialized.current) {
                 cameraInitialized.current = true
                 if (settings.cameraPosition)
                     renderer.camera.centerOn = settings.cameraPosition
@@ -104,6 +125,8 @@ export default function useEngine(settings) {
 
                 renderer.camera.updateViewMatrix()
             }
+
+            bindGizmo()
             renderer.camera.updateProjection()
             renderer.entitiesMap = entities.current
             renderer.meshes = meshes.current
@@ -126,6 +149,7 @@ export default function useEngine(settings) {
         selected, materials,
         settings, entitiesChangeID
     ])
+
 
     useEffect(update, [update])
 

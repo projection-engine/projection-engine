@@ -1,8 +1,6 @@
 import styles from "../styles/SideOptions.module.css"
 import CAMERA_GIZMO from "../../../static/misc/CAMERA_GIZMO"
-import PropTypes from "prop-types"
-import React, {useContext, useEffect, useRef} from "react"
-import EngineProvider from "../../../context/EngineProvider"
+import React, {useEffect, useRef} from "react"
 import updateCameraPlacement from "../utils/updateCameraPlacement"
 
 

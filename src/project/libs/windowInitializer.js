@@ -135,7 +135,6 @@ export default function WindowInitializer(fileSystem, pushEvent) {
         console.targerts = console.targerts.filter(r => r !== ref)
     }
     console.log = (...comps) => {
-        console.dir(comps)
         const message = comps.join(",\n")
         if(window.renderer && window.renderer.environment === ENVIRONMENT.PROD)
             for(let i = 0; i < console.targerts.length; i++){

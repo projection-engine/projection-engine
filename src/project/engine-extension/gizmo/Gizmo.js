@@ -93,8 +93,7 @@ export default class Gizmo {
         meshes,
         meshesMap,
         selected,
-        camera,
-        entities,
+
         transformationType
     ) {
         this.transformationType = transformationType

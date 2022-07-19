@@ -21,6 +21,8 @@ import drawIconsToDepth from "./utils/drawIconsToDepth"
 const TRIGGERS = ["data-viewport"]
 const LEFT_BUTTON = 0
 const WORKER = new Worker(new URL("./utils/findEntities.js", import.meta.url))
+
+let gizmoSystem
 export default function Viewport(props) {
     const renderer = window.renderer
     const settings = useContext(SettingsProvider)
@@ -31,7 +33,6 @@ export default function Viewport(props) {
     )
     const [rendererIsReady, setRendererIsReady] = useState(false)
     useContextTarget(internalID, optionsViewport, TRIGGERS)
-
     useEffect(() => {
         if (!props.engine.viewportInitialized) {
             const {
@@ -49,12 +50,19 @@ export default function Viewport(props) {
 
 
     let latestTranslation
+
     function handleMouse(e) {
         if (e.type === "mousemove") {
             latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
             updateCursor(latestTranslation)
         } else
             document.removeEventListener("mousemove", handleMouse)
+    }
+
+
+    function gizmoMouseMove(event) {
+        if (gizmoSystem && gizmoSystem.targetGizmo)
+            gizmoSystem.targetGizmo.onMouseMove(event)
     }
 
     return (
@@ -69,8 +77,26 @@ export default function Viewport(props) {
                         document.addEventListener("mousemove", handleMouse)
                         document.addEventListener("mouseup", handleMouse, {once: true})
                     }
+                    if(e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
+                        gizmoSystem = window.renderer.editorSystem.gizmoSystem
+                        if (gizmoSystem.targetGizmo) {
+                            gizmoSystem.targetGizmo.onMouseDown(e)
+                            e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
+                            e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
+                        }
+                    }
                 }}
-                onClick={event => onViewportClick(event, settings, props.engine.setSelected, props.engine.selected)}
+                onMouseUp={event => {
+                    if (gizmoSystem && gizmoSystem.targetGizmo) {
+                        gizmoSystem.targetGizmo.onMouseUp(event)
+                        // gizmoSystem.targetGizmo = undefined
+                        event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
+                    }
+                }}
+                onClick={event => {
+                    onViewportClick(event, settings, props.engine.setSelected, props.engine.selected)
+                }}
+
                 onDragOver={e => {
                     e.preventDefault()
                     e.currentTarget.classList.add(styles.hovered)

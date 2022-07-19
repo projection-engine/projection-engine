@@ -112,7 +112,6 @@ export default class EditorEngine extends Renderer {
                 ...params,
                 camera: prodEnv ? this.rootCamera : this.camera,
                 gizmo: this.gizmo,
-                selectedMap: this.arrayToObject(params.selected),
                 cursor: this.cursor
             },
             onWrap: this.editorSystem,

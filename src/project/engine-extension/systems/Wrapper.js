@@ -11,7 +11,7 @@ export default class Wrapper {
         gpu = window.gpu
         this.gridSystem = new GridSystem()
         this.billboardSystem = new IconsSystem()
-        this.gizmoSystem = new GizmoSystem(resolution)
+        this.gizmoSystem = new GizmoSystem()
         this.selectedSystem = new SelectedSystem(resolution)
         this.previewSystem = new PreviewSystem()
         this.backgroundSystem = new BackgroundSystem()
