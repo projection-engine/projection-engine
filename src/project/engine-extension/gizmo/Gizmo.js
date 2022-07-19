@@ -44,21 +44,22 @@ export default class Gizmo {
         this.#testClick()
     }
 
-    onMouseUp(force) {
-        if (this.tracking || force === true) {
-            this.tracking = false
-            this.distanceX = 0
-            this.distanceY = 0
-            this.distanceZ = 0
-            this.currentCoord = undefined
-            document.exitPointerLock()
-            this.clickedAxis = -1
-            this.targetEntities = []
-            this.mainEntity = undefined
-            this.translation = undefined
-            this.targetRotation = undefined
-        }
+    onMouseUp() {
+        document.exitPointerLock()
+        this.distanceX = 0
+        this.distanceY = 0
+        this.distanceZ = 0
+        this.clickedAxis = -1
+        this.tracking = false
         this.tooltip.stop()
+    }
+
+    exit() {
+        this.tracking = false
+        this.targetEntities = []
+        this.mainEntity = undefined
+        this.translation = undefined
+        this.targetRotation = undefined
     }
 
     #testClick() {
@@ -93,11 +94,9 @@ export default class Gizmo {
         meshes,
         meshesMap,
         selected,
-
         transformationType
     ) {
         this.transformationType = transformationType
-
         if (!this.translation || this.mainEntity !== selected[0]) {
             this.targetEntities = selected
             this.mainEntity = selected[0]

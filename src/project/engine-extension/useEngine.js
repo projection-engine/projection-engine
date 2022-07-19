@@ -94,6 +94,10 @@ export default function useEngine(settings) {
                 gizmoSystem.targetGizmo = gizmoSystem.scaleGizmo
                 break
             }
+        }else if(gizmoSystem.targetGizmo){
+
+            gizmoSystem.targetGizmo.exit()
+            gizmoSystem.targetGizmo = undefined
         }
     }
 

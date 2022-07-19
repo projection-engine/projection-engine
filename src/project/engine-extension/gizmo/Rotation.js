@@ -32,9 +32,9 @@ export default class Rotation {
         this.drawID = (...params) => sys.drawToDepthSampler(...params)
         this.renderTarget = sys.tooltip.renderTarget
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
-        this.xGizmo = mapEntity("x",  "ROTATION")
-        this.yGizmo = mapEntity("y",  "ROTATION")
-        this.zGizmo = mapEntity("z",  "ROTATION")
+        this.xGizmo = mapEntity("x", "ROTATION")
+        this.yGizmo = mapEntity("y", "ROTATION")
+        this.zGizmo = mapEntity("z", "ROTATION")
 
         import("../data/Plane.json")
             .then(res => {
@@ -61,25 +61,26 @@ export default class Rotation {
         this.#testClick()
     }
 
-    onMouseUp(force) {
-        if (this.tracking || force === true) {
-            this.renderTarget.innerText = ""
-            this.started = false
-            this.distanceX = 0
-            this.distanceY = 0
-            this.distanceZ = 0
-            this.tracking = false
-            this.clickedAxis = -1
-            this.currentCoord = undefined
-            document.exitPointerLock()
-            this.currentRotation = [0, 0, 0]
+    onMouseUp() {
+        document.exitPointerLock()
 
-            this.targetEntities = []
-            this.mainEntity = undefined
-            this.translation = undefined
-            this.targetRotation = undefined
-        }
+        this.started = false
+        this.distanceX = 0
+        this.distanceY = 0
+        this.distanceZ = 0
+        this.clickedAxis = -1
+        this.tracking = false
+        this.currentRotation = [0, 0, 0]
+        this.renderTarget.innerText = ""
         this.renderTarget.style.display = "none"
+    }
+
+    exit() {
+        this.tracking = false
+        this.targetEntities = []
+        this.mainEntity = undefined
+        this.translation = undefined
+        this.targetRotation = undefined
     }
 
     onMouseMove(event) {

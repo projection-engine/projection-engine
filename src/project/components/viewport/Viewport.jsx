@@ -88,8 +88,7 @@ export default function Viewport(props) {
                 }}
                 onMouseUp={event => {
                     if (gizmoSystem && gizmoSystem.targetGizmo) {
-                        gizmoSystem.targetGizmo.onMouseUp(event)
-                        // gizmoSystem.targetGizmo = undefined
+                        gizmoSystem.targetGizmo.onMouseUp()
                         event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
                     }
                 }}

@@ -7,20 +7,9 @@
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraGizmo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraGizmo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/EditorEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/EditorEngine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/camera/CameraEvents.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/camera/CameraEvents.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Scale.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Scale.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Translation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Translation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/instances/Icon.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/instances/Icon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/IconsSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/IconsSystem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/Wrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/Wrapper.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useProjectWrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useProjectWrapper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/libs/windowInitializer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/libs/windowInitializer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,7 +239,8 @@
       <workItem from="1658058676083" duration="10049000" />
       <workItem from="1658082537035" duration="10448000" />
       <workItem from="1658164299325" duration="14573000" />
-      <workItem from="1658250320906" duration="15706000" />
+      <workItem from="1658250320906" duration="15874000" />
+      <workItem from="1658268382644" duration="431000" />
     </task>
     <servers />
   </component>
