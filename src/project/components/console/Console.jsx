@@ -13,7 +13,6 @@ export default function Console(props){
         return () => console.removeTarget(ref.current)
     }, [])
 
-
     const translate = useLocalization("PROJECT", "CONSOLE")
 
     return (

@@ -15,7 +15,6 @@
   font-size: 0.7rem;
   border: none;
   color: var(--pj-color-secondary);
-  border-radius: 3px;
   padding: 0 8px;
   cursor: pointer;
   background: none;
@@ -24,17 +23,36 @@
   justify-content: center;
 }
 
-.tab[data-highlight="true"] {
+
+.tabWrapper{
+  display: flex;
+  align-items: center;
+}
+
+
+.tabWrapper[data-highlight="true"] {
   background: var(--pj-border-primary);
+  font-weight: 550;
+
+  border-radius: 3px;
+}
+.tabWrapper[data-highlight="true"] > .tab{
   cursor: default;
   font-weight: 550;
 }
 
-.tab[data-highlight="false"]:active {
+
+.tabWrapper[data-highlight="false"]:active > .tab{
   color: var(--pj-accent-color);
   background: var(--pj-background-tertiary);
+
 }
 
-.tab[data-highlight="false"]:hover {
+.tabWrapper[data-highlight="false"]:hover  > .tab{
   color: var(--pj-accent-color);
+}
+.viewName{
+  font-size: .7rem;
+  font-weight: 550;
+  color: var(--pj-color-secondary);
 }

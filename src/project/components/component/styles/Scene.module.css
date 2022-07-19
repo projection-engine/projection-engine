@@ -96,3 +96,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.nameInput{
+  width: 100%;
+  font-size: .7rem;
+  background: var(--pj-background-tertiary);
+  outline: none;
+  border:transparent 1px solid;
+  border-radius: 3px;
+  color: var(--pj-color-secondary);
+
+  height: 23px;
+}
+
+.nameInput:focus{
+  background: var(--pj-background-tertiary);
+  border-color: var(--pj-accent-color);
+}

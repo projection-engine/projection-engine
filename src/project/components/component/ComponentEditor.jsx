@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import styles from "./styles/Scene.module.css"
-import React, {useContext, useMemo, useState} from "react"
+import React, {useContext, useEffect, useMemo, useState} from "react"
 import useForm from "./hooks/useForm"
 import {Icon} from "@f-ui/core"
 import FormTabs from "./components/FormTabs"
@@ -9,6 +9,7 @@ import EngineProvider from "../../context/EngineProvider"
 import Header from "../../../components/view/components/Header"
 import useLocalization from "../../../global/useLocalization"
 
+const DELAY= 250
 export default function ComponentEditor(props) {
     const  [engine] = useContext(EngineProvider)
     const [currentTab, setCurrentTab] = useState("-2")
@@ -25,9 +26,34 @@ export default function ComponentEditor(props) {
         return []
     }, [engine.selected, currentTab])
     const translate = useLocalization("PROJECT", "COMPONENT_EDITOR")
+
+    const [currentEntityName, setCurrentEntityName] = useState(engine.selectedEntity?.name)
+    useEffect(() => {
+        if(engine.selectedEntity)
+            setCurrentEntityName(engine.selectedEntity.name)
+    }, [engine.selectedEntity])
+
+    let timeout
+    const handleNameChange = (value) => {
+        setCurrentEntityName(value)
+        engine.selectedEntity.name = value
+        clearTimeout(timeout)
+        setTimeout(() => {
+
+            engine.updateHierarchy()
+        }, DELAY)
+    }
     return (
         <>
-            <Header {...props} icon={"category"} title={engine.selectedEntity ? engine.selectedEntity.name : translate("TITLE")}/>
+            <Header {...props} icon={"category"} title={translate("TITLE")}>
+                <input
+                    style={{display: engine.selectedEntity ? undefined : "none"}}
+                    onChange={v => handleNameChange(v.target.value)}
+                    value={currentEntityName}
+                    className={styles.nameInput}
+                    placeholder={translate("ENTITY_NAME")}
+                />
+            </Header>
             {props.hidden ?
                 null
                 :
@@ -63,6 +89,7 @@ export default function ComponentEditor(props) {
                             </div>
                         ) : null}
                         {currentForm.content}
+
                     </div>
                 </div>
             }

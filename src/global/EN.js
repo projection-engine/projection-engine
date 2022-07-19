@@ -117,7 +117,42 @@ export default class EnglishLocalization {
             FOV: "Field Of View",
             VIEW_PLANES: "View Planes",
             FAR: "Far",
-            NEAR: "Near"
+            NEAR: "Near",
+            ENTITY_NAME: "Entity Name"
+        },
+        FILES: {
+            TITLE: "Content Browser",
+            EMPTY: "Empty folder",
+            SELECT_ALL: "Select all",
+            SELECT_NONE: "Select none",
+            SELECT_INVERT: "Invert selection",
+            BACK: "Back",
+            DELETE: "Delete",
+
+            CUT: "Cut",
+            PASTE: "Paste",
+            RENAME: "Rename",
+            NEW_FOLDER: "New Folder",
+            OPEN_WITH_EXPLORER: "Open with explorer",
+            FORWARD: "Forward",
+            REFRESH: "Refresh",
+            REFRESHING: "Refreshing files",
+            GO_TO_PARENT: "Go to parent",
+            NEW_SCRIPT: "New Script",
+            NEW_MATERIAL: "New Material",
+
+            ASSETS: "Assets",
+            BOOKMARKS: "Bookmarks",
+            IMPORT: "Import",
+            SIDE_BAR: "Sidebar",
+            OPTIONS: "Navigation options",
+            VIEW: "View",
+            BACK_DIR: "Action: Go back",
+            FORWARD_DIR: "Action: Go forward",
+            PARENT_DIR: "Action: Go to parent",
+            CREATE_FOLDER: "Create folder",
+            ADD_BOOKMARK: "Add folder to bookmarks",
+            FILTER_TYPE: "Filter by file type"
         }
     }
     static COMPONENTS = {
@@ -143,4 +178,5 @@ export default class EnglishLocalization {
             CONSOLE: "Console"
         }
     }
+
 }
