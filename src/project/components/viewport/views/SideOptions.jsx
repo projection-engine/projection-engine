@@ -12,7 +12,6 @@ import useLocalization from "../../../../global/useLocalization"
 
 export default function SideOptions(props){
     const {executingAnimation, selectedEntity} = props
-    const [openSideBar, setOpenSideBar] = useState(false)
 
     const translate = useLocalization("PROJECT", "VIEWPORT")
 
@@ -23,12 +22,10 @@ export default function SideOptions(props){
                 :
                 <>
                     <GizmoBar/>
-                    <CameraBar sideBarOpen={openSideBar}/>
+                    <CameraBar/>
                 </>
             }
             <VerticalTabs
-                open={openSideBar}
-                setOpen={setOpenSideBar}
                 absolute={true}
                 tabs={[
                     {
@@ -57,6 +54,7 @@ export default function SideOptions(props){
         </>
     )
 }
+
 SideOptions.propTypes={
     selectedEntity: PropTypes.object,
     executingAnimation: PropTypes.bool

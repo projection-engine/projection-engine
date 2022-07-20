@@ -7,7 +7,7 @@ import CameraGizmo from "./CameraGizmo"
 import useLocalization from "../../../../global/useLocalization"
 import updateCameraPlacement from "../utils/updateCameraPlacement"
 
-export default function CameraBar(props) {
+export default function CameraBar() {
     const [cameraIsOrtho, setCameraIsOrtho] = useState(false)
     const cameraIcon = useMemo(() => {
         if (!cameraIsOrtho)
@@ -27,7 +27,7 @@ export default function CameraBar(props) {
     const translate = useLocalization("PROJECT", "VIEWPORT")
 
     return (
-        <div className={styles.cameraWrapper} style={{right: props.sideBarOpen ? "25px" : undefined}}>
+        <div className={styles.cameraWrapper} style={{right: "25px"}}>
             <CameraGizmo />
             <div
                 style={{
@@ -126,7 +126,4 @@ export default function CameraBar(props) {
         </div>
     )
 
-}
-CameraBar.propTypes = {
-    sideBarOpen: PropTypes.bool
 }

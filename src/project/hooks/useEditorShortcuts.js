@@ -1,9 +1,9 @@
-import GIZMOS from "../../../static/misc/GIZMOS"
-import {ENTITY_ACTIONS} from "../../../engine-extension/entityReducer"
+import GIZMOS from "../static/misc/GIZMOS"
+import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import {useMemo, useState} from "react"
-import KEYS from "../../../engine/data/KEYS"
-import RENDER_TARGET from "../../../static/misc/RENDER_TARGET"
-import useHotKeys from "../../shortcuts/hooks/useHotKeys"
+import KEYS from "../engine/data/KEYS"
+import RENDER_TARGET from "../static/misc/RENDER_TARGET"
+import useHotKeys from "../components/shortcuts/hooks/useHotKeys"
 
 export default function useEditorShortcuts({engine, settings, id, serializer}) {
     const [toCopy, setToCopy] = useState([])
@@ -82,16 +82,16 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
             {label: "Translate", require: [KEYS.KeyG], callback: () => settings.gizmo = GIZMOS.TRANSLATION},
             {label: "Scale", require: [KEYS.KeyS], callback: () => settings.gizmo = GIZMOS.SCALE},
             {label: "Rotate", require: [KEYS.KeyR], callback: () => settings.gizmo = GIZMOS.ROTATION},
-            {
-                label: "Undo",
-                require: [KEYS.ControlLeft, KEYS.KeyZ],
-                callback: () => engine.returnChanges()
-            },
-            {
-                label: "Redo",
-                require: [KEYS.ControlLeft, KEYS.KeyY],
-                callback: () => engine.forwardChanges()
-            },
+            // {
+            //     label: "Undo",
+            //     require: [KEYS.ControlLeft, KEYS.KeyZ],
+            //     callback: () => engine.returnChanges()
+            // },
+            // {
+            //     label: "Redo",
+            //     require: [KEYS.ControlLeft, KEYS.KeyY],
+            //     callback: () => engine.forwardChanges()
+            // },
             {
                 label: "Group",
                 disabled: engine.selected.length === 0,
@@ -123,11 +123,6 @@ export default function useEditorShortcuts({engine, settings, id, serializer}) {
                             document.exitFullscreen().catch()
                     }
                 }
-            },
-            {
-                label: "Toggle metrics",
-                require: [KEYS.ControlLeft, KEYS.ShiftLeft, KEYS.KeyH],
-                callback: () => settings.performanceMetrics = !settings.performanceMetrics
             },
             {
                 label: "Delete",

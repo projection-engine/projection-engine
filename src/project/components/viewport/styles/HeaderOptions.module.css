@@ -1,13 +1,13 @@
 .options {
-    display: flex;
+    display: grid;
+    grid-template-columns: 200px calc(100% - 400px) 200px;
     align-items: center;
-    align-content: center;
-    justify-content: space-between;
+    justify-items: flex-end;
+
     width: 100%;
-    padding: 0 4px;
-    height: 25px;
+    padding: 0 2px;
+    height: 23px;
     user-select: none;
-    position: absolute;
     top: 20px;
     z-index: 10;
     background: rgb(0 0 0 / 15%);
@@ -92,11 +92,18 @@
     font-size: 0.7rem;
 
     /* font-weight: 550; */
-    height: 20px;
+    height: 17px;
     border-radius: 3px;
     overflow: hidden;
-    padding: 0 4px !important;
-    background-color: var(--pj-border-primary) !important;
+    padding: 0 !important;
+    padding-left: 4px !important;
+    gap: 2px !important;
+    /*background-color: var(--pj-border-primary) !important;*/
+}
+.dropdown[data-highlight="true"]{
+    background-color: var(--pj-accent-color) !important;
+    color: white;
+    /*font-weight: 550;*/
 }
 
 .shadedIcon {

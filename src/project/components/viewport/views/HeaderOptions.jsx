@@ -4,6 +4,7 @@ import Shading from "../components/Shading"
 import Add from "../components/Add"
 import Visible from "../components/Visible"
 import {Button, Icon} from "@f-ui/core"
+import ViewTabs from "./ViewTabs"
 
 
 export default function HeaderOptions() {
@@ -44,6 +45,7 @@ export default function HeaderOptions() {
                 <Visible />
                 <Add/>
             </div>
+            <ViewTabs/>
             <Shading/>
         </div>
     )

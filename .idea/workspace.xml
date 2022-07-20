@@ -6,10 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/view/Views.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/Views.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Editor.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/useEngine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/hooks/useEditorShortcuts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useEditorShortcuts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewTabs.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewTabs.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/utils/onViewportClick.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/utils/onViewportClick.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/HeaderOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/HeaderOptions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/ViewTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/ViewTabs.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/MiscellaneousPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/MiscellaneousPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,13 +32,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/project/engine" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -81,11 +94,11 @@
       <recent name="$PROJECT_DIR$/src/project/components/blueprints/context" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/project/hooks" />
+      <recent name="$PROJECT_DIR$/src/project/static/misc" />
       <recent name="$PROJECT_DIR$/src/project/engine-extension/gizmo" />
       <recent name="$PROJECT_DIR$/src/project/engine-extension/gizmo/rotation" />
       <recent name="$PROJECT_DIR$/src/components/hooks" />
-      <recent name="$PROJECT_DIR$/src/project/engine-extension/data" />
-      <recent name="$PROJECT_DIR$/src/project/engine-extension" />
     </key>
   </component>
   <component name="RunManager">
@@ -240,7 +253,7 @@
       <workItem from="1658082537035" duration="10448000" />
       <workItem from="1658164299325" duration="14573000" />
       <workItem from="1658250320906" duration="15874000" />
-      <workItem from="1658268382644" duration="431000" />
+      <workItem from="1658268382644" duration="5103000" />
     </task>
     <servers />
   </component>

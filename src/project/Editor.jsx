@@ -5,7 +5,7 @@ import Frame from "../components/frame/Frame"
 import useProjectWrapper from "./hooks/useProjectWrapper"
 import PropTypes from "prop-types"
 import Viewport from "./components/viewport/Viewport"
-import useEditorShortcuts from "./components/viewport/hooks/useEditorShortcuts"
+import useEditorShortcuts from "./hooks/useEditorShortcuts"
 import Views from "../components/view/Views"
 import useOptions from "./hooks/useOptions"
 import useFiles from "./hooks/useFiles"
@@ -76,7 +76,7 @@ export default function Editor(props) {
                                         resizePosition={"bottom"}
                                     />
                                     <div className={styles.viewportWrapper}>
-                                        <ViewTabs/>
+
                                         <Viewport
                                             utils={utils}
                                             id={id}

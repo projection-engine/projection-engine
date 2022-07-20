@@ -1,12 +1,15 @@
 .wrapper {
-  height: 20px;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2px;
   padding: 2px;
-  overflow: hidden;
+  margin: 0 16px;
+  overflow-x: auto;
+
+  overflow-y: hidden;
 }
 
 .tab {
@@ -18,9 +21,11 @@
   padding: 0 8px;
   cursor: pointer;
   background: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -55,4 +60,5 @@
   font-size: .7rem;
   font-weight: 550;
   color: var(--pj-color-secondary);
+  margin-bottom: 4px;
 }

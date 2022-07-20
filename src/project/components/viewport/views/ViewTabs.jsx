@@ -21,7 +21,6 @@ export default function ViewTabs() {
                     <button
                         onClick={() => settings.currentView = i}
                         className={styles.tab}
-
                         data-view={i}
                     >
                         {v.name}
@@ -30,6 +29,21 @@ export default function ViewTabs() {
                         <Icon styles={{fontSize: ".9rem"}}>more_vert</Icon>
                         <DropdownOptions>
                             <div style={{padding: "4px"}}>
+                                <div className={styles.viewName}>
+                                    <label>View name</label>
+                                    <Search
+                                        noPlaceHolder={true}
+                                        searchString={v.name}
+                                        setSearchString={v => {
+                                            settings.views = settings.views.map((view, index) => {
+                                                if (index === i)
+                                                    view.name = v
+                                                return view
+                                            })
+                                        }}
+                                        noIcon={true} noPadding={true}
+                                    />
+                                </div>
                                 <DropdownOption option={{
                                     label: translate("DELETE_VIEW"),
                                     onClick: () => {
@@ -38,21 +52,7 @@ export default function ViewTabs() {
                                         settings.views = settings.views.filter((_, index) => i !== index)
                                     },
                                 }}/>
-                               <div className={styles.viewName}>
-								   <label>View name</label>
-								   <Search
-									   noPlaceHolder={true}
-									   searchString={v.name}
-									   setSearchString={v => {
-										   settings.views = settings.views.map((view, index) => {
-											   if (index === i)
-												   view.name = v
-											   return view
-										   })
-									   }}
-									   noIcon={true} noPadding={true}
-								   />
-							   </div>
+
                             </div>
                         </DropdownOptions>
                     </Dropdown>

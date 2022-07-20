@@ -17,6 +17,7 @@ import SideOptions from "./views/SideOptions"
 import updateCursor from "./utils/updateCursor"
 import onViewportClick from "./utils/onViewportClick"
 import drawIconsToDepth from "./utils/drawIconsToDepth"
+import Information from "./components/Information"
 
 const TRIGGERS = ["data-viewport"]
 const LEFT_BUTTON = 0
@@ -59,65 +60,64 @@ export default function Viewport(props) {
             document.removeEventListener("mousemove", handleMouse)
     }
 
-
     function gizmoMouseMove(event) {
         if (gizmoSystem && gizmoSystem.targetGizmo)
             gizmoSystem.targetGizmo.onMouseMove(event)
     }
 
     return (
-        <>
+        <div
+            onMouseDown={e => {
+                e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
+                if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
+                    latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
+                    updateCursor(latestTranslation)
+                    document.addEventListener("mousemove", handleMouse)
+                    document.addEventListener("mouseup", handleMouse, {once: true})
+                }
+                if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
+                    gizmoSystem = window.renderer.editorSystem.gizmoSystem
+                    if (gizmoSystem.targetGizmo) {
+                        gizmoSystem.targetGizmo.onMouseDown(e)
+                        e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
+                        e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
+                    }
+                }
+            }}
+            onMouseUp={event => {
+                if (gizmoSystem && gizmoSystem.targetGizmo) {
+                    gizmoSystem.targetGizmo.onMouseUp()
+                    event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
+                }
+            }}
+            onClick={event => {
+                onViewportClick(event, settings, props.engine.setSelected, props.engine.selected)
+            }}
+
+            onDragOver={e => {
+                e.preventDefault()
+                e.currentTarget.classList.add(styles.hovered)
+            }}
+            onDragLeave={e => {
+                e.preventDefault()
+                e.currentTarget.classList.remove(styles.hovered)
+            }}
+            onDrop={e => {
+                // TODO - APPLY MATERIAL BY DROPPING IT ON MESH (PICK MESH AND LOAD MATERIAL)
+                e.preventDefault()
+                e.currentTarget.classList.remove(styles.hovered)
+                importData(e, props.engine)
+            }}
+
+            data-viewport={RENDER_TARGET}
+            id={internalID}
+            className={styles.viewport}
+        >
             {props.engine.executingAnimation ? null : <HeaderOptions/>}
-            <div
-                onMouseDown={e => {
-                    e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
-                    if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
-                        latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
-                        updateCursor(latestTranslation)
-                        document.addEventListener("mousemove", handleMouse)
-                        document.addEventListener("mouseup", handleMouse, {once: true})
-                    }
-                    if(e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
-                        gizmoSystem = window.renderer.editorSystem.gizmoSystem
-                        if (gizmoSystem.targetGizmo) {
-                            gizmoSystem.targetGizmo.onMouseDown(e)
-                            e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
-                            e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
-                        }
-                    }
-                }}
-                onMouseUp={event => {
-                    if (gizmoSystem && gizmoSystem.targetGizmo) {
-                        gizmoSystem.targetGizmo.onMouseUp()
-                        event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
-                    }
-                }}
-                onClick={event => {
-                    onViewportClick(event, settings, props.engine.setSelected, props.engine.selected)
-                }}
-
-                onDragOver={e => {
-                    e.preventDefault()
-                    e.currentTarget.classList.add(styles.hovered)
-                }}
-                onDragLeave={e => {
-                    e.preventDefault()
-                    e.currentTarget.classList.remove(styles.hovered)
-                }}
-                onDrop={e => {
-                    // TODO - APPLY MATERIAL BY DROPPING IT ON MESH (PICK MESH AND LOAD MATERIAL)
-                    e.preventDefault()
-                    e.currentTarget.classList.remove(styles.hovered)
-                    importData(e, props.engine)
-                }}
-
-                data-viewport={RENDER_TARGET}
-                id={internalID}
-                className={styles.viewport}
-            >
+            <div style={{display: "flex", width: "100%", height: "100%", overflow: "hidden"}}>
                 <canvas
                     id={RENDER_TARGET}
-                    style={{width: "100%", height: "100%", background: "transparent"}}
+                    style={{width: "calc(100% - 23px)", height: "100%", background: "transparent"}}
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
@@ -127,36 +127,37 @@ export default function Viewport(props) {
                         executingAnimation={props.engine.executingAnimation}
                     />
                 ) : null}
-
-                <SelectBox
-                    targetElementID={RENDER_TARGET}
-                    disabled={settings.gizmo === GIZMOS.CURSOR}
-                    setSelected={(_, startCoords, endCoords) => {
-                        if (startCoords && endCoords) {
-                            drawIconsToDepth()
-                            const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer
-                            const size = {
-                                w: depthFBO.width,
-                                h: depthFBO.height
-                            }
-                            const nStart = Conversion.toQuadCoord(startCoords, size)
-                            const nEnd = Conversion.toQuadCoord(endCoords, size)
-
-                            try {
-                                const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)
-                                WORKER.postMessage({entities: renderer.entities, data})
-                                WORKER.onmessage = ({data: selected}) => props.engine.setSelected(selected)
-                            } catch (err) {
-                                console.error(err, startCoords, nStart)
-                            }
-                        }
-                    }}
-                    target={RENDER_TARGET}
-                    selected={[]}
-                    nodes={[]}
-                />
             </div>
-        </>
+            {rendererIsReady ? <Information/> : null}
+
+            <SelectBox
+                targetElementID={RENDER_TARGET}
+                disabled={settings.gizmo === GIZMOS.CURSOR}
+                setSelected={(_, startCoords, endCoords) => {
+                    if (startCoords && endCoords) {
+                        drawIconsToDepth()
+                        const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer
+                        const size = {
+                            w: depthFBO.width,
+                            h: depthFBO.height
+                        }
+                        const nStart = Conversion.toQuadCoord(startCoords, size)
+                        const nEnd = Conversion.toQuadCoord(endCoords, size)
+
+                        try {
+                            const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)
+                            WORKER.postMessage({entities: renderer.entities, data})
+                            WORKER.onmessage = ({data: selected}) => props.engine.setSelected(selected)
+                        } catch (err) {
+                            console.error(err, startCoords, nStart)
+                        }
+                    }
+                }}
+                target={RENDER_TARGET}
+                selected={[]}
+                nodes={[]}
+            />
+        </div>
     )
 }
 

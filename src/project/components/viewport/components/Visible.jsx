@@ -33,12 +33,7 @@ export default function Visible() {
                     icon: settingsContext.iconsVisibility ? checkIcon : undefined,
                     onClick: () => settingsContext.iconsVisibility = !settingsContext.iconsVisibility
                 }}/>
-                <DropdownOption option={{
-                    label: translate("FPS"),
-                    icon: settingsContext.performanceMetrics ? checkIcon : undefined,
-                    onClick: () => settingsContext.performanceMetrics = !settingsContext.performanceMetrics,
-                    shortcut: "Ctrl + shift + h"
-                }}/>
+
                 <DropdownOption option={{
                     label: translate("CAM_ANIM"),
                     icon: settingsContext.cameraAnimation ? checkIcon : undefined,
