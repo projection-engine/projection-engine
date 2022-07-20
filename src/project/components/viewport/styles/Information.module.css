@@ -9,7 +9,7 @@
     background: var(--pj-background-tertiary);
     color: var(--pj-color-secondary);
 }
-.container:first-child{
+.container > *{
     display: flex;
     gap: 4px;
     justify-content: flex-start;

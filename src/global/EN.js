@@ -27,6 +27,19 @@ export default class EnglishLocalization {
             CREATION: "Creation date"
         }
     }
+    static HELP = {
+        MAIN: {
+            TITLE: "Projection Engine",
+            CLOSE: "Close",
+            BODY: `
+            <strong>
+            	v1.1.0 Alpha
+			</strong>
+			<br>
+            <div>2022 | Gustavo Roque</div>
+            `
+        }
+    }
     static PROJECT = {
         VIEWPORT: {
             CAMERA: "Camera",

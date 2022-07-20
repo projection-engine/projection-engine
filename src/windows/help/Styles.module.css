@@ -1,0 +1,49 @@
+.wrapper{
+    align-items: center;
+    padding: 10px 0;
+    color: var(--pj-color-secondary);
+}
+
+.logoWrapper{
+    display: grid;
+    align-items: flex-start;
+    justify-items: center;
+    text-align: center;
+
+    gap: 4px;
+    width: 150px;
+
+
+    font-size: 1rem;
+    font-weight: 550;
+}
+.image{
+    height: 75px;
+    background: var(--pj-background-tertiary);
+
+    border: var(--pj-border-primary) 1px solid;
+    border-radius: 5px;
+}
+.closeButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    height: 27px;
+
+    padding: 2px 8px;
+    background: var(--pj-background-tertiary) !important;
+    color: var(--pj-color-secondary);
+    border: var(--pj-border-primary) 1px solid !important;
+}
+
+.article{
+
+    height: 100%;
+    font-size: .8rem;
+
+    display: grid;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}

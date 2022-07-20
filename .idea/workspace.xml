@@ -6,23 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components" beforeDir="false" afterPath="$PROJECT_DIR$/src/components" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/frame/Frame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/Frame.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/frame/styles/Frame.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/styles/Frame.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/view/Views.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/view/Views.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/EN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/EN.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Editor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/shortcuts/Shortcuts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/shortcuts/Shortcuts.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Visible.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/hooks/useEditorShortcuts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useEditorShortcuts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewTabs.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/ViewTabs.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/Viewport.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/utils/onViewportClick.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/utils/onViewportClick.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/HeaderOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/HeaderOptions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/Information.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/Information.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/Information.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/Information.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/ViewTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/ViewTabs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine/systems/MiscellaneousPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/MiscellaneousPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/engine" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/hooks/useOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useOptions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/static/icons/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/project/static/misc/SETTINGS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/static/misc/SETTINGS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windows/help/Help.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/help/Help.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +39,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/project/engine" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/public/events/file-system/FS.js" root0="FORCE_HIGHLIGHTING" />
@@ -94,11 +95,11 @@
       <recent name="$PROJECT_DIR$/src/project/components/blueprints/context" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/static" />
       <recent name="$PROJECT_DIR$/src/project/hooks" />
       <recent name="$PROJECT_DIR$/src/project/static/misc" />
       <recent name="$PROJECT_DIR$/src/project/engine-extension/gizmo" />
       <recent name="$PROJECT_DIR$/src/project/engine-extension/gizmo/rotation" />
-      <recent name="$PROJECT_DIR$/src/components/hooks" />
     </key>
   </component>
   <component name="RunManager">
@@ -253,7 +254,7 @@
       <workItem from="1658082537035" duration="10448000" />
       <workItem from="1658164299325" duration="14573000" />
       <workItem from="1658250320906" duration="15874000" />
-      <workItem from="1658268382644" duration="5103000" />
+      <workItem from="1658268382644" duration="8986000" />
     </task>
     <servers />
   </component>

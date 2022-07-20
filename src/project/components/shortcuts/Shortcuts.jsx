@@ -3,8 +3,9 @@ import React, {useEffect} from "react"
 import styles from "./styles/Shortcuts.module.css"
 import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
 import KEYS from "../../engine/data/KEYS"
+import PropTypes from "prop-types"
 
-export default function Shortcuts() {
+export default function Shortcuts(props) {
     function handler(event) {
         if (document.activeElement?.tagName !== "INPUT") {
             const l = window.shortcuts.all.length
@@ -44,5 +45,8 @@ export default function Shortcuts() {
             document.removeEventListener("keydown", handler)
         }
     }, [])
-    return <div className={styles.wrapper} id={SHORTCUTS_ID}/>
+    return <div className={styles.wrapper} id={SHORTCUTS_ID} style={{display: props.settings.visible.shortcuts ? undefined : "none"}}/>
+}
+Shortcuts.propTypes={
+    settings: PropTypes.object
 }

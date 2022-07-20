@@ -16,6 +16,7 @@ import ViewTabs from "./components/viewport/views/ViewTabs"
 import HierarchyProvider from "./context/HierarchyProvider"
 import Context from "../components/context/Context"
 import useSerializer from "./hooks/useSerializer"
+import Shortcuts from "./components/shortcuts/Shortcuts"
 
 export default function Editor(props) {
     const {id, meta, events, settings, load} = props
@@ -73,6 +74,7 @@ export default function Editor(props) {
                                         tabs={view.left}
                                         orientation={"vertical"}
                                         leftOffset={"10px"}
+                                        topOffset={"23px"}
                                         resizePosition={"bottom"}
                                     />
                                     <div className={styles.viewportWrapper}>

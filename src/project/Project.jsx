@@ -69,7 +69,7 @@ export default function Project() {
                         id={project.id}
                         meta={project.meta}
                     /> : null}
-                <Shortcuts/>
+                <Shortcuts settings={settings}/>
             </QuickAccessProvider.Provider>
         </ThemeProvider>
     )

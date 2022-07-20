@@ -64,5 +64,10 @@ export default {
         right: [VIEWS.HIERARCHY, VIEWS.COMPONENT] 
     }],
     currentView: 0,
-    INITIALIZED: false
+    INITIALIZED: false,
+    visible: {
+        sideBarViewport: true,
+        metricsViewport: true,
+        shortcuts: true
+    }
 }

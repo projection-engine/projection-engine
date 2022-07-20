@@ -18,6 +18,8 @@ import updateCursor from "./utils/updateCursor"
 import onViewportClick from "./utils/onViewportClick"
 import drawIconsToDepth from "./utils/drawIconsToDepth"
 import Information from "./components/Information"
+import GizmoBar from "./components/GizmoBar"
+import CameraBar from "./components/CameraBar"
 
 const TRIGGERS = ["data-viewport"]
 const LEFT_BUTTON = 0
@@ -117,18 +119,21 @@ export default function Viewport(props) {
             <div style={{display: "flex", width: "100%", height: "100%", overflow: "hidden"}}>
                 <canvas
                     id={RENDER_TARGET}
-                    style={{width: "calc(100% - 23px)", height: "100%", background: "transparent"}}
+                    style={{width: settings.visible.sideBarViewport  ? "calc(100% - 23px)" : "100%", height: "100%", background: "transparent"}}
                     width={settings.resolution[0]}
                     height={settings.resolution[1]}
                 />
-                {rendererIsReady ? (
-                    <SideOptions
-                        selectedEntity={props.engine.selectedEntity}
-                        executingAnimation={props.engine.executingAnimation}
-                    />
-                ) : null}
+                {!rendererIsReady || props.engine.executingAnimation ?
+                    null
+                    :
+                    <>
+                        <GizmoBar/>
+                        <CameraBar/>
+                    </>
+                }
+                {rendererIsReady && settings.visible.sideBarViewport ? <SideOptions selectedEntity={props.engine.selectedEntity}/> : null}
             </div>
-            {rendererIsReady ? <Information/> : null}
+            {rendererIsReady ? <Information visible={settings.visible.metricsViewport}/> : null}
 
             <SelectBox
                 targetElementID={RENDER_TARGET}
