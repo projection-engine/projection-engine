@@ -23,12 +23,8 @@ esac
 MESSAGE=$TYPE
 MESSAGE+="["$M"]"
 
-cd docs
-git add --all
-git commit -m "$MESSAGE"
-git push origin v1.0.x-alpha
 
-cd ../src/components
+cd src/components
 git add --all
 git commit -m "$MESSAGE"
 git push origin v1.0.x-alpha

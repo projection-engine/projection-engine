@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1325f4a6-9fb0-45a1-b6f5-c43958664c8d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.stylelintrc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/windows/WindowManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/windows/WindowManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/commit.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components" beforeDir="false" afterPath="$PROJECT_DIR$/src/components" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/frame/Frame.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/Frame.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/frame/components/Actions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/frame/components/Actions.jsx" afterDir="false" />
@@ -19,47 +13,10 @@
       <change beforePath="$PROJECT_DIR$/src/components/search/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/Search.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/search/styles/Search.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/styles/Search.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/vertical-tab/VerticalTabs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/EN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/EN.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/Card.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/components/Card.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/components/Headers.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/styles/Card.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/styles/Card.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/styles/Home.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/styles/Home.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/styles/Issue.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/styles/IssuesList.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/styles/SideBar.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/styles/Recent.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/Editor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Editor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/Project.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/Project.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/files" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/files/components/ControlBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/Viewport.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/CameraBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/GizmoBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/GizmoBar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/components/GridSizeSelector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/components/GridSizeSelector.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/HeaderOptions.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/styles/Information.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/styles/Information.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/components/viewport/views/SideOptions.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/EditorEngine.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/EditorEngine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/data/Camera.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/data/CAMERA.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/data/ScaleGizmo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/data/SCALE_GIZMO.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/data/TranslationGizmo.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/data/TRANSLATION_GIZMO.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Gizmo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Rotation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Scale.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Scale.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Tooltip.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Translation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/gizmo/Translation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine-extension/systems/GizmoSystem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/engine/systems/misc/PerformanceMetrics.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useFrameOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/hooks/useQuickAccess.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/hooks/useQuickAccess.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/project/styles/Project.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/project/styles/Project.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/windows/settings/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/settings/Settings.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/windows/settings/styles/Settings.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/settings/styles/Settings.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.main.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack/main.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.renderer.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack/renderer.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.rules.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack/rules.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -294,7 +251,7 @@
       <workItem from="1658268382644" duration="9802000" />
       <workItem from="1658342715682" duration="2000" />
       <workItem from="1658350990385" duration="7813000" />
-      <workItem from="1658435047957" duration="4206000" />
+      <workItem from="1658435047957" duration="4656000" />
     </task>
     <servers />
   </component>
