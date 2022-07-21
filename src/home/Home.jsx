@@ -8,17 +8,28 @@ import Create from "./components/Create"
 import AsyncFS from "../project/libs/AsyncFS"
 import FileSystem from "../project/libs/FileSystem"
 import Card from "./components/Card"
-import Headers from "./components/Headers"
 import LocalizationProvider from "../global/LocalizationProvider"
 import useLocalization from "../global/useLocalization"
 import Search from "../components/search/Search"
+import Recent from "./components/Recent"
+import ROUTES from "../../public/static/ROUTES"
 
 const pathResolve = window.require("path")
+const {ipcRenderer} = window.require("electron")
 
 export default function Home() {
     const {searchString, setSearchString, projectsToShow, setProjects} = useProjects()
     const {localization} = useContext(LocalizationProvider)
     const translate = useLocalization("HOME", "HOME")
+
+    function openProject(p) {
+        ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW, {
+            windowID: p.id,
+            data: p,
+            hasMain: false
+        })
+    }
+
     return (
         <ThemeProvider
             language={localization}
@@ -37,8 +48,8 @@ export default function Home() {
                 <div className={styles.wrapperProjects}>
                     <div className={styles.titleWrapper}>
                         <div className={styles.title}>
-                            <label>{translate("PROJECTS")}</label>
-                            <Search setSearchString={setSearchString} searchString={searchString}/>
+                            <h2>{translate("PROJECTS")}</h2>
+                            <Search height={"30px"} setSearchString={setSearchString} searchString={searchString}/>
                         </div>
                         <Dropdown
                             className={styles.button}
@@ -52,7 +63,8 @@ export default function Home() {
                             </DropdownOptions>
                         </Dropdown>
                     </div>
-                    <Headers/>
+                    {!searchString ? <Recent open={(p) => openProject(p)} projects={projectsToShow}/> : null}
+
                     {projectsToShow.length === 0 ?
                         <div className={styles.emptyWrapper}>
                             <Icon styles={{fontSize: "100px"}}>folder</Icon>
@@ -63,6 +75,7 @@ export default function Home() {
                             {projectsToShow.map((p, i) => (
                                 <React.Fragment key={p.id}>
                                     <Card
+                                        open={() => openProject(p)}
                                         data={p} index={i}
                                         onRename={async newName => {
                                             const pathName = pathResolve.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + p.id + FileSystem.sep + ".meta")

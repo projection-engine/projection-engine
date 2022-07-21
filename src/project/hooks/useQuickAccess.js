@@ -1,8 +1,8 @@
-import {useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import FileSystem from "../libs/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 
-export default function useQuickAccess( ) {
+export default function useQuickAccess() {
     const [state, setState] = useState({
         images: [],
         meshes: [],
@@ -15,7 +15,7 @@ export default function useQuickAccess( ) {
                 const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
                     meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
                     materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
-                    scriptReg = reg.filter(r =>r.path &&  r.path.includes(FILE_TYPES.SCRIPT)),
+                    scriptReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SCRIPT)),
                     promises = []
 
                 promises.push(...imagesReg.map(i => {
@@ -42,7 +42,7 @@ export default function useQuickAccess( ) {
                 }))
                 promises.push(...materialsReg.map(i => {
                     return new Promise(resolve => {
-                        const split = i.path.split(FileSystem.sep )
+                        const split = i.path.split(FileSystem.sep)
                         resolve({
                             type: FILE_TYPES.MATERIAL,
                             registryID: i.id,
@@ -67,13 +67,14 @@ export default function useQuickAccess( ) {
                         setState({
                             images: res.filter(f => f.type === FILE_TYPES.IMAGE),
                             meshes: res.filter(f => f.type === FILE_TYPES.MESH),
-                            materials: res.filter(f => f.type ===  FILE_TYPES.MATERIAL),
+                            materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
                             scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
                         })
                     })
             })
     }
-
-
-    return [refresh, state]
+    useEffect(() => {
+        window.fileSystem.refresh = refresh
+    }, [])
+    return state
 }

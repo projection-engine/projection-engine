@@ -1,15 +1,14 @@
 {
-  "name": "projection",
+  "name": "projection-engine",
   "productName": "projection",
-  "version": "0.0.11-alpha",
-  "description": "Projection Engine",
+  "version": "next",
+  "description": "3D Graphics engine",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "publish": "electron-forge publish"
   },
   "keywords": [],
   "author": {
@@ -22,41 +21,15 @@
       "packagerConfig": {
         "--asar": false
       },
-      "platforms": [
-        "darwin",
-        "linux",
-        "win32"
-      ],
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "projection"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
       "plugins": [
         [
           "@electron-forge/plugin-webpack",
           {
+
             "devContentSecurityPolicy": "default-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; script-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; connect-src * 'self' data: blob: file: 'unsafe-inline' 'unsafe-eval'; img-src * 'self' data: blob: file: data: blob: 'unsafe-inline'; frame-src * 'self' data: blob: file:; style-src * 'self' data: blob: file: 'unsafe-inline';",
-            "mainConfig": "./webpack.main.config.js",
+            "mainConfig": "./webpack/main.config.js",
             "renderer": {
-              "config": "./webpack.renderer.config.js",
+              "config": "./webpack/renderer.config.js",
               "entryPoints": [
                 {
                   "html": "./public/entry/window.html",
@@ -101,16 +74,12 @@
     "@electron-forge/plugin-webpack": "^6.0.0-beta.63",
     "@vercel/webpack-asset-relocator-loader": "^1.7.0",
     "babel-loader": "^8.2.5",
-    "babel-plugin-module-resolver": "^4.1.0",
     "css-loader": "^6.7.1",
     "electron": "17.4.1",
     "eslint": "^8.16.0",
     "eslint-plugin-react": "^7.30.0",
-    "node-loader": "^2.0.0",
     "react-scripts": "^5.0.0",
     "style-loader": "^3.3.1",
-    "stylelint": "^14.8.5",
-    "stylelint-config-standard": "^25.0.0",
     "url-loader": "^4.1.1"
   },
   "dependencies": {

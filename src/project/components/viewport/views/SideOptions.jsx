@@ -4,10 +4,8 @@ import Transform from "../../component/components/Transform"
 import COMPONENTS from "../../../engine/data/COMPONENTS"
 import {updateTransform} from "../../component/hooks/useForm"
 import VerticalTabs from "../../../../components/vertical-tab/VerticalTabs"
-import React, {useState} from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import GizmoBar from "../components/GizmoBar"
-import CameraBar from "../components/CameraBar"
 import useLocalization from "../../../../global/useLocalization"
 
 export default function SideOptions(props) {

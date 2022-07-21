@@ -15,17 +15,16 @@ export default class EnglishLocalization {
             NEW_NAME: "New name",
             DELETE: "Delete",
             SHOW_IN_EXPLORER: "Show in explorer",
-            NEVER: "Never"
+            NEVER: "Never",
+            PROJECT: "Project",
+            LAST_MODIFIED: "Last modified",
+            CREATION: "Creation date",
+            RECENT: "Recent"
         },
         CREATE: {
             NEW_PROJECT: "New project",
             PROJECT_CREATED: "Project created"
         },
-        HEADERS: {
-            PROJECT: "Project",
-            LAST_MODIFIED: "Last modified",
-            CREATION: "Creation date"
-        }
     }
     static HELP = {
         MAIN: {
@@ -38,6 +37,11 @@ export default class EnglishLocalization {
 			<br>
             <div>2022 | Gustavo Roque</div>
             `
+        }
+    }
+    static SETTINGS = {
+        MAIN: {
+            TITLE: "Preferences"
         }
     }
     static PROJECT = {

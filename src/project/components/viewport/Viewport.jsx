@@ -29,13 +29,15 @@ let gizmoSystem
 export default function Viewport(props) {
     const renderer = window.renderer
     const settings = useContext(SettingsProvider)
-    const internalID = useId()
-    const optionsViewport = useMemo(
+
+    const contextMenuOptions = useMemo(
         () => getOptionsViewport(props.engine, props.utils),
         [props.engine.selected, props.utils]
     )
+    useContextTarget(RENDER_TARGET, contextMenuOptions, TRIGGERS)
+
     const [rendererIsReady, setRendererIsReady] = useState(false)
-    useContextTarget(internalID, optionsViewport, TRIGGERS)
+
     useEffect(() => {
         if (!props.engine.viewportInitialized) {
             const {
@@ -66,6 +68,7 @@ export default function Viewport(props) {
         if (gizmoSystem && gizmoSystem.targetGizmo)
             gizmoSystem.targetGizmo.onMouseMove(event)
     }
+
 
     return (
         <div
@@ -112,7 +115,6 @@ export default function Viewport(props) {
             }}
 
             data-viewport={RENDER_TARGET}
-            id={internalID}
             className={styles.viewport}
         >
             {props.engine.executingAnimation ? null : <HeaderOptions/>}

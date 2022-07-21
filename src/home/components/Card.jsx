@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Icon, TextField} from "@f-ui/core"
 import React, {useContext, useRef, useState} from "react"
 import FileSystem from "../../project/libs/FileSystem"
-import ROUTES from "../../../public/static/ROUTES"
 import useLocalization from "../../global/useLocalization"
 
 const {ipcRenderer, shell} = window.require("electron")
@@ -19,16 +18,18 @@ export default function Card(props) {
             data-card={props.data.id}
             ref={ref}
         >
-            <div style={{width: "100%", fontSize: ".9rem", fontWeight: 550}}>
-                {name}
+            <div className={styles.info}>
+                <strong>{name}</strong>
             </div>
             <div className={styles.divider}/>
-            <div style={{width: "100%", paddingLeft: "4px"}}>
-                {data.meta.lastModification ? data.meta.lastModification : translate("NEVER")}
+            <div className={styles.info}>
+                <strong>{data.meta.lastModification ? data.meta.lastModification : translate("NEVER")}</strong>
+                <small>{translate("LAST_MODIFIED")}</small>
             </div>
             <div className={styles.divider}/>
-            <div style={{width: "100%", paddingLeft: "4px"}}>
-                {data.meta.creationDate}
+            <div className={styles.info}>
+                <strong>{data.meta.creationDate}</strong>
+                <small>{translate("CREATION")}</small>
             </div>
             <div className={styles.divider}/>
             <div className={styles.section}>
@@ -62,13 +63,7 @@ export default function Card(props) {
                     </DropdownOptions>
                 </Dropdown>
                 <Button
-                    onClick={() => {
-                        ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW, {
-                            windowID: props.data.id,
-                            data: props.data,
-                            hasMain: false
-                        })
-                    }}
+                    onClick={() => props.open()}
                     className={styles.button}
                     styles={{background: "var(--pj-border-primary)"}}
                 >
@@ -79,6 +74,7 @@ export default function Card(props) {
     )
 }
 Card.propTypes = {
+    open: PropTypes.func,
     isLast: PropTypes.bool,
     index: PropTypes.number,
     data: PropTypes.object,

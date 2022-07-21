@@ -10,15 +10,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: transparent 1px solid;
+  border:  var(--pj-border-primary) 1px solid;
+  height: 45px;
 }
 
 .wrapper:hover {
-  border-color: var(--pj-border-primary);
+  background: var(--pj-background-primary);
 }
 
 .divider {
-  height: 35px;
+  max-height: 25px;
+  height: 25px;
   width: 1px;
   background: var(--pj-border-primary);
 }
@@ -138,4 +140,12 @@
   height: 20px;
   width: 1px;
   background: var(--pj-background-tertiary);
+}
+
+.info{
+  width: 100%;
+  padding-left: 4px;
+  display: grid;
+  align-items: center;
+  justify-content: flex-start;
 }

@@ -1,11 +1,11 @@
 import styles from "../styles/SideOptions.module.css"
-import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import React, {useMemo, useState} from "react"
+import React, {useContext, useMemo, useState} from "react"
 import {handleGrab} from "../utils/transformCamera"
 import CameraGizmo from "./CameraGizmo"
 import useLocalization from "../../../../global/useLocalization"
 import updateCameraPlacement from "../utils/updateCameraPlacement"
+import SettingsProvider from "../../../context/SettingsProvider"
 
 export default function CameraBar() {
     const [cameraIsOrtho, setCameraIsOrtho] = useState(false)
@@ -25,9 +25,9 @@ export default function CameraBar() {
 
 
     const translate = useLocalization("PROJECT", "VIEWPORT")
-
+    const settings = useContext(SettingsProvider)
     return (
-        <div className={styles.cameraWrapper} style={{right: "25px"}}>
+        <div className={styles.cameraWrapper} style={{right: settings.visible.sideBarViewport ? "25px" : "0"}}>
             <CameraGizmo />
             <div
                 style={{

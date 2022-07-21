@@ -28,7 +28,7 @@ export default class WindowManager {
     constructor() {
         ipcMain.on(ROUTES.OPEN_NEW_WINDOW, (event, data) => {
             if(!this.windows[data.type] && this.window)
-                this.start(data.type, data.windowSettings, data)
+                this.start(data.type, data.windowSettings, data.windowProps)
         })
     }
     start(type, windowSettings, pageProps){
@@ -55,7 +55,7 @@ export default class WindowManager {
                 delete this.windows[type]
             })
             ipcMain.once(type + ROUTES.ON_NEW_WINDOW, () => {
-                this.window.send(type + ROUTES.CLOSE_NEW_WINDOW, pageProps)
+                this.window.send(type + ROUTES.ON_NEW_WINDOW, pageProps)
                 // ON NEW WINDOW LOAD SEND PROPS
             })
         }

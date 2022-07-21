@@ -1,58 +1,61 @@
-import React, {useState} from "react"
+import React, {useEffect} from "react"
 import ReactDOM from "react-dom"
 import "../../global/global.css"
-import {Tab, ThemeProvider, VerticalTabs} from "@f-ui/core"
+import styles from "./styles/Settings.module.css"
+import {Button, ThemeProvider} from "@f-ui/core"
+import ROUTES from "../../../public/static/ROUTES"
+import WINDOWS from "../../../public/static/WINDOWS"
+import logo from "../../static/logo.png"
+import useLocalization from "../../global/useLocalization"
+import useDirectState from "../../components/hooks/useDirectState"
 import Frame from "../../components/frame/Frame"
 import FRAME_EVENTS from "../../../public/static/FRAME_EVENTS"
-import AccordionTemplate from "../../components/accordion/AccordionTemplate"
+import SideBar from "./components/SideBar"
+import ResizableBar from "../../components/resizable/ResizableBar"
+import CurrentView from "./components/CurrentView"
+
+const {ipcRenderer} = window.require("electron")
+
 
 function Settings() {
-    const [open, setOpen] = useState(0)
+    const translate = useLocalization("SETTINGS", "MAIN")
+    const [settings, clean, dispatchBlock] = useDirectState()
+
+    useEffect(() => {
+        ipcRenderer.once(WINDOWS.SETTINGS + ROUTES.ON_NEW_WINDOW, (event, data) => {
+            console.log(data, event)
+        })
+    }, [])
+
     return (
         <ThemeProvider
             language={"en"}
             theme={"dark"}
-            className={"wrapper"}
+            className={"wrapper " + styles.wrapper}
         >
-            <Frame 
-                label={"Project settings"}
+            <Frame
                 options={[]}
+                label={translate("TITLE")}
                 pageInfo={{
-                    closeEvent: FRAME_EVENTS.CLOSE_SHORTCUTS,
-                    minimizeEvent: FRAME_EVENTS.MINIMIZE_SHORTCUTS,
-                    maximizeEvent: FRAME_EVENTS.MAXIMIZE_SHORTCUTS,
+                    closeEvent: () => {
+                        const settingsClone = {}
+                        Object.keys(settings).map(k => {
+                            settingsClone[k] = settings[k]
+                        })
+                        ipcRenderer.send(WINDOWS.SETTINGS + ROUTES.CLOSE_NEW_WINDOW, settingsClone)
+                    }
                 }}
             />
-            <VerticalTabs open={open} setOpen={setOpen}>
-                <Tab label={"Project"}>
-                    <AccordionTemplate title={"Name"}>
-
-                    </AccordionTemplate>
-                </Tab>
-                <Tab label={"Key map"}>
-                    <AccordionTemplate title={"Viewport"}>
-
-                    </AccordionTemplate>
-                    <AccordionTemplate title={"Viewport movement"}>
-
-                    </AccordionTemplate>
-                    <AccordionTemplate title={"Blueprints"}>
-
-                    </AccordionTemplate>
-                    <AccordionTemplate title={"Files"}>
-
-                    </AccordionTemplate>
-
-                </Tab>
-            </VerticalTabs>
+            <div style={{display: "flex", height: "100%", width: "100%"}}>
+                <SideBar/>
+                <ResizableBar type={"width"}/>
+                <CurrentView/>
+            </div>
         </ThemeProvider>
     )
 }
 
-
 ReactDOM.render(
-    <React.StrictMode>
-        <Settings/>
-    </React.StrictMode>,
+    <Settings/>,
     document.getElementById("root")
 )

@@ -32,7 +32,8 @@
   position: relative;
   overflow-y: auto;
   height: 100%;
-  padding: 0 5% 32px;
+  padding: 16px 5% 32px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -45,7 +46,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 4vh;
   padding-bottom: 8px;
 
   overflow: hidden;
@@ -57,6 +57,9 @@
   align-items: center;
   gap: 16px;
   white-space: nowrap;
+}
+.title > h2 {
+  margin: 0;
 }
 
 .title > label {
@@ -78,7 +81,6 @@
   align-items: center;
   gap: 4px;
   padding: 2px 8px !important;
-  font-weight: 550;
   overflow: hidden;
   max-width: 100%;
   background: var(--pj-border-primary) !important;

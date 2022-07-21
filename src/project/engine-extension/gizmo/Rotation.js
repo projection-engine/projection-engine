@@ -11,6 +11,20 @@ import Conversion from "../../engine/utils/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import mapEntity from "./mapEntity"
 
+const CSS = {
+    backdropFilter: "blur(10px) brightness(70%)",
+    borderRadius: "5px",
+    width: "fit-content",
+    height: "fit-content",
+    position: "absolute",
+    top: "4px",
+    left: "4px",
+    zIndex: "10",
+    color: "white",
+    padding: "8px",
+    fontSize: ".75rem",
+    display: "none"
+}
 let gpu
 const toDeg = 57.29, toRad = 3.1415 / 180
 export default class Rotation {
@@ -28,14 +42,22 @@ export default class Rotation {
 
     constructor(sys) {
         gpu = window.gpu
+        const targetID = window.gpu.canvas.id + "-gizmo"
+        if (document.getElementById(targetID) !== null)
+            this.renderTarget = document.getElementById(targetID)
+        else {
+            this.renderTarget = document.createElement("div")
+            this.renderTarget.id = targetID
+            Object.assign(this.renderTarget.style, CSS)
+            document.body.appendChild(this.renderTarget)
+        }
 
         this.drawID = (...params) => sys.drawToDepthSampler(...params)
-        this.renderTarget = sys.tooltip.renderTarget
+
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot, gpu)
         this.xGizmo = mapEntity("x", "ROTATION")
         this.yGizmo = mapEntity("y", "ROTATION")
         this.zGizmo = mapEntity("z", "ROTATION")
-
         import("../data/Plane.json")
             .then(res => {
                 this.xyz = new MeshInstance({

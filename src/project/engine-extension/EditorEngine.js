@@ -43,7 +43,7 @@ export default class EditorEngine extends Renderer {
         Promise.all(
             [
                 import("./data/SPHERE.json"),
-                import("./data/Camera.json")]
+                import("./data/CAMERA.json")]
         ).then(([sphere, camera]) => {
             this.sphereMesh = new MeshInstance({
                 ...sphere,

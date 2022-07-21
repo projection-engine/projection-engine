@@ -5,6 +5,8 @@ import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 import mapEntity from "./mapEntity"
 
+const MOVEMENT_SCALE = .001
+
 export default class Scale extends Gizmo {
     target = []
     clickedAxis = -1
@@ -16,13 +18,13 @@ export default class Scale extends Gizmo {
     distanceY = 0
     distanceZ = 0
 
-    constructor( sys) {
-        super( sys)
-        this.xGizmo = mapEntity("x",  "SCALE")
-        this.yGizmo = mapEntity("y",  "SCALE")
-        this.zGizmo = mapEntity("z",  "SCALE")
+    constructor(sys) {
+        super(sys)
+        this.xGizmo = mapEntity("x", "SCALE")
+        this.yGizmo = mapEntity("y", "SCALE")
+        this.zGizmo = mapEntity("z", "SCALE")
 
-        import("../data/ScaleGizmo.json")
+        import("../data/SCALE_GIZMO.json")
             .then(res => {
                 this.xyz = new MeshInstance({
                     vertices: res.vertices,
@@ -32,36 +34,34 @@ export default class Scale extends Gizmo {
     }
 
     onMouseMove(event) {
-        if (!this.started) {
-            this.tooltip.start()
-            this.started = true
-        }
-        const vector = [event.movementX, event.movementX, event.movementX]
+        const s = Math.abs(this.gridSize > 1 ? event.movementX * MOVEMENT_SCALE * this.gridSize : event.movementX * MOVEMENT_SCALE)
+        const sign = Math.sign(event.movementX)
+        this.notify(s, sign)
+
         switch (this.clickedAxis) {
+
         case 1: // x
-            this.distanceX += Math.abs(vector[0] * 0.01)
+            this.distanceX += s
             if (Math.abs(this.distanceX) >= this.gridSize) {
-                this.transformElement([Math.sign(vector[0]) * this.distanceX, 0, 0])
+                this.transformElement([sign * this.distanceX, 0, 0])
                 this.distanceX = 0
             }
             break
         case 2: // y
-            this.distanceY += Math.abs(vector[1] * 0.01)
+            this.distanceY += s
             if (Math.abs(this.distanceY) >= this.gridSize) {
-                this.transformElement([0, Math.sign(vector[1]) * this.distanceY, 0])
+                this.transformElement([0, sign * this.distanceY, 0])
                 this.distanceY = 0
             }
             break
         case 3: // z
-            this.distanceZ += Math.abs(vector[2] * 0.01)
+            this.distanceZ += s
             if (Math.abs(this.distanceZ) >= this.gridSize) {
-                this.transformElement([0, 0, Math.sign(vector[2]) * this.distanceZ])
+                this.transformElement([0, 0, sign * this.distanceZ])
                 this.distanceZ = 0
             }
             break
         }
-        if (this.targetEntities.length === 1)
-            this.tooltip.render(this.targetEntities[0].components[COMPONENTS.TRANSFORM].scaling)
     }
 
     transformElement(vec) {

@@ -3,6 +3,7 @@ import COMPONENTS from "../../engine/data/COMPONENTS"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../engine/utils/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
+import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER"
 
 let gpu
 export default class Gizmo {
@@ -19,6 +20,9 @@ export default class Gizmo {
     zGizmo
     xyz
     gridSize
+    totalMoved = 0
+
+    started = false
 
     translation = undefined
     mainEntity = undefined
@@ -29,11 +33,13 @@ export default class Gizmo {
 
         gpu = window.gpu
         this.drawID = (...params) => sys.drawToDepthSampler(...params)
-        this.tooltip = sys.tooltip
+        this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
         this.gizmoShader = sys.gizmoShader
     }
 
     onMouseDown(event) {
+        if (!this.renderTarget)
+            this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
         const w = gpu.canvas.width, h = gpu.canvas.height
         const x = event.clientX
         const y = event.clientY
@@ -42,16 +48,22 @@ export default class Gizmo {
         this.currentCoord.clientX = event.clientX
         this.currentCoord.clientY = event.clientY
         this.#testClick()
-    }
 
+    }
+    notify(value, sign){
+        this.totalMoved += sign * value
+        this.renderTarget.innerText = this.totalMoved.toFixed(3) + " un"
+    }
     onMouseUp() {
+        this.totalMoved = 0
+        this.started = false
         document.exitPointerLock()
         this.distanceX = 0
         this.distanceY = 0
         this.distanceZ = 0
         this.clickedAxis = -1
         this.tracking = false
-        this.tooltip.stop()
+        this.renderTarget.style.display = "none"
     }
 
     exit() {
@@ -85,7 +97,7 @@ export default class Gizmo {
         else {
             this.tracking = true
             window.gpu.canvas.requestPointerLock()
-            this.tooltip.start()
+            this.renderTarget.style.display = "block"
         }
     }
 

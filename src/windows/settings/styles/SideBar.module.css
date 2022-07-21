@@ -1,0 +1,7 @@
+.wrapper{
+    width: 225px;
+    min-width: 225px;
+    background: var(--pj-background-secondary);
+    border-right: var(--pj-border-primary) 1px solid;
+    height: 100%;
+}

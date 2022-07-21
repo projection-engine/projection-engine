@@ -4,8 +4,6 @@ import useGlobalOptions from "../components/hooks/useGlobalOptions"
 import useLoader from "../components/loader/useLoader"
 import Editor from "./Editor"
 import FRAME_EVENTS from "../../public/static/FRAME_EVENTS"
-import useQuickAccess from "./hooks/useQuickAccess"
-import QuickAccessProvider from "./context/QuickAccessProvider"
 import FileSystem from "./libs/FileSystem"
 import WindowInitializer from "./libs/windowInitializer"
 import useDirectState from "../components/hooks/useDirectState"
@@ -21,9 +19,7 @@ const DARK = "dark"
 export default function Project() {
     const global = useGlobalOptions()
     const loader = useLoader(global.dark, global.accentColor)
-
     const [project, setProject] = useState()
-    const [refresh, quickAccess] = useQuickAccess(project?.id)
     const [events, setEvents] = useState({})
     const [settings, , pushBlock] = useDirectState(SETTINGS)
 
@@ -32,11 +28,14 @@ export default function Project() {
         ipcRenderer.send(ROUTES.LOAD_PROJECT)
         ipcRenderer.on(ROUTES.PAGE_PROPS, (ev, data) => {
             const fs = new FileSystem(data.package.id)
-            fs.refresh = refresh
             WindowInitializer(fs, loader.pushEvent)
-
             setProject(data.package)
-            setEvents(data)
+            setEvents({
+                ...data,
+                closeEvent: FRAME_EVENTS.CLOSE,
+                minimizeEvent: FRAME_EVENTS.MINIMIZE,
+                maximizeEvent: FRAME_EVENTS.MAXIMIZE
+            })
         })
         // document.body.addEventListener("keydown", e => {
         //     e.preventDefault()
@@ -52,25 +51,16 @@ export default function Project() {
             accentColor={global.accentColor}
             className={"wrapper"}
         >
-            <QuickAccessProvider.Provider value={quickAccess}>
-                {project ?
-                    <Editor
-                        settings={settings}
-                        load={loader}
-                        pushSettingsBlock={pushBlock}
-
-                        events={{
-                            ...events,
-                            closeEvent: FRAME_EVENTS.CLOSE,
-                            minimizeEvent: FRAME_EVENTS.MINIMIZE,
-                            maximizeEvent: FRAME_EVENTS.MAXIMIZE
-                        }}
-                        quickAccess={quickAccess}
-                        id={project.id}
-                        meta={project.meta}
-                    /> : null}
-                <Shortcuts settings={settings}/>
-            </QuickAccessProvider.Provider>
+            {project != null ?
+                <Editor
+                    settings={settings}
+                    load={loader}
+                    pushSettingsBlock={pushBlock}
+					frameEvents={events}
+                    id={project.id}
+                    meta={project.meta}
+                /> : null}
+            <Shortcuts settings={settings}/>
         </ThemeProvider>
     )
 }

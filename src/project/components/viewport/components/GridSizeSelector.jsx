@@ -1,11 +1,10 @@
 import React, {useState} from "react"
 import PropTypes from "prop-types"
-import {Button, Dropdown, DropdownOptions, ToolTip} from "@f-ui/core"
+import {Button, Dropdown, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
 import styles from "../styles/SideOptions.module.css"
 
 export default function GridSizeSelector(props) {
     const [state, setState] = useState(props.initialValue)
-    const [active, setActive] = useState(false)
     const [open, setOpen] = useState(false)
 
     return (
@@ -16,35 +15,43 @@ export default function GridSizeSelector(props) {
             onClose={() => setOpen(false)}
             variant={open ? "filled" : undefined}
             attributes={{"data-minimal": `${props.minimal}`}}
-            modalStyles={{
-                padding: "4px"
-            }}
+            modalStyles={{padding: "4px"}}
         >
             <ToolTip content={props.label}/>
             {props.icon}
             {props.minimal ? null : <label className={styles.overflow}>{props.label}</label>}
             <DropdownOptions>
                 <div className={styles.gridSizeHeader}>
-                    <input
-                        type={"checkbox"}
-                        checked={active}
-                        onChange={e => {
-                            setActive(e.target.checked)
-                        }}
-                    />
                     {props.label}
+                    <Button
+                        onClick={() => {
+                            setState(props.initialValue)
+                            props.onSave(props.initialValue)
+                        }}
+                        variant={"outlined"}
+                        styles={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "20px",
+                            height: "20px",
+                            padding: 0
+                        }}
+                    >
+                        <Icon styles={{fontSize: "1rem"}}>close</Icon>
+                    </Button>
                 </div>
                 <div className={styles.gridSizeItems}>
                     {props.values.map(e => (
                         <React.Fragment key={e + "variable-scale"}>
                             <Button
-                                disabled={!active}
+
                                 styles={{width: "100%"}}
                                 className={styles.button}
                                 variant={state === e ? "filled" : undefined}
                                 onClick={() => {
                                     setState(e)
-                                    props.onSave(state, active)
+                                    props.onSave(state)
                                 }}>
                                 {e}
                             </Button>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import FileSystem from "../libs/FileSystem"
 import FILE_TYPES from "../../../public/static/FILE_TYPES"
 import openLevelBlueprint from "../utils/openLevelBlueprint"
@@ -7,10 +7,9 @@ import WINDOWS from "../../../public/static/WINDOWS"
 import {Icon} from "@f-ui/core"
 
 const {ipcRenderer} = window.require("electron")
-export default function useOptions(engine, save, settings) {
-    const [options, setOptions] = useState([])
-    useEffect(() => {
-        setOptions([
+export default function useFrameOptions(engine, save, settings) {
+    return useMemo(() => {
+        return [
             {
                 label: "Save",
                 icon: "save",
@@ -63,9 +62,52 @@ export default function useOptions(engine, save, settings) {
                 onClick: openLevelBlueprint
             },
             {divider: true},
-
             {
-                label: "View",
+                label: "Edit",
+                options: [
+                    {
+                        label: "Undo",
+                        onClick: () => null,
+                        disabled: true,
+                        shortcut: "Ctrl - Z"
+                    },
+                    {
+                        label: "Redo",
+                        onClick: () => null,
+                        disabled: true,
+                        shortcut: "Ctrl - Y"
+                    },
+                    {divider: true},
+                    {
+                        label: "Preferences",
+                        icon: <Icon styles={{fontSize: "1.1rem"}}>settings</Icon>,
+                        onClick: () => {
+                            const settingsClone = {}
+                            Object.keys(settings).map(k => {
+                                settingsClone[k] = settings[k]
+                            })
+                            ipcRenderer.send(
+                                ROUTES.OPEN_NEW_WINDOW,
+                                {
+                                    type: WINDOWS.SETTINGS,
+                                    windowSettings: {
+                                        width: 625,
+                                        height: 750,
+                                        minWidth: 300,
+                                        minHeight: 500 ,
+
+                                    },
+                                    windowProps:settingsClone
+                                })
+                            ipcRenderer.once(WINDOWS.SETTINGS + ROUTES.CLOSE_NEW_WINDOW, (event, data) => {
+								console.log(data, event)
+                            })
+                        },
+                    },
+                ]
+            },
+            {
+                label: "Window",
                 options: [
                     {
                         label: "Viewport Sidebar",
@@ -122,8 +164,6 @@ export default function useOptions(engine, save, settings) {
 
                 ]
             },
-        ])
+        ]
     }, [save, engine.executingAnimation])
-
-    return options
 }

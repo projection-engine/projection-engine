@@ -4,7 +4,6 @@ import Scale from "../gizmo/Scale"
 import TRANSFORMATION_TYPE from "../../static/misc/TRANSFORMATION_TYPE"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
-import Tooltip from "../gizmo/Tooltip"
 import generateNextID from "../../engine/utils/generateNextID"
 import * as shaderCode from "../../engine/shaders/PICK.glsl"
 
@@ -15,8 +14,10 @@ export default class GizmoSystem {
 
     constructor() {
         gpu = window.gpu
+
+
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
-        this.tooltip = new Tooltip()
+
         this.translationGizmo = new Translation(this)
         this.scaleGizmo = new Scale(this)
         this.rotationGizmo = new Rotation(this)

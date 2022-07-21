@@ -55,8 +55,8 @@ export default function GizmoBar() {
                         icon={<Icon styles={{fontSize: "1rem"}}>grid_4x4</Icon>}
                         initialValue={DEFAULT_TRANSLATION}
                         values={TRANSLATION_VALUES}
-                        onSave={(value, active) => {
-                            window.renderer.gizmos.translation.gridSize = active ? value : DEFAULT_TRANSLATION
+                        onSave={(value) => {
+                            window.renderer.gizmos.translation.gridSize = value
                         }}
                     />
                     <GridSizeSelector
@@ -66,8 +66,8 @@ export default function GizmoBar() {
                         icon={<Icon>linear_scale</Icon>}
                         initialValue={DEFAULT_SCALE}
                         values={SCALE_VALUES}
-                        onSave={(value, active) => {
-                            window.renderer.gizmos.scale.gridSize = active ? value : DEFAULT_ROTATION
+                        onSave={(value) => {
+                            window.renderer.gizmos.scale.gridSize = value
                         }}
                     />
                     <GridSizeSelector
@@ -76,8 +76,8 @@ export default function GizmoBar() {
                         icon={<Icon>rotate_right</Icon>}
                         initialValue={DEFAULT_ROTATION}
                         values={ROTATION_VALUES}
-                        onSave={(value, active) => {
-                            window.renderer.gizmos.rotation.gridSize = active ? value : DEFAULT_ROTATION
+                        onSave={(value) => {
+                            window.renderer.gizmos.rotation.gridSize = value
                         }}
                     />
                 </div>
