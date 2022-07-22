@@ -1,8 +1,8 @@
 import {useEffect, useMemo, useState} from "react"
-import AsyncFS from "../../project/libs/AsyncFS"
-import FileSystem from "../../project/libs/FileSystem"
-import EN from "../../global/EN"
-import loadGlobalLocalization from "../../global/loadGlobalLocalization"
+import AsyncFS from "../../../project/libs/AsyncFS"
+import FileSystem from "../../../project/libs/FileSystem"
+import EN from "../../../global/EN"
+import loadGlobalLocalization from "../../../global/loadGlobalLocalization"
 import {useAlert} from "@f-ui/core"
 
 const path = window.require("path")

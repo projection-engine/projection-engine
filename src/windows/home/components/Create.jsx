@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import React, {useContext, useState} from "react"
 import {DropdownProvider, TextField} from "@f-ui/core"
-import FileSystem from "../../project/libs/FileSystem"
-import useLocalization from "../../global/useLocalization"
+import FileSystem from "../../../project/libs/FileSystem"
+import useLocalization from "../../../global/useLocalization"
 
 export default function Create(props) {
     const {setProjects} = props

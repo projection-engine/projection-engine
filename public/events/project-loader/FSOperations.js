@@ -1,6 +1,6 @@
 import FILE_TYPES from "../../static/FILE_TYPES"
 import {lstat, readdir, readFile} from "../file-system/FSEvents"
-import PathSep from "../../static/PathSep"
+import PathSep from "../../lib/PathSep"
 
 const pathRequire = require("path")
 const fs = require("fs")

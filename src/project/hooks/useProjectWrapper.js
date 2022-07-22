@@ -1,11 +1,12 @@
 import useEngine from "../engine-extension/useEngine"
 import {useEffect, useRef} from "react"
 import EVENTS from "../static/misc/EVENTS"
-import ProjectLoader from "../libs/ProjectLoader"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import MeshInstance from "../engine/instances/MeshInstance"
 import {v4} from "uuid"
 import CHANNELS from "../../../public/static/CHANNELS"
+import parseMaterialObject from "../utils/parseMaterialObject"
+import parseEntityObject from "../utils/parseEntityObject"
 
 const {ipcRenderer} = window.require("electron")
 export default function useProjectWrapper(id, settings, pushSettingsBlock, load) {
@@ -18,7 +19,12 @@ export default function useProjectWrapper(id, settings, pushSettingsBlock, load)
         if (response.settings && response.settings.data)
             pushSettingsBlock({...response.settings.data, INITIALIZED: true})
         try {
-            const entities = await Promise.all(response.entities.map(e => e ? ProjectLoader.mapEntity(e.data) : undefined).filter(e => e))
+            const entitiesToParse = response.entities, entities = []
+            for(let i =0; i< entitiesToParse.length; i++){
+                if(!entitiesToParse[i]?.data)
+                    continue
+                entities.push(await parseEntityObject(entitiesToParse[i].data))
+            }
             engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: entities})
         } catch (err) {
             console.error(err)
@@ -37,7 +43,7 @@ export default function useProjectWrapper(id, settings, pushSettingsBlock, load)
                 (_, response) => engine.dispatchMeshes([new MeshInstance(response)])
             )
             ipcRenderer.on(CHANNELS.MATERIAL + "-" + listenID, (event, response) => {
-                ProjectLoader.mapMaterial(response.result, response.id)
+                parseMaterialObject(response.result, response.id)
                     .then(mat => engine.setMaterials(prev => {
                         return [...prev, mat]
                     }))

@@ -1,4 +1,4 @@
-import PathSep from "../../../static/PathSep"
+import PathSep from "../../../lib/PathSep"
 import Node, {getNormalizedName} from "../instances/Node"
 import prepareMaterial from "./prepareMaterial"
 import {v4} from "uuid"

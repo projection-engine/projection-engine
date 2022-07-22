@@ -1,4 +1,4 @@
-import PathSep from "../../../static/PathSep"
+import PathSep from "../../../lib/PathSep"
 
 const fs = require("fs")
 const path = require("path")

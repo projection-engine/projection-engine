@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 import ReactDOM from "react-dom"
-import "../global/global.css"
+import "../../global/global.css"
 import Home from "./Home"
-import LocalizationProvider from "../global/LocalizationProvider"
+import LocalizationProvider from "../../global/LocalizationProvider"
 
 function Wrapper(){
     const [localization, setLocalization] = useState("en")

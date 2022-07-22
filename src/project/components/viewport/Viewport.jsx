@@ -23,7 +23,7 @@ import CameraBar from "./components/CameraBar"
 
 const TRIGGERS = ["data-viewport"]
 const LEFT_BUTTON = 0
-const WORKER = new Worker(new URL("./utils/findEntities.js", import.meta.url))
+const WORKER = new Worker(new URL("./utils/EntitySearch.worker.js", import.meta.url))
 
 let gizmoSystem
 export default function Viewport(props) {

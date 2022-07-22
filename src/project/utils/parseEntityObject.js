@@ -1,89 +1,33 @@
+import FileSystem from "../libs/FileSystem"
+import Entity from "../engine/basic/Entity"
+import COMPONENTS from "../engine/data/COMPONENTS"
 import DirectionalLightComponent from "../engine/components/DirectionalLightComponent"
-
 import MeshComponent from "../engine/components/MeshComponent"
+import {DATA_TYPES} from "../engine/data/DATA_TYPES"
+import TextureInstance from "../engine/instances/TextureInstance"
 import PointLightComponent from "../engine/components/PointLightComponent"
 import SpotLightComponent from "../engine/components/SpotLightComponent"
 import TransformComponent from "../engine/components/TransformComponent"
+import Transformation from "../engine/utils/Transformation"
 import FolderComponent from "../engine/components/FolderComponent"
 import PhysicsBodyComponent from "../engine/components/PhysicsBodyComponent"
-import Entity from "../engine/basic/Entity"
-import MaterialInstance from "../engine/instances/MaterialInstance"
 import ProbeComponent from "../engine/components/ProbeComponent"
-import COMPONENTS from "../engine/data/COMPONENTS"
 import CameraComponent from "../engine/components/CameraComponent"
-import Transformation from "../engine/utils/Transformation"
-import {DATA_TYPES} from "../engine/data/DATA_TYPES"
-import TextureInstance from "../engine/instances/TextureInstance"
-import FileSystem from "./FileSystem"
 
-export default class ProjectLoader {
-    static async getEntities() {
-        const entities = await window.fileSystem.fromDirectory(window.fileSystem.path + FileSystem.sep + "logic", ".entity")
-        return await Promise.all(entities.map(e => window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + e, "json", true)))
-    }
+async function readFromRegistry(fileID) {
+    return new Promise(resolve => {
+        window.fileSystem.readRegistryFile(fileID)
+            .then(lookUpTable => {
 
-    static async readFromRegistry(fileID) {
-        return new Promise(resolve => {
-            window.fileSystem.readRegistryFile(fileID)
-                .then(lookUpTable => {
-
-                    if (lookUpTable) {
-                        window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + lookUpTable.path)
-                            .then(fileData => {
-                                if (fileData) resolve(fileData)
-                                else resolve(null)
-                            }).catch(() => resolve(null))
-                    } else resolve(null)
-                }).catch(() => resolve(null))
-        })
-    }
-
-    static async mapMaterial({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, id) {
-        let newMat
-        await new Promise(resolve => {
-            newMat = new MaterialInstance({
-                vertex: vertexShader,
-                fragment: shader,
-                cubeMapShaderCode: cubeMapShader?.code,
-                onCompiled: () => resolve(),
-                settings,
-                uniformData,
-                id
-            })
-        })
-        newMat.uniforms = uniforms
-        return newMat
-    }
-
-    static async mapEntity(entity) {
-        const parsedEntity = new Entity(entity.id, entity.name, entity.active)
-        Object.keys(entity)
-            .forEach(k => {
-                if (k !== "components")
-                    parsedEntity[k] = entity[k]
-            })
-
-        for (const k in entity.components) {
-            if (typeof ENTITIES[k] === "function") {
-                let component = await ENTITIES[k](entity, k)
-
-                if (component) {
-                    const keys = Object.keys(entity.components[k])
-                    for (let i = 0; i < keys.length; i++) {
-                        const oK = keys[i]
-
-                        if (k === COMPONENTS.TRANSFORM && oK === "_transformationMatrix")
-                            continue
-                        if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
-                    }
-                    parsedEntity.components[k] = component
-					if(k === COMPONENTS.TRANSFORM || k === COMPONENTS.DIRECTIONAL_LIGHT)
-						component.changed = true
-                }
-            }
-        }
-        return parsedEntity
-    }
+                if (lookUpTable) {
+                    window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + lookUpTable.path)
+                        .then(fileData => {
+                            if (fileData) resolve(fileData)
+                            else resolve(null)
+                        }).catch(() => resolve(null))
+                } else resolve(null)
+            }).catch(() => resolve(null))
+    })
 }
 
 const ENTITIES = {
@@ -97,7 +41,7 @@ const ENTITIES = {
             const u = toLoad[index]
             if (u) {
                 if (u.type === DATA_TYPES.TEXTURE && u.modified) {
-                    const fileData = await ProjectLoader.readFromRegistry(u.value)
+                    const fileData = await readFromRegistry(u.value)
                     if (fileData) {
                         let texture
                         await new Promise(r => {
@@ -155,4 +99,34 @@ const ENTITIES = {
     [COMPONENTS.PROBE]: async (entity, k) => new ProbeComponent(entity.components[k].id),
     [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id)
 
+}
+
+export default async function parseEntityObject(entity) {
+    const parsedEntity = new Entity(entity.id, entity.name, entity.active)
+    Object.keys(entity)
+        .forEach(k => {
+            if (k !== "components")
+                parsedEntity[k] = entity[k]
+        })
+
+    for (const k in entity.components) {
+        if (typeof ENTITIES[k] === "function") {
+            let component = await ENTITIES[k](entity, k)
+
+            if (component) {
+                const keys = Object.keys(entity.components[k])
+                for (let i = 0; i < keys.length; i++) {
+                    const oK = keys[i]
+
+                    if (k === COMPONENTS.TRANSFORM && oK === "_transformationMatrix")
+                        continue
+                    if (!oK.includes("__") && !oK.includes("#")) component[oK] = entity.components[k][oK]
+                }
+                parsedEntity.components[k] = component
+                if (k === COMPONENTS.TRANSFORM || k === COMPONENTS.DIRECTIONAL_LIGHT)
+                    component.changed = true
+            }
+        }
+    }
+    return parsedEntity
 }

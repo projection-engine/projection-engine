@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import React, {useMemo} from "react"
 import styles from "../styles/Recent.module.css"
-import logo from "../../static/logo.png"
-import useLocalization from "../../global/useLocalization"
+import logo from "../../../static/logo.png"
+import useLocalization from "../../../global/useLocalization"
 
 export default function Recent(props) {
     const toShow = useMemo(() => {

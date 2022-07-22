@@ -1,6 +1,6 @@
 import {fromDirectory} from "./FSOperations"
 import {readFile} from "../file-system/FSEvents"
-import PathSep from "../../static/PathSep"
+import PathSep from "../../lib/PathSep"
 
 
 export default async function loadData(projectPath) {

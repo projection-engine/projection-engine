@@ -2,8 +2,8 @@ import styles from "../styles/Card.module.css"
 import PropTypes from "prop-types"
 import {Button, Dropdown, DropdownOption, DropdownOptions, DropdownProvider, Icon, TextField} from "@f-ui/core"
 import React, {useContext, useRef, useState} from "react"
-import FileSystem from "../../project/libs/FileSystem"
-import useLocalization from "../../global/useLocalization"
+import FileSystem from "../../../project/libs/FileSystem"
+import useLocalization from "../../../global/useLocalization"
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function Card(props) {

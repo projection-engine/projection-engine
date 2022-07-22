@@ -1,5 +1,5 @@
 import {readRegistry} from "./FSOperations"
-import PathSep from "../../static/PathSep"
+import PathSep from "../../lib/PathSep"
 import REG_PATH from "../../static/REG_PATH"
 import CHANNELS from "../../static/CHANNELS"
 
