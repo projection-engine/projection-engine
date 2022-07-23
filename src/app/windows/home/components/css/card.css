@@ -1,0 +1,22 @@
+
+.button.card-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 25px;
+    max-height: 25px;
+    min-width: 25px;
+    max-width: 25px;
+    font-size: 0.7rem;
+    font-weight: 550;
+    padding: 0 !important;
+    gap: 4px;
+    border: none !important;
+}
+
+.button.card-home:active, .button.card-home[data-highlight = "true"]{
+    color: white;
+    background: var(--pj-accent-color) !important;
+}
+

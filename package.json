@@ -1,0 +1,76 @@
+{
+  "name": "projection-engine",
+  "version": "2.0.0",
+  "description": "Projection Engine is a 3D graphics engine written from ground up to be fast and easy to use",
+  "main": "src/electron/index.js",
+  "scripts": {
+    "start": "concurrently \"yarn rollup -c -w\" \"electron-forge start\"",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\"",
+    "svelte-build": "rollup -c",
+    "svelte-dev": "rollup -c -w",
+    "svelte-start": "sirv public"
+  },
+  "keywords": [],
+  "author": "facobackup",
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "crawler"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "atob": "^2.1.2",
+    "babel-runtime": "^6.26.0",
+    "buffer": "^6.0.3",
+    "electron-reload": "^1.5.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "gl-matrix": "^3.4.3",
+    "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
+    "prop-types": "^15.7.2",
+    "sirv-cli": "^0.4.4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.50",
+    "@electron-forge/maker-deb": "^6.0.0-beta.50",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.50",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.50",
+    "@electron-forge/maker-zip": "^6.0.0-beta.50",
+    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-image": "^2.1.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "concurrently": "^5.1.0",
+    "electron": "^19.0.6",
+    "rollup": "^3.0.0-1",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-svelte": "^7.1.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "svelte": "^3.49.0"
+  }
+}

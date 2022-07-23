@@ -1,0 +1,28 @@
+
+.modal.dropdown {
+    display: grid;
+    align-items: center;
+    gap: 4px;
+
+    width: 225px;
+
+    height: fit-content;
+
+    position: fixed;
+    z-index: -1;
+
+    color: var(--pj-color-secondary);
+    box-shadow: var(--pj-boxshadow);
+    border-radius: 3px;
+    background-color: var(--pj-background-tertiary);
+    border: var(--pj-border-primary) 1px solid;
+}
+
+.modal.dropdown  > button {
+    height: 25px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
