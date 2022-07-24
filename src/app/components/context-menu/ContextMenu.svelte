@@ -1,6 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import Options from "./Options.svelte";
+
     const RIGHT_BUTTON = 2
 
     let startPosition = undefined, locked = false

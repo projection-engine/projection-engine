@@ -1,10 +1,11 @@
 <script>
     import Dropdown from "../dropdown/Dropdown.svelte";
     import Icon from "../Icon/Icon.svelte";
-    import ROUTES from "../../../electron/static/ROUTES";
-    const {ipcRenderer} = window.require("electron")
     import logo from '../../../assets/logo.png';
-    export let logoAction = false
+
+    const {ipcRenderer} = window.require("electron")
+
+    export let logoAction = () => null
     export let pageInfo = {}
     export let label = ""
     export let options = []
@@ -15,10 +16,9 @@
 <div class={"wrapper"}>
     <div class={"options"}>
         <button
-            disabled="{logoAction}"
-            class={"logo-button"}
-            on:click={()=> ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW)}
-            >
+                class={"logo-button"}
+                on:click={()=> logoAction()}
+        >
             <div class={"logo-wrapper"}>
                 <img src={logo} alt={"LOGO"} class={"logo"}/>
             </div>
@@ -67,11 +67,11 @@
     <div class={"action-wrapper"}>
         {#if pageInfo.minimizeEvent}
             <button
-                on:click={() => {
+                    on:click={() => {
                     if (typeof pageInfo.minimizeEvent === "function")
                         pageInfo.minimizeEvent()
                     else
-                        ipcRenderer.send(pageInfo.minimizeEvent)
+                        ipcRenderer.send("minimize" + sessionStorage.getItem("electronWindowID"))
                 }}
                     class={"action-button"}
                     style={"--pj-accent-color: #0095ff"}
@@ -81,11 +81,11 @@
         {/if}
         {#if pageInfo.maximizeEvent}
             <button
-                on:click={() => {
+                    on:click={() => {
                     if (typeof pageInfo.maximizeEvent === "function")
                         pageInfo.maximizeEvent()
                     else
-                        ipcRenderer.send(pageInfo.maximizeEvent)
+                        ipcRenderer.send("maximize" + sessionStorage.getItem("electronWindowID"))
                 }}
                     class={"action-button"}
                     style={"--pj-accent-color: #0095ff"}
@@ -95,11 +95,11 @@
         {/if}
         {#if pageInfo.closeEvent}
             <button
-                on:click={() => {
+                    on:click={() => {
                     if (typeof pageInfo.closeEvent === "function")
                         pageInfo.closeEvent()
                     else
-                        ipcRenderer.send(pageInfo.closeEvent)
+                        ipcRenderer.send("close" + sessionStorage.getItem("electronWindowID"))
                 }}
                     class={"action-button"}
                     style={"--pj-accent-color: red"}
@@ -207,7 +207,8 @@
         gap: 4px;
         align-items: center;
     }
-    .vert-divider{
+
+    .vert-divider {
         margin-top: 4px;
         margin-bottom: 4px;
         width: 100%;
@@ -215,6 +216,7 @@
         height: 1px;
         background: var(--pj-border-primary);
     }
+
     .action-button {
         width: 30px;
         height: 30px;
@@ -226,14 +228,15 @@
         border: none;
     }
 
-    .icon-container{
+    .icon-container {
         width: 25px;
         height: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    .option-button{
+
+    .option-button {
         display: flex;
         align-items: center;
         justify-content: flex-start;

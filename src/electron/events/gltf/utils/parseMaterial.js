@@ -1,4 +1,4 @@
-const PathSep = require("../../../lib/PathSep")
+
 const {Node, getNormalizedName} = require("../instances/Node")
 const prepareMaterial = require("./prepareMaterial")
 const {v4} = require("uuid")
@@ -72,7 +72,7 @@ async function loadTexture(basePath, texture, textures, images, partialPath, pro
             file = imgURI.uri
         else {
             file = await new Promise(resolve => {
-                const imgPath = path.resolve(basePath + PathSep.sep + imgURI.uri)
+                const imgPath = path.resolve(basePath + path.sep + imgURI.uri)
                 fs.readFile(
                     imgPath,
                     (_, buffer) => {

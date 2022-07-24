@@ -1,6 +1,6 @@
 const FILE_TYPES = require("../../../static/FILE_TYPES")
 const {lstat, readdir, readFile} = require("../../file-system/fs-essentials")
-const PathSep = require("../../../lib/PathSep")
+
 
 const pathRequire = require("path")
 const fs = require("fs")
@@ -20,10 +20,10 @@ async function fromDirectory(startPath, extension) {
 
 async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
-        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + PathSep.sep + "assetsRegistry" + PathSep.sep + fileID + FILE_TYPES.REGISTRY)))[1]
+        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + pathRequire.sep + "assetsRegistry" + pathRequire.sep + fileID + FILE_TYPES.REGISTRY)))[1]
 
         if (lookUpTable) {
-            const fileData = (await readFile(projectPath + PathSep.sep + "assets" +PathSep.sep +  JSON.parse(lookUpTable).path))[1]
+            const fileData = (await readFile(projectPath + pathRequire.sep + "assets" +pathRequire.sep +  JSON.parse(lookUpTable).path))[1]
             if (fileData) resolve(fileData)
             else resolve(null)
         } else resolve(null)

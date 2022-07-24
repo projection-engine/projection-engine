@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import "./css/alert.css"
+
     let target
     const close = (newElement) => {
         newElement.className = "outAnimation alert-modal"

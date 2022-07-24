@@ -83,7 +83,5 @@ module.exports = function FS() {
             } else event.sender.send("import-gltf" + listenID, [])
         })
     })
-    ipcMain.on("load-project", async (event, {projectPath, projectID, listenID}) => {
-        await loader(projectPath, projectID, listenID, event.sender)
-    })
+
 }

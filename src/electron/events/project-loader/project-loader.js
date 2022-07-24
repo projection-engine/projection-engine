@@ -4,11 +4,15 @@ const loadMaterials = require("./lib/load-materials")
 const loadData = require("./lib/load-meta-data")
 const CHANNELS = require("../../static/CHANNELS")
 const cleanUpRegistry = require("./lib/clean-up-registry")
+const getBasePath = require("../../lib/get-base-path");
+const os = require("os");
+const path = require("path");
 
-module.exports = async function loader(projectPath, projectID, listenID, sender) {
-    cleanUpRegistry(projectPath, listenID)
+module.exports = async function loader(projectID, sender) {
+    const projectPath = getBasePath(os, path) +"projects" + path.sep + projectID
+    cleanUpRegistry(projectPath, projectID)
     const {settings, meta, entities} = await loadData(projectPath)
-    sender.send(CHANNELS.META_DATA + "-" + listenID, {
+    sender.send(CHANNELS.META_DATA + "-" + projectID, {
         meta, settings, entities
     })
     const toLoadData = {
@@ -24,7 +28,7 @@ module.exports = async function loader(projectPath, projectID, listenID, sender)
         toLoadData.meshes.add(current.components[COMPONENTS.MESH].meshID)
     }
 
-    loadMeshes(Array.from(toLoadData.meshes), projectPath, (data) => sender.send(CHANNELS.MESH + "-" + listenID, data)).catch()
-    loadMaterials(Array.from(toLoadData.materials), projectPath, (data) => sender.send(CHANNELS.MATERIAL + "-" + listenID, data)).catch()
+    loadMeshes(Array.from(toLoadData.meshes), projectPath, (data) => sender.send(CHANNELS.MESH + "-" + projectID, data)).catch()
+    loadMaterials(Array.from(toLoadData.materials), projectPath, (data) => sender.send(CHANNELS.MATERIAL + "-" + projectID, data)).catch()
 
 }

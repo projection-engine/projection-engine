@@ -1,5 +1,4 @@
 const {readRegistry} = require( "./fs-operations")
-const PathSep = require( "../../../lib/PathSep")
 const REG_PATH = require( "../../../static/REG_PATH")
 const CHANNELS = require( "../../../static/CHANNELS")
 
@@ -8,7 +7,7 @@ const path = require("path")
 
 module.exports =  function cleanUpRegistry(projectPath, listenID, sender) {
     
-    readRegistry(projectPath + PathSep.sep + REG_PATH).then(reg => {
+    readRegistry(projectPath + path.sep + REG_PATH).then(reg => {
         const promises = []
         for (let i in reg) {
             const {registryPath} = reg[i] ? reg[i] : {}
@@ -17,7 +16,7 @@ module.exports =  function cleanUpRegistry(projectPath, listenID, sender) {
                     fs.readFile(registryPath, (err, data) => {
                         if (!err) {
                             const objectData = JSON.parse(data.toString())
-                            const filePath = path.resolve(projectPath + PathSep.sep + "assets" + PathSep.sep + objectData.path)
+                            const filePath = path.resolve(projectPath + path.sep + "assets" + path.sep + objectData.path)
                             if (!fs.existsSync(filePath))
                                 fs.rm(registryPath, (err) => {
                                     console.log(err, registryPath)

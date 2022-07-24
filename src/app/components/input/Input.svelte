@@ -1,5 +1,4 @@
 <script>
-    import Icon from "../Icon/Icon.svelte";
     import {onMount} from "svelte";
 
     const DELAY = 250, ENTER = "Enter"

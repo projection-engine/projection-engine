@@ -2,12 +2,11 @@
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import Icon from "../../components/Icon/Icon.svelte";
     import Card from "./components/Card.svelte";
-    import Dropdown from "../../components/dropdown/Dropdown.svelte";
     import Input from "../../components/input/Input.svelte";
     import Recent from "./components/Recent.svelte";
-    import FRAME_EVENTS from "../../../electron/static/FRAME_EVENTS";
     import EnglishLocalization from "../../static/EnglishLocalization";
     import ROUTES from "../../../electron/static/ROUTES";
+    import getBasePath from "../../../electron/lib/get-base-path";
     import {onMount} from "svelte";
     import loadGlobalLocalization from "../../libs/load-global-localization";
     import refreshProjects from "./utils/refresh-projects";
@@ -16,42 +15,41 @@
     import Alert from "../../components/alert/Alert.svelte";
 
     const pathLib = window.require("path")
+    const os =  window.require("os")
+
+
     const {ipcRenderer} = window.require("electron")
+
     let searchString = ""
     let projectsToShow = []
     let openInput = false
     const translate = (key) => EnglishLocalization.HOME.HOME[key]
 
     function openProject(p) {
-        ipcRenderer.send(ROUTES.SWITCH_MAIN_WINDOW, {
-            windowID: p.id,
-            data: p,
-            hasMain: false
-        })
+        ipcRenderer.send(ROUTES.OPEN_PROJECT+sessionStorage.getItem("electronWindowID"), p)
     }
 
     onMount(() => {
         loadGlobalLocalization()
-        let b = localStorage.getItem("basePath")
-        if (localStorage.getItem("basePath") === null) {
-            b = window.require("os").homedir() + pathLib.sep + "ProjectionEngineProjects" + pathLib.sep
-            localStorage.setItem("basePath", b)
-        }
+        const b = getBasePath(os, pathLib)
+        localStorage.setItem("basePath", b)
+
         AsyncFS.mkdir(b).catch()
         refreshProjects(b + "projects" + FileSystem.sep).then(r => projectsToShow = r).catch()
     })
+
 </script>
 
 
 <Alert/>
 <WindowFrame
-        options={[]}
-        label={translate("TITLE")}
-        pageInfo={{
-            closeEvent: FRAME_EVENTS.CLOSE_MAIN,
-            minimizeEvent: FRAME_EVENTS.MINIMIZE_MAIN,
-            maximizeEvent:FRAME_EVENTS.MAXIMIZE_MAIN
-        }}
+    options={[]}
+    label={translate("TITLE")}
+    pageInfo={{
+        closeEvent: true,
+        minimizeEvent: true,
+        maximizeEvent: true
+    }}
 />
 <div class={"wrapper"}>
     <div class={"wrapperProjects"}>
@@ -110,11 +108,10 @@
             </div>
         {:else}
             <div class={"content"}>
-                {#each projectsToShow as p, index}
+                {#each projectsToShow as p}
                     <Card
                         open={() => openProject(p)}
                         data={p}
-                        index={index}
                         onRename={async newName => {
                             const pathName = pathLib.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + p.id + FileSystem.sep + ".meta")
                             const [error, res] = await AsyncFS.read(pathName)
@@ -125,7 +122,6 @@
                                 }))
                             }}
                         onDelete={async () => {
-                            console.log(p)
                             await AsyncFS.rm(
                                 pathLib.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + p.id),
                                 {recursive: true, force: true})

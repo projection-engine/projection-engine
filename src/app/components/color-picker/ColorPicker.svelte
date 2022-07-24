@@ -1,5 +1,5 @@
 <script>
-    import {onMount, onDestroy} from 'svelte';
+    import {onDestroy, onMount} from 'svelte';
     import hsvToHsl from "./utils/hsv-to-hsl.js";
 
     export let handleChange = () => null

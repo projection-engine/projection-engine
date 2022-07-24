@@ -1,6 +1,7 @@
 <script>
     import EnglishLocalization from "../../../static/EnglishLocalization";
     import logo from "../../../../assets/logo.png"
+
     export let open = () => null
     export let projects = []
     function getRecent(projects){

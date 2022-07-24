@@ -1,0 +1,3 @@
+[submodule "src/app/windows/project/libs/engine"]
+	path = src/app/windows/project/libs/engine
+	url = git@github.com:projection-engine/engine.git
