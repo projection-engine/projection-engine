@@ -1,5 +1,5 @@
 import BOARD_SIZE from "../../components/blueprints/data/BOARD_SIZE"
-import compiler from "../../components/blueprints/libs/compiler"
+// import compiler from "../../components/blueprints/libs/compiler"
 
 export default function initializeBlueprints() {
     window.blueprints = {
@@ -25,12 +25,12 @@ export default function initializeBlueprints() {
                     texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
                 }
             })
-            const compiled = await compiler(nodes.filter(n => !n.isComment), links)
-            const preview = window.renderer.generatePreview(true)
+            // const compiled = await compiler(nodes.filter(n => !n.isComment), links)
+            // const preview = window.renderer.generatePreview(true)
 
-            return {
-                compiled, preview, parsedNodes
-            }
+            // return {
+            //     compiled, preview, parsedNodes
+            // }
         },
         async save(hook) {
             const {

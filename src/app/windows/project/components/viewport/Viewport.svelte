@@ -4,22 +4,19 @@
     import importData from "../../libs/importer/import"
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
-    import {getContext, onMount} from "svelte";
-    import ContextMap from "../../static/misc/ContextMap";
     import EditorEngine from "../../libs/engine-extension/EditorEngine";
     import windowBuilder from "../../libs/engine/window-builder";
     import Conversion from "../../libs/engine/utils/Conversion";
-    import {effect} from "../../libs/effect";
-
     import {engine as engineStore} from "../../stores/engine-store";
     import {get} from "svelte/store";
     import {settingsStore} from "../../stores/settings-store";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
+    import updateRenderer from "./utils/update-renderer";
+    import HeaderOptions from "./views/HeaderOptions.svelte";
 
     export let utils = {}
     const LEFT_BUTTON = 0
-    const renderer = window.renderer
-    let WORKER = entitySearchWorker
+    let WORKER = entitySearchWorker()
 
     const engine = get(engineStore),
         settings = get(settingsStore),
@@ -34,7 +31,23 @@
             windowBuilder(canvasRef)
             engineStore.set({...engine, viewportInitialized: true})
 
-            window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]})
+            window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]}, () => {
+                updateRenderer(
+                    engine.viewportInitialized,
+                    engine.fallbackMaterial,
+                    engine.meshes,
+                    engine.materials,
+                    engine.entities,
+                    engine.cameraInitialized,
+                    (v) => engineStore.set({...engine, cameraInitialized: v}),
+                    (v) => engineStore.set({...engine, fallbackMaterial: v}),
+                    engine.executingAnimation,
+                    engine.selected,
+                    engine.levelScript,
+                    settings
+                )
+            })
+
             rendererIsReady = true
         }
     }
@@ -91,28 +104,27 @@
 
 
 <div
-        on:mousedown={onMouseDown}
-        on:mouseup={onMouseUp}
-        on:click={onClick}
+    on:mousedown={onMouseDown}
+    on:mouseup={onMouseUp}
+    on:click={onClick}
 
-        on:dragover={e => {
-            e.preventDefault()
-            //e.currentTarget.classList.add("hovered")
-        }}
-        on:dragleave={e => {
-            e.preventDefault()
-            //e.currentTarget.classList.remove("hovered")
-        }}
-        on:drop={e => {
-            e.preventDefault()
-    //        e.currentTarget.classList.remove("hovered")
-            importData(e, engine)
-        }}
-        class={"viewport"}
+    on:dragover={e => {
+        e.preventDefault()
+        //e.currentTarget.classList.add("hovered")
+    }}
+    on:dragleave={e => {
+        e.preventDefault()
+        //e.currentTarget.classList.remove("hovered")
+    }}
+    on:drop={e => {
+        e.preventDefault()
+//        e.currentTarget.classList.remove("hovered")
+        importData(e, engine)
+    }}
+    class={"viewport"}
 >
     {#if !engine.executingAnimation}
-        <div></div>
-        <!--        <HeaderOptions/>-->
+        <HeaderOptions/>
     {/if}
     <div style="display: flex; width: 100%; height: 100%; overflow: hidden">
         <canvas

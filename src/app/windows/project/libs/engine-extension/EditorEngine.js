@@ -21,8 +21,8 @@ export default class EditorEngine extends Renderer {
     selected = []
 
 
-    constructor(resolution) {
-        super(resolution)
+    constructor(resolution, whenReady) {
+        super(resolution, whenReady)
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 

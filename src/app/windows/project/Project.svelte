@@ -2,22 +2,18 @@
 
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
-    import {onDestroy, onMount, setContext} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import SETTINGS from "./static/misc/SETTINGS";
     import loadProject from "./utils/load-project";
-    import ContextMap from "./static/misc/ContextMap";
     import Viewport from "./components/viewport/Viewport.svelte";
     import {engine as engineStore} from "./stores/engine-store";
     import {settingsStore} from "./stores/settings-store";
+    import Initializer from "./libs/Initializer";
+    import {get} from "svelte/store";
+    import entityReducer from "./libs/engine-extension/entityReducer";
 
     const {ipcRenderer} = window.require("electron")
-    let engine = {
-        meta: {},
-        meshes: new Map(),
-        materials: [],
-        viewportInitialized: false,
-        executingAnimations: false
-    }
+    let engine = get(engineStore)
     let settings = SETTINGS
     const unsubscribeEngine = engineStore.subscribe(v => {
         engine = v
@@ -31,6 +27,16 @@
         unsubscribeSettings()
     })
     onMount(() => {
+        engineStore.set({
+            ...engine,
+            dispatchEntities: packageData => entityReducer(packageData, engine.entities, id => {
+                engineStore.set({
+                    ...engine,
+                    changeID: id
+                })
+            }),
+        })
+        Initializer()
         loadProject(
             mesh => {
                 engine.meshes.set(mesh.id, mesh)

@@ -1,8 +1,8 @@
 import GIZMOS from "../../../static/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import ContextMap from "../../../static/misc/ContextMap";
 import Conversion from "../../../libs/engine/utils/Conversion";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+
 const MAX_TIMESTAMP = 350, MAX_DELTA = 50
 
 function pickIcon(coords) {

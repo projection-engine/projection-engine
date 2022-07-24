@@ -74,13 +74,13 @@
             </button>
 
             <button
-                    on:click={() => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FileSystem.sep + data.id)}
+                on:click={() => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FileSystem.sep + data.id)}
             >
                 <Icon styles={"font-size: 1.1rem"}>folder</Icon>
                 {translate("SHOW_IN_EXPLORER")}
             </button>
             <button
-                    on:click={() => onDelete()}
+                on:click={() => onDelete()}
             >
                 <Icon styles={"font-size: 1.1rem"}>delete_forever</Icon>
                 {translate("DELETE")}
