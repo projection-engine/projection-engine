@@ -1,0 +1,81 @@
+ .dropdown{
+   padding: 0 10px !important;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 3px !important;
+   font-size: .7rem;
+   height: 23px;
+ }
+.settingsButton {
+  height: 23px;
+  min-width: 23px;
+  padding: 0 2px;
+  display: flex;
+  border-radius: 3px;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  background: var(--pj-border-primary);
+  border: none !important;
+}
+
+.settingsButton > * {
+  font-size: 1.1rem !important;
+}
+
+.settingsButton:disabled {
+  color: #999;
+}
+
+
+.divider {
+  width: 2px;
+  height: 20px;
+  min-width: 2px;
+  margin: 0 4px;
+  background: var(--pj-background-tertiary);
+}
+
+
+.icon {
+  width: fit-content;
+}
+
+.image {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.input {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 100%;
+}
+
+.wrapper {
+  height: 100%;
+  padding-left: 4px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-height: 35px;
+  border-left: var(--pj-background-tertiary) 2px solid;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+
+}
+
+.fileType > * {
+  text-transform: capitalize;
+}

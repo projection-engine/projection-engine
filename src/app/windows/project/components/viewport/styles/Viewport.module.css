@@ -1,0 +1,42 @@
+
+
+.viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--pj-background-tertiary);
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  color: white;
+  padding: 8px 0;
+}
+
+.hovered {
+  opacity: 0.5;
+}
+
+.position {
+  color: var(--pj-color-primary);
+  font-size: 0.75rem;
+  position: absolute;
+  z-index: 10;
+  backdrop-filter: blur(10px) brightness(70%);
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  display: grid;
+  gap: 4px;
+  bottom: 4px;
+  left: 4px;
+  border-radius: 5px;
+}

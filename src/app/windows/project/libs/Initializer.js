@@ -1,6 +1,5 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 import initializeConsole from "./initializer/initializeConsole"
-import initializeShortcuts from "./initializer/initializeShortcuts"
 import initializeEntityWorker from "./initializer/initializeEntityWorker"
 import initializeBlueprints from "./initializer/initializeBlueprints"
 
@@ -20,14 +19,12 @@ export default function Initializer(fileSystem, pushEvent) {
     // BLUEPRINTS
     initializeBlueprints()
 
-    // CONTEXT MENU
+    // ContextMap MENU
     window.contextMenu = {targets: {}, focused: undefined}
 
     // ENTITY WORKER
     initializeEntityWorker()
 
-    // SHORTCUTS
-    initializeShortcuts()
     // CONSOLE
     initializeConsole()
 }

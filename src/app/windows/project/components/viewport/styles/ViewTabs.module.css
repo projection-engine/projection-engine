@@ -1,0 +1,64 @@
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  margin: 0 16px;
+  overflow-x: auto;
+
+  overflow-y: hidden;
+}
+
+.tab {
+  outline: none;
+  height: 17px;
+  font-size: 0.7rem;
+  border: none;
+  color: var(--pj-color-secondary);
+  padding: 0 8px;
+  cursor: pointer;
+  background: none;
+
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.tabWrapper{
+  display: flex;
+  align-items: center;
+}
+
+
+.tabWrapper[data-highlight="true"] {
+  background: var(--pj-border-primary);
+  font-weight: 550;
+
+  border-radius: 3px;
+}
+.tabWrapper[data-highlight="true"] > .tab{
+  cursor: default;
+  font-weight: 550;
+}
+
+
+.tabWrapper[data-highlight="false"]:active > .tab{
+  color: var(--pj-accent-color);
+  background: var(--pj-background-tertiary);
+
+}
+
+.tabWrapper[data-highlight="false"]:hover  > .tab{
+  color: var(--pj-accent-color);
+}
+.viewName{
+  font-size: .7rem;
+  font-weight: 550;
+  color: var(--pj-color-secondary);
+  margin-bottom: 4px;
+}

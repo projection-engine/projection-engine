@@ -5,6 +5,8 @@ import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"
 import mapEntity from "./mapEntity"
 
+import mesh from "../data/SCALE_GIZMO.json"
+
 const MOVEMENT_SCALE = .001
 
 export default class Scale extends Gizmo {
@@ -24,13 +26,10 @@ export default class Scale extends Gizmo {
         this.yGizmo = mapEntity("y", "SCALE")
         this.zGizmo = mapEntity("z", "SCALE")
 
-        import("../data/SCALE_GIZMO.json")
-            .then(res => {
-                this.xyz = new MeshInstance({
-                    vertices: res.vertices,
-                    indices: res.indices
-                })
-            })
+        this.xyz = new MeshInstance({
+            vertices: mesh.vertices,
+            indices: mesh.indices
+        })
     }
 
     onMouseMove(event) {
@@ -40,27 +39,27 @@ export default class Scale extends Gizmo {
 
         switch (this.clickedAxis) {
 
-        case 1: // x
-            this.distanceX += s
-            if (Math.abs(this.distanceX) >= this.gridSize) {
-                this.transformElement([sign * this.distanceX, 0, 0])
-                this.distanceX = 0
-            }
-            break
-        case 2: // y
-            this.distanceY += s
-            if (Math.abs(this.distanceY) >= this.gridSize) {
-                this.transformElement([0, sign * this.distanceY, 0])
-                this.distanceY = 0
-            }
-            break
-        case 3: // z
-            this.distanceZ += s
-            if (Math.abs(this.distanceZ) >= this.gridSize) {
-                this.transformElement([0, 0, sign * this.distanceZ])
-                this.distanceZ = 0
-            }
-            break
+            case 1: // x
+                this.distanceX += s
+                if (Math.abs(this.distanceX) >= this.gridSize) {
+                    this.transformElement([sign * this.distanceX, 0, 0])
+                    this.distanceX = 0
+                }
+                break
+            case 2: // y
+                this.distanceY += s
+                if (Math.abs(this.distanceY) >= this.gridSize) {
+                    this.transformElement([0, sign * this.distanceY, 0])
+                    this.distanceY = 0
+                }
+                break
+            case 3: // z
+                this.distanceZ += s
+                if (Math.abs(this.distanceZ) >= this.gridSize) {
+                    this.transformElement([0, 0, sign * this.distanceZ])
+                    this.distanceZ = 0
+                }
+                break
         }
     }
 

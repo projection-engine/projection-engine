@@ -1,0 +1,170 @@
+<script>
+    import RENDER_TARGET from "../../static/misc/RENDER_TARGET"
+    import GIZMOS from "../../static/misc/GIZMOS"
+    import importData from "../../libs/importer/import"
+    import updateCursor from "./utils/update-cursor"
+    import onViewportClick from "./utils/on-viewport-click"
+    import {getContext, onMount} from "svelte";
+    import ContextMap from "../../static/misc/ContextMap";
+    import EditorEngine from "../../libs/engine-extension/EditorEngine";
+    import windowBuilder from "../../libs/engine/window-builder";
+    import Conversion from "../../libs/engine/utils/Conversion";
+    import {effect} from "../../libs/effect";
+
+    import {engine as engineStore} from "../../stores/engine-store";
+    import {get} from "svelte/store";
+    import {settingsStore} from "../../stores/settings-store";
+    import entitySearchWorker from "../../../../web-workers/entity-search-worker";
+
+    export let utils = {}
+    const LEFT_BUTTON = 0
+    const renderer = window.renderer
+    let WORKER = entitySearchWorker
+
+    const engine = get(engineStore),
+        settings = get(settingsStore),
+        id = sessionStorage.getItem("electronWindowID")
+
+    let gizmoSystem
+    let rendererIsReady = false
+    let canvasRef
+
+    $: {
+        if (canvasRef && !engine.viewportInitialized) {
+            windowBuilder(canvasRef)
+            engineStore.set({...engine, viewportInitialized: true})
+
+            window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]})
+            rendererIsReady = true
+        }
+    }
+    let latestTranslation
+
+    function handleMouse(e) {
+        if (e.type === "mousemove") {
+            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
+            updateCursor(latestTranslation)
+        } else
+            document.removeEventListener("mousemove", handleMouse)
+    }
+
+    function gizmoMouseMove(event) {
+        if (gizmoSystem && gizmoSystem.targetGizmo)
+            gizmoSystem.targetGizmo.onMouseMove(event)
+    }
+
+    function onMouseDown(e) {
+        if (!window.renderer)
+            return
+        e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
+        if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
+            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
+            updateCursor(latestTranslation)
+            document.addEventListener("mousemove", handleMouse)
+            document.addEventListener("mouseup", handleMouse, {once: true})
+        }
+        if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
+            gizmoSystem = window.renderer.editorSystem.gizmoSystem
+            if (gizmoSystem.targetGizmo) {
+                gizmoSystem.targetGizmo.onMouseDown(e)
+                e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
+                e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
+            }
+        }
+    }
+
+    function onMouseUp(event) {
+        if (gizmoSystem && gizmoSystem.targetGizmo) {
+            gizmoSystem.targetGizmo.onMouseUp()
+            event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
+        }
+    }
+
+    function onClick(event) {
+        if (!window.renderer)
+            return
+        onViewportClick(event, settings, engine, (data) => {
+            engineStore.set(data)
+        })
+    }
+</script>
+
+
+<div
+        on:mousedown={onMouseDown}
+        on:mouseup={onMouseUp}
+        on:click={onClick}
+
+        on:dragover={e => {
+            e.preventDefault()
+            //e.currentTarget.classList.add("hovered")
+        }}
+        on:dragleave={e => {
+            e.preventDefault()
+            //e.currentTarget.classList.remove("hovered")
+        }}
+        on:drop={e => {
+            e.preventDefault()
+    //        e.currentTarget.classList.remove("hovered")
+            importData(e, engine)
+        }}
+        class={"viewport"}
+>
+    {#if !engine.executingAnimation}
+        <div></div>
+        <!--        <HeaderOptions/>-->
+    {/if}
+    <div style="display: flex; width: 100%; height: 100%; overflow: hidden">
+        <canvas
+                bind:this={canvasRef}
+                id={RENDER_TARGET}
+                style="width: {settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent"
+            width={settings.resolution[0]}
+            height={settings.resolution[1]}
+        >
+
+        </canvas>
+        {#if rendererIsReady && !engine.executingAnimation}
+            <div></div>
+            <!--<GizmoBar/>-->
+            <!--<CameraBar/>-->
+        {/if}
+        {#if rendererIsReady && settings.visible.sideBarViewport}
+            <div></div>
+            <!--            <SideOptions selectedEntity={engine.selectedEntity}/>-->
+        {/if}
+    </div>
+    {#if rendererIsReady}
+        <div></div>
+        <!--        <Information visible={settings.visible.metricsViewport}/>-->
+    {/if}
+
+    <!--    <SelectBox-->
+    <!--            targetElementID={RENDER_TARGET}-->
+    <!--            disabled={settings.gizmo === GIZMOS.CURSOR}-->
+    <!--            setSelected={(_, startCoords, endCoords) => {-->
+    <!--            if (startCoords && endCoords) {-->
+    <!--                drawIconsToBuffer()-->
+    <!--                const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer-->
+    <!--                const size = {-->
+    <!--                    w: depthFBO.width,-->
+    <!--                    h: depthFBO.height-->
+    <!--                }-->
+    <!--                const nStart = Conversion.toQuadCoord(startCoords, size)-->
+    <!--                const nEnd = Conversion.toQuadCoord(endCoords, size)-->
+
+    <!--                try {-->
+    <!--                    const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)-->
+    <!--                    entityWorker.postMessage({entities: renderer.entities, data})-->
+    <!--                    entityWorker.onmessage = ({data: selected}) => engine.setSelected(selected)-->
+    <!--                } catch (err) {-->
+    <!--                    console.error(err, startCoords, nStart)-->
+    <!--                }-->
+    <!--            }-->
+    <!--        }}-->
+    <!--            target={RENDER_TARGET}-->
+    <!--            selected={[]}-->
+    <!--            nodes={[]}-->
+    <!--    />-->
+</div>
+

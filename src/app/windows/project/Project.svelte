@@ -2,50 +2,56 @@
 
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
-    import {onMount} from "svelte";
-    import ROUTES from "../../../electron/static/ROUTES";
-    import CHANNELS from "../../../electron/static/CHANNELS";
-    import MeshInstance from "./libs/engine/instances/MeshInstance";
-    import parseMaterialObject from "./utils/parseMaterialObject";
+    import {onDestroy, onMount, setContext} from "svelte";
     import SETTINGS from "./static/misc/SETTINGS";
+    import loadProject from "./utils/load-project";
+    import ContextMap from "./static/misc/ContextMap";
+    import Viewport from "./components/viewport/Viewport.svelte";
+    import {engine as engineStore} from "./stores/engine-store";
+    import {settingsStore} from "./stores/settings-store";
 
     const {ipcRenderer} = window.require("electron")
-    let meta = {}
+    let engine = {
+        meta: {},
+        meshes: new Map(),
+        materials: [],
+        viewportInitialized: false,
+        executingAnimations: false
+    }
     let settings = SETTINGS
-    let meshes = new Map()
-    let materials = []
+    const unsubscribeEngine = engineStore.subscribe(v => {
+        engine = v
+    })
+    const unsubscribeSettings = settingsStore.subscribe(v => {
+        settings = v
+    })
 
+    onDestroy(() => {
+        unsubscribeEngine()
+        unsubscribeSettings()
+    })
     onMount(() => {
-        const projectID = sessionStorage.getItem("electronWindowID")
-        console.log(projectID)
-        const IPC = ROUTES.LOAD_PROJECT + projectID
-
-        ipcRenderer.on(CHANNELS.META_DATA + "-" + projectID, (ev, data) => {
-            console.log(data)
-            if(data?.meta)
-                meta = data.meta.data
-            if(data?.settings)
-                settings = {...settings, ...data.settings.data}
-        })
-
-        ipcRenderer.on(CHANNELS.MESH + "-" + projectID, (ev, data) => {
-            meshes.set(data.id, new MeshInstance(data))
-        })
-
-        ipcRenderer.on(CHANNELS.MATERIAL + "-" + projectID, async (ev, data) => {
-            materials.push(
-                await parseMaterialObject(data.result, data.id)
-            )
-        })
-        ipcRenderer.send(IPC)
-
+        loadProject(
+            mesh => {
+                engine.meshes.set(mesh.id, mesh)
+                engineStore.set(engine)
+            },
+            (m, s) => {
+                settingsStore.set({...settings, ...s})
+                engine.meta = m
+                engineStore.set(engine)
+            },
+            (material) => {
+                engine.materials.push(material)
+                engineStore.set(engine)
+            })
     })
 </script>
 
 <Alert/>
 <WindowFrame
     options={[]}
-    label={meta.name}
+    label={engine.meta?.name}
     pageInfo={{
         closeEvent: true,
         minimizeEvent: true,
@@ -53,9 +59,8 @@
     }}
 />
 <div class="wrapper">
-
+    <Viewport/>
 </div>
-
 
 <style>
     .wrapper {

@@ -4,7 +4,7 @@ import Scale from "../gizmo/Scale"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import ShaderInstance from "../../engine/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
-import generateNextID from "../../engine/utils/generateNextID"
+import getPickerId from "../../engine/utils/get-picker-id"
 import * as shaderCode from "../../engine/shaders/PICK.glsl"
 
 let gpu, depthSystem
@@ -41,7 +41,7 @@ export default class GizmoSystem {
                 viewMatrix: view,
                 transformMatrix: transforms[i],
                 projectionMatrix: projection,
-                uID: [...generateNextID(i + 1), 1.],
+                uID: [...getPickerId(i + 1), 1.],
                 camPos,
                 translation,
                 cameraIsOrthographic

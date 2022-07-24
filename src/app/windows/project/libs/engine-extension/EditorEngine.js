@@ -12,6 +12,8 @@ import ENVIRONMENT from "../engine/data/ENVIRONMENT"
 import MeshInstance from "../engine/instances/MeshInstance"
 import EditorCamera from "./camera/EditorCamera"
 import CameraEvents from "./camera/CameraEvents"
+import sphere from "./data/SPHERE.json"
+import camera from "./data/CAMERA.json"
 
 export default class EditorEngine extends Renderer {
     gizmo
@@ -40,25 +42,20 @@ export default class EditorEngine extends Renderer {
             },
             id: "shading-models"
         })
-        Promise.all(
-            [
-                import("./data/SPHERE.json"),
-                import("./data/CAMERA.json")]
-        ).then(([sphere, camera]) => {
-            this.sphereMesh = new MeshInstance({
-                ...sphere,
-                uvs: [],
-                tangents: [],
-            })
-            this.cameraMesh = new MeshInstance({
-                ...camera,
-                uvs: [],
-                tangents: [],
-            })
-            this.cubeMesh = new MeshInstance({
-                vertices: [-1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1],
-                indices: [0, 3, 9, 0, 9, 6, 8, 10, 21, 8, 21, 19, 20, 23, 17, 20, 17, 14, 13, 15, 4, 13, 4, 2, 7, 18, 12, 7, 12, 1, 22, 11, 5, 22, 5, 16]
-            })
+
+        this.sphereMesh = new MeshInstance({
+            ...sphere,
+            uvs: [],
+            tangents: [],
+        })
+        this.cameraMesh = new MeshInstance({
+            ...camera,
+            uvs: [],
+            tangents: [],
+        })
+        this.cubeMesh = new MeshInstance({
+            vertices: [-1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1],
+            indices: [0, 3, 9, 0, 9, 6, 8, 10, 21, 8, 21, 19, 20, 23, 17, 20, 17, 14, 13, 15, 4, 13, 4, 2, 7, 18, 12, 7, 12, 1, 22, 11, 5, 22, 5, 16]
         })
     }
 
@@ -83,7 +80,7 @@ export default class EditorEngine extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, params,   levelScript, fallbackMaterial) {
+    updatePackage(prodEnv, params, levelScript, fallbackMaterial) {
         this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()

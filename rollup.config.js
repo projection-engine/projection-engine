@@ -5,7 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import {terser} from 'rollup-plugin-terser';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
-
+import json from "@rollup/plugin-json";
 
 const common = (inputFile, outputFile, cssFile) => ({
     input: `src/app/windows/${inputFile}.js`,
@@ -34,7 +34,8 @@ const common = (inputFile, outputFile, cssFile) => ({
         !production && serve(),
         !production && livereload('public'),
         production && terser(),
-        image()
+        image(),
+        json()
     ],
     watch: {
         clearScreen: false

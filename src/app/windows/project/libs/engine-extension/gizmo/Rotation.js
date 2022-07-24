@@ -10,6 +10,7 @@ import COMPONENTS from "../../engine/data/COMPONENTS"
 import Conversion from "../../engine/utils/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import mapEntity from "./mapEntity"
+import mesh from "../data/ROTATION_GIZMO.json"
 
 const CSS = {
     backdropFilter: "blur(10px) brightness(70%)",
@@ -58,16 +59,14 @@ export default class Rotation {
         this.xGizmo = mapEntity("x", "ROTATION")
         this.yGizmo = mapEntity("y", "ROTATION")
         this.zGizmo = mapEntity("z", "ROTATION")
-        import("../data/Plane.json")
-            .then(res => {
-                this.xyz = new MeshInstance({
-                    vertices: res.vertices,
-                    indices: res.indices,
-                    normals: [],
-                    uvs: res.uvs,
-                    tangents: [],
-                })
-            })
+
+        this.xyz = new MeshInstance({
+            vertices: mesh.vertices,
+            indices: mesh.indices,
+            normals: [],
+            uvs: mesh.uvs,
+            tangents: [],
+        })
 
         this.texture = new TextureInstance(circle, false)
     }
@@ -111,31 +110,31 @@ export default class Rotation {
         }
 
         switch (this.clickedAxis) {
-        case 1: // x
-            this.distanceX += Math.abs(event.movementX * 0.05)
-            if (Math.abs(this.distanceX) >= this.gridSize) {
-                this.rotateElement([Math.sign(event.movementX) * this.gridSize * toRad, 0, 0])
-                this.distanceX = 0
-                this.renderTarget.innerText = `${(this.currentRotation[0] * toDeg).toFixed(1)} θ`
-            }
-            break
-        case 2: // y
-            this.distanceY += Math.abs(event.movementX * 0.05)
-            if (Math.abs(this.distanceY) >= this.gridSize) {
-                this.rotateElement([0, Math.sign(event.movementX) * this.gridSize * toRad, 0])
-                this.renderTarget.innerText = `${(this.currentRotation[1] * toDeg).toFixed(1)} θ`
-                this.distanceY = 0
-            }
-            break
-        case 3: // z
-            this.distanceZ += Math.abs(event.movementX * 0.05)
-            if (Math.abs(this.distanceZ) >= this.gridSize) {
-                this.rotateElement([0, 0, Math.sign(event.movementX) * this.gridSize * toRad])
+            case 1: // x
+                this.distanceX += Math.abs(event.movementX * 0.05)
+                if (Math.abs(this.distanceX) >= this.gridSize) {
+                    this.rotateElement([Math.sign(event.movementX) * this.gridSize * toRad, 0, 0])
+                    this.distanceX = 0
+                    this.renderTarget.innerText = `${(this.currentRotation[0] * toDeg).toFixed(1)} θ`
+                }
+                break
+            case 2: // y
+                this.distanceY += Math.abs(event.movementX * 0.05)
+                if (Math.abs(this.distanceY) >= this.gridSize) {
+                    this.rotateElement([0, Math.sign(event.movementX) * this.gridSize * toRad, 0])
+                    this.renderTarget.innerText = `${(this.currentRotation[1] * toDeg).toFixed(1)} θ`
+                    this.distanceY = 0
+                }
+                break
+            case 3: // z
+                this.distanceZ += Math.abs(event.movementX * 0.05)
+                if (Math.abs(this.distanceZ) >= this.gridSize) {
+                    this.rotateElement([0, 0, Math.sign(event.movementX) * this.gridSize * toRad])
 
-                this.distanceZ = 0
-                this.renderTarget.innerText = `${(this.currentRotation[2] * toDeg).toFixed(1)} θ`
-            }
-            break
+                    this.distanceZ = 0
+                    this.renderTarget.innerText = `${(this.currentRotation[2] * toDeg).toFixed(1)} θ`
+                }
+                break
         }
     }
 
@@ -224,17 +223,17 @@ export default class Rotation {
         matrix[14] += this.translation[2]
         if (this.transformationType === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
             switch (axis) {
-            case "x":
-                mat4.rotateY(matrix, matrix, -this.currentRotation[0])
-                break
-            case "y":
-                mat4.rotateY(matrix, matrix, this.currentRotation[1])
-                break
-            case "z":
-                mat4.rotateY(matrix, matrix, this.currentRotation[2])
-                break
-            default:
-                break
+                case "x":
+                    mat4.rotateY(matrix, matrix, -this.currentRotation[0])
+                    break
+                case "y":
+                    mat4.rotateY(matrix, matrix, this.currentRotation[1])
+                    break
+                case "z":
+                    mat4.rotateY(matrix, matrix, this.currentRotation[2])
+                    break
+                default:
+                    break
             }
         } else if (axis !== undefined)
             return mat4.fromRotationTranslationScale([], quat.multiply([], this.targetRotation, comp.rotationQuat), this.translation, comp.scaling)

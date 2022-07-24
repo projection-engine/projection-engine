@@ -1,0 +1,17 @@
+.container{
+    height: 23px;
+    font-size: .7rem;
+    display: flex;
+    gap: 4px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+    background: var(--pj-background-tertiary);
+    color: var(--pj-color-secondary);
+}
+.container > *{
+    display: flex;
+    gap: 4px;
+    justify-content: flex-start;
+    align-items: center;
+}

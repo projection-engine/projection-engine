@@ -1,10 +1,10 @@
 import importMesh from "./importMesh"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
-import FILE_TYPES from "../../../../public/static/FILE_TYPES"
 import importScene from "./importScene"
 import FileSystem from "../FileSystem"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
+import FILE_TYPES from "../../../../../electron/static/CHANNELS";
 
 export default async function importData(event, engine, asID) {
     const items = [], meshes = []

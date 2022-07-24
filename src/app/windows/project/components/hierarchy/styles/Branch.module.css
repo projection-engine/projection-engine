@@ -1,0 +1,138 @@
+.wrapper {
+  font-size: 0.7rem;
+  height: 23px;
+  border-left: transparent 2px solid;
+}
+
+.wrapper:nth-child(odd) {
+  background: var(--pj-background-secondary);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 8px 8px 8px 20px;
+  border-left: var(--pj-border-primary) 1px solid;
+  font-size: 0.75rem;
+}
+
+.wrapper > .content {
+  display: none;
+}
+
+.wrapper[data-open="-"] > .content {
+  display: flex;
+}
+
+.wrapper[data-open="-"], .wrapper[data-parentopen="-"] {
+  border-left-color: var(--pj-accent-color);
+}
+
+.wrapper[data-selected="-"] {
+  background: var(--pj-accent-color-light);
+  color: white;
+}
+
+.wrapper[data-selected="-"]:hover{
+  background: var(--pj-accent-color-light);
+  color: white;
+}
+
+.wrapper:hover{
+  background: var(--pj-border-primary);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  height: 23px;
+  width: 100%;
+}
+
+
+
+
+.buttonSmall {
+  height: 23px;
+  width: 25px;
+  outline: none;
+  border: none;
+  background: none;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 0.7;
+
+  cursor: pointer;
+}
+
+.buttonSmall:hover {
+  opacity: 0.85;
+  color: var(--pj-color-secondary);
+}
+
+.buttonSmall:active {
+  opacity: 1;
+  color: var(--pj-color-primary);
+}
+
+.buttonSmall[data-open=""] {
+  transform: rotate(-90deg);
+}
+
+.buttonSmall[data-open="-"] {
+  transform: none;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.buttonIcon {
+  width: 23px;
+  height: 23px;
+  color: rgb(203 158 53 / 87%);
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+
+  cursor: pointer;
+}
+
+.buttonIcon[data-locked="-"] {
+
+  color:   orangered;
+}
+
+.buttonIcon:active {
+  color: rgb(203 110 53);
+}
+
+.label {
+  cursor: grab;
+  width: 100%;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.label:active {
+  cursor: grabbing;
+}
+
+.draggedOver {
+  background: rgb(203 110 53 / 50%) !important;
+}
