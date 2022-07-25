@@ -54,24 +54,51 @@
     })
 </script>
 
-<Alert/>
-<WindowFrame
-    options={[]}
-    label={engine.meta?.name}
-    pageInfo={{
+<div class="wrapper">
+    <Alert/>
+    <WindowFrame
+            options={[]}
+            label={engine.meta?.name}
+            pageInfo={{
         closeEvent: true,
         minimizeEvent: true,
         maximizeEvent: true
     }}
-/>
-<div class="wrapper">
-    <Viewport/>
+    />
+    <div class="content">
+        <div class="middle">
+            <Viewport/>
+        </div>
+
+    </div>
 </div>
 
 <style>
     .wrapper {
-        background: var(--pj-background-quaternary);
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background-color: var(--pj-background-primary);
+    }
+
+    .content {
         width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--pj-background-quaternary);
+        display: flex;
+        flex-direction: column;
+        padding: 3px;
+        user-select: none;
+    }
+
+    .middle {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
     }
 </style>

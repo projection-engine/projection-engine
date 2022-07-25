@@ -4,6 +4,7 @@ const LEFT_LIMIT = 0
 export default function transformModal(open, modal, button) {
     if (open) {
         modal.style.zIndex = "-1"
+        modal.style.display = "none"
         const buttonBoundingRect = button.getBoundingClientRect()
         const halfHeight = buttonBoundingRect.height / 2
         modal.style.top = (buttonBoundingRect.top + halfHeight) + "px"
@@ -29,6 +30,7 @@ export default function transformModal(open, modal, button) {
 
         modal.style.transform = `translate(${x}, ${y})`;
         modal.style.zIndex = "9999"
+        modal.style.display = "grid"
         if(button.firstElementChild)
             button.firstElementChild.setAttribute("data-highlight", "true")
         return

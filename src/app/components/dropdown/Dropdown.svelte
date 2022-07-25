@@ -28,6 +28,7 @@
             if (onClose && open)
                 onClose()
             open = false
+            modal.style.display = "none"
             modal.style.zIndex = "-1"
         }
     }
@@ -42,21 +43,20 @@
 
 <div>
     <span
-            bind:this={button}
-            on:click={() => {
-            if(!open){
+        bind:this={button}
+        on:click={() => {
+            if(!open && !disabled){
                 if(onOpen)
                     onOpen()
                 open = true
-              }
+            }
         }}
-            style={(hideArrow ? "" : "display: flex; align-items: center; gap: 4px; ") + styles}
-            disabled="{disabled}"
+        style={(hideArrow ? "" : "display: flex; align-items: center; gap: 4px; ") + styles}
     >
+            <slot name="button"/>
         {#if !hideArrow}
             <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>
         {/if}
-        <slot name="button"/>
     </span>
     <div
         class="modal dropdown"

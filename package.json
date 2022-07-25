@@ -66,11 +66,14 @@
     "@rollup/plugin-node-resolve": "^7.0.0",
     "concurrently": "^5.1.0",
     "electron": "^19.0.6",
+    "postcss": "^8.4.14",
+    "postcss-load-config": "^4.0.1",
     "rollup": "^3.0.0-1",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^5.1.2",
-    "svelte": "^3.49.0"
+    "svelte": "^3.49.0",
+    "svelte-preprocess": "^4.10.7"
   }
 }

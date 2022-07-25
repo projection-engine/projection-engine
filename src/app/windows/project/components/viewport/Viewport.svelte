@@ -13,6 +13,7 @@
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
     import updateRenderer from "./utils/update-renderer";
     import HeaderOptions from "./views/HeaderOptions.svelte";
+    import CameraBar from "./components/CameraBar.svelte";
 
     export let utils = {}
     const LEFT_BUTTON = 0
@@ -116,7 +117,7 @@
         e.preventDefault()
         //e.currentTarget.classList.remove("hovered")
     }}
-    on:drop={e => {
+        on:drop={e => {
         e.preventDefault()
 //        e.currentTarget.classList.remove("hovered")
         importData(e, engine)
@@ -126,20 +127,19 @@
     {#if !engine.executingAnimation}
         <HeaderOptions/>
     {/if}
-    <div style="display: flex; width: 100%; height: 100%; overflow: hidden">
+    <div class="wrapper">
         <canvas
                 bind:this={canvasRef}
                 id={RENDER_TARGET}
-                style="width: {settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent"
-            width={settings.resolution[0]}
-            height={settings.resolution[1]}
+                style={`width: ${settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent`}
+                width={settings.resolution[0]}
+                height={settings.resolution[1]}
         >
 
         </canvas>
         {#if rendererIsReady && !engine.executingAnimation}
-            <div></div>
             <!--<GizmoBar/>-->
-            <!--<CameraBar/>-->
+            <CameraBar />
         {/if}
         {#if rendererIsReady && settings.visible.sideBarViewport}
             <div></div>
@@ -180,3 +180,22 @@
     <!--    />-->
 </div>
 
+<style>
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .viewport {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--pj-background-tertiary);
+        border-radius: 5px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+</style>

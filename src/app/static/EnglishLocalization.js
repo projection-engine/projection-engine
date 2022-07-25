@@ -45,6 +45,8 @@ export default class EnglishLocalization {
     }
     static PROJECT = {
         VIEWPORT: {
+            ADD: "Add",
+            ADD_DETAILS: "Add entity",
             CAMERA: "Camera",
             TITLE: "Viewport",
             ACTIVE_ENTITY: "Active Entity",

@@ -6,7 +6,9 @@ import {terser} from 'rollup-plugin-terser';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
+import {sveltePreprocess} from "svelte-preprocess/dist/autoProcess";
 
+const PRODUCTION = false;
 const common = (inputFile, outputFile, cssFile) => ({
     input: `src/app/windows/${inputFile}.js`,
     output: {
@@ -17,23 +19,24 @@ const common = (inputFile, outputFile, cssFile) => ({
     },
     plugins: [
         svelte({
-
+            preprocess: sveltePreprocess(),
             compilerOptions: {
-                dev: !production,
+
+                dev: !PRODUCTION,
                 css: css => {
                     css.write(`public/build/${cssFile}.css`);
                 }
             }
         }),
-        css({ output: `${cssFile}.css` }),
+        css({output: `${cssFile}.css`}),
         resolve({
             browser: true,
             dedupe: ['svelte']
         }),
         commonjs(),
-        !production && serve(),
-        !production && livereload('public'),
-        production && terser(),
+        !PRODUCTION && serve(),
+        !PRODUCTION && livereload('public'),
+        PRODUCTION && terser(),
         image(),
         json()
     ],
@@ -41,7 +44,7 @@ const common = (inputFile, outputFile, cssFile) => ({
         clearScreen: false
     }
 })
-const production = false;
+
 export default [
     common("home/root", "home", "home"),
     common("project/root", "project", "project"),

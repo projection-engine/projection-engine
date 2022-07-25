@@ -12,6 +12,7 @@
     import CameraComponent from "../../../libs/engine/components/CameraComponent";
     import PointLightComponent from "../../../libs/engine/components/PointLightComponent";
     import DirectionalLightComponent from "../../../libs/engine/components/DirectionalLightComponent";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
 
     const engine = get(engineStore)
     const createCM = (asDiffuse) => {
@@ -31,13 +32,14 @@
 <Dropdown>
     <button slot="button">
         {translate("ADD")}
+        <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
     </button>
-    <div>
-        <div class={"dividerWrapper"}>
-            {translate("LIGHTS")}
-            <div class={"divider"}></div>
-        </div>
-        <button
+
+    <div class={"divider-wrapper"}>
+        {translate("LIGHTS")}
+        <div class={"divider"}></div>
+    </div>
+    <button
             on:click={() =>  {
                 const actor = new Entity(undefined, translate("POINT_LIGHT"))
                 actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
@@ -48,12 +50,12 @@
                 actor.components[COMPONENTS.TRANSFORM] = transformComponent
                 engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
             }}
-        >
-            <Icon styles={"font-size: 1.1rem"}>lightbulb</Icon>
-            {translate("POINT_LIGHT")}
-        </button>
+    >
+        <Icon styles={"font-size: 1.1rem"}>lightbulb</Icon>
+        {translate("POINT_LIGHT")}
+    </button>
 
-        <button
+    <button
             on:click={() => {
                 const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
 
@@ -66,30 +68,30 @@
 
                 engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
             }}
-        >
-            <Icon styles={"font-size: 1.1rem"}>light_mode</Icon>
-            {translate("DIRECTIONAL_LIGHT")}
-        </button>
+    >
+        <Icon styles={"font-size: 1.1rem"}>light_mode</Icon>
+        {translate("DIRECTIONAL_LIGHT")}
+    </button>
 
-        <div class={"dividerWrapper"}>
-            {translate("AMBIENT")}
-            <div class={"divider"}></div>
-        </div>
+    <div class={"divider-wrapper"}>
+        {translate("AMBIENT")}
+        <div class={"divider"}></div>
+    </div>
 
 
-        <button on:click={() => createCM()}>
-            <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
-            {translate("SPECULAR_PROBE")}
-        </button>
-        <button on:click={() => createCM(true)}>
-            <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
-            {translate("DIFFUSE_PROBE")}
-        </button>
-        <div class={"dividerWrapper"}>
-            {translate("UTILS")}
-            <div class={"divider"}></div>
-        </div>
-        <button
+    <button on:click={() => createCM()}>
+        <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
+        {translate("SPECULAR_PROBE")}
+    </button>
+    <button on:click={() => createCM(true)}>
+        <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
+        {translate("DIFFUSE_PROBE")}
+    </button>
+    <div class={"divider-wrapper"}>
+        {translate("UTILS")}
+        <div class={"divider"}></div>
+    </div>
+    <button
             on:click={() => {
                 const actor = new Entity(undefined, translate("CAMERA"))
                 actor.components[COMPONENTS.CAMERA] = new CameraComponent()
@@ -103,19 +105,25 @@
 
                 engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
             }}
-        >
-            <Icon styles={"font-size: 1.1rem"}>videocam</Icon>
-            {translate("CAMERA")}
-        </button>
-    </div>
+    >
+        <Icon styles={"font-size: 1.1rem"}>videocam</Icon>
+        {translate("CAMERA")}
+    </button>
 </Dropdown>
 
 <style>
-    .dividerWrapper {
-
+    .divider-wrapper {
+        padding: 4px 4px 0;
+        font-size: .75rem;
+        font-weight: 550;
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 
     .divider {
-
+        height: 2px;
+        background: var(--pj-border-primary);
+        width: 100%;
     }
 </style>

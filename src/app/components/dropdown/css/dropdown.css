@@ -1,6 +1,6 @@
 
 .modal.dropdown {
-    display: grid;
+    display: none;
     align-items: center;
     gap: 4px;
 

@@ -1,4 +1,4 @@
-import CameraTab from "../components/CameraTab"
+import CameraTab from "../components/CameraTab.svelte"
 import ViewportTab from "../components/ViewportTab"
 import Transform from "../../component/components/Transform"
 import COMPONENTS from "../../../engine/data/COMPONENTS"
