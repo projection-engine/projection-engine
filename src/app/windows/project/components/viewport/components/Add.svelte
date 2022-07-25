@@ -26,7 +26,8 @@
 
         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
-    const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+    export let translate
+
 </script>
 
 <Dropdown>
@@ -40,16 +41,16 @@
         <div class={"divider"}></div>
     </div>
     <button
-            on:click={() =>  {
-                const actor = new Entity(undefined, translate("POINT_LIGHT"))
-                actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
-                const transformComponent = new TransformComponent()
-                transformComponent.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                transformComponent.lockedRotation = true
-                transformComponent.lockedScaling = true
-                actor.components[COMPONENTS.TRANSFORM] = transformComponent
-                engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            }}
+        on:click={() =>  {
+            const actor = new Entity(undefined, translate("POINT_LIGHT"))
+            actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
+            const transformComponent = new TransformComponent()
+            transformComponent.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+            transformComponent.lockedRotation = true
+            transformComponent.lockedScaling = true
+            actor.components[COMPONENTS.TRANSFORM] = transformComponent
+            engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+        }}
     >
         <Icon styles={"font-size: 1.1rem"}>lightbulb</Icon>
         {translate("POINT_LIGHT")}
@@ -92,19 +93,19 @@
         <div class={"divider"}></div>
     </div>
     <button
-            on:click={() => {
-                const actor = new Entity(undefined, translate("CAMERA"))
-                actor.components[COMPONENTS.CAMERA] = new CameraComponent()
+        on:click={() => {
+            const actor = new Entity(undefined, translate("CAMERA"))
+            actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
-                actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
-                actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-                actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+            actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+            actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+            actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
+            actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
+            actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
 
-                engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            }}
+            engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+        }}
     >
         <Icon styles={"font-size: 1.1rem"}>videocam</Icon>
         {translate("CAMERA")}

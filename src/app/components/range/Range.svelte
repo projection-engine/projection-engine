@@ -32,7 +32,7 @@
 
         if (e.movementX < 0 && (currentValue <= maxValue || !maxValue))
             currentValue = parseFloat((currentValue + increment).toFixed(precision ? precision : 1))
-        else if (currentValue.current >= minValue || !minValue)
+        else if (currentValue >= minValue || !minValue)
             currentValue = parseFloat((currentValue - increment).toFixed(precision ? precision : 1))
 
         if (integer)
@@ -45,8 +45,8 @@
 
         const v = currentValue.toFixed(precision ? precision : 1)
 
-        ref.current.innerText = v
-        inputRef.current.value = v
+        ref.innerText = v
+        inputRef.value = v
 
         if (handleChange)
             handleChange(currentValue)
@@ -78,7 +78,7 @@
             const parsedValue = isNaN(parseFloat(value)) ? 0 : parseFloat(parseFloat(value).toFixed(precision ? precision : 1))
             inputRef.value = parsedValue
             ref.innerText = parsedValue
-            currentValue.current = parsedValue
+            currentValue = parsedValue
         }
     }
 </script>
@@ -117,7 +117,7 @@
         data-disabled={`${disabled}`}
         on:mousedown={() => {
             if (!focused && !disabled)
-                ref.current?.requestPointerLock()
+                ref.requestPointerLock()
         }}
         on:mousemove={(e) => {
             if (document.pointerLockElement)
@@ -126,12 +126,12 @@
         on:mouseup={() => {
             document.exitPointerLock()
             if (onFinish !== undefined)
-                onFinish(currentValue.current)
+                onFinish(currentValue)
             if (!disabled) {
-                if (!dragged.current)
+                if (!dragged)
                     focused = true
                 else
-                    dragged.current = false
+                    dragged = false
             }
         }}
         style={`

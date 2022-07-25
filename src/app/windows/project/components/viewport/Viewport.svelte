@@ -14,6 +14,8 @@
     import updateRenderer from "./utils/update-renderer";
     import HeaderOptions from "./views/HeaderOptions.svelte";
     import CameraBar from "./components/CameraBar.svelte";
+    import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
+    import EnglishLocalization from "../../../../static/EnglishLocalization";
 
     export let utils = {}
     const LEFT_BUTTON = 0
@@ -101,19 +103,20 @@
             engineStore.set(data)
         })
     }
+    const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
 </script>
 
 
 <div
-    on:mousedown={onMouseDown}
-    on:mouseup={onMouseUp}
-    on:click={onClick}
+        on:mousedown={onMouseDown}
+        on:mouseup={onMouseUp}
+        on:click={onClick}
 
-    on:dragover={e => {
+        on:dragover={e => {
         e.preventDefault()
         //e.currentTarget.classList.add("hovered")
     }}
-    on:dragleave={e => {
+        on:dragleave={e => {
         e.preventDefault()
         //e.currentTarget.classList.remove("hovered")
     }}
@@ -122,10 +125,10 @@
 //        e.currentTarget.classList.remove("hovered")
         importData(e, engine)
     }}
-    class={"viewport"}
+        class={"viewport"}
 >
     {#if !engine.executingAnimation}
-        <HeaderOptions/>
+        <HeaderOptions translate={translate} settings={settings}/>
     {/if}
     <div class="wrapper">
         <canvas
@@ -139,7 +142,7 @@
         </canvas>
         {#if rendererIsReady && !engine.executingAnimation}
             <!--<GizmoBar/>-->
-            <CameraBar />
+            <CameraBar/>
         {/if}
         {#if rendererIsReady && settings.visible.sideBarViewport}
             <div></div>
@@ -147,8 +150,13 @@
         {/if}
     </div>
     {#if rendererIsReady}
-        <div></div>
-        <!--        <Information visible={settings.visible.metricsViewport}/>-->
+        <div
+            id={INFORMATION_CONTAINER.CONTAINER}
+            class={"info-container"}
+            style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
+            <div id={INFORMATION_CONTAINER.FPS}></div>
+            <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
+        </div>
     {/if}
 
     <!--    <SelectBox-->
@@ -187,6 +195,7 @@
         height: 100%;
         overflow: hidden;
     }
+
     .viewport {
         width: 100%;
         height: 100%;
@@ -197,5 +206,21 @@
         display: flex;
         flex-direction: column;
     }
-
+    .info-container{
+        height: 23px;
+        font-size: .7rem;
+        display: flex;
+        gap: 4px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 4px;
+        background: var(--pj-background-tertiary);
+        color: var(--pj-color-secondary);
+    }
+    .info-container > *{
+        display: flex;
+        gap: 4px;
+        justify-content: flex-start;
+        align-items: center;
+    }
 </style>

@@ -1,5 +1,5 @@
 import CameraTab from "../components/CameraTab.svelte"
-import ViewportTab from "../components/ViewportTab"
+import ViewportTab from "../components/3DCursorPosition.svelte"
 import Transform from "../../component/components/Transform"
 import COMPONENTS from "../../../engine/data/COMPONENTS"
 import {updateTransform} from "../../component/hooks/useForm"
