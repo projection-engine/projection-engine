@@ -3,19 +3,19 @@
 
     const DELAY = 200
 
-    export let minLabelWidth = ""
-    export let variant = "default"
-    export let label
+    export let minLabelWidth = undefined;
+    export let variant = undefined;
+    export let label = undefined;
     export let precision = 2
-    export let maxValue
-    export let minValue
+    export let maxValue = undefined;
+    export let minValue = undefined;
     export let onFinish = () => null
-    export let accentColor
-    export let disabled = false
+    export let accentColor = undefined;
+    export let disabled = undefined;
     export let incrementPercentage = .01
     export let value = "0"
-    export let handleChange = () => null
-    export let integer = false
+    export let handleChange = undefined;
+    export let integer = undefined;
 
     let ref
     let inputRef
@@ -89,7 +89,7 @@
         style={{"--accent-color": accentColor}}
 >
     {#if label}
-        <div style="min-width: {minLabelWidth}">
+        <div style="min-width: {minLabelWidth}" class="overflow">
             {label}
             <ToolTip>
                 {label}
@@ -97,33 +97,33 @@
         </div>
     {/if}
     <input
-        bind:this={inputRef}
-        disabled={`${disabled}`}
-        autofocus
-        onChange={(e) => onChange(e.target)}
-        type="number"
-        style={`
+            bind:this={inputRef}
+            disabled={`${disabled}`}
+            autofocus
+            onChange={(e) => onChange(e.target)}
+            type="number"
+            style={`
             display: ${focused ? undefined : "none"};
             cursor: text;
             background: var(--pj-background-quaternary);
             border-radius: ${!accentColor ? "3px" : undefined}
         `}
-        class={"draggable"}
-        on:blur={() => focused = false}
+            class={"draggable"}
+            on:blur={() => focused = false}
     >
 
     <div
-        bind:this={ref}
-        data-disabled={`${disabled}`}
-        on:mousedown={() => {
+            bind:this={ref}
+            data-disabled={`${disabled}`}
+            on:mousedown={() => {
             if (!focused && !disabled)
                 ref.requestPointerLock()
         }}
-        on:mousemove={(e) => {
+            on:mousemove={(e) => {
             if (document.pointerLockElement)
                 handleMouseMove(e)
         }}
-        on:mouseup={() => {
+            on:mouseup={() => {
             document.exitPointerLock()
             if (onFinish !== undefined)
                 onFinish(currentValue)
@@ -134,14 +134,14 @@
                     dragged = false
             }
         }}
-        style={`
+            style={`
             display: ${!focused ? undefined : "none"};
             color: ${disabled ? "#999" : undefined};
             cursor: ${disabled ? "default" : undefined};
             background: ${disabled ? "var(--background-0)" : undefined};
             borderRadius: ${!accentColor || disabled ? "3px" : undefined};
         `}
-        class={"draggable"}
+            class={"draggable"}
     ></div>
 </div>
 
@@ -225,14 +225,8 @@
         padding-left: 4px;
     }
 
-    .labeledWrapper > label {
-        font-size: 0.7rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
 
-    .labeledWrapper[data-variant="embedded"] > label {
+    .labeledWrapper[data-variant="embedded"] > div {
         min-width: 15px;
         text-align: left;
     }

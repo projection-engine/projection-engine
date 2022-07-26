@@ -11,5 +11,7 @@ export const engine = writable({
     executingAnimation: false,
     selected: [],
     levelScript: undefined,
-    changeID: undefined
+    changeID: undefined,
+    selectedEntity: undefined,
+    lockedEntity: undefined
 });

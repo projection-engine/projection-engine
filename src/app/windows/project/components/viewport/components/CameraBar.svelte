@@ -8,9 +8,9 @@
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import CameraGizmo from "./CameraGizmo.svelte";
-
+    export let translate
     let cameraIsOrtho = false
-    const translate = key => EnglishLocalization.PROJECT.VIEWPORT[key]
+
     const settings = get(settingsStore)
 </script>
 

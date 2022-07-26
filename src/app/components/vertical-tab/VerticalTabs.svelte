@@ -1,0 +1,108 @@
+<script>
+    import ResizableBar from "../resizable/ResizableBar.svelte";
+
+
+    export let initialTab = 0
+    export let absolute = true
+    export let tabs = []
+    let tab = initialTab !== undefined ? initialTab : -1
+
+</script>
+
+{#if !tabs[tab]?.disabled}
+    {#if absolute}
+        <div class={"content-wrapper"}>
+            <div style="max-width: 0"></div>
+            <ResizableBar
+                    type={"width"}
+            />
+            <div class={"content"}>
+                <svelte:component this={tabs[tab].component} {...tabs[tab].props}/>
+            </div>
+        </div>
+    {:else}
+        <ResizableBar
+                type={"width"}
+        />
+        <svelte:component this={tabs[tab].component} {...tabs[tab].props}/>
+    {/if}
+{/if}
+<div
+        class={"bar"}
+        style={!absolute ?  "position: relative" : undefined}
+>
+    {#each tabs as option, i}
+        <button
+            disabled={option.disabled}
+
+            data-highlight={tab === i ? "-" : ""}
+            class={"button"}
+            on:click={() => {
+                if (tab === i)
+                    tab = -1
+                else
+                    tab = i
+            }}
+        >
+            {option.label}
+        </button>
+    {/each}
+</div>
+
+<style>
+    .bar {
+        padding: 4px 0;
+        min-width: 23px;
+        max-width: 23px;
+        background: var(--pj-background-tertiary);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+        gap: 4px;
+
+    }
+
+    .bar[data-hidden="true"] {
+        transform: translateX(+100%);
+    }
+
+    .button {
+        width: 20px;
+        height: fit-content;
+        border-radius: 0 3px 3px 0;
+        background: var(--pj-border-primary);
+        padding: 4px 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .button > label {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+    }
+
+    .content {
+        color: var(--pj-color-secondary);
+        padding: 8px;
+        background: rgb(63 63 63 / 90%);
+        border-radius: 3px;
+        width: 250px;
+        display: grid;
+        gap: 4px;
+        min-width: 50px;
+        overflow: hidden;
+        box-shadow: var(--pj-boxshadow);
+    }
+
+    .content-wrapper {
+        display: flex;
+        position: absolute;
+        right: 30px;
+        bottom: 4px;
+    }
+
+</style>

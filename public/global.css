@@ -117,3 +117,9 @@ button > label{
 	text-overflow: ellipsis;
 }
 
+.overflow{
+	font-size: 0.7rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

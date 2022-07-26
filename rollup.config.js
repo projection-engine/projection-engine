@@ -6,7 +6,6 @@ import {terser} from 'rollup-plugin-terser';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
-import {sveltePreprocess} from "svelte-preprocess/dist/autoProcess";
 
 const PRODUCTION = false;
 const common = (inputFile, outputFile, cssFile) => ({
@@ -19,9 +18,7 @@ const common = (inputFile, outputFile, cssFile) => ({
     },
     plugins: [
         svelte({
-            preprocess: sveltePreprocess(),
             compilerOptions: {
-
                 dev: !PRODUCTION,
                 css: css => {
                     css.write(`public/build/${cssFile}.css`);

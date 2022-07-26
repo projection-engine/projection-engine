@@ -1,13 +1,13 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
     import GIZMOS from "../../../static/misc/GIZMOS"
-    import GridSizeSelector from "./GridSizeSelector"
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import {settingsStore} from "../../../stores/settings-store";
     import {get} from "svelte/store";
     import EnglishLocalization from "../../../../../static/EnglishLocalization";
     import ResizableBar from "../../../../../components/resizable/ResizableBar.svelte";
+    import GridSizeSelector from "./GridSizeSelector.svelte";
 
     const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
     const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
@@ -17,7 +17,7 @@
     let minimal = false
     let ref
     let initialized = false
-
+    export let translate
     $: {
         if (ref && !initialized && settings.extendedGizmoView !== undefined && settings.extendedGizmoView) {
             ref.style.width = "150px"
@@ -25,7 +25,7 @@
             initialized = true
         }
     }
-    const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+
 </script>
 
 <div class={"floating"}>
@@ -53,34 +53,40 @@
             <GridSizeSelector
                 label={translate("TRANSLATION_GRID")}
                 minimal={minimal}
-                icon={<Icon styles={{fontSize: "1rem"}}>grid_4x4</Icon>}
+
                 initialValue={DEFAULT_TRANSLATION}
                 values={TRANSLATION_VALUES}
                 onSave={(value) => {
                     window.renderer.gizmos.translation.gridSize = value
                 }}
-            />
+            >
+                <Icon slot="icon" styles="font-size: 1rem">grid_4x4</Icon>
+            </GridSizeSelector>
             <GridSizeSelector
 
                 label={translate("SCALE_GRID")}
                 minimal={minimal}
-                icon={<Icon>linear_scale</Icon>}
+
                 initialValue={DEFAULT_SCALE}
                 values={SCALE_VALUES}
                 onSave={(value) => {
                     window.renderer.gizmos.scale.gridSize = value
                 }}
-            />
+            >
+                <Icon slot="icon">linear_scale</Icon>
+            </GridSizeSelector>
             <GridSizeSelector
                 label={translate("ROTATION_GRID")}
                 minimal={minimal}
-                icon={<Icon>rotate_right</Icon>}
+
                 initialValue={DEFAULT_ROTATION}
                 values={ROTATION_VALUES}
                 onSave={(value) => {
                     window.renderer.gizmos.rotation.gridSize = value
                 }}
-            />
+            >
+                <Icon slot="icon">rotate_right</Icon>
+            </GridSizeSelector>
         </div>
         <div class={"buttonGroup"}>
             <button

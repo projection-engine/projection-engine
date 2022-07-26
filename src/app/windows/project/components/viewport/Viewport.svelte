@@ -12,10 +12,13 @@
     import {settingsStore} from "../../stores/settings-store";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
     import updateRenderer from "./utils/update-renderer";
-    import HeaderOptions from "./views/HeaderOptions.svelte";
+    import HeaderOptions from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import GizmoBar from "./components/GizmoBar.svelte";
+    import SideOptions from "./views/SideOptions.svelte";
+    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
 
     export let utils = {}
     const LEFT_BUTTON = 0
@@ -28,6 +31,7 @@
     let gizmoSystem
     let rendererIsReady = false
     let canvasRef
+    let hovered = false
 
     $: {
         if (canvasRef && !engine.viewportInitialized) {
@@ -54,8 +58,8 @@
             rendererIsReady = true
         }
     }
-    let latestTranslation
 
+    let latestTranslation
     function handleMouse(e) {
         if (e.type === "mousemove") {
             latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
@@ -103,7 +107,9 @@
             engineStore.set(data)
         })
     }
+
     const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+
 </script>
 
 
@@ -111,21 +117,21 @@
         on:mousedown={onMouseDown}
         on:mouseup={onMouseUp}
         on:click={onClick}
-
         on:dragover={e => {
         e.preventDefault()
-        //e.currentTarget.classList.add("hovered")
+        hovered  = true
     }}
         on:dragleave={e => {
         e.preventDefault()
-        //e.currentTarget.classList.remove("hovered")
+        hovered  = false
     }}
         on:drop={e => {
         e.preventDefault()
-//        e.currentTarget.classList.remove("hovered")
+        hovered  = false
         importData(e, engine)
     }}
         class={"viewport"}
+        class:hovered={hovered}
 >
     {#if !engine.executingAnimation}
         <HeaderOptions translate={translate} settings={settings}/>
@@ -138,22 +144,20 @@
                 width={settings.resolution[0]}
                 height={settings.resolution[1]}
         >
-
         </canvas>
         {#if rendererIsReady && !engine.executingAnimation}
-            <!--<GizmoBar/>-->
-            <CameraBar/>
+            <GizmoBar translate={translate}/>
+            <CameraBar translate={translate}/>
         {/if}
         {#if rendererIsReady && settings.visible.sideBarViewport}
-            <div></div>
-            <!--            <SideOptions selectedEntity={engine.selectedEntity}/>-->
+            <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
         {/if}
     </div>
     {#if rendererIsReady}
         <div
-            id={INFORMATION_CONTAINER.CONTAINER}
-            class={"info-container"}
-            style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
+                id={INFORMATION_CONTAINER.CONTAINER}
+                class={"info-container"}
+                style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
             <div id={INFORMATION_CONTAINER.FPS}></div>
             <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
         </div>
@@ -206,7 +210,8 @@
         display: flex;
         flex-direction: column;
     }
-    .info-container{
+
+    .info-container {
         height: 23px;
         font-size: .7rem;
         display: flex;
@@ -217,7 +222,8 @@
         background: var(--pj-background-tertiary);
         color: var(--pj-color-secondary);
     }
-    .info-container > *{
+
+    .info-container > * {
         display: flex;
         gap: 4px;
         justify-content: flex-start;

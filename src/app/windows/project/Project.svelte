@@ -16,7 +16,12 @@
     let engine = get(engineStore)
     let settings = SETTINGS
     const unsubscribeEngine = engineStore.subscribe(v => {
-        engine = v
+        const value = {...v}
+        if(v.selected.length > 0 || v.lockedEntity)
+            value.selectedEntity = engine.entities.get(v.lockedEntity ? v.lockedEntity : v.selected[0])
+        else
+            value.selectedEntity = undefined
+        engine = value
     })
     const unsubscribeSettings = settingsStore.subscribe(v => {
         settings = v
