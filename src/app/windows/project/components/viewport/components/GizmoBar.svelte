@@ -7,7 +7,7 @@
     import {get} from "svelte/store";
     import EnglishLocalization from "../../../../../static/EnglishLocalization";
     import ResizableBar from "../../../../../components/resizable/ResizableBar.svelte";
-    import GridSizeSelector from "./GridSizeSelector.svelte";
+    import GridSizeSelector from "./settings/GizmoGridSettings.svelte";
 
     const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
     const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]

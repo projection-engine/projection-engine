@@ -1,8 +1,8 @@
 <script>
-    import {settingsStore} from "../../../stores/settings-store";
+    import {settingsStore} from "../../../../stores/settings-store";
     import {get} from "svelte/store";
-    import Range from "../../../../../components/range/Range.svelte";
-    import EnglishLocalization from "../../../../../static/EnglishLocalization";
+    import Range from "../../../../../../components/range/Range.svelte";
+    import EnglishLocalization from "../../../../../../static/EnglishLocalization";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     const settings = get(settingsStore)

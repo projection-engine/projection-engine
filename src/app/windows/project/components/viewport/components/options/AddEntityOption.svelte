@@ -1,18 +1,18 @@
 <script>
-    import EnglishLocalization from "../../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../../../static/EnglishLocalization";
     import {get} from "svelte/store";
-    import {engine as engineStore} from "../../../stores/engine-store";
-    import Entity from "../../../libs/engine/basic/Entity";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import ProbeComponent from "../../../libs/engine/components/ProbeComponent";
-    import TransformComponent from "../../../libs/engine/components/TransformComponent";
-    import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
-    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import CameraComponent from "../../../libs/engine/components/CameraComponent";
-    import PointLightComponent from "../../../libs/engine/components/PointLightComponent";
-    import DirectionalLightComponent from "../../../libs/engine/components/DirectionalLightComponent";
-    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
+    import {engine as engineStore} from "../../../../stores/engine-store";
+    import Entity from "../../../../libs/engine/basic/Entity";
+    import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
+    import ProbeComponent from "../../../../libs/engine/components/ProbeComponent";
+    import TransformComponent from "../../../../libs/engine/components/TransformComponent";
+    import {ENTITY_ACTIONS} from "../../../../libs/engine-extension/entityReducer";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import CameraComponent from "../../../../libs/engine/components/CameraComponent";
+    import PointLightComponent from "../../../../libs/engine/components/PointLightComponent";
+    import DirectionalLightComponent from "../../../../libs/engine/components/DirectionalLightComponent";
+    import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
 
     const engine = get(engineStore)
     const createCM = (asDiffuse) => {

@@ -12,6 +12,8 @@
     import {get} from "svelte/store";
     import entityReducer from "./libs/engine-extension/entityReducer";
 
+    import getFrameOptions from "./utils/get-frame-options";
+
     const {ipcRenderer} = window.require("electron")
     let engine = get(engineStore)
     let settings = SETTINGS
@@ -57,12 +59,21 @@
                 engineStore.set(engine)
             })
     })
+    $: view = settings.views[settings.currentView];
+    const updateView = (key, newView) => {
+        const s = {...settings}
+        const copy = [...s.views]
+        copy[s.currentView] = {...view, [key]: newView}
+        s.views = copy
+        settingsStore.set(s)
+    }
+    $: frameOptions = getFrameOptions(engine, settings)
 </script>
 
 <div class="wrapper">
     <Alert/>
     <WindowFrame
-            options={[]}
+            options={frameOptions}
             label={engine.meta?.name}
             pageInfo={{
         closeEvent: true,
@@ -72,9 +83,26 @@
     />
     <div class="content">
         <div class="middle">
+<!--            <ViewsContainer-->
+<!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
+<!--                tabs={view.bottom}-->
+<!--                resizePosition={"top"}-->
+<!--                orientation={"horizontal"}-->
+<!--            />-->
             <Viewport/>
+<!--            <ViewsContainer-->
+<!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
+<!--                tabs={view.bottom}-->
+<!--                resizePosition={"top"}-->
+<!--                orientation={"horizontal"}-->
+<!--            />-->
         </div>
-
+<!--        <ViewsContainer-->
+<!--            setTabs={(tabs) => updateView("bottom", tabs)}-->
+<!--            tabs={view.bottom}-->
+<!--            resizePosition={"top"}-->
+<!--            orientation={"horizontal"}-->
+<!--        />-->
     </div>
 </div>
 

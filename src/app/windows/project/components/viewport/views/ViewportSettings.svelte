@@ -1,9 +1,10 @@
 <script>
-    import Add from "../components/Add.svelte"
+    import Add from "../components/options/AddEntityOption.svelte"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import Shading from "../components/options/ShadingOption.svelte";
 
     export let settings
     export let translate
@@ -89,7 +90,7 @@
             <Add translate={translate}/>
         </div>
         <!--        <ViewTabs/>-->
-        <!--        <Shading/>-->
+                <Shading translate={translate}/>
     </div>
 {/if}
 

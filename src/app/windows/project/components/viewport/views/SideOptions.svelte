@@ -1,6 +1,6 @@
 <script>
-    import CameraTab from "../components/CameraTab.svelte"
-    import ViewportTab from "../components/3DCursorPosition.svelte"
+    import CameraTab from "../components/settings/CameraSettings.svelte"
+    import ViewportTab from "../components/settings/3DCursorSettings.svelte"
     // import Transform from "../../component/components/Transform"
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
     import updateEntityTransformation from "../../../utils/update-entity-transformation";

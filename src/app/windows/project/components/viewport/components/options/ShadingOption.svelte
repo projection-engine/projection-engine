@@ -1,0 +1,136 @@
+<script>
+    import SHADING_MODELS from "../../../../static/misc/SHADING_MODELS"
+    import {settingsStore} from "../../../../stores/settings-store";
+    import {get} from "svelte/store";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+
+    let shadingModel = SHADING_MODELS.DETAIL
+    const settings = get(settingsStore)
+    export let translate = () => null
+    $: shading = (() => {
+        switch (shadingModel) {
+            case SHADING_MODELS.LIGHT_ONLY:
+                return {
+                    icon: "light_bulb",
+                    label: "SHADING_LIGHT"
+                }
+            case SHADING_MODELS.ALBEDO:
+                return {
+                    label: "SHADING_UNLIT",
+                    icon: "flat"
+                }
+            case SHADING_MODELS.NORMAL:
+                return {
+                    icon: "view_in_ar",
+                    label: "SHADING_NORMAL"
+                }
+            case SHADING_MODELS.DEPTH:
+                return {
+                    icon: "settings",
+                    label: "SHADING_DEPTH"
+                }
+            case SHADING_MODELS.AO:
+                return {
+                    icon: "settings",
+                    label: "SHADING_AO"
+                }
+
+            case SHADING_MODELS.DETAIL:
+                return {
+                    label: "SHADING_DETAIL",
+                    icon: "shaded"
+                }
+            default:
+                return {}
+        }
+    })();
+
+    const getTexture = () => {
+        switch (shadingModel) {
+            case SHADING_MODELS.DEPTH:
+                return window.renderer.renderingPass.depthPrePass.depth
+            case SHADING_MODELS.AO:
+                return window.renderer.renderingPass.ao.texture
+            case SHADING_MODELS.NORMAL:
+                return window.renderer.renderingPass.deferred.frameBuffer.colors[1]
+            case SHADING_MODELS.ALBEDO:
+                return window.renderer.renderingPass.deferred.frameBuffer.colors[2]
+        }
+
+    }
+    $: {
+        if (window.renderer) {
+            if (shadingModel !== SHADING_MODELS.DETAIL)
+                window.renderer.postProcessingPass.finalPass.workerTexture = getTexture()
+            else
+                window.renderer.postProcessingPass.finalPass.workerTexture = window.renderer.renderingPass.currentFrameFBO.colors[0]
+        }
+        if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
+            shadingModel = SHADING_MODELS.DETAIL
+            alert.pushAlert(translate("SHADING_SWITCH"), "info")
+        }
+    }
+</script>
+
+<Dropdown>
+    <button class="dropdown" slot="button">
+        <Icon styles="font-size: 1rem; min-width: 1.1rem">{shading.icon}</Icon>
+        <div style="white-space: nowrap">{translate(shading.label)}</div>
+    </button>
+    <button
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.DETAIL}
+    >
+        {#if shadingModel === SHADING_MODELS.DETAIL}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_DETAIL")}
+    </button>
+    <button
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.LIGHT_ONLY}
+    >
+        {#if shadingModel === SHADING_MODELS.LIGHT_ONLY}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_LIGHT")}
+    </button>
+    <button
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.ALBEDO}
+    >
+        {#if shadingModel === SHADING_MODELS.ALBEDO}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_UNLIT")}
+    </button>
+    <button
+            disabled="{!settings.ao}"
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.AO}
+    >
+        {#if shadingModel === SHADING_MODELS.AO}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_AO")}
+    </button>
+    <button
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.DEPTH}
+    >
+        {#if shadingModel === SHADING_MODELS.DEPTH}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_DEPTH")}
+    </button>
+    <button
+            class={"item"}
+            on:click={() => shadingModel = SHADING_MODELS.NORMAL}
+    >
+        {#if shadingModel === SHADING_MODELS.NORMAL}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
+        {/if}
+        {translate("SHADING_NORMAL")}
+    </button>
+</Dropdown>

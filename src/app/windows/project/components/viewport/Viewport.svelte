@@ -143,8 +143,7 @@
                 style={`width: ${settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent`}
                 width={settings.resolution[0]}
                 height={settings.resolution[1]}
-        >
-        </canvas>
+        ></canvas>
         {#if rendererIsReady && !engine.executingAnimation}
             <GizmoBar translate={translate}/>
             <CameraBar translate={translate}/>
