@@ -8,18 +8,19 @@
     import Viewport from "./components/viewport/Viewport.svelte";
     import {engine as engineStore} from "./stores/engine-store";
     import {settingsStore} from "./stores/settings-store";
-    import Initializer from "./libs/Initializer";
+    import InitializeWindow from "./libs/initialize-window";
     import {get} from "svelte/store";
     import entityReducer from "./libs/engine-extension/entityReducer";
 
     import getFrameOptions from "./utils/get-frame-options";
+    import Shortcuts from "./components/shortcuts/Shortcuts.svelte";
 
     const {ipcRenderer} = window.require("electron")
     let engine = get(engineStore)
     let settings = SETTINGS
     const unsubscribeEngine = engineStore.subscribe(v => {
         const value = {...v}
-        if(v.selected.length > 0 || v.lockedEntity)
+        if (v.selected.length > 0 || v.lockedEntity)
             value.selectedEntity = engine.entities.get(v.lockedEntity ? v.lockedEntity : v.selected[0])
         else
             value.selectedEntity = undefined
@@ -43,7 +44,7 @@
                 })
             }),
         })
-        Initializer()
+        InitializeWindow()
         loadProject(
             mesh => {
                 engine.meshes.set(mesh.id, mesh)
@@ -83,28 +84,30 @@
     />
     <div class="content">
         <div class="middle">
-<!--            <ViewsContainer-->
-<!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
-<!--                tabs={view.bottom}-->
-<!--                resizePosition={"top"}-->
-<!--                orientation={"horizontal"}-->
-<!--            />-->
+            <!--            <ViewsContainer-->
+            <!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
+            <!--                tabs={view.bottom}-->
+            <!--                resizePosition={"top"}-->
+            <!--                orientation={"horizontal"}-->
+            <!--            />-->
             <Viewport/>
-<!--            <ViewsContainer-->
-<!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
-<!--                tabs={view.bottom}-->
-<!--                resizePosition={"top"}-->
-<!--                orientation={"horizontal"}-->
-<!--            />-->
+            <!--            <ViewsContainer-->
+            <!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
+            <!--                tabs={view.bottom}-->
+            <!--                resizePosition={"top"}-->
+            <!--                orientation={"horizontal"}-->
+            <!--            />-->
         </div>
-<!--        <ViewsContainer-->
-<!--            setTabs={(tabs) => updateView("bottom", tabs)}-->
-<!--            tabs={view.bottom}-->
-<!--            resizePosition={"top"}-->
-<!--            orientation={"horizontal"}-->
-<!--        />-->
+        <!--        <ViewsContainer-->
+        <!--            setTabs={(tabs) => updateView("bottom", tabs)}-->
+        <!--            tabs={view.bottom}-->
+        <!--            resizePosition={"top"}-->
+        <!--            orientation={"horizontal"}-->
+        <!--        />-->
     </div>
+    <Shortcuts/>
 </div>
+
 
 <style>
     .wrapper {

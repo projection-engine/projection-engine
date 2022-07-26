@@ -1,4 +1,4 @@
-.wrapper {
+.wrapper.shortcuts {
   width: 100%;
   height: 25px;
   background: var(--pj-background-tertiary);
@@ -10,7 +10,7 @@
 
 }
 
-.wrapper > *[data-item="-"], .wrapper > *[data-action="-"] > *[data-item="-"] {
+.wrapper.shortcuts > *[data-item="-"], .wrapper.shortcuts > *[data-action="-"] > *[data-item="-"] {
   padding: 2px 8px;
   background: var(--pj-background-primary);
   border-radius: 3px;
@@ -19,13 +19,13 @@
   font-size: 0.7rem;
 }
 
-.wrapper > *[data-action="-"] {
+.wrapper.shortcuts > *[data-action="-"] {
   font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 2px;
 }
 
-.wrapper > *[data-action="-"] > * {
+.wrapper.shortcuts > *[data-action="-"] > * {
   white-space: nowrap;
 }

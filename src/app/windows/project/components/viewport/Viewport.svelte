@@ -19,6 +19,8 @@
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import bindShortcuts from "../shortcuts/hooks/bindShortcuts";
+    import {onDestroy, onMount} from "svelte";
 
     export let utils = {}
     const LEFT_BUTTON = 0
@@ -30,7 +32,7 @@
 
     let gizmoSystem
     let rendererIsReady = false
-    let canvasRef
+    let canvasRef = null
     let hovered = false
 
     $: {
@@ -60,6 +62,7 @@
     }
 
     let latestTranslation
+
     function handleMouse(e) {
         if (e.type === "mousemove") {
             latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
@@ -109,29 +112,40 @@
     }
 
     const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+    const shortcutBinding = bindShortcuts({
+        focusTargetLabel: translate("TITLE"),
+        focusTargetIcon: "window",
+        actions: []
+    })
+
+    onMount(() => shortcutBinding.onMount(canvasRef))
+    onDestroy(() => shortcutBinding.onDestroy(canvasRef))
+    $: {
+        shortcutBinding.rebind(canvasRef, engine.executingAnimation)
+    }
 
 </script>
 
 
 <div
-        on:mousedown={onMouseDown}
-        on:mouseup={onMouseUp}
-        on:click={onClick}
-        on:dragover={e => {
+    on:mousedown={onMouseDown}
+    on:mouseup={onMouseUp}
+    on:click={onClick}
+    on:dragover={e => {
         e.preventDefault()
         hovered  = true
     }}
-        on:dragleave={e => {
+    on:dragleave={e => {
         e.preventDefault()
         hovered  = false
     }}
-        on:drop={e => {
+    on:drop={e => {
         e.preventDefault()
         hovered  = false
         importData(e, engine)
     }}
-        class={"viewport"}
-        class:hovered={hovered}
+    class={"viewport"}
+    class:hovered={hovered}
 >
     {#if !engine.executingAnimation}
         <HeaderOptions translate={translate} settings={settings}/>

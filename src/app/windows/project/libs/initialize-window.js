@@ -3,9 +3,10 @@ import initializeConsole from "./initializer/initializeConsole"
 import initializeEntityWorker from "./initializer/initializeEntityWorker"
 import initializeBlueprints from "./initializer/initializeBlueprints"
 import FileSystem from "./FileSystem";
+import LABELED_KEYS from "../static/misc/LABELED_KEYS";
 
 
-export default function Initializer( ) {
+export default function InitializeWindow( ) {
     window.fileSystem =  new FileSystem(sessionStorage.getItem("electronWindowID"))
 
     // MATH
@@ -26,4 +27,7 @@ export default function Initializer( ) {
 
     // CONSOLE
     initializeConsole()
+
+    window.shortcuts = {all: [], active: {}, window: undefined}
+    window.shortcuts.updateShortcuts = () => null
 }

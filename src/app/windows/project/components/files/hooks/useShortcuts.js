@@ -2,7 +2,7 @@ import {useMemo} from "react"
 import KEYS from "../../../engine/data/KEYS"
 import handleDelete from "../utils/handleDelete"
 import FileSystem from "../../../libs/FileSystem"
-import useHotKeys from "../../shortcuts/hooks/useHotKeys"
+import bindShortcuts from "../../shortcuts/hooks/bindShortcuts"
 import selection from "../utils/selection"
 import SELECTION_TYPES from "../templates/SELECTION_TYPES"
 
@@ -68,7 +68,7 @@ export default function useShortcuts(hook,  selected, setSelected,  internalID, 
             }
         ]
     }, [selected, hook.items, hook.currentDirectory, hook.toCut])
-    useHotKeys({
+    bindShortcuts({
         focusTargetLabel: translate("TITLE"),
         focusTargetIcon: "folder",
         focusTarget: internalID,
