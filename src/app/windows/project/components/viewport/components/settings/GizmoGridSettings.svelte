@@ -2,7 +2,7 @@
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
-
+    import "../../css/Viewport.css"
     export let values = []
     export let minimal = true
     export let onSave = () => null
@@ -19,7 +19,7 @@
         onOpen={() => open =true}
         onClose={() => open = false}
 >
-    <button slot="button" data-minimal={`${minimal}`} data-highlight={open ? "-" : ""} class={"transformation-wrapper"}>
+    <button slot="button" data-minimal={`${minimal}`} data-highlight={open ? "-" : ""} class={"transformation-wrapper gizmo-bar"} style="border: none">
         <ToolTip content={label}/>
         <slot name="icon"/>
         {#if !minimal}
@@ -37,10 +37,10 @@
             }}
             class="close-button"
         >
-            <Icon styles={{fontSize: "1rem"}}>close</Icon>
+            <Icon styles="font-size: 1rem">close</Icon>
         </button>
     </div>
-    <div class={"gridSizeItems"}>
+    <div class={"grid-size-items"}>
         {#each values as e}
             <button
                     style="width: 100%"
@@ -59,49 +59,15 @@
 </Dropdown>
 
 <style>
-
-    .transformation-wrapper {
-        position: relative;
-
-        --color-to-apply: white;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgb(40 40 40 / 85%);
-        height: 35px;
-        width: 100%;
-        font-size: 0.75rem;
-        padding: 0 !important;
-        border-radius: 0;
-        border: var(--pj-border-primary) 1px solid;
-        gap: 8px;
-    }
-
-    .transformation-wrapper > span {
-        font-size: 1.2rem !important;
-        color-rendering: optimizespeed !important;
-        shape-rendering: optimizespeed !important;
-    }
-
-    .transformation-wrapper[data-highlight="true"] {
-        border-color: #0095ff;
-    }
-
-    .transformation-wrapper[data-minimal="false"] {
-        justify-content: flex-start;
-        padding: 8px !important;
-        text-align: left;
-    }
-
     .grid-size-header{
         display: flex;
         align-items: center;
         justify-content: flex-start;
         gap: 4px;
-        margin-bottom: 8px;
         font-size: .75rem;
         color: var(--pj-color-secondary);
+        padding: 0 4px;
+        height: 25px;
     }
 
     .close-button{
@@ -111,5 +77,13 @@
         width: 20px;
         height: 20px;
         padding: 0;
+        border: none;
+        --pj-accent-color: #ff5555;
+    }
+    .grid-size-items{
+        display: grid;
+        gap: 4px;
+        grid-template-rows: repeat(4, 20px);
+        grid-template-columns: repeat(2, calc(50% - 4px));
     }
 </style>

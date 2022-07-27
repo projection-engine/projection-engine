@@ -1,0 +1,58 @@
+
+.transformation-wrapper.gizmo-bar {
+    position: relative;
+
+    --color-to-apply: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(40 40 40 / 85%);
+    height: 35px;
+    width: 100%;
+    font-size: 0.75rem;
+    padding: 0 !important;
+    border-radius: 0;
+    gap: 8px;
+}
+
+.transformation-wrapper.gizmo-bar > span {
+    font-size: 1.2rem !important;
+    color-rendering: optimizespeed !important;
+    shape-rendering: optimizespeed !important;
+}
+
+.transformation-wrapper.gizmo-bar[data-highlight="true"] {
+    border-color: #0095ff;
+}
+
+.transformation-wrapper.gizmo-bar[data-minimal="false"] {
+    justify-content: flex-start;
+    padding: 8px !important;
+    text-align: left;
+}
+
+
+
+.button-group.gizmo-bar {
+    display: grid;
+
+}
+
+.button-group.gizmo-bar > * {
+    border: var(--pj-border-primary) 1px solid;
+}
+
+.button-group.gizmo-bar > *:nth-child(odd) {
+    border-radius: 0 !important;
+}
+
+.button-group.gizmo-bar > *:first-child {
+    border-bottom: none !important;
+    border-radius: 3px 3px 0 0 !important;
+}
+
+.button-group.gizmo-bar > *:last-child {
+    border-top: none;
+    border-radius: 0 0 3px 3px !important;
+}

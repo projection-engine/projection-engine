@@ -1,20 +1,20 @@
 <script>
     import ResizableBar from "../resizable/ResizableBar.svelte";
 
-
-    export let initialTab = 0
+    export let globalStyle = ""
+    export let initialTab = -1
     export let absolute = true
     export let tabs = []
     let tab = initialTab !== undefined ? initialTab : -1
-
+    console.log(absolute)
 </script>
 
-{#if !tabs[tab]?.disabled}
+{#if tab > -1 && tabs[tab] && !tabs[tab].disabled}
     {#if absolute}
-        <div class={"content-wrapper"}>
+        <div class={"content-wrapper"} style="{globalStyle}">
             <div style="max-width: 0"></div>
             <ResizableBar
-                    type={"width"}
+                type={"width"}
             />
             <div class={"content"}>
                 <svelte:component this={tabs[tab].component} {...tabs[tab].props}/>
@@ -44,7 +44,9 @@
                     tab = i
             }}
         >
+            <div class="label">
             {option.label}
+            </div>
         </button>
     {/each}
 </div>
@@ -79,7 +81,7 @@
         justify-content: center;
     }
 
-    .button > label {
+    .label {
         writing-mode: vertical-rl;
         text-orientation: mixed;
         transform: rotate(180deg);
@@ -101,6 +103,7 @@
     .content-wrapper {
         display: flex;
         position: absolute;
+        z-index: 9999;
         right: 30px;
         bottom: 4px;
     }

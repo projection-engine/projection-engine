@@ -74,9 +74,8 @@ export default function CameraEvents(c) {
                 camera.updateViewMatrix(ctrl)
 
                 if (!doubleClick && camera.gizmoReference) {
-                    const t = camera.getNotTranslatedViewMatrix()
-                    console.log(`translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`, camera.gizmoReference)
-                    camera.gizmoReference.style.transform = `translateZ(calc(var(--cubeSize) * -3)) matrix3d(${t})`
+                    const transformationMatrix = camera.getNotTranslatedViewMatrix()
+                    camera.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${transformationMatrix})`
                 }
 
             }

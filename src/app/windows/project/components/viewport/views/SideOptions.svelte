@@ -5,21 +5,27 @@
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
     import updateEntityTransformation from "../../../utils/update-entity-transformation";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+    import {settingsStore} from "../../../stores/settings-store";
+    import {get} from "svelte/store";
 
     export let selectedEntity
     export let translate
+    const settings=  get(settingsStore)
 </script>
 
 <VerticalTabs
         absolute={true}
+        globalStyle={settings.visible.metricsViewport ? "bottom: 25px" : undefined}
         tabs={[
         {
             label: translate("CAMERA"),
-            content: CameraTab
+            component: CameraTab,
+            props: {}
         },
         {
             label: translate("TITLE"),
-            content: ViewportTab
+            component: ViewportTab,
+            props: {}
         },
         /*
         {

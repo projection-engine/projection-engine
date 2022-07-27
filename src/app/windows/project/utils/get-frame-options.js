@@ -74,7 +74,7 @@ export default function getFrameOptions(engine, settings, save){
                 {divider: true},
                 {
                     label: "Preferences",
-                    icon: settings,
+                    icon: "settings",
                     onClick: () => {
                         // const settingsClone = {}
                         // Object.keys(settings).map(k => {

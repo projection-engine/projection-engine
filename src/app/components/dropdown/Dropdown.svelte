@@ -51,7 +51,8 @@
                 open = true
             }
         }}
-        style={(hideArrow ? "" : "display: flex; align-items: center; gap: 4px; ") + styles}
+        class={open ? "highlight dropdown" : undefined}
+        style={(hideArrow ? "" : "display: flex; align-items: center;") + styles}
     >
             <slot name="button"/>
         {#if !hideArrow}

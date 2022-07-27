@@ -10,14 +10,20 @@
     import {settingsStore} from "./stores/settings-store";
     import InitializeWindow from "./libs/initialize-window";
     import {get} from "svelte/store";
-    import entityReducer from "./libs/engine-extension/entityReducer";
+    import entityReducer, {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
 
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./components/shortcuts/Shortcuts.svelte";
+    import Canvas from "./components/viewport/Canvas.svelte";
+    import loadProjectMetadata from "./utils/load-project-metadata";
+    import parseEntityObject from "./utils/parse-entity-object";
 
     const {ipcRenderer} = window.require("electron")
     let engine = get(engineStore)
     let settings = SETTINGS
+    let isReady = false
+    let isDataLoaded = false
+    let isMetadataLoaded = false
     const unsubscribeEngine = engineStore.subscribe(v => {
         const value = {...v}
         if (v.selected.length > 0 || v.lockedEntity)
@@ -45,21 +51,37 @@
             }),
         })
         InitializeWindow()
-        loadProject(
-            mesh => {
-                engine.meshes.set(mesh.id, mesh)
-                engineStore.set(engine)
-            },
-            (m, s) => {
-                settingsStore.set({...settings, ...s})
-                engine.meta = m
-                engineStore.set(engine)
-            },
-            (material) => {
-                engine.materials.push(material)
-                engineStore.set(engine)
-            })
+        loadProjectMetadata((m, s) => {
+            settingsStore.set({...settings, ...s})
+            engine.meta = m
+            engineStore.set(engine)
+            isMetadataLoaded = true
+            console.log("HERE")
+        })
     })
+
+    $: {
+        if (isReady && !isDataLoaded) {
+            isDataLoaded = true
+            loadProject(
+                mesh => {
+                    engine.meshes.set(mesh.id, mesh)
+                    engineStore.set(engine)
+                },
+                async entities => {
+                    const mapped = []
+                    for (let i = 0; i < entities.length; i++) {
+                        mapped.push(await parseEntityObject(entities))
+                    }
+                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                },
+                material => {
+                    engine.materials.push(material)
+                    engineStore.set(engine)
+                })
+        }
+    }
+
     $: view = settings.views[settings.currentView];
     const updateView = (key, newView) => {
         const s = {...settings}
@@ -90,7 +112,17 @@
             <!--                resizePosition={"top"}-->
             <!--                orientation={"horizontal"}-->
             <!--            />-->
-            <Viewport/>
+            {#if isMetadataLoaded}
+                <Viewport isReady={isReady}>
+                    <Canvas
+                            slot="canvas"
+                            onReady={() => {
+                            isReady = true
+                            console.log("IM HERE")
+                        }}
+                    />
+                </Viewport>
+            {/if}
             <!--            <ViewsContainer-->
             <!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
             <!--                tabs={view.bottom}-->

@@ -6,6 +6,11 @@ const ROUTES = require("../static/ROUTES");
 const {v4} = require("uuid");
 const windowLifeCycle = require("./window-life-cycle");
 const loader = require("../events/project-loader/project-loader");
+const loadMetadata = require("../events/project-loader/lib/load-metadata");
+
+const CHANNELS = require("../static/CHANNELS");
+const getBasePath = require("./get-base-path");
+const os = require("os");
 const RELATIVE_PATH_LOGO = "../../assets/logo.png"
 
 module.exports = function ProjectWindow(handleClose, data) {
@@ -31,7 +36,9 @@ module.exports = function ProjectWindow(handleClose, data) {
     ipcMain.on(ROUTES.LOAD_PROJECT + data.id, async event => {
         await loader(data.id, event.sender)
     })
-
+    ipcMain.on(ROUTES.LOAD_PROJECT_METADATA + data.id, async event => {
+        event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) +"projects" + path.sep + data.id))
+    })
 
     windowLifeCycle(
         data.id,

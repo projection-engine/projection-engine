@@ -32,7 +32,7 @@
 
 </script>
 
-<div class={"wrapper"} style={{right: settings.visible.sideBarViewport ? "25px" : "0"}}>
+<div class={"wrapper"} style={settings.visible.sideBarViewport ? "right: 25px" : undefined}>
 
     <div
             class={"gizmo-wrapper"}
@@ -62,7 +62,7 @@
         }
     }}
     >
-        <div class={"cameraView"}>
+        <div class={"camera-view"}>
             <div class={"cube"} id={CAMERA_GIZMO}>
                 <div
                         class={"face front"}
@@ -131,35 +131,34 @@
 
     <div class="vertical-options">
         <Dropdown hideArrow={true}>
-            <button class={"item"} slot="button">
+            <button slot="button">
                 <Icon styles={"font-size: 1.1rem"}>videocam</Icon>
                 <ToolTip>
                     Camera position
                 </ToolTip>
             </button>
 
-            <button class={"item"} on:click={() => updateCameraPlacement(0, Math.PI /2)}>
+            <button on:click={() => updateCameraPlacement(0, Math.PI /2)}>
                 {translate("TOP")}
             </button>
-            <button class={"item"} on:click={() => updateCameraPlacement(0, -Math.PI /2)}>
+            <button on:click={() => updateCameraPlacement(0, -Math.PI /2)}>
                 {translate("BOTTOM")}
             </button>
-            <button class={"item"} on:click={() => updateCameraPlacement(Math.PI, 0)}>
+            <button on:click={() => updateCameraPlacement(Math.PI, 0)}>
                 {translate("LEFT")}
             </button>
-            <button class={"item"} on:click={() => updateCameraPlacement(0, 0)}>
+            <button on:click={() => updateCameraPlacement(0, 0)}>
                 {translate("RIGHT")}
             </button>
-            <button class={"item"} on:click={() => updateCameraPlacement(Math.PI/2, 0)}>
+            <button on:click={() => updateCameraPlacement(Math.PI/2, 0)}>
                 {translate("FRONT")}
             </button>
-            <button class={"item"} on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}>
+            <button on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}>
                 {translate("BACK")}
             </button>
         </Dropdown>
 
         <button
-                class={"item"}
                 on:click={() => {
                 const negated = !window.renderer.camera.ortho
                 window.renderer.camera.ortho = negated
@@ -206,6 +205,19 @@
 
 <style>
 
+    .wrapper {
+        display: grid;
+        align-content: flex-start;
+        justify-items: center;
+        gap: 4px;
+        height: fit-content;
+        transition: 150ms ease-in;
+        position: absolute;
+        right: 0;
+        top: 28px;
+        z-index: 15;
+    }
+
     .gizmo-wrapper {
         overflow: hidden;
         border-radius: 50%;
@@ -222,7 +234,7 @@
         background: rgb(255 255 255 / 50%);
     }
 
-    .cameraView {
+    .camera-view {
         --cube-size: 25px;
 
         width: calc(var(--cube-size) * 2);

@@ -64,6 +64,10 @@ button{
 button:hover{
 	color: var(--pj-accent-color);
 }
+button[data-highlight="-"]{
+	background: var(--pj-accent-color) !important;
+	color: white !important;
+}
 button:active{
 	color: var(--pj-accent-color);
 	background: var(--pj-background-primary);
@@ -110,12 +114,6 @@ a {
 }
 
 
-button > label{
-	white-space: nowrap;
-	max-width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
 
 .overflow{
 	font-size: 0.7rem;

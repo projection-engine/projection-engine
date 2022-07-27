@@ -1,6 +1,6 @@
 module.exports =  {
     SEND: "load-project",
-    META_DATA: "meta-settings",
+    ENTITIES: "ENTITIES",
     MESH: "mesh",
     MATERIAL: "material",
     SCRIPTS: "scripts",

@@ -12,56 +12,25 @@
     import {settingsStore} from "../../stores/settings-store";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
     import updateRenderer from "./utils/update-renderer";
-    import HeaderOptions from "./views/ViewportSettings.svelte";
+    import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
-    import bindShortcuts from "../shortcuts/hooks/bindShortcuts";
-    import {onDestroy, onMount} from "svelte";
-
     export let utils = {}
+    export let isReady = false
+
     const LEFT_BUTTON = 0
     let WORKER = entitySearchWorker()
-
-    const engine = get(engineStore),
-        settings = get(settingsStore),
-        id = sessionStorage.getItem("electronWindowID")
-
     let gizmoSystem
-    let rendererIsReady = false
-    let canvasRef = null
     let hovered = false
-
-    $: {
-        if (canvasRef && !engine.viewportInitialized) {
-            windowBuilder(canvasRef)
-            engineStore.set({...engine, viewportInitialized: true})
-
-            window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]}, () => {
-                updateRenderer(
-                    engine.viewportInitialized,
-                    engine.fallbackMaterial,
-                    engine.meshes,
-                    engine.materials,
-                    engine.entities,
-                    engine.cameraInitialized,
-                    (v) => engineStore.set({...engine, cameraInitialized: v}),
-                    (v) => engineStore.set({...engine, fallbackMaterial: v}),
-                    engine.executingAnimation,
-                    engine.selected,
-                    engine.levelScript,
-                    settings
-                )
-            })
-
-            rendererIsReady = true
-        }
-    }
-
     let latestTranslation
+
+    const engine = get(engineStore)
+    const settings = get(settingsStore)
+    const id = sessionStorage.getItem("electronWindowID")
 
     function handleMouse(e) {
         if (e.type === "mousemove") {
@@ -112,18 +81,10 @@
     }
 
     const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
-    const shortcutBinding = bindShortcuts({
-        focusTargetLabel: translate("TITLE"),
-        focusTargetIcon: "window",
-        actions: []
-    })
-
-    onMount(() => shortcutBinding.onMount(canvasRef))
-    onDestroy(() => shortcutBinding.onDestroy(canvasRef))
     $: {
-        shortcutBinding.rebind(canvasRef, engine.executingAnimation)
+        if(isReady)
+            window.renderer.miscellaneousPass.metrics.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     }
-
 </script>
 
 
@@ -148,33 +109,26 @@
     class:hovered={hovered}
 >
     {#if !engine.executingAnimation}
-        <HeaderOptions translate={translate} settings={settings}/>
+        <ViewportSettings translate={translate} settings={settings}/>
     {/if}
     <div class="wrapper">
-        <canvas
-                bind:this={canvasRef}
-                id={RENDER_TARGET}
-                style={`width: ${settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent`}
-                width={settings.resolution[0]}
-                height={settings.resolution[1]}
-        ></canvas>
-        {#if rendererIsReady && !engine.executingAnimation}
+        <slot name="canvas"/>
+        {#if isReady && !engine.executingAnimation}
             <GizmoBar translate={translate}/>
             <CameraBar translate={translate}/>
         {/if}
-        {#if rendererIsReady && settings.visible.sideBarViewport}
+        {#if isReady && settings.visible.sideBarViewport}
             <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
         {/if}
     </div>
-    {#if rendererIsReady}
-        <div
-                id={INFORMATION_CONTAINER.CONTAINER}
-                class={"info-container"}
-                style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
-            <div id={INFORMATION_CONTAINER.FPS}></div>
-            <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
-        </div>
-    {/if}
+    <div
+            id={INFORMATION_CONTAINER.CONTAINER}
+            class={"info-container"}
+            style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
+        <div id={INFORMATION_CONTAINER.FPS}></div>
+        <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
+    </div>
+
 
     <!--    <SelectBox-->
     <!--            targetElementID={RENDER_TARGET}-->
@@ -206,13 +160,6 @@
 </div>
 
 <style>
-    .wrapper {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
     .viewport {
         width: 100%;
         height: 100%;
@@ -223,6 +170,14 @@
         display: flex;
         flex-direction: column;
     }
+
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
 
     .info-container {
         height: 23px;

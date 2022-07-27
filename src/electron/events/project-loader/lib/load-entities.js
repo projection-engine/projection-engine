@@ -1,13 +1,9 @@
 const {fromDirectory} = require("./fs-operations")
 const {readFile} = require( "../../file-system/fs-essentials")
 const pathRequire = require("path")
-module.exports =  async function loadData(projectPath) {
-    let entities, settings, meta
+module.exports =  async function loadEntities(projectPath) {
+    let entities
     try {
-        let res = (await readFile(projectPath + pathRequire.sep + ".settings"))[1]
-        settings = {type: "settings", data: res ? JSON.parse(res) : {}}
-        res = (await readFile(projectPath + pathRequire.sep + ".meta"))[1]
-        meta = {type: "meta", data: res ? JSON.parse(res) : {}}
         entities = await fromDirectory(projectPath + pathRequire.sep + "logic", ".entity")
         entities = await Promise.all(entities.map(e => {
             return new Promise(async resolve => {
@@ -22,9 +18,9 @@ module.exports =  async function loadData(projectPath) {
                 }
             })
         }))
-        return {settings, meta, entities: entities.filter(e => e)}
+        return  entities.filter(e => e)
     } catch (e) {
         console.log(e)
-        return {}
+        return []
     }
 }

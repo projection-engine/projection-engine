@@ -12,10 +12,9 @@
 </script>
 
 <div class={"wrapper"}>
-    {settings.views.map((v, i) => (
+    {#each settings.views as v, i}
         <div
             data-highlight={`${i === settings.currentView}`}
-            key={"tab-view-" + i}
             class={"tab-wrapper"}
         >
             <button
@@ -25,12 +24,12 @@
             >
                 {v.name}
             </button>
-            <Dropdown class={"tab"} hideArrow={true} styles={{padding: "0"}}>
-                <button slot="button">
+            <Dropdown hideArrow={true}>
+                <button slot="button" class={"tab"}>
                     <Icon styles="font-size: .9rem">more_vert</Icon>
                 </button>
-                <div style={{padding: "4px"}}>
-                    <div class={"viewName"}>
+                <div style="padding: 4px">
+                    <div class={"view-name"}>
                         <label>View name</label>
                         <Input
                             noPlaceHolder={true}
@@ -57,7 +56,7 @@
                 </div>
             </Dropdown>
         </div>
-    ))}
+    {/each}
     {#if settings.views.length < 10}
         <button
                 onClick={() => settings.views = [...settings.views, {
@@ -138,7 +137,7 @@
         color: var(--pj-accent-color);
     }
 
-    .viewName {
+    .view-name {
         font-size: .7rem;
         font-weight: 550;
         color: var(--pj-color-secondary);

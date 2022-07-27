@@ -1,7 +1,7 @@
 const COMPONENTS = {} // TODO - REQUIRE
 const loadMeshes = require("./lib/load-meshes")
 const loadMaterials = require("./lib/load-materials")
-const loadData = require("./lib/load-meta-data")
+const loadEntities = require("./lib/load-entities")
 const CHANNELS = require("../../static/CHANNELS")
 const cleanUpRegistry = require("./lib/clean-up-registry")
 const getBasePath = require("../../lib/get-base-path");
@@ -11,10 +11,8 @@ const path = require("path");
 module.exports = async function loader(projectID, sender) {
     const projectPath = getBasePath(os, path) +"projects" + path.sep + projectID
     cleanUpRegistry(projectPath, projectID)
-    const {settings, meta, entities} = await loadData(projectPath)
-    sender.send(CHANNELS.META_DATA + "-" + projectID, {
-        meta, settings, entities
-    })
+    const entities = await loadEntities(projectPath)
+    sender.send(CHANNELS.ENTITIES + "-" + projectID, entities)
     const toLoadData = {
         meshes: new Set(),
         materials: new Set()

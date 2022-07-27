@@ -32,7 +32,12 @@
             {:else }
                 {#if option.options}
                     <Dropdown class={"button"} style={"padding-right: 0"}>
-                        <svelte:fragment slot="header">{option.label}</svelte:fragment>
+                        <button on:click={option.onClick} class={"button"} slot="button">
+                            {#if option.icon}
+                                <Icon styles="font-size: 1.1rem">{option.icon}</Icon>
+                            {/if}
+                            {option.label}
+                        </button>
                         {#each option.options as subOption}
                             {#if subOption.divider}
                                 <div class={"vert-divider"}></div>
@@ -44,10 +49,10 @@
                                 >
                                     <div class={"icon-container"}>
                                         {#if subOption.icon}
-                                            {option.icon}
+                                            <Icon styles="font-size: 1.1rem">{subOption.icon}</Icon>
                                         {/if}
                                     </div>
-                                    {option.label}
+                                    {subOption.label}
                                 </button>
                             {/if}
                         {/each}
@@ -55,7 +60,7 @@
                 {:else}
                     <button on:click={option.onClick} class={"button"}>
                         {#if option.icon}
-                            <Icon styles={{fontSize: "1.1rem"}}>{option.icon}</Icon>
+                            <Icon styles="font-size: 1.1rem">{option.icon}</Icon>
                         {/if}
                         {option.label}
                     </button>
@@ -190,14 +195,13 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        padding: 2px 4px;
         width: fit-content;
         white-space: nowrap;
         font-size: 0.7rem;
         font-weight: 550;
         height: 25px;
-        border-radius: 3px;
 
+        border: none;
     }
 
     .options {

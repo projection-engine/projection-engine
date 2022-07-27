@@ -102,6 +102,10 @@ export default class EditorEngine extends Renderer {
         this.camera.gamma = params.gamma
         this.camera.exposure = params.exposure
 
+        const bBox = window.gpu.canvas.getBoundingClientRect()
+        this.camera.aspectRatio = bBox.width / bBox.height
+        this.camera.updateProjection()
+
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
 
         Packager({

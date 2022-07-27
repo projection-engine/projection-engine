@@ -5,15 +5,16 @@
     import {onMount} from "svelte";
 
     let requested = false
-    let camera = window.renderer.camera
+
 
     function updateCameraRotation() {
+        const camera = window.renderer.camera
         const transformationMatrix = camera.getNotTranslatedViewMatrix()
         camera.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${transformationMatrix})`
     }
 
     onMount(() => {
-        camera.gizmoReference = document.getElementById(CAMERA_GIZMO)
+        window.renderer.camera.gizmoReference = document.getElementById(CAMERA_GIZMO)
         updateCameraRotation()
     })
 
@@ -28,6 +29,7 @@
         requested = false
     }}
     on:mousemove={({currentTarget, movementX, movementY}) => {
+        const camera = window.renderer.camera
         if (currentTarget.isFocused) {
             if (!requested) {
                 requested = true

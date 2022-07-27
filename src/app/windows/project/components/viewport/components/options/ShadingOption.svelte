@@ -74,12 +74,17 @@
 </script>
 
 <Dropdown>
-    <button class="dropdown" slot="button">
-        <Icon styles="font-size: 1rem; min-width: 1.1rem">{shading.icon}</Icon>
+    <button class="summary" slot="button">
+        {#if shadingModel === SHADING_MODELS.DETAIL}
+            <div style="--color-to-apply: white" class={"shaded-icon"}></div>
+        {:else if shadingModel === SHADING_MODELS.ALBEDO}
+            <div style="--color-to-apply: white" class={"flat-icon"}></div>
+        {:else}
+            <Icon styles="font-size: 1rem; min-width: 1.1rem">{shading.icon}</Icon>
+        {/if}
         <div style="white-space: nowrap">{translate(shading.label)}</div>
     </button>
     <button
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.DETAIL}
     >
         {#if shadingModel === SHADING_MODELS.DETAIL}
@@ -88,7 +93,6 @@
         {translate("SHADING_DETAIL")}
     </button>
     <button
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.LIGHT_ONLY}
     >
         {#if shadingModel === SHADING_MODELS.LIGHT_ONLY}
@@ -97,7 +101,6 @@
         {translate("SHADING_LIGHT")}
     </button>
     <button
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.ALBEDO}
     >
         {#if shadingModel === SHADING_MODELS.ALBEDO}
@@ -107,7 +110,6 @@
     </button>
     <button
             disabled="{!settings.ao}"
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.AO}
     >
         {#if shadingModel === SHADING_MODELS.AO}
@@ -116,7 +118,6 @@
         {translate("SHADING_AO")}
     </button>
     <button
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.DEPTH}
     >
         {#if shadingModel === SHADING_MODELS.DEPTH}
@@ -125,7 +126,6 @@
         {translate("SHADING_DEPTH")}
     </button>
     <button
-            class={"item"}
             on:click={() => shadingModel = SHADING_MODELS.NORMAL}
     >
         {#if shadingModel === SHADING_MODELS.NORMAL}
@@ -134,3 +134,35 @@
         {translate("SHADING_NORMAL")}
     </button>
 </Dropdown>
+
+<style>
+
+    .shaded-icon {
+        transition: 150ms linear;
+        background: linear-gradient(to right bottom, var(--color-to-apply) 25%, #333 75%);
+        min-width: 13px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+    }
+
+    .flat-icon {
+        transition: 150ms linear;
+        min-width: 13px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--color-to-apply);
+    }
+
+
+    .summary {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        padding: 0 4px;
+        font-size: 0.7rem !important;
+
+        border: none;
+    }
+</style>

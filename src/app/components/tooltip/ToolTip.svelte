@@ -66,6 +66,13 @@
         box-shadow: rgb(0 0 0 / 20%) 0 0 2px 2px;
         position: fixed !important;
         z-index: 9999;
+
+        background: var(--pj-background-quaternary);
+        border: var(--pj-border-primary) 1px solid;
+        padding: 4px 8px;
+        border-radius: 3px;
+        color: white !important;
+        font-weight: 550;
     }
 
     @keyframes show {

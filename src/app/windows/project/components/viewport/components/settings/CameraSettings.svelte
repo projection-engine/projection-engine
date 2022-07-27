@@ -18,12 +18,11 @@
 </script>
 
 <div>
-    <div class={"label"}>Clipping planes</div>
+
     <Range
             minLabelWidth={"30px"}
             label={translate("FAR")}
             minValue={state.zNear + 1}
-            variant={"embedded"}
             onFinish={(v) => {
             settings.zFar = v
             state.zFar = v
@@ -36,7 +35,6 @@
     <Range
             minLabelWidth={"30px"}
             label={translate("NEAR")}
-            variant={"embedded"}
             maxValue={state.zFar - 1}
             onFinish={(v) => {
                 settings.zNear = v
@@ -48,14 +46,14 @@
             handleChange={v => state.zNear = v}
     />
 
-    <div class={"label"}>Field of view</div>
+
     <Range
             minLabelWidth={"30px"}
             label={translate("FOV")}
             minValue={10}
             maxValue={110}
             disabled={settings.ortho}
-            variant={"embedded"}
+
             onFinish={(v) => {
             settings.fov = v * toRad
             state.fov = v
