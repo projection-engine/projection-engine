@@ -38,15 +38,18 @@ export default function onViewportClick(event, settings, engine, setContext) {
         if (entity) {
             if (event.ctrlKey) {
                 if (engine.selected.find(e => e === entity.id)) {
-                    setContext({...engine, selected: engine.selected.filter(s => s !== entity.id)})
+                    setContext(engine.selected.filter(s => s !== entity.id))
                     return
                 }
-                setContext({...engine, selected: [...engine.selected, entity.id]})
+                if (!engine.selected.find(e => e === entity.id))
+                    setContext([...engine.selected, entity.id])
                 return
             }
-            setContext({...engine, selected: [entity.id]})
+            if (engine.selected.length !== 1 || engine.selected[0] !== entity.id)
+                setContext([entity.id])
         }
         return
     }
-    setContext({...engine, selected: []})
+    if (engine.selected.length > 0)
+        setContext([])
 }

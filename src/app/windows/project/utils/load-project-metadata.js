@@ -1,6 +1,3 @@
-import CHANNELS from "../../../../electron/static/CHANNELS";
-import MeshInstance from "../libs/engine/instances/MeshInstance";
-import parseMaterialObject from "./parse-material-object";
 import ROUTES from "../../../../electron/static/ROUTES";
 
 const {ipcRenderer} = window.require("electron")

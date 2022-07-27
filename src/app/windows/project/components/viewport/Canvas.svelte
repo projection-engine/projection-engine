@@ -6,9 +6,9 @@
     import {engine as engineStore} from "../../stores/engine-store";
     import EditorEngine from "../../libs/engine-extension/EditorEngine";
     import updateRenderer from "./utils/update-renderer";
-    import {get} from "svelte/store";
-    import {settingsStore} from "../../stores/settings-store";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import StoreController from "../../stores/StoreController";
+
     export let onReady
     let canvasRef = null
     let initialized = false
@@ -19,35 +19,47 @@
         actions: []
     })
 
-    const engine = get(engineStore), settings = get(settingsStore)
-
+    let engine = {}
+    let settings = {}
+    const unsubscribeEngine = StoreController.getEngine(v => engine=v)
+    const unsubscribeSettings = StoreController.getSettings(v => settings=v)
+    function updateEngine(){
+        updateRenderer(
+            engine.viewportInitialized,
+            engine.fallbackMaterial,
+            engine.meshes,
+            engine.materials,
+            engine.entities,
+            engine.cameraInitialized,
+            (v) => StoreController.updateEngine({...engine, cameraInitialized: v}),
+            (v) => StoreController.updateEngine({...engine, fallbackMaterial: v}),
+            engine.executingAnimation,
+            engine.selected,
+            engine.levelScript,
+            settings
+        )
+    }
     $: {
+
         if (canvasRef && !initialized) {
             initialized = true
             windowBuilder(canvasRef)
-            engineStore.set({...engine, viewportInitialized: true})
+            StoreController.updateEngine({...engine, viewportInitialized: true})
 
             window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]}, () => {
-                updateRenderer(
-                    engine.viewportInitialized,
-                    engine.fallbackMaterial,
-                    engine.meshes,
-                    engine.materials,
-                    engine.entities,
-                    engine.cameraInitialized,
-                    (v) => engineStore.set({...engine, cameraInitialized: v}),
-                    (v) => engineStore.set({...engine, fallbackMaterial: v}),
-                    engine.executingAnimation,
-                    engine.selected,
-                    engine.levelScript,
-                    settings
-                )
+                updateEngine()
             })
             onReady()
         }
+        if(initialized)
+            updateEngine()
     }
     onMount(() => shortcutBinding.onMount(canvasRef))
-    onDestroy(() => shortcutBinding.onDestroy(canvasRef))
+    onDestroy(() => {
+        shortcutBinding.onDestroy(canvasRef)
+        unsubscribeEngine()
+        unsubscribeSettings()
+    })
     $: {
         shortcutBinding.rebind(canvasRef, engine.executingAnimation)
     }

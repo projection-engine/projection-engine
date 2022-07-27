@@ -3,6 +3,7 @@
     import transformModal from "./utils/transform-modal.js";
     import {onDestroy, onMount} from "svelte";
     import "./css/dropdown.css"
+    import createPortal from "../create-portal";
 
     export let styles = ""
     export let disabled = false
@@ -16,15 +17,7 @@
 
 
     function handler(event) {
-        const el = document.elementsFromPoint(event.clientX, event.clientY)
-        let bClicked = false, mClicked = false
-        el.forEach(element => {
-            if (element === button)
-                bClicked = true
-            if (element === modal)
-                mClicked = true
-        })
-        if (!bClicked && !mClicked) {
+        if (!modal.contains(event.target)) {
             if (onClose && open)
                 onClose()
             open = false
@@ -32,11 +25,13 @@
             modal.style.zIndex = "-1"
         }
     }
-
+    const portal = createPortal()
     onMount(() => {
+        portal.open(modal)
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
+        portal.close()
         document.removeEventListener("mousedown", handler)
     })
 </script>

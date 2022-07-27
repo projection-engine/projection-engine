@@ -7,7 +7,7 @@
     export let onResizeStart = () => null
     export let type = "width"
     export let disabled = false
-    export let color = "var(--pj-border-primary)"
+    export let color = "unset"
     let ref
     let initial = {}
 
@@ -85,25 +85,25 @@
         const resize = new ResizeObserver(callback)
         const mutation = new MutationObserver(callback)
 
-        if (ref.previousElementSibling) {
-            const initialW1 = ref.previousElementSibling.style.width,
-                initialW2 = ref.nextElementSibling.style.width,
-                initialH1 = ref.previousElementSibling.style.height,
-                initialH2 = ref.nextElementSibling.style.height
-            initial = {initialW1, initialW2, initialH1, initialH2}
-            mutation.observe(ref.parentNode, {childList: true})
-            resize.observe(document.body)
-        }
+        if (!ref.previousElementSibling || !ref.nextElementSibling)
+            return
+        const initialW1 = ref.previousElementSibling.style.width,
+            initialW2 = ref.nextElementSibling.style.width,
+            initialH1 = ref.previousElementSibling.style.height,
+            initialH2 = ref.nextElementSibling.style.height
+        initial = {initialW1, initialW2, initialH1, initialH2}
+        mutation.observe(ref.parentNode, {childList: true})
+        resize.observe(document.body)
 
         if (type === "width") {
-            if (resetTargets?.previous)
+            if (resetTargets?.previous )
                 ref.previousElementSibling.style.width = initial.initialW1
             if (resetTargets?.next)
                 ref.nextElementSibling.style.width = initial.initialW2
         } else {
-            if (resetTargets?.previous)
+            if (resetTargets?.previous )
                 ref.previousElementSibling.style.height = initial.initialH1
-            if (resetTargets?.next)
+            if (resetTargets?.next )
                 ref.nextElementSibling.style.height = initial.initialH2
         }
 
@@ -121,18 +121,18 @@
 
 </script>
 <div
-    on:mousedown={handleMouseDown}
-    style={`
+        on:mousedown={handleMouseDown}
+        style={`
         background: ${color};
-        min-height: ${type === "height" ? "2px" : "100%"};
-        max-height: ${type === "height" ? "2px" : "100%"};
-        min-width: ${type === "width" ? "2px" : "100%"};
-        max-width: ${type === "width" ? "2px" : "100%"};
+        min-height: ${type === "height" ? "3px" : "100%"};
+        max-height: ${type === "height" ? "3px" : "100%"};
+        min-width: ${type === "width" ? "3px" : "100%"};
+        max-width: ${type === "width" ? "3px" : "100%"};
         cursor: ${type === "width" ? "ew-resize" : "ns-resize"};
     `}
-    data-disabled={`${disabled}`}
-    class={"wrapper"}
-    bind:this={ref}
+        data-disabled={`${disabled}`}
+        class={"wrapper"}
+        bind:this={ref}
 ></div>
 
 <style>
@@ -141,8 +141,8 @@
         cursor: pointer;
         border-radius: 5px;
         transition: background-color 150ms linear;
-        min-height: 2px;
-        min-width: 2px;
+        min-height: 3px;
+        min-width: 3px;
 
     }
 

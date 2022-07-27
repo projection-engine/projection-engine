@@ -1,6 +1,6 @@
 <script>
-    import View from "./components/View"
     import ResizableBar from "../resizable/ResizableBar.svelte";
+    import View from "./components/View.svelte";
 
     export let resizePosition
     export let topOffset = undefined
@@ -15,44 +15,45 @@
     let ref
 
     $: orientationName = orientation === "horizontal" ? "height" : "width"
-    $: maxMin = orientation === "horizontal" ? "Height" : "Width"
-    $: invOrientation = orientation === "horizontal" ? "width" : "height"
 
+    $: invOrientation = orientation === "horizontal" ? "width" : "height"
 </script>
 
 
-{resizePosition === "bottom" || tabs.length === 0 ? null :
+{#if resizePosition !== "bottom" && tabs.length > 0 }
     <ResizableBar
-        resetTargets={{previous: true, next: false}}
-        resetWhen={[hidden]}
-        type={orientation}
-        onResizeStart={() => {
+            resetTargets={{previous: true, next: false}}
+            resetWhen={[hidden]}
+            type={orientationName}
+            onResizeStart={() => {
             if (hidden)
                 hidden = false
         }}
-        onResizeEnd={() => {
+            onResizeEnd={() => {
             const bBox = ref.getBoundingClientRect()
             if (bBox[orientation] <= 30)
                 hidden = true
         }}
     />
-}
+{/if}
 <div
         bind:this={ref}
         class={"wrapper"}
         data-orientation={orientation}
-        style={{
-            flexDirection: orientation === "horizontal" ? "row" : undefined,
-            [orientationName]: tabs.length > 0 ? "250px" : "0",
-            ["max" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
-            ["min" + maxMin]: tabs.length === 0 ? "0px" : (hidden ? "30px" : undefined),
-        }}
+        style={`
+            flex-direction: ${orientation === "horizontal" ? "row" : undefined};
+            ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
+            ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
+            ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
+        `}
 >
     {#each tabs as view, vI}
         <View
                 hidden={hidden}
                 instance={view}
-                styles={{[orientationName]: hidden ? "30px" : "inherit"}}
+                styles={`
+                    ${orientationName}: ${hidden ? "30px" : "inherit"};
+                `}
                 switchView={(newView) => {
                         if (!newView) {
                             const copy = [...tabs]
@@ -72,41 +73,40 @@
                     type={invOrientation}
                     resetWhen={tabs}
                     onResizeEnd={(next, prev) => {
+                        const nextBB = next.getBoundingClientRect()
+                        const prevBB = prev.getBoundingClientRect()
+                        if (prevBB[invOrientation] < 30) {
+                            prev.style[invOrientation] = "100%"
 
-                            const nextBB = next.getBoundingClientRect()
-                            const prevBB = prev.getBoundingClientRect()
-                            if (prevBB[invOrientation] < 30) {
-                                prev.style[invOrientation] = "100%"
-
-                                const copy = [...tabs]
-                                copy.shift()
-                                setTabs(copy)
+                            const copy = [...tabs]
+                            copy.shift()
+                            setTabs(copy)
 
 
-                            }
-                            if (nextBB[invOrientation] < 30) {
-                                next.style[invOrientation] = "100%"
+                        }
+                        if (nextBB[invOrientation] < 30) {
+                            next.style[invOrientation] = "100%"
 
-                                const copy = [...tabs]
-                                copy[vI + 1] = undefined
-                                setTabs(copy.filter(e => e))
-                            }
-                        }}
+                            const copy = [...tabs]
+                            copy[vI + 1] = undefined
+                            setTabs(copy.filter(e => e))
+                        }
+                    }}
             >
             </ResizableBar>
         {/if}
     {/each}
     <button
-            on:click={() =>
-                setTabs([...tabs, "console"])}
-            style={{
-                left: orientation === "vertical" ? tabs.length === 0 ? leftOffset : "10px" : "100%",
-                top: topOffset ? `calc(100% - ${topOffset})` : "100%",
-                transform: orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 ? "translate(0, -100%)" : "translate(-100%, -100%)")
-            }}
-            class={"extendView"}></button>
+            on:click={() => setTabs([...tabs, "console"])}
+            style={`
+                left: ${orientation === "vertical" ? tabs.length === 0 ? leftOffset : "10px" : "100%"};
+                top: ${topOffset ? `calc(100% - ${topOffset})` : "100%"};
+                transform: ${orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 ? "translate(0, -100%)" : "translate(-100%, -100%)")};
+            `}
+            class={"extend-view"}
+    ></button>
 </div>
-{#if resizePosition !== "top" && tabs.length > 0}
+{#if resizePosition !== "top" && tabs.length > 1}
     <ResizableBar
             resetTargets={{previous: true, next: false}}
             resetWhen={[hidden]}
@@ -132,4 +132,25 @@
         gap: 0;
     }
 
+    .extend-view {
+        border-radius: 50%;
+        position: absolute !important;
+        width: 10px;
+        height: 10px;
+        padding: 0;
+        background: var(--pj-border-secondary);
+        z-index: 20;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .extend-view:hover {
+        background: var(--pj-accent-color);
+    }
+
+    .extend-view:active {
+        background: var(--pj-accent-color);
+        transform: scale(1.5);
+    }
 </style>

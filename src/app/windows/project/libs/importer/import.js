@@ -4,8 +4,7 @@ import importScene from "./importScene"
 import FileSystem from "../FileSystem"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
-import FILE_TYPES from "../../../../../electron/static/CHANNELS";
-
+import FILE_TYPES from "../../../../../electron/static/FILE_TYPES";
 export default async function importData(event, engine, asID) {
     const items = [], meshes = []
 
@@ -43,7 +42,8 @@ export default async function importData(event, engine, asID) {
 
     if (meshes.length > 0) {
         const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
-        engine.dispatchMeshes(newMeshes)
+        for(let i = 0; i < newMeshes.length; i++)
+            engine.meshes.set(newMeshes[i].id, newMeshes[i])
         if (!asID) {
             const toLoad = meshes
                 .map(m => m.entity)
@@ -54,7 +54,6 @@ export default async function importData(event, engine, asID) {
                 if (e.components && e.components[COMPONENTS.TRANSFORM]) {
                     const transform = e.components[COMPONENTS.TRANSFORM]
                     vec4.add(transform.translation, transform.translation, cursorPoint)
-                    console.dir(transform.translation)
                     transform.changed = true
                 }
             })

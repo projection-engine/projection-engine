@@ -17,7 +17,7 @@
 </script>
 
 
-<div>3D cursor position</div>
+<div style="font-size: .7rem">3D cursor position</div>
 <Range
         metric={"m"}
         accentColor={"red"}

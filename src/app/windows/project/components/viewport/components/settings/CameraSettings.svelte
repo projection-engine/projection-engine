@@ -3,9 +3,13 @@
     import {get} from "svelte/store";
     import Range from "../../../../../../components/range/Range.svelte";
     import EnglishLocalization from "../../../../../../static/EnglishLocalization";
+    import StoreController from "../../../../stores/StoreController";
+    import {onDestroy} from "svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
-    const settings = get(settingsStore)
+    let settings = {}
+    const unsubscribeSettings = StoreController.getSettings(v => settings=v)
+    onDestroy(() => unsubscribeSettings())
     let state = {
         zFar: settings.zFar,
         zNear: settings.zNear,

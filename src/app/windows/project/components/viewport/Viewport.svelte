@@ -1,17 +1,11 @@
 <script>
-    import RENDER_TARGET from "../../static/misc/RENDER_TARGET"
     import GIZMOS from "../../static/misc/GIZMOS"
     import importData from "../../libs/importer/import"
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
-    import EditorEngine from "../../libs/engine-extension/EditorEngine";
-    import windowBuilder from "../../libs/engine/window-builder";
     import Conversion from "../../libs/engine/utils/Conversion";
     import {engine as engineStore} from "../../stores/engine-store";
-    import {get} from "svelte/store";
-    import {settingsStore} from "../../stores/settings-store";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
-    import updateRenderer from "./utils/update-renderer";
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
@@ -19,6 +13,9 @@
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import StoreController from "../../stores/StoreController";
+    import {onDestroy} from "svelte";
+
     export let utils = {}
     export let isReady = false
 
@@ -28,8 +25,15 @@
     let hovered = false
     let latestTranslation
 
-    const engine = get(engineStore)
-    const settings = get(settingsStore)
+    let engine = {}
+    let settings = {}
+    const unsubscribeEngine = StoreController.getEngine(v => engine = v)
+    const unsubscribeSettings = StoreController.getSettings(v => settings = v)
+    onDestroy(() => {
+        unsubscribeEngine()
+        unsubscribeSettings()
+    })
+
     const id = sessionStorage.getItem("electronWindowID")
 
     function handleMouse(e) {
@@ -75,38 +79,42 @@
     function onClick(event) {
         if (!window.renderer)
             return
-        onViewportClick(event, settings, engine, (data) => {
-            engineStore.set(data)
-        })
+        onViewportClick(
+            event,
+            settings,
+            engine,
+            (data) => {
+                StoreController.updateEngine({...engine, selected: data})
+            })
     }
 
     const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
     $: {
-        if(isReady)
+        if (isReady)
             window.renderer.miscellaneousPass.metrics.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     }
 </script>
 
 
 <div
-    on:mousedown={onMouseDown}
-    on:mouseup={onMouseUp}
-    on:click={onClick}
-    on:dragover={e => {
+        on:mousedown={onMouseDown}
+        on:mouseup={onMouseUp}
+        on:click={onClick}
+        on:dragover={e => {
         e.preventDefault()
         hovered  = true
     }}
-    on:dragleave={e => {
+        on:dragleave={e => {
         e.preventDefault()
         hovered  = false
     }}
-    on:drop={e => {
+        on:drop={e => {
         e.preventDefault()
         hovered  = false
         importData(e, engine)
     }}
-    class={"viewport"}
-    class:hovered={hovered}
+        class={"viewport"}
+        class:hovered={hovered}
 >
     {#if !engine.executingAnimation}
         <ViewportSettings translate={translate} settings={settings}/>

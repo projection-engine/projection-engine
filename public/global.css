@@ -10,7 +10,7 @@
 	font-family: "Material Icons Round" !important;
 	font-weight: normal;
 	font-style: normal;
-	font-size: 24px;
+	font-size: 1.1rem;
 	line-height: 1;
 	letter-spacing: normal;
 	text-transform: none;
@@ -77,11 +77,19 @@ a {
 	text-decoration: none;
 }
 
+
+
 * {
 	font-family: 'Roboto';
 	box-sizing: border-box;
 	text-rendering: optimizeSpeed;
 }
+*[data-overflow="-"]{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 *:focus{
 	outline: none;
 }
@@ -89,25 +97,25 @@ a {
 *:not(input){
 	user-select: none;
 }
-/* width */
+*[data-divider="-"]{
+	width: 100%;
+	background: var(--pj-border-primary);
+	height: 1px;
+}
+
+
 ::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
 	background: #f1f1f1;
 	border-radius: 5px;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
 	background: #888;
 	border-radius: 5px;
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background-color: #555;
 	border-radius: 5px;
@@ -115,9 +123,3 @@ a {
 
 
 
-.overflow{
-	font-size: 0.7rem;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}

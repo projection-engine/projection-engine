@@ -4,9 +4,13 @@
     import {get} from "svelte/store";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import StoreController from "../../../../stores/StoreController";
+    import {onDestroy} from "svelte";
 
     let shadingModel = SHADING_MODELS.DETAIL
-    const settings = get(settingsStore)
+    let settings = {}
+    const unsubscribeSettings = StoreController.getSettings(v => settings=v)
+    onDestroy(() => unsubscribeSettings())
     export let translate = () => null
     $: shading = (() => {
         switch (shadingModel) {

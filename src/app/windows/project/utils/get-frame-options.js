@@ -1,9 +1,11 @@
-import WINDOWS from "../../../../electron/static/WINDOWS";
 import openLevelBlueprint from "./open-level-blueprint";
+import StoreController from "../stores/StoreController";
+import FILE_TYPES from "../../../../electron/static/FILE_TYPES";
+import FileSystem from "../libs/FileSystem"
 const {ipcRenderer} = window.require("electron")
 
-export default function getFrameOptions(engine, settings, save){
-    return  [
+export default function getFrameOptions(engine, settings, save) {
+    return [
         {
             label: "Save",
             icon: "save",
@@ -32,10 +34,11 @@ export default function getFrameOptions(engine, settings, save){
                         }
                         const levelScript = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
                         if (levelScript)
-                            engine.setLevelScript(levelScript)
+                            StoreController.updateEngine({...engine, levelScript})
                     }
-                    engine.setExecutingAnimation(newValue)
+                    StoreController.updateEngine({...engine, executingAnimation: newValue})
                 } catch (err) {
+                    console.error(err)
                     if (newValue)
                         alert.pushAlert("Some error occurred", "error")
                 }
@@ -111,6 +114,7 @@ export default function getFrameOptions(engine, settings, save){
                             ...settings.visible,
                             sideBarViewport: !settings.visible.sideBarViewport
                         }
+                        StoreController.updateSettings(settings)
                     },
                 },
                 {
@@ -121,6 +125,7 @@ export default function getFrameOptions(engine, settings, save){
                             ...settings.visible,
                             metricsViewport: !settings.visible.metricsViewport
                         }
+                        StoreController.updateSettings(settings)
                     },
                 },
                 {
@@ -131,6 +136,7 @@ export default function getFrameOptions(engine, settings, save){
                             ...settings.visible,
                             shortcuts: !settings.visible.shortcuts
                         }
+                        StoreController.updateSettings(settings)
                     },
                 }
             ]
@@ -140,7 +146,7 @@ export default function getFrameOptions(engine, settings, save){
             options: [
                 {
                     label: "About",
-                    onClick: () =>{
+                    onClick: () => {
                         // ipcRenderer.send(ROUTES.OPEN_NEW_WINDOW, {
                         //     type: WINDOWS.HELP,
                         //     windowSettings: {

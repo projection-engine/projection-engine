@@ -3,7 +3,6 @@ import initializeConsole from "./initializer/initializeConsole"
 import initializeEntityWorker from "./initializer/initializeEntityWorker"
 import initializeBlueprints from "./initializer/initializeBlueprints"
 import FileSystem from "./FileSystem";
-import LABELED_KEYS from "../static/misc/LABELED_KEYS";
 
 
 export default function InitializeWindow( ) {
@@ -19,7 +18,7 @@ export default function InitializeWindow( ) {
     // BLUEPRINTS
     initializeBlueprints()
 
-    // ContextMap MENU
+    // StoreController MENU
     window.contextMenu = {targets: {}, focused: undefined}
 
     // ENTITY WORKER

@@ -8,13 +8,17 @@
     import "../css/Viewport.css"
     import ResizableBar from "../../../../../components/resizable/ResizableBar.svelte";
     import GizmoGridSettings from "./settings/GizmoGridSettings.svelte";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
+    import StoreController from "../../../stores/StoreController";
 
     const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
     const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
     const DEFAULT_TRANSLATION = .001, TRANSLATION_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
 
-    const settings = get(settingsStore)
+    let settings = {}
+    const unsubscribeSettings = StoreController.getSettings(v => settings=v)
+    onDestroy(() => unsubscribeSettings())
+
     let minimal = true
     let ref
     let initialized = false
@@ -46,7 +50,7 @@
                 {settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "place" : "language"}
             </Icon>
             {#if !minimal}
-                <div class={"overflow"}>{settings.transformationType}</div>
+                <div data-overflow="-">{settings.transformationType}</div>
             {/if}
         </button>
         <div class={"button-group gizmo-bar"}>
@@ -97,7 +101,7 @@
                 <Icon>highlight_alt</Icon>
                 <ToolTip content={translate("SELECTION")}/>
                 {#if !minimal}
-                    <div class={"overflow"}>{translate("SELECTION")}</div>
+                    <div data-overflow="-">{translate("SELECTION")}</div>
                 {/if}
             </button>
             <button
@@ -109,7 +113,7 @@
                 <Icon>adjust</Icon>
                 <ToolTip content={translate("CURSOR")}/>
                 {#if !minimal}
-                    <div class={"overflow"}>{translate("CURSOR")}</div>
+                    <div data-overflow="-">{translate("CURSOR")}</div>
                 {/if}
             </button>
         </div>
@@ -121,7 +125,7 @@
                     on:click={() => settings.gizmo = GIZMOS.TRANSLATION}>
                 <Icon>open_with</Icon>
                 {#if !minimal}
-                    <div class={"overflow"}>{translate("T_GIZMO")}</div>
+                    <div data-overflow="-">{translate("T_GIZMO")}</div>
                 {/if}
             </button>
             <button
@@ -131,7 +135,7 @@
                     on:click={() => settings.gizmo = GIZMOS.ROTATION}>
                 <Icon>360</Icon>
                 {#if !minimal}
-                    <div class={"overflow"}>{translate("R_GIZMO")}</div>
+                    <div data-overflow="-">{translate("R_GIZMO")}</div>
                 {/if}
             </button>
             <button
@@ -141,7 +145,7 @@
                     on:click={() => settings.gizmo = GIZMOS.SCALE}>
                 <Icon>open_in_full</Icon>
                 {#if !minimal}
-                    <label class={"overflow"}>{translate("S_GIZMO")}</label>
+                    <label data-overflow="-">{translate("S_GIZMO")}</label>
                 {/if}
             </button>
         </div>

@@ -33,24 +33,24 @@
             {translate("CLOSE")}
         </button>
 
-        <div class={"divider"}></div>
-        <button on:click={() => switchView(VIEWS.HIERARCHY)}>
+        <div data-divider="-"></div>
+        <button class="button" on:click={() => switchView(VIEWS.HIERARCHY)}>
             <Icon styles="font-size: 1rem">account_tree</Icon>
             {translate("HIERARCHY")}
         </button>
-        <button on:click={() => switchView(VIEWS.COMPONENT)}>
+        <button class="button" on:click={() => switchView(VIEWS.COMPONENT)}>
             <Icon styles="font-size: 1rem">category</Icon>
             {translate("COMP_EDITOR")}
         </button>
-        <button on:click={() => switchView(VIEWS.FILES)}>
+        <button  class="button" on:click={() => switchView(VIEWS.FILES)}>
             <Icon styles="font-size: 1rem">folder</Icon>
             {translate("CONTENT_BROWSER")}
         </button>
-        <button on:click={() => switchView(VIEWS.BLUEPRINT)}>
+        <button  class="button" on:click={() => switchView(VIEWS.BLUEPRINT)}>
             <Icon styles="font-size: 1rem">texture</Icon>
             {translate("SHADER_EDITOR")}
         </button>
-        <button on:click={() => switchView(VIEWS.CONSOLE)}>
+        <button class="button" on:click={() => switchView(VIEWS.CONSOLE)}>
             <Icon styles="font-size: 1rem">terminal</Icon>
             {translate("CONSOLE")}
         </button>
@@ -59,3 +59,42 @@
         <slot/>
     {/if}
 </div>
+
+<style>
+    .button{
+        height: 20px;
+    }
+
+
+    .title {
+        background: var(--pj-background-tertiary);
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--pj-color-secondary);
+        min-height: 25px;
+        max-height: 25px;
+        min-width: 25px;
+        max-width: 25px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 30px;
+        background-color: var(--pj-background-primary);
+        padding: 2px;
+        gap: 2px;
+
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .headerHidden {
+        height: 100%;
+        width: 100%;
+        background-color: var(--pj-background-primary);
+        padding: 2px;
+    }
+</style>

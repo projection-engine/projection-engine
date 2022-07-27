@@ -4,8 +4,6 @@
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Shading from "../components/options/ShadingOption.svelte";
-    import {get} from "svelte/store";
-    import {engine as engineStore} from "../../../stores/engine-store";
     import Entity from "../../../libs/engine/basic/Entity";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ProbeComponent from "../../../libs/engine/components/ProbeComponent";
@@ -16,6 +14,7 @@
     import PointLightComponent from "../../../libs/engine/components/PointLightComponent";
     import DirectionalLightComponent from "../../../libs/engine/components/DirectionalLightComponent";
     import ViewportTemplates from "../components/ViewportTemplates.svelte";
+    import StoreController from "../../../stores/StoreController";
 
     export let settings
     export let translate
@@ -25,8 +24,7 @@
     const handleFullscreen = () => {
         fullscreen = document.fullscreenElement;
     }
-    onMount(() => document.addEventListener("fullscreenchange", handleFullscreen))
-    onDestroy(() => document.removeEventListener("fullscreenchange", handleFullscreen))
+
 
     const onClickFullscreen = () => {
         if (!fullscreen) {
@@ -39,7 +37,14 @@
                 .finally(() => fullscreen = false)
     }
 
-    const engine = get(engineStore)
+    let engine = {}
+    const unsubscribeEngine = StoreController.getEngine(v => engine = v)
+    onMount(() => document.addEventListener("fullscreenchange", handleFullscreen))
+    onDestroy(() => {
+        document.removeEventListener("fullscreenchange", handleFullscreen)
+        unsubscribeEngine()
+    })
+
     const createCM = (asDiffuse) => {
         const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
@@ -58,26 +63,26 @@
     <div class={"options"} bind:this={ref}>
         <div class="left-content">
             <button class="dropdown" on:click={onClickFullscreen}>
-                <Icon styles="font-size: 1.1rem">fullscreen</Icon>
+                <Icon>fullscreen</Icon>
             </button>
             <Dropdown>
                 <button slot="button" class="dropdown">
-                    <Icon styles="font-size: 1.1rem">visibility</Icon>
-                    <div class={"overflow"}>
+                    <Icon>visibility</Icon>
+                    <div data-overflow="-">
                         {translate("VISIBLE")}
                     </div>
                 </button>
 
                 <button on:click={() => settings.gridVisibility = !settings.gridVisibility}>
                     {#if settings.gridVisibility}
-                        <Icon styles={"font-size: 1.1rem"}>check</Icon>
+                        <Icon>check</Icon>
                     {/if}
                     {translate("GRID")}
                 </button>
 
                 <button on:click={() => settings.iconsVisibility = !settings.iconsVisibility}>
                     {#if settings.iconsVisibility}
-                        <Icon styles={"font-size: 1.1rem"}>check</Icon>
+                        <Icon>check</Icon>
                     {/if}
                     {translate("ICONS")}
                 </button>
@@ -90,14 +95,14 @@
                     }}
                 >
                     {#if settings.cameraAnimation}
-                        <Icon styles={"font-size: 1.1rem"}>check</Icon>
+                        <Icon>check</Icon>
                     {/if}
                     {translate("CAM_ANIM")}
                 </button>
 
                 <button on:click={() => settings.background = !settings.background}>
                     {#if settings.background}
-                        <Icon styles={"font-size: 1.1rem"}>check</Icon>
+                        <Icon>check</Icon>
                     {/if}
                     {translate("BACKGROUND")}
                 </button>
@@ -120,10 +125,10 @@
 
                 <div class={"divider-wrapper"}>
                     {translate("LIGHTS")}
-                    <div class={"divider"}></div>
+                    <div data-divider="-"></div>
                 </div>
                 <button
-                    on:click={() =>  {
+                        on:click={() =>  {
                         const actor = new Entity(undefined, translate("POINT_LIGHT"))
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                         const transformComponent = new TransformComponent()
@@ -134,12 +139,12 @@
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
                 >
-                    <Icon styles={"font-size: 1.1rem"}>lightbulb</Icon>
+                    <Icon>lightbulb</Icon>
                     {translate("POINT_LIGHT")}
                 </button>
 
                 <button
-                    on:click={() => {
+                        on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
 
                         const transformComponent = new TransformComponent()
@@ -152,30 +157,30 @@
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
                 >
-                    <Icon styles={"font-size: 1.1rem"}>light_mode</Icon>
+                    <Icon>light_mode</Icon>
                     {translate("DIRECTIONAL_LIGHT")}
                 </button>
 
                 <div class={"divider-wrapper"}>
                     {translate("AMBIENT")}
-                    <div class={"divider"}></div>
+                    <div data-divider="-"></div>
                 </div>
 
 
                 <button on:click={() => createCM()}>
-                    <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
+                    <Icon>lens_blur</Icon>
                     {translate("SPECULAR_PROBE")}
                 </button>
                 <button on:click={() => createCM(true)}>
-                    <Icon styles={"font-size: 1.1rem"}>lens_blur</Icon>
+                    <Icon>lens_blur</Icon>
                     {translate("DIFFUSE_PROBE")}
                 </button>
                 <div class={"divider-wrapper"}>
                     {translate("UTILS")}
-                    <div class={"divider"}></div>
+                    <div data-divider="-"></div>
                 </div>
                 <button
-                    on:click={() => {
+                        on:click={() => {
                         const actor = new Entity(undefined, translate("CAMERA"))
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
@@ -189,7 +194,7 @@
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
                 >
-                    <Icon styles={"font-size: 1.1rem"}>videocam</Icon>
+                    <Icon>videocam</Icon>
                     {translate("CAMERA")}
                 </button>
             </Dropdown>
@@ -224,6 +229,7 @@
         width: 100%;
 
     }
+
     .right-content {
         display: flex;
         align-items: center;
@@ -231,6 +237,7 @@
         width: 100%;
 
     }
+
     .dropdown {
         display: flex;
         align-items: center;
@@ -246,6 +253,7 @@
         padding-left: 4px !important;
         border: none !important;
     }
+
     .range-wrapper {
         user-select: none;
         display: flex;
@@ -255,4 +263,14 @@
         color: var(--pj-color-secondary);
     }
 
+    .divider-wrapper{
+        display: flex;
+        align-items: center;
+        align-content: center;
+        color: var(--pj-color-primary);
+        gap: 8px;
+        font-size: 0.7rem !important;
+        padding: 2px 6px 0;
+        overflow: hidden;
+    }
 </style>

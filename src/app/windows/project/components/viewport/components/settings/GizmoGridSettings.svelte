@@ -3,6 +3,7 @@
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
     import "../../css/Viewport.css"
+
     export let values = []
     export let minimal = true
     export let onSave = () => null
@@ -23,7 +24,7 @@
         <ToolTip content={label}/>
         <slot name="icon"/>
         {#if !minimal}
-            <div class={"overflow"}>{label}</div>
+            <div data-overflow="-">{label}</div>
         {/if}
     </button>
 

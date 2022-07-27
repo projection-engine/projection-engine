@@ -63,7 +63,7 @@
     <div class={"divider"}></div>
     <div class={"section"}>
         <button class="button card-home" on:click={() => openForChange = true}>
-            <Icon styles="font-size: 1rem">edit</Icon>
+            <Icon>edit</Icon>
         </button>
 
         <Dropdown hideArrow={true}>
@@ -76,13 +76,13 @@
             <button
                 on:click={() => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FileSystem.sep + data.id)}
             >
-                <Icon styles={"font-size: 1.1rem"}>folder</Icon>
+                <Icon>folder</Icon>
                 {translate("SHOW_IN_EXPLORER")}
             </button>
             <button
                 on:click={() => onDelete()}
             >
-                <Icon styles={"font-size: 1.1rem"}>delete_forever</Icon>
+                <Icon>delete_forever</Icon>
                 {translate("DELETE")}
             </button>
         </Dropdown>
@@ -91,7 +91,7 @@
                 class="button card-home"
                 style="background: var(--pj-border-primary)"
         >
-            <Icon styles={"font-size: 1rem"}>open_in_new</Icon>
+            <Icon>open_in_new</Icon>
         </button>
     </div>
 </div>

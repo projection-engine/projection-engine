@@ -76,7 +76,7 @@ export default function updateRenderer(
         levelScript,
         fMat
     )
-    bindGizmo(selected)
+    bindGizmo(selected, settings)
 
     renderer.start()
 }

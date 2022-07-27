@@ -7,7 +7,10 @@
     import Icon from "../../../../components/Icon/Icon.svelte";
     import KEYS from "../../libs/engine/data/KEYS";
     import "./styles/Shortcuts.css"
-    const settings = get(settingsStore)
+    import StoreController from "../../stores/StoreController";
+
+    let settings = {}
+    const unsubscribeSettings = StoreController.getSettings(v => settings=v)
 
     function handler(event) {
         if (document.activeElement?.tagName !== "INPUT") {
@@ -54,6 +57,7 @@
         document.addEventListener("keyup", handler)
     })
     onDestroy(() => {
+        unsubscribeSettings()
         document.removeEventListener("keyup", handler)
         document.removeEventListener("keydown", handler)
     })

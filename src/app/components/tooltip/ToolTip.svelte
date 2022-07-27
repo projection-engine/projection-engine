@@ -1,30 +1,33 @@
 <script>
     import {onDestroy, onMount} from "svelte";
+    import createPortal from "../create-portal";
 
     let open = false
     export let content = ""
     export let styles = ""
     let wrapper
-    let bBox
+    let mountingPoint
+    let bBox, bodyBBox
     const handleMouseMove = (event) => {
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
 
         let transform = {x: "0px", y: "0px"}
-        if ((event.clientX + 10 + bBox.width) > document.body.offsetWidth)
+        if ((event.clientX + 10 + bBox.width) >= bodyBBox.width)
             transform.x = "calc(-100% - 10px)"
-        if ((event.clientY + 10 + bBox.height) > document.body.offsetHeight)
+        if ((event.clientY + 10 + bBox.height) >= bodyBBox.height)
             transform.y = "calc(-100% - 10px)"
-
         wrapper.style.transform = `translate(${transform.x}, ${transform.y})`
     }
     const hover = (event) => {
         open = true
         bBox = wrapper.getBoundingClientRect()
+        bodyBBox = document.body.getBoundingClientRect()
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
+        console.log(bBox)
         document.addEventListener("mousemove", handleMouseMove)
-        wrapper.parentNode.addEventListener(
+        mountingPoint.parentElement.addEventListener(
             "mouseleave",
             () => {
                 document.removeEventListener("mousemove", handleMouseMove)
@@ -33,17 +36,19 @@
             {once: true}
         )
     }
-
+    const portal = createPortal()
     onMount(() => {
-        console.log(wrapper)
-        wrapper.parentNode.addEventListener("mouseenter", hover)
+        mountingPoint.parentElement.addEventListener("mouseenter", hover)
+        portal.open(wrapper)
     })
     onDestroy(() => {
-        wrapper.parentNode.removeEventListener("mouseenter", hover)
+        mountingPoint.parentElement.removeEventListener("mouseenter", hover)
+        portal.close()
     })
 </script>
 
 
+<span style="display: none" bind:this={mountingPoint}></span>
 <div style={`display: ${open ? "block" : "none"}; ` + (styles ? styles : "")} class="container" bind:this={wrapper}>
     {#if content}
         {content}
@@ -63,16 +68,18 @@
         opacity: 0;
         animation: show 150ms ease forwards;
         animation-delay: 250ms;
-        box-shadow: rgb(0 0 0 / 20%) 0 0 2px 2px;
-        position: fixed !important;
+        box-shadow: rgb(0 0 0 / 20%) 2px 2px 2px 2px;
+        position: fixed;
         z-index: 9999;
 
         background: var(--pj-background-quaternary);
         border: var(--pj-border-primary) 1px solid;
         padding: 4px 8px;
-        border-radius: 3px;
+        border-radius: 5px;
         color: white !important;
         font-weight: 550;
+
+        font-size: .8rem;
     }
 
     @keyframes show {

@@ -89,10 +89,10 @@
                 {/if}
                 <button on:click={() => openInput = !openInput} class="button-create" style="width: {openInput ? "25px" : "initial"}; padding: {openInput ? "0px" : "4px 8px"}; justify-content: {openInput ? "center" : "initial"}">
                     {#if !openInput}
-                        <Icon styles="font-size: 1.1rem">add</Icon>
+                        <Icon >add</Icon>
                         {translate("CREATE")}
                         {:else}
-                        <Icon styles="font-size: 1.1rem">navigate_next</Icon>
+                        <Icon >navigate_next</Icon>
                     {/if}
                 </button>
             </div>

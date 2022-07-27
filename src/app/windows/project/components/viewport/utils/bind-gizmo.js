@@ -1,6 +1,6 @@
 import GIZMOS from "../../../static/misc/GIZMOS";
 
-export default  function bindGizmo(selected) {
+export default  function bindGizmo(selected, settings) {
     const gizmoSystem = window.renderer.editorSystem.gizmoSystem
     const entities = window.renderer.entitiesMap
     gizmoSystem.selectedEntities = selected

@@ -24,7 +24,7 @@
             </div>
         </button>
         {#if label}
-            <span class={"title"}>{label}</span>
+            <h6 class={"title"} data-overflow="-">{label}</h6>
         {/if}
         {#each options as option}
             {#if option.divider}
@@ -184,10 +184,11 @@
     .title {
         text-align: left;
         color: var(--pj-color-secondary);
-        font-weight: 550;
-        font-size: 0.8rem;
         white-space: nowrap;
-        margin-right: 24px;
+        margin-right: 16px;
+        margin-bottom: 0;
+        margin-top: 0;
+        max-width: 10vw;
     }
 
 

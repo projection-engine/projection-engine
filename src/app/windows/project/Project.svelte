@@ -6,10 +6,7 @@
     import SETTINGS from "./static/misc/SETTINGS";
     import loadProject from "./utils/load-project";
     import Viewport from "./components/viewport/Viewport.svelte";
-    import {engine as engineStore} from "./stores/engine-store";
-    import {settingsStore} from "./stores/settings-store";
     import InitializeWindow from "./libs/initialize-window";
-    import {get} from "svelte/store";
     import entityReducer, {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
 
     import getFrameOptions from "./utils/get-frame-options";
@@ -17,56 +14,57 @@
     import Canvas from "./components/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import parseEntityObject from "./utils/parse-entity-object";
+    import StoreController from "./stores/StoreController";
+    import ViewsContainer from "../../components/view/ViewsContainer.svelte";
 
     const {ipcRenderer} = window.require("electron")
-    let engine = get(engineStore)
-    let settings = SETTINGS
+
+    let engine
+    let settings
+    const unsubscribeEngine = StoreController.getEngine(v => engine = v)
+    const unsubscribeSettings = StoreController.getSettings(v => settings = v)
+    onDestroy(() => {
+        unsubscribeSettings()
+        unsubscribeEngine()
+    })
     let isReady = false
     let isDataLoaded = false
     let isMetadataLoaded = false
-    const unsubscribeEngine = engineStore.subscribe(v => {
-        const value = {...v}
-        if (v.selected.length > 0 || v.lockedEntity)
-            value.selectedEntity = engine.entities.get(v.lockedEntity ? v.lockedEntity : v.selected[0])
-        else
-            value.selectedEntity = undefined
-        engine = value
-    })
-    const unsubscribeSettings = settingsStore.subscribe(v => {
-        settings = v
-    })
 
-    onDestroy(() => {
-        unsubscribeEngine()
-        unsubscribeSettings()
-    })
     onMount(() => {
-        engineStore.set({
+        InitializeWindow()
+        StoreController.updateEngine({
             ...engine,
             dispatchEntities: packageData => entityReducer(packageData, engine.entities, id => {
-                engineStore.set({
+                StoreController.updateEngine({
                     ...engine,
                     changeID: id
                 })
-            }),
+            })
+
         })
-        InitializeWindow()
         loadProjectMetadata((m, s) => {
-            settingsStore.set({...settings, ...s})
+            StoreController.updateSettings({...settings, ...s})
             engine.meta = m
-            engineStore.set(engine)
             isMetadataLoaded = true
-            console.log("HERE")
         })
     })
-
+    let view = {
+        name: "Default",
+        bottom: [],
+        left: [],
+        right: []
+    }
     $: {
+        if (isMetadataLoaded && settings.views[settings.currentView])
+            view = settings.views[settings.currentView]
+
         if (isReady && !isDataLoaded) {
             isDataLoaded = true
             loadProject(
                 mesh => {
                     engine.meshes.set(mesh.id, mesh)
-                    engineStore.set(engine)
+                    StoreController.updateEngine(engine)
                 },
                 async entities => {
                     const mapped = []
@@ -77,18 +75,19 @@
                 },
                 material => {
                     engine.materials.push(material)
-                    engineStore.set(engine)
+                    StoreController.updateEngine(engine)
                 })
         }
     }
 
-    $: view = settings.views[settings.currentView];
+
+
     const updateView = (key, newView) => {
         const s = {...settings}
         const copy = [...s.views]
         copy[s.currentView] = {...view, [key]: newView}
         s.views = copy
-        settingsStore.set(s)
+        StoreController.updateSettings(s)
     }
     $: frameOptions = getFrameOptions(engine, settings)
 </script>
@@ -106,12 +105,12 @@
     />
     <div class="content">
         <div class="middle">
-            <!--            <ViewsContainer-->
-            <!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
-            <!--                tabs={view.bottom}-->
-            <!--                resizePosition={"top"}-->
-            <!--                orientation={"horizontal"}-->
-            <!--            />-->
+<!--            <ViewsContainer-->
+<!--                    setTabs={(tabs) => updateView("bottom", tabs)}-->
+<!--                    tabs={view.bottom}-->
+<!--                    resizePosition={"top"}-->
+<!--                    orientation={"horizontal"}-->
+<!--            />-->
             {#if isMetadataLoaded}
                 <Viewport isReady={isReady}>
                     <Canvas
@@ -123,19 +122,19 @@
                     />
                 </Viewport>
             {/if}
-            <!--            <ViewsContainer-->
-            <!--                setTabs={(tabs) => updateView("bottom", tabs)}-->
-            <!--                tabs={view.bottom}-->
-            <!--                resizePosition={"top"}-->
-            <!--                orientation={"horizontal"}-->
-            <!--            />-->
+<!--            <ViewsContainer-->
+<!--                    setTabs={(tabs) => updateView("bottom", tabs)}-->
+<!--                    tabs={view.bottom}-->
+<!--                    resizePosition={"top"}-->
+<!--                    orientation={"horizontal"}-->
+<!--            />-->
         </div>
-        <!--        <ViewsContainer-->
-        <!--            setTabs={(tabs) => updateView("bottom", tabs)}-->
-        <!--            tabs={view.bottom}-->
-        <!--            resizePosition={"top"}-->
-        <!--            orientation={"horizontal"}-->
-        <!--        />-->
+        <ViewsContainer
+                setTabs={(tabs) => updateView("bottom", tabs)}
+                tabs={view.bottom}
+                resizePosition={"top"}
+                orientation={"horizontal"}
+        />
     </div>
     <Shortcuts/>
 </div>

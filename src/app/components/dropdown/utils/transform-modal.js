@@ -1,10 +1,11 @@
-const offX = 8, offY = 4
+const offX = 4, offY = 4
 const LEFT_LIMIT = 0
 
 export default function transformModal(open, modal, button) {
     if (open) {
         modal.style.zIndex = "-1"
-        modal.style.display = "none"
+        modal.style.display = "block"
+
         const buttonBoundingRect = button.getBoundingClientRect()
         const halfHeight = buttonBoundingRect.height / 2
         modal.style.top = (buttonBoundingRect.top + halfHeight) + "px"
@@ -27,9 +28,8 @@ export default function transformModal(open, modal, button) {
         if ((modalBoundingRect.x + modalBoundingRect.width) > body.width)
             x = (body.width - (modalBoundingRect.x + modalBoundingRect.width) - offX) + "px"
 
-
         modal.style.transform = `translate(${x}, ${y})`;
-        modal.style.zIndex = "9999"
+        modal.style.zIndex = "999"
         modal.style.display = "grid"
         if(button.firstElementChild)
             button.firstElementChild.setAttribute("data-highlight", "true")

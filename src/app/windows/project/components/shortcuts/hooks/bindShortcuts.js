@@ -37,7 +37,6 @@ export default function bindShortcuts({
             target.removeEventListener("mouseenter", handler)
         },
         rebind(target, disabled) {
-            console.log("AQUI")
             this.onDestroy(target)
             this.onMount(target, disabled)
         }
