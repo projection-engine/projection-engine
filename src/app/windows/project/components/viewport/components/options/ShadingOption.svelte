@@ -1,7 +1,5 @@
 <script>
     import SHADING_MODELS from "../../../../static/misc/SHADING_MODELS"
-    import {settingsStore} from "../../../../stores/settings-store";
-    import {get} from "svelte/store";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
     import StoreController from "../../../../stores/StoreController";

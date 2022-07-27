@@ -1,4 +1,5 @@
 import {writable} from 'svelte/store';
+import entityReducer from "../libs/engine-extension/entityReducer";
 
 export const engine = writable({
     meta: {},
@@ -13,5 +14,8 @@ export const engine = writable({
     levelScript: undefined,
     changeID: undefined,
     selectedEntity: undefined,
-    lockedEntity: undefined
+    lockedEntity: undefined,
+    dispatchEntities (packageData, state) {
+        entityReducer(packageData, this.entities, state)
+    }
 });

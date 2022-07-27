@@ -3,8 +3,6 @@
     import ViewportTab from "../components/settings/3DCursorSettings.svelte"
     // import Transform from "../../component/components/Transform"
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
-    import {settingsStore} from "../../../stores/settings-store";
-    import {get} from "svelte/store";
     import StoreController from "../../../stores/StoreController";
     import {onDestroy} from "svelte";
 

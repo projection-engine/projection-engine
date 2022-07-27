@@ -10,9 +10,11 @@ export default function bindShortcuts({
             label: focusTargetLabel,
             icon: focusTargetIcon
         }
+        console.log(actions)
         window.shortcuts.all = actions
         window.shortcuts.updateShortcuts()
         window.shortcuts.active = {}
+        console.log("MOUSE ENTER")
     }
 
     return {
@@ -30,6 +32,7 @@ export default function bindShortcuts({
                 target.focus()
             }
             target.addEventListener("mouseenter", handler)
+            console.log("UPDATING MOUNT")
         },
         onDestroy: (target) => {
             if (!target)

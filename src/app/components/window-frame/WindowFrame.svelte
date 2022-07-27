@@ -43,9 +43,9 @@
                                 <div class={"vert-divider"}></div>
                             {:else}
                                 <button
-                                        class={"option-button"}
-                                        disabled="{subOption.disabled}"
-                                        on:click={subOption.onClick}
+                                    class={"option-button"}
+                                    disabled="{subOption.disabled}"
+                                    on:click={subOption.onClick}
                                 >
                                     <div class={"icon-container"}>
                                         {#if subOption.icon}
@@ -214,8 +214,8 @@
     }
 
     .vert-divider {
-        margin-top: 4px;
-        margin-bottom: 4px;
+        margin-top: 2px;
+        margin-bottom: 2px;
         width: 100%;
         max-height: 1px;
         height: 1px;

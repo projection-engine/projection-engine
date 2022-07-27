@@ -3,11 +3,10 @@
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import {onDestroy, onMount} from "svelte";
-    import SETTINGS from "./static/misc/SETTINGS";
     import loadProject from "./utils/load-project";
     import Viewport from "./components/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import entityReducer, {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
+    import {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
 
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./components/shortcuts/Shortcuts.svelte";
@@ -33,16 +32,6 @@
 
     onMount(() => {
         InitializeWindow()
-        StoreController.updateEngine({
-            ...engine,
-            dispatchEntities: packageData => entityReducer(packageData, engine.entities, id => {
-                StoreController.updateEngine({
-                    ...engine,
-                    changeID: id
-                })
-            })
-
-        })
         loadProjectMetadata((m, s) => {
             StoreController.updateSettings({...settings, ...s})
             engine.meta = m
@@ -67,6 +56,7 @@
                     StoreController.updateEngine(engine)
                 },
                 async entities => {
+                    console.log(entities)
                     const mapped = []
                     for (let i = 0; i < entities.length; i++) {
                         mapped.push(await parseEntityObject(entities))
@@ -79,8 +69,6 @@
                 })
         }
     }
-
-
 
     const updateView = (key, newView) => {
         const s = {...settings}
@@ -122,12 +110,13 @@
                     />
                 </Viewport>
             {/if}
-<!--            <ViewsContainer-->
-<!--                    setTabs={(tabs) => updateView("bottom", tabs)}-->
-<!--                    tabs={view.bottom}-->
-<!--                    resizePosition={"top"}-->
-<!--                    orientation={"horizontal"}-->
-<!--            />-->
+            <ViewsContainer
+                setTabs={(tabs) => updateView("right", tabs)}
+                tabs={view.right}
+                orientation={"vertical"}
+                leftOffset={"0%"}
+                resizePosition={"top"}
+            />
         </div>
         <ViewsContainer
                 setTabs={(tabs) => updateView("bottom", tabs)}
@@ -136,7 +125,7 @@
                 orientation={"horizontal"}
         />
     </div>
-    <Shortcuts/>
+    <Shortcuts isEngineReady={isMetadataLoaded}/>
 </div>
 
 

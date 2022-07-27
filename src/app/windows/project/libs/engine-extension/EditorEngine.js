@@ -20,9 +20,11 @@ export default class EditorEngine extends Renderer {
     cursor
     selected = []
 
+    updateData=()=>null
 
-    constructor(resolution, whenReady) {
-        super(resolution, whenReady)
+    constructor(resolution,  update) {
+        super(resolution, update )
+        this.updateData = () => update(this)
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 

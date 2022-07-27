@@ -100,7 +100,8 @@ export default class EnglishLocalization {
         },
         HIERARCHY: {
             TITLE: "Hierarchy",
-            NEW_FOLDER: "New Folder"
+            NEW_FOLDER: "New Folder",
+            SEARCH: "Search"
         },
         CONSOLE: {
             TITLE: "Console",

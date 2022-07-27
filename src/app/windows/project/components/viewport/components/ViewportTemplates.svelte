@@ -1,7 +1,6 @@
 <script>
     import Input from "../../../../../components/input/Input.svelte";
     import VIEWS from "../../../../../components/view/VIEWS";
-    import {settingsStore} from "../../../stores/settings-store";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import "../css/Viewport.css"

@@ -1,6 +1,4 @@
 <script>
-    import {settingsStore} from "../../../../stores/settings-store";
-    import {get} from "svelte/store";
     import Range from "../../../../../../components/range/Range.svelte";
     import EnglishLocalization from "../../../../../../static/EnglishLocalization";
     import StoreController from "../../../../stores/StoreController";

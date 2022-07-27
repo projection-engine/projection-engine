@@ -1,8 +1,6 @@
 <script>
     import {handleGrab} from "../utils/transform-camera"
     import updateCameraPlacement from "../utils/update-camera-placement"
-    import {get} from "svelte/store";
-    import {settingsStore} from "../../../stores/settings-store";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";

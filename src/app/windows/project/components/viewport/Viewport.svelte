@@ -4,7 +4,6 @@
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
     import Conversion from "../../libs/engine/utils/Conversion";
-    import {engine as engineStore} from "../../stores/engine-store";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";

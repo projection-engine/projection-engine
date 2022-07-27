@@ -2,6 +2,7 @@ import openLevelBlueprint from "./open-level-blueprint";
 import StoreController from "../stores/StoreController";
 import FILE_TYPES from "../../../../electron/static/FILE_TYPES";
 import FileSystem from "../libs/FileSystem"
+
 const {ipcRenderer} = window.require("electron")
 
 export default function getFrameOptions(engine, settings, save) {

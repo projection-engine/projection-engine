@@ -1,14 +1,13 @@
 <script>
     import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
     import LABELED_KEYS from "../../static/misc/LABELED_KEYS";
-    import {get} from "svelte/store";
-    import {settingsStore} from "../../stores/settings-store";
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import KEYS from "../../libs/engine/data/KEYS";
     import "./styles/Shortcuts.css"
     import StoreController from "../../stores/StoreController";
 
+    export let isEngineReady
     let settings = {}
     const unsubscribeSettings = StoreController.getSettings(v => settings=v)
 
@@ -45,14 +44,18 @@
 
     let focusedWindow
     let actions = []
-    onMount(() => {
-        if(window.shortcuts) {
+    let initialized = false
+    $: {
+        if(!initialized && isEngineReady) {
+            initialized = true
             window.shortcuts.updateShortcuts = () => {
                 const clickedLen = Object.keys(window.shortcuts.active).length
                 actions = window.shortcuts.all.filter(a => (a.require.length === 1 && clickedLen === 0) || a.require.find(e => window.shortcuts.active[e] === true) !== undefined)
                 focusedWindow = window.shortcuts.window
             }
         }
+    }
+    onMount(() => {
         document.addEventListener("keydown", handler)
         document.addEventListener("keyup", handler)
     })
@@ -77,10 +80,12 @@
             Nothing focused
         </div>
     {/if}
-    {#each actions as a, i}
+    {#each actions as a}
         <div data-action={"-"}>
             <div data-item={"-"}>
-                {a.require.map((e, i) => LABELED_KEYS[e] + (i < a.require.length - 1 ? " + " : ""))}
+                {#each a.require as e, i}
+                    {LABELED_KEYS[e] + (i < a.require.length - 1 ? " + " : "")}
+                {/each}
             </div>
             <div>
                 {a.label}

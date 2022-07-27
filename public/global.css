@@ -72,6 +72,11 @@ button:active{
 	color: var(--pj-accent-color);
 	background: var(--pj-background-primary);
 }
+button:disabled{
+	cursor: default;
+	color: var(--pj-color-quinary) !important;
+	background: transparent !important;
+}
 a {
 	color: inherit;
 	text-decoration: none;

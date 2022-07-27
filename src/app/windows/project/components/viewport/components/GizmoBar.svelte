@@ -3,8 +3,6 @@
     import GIZMOS from "../../../static/misc/GIZMOS"
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import {settingsStore} from "../../../stores/settings-store";
-    import {get} from "svelte/store";
     import "../css/Viewport.css"
     import ResizableBar from "../../../../../components/resizable/ResizableBar.svelte";
     import GizmoGridSettings from "./settings/GizmoGridSettings.svelte";
@@ -145,7 +143,7 @@
                     on:click={() => settings.gizmo = GIZMOS.SCALE}>
                 <Icon>open_in_full</Icon>
                 {#if !minimal}
-                    <label data-overflow="-">{translate("S_GIZMO")}</label>
+                    <div data-overflow="-">{translate("S_GIZMO")}</div>
                 {/if}
             </button>
         </div>
@@ -167,8 +165,11 @@
 <style>
 
     .floating {
+
+        overflow-y: auto;
+        overflow-x: hidden;
         width: fit-content;
-        max-height: calc(100% - 35px);
+        max-height: calc(100% - 55px);
         position: absolute;
         left: 0;
         padding-left: 4px;

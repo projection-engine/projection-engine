@@ -6,6 +6,7 @@ import Entity from "../../../libs/engine/basic/Entity";
 import TransformComponent from "../../../libs/engine/components/TransformComponent";
 import Transformation from "../../../libs/engine/utils/Transformation";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import StoreController from "../../../stores/StoreController";
 
 
 function getCursor() {
@@ -19,23 +20,19 @@ function getCursor() {
     return entity
 }
 
-export default function updateRenderer(
-    viewportInitialized,
-    fallbackMaterial,
-    meshes,
-    materials,
-    entities,
-    cameraInitialized,
-    setCameraInitialized,
-    setFallbackMaterial,
-    executingAnimation,
-    selected,
-    levelScript,
-    settings
-) {
-    const renderer = window.renderer
-
+export default function updateRenderer(renderer) {
+    const {
+        fallbackMaterial,
+        meshes,
+        materials,
+        entities,
+        executingAnimation,
+        selected,
+        levelScript
+    } = StoreController.engine
+    const settings = StoreController.settings
     let fMat = fallbackMaterial
+
     if (!fallbackMaterial) {
         fMat = new MaterialInstance({
             vertex: shaderCode.fallbackVertex,
@@ -44,23 +41,21 @@ export default function updateRenderer(
             cubeMapShaderCode: shaderCode.cubeMapShader,
             id: FALLBACK_MATERIAL
         })
-        setFallbackMaterial(fMat)
+        StoreController.updateEngine({...StoreController.engine, fallbackMaterial: fMat})
 
     }
-    if (settings.INITIALIZED && !cameraInitialized) {
-        setCameraInitialized(true)
+
+    if (!renderer.camera.cameraInitialized) {
+        renderer.camera.cameraInitialized = true
         if (settings.cameraPosition)
             renderer.camera.centerOn = settings.cameraPosition
         if (typeof settings.yaw === "number")
             renderer.camera.yaw = settings.yaw
         if (typeof settings.pitch === "number")
             renderer.camera.pitch = settings.pitch
-
         renderer.camera.updateViewMatrix()
     }
 
-
-    renderer.camera.updateProjection()
     renderer.entitiesMap = entities
     renderer.meshes = meshes
     renderer.materials = materials

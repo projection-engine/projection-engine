@@ -6,6 +6,7 @@
     // import Console from "../../../project/components/console/Console"
 
     import Console from "../../../windows/project/components/console/Console.svelte";
+    import Hierarchy from "../../../windows/project/components/hierarchy/Hierarchy.svelte";
 
     export let styles
     export let extendView
@@ -19,8 +20,8 @@
         switch (instance) {
             // case "blueprint":
             //     return ShaderEditor
-            // case "hierarchy":
-            //     return Hierarchy
+            case "hierarchy":
+                return Hierarchy
             // case "component":
             //     return ComponentEditor
             // case "files":
