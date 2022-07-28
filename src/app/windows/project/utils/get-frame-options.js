@@ -1,6 +1,6 @@
 import openLevelBlueprint from "./open-level-blueprint";
-import StoreController from "../stores/StoreController";
-import FILE_TYPES from "../../../../electron/static/FILE_TYPES";
+import DataStoreController from "../stores/DataStoreController";
+import FILE_TYPES from "../../../../static/FILE_TYPES";
 import FileSystem from "../libs/FileSystem"
 
 const {ipcRenderer} = window.require("electron")
@@ -35,9 +35,9 @@ export default function getFrameOptions(engine, settings, save) {
                         }
                         const levelScript = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
                         if (levelScript)
-                            StoreController.updateEngine({...engine, levelScript})
+                            DataStoreController.updateEngine({...engine, levelScript})
                     }
-                    StoreController.updateEngine({...engine, executingAnimation: newValue})
+                    DataStoreController.updateEngine({...engine, executingAnimation: newValue})
                 } catch (err) {
                     console.error(err)
                     if (newValue)
@@ -115,7 +115,7 @@ export default function getFrameOptions(engine, settings, save) {
                             ...settings.visible,
                             sideBarViewport: !settings.visible.sideBarViewport
                         }
-                        StoreController.updateSettings(settings)
+                        DataStoreController.updateSettings(settings)
                     },
                 },
                 {
@@ -126,7 +126,7 @@ export default function getFrameOptions(engine, settings, save) {
                             ...settings.visible,
                             metricsViewport: !settings.visible.metricsViewport
                         }
-                        StoreController.updateSettings(settings)
+                        DataStoreController.updateSettings(settings)
                     },
                 },
                 {
@@ -137,7 +137,7 @@ export default function getFrameOptions(engine, settings, save) {
                             ...settings.visible,
                             shortcuts: !settings.visible.shortcuts
                         }
-                        StoreController.updateSettings(settings)
+                        DataStoreController.updateSettings(settings)
                     },
                 }
             ]

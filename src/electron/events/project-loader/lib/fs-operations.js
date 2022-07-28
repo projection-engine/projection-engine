@@ -1,4 +1,4 @@
-const FILE_TYPES = require("../../../static/FILE_TYPES")
+const FILE_TYPES = require("../../../../static/FILE_TYPES")
 const {lstat, readdir, readFile} = require("../../file-system/fs-essentials")
 
 

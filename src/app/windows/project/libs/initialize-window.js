@@ -18,7 +18,7 @@ export default function InitializeWindow( ) {
     // BLUEPRINTS
     initializeBlueprints()
 
-    // StoreController MENU
+    // DataStoreController MENU
     window.contextMenu = {targets: {}, focused: undefined}
 
     // ENTITY WORKER

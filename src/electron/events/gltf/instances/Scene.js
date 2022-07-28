@@ -1,6 +1,6 @@
 const {Node, getNormalizedName} = require("./Node")
 const {v4} = require("uuid")
-const FILE_TYPES = require("../../../static/FILE_TYPES")
+const FILE_TYPES = require("../../../../static/FILE_TYPES")
 const createDirectory = require("../utils/createDirectory")
 const path = require("path")
 module.exports = class Scene {

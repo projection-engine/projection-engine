@@ -1,12 +1,7 @@
 <script>
-    // import ShaderEditor from "../../../project/components/blueprints/ShaderEditor"
-    // import Hierarchy from "../../../project/components/hierarchy/Hierarchy"
-    // import ComponentEditor from "../../../project/components/component/ComponentEditor"
-    // import ContentBrowser from "../../../project/components/files/ContentBrowser"
-    // import Console from "../../../project/components/console/Console"
-
-    import Console from "../../../windows/project/components/console/Console.svelte";
-    import Hierarchy from "../../../windows/project/components/hierarchy/Hierarchy.svelte";
+    import Console from "../../../windows/project/views/console/Console.svelte";
+    import Hierarchy from "../../../windows/project/views/hierarchy/Hierarchy.svelte";
+    import ContentBrowser from "../../../windows/project/views/content-browser/ContentBrowser.svelte";
 
     export let styles
     export let extendView
@@ -22,10 +17,10 @@
             //     return ShaderEditor
             case "hierarchy":
                 return Hierarchy
-            // case "component":
+            // case "component-editor":
             //     return ComponentEditor
-            // case "files":
-            //     return ContentBrowser
+            case "files":
+                return ContentBrowser
             case "console":
                 return Console
             default:

@@ -4,7 +4,7 @@ import importScene from "./importScene"
 import FileSystem from "../FileSystem"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
-import FILE_TYPES from "../../../../../electron/static/FILE_TYPES";
+import FILE_TYPES from "../../../../../static/FILE_TYPES";
 
 export default async function importData(event, engine, asID) {
     const items = [], meshes = []

@@ -1,8 +1,8 @@
 const {BrowserWindow, ipcMain} = require("electron")
-const Window = require("../static/Windows")
-const FRAME_EVENTS = require("../static/FRAME_EVENTS")
+const Window = require("../Windows")
+const FRAME_EVENTS = require("../../static/FRAME_EVENTS")
 const path = require("path");
-const ROUTES = require("../static/ROUTES");
+const ROUTES = require("../../static/ROUTES");
 const {v4} = require("uuid");
 const ProjectWindow = require("./project-window")
 const windowLifeCycle = require("./window-life-cycle");
@@ -44,7 +44,7 @@ module.exports = function HomeWindow() {
 
     ipcMain.on(ROUTES.OPEN_PROJECT + this.id, (event, data) => {
         const found = projects.find(p => p.id === data.id)
-        if (!found) {
+        if (!found?.window) {
             ProjectWindow(() => {
                 projects = projects.filter(p => p.id !== data.id)
                 if (!isClosed)

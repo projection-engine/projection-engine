@@ -1,12 +1,12 @@
 const glTF = require("../gltf/glTF")
 const {readRegistry} = require("../project-loader/lib/fs-operations")
-const loader = require("../project-loader/project-loader")
 const parsePath = require("../utils")
 const {directoryStructure} = require("./fs-essentials")
 
 const {dialog, ipcMain} = require("electron")
 const fsUtils = require("fs")
 const path = require("path")
+const ROUTES = require("../../../static/ROUTES")
 
 
 module.exports = function FS() {
@@ -50,7 +50,7 @@ module.exports = function FS() {
             .catch(err => console.error(err))
     })
 
-    ipcMain.on("refresh-files", async (event, {pathName, listenID}) => {
+    ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, async (event, {pathName, listenID}) => {
         const promiseRes = []
 
         const registryData = (await readRegistry(pathName + "Registry")).filter(reg => reg)
@@ -67,7 +67,7 @@ module.exports = function FS() {
             return 0
         })
 
-        event.sender.send("refresh-files-" + listenID, sorted)
+        event.sender.send("refresh-content-browser-" + listenID, sorted)
     })
     ipcMain.on("read-registry", async (event, {pathName, listenID}) => {
         const result = await readRegistry(pathName)

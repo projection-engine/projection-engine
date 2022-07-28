@@ -140,6 +140,8 @@ export default class EnglishLocalization {
             ENTITY_NAME: "Entity Name"
         },
         FILES: {
+            SEARCH: "Search",
+            SELECT: "Select",
             TITLE: "Content Browser",
             EMPTY: "Empty folder",
             SELECT_ALL: "Select all",
@@ -155,7 +157,7 @@ export default class EnglishLocalization {
             OPEN_WITH_EXPLORER: "Open with explorer",
             FORWARD: "Forward",
             REFRESH: "Refresh",
-            REFRESHING: "Refreshing files",
+            REFRESHING: "Refreshing content-browser",
             GO_TO_PARENT: "Go to parent",
             NEW_SCRIPT: "New Script",
             NEW_MATERIAL: "New Material",

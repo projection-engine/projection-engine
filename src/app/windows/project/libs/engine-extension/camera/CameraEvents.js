@@ -1,6 +1,6 @@
 import EditorCamera from "./EditorCamera"
 import KEYS from "../../engine/data/KEYS"
-import {rotateY} from "../../../components/viewport/utils/transform-camera";
+import {rotateY} from "../../../views/viewport/utils/transform-camera";
 
 const BUTTON_MIDDLE = 1
 export default function CameraEvents(c) {

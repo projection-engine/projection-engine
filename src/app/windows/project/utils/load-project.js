@@ -1,7 +1,7 @@
-import CHANNELS from "../../../../electron/static/CHANNELS";
+import CHANNELS from "../../../../static/CHANNELS";
 import MeshInstance from "../libs/engine/instances/MeshInstance";
 import parseMaterialObject from "./parse-material-object";
-import ROUTES from "../../../../electron/static/ROUTES";
+import ROUTES from "../../../../static/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 export default function loadProject(callbackMesh, callbackEntities, callbackMaterials){
@@ -12,6 +12,7 @@ export default function loadProject(callbackMesh, callbackEntities, callbackMate
     })
 
     ipcRenderer.on(CHANNELS.MESH + "-" + projectID, (ev, data) => {
+        console.log(data)
         callbackMesh(new MeshInstance(data))
     })
 

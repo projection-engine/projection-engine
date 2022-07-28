@@ -1,27 +1,26 @@
 <script>
-
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import {onDestroy, onMount} from "svelte";
     import loadProject from "./utils/load-project";
-    import Viewport from "./components/viewport/Viewport.svelte";
+    import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
     import {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
-
     import getFrameOptions from "./utils/get-frame-options";
-    import Shortcuts from "./components/shortcuts/Shortcuts.svelte";
-    import Canvas from "./components/viewport/Canvas.svelte";
+    import Shortcuts from "./views/shortcuts/Shortcuts.svelte";
+    import Canvas from "./views/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import parseEntityObject from "./utils/parse-entity-object";
-    import StoreController from "./stores/StoreController";
+    import DataStoreController from "./stores/DataStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
     let engine
     let settings
-    const unsubscribeEngine = StoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = StoreController.getSettings(v => settings = v)
+    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+
     onDestroy(() => {
         unsubscribeSettings()
         unsubscribeEngine()
@@ -33,7 +32,7 @@
     onMount(() => {
         InitializeWindow()
         loadProjectMetadata((m, s) => {
-            StoreController.updateSettings({...settings, ...s})
+            DataStoreController.updateSettings({...settings, ...s})
             engine.meta = m
             isMetadataLoaded = true
         })
@@ -52,20 +51,21 @@
             isDataLoaded = true
             loadProject(
                 mesh => {
+
                     engine.meshes.set(mesh.id, mesh)
-                    StoreController.updateEngine(engine)
+                    DataStoreController.updateEngine(engine)
                 },
                 async entities => {
                     console.log(entities)
                     const mapped = []
                     for (let i = 0; i < entities.length; i++) {
-                        mapped.push(await parseEntityObject(entities))
+                        mapped.push(await parseEntityObject(entities[i].data))
                     }
-                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                     engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
                 },
                 material => {
                     engine.materials.push(material)
-                    StoreController.updateEngine(engine)
+                    DataStoreController.updateEngine(engine)
                 })
         }
     }
@@ -75,7 +75,7 @@
         const copy = [...s.views]
         copy[s.currentView] = {...view, [key]: newView}
         s.views = copy
-        StoreController.updateSettings(s)
+        DataStoreController.updateSettings(s)
     }
     $: frameOptions = getFrameOptions(engine, settings)
 </script>

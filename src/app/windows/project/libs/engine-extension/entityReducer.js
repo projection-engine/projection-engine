@@ -2,7 +2,7 @@ import PickComponent from "../engine/components/PickComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
-import StoreController from "../../stores/StoreController";
+import DataStoreController from "../../stores/DataStoreController";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -16,7 +16,7 @@ export const ENTITY_ACTIONS = {
 }
 
 
-export default function entityReducer({type, payload}, state, engineState=StoreController.engine) {
+export default function entityReducer({type, payload}, state, engineState=DataStoreController.engine) {
     const initialSize = state.size
     switch (type) {
     case ENTITY_ACTIONS.REMOVE:
@@ -90,6 +90,6 @@ export default function entityReducer({type, payload}, state, engineState=StoreC
             payload: state
         })
 
-        StoreController.updateEngine( {...engineState, changeID: v4()})
+        DataStoreController.updateEngine( {...engineState, changeID: v4()})
     }
 }

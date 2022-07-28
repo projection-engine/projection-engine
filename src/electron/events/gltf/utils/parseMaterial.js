@@ -2,7 +2,7 @@
 const {Node, getNormalizedName} = require("../instances/Node")
 const prepareMaterial = require("./prepareMaterial")
 const {v4} = require("uuid")
-const FILE_TYPES = require("../../../static/FILE_TYPES")
+const FILE_TYPES = require("../../../../static/FILE_TYPES")
 
 const fs = require("fs")
 const path = require("path")

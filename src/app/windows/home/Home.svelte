@@ -5,7 +5,7 @@
     import Input from "../../components/input/Input.svelte";
     import Recent from "./components/Recent.svelte";
     import EnglishLocalization from "../../static/EnglishLocalization";
-    import ROUTES from "../../../electron/static/ROUTES";
+    import ROUTES from "../../../static/ROUTES";
     import getBasePath from "../../../electron/lib/get-base-path";
     import {onMount} from "svelte";
     import loadGlobalLocalization from "../../libs/load-global-localization";

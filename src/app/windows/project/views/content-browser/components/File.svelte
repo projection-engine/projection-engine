@@ -1,0 +1,200 @@
+<script>
+    import FileSystem from "../../../libs/FileSystem"
+    import handleDropFolder from "../utils/handle-drop-folder"
+    import Input from "../../../../../components/input/Input.svelte";
+    import FILE_TYPES from "../../../../../../static/FILE_TYPES";
+    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Preview from "../../../../../components/preview/Preview.svelte";
+    import getFileIcon from "../utils/get-file-icon";
+    import FileStoreController from "../../../stores/FileStoreController";
+
+    const {shell} = window.require("electron")
+
+    export let childrenQuantity
+    export let reset
+    export let type
+    export let data
+    export let selected
+    export let setSelected
+    export let hook
+    export let onRename
+    export let submitRename
+    export let items
+    export let setCurrentDirectory
+    let currentLabel
+    $: {
+        currentLabel = data.name
+    }
+    $: isSelected = selected.includes(data.id)
+    $: metadata = {
+        path: window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + data.registryID + FILE_TYPES.PREVIEW,
+        type: data.type ? "." + data.type : "folder",
+        childrenQuantity,
+        icon: getFileIcon(data.type)
+    }
+</script>
+<div
+        on:dragover={(e) => {
+        if (type === 0) {
+            e.preventDefault()
+          //  e.currentTarget.classList.addhovered)
+        }
+    }}
+        on:dragleave={(e) => {
+        e.preventDefault()
+        //e.currentTarget.classList.removehovered)
+    }}
+        on:drop={e => {
+        e.preventDefault()
+        //e.currentTarget.parentNode.classList.removehovered)
+        handleDropFolder(e.dataTransfer.getData("text"), data.id, hook)
+    }}
+        onContextMenu={() => setSelected(data.id)}
+        data-file={type === 0 ? undefined : data.id}
+        data-folder={type !== 0 ? undefined : data.id}
+        on:dblclick={() => {
+        if (type === 1) {
+            if (data.type === FILE_TYPES.SCRIPT.replace(".", ""))
+                shell.openPath(FileStoreController.ASSETS_PATH + FileSystem.sep + data.id).catch()
+            else
+                setSelected(data.id)
+        } else {
+            reset()
+            setCurrentDirectory(data)
+        }
+    }}
+        id={data.id}
+        on:dragstart={(event) => {
+        if (event.ctrlKey) {
+            const selected = selected.map(s => {
+                return items.find(i => i.id === s)
+            }).filter(e => e && !e.isFolder && e.type === "mesh")
+            event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
+        } else
+            event.dataTransfer.setData("text", JSON.stringify([type === 1 ? data.registryID : data.id]))
+    }}
+        draggable="{onRename !== data.id}"
+        on:click={setSelected}
+        style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (FileStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
+        class="file"
+>
+
+    {#if metadata.type === FILE_TYPES.SCRIPT}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">javascript</Icon>
+        </div>
+    {:else if metadata.type === FILE_TYPES.SCENE}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">inventory_2</Icon>
+        </div>
+    {:else if metadata.type === "folder"}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
+            <div
+                title={"Files"}
+                class="floatingIconWrapper"
+            >
+                {childrenQuantity}
+            </div>
+        </div>
+    {:else}
+        <div class="icon" >
+            <Preview path={metadata.path}>
+                <img class="image" slot="image" alt="logo" let:src src={src}>
+                <Icon slot="icon" styles="font-size: 4rem">
+                    {metadata.icon}
+                </Icon>
+
+                <div class= "floatingIconWrapper">
+                    <Icon class="floatingIcon">{metadata.icon}</Icon>
+                </div>
+            </Preview>
+        </div>
+    {/if}
+    {#if onRename === data.id} ?
+        <Input
+                onEnter={() => submitRename(currentLabel)}
+                onBlur={() => submitRename(currentLabel)}
+                setSearchString={e => currentLabel = e.target.value}
+                searchString={currentLabel}
+        />
+    {:else }
+        <div data-overflow="-" class="label">
+            {currentLabel}
+        </div>
+    {/if}
+</div>
+
+<style>
+    .icon {
+        position: relative;
+        color: var(--pj-color-secondary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 5px;
+    }
+
+
+    .floatingIconWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--pj-background-tertiary);
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        width: 1.3rem;
+        height: 1.3rem;
+        border-radius: 3px;
+        font-size: 0.7rem !important;
+    }
+
+    .floatingIcon {
+        color: var(--pj-color-secondary);
+        font-size: 1.1rem !important;
+    }
+
+    .image {
+        max-height: 100%;
+    }
+
+    .label {
+        font-size: 0.75rem;
+        padding: 4px 4px 8px;
+        text-align: center;
+        line-height: 100%;
+        min-height: 20px;
+    }
+
+
+    .file {
+        position: relative;
+        overflow: hidden;
+        border-radius: 5px;
+        color: var(--pj-color-secondary);
+        gap: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 115px;
+        width: 115px;
+        outline: transparent 2px solid;
+        cursor: pointer;
+        flex: 1 1 80px;
+        padding: 4px 4px 0;
+    }
+
+    .file:hover,
+    .file:active {
+        border-color: transparent;
+        background: var(--pj-background-primary);
+    }
+
+
+
+</style>

@@ -6,11 +6,14 @@ import MeshInstance from "../engine/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import FileSystem from "../FileSystem"
 import {vec4} from "gl-matrix"
+import DataStoreController from "../../stores/DataStoreController";
 
-export default async function importScene(engine, reg, onlyReturn) {
+export default async function importScene(reg, onlyReturn) {
     const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
     const meshes = []
     const entities = []
+    const engineCopy = {...DataStoreController.engine}
+
     if (file) {
         const folder = new Entity()
         folder.name = file.name
@@ -22,7 +25,6 @@ export default async function importScene(engine, reg, onlyReturn) {
         }
         entities.push(folder)
         if(!onlyReturn) {
-            engine.dispatchMeshes(meshes)
             const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
             entities.forEach(e => {
                 if (e.components && e.components[COMPONENTS.TRANSFORM]) {
@@ -32,7 +34,10 @@ export default async function importScene(engine, reg, onlyReturn) {
                     transform.changed = true
                 }
             })
-            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+
+            for(let i =0; i < meshes.length; i++)
+                engineCopy.meshes.set(meshes[i].id, meshes)
+            engineCopy.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities}, engineCopy)
         }
     } else
         alert.pushAlert("Error loading scene",  "error")

@@ -1,6 +1,8 @@
 import {v4, v4 as uuidv4} from "uuid"
 import AsyncFS from "./AsyncFS"
 import IMAGE_WORKER_ACTIONS from "./engine/data/IMAGE_WORKER_ACTIONS"
+import FILE_TYPES from "../../../../static/FILE_TYPES";
+import FileStoreController from "../stores/FileStoreController";
 
 const pathRequire = window.require("path")
 
@@ -9,7 +11,7 @@ export default class FileSystem {
     static sep = pathRequire.sep
     static registry = []
 
-    static fixPath(p){
+    static fixPath(p) {
         return pathRequire.resolve(p)
     }
 
@@ -31,7 +33,7 @@ export default class FileSystem {
     async writeFile(pathName, data, absolute) {
         const result = await AsyncFS.write(FileSystem.resolvePath(!absolute ? this.path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
 
-        if(result[0])
+        if (result[0])
             throw Error(result[0])
     }
 
@@ -55,14 +57,14 @@ export default class FileSystem {
     async deleteFile(pathName, options) {
         const p = pathName.replaceAll(FileSystem.sep + FileSystem.sep, FileSystem.sep)
         const currentPath = this.path + FileSystem.sep + p
-        for(let i = 0; i < FileSystem.registry.length; i++){
+        for (let i = 0; i < FileSystem.registry.length; i++) {
             const r = FileSystem.registry[i]
-            const rPath = "assets" +FileSystem.sep + r.path
-            if(rPath.includes(p))
+            const rPath = "assets" + FileSystem.sep + r.path
+            if (rPath.includes(p))
                 await AsyncFS.rm(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry" + FileSystem.sep + r.id + ".reg"))
         }
         await AsyncFS.rm(currentPath, options)
-        
+
         const rs = await this.findRegistry(currentPath)
         if (rs) await AsyncFS.rm(FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry" + FileSystem.sep + rs.id + ".reg"))
     }
@@ -87,50 +89,48 @@ export default class FileSystem {
             const fileID = uuidv4()
             const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
             switch (type) {
-            case "png":
-            case "jpg":
-            case "jpeg": {
-                if(!(await AsyncFS.exists(newRoot + ".pimg"))) {
-                    const res = `data:image/${type};base64,` + (await this.readFile(filePath, "base64"))
-                    if (res) {
-                        await AsyncFS.write(newRoot + ".pimg", res)
-                        const reduced = await window.imageWorker(IMAGE_WORKER_ACTIONS.RESIZE_IMAGE, {
-                            image: res,
-                            width: 256,
-                            height: 256
-                        })
-                        await AsyncFS.write(FileSystem.resolvePath(this.path + FileSystem.sep + "previews" + FileSystem.sep + fileID + ".preview"), reduced)
-                        await this.createRegistryEntry(fileID, newRoot.replace(this.path + FileSystem.sep + "assets" + FileSystem.sep, "") + ".pimg")
-                    }
-                    else
-                        alert.pushAlert("Error importing image", "error")
+                case "png":
+                case "jpg":
+                case "jpeg": {
+                    if (!(await AsyncFS.exists(newRoot + ".pimg"))) {
+                        const res = `data:image/${type};base64,` + (await this.readFile(filePath, "base64"))
+                        if (res) {
+                            await AsyncFS.write(newRoot + ".pimg", res)
+                            const reduced = await window.imageWorker(IMAGE_WORKER_ACTIONS.RESIZE_IMAGE, {
+                                image: res,
+                                width: 256,
+                                height: 256
+                            })
+                            await AsyncFS.write(FileSystem.resolvePath(this.path + FileSystem.sep + "previews" + FileSystem.sep + fileID + ".preview"), reduced)
+                            await this.createRegistryEntry(fileID, newRoot.replace(this.path + FileSystem.sep + "assets" + FileSystem.sep, "") + ".pimg")
+                        } else
+                            alert.pushAlert("Error importing image", "error")
+                    } else
+                        alert.pushAlert("Image already exists", "error")
+                    break
                 }
-                else
-                    alert.pushAlert("Image already exists", "error")
-                break
-            }
-            case "gltf":
-                result.push({
-                    file: name.split(".")[0],
-                    ids: await new Promise(resolve => {
-                        const listenID = v4().toString()
-                        ipcRenderer.once("import-gltf-" + listenID, (ev, data) => {
-                            resolve(data)
-                        })
+                case "gltf":
+                    result.push({
+                        file: name.split(".")[0],
+                        ids: await new Promise(resolve => {
+                            const listenID = v4().toString()
+                            ipcRenderer.once("import-gltf-" + listenID, (ev, data) => {
+                                resolve(data)
+                            })
 
-                        ipcRenderer.send("import-gltf", {
-                            filePath: filePath,
-                            newRoot,
-                            options: {},
-                            projectPath: this.path,
-                            listenID,
-                            fileName: filePath.split(pathRequire.sep).pop()
+                            ipcRenderer.send("import-gltf", {
+                                filePath: filePath,
+                                newRoot,
+                                options: {},
+                                projectPath: this.path,
+                                listenID,
+                                fileName: filePath.split(pathRequire.sep).pop()
+                            })
                         })
                     })
-                })
-                break
-            default:
-                break
+                    break
+                default:
+                    break
             }
         }
         return result
@@ -167,7 +167,7 @@ export default class FileSystem {
 
     async updateAsset(registryID, fileData, previewImage) {
         const res = await this.readRegistryFile(registryID)
-        if(res)
+        if (res)
             await this.writeAsset(res.path, fileData, previewImage, registryID)
         else
             throw Error("Not found")
@@ -179,7 +179,7 @@ export default class FileSystem {
 
     async updateEntity(entity, id) {
         const p = FileSystem.resolvePath(this.path + FileSystem.sep + "logic")
-        await AsyncFS.write(FileSystem.resolvePath(p + FileSystem.sep  +id + ".entity"), entity)
+        await AsyncFS.write(FileSystem.resolvePath(p + FileSystem.sep + id + ".entity"), entity)
     }
 
     async updateProject(meta, settings) {
@@ -259,7 +259,10 @@ export default class FileSystem {
             ipcRenderer.once("read-registry-" + listenID, (ev, data) => {
                 resolve(data)
             })
-            ipcRenderer.send("read-registry", {pathName: FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry"), listenID})
+            ipcRenderer.send("read-registry", {
+                pathName: FileSystem.resolvePath(this.path + FileSystem.sep + "assetsRegistry"),
+                listenID
+            })
         })
         FileSystem.registry = promise
         return promise
@@ -285,7 +288,7 @@ export default class FileSystem {
             projectPath = localStorage.getItem("basePath") + "projects" + FileSystem.sep + projectID
         if (!(await AsyncFS.exists(FileSystem.resolvePath(localStorage.getItem("basePath") + "projects")))) await AsyncFS.mkdir(FileSystem.resolvePath(localStorage.getItem("basePath") + "projects"))
         const [err] = await AsyncFS.mkdir(projectPath)
-        if(!err) {
+        if (!err) {
             await AsyncFS.write(FileSystem.resolvePath(projectPath + FileSystem.sep + ".meta"), JSON.stringify({
                 id: projectID, name: name, creationDate: new Date().toDateString()
             }))
@@ -295,6 +298,77 @@ export default class FileSystem {
 
     static resolvePath(path) {
         return pathRequire.resolve(path)
+    }
+
+    async refresh(autoPush=true) {
+        const reg = await this.readRegistry()
+        const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
+            meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
+            materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
+            scriptReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SCRIPT)),
+            promises = []
+
+        promises.push(...imagesReg.map(i => {
+            return new Promise(resolve => {
+                const split = i.path.split(FileSystem.sep)
+                resolve({
+                    type: FILE_TYPES.IMAGE,
+                    registryID: i.id,
+                    name: split[split.length - 1]
+                })
+            })
+        }))
+
+        promises.push(...meshesReg.map(i => {
+            return new Promise(resolve => {
+                const split = i.path.split(FileSystem.sep)
+                resolve({
+                    type: FILE_TYPES.MESH,
+                    registryID: i.id,
+                    name: split[split.length - 1]
+                })
+
+            })
+        }))
+        promises.push(...materialsReg.map(i => {
+            return new Promise(resolve => {
+                const split = i.path.split(FileSystem.sep)
+                resolve({
+                    type: FILE_TYPES.MATERIAL,
+                    registryID: i.id,
+                    name: split[split.length - 1].split(".")[0]
+                })
+            })
+        }))
+        promises.push(...scriptReg.map(i => {
+            return new Promise(resolve => {
+                const split = i.path.split(FileSystem.sep)
+                resolve({
+                    type: FILE_TYPES.SCRIPT,
+                    registryID: i.id,
+                    name: split[split.length - 1].split(".")[0]
+                })
+            })
+        }))
+
+
+
+        const res = await Promise.all(promises)
+        if(autoPush)
+            FileStoreController.updateStore({
+                ...FileStoreController.data,
+                images: res.filter(f => f.type === FILE_TYPES.IMAGE),
+                meshes: res.filter(f => f.type === FILE_TYPES.MESH),
+                materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
+                scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
+            })
+        else
+            return {
+                images: res.filter(f => f.type === FILE_TYPES.IMAGE),
+                meshes: res.filter(f => f.type === FILE_TYPES.MESH),
+                materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
+                scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
+            }
     }
 
 }
