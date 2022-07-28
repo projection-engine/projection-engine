@@ -1,147 +1,138 @@
-import React from "react"
-import {Checkbox} from "@f-ui/core"
-import AccordionTemplate from "../../../../views/accordion/AccordionTemplate"
-import Range from "../../../../views/range/Range"
-import PropTypes from "prop-types"
+<script>
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Range from "../../../../../components/range/Range.svelte";
 
-export default function PostProcessing(props) {
-    const {selected} = props
-    return (
-        <>
-            <AccordionTemplate title={"Lens distortion"}>
-                <Checkbox
-                    noMargin={true}
-                    checked={selected.distortion}
-                    handleCheck={() => selected.distortion = !selected.distortion}
-                    label={"Enabled"}
-                    height={"25px"}
-                    width={"100%"}
-                />
-                <Range
-                    label={"Strength"}
-                    disabled={!selected.distortion}
-                    onFinish={v => {
-                        selected.distortionStrength = v
-                    }}
-                    incrementPercentage={.01}
-                    precision={3}
+    export let selected
+</script>
 
-                    value={selected.distortionStrength} maxValue={10} minValue={0}
-                />
-            </AccordionTemplate>
+<Accordion title={"Lens distortion"}>
+    <Checkbox
+        noMargin={true}
+        checked={selected.distortion}
+        handleCheck={() => selected.distortion = !selected.distortion}
+        label={"Enabled"}
+        height={"25px"}
+        width={"100%"}
+    />
+    <Range
+        label={"Strength"}
+        disabled={!selected.distortion}
+        onFinish={v => {
+            selected.distortionStrength = v
+        }}
+        incrementPercentage={.01}
+        precision={3}
 
-            <AccordionTemplate title={"Chromatic aberration"}>
-                <Checkbox
-                    noMargin={true}
-                    checked={selected.chromaticAberration}
-                    handleCheck={() => selected.chromaticAberration = !selected.chromaticAberration}
-                    label={"Chromatic aberration"}
-                    height={"25px"}
-                    width={"100%"}
-                />
-                <Range
-                    label={"Strength"}
-                    disabled={!selected.chromaticAberration}
-                    onFinish={v => {
-                        selected.chromaticAberrationStrength = v
-                    }}
-                    incrementPercentage={.01}
-                    precision={3}
-                    value={selected.chromaticAberrationStrength}
-                    maxValue={10}
-                    minValue={0}
-                />
-            </AccordionTemplate>
+        value={selected.distortionStrength} maxValue={10} minValue={0}
+    />
+</Accordion>
 
-            <AccordionTemplate title={"Film grain"}>
-                <Checkbox
-                    noMargin={true}
-                    checked={selected.filmGrain}
-                    handleCheck={() => selected.filmGrain = !selected.filmGrain}
-                    label={"Enabled"}
-                    height={"25px"}
-                    width={"100%"}
-                />
-				
-                <Range
-                    label={"Strength"}
-                    disabled={!selected.filmGrain}
-                    onFinish={v => {
-                        selected.filmGrainStrength = v
-                    }}
-                    incrementPercentage={.001}
-                    precision={3}
-                    value={selected.filmGrainStrength} maxValue={10} minValue={0}
-                />
-            </AccordionTemplate>
+<Accordion title={"Chromatic aberration"}>
+    <Checkbox
+        noMargin={true}
+        checked={selected.chromaticAberration}
+        handleCheck={() => selected.chromaticAberration = !selected.chromaticAberration}
+        label={"Chromatic aberration"}
+        height={"25px"}
+        width={"100%"}
+    />
+    <Range
+        label={"Strength"}
+        disabled={!selected.chromaticAberration}
+        onFinish={v => {
+            selected.chromaticAberrationStrength = v
+        }}
+        incrementPercentage={.01}
+        precision={3}
+        value={selected.chromaticAberrationStrength}
+        maxValue={10}
+        minValue={0}
+    />
+</Accordion>
 
-            <AccordionTemplate title={"Bloom"}>
-                <Checkbox
-                    noMargin={true}
-                    checked={selected.bloom}
-                    handleCheck={() => selected.bloom = !selected.bloom}
-                    label={"Enabled"}
-                    height={"25px"}
-                    width={"100%"}/>
+<Accordion title={"Film grain"}>
+    <Checkbox
+        noMargin={true}
+        checked={selected.filmGrain}
+        handleCheck={() => selected.filmGrain = !selected.filmGrain}
+        label={"Enabled"}
+        height={"25px"}
+        width={"100%"}
+    />
 
-                <Range
-                    label={"Strength"}
+    <Range
+        label={"Strength"}
+        disabled={!selected.filmGrain}
+        onFinish={v => {
+            selected.filmGrainStrength = v
+        }}
+        incrementPercentage={.001}
+        precision={3}
+        value={selected.filmGrainStrength} maxValue={10} minValue={0}
+    />
+</Accordion>
 
-                    disabled={!selected.bloom}
-                    onFinish={v => {
-                        selected.bloomStrength = v
-                    }}
-                    incrementPercentage={.001}
-                    precision={3}
-                    value={selected.bloomStrength} maxValue={10} minValue={0}/>
+<Accordion title={"Bloom"}>
+    <Checkbox
+        noMargin={true}
+        checked={selected.bloom}
+        handleCheck={() => selected.bloom = !selected.bloom}
+        label={"Enabled"}
+        height={"25px"}
+        width={"100%"}/>
 
-                <Range
-                    label={"Threshold"}
+    <Range
+        label={"Strength"}
 
-                    disabled={!selected.bloom}
-                    incrementPercentage={.001}
-                    precision={3}
-                    onFinish={v => {
-                        selected.bloomThreshold = v
-                    }}
-                    value={selected.bloomThreshold}
+        disabled={!selected.bloom}
+        onFinish={v => {
+            selected.bloomStrength = v
+        }}
+        incrementPercentage={.001}
+        precision={3}
+        value={selected.bloomStrength} maxValue={10} minValue={0}/>
 
-                    maxValue={1} minValue={0}
-                />
-            </AccordionTemplate>
+    <Range
+        label={"Threshold"}
 
-            <AccordionTemplate title={"Color correction"}>
-                <Range
-                    label={"Gamma"}
+        disabled={!selected.bloom}
+        incrementPercentage={.001}
+        precision={3}
+        onFinish={v => {
+            selected.bloomThreshold = v
+        }}
+        value={selected.bloomThreshold}
 
-                    incrementPercentage={.001}
-                    precision={3}
-                    minValue={.1}
-                    maxValue={10}
-                    onFinish={v => {
-                        selected.gamma = v
-                    }}
-                    value={selected.gamma}
-                />
+        maxValue={1} minValue={0}
+    />
+</Accordion>
 
-                <Range
-                    label={"Exposure"}
+<Accordion title={"Color correction"}>
+    <Range
+        label={"Gamma"}
 
-                    minValue={.1}
-                    incrementPercentage={.001}
-                    precision={3}
-                    maxValue={10}
-                    onFinish={v => {
-                        selected.exposure = v
-                    }}
-                    value={selected.exposure}
-                />
-            </AccordionTemplate>
+        incrementPercentage={.001}
+        precision={3}
+        minValue={.1}
+        maxValue={10}
+        onFinish={v => {
+            selected.gamma = v
+        }}
+        value={selected.gamma}
+    />
 
-        </>
-    )
-}
+    <Range
+        label={"Exposure"}
 
-PostProcessing.propTypes={
-    selected: PropTypes.object
-}
+        minValue={.1}
+        incrementPercentage={.001}
+        precision={3}
+        maxValue={10}
+        onFinish={v => {
+            selected.exposure = v
+        }}
+        value={selected.exposure}
+    />
+</Accordion>
+
+
