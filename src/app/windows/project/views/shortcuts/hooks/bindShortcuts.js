@@ -4,17 +4,29 @@ export default function bindShortcuts({
                                           actions
                                       }) {
     let initialized = false
+
     function handler(e) {
-        e.currentTarget.focus()
-        window.shortcuts.window = {
-            label: focusTargetLabel,
-            icon: focusTargetIcon
+        switch (e.type) {
+            case "mousedown":
+                e.currentTarget.isClicked = true
+                break;
+            case "mouseenter":
+                if (e.currentTarget.isClicked)
+                    break;
+                e.currentTarget.focus()
+                window.shortcuts.window = {
+                    label: focusTargetLabel,
+                    icon: focusTargetIcon
+                }
+                window.shortcuts.all = actions
+                window.shortcuts.updateShortcuts()
+                window.shortcuts.active = {}
+
+                break
+            case "mouseup":
+                e.currentTarget.isClicked = false
+                break
         }
-        console.log(actions)
-        window.shortcuts.all = actions
-        window.shortcuts.updateShortcuts()
-        window.shortcuts.active = {}
-        console.log("MOUSE ENTER")
     }
 
     return {
@@ -31,12 +43,15 @@ export default function bindShortcuts({
                 initialized = true
                 target.focus()
             }
+            target.addEventListener("mousedown", handler)
+            target.addEventListener("mouseup", handler)
             target.addEventListener("mouseenter", handler)
-            console.log("UPDATING MOUNT")
         },
         onDestroy: (target) => {
             if (!target)
                 return
+            target.removeEventListener("mousedown", handler)
+            target.removeEventListener("mouseup", handler)
             target.removeEventListener("mouseenter", handler)
         },
         rebind(target, disabled) {

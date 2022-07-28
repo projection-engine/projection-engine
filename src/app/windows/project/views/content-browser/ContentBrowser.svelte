@@ -57,7 +57,7 @@
 >
         <ControlBar
                 currentDirectory={currentDirectory}
-                setCurrentDirectory={v => currentDirectory = v}
+                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 bookmarks={store.bookmarks}
                 items={store.items}
                 translate={translate}
@@ -82,7 +82,7 @@
                     bookmarks={store.bookmarks}
 
                     currentDirectory={currentDirectory}
-                    setCurrentDirectory={v => currentDirectory = v}
+                    setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                     translate={translate}
             />
         {/if}
@@ -90,7 +90,7 @@
         <Files
                 items={store.items}
                 currentDirectory={currentDirectory}
-                setCurrentDirectory={v => currentDirectory = v}
+                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}
                 translate={translate}
                 setSearchString={v => searchString = v}

@@ -1,27 +1,26 @@
 export default class NavigationHistory {
-    history = {
-        data: [],
-        index: -1
-    }
 
+    data = []
+    index = -1
     constructor(setCurrentDirectory) {
         this.setCurrentDirectory = setCurrentDirectory
     }
 
     returnDir() {
-        if (this.history.current.index > 0 && this.history.current.data[this.history.current.index - 1]) {
-            this.history.current.index -= 1
+        console.log(this)
+        if (this.index > 0 && this.data[this.index - 1]) {
+            this.index -= 1
             this.setCurrentDirectory({
-                id: this.history.current.data[this.history.current.index]
+                id: this.data[this.index]
             })
         }
     }
 
     forwardDir() {
-        if (this.history.current.index < 10 && this.history.current.data[this.history.current.index + 1]) {
-            this.history.current.index += 1
+        if (this.index < 10 && this.data[this.index + 1]) {
+            this.index += 1
             this.setCurrentDirectory({
-                id: this.history.current.data[this.history.current.index]
+                id: this.data[this.index]
             })
         }
     }
@@ -35,5 +34,13 @@ export default class NavigationHistory {
         else
             this.setCurrentDirectory({id: split.join(FileSystem.sep)})
 
+    }
+
+    updateCurrentDirectory(v, currentDirectory) {
+        const historyData = this.data
+        historyData.push(currentDirectory.id)
+        if (historyData.length > 10) historyData.shift()
+        this.index = historyData.length
+        this.setCurrentDirectory(v)
     }
 }

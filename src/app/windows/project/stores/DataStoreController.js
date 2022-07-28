@@ -1,5 +1,4 @@
 import {engine} from "./engine-store";
-import {get} from "svelte/store";
 import {settingsStore} from "./settings-store";
 import ENGINE from "../static/misc/ENGINE";
 import {SETTINGS} from "../../../../static/WINDOWS";

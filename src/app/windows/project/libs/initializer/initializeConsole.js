@@ -1,5 +1,3 @@
-import ENVIRONMENT from "../engine/data/ENVIRONMENT"
-
 export default function initializeConsole() {
     const oldLog = console.log
     console.targerts = []

@@ -30,7 +30,6 @@
     export let items
     export let navigationHistory
 
-
     let loading = false
     $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
 
@@ -45,14 +44,14 @@
             <div class="buttonGroup">
                 <button
                         class="settingsButton"
-                        on:click={navigationHistory.returnDir}
+                        on:click={() => navigationHistory.returnDir()}
                 >
                     <Icon>arrow_back</Icon>
                     <ToolTip content={translate("BACK_DIR")}/>
                 </button>
                 <button
                         class="settingsButton"
-                        on:click={navigationHistory.forwardDir}
+                        on:click={() => navigationHistory.forwardDir()}
                 >
                     <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
                     <ToolTip content={translate("FORWARD_DIR")}/>

@@ -5,13 +5,14 @@ export default function entityWorker() {
     const src = `
         const ENTITY_WORKER_ACTIONS = ${JSON.stringify(ENTITY_WORKER_ACTIONS)}
         const COMPONENTS = ${JSON.stringify(COMPONENTS)} 
-        console.log(COMPONENTS)
-        console.log(ENTITY_WORKER_ACTIONS)
+        
         let entities = new Map(), updated = false, hierarchy = []
             
         self.onmessage = ({data: {type, payload, actionID}}) => {
+           
             switch (type) {
             case ENTITY_WORKER_ACTIONS.GET_HIERARCHY: {
+                console.log(entities)
                 self.postMessage({actionID, payload: hierarchy})
                 break
             }

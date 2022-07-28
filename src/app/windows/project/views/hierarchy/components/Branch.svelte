@@ -29,6 +29,7 @@
 
             ref.setAttribute("data-selected", is ? "-" : "")
         }
+        console.log(nodeRef)
     }
 
     $: icon = (() => {
@@ -57,8 +58,8 @@
             data-open={open[nodeRef.id] ? "-" : ""}
             data-selected={""}
             data-parentopen={open[nodeRef.parent?.id] ? "-" : ""}
-            style={{paddingLeft: depth * 16 + "px"}}
-            onMouseDown={e => {
+            style="padding-left: {depth * 16 + "px"}"
+            on:mousedown={e => {
         if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
             setSelected(nodeRef.id, e.ctrlKey)
     }}

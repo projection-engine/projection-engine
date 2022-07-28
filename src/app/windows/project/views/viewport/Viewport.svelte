@@ -14,6 +14,9 @@
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
+    import SelectBox from "../../../../components/select-box/SelectBox.svelte";
+    import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
+    import drawIconsToBuffer from "./utils/draw-icons-to-buffer";
 
     export let utils = {}
     export let isReady = false
@@ -137,33 +140,33 @@
     </div>
 
 
-    <!--    <SelectBox-->
-    <!--            targetElementID={RENDER_TARGET}-->
-    <!--            disabled={settings.gizmo === GIZMOS.CURSOR}-->
-    <!--            setSelected={(_, startCoords, endCoords) => {-->
-    <!--            if (startCoords && endCoords) {-->
-    <!--                drawIconsToBuffer()-->
-    <!--                const depthFBO = renderer.renderingPass.depthPrePass.frameBuffer-->
-    <!--                const size = {-->
-    <!--                    w: depthFBO.width,-->
-    <!--                    h: depthFBO.height-->
-    <!--                }-->
-    <!--                const nStart = Conversion.toQuadCoord(startCoords, size)-->
-    <!--                const nEnd = Conversion.toQuadCoord(endCoords, size)-->
+    <SelectBox
+            targetElementID={RENDER_TARGET}
+            disabled={settings.gizmo === GIZMOS.CURSOR}
+            setSelected={(_, startCoords, endCoords) => {
+            if (startCoords && endCoords) {
+                drawIconsToBuffer()
+                const depthFBO = window.renderer.renderingPass.depthPrePass.frameBuffer
+                const size = {
+                    w: depthFBO.width,
+                    h: depthFBO.height
+                }
+                const nStart = Conversion.toQuadCoord(startCoords, size)
+                const nEnd = Conversion.toQuadCoord(endCoords, size)
 
-    <!--                try {-->
-    <!--                    const data = renderer.picking.readBlock(depthFBO, nStart, nEnd)-->
-    <!--                    entityWorker.postMessage({entities: renderer.entities, data})-->
-    <!--                    entityWorker.onmessage = ({data: selected}) => engine.setSelected(selected)-->
-    <!--                } catch (err) {-->
-    <!--                    console.error(err, startCoords, nStart)-->
-    <!--                }-->
-    <!--            }-->
-    <!--        }}-->
-    <!--            target={RENDER_TARGET}-->
-    <!--            selected={[]}-->
-    <!--            nodes={[]}-->
-    <!--    />-->
+                try {
+                    const data = window.renderer.picking.readBlock(depthFBO, nStart, nEnd)
+                    WORKER.postMessage({entities: window.renderer.entities, data})
+                    WORKER.onmessage = ({data: selected}) => DataStoreController.updateEngine({...engine, selected })
+                } catch (err) {
+                    console.error(err, startCoords, nStart)
+                }
+            }
+        }}
+            target={RENDER_TARGET}
+            selected={[]}
+            nodes={[]}
+    />
 </div>
 
 <style>

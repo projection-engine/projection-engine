@@ -5,6 +5,7 @@
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import File from "./File.svelte";
+    import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
 
     export let fileType
     export let setFileType
@@ -61,11 +62,11 @@
         data-wrapper={internalID}
 >
     <div class="filesWrapper">
-        <!--        <SelectBox-->
-        <!--            nodes={hook.items}-->
-        <!--            selected={selected}-->
-        <!--            setSelected={setSelected}-->
-        <!--        />-->
+        <SelectBox
+            nodes={items}
+            selected={selected}
+            setSelected={setSelected}
+        />
         {#if filesToRender.length > 0}
             {#each filesToRender as child, index}
                 <File
