@@ -2,10 +2,10 @@
     import Console from "../../../windows/project/views/console/Console.svelte";
     import Hierarchy from "../../../windows/project/views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../windows/project/views/content-browser/ContentBrowser.svelte";
+    import ComponentEditor from "../../../windows/project/views/component-editor/ComponentEditor.svelte";
 
     export let styles
     export let extendView
-    export let orientation
     export let switchView
     export let hidden
     export let instance
@@ -17,8 +17,8 @@
             //     return ShaderEditor
             case "hierarchy":
                 return Hierarchy
-            // case "component-editor":
-            //     return ComponentEditor
+            case "component-editor":
+                return ComponentEditor
             case "files":
                 return ContentBrowser
             case "console":

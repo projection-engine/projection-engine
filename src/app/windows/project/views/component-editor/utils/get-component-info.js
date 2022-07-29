@@ -1,5 +1,4 @@
-import COMPONENTS from "../../../engine/data/COMPONENTS"
-
+import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 
 export default function getComponentInfo(c) {
     const res = {}

@@ -3,6 +3,7 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
     export let entityID
     export let type
@@ -156,15 +157,12 @@
 <Accordion title={"Shadows"} type={"grid"}>
 
     <Checkbox
-            noMargin={true}
             label={"Casts shadows"}
-            width={"100%"}
-            height={"25px"}
             checked={state.shadowMap}
             handleCheck={() => {
-            state = {...state, shadowMap: !state.shadowMap}
-            submit(!state.shadowMap, "shadowMap")
-        }}/>
+                state = {...state, shadowMap: !state.shadowMap}
+                submit(!state.shadowMap, "shadowMap")
+            }}/>
     {#if type === COMPONENTS.DIRECTIONAL_LIGHT || type === COMPONENTS.SKYLIGHT}
         <Range
                 label={"Size"}

@@ -1,18 +1,16 @@
 <script>
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Range from "../../../../../components/range/Range.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
     export let selected
 </script>
 
 <Accordion title={"Lens distortion"}>
     <Checkbox
-        noMargin={true}
         checked={selected.distortion}
         handleCheck={() => selected.distortion = !selected.distortion}
         label={"Enabled"}
-        height={"25px"}
-        width={"100%"}
     />
     <Range
         label={"Strength"}
@@ -29,12 +27,9 @@
 
 <Accordion title={"Chromatic aberration"}>
     <Checkbox
-        noMargin={true}
         checked={selected.chromaticAberration}
         handleCheck={() => selected.chromaticAberration = !selected.chromaticAberration}
         label={"Chromatic aberration"}
-        height={"25px"}
-        width={"100%"}
     />
     <Range
         label={"Strength"}
@@ -52,12 +47,9 @@
 
 <Accordion title={"Film grain"}>
     <Checkbox
-        noMargin={true}
         checked={selected.filmGrain}
         handleCheck={() => selected.filmGrain = !selected.filmGrain}
         label={"Enabled"}
-        height={"25px"}
-        width={"100%"}
     />
 
     <Range
@@ -74,12 +66,11 @@
 
 <Accordion title={"Bloom"}>
     <Checkbox
-        noMargin={true}
+
         checked={selected.bloom}
         handleCheck={() => selected.bloom = !selected.bloom}
         label={"Enabled"}
-        height={"25px"}
-        width={"100%"}/>
+    />
 
     <Range
         label={"Strength"}

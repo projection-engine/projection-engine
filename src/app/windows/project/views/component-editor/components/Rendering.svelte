@@ -3,6 +3,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import {onDestroy, onMount} from "svelte";
     import DataStoreController from "../../../stores/DataStoreController";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
     let engine = {}
     let settings = {}
@@ -59,21 +60,16 @@
     />
 </Accordion>
 <Checkbox
-        noMargin={true}
-        checked={settings.fxaa}
-        handleCheck={() => settings.fxaa = !settings.fxaa}
-        label={"Anti-aliasing"}
-        height={"25px"}
-        width={"100%"}/>
+    checked={settings.fxaa}
+    handleCheck={() => settings.fxaa = !settings.fxaa}
+    label={"Anti-aliasing"}
+/>
 
 <Accordion title={"Screen space reflections"}>
     <Checkbox
-            noMargin={true}
             checked={settings.ssr}
             handleCheck={() => settings.ssr = !settings.ssr}
             label={"Enabled"}
-            height={"25px"}
-            width={"100%"}
     />
     <Range
             disabled={!settings.ssr}
@@ -102,12 +98,9 @@
 
 <Accordion title={"Global illumination"}>
     <Checkbox
-            noMargin={true}
             checked={settings.ssgi}
             handleCheck={() => settings.ssgi = !settings.ssgi}
             label={"Enabled"}
-            height={"25px"}
-            width={"100%"}
     />
     <Range
             disabled={!settings.ssgi}
@@ -168,7 +161,7 @@
             handleChange={v => state.shadowMapResolution = v}
             value={state.shadowMapResolution}
     />
-    <div class={inline}>
+    <div class="inline">
         <Range
                 label={"Lights"}
                 accentColor={"red"}
@@ -196,13 +189,11 @@
 
 <Accordion title={"Ambient occlusion"}>
     <Checkbox
-            noMargin={true}
             checked={settings.ao}
             handleCheck={() => settings.ao = !settings.ao}
             label={"Enabled"}
-            height={"25px"}
-            width={"100%"}/>
-    <div class={inline}>
+    />
+    <div class="inline">
         <Range
                 disabled={!settings.ao}
                 label={"Strength"}
@@ -227,7 +218,7 @@
         />
     </div>
 
-    <div class={inline}>
+    <div class="inline">
         <Range
                 disabled={!settings.ao}
                 label={"Area"}
@@ -252,7 +243,7 @@
         />
     </div>
 
-    <div class={inline}>
+    <div class="inline">
         <Range
                 disabled={!settings.ao}
                 label={"Radius"}

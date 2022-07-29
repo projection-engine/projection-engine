@@ -1,16 +1,22 @@
 <script>
-    import FormTabs from "./components/FormTabs.svelte"
+    import FormTabs from "./views/Components.svelte"
     import Icon from "../../../../components/Icon/Icon.svelte";
     import getComponentInfo from "./utils/get-component-info";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";
     import Input from "../../../../components/input/Input.svelte";
+    import DataStoreController from "../../stores/DataStoreController";
+    import {onDestroy} from "svelte";
+    import Form from "./views/Form.svelte";
 
-    const DELAY = 250
 
     export let hidden = false
     export let switchView
     export let orientation
+
+    let engine = {}
+    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    onDestroy(() => unsubscribeEngine())
 
     let currentTab = "-2"
     $: tabs = (() => {
@@ -32,16 +38,6 @@
             currentEntityName = (engine.selectedEntity.name)
     }
 
-    let timeout
-    const handleNameChange = (value) => {
-        currentEntityName = value
-        engine.selectedEntity.name = value
-        clearTimeout(timeout)
-        setTimeout(() => {
-
-            engine.updateHierarchy()
-        }, DELAY)
-    }
 
 </script>
 <Header
@@ -54,14 +50,17 @@
 
     {#if engine.selectedEntity}
         <Input
-                setSearchString={v => handleNameChange(v)}
+                setSearchString={v => {
+                currentEntityName = value
+                engine.selectedEntity.name = value
+                }}
                 searchString={currentEntityName}
                 placeholder={translate("ENTITY_NAME")}
         />
     {/if}
 </Header>
 {#if !hidden}
-    <div class={content}>
+    <div class="content">
         <FormTabs
                 translate={translate}
                 tabs={tabs}
@@ -69,32 +68,61 @@
                 currentTab={currentTab}
                 setCurrentTab={v => currentTab = v}
         />
-        <div style={{width: "100%", overflowX: "hidden"}}>
-            {#if !engine.executingAnimation && !currentForm.open}
-                <div class={header} style={{justifyContent: "flex-start"}}>
-                    <Icon>
-                        {currentTab === "-2" ? "image" : null}
-                        {currentTab === "-3" ? "videocam" : null}
-                    </Icon>
-                    <div class={overflow}>
-                        {currentTab === "-2" ? translate("RENDERING") : null}
-                        {currentTab === "-3" ? translate("POST_PROCESSING") : null}
-                    </div>
+        <div class="wrapper">
+            {#if !engine.executingAnimation }
+                <div class="header">
+                    {#if !tabs[currentTab]}
+                        {#if currentTab === "-2"}
+                            <Icon>image</Icon>
+                            <div data-overflow="-">{translate("RENDERING")}</div>
+                            {:else}
+                            <Icon>videocam</Icon>
+                            <div data-overflow="-">{translate("POST_PROCESSING")}</div>
+                            {/if}
+
+                    {:else}
+                        <Icon>
+                            {tabs[currentTab].icon}
+                        </Icon>
+                        <div data-overflow="-">
+                            {tabs[currentTab].label}
+                        </div>
+                    {/if}
                 </div>
             {/if}
-            {#if tabs[currentTab]}
-                <div class={header} style={{justifyContent: "flex-start"}}>
-                    <Icon>
-                        {tabs[currentTab].icon}
-                    </Icon>
-                    <label class={overflow}>
-                        {tabs[currentTab].label}
-                    </label>
-                </div>
-            {/if}
-            {currentForm.content}
+            <Form engine={engine} currentTab={currentTab} />
 
         </div>
     </div>
 {/if}
 
+
+<style>
+    .content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        max-height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .header {
+        display: flex;
+        gap: 4px;
+        color: var(--pj-color-primary);
+        font-size: 0.8rem;
+        font-weight: 550;
+        align-items: center;
+
+        width: 100%;
+        padding: 4px;
+        border-bottom: var(--pj-border-primary) 1px solid;
+        justify-content: flex-start
+    }
+
+    .wrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+</style>

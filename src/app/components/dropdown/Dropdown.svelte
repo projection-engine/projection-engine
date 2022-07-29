@@ -17,7 +17,7 @@
 
 
     function handler(event) {
-        if (!modal.contains(event.target)) {
+        if (!modal.contains(event.target) || event.target.getAttribute("data-closedropdown") === "-") {
             if (onClose && open)
                 onClose()
             open = false

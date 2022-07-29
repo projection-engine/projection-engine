@@ -44,8 +44,6 @@
     </button>
     {#if entity !== undefined && !entity.isFolder}
         <div class="divider"></div>
-    {/if}
-    {#if entity === undefined || entity.isFolder ? null}
         <button
             data-highlight={currentTab === ENTITY_TAB ? "-" : undefined}
             class="button"

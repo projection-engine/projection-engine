@@ -1,5 +1,6 @@
 <script>
     import Range from "../../../../../components/range/Range.svelte";
+    import Transformation from "../../../libs/engine/utils/Transformation";
 
     export let entityID
     export let selected
@@ -7,7 +8,7 @@
     export let submitTranslation
     export let submitScaling
 
-    let state = {}
+    let state
     $: {
         const euler = selected.rotationUpdated ? selected.rotation : Transformation.getEuler(selected.rotationQuat)
         state = {

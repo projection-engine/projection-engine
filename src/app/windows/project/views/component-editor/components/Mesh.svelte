@@ -5,6 +5,11 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import TextureInstance from "../../../libs/engine/instances/TextureInstance";
+    import FileStoreController from "../../../stores/FileStoreController";
+    import {onDestroy} from "svelte";
+    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
 
     export let engine
     export let entityID
@@ -13,12 +18,14 @@
 
     let state = {}
     let lastID
-    const quickAccess = useContext(QuickAccessProvider)
+    let store = {}
+    const unsubscribeStore = FileStoreController.getStore(v => store = v)
+    onDestroy(() => unsubscribeStore())
 
     $: {
         const newState = {}
         if (!lastID || lastID !== entityID) {
-            newState.currentMesh = quickAccess.meshes.find(mesh => mesh.registryID === selected.meshID)
+            newState.currentMesh = store.meshes.find(mesh => mesh.registryID === selected.meshID)
             lastID = entityID
             const matSelected = engine.materials.find(m => m.id === selected.materialID)
 
@@ -27,7 +34,7 @@
             newState.uniforms = matSelected && matSelected.uniforms ? matSelected.uniforms.map(u => {
                 return {...u, value: selected.uniformValues[u.key]}
             }) : []
-            newState.currentMaterial = quickAccess.materials.find(i => i.registryID === selected.materialID)
+            newState.currentMaterial = store.materials.find(i => i.registryID === selected.materialID)
             state = newState
         }
     }
@@ -113,16 +120,14 @@
 />
 {#if state.uniforms?.length > 0}
     <Checkbox
-            noMargin={true}
+
             label={"Override material uniforms"}
-            width={"100%"}
-            height={"25px"}
             checked={state.overrideMaterial}
             handleCheck={() => {
                 const s = !state.overrideMaterial
                 state.overrideMaterial = s
                 submit(s, "overrideMaterial")
-            }} styles={{background: "var(--pj-border-primary)"}}
+            }}
     />
 {/if}
 {#if state.overrideMaterial && state.uniforms}
@@ -179,8 +184,8 @@
                     </div>
                 {:else}
                     <ColorPicker
-                            submit={(_, v) => updateUniforms(u.key, v.map(vv => vv / 255), obj, true)}
-                            value={!u.value ? "rgb(0,0,0)" : `rgb(${u.value[0] * 255},${u.value[1] * 255},${u.value[2] * 255})`}
+                        submit={(_, v) => updateUniforms(u.key, v.map(vv => vv / 255), obj, true)}
+                        value={!u.value ? "rgb(0,0,0)" : `rgb(${u.value[0] * 255},${u.value[1] * 255},${u.value[2] * 255})`}
                     />
                 {/if}
 

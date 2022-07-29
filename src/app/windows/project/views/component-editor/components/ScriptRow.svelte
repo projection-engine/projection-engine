@@ -14,8 +14,9 @@
         <div data-overflow="-">
             {found.name}
         </div>
-        <button style="--pj-accent-color: #ff5555" class="buttonScriptsList"
-                onClick={() => submit(selected)}>
+        <button
+                style="--pj-accent-color: #ff5555" class="buttonScriptsList"
+                on:click={() => submit(selected)}>
             <Icon>close</Icon>
         </button>
     </div>

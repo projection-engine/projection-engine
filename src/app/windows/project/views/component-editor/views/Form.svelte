@@ -1,0 +1,152 @@
+<script>
+
+    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+    import ENTITY_TAB from "../static/ENTITY_TAB";
+    import Scripts from "../components/Scripts.svelte";
+    import Camera from "../components/Camera.svelte";
+    import Probe from "../components/Probe.svelte";
+    import Lights from "../components/Lights.svelte";
+    import Mesh from "../components/Mesh.svelte";
+    import Transform from "../components/Transform.svelte";
+    import updateTransformation from "../utils/update-transformation";
+    import MaterialInstance from "../../../libs/engine/instances/MaterialInstance";
+    import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL";
+    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Rendering from "../components/Rendering.svelte";
+    import PostProcessing from "../components/PostProcessing.svelte";
+    import DataStoreController from "../../../stores/DataStoreController";
+    import {onDestroy} from "svelte";
+
+    export let engine
+    export let currentTab
+
+    let settings = {}
+    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    onDestroy(() => unsubscribeSettings())
+    const submit = (component, key, data) => engine.selectedEntity.components[component][key] = data
+</script>
+
+{#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
+    <div class="wrapper">
+        {#if currentTab !== ENTITY_TAB}
+            {#if key === COMPONENTS.CAMERA}
+                <Camera
+                        selected={engine.selectedEntity.components[COMPONENTS.CAMERA]}
+                        submit={(key, value) => engine.selectedEntity.components[COMPONENTS.CAMERA][key] = value}
+                />
+            {:else if key === COMPONENTS.TRANSFORM}
+                <Transform
+                        entityID={engine.selectedEntity.id}
+                        engine={engine}
+
+                        selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
+                        submitRotation={(axis, data) => updateTransformation(axis, data, "rotation", engine.selectedEntity,)}
+                        submitScaling={(axis, data) => updateTransformation(axis, data, "scaling", engine.selectedEntity,)}
+                        submitTranslation={(axis, data) => updateTransformation(axis, data, "translation", engine.selectedEntity)}
+                />
+            {:else if key === COMPONENTS.MESH}
+                <Mesh
+                        entityID={engine.selectedEntity.id}
+                        engine={engine}
+                        selected={engine.selectedEntity.components[COMPONENTS.MESH]}
+                        submit={async (val, key) => {
+                            if (key)
+                                submit(COMPONENTS.MESH, key, val)
+                            else {
+                                if (val) {
+                                    const exists = window.renderer.materials.find(m => m.id === val.id)
+                                    if (!exists) {
+                                        let newMat
+                                        await new Promise(resolve => {
+                                            newMat = new MaterialInstance({
+                                                id: val.id,
+                                                onCompiled:() => resolve(),
+                                                settings: val.blob.settings,
+                                                vertex: val.blob.vertexShader,
+                                                fragment: val.blob.shader,
+                                                uniformData: val.blob.uniformData
+                                            })
+                                        })
+                                        engine.setMaterials(prev => {
+                                            return [...prev, newMat]
+                                        })
+                                    }
+                                }
+                                const component = engine.selectedEntity.components[COMPONENTS.MESH]
+                                if (val) {
+                                    component.materialID = val.id
+                                    component.uniforms = val.blob.uniforms
+                                } else
+                                    component.materialID = FALLBACK_MATERIAL
+                            }
+                        }}
+
+                />
+            {:else if key === COMPONENTS.DIRECTIONAL_LIGHT || key === COMPONENTS.POINT_LIGHT}
+                <Lights
+                        entityID={engine.selectedEntity.id}
+                        type={key}
+                        selected={engine.selectedEntity.components[key]}
+                        submit={(data, k) => submit(key, k, data)}
+                        submitColor={(data) => submit(key, "color", data)}
+                />
+
+            {:else if key === COMPONENTS.PROBE}
+                <Probe
+                        selected={engine.selectedEntity.components[key]}
+                        submit={(data, key) => {
+                            submit(COMPONENTS.PROBE, key, data)
+                            alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
+                        }}
+                />
+            {/if}
+        {:else}
+            <Scripts entity={engine.selectedEntity}/>
+        {/if}
+    </div>
+{:else if engine.executingAnimation}
+    <div class="empty">
+        <Icon styles="font-size: 140px">
+            play_arrow
+        </Icon>
+        Stop the simulation to change attributes.
+    </div>
+{:else}
+    <div class="wrapper">
+        {#if currentTab === "-2"}
+            <Rendering/>
+        {:else}
+            <PostProcessing selected={settings}/>
+        {/if}
+    </div>
+{/if}
+
+<style>
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        height: fit-content;
+        width: 100%;
+        max-width: 100%;
+        padding: 4px 4px 32px;
+        color: var(--pj-color-primary);
+        overflow-x: hidden;
+    }
+
+    .empty {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+        text-align: center;
+        color: var(--pj-color-primary);
+        font-size: 0.75rem;
+        font-weight: 550;
+    }
+
+</style>

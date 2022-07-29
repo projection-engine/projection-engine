@@ -1,8 +1,10 @@
 <script>
-    import PostProcessing from "./PostProcessing"
+
     import EnglishLocalization from "../../../../../static/EnglishLocalization";
     import Range from "../../../../../components/range/Range.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import PostProcessing from "./PostProcessing.svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     export let selected
@@ -34,15 +36,13 @@
 />
 <Accordion title={translate("ORTHO_PROJECTION")}>
     <Checkbox
-            noMargin={true}
             checked={state.ortho}
             handleCheck={() => {
-            submit("ortho", !state.ortho)
-            state.ortho = !state.ortho
-        }}
+                submit("ortho", !state.ortho)
+                state.ortho = !state.ortho
+            }}
             label={translate("ENABLED")}
-            height={"25px"}
-            width={"100%"}/>
+        />
     <Range
             label={translate("PROJECTION_SIZE")}
             disabled={!state.ortho}

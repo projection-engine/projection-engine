@@ -1,10 +1,15 @@
 <script>
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ScriptRow from "./ScriptRow.svelte";
+    import FileStoreController from "../../../stores/FileStoreController";
+    import {onDestroy} from "svelte";
+    import Selector from "../../../../../components/selector/Selector.svelte";
 
     export let entity
 
-    const quickAccess = useContext(QuickAccessProvider)
+    let store = {}
+    const unsubscribeStore = FileStoreController.getStore(v => store = v)
+    onDestroy(() => unsubscribeStore())
 
     let state = []
     let previousID
@@ -20,15 +25,14 @@
     <Selector
             type={"script"}
             selected={undefined}
-            autoClose={true}
             handleChange={d => {
-                    if (d && !state.find(s => s === d.registryID)) {
-                        entity.scriptsMap.push(d.registryID)
-                        state =  [...state, d.registryID]
+                if (d && !state.find(s => s === d.registryID)) {
+                    entity.scriptsMap.push(d.registryID)
+                    state =  [...state, d.registryID]
 
-                    }else if(state.find(s => s === d.registryID))
-                        alert.pushAlert("Script already linked", "info")
-                }}
+                }else if(state.find(s => s === d.registryID))
+                    alert.pushAlert("Script already linked", "info")
+            }}
     >
         <div class="inline add">
             <Icon>add</Icon>
@@ -43,7 +47,7 @@
         {#each state as s, index}
             <ScriptRow
                 selected={s}
-                scripts={quickAccess.scripts}
+                scripts={store.scripts}
                 submit={key => {
                     const newScripts = state.filter(s => s !== key)
                     entity.scripts = newScripts
