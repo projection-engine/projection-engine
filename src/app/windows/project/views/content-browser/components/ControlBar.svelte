@@ -114,7 +114,7 @@
                     </button>
 
                     {#each Object.keys(FILE_TYPES) as k, i}
-                        <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])}>
+                        <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])} style="text-transform: capitalize">
                             {#if fileType === FILE_TYPES[k]}
                                 <Icon>check</Icon>
                             {/if}
@@ -237,10 +237,6 @@
         justify-content: flex-start;
         align-items: center;
         gap: 2px;
-    }
-
-    .fileType > * {
-        text-transform: capitalize;
     }
 
 </style>

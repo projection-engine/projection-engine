@@ -12,7 +12,7 @@ export default function loadProject(callbackMesh, callbackEntities, callbackMate
     })
 
     ipcRenderer.on(CHANNELS.MESH + "-" + projectID, (ev, data) => {
-        console.log(data)
+        console.trace(data)
         callbackMesh(new MeshInstance(data))
     })
 

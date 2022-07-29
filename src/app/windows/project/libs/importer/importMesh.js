@@ -39,7 +39,8 @@ export default async function importMesh(objLoaded, engine, id) {
             existsMesh = true
         entity = initializeEntity(objLoaded, mesh.id)
     } catch (e) {
-        alert.pushAlert("Error loading mesh", "error")
+        console.log(e)
+        alert.pushAlert("Some error occurred", "error")
     }
 
     return {
@@ -52,8 +53,10 @@ export default async function importMesh(objLoaded, engine, id) {
 
 export function initializeEntity(data, meshID, parent){
     const entity = new Entity(undefined, data.name)
-    entity.parent = parent
-    parent.children.push(entity)
+    if(parent && parent instanceof Entity) {
+        entity.parent = parent
+        parent.children.push(entity)
+    }
     const transformation = new TransformComponent()
     transformation.scaling = data.scaling
     transformation.rotationQuat = data.rotationQuat

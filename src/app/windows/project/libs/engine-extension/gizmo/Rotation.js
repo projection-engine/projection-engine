@@ -165,6 +165,8 @@ export default class Rotation {
 
 
     #testClick() {
+        if(!this.mainEntity || this.mainEntity?.isFolder)
+            return
         const camera = window.renderer.camera
         const mX = this.#rotateMatrix("x", this.xGizmo.components[COMPONENTS.TRANSFORM])
         const mY = this.#rotateMatrix("y", this.yGizmo.components[COMPONENTS.TRANSFORM])
@@ -204,7 +206,10 @@ export default class Rotation {
         selected,
         transformationType
     ) {
-
+        if(!selected[0]) {
+            this.mainEntity = undefined
+            return
+        }
         this.transformationType = transformationType
         if (!this.translation || this.mainEntity !== selected[0]) {
             this.targetEntities = selected

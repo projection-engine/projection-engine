@@ -32,6 +32,7 @@ export default function entityWorker() {
                     callback(entitiesArray[i], 0)
                 }
                 hierarchy = data
+                self.postMessage({actionID})
                 break
             }
             case ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA: {

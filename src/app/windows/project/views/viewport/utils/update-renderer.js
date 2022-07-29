@@ -20,7 +20,7 @@ function getCursor() {
     return entity
 }
 
-export default function updateRenderer(renderer) {
+export default function updateRenderer(renderer, engine, settings) {
     const {
         fallbackMaterial,
         meshes,
@@ -29,8 +29,8 @@ export default function updateRenderer(renderer) {
         executingAnimation,
         selected,
         levelScript
-    } = DataStoreController.engine
-    const settings = DataStoreController.settings
+    } = engine
+
     let fMat = fallbackMaterial
 
     if (!fallbackMaterial) {
@@ -64,7 +64,6 @@ export default function updateRenderer(renderer) {
     if (!renderer.cursor)
         renderer.cursor = getCursor()
 
-
     renderer.updatePackage(
         executingAnimation,
         {selected, ...settings},
@@ -72,6 +71,6 @@ export default function updateRenderer(renderer) {
         fMat
     )
     bindGizmo(selected, settings)
-
+    if(!renderer.frameID)
     renderer.start()
 }

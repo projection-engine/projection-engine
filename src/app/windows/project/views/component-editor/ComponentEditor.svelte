@@ -1,6 +1,4 @@
 <script>
-    import FormTabs from "./views/Components.svelte"
-    import Icon from "../../../../components/Icon/Icon.svelte";
     import getComponentInfo from "./utils/get-component-info";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";
@@ -8,7 +6,9 @@
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import Form from "./views/Form.svelte";
-
+    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Components from "./views/Components.svelte";
+    console.log("ON COMP EDITOR")
 
     export let hidden = false
     export let switchView
@@ -36,6 +36,8 @@
     $: {
         if (engine.selectedEntity)
             currentEntityName = (engine.selectedEntity.name)
+        else
+            currentTab = "-2"
     }
 
 
@@ -51,8 +53,8 @@
     {#if engine.selectedEntity}
         <Input
                 setSearchString={v => {
-                currentEntityName = value
-                engine.selectedEntity.name = value
+                currentEntityName = v
+                engine.selectedEntity.name = v
                 }}
                 searchString={currentEntityName}
                 placeholder={translate("ENTITY_NAME")}
@@ -61,12 +63,15 @@
 </Header>
 {#if !hidden}
     <div class="content">
-        <FormTabs
+        <Components
                 translate={translate}
                 tabs={tabs}
-                entity={engine.selectedEntity}
+                engine={engine}
                 currentTab={currentTab}
-                setCurrentTab={v => currentTab = v}
+                setCurrentTab={v => {
+                    currentTab = v
+                    console.log(v)
+                }}
         />
         <div class="wrapper">
             {#if !engine.executingAnimation }

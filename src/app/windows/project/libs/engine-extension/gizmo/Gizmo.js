@@ -75,6 +75,8 @@ export default class Gizmo {
     }
 
     #testClick() {
+        if(!this.mainEntity || this.mainEntity?.isFolder)
+            return
         const camera = window.renderer.camera
         const mX = this.#translateMatrix(this.xGizmo.components)
         const mY = this.#translateMatrix(this.yGizmo.components)
@@ -108,6 +110,10 @@ export default class Gizmo {
         selected,
         transformationType
     ) {
+        if(!selected[0]) {
+            this.mainEntity = undefined
+            return
+        }
         this.transformationType = transformationType
         if (!this.translation || this.mainEntity !== selected[0]) {
             this.targetEntities = selected

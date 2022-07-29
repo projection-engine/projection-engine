@@ -73,7 +73,7 @@
     {#if focusedWindow}
         <div data-item={"-"} data-action={"-"}>
             <Icon styles="font-size: 1rem">{focusedWindow.icon}</Icon>
-            <label>{focusedWindow.label}</label>
+            <div>{focusedWindow.label}</div>
         </div>
     {:else}
         <div data-item={"-"}>

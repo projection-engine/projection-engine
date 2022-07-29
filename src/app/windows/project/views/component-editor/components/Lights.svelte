@@ -5,7 +5,6 @@
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
-    export let entityID
     export let type
     export let selected
     export let submit

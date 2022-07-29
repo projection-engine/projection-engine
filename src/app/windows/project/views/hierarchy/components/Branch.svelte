@@ -7,7 +7,7 @@
 
     const LEFT_BUTTON = 0
     export let depth
-    export let node
+    export let nodeRef
     export let open
     export let setOpen
     export let selected
@@ -17,8 +17,6 @@
 
     let ref
     let active = true
-    $: nodeRef = node ? window.renderer.entitiesMap.get(node.id) : undefined
-
     $: {
         if (nodeRef && ref) {
             active = nodeRef.active
@@ -29,7 +27,6 @@
 
             ref.setAttribute("data-selected", is ? "-" : "")
         }
-        console.log(nodeRef)
     }
 
     $: icon = (() => {
@@ -58,10 +55,10 @@
             data-open={open[nodeRef.id] ? "-" : ""}
             data-selected={""}
             data-parentopen={open[nodeRef.parent?.id] ? "-" : ""}
-            style="padding-left: {depth * 16 + "px"}"
+            style={"padding-left:" +  (depth * 16 + "px")}
             on:mousedown={e => {
-        if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
-            setSelected(nodeRef.id, e.ctrlKey)
+            if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
+                setSelected(nodeRef.id, e.ctrlKey)
     }}
             on:dragover={e => {
         e.preventDefault()
@@ -78,10 +75,11 @@
         const src = e.dataTransfer.getData("text")
         const entityDragged = window.renderer.entitiesMap.get(src)
         if(entityDragged) {
-            if(entityDragged.parent)
-                entityDragged.parent.children =entityDragged.parent.children.filter(c => c.id  !== entityDragged.id)
 
-            entityDragged.parent = nodeRef
+            //if(entityDragged.parent)
+                //entityDragged.parent.children =entityDragged.parent.children.filter(c => c.id  !== entityDragged.id)
+
+            // entityDragged.parent = nodeRef
             nodeRef.children.push(entityDragged)
             window.renderer.updateData()
             window.entityWorker.postMessage({
@@ -97,14 +95,16 @@
                         data-open={open[nodeRef.id] ? "-" : ""}
                         class="buttonSmall hierarchy-branch"
                         on:click={() => {
+                            console.log(open[nodeRef.id])
                         if (!open[nodeRef.id])
                             setOpen({...open, [nodeRef.id]: true})
                         else {
-                            const newOpen = {...open, [nodeRef.id]: false}
+                            const newOpen = {...open}
+                            delete newOpen[nodeRef.id]
                             const callback = (node) => {
                                 node.children.forEach(c => {
                                     if (newOpen[c.id]) {
-                                        newOpen[c.id] = false
+                                        delete newOpen[c.id]
                                         callback(c)
                                     }
                                 })
@@ -149,7 +149,12 @@
                 active = !active
             }}>
                 <Icon styles="font-size: .9rem">
-                    {active ? "visibility" : "visibility_off"}
+                    {#if active}
+                        visibility
+                    {:else}
+                        visibility_off
+                    {/if}
+
                 </Icon>
             </button>
         </div>

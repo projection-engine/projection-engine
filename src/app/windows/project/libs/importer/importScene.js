@@ -7,9 +7,13 @@ import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
 import FileSystem from "../FileSystem"
 import {vec4} from "gl-matrix"
 import DataStoreController from "../../stores/DataStoreController";
+import FileStoreController from "../../stores/FileStoreController";
 
 export default async function importScene(reg, onlyReturn) {
-    const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+    const file = await window.fileSystem.readFile(
+        FileStoreController.ASSETS_PATH+ FileSystem.sep + reg.path, "json")
+    console.trace(reg)
+
     const meshes = []
     const entities = []
     const engineCopy = {...DataStoreController.engine}
@@ -36,11 +40,11 @@ export default async function importScene(reg, onlyReturn) {
             })
 
             for(let i =0; i < meshes.length; i++)
-                engineCopy.meshes.set(meshes[i].id, meshes)
+                engineCopy.meshes.set(meshes[i].id, meshes[i])
             engineCopy.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities}, engineCopy)
         }
     } else
-        alert.pushAlert("Error loading scene",  "error")
+        alert.pushAlert("Some error occurred",  "error")
     return {meshes, entities}
 }
 

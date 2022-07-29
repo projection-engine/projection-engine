@@ -7,7 +7,6 @@
 
     export let icon
     export let title
-    export let children
     export let orientation
     export let hidden
     export let switchView

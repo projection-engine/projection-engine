@@ -12,15 +12,15 @@
             class="container"
             disabled={disabled ? "true" : undefined}
             style={`
-                background: ${checked ? "var(--fabric-accent-color)" : undefined};
-                border: ${checked ? "var(--fabric-accent-color) 1px solid" : undefined};
+                background: ${checked ? "var(--pj-accent-color)" : undefined};
+                border: ${checked ? "var(--pj-accent-color) 1px solid" : undefined};
             `}
             on:click={() => handleCheck(checked)}>
         <Icon
                 styles={`
                 color: white;
                 visibility: ${checked ? "visible" : "hidden"};
-                font-size: 15px;
+                font-size: 13px;
                 font-weight: bold;
                 `}
         >
@@ -30,5 +30,48 @@
     </button>
     {label}
 </div>
-)
-}
+
+<style>
+    .container {
+        outline: none;
+
+        border: var(--pj-color-tertiary) 1px solid;
+        width: 13px;
+        height: 13px;
+
+        border-radius: 50%;
+        background: transparent;
+        transition: 150ms linear;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .container:hover {
+        border: var(--pj-accent-color) 1px solid;
+    }
+
+    .container:active {
+        background: var(--pj-background-quaternary);
+        border: var(--pj-accent-color) 1px solid;
+    }
+
+    .container:disabled {
+        background: transparent;
+        border-color: var(--pj-color-quaternary);
+        cursor: unset;
+    }
+    .wrapper{
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: .7rem;
+        background: var(--pj-border-primary);
+        border-radius: 3px;
+        height: 25px;
+        width: 100%;
+        padding: 4px;
+        font-weight: 550;
+    }
+</style>

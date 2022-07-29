@@ -8,44 +8,42 @@
     export let selected
     export let nodes
     let ref
-    let initiated = false,
-        startingPosition = {x: 0, y: 0}
 
     $: ids = nodes.map(n => n.id)
 
     const handleMouseMove = (event) => {
         if (!document.pointerLockElement) {
-            if (ref.parentNode) {
-                const bBox = ref.parentNode.getBoundingClientRect()
+            if (ref.parentElement) {
+                const bBox = ref.parentElement.getBoundingClientRect()
                 const offset = {
-                    x: bBox.left - ref.parentNode.scrollLeft,
-                    y: bBox.top - ref.parentNode.scrollTop
+                    x: bBox.left - ref.parentElement.scrollLeft,
+                    y: bBox.top - ref.parentElement.scrollTop
                 }
 
                 let translation = {x: 0, y: 0}
-                if (!initiated) {
-                    ref.style.top = (startingPosition.y - offset.y) + "px"
-                    ref.style.left = (startingPosition.x - offset.x) + "px"
+                if (!ref.dragInitialized) {
+                    ref.style.top = (ref.startingPosition.y - offset.y) + "px"
+                    ref.style.left = (ref.startingPosition.x - offset.x) + "px"
                     ref.style.zIndex = 999
 
-                    initiated = true
+                    ref.dragInitialized = true
                 }
 
                 ref.style.left = (event.clientX - offset.x) + "px"
                 ref.style.top = (event.clientY - offset.y) + "px"
 
-                if (startingPosition.x - event.clientX < 0) {
-                    ref.style.width = (event.clientX - startingPosition.x) + "px"
-                    translation.x = (startingPosition.x - event.clientX)
+                if (ref.startingPosition.x - event.clientX < 0) {
+                    ref.style.width = (event.clientX - ref.startingPosition.x) + "px"
+                    translation.x = (ref.startingPosition.x - event.clientX)
                 } else {
-                    ref.style.width = (startingPosition.x - event.clientX) + "px"
+                    ref.style.width = (ref.startingPosition.x - event.clientX) + "px"
                     translation.x = 0
                 }
-                if (startingPosition.y - event.clientY < 0) {
-                    ref.style.height = (event.clientY - startingPosition.y) + "px"
-                    translation.y = (startingPosition.y - event.clientY)
+                if (ref.startingPosition.y - event.clientY < 0) {
+                    ref.style.height = (event.clientY - ref.startingPosition.y) + "px"
+                    translation.y = (ref.startingPosition.y - event.clientY)
                 } else {
-                    ref.style.height = (startingPosition.y - event.clientY) + "px"
+                    ref.style.height = (ref.startingPosition.y - event.clientY) + "px"
                     translation.y = 0
                 }
 
@@ -56,7 +54,7 @@
     }
 
     function checkFocus(target) {
-        return (ref.parentNode === target || target.id === targetElementID) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+        return (ref.parentElement === target || target.id === targetElementID) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
     }
 
     const handleMouseDown = (event) => {
@@ -65,11 +63,11 @@
         if (event.button === LEFT_BUTTON && checkFocus(target)) {
             if (!event.ctrlKey)
                 setSelected([])
-            startingPosition = {x: event.clientX, y: event.clientY}
+            ref.startingPosition = {x: event.clientX, y: event.clientY}
             document.addEventListener("mousemove", handleMouseMove)
             document.addEventListener("mouseup", ({clientY, clientX}) => {
-                initiated = false
-                startingPosition = {x: 0, y: 0}
+                ref.dragInitialized = false
+                ref.startingPosition = {x: 0, y: 0}
                 const start = {x: event.clientX, y: event.clientY}, end = {x: clientX, y: clientY}
                 const deltaX = Math.abs(start.x - end.x)
                 const deltaY = Math.abs(start.y - end.y)
@@ -101,12 +99,30 @@
             }, {once: true})
         }
     }
+    let initialized = false
+    let lastDisabled = disabled
     $: {
-        if (!disabled && ref)
-            ref.parentNode.addEventListener("mousedown", handleMouseDown)
+        if (lastDisabled !== disabled) {
+            lastDisabled = disabled
+            initialized = false
+            console.log("TRIGGERING")
+        }
+    }
+    $: {
+
+        if (ref) {
+            if (disabled)
+                ref.parentElement.removeEventListener("mousedown", handleMouseDown)
+            if (!initialized && !disabled) {
+                console.log("HERE AGAIN")
+                initialized = true
+
+                ref.parentElement.addEventListener("mousedown", handleMouseDown)
+            }
+        }
     }
     onDestroy(() => {
-        ref.parentNode.removeEventListener("mousedown", handleMouseDown)
+        ref.parentElement.removeEventListener("mousedown", handleMouseDown)
     })
 </script>
 

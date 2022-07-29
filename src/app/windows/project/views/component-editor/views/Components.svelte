@@ -5,21 +5,17 @@
 
     export let translate
     export let tabs
-    export let entity
+    export let engine
     export let currentTab
     export let setCurrentTab
 
+    let entity
+    let currentKey
 
-    $: currentKey =entity?Object.keys(entity.components)[currentTab] : undefined
-
-    let initialized = false
     $: {
-        if (!entity) {
-            setCurrentTab("-2")
-            initialized = false
-        } else if (!initialized && !entity.isFolder) {
-            setCurrentTab("0")
-            initialized = true
+        if (engine.selectedEntity) {
+            entity = engine.selectedEntity
+            currentKey = Object.keys(entity.components)[currentTab]
         }
     }
 
@@ -27,17 +23,17 @@
 
 <div class="wrapper">
     <button
-        class="button"
-        data-highlight={currentTab === "-2" ? "-" : undefined}
-        on:click={() => setCurrentTab("-2")}
+            class="button"
+            data-highlight={currentTab === "-2" ? "-" : undefined}
+            on:click={() => setCurrentTab("-2")}
     >
         <Icon>image</Icon>
         <ToolTip content={translate("RENDERING")}/>
     </button>
     <button
-        class="button"
-        data-highlight={currentTab === "-3" ? "-" : undefined}
-        on:click={() => setCurrentTab("-3")}
+            class="button"
+            data-highlight={currentTab === "-3" ? "-" : undefined}
+            on:click={() => setCurrentTab("-3")}
     >
         <Icon>videocam</Icon>
         <ToolTip content={translate("POST_PROCESSING")}/>
@@ -45,9 +41,9 @@
     {#if entity !== undefined && !entity.isFolder}
         <div class="divider"></div>
         <button
-            data-highlight={currentTab === ENTITY_TAB ? "-" : undefined}
-            class="button"
-            on:click={() => setCurrentTab(ENTITY_TAB)}>
+                data-highlight={currentTab === ENTITY_TAB ? "-" : undefined}
+                class="button"
+                on:click={() => setCurrentTab(ENTITY_TAB)}>
             <Icon>terminal</Icon>
             <ToolTip content={translate("SCRIPTS")} animationDelay={"0ms"}/>
         </button>
@@ -63,3 +59,35 @@
     {/each}
 </div>
 
+
+<style>
+    .wrapper {
+        display: grid;
+        width: 30px;
+        align-content: flex-start;
+        gap: 4px;
+        padding: 2px;
+        border-right: var(--pj-border-primary) 1px solid;
+        background: var(--pj-background-tertiary);
+        position: sticky;
+        top: 0;
+    }
+
+    .button {
+        padding: 0 !important;
+        width: 23px;
+        height: 23px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 3px;
+    }
+
+    .divider {
+        width: 100%;
+        height: 2px;
+        background-color: var(--pj-border-primary);
+    }
+
+</style>

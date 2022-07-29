@@ -5,12 +5,13 @@ import FileSystem from "../libs/FileSystem"
 
 const {ipcRenderer} = window.require("electron")
 
-export default function getFrameOptions(engine, settings, save) {
+export default function getFrameOptions(engine, s) {
+    const settings = {...s}
     return [
         {
             label: "Save",
             icon: "save",
-            onClick: () => save().catch()
+            onClick: () => DataStoreController.save().catch()
         },
         {
             label: engine.executingAnimation ? "Stop" : "Play",
@@ -111,6 +112,7 @@ export default function getFrameOptions(engine, settings, save) {
                     label: "Viewport Sidebar",
                     icon: !settings.visible.sideBarViewport ? undefined : "check",
                     onClick: () => {
+
                         settings.visible = {
                             ...settings.visible,
                             sideBarViewport: !settings.visible.sideBarViewport

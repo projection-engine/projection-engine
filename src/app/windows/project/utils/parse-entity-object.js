@@ -105,10 +105,12 @@ export default async function parseEntityObject(entity) {
     const parsedEntity = new Entity(entity.id, entity.name, entity.active)
     Object.keys(entity)
         .forEach(k => {
-            if (k !== "components")
+            if (k !== "components" && k !== parent)
                 parsedEntity[k] = entity[k]
         })
 
+    parsedEntity.parent = undefined
+    parsedEntity.parentCache = entity.parent
     for (const k in entity.components) {
         if (typeof ENTITIES[k] === "function") {
             let component = await ENTITIES[k](entity, k)

@@ -42,7 +42,7 @@
                 state.ortho = !state.ortho
             }}
             label={translate("ENABLED")}
-        />
+    />
     <Range
             label={translate("PROJECTION_SIZE")}
             disabled={!state.ortho}
@@ -78,7 +78,13 @@
         }}
     />
 </Accordion>
-<PostProcessing selected={state}/>
+<PostProcessing
+        selected={state}
+        submit={(key, value) => {
+        state = {...state, [key]: value}
+        submit(key, value)
+    }}
+/>
 
 
 

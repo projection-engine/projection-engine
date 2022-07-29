@@ -41,12 +41,13 @@
 
             window.renderer = new EditorEngine(
                 {w: settings.resolution[0], h: settings.resolution[1]},
-                updateRenderer
+                ref => updateRenderer(ref, engine, settings)
             )
+
             onReady()
         }
-        if (initialized)
-            window.renderer.updateData()
+        if (initialized )
+            updateRenderer(window.renderer, engine, settings)
     }
 
 </script>

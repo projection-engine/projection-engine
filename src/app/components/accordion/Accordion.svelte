@@ -1,12 +1,17 @@
 <script>
     export let type = ""
+    export let title
 </script>
 
 
 <details class="accordion">
     <summary class="summary">
         <span data-icon="-" data-accordion={"true"} style="font-size: 1.25rem">expand_more</span>
-        <slot name="header"/>
+        {#if title}
+            {title}
+        {:else}
+            <slot name="header"/>
+        {/if}
     </summary>
     <div class="content" style={`display: ${type ? type : "grid"}`}>
         <slot/>

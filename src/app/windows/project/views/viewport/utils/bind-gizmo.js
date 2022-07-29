@@ -1,4 +1,5 @@
 import GIZMOS from "../../../static/misc/GIZMOS";
+import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 
 export default  function bindGizmo(selected, settings) {
     const gizmoSystem = window.renderer.editorSystem.gizmoSystem

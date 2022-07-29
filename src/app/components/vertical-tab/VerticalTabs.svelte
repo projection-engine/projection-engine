@@ -6,7 +6,6 @@
     export let absolute = true
     export let tabs = []
     let tab = initialTab !== undefined ? initialTab : -1
-    console.log(absolute)
 </script>
 
 {#if tab > -1 && tabs[tab] && !tabs[tab].disabled}
@@ -28,7 +27,8 @@
     {/if}
 {/if}
 <div
-        class={"bar"}
+        class="bar"
+
         style={!absolute ?  "position: relative" : undefined}
 >
     {#each tabs as option, i}
@@ -66,9 +66,6 @@
 
     }
 
-    .bar[data-hidden="true"] {
-        transform: translateX(+100%);
-    }
 
     .button {
         width: 20px;

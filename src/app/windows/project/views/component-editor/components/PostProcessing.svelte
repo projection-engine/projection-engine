@@ -4,19 +4,23 @@
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
     export let selected
+    export let submit
 </script>
 
 <Accordion title={"Lens distortion"}>
     <Checkbox
         checked={selected.distortion}
-        handleCheck={() => selected.distortion = !selected.distortion}
+        handleCheck={() => {
+                    submit("distortion",  !selected.distortion)
+
+        }}
         label={"Enabled"}
     />
     <Range
         label={"Strength"}
         disabled={!selected.distortion}
         onFinish={v => {
-            selected.distortionStrength = v
+            submit("distortionStrength",  v)
         }}
         incrementPercentage={.01}
         precision={3}
@@ -28,14 +32,14 @@
 <Accordion title={"Chromatic aberration"}>
     <Checkbox
         checked={selected.chromaticAberration}
-        handleCheck={() => selected.chromaticAberration = !selected.chromaticAberration}
-        label={"Chromatic aberration"}
+        handleCheck={() => submit("chromaticAberration", !selected.chromaticAberration)}
+        label={"Enabled"}
     />
     <Range
         label={"Strength"}
         disabled={!selected.chromaticAberration}
         onFinish={v => {
-            selected.chromaticAberrationStrength = v
+            submit("chromaticAberrationStrength",  v)
         }}
         incrementPercentage={.01}
         precision={3}
@@ -48,7 +52,7 @@
 <Accordion title={"Film grain"}>
     <Checkbox
         checked={selected.filmGrain}
-        handleCheck={() => selected.filmGrain = !selected.filmGrain}
+        handleCheck={() => submit("filmGrain",  !selected.filmGrain)}
         label={"Enabled"}
     />
 
@@ -56,7 +60,7 @@
         label={"Strength"}
         disabled={!selected.filmGrain}
         onFinish={v => {
-            selected.filmGrainStrength = v
+            submit("filmGrainStrength",  v)
         }}
         incrementPercentage={.001}
         precision={3}
@@ -68,7 +72,7 @@
     <Checkbox
 
         checked={selected.bloom}
-        handleCheck={() => selected.bloom = !selected.bloom}
+        handleCheck={() => submit("bloom",  !selected.bloom)}
         label={"Enabled"}
     />
 
@@ -77,7 +81,7 @@
 
         disabled={!selected.bloom}
         onFinish={v => {
-            selected.bloomStrength = v
+            submit("bloomStrength",  v)
         }}
         incrementPercentage={.001}
         precision={3}
@@ -90,7 +94,7 @@
         incrementPercentage={.001}
         precision={3}
         onFinish={v => {
-            selected.bloomThreshold = v
+            submit("bloomThreshold",  v)
         }}
         value={selected.bloomThreshold}
 
@@ -107,7 +111,7 @@
         minValue={.1}
         maxValue={10}
         onFinish={v => {
-            selected.gamma = v
+            submit("gamma",  v)
         }}
         value={selected.gamma}
     />
@@ -120,7 +124,7 @@
         precision={3}
         maxValue={10}
         onFinish={v => {
-            selected.exposure = v
+            submit("exposure",  v)
         }}
         value={selected.exposure}
     />

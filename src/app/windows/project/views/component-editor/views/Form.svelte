@@ -20,21 +20,25 @@
     export let engine
     export let currentTab
 
+    $: currentComponent = engine.selectedEntity ? Object.keys(engine.selectedEntity.components)[currentTab] : undefined
+    $: componentRef = currentComponent ? engine.selectedEntity.components[currentComponent] : undefined
     let settings = {}
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     const submit = (component, key, data) => engine.selectedEntity.components[component][key] = data
+
+    console.log(settings)
 </script>
 
 {#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
     <div class="wrapper">
         {#if currentTab !== ENTITY_TAB}
-            {#if key === COMPONENTS.CAMERA}
+            {#if currentComponent === COMPONENTS.CAMERA}
                 <Camera
-                        selected={engine.selectedEntity.components[COMPONENTS.CAMERA]}
-                        submit={(key, value) => engine.selectedEntity.components[COMPONENTS.CAMERA][key] = value}
+                        selected={componentRef}
+                        submit={(key, value) => componentRef[key] = value}
                 />
-            {:else if key === COMPONENTS.TRANSFORM}
+            {:else if currentComponent === COMPONENTS.TRANSFORM}
                 <Transform
                         entityID={engine.selectedEntity.id}
                         engine={engine}
@@ -44,11 +48,11 @@
                         submitScaling={(axis, data) => updateTransformation(axis, data, "scaling", engine.selectedEntity,)}
                         submitTranslation={(axis, data) => updateTransformation(axis, data, "translation", engine.selectedEntity)}
                 />
-            {:else if key === COMPONENTS.MESH}
+            {:else if currentComponent === COMPONENTS.MESH}
                 <Mesh
                         entityID={engine.selectedEntity.id}
                         engine={engine}
-                        selected={engine.selectedEntity.components[COMPONENTS.MESH]}
+                        selected={componentRef}
                         submit={async (val, key) => {
                             if (key)
                                 submit(COMPONENTS.MESH, key, val)
@@ -72,30 +76,30 @@
                                         })
                                     }
                                 }
-                                const component = engine.selectedEntity.components[COMPONENTS.MESH]
+
                                 if (val) {
-                                    component.materialID = val.id
-                                    component.uniforms = val.blob.uniforms
+                                    componentRef.materialID = val.id
+                                    componentRef.uniforms = val.blob.uniforms
                                 } else
-                                    component.materialID = FALLBACK_MATERIAL
+                                    componentRef.materialID = FALLBACK_MATERIAL
                             }
                         }}
 
                 />
-            {:else if key === COMPONENTS.DIRECTIONAL_LIGHT || key === COMPONENTS.POINT_LIGHT}
+            {:else if currentComponent === COMPONENTS.DIRECTIONAL_LIGHT || currentComponent === COMPONENTS.POINT_LIGHT}
                 <Lights
                         entityID={engine.selectedEntity.id}
-                        type={key}
-                        selected={engine.selectedEntity.components[key]}
-                        submit={(data, k) => submit(key, k, data)}
-                        submitColor={(data) => submit(key, "color", data)}
+                        type={currentComponent}
+                        selected={componentRef}
+                        submit={(data, k) => submit(currentComponent, k, data)}
+                        submitColor={(data) => submit(currentComponent, "color", data)}
                 />
 
-            {:else if key === COMPONENTS.PROBE}
+            {:else if currentComponent === COMPONENTS.PROBE}
                 <Probe
-                        selected={engine.selectedEntity.components[key]}
+                        selected={componentRef}
                         submit={(data, key) => {
-                            submit(COMPONENTS.PROBE, key, data)
+                            submit(currentComponent, key, data)
                             alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
                         }}
                 />
@@ -116,7 +120,7 @@
         {#if currentTab === "-2"}
             <Rendering/>
         {:else}
-            <PostProcessing selected={settings}/>
+            <PostProcessing selected={settings} submit={(key, value) => DataStoreController.updateSettings({...settings, [key]: value})}/>
         {/if}
     </div>
 {/if}

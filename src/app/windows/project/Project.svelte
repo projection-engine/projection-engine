@@ -51,16 +51,16 @@
             isDataLoaded = true
             loadProject(
                 mesh => {
-
                     engine.meshes.set(mesh.id, mesh)
                     DataStoreController.updateEngine(engine)
                 },
                 async entities => {
-                    console.log(entities)
+
                     const mapped = []
                     for (let i = 0; i < entities.length; i++) {
                         mapped.push(await parseEntityObject(entities[i].data))
                     }
+
                      engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
                 },
                 material => {

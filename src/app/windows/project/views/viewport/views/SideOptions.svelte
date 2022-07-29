@@ -6,7 +6,6 @@
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
 
-    export let selectedEntity
     export let translate
     let settings = {}
     const unsubscribeSettings = DataStoreController.getSettings(v => settings=v)

@@ -149,7 +149,7 @@
                         label={u.label}
                 />
                 )
-            {:else if type === DATA_TYPES.VEC3}
+            {:else if u.type === DATA_TYPES.VEC3}
                 {#if !u.normalized}
 
                     <div class="formWrapper">
@@ -157,16 +157,16 @@
                                 accentColor={"red"}
                                 maxValue={u.max}
                                 minValue={u.min}
-                                onFinish={(v) => updateUniforms(u.key, [parseFloat(v), u.value[1], u.value[2]], obj, true)}
-                                handleChange={v => updateUniforms(u.key, [parseFloat(v), u.value[1], u.value[2]], obj, false)}
+                                onFinish={(v) => updateUniforms(u.key, [parseFloat(v), u.value[1], u.value[2]], u, true)}
+                                handleChange={v => updateUniforms(u.key, [parseFloat(v), u.value[1], u.value[2]], u, false)}
                                 value={u.value ? u.value[0] : 0}
 
                                 label={"X"}
                         />
                         <Range
                                 accentColor={"green"}
-                                onFinish={(v) => updateUniforms(u.key, [u.value[0], parseFloat(v), u.value[2]], obj, true)}
-                                handleChange={v => updateUniforms(u.key, [u.value[0], parseFloat(v), u.value[2]], obj, false)}
+                                onFinish={(v) => updateUniforms(u.key, [u.value[0], parseFloat(v), u.value[2]], u, true)}
+                                handleChange={v => updateUniforms(u.key, [u.value[0], parseFloat(v), u.value[2]], u, false)}
                                 value={u.value ? u.value[1] : 0}
 
                                 label={"Y"}
@@ -175,8 +175,8 @@
                                 accentColor={"blue"}
                                 maxValue={u.max}
                                 minValue={u.min}
-                                onFinish={(v) => updateUniforms(u.key, [u.value[0], u.value[1], parseFloat(v)], obj, true)}
-                                handleChange={v => updateUniforms(u.key, [u.value[0], u.value[1], parseFloat(v)], obj, false)}
+                                onFinish={(v) => updateUniforms(u.key, [u.value[0], u.value[1], parseFloat(v)], u, true)}
+                                handleChange={v => updateUniforms(u.key, [u.value[0], u.value[1], parseFloat(v)], u, false)}
                                 value={u.value ? u.value[2] : 0}
 
                                 label={"Z"}
@@ -184,12 +184,12 @@
                     </div>
                 {:else}
                     <ColorPicker
-                        submit={(_, v) => updateUniforms(u.key, v.map(vv => vv / 255), obj, true)}
+                        submit={(_, v) => updateUniforms(u.key, v.map(vv => vv / 255), u, true)}
                         value={!u.value ? "rgb(0,0,0)" : `rgb(${u.value[0] * 255},${u.value[1] * 255},${u.value[2] * 255})`}
                     />
                 {/if}
 
-            {:else if type === DATA_TYPES.TEXTURE}
+            {:else if u.type === DATA_TYPES.TEXTURE}
 
                 <Selector
                         type={"image"}
@@ -244,7 +244,6 @@
                                         }
                                         submit(values, "uniformValues")
                                     }
-
                                 }
                             }
                         }}

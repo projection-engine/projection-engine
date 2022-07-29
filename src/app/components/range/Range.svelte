@@ -14,7 +14,7 @@
     export let disabled = undefined;
     export let incrementPercentage = .01
     export let value = "0"
-    export let handleChange = undefined;
+    export let handleChange
     export let integer = undefined;
 
     let ref
@@ -86,10 +86,10 @@
 <div
         class={"wrapper labeledWrapper"}
         data-variant={variant}
-        style={{"--accent-color": accentColor}}
+        style={accentColor ? "--accent-color: " + accentColor : undefined}
 >
     {#if label}
-        <div style="min-width: {minLabelWidth}" class="overflow">
+        <div style="min-width: {minLabelWidth}" data-overflow="-">
             {label}
             <ToolTip>
                 {label}

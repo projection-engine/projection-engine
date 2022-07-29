@@ -5,43 +5,21 @@
     import DataStoreController from "../../../stores/DataStoreController";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
-    let engine = {}
     let settings = {}
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
-    let state = {}
-    onMount(() => {
-        const newState = {}
-        newState.FXAASpanMax = settings.FXAASpanMax
-        newState.FXAAReduceMin = settings.FXAAReduceMin
-        newState.FXAAReduceMul = settings.FXAAReduceMul
 
-        newState.shadowMapResolution = settings.shadowMapResolution
-        newState.shadowAtlasQuantity = settings.shadowAtlasQuantity
-        newState.pcfSamples = settings.pcfSamples
-
-        newState.total_strength = settings.total_strength
-        newState.base = settings.base
-        newState.area = settings.area
-        newState.falloff = settings.falloff
-        newState.radius = settings.radius
-        newState.samples = settings.samples
-
-        newState.ssgiQuality = settings.ssgiQuality
-        newState.ssgiBrightness = settings.ssgiBrightness
-        newState.ssgiStepSize = settings.ssgiStepSize
-
-        newState.ssrMaxSteps = settings.ssrMaxSteps
-        newState.ssrStepSize = settings.ssrStepSize
-
-        state = newState
-    })
+    function update(key, value){
+        DataStoreController.updateSettings({...settings, [key]: value})
+    }
 </script>
 <Accordion title={"Resolution"}>
     <Range
             label={"X"}
             variant={"embedded"}
-            onFinish={v => settings.resolution = [v, settings.resolution[1]]}
+            onFinish={v => {
+                update("resolution", [v, settings.resolution[1]])
+            }}
             incrementPercentage={1}
             precision={0}
             handleChange={() => null}
@@ -51,7 +29,9 @@
     <Range
             label={"Y"}
             variant={"embedded"}
-            onFinish={v => settings.resolution = [settings.resolution[0], v]}
+            onFinish={v => {
+                update("resolution", [settings.resolution[0], v])
+            }}
             incrementPercentage={1}
             precision={0}
             handleChange={() => null}
@@ -60,38 +40,47 @@
     />
 </Accordion>
 <Checkbox
-    checked={settings.fxaa}
-    handleCheck={() => settings.fxaa = !settings.fxaa}
-    label={"Anti-aliasing"}
+        checked={settings.fxaa}
+        handleCheck={() => {
+               update("fxaa", !settings.fxaa)
+        }}
+        label={"Anti-aliasing"}
 />
 
 <Accordion title={"Screen space reflections"}>
     <Checkbox
             checked={settings.ssr}
-            handleCheck={() => settings.ssr = !settings.ssr}
+            handleCheck={() => {
+                update("ssr",  !settings.ssr)
+            }}
             label={"Enabled"}
     />
     <Range
             disabled={!settings.ssr}
             label={"Steps"}
-            onFinish={v => settings.ssrMaxSteps = v}
+            onFinish={v => {
+                update("ssrMaxSteps", v)
+
+            }}
             incrementPercentage={1}
             precision={0}
             minValue={0}
             maxValue={100}
             handleChange={v => window.renderer.params.ssrMaxSteps = v}
-            value={state.ssrMaxSteps}
+            value={settings.ssrMaxSteps}
     />
     <Range
             disabled={!settings.ssr}
             label={"Step size"}
-            onFinish={v => settings.ssrStepSize = v}
+            onFinish={v => {
+                update("ssrStepSize", v)
+            }}
             incrementPercentage={.001}
             precision={4}
             minValue={.05}
             maxValue={1}
             handleChange={v => window.renderer.params.ssrStepSize = v}
-            value={state.ssrStepSize}
+            value={settings.ssrStepSize}
     />
 </Accordion>
 
@@ -99,52 +88,53 @@
 <Accordion title={"Global illumination"}>
     <Checkbox
             checked={settings.ssgi}
-            handleCheck={() => settings.ssgi = !settings.ssgi}
+            handleCheck={() =>  {
+                update("ssgi", !settings.ssgi)
+            }}
             label={"Enabled"}
     />
     <Range
             disabled={!settings.ssgi}
             label={"Steps"}
-            onFinish={v => settings.ssgiQuality = v}
+            onFinish={v => {
+                    update("ssgiQuality", v)
+            }}
             incrementPercentage={1}
             precision={0}
             minValue={0}
             maxValue={100}
             handleChange={v => window.renderer.params.ssgiQuality = v}
-            value={state.ssgiQuality}
+            value={settings.ssgiQuality}
     />
 
     <Range
             disabled={!settings.ssgi}
             label={"Intensity"}
             onFinish={v => {
-                        settings.ssgiBrightness = v
-                        state.ssgiBrightness = v
-                    }}
+                update("ssgiBrightness", v)
+            }}
             incrementPercentage={.001}
             precision={4}
             minValue={0}
             maxValue={10}
             handleChange={v => {
-                        // state.ssgiBrightness = v
-                        window.renderer.params.ssgiBrightness = v
-                    }}
-            value={state.ssgiBrightness}
+                window.renderer.params.ssgiBrightness = v
+            }}
+            value={settings.ssgiBrightness}
     />
 
     <Range
             disabled={!settings.ssgi}
             label={"Step size"}
             onFinish={v => {
-                        settings.ssgiStepSize = v
-                        state.ssgiStepSize = v
-                    }}
+                update("ssgiStepSize", v)
+            }}
             incrementPercentage={.001}
             precision={4}
             minValue={.05}
             maxValue={1}
             handleChange={v => window.renderer.params.ssgiStepSize = v}
-            value={state.ssgiStepSize}
+            value={settings.ssgiStepSize}
     />
 
 </Accordion>
@@ -154,35 +144,41 @@
     <Range
             label={"Atlas resolution"}
             accentColor={"red"}
-            onFinish={v => settings.shadowMapResolution = v}
+            onFinish={v => {
+                update("shadowMapResolution", v)
+            }}
             incrementPercentage={1}
             precision={0}
             minValue={1}
-            handleChange={v => state.shadowMapResolution = v}
-            value={state.shadowMapResolution}
+
+            value={settings.shadowMapResolution}
     />
-    <div class="inline">
+    <div data-inline="-">
         <Range
                 label={"Lights"}
                 accentColor={"red"}
-                onFinish={v => settings.shadowAtlasQuantity = v}
+                onFinish={v => {
+                    update("shadowAtlasQuantity", v)
+                }}
                 incrementPercentage={1}
                 precision={0}
                 minValue={1}
-                handleChange={v => state.shadowAtlasQuantity = v}
-                value={state.shadowAtlasQuantity}
+
+                value={settings.shadowAtlasQuantity}
         />
 
         <Range
                 label={"Smoothing samples"}
                 accentColor={"green"}
-                onFinish={v => settings.pcfSamples = v}
+                onFinish={v => {
+                    update("pcfSamples", v)
+                }}
                 incrementPercentage={1}
                 precision={0}
                 minValue={1}
                 maxValue={10}
-                handleChange={v => state.pcfSamples = v}
-                value={state.pcfSamples}
+
+                value={settings.pcfSamples}
         />
     </div>
 </Accordion>
@@ -190,82 +186,94 @@
 <Accordion title={"Ambient occlusion"}>
     <Checkbox
             checked={settings.ao}
-            handleCheck={() => settings.ao = !settings.ao}
+            handleCheck={() => update("ao", !settings.ao)}
             label={"Enabled"}
     />
-    <div class="inline">
+    <div data-inline="-">
         <Range
                 disabled={!settings.ao}
                 label={"Strength"}
                 accentColor={"red"}
-                onFinish={v => settings.total_strength = v}
+                onFinish={v => {
+                    update("total_strength", v)
+                }}
                 incrementPercentage={.001}
                 precision={3}
                 minValue={0}
-                handleChange={v => state.total_strength = v}
-                value={state.total_strength}
+
+                value={settings.total_strength}
         />
         <Range
                 disabled={!settings.ao}
                 label={"Base"}
                 accentColor={"green"}
-                onFinish={v => settings.base = v}
+                onFinish={v => {
+                    update("base", v)
+                }}
                 incrementPercentage={.001}
                 precision={3}
                 minValue={0}
-                handleChange={v => state.base = v}
-                value={state.base}
+
+                value={settings.base}
         />
     </div>
 
-    <div class="inline">
+    <div data-inline="-">
         <Range
                 disabled={!settings.ao}
                 label={"Area"}
                 accentColor={"red"}
-                onFinish={v => settings.area = v}
+                onFinish={v => {
+                    update("area", v)
+                }}
                 incrementPercentage={.001}
                 precision={3}
                 minValue={0}
-                handleChange={v => state.area = v}
-                value={state.area}
+
+                value={settings.area}
         />
         <Range
                 disabled={!settings.ao}
                 label={"Falloff"}
                 accentColor={"green"}
-                onFinish={v => settings.falloff = v}
+                onFinish={v => {
+                    update("falloff", v)
+                }}
                 incrementPercentage={.001}
                 precision={3}
                 minValue={0}
-                handleChange={v => state.falloff = v}
-                value={state.falloff}
+
+                value={settings.falloff}
         />
     </div>
 
-    <div class="inline">
+    <div data-inline="-">
         <Range
                 disabled={!settings.ao}
                 label={"Radius"}
                 accentColor={"red"}
-                onFinish={v => settings.radius = v}
+                onFinish={v =>{
+                    update("radius", v)
+                }}
                 incrementPercentage={.001}
                 precision={3}
                 minValue={0}
-                handleChange={v => state.radius = v}
-                value={state.radius}
+
+                value={settings.radius}
         />
 
         <Range
                 label={"Samples"}
                 accentColor={"red"}
-                onFinish={v => settings.samples = v}
+                onFinish={v => {
+                    update("samples", v)
+                }}
                 incrementPercentage={1}
                 precision={0}
                 minValue={1} disabled={true}
                 maxValue={10}
-                handleChange={v => state.samples = v}
-                value={state.samples}
+
+                value={settings.samples}
         />
     </div>
 </Accordion>

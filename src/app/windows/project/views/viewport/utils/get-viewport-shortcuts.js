@@ -25,7 +25,7 @@ export default function getViewportShortcuts() {
             label: "Select Multiple",
             require: [KEYS.ControlLeft, KEYS.Mouse0]
         },
-        {label: "Save", require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => serializer()},
+        {label: "Save", require: [KEYS.ControlLeft, KEYS.KeyS], callback: () => DataStoreController.save().catch()},
         {
             label: "Translate",
             require: [KEYS.KeyG],

@@ -29,44 +29,55 @@
     let ref
     let offset = 0
     let maxDepth = 0
-
+    let entities = engine.entities
+    let lastChangeID
+    $: {
+        if(engine.changeID !== lastChangeID) {
+            lastChangeID = engine.changeID
+            entities = engine.entities
+        }
+    }
     onMount(() => scroller.onMount(ref))
     onDestroy(() => {
         unsubscribeEngine()
         scroller.onDestroy()
     })
-    $: {
 
+    $: {
         window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.GET_HIERARCHY,
             actionID: ID
         })
         window.addEntityWorkerListener(
             payload => {
-                console.log(payload)
+                console.log(payload.map(p => p.node))
                 const data = []
                 for (let i = 0; i < payload.length; i++) {
                     if (!payload[i].node.parent || open[payload[i].node.parent.id])
-                        data.push(payload[i])
+                        data.push({
+                            depth: payload[i].depth,
+                            node: entities.get(payload[i].node.id)
+                        })
                 }
                 toRender = data
             },
             ID
         )
+
     }
-    $: {
-        const newOpen = {...open}
-        const openStructure = (entity) => {
-            if (entity.parent)
-                openStructure(entity.parent)
-            newOpen[entity.id] = true
-        }
-        for (let i = 0; i < engine.selected.length; i++) {
-            const entity = window.renderer.entitiesMap.get(engine.selected[i])
-            openStructure(entity)
-        }
-        open = newOpen
-    }
+    // $: {
+    //     const newOpen = {...open}
+    //     const openStructure = (entity) => {
+    //         if (entity.parent)
+    //             openStructure(entity.parent)
+    //         newOpen[entity.id] = true
+    //     }
+    //     for (let i = 0; i < engine.selected.length; i++) {
+    //         const entity = window.renderer.entitiesMap.get(engine.selected[i])
+    //         openStructure(entity)
+    //     }
+    //     open = newOpen
+    // }
 
 </script>
 <Header
@@ -97,7 +108,7 @@
         {#each toRender as e, i}
             {#if i < maxDepth}
                 <Branch
-                        node={toRender[i + offset].node}
+                        nodeRef={toRender[i + offset].node}
                         depth={toRender[i + offset].depth}
                         selected={engine.selected}
                         setSelected={(entity, ctrlKey) => {

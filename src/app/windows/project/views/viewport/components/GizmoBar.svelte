@@ -95,7 +95,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.NONE ? "filled" : undefined}
-                    on:click={() => settings.gizmo = GIZMOS.NONE}>
+                    on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.NONE})}>
                 <Icon>highlight_alt</Icon>
                 <ToolTip content={translate("SELECTION")}/>
                 {#if !minimal}
@@ -107,7 +107,7 @@
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.CURSOR ? "-" : undefined}
                     style="border-top: var(--pj-border-primary) 1px solid"
-                    on:click={() => settings.gizmo = GIZMOS.CURSOR}>
+                    on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.CURSOR})}>
                 <Icon>adjust</Icon>
                 <ToolTip content={translate("CURSOR")}/>
                 {#if !minimal}
@@ -120,7 +120,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
-                    on:click={() => settings.gizmo = GIZMOS.TRANSLATION}>
+                    on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.TRANSLATION})}>
                 <Icon>open_with</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("T_GIZMO")}</div>
@@ -130,7 +130,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
-                    on:click={() => settings.gizmo = GIZMOS.ROTATION}>
+                    on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})}>
                 <Icon>360</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("R_GIZMO")}</div>
@@ -140,7 +140,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
-                    on:click={() => settings.gizmo = GIZMOS.SCALE}>
+                    on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.SCALE})}>
                 <Icon>open_in_full</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("S_GIZMO")}</div>

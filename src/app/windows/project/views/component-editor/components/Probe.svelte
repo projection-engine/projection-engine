@@ -3,6 +3,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
     export let selected
     export let submit

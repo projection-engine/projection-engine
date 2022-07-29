@@ -24,7 +24,6 @@ export default class EditorEngine extends Renderer {
 
     constructor(resolution,  update) {
         super(resolution, update )
-        this.updateData = () => update(this)
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 
@@ -92,6 +91,7 @@ export default class EditorEngine extends Renderer {
         this.camera.zNear = params.zNear
         this.camera.zFar = params.zFar
         this.camera.fov = params.fov
+
         this.camera.distortion = params.distortion
         this.camera.distortionStrength = params.distortionStrength
         this.camera.chromaticAberration = params.chromaticAberration

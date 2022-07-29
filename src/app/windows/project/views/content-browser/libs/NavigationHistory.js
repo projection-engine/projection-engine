@@ -1,3 +1,4 @@
+import FileSystem from "../../../libs/FileSystem"
 export default class NavigationHistory {
 
     data = []
@@ -29,10 +30,11 @@ export default class NavigationHistory {
         const found = currentDirectory.id
         const split = found.split(FileSystem.sep)
         split.pop()
-        if (split.length > 1)
+        if (!split.join(FileSystem.sep))
             this.setCurrentDirectory({id: FileSystem.sep})
         else
             this.setCurrentDirectory({id: split.join(FileSystem.sep)})
+
 
     }
 

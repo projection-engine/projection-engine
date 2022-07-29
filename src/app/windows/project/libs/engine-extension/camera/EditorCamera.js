@@ -1,6 +1,7 @@
 import {mat4, quat} from "gl-matrix"
+import CameraPostProcessing from "../../engine/basic/CameraPostProcessing";
 
-export default class EditorCamera {
+export default class EditorCamera extends CameraPostProcessing{
     radius = 25
     centerOn = [0, 0, 0]
     ortho = false 
@@ -18,6 +19,7 @@ export default class EditorCamera {
     gizmoReference
 
     constructor() {
+        super()
         this.pitch = .5
         this.yaw = .5
         this.updateViewMatrix()

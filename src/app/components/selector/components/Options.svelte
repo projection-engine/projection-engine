@@ -9,7 +9,6 @@
 
     export let handleChange
     export let type
-    export let selected
     export let setState
     export let state
     export let store
@@ -32,7 +31,7 @@
         <button
                 class="reset-button"
                 on:click={() => {
-                handleChange(undefined, () => setState({name: translate("EMPTY")}), () => dropdownContext.setOpen(false))
+                handleChange(undefined, () => setState({name: translate("EMPTY")}))
             }}
 
         >
@@ -45,7 +44,7 @@
                 class="reset-button"
 
                 on:click={() => {
-                handleChange(undefined, () => setState({name: translate("EMPTY")}), () => dropdownContext.setOpen(false))
+                handleChange(undefined, () => setState({name: translate("EMPTY")}))
             }}
         >
             <ToolTip>{translate("REMOVE_SCRIPT")}</ToolTip>

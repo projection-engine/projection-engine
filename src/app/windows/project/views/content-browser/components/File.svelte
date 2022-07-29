@@ -92,7 +92,7 @@
             <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
             <div
                 title={"Files"}
-                class="floatingIconWrapper"
+                class="floating-icon-wrapper"
             >
                 {childrenQuantity}
             </div>
@@ -105,8 +105,8 @@
                     {metadata.icon}
                 </Icon>
 
-                <div class= "floatingIconWrapper">
-                    <Icon class="floatingIcon">{metadata.icon}</Icon>
+                <div class= "floating-icon-wrapper">
+                    <Icon>{metadata.icon}</Icon>
                 </div>
             </Preview>
         </div>
@@ -140,7 +140,7 @@
     }
 
 
-    .floatingIconWrapper {
+    .floating-icon-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -154,10 +154,6 @@
         font-size: 0.7rem !important;
     }
 
-    .floatingIcon {
-        color: var(--pj-color-secondary);
-        font-size: 1.1rem !important;
-    }
 
     .image {
         max-height: 100%;

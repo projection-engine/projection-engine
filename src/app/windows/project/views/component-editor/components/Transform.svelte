@@ -2,10 +2,9 @@
     import Range from "../../../../../components/range/Range.svelte";
     import Transformation from "../../../libs/engine/utils/Transformation";
 
-    export let entityID
+
     export let selected
     export let submitRotation
-    export let submitTranslation
     export let submitScaling
 
     let state
@@ -76,7 +75,6 @@
                         ...state,
                         zT: v
                     }
-                    // window.renderer.
                 }}
         handleChange={e => {
                     selected.translation[2] = e

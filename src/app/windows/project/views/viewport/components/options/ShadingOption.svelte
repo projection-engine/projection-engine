@@ -63,10 +63,11 @@
     }
     $: {
         if (window.renderer) {
+            const ppSystem = window.renderer.postProcessingPass
             if (shadingModel !== SHADING_MODELS.DETAIL)
-                window.renderer.postProcessingPass.finalPass.workerTexture = getTexture()
+                ppSystem.finalPass.workerTexture = getTexture()
             else
-                window.renderer.postProcessingPass.finalPass.workerTexture = window.renderer.renderingPass.currentFrameFBO.colors[0]
+                ppSystem.finalPass.workerTexture = ppSystem.worker.colors[0]
         }
         if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
             shadingModel = SHADING_MODELS.DETAIL

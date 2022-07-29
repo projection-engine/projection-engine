@@ -3,6 +3,7 @@
     import Hierarchy from "../../../windows/project/views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../windows/project/views/content-browser/ContentBrowser.svelte";
     import ComponentEditor from "../../../windows/project/views/component-editor/ComponentEditor.svelte";
+    import VIEWS from "../VIEWS";
 
     export let styles
     export let extendView
@@ -15,13 +16,13 @@
         switch (instance) {
             // case "blueprint":
             //     return ShaderEditor
-            case "hierarchy":
+            case VIEWS.HIERARCHY:
                 return Hierarchy
-            case "component-editor":
+            case VIEWS.COMPONENT:
                 return ComponentEditor
-            case "files":
+            case VIEWS.FILES:
                 return ContentBrowser
-            case "console":
+            case VIEWS.CONSOLE:
                 return Console
             default:
                 return null

@@ -40,9 +40,9 @@
         </div>
     </Selector>
 
-    <label class=label>
+    <div>
         Linked scripts
-    </label>
+    </div>
     {#if state.length > 0}
         {#each state as s, index}
             <ScriptRow

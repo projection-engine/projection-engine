@@ -25,7 +25,6 @@
         bodyBBox = document.body.getBoundingClientRect()
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
-        console.log(bBox)
         document.addEventListener("mousemove", handleMouseMove)
         mountingPoint.parentElement.addEventListener(
             "mouseleave",
@@ -42,8 +41,14 @@
         portal.open(wrapper)
     })
     onDestroy(() => {
-        mountingPoint.parentElement.removeEventListener("mouseenter", hover)
-        portal.close()
+        try{
+            console.log(wrapper)
+            mountingPoint.parentElement.removeEventListener("mouseenter", hover)
+            portal.close()
+        }catch(err){
+            console.log(err)
+        }
+
     })
 </script>
 

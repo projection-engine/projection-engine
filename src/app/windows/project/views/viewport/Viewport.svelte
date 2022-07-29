@@ -18,7 +18,6 @@
     import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
     import drawIconsToBuffer from "./utils/draw-icons-to-buffer";
 
-    export let utils = {}
     export let isReady = false
 
     const LEFT_BUTTON = 0
@@ -95,6 +94,7 @@
         if (isReady)
             window.renderer.miscellaneousPass.metrics.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     }
+    $: isSelectBoxDisabled = settings.gizmo === GIZMOS.CURSOR
 </script>
 
 
@@ -142,7 +142,7 @@
 
     <SelectBox
             targetElementID={RENDER_TARGET}
-            disabled={settings.gizmo === GIZMOS.CURSOR}
+            disabled={isSelectBoxDisabled}
             setSelected={(_, startCoords, endCoords) => {
             if (startCoords && endCoords) {
                 drawIconsToBuffer()

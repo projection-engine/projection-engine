@@ -95,6 +95,12 @@ a {
 	text-overflow: ellipsis;
 }
 
+
+*[data-inline = "-"]{
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
 *:focus{
 	outline: none;
 }
@@ -125,6 +131,4 @@ a {
 	background-color: #555;
 	border-radius: 5px;
 }
-
-
 
