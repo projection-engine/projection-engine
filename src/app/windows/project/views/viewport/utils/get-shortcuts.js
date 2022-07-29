@@ -3,7 +3,7 @@ import ViewportActions from "../libs/ViewportActions";
 import DataStoreController from "../../../stores/DataStoreController";
 import GIZMOS from "../../../static/misc/GIZMOS";
 
-export default function getViewportShortcuts() {
+export default function getShortcuts() {
     return [
         {
             label: "Invert selection",

@@ -25,9 +25,10 @@
             modal.style.zIndex = "-1"
         }
     }
+
     const portal = createPortal()
     onMount(() => {
-        portal.open(modal)
+        portal.open(modal, 500)
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
@@ -36,8 +37,7 @@
     })
 </script>
 
-<div>
-    <span
+<div
         bind:this={button}
         on:click={() => {
             if(!open && !disabled){
@@ -47,16 +47,16 @@
             }
         }}
         class={open ? "highlight dropdown" : undefined}
-        style={(hideArrow ? "" : "display: flex; align-items: center;") + styles}
-    >
-            <slot name="button"/>
-        {#if !hideArrow}
-            <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>
-        {/if}
-    </span>
+        style={(hideArrow ? "height: fit-content;" : "display: flex; align-items: center; ")}
+>
+    <slot name="button"/>
+    {#if !hideArrow}
+        <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>
+    {/if}
     <div
-        class="modal dropdown"
-        bind:this={modal}
+            style={styles}
+            class="modal dropdown"
+            bind:this={modal}
     >
         <slot/>
     </div>

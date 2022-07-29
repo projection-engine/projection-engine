@@ -10,11 +10,15 @@
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy, onMount} from "svelte";
     import infiniteScroll from "../../libs/infinite-scroll";
+    import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
+    import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
+    import getContextMenu from "./utils/get-context-menu";
+
 
     export let hidden = false
     export let switchView
     export let orientation
-
+    const TRIGGERS = ["data-node"]
     let searchedEntity = ""
     let engine = {}
     let settings = {}
@@ -37,12 +41,14 @@
             entities = engine.entities
         }
     }
+    const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS)
+    $: contextMenuBinding.rebind(getContextMenu())
     onMount(() => scroller.onMount(ref))
     onDestroy(() => {
         unsubscribeEngine()
         scroller.onDestroy()
+        contextMenuBinding.onDestroy()
     })
-
     $: {
         window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.GET_HIERARCHY,
@@ -65,6 +71,8 @@
         )
 
     }
+
+
     // $: {
     //     const newOpen = {...open}
     //     const openStructure = (entity) => {

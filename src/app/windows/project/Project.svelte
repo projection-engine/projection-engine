@@ -13,6 +13,7 @@
     import parseEntityObject from "./utils/parse-entity-object";
     import DataStoreController from "./stores/DataStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
+    import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -91,6 +92,7 @@
         maximizeEvent: true
     }}
     />
+    <ContextMenu/>
     <div class="content">
         <div class="middle">
 <!--            <ViewsContainer-->

@@ -1,25 +1,20 @@
 import updateCursor from "./update-cursor"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import DataStoreController from "../../../stores/DataStoreController";
 
-export default function getOptionsViewport(engine, utils) {
-    const {
-        group,
-        copy,
-        paste,
-        invertSelection,
-        deleteSelected
-    } = utils
+export default function getContextMenu(engine) {
+
     const base = [
         {
             label: "Select all",
             onClick: () => {
-                engine.setSelected(window.renderer.entities.filter(e => !e.isFolder).map(e => e.id))
+              DataStoreController.updateEngine({...engine, selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)})
             },
             shortcut: ["A"]
         },
         {
             label: "Invert selection",
-            onClick: invertSelection,
+            onClick: () => DataStoreController.invertSelection(),
             shortcut: ["Ctrl", "I"]
         }
     ]
@@ -29,20 +24,20 @@ export default function getOptionsViewport(engine, utils) {
         ...base,
         {
             label: "Copy",
-            onClick: () => copy(false),
+            onClick: () => DataStoreController.copy(false),
             icon: "copy_all",
             shortcut: ["Ctrl", "C"]
         },
         {
             label: "Paste",
-            onClick: paste,
+            onClick: () => DataStoreController.paste(),
             icon: "content_paste_go",
             shortcut: ["Ctrl", "V"]
         },
         {divider: true},
         {
             label: "Group entities",
-            onClick: group,
+            onClick: () => DataStoreController.group(),
             shortcut: ["Ctrl", "P"]
         },
         {divider: true},
@@ -54,13 +49,13 @@ export default function getOptionsViewport(engine, utils) {
             icon: "content_copy",
             disabled: true
         },
-        {
-            label: "Duplicate entities",
-            onClick: () => {
-
-            },
-            disabled: true
-        },
+        // {
+        //     label: "Duplicate entities",
+        //     onClick: () => {
+        //
+        //     },
+        //     disabled: true
+        // },
         {divider: true},
         {
             label: "Apply current transformation",
@@ -141,7 +136,7 @@ export default function getOptionsViewport(engine, utils) {
             shortcut: ["Delete"],
             icon: "delete_forever",
             label: "Delete",
-            onClick: deleteSelected
+            onClick:  () => DataStoreController.deleteSelected()
         },
 
     ]

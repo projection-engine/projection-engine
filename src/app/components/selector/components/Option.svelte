@@ -19,7 +19,7 @@
     }}
 >
     <DataIcon state={data} type={type}/>
-    <div data-overflow="-">
+    <div data-overflow="-" style="max-width: 100%">
         {data.name}
     </div>
     <ToolTip content={data.name}/>
@@ -42,6 +42,8 @@
         text-align: center;
         background: var(--pj-background-secondary);
         cursor: pointer;
+
+        overflow: hidden;
     }
 
     .option:hover {

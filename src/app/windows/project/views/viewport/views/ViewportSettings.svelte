@@ -73,14 +73,16 @@
                     </div>
                 </button>
 
-                <button on:click={() => settings.gridVisibility = !settings.gridVisibility}>
+                <button on:click={() => {
+                    DataStoreController.updateSettings({...settings, gridVisibility: !settings.gridVisibility})
+                }}>
                     {#if settings.gridVisibility}
                         <Icon>check</Icon>
                     {/if}
                     {translate("GRID")}
                 </button>
 
-                <button on:click={() => settings.iconsVisibility = !settings.iconsVisibility}>
+                <button on:click={() => DataStoreController.updateSettings({...settings, iconsVisibility: !settings.iconsVisibility})}>
                     {#if settings.iconsVisibility}
                         <Icon>check</Icon>
                     {/if}
@@ -90,7 +92,7 @@
                 <button
                         on:click={() => {
                         const v = !settings.cameraAnimation
-                        settings.cameraAnimation = v
+                        DataStoreController.updateSettings({...settings, cameraAnimation: v})
                         window.renderer.camera.animated = v
                     }}
                 >
@@ -100,7 +102,7 @@
                     {translate("CAM_ANIM")}
                 </button>
 
-                <button on:click={() => settings.background = !settings.background}>
+                <button on:click={() => DataStoreController.updateSettings({...settings, background: !settings.background})}>
                     {#if settings.background}
                         <Icon>check</Icon>
                     {/if}
@@ -112,7 +114,7 @@
                             label={translate("ICON_SIZE")}
                             value={settings.iconSize}
                             maxValue={5} minValue={.1}
-                            onFinish={v => settings.iconSize = v}
+                            onFinish={v => DataStoreController.updateSettings({...settings, iconSize: v})}
                     />
                 </div>
             </Dropdown>

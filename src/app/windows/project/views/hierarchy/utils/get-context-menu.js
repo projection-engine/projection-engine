@@ -23,7 +23,7 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getHierarchyOptions(){
+export default function getContextMenu(){
     return [
         {
             requiredTrigger: "data-self",

@@ -1,11 +1,15 @@
 <script>
-    import getFileOptions from "../utils/get-file-options"
+    import getContextMenu from "../utils/get-context-menu"
     import FileSystem from "../../../libs/FileSystem"
     import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import File from "./File.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
+    import bindShortcut from "../../shortcuts/libs/bind-shortcut";
+    import getShortcuts from "../utils/get-shortcuts";
+    import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
+    import {onDestroy, onMount} from "svelte";
 
     export let fileType
     export let setFileType
@@ -18,7 +22,7 @@
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
-
+    let ref
     function map(arr, items) {
         return arr.map(e => {
             return {
@@ -29,14 +33,13 @@
         })
     }
 
+    const internalID = v4()
     const TRIGGERS = [
         "data-wrapper",
         "data-file",
         "data-folder"
     ]
 
-
-    const internalID = v4()
     let currentItem
     $: filesToRender = (() => {
         let type = fileType?.split("")
@@ -53,19 +56,36 @@
             )
         return map(items.filter(file => !file.parent), items)
     })();
-    $: options = getFileOptions(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
+    $: options = getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
+    $: shortcutOptions = getShortcuts(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected)
+    const shortcutBinding = bindShortcut({
+        focusTargetLabel: translate("TITLE"),
+        focusTargetIcon: "folder",
+        actions: shortcutOptions
+    })
+    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
+    $: contextMenuBinding.rebind(options)
+    $: shortcutBinding.rebind(ref, false, shortcutOptions)
+    onMount(() => shortcutBinding.onMount(ref))
+    onDestroy(() => {
+        shortcutBinding.onDestroy(ref)
+        contextMenuBinding.onDestroy()
+    })
+
+
 </script>
 
 <div
+        bind:this={ref}
         id={internalID}
         class="content"
         data-wrapper={internalID}
 >
     <div class="filesWrapper">
         <SelectBox
-            nodes={items}
-            selected={selected}
-            setSelected={setSelected}
+                nodes={items}
+                selected={selected}
+                setSelected={setSelected}
         />
         {#if filesToRender.length > 0}
             {#each filesToRender as child, index}

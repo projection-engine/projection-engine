@@ -27,7 +27,6 @@
     export let currentDirectory
     export let setCurrentDirectory
     export let setView
-    export let items
     export let navigationHistory
 
     let loading = false
@@ -43,23 +42,27 @@
         <div class="buttonGroup" style="width: 100%">
             <div class="buttonGroup">
                 <button
-                        class="settingsButton"
+                        class="settings-button"
                         on:click={() => navigationHistory.returnDir()}
                 >
                     <Icon>arrow_back</Icon>
                     <ToolTip content={translate("BACK_DIR")}/>
                 </button>
                 <button
-                        class="settingsButton"
+                        class="settings-button"
                         on:click={() => navigationHistory.forwardDir()}
                 >
                     <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
                     <ToolTip content={translate("FORWARD_DIR")}/>
                 </button>
                 <button
-                        class="settingsButton"
-                        disabled="{currentDirectory.id === FileSystem.sep}"
-                        on:click={() => navigationHistory.goToParent(currentDirectory)}
+                        class="settings-button"
+
+                        on:click={() => {
+                            if(currentDirectory.id === FileSystem.sep)
+                                return
+                            navigationHistory.goToParent(currentDirectory)
+                        }}
                 >
                     <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right
                     </Icon>
@@ -68,7 +71,7 @@
                 <div class="divider"></div>
                 <button
                         disabled="{loading}"
-                        class="settingsButton"
+                        class="settings-button"
                         on:click={() => {
                         alert.pushAlert(translate("REFRESHING"), "info")
                         FileStoreController.refreshFiles().then(() => loading = false).catch()
@@ -78,7 +81,7 @@
                     <ToolTip content={translate("REFRESH")}/>
                 </button>
                 <button
-                        class="settingsButton"
+                        class="settings-button"
                         on:click={async () => {
                         let path = currentDirectory.id + FileSystem.sep + translate("NEW_FOLDER")
 
@@ -94,7 +97,7 @@
                     <ToolTip content={translate("CREATE_FOLDER")}/>
                 </button>
                 <button
-                        class="settingsButton"
+                        class="settings-button"
                         data-highlight={starred ? "-" : undefined}
                         on:click={() => {
                         if (starred)
@@ -107,7 +110,7 @@
                     <ToolTip content={translate("ADD_BOOKMARK")}/>
                 </button>
                 <Dropdown disabled={loading} hideArrow={true}>
-                    <button class="settingsButton" slot="button"
+                    <button class="settings-button" slot="button"
                             data-highlight={fileType !== undefined ? "-" : undefined}>
                         <ToolTip content={translate("FILTER_TYPE")}/>
                         <Icon>filter_alt</Icon>
@@ -173,21 +176,21 @@
             <button slot="button" style="padding-left: 8px; border: none">
                 {translate("SELECT")}
             </button>
-            <button on:click={() => selection(SELECTION_TYPES.ALL, items, currentDirectory, setSelected, selected)}>
+            <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory, setSelected, selected)}>
                 {translate("SELECT_ALL")}
             </button>
 
-            <button on:click={() => selection(SELECTION_TYPES.NONE, items, currentDirectory, setSelected, selected)}>
+            <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory, setSelected, selected)}>
                 {translate("SELECT_NONE")}
             </button>
-            <button on:click={() => selection(SELECTION_TYPES.INVERT, items, currentDirectory, setSelected, selected)}>
+            <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory, setSelected, selected)}>
                 {translate("SELECT_INVERT")}
             </button>
         </Dropdown>
         <div class="divider"></div>
         <button
                 style="width: 75px; gap: 4px; padding: 0 16px"
-                class="settingsButton"
+                class="settings-button"
                 on:click={() => importFile(currentDirectory)}
         >
             <Icon>open_in_new</Icon>
@@ -196,7 +199,7 @@
     </div>
 </div>
 <style>
-    .settingsButton {
+    .settings-button {
         height: 23px;
         min-width: 23px;
         padding: 0 2px;
@@ -209,7 +212,7 @@
         border: none !important;
     }
 
-    .settingsButton:disabled {
+    .settings-button:disabled {
         color: #999;
     }
 

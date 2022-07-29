@@ -17,16 +17,17 @@
     $: meshes = store.meshes
 
 
-        let searchString = ""
+    let searchString = ""
     $: filtered = getType(store, type).filter(e => e.name.toLowerCase().includes(searchString.toLowerCase()))
 
 
 </script>
+
 <div class="search-wrapper">
-    <h1 class="search-title">
-        {type}
-    </h1>
-    <Input searchString={searchString} setSearchString={v => searchString = v} width={"100%"}/>
+
+    <Input searchString={searchString} setSearchString={v => searchString = v} width={"100%"} placeholder={translate("SEARCH")}>
+        <Icon slot="icon">search</Icon>
+    </Input>
     {#if type === "material"}
         <button
                 class="reset-button"
@@ -85,12 +86,6 @@
         overflow-y: auto;
     }
 
-    .search-title {
-        margin: 0;
-        font-weight: 550;
-        font-size: 0.75rem;
-        text-transform: capitalize;
-    }
 
     .nothing {
         user-select: none;
@@ -106,9 +101,6 @@
 
     .search-wrapper {
         width: 100%;
-
-        background: var(--pj-border-primary);
-        border-radius: 3px;
         padding: 4px;
         display: grid;
         grid-auto-flow: column;

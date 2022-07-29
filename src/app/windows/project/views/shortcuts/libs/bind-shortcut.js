@@ -1,9 +1,11 @@
-export default function bindShortcuts({
+export default function bindShortcut({
                                           focusTargetLabel,
                                           focusTargetIcon,
                                           actions
                                       }) {
     let initialized = false
+
+    let all = actions
 
     function handler(e) {
         switch (e.type) {
@@ -18,7 +20,7 @@ export default function bindShortcuts({
                     label: focusTargetLabel,
                     icon: focusTargetIcon
                 }
-                window.shortcuts.all = actions
+                window.shortcuts.all = all
                 window.shortcuts.updateShortcuts()
                 window.shortcuts.active = {}
 
@@ -35,7 +37,7 @@ export default function bindShortcuts({
                 return
 
             if (document.activeElement === target) {
-                window.shortcuts.all = actions
+                window.shortcuts.all = all
                 window.shortcuts.updateShortcuts()
             }
             target.tabIndex = 0
@@ -54,9 +56,11 @@ export default function bindShortcuts({
             target.removeEventListener("mouseup", handler)
             target.removeEventListener("mouseenter", handler)
         },
-        rebind(target, disabled) {
+        rebind(target, disabled, actions) {
+            all = actions ? actions : all
             this.onDestroy(target)
             this.onMount(target, disabled)
+
         }
     }
 }

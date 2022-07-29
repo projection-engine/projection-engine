@@ -1,12 +1,13 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import Options from "./Options.svelte";
+    import Options from "./components/Options.svelte";
 
     const RIGHT_BUTTON = 2
 
     let startPosition = undefined, locked = false
     let contextMenu
     let contextProps = {}
+    let open = false
     function checkMouseOffset(startPosition, event) {
         return Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10
     }
@@ -23,6 +24,7 @@
         } else
             target.style.top = (event.clientY - 8) + "px"
         target.style.zIndex = "999"
+
     }
 
     const handleContext = (event) => {
@@ -54,15 +56,18 @@
                             trigger = has
                     })
 
-
-                    contextMenu.focus()
+                    open = true
                     contextProps = {
                         options:window.contextMenu.focused.options,
                         selected: targets[0],
                         trigger,
                         event,
-                        close: () => contextMenu.style.zIndex = "-1",
-                        callback:() => setPlacementOffset(contextMenu, event)
+                        close: () => {
+                            open = false
+                            contextMenu.style.zIndex = "-1"
+                        },
+                        callback:() => setPlacementOffset(contextMenu, event),
+                        open: true
                     }
                 }
             }
@@ -83,6 +88,9 @@
                 startPosition = {x: event.clientX, y: event.clientY}
                 window.contextMenu.focused = focused
             }
+        }else if(!contextMenu.contains(event.target)) {
+            open = false
+            contextMenu.style.zIndex = "-1"
         }
     }
     onMount(() => {
@@ -97,18 +105,32 @@
         document.removeEventListener("mousedown", handleMouseDown)
         contextMenu.parentElement.removeEventListener("mouseup", handleContext)
     })
+
 </script>
 
 <div
+    class="wrapper"
     bind:this={contextMenu}
-    tabindex="0"
-    on:blur={e => {
-        if(!e.currentTarget.contains(e.nativeEvent.relatedTarget)) {
-            window.contextMenu.focused = undefined
-            contextMenu.style.zIndex = "-1"
-            startPosition = undefined
-        }
-    }}
 >
-    <Options {...contextProps}/>
+    {#if open}
+        <Options {...contextProps}/>
+    {/if}
 </div>
+
+<style>
+
+    .wrapper {
+        position: absolute;
+        z-index: -1;
+        background: var(--pj-background-quaternary-light);
+        border: var(--pj-border-primary) 1px solid;
+        width: 225px;
+        max-height: 300px;
+        padding: 2px;
+        border-radius: 3px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: var(--pj-boxshadow);
+    }
+
+</style>

@@ -1,5 +1,5 @@
 import {useMemo, useState} from "react"
-import bindShortcuts from "../../shortcuts/hooks/bindShortcuts"
+import bindShortcut from "../../shortcuts/libs/bind-shortcut"
 import KEYS from "../../../engine/data/KEYS"
 import addComment from "../utils/addComment"
 import cloneClass from "../../../engine/utils/cloneClass"
@@ -110,7 +110,7 @@ export default function useShortcuts(hook,  save, internalID) {
             }
         ]
     }, [hook.nodes, hook.links, toCopy, hook.selected, hook.changed])
-    bindShortcuts({
+    bindShortcut({
         focusTargetLabel:  "Shader Editor",
         focusTargetIcon:  "texture",
         focusTarget: internalID,

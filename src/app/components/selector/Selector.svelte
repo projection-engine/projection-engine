@@ -21,7 +21,6 @@
     onDestroy(() => unsubscribeStore())
 
 
-
     let state
     $: {
         const rID = (selected?.registryID ? selected?.registryID : selected)
@@ -32,9 +31,11 @@
 
 </script>
 
-<Dropdown hideArrow={true}>
-    <button slot="button"
-            style={`max-height: ${size === "small" ? "25px" : "43px"}; min-height:  ${size === "small" ? "unset" : "43px"}`}>
+<Dropdown hideArrow={true} styles="width: 250px;">
+    <button
+            slot="button"
+            style={`max-height: ${size === "small" ? "25px" : "43px"}; min-height:  ${size === "small" ? "25px" : "43px"}; width: 100%`}
+    >
         <ToolTip content={state.name}/>
         <div class="wrapper">
             {#if size !== "small"}
@@ -43,33 +44,35 @@
             <div data-overflow="-" style="text-align: left">
                 {state.name}
             </div>
-            <div class="buttonType">
+            <div class="button-type">
                 {type}
             </div>
         </div>
     </button>
     <Options
-        translate={translate}
-        handleChange={handleChange}
-        type={type}
+            translate={translate}
+            handleChange={handleChange}
+            type={type}
 
-        selected={selected}
-        setState={v => state = v}
-        state={state}
-        store={store}
+            selected={selected}
+            setState={v => state = v}
+            state={state}
+            store={store}
     />
 </Dropdown>
 
 
 <style>
 
-    .buttonType {
+    .button-type {
         font-size: 0.65rem;
         font-weight: normal;
         text-align: right;
         text-transform: capitalize;
-        width: 100%;
+        width: fit-content;
+        margin-left: auto;
     }
+
     .wrapper {
         font-weight: 550;
         display: flex;

@@ -188,7 +188,8 @@ export default class EnglishLocalization {
             EMPTY: "Empty",
             NOTHING: "Nothing found",
             DEFAULT_MATERIAL: "Default material",
-            REMOVE_SCRIPT: "Remove script"
+            REMOVE_SCRIPT: "Remove script",
+            SEARCH: "Search"
         },
         VIEWS: {
             CLOSE: "Close",

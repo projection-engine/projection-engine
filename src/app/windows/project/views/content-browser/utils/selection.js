@@ -1,6 +1,8 @@
 import SELECTION_TYPES from "../templates/SELECTION_TYPES"
+import FileStoreController from "../../../stores/FileStoreController";
 
-export default function selection(type, items, currentDirectory, setSelected, selected) {
+export default function selection(type, currentDirectory, setSelected, selected) {
+    const items = FileStoreController.data.items
     switch (type) {
     case SELECTION_TYPES.INVERT: {
         const linked = items.filter(i => i.id.includes(currentDirectory.id))

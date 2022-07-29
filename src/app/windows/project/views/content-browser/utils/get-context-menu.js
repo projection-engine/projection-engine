@@ -9,7 +9,7 @@ import FILE_TYPES from "../../../../../../static/FILE_TYPES";
 
 
 const {shell} = window.require("electron")
-export default function getFileOptions(currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
+export default function getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
     const check = async (path, ext) => {
         let n = path + ext
         let it = 0

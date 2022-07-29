@@ -1,6 +1,6 @@
 <script>
     import FileSystem from "../../libs/FileSystem"
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";
@@ -13,6 +13,8 @@
     export let hidden
     export let switchView
     export let orientation
+
+
 
     let store = {}
     const unsubscribeStore = FileStoreController.getStore(v => store = v)
@@ -55,24 +57,23 @@
         title={translate("TITLE")}
         icon={"folder"}
 >
-        <ControlBar
-                currentDirectory={currentDirectory}
-                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-                bookmarks={store.bookmarks}
-                items={store.items}
-                translate={translate}
-                setSelected={v => selected = v}
-                selected={selected}
-                fileType={fileType}
-                setFileType={v => fileType = v}
-                searchString={searchString}
-                setSearchString={v => searchString = v}
-                path={path}
-                view={view}
+    <ControlBar
+            currentDirectory={currentDirectory}
+            setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+            bookmarks={store.bookmarks}
+            translate={translate}
+            setSelected={v => selected = v}
+            selected={selected}
+            fileType={fileType}
+            setFileType={v => fileType = v}
+            searchString={searchString}
+            setSearchString={v => searchString = v}
+            path={path}
+            view={view}
 
-                setView={v => view = v}
-                navigationHistory={navigationHistory}
-        />
+            setView={v => view = v}
+            navigationHistory={navigationHistory}
+    />
 </Header>
 {#if !hidden}
     <div class="wrapper">
