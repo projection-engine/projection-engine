@@ -50,16 +50,16 @@ export default function getShortcuts() {
                 DataStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})
             }
         },
-        // {
-        //     label: "Undo",
-        //     require: [KEYS.ControlLeft, KEYS.KeyZ],
-        //     callback: () => engine.returnChanges()
-        // },
-        // {
-        //     label: "Redo",
-        //     require: [KEYS.ControlLeft, KEYS.KeyY],
-        //     callback: () => engine.forwardChanges()
-        // },
+        {
+            label: "Undo",
+            require: [KEYS.ControlLeft, KEYS.KeyZ],
+            callback: () => DataStoreController.undo()
+        },
+        {
+            label: "Redo",
+            require: [KEYS.ControlLeft, KEYS.KeyY],
+            callback: () => DataStoreController.redo()
+        },
         {
             label: "Group",
             require: [KEYS.ControlLeft, KEYS.KeyP],

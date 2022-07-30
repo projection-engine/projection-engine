@@ -3,9 +3,30 @@ import {settingsStore} from "./settings-store";
 import ENGINE from "../static/misc/ENGINE";
 import {SETTINGS} from "../../../../static/WINDOWS";
 import FileSystem from "../libs/FileSystem"
+import DataHistoryController from "./DataHistoryController";
+
+let initialized = false
 export default class DataStoreController {
     static engine = ENGINE
     static settings = SETTINGS
+    static history = new DataHistoryController()
+
+    static undo(){
+        DataStoreController.history.undo()
+    }
+    static redo(){
+        DataStoreController.history.redo()
+    }
+    static saveEntity(entityID, component, key, changeValue){
+ console.log(changeValue)
+        DataStoreController.history.pushChange({
+            target: DataHistoryController.targets.entity,
+            changeValue,
+            entityID,
+            component,
+            key
+        })
+    }
     static getSettings(onChange) {
         return settingsStore.subscribe(newValue => {
             onChange(newValue)
@@ -17,7 +38,18 @@ export default class DataStoreController {
         })
     }
     static updateSettings(value=DataStoreController.settings) {
-        // TODO - SAVE PREVIOUS VERSION
+        console.log(initialized)
+        if(initialized) {
+            DataStoreController.history.pushChange({
+                target: DataHistoryController.targets.settings,
+                changeValue: DataStoreController.settings
+            })
+            DataStoreController.history.pushChange({
+                target: DataHistoryController.targets.settings,
+                changeValue: value
+            })
+        }
+        initialized = true
         DataStoreController.settings = value
         settingsStore.set({...value})
     }

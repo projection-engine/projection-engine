@@ -1,7 +1,7 @@
 import Node from "../Node"
 import {DATA_TYPES} from "../../../../../engine/data/DATA_TYPES"
 import NODE_TYPES from "../../../data/NODE_TYPES"
-import checkFloat from "../../../utils/checkFloat"
+import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
 export default class PerlinNoise extends Node {
@@ -105,7 +105,7 @@ export default class PerlinNoise extends Node {
         let response = []
         if (!this.res && vec) {
             this.res = `res${index}`
-            response.push(`float ${this.res} = pNoise(${vec.type === DATA_TYPES.FLOAT ? `vec2(${vec.name}, ${vec.name})` : vec.name}, ${this.samples}, ${checkFloat(this.persistence)}, ${checkFloat(this.frequency)}, ${checkFloat(this.amplitude)}, ${checkFloat(this.unitValue)});`)
+            response.push(`float ${this.res} = pNoise(${vec.type === DATA_TYPES.FLOAT ? `vec2(${vec.name}, ${vec.name})` : vec.name}, ${this.samples}, ${checkGlslFloat(this.persistence)}, ${checkGlslFloat(this.frequency)}, ${checkGlslFloat(this.amplitude)}, ${checkGlslFloat(this.unitValue)});`)
         }
 
         return response.join("\n")

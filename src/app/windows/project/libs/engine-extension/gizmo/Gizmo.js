@@ -4,6 +4,7 @@ import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../engine/utils/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import INFORMATION_CONTAINER from "../../../static/misc/INFORMATION_CONTAINER"
+import DataStoreController from "../../../stores/DataStoreController";
 
 let gpu
 export default class Gizmo {
@@ -28,6 +29,7 @@ export default class Gizmo {
     mainEntity = undefined
     targetEntities = []
     updateTransformationRealtime = false
+    key
 
     constructor(sys) {
 
@@ -35,6 +37,18 @@ export default class Gizmo {
         this.drawID = (...params) => sys.drawToDepthSampler(...params)
         this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
         this.gizmoShader = sys.gizmoShader
+    }
+
+    onMouseMove(){
+        if(!this.started){
+            this.started = true
+            DataStoreController.saveEntity(
+                this.mainEntity.id,
+                COMPONENTS.TRANSFORM,
+                this.key,
+                this.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
+            )
+        }
     }
 
     onMouseDown(event) {
@@ -55,6 +69,14 @@ export default class Gizmo {
         this.renderTarget.innerText = this.totalMoved.toFixed(3) + " un"
     }
     onMouseUp() {
+        if(this.totalMoved !== 0){
+            DataStoreController.saveEntity(
+                this.mainEntity.id,
+                COMPONENTS.TRANSFORM,
+                this.key,
+                this.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
+            )
+        }
         this.totalMoved = 0
         this.started = false
         document.exitPointerLock()
@@ -97,6 +119,7 @@ export default class Gizmo {
         if (pickID === 0)
             this.onMouseUp(true)
         else {
+
             this.tracking = true
             window.gpu.canvas.requestPointerLock()
             this.renderTarget.style.display = "block"

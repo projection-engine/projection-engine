@@ -2,13 +2,13 @@ import styles from "./styles/ShaderEditor.module.css"
 import React from "react"
 import PropTypes from "prop-types"
 import useShaderEditor from "./hooks/useShaderEditor"
-import compileShaders from "./libs/compileShaders"
+import buildShader from "./libs/build-shader"
 import Header from "../../../views/view/views/Header"
 import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import Editor from "./components/Editor"
-import Available from "./components/Available"
+import Editor from "./components/Editor.svelte"
+import Available from "./components/Nodes.svelte"
 import selection from "./utils/selection"
-import SELECTION_TYPES from "./templates/SELECTION_TYPES"
+import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
 import useLocalization from "../../../global/useLocalization"
 import FileSystem from "../../libs/FileSystem"
 import compiler from "./libs/compiler"
@@ -40,7 +40,7 @@ export default function ShaderEditor(props) {
                     <Button
                         disabled={!hook.openFile?.registryID}
                         className={styles.button}
-                        onClick={() => compileShaders(hook).catch()}
+                        onClick={() => buildShader(hook).catch()}
                     >
                         <Icon styles={{fontSize: "1rem"}}>code</Icon>
                         {translate("COMPILE")}

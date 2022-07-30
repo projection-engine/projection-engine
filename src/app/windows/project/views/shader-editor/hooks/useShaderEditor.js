@@ -1,7 +1,7 @@
 import {useContext, useEffect, useId, useRef, useState} from "react"
 import Material from "../templates/nodes/Material"
 import TextureSample from "../templates/nodes/TextureSample"
-import getNewInstance from "../utils/getNewInstance"
+import getNewInstance from "../utils/get-new-instance"
 import FileSystem from "../../../libs/FileSystem"
 import QuickAccessProvider from "../../../context/QuickAccessProvider"
 import BOARD_SIZE from "../data/BOARD_SIZE"

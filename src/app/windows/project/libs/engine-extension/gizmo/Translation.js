@@ -13,7 +13,7 @@ export default class Translation extends Gizmo {
     tracking = false
     currentCoord = undefined
     gridSize = .01
-
+    key = "translation"
     constructor(sys) {
         super(sys)
         this.xGizmo = mapEntity("x", "TRANSLATION")
@@ -33,6 +33,7 @@ export default class Translation extends Gizmo {
 
 
     onMouseMove(event) {
+        super.onMouseMove()
         const s = Math.abs(this.gridSize > 1 ? event.movementX * MOVEMENT_SCALE * this.gridSize : event.movementX * MOVEMENT_SCALE)
         const sign = Math.sign(event.movementX)
 

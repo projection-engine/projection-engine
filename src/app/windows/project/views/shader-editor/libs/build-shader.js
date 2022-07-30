@@ -1,7 +1,7 @@
 import compiler from "./compiler"
 import {trimString} from "../../../engine/instances/ShaderInstance"
 
-export default async function compileShaders(hook){
+export default async function buildShader(hook){
     alert.pushAlert("Compiling shaders", "info")
     hook.setImpactingChange(false)
     const {

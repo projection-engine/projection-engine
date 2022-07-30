@@ -108,6 +108,8 @@ export default class EnglishLocalization {
             CLEAR: "Clear"
         },
         SHADER_EDITOR: {
+            ADD: "Add",
+            COLOR: "Color",
             TITLE: "Shader Editor",
             SAVE: "Save",
             COMPILE: "Compile",

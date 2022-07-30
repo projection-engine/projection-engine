@@ -1,11 +1,11 @@
-export default function resolveStructure(currentNode, outputs, links, nodes, body, isVertex) {
+export default function resolveRelationship(currentNode, outputs, links, nodes, body, isVertex) {
     const inputs = {}
     const linksToResolve = links.filter(l => l.target.id === currentNode.id)
     linksToResolve.forEach(link => {
         const source = nodes.find(n => n.id === link.source.id)
 
         if (!source.ready)
-            resolveStructure(source, links.filter(l => l.source.id === source.id).map(l => l.source.attribute.key), links, nodes, body)
+            resolveRelationship(source, links.filter(l => l.source.id === source.id).map(l => l.source.attribute.key), links, nodes, body)
 
         inputs[link.target.attribute.key] = {
             name: source[link.source.attribute.key],

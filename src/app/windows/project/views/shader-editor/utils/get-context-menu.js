@@ -1,8 +1,8 @@
-import deleteNode from "./deleteNode"
-import SELECTION_TYPES from "../templates/SELECTION_TYPES"
+import deleteNode from "./delete-node"
+import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
 
-export default function getBoardOptions(pushNode, hook, links, deleteLink) {
+export default function getContextMenu(pushNode, hook, links, deleteLink) {
     return [
         {
             label: "Select all",

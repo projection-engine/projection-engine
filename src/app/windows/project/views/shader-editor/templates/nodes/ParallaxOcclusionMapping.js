@@ -1,7 +1,7 @@
 import Node from "./Node"
 import {DATA_TYPES} from "../../../../engine/data/DATA_TYPES"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import checkFloat from "../../utils/checkFloat"
+import checkGlslFloat from "../../utils/check-glsl-float"
 
 
 export default class ParallaxOcclusionMapping extends Node {
@@ -90,7 +90,7 @@ export default class ParallaxOcclusionMapping extends Node {
 
     getFunctionCall({heightMap, viewDirection, texCoord}, index) {
         this.UVs = "UVs" + index
-        return `vec2 ${this.UVs} = parallaxMapping( ${texCoord.name},  ${viewDirection.name},  ${heightMap.name},  ${checkFloat(this.heightScale)},  ${checkFloat(this.layers)} );`
+        return `vec2 ${this.UVs} = parallaxMapping( ${texCoord.name},  ${viewDirection.name},  ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
     }
 
 }

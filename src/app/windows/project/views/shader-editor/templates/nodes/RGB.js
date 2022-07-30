@@ -1,7 +1,7 @@
 import Node from "./Node"
 import {DATA_TYPES} from "../../../../engine/data/DATA_TYPES"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import checkFloat from "../../utils/checkFloat"
+import checkGlslFloat from "../../utils/check-glsl-float"
 
 
 export default class RGB extends Node {
@@ -48,7 +48,7 @@ export default class RGB extends Node {
         } else {
             this.uniformName = `COLOR_RGB${index}`
 
-            return `#define ${this.uniformName} vec3(${checkFloat(v[0] / 255)}, ${checkFloat(v[1] / 255)}, ${checkFloat(v[2] / 255)})`
+            return `#define ${this.uniformName} vec3(${checkGlslFloat(v[0] / 255)}, ${checkGlslFloat(v[1] / 255)}, ${checkGlslFloat(v[2] / 255)})`
         }
     }
 

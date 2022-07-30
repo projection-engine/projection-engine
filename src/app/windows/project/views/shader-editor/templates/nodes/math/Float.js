@@ -1,7 +1,7 @@
 import Node from "../Node"
 import {DATA_TYPES} from "../../../../../engine/data/DATA_TYPES"
 import NODE_TYPES from "../../../data/NODE_TYPES"
-import checkFloat from "../../../utils/checkFloat"
+import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
 export default class Float extends Node {
@@ -46,7 +46,7 @@ export default class Float extends Node {
             return `uniform float ${this.uniformName};`
         } else {
             this.uniformName = `FLOAT_VAR${index}`
-            return `#define ${this.uniformName} ${checkFloat(this.v)}`
+            return `#define ${this.uniformName} ${checkGlslFloat(this.v)}`
         }
     }
 

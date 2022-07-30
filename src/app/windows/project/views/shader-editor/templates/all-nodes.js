@@ -39,7 +39,7 @@ import CosineH from "./nodes/math/CosineH"
 import Cosine from "./nodes/math/Cosine"
 import MakeVector from "./nodes/vec/MakeVector"
 
-export const availableNodes = [
+export const allNodes = [
     {
         label: "MakeVector",
         dataTransfer: "MakeVector",

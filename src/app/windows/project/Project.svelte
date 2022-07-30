@@ -62,7 +62,7 @@
                         mapped.push(await parseEntityObject(entities[i].data))
                     }
 
-                     engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
                 },
                 material => {
                     engine.materials.push(material)
@@ -95,29 +95,26 @@
     <ContextMenu/>
     <div class="content">
         <div class="middle">
-<!--            <ViewsContainer-->
-<!--                    setTabs={(tabs) => updateView("bottom", tabs)}-->
-<!--                    tabs={view.bottom}-->
-<!--                    resizePosition={"top"}-->
-<!--                    orientation={"horizontal"}-->
-<!--            />-->
+            <ViewsContainer
+                    setTabs={(tabs) => updateView("left", tabs)}
+                    tabs={view.left}
+                    orientation={"vertical"}
+                    resizePosition={"top"}
+            />
             {#if isMetadataLoaded}
                 <Viewport isReady={isReady}>
                     <Canvas
                             slot="canvas"
-                            onReady={() => {
-                            isReady = true
-                            console.log("IM HERE")
-                        }}
+                            onReady={() => isReady = true}
                     />
                 </Viewport>
             {/if}
             <ViewsContainer
-                setTabs={(tabs) => updateView("right", tabs)}
-                tabs={view.right}
-                orientation={"vertical"}
-                leftOffset={"0%"}
-                resizePosition={"top"}
+                    setTabs={(tabs) => updateView("right", tabs)}
+                    tabs={view.right}
+                    orientation={"vertical"}
+                    leftOffset={"0%"}
+                    resizePosition={"top"}
             />
         </div>
         <ViewsContainer

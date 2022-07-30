@@ -11,6 +11,7 @@ import Conversion from "../../engine/utils/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import mapEntity from "./mapEntity"
 import mesh from "../data/ROTATION_GIZMO.json"
+import DataStoreController from "../../../stores/DataStoreController";
 
 const CSS = {
     backdropFilter: "blur(10px) brightness(70%)",
@@ -40,6 +41,7 @@ export default class Rotation {
     targetRotation = undefined
     mainEntity = undefined
     targetEntities = []
+    started = false
 
     constructor(sys) {
         gpu = window.gpu
@@ -83,6 +85,12 @@ export default class Rotation {
     }
 
     onMouseUp() {
+        DataStoreController.saveEntity(
+            this.mainEntity.id,
+            COMPONENTS.TRANSFORM,
+            "rotationQuat",
+            this.mainEntity.components[COMPONENTS.TRANSFORM].rotationQuat
+        )
         document.exitPointerLock()
 
         this.started = false
@@ -105,8 +113,14 @@ export default class Rotation {
     }
 
     onMouseMove(event) {
-        if (!this.started) {
+        if(!this.started){
             this.started = true
+            DataStoreController.saveEntity(
+                this.mainEntity.id,
+                COMPONENTS.TRANSFORM,
+                "rotationQuat",
+                this.mainEntity.components[COMPONENTS.TRANSFORM].rotationQuat
+            )
         }
 
         switch (this.clickedAxis) {

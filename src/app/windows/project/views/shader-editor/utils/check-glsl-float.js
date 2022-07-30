@@ -1,3 +1,3 @@
-export default function checkFloat(v){
+export default function checkGlslFloat(v){
     return `${v}${v % 1 !== 0 ? "" : "."}`
 }

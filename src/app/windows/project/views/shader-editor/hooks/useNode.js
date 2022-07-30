@@ -1,8 +1,8 @@
 import {useEffect, useMemo, useRef, useState} from "react"
-import getBezierCurve from "../utils/bezierCurve"
+import getBezierCurve from "../utils/get-bezier-curve"
 import NODE_TYPES from "../data/NODE_TYPES"
 import NODE_INFO from "../data/NODE_INFO"
-import dragNode from "../utils/dragNode"
+import dragNode from "../utils/drag-node"
 import LINK_WIDTH from "../data/LINK_WIDTH"
 
 export default function useNode(
@@ -72,7 +72,7 @@ export default function useNode(
     }
 
     useEffect(() => {
-        if(!height){
+        if (!height) {
             const h = ref.current.firstChild.scrollHeight + 4
             setHeight(h >= 35 ? h : 55)
         }
@@ -80,17 +80,20 @@ export default function useNode(
         return () => document.removeEventListener("mousedown", handleDragStart)
     }, [node, selected, isSelected])
 
-
-    const width = useMemo(() => {
+    let width
+    $: {
         switch (node.size) {
-        case 0:
-            return "225px"
-        case 1:
-            return "150px"
-        default:
-            return "135px"
+            case 0:
+                width = "225px"
+                break
+            case 1:
+                width = "150px"
+                break
+            default:
+                width = "135px"
+                break
         }
-    }, [])
+    }
 
     return {
         nodeInfo, width,

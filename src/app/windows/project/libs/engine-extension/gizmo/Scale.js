@@ -19,6 +19,7 @@ export default class Scale extends Gizmo {
     distanceX = 0
     distanceY = 0
     distanceZ = 0
+    key = "scaling"
 
     constructor(sys) {
         super(sys)
@@ -33,12 +34,12 @@ export default class Scale extends Gizmo {
     }
 
     onMouseMove(event) {
+        super.onMouseMove()
         const s = Math.abs(this.gridSize > 1 ? event.movementX * MOVEMENT_SCALE * this.gridSize : event.movementX * MOVEMENT_SCALE)
         const sign = Math.sign(event.movementX)
         this.notify(s, sign)
 
         switch (this.clickedAxis) {
-
             case 1: // x
                 this.distanceX += s
                 if (Math.abs(this.distanceX) >= this.gridSize) {

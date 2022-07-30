@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react"
 import bindShortcut from "../../shortcuts/libs/bind-shortcut"
 import KEYS from "../../../engine/data/KEYS"
-import addComment from "../utils/addComment"
+import addComment from "../utils/add-comment"
 import cloneClass from "../../../engine/utils/cloneClass"
 import {v4 as uuidv4} from "uuid"
 

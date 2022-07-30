@@ -1,11 +1,11 @@
 import cloneClass from "../../../engine/utils/cloneClass"
 import NODE_TYPES from "../data/NODE_TYPES"
-import deferredTemplate from "../templates/deferredTemplate"
-import forwardTemplate from "../templates/forwardTemplate"
-import resolveStructure from "./resolveStructure"
+import deferredTemplate from "../templates/shaders/deferred-shader"
+import forwardTemplate from "../templates/shaders/forward-shader"
+import resolveRelationship from "./resolve-relationship"
 import {vertex} from "../../../engine/shaders/mesh/FALLBACK.glsl"
 import MATERIAL_RENDERING_TYPES from "../../../engine/data/MATERIAL_RENDERING_TYPES"
-import unlitTemplate from "../templates/unlitTemplate"
+import unlitTemplate from "../templates/shaders/unlit-shader"
 
 function getShadingTemplate(type) {
     switch (type) {
@@ -78,7 +78,7 @@ export default async function compiler(n, links) {
 // function compileVertex(startPoint, n, links) {
 //     let vertexBody = []
 //     const nodes = n.map(nn => cloneClass(nn))
-//     resolveStructure(startPoint, [], links.filter(l => l.target.id !== startPoint.id || l.target.id === startPoint.id && l.target.attribute.key === "worldOffset"), nodes, vertexBody, true)
+//     resolveRelationship(startPoint, [], links.filter(l => l.target.id !== startPoint.id || l.target.id === startPoint.id && l.target.attribute.key === "worldOffset"), nodes, vertexBody, true)
 //     return vertexBody.join("\n")
 // }
 
@@ -116,7 +116,7 @@ async function compileFrag(n, links,  shadingType, discardedLinks=["worldOffset"
 
 
     let body = []
-    resolveStructure(startPoint, [], links.filter(l => l.target.id !== startPoint.id || l.target.id === startPoint.id && !discardedLinks.includes(l.target.key)), nodes, body, false)
+    resolveRelationship(startPoint, [], links.filter(l => l.target.id !== startPoint.id || l.target.id === startPoint.id && !discardedLinks.includes(l.target.key)), nodes, body, false)
     return {
         code: `
             ${codeString.static}

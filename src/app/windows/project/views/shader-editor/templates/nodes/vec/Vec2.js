@@ -1,7 +1,7 @@
 import Node from "../Node"
 import {DATA_TYPES} from "../../../../../engine/data/DATA_TYPES"
 import NODE_TYPES from "../../../data/NODE_TYPES"
-import checkFloat from "../../../utils/checkFloat"
+import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
 export default class Vec2 extends Node {
@@ -53,7 +53,7 @@ export default class Vec2 extends Node {
             return `uniform float ${this.uniformName};`
         } else {
             this.uniformName = `VEC2_VAR${index}`
-            return `#define ${this.uniformName} vec2(${checkFloat(this.v[0])}, ${checkFloat(this.v[1])})`
+            return `#define ${this.uniformName} vec2(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])})`
         }
     }
 
