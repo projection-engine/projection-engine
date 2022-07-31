@@ -5,6 +5,7 @@
     import "./css/dropdown.css"
     import createPortal from "../create-portal";
 
+    export let width = ""
     export let styles = ""
     export let disabled = false
     export let hideArrow = false
@@ -47,7 +48,7 @@
             }
         }}
         class={open ? "highlight dropdown" : undefined}
-        style={(hideArrow ? "height: fit-content;" : "display: flex; align-items: center; width: 100%;")}
+        style={(hideArrow ? "height: fit-content;" : "display: flex; align-items: center; ") + "width: " + width}
 >
     <slot name="button"/>
     {#if !hideArrow}

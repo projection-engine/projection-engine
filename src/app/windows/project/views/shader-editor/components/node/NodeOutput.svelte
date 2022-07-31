@@ -58,14 +58,10 @@
                                 attribute
                             })
                         )
-
                     onDrag.setDragType(attribute.type)
                 } else
                     e.preventDefault()
             }}
     ></span>
 </div>
-)
-}
-
 

@@ -175,7 +175,7 @@
 {#if !hidden}
     <Editor
             translate={translate}
-
+            isOpen={openFile.registryID !== undefined}
             selected={selected}
             setSelected={v => selected = v}
             nodes={nodes}

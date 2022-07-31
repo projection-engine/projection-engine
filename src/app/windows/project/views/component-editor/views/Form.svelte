@@ -3,7 +3,7 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ENTITY_TAB from "../static/ENTITY_TAB";
     import Scripts from "../components/Scripts.svelte";
-    import Camera from "../components/Camera.svelte";
+    import Component from "../components/Component.svelte";
     import Probe from "../components/Probe.svelte";
     import Lights from "../components/Lights.svelte";
     import Mesh from "../components/Mesh.svelte";
@@ -34,7 +34,7 @@
     <div class="wrapper">
         {#if currentTab !== ENTITY_TAB}
             {#if currentComponent === COMPONENTS.CAMERA}
-                <Camera
+                <Component
                         translate={translate}
                         selected={componentRef}
                         submit={(key, value) => componentRef[key] = value}

@@ -5,7 +5,7 @@ import resolveRelationship from "./resolve-relationship"
 import unlitTemplate from "../templates/shaders/unlit-shader"
 import MATERIAL_RENDERING_TYPES from "../../../libs/engine/data/MATERIAL_RENDERING_TYPES";
 import cloneClass from "../../../libs/engine/utils/clone-class";
-
+import {vertex} from "../../../libs/engine/shaders/mesh/FALLBACK.glsl"
 function getShadingTemplate(type) {
     switch (type) {
     case MATERIAL_RENDERING_TYPES.FORWARD:

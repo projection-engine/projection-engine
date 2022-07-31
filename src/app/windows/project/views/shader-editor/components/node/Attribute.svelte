@@ -34,7 +34,7 @@
     }
 
 
-    const value = node[attribute.key]
+    $: value = node[attribute.key]
     const label = attribute.label, type = attribute.type
 </script>
 
@@ -88,12 +88,12 @@
     </div>
     )
 {:else if type === DATA_TYPES.COLOR}
-        <ColorPicker
-                label={label}
-                submit={(_,arr) => handleChange(arr.map(a => a/255), attribute)}
-                value={Array.isArray(value) ? value.map(v => v * 255) : value}
-                height="17px"
-        />
+    <ColorPicker
+            label={label}
+            submit={({r, g, b}) => handleChange([r/255,g/255,b/255], attribute)}
+            value={Array.isArray(value) ? value.map(v => v * 255) : value}
+            height="25px"
+    />
 
 {:else if type === DATA_TYPES.TEXTURE}
 

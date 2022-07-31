@@ -21,6 +21,7 @@
     export let selected
     export let setSelected
     export let submitNodeVariable
+    export let isOpen
 
     const TRIGGERS = [
         "data-node",
@@ -98,7 +99,6 @@
     })
 
 
-
 </script>
 
 <div class="wrapper">
@@ -108,6 +108,7 @@
             targetElementID={internalID}
             setSelected={setSelected}
     />
+
     <svg
             id={internalID}
             on:dragover={e => e.preventDefault()}
@@ -116,27 +117,31 @@
             data-board={"BOARD"}
             style="height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
             on:drop={event => {
-                        event.preventDefault()
-                        const foundNodes = handleDropBoard(event.dataTransfer.getData("text"))
-                        if (foundNodes)
-                            handleDropNode(foundNodes, event, ref, nodes, setNodes)
-
-                    }}
+                if(isOpen){
+                event.preventDefault()
+                const foundNodes = handleDropBoard(event.dataTransfer.getData("text"))
+                if (foundNodes)
+                    handleDropNode(foundNodes, event, ref, nodes, setNodes)
+                }
+            }}
             bind:this={ref}
             class="board"
             on:mousedown={e => {
+                if(isOpen){
                 if (e.button === 2)
                     handleBoardScroll(ref.parentNode)
                 if (e.target === ref)
                     setSelected([])
+                }
             }}
     >
-        {#each nodes as node}
-            {#if node.isComment}
-                <Comment
-                        onDrag={{setDragType: v => dragType = v, dragType}}
-                        setSelected={(i) => setSelected([i])}
-                        submitName={newName => {
+        {#if isOpen}
+            {#each nodes as node}
+                {#if node.isComment}
+                    <Comment
+                            onDrag={{setDragType: v => dragType = v, dragType}}
+                            setSelected={(i) => setSelected([i])}
+                            submitName={newName => {
                                     setNodes(nodes.map(p => {
                                             if (p.id === node.id)
                                                 p.name = newName
@@ -144,40 +149,43 @@
                                             return p
                                         }))
                                 }}
-                        selected={selected}
-                        node={node}
+                            selected={selected}
+                            node={node}
+                    />
+                {/if}
+            {/each}
+            {#each resolvedLinks as l}
+                <path
+                        data-link={l.target + "-" + l.source}
+                        fill={"none"}
+                        stroke={"#fff"}
+                        stroke-width={LINK_WIDTH}
+                        id={l.target + "-" + l.source}
+                        d=""
                 />
-            {/if}
-        {/each}
-        {#each resolvedLinks as l}
-            <path
-                    data-link={l.target + "-" + l.source}
-                    fill={"none"}
-                    stroke={"#fff"}
-                    stroke-width={LINK_WIDTH}
-                    id={l.target + "-" + l.source}
-                    d=""
-            />
-        {/each}
-        {#each nodes as node}
-            {#if !node.isComment }
-                <Node
-                        onDrag={{setDragType: v => dragType = v, dragType}}
-                        links={resolvedLinks}
-                        setSelected={(i, multi) => {
+            {/each}
+            {#each nodes as node}
+                {#if !node.isComment }
+                    <Node
+                            onDrag={{setDragType: v => dragType = v, dragType}}
+                            links={resolvedLinks}
+                            setSelected={(i, multi) => {
                                     if (multi)
                                         setSelected(i)
                                     else
                                         setSelected([i])
                                 }}
-                        selected={selected}
-                        node={node}
-                        handleLink={() => null}
-                        submitNodeVariable={submitNodeVariable}
-                />
-            {/if}
-        {/each}
+                            selected={selected}
+                            node={node}
+                            handleLink={() => null}
+                            submitNodeVariable={submitNodeVariable}
+                    />
+                {/if}
+            {/each}
+        {/if}
     </svg>
+
+
 </div>
 
 <style>
@@ -195,60 +203,6 @@
         transform-origin: center center;
     }
 
-    .prototypeWrapperBoard {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .prototypeWrapper {
-        display: flex;
-        max-height: 50vh;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .label {
-        font-weight: 550;
-        font-size: 0.7rem;
-        overflow: hidden;
-        max-width: 100%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .contextWrapper {
-        position: absolute;
-        width: fit-content !important;
-        height: fit-content !important;
-        min-height: unset !important;
-        max-height: unset !important;
-    }
-
-    .scaleGroup {
-        position: absolute !important;
-        top: 4px;
-        left: 4px;
-        z-index: 99;
-        height: fit-content;
-        width: fit-content;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .scaleGroupInternal {
-        backdrop-filter: blur(10px) brightness(0.8);
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        border-radius: 5px;
-    }
-
     .wrapper {
         overflow: hidden !important;
         width: 100%;
@@ -257,22 +211,5 @@
         border-radius: 5px 0 0 5px;
     }
 
-    .input {
-        color: var(--pj-color-secondary);
-        padding: 4px;
-        font-size: 0.7rem;
-        font-weight: 550;
-    }
-
-    .content {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        overflow: hidden;
-        background: var(--pj-background-primary);
-        border-radius: 5px;
-        min-width: 250px;
-        position: relative;
-    }
 
 </style>

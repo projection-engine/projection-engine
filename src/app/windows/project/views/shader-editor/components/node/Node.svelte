@@ -128,11 +128,12 @@
                     style="border-color: {nodeInfo.COLOR}"
                     id={node.id + "-node"}
             >
-                <ToolTip content={nodeInfo.LABEL}/>
                 {node.name}
             </div>
             <div class="content">
-                <div class="column" style={node.output.length > 0  ? `max-width: calc(${width} - 75px)` : undefined}>
+                <div
+                        class="column"
+                        style={node.output.length > 0  ? `max-width: calc(${width} - 75px)` : "width: 100%"}>
                     {#each node.inputs as a, i}
                         <NodeInput
                                 handleLink={handleLink}
@@ -176,12 +177,13 @@
     .wrapper {
         overflow: visible;
         box-shadow: var(--pj-boxshadow);
-        background: var(--pj-background-tertiary);
+        background: var(--pj-background-secondary);
         transition: outline 150ms linear;
         outline: transparent 2px solid;
         position: relative;
         border-radius: 3px;
         min-height: 35px;
+        border: var(--pj-border-primary) 1px solid;
     }
 
 
@@ -197,11 +199,21 @@
         font-size: 0.7rem;
         color: var(--pj-color-secondary);
         border-left: transparent 3px solid;
-        background: var(--pj-background-secondary);
+        background: var(--pj-background-primary);
+        border-bottom: var(--pj-border-primary) 1px solid;
         transition: color 150ms linear;
     }
 
     .label:active {
         cursor: grabbing;
     }
+
+    .content {
+        display: flex;
+        height: calc(100% - 30px);
+        overflow: visible;
+        border-radius: 0 0 3px 3px;
+        background-color: var(--pj-background-primary);
+    }
+
 </style>

@@ -1,4 +1,4 @@
-export default function hsvToHsl(h, s, v,) {
+export default function hsv2Hsl(h, s, v,) {
 
         const hh = ((200 - s) * v) / 100;
         return {
