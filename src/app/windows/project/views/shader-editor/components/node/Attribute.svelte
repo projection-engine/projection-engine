@@ -88,15 +88,12 @@
     </div>
     )
 {:else if type === DATA_TYPES.COLOR}
-
-    <div class="colorInput">
-        <div>{label}</div>
         <ColorPicker
+                label={label}
                 submit={(_,arr) => handleChange(arr.map(a => a/255), attribute)}
-                value={value.map(v => v * 255)}
-                size={"small"}
+                value={Array.isArray(value) ? value.map(v => v * 255) : value}
+                height="17px"
         />
-    </div>
 
 {:else if type === DATA_TYPES.TEXTURE}
 
@@ -143,14 +140,6 @@
         gap: 4px;
     }
 
-    .colorInput {
-        display: flex;
-        align-items: center;
-        font-size: .7rem;
-        width: 100%;
-        gap: 4px;
-
-    }
 
     .dropdown {
         border: none;

@@ -1,6 +1,6 @@
 <script>
     import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES";
-
+    import "../../css/NodeIO.css"
     export let handleLinkDrag
     export let onDragEnd
     export let data
@@ -22,7 +22,7 @@
 </script>
 <div
         data-link={link ? (link.target + "-" + link.source) : null}
-        class="attribute" bind:this={wrapperRef}
+        class="attribute node-io" bind:this={wrapperRef}
         data-dtype={"output"}
         data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
         style="justify-content: flex-end">
@@ -32,9 +32,10 @@
     >
         {data.label}
     </div>
-    <div
+    <span
             id={node.id + data.key}
-            class="connection"
+            class="connection node-io"
+
             draggable={!(data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)) ? "true" : undefined}
             data-dtype={"output"}
             data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
@@ -62,7 +63,7 @@
                 } else
                     e.preventDefault()
             }}
-    ></div>
+    ></span>
 </div>
 )
 }
