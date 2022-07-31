@@ -1,7 +1,7 @@
 <script>
     import FileSystem from "../../../libs/FileSystem"
     import handleDrop from "../../../libs/importer/import"
-    import {DATA_TYPES} from "../../../libs/engine/data/DATA_TYPES";
+    import DATA_TYPES from "../../../libs/engine/data/DATA_TYPES";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import TextureInstance from "../../../libs/engine/instances/TextureInstance";

@@ -1,4 +1,6 @@
-export default function handleDropBoard(data, allNodes) {
+import {allNodes} from "../templates/all-nodes";
+
+export default function handleDropBoard(data) {
     const find = (current) => {
         let n = current.find(el => el.dataTransfer === data)
         if (n)

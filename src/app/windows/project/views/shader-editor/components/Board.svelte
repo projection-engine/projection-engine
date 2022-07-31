@@ -1,0 +1,278 @@
+<script>
+
+    import {v4} from "uuid";
+    import Comment from "./node/Comment.svelte";
+    // import Node from "./node/Node.svelte";
+    import LINK_WIDTH from "../data/LINK_WIDTH";
+    import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
+    import handleBoardScroll from "../utils/handle-board-scroll";
+    import handleDropNode from "../utils/handle-drop-node";
+    import handleDropBoard from "../utils/handle-drop-board";
+    import BOARD_SIZE from "../data/BOARD_SIZE";
+    import getContextMenu from "../utils/get-context-menu";
+    import {onDestroy, onMount} from "svelte";
+    import updateLinks from "../utils/update-links";
+    import Node from "./node/Node.svelte";
+
+    export let links
+    export let setLinks
+    export let nodes
+    export let setNodes
+    export let selected
+    export let setSelected
+    export let submitNodeVariable
+
+    const TRIGGERS = [
+        "data-node",
+        "data-board",
+        "data-link",
+        "data-group"
+    ]
+
+    let ref
+    let internalID = v4()
+    let mappedLinks = []
+    let dragType
+    $: resolvedLinks = links.map(l => {
+        return {
+            target: l.target.id + l.target.attribute.key,
+            source: l.source.id + l.source.attribute.key,
+            targetKey: l.target.attribute.key,
+            sourceKey: l.source.attribute.key,
+
+            sourceType: l.source.attribute.type,
+            targetType: l.target.attribute.type
+        }
+    })
+
+
+    const handleWheel = (e) => {
+        e.preventDefault()
+        let s = window.blueprints.scale
+        if (e.wheelDelta > 0 && s < 3)
+            s += s * .1
+        else if (e.wheelDelta < 0 && s >= .5)
+            s -= s * .1
+
+        ref.style.transform = "scale(" + s + ")"
+        window.blueprints.scale = s
+        updateLinks(mappedLinks, ref)
+    }
+
+    $: boardOptions = getContextMenu(
+        nodes,
+        setNodes,
+        setSelected,
+        selected,
+        resolvedLinks,
+        setLinks
+    )
+    $: {
+        if (mappedLinks.length !== resolvedLinks.length)
+            mappedLinks = resolvedLinks.map(l => {
+                const linkPath = document.getElementById(l.target + "-" + l.source)
+                return {
+                    target: document.getElementById(l.target),
+                    source: document.getElementById(l.source),
+                    linkPath
+                }
+            })
+        updateLinks(mappedLinks, ref)
+    }
+
+    const mutationObserver = new MutationObserver(() => updateLinks(mappedLinks, ref))
+    onMount(() => {
+        if (ref && ref.parentElement) {
+            ref.parentElement.scrollTop = BOARD_SIZE / 2
+            ref.parentElement.scrollLeft = BOARD_SIZE / 2
+            ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
+        }
+
+        mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
+        updateLinks(mappedLinks, ref)
+    })
+    onDestroy(() => {
+        if (ref && ref.parentElement)
+            ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})
+        mutationObserver.disconnect()
+    })
+
+
+
+</script>
+
+<div class="wrapper">
+    <SelectBox
+            nodes={nodes}
+            selected={selected}
+            targetElementID={internalID}
+            setSelected={setSelected}
+    />
+    <svg
+            id={internalID}
+            on:dragover={e => e.preventDefault()}
+            on:contextmenu={e => e.preventDefault()}
+
+            data-board={"BOARD"}
+            style="height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
+            on:drop={event => {
+                        event.preventDefault()
+                        const foundNodes = handleDropBoard(event.dataTransfer.getData("text"))
+                        if (foundNodes)
+                            handleDropNode(foundNodes, event, ref, nodes, setNodes)
+
+                    }}
+            bind:this={ref}
+            class="board"
+            on:mousedown={e => {
+                if (e.button === 2)
+                    handleBoardScroll(ref.parentNode)
+                if (e.target === ref)
+                    setSelected([])
+            }}
+    >
+        {#each nodes as node}
+            {#if node.isComment}
+                <Comment
+                        onDrag={{setDragType: v => dragType = v, dragType}}
+                        setSelected={(i) => setSelected([i])}
+                        submitName={newName => {
+                                    setNodes(nodes.map(p => {
+                                            if (p.id === node.id)
+                                                p.name = newName
+
+                                            return p
+                                        }))
+                                }}
+                        selected={selected}
+                        node={node}
+                />
+            {/if}
+        {/each}
+        {#each resolvedLinks as l}
+            <path
+                    data-link={l.target + "-" + l.source}
+                    fill={"none"}
+                    stroke={"#fff"}
+                    stroke-width={LINK_WIDTH}
+                    id={l.target + "-" + l.source}
+                    d=""
+            />
+        {/each}
+        {#each nodes as node}
+            {#if !node.isComment }
+                <Node
+                        onDrag={{setDragType: v => dragType = v, dragType}}
+                        links={resolvedLinks}
+                        setSelected={(i, multi) => {
+                                    if (multi)
+                                        setSelected(i)
+                                    else
+                                        setSelected([i])
+                                }}
+                        selected={selected}
+                        node={node}
+                        handleLink={() => null}
+                        submitNodeVariable={submitNodeVariable}
+                />
+            {/if}
+        {/each}
+    </svg>
+</div>
+
+<style>
+
+    .board {
+        left: 0;
+        top: 0;
+        z-index: 0;
+        position: relative;
+        box-shadow: var(--pj-boxshadow);
+        color-rendering: optimizespeed;
+        background: var(--pj-background-tertiary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
+        background-size: 20px 20px;
+        overflow: hidden;
+        transform-origin: center center;
+    }
+
+    .prototypeWrapperBoard {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .prototypeWrapper {
+        display: flex;
+        max-height: 50vh;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .label {
+        font-weight: 550;
+        font-size: 0.7rem;
+        overflow: hidden;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .contextWrapper {
+        position: absolute;
+        width: fit-content !important;
+        height: fit-content !important;
+        min-height: unset !important;
+        max-height: unset !important;
+    }
+
+    .scaleGroup {
+        position: absolute !important;
+        top: 4px;
+        left: 4px;
+        z-index: 99;
+        height: fit-content;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .scaleGroupInternal {
+        backdrop-filter: blur(10px) brightness(0.8);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-radius: 5px;
+    }
+
+    .wrapper {
+        overflow: hidden !important;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .input {
+        color: var(--pj-color-secondary);
+        padding: 4px;
+        font-size: 0.7rem;
+        font-weight: 550;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        overflow: hidden;
+        background: var(--pj-background-primary);
+        border-radius: 5px;
+        min-width: 250px;
+        position: relative;
+    }
+
+</style>

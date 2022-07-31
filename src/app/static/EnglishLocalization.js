@@ -127,7 +127,11 @@ export default class EnglishLocalization {
             NO_ERRORS: "No errors were found.",
             NODE: "Node",
             STATUS: "Status",
-            SOURCE: "Source code"
+            SOURCE: "Source code",
+            COMPILING: "Compiling shaders",
+            NOT_APPLIED: "Mesh doesn't seem to be applied to a mesh.",
+            SAVED: "Saved",
+            ERROR: "Some error occurred"
         },
         COMPONENT_EDITOR: {
             ENABLED: "Enabled",
@@ -166,10 +170,7 @@ export default class EnglishLocalization {
             ATTENUATION: "Attenuation",
             CASTS_SHADOWS: "Casts shadows",
             SIZE: "Size",
-            COMPILING: "Compiling shaders",
-            NOT_APPLIED: "Mesh doesn't seem to be applied to a mesh.",
-            SAVED: "Saved",
-            ERROR: "Some error occurred"
+
         },
         FILES: {
             SEARCH: "Search",

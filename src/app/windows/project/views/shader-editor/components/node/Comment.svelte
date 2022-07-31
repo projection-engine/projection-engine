@@ -49,8 +49,7 @@
             id={node.id}
 
             class="wrapper"
-            data-seleted={`${isSelected}`}
-            style={"background:" + node.color ? `rgba(${rgb}, .5)` : "rgba(150, 150, 150, .5)"}
+            style={("background:" + node.color ? `rgba(${rgb}, .5);` : "rgba(150, 150, 150, .5);") + `outline-color: ${isSelected ? "yellow" : "unset"}`}
             width="{node.width}"
             height="{node.height}">
         {#if onEdit}
@@ -82,3 +81,41 @@
         {/if}
     </foreignObject>
 </g>
+
+
+<style>
+    .wrapper {
+        border-radius: 3px;
+        outline: transparent 2px solid;
+        resize: both;
+    }
+
+    .header {
+        width: 100%;
+
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: .8rem;
+        font-weight: 550;
+        padding: 4px;
+
+        color: var(--pj-color-secondary);
+        cursor: grab;
+    }
+
+    .wrapper:active {
+        cursor: grabbing;
+    }
+
+    .input {
+        height: 35px;
+        width: 100%;
+        background: none;
+        border: none;
+        outline: none;
+
+        color: var(--pj-color-secondary);
+    }
+</style>

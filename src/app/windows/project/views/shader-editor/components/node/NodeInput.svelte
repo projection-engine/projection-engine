@@ -1,6 +1,7 @@
 <script>
     import linkNodes from "../../utils/link-nodes"
-    import getNodeInput from "../../utils/get-node-input"
+    import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES"
+    import Attribute from "./Attribute.svelte";
 
     export let handleLink
     export let attribute
@@ -11,7 +12,7 @@
 
 
     let wrapperRef
-    $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key)
+    $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key) : undefined
 
 </script>
 <div
@@ -20,7 +21,7 @@
         bind:this={wrapperRef}
         data-dtype={"input"}
         data-disabled={`${attribute.disabled || attribute.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
-        style={{transform: attribute.accept ? "translateX(var(--direction))" : undefined}}
+        style={attribute.accept ? "transform: translateX(var(--direction))" : undefined}
 >
 
     {#if attribute.accept}
@@ -40,7 +41,13 @@
     {#if link}
         {attribute.label}
         {:else}
-        {getNodeInput(attribute, node, (...attrData) => submitNodeVariable(...attrData, node), true)}
+        <Attribute
+                attribute={attribute}
+                node={node}
+                handleChange={(...attrData) => submitNodeVariable(...attrData, node)}
+                returnDefault={true}
+        />
+
     {/if}
 </div>
 

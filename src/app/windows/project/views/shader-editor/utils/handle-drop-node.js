@@ -1,9 +1,10 @@
-export default function handleDropNode(dataToPush, event, ref, hook) {
+export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {
-        if (n.unique && !hook.nodes.find(node => node.constructor.name === n.constructor.name) || !n.unique) {
+        if (n.unique && !nodes.find(node => node.constructor.name === n.constructor.name) || !n.unique) {
+            const bBox = ref.getBoundingClientRect()
             const bounding = {
-                x: ref.current.scrollLeft - ref.current.getBoundingClientRect().left,
-                y: ref.current.scrollTop - ref.current.getBoundingClientRect().top
+                x: ref.scrollLeft - bBox.left,
+                y: ref.scrollTop - bBox.top
             }
             const mousePlacement = {
                 x: event.clientX + bounding.x,
@@ -21,14 +22,8 @@ export default function handleDropNode(dataToPush, event, ref, hook) {
     }
     if (Array.isArray(dataToPush)) {
         const result = dataToPush.map(d => doIt(d)).flat()
-        hook.setChanged(true)
-        hook.setNodes(prev => {
-            return [...prev, ...result]
-        })
-    } else {
-        hook.setChanged(true)
-        hook.setNodes(prev => {
-            return [...prev, doIt(dataToPush)]
-        })
-    }
+        setNodes([...nodes, ...result])
+    } else
+        setNodes([...nodes, doIt(dataToPush)])
+
 }

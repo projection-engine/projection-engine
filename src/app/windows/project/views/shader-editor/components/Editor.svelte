@@ -6,54 +6,65 @@
     import {v4} from "uuid";
     import EnglishLocalization from "../../../../../static/EnglishLocalization";
     import cloneClass from "../../../libs/engine/utils/clone-class";
+    import Board from "./Board.svelte";
 
+    export let selected
+    export let setSelected
+    export let nodes
+    export let setNodes
+    export let links
+    export let setLinks
+    export let translate
     const internalID = v4()
-    $: fallbackSelected = hook.nodes.find(n => n instanceof ShaderEditor)
+    $: fallbackSelected = nodes.find(n => n instanceof ShaderEditor)
 
     const submitNodeVariable = (event, attr, node) => {
-        hook.setNodes(prev => {
-            const n = [...prev]
-            const classLocation = n.findIndex(e => e.id === node.id)
-            const clone = cloneClass(prev[classLocation])
-            clone[attr.key] = event
-            const input = clone.inputs.find(i => i.key === attr.key)
 
-            if (input.onChange)
-                input.onChange(event)
+        const n = [...nodes]
+        const classLocation = n.findIndex(e => e.id === node.id)
+        const clone = cloneClass(nodes[classLocation])
+        clone[attr.key] = event
+        const input = clone.inputs.find(i => i.key === attr.key)
 
-            n[classLocation] = clone
-            return n
-        })
-        hook.setChanged(true)
-        hook.setImpactingChange(true)
+        if (input.onChange)
+            input.onChange(event)
+
+        n[classLocation] = clone
+        setNodes(n)
     }
 
     const updateNode = (key, value, node) => {
-        hook.setNodes(prev => {
-            const n = [...prev],
-                classLocation = n.findIndex(e => e.id === node.id),
-                clone = cloneClass(prev[classLocation])
-            clone[key] = value
-            n[classLocation] = clone
-            return n
-        })
+        const n = [...nodes],
+            classLocation = n.findIndex(e => e.id === node.id),
+            clone = cloneClass(nodes[classLocation])
+        clone[key] = value
+        n[classLocation] = clone
+        setNodes(n)
     }
-
-    const translate = key => EnglishLocalization.PROJECT.SHADER_EDITOR[key]
-
-
 </script>
 
 <div class="wrapper" id={internalID}>
-    <Canvas
-            selected={hook.selected}
-            setSelected={hook.setSelected}
+    <Board
+
+            links={links}
+            setLinks={setLinks}
+            nodes={nodes}
+            setNodes={setNodes}
+            selected={selected}
+            setSelected={setSelected}
+            submitNodeVariable={submitNodeVariable}
     />
     <VerticalTabs
             tabs={[{
                 label: translate("NODE"),
                 component: AttributeEditor,
-                props: {translate}
+                props: {
+                     selected,
+                    nodes,
+                    updateNode,
+                    submitNodeVariable,
+                    translate
+                }
             },
             {
                 label:translate("STATUS"),
@@ -62,3 +73,14 @@
         ]}
     />
 </div>
+
+<style>
+    .wrapper {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        padding: 4px;
+    }
+
+</style>

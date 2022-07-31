@@ -1,13 +1,14 @@
 import deleteNode from "./delete-node"
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
+import {links} from "../components/Board.svelte";
 
-export default function getContextMenu(pushNode, hook, links, deleteLink) {
+export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks) {
     return [
         {
             label: "Select all",
             requiredTrigger: "data-board",
-            onClick: () => selection(SELECTION_TYPES.ALL, hook)
+            onClick: () => selection(SELECTION_TYPES.ALL, nodes, setSelected, selected)
         },
         // {
         //     label: "Select none",
@@ -25,14 +26,20 @@ export default function getContextMenu(pushNode, hook, links, deleteLink) {
             label: "Delete",
             icon: "delete",
             onClick: (node) => {
-                deleteNode(node.getAttribute("data-node"), hook)
+                deleteNode(node.getAttribute("data-node"), nodes, setNodes, links, setLinks, setSelected)
             }
         },
         {
             requiredTrigger: "data-link",
             label: "Delete link",
             icon: "delete",
-            onClick: (node) => deleteLink(node.getAttribute("data-link"))
+            onClick: (node) =>links.filter(l => {
+                const test = {
+                    t: l.target.id + l.target.attribute.key,
+                    s: l.source.id + l.source.attribute.key,
+                }
+                return (test.t + "-" + test.s) !== node.getAttribute("data-link")
+            })
         },
         {
             requiredTrigger: "data-group",
@@ -40,8 +47,8 @@ export default function getContextMenu(pushNode, hook, links, deleteLink) {
             icon: "delete",
             onClick: (node) => {
                 const attr = node.getAttribute("data-group")
-                hook.setChanged(true)
-                hook.setNodes(prev => prev.filter(pr => pr.id !== attr))
+
+                setNodes(nodes.filter(pr => pr.id !== attr))
             }
         },
 

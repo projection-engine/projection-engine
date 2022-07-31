@@ -1,21 +1,20 @@
 <script>
-    import getNodeInput from "../utils/get-node-input"
-    import EnglishLocalization from "../../../../../static/EnglishLocalization";
+
     import Input from "../../../../../components/input/Input.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Material from "../templates/nodes/Material";
+    import Attribute from "./node/Attribute.svelte";
 
     export let selected
     export let nodes
     export let updateNode
     export let submitNodeVariable
-
+    export let translate
     let selectedNode
     $: {
         const index = nodes.findIndex(n => (selected ? n.id === selected : n instanceof Material))
         selectedNode = nodes[index]
     }
-    const translate = key => EnglishLocalization.PROJECT.SHADER_EDITOR[key]
 </script>
 
 <div class="contentWrapper">
@@ -29,7 +28,12 @@
         />
         {#each selectedNode.inputs as attr, i}
             {#if !attr.accept}
-                {getNodeInput(attr, selectedNode, (...attrData) => submitNodeVariable(...attrData, selected))}
+                <Attribute
+                        attribute={attr}
+                        node={selectedNode}
+                        handleChange={(...attrData) => submitNodeVariable(...attrData, selected)}
+                        returnDefault={false}
+                />
             {/if}
         {/each}
         {#if selectedNode.isComment}

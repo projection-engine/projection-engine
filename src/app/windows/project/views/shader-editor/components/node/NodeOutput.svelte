@@ -1,6 +1,5 @@
 <script>
-
-    import {DATA_TYPES} from "../../../../libs/engine/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES";
 
     export let handleLinkDrag
     export let onDragEnd
@@ -26,10 +25,10 @@
         class="attribute" bind:this={wrapperRef}
         data-dtype={"output"}
         data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
-        style={{justifyContent: "flex-end"}}>
+        style="justify-content: flex-end">
     <div
             data-overflow="-"
-            style={{color: data.disabled ? "#999" : data.color, fontWeight: "bold"}}
+            style={`color: ${data.disabled ? "#999" : data.color}; font-weight: bold`}
     >
         {data.label}
     </div>

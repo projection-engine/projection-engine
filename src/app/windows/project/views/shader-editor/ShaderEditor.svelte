@@ -18,6 +18,7 @@
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import Editor from "./components/Editor.svelte";
 
     export let hidden
     export let switchView
@@ -171,9 +172,18 @@
         </button>
     </div>
 </Header>
-<!--{#if !hidden}-->
-<!--    <Editor hook={hook}/>-->
-<!--{/if}-->
+{#if !hidden}
+    <Editor
+            translate={translate}
+
+            selected={selected}
+            setSelected={v => selected = v}
+            nodes={nodes}
+            setNodes={v => nodes = v}
+            links={links}
+            setLinks={v => links = v}
+    />
+{/if}
 
 <style>
     .icon {

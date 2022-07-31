@@ -1,4 +1,4 @@
-import {DATA_TYPES} from "../../../libs/engine/data/DATA_TYPES";
+import DATA_TYPES from "../../../libs/engine/data/DATA_TYPES";
 
 export default function linkNodes(event, inputData, node, handleLink) {
     const data = JSON.parse(event.dataTransfer.getData("text"))

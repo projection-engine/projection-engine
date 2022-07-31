@@ -50,22 +50,25 @@
 </Dropdown>
 
 <style>
+
     .button {
         display: flex;
         align-items: center;
         gap: 4px;
         height: 23px;
-        font-size: .7rem !important;
-        background: var(--pj-border-primary);
+        border: none;
     }
+
 
     .modalAvailableNodes{
         max-height: 350px;
-        width: 250px;
+        width: 100%;
         max-width: unset;
 
         display: grid;
         gap: 4px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .headerAvailableNodes {
