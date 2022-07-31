@@ -1,9 +1,8 @@
 import compiler from "./compiler"
-import {trimString} from "../../../engine/instances/ShaderInstance"
+import {trimString} from "../../../libs/engine/instances/ShaderInstance";
 
-export default async function buildShader(hook){
-    alert.pushAlert("Compiling shaders", "info")
-    hook.setImpactingChange(false)
+export default async function buildShader(nodes, links, openFile, setStatus, translate){
+    alert.pushAlert(translate("COMPILING"), "info")
     const {
         shader,
         vertexShader,
@@ -11,13 +10,13 @@ export default async function buildShader(hook){
         settings,
         info,
         cubeMapShader
-    } = await compiler(hook.nodes.filter(n => !n.isComment), hook.links)
+    } = await compiler(nodes.filter(n => !n.isComment), links)
 
     if (shader) {
-        const currentMaterial = window.renderer.materials.find(m => m.id === hook.openFile.registryID)
+        const currentMaterial = window.renderer.materials.find(m => m.id === openFile.registryID)
         let promise
         if (!currentMaterial)
-            alert.pushAlert("Mesh doesnt seem to be applied to a mesh.", "alert")
+            alert.pushAlert(translate("NOT_APPLIED"), "alert")
         else {
 
             promise = new Promise(resolve => {
@@ -29,7 +28,7 @@ export default async function buildShader(hook){
         const message = m ? m : {messages: []}
         const shaderSplit = trimString(shader).split(";")
         let parsed = []
-        hook.setStatus({
+        setStatus({
             ...message,
             messages: message.messages
                 .map(m => m.split("ERROR"))

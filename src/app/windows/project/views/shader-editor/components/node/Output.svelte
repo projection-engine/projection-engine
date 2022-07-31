@@ -1,7 +1,5 @@
 <script>
 
-    import OnDragProvider from "../../context/DragProvider"
-    import NodeProvider from "../../context/NodeProvider"
     import {DATA_TYPES} from "../../../../libs/engine/data/DATA_TYPES";
 
     export let handleLinkDrag

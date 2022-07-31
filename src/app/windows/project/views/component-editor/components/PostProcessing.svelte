@@ -3,6 +3,7 @@
     import Range from "../../../../../components/range/Range.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
+    export let translate
     export let selected
     export let submit
 </script>

@@ -1,6 +1,6 @@
 <script>
     import FileSystem from "../../libs/FileSystem"
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
     import EnglishLocalization from "../../../../static/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";

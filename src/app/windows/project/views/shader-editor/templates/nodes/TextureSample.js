@@ -1,8 +1,9 @@
 import Node from "./Node"
-import {DATA_TYPES} from "../../../../engine/data/DATA_TYPES"
+import {DATA_TYPES} from "../../../../libs/engine/data/DATA_TYPES"
+import IMAGE_WORKER_ACTIONS from "../../../../libs/engine/data/IMAGE_WORKER_ACTIONS"
 import NODE_TYPES from "../../data/NODE_TYPES"
 import FileSystem from "../../../../libs/FileSystem"
-import IMAGE_WORKER_ACTIONS from "../../../../engine/data/IMAGE_WORKER_ACTIONS"
+
 
 export const TEXTURE_TYPES = {
     RGB: "RGB",

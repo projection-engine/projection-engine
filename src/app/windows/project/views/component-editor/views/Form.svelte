@@ -19,7 +19,7 @@
 
     export let engine
     export let currentTab
-
+    export let translate
     $: currentComponent = engine.selectedEntity ? Object.keys(engine.selectedEntity.components)[currentTab] : undefined
     $: componentRef = currentComponent ? engine.selectedEntity.components[currentComponent] : undefined
     let settings = {}
@@ -35,11 +35,13 @@
         {#if currentTab !== ENTITY_TAB}
             {#if currentComponent === COMPONENTS.CAMERA}
                 <Camera
+                        translate={translate}
                         selected={componentRef}
                         submit={(key, value) => componentRef[key] = value}
                 />
             {:else if currentComponent === COMPONENTS.TRANSFORM}
                 <Transform
+                        translate={translate}
                         entityID={engine.selectedEntity.id}
                         engine={engine}
 
@@ -50,6 +52,7 @@
                 />
             {:else if currentComponent === COMPONENTS.MESH}
                 <Mesh
+                        translate={translate}
                         entityID={engine.selectedEntity.id}
                         engine={engine}
                         selected={componentRef}
@@ -88,6 +91,7 @@
                 />
             {:else if currentComponent === COMPONENTS.DIRECTIONAL_LIGHT || currentComponent === COMPONENTS.POINT_LIGHT}
                 <Lights
+                        translate={translate}
                         entityID={engine.selectedEntity.id}
                         type={currentComponent}
                         selected={componentRef}
@@ -97,15 +101,19 @@
 
             {:else if currentComponent === COMPONENTS.PROBE}
                 <Probe
+                        translate={translate}
                         selected={componentRef}
                         submit={(data, key) => {
                             submit(currentComponent, key, data)
-                            alert.pushAlert( "Reflection captures need to be rebuilt", "alert")
+                            alert.pushAlert(translate("RECOMPUTE_PROBES"), "alert")
                         }}
                 />
             {/if}
         {:else}
-            <Scripts entity={engine.selectedEntity}/>
+            <Scripts
+                    translate={translate}
+                    entity={engine.selectedEntity}
+            />
         {/if}
     </div>
 {:else if engine.executingAnimation}
@@ -113,14 +121,17 @@
         <Icon styles="font-size: 140px">
             play_arrow
         </Icon>
-        Stop the simulation to change attributes.
+        {translate("STOP_SIMULATION")}
     </div>
 {:else}
     <div class="wrapper">
         {#if currentTab === "-2"}
-            <Rendering/>
+            <Rendering translate={translate}/>
         {:else}
-            <PostProcessing selected={settings} submit={(key, value) => DataStoreController.updateSettings({...settings, [key]: value})}/>
+            <PostProcessing
+                selected={settings}
+                submit={(key, value) => DataStoreController.updateSettings({...settings, [key]: value})}
+            />
         {/if}
     </div>
 {/if}

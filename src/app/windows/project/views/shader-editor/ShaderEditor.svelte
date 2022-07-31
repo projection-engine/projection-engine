@@ -1,143 +1,211 @@
-import styles from "./styles/ShaderEditor.module.css"
-import React from "react"
-import PropTypes from "prop-types"
-import useShaderEditor from "./hooks/useShaderEditor"
-import buildShader from "./libs/build-shader"
-import Header from "../../../views/view/views/Header"
-import {Button, Dropdown, DropdownOption, DropdownOptions, Icon, ToolTip} from "@f-ui/core"
-import Editor from "./components/Editor.svelte"
-import Available from "./components/Nodes.svelte"
-import selection from "./utils/selection"
-import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
-import useLocalization from "../../../global/useLocalization"
-import FileSystem from "../../libs/FileSystem"
-import compiler from "./libs/compiler"
+<script>
+    import buildShader from "./libs/build-shader"
+    import Nodes from "./components/Nodes.svelte"
+    import selection from "./utils/selection"
+    import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
+    import FileSystem from "../../libs/FileSystem"
+    import compiler from "./libs/compiler"
+    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import DataStoreController from "../../stores/DataStoreController";
+    import {onDestroy} from "svelte";
+    import {v4} from "uuid";
+    import FileStoreController from "../../stores/FileStoreController";
+    import parseFile from "./libs/parse-file";
+    import Material from "./templates/nodes/Material";
+    import BOARD_SIZE from "./data/BOARD_SIZE";
+    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import Header from "../../../../components/view/components/Header.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
 
-const GRID_SIZE = 20
+    export let hidden
+    export let switchView
+    export let orientation
 
-const {shell} = window.require("electron")
-export default function ShaderEditor(props) {
-    const hook = useShaderEditor()
-    const translate = useLocalization("PROJECT", "SHADER_EDITOR")
+    const GRID_SIZE = 20
+    const {shell} = window.require("electron")
+    const translate = key => EnglishLocalization.PROJECT.SHADER_EDITOR[key]
 
-    return (
-        <>
-            <Header
-                {...props}
-                title={translate("TITLE")}
-                icon={"texture"}
-                orientation={"horizontal"}
-            >
-                <div className={styles.options}>
-                    <div className={styles.divider}/>
-                    <Button
-                        disabled={!hook.openFile?.registryID || !hook.changed}
-                        className={styles.button}
-                        onClick={() => window.blueprints.save(hook).catch()}>
-                        <Icon styles={{fontSize: "1rem"}}>save</Icon>
-                        {translate("SAVE")}
-                    </Button>
-                    <Button
-                        disabled={!hook.openFile?.registryID}
-                        className={styles.button}
-                        onClick={() => buildShader(hook).catch()}
-                    >
-                        <Icon styles={{fontSize: "1rem"}}>code</Icon>
-                        {translate("COMPILE")}
-                    </Button>
-                    <div className={styles.divider}/>
-                    <Dropdown
-                        className={styles.button}
-                        styles={{paddingRight: "2px"}}
-                        disabled={hook.quickAccessMaterials.length === 0}
-                    >
-                        <div className={styles.icon}/>
-                        {hook.openFile?.name ? hook.openFile.name : ""}
-                        <DropdownOptions>
-                            {hook.quickAccessMaterials.map((m, i) => (
-                                <React.Fragment key={hook.internalID + "-material-" + i}>
-                                    <DropdownOption option={{
-                                        label: m.name,
-                                        onClick: () => hook.setOpenFile(m)
-                                    }}/>
-                                </React.Fragment>
-                            ))}
-                        </DropdownOptions>
-                    </Dropdown>
-                    <Available disabled={!hook.openFile.registryID}/>
-                </div>
-                <div className={styles.options} style={{justifyContent: "flex-end"}}>
-                    <Dropdown
-                        className={styles.button}
-                        styles={{paddingRight: "2px"}}
-                    >
-                        {translate("SELECT")}
-                        <DropdownOptions>
-                            <DropdownOption
-                                option={{
-                                    label: translate("ALL"),
-                                    onClick: () => selection(SELECTION_TYPES.ALL, hook),
-                                    shortcut: "A"
-                                }}
-                            />
-                            <DropdownOption
-                                option={{
-                                    label: translate("NONE"),
-                                    onClick: () => selection(SELECTION_TYPES.NONE, hook),
-                                    shortcut: "Alt + A"
-                                }}
-                            />
-                            <DropdownOption
-                                option={{
-                                    label: translate("INVERT"),
-                                    onClick: () => selection(SELECTION_TYPES.INVERT, hook),
-                                    shortcut: "Ctrl + i"
-                                }}
-                            />
-                        </DropdownOptions>
-                    </Dropdown>
+    let engine
+    let fileStore
+    const unsubscribeFiles = FileStoreController.getStore(v => fileStore = v)
+    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    onDestroy(() => {
+        unsubscribeEngine()
+        unsubscribeFiles()
+    })
 
-                    <Button
-                        className={styles.button}
-                        styles={{padding: "4px"}}
-                        onClick={e => {
-                            if (window.blueprints.grid === GRID_SIZE) {
-                                window.blueprints.grid = 1
-                                e.currentTarget.classList.remove(styles.highlightButton)
-                            } else {
-                                window.blueprints.grid = GRID_SIZE
-                                e.currentTarget.classList.add(styles.highlightButton)
-                            }
-                        }}
-                    >
-                        <Icon styles={{fontSize: "1rem"}}>grid_4x4</Icon>
-                        <ToolTip content={translate("GRID")}/>
-                    </Button>
-                    <Button
-                        className={styles.button}
-                        styles={{padding: "4px"}}
-                        disabled={!hook.openFile?.registryID}
-                        onClick={async () => {
-                            const {shader} = await compiler(hook.nodes, hook.links)
-                            const newFile = window.fileSystem.temp + FileSystem.sep + hook.openFile.registryID + ".log"
-                            await window.fileSystem.writeFile(newFile, shader, true)
-                            shell.openPath(newFile).catch()
-                        }}
-                    >
-                        <Icon styles={{fontSize: "1rem"}}>code</Icon>
-                        <ToolTip content={translate("SOURCE")}/>
-                    </Button>
-                </div>
-            </Header>
-            {props.hidden ? null : <Editor hook={hook}/>}
-        </>
-    )
-}
+    const internalID = v4()
+    let openFile = {}
+    let nodes = []
+    let links = []
+    let selected
+    let status
 
-ShaderEditor.propTypes = {
-    hidden: PropTypes.bool,
-    switchView: PropTypes.func,
-    orientation: PropTypes.string,
-}
+    $: {
+        if (engine.selectedEntity && engine.selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
+            const mID = engine.selectedEntity.components[COMPONENTS.MESH].materialID
+            const found = fileStore.materials.find(m => m.registryID === mID)
+            if (found) {
+                alert.pushAlert("Editing " + found.name, "info")
+                openFile = found
+            }
+        }
+    }
+
+    $: {
+        // nodes  = []
+        // links  = []
+        status = {}
+        selected = []
+
+        parseFile(
+            openFile,
+            (d) => {
+                const found = d.find(dd => dd instanceof Material)
+                if (found)
+                    nodes = d
+                else {
+                    const newMat = new Material()
+                    newMat.x = newMat.x + BOARD_SIZE / 2
+                    newMat.y = newMat.y + BOARD_SIZE / 2
+                    nodes = [...d, newMat]
+                }
+            },
+            v => links = v
+        ).catch()
+    }
+</script>
+<Header
+        orientation={orientation}
+        hidden={hidden}
+        switchView={switchView}
+        title={translate("TITLE")}
+        icon={"texture"}
+>
+    <div class="options">
+        <div class="divider"></div>
+        <button
+                disabled={!openFile?.registryID}
+                class="button"
+                on:click={() => window.blueprints.save(openFile, nodes, links, translate).catch()}>
+            <Icon>save</Icon>
+            {translate("SAVE")}
+        </button>
+        <button
+                disabled={!openFile?.registryID}
+                class="button"
+                on:click={() => buildShader(nodes, links, openFile, v => status = v, translate).catch()}
+        >
+            <Icon>code</Icon>
+            {translate("COMPILE")}
+        </button>
+        <div class="divider"></div>
+        <Dropdown disabled={fileStore.materials.length === 0}>
+            <button class="button" slot="button">
+                <div class="icon"></div>
+                {openFile.name ? openFile.name : ""}
+            </button>
 
 
+            {#each fileStore.materials as m, i}
+                <button on:click={ () => openFile = m}>
+                    {m.name}
+                </button>
+            {/each}
+        </Dropdown>
+        {#if openFile.registryID}
+            <Nodes translate={translate}/>
+        {/if}
+    </div>
+    <div class="options" style="justify-content: flex-end">
+        <Dropdown>
+            <button class="button" slot="button">
+                {translate("SELECT")}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes, v => selected = v, selected)}>
+                {translate("ALL")}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes, v => selected = v, selected)}>
+                {translate("NONE")}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes, v => selected = v, selected)}>
+                {translate("INVERT")}
+            </button>
+        </Dropdown>
+
+        <button
+                class="button"
+
+                on:click={e => {
+                if (window.blueprints.grid === GRID_SIZE) {
+                    window.blueprints.grid = 1
+                    e.currentTarget.setAttribute("data-highlight", "")
+
+                } else {
+                    window.blueprints.grid = GRID_SIZE
+                    e.currentTarget.setAttribute("data-highlight", "-")
+
+                }
+            }}
+        >
+            <Icon>grid_4x4</Icon>
+            <ToolTip content={translate("GRID")}/>
+        </button>
+        <button
+                class="button"
+                disabled={!openFile.registryID}
+                on:click={async () => {
+                    const {shader} = await compiler(nodes, links)
+                    const newFile = window.fileSystem.temp + FileSystem.sep + openFile.registryID + ".log"
+                    await window.fileSystem.writeFile(newFile, shader, true)
+                    shell.openPath(newFile).catch()
+                }}
+        >
+            <Icon>code</Icon>
+            <ToolTip content={translate("SOURCE")}/>
+        </button>
+    </div>
+</Header>
+<!--{#if !hidden}-->
+<!--    <Editor hook={hook}/>-->
+<!--{/if}-->
+
+<style>
+    .icon {
+        transition: 150ms linear;
+        background: linear-gradient(to right bottom, white 25%, #333 75%);
+        min-width: 13px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+    }
+
+    .button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 23px;
+        border: none;
+    }
+
+    .options {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 6px;
+        width: 100%;
+        padding-left: 4px;
+    }
+
+    .divider{
+        height: 20px;
+        background: var(--pj-background-tertiary);
+        width: 2px;
+
+    }
+</style>

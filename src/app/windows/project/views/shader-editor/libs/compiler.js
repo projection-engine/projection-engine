@@ -1,11 +1,10 @@
-import cloneClass from "../../../engine/utils/cloneClass"
 import NODE_TYPES from "../data/NODE_TYPES"
 import deferredTemplate from "../templates/shaders/deferred-shader"
 import forwardTemplate from "../templates/shaders/forward-shader"
 import resolveRelationship from "./resolve-relationship"
-import {vertex} from "../../../engine/shaders/mesh/FALLBACK.glsl"
-import MATERIAL_RENDERING_TYPES from "../../../engine/data/MATERIAL_RENDERING_TYPES"
 import unlitTemplate from "../templates/shaders/unlit-shader"
+import MATERIAL_RENDERING_TYPES from "../../../libs/engine/data/MATERIAL_RENDERING_TYPES";
+import cloneClass from "../../../libs/engine/utils/clone-class";
 
 function getShadingTemplate(type) {
     switch (type) {

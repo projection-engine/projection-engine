@@ -11,7 +11,6 @@
     import {onDestroy, onMount} from "svelte";
     import infiniteScroll from "../../libs/infinite-scroll";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
-    import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
     import getContextMenu from "./utils/get-context-menu";
 
 

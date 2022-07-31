@@ -66,14 +66,14 @@ export default function getFrameOptions(engine, s) {
             options: [
                 {
                     label: "Undo",
-                    onClick: () => null,
-                    disabled: true,
+                    onClick: () => DataStoreController.undo(),
+
                     shortcut: "Ctrl - Z"
                 },
                 {
                     label: "Redo",
-                    onClick: () => null,
-                    disabled: true,
+                    onClick: () => DataStoreController.redo(),
+
                     shortcut: "Ctrl - Y"
                 },
                 {divider: true},

@@ -1,10 +1,11 @@
 <script>
     import Range from "../../../../../components/range/Range.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import DataStoreController from "../../../stores/DataStoreController";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
 
+    export let translate
     let settings = {}
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
@@ -13,7 +14,16 @@
         DataStoreController.updateSettings({...settings, [key]: value})
     }
 </script>
-<Accordion title={"Resolution"}>
+
+
+<Checkbox
+        checked={settings.fxaa}
+        handleCheck={() => {
+               update("fxaa", !settings.fxaa)
+        }}
+        label={translate("AA")}
+/>
+<Accordion title={translate("RESOLUTION")}>
     <Range
             label={"X"}
             variant={"embedded"}
@@ -39,25 +49,18 @@
             minValue={1}
     />
 </Accordion>
-<Checkbox
-        checked={settings.fxaa}
-        handleCheck={() => {
-               update("fxaa", !settings.fxaa)
-        }}
-        label={"Anti-aliasing"}
-/>
 
-<Accordion title={"Screen space reflections"}>
+<Accordion title={translate("SSR")}>
     <Checkbox
             checked={settings.ssr}
             handleCheck={() => {
                 update("ssr",  !settings.ssr)
             }}
-            label={"Enabled"}
+            label={translate("ENABLED")}
     />
     <Range
             disabled={!settings.ssr}
-            label={"Steps"}
+            label={translate("STEPS")}
             onFinish={v => {
                 update("ssrMaxSteps", v)
 
@@ -71,7 +74,7 @@
     />
     <Range
             disabled={!settings.ssr}
-            label={"Step size"}
+            label={translate("STEP_SIZE")}
             onFinish={v => {
                 update("ssrStepSize", v)
             }}
@@ -85,17 +88,17 @@
 </Accordion>
 
 
-<Accordion title={"Global illumination"}>
+<Accordion title={translate("SSGI")}>
     <Checkbox
             checked={settings.ssgi}
             handleCheck={() =>  {
                 update("ssgi", !settings.ssgi)
             }}
-            label={"Enabled"}
+            label={translate("ENABLED")}
     />
     <Range
             disabled={!settings.ssgi}
-            label={"Steps"}
+            label={translate("STEPS")}
             onFinish={v => {
                     update("ssgiQuality", v)
             }}
@@ -109,7 +112,7 @@
 
     <Range
             disabled={!settings.ssgi}
-            label={"Intensity"}
+            label={translate("STRENGTH")}
             onFinish={v => {
                 update("ssgiBrightness", v)
             }}
@@ -125,7 +128,7 @@
 
     <Range
             disabled={!settings.ssgi}
-            label={"Step size"}
+            label={translate("STEP_SIZE")}
             onFinish={v => {
                 update("ssgiStepSize", v)
             }}
@@ -139,10 +142,10 @@
 
 </Accordion>
 
-<Accordion title={"Shadows"}>
+<Accordion title={translate("SHADOWS")}>
 
     <Range
-            label={"Atlas resolution"}
+            label={translate("RESOLUTION")}
             accentColor={"red"}
             onFinish={v => {
                 update("shadowMapResolution", v)
@@ -155,7 +158,7 @@
     />
     <div data-inline="-">
         <Range
-                label={"Lights"}
+                label={translate("LIGHTS")}
                 accentColor={"red"}
                 onFinish={v => {
                     update("shadowAtlasQuantity", v)
@@ -168,7 +171,7 @@
         />
 
         <Range
-                label={"Smoothing samples"}
+                label={translate("SMOOTHING_SAMPLES")}
                 accentColor={"green"}
                 onFinish={v => {
                     update("pcfSamples", v)
@@ -183,16 +186,16 @@
     </div>
 </Accordion>
 
-<Accordion title={"Ambient occlusion"}>
+<Accordion title={translate("AO")}>
     <Checkbox
             checked={settings.ao}
             handleCheck={() => update("ao", !settings.ao)}
-            label={"Enabled"}
+            label={translate("ENABLED")}
     />
     <div data-inline="-">
         <Range
                 disabled={!settings.ao}
-                label={"Strength"}
+                label={translate("STRENGTH")}
                 accentColor={"red"}
                 onFinish={v => {
                     update("total_strength", v)
@@ -205,7 +208,7 @@
         />
         <Range
                 disabled={!settings.ao}
-                label={"Base"}
+                label={translate("BASE")}
                 accentColor={"green"}
                 onFinish={v => {
                     update("base", v)
@@ -221,7 +224,7 @@
     <div data-inline="-">
         <Range
                 disabled={!settings.ao}
-                label={"Area"}
+                label={translate("AREA")}
                 accentColor={"red"}
                 onFinish={v => {
                     update("area", v)
@@ -234,7 +237,7 @@
         />
         <Range
                 disabled={!settings.ao}
-                label={"Falloff"}
+                label={translate("FALLOFF")}
                 accentColor={"green"}
                 onFinish={v => {
                     update("falloff", v)
@@ -250,7 +253,8 @@
     <div data-inline="-">
         <Range
                 disabled={!settings.ao}
-                label={"Radius"}
+
+                label={translate("RADIUS")}
                 accentColor={"red"}
                 onFinish={v =>{
                     update("radius", v)
@@ -263,7 +267,7 @@
         />
 
         <Range
-                label={"Samples"}
+                label={translate("SAMPLES")}
                 accentColor={"red"}
                 onFinish={v => {
                     update("samples", v)

@@ -1,6 +1,5 @@
 <script>
 
-    import EnglishLocalization from "../../../../../static/EnglishLocalization";
     import Range from "../../../../../components/range/Range.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
@@ -9,9 +8,10 @@
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     export let selected
     export let submit
+    export let translate
     let state = {}
 
-    const translate = key => EnglishLocalization.PROJECT.COMPONENT_EDITOR[key]
+
     $: {
         if (state.id !== selected.id)
             state = {}

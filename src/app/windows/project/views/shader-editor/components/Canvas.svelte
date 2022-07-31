@@ -9,7 +9,6 @@
     import handleDropNode from "../utils/handle-drop-node";
     import handleDropBoard from "../utils/handle-drop-board";
     import BOARD_SIZE from "../data/BOARD_SIZE";
-    import getBezierCurve from "../utils/get-bezier-curve";
     import getContextMenu from "../utils/get-context-menu";
     import {onDestroy, onMount} from "svelte";
     import updateLinks from "../utils/update-links";

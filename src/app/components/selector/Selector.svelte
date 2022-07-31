@@ -5,8 +5,6 @@
     import EnglishLocalization from "../../static/EnglishLocalization";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
-    import Preview from "../preview/Preview.svelte";
-    import Icon from "../Icon/Icon.svelte";
     import DataIcon from "./components/DataIcon.svelte";
     import Options from "./components/Options.svelte";
 

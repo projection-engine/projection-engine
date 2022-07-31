@@ -8,6 +8,7 @@
     import Form from "./views/Form.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import Components from "./views/Components.svelte";
+
     console.log("ON COMP EDITOR")
 
     export let hidden = false
@@ -95,7 +96,11 @@
                     {/if}
                 </div>
             {/if}
-            <Form engine={engine} currentTab={currentTab} />
+            <Form
+                    translate={translate}
+                    engine={engine}
+                    currentTab={currentTab}
+            />
 
         </div>
     </div>

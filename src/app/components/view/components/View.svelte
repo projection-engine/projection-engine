@@ -4,6 +4,7 @@
     import ContentBrowser from "../../../windows/project/views/content-browser/ContentBrowser.svelte";
     import ComponentEditor from "../../../windows/project/views/component-editor/ComponentEditor.svelte";
     import VIEWS from "../VIEWS";
+    import ShaderEditor from "../../../windows/project/views/shader-editor/ShaderEditor.svelte";
 
     export let styles
     export let extendView
@@ -14,8 +15,8 @@
 
     $: component = (() => {
         switch (instance) {
-            // case "blueprint":
-            //     return ShaderEditor
+            case VIEWS.BLUEPRINT:
+                return ShaderEditor
             case VIEWS.HIERARCHY:
                 return Hierarchy
             case VIEWS.COMPONENT:

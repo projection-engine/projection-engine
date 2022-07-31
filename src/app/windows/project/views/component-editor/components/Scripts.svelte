@@ -6,6 +6,7 @@
     import Selector from "../../../../../components/selector/Selector.svelte";
 
     export let entity
+    export let translate
 
     let store = {}
     const unsubscribeStore = FileStoreController.getStore(v => store = v)
@@ -21,11 +22,11 @@
         }
     }
 </script>
-<div class="wrapper">
-    <Selector
-            type={"script"}
-            selected={undefined}
-            handleChange={d => {
+
+<Selector
+        type={"script"}
+        selected={undefined}
+        handleChange={d => {
                 if (d && !state.find(s => s === d.registryID)) {
                     entity.scriptsMap.push(d.registryID)
                     state =  [...state, d.registryID]
@@ -33,19 +34,19 @@
                 }else if(state.find(s => s === d.registryID))
                     alert.pushAlert("Script already linked", "info")
             }}
-    >
-        <div class="inline add">
-            <Icon>add</Icon>
-            Add new component
-        </div>
-    </Selector>
-
-    <div>
-        Linked scripts
+>
+    <div class="inline add">
+        <Icon>add</Icon>
+        Add new component
     </div>
-    {#if state.length > 0}
-        {#each state as s, index}
-            <ScriptRow
+</Selector>
+
+<div>
+    Linked scripts
+</div>
+{#if state.length > 0}
+    {#each state as s, index}
+        <ScriptRow
                 selected={s}
                 scripts={store.scripts}
                 submit={key => {
@@ -53,15 +54,15 @@
                     entity.scripts = newScripts
                     state = newScripts
                 }}
-            />
-        {/each}
-    {:else}
-        <div class="empty">
-            <Icon styles="font-size: 30px">folder</Icon>
-            No linked blueprints
-        </div>
-    {/if}
-</div>
+        />
+    {/each}
+{:else}
+    <div class="empty">
+        <Icon styles="font-size: 30px">folder</Icon>
+        No linked blueprints
+    </div>
+{/if}
+
 <style>
     .wrapper {
         display: flex;

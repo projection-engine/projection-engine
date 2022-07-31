@@ -1,4 +1,5 @@
 import BOARD_SIZE from "../../views/shader-editor/data/BOARD_SIZE"
+import compiler from "../../views/shader-editor/libs/compiler";
 // import compiler from "../../views/shader-editor/libs/compiler"
 
 export default function initializeBlueprints() {
@@ -25,32 +26,30 @@ export default function initializeBlueprints() {
                     texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
                 }
             })
-            // const compiled = await compiler(nodes.filter(n => !n.isComment), links)
-            // const preview = window.renderer.generatePreview(true)
+            const compiled = await compiler(nodes.filter(n => !n.isComment), links)
+            const preview = window.renderer.generatePreview(true)
 
-            // return {
-            //     compiled, preview, parsedNodes
-            // }
+            return {
+                compiled, preview, parsedNodes
+            }
         },
-        async save(hook) {
+        async save(openFile, nodes, links, translate) {
             const {
                 compiled, preview, parsedNodes
-            } = await this.compile(hook.nodes, hook.links)
+            } = await this.compile(nodes, links)
             window.fileSystem
                 .updateAsset(
-                    hook.openFile.registryID,
+                    openFile.registryID,
                     JSON.stringify({
                         nodes: parsedNodes,
-                        links: hook.links,
+                        links: links,
                         response: compiled,
                         type: compiled.variant
                     }),
                     preview
                 )
-                .then(() => alert.pushAlert("Saved", "success",))
-                .catch(() => alert.pushAlert("Some error occurred", "error",))
-            hook.setChanged(false)
-            hook.setImpactingChange(false)
+                .then(() => alert.pushAlert(translate("SAVED"), "success",))
+                .catch(() => alert.pushAlert(translate("ERROR"), "error"))
         }
     }
 }

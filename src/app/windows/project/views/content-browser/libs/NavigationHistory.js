@@ -1,4 +1,5 @@
 import FileSystem from "../../../libs/FileSystem"
+
 export default class NavigationHistory {
 
     data = []

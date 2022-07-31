@@ -7,6 +7,7 @@
 
     export let selected
     export let submit
+    export let translate
 
     let state
     $: {
@@ -31,9 +32,11 @@
             selected.specularProbe = v
         }}
 />
-<Accordion title={"Resolution"}>
-    <Dropdown class="dropdown" disabled={!state.specularProbe} styles={{background: "var(--pj-border-primary)"}}>
-        {state.resolution}p
+<Accordion title={translate("RESOLUTION")}>
+    <Dropdown disabled={!state.specularProbe}>
+        <button slot="button">
+            {state.resolution}p
+        </button>
         <button
                 on:click={() => {
                     state.resolution = 128

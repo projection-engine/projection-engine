@@ -8,6 +8,7 @@
     export let type
     export let selected
     export let submit
+    export let translate
 
     let state
     $: {
@@ -33,7 +34,7 @@
     }
 </script>
 {#if type === COMPONENTS.POINT_LIGHT}
-    <Accordion title={"Attenuation"} type={"flex"}>
+    <Accordion title={translate("Attenuation")} type={"flex"}>
         <Range
                 accentColor={"red"}
                 incrementPercentage={.01}
@@ -88,11 +89,11 @@
 
     </Accordion>
 {/if}
-<Accordion title={"View planes"} type={"grid"}>
+<Accordion title={translate("VIEW_PLANES")} type={"grid"}>
     <Range
         accentColor={"red"}
         value={state.zFar}
-        label={"Far"}
+        label={translate("FAR")}
         precision={3}
         incrementPercentage={.01}
         onFinish={(v) => {
@@ -106,7 +107,7 @@
     <Range
             accentColor={"green"}
             value={state.zNear}
-            label={"Near"}
+            label={translate("NEAR")}
             precision={3}
             incrementPercentage={.01}
             onFinish={(v) => {
@@ -124,7 +125,7 @@
         }}
     />
 </Accordion>
-<Accordion title={"Intensity & color"}>
+<Accordion title={translate("INTENSITY_COLOR")}>
     <ColorPicker
             value={state.color}
             submit={color => {
@@ -138,7 +139,7 @@
         }}
     />
     <Range
-            label={"Intensity"}
+            label={translate("INTENSITY")}
             accentColor={"red"}
             value={state.intensity}
             minValue={.0001}
@@ -153,10 +154,10 @@
             }}
             handleChange={e => selected.intensity = e}/>
 </Accordion>
-<Accordion title={"Shadows"} type={"grid"}>
+<Accordion title={translate("Shadows")} type={"grid"}>
 
     <Checkbox
-            label={"Casts shadows"}
+            label={translate("CASTS_SHADOW")}
             checked={state.shadowMap}
             handleCheck={() => {
                 state = {...state, shadowMap: !state.shadowMap}
@@ -164,7 +165,7 @@
             }}/>
     {#if type === COMPONENTS.DIRECTIONAL_LIGHT || type === COMPONENTS.SKYLIGHT}
         <Range
-                label={"Size"}
+                label={translate("SIZE")}
                 accentColor={"green"}
                 value={state.size}
                 minValue={1}
