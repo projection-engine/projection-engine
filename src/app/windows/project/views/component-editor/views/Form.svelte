@@ -2,13 +2,8 @@
 
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ENTITY_TAB from "../static/ENTITY_TAB";
-    import Scripts from "../components/Scripts.svelte";
     import Component from "../components/Component.svelte";
-    import Probe from "../components/Probe.svelte";
-    import Lights from "../components/Lights.svelte";
     import Mesh from "../components/Mesh.svelte";
-    import Transform from "../components/Transform.svelte";
-    import updateTransformation from "../utils/update-transformation";
     import MaterialInstance from "../../../libs/engine/instances/MaterialInstance";
     import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL";
     import Icon from "../../../../../components/Icon/Icon.svelte";
@@ -26,31 +21,12 @@
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     const submit = (component, key, data) => engine.selectedEntity.components[component][key] = data
-
-    console.log(settings)
 </script>
 
 {#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
     <div class="wrapper">
         {#if currentTab !== ENTITY_TAB}
-            {#if currentComponent === COMPONENTS.CAMERA}
-                <Component
-                        translate={translate}
-                        selected={componentRef}
-                        submit={(key, value) => componentRef[key] = value}
-                />
-            {:else if currentComponent === COMPONENTS.TRANSFORM}
-                <Transform
-                        translate={translate}
-                        entityID={engine.selectedEntity.id}
-                        engine={engine}
-
-                        selected={engine.selectedEntity.components[COMPONENTS.TRANSFORM]}
-                        submitRotation={(axis, data) => updateTransformation(axis, data, "rotation", engine.selectedEntity,)}
-                        submitScaling={(axis, data) => updateTransformation(axis, data, "scaling", engine.selectedEntity,)}
-                        submitTranslation={(axis, data) => updateTransformation(axis, data, "translation", engine.selectedEntity)}
-                />
-            {:else if currentComponent === COMPONENTS.MESH}
+            {#if currentComponent === COMPONENTS.MESH}
                 <Mesh
                         translate={translate}
                         entityID={engine.selectedEntity.id}
@@ -74,9 +50,7 @@
                                                 uniformData: val.blob.uniformData
                                             })
                                         })
-                                        engine.setMaterials(prev => {
-                                            return [...prev, newMat]
-                                        })
+                                        engine.materials.push(newMat)
                                     }
                                 }
 
@@ -89,25 +63,13 @@
                         }}
 
                 />
-            {:else if currentComponent === COMPONENTS.DIRECTIONAL_LIGHT || currentComponent === COMPONENTS.POINT_LIGHT}
-                <Lights
+            {:else}
+                <Component
                         translate={translate}
-                        entityID={engine.selectedEntity.id}
-                        type={currentComponent}
                         selected={componentRef}
-                        submit={(data, k) => submit(currentComponent, k, data)}
-                        submitColor={(data) => submit(currentComponent, "color", data)}
+                        submit={(key, value) => componentRef[key] = value}
                 />
 
-            {:else if currentComponent === COMPONENTS.PROBE}
-                <Probe
-                        translate={translate}
-                        selected={componentRef}
-                        submit={(data, key) => {
-                            submit(currentComponent, key, data)
-                            alert.pushAlert(translate("RECOMPUTE_PROBES"), "alert")
-                        }}
-                />
             {/if}
         {:else}
             <Scripts
@@ -129,8 +91,8 @@
             <Rendering translate={translate}/>
         {:else}
             <PostProcessing
-                selected={settings}
-                submit={(key, value) => DataStoreController.updateSettings({...settings, [key]: value})}
+                    selected={settings}
+                    submit={(key, value) => DataStoreController.updateSettings({...settings, [key]: value})}
             />
         {/if}
     </div>

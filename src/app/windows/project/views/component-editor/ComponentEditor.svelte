@@ -8,8 +8,8 @@
     import Form from "./views/Form.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import Components from "./views/Components.svelte";
-
-    console.log("ON COMP EDITOR")
+    import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS";
+    import {v4} from "uuid";
 
     export let hidden = false
     export let switchView
@@ -33,11 +33,11 @@
     })();
     const translate = key => EnglishLocalization.PROJECT.COMPONENT_EDITOR[key]
 
-    let currentEntityName = engine.selectedEntity?.name
+    let currentEntityName = ''
     $: {
-        if (engine.selectedEntity)
-            currentEntityName = (engine.selectedEntity.name)
-        else
+        if ( engine.selectedEntity)
+            currentEntityName = engine.selectedEntity.name
+        if (!engine.selectedEntity)
             currentTab = "-2"
     }
 
@@ -54,8 +54,9 @@
     {#if engine.selectedEntity}
         <Input
                 setSearchString={v => {
-                currentEntityName = v
-                engine.selectedEntity.name = v
+                    currentEntityName = v
+                    engine.selectedEntity.name = v
+                    DataStoreController.updateEngine({...engine, changeID: v4()})
                 }}
                 searchString={currentEntityName}
                 placeholder={translate("ENTITY_NAME")}
@@ -81,10 +82,10 @@
                         {#if currentTab === "-2"}
                             <Icon>image</Icon>
                             <div data-overflow="-">{translate("RENDERING")}</div>
-                            {:else}
+                        {:else}
                             <Icon>videocam</Icon>
                             <div data-overflow="-">{translate("POST_PROCESSING")}</div>
-                            {/if}
+                        {/if}
 
                     {:else}
                         <Icon>

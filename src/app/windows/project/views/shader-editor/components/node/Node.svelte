@@ -15,6 +15,7 @@
     export let selected
     export let setSelected
     export let submitNodeVariable
+    export let canvas
     let pathRef
     let ref
 
@@ -67,6 +68,9 @@
 
     const handleDragStart = (event) => {
         let isFirst, alreadyFound = false
+        if (!ref.contains(event.target))
+            return
+
         document.elementsFromPoint(event.clientX, event.clientY)
             .forEach(e => {
                 if (e.id?.includes("-node") && !alreadyFound && e.id === (node.id + "-node"))
@@ -87,9 +91,9 @@
             const h = ref.firstChild.scrollHeight + 4
             height = h >= 35 ? h : 55
         }
-        document.addEventListener("mousedown", handleDragStart)
+        canvas.addEventListener("mousedown", handleDragStart)
     })
-    onDestroy(() => document.removeEventListener("mousedown", handleDragStart))
+    onDestroy(() => canvas.removeEventListener("mousedown", handleDragStart))
 
     let width
     $: {
@@ -191,7 +195,7 @@
         cursor: grab;
         height: 30px;
         display: flex;
-        border-radius: 3px 3px   0 0;
+        border-radius: 3px 3px 0 0;
         align-items: center;
         gap: 3px;
         padding: 0 4px;

@@ -29,7 +29,7 @@
 
 </script>
 
-<Dropdown hideArrow={true} styles="width: 250px;">
+<Dropdown hideArrow={true} styles="width: 250px;" >
     <button
             slot="button"
             style={`max-height: ${size === "small" ? "25px" : "43px"}; min-height:  ${size === "small" ? "25px" : "43px"}; width: 100%`}

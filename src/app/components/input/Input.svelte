@@ -26,6 +26,7 @@
             input.value= s
     }
     onMount(updateInput)
+    $: if(input) input.value = searchString
 </script>
 
 <div

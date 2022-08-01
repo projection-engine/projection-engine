@@ -12,6 +12,7 @@
     export let height = "25px"
     export let value
     export let label
+    export let disabled
     const internalID = v4()
 
     let hue = 0, saturation = 0, colorValue = 100
@@ -116,8 +117,8 @@
 </script>
 
 
-<Dropdown hideArrow="true" width="100%">
-    <div slot="button" style="min-height: {height};max-height: {height};" bind:this={button} class="dropdown">
+<Dropdown hideArrow="true" width="100%" disabled={disabled}>
+    <div slot="button" style="min-height: {height};max-height: {height};" bind:this={button} class="dropdown" disabled={disabled}>
         {#if label}
             <div class="label" style="height: {height};">
                 {label}

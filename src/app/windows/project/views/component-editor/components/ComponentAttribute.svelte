@@ -8,49 +8,93 @@
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import DataStoreController from "../../../stores/DataStoreController";
 
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 
+    export let isNative
     export let selected
     export let submit
     export let translate
     export let attribute
+    $: label = translate(label) ? translate(label) : attribute.label
+    $: value = selected[attribute.key]
+    $: isDisabled = selected[attribute.disabledIf]
 </script>
 
 
 {#if attribute.type === "number"}
     <Range
-            onFinish={() => null}
+            handleChange={v => selected[attribute.key] = v}
             minValue={attribute.min}
             maxValue={attribute.max}
-            label={attribute.label}
-            value={selected[attribute.key]}
+            label={label}
+            value={value}
+            isAngle={attribute.isAngle}
+            disabled={isDisabled}
     />
+{:else if attribute.type === "array"}
+    {#each attribute.labels as partial, index}
+        <Range
+                disabled={isDisabled}
+                isAngle={attribute.isAngle}
+                handleChange={v => {
+                    const newData = [...value]
+                    newData[index] = v
+                    selected[attribute.key] = newData
+                }}
+                minValue={attribute.min}
+                maxValue={attribute.max}
+                label={partial}
+                variant="embedded"
+                value={value[index]}
+        />
+    {/each}
 {:else if attribute.type === "boolean"}
     <Checkbox
-            label={attribute.label}
-            value={selected[attribute.key]}
+            handleCheck={() => selected[attribute.key] = !value}
+            label={label}
+            checked={value}
+            disabled={isDisabled}
     />
 {:else if attribute.type === "options"}
-    <Dropdown>
-        <button slot="button">
-            {attribute.label}
+    <Dropdown disabled={isDisabled} width="100%">
+        <button slot="button" class="dropdown">
+            {label}
         </button>
         {#each attribute.options as option}
-            <button on:click={() => null}>
-                {translate(option.label)}
+            <button on:click={() => selected[attribute.key] = option.value}>
+                {#if translate(option.label)}
+                    {translate(option.label)}
+                {:else}
+                    {option.label}
+                {/if}
             </button>
         {/each}
     </Dropdown>
 {:else if attribute.type === "string"}
-    <Input searchString={selected[attribute.key]} setSearchString={() => null}
-           placeholder={translate(attribute.label)}/>
+    <Input
+            searchString={value}
+            setSearchString={v => selected[attribute.key] = v}
+            placeholder={label}
+            disabled={isDisabled}
+    />
 {:else if attribute.type === "color"}
     <ColorPicker
-            submit={({r,g,b}) => null}
-            placeholder={translate(attribute.label)}
-            value={selected[attribute.key]}
+            disabled={isDisabled}
+            submit={({r,g,b}) => selected[attribute.key] = [r, g, b]}
+            placeholder={label}
+            value={value}
             size={"small"}
     />
 {/if}
+
+
+<style>
+    .dropdown {
+        height: 25px;
+        width: 100%;
+        border: none;
+    }
+</style>

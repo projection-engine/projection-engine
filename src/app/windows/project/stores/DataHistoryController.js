@@ -1,5 +1,6 @@
 import DataStoreController from "./DataStoreController";
 import {settingsStore} from "./settings-store";
+import EnglishLocalization from "../../../static/EnglishLocalization";
 
 export default class DataHistoryController {
     static targets = {
@@ -28,12 +29,21 @@ export default class DataHistoryController {
     undo(){
         if (this.index > 0 && this.history[this.index - 1]) {
             this.index -= 1
+            if(this.history[this.index].target === DataHistoryController.targets.settings)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_SETTINGS)
+            else
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_ENTITIES)
             this.#apply()
+
         }
     }
     redo(){
         if (this.index < 10 && this.history[this.index + 1]) {
             this.index += 1
+            if(this.history[this.index].target === DataHistoryController.targets.settings)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_SETTINGS)
+            else
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_ENTITIES)
             this.#apply()
         }
     }

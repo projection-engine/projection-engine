@@ -6,11 +6,10 @@ import MeshComponent from "../libs/engine/components/MeshComponent"
 import DATA_TYPES from "../libs/engine/data/DATA_TYPES"
 import TextureInstance from "../libs/engine/instances/TextureInstance"
 import PointLightComponent from "../libs/engine/components/PointLightComponent"
-import SpotLightComponent from "../libs/engine/components/SpotLightComponent"
+
 import TransformComponent from "../libs/engine/components/TransformComponent"
 import Transformation from "../libs/engine/utils/Transformation"
 import FolderComponent from "../libs/engine/components/FolderComponent"
-import PhysicsBodyComponent from "../libs/engine/components/PhysicsBodyComponent"
 import ProbeComponent from "../libs/engine/components/ProbeComponent"
 import CameraComponent from "../libs/engine/components/CameraComponent"
 
@@ -81,7 +80,6 @@ const ENTITIES = {
     },
 
     [COMPONENTS.POINT_LIGHT]: async (entity, k) => new PointLightComponent(entity.components[k].id),
-    [COMPONENTS.SPOT_LIGHT]: async (entity, k) => new SpotLightComponent(entity.components[k].id),
     [COMPONENTS.TRANSFORM]: async (entity, k) => {
         const component = new TransformComponent(entity.components[k].id, true)
 
@@ -95,7 +93,6 @@ const ENTITIES = {
         return component
     },
     [COMPONENTS.FOLDER]: async (entity, k) => new FolderComponent(entity.components[k].id),
-    [COMPONENTS.PHYSICS]: async (entity, k) => new PhysicsBodyComponent(entity.components[k].id),
     [COMPONENTS.PROBE]: async (entity, k) => new ProbeComponent(entity.components[k].id),
     [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id)
 

@@ -2,6 +2,9 @@
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ENTITY_TAB from "../static/ENTITY_TAB";
+    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import FileStoreController from "../../../stores/FileStoreController";
+    import {onDestroy} from "svelte";
 
     export let translate
     export let tabs
@@ -13,12 +16,16 @@
     let currentKey
 
     $: {
-        if (engine.selectedEntity) {
-            entity = engine.selectedEntity
+        entity = engine.selectedEntity
+        if (entity)
             currentKey = Object.keys(entity.components)[currentTab]
-        }
-    }
 
+    }
+    let store = {}
+    const unsubscribeStore = FileStoreController.getStore(v => store = v)
+    onDestroy(() => unsubscribeStore())
+
+    $: console.log(store)
 </script>
 
 <div class="wrapper">
@@ -38,15 +45,25 @@
         <Icon>videocam</Icon>
         <ToolTip content={translate("POST_PROCESSING")}/>
     </button>
-    {#if entity !== undefined && !entity.isFolder}
+    {#if entity != null && !entity.isFolder}
         <div class="divider"></div>
-        <button
-                data-highlight={currentTab === ENTITY_TAB ? "-" : undefined}
-                class="button"
-                on:click={() => setCurrentTab(ENTITY_TAB)}>
-            <Icon>terminal</Icon>
-            <ToolTip content={translate("SCRIPTS")} animationDelay={"0ms"}/>
-        </button>
+        <Dropdown hideArrow={true} disabled={store.scripts.length === 0}>
+            <button slot="button" class="button"  disabled={store.scripts.length === 0}>
+                <Icon>terminal</Icon>
+            </button>
+            {#each store.scripts as script}
+                <button on:click={() => {
+                    const exists = entity.scriptsMap.find(s => s === script.registryID)
+                        if (script && !exists) {
+                            entity.scriptsMap.push(script.registryID)
+                            alert.pushAlert("Component added", "info")
+                        }else if(exists)
+                            alert.pushAlert("Component already exists", "info")
+                }}>
+                    {script.name}
+                </button>
+            {/each}
+        </Dropdown>
     {/if}
     {#each tabs as t, i}
         <button

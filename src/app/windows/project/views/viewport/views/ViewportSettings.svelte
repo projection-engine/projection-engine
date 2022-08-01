@@ -13,7 +13,7 @@
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import PointLightComponent from "../../../libs/engine/components/PointLightComponent";
     import DirectionalLightComponent from "../../../libs/engine/components/DirectionalLightComponent";
-    import ViewportTemplates from "../components/ViewportTemplates.svelte";
+    import ViewportTemplates from "../components/ViewTemplates.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
 
     export let settings

@@ -7,12 +7,15 @@
     export let node
     export let selected
     export let setSelected
+    export let canvas
     let ref
 
     $: isSelected =  selected.indexOf(node.id) > -1
 
     const handleDragStart = (event) => {
         let isFirst, alreadyFound = false
+        if (!ref.contains(event.target))
+            return
         document.elementsFromPoint(event.clientX, event.clientY)
             .forEach(e => {
                 if (e.id?.includes("-node") && !alreadyFound && e.id === (node.id + "-node"))
@@ -28,10 +31,10 @@
 
     }
     onMount(() => {
-        document.addEventListener("mousedown", handleDragStart)
+        canvas.addEventListener("mousedown", handleDragStart)
     })
     onDestroy(() => {
-        document.removeEventListener("mousedown", handleDragStart)
+        canvas.removeEventListener("mousedown", handleDragStart)
     })
 
     let onEdit = false

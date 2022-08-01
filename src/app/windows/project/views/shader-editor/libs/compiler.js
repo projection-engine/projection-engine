@@ -6,14 +6,31 @@ import unlitTemplate from "../templates/shaders/unlit-shader"
 import MATERIAL_RENDERING_TYPES from "../../../libs/engine/data/MATERIAL_RENDERING_TYPES";
 import cloneClass from "../../../libs/engine/utils/clone-class";
 import {vertex} from "../../../libs/engine/shaders/mesh/FALLBACK.glsl"
+import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
+
 function getShadingTemplate(type) {
     switch (type) {
-    case MATERIAL_RENDERING_TYPES.FORWARD:
-        return forwardTemplate
-    case MATERIAL_RENDERING_TYPES.DEFERRED:
-        return deferredTemplate
-    default:
-        return unlitTemplate
+        case MATERIAL_RENDERING_TYPES.FORWARD:
+            return forwardTemplate
+        case MATERIAL_RENDERING_TYPES.DEFERRED:
+            return deferredTemplate
+        case MATERIAL_RENDERING_TYPES.SKYBOX:
+            return skyboxShader
+        default:
+            return unlitTemplate
+    }
+}
+
+function getShaderVertex(type) {
+    switch (type) {
+        case MATERIAL_RENDERING_TYPES.FORWARD:
+            return vertex
+        case MATERIAL_RENDERING_TYPES.DEFERRED:
+            return vertex
+        case MATERIAL_RENDERING_TYPES.SKYBOX:
+            return vertexSkybox
+        default:
+            return vertex
     }
 }
 
@@ -28,7 +45,16 @@ export default async function compiler(n, links) {
             code,
             uniforms,
             uniformData
-        } = await compileFrag(n, links, startPoint.shadingType)
+        } = await compileFrag(
+            n,
+            links,
+            startPoint.shadingType,
+            startPoint.inputs.map(i => {
+                if (i.disabled)
+                    return i.key
+                return undefined
+            }).filter(i => i)
+        )
         // const vertexBody = compileVertex(startPoint, n, links)
         const cubeMapShader = await compileFrag(
             n,
@@ -44,7 +70,7 @@ export default async function compiler(n, links) {
                 "emission",
                 "worldOffset"
             ], false)
-
+        console.log(code)
         return {
             info: [{key: "samplers", label: "Texture samplers", data: samplers.length}, {
                 key: "uniforms",
@@ -53,7 +79,7 @@ export default async function compiler(n, links) {
             },],
             cubeMapShader,
             shader: code,
-            vertexShader: vertex,
+            vertexShader: getShaderVertex(startPoint.shadingType),
             uniforms,
             uniformData,
             settings: {
@@ -81,13 +107,13 @@ export default async function compiler(n, links) {
 //     return vertexBody.join("\n")
 // }
 
-async function compileFrag(n, links,  shadingType, discardedLinks=["worldOffset"], noAmbient) {
+async function compileFrag(n, links, shadingType, discardedLinks = ["worldOffset"], noAmbient) {
     const nodes = n.map(nn => cloneClass(nn))
     const startPoint = nodes.find(n => {
         return n.type === NODE_TYPES.OUTPUT
     })
     startPoint.shadingType = shadingType
-    if(noAmbient)
+    if (noAmbient)
         startPoint.ambientInfluence = false
     const codeString = getShadingTemplate(shadingType),
         uniforms = [],

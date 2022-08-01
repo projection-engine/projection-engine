@@ -1,6 +1,7 @@
 <script>
     import ToolTip from "../tooltip/ToolTip.svelte";
 
+    const toDeg = 180 / Math.PI
     const DELAY = 200
 
     export let minLabelWidth = undefined;
@@ -15,6 +16,7 @@
     export let incrementPercentage = .01
     export let value = "0"
     export let handleChange
+    export let isAngle
     export let integer = undefined;
 
     let ref
@@ -43,10 +45,9 @@
         else if (currentValue < minValue && minValue !== undefined)
             currentValue = minValue
 
-        const v = currentValue.toFixed(precision ? precision : 1)
-
-        ref.innerText = v
-        inputRef.value = v
+        const prev = (currentValue * (isAngle ? toDeg : 1) ).toFixed(precision ? precision : 1)
+        ref.innerText = prev
+        inputRef.value = prev
 
         if (handleChange)
             handleChange(currentValue)
@@ -76,8 +77,9 @@
     $: {
         if (!dragged && inputRef && ref) {
             const parsedValue = isNaN(parseFloat(value)) ? 0 : parseFloat(parseFloat(value).toFixed(precision ? precision : 1))
-            inputRef.value = parsedValue
-            ref.innerText = parsedValue
+            const prev = (parsedValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
+            inputRef.value = prev
+            ref.innerText = prev
             currentValue = parsedValue
         }
     }

@@ -3,23 +3,7 @@ import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES"
 import NODE_TYPES from "../../data/NODE_TYPES"
 import MATERIAL_RENDERING_TYPES from "../../../../libs/engine/data/MATERIAL_RENDERING_TYPES"
 
-const blendOptions = [
-    {label: "ZERO", data: "ZERO"},
-    {label: "ONE", data: "ONE"},
-    {label: "SRC_COLOR", data: "SRC_COLOR"},
-    {label: "ONE_MINUS_SRC_COLOR", data: "ONE_MINUS_SRC_COLOR"},
-    {label: "DST_COLOR", data: "DST_COLOR"},
-    {label: "ONE_MINUS_DST_COLOR", data: "ONE_MINUS_DST_COLOR"},
-    {label: "SRC_ALPHA", data: "SRC_ALPHA"},
-    {label: "ONE_MINUS_SRC_ALPHA", data: "ONE_MINUS_SRC_ALPHA"},
-    {label: "DST_ALPHA", data: "DST_ALPHA"},
-    {label: "ONE_MINUS_DST_ALPHA", data: "ONE_MINUS_DST_ALPHA"},
-    {label: "CONSTANT_COLOR", data: "CONSTANT_COLOR"},
-    {label: "ONE_MINUS_CONSTANT_COLOR", data: "ONE_MINUS_CONSTANT_COLOR"},
-    {label: "CONSTANT_ALPHA", data: "CONSTANT_ALPHA"},
-    {label: "ONE_MINUS_CONSTANT_ALPHA", data: "ONE_MINUS_CONSTANT_ALPHA"},
-    {label: "SRC_ALPHA_SATURATE", data: "SRC_ALPHA_SATURATE"},
-]
+
 export default class Material extends Node {
     ambientInfluence = true
     shadingType = MATERIAL_RENDERING_TYPES.DEFERRED
@@ -38,8 +22,9 @@ export default class Material extends Node {
     roughness = 1
     metallic = 0
     opacity = 1
-    emission = [0,0,0]
-    al = [0,0,0]
+    emission = [0, 0, 0]
+    al = [0, 0, 0]
+
     constructor() {
         const allTypes = [DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2, DATA_TYPES.FLOAT, DATA_TYPES.INT]
         super([
@@ -52,7 +37,15 @@ export default class Material extends Node {
             {label: "Emission", key: "emission", accept: allTypes, type: DATA_TYPES.COLOR},
             // {label: "World Offset", key: "worldOffset", accept: [DATA_TYPES.VEC4]},
 
-            {label: "Opacity", key: "opacity", accept: allTypes, disabled: true, type: DATA_TYPES.FLOAT, max: 1, min: 0},
+            {
+                label: "Opacity",
+                key: "opacity",
+                accept: allTypes,
+                disabled: true,
+                type: DATA_TYPES.FLOAT,
+                max: 1,
+                min: 0
+            },
             {label: "Refraction", key: "refraction", accept: allTypes, disabled: true},
 
             {label: "Probe influence", key: "ambientInfluence", type: DATA_TYPES.CHECKBOX},
@@ -68,33 +61,41 @@ export default class Material extends Node {
                 options: [
                     {label: "Forward lit", data: MATERIAL_RENDERING_TYPES.FORWARD},
                     {label: "Deferred lit", data: MATERIAL_RENDERING_TYPES.DEFERRED},
-                    {label: "Unlit", data: MATERIAL_RENDERING_TYPES.UNLIT}
+                    {label: "Unlit", data: MATERIAL_RENDERING_TYPES.UNLIT},
+                    {label: "Skybox", data: MATERIAL_RENDERING_TYPES.SKYBOX},
                 ]
             }
         ], [])
         this.inputs.find(i => i.key === "shadingType").onChange = (v) => {
-            switch (v){
-            case MATERIAL_RENDERING_TYPES.FORWARD:
-                this.inputs.find(i => i.key === "refraction").disabled = false
-                this.inputs.find(i => i.key === "opacity").disabled = false
-                this.inputs.find(i => i.key === "roughness").disabled =false
-                this.inputs.find(i => i.key === "metallic").disabled = false
-                this.inputs.find(i => i.key === "normal").disabled = false
-                break
-            case MATERIAL_RENDERING_TYPES.DEFERRED:
-                this.inputs.find(i => i.key === "refraction").disabled = true
-                this.inputs.find(i => i.key === "opacity").disabled = true
+            switch (v) {
+                case MATERIAL_RENDERING_TYPES.FORWARD:
+                    this.inputs.find(i => i.key === "refraction").disabled = false
+                    this.inputs.find(i => i.key === "opacity").disabled = false
+                    this.inputs.find(i => i.key === "roughness").disabled = false
+                    this.inputs.find(i => i.key === "metallic").disabled = false
+                    this.inputs.find(i => i.key === "normal").disabled = false
+                    break
+                case MATERIAL_RENDERING_TYPES.DEFERRED:
+                    this.inputs.find(i => i.key === "refraction").disabled = true
+                    this.inputs.find(i => i.key === "opacity").disabled = true
 
-                this.inputs.find(i => i.key === "roughness").disabled =false
-                this.inputs.find(i => i.key === "metallic").disabled = false
-                this.inputs.find(i => i.key === "normal").disabled = false
-                break
-            default:
-                this.inputs.find(i => i.key === "refraction").disabled = true
-                this.inputs.find(i => i.key === "roughness").disabled = true
-                this.inputs.find(i => i.key === "metallic").disabled = true
-                this.inputs.find(i => i.key === "normal").disabled = true
-                break
+                    this.inputs.find(i => i.key === "roughness").disabled = false
+                    this.inputs.find(i => i.key === "metallic").disabled = false
+                    this.inputs.find(i => i.key === "normal").disabled = false
+                    break
+                case MATERIAL_RENDERING_TYPES.SKYBOX:
+                    this.inputs = this.inputs.map(i => {
+                        if (i.key !== "al")
+                            i.disabled = true
+
+                        return i
+                    })
+                default:
+                    this.inputs.find(i => i.key === "refraction").disabled = true
+                    this.inputs.find(i => i.key === "roughness").disabled = true
+                    this.inputs.find(i => i.key === "metallic").disabled = true
+                    this.inputs.find(i => i.key === "normal").disabled = true
+                    break
             }
         }
         this.inputs.find(i => i.key === "depthTest").onChange = (v) => {
@@ -109,62 +110,64 @@ export default class Material extends Node {
 
     getData(field) {
         switch (field.type) {
-        case DATA_TYPES.VEC2:
-            return `vec3(${field.name}, 0.)`
-        case DATA_TYPES.VEC4:
-            return `vec3(${field.name})`
-        case DATA_TYPES.FLOAT:
-            return `vec3(${field.name}, ${field.name}, ${field.name})`
-        case DATA_TYPES.INT:
-            return `vec3(float(${field.name}), float(${field.name}), float(${field.name}))`
-        default:
-            return field.name
+            case DATA_TYPES.VEC2:
+                return `vec3(${field.name}, 0.)`
+            case DATA_TYPES.VEC4:
+                return `vec3(${field.name})`
+            case DATA_TYPES.FLOAT:
+                return `vec3(${field.name}, ${field.name}, ${field.name})`
+            case DATA_TYPES.INT:
+                return `vec3(float(${field.name}), float(${field.name}), float(${field.name}))`
+            default:
+                return field.name
         }
     }
 
     getDataBehaviour(field) {
 
         switch (field.type) {
-        case DATA_TYPES.VEC2:
-        case DATA_TYPES.VEC4:
-        case DATA_TYPES.VEC3:
-            return `${field.name}.x`
-        case DATA_TYPES.INT:
-            return `float(${field.name})`
-        default:
-            return field.name
+            case DATA_TYPES.VEC2:
+            case DATA_TYPES.VEC4:
+            case DATA_TYPES.VEC3:
+                return `${field.name}.x`
+            case DATA_TYPES.INT:
+                return `float(${field.name})`
+            default:
+                return field.name
         }
     }
 
 
     getFunctionCall({
-        al={
-            name: this.al,
-            type: DATA_TYPES.VEC3
-        },
-        normal,
-        ao,
-        roughness={
-            name: this.roughness,
-            type: DATA_TYPES.FLOAT
-        },
-        metallic={
-            name: this.metallic,
-            type: DATA_TYPES.FLOAT
-        },
-        opacity={
-            name: this.opacity,
-            type: DATA_TYPES.FLOAT
-        },
-        refraction,
-        emission={
-            name: this.emission,
-            type: DATA_TYPES.VEC3
-        },
-        // worldOffset
-    }, n1, n2, n3, isVertex) {
+                        al = {
+                            name: this.al,
+                            type: DATA_TYPES.VEC3
+                        },
+                        normal,
+                        ao,
+                        roughness = {
+                            name: this.roughness,
+                            type: DATA_TYPES.FLOAT
+                        },
+                        metallic = {
+                            name: this.metallic,
+                            type: DATA_TYPES.FLOAT
+                        },
+                        opacity = {
+                            name: this.opacity,
+                            type: DATA_TYPES.FLOAT
+                        },
+                        refraction,
+                        emission = {
+                            name: this.emission,
+                            type: DATA_TYPES.VEC3
+                        },
+                        // worldOffset
+                    }, n1, n2, n3, isVertex) {
 
-        if (!isVertex)
+        if (!isVertex) {
+            if (this.shadingType === MATERIAL_RENDERING_TYPES.SKYBOX)
+                return `vec4 gAlbedo = vec4(${al ? this.getData(al) : "vec3(.5, .5, .5)"}, 1.);`
             return `
                 ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? "vec4" : ""} gAlbedo = vec4(${al ? this.getData(al) : "vec3(.5, .5, .5)"}, 1.) + vec4(${emission ? this.getData(emission) : "vec3(.0)"}, 0.);
                 ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? "vec4" : ""} gNormal = ${normal ? `vec4(normalize(toTangentSpace * ((${this.getData(normal)} * 2.0)- 1.0)), 1.)` : "vec4(normalVec, 1.)"};
@@ -172,11 +175,7 @@ export default class Material extends Node {
                 ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? `float opacity = ${roughness !== undefined ? this.getDataBehaviour(opacity) : "1."};` : ""}
                 ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? `float refraction = ${refraction ? this.getDataBehaviour(refraction) : "0."};` : ""}
             `
-        // else if (worldOffset)
-        //     return `
-        //         gl_Position += ${worldOffset.name};
-        //     `
-        else
+        } else
             return ""
     }
 }

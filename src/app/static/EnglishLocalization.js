@@ -44,6 +44,12 @@ export default class EnglishLocalization {
         }
     }
     static PROJECT = {
+        ALERTS: {
+            UNDO_SETTINGS: "Undoing settings modification.",
+            REDO_SETTINGS: "Redoing settings modification.",
+            UNDO_ENTITIES: "Undoing entity modification.",
+            REDO_ENTITIES: "Redoing entity modification.",
+        },
         VIEWPORT: {
             ADD: "Add",
             ADD_DETAILS: "Add entity",
@@ -97,8 +103,7 @@ export default class EnglishLocalization {
             R_GIZMO: "Rotation gizmo",
             S_GIZMO: "Scale gizmo",
             BACKGROUND: "Background",
-            INTENSITY:"Intensity",
-            INTENSITY_COLOR: "Intensity & color"
+
         },
         HIERARCHY: {
             TITLE: "Hierarchy",
@@ -129,11 +134,24 @@ export default class EnglishLocalization {
             STATUS: "Status",
             SOURCE: "Source code",
             COMPILING: "Compiling shaders",
-            NOT_APPLIED: "Mesh doesn't seem to be applied to a mesh.",
+            NOT_APPLIED: "Material doesn't seem to be applied to a mesh.",
             SAVED: "Saved",
             ERROR: "Some error occurred"
         },
         COMPONENT_EDITOR: {
+            SPECULAR_PROBE: "Specular probe",
+            MULTIPLIER: "Multiplier",
+            INTENSITY:"Intensity",
+            INTENSITY_COLOR: "Intensity & color",
+            DISTORTION: "Distortion",
+            THRESHOLD:"Threshold" ,
+            BLOOM: "Bloom",
+            COLOR_CORRECTION: "Color correction",
+            GAMMA: "Gamma",
+            EXPOSURE: "Exposure",
+            FILM_GRAIN: "Film grain",
+            CHROMATIC_ABERRATION: "Chromatic aberration",
+
             ENABLED: "Enabled",
             RENDERING: "Rendering features",
             POST_PROCESSING: "Editor post-processing",

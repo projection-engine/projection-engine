@@ -2,10 +2,13 @@ import getBezierCurve from "./get-bezier-curve";
 import LINK_WIDTH from "../data/LINK_WIDTH";
 
 export default function updateLinks(mappedLinks, ref) {
-    if(!ref)
+    if (!ref)
         return
+
+    console.trace()
     const scale = window.blueprints.scale
     try {
+
         let parentBBox = ref.getBoundingClientRect()
         const bounding = {
             x: ref.scrollLeft - parentBBox.left,

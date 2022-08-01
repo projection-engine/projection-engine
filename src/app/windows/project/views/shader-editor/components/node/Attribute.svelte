@@ -49,11 +49,13 @@
             value={value}
             onFinish={v => handleChange(type === DATA_TYPES.FLOAT ? v : parseInt(v), attribute)}
             label={label}
+            disabled={attribute.disabled}
     />
 {:else if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 || type === DATA_TYPES.VEC2}
 
     <div class="vecWrapper">
         <Range
+                disabled={attribute.disabled}
                 maxValue={attribute.max}
                 minValue={attribute.min}
                 value={value[0]}
@@ -61,6 +63,7 @@
                 onFinish={v => handleChange(getNewVec(value, v, 0, type), attribute)}
         />
         <Range
+                disabled={attribute.disabled}
                 maxValue={attribute.max}
                 minValue={attribute.min}
                 value={value[1]}
@@ -69,6 +72,7 @@
         />
         {#if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 }
             <Range
+                    disabled={attribute.disabled}
                     maxValue={attribute.max}
                     minValue={attribute.min}
                     value={value[2]}
@@ -78,6 +82,7 @@
         {/if}
         {#if type === DATA_TYPES.VEC4}
             <Range
+                    disabled={attribute.disabled}
                     maxValue={attribute.max}
                     minValue={attribute.min}
                     onFinish={v => handleChange([value[0], value[1], value[2], v], attribute)}
@@ -89,6 +94,7 @@
     )
 {:else if type === DATA_TYPES.COLOR}
     <ColorPicker
+            disabled={attribute.disabled}
             label={label}
             submit={({r, g, b}) => handleChange([r/255,g/255,b/255], attribute)}
             value={Array.isArray(value) ? value.map(v => v * 255) : value}
@@ -98,6 +104,7 @@
 {:else if type === DATA_TYPES.TEXTURE}
 
     <Selector
+            disabled={attribute.disabled}
             type={"image"}
             size={"small"}
             handleChange={(src) => handleChange(src, attribute)}

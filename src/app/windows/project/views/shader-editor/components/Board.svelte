@@ -13,6 +13,10 @@
     import {onDestroy, onMount} from "svelte";
     import updateLinks from "../utils/update-links";
     import Node from "./node/Node.svelte";
+    import resolveLinks from "../utils/resolve-links";
+    import onMutation from "../libs/on-mutation";
+    import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
+    import RENDER_TARGET from "../../../static/misc/RENDER_TARGET";
 
     export let links
     export let setLinks
@@ -34,17 +38,7 @@
     let internalID = v4()
     let mappedLinks = []
     let dragType
-    $: resolvedLinks = links.map(l => {
-        return {
-            target: l.target.id + l.target.attribute.key,
-            source: l.source.id + l.source.attribute.key,
-            targetKey: l.target.attribute.key,
-            sourceKey: l.source.attribute.key,
-
-            sourceType: l.source.attribute.type,
-            targetType: l.target.attribute.type
-        }
-    })
+    $: resolvedLinks = resolveLinks(links)
 
 
     const handleWheel = (e) => {
@@ -60,39 +54,44 @@
         updateLinks(mappedLinks, ref)
     }
 
-    $: boardOptions = getContextMenu(
-        nodes,
-        setNodes,
-        setSelected,
-        selected,
-        resolvedLinks,
-        setLinks
-    )
-    $: {
-        if (mappedLinks.length !== resolvedLinks.length)
-            mappedLinks = resolvedLinks.map(l => {
-                const linkPath = document.getElementById(l.target + "-" + l.source)
-                return {
-                    target: document.getElementById(l.target),
-                    source: document.getElementById(l.source),
-                    linkPath
-                }
-            })
+    function updateLinkRendering(resolvedLinks){
+        if(!resolvedLinks)
+            return
+        mappedLinks = resolvedLinks.map(l => {
+            const linkPath = document.getElementById(l.target + "-" + l.source)
+            return {
+                target: document.getElementById(l.target),
+                source: document.getElementById(l.source),
+                linkPath
+            }
+        })
         updateLinks(mappedLinks, ref)
     }
+    $:  {
+        updateLinkRendering(resolvedLinks)
+    }
 
-    const mutationObserver = new MutationObserver(() => updateLinks(mappedLinks, ref))
+    const mutationObserver = new MutationObserver(e => onMutation(links, ref, e))
     onMount(() => {
         if (ref && ref.parentElement) {
             ref.parentElement.scrollTop = BOARD_SIZE / 2
             ref.parentElement.scrollLeft = BOARD_SIZE / 2
             ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
         }
-
         mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
-        updateLinks(mappedLinks, ref)
     })
+    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
+    $: contextMenuBinding.rebind( getContextMenu(
+        nodes,
+        setNodes,
+        setSelected,
+        selected,
+        resolvedLinks,
+        setLinks
+    ))
+
     onDestroy(() => {
+        contextMenuBinding.onDestroy()
         if (ref && ref.parentElement)
             ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})
         mutationObserver.disconnect()
@@ -139,6 +138,7 @@
             {#each nodes as node}
                 {#if node.isComment}
                     <Comment
+                            canvas={ref}
                             onDrag={{setDragType: v => dragType = v, dragType}}
                             setSelected={(i) => setSelected([i])}
                             submitName={newName => {
@@ -167,6 +167,7 @@
             {#each nodes as node}
                 {#if !node.isComment }
                     <Node
+                            canvas={ref}
                             onDrag={{setDragType: v => dragType = v, dragType}}
                             links={resolvedLinks}
                             setSelected={(i, multi) => {
