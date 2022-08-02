@@ -33,9 +33,7 @@ export default class FileStoreController {
     static async refreshFiles() {
         try{
             const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FileStoreController.ASSETS_PATH})
-            console.log(data)
             const fileTypes = await window.fileSystem.refresh(false)
-            console.log(fileTypes)
             FileStoreController.updateStore({...FileStoreController.data, items: data, ...fileTypes})
         }
         catch (err){

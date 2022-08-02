@@ -1,6 +1,6 @@
 import FileSystem from "../libs/FileSystem"
 import AsyncFS from "../libs/AsyncFS"
-import SCRIPT_TEMPLATE from "../static/misc/SCRIPT_TEMPLATE"
+import SCRIPT_TEMPLATE from "../views/content-browser/templates/SYSTEM_TEMPLATE"
 import FILE_TYPES from "../../../../static/FILE_TYPES";
 
 const {shell} = window.require("electron")

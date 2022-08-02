@@ -1,7 +1,7 @@
 module.exports =  {
     MESH: ".mesh",
-    LEVEL_SCRIPT: "LEVEL_SCRIPT.js",
-    SCRIPT: ".js",
+    SYSTEM: ".system",
+    COMPONENT: ".component",
     MATERIAL: ".material",
     IMAGE: ".pimg",
     REGISTRY: ".reg",

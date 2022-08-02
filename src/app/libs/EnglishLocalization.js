@@ -188,7 +188,8 @@ export default class EnglishLocalization {
             ATTENUATION: "Attenuation",
             CASTS_SHADOWS: "Casts shadows",
             SIZE: "Size",
-
+            LINK_COMPONENT: "Add custom component",
+            REMOVE_COMPONENT: "Remove custom component"
         },
         FILES: {
             SEARCH: "Search",
@@ -210,8 +211,10 @@ export default class EnglishLocalization {
             REFRESH: "Refresh",
             REFRESHING: "Refreshing content-browser",
             GO_TO_PARENT: "Go to parent",
-            NEW_SCRIPT: "New Script",
-            NEW_MATERIAL: "New Material",
+            NEW_SYSTEM: "New system",
+            NEW_COMPONENT: "New component",
+            NEW_MATERIAL: "New material",
+            NEW_MATERIAL_INSTANCE: "New material instance",
 
             ASSETS: "Assets",
             BOOKMARKS: "Bookmarks",

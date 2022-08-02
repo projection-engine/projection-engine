@@ -54,7 +54,7 @@
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={() => {
         if (type === 1) {
-            if (data.type === FILE_TYPES.SCRIPT.replace(".", ""))
+            if (data.type === FILE_TYPES.SYSTEM.replace(".", "") || data.type === FILE_TYPES.COMPONENT.replace(".", ""))
                 shell.openPath(FileStoreController.ASSETS_PATH + FileSystem.sep + data.id).catch()
             else
                 setSelected(data.id)
@@ -79,9 +79,13 @@
         class="file"
 >
 
-    {#if metadata.type === FILE_TYPES.SCRIPT}
+    {#if metadata.type === FILE_TYPES.COMPONENT}
         <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">javascript</Icon>
+            <Icon styles="font-size: 3.5rem; ">extension</Icon>
+        </div>
+    {:else if metadata.type === FILE_TYPES.SYSTEM}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">memory</Icon>
         </div>
     {:else if metadata.type === FILE_TYPES.SCENE}
         <div class="icon">

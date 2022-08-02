@@ -4,7 +4,7 @@
     import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
-    import File from "./File.svelte";
+    import File from "./Item.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import bindShortcut from "../../shortcuts/libs/bind-shortcut";
     import getShortcuts from "../utils/get-shortcuts";
@@ -56,7 +56,7 @@
             )
         return map(items.filter(file => !file.parent), items)
     })();
-    $: options = getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
+    $: contextMenuOptions = getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
     $: shortcutOptions = getShortcuts(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected)
     const shortcutBinding = bindShortcut({
         focusTargetLabel: translate("TITLE"),
@@ -64,7 +64,7 @@
         actions: shortcutOptions
     })
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
-    $: contextMenuBinding.rebind(options)
+    $: contextMenuBinding.rebind(contextMenuOptions)
     $: shortcutBinding.rebind(ref, false, shortcutOptions)
     onMount(() => shortcutBinding.onMount(ref))
     onDestroy(() => {

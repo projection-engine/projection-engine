@@ -5,7 +5,7 @@
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
     import FileSystem from "../../libs/FileSystem"
     import compiler from "./libs/compiler"
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";

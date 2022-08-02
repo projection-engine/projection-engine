@@ -2,7 +2,7 @@
 
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ENTITY_TAB from "../static/ENTITY_TAB";
-    import Component from "../components/Component.svelte";
+    import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
     import MaterialInstance from "../../../libs/engine/instances/MaterialInstance";
     import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL";
@@ -11,9 +11,11 @@
     import PostProcessing from "../components/PostProcessing.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
+    import Component from "../../../libs/engine/basic/Component";
 
     export let engine
     export let currentTab
+    export let removeComponent
     export let translate
     $: currentComponent = engine.selectedEntity ? Object.keys(engine.selectedEntity.components)[currentTab] : undefined
     $: componentRef = currentComponent ? engine.selectedEntity.components[currentComponent] : undefined
@@ -21,8 +23,25 @@
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     const submit = (component, key, data) => engine.selectedEntity.components[component][key] = data
+
+    let savedState = false
+    $: {
+        if (engine.selectedEntity)
+            savedState = false
+    }
+
 </script>
 
+{#if componentRef?.constructor?.name === Component.name}
+    <button class="delete-button" on:click={() => {
+        removeComponent(currentComponent)
+    }}>
+        <Icon>
+            delete_forever
+        </Icon>
+        {translate("REMOVE_COMPONENT")}
+    </button>
+{/if}
 {#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
     <div class="wrapper">
         {#if currentTab !== ENTITY_TAB}
@@ -64,18 +83,33 @@
 
                 />
             {:else}
-                <Component
+                <ComponentLayout
                         translate={translate}
                         selected={componentRef}
-                        submit={(key, value) => componentRef[key] = value}
+                        submit={(key, value, save) => {
+
+                            if(!savedState){
+                                DataStoreController.saveEntity(
+                                    engine.selectedEntity.id,
+                                     currentComponent,
+                                      key,
+                                      value
+                                )
+                                savedState = true
+                            }
+                            componentRef[key] = value
+                            if(save)
+                                DataStoreController.saveEntity(
+                                    engine.selectedEntity.id,
+                                     currentComponent,
+                                      key,
+                                      value
+                                )
+                        }}
                 />
 
             {/if}
-        {:else}
-            <Scripts
-                    translate={translate}
-                    entity={engine.selectedEntity}
-            />
+
         {/if}
     </div>
 {:else if engine.executingAnimation}
@@ -125,5 +159,14 @@
         font-size: 0.75rem;
         font-weight: 550;
     }
-
+.delete-button{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    --pj-accent-color: #ff5555;
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border: none;
+}
 </style>

@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../../libs/EnglishLocalization";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
 

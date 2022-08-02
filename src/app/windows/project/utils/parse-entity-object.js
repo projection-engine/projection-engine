@@ -12,6 +12,7 @@ import Transformation from "../libs/engine/utils/Transformation"
 import FolderComponent from "../libs/engine/components/FolderComponent"
 import ProbeComponent from "../libs/engine/components/ProbeComponent"
 import CameraComponent from "../libs/engine/components/CameraComponent"
+import Component from "../libs/engine/basic/Component";
 
 async function readFromRegistry(fileID) {
     return new Promise(resolve => {
@@ -125,6 +126,14 @@ export default async function parseEntityObject(entity) {
                 if (k === COMPONENTS.TRANSFORM || k === COMPONENTS.DIRECTIONAL_LIGHT)
                     component.changed = true
             }
+        }
+        else if(k !== COMPONENTS.PICK) {
+            const newComp = new Component()
+            const data = entity.components[k]
+            Object.keys(data).forEach(k => {
+                newComp[k]= data[k]
+            })
+            parsedEntity.components[k] = newComp
         }
     }
     return parsedEntity

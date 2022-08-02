@@ -8,7 +8,7 @@
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";

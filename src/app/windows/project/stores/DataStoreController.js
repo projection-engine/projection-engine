@@ -18,7 +18,7 @@ export default class DataStoreController {
         DataStoreController.history.redo()
     }
     static saveEntity(entityID, component, key, changeValue){
- console.log(changeValue)
+
         DataStoreController.history.pushChange({
             target: DataHistoryController.targets.entity,
             changeValue,
@@ -38,7 +38,7 @@ export default class DataStoreController {
         })
     }
     static updateSettings(value=DataStoreController.settings) {
-        console.log(initialized)
+
         if(initialized) {
             DataStoreController.history.pushChange({
                 target: DataHistoryController.targets.settings,

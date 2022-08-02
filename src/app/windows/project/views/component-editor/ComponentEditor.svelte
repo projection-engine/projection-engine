@@ -1,6 +1,6 @@
 <script>
     import getComponentInfo from "./utils/get-component-info";
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";
     import Input from "../../../../components/input/Input.svelte";
     import DataStoreController from "../../stores/DataStoreController";
@@ -20,9 +20,11 @@
     onDestroy(() => unsubscribeEngine())
 
     let currentTab = "-2"
+    $: entity = engine.selectedEntity
     $: tabs = (() => {
-        if (engine.selectedEntity) {
-            const components = Object.keys(engine.selectedEntity.components)
+        if (entity) {
+            const components = Object.keys(entity.components)
+            console.log(components)
             if (components[currentTab] === undefined && currentTab > 0) {
                 currentTab = components.length - 1
                 return []
@@ -35,9 +37,9 @@
 
     let currentEntityName = ''
     $: {
-        if ( engine.selectedEntity)
-            currentEntityName = engine.selectedEntity.name
-        if (!engine.selectedEntity)
+        if ( entity)
+            currentEntityName = entity.name
+        if (!entity)
             currentTab = "-2"
     }
 
@@ -51,17 +53,18 @@
         icon={"category"}
 >
 
-    {#if engine.selectedEntity}
+    {#if entity}
         <Input
                 setSearchString={v => {
                     currentEntityName = v
-                    engine.selectedEntity.name = v
+                    entity.name = v
                     DataStoreController.updateEngine({...engine, changeID: v4()})
                 }}
                 searchString={currentEntityName}
                 placeholder={translate("ENTITY_NAME")}
         />
     {/if}
+
 </Header>
 {#if !hidden}
     <div class="content">
@@ -98,6 +101,11 @@
                 </div>
             {/if}
             <Form
+                    removeComponent={(comp) => {
+                        currentTab = "-2"
+                        delete entity.components[comp]
+                        DataStoreController.updateEngine()
+                    }}
                     translate={translate}
                     engine={engine}
                     currentTab={currentTab}

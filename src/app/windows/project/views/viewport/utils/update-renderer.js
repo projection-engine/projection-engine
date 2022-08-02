@@ -28,7 +28,7 @@ export default function updateRenderer(renderer, engine, settings) {
         entities,
         executingAnimation,
         selected,
-        levelScript
+        scripts
     } = engine
 
     let fMat = fallbackMaterial
@@ -67,7 +67,7 @@ export default function updateRenderer(renderer, engine, settings) {
     renderer.updatePackage(
         executingAnimation,
         {selected, ...settings},
-        levelScript,
+        scripts,
         fMat
     )
     bindGizmo(selected, settings)

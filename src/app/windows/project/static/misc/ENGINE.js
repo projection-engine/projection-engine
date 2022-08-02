@@ -10,7 +10,7 @@ export default {
     cameraInitialized: false,
     executingAnimation: false,
     selected: [],
-    levelScript: undefined,
+    scripts: [],
     changeID: undefined,
     selectedEntity: undefined,
     lockedEntity: undefined,

@@ -1,3 +1,5 @@
+import COMPONENTS from "../libs/engine/data/COMPONENTS";
+
 export default function  updateEntityTransformation(axis, data, key, entity) {
     const component = entity.components[COMPONENTS.TRANSFORM]
     const prev = component[key]

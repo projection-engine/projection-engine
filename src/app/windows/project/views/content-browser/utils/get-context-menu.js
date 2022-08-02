@@ -3,9 +3,10 @@ import handleDelete from "./handle-delete"
 import AsyncFS from "../../../libs/AsyncFS"
 
 import FileSystem from "../../../libs/FileSystem"
-import SCRIPT_TEMPLATE from "../../../static/misc/SCRIPT_TEMPLATE"
+import SYSTEM_TEMPLATE from "../templates/SYSTEM_TEMPLATE"
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
+import COMPONENT_TEMPLATE from "../templates/COMPONENT_TEMPLATE";
 
 
 const {shell} = window.require("electron")
@@ -165,12 +166,30 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         },
         {
             requiredTrigger: "data-wrapper",
-            label: translate("NEW_SCRIPT"),
-            icon: "code",
+            label: translate("NEW_MATERIAL_INSTANCE"),
+            icon: "texture",
+            onClick: async () => null
+        },
+        {divider: true, requiredTrigger: "data-wrapper"},
+        {
+            requiredTrigger: "data-wrapper",
+            label: translate("NEW_SYSTEM"),
+            icon: "memory",
             onClick: async () => {
-                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_SCRIPT"), FILE_TYPES.SCRIPT)
+                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_SYSTEM"), FILE_TYPES.SYSTEM)
 
-                await window.fileSystem.writeAsset(path, SCRIPT_TEMPLATE)
+                await window.fileSystem.writeAsset(path, SYSTEM_TEMPLATE)
+                FileStoreController.refreshFiles().catch()
+            }
+        },
+        {
+            requiredTrigger: "data-wrapper",
+            label: translate("NEW_COMPONENT"),
+            icon: "extension",
+            onClick: async () => {
+                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
+
+                await window.fileSystem.writeAsset(path, COMPONENT_TEMPLATE)
                 FileStoreController.refreshFiles().catch()
             }
         },

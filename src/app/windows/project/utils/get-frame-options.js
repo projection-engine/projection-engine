@@ -2,6 +2,7 @@ import openLevelBlueprint from "./open-level-blueprint";
 import DataStoreController from "../stores/DataStoreController";
 import FILE_TYPES from "../../../../static/FILE_TYPES";
 import FileSystem from "../libs/FileSystem"
+import loadSystems from "./load-systems";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -16,35 +17,7 @@ export default function getFrameOptions(engine, s) {
         {
             label: engine.executingAnimation ? "Stop" : "Play",
             icon: engine.executingAnimation ? "pause" : "play_arrow",
-            onClick: async () => {
-                const newValue = !engine.executingAnimation
-                const entities = window.renderer.entities
-                try {
-                    if (newValue) {
-                        for (let i = 0; i < entities.length; i++) {
-                            const c = entities[i]
-                            const scripts = []
-                            for (let s = 0; s < c.scriptsMap.length; s++) {
-                                const reg = await window.fileSystem.readRegistryFile(c.scriptsMap[s])
-                                if (reg) {
-                                    const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path)
-                                    if (file)
-                                        scripts.push(file)
-                                }
-                            }
-                            c.scripts = scripts
-                        }
-                        const levelScript = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + FILE_TYPES.LEVEL_SCRIPT)
-                        if (levelScript)
-                            DataStoreController.updateEngine({...engine, levelScript})
-                    }
-                    DataStoreController.updateEngine({...engine, executingAnimation: newValue})
-                } catch (err) {
-                    console.error(err)
-                    if (newValue)
-                        alert.pushAlert("Some error occurred", "error")
-                }
-            }
+            onClick: async () => loadSystems(engine)
         },
         {divider: true},
         {
@@ -54,11 +27,6 @@ export default function getFrameOptions(engine, s) {
                 alert.pushAlert("Recompiling probes", "info")
                 window.renderer.refreshProbes()
             }
-        },
-        {
-            label: "Edit level blueprint",
-            icon: "foundation",
-            onClick: openLevelBlueprint
         },
         {divider: true},
         {

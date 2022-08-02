@@ -5,6 +5,10 @@
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import FileStoreController from "../../../stores/FileStoreController";
     import {onDestroy} from "svelte";
+    import FileSystem from "../../../libs/FileSystem";
+    import ComponentProps from "../../../libs/engine/data/ComponentProps";
+    import Component from "../../../libs/engine/basic/Component";
+    import componentConstructor from "../../content-browser/libs/component-constructor";
 
     export let translate
     export let tabs
@@ -47,19 +51,13 @@
     </button>
     {#if entity != null && !entity.isFolder}
         <div class="divider"></div>
-        <Dropdown hideArrow={true} disabled={store.scripts.length === 0}>
-            <button slot="button" class="button"  disabled={store.scripts.length === 0}>
+        <Dropdown hideArrow={true} disabled={store.components.length === 0}>
+            <button slot="button" class="button" disabled={store.components.length === 0}>
                 <Icon>terminal</Icon>
+                <ToolTip content={translate("LINK_COMPONENT")}/>
             </button>
-            {#each store.scripts as script}
-                <button on:click={() => {
-                    const exists = entity.scriptsMap.find(s => s === script.registryID)
-                        if (script && !exists) {
-                            entity.scriptsMap.push(script.registryID)
-                            alert.pushAlert("Component added", "info")
-                        }else if(exists)
-                            alert.pushAlert("Component already exists", "info")
-                }}>
+            {#each store.components as script}
+                <button on:click={async () => componentConstructor(entity, script)}>
                     {script.name}
                 </button>
             {/each}
@@ -71,7 +69,9 @@
                 class="button"
                 on:click={() => setCurrentTab(Object.keys(entity.components).findIndex(e => e === t.key))}>
             <Icon>{t.icon}</Icon>
-            <ToolTip content={t.label} animationDelay={"0ms"}/>
+            <ToolTip>
+                    {t.label}
+            </ToolTip>
         </button>
     {/each}
 </div>

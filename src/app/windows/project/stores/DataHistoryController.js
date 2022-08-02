@@ -1,6 +1,6 @@
 import DataStoreController from "./DataStoreController";
 import {settingsStore} from "./settings-store";
-import EnglishLocalization from "../../../static/EnglishLocalization";
+import EnglishLocalization from "../../../libs/EnglishLocalization";
 
 export default class DataHistoryController {
     static targets = {
@@ -22,7 +22,7 @@ export default class DataHistoryController {
             if(this.history.length > 10)
                 this.history.shift()
 
-            this.index = this.history.length
+            this.index = this.history.length - 1
         }
     }
 
@@ -30,9 +30,9 @@ export default class DataHistoryController {
         if (this.index > 0 && this.history[this.index - 1]) {
             this.index -= 1
             if(this.history[this.index].target === DataHistoryController.targets.settings)
-                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_SETTINGS)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_SETTINGS, "info")
             else
-                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_ENTITIES)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_ENTITIES, "info")
             this.#apply()
 
         }
@@ -41,9 +41,9 @@ export default class DataHistoryController {
         if (this.index < 10 && this.history[this.index + 1]) {
             this.index += 1
             if(this.history[this.index].target === DataHistoryController.targets.settings)
-                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_SETTINGS)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_SETTINGS, "info")
             else
-                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_ENTITIES)
+                alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_ENTITIES, "info")
             this.#apply()
         }
     }

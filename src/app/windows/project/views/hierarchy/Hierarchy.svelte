@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";

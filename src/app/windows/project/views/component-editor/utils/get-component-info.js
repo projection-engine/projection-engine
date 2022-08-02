@@ -1,4 +1,5 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import DataStoreController from "../../../stores/DataStoreController";
 
 export default function getComponentInfo(c) {
     const res = {}
@@ -56,6 +57,18 @@ export default function getComponentInfo(c) {
         res.icon = "lens_blur"
         break
     default:
+        if(c === COMPONENTS.PICK)
+            break
+        const entity = DataStoreController.engine.selectedEntity
+        if(!entity)
+            break
+        const customComp = entity.components[c]
+        if(!customComp)
+            break
+        res.key = c
+        res.label = customComp.name
+        res.icon = customComp.icon
+        console.log(res)
         break
     }
     return res

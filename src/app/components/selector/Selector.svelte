@@ -2,7 +2,7 @@
 
     import FileStoreController from "../../windows/project/stores/FileStoreController";
     import {onDestroy} from "svelte";
-    import EnglishLocalization from "../../static/EnglishLocalization";
+    import EnglishLocalization from "../../libs/EnglishLocalization";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import DataIcon from "./components/DataIcon.svelte";

@@ -4,7 +4,7 @@
     import Card from "./components/Card.svelte";
     import Input from "../../components/input/Input.svelte";
     import Recent from "./components/Recent.svelte";
-    import EnglishLocalization from "../../static/EnglishLocalization";
+    import EnglishLocalization from "../../libs/EnglishLocalization";
     import ROUTES from "../../../static/ROUTES";
     import getBasePath from "../../../electron/lib/get-base-path";
     import {onMount} from "svelte";

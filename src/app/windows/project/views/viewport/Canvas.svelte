@@ -5,7 +5,7 @@
     import windowBuilder from "../../libs/engine/window-builder";
     import EditorEngine from "../../libs/engine-extension/EditorEngine";
     import updateRenderer from "./utils/update-renderer";
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import DataStoreController from "../../stores/DataStoreController";
     import getShortcuts from "./utils/get-shortcuts";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";

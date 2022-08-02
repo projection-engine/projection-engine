@@ -306,7 +306,8 @@ export default class FileSystem {
         const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
             meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
             materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
-            scriptReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SCRIPT)),
+            systemsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SYSTEM)),
+            componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
             promises = []
 
         promises.push(...imagesReg.map(i => {
@@ -341,16 +342,27 @@ export default class FileSystem {
                 })
             })
         }))
-        promises.push(...scriptReg.map(i => {
+        promises.push(...systemsReg.map(i => {
             return new Promise(resolve => {
                 const split = i.path.split(FileSystem.sep)
                 resolve({
-                    type: FILE_TYPES.SCRIPT,
+                    type: FILE_TYPES.SYSTEM,
                     registryID: i.id,
                     name: split[split.length - 1].split(".")[0]
                 })
             })
         }))
+        promises.push(...componentsReg.map(i => {
+            return new Promise(resolve => {
+                const split = i.path.split(FileSystem.sep)
+                resolve({
+                    type: FILE_TYPES.COMPONENT,
+                    registryID: i.id,
+                    name: split[split.length - 1].split(".")[0]
+                })
+            })
+        }))
+
 
 
 
@@ -361,14 +373,16 @@ export default class FileSystem {
                 images: res.filter(f => f.type === FILE_TYPES.IMAGE),
                 meshes: res.filter(f => f.type === FILE_TYPES.MESH),
                 materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
-                scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
+                systems: res.filter(f => f.type === FILE_TYPES.SYSTEM),
+                components: res.filter(f => f.type === FILE_TYPES.COMPONENT),
             })
         else
             return {
                 images: res.filter(f => f.type === FILE_TYPES.IMAGE),
                 meshes: res.filter(f => f.type === FILE_TYPES.MESH),
                 materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
-                scripts: res.filter(f => f.type === FILE_TYPES.SCRIPT)
+                systems: res.filter(f => f.type === FILE_TYPES.SYSTEM),
+                components: res.filter(f => f.type === FILE_TYPES.COMPONENT),
             }
     }
 

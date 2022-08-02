@@ -1,4 +1,4 @@
-import EnglishLocalization from "../../../static/EnglishLocalization";
+import EnglishLocalization from "../../../libs/EnglishLocalization";
 import AsyncFS from "../../../libs/AsyncFS";
 import FileSystem from "../../../libs/FileSystem"
 

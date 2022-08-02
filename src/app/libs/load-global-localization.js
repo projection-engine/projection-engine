@@ -1,4 +1,4 @@
-import EN from "../static/EnglishLocalization"
+import EN from "./EnglishLocalization"
 
 export default function loadGlobalLocalization(localization) {
     window.localization = {

@@ -9,7 +9,7 @@ export default class NavigationHistory {
     }
 
     returnDir() {
-        console.log(this)
+        // const subtraction = this.index === this.data.length?
         if (this.index > 0 && this.data[this.index - 1]) {
             this.index -= 1
             this.setCurrentDirectory({
@@ -35,15 +35,13 @@ export default class NavigationHistory {
             this.setCurrentDirectory({id: FileSystem.sep})
         else
             this.setCurrentDirectory({id: split.join(FileSystem.sep)})
-
-
     }
 
     updateCurrentDirectory(v, currentDirectory) {
         const historyData = this.data
         historyData.push(currentDirectory.id)
         if (historyData.length > 10) historyData.shift()
-        this.index = historyData.length
+        this.index = historyData.length - 1
         this.setCurrentDirectory(v)
     }
 }

@@ -81,7 +81,7 @@ export default class EditorEngine extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, params, levelScript, fallbackMaterial) {
+    updatePackage(prodEnv, params, scripts, fallbackMaterial) {
         this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
@@ -119,7 +119,7 @@ export default class EditorEngine extends Renderer {
             },
             onWrap: this.editorSystem,
             fallbackMaterial,
-            levelScript,
+            scripts,
         })
     }
 

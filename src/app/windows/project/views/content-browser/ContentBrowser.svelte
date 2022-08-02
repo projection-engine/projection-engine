@@ -2,7 +2,7 @@
     import FileSystem from "../../libs/FileSystem"
     import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
-    import EnglishLocalization from "../../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../../libs/EnglishLocalization";
     import Header from "../../../../components/view/components/Header.svelte";
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";

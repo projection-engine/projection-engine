@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../static/EnglishLocalization";
+    import EnglishLocalization from "../../../libs/EnglishLocalization";
     import logo from "../../../../assets/logo.png"
 
     export let open = () => null
