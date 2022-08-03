@@ -1,10 +1,10 @@
-import MaterialInstance from "../../../libs/engine/instances/MaterialInstance";
-import * as shaderCode from "../../../libs/engine/shaders/mesh/FALLBACK.glsl"
-import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL";
+import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
+import * as shaderCode from "../../../libs/engine/data/shaders/FALLBACK.glsl"
+import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
 import bindGizmo from "./bind-gizmo";
-import Entity from "../../../libs/engine/basic/Entity";
+import Entity from "../../../libs/engine/libs/basic/Entity";
 import TransformComponent from "../../../libs/engine/components/TransformComponent";
-import Transformation from "../../../libs/engine/utils/Transformation";
+import Transformation from "../../../libs/engine/services/Transformation";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import DataStoreController from "../../../stores/DataStoreController";
 
@@ -20,9 +20,8 @@ function getCursor() {
     return entity
 }
 
-export default function updateRenderer(renderer, engine, settings) {
+export default function updateRenderer( engine, settings) {
     const {
-        fallbackMaterial,
         meshes,
         materials,
         entities,
@@ -30,21 +29,7 @@ export default function updateRenderer(renderer, engine, settings) {
         selected,
         scripts
     } = engine
-
-    let fMat = fallbackMaterial
-
-    if (!fallbackMaterial) {
-        fMat = new MaterialInstance({
-            vertex: shaderCode.fallbackVertex,
-            fragment: shaderCode.fragment,
-            settings: {isForward: false},
-            cubeMapShaderCode: shaderCode.cubeMapShader,
-            id: FALLBACK_MATERIAL
-        })
-        DataStoreController.updateEngine({...DataStoreController.engine, fallbackMaterial: fMat})
-
-    }
-
+    const renderer = window.renderer
     if (!renderer.camera.cameraInitialized) {
         renderer.camera.cameraInitialized = true
         if (settings.cameraPosition)
@@ -67,10 +52,9 @@ export default function updateRenderer(renderer, engine, settings) {
     renderer.updatePackage(
         executingAnimation,
         {selected, ...settings},
-        scripts,
-        fMat
+        scripts
     )
     bindGizmo(selected, settings)
-    if(!renderer.frameID)
+
     renderer.start()
 }

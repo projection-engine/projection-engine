@@ -1,5 +1,5 @@
-import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
-import DataStoreController from "../../../stores/DataStoreController";
+import {ENTITY_ACTIONS} from "./engine-extension/entityReducer";
+import DataStoreController from "../stores/DataStoreController";
 
 export default class ViewportActions {
     static toCopy

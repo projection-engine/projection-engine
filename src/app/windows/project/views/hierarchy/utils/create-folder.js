@@ -1,4 +1,4 @@
-import Entity from "../../../libs/engine/basic/Entity";
+import Entity from "../../../libs/engine/libs/basic/Entity";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import FolderComponent from "../../../libs/engine/components/FolderComponent";
 import DataStoreController from "../../../stores/DataStoreController";

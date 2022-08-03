@@ -1,5 +1,5 @@
-import ComponentProps from "../../../libs/engine/data/ComponentProps";
-import Component from "../../../libs/engine/basic/Component";
+import ComponentProps from "../../../libs/engine/services/ComponentProps";
+import Component from "../../../libs/engine/libs/basic/Component";
 import FileStoreController from "../../../stores/FileStoreController";
 import FileSystem from "../../../libs/FileSystem"
 import DataStoreController from "../../../stores/DataStoreController";

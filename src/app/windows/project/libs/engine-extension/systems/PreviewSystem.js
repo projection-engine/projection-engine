@@ -1,11 +1,14 @@
-import FramebufferInstance from "../../engine/instances/FramebufferInstance"
-import ForwardPass from "../../engine/systems/passes/ForwardPass"
+import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
+import ForwardPass from "../../engine/libs/passes/rendering/ForwardPass"
 import {mat4} from "gl-matrix"
-import MeshInstance from "../../engine/instances/MeshInstance"
+import MeshInstance from "../../engine/libs/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
 import SHADING_MODELS from "../../../static/misc/SHADING_MODELS"
 import COMPONENTS from "../../engine/data/COMPONENTS"
-import MaterialInstance from "../../engine/instances/MaterialInstance"
+import MaterialInstance from "../../engine/libs/instances/MaterialInstance"
+import MaterialRenderer from "../../engine/services/MaterialRenderer";
+import Renderer from "../../engine/Renderer";
+import EditorEngine from "../EditorEngine";
 
 function toBase64( fbo) {
     const gpu = window.gpu
@@ -59,11 +62,7 @@ export default class PreviewSystem {
     }
 
     execute(options, data, materialMesh, meshEntity) {
-        const {
-            elapsed,
-            brdf,
-            fallbackMaterial
-        } = options
+        const {elapsed} = options
         let response
         this.frameBuffer.startMapping()
 
@@ -89,15 +88,14 @@ export default class PreviewSystem {
                 100, .1, 0, 0
             ]]
 
-            ForwardPass.drawMesh({
+            MaterialRenderer.drawMesh({
                 mesh: materialMesh,
                 camPosition: cam[1],
                 viewMatrix: cam[0],
                 projectionMatrix: this.projection,
                 transformMatrix,
-                material: fallbackMaterial,
+                material: Renderer.fallbackMaterial,
                 normalMatrix: this.identity,
-                brdf,
                 directionalLightsQuantity: 0,
                 directionalLightsData: [],
                 dirLightPOV: [],
@@ -114,15 +112,14 @@ export default class PreviewSystem {
         }
         else if (materialMesh instanceof MaterialInstance){
             const [ viewMatrix, camPosition ] = this.cameraData
-            ForwardPass.drawMesh({
-                mesh: window.renderer.sphereMesh,
+            MaterialRenderer.drawMesh({
+                mesh: EditorEngine.sphereMesh,
                 camPosition,
                 viewMatrix,
                 projectionMatrix: this.projection,
                 transformMatrix: this.identity,
                 material: materialMesh,
                 normalMatrix: this.identity,
-                brdf,
                 directionalLightsQuantity: 0,
                 directionalLightsData: [],
                 dirLightPOV: [],
@@ -138,7 +135,7 @@ export default class PreviewSystem {
         }
         this.frameBuffer.stopMapping()
         response= toBase64(this.frameBuffer)
-        window.renderer.sphereMesh.finish()
+        EditorEngine.sphereMesh.finish()
         window.gpu.bindVertexArray(null)
         return response
     }

@@ -5,7 +5,7 @@ import resolveRelationship from "./resolve-relationship"
 import unlitTemplate from "../templates/shaders/unlit-shader"
 import MATERIAL_RENDERING_TYPES from "../../../libs/engine/data/MATERIAL_RENDERING_TYPES";
 import cloneClass from "../../../libs/engine/utils/clone-class";
-import {vertex} from "../../../libs/engine/shaders/mesh/FALLBACK.glsl"
+import {vertex} from "../../../libs/engine/data/shaders/FALLBACK.glsl"
 import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
 
 function getShadingTemplate(type) {
@@ -40,6 +40,7 @@ export default async function compiler(n, links) {
         return n.type === NODE_TYPES.OUTPUT
     })
     if (startPoint) {
+        console.log(startPoint.shadingType)
         const samplers = n.filter(e => typeof e.format === "object"), uniformNodes = n.filter(e => e.uniform)
         const {
             code,
@@ -55,7 +56,7 @@ export default async function compiler(n, links) {
                 return undefined
             }).filter(i => i)
         )
-        // const vertexBody = compileVertex(startPoint, n, links)
+
         const cubeMapShader = await compileFrag(
             n,
             links,
@@ -70,7 +71,6 @@ export default async function compiler(n, links) {
                 "emission",
                 "worldOffset"
             ], false)
-        console.log(code)
         return {
             info: [{key: "samplers", label: "Texture samplers", data: samplers.length}, {
                 key: "uniforms",
@@ -84,16 +84,9 @@ export default async function compiler(n, links) {
             uniformData,
             settings: {
                 shadingType: startPoint.shadingType,
-                isForwardShaded: startPoint.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED,
-                rsmAlbedo: startPoint.rsmAlbedo,
-                doubledSided: startPoint.doubledSided,
-
-                depthMask: startPoint.depthMask,
+                faceCulling: startPoint.faceCulling,
                 depthTest: startPoint.depthTest,
-                cullFace: startPoint.cullFace,
-                blend: startPoint.blend,
-                blendFuncTarget: startPoint.blendFuncTarget,
-                blendFuncSource: startPoint.blendFuncSource,
+                blend: startPoint.blend
             }
         }
     } else return {}

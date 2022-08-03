@@ -1,13 +1,9 @@
 <script>
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import ENTITY_TAB from "../static/ENTITY_TAB";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import FileStoreController from "../../../stores/FileStoreController";
     import {onDestroy} from "svelte";
-    import FileSystem from "../../../libs/FileSystem";
-    import ComponentProps from "../../../libs/engine/data/ComponentProps";
-    import Component from "../../../libs/engine/basic/Component";
     import componentConstructor from "../../content-browser/libs/component-constructor";
 
     export let translate
@@ -51,9 +47,23 @@
     </button>
     {#if entity != null && !entity.isFolder}
         <div class="divider"></div>
+    {/if}
+    {#each tabs as t, i}
+        <button
+                data-highlight={currentKey === t.key ? "-" : undefined}
+                class="button"
+                on:click={() => setCurrentTab(Object.keys(entity.components).findIndex(e => e === t.key))}>
+            <Icon>{t.icon}</Icon>
+            <ToolTip>
+                {t.label}
+            </ToolTip>
+        </button>
+    {/each}
+    {#if entity != null && !entity.isFolder}
+        <div class="divider"></div>
         <Dropdown hideArrow={true} disabled={store.components.length === 0}>
             <button slot="button" class="button" disabled={store.components.length === 0}>
-                <Icon>terminal</Icon>
+                <Icon>add</Icon>
                 <ToolTip content={translate("LINK_COMPONENT")}/>
             </button>
             {#each store.components as script}
@@ -63,17 +73,6 @@
             {/each}
         </Dropdown>
     {/if}
-    {#each tabs as t, i}
-        <button
-                data-highlight={currentKey === t.key ? "-" : undefined}
-                class="button"
-                on:click={() => setCurrentTab(Object.keys(entity.components).findIndex(e => e === t.key))}>
-            <Icon>{t.icon}</Icon>
-            <ToolTip>
-                    {t.label}
-            </ToolTip>
-        </button>
-    {/each}
 </div>
 
 

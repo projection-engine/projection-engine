@@ -16,7 +16,6 @@
     import resolveLinks from "../utils/resolve-links";
     import onMutation from "../libs/on-mutation";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
-    import RENDER_TARGET from "../../../static/misc/RENDER_TARGET";
 
     export let links
     export let setLinks

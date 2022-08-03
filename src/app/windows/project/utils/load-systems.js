@@ -1,8 +1,7 @@
 import FileSystem from "../libs/FileSystem";
-import FILE_TYPES from "../../../../static/FILE_TYPES";
 import DataStoreController from "../stores/DataStoreController";
 import FileStoreController from "../stores/FileStoreController";
-import Scripting from "../libs/engine/systems/misc/Scripting";
+import Scripting from "../libs/engine/libs/passes/misc/Scripting";
 
 const {shell} = window.require("electron")
 

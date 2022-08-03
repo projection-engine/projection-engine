@@ -6,7 +6,7 @@
     export let topOffset = undefined
     export let leftOffset = undefined
     export let orientation
-
+    export let overlay
     export let tabs
     export let setTabs
 
@@ -47,6 +47,9 @@
             ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
         `}
 >
+    {#if overlay}
+        <div class="overlay"></div>
+    {/if}
     {#each tabs as view, vI}
         <View
                 hidden={hidden}
@@ -103,8 +106,7 @@
                 top: ${topOffset ? `calc(100% - ${topOffset})` : "100%"};
                 transform: ${orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 ? "translate(0, -100%)" : "translate(-100%, -100%)")};
             `}
-            class={"extend-view"}
-    ></button>
+            class={"extend-view"}></button>
 </div>
 {#if resizePosition !== "top" && tabs.length > 1}
     <ResizableBar
@@ -130,6 +132,14 @@
         display: flex;
         flex-direction: column;
         gap: 0;
+    }
+
+    .overlay{
+        position: absolute;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.5);
     }
 
     .extend-view {

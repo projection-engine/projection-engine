@@ -1,6 +1,6 @@
 import * as shaderCode from "../shaders/GRID.glsl"
-import ShaderInstance from "../../engine/instances/ShaderInstance"
-import QuadInstance from "../../engine/instances/QuadInstance"
+import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
+import QuadInstance from "../../engine/libs/instances/QuadInstance"
 
 export default class GridSystem {
     constructor() {

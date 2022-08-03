@@ -1,7 +1,6 @@
 import deleteNode from "./delete-node"
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
-import {links} from "../components/Board.svelte";
 
 export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks) {
     return [

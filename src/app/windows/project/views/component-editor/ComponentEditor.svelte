@@ -8,7 +8,6 @@
     import Form from "./views/Form.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import Components from "./views/Components.svelte";
-    import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS";
     import {v4} from "uuid";
 
     export let hidden = false
@@ -37,7 +36,7 @@
 
     let currentEntityName = ''
     $: {
-        if ( entity)
+        if (entity)
             currentEntityName = entity.name
         if (!entity)
             currentTab = "-2"
@@ -79,27 +78,27 @@
                 }}
         />
         <div class="wrapper">
-            {#if !engine.executingAnimation }
-                <div class="header">
-                    {#if !tabs[currentTab]}
-                        {#if currentTab === "-2"}
-                            <Icon>image</Icon>
-                            <div data-overflow="-">{translate("RENDERING")}</div>
-                        {:else}
-                            <Icon>videocam</Icon>
-                            <div data-overflow="-">{translate("POST_PROCESSING")}</div>
-                        {/if}
 
+            <div class="header">
+                {#if !tabs[currentTab]}
+                    {#if currentTab === "-2"}
+                        <Icon>image</Icon>
+                        <div data-overflow="-">{translate("RENDERING")}</div>
                     {:else}
-                        <Icon>
-                            {tabs[currentTab].icon}
-                        </Icon>
-                        <div data-overflow="-">
-                            {tabs[currentTab].label}
-                        </div>
+                        <Icon>videocam</Icon>
+                        <div data-overflow="-">{translate("POST_PROCESSING")}</div>
                     {/if}
-                </div>
-            {/if}
+
+                {:else}
+                    <Icon>
+                        {tabs[currentTab].icon}
+                    </Icon>
+                    <div data-overflow="-">
+                        {tabs[currentTab].label}
+                    </div>
+                {/if}
+            </div>
+
             <Form
                     removeComponent={(comp) => {
                         currentTab = "-2"

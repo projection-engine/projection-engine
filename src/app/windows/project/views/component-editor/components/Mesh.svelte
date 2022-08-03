@@ -4,7 +4,7 @@
     import DATA_TYPES from "../../../libs/engine/data/DATA_TYPES";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Range from "../../../../../components/range/Range.svelte";
-    import TextureInstance from "../../../libs/engine/instances/TextureInstance";
+    import TextureInstance from "../../../libs/engine/libs/instances/TextureInstance";
     import FileStoreController from "../../../stores/FileStoreController";
     import {onDestroy} from "svelte";
     import Selector from "../../../../../components/selector/Selector.svelte";

@@ -1,5 +1,5 @@
 import {vec4} from "gl-matrix"
-import MeshInstance from "../../engine/instances/MeshInstance"
+import MeshInstance from "../../engine/libs/instances/MeshInstance"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./Gizmo"

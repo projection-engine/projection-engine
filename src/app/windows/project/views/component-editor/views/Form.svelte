@@ -4,14 +4,14 @@
     import ENTITY_TAB from "../static/ENTITY_TAB";
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
-    import MaterialInstance from "../../../libs/engine/instances/MaterialInstance";
-    import FALLBACK_MATERIAL from "../../../static/misc/FALLBACK_MATERIAL";
+    import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
+    import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Rendering from "../components/Rendering.svelte";
     import PostProcessing from "../components/PostProcessing.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
-    import Component from "../../../libs/engine/basic/Component";
+    import Component from "../../../libs/engine/libs/basic/Component";
 
     export let engine
     export let currentTab
@@ -42,7 +42,7 @@
         {translate("REMOVE_COMPONENT")}
     </button>
 {/if}
-{#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.executingAnimation && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
+{#if (parseInt(currentTab) > -1 || currentTab === ENTITY_TAB) && engine.selectedEntity && !engine.selectedEntity.components[COMPONENTS.FOLDER]}
     <div class="wrapper">
         {#if currentTab !== ENTITY_TAB}
             {#if currentComponent === COMPONENTS.MESH}
@@ -111,13 +111,6 @@
             {/if}
 
         {/if}
-    </div>
-{:else if engine.executingAnimation}
-    <div class="empty">
-        <Icon styles="font-size: 140px">
-            play_arrow
-        </Icon>
-        {translate("STOP_SIMULATION")}
     </div>
 {:else}
     <div class="wrapper">

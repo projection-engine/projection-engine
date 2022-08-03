@@ -1,15 +1,15 @@
 import Renderer from "../engine/Renderer"
-import {STEPS_CUBE_MAP} from "../engine/systems/passes/SpecularProbePass"
+import {STEPS_CUBE_MAP} from "../engine/libs/passes/rendering/SpecularProbePass"
 import Wrapper from "./systems/Wrapper"
-import MaterialInstance from "../engine/instances/MaterialInstance"
+import MaterialInstance from "../engine/libs/instances/MaterialInstance"
 import * as debugCode from "./shaders/DEBUG.glsl"
-import * as shaderCode from "../engine/shaders/mesh/FALLBACK.glsl"
+import * as shaderCode from "../engine/data/shaders/FALLBACK.glsl"
 import DATA_TYPES from "../engine/data/DATA_TYPES"
 import SHADING_MODELS from "../../static/misc/SHADING_MODELS"
-import {STEPS_LIGHT_PROBE} from "../engine/systems/passes/DiffuseProbePass"
-import Packager from "../engine/Packager"
+import {STEPS_LIGHT_PROBE} from "../engine/libs/passes/rendering/DiffuseProbePass"
+import Packager from "../engine/libs/builder/Packager"
 import ENVIRONMENT from "../engine/data/ENVIRONMENT"
-import MeshInstance from "../engine/instances/MeshInstance"
+import MeshInstance from "../engine/libs/instances/MeshInstance"
 import EditorCamera from "./camera/EditorCamera"
 import CameraEvents from "./camera/CameraEvents"
 import sphere from "./data/SPHERE.json"
@@ -19,11 +19,10 @@ export default class EditorEngine extends Renderer {
     gizmo
     cursor
     selected = []
+    static sphereMesh
 
-    updateData=()=>null
-
-    constructor(resolution,  update) {
-        super(resolution, update )
+    constructor(resolution) {
+        super(resolution )
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 
@@ -44,7 +43,7 @@ export default class EditorEngine extends Renderer {
             id: "shading-models"
         })
 
-        this.sphereMesh = new MeshInstance({
+        EditorEngine.sphereMesh = new MeshInstance({
             ...sphere,
             uvs: [],
             tangents: [],
@@ -81,7 +80,7 @@ export default class EditorEngine extends Renderer {
         this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, params, scripts, fallbackMaterial) {
+    updatePackage(prodEnv, params, scripts) {
         this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
@@ -110,7 +109,7 @@ export default class EditorEngine extends Renderer {
 
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
 
-        Packager({
+        Packager.build({
             params: {
                 ...params,
                 camera: prodEnv ? this.rootCamera : this.camera,
@@ -118,7 +117,6 @@ export default class EditorEngine extends Renderer {
                 cursor: this.cursor
             },
             onWrap: this.editorSystem,
-            fallbackMaterial,
             scripts,
         })
     }

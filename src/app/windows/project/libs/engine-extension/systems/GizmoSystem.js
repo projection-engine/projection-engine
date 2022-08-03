@@ -2,10 +2,11 @@ import Translation from "../gizmo/Translation"
 import Rotation from "../gizmo/Rotation"
 import Scale from "../gizmo/Scale"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-import ShaderInstance from "../../engine/instances/ShaderInstance"
+import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 import getPickerId from "../../engine/utils/get-picker-id"
-import * as shaderCode from "../../engine/shaders/PICK.glsl"
+import * as shaderCode from "../../engine/data/shaders/PICK.glsl"
+import EngineLoop from "../../engine/libs/loop/EngineLoop";
 
 let gpu, depthSystem
 export default class GizmoSystem {
@@ -64,7 +65,7 @@ export default class GizmoSystem {
         transformationType = TRANSFORMATION_TYPE.GLOBAL
     ) {
         if (!depthSystem)
-            depthSystem = window.renderer.renderingPass.depthPrePass
+            depthSystem = EngineLoop.renderMap.get("depthPrePass")
         if (selected.length > 0 && this.selectedEntities.length > 0 && this.targetGizmo)
             this.targetGizmo.execute(meshes, meshesMap, this.selectedEntities, transformationType)
         else if (this.targetGizmo) {

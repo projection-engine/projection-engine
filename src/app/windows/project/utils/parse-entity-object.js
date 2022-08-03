@@ -1,18 +1,18 @@
 import FileSystem from "../libs/FileSystem"
-import Entity from "../libs/engine/basic/Entity"
+import Entity from "../libs/engine/libs/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
 import DirectionalLightComponent from "../libs/engine/components/DirectionalLightComponent"
 import MeshComponent from "../libs/engine/components/MeshComponent"
 import DATA_TYPES from "../libs/engine/data/DATA_TYPES"
-import TextureInstance from "../libs/engine/instances/TextureInstance"
+import TextureInstance from "../libs/engine/libs/instances/TextureInstance"
 import PointLightComponent from "../libs/engine/components/PointLightComponent"
 
 import TransformComponent from "../libs/engine/components/TransformComponent"
-import Transformation from "../libs/engine/utils/Transformation"
+import Transformation from "../libs/engine/services/Transformation"
 import FolderComponent from "../libs/engine/components/FolderComponent"
 import ProbeComponent from "../libs/engine/components/ProbeComponent"
 import CameraComponent from "../libs/engine/components/CameraComponent"
-import Component from "../libs/engine/basic/Component";
+import Component from "../libs/engine/libs/basic/Component";
 
 async function readFromRegistry(fileID) {
     return new Promise(resolve => {

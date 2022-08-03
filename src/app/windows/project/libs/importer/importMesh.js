@@ -1,11 +1,11 @@
-import MeshInstance from "../engine/instances/MeshInstance"
-import Entity from "../engine/basic/Entity"
+import MeshInstance from "../engine/libs/instances/MeshInstance"
+import Entity from "../engine/libs/basic/Entity"
 import TransformComponent from "../engine/components/TransformComponent"
 
 import MeshComponent from "../engine/components/MeshComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import FileSystem from "../FileSystem"
-import FALLBACK_MATERIAL from "../../static/misc/FALLBACK_MATERIAL"
+import FALLBACK_MATERIAL from "../engine/data/FALLBACK_MATERIAL"
 
 export default async function importMesh(objLoaded, engine, id) {
 

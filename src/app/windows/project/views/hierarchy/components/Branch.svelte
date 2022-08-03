@@ -2,7 +2,7 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ENTITY_WORKER_ACTIONS from "../../../static/misc/ENTITY_WORKER_ACTIONS";
-    import Packager from "../../../libs/engine/Packager";
+    import Packager from "../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
 
     const LEFT_BUTTON = 0
@@ -81,7 +81,7 @@
 
             // entityDragged.parent = nodeRef
             nodeRef.children.push(entityDragged)
-            window.renderer.updateData()
+
             window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
             payload: window.renderer.entitiesMap

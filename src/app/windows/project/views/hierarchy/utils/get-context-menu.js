@@ -1,9 +1,9 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import Entity from "../../../libs/engine/basic/Entity";
+import Entity from "../../../libs/engine/libs/basic/Entity";
 import FolderComponent from "../../../libs/engine/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
 import DataStoreController from "../../../stores/DataStoreController";
-import ViewportActions from "../../viewport/libs/ViewportActions";
+import ViewportActions from "../../../libs/ViewportActions";
 
 function createFolder() {
     const newEntity = new Entity()

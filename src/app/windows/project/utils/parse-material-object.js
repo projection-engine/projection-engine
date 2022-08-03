@@ -1,4 +1,4 @@
-import MaterialInstance from "../libs/engine/instances/MaterialInstance"
+import MaterialInstance from "../libs/engine/libs/instances/MaterialInstance"
 
 export default async function parseMaterialObject({cubeMapShader, shader, vertexShader, uniforms, uniformData, settings}, id) {
     let newMat

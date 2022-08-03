@@ -1,17 +1,18 @@
-import ShaderInstance from "../../engine/instances/ShaderInstance"
+import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
 
 import {mat4, quat, vec3} from "gl-matrix"
-import MeshInstance from "../../engine/instances/MeshInstance"
-import TextureInstance from "../../engine/instances/TextureInstance"
+import MeshInstance from "../../engine/libs/instances/MeshInstance"
+import TextureInstance from "../../engine/libs/instances/TextureInstance"
 import circle from "../../../static/icons/circle.png"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import COMPONENTS from "../../engine/data/COMPONENTS"
-import Conversion from "../../engine/utils/Conversion"
+import Conversion from "../../engine/services/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import mapEntity from "./mapEntity"
 import mesh from "../data/ROTATION_GIZMO.json"
 import DataStoreController from "../../../stores/DataStoreController";
+import ViewportPicker from "../../engine/services/ViewportPicker";
 
 const CSS = {
     backdropFilter: "blur(10px) brightness(70%)",
@@ -195,7 +196,7 @@ export default class Rotation {
             this.translation,
             camera.ortho
         )
-        const dd = window.renderer.picking.depthPick(FBO, this.currentCoord)
+        const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 

@@ -5,7 +5,6 @@ export default {
     meshes: new Map(),
     materials: [],
     viewportInitialized: false,
-    fallbackMaterial: undefined,
     entities: new Map(),
     cameraInitialized: false,
     executingAnimation: false,

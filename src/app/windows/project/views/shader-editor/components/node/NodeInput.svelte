@@ -3,6 +3,7 @@
     import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES"
     import Attribute from "./Attribute.svelte";
     import "../../css/NodeIO.css"
+
     export let handleLink
     export let attribute
     export let inputLinks

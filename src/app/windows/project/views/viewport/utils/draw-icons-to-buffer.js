@@ -1,13 +1,14 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
 
 export default function drawIconsToBuffer() {
-
+    const depthSystem = EngineLoop.renderMap.get("depthPrePass")
     const entities = Array.from(window.renderer.entitiesMap.values())
     const cameraMesh = window.renderer.cameraMesh
-    const shader = window.renderer.renderingPass.depthPrePass.shader
+    const shader = depthSystem.shader
 
     shader.use()
-    const FBO = window.renderer.renderingPass.depthPrePass.frameBuffer
+    const FBO = depthSystem.frameBuffer
     FBO.startMapping(undefined, undefined, false)
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]

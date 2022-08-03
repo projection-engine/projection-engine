@@ -1,7 +1,4 @@
 <script>
-    import EnglishLocalization from "../../../../../libs/EnglishLocalization";
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
 
     export let translate
     export let status

@@ -2,7 +2,6 @@
     import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
     import bindShortcut from "../shortcuts/libs/bind-shortcut";
     import {onDestroy, onMount} from "svelte";
-    import windowBuilder from "../../libs/engine/window-builder";
     import EditorEngine from "../../libs/engine-extension/EditorEngine";
     import updateRenderer from "./utils/update-renderer";
     import EnglishLocalization from "../../../../libs/EnglishLocalization";
@@ -10,13 +9,13 @@
     import getShortcuts from "./utils/get-shortcuts";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
+    import Packager from "../../libs/engine/libs/builder/Packager";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
     let canvasRef = null
     let initialized = false
-
-
+    let done = false
     let engine = {}
     let settings = {}
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
@@ -38,21 +37,20 @@
     })
 
     $: {
-        shortcutBinding.rebind(canvasRef, engine.executingAnimation)
+        shortcutBinding.rebind(canvasRef)
         if (canvasRef && !initialized) {
             initialized = true
-            windowBuilder(canvasRef)
-            DataStoreController.updateEngine({...engine, viewportInitialized: true})
+            Packager.buildWindow(canvasRef, window.imageWorker)
+                .then(() => {
+                    window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]})
+                    onReady()
+                    done = true
+                    DataStoreController.updateEngine({...engine, viewportInitialized: true})
+                })
 
-            window.renderer = new EditorEngine(
-                {w: settings.resolution[0], h: settings.resolution[1]},
-                ref => updateRenderer(ref, engine, settings)
-            )
-
-            onReady()
         }
-        if (initialized)
-            updateRenderer(window.renderer, engine, settings)
+        if (done)
+            updateRenderer(  engine, settings)
     }
 
 </script>

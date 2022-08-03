@@ -1,7 +1,7 @@
-import ShaderInstance from "../../engine/instances/ShaderInstance"
+import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import * as shaderCode from "../shaders/SELECTED.glsl"
 import COMPONENTS from "../../engine/data/COMPONENTS"
-import FramebufferInstance from "../../engine/instances/FramebufferInstance"
+import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
 
 export default class SelectedSystem {
 

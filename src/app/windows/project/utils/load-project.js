@@ -1,5 +1,5 @@
 import CHANNELS from "../../../../static/CHANNELS";
-import MeshInstance from "../libs/engine/instances/MeshInstance";
+import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
 import parseMaterialObject from "./parse-material-object";
 import ROUTES from "../../../../static/ROUTES";
 

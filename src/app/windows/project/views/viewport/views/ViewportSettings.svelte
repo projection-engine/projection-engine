@@ -4,7 +4,7 @@
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Shading from "../components/options/ShadingOption.svelte";
-    import Entity from "../../../libs/engine/basic/Entity";
+    import Entity from "../../../libs/engine/libs/basic/Entity";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ProbeComponent from "../../../libs/engine/components/ProbeComponent";
     import TransformComponent from "../../../libs/engine/components/TransformComponent";

@@ -1,10 +1,11 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-import Conversion from "../../engine/utils/Conversion"
+import Conversion from "../../engine/services/Conversion"
 import getEntityTranslation from "./getEntityTranslation"
 import INFORMATION_CONTAINER from "../../../static/misc/INFORMATION_CONTAINER"
 import DataStoreController from "../../../stores/DataStoreController";
+import ViewportPicker from "../../engine/services/ViewportPicker";
 
 let gpu
 export default class Gizmo {
@@ -112,7 +113,7 @@ export default class Gizmo {
             this.translation,
             camera.ortho
         )
-        const dd = window.renderer.picking.depthPick(FBO, this.currentCoord)
+        const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
         this.clickedAxis = pickID
 

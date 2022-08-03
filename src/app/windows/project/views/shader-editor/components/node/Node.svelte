@@ -1,5 +1,4 @@
 <script>
-    import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import LINK_WIDTH from "../../data/LINK_WIDTH";
     import NODE_TYPES from "../../data/NODE_TYPES";
     import NODE_INFO from "../../data/NODE_INFO";

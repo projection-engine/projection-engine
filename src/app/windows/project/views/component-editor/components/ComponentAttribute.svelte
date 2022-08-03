@@ -1,14 +1,10 @@
 <script>
 
     import Range from "../../../../../components/range/Range.svelte";
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
-    import PostProcessing from "./PostProcessing.svelte";
-    import ComponentAttribute from "./ComponentAttribute.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
 
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180

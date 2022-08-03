@@ -3,7 +3,7 @@
     import importData from "../../libs/importer/import"
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
-    import Conversion from "../../libs/engine/utils/Conversion";
+    import Conversion from "../../libs/engine/services/Conversion";
     import entitySearchWorker from "../../../../web-workers/entity-search-worker";
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
@@ -17,6 +17,8 @@
     import SelectBox from "../../../../components/select-box/SelectBox.svelte";
     import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
     import drawIconsToBuffer from "./utils/draw-icons-to-buffer";
+    import EngineLoop from "../../libs/engine/libs/loop/EngineLoop";
+    import ViewportPicker from "../../libs/engine/services/ViewportPicker";
 
     export let isReady = false
 
@@ -92,7 +94,7 @@
     const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
     $: {
         if (isReady)
-            window.renderer.miscellaneousPass.metrics.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
+            EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     }
     $: isSelectBoxDisabled = settings.gizmo === GIZMOS.CURSOR
 </script>
@@ -118,19 +120,23 @@
         class={"viewport"}
         class:hovered={hovered}
 >
+
     {#if !engine.executingAnimation}
         <ViewportSettings translate={translate} settings={settings}/>
     {/if}
     <div class="wrapper">
         <slot name="canvas"/>
-        {#if isReady && !engine.executingAnimation}
-            <GizmoBar translate={translate}/>
-            <CameraBar translate={translate}/>
-        {/if}
-        {#if isReady && settings.visible.sideBarViewport}
-            <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
+        {#if !engine.executingAnimation}
+            {#if isReady }
+                <GizmoBar translate={translate}/>
+                <CameraBar translate={translate}/>
+            {/if}
+            {#if isReady && settings.visible.sideBarViewport}
+                <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
+            {/if}
         {/if}
     </div>
+
     <div
             id={INFORMATION_CONTAINER.CONTAINER}
             class={"info-container"}
@@ -139,14 +145,14 @@
         <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
     </div>
 
-
-    <SelectBox
-            targetElementID={RENDER_TARGET}
-            disabled={isSelectBoxDisabled}
-            setSelected={(_, startCoords, endCoords) => {
+    {#if !engine.executingAnimation}
+        <SelectBox
+                targetElementID={RENDER_TARGET}
+                disabled={isSelectBoxDisabled}
+                setSelected={(_, startCoords, endCoords) => {
             if (startCoords && endCoords) {
                 drawIconsToBuffer()
-                const depthFBO = window.renderer.renderingPass.depthPrePass.frameBuffer
+                const depthFBO = EngineLoop.renderMap.get("depthPrePass").frameBuffer
                 const size = {
                     w: depthFBO.width,
                     h: depthFBO.height
@@ -155,7 +161,7 @@
                 const nEnd = Conversion.toQuadCoord(endCoords, size)
 
                 try {
-                    const data = window.renderer.picking.readBlock(depthFBO, nStart, nEnd)
+                    const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
                     WORKER.postMessage({entities: window.renderer.entities, data})
                     WORKER.onmessage = ({data: selected}) => DataStoreController.updateEngine({...engine, selected })
                 } catch (err) {
@@ -163,10 +169,11 @@
                 }
             }
         }}
-            target={RENDER_TARGET}
-            selected={[]}
-            nodes={[]}
-    />
+                target={RENDER_TARGET}
+                selected={[]}
+                nodes={[]}
+        />
+    {/if}
 </div>
 
 <style>

@@ -1,5 +1,5 @@
 import KEYS from "../../../libs/engine/data/KEYS";
-import ViewportActions from "../libs/ViewportActions";
+import ViewportActions from "../../../libs/ViewportActions";
 import DataStoreController from "../../../stores/DataStoreController";
 import GIZMOS from "../../../static/misc/GIZMOS";
 

@@ -1,20 +1,22 @@
 import GIZMOS from "../../../static/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import Conversion from "../../../libs/engine/utils/Conversion";
+import Conversion from "../../../libs/engine/services/Conversion";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
+import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
 
-const MAX_TIMESTAMP = 350, MAX_DELTA = 50
+const  MAX_DELTA = 50
 
 function pickIcon(coords) {
     drawIconsToBuffer()
-    const picked = window.renderer.picking.depthPick(window.renderer.renderingPass.depthPrePass.frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(EngineLoop.renderMap.get("depthPrePass").frameBuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
 function pickMesh(meshesMap, x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
     const coords = Conversion.toQuadCoord({x, y}, {w, h})
-    const picked = window.renderer.picking.depthPick(window.renderer.renderingPass.depthPrePass.frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(EngineLoop.renderMap.get("depthPrePass").frameBuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 

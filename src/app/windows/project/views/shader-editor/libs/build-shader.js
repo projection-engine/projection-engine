@@ -1,5 +1,5 @@
 import compiler from "./compiler"
-import {trimString} from "../../../libs/engine/instances/ShaderInstance";
+import {trimString} from "../../../libs/engine/libs/instances/ShaderInstance";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
     alert.pushAlert(translate("COMPILING"), "info")
