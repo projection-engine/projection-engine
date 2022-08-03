@@ -2,19 +2,21 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
-import {terser} from 'rollup-plugin-terser';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
+import {uglify} from "rollup-plugin-uglify";
 
-const PRODUCTION = false;
+
+const PRODUCTION = !process.env.ROLLUP_WATCH;
 const common = (inputFile, outputFile, cssFile) => ({
     input: `src/app/windows/${inputFile}.js`,
     output: {
         sourcemap: true,
         format: 'iife',
         name: 'app',
-        file: `public/build/${outputFile}.js`
+        file: `public/build/${outputFile}.js`,
+
     },
     plugins: [
         svelte({
@@ -33,7 +35,7 @@ const common = (inputFile, outputFile, cssFile) => ({
         commonjs(),
         !PRODUCTION && serve(),
         !PRODUCTION && livereload('public'),
-        PRODUCTION && terser(),
+        PRODUCTION && uglify(),
         image(),
         json()
     ],

@@ -4,8 +4,8 @@
   "description": "Projection Engine is a 3D graphics engine written from ground up to be fast and easy to use",
   "main": "src/electron/index.js",
   "scripts": {
-    "start": "concurrently \"yarn rollup -c -w\" \"electron-forge start\"",
-    "package": "electron-forge package",
+    "start": "concurrently \"yarn svelte-start\" \"electron-forge start\"",
+    "package": "yarn svelte-build && electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
@@ -18,7 +18,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "--asar": false
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -45,14 +47,13 @@
   },
   "dependencies": {
     "atob": "^2.1.2",
+    "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "electron-reload": "^1.5.0",
-    "sirv-cli": "^0.4.4",
     "@electron-forge/cli": "^6.0.0-beta.50",
     "@electron-forge/maker-deb": "^6.0.0-beta.50",
     "@electron-forge/maker-rpm": "^6.0.0-beta.50",
@@ -64,11 +65,12 @@
     "@rollup/plugin-node-resolve": "^7.0.0",
     "concurrently": "^5.1.0",
     "electron": "^19.0.6",
-    "rollup": "^3.0.0-1",
+    "rollup": "^2.77.2",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.0",
-    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-uglify": "^6.0.4",
+    "sirv-cli": "^0.4.4",
     "svelte": "^3.49.0",
     "svelte-preprocess": "^4.10.7"
   }

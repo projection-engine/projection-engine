@@ -1,12 +1,8 @@
-import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
-import * as shaderCode from "../../../libs/engine/data/shaders/FALLBACK.glsl"
-import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
 import bindGizmo from "./bind-gizmo";
 import Entity from "../../../libs/engine/libs/basic/Entity";
 import TransformComponent from "../../../libs/engine/components/TransformComponent";
 import Transformation from "../../../libs/engine/services/Transformation";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import DataStoreController from "../../../stores/DataStoreController";
 
 
 function getCursor() {

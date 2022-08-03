@@ -1,5 +1,4 @@
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
-import ForwardPass from "../../engine/libs/passes/rendering/ForwardPass"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/libs/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"

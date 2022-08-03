@@ -1,5 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
-const path = require('path');
+const {app, BrowserWindow} = require('electron');
 const WindowManager = require("./lib/WindowManager");
 
 const manager = new WindowManager()
