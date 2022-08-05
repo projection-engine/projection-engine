@@ -29,6 +29,7 @@ export default function rgb2hsv(r, g, b) {
             h -= 1;
 
     }
+
     return {
         h: Math.round(h * 360),
         s: percentRoundFn(s * 100),

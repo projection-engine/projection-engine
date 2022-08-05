@@ -5,32 +5,37 @@
 
     export let state
     export let type
-    $: previewPath = window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + state.registryID + ".preview"
+    let previewPath
+    $: {
+        if(state) previewPath =  window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + state.registryID + ".preview"
+    }
 </script>
 
 {#if type === "mesh"}
     <Preview path={previewPath}>
-        <img class="img" slot="image" alt="logo" let:src src={src}>
+        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
         <Icon slot="icon" styles="font-size: 1.6rem">view_in_ar</Icon>
     </Preview>
 {:else if type === "image"}
     <Preview path={previewPath}>
-        <img class="img" slot="image" alt="logo" let:src src={src}>
+        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
         <Icon slot="icon" styles="font-size: 1.6rem">image</Icon>
     </Preview>
 {:else if type === "material"}
     <Preview path={previewPath}>
-        <img class="img" slot="image" alt="logo" let:src src={src}>
+        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
         <Icon slot="icon" styles="font-size: 1.6rem">texture</Icon>
     </Preview>
-{:else if type === "script"}
-    <Icon slot="icon" styles="font-size: 1.6rem">javascript</Icon>
 {/if}
 <style>
     .img{
         object-fit: cover;
-        width: 30px;
-        height: 30px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
         border-radius: 5px;
     }
 </style>

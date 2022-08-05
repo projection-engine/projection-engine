@@ -4,7 +4,6 @@
 
     let open = false
     export let content = ""
-    export let styles = ""
     let wrapper
     let mountingPoint
     let bBox, bodyBBox
@@ -35,26 +34,26 @@
             {once: true}
         )
     }
-    const portal = createPortal()
+    const portal = createPortal(999, false)
+    $: open ? portal.open() : portal.close()
     onMount(() => {
         mountingPoint.parentElement.addEventListener("mouseenter", hover)
-        portal.open(wrapper)
+        portal.create(wrapper)
     })
     onDestroy(() => {
         try{
-            console.log(wrapper)
             mountingPoint.parentElement.removeEventListener("mouseenter", hover)
-            portal.close()
+            portal.destroy()
         }catch(err){
             console.log(err)
         }
-
     })
 </script>
 
 
 <span style="display: none" bind:this={mountingPoint}></span>
-<div style={`display: ${open ? "block" : "none"}; ` + (styles ? styles : "")} class="container" bind:this={wrapper}>
+
+<div class="container" bind:this={wrapper}>
     {#if content}
         {content}
     {:else}

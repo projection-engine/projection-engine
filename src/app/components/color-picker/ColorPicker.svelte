@@ -19,7 +19,20 @@
     let focused = false, boundingBox = {x: 0, y: 0}, clicked = false
     let picker, canvas
     let button
+    let hsl = {}
 
+    function updateBasedOnValues() {
+        if (!canvas || changed)
+            return
+        boundingBox = canvas.getBoundingClientRect()
+
+        const x = (saturation / 100) * size
+        const y = (1 - colorValue / 100) * size
+        picker.style.left = x + "px"
+        picker.style.top = y + "px"
+        hsl = hsv2Hsl(hue, saturation, colorValue)
+
+    }
 
     $: {
         if (value) {
@@ -31,6 +44,7 @@
                 saturation = hsv.s
                 colorValue = hsv.v
             } else if (Array.isArray(value)) {
+                console.log(value)
                 const hsv = rgb2hsv(value[0], value[1], value[2])
                 hue = hsv.h
                 saturation = hsv.s
@@ -41,15 +55,12 @@
                 saturation = hsv.s
                 colorValue = hsv.v
             }
+            updateBasedOnValues()
+            changed = false
         }
 
     }
 
-    function updatePicker() {
-        const {h, s, l} = hsv2Hsl(hue, saturation, colorValue)
-        picker.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`
-        button.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`
-    }
 
     function handler(event) {
         switch (event.type) {
@@ -73,7 +84,7 @@
                     if (colorValue < 100 && colorValue > 0)
                         picker.style.top = y + "px"
                     if (colorValue <= 100 || saturation <= 100)
-                        updatePicker()
+                        hsl = hsv2Hsl(hue, saturation, colorValue)
                 }
                 break
             }
@@ -99,44 +110,50 @@
         picker = document.getElementById(internalID + "-picker")
         canvas = document.getElementById(internalID + "-canvas")
 
-        boundingBox = canvas.getBoundingClientRect()
-
-        const x = (saturation / 100) * size
-        const y = (1 - colorValue / 100)  * size
-        picker.style.left = x + "px"
-        picker.style.top = y + "px"
-
-        const hsl = hsv2Hsl(hue, saturation, colorValue)
-        button.style.background = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
-        updatePicker()
-
+        updateBasedOnValues()
         canvas.addEventListener("mousemove", handler)
         canvas.addEventListener("mousedown", handler)
         document.body.addEventListener("mouseup", handler)
     })
+    let timeout
+
+    function handleInputChange(event) {
+        changed = true
+        hue= parseFloat(event.target.value)
+
+        clearTimeout(timeout)
+        setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 250)
+        console.log(hsv2Rgb(hue, saturation, colorValue))
+        event.target.parentElement.style.setProperty('--hue', hue);
+        hsl= {...hsl, h: parseFloat(event.target.value)}
+    }
 </script>
 
 
-<Dropdown hideArrow="true" width="100%" disabled={disabled}>
-    <div slot="button" style="min-height: {height};max-height: {height};" bind:this={button} class="dropdown" disabled={disabled}>
+<Dropdown
+        hideArrow="true"
+        width="100%"
+        styles={`width: ${size + 16}px;`}
+        disabled={disabled}
+>
+    <div
+            slot="button"
+            style={`min-height: ${height};max-height: ${height}; background: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%);`}
+            bind:this={button}
+            class="dropdown"
+            disabled={disabled}>
         {#if label}
             <div class="label" style="height: {height};">
                 {label}
             </div>
         {/if}
     </div>
-    <div class="container" style="--hue: {hue}; width: {size + 32}px; height:  {size + 48}px; ">
+    <div class="container" style="--hue: {hue}; width: {size + 16}px; height:  {size + 48}px; ">
         <div style="width: {size}px; height: {size}px" class="canvas" id="{internalID}-canvas">
             <div class="picker" id="{internalID}-picker"></div>
         </div>
         <input
-                on:change={(event) => {
-                    changed = true
-                    hue= parseFloat(event.target.value)
-                    event.target.parentElement.style.setProperty('--hue', event.target.value);
-                    updatePicker()
-
-                }}
+                on:change={handleInputChange}
                 type="range"
                 value={hue}
                 max="360"
@@ -176,11 +193,7 @@
         justify-items: center;
         align-content: center;
         gap: 16px;
-        padding: 16px;
-
-        background: var(--pj-background-secondary);
-        border-radius: 5px;
-        border: var(--pj-border-primary) 1px solid;
+        padding: 8px;
 
 
         --hue: 0;
@@ -243,7 +256,7 @@
         height: 25px;
         border-radius: 50px;
         position: relative;
-
+        background: transparent;
         top: 0;
         left: 0;
         z-index: 99999;

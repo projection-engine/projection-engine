@@ -115,7 +115,7 @@
         on:drop={e => {
         e.preventDefault()
         hovered  = false
-        importData(e, engine)
+        importData(e)
     }}
         class={"viewport"}
         class:hovered={hovered}

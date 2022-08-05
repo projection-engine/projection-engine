@@ -10,10 +10,11 @@
 <div class="wrapper" data-disabled={disabled ? `-` : undefined}>
     <button
             class="container"
-            disabled={disabled ? "true" : undefined}
+            disabled={disabled}
             style={`
                 background: ${checked ? "var(--pj-accent-color)" : undefined};
                 border: ${checked ? "var(--pj-accent-color) 1px solid" : undefined};
+                opacity: ${disabled ? ".5" : "1"};
             `}
             on:click={() => handleCheck(checked)}>
         <Icon

@@ -40,7 +40,7 @@ export default async function compiler(n, links) {
         return n.type === NODE_TYPES.OUTPUT
     })
     if (startPoint) {
-        console.log(startPoint.shadingType)
+        console.trace(startPoint.shadingType)
         const samplers = n.filter(e => typeof e.format === "object"), uniformNodes = n.filter(e => e.uniform)
         const {
             code,
@@ -71,12 +71,12 @@ export default async function compiler(n, links) {
                 "emission",
                 "worldOffset"
             ], false)
+
         return {
-            info: [{key: "samplers", label: "Texture samplers", data: samplers.length}, {
-                key: "uniforms",
-                label: "Uniform quantity",
-                data: uniformNodes.length
-            },],
+            info: [
+                {key: "samplers", label: "Texture samplers", data: samplers.length},
+                {key: "uniforms", label: "Uniform quantity", data: uniformNodes.length}
+            ],
             cubeMapShader,
             shader: code,
             vertexShader: getShaderVertex(startPoint.shadingType),

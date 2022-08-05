@@ -4,8 +4,6 @@
     import ENTITY_TAB from "../static/ENTITY_TAB";
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
-    import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
-    import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Rendering from "../components/Rendering.svelte";
     import PostProcessing from "../components/PostProcessing.svelte";
@@ -48,37 +46,21 @@
             {#if currentComponent === COMPONENTS.MESH}
                 <Mesh
                         translate={translate}
-                        entityID={engine.selectedEntity.id}
-                        engine={engine}
                         selected={componentRef}
-                        submit={async (val, key) => {
-                            if (key)
-                                submit(COMPONENTS.MESH, key, val)
-                            else {
-                                if (val) {
-                                    const exists = window.renderer.materials.find(m => m.id === val.id)
-                                    if (!exists) {
-                                        let newMat
-                                        await new Promise(resolve => {
-                                            newMat = new MaterialInstance({
-                                                id: val.id,
-                                                onCompiled:() => resolve(),
-                                                settings: val.blob.settings,
-                                                vertex: val.blob.vertexShader,
-                                                fragment: val.blob.shader,
-                                                uniformData: val.blob.uniformData
-                                            })
-                                        })
-                                        engine.materials.push(newMat)
-                                    }
-                                }
-
-                                if (val) {
-                                    componentRef.materialID = val.id
-                                    componentRef.uniforms = val.blob.uniforms
-                                } else
-                                    componentRef.materialID = FALLBACK_MATERIAL
-                            }
+                        submit={async (value, key) => {
+                            DataStoreController.saveEntity(
+                                engine.selectedEntity.id,
+                                currentComponent,
+                                key,
+                                componentRef[key]
+                            )
+                            componentRef[key] = value
+                            DataStoreController.saveEntity(
+                                engine.selectedEntity.id,
+                                currentComponent,
+                                key,
+                                value
+                            )
                         }}
 
                 />
@@ -87,7 +69,6 @@
                         translate={translate}
                         selected={componentRef}
                         submit={(key, value, save) => {
-
                             if(!savedState){
                                 DataStoreController.saveEntity(
                                     engine.selectedEntity.id,
@@ -129,7 +110,7 @@
     .wrapper {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 4px;
 
         height: fit-content;
         width: 100%;
@@ -139,27 +120,14 @@
         overflow-x: hidden;
     }
 
-    .empty {
+    .delete-button {
         width: 100%;
-        height: 100%;
-        display: grid;
+        display: flex;
         align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-        text-align: center;
-        color: var(--pj-color-primary);
-        font-size: 0.75rem;
-        font-weight: 550;
+        --pj-accent-color: #ff5555;
+        margin-top: 4px;
+        margin-left: 4px;
+        margin-right: 4px;
+        border: none;
     }
-.delete-button{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    --pj-accent-color: #ff5555;
-    margin-top: 4px;
-    margin-left: 4px;
-    margin-right: 4px;
-    border: none;
-}
 </style>

@@ -14,7 +14,7 @@
     let open = false
     let modal
     let button
-    $: modal && button ? transformModal(open, modal, button) : null
+    $: if (modal && button) transformModal(open, modal, button)
 
 
     function handler(event) {
@@ -27,13 +27,14 @@
         }
     }
 
-    const portal = createPortal()
+    const portal = createPortal(500)
+    $: open ? portal.open() : portal.close()
     onMount(() => {
-        portal.open(modal, 500)
+        portal.create(modal)
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
-        portal.close()
+        portal.destroy()
         document.removeEventListener("mousedown", handler)
     })
 </script>
@@ -50,6 +51,7 @@
         class={open ? "highlight dropdown" : undefined}
         style={(hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;") + "width: " + width}
 >
+
     <slot name="button"/>
     {#if !hideArrow}
         <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>

@@ -29,7 +29,6 @@ void main(){
 			tt[3][2]  += t.z;
 		}
 		gl_Position =  projectionMatrix * viewMatrix * tt * sc * vec4(position,1.0);
-   
 }
 `
 
@@ -68,7 +67,7 @@ void main(){
 `
 export const vertexRot = `#version 300 es
 
-#define SIZE .2
+#define SIZE .15
 layout (location = 1) in vec3 position;
 layout (location = 3) in vec2 uvs;
 

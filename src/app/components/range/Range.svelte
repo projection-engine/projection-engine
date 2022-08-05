@@ -45,7 +45,7 @@
         else if (currentValue < minValue && minValue !== undefined)
             currentValue = minValue
 
-        const prev = (currentValue * (isAngle ? toDeg : 1) ).toFixed(precision ? precision : 1)
+        const prev = (currentValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
         ref.innerText = prev
         inputRef.value = prev
 
@@ -91,16 +91,18 @@
         style={accentColor ? "--accent-color: " + accentColor : undefined}
 >
     {#if label}
-        <div style="min-width: {minLabelWidth}" data-overflow="-">
+        <div style="min-width: {minLabelWidth}; color: {disabled ? "#999" : "var(--pj-color-secondary)"};" data-overflow="-">
             {label}
-            <ToolTip>
-                {label}
-            </ToolTip>
+            {#if !disabled}
+                <ToolTip>
+                    {label}
+                </ToolTip>
+            {/if}
         </div>
     {/if}
     <input
             bind:this={inputRef}
-            disabled={`${disabled}`}
+            disabled={disabled}
             autofocus
             onChange={(e) => onChange(e.target)}
             type="number"

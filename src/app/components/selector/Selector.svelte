@@ -5,7 +5,6 @@
     import EnglishLocalization from "../../libs/EnglishLocalization";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
-    import DataIcon from "./components/DataIcon.svelte";
     import Options from "./components/Options.svelte";
 
     export let size
@@ -18,27 +17,34 @@
     const unsubscribeStore = FileStoreController.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
-
+    function getParsedType(){
+        switch (type){
+            case "image":
+                return "images"
+            case "material":
+                return "materials"
+            case "mesh":
+                return "meshes"
+            default:
+                return undefined
+        }
+    }
     let state
     $: {
-        const rID = (selected?.registryID ? selected?.registryID : selected)
-        let name = translate("EMPTY"),
-            data = store[type + "s"]?.find(e => e.registryID === rID)
-        state = data ? data : {name}
+        const rID = selected?.registryID ? selected?.registryID : selected
+        let data = store[getParsedType()]?.find(e => e.registryID === rID)
+        state = data ? data : {name: translate("EMPTY")}
     }
 
 </script>
 
-<Dropdown hideArrow={true} styles="width: 250px;" >
+<Dropdown hideArrow={true} styles="width: clamp(250px, 20vw, 500px);" >
     <button
             slot="button"
             style={`max-height: ${size === "small" ? "25px" : "43px"}; min-height:  ${size === "small" ? "25px" : "43px"}; width: 100%`}
     >
         <ToolTip content={state.name}/>
         <div class="wrapper">
-            {#if size !== "small"}
-                <DataIcon state={state} type={type}/>
-            {/if}
             <div data-overflow="-" style="text-align: left">
                 {state.name}
             </div>
@@ -72,6 +78,8 @@
     }
 
     .wrapper {
+        position: relative;
+        overflow:hidden;
         font-weight: 550;
         display: flex;
         align-items: center;

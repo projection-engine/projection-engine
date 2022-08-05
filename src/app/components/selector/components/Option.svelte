@@ -19,16 +19,27 @@
     }}
 >
     <DataIcon state={data} type={type}/>
-    <div data-overflow="-" style="max-width: 100%">
+    <div data-overflow="-" class="label" >
         {data.name}
     </div>
     <ToolTip content={data.name}/>
 </button>
 
 <style>
+    .label{
+        max-width: 100%;
+        position: absolute;
+        z-index: 10;
+        bottom: 4px;
+        width: 100%;
+        text-align: center;
+        padding: 0 4px;
+    }
     .option {
-        width: 75px;
-        height: 75px;
+        position: relative;
+
+        width: var(--card-size);
+        height: var(--card-size);
         outline: none;
         border: var(--pj-border-primary) 1px solid;
         border-radius: 3px;
@@ -40,18 +51,17 @@
         font-weight: 550;
         color: var(--pj-color-secondary);
         text-align: center;
-        background: var(--pj-background-secondary);
         cursor: pointer;
 
         overflow: hidden;
     }
 
     .option:hover {
-        background: var(--pj-border-primary);
+        border-color: var(--pj-accent-color);
     }
 
     .option:active {
-        background: var(--pj-border-primary);
+        transform:scale(.99);
         border-color: var(--pj-accent-color);
     }
 

@@ -86,8 +86,9 @@
                     setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                     translate={translate}
             />
+            <ResizableBar type={"width"}/>
         {/if}
-        <ResizableBar type={"width"}/>
+
         <Files
                 items={store.items}
                 currentDirectory={currentDirectory}

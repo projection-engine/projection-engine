@@ -6,8 +6,9 @@ import MeshComponent from "../engine/components/MeshComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import FileSystem from "../FileSystem"
 import FALLBACK_MATERIAL from "../engine/data/FALLBACK_MATERIAL"
+import DataStoreController from "../../stores/DataStoreController";
 
-export default async function importMesh(objLoaded, engine, id) {
+export default async function importMesh(objLoaded, id) {
 
     let mesh,
         entity,
@@ -23,7 +24,7 @@ export default async function importMesh(objLoaded, engine, id) {
                 wireframeBuffer: true
             })
 
-            if (objLoaded.material && !engine.materials.find(m => m.id === objLoaded.material)) {
+            if (objLoaded.material && !DataStoreController.engine.materials.find(m => m.id === objLoaded.material)) {
                 const rs = await window.fileSystem.readRegistryFile(objLoaded.material)
                 if (rs) {
                     const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" +FileSystem.sep +  rs.path, "json")
@@ -39,7 +40,7 @@ export default async function importMesh(objLoaded, engine, id) {
             existsMesh = true
         entity = initializeEntity(objLoaded, mesh.id)
     } catch (e) {
-        console.log(e)
+        console.error(e)
         alert.pushAlert("Some error occurred", "error")
     }
 

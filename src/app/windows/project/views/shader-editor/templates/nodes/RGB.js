@@ -5,7 +5,7 @@ import checkGlslFloat from "../../utils/check-glsl-float"
 
 
 export default class RGB extends Node {
-    v = [0, 0, 0]
+    rgb = [0, 0, 0]
     uniform = false
 
     constructor() {
@@ -13,10 +13,9 @@ export default class RGB extends Node {
             {
                 label: "Dynamic",
                 key: "uniform",
-                type: DATA_TYPES.CHECKBOX,
-                info: "Allow node to be set dynamically"
+                type: DATA_TYPES.CHECKBOX
             },
-            {label: "Color", key: "v", type: DATA_TYPES.COLOR},
+            {label: "Color", key: "rgb", type: DATA_TYPES.COLOR},
         ], [
             {label: "Value", key: "COLOR_RGB", type: DATA_TYPES.VEC3},
         ])
@@ -28,7 +27,7 @@ export default class RGB extends Node {
     }
 
     async getInputInstance(index, uniforms, uniformData) {
-        const v = this.v
+        const v = this.rgb
         if (this.uniform) {
             this.uniformName = `COLOR_RGB${index}`
             uniformData.push({
@@ -47,7 +46,6 @@ export default class RGB extends Node {
             return `uniform vec3 ${this.uniformName};`
         } else {
             this.uniformName = `COLOR_RGB${index}`
-
             return `#define ${this.uniformName} vec3(${checkGlslFloat(v[0] / 255)}, ${checkGlslFloat(v[1] / 255)}, ${checkGlslFloat(v[2] / 255)})`
         }
     }

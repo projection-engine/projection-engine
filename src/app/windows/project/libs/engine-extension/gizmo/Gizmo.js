@@ -6,6 +6,7 @@ import getEntityTranslation from "./getEntityTranslation"
 import INFORMATION_CONTAINER from "../../../static/misc/INFORMATION_CONTAINER"
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportPicker from "../../engine/services/ViewportPicker";
+import EngineLoop from "../../engine/libs/loop/EngineLoop";
 
 let gpu
 export default class Gizmo {
@@ -40,8 +41,8 @@ export default class Gizmo {
         this.gizmoShader = sys.gizmoShader
     }
 
-    onMouseMove(){
-        if(!this.started){
+    onMouseMove() {
+        if (!this.started) {
             this.started = true
             DataStoreController.saveEntity(
                 this.mainEntity.id,
@@ -55,22 +56,22 @@ export default class Gizmo {
     onMouseDown(event) {
         if (!this.renderTarget)
             this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
-        const w = gpu.canvas.width, h = gpu.canvas.height
+
+        const w = window.gpu.canvas.width, h = window.gpu.canvas.height
         const x = event.clientX
         const y = event.clientY
 
-        this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h}, gpu.canvas)
-        this.currentCoord.clientX = event.clientX
-        this.currentCoord.clientY = event.clientY
+        this.currentCoord = Conversion.toQuadCoord({x, y}, {w, h})
         this.#testClick()
-
     }
-    notify(value, sign){
+
+    notify(value, sign) {
         this.totalMoved += sign * value
         this.renderTarget.innerText = this.totalMoved.toFixed(3) + " un"
     }
+
     onMouseUp() {
-        if(this.totalMoved !== 0){
+        if (this.totalMoved !== 0) {
             DataStoreController.saveEntity(
                 this.mainEntity.id,
                 COMPONENTS.TRANSFORM,
@@ -98,7 +99,7 @@ export default class Gizmo {
     }
 
     #testClick() {
-        if(!this.mainEntity || this.mainEntity?.isFolder)
+        if (!this.mainEntity || this.mainEntity?.isFolder)
             return
         const camera = window.renderer.camera
         const mX = this.#translateMatrix(this.xGizmo.components)
@@ -134,7 +135,7 @@ export default class Gizmo {
         selected,
         transformationType
     ) {
-        if(!selected[0]) {
+        if (!selected[0]) {
             this.mainEntity = undefined
             return
         }

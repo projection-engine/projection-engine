@@ -2,27 +2,47 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import Icon from "../Icon/Icon.svelte";
     import logo from '../../../assets/logo.png';
+    import EnglishLocalization from "../../libs/EnglishLocalization";
+    import About from "./About.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
-    export let logoAction = () => null
     export let pageInfo = {}
     export let label = ""
     export let options = []
-
-
+    let isAboutOpen = false
+    const translate = (key) => EnglishLocalization.COMPONENTS.FRAME[key]
 </script>
 
 <div class={"wrapper"}>
+    {#if isAboutOpen}
+        <About handleClose={() => isAboutOpen = false} translate={translate}/>
+    {/if}
     <div class={"options"}>
-        <button
-                class={"logo-button"}
-                on:click={()=> logoAction()}
-        >
-            <div class={"logo-wrapper"}>
-                <img src={logo} alt={"LOGO"} class={"logo"}/>
-            </div>
-        </button>
+        <Dropdown hideArrow={true}>
+            <button
+                    slot="button"
+                    class={"logo-button"}
+            >
+                <div class={"logo-wrapper"}>
+                    <img src={logo} alt={"LOGO"} class={"logo"}/>
+                </div>
+            </button>
+            <button on:click={() => isAboutOpen = true}>
+                {translate("ABOUT")}
+            </button>
+            {#if pageInfo.closeEvent}
+                <button
+                        on:click={() => {
+                    if (typeof pageInfo.closeEvent === "function")
+                        pageInfo.closeEvent()
+                    else
+                        ipcRenderer.send("close" + sessionStorage.getItem("electronWindowID"))
+                }}>
+                    {translate("EXIT")}
+                </button>
+            {/if}
+        </Dropdown>
         {#if label}
             <h6 class={"title"} data-overflow="-">{label}</h6>
         {/if}
@@ -43,9 +63,9 @@
                                 <div class={"vert-divider"}></div>
                             {:else}
                                 <button
-                                    class={"option-button"}
-                                    disabled="{subOption.disabled}"
-                                    on:click={subOption.onClick}
+                                        class={"option-button"}
+                                        disabled={subOption.disabled}
+                                        on:click={subOption.onClick}
                                 >
                                     <div class={"icon-container"}>
                                         {#if subOption.icon}

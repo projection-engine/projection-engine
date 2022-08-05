@@ -44,6 +44,7 @@ export default class SelectedSystem {
                     t.transformationMatrix
                 )
             }
+
             this.frameBuffer.stopMapping()
 
 
@@ -52,7 +53,6 @@ export default class SelectedSystem {
                 silhouette: this.frameBuffer.colors[0]
             })
             this.frameBuffer.draw()
-
             window.gpu.bindVertexArray(null)
         }
     }

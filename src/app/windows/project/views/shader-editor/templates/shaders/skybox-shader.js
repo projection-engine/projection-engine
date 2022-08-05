@@ -13,8 +13,7 @@ in vec3 normalVec;
 in mat4 normalMatrix; 
 in vec3 viewDirection;  
 uniform float elapsedTime;
- 
-uniform sampler2D sceneColor;
+  
 
 // OUTPUTS
 out vec4 finalColor;
@@ -24,7 +23,7 @@ out vec4 finalColor;
 void main(){
     ${body}
      vec3 albedo = vec3(gAlbedo);
-    finalColor = vec4(albedo, opacity);
+    finalColor = vec4(albedo, 1.);
 }
         `,
     inputs: "",
@@ -38,12 +37,12 @@ layout (location = 3) in vec2 uvTexture;
 
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-out vec3 texCoord;
+out vec2 texCoord;
 
 void main(){
     texCoord = uvTexture;
     
-    mat4 m = viewMatrix ;
+    mat4 m = viewMatrix;
    m[3][0]  = 0.0;
    m[3][1]  = 0.0;
    m[3][2]  = 0.0;

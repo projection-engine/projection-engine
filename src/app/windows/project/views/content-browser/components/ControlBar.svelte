@@ -117,7 +117,8 @@
                     </button>
 
                     {#each Object.keys(FILE_TYPES) as k, i}
-                        <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])} style="text-transform: capitalize">
+                        <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])}
+                                style="text-transform: capitalize">
                             {#if fileType === FILE_TYPES[k]}
                                 <Icon>check</Icon>
                             {/if}
@@ -159,16 +160,18 @@
                 {translate("VIEW")}
             </button>
             <button on:click={() => setView({...view, navigation: !view.navigation})}>
-                {translate("OPTIONS")}
                 {#if view.navigation}
                     <Icon>check</Icon>
                 {/if}
+                {translate("OPTIONS")}
+
             </button>
             <button on:click={() => setView({...view, sideBar: !view.sideBar})}>
-                {translate("SIDE_BAR")}
                 {#if view.sideBar}
                     <Icon>check</Icon>
                 {/if}
+                {translate("SIDE_BAR")}
+
             </button>
 
         </Dropdown>

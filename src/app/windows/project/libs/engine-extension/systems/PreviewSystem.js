@@ -103,8 +103,6 @@ export default class PreviewSystem {
                 materialComponent: {},
                 elapsed,
                 ambient: {},
-
-                shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true
             })
             materialMesh.finish()
@@ -127,8 +125,6 @@ export default class PreviewSystem {
                 materialComponent: {},
                 elapsed,
                 ambient: {},
-
-                shadingModel: SHADING_MODELS.NORMAL,
                 useCubeMapShader: true
             })
         }

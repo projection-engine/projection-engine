@@ -5,8 +5,9 @@ import FileSystem from "../FileSystem"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../static/FILE_TYPES";
+import DataStoreController from "../../stores/DataStoreController";
 
-export default async function importData(event, engine, asID) {
+export default async function importData(event, asID) {
     const items = [], meshes = []
 
     if (asID)
@@ -15,7 +16,8 @@ export default async function importData(event, engine, asID) {
         try {
             items.push(...JSON.parse(event.dataTransfer.getData("text")))
         } catch (e) {
-            alert.pushAlert("Error importing file", "error")
+            console.error(e)
+            alert.pushAlert("Error loading file", "error")
         }
 
     for (let i = 0; i < items.length; i++) {
@@ -25,7 +27,7 @@ export default async function importData(event, engine, asID) {
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.MESH: {
                     const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
-                    const meshData = await importMesh(file, engine, data)
+                    const meshData = await importMesh(file,data)
                     if (meshData.mesh !== undefined)
                         meshes.push(meshData)
                     else
@@ -44,7 +46,7 @@ export default async function importData(event, engine, asID) {
     if (meshes.length > 0) {
         const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
         for (let i = 0; i < newMeshes.length; i++)
-            engine.meshes.set(newMeshes[i].id, newMeshes[i])
+            DataStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
         if (!asID) {
             const toLoad = meshes
                 .map(m => m.entity)
@@ -59,7 +61,7 @@ export default async function importData(event, engine, asID) {
                     transform.changed = true
                 }
             })
-            engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
+            DataStoreController.engine.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
             alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
         }
     }

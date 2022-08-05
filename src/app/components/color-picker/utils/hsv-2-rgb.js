@@ -1,54 +1,19 @@
-export default function hsv2Rgb(h, s, v) {
-    let rgb = {};
+function mix(a, b, v)
+{
+    return (1-v)*a + v*b;
+}
 
+export default function hsv2Rgb(H, s, v)
+{
+    const S = s/100, V = v/100
+    const V2 = V * (1 - S);
+    const r  = ((H>=0 && H<=60) || (H>=300 && H<=360)) ? V : ((H>=120 && H<=240) ? V2 : ((H>=60 && H<=120) ? mix(V,V2,(H-60)/60) : ((H>=240 && H<=300) ? mix(V2,V,(H-240)/60) : 0)));
+    const g  = (H>=60 && H<=180) ? V : ((H>=240 && H<=360) ? V2 : ((H>=0 && H<=60) ? mix(V2,V,H/60) : ((H>=180 && H<=240) ? mix(V,V2,(H-180)/60) : 0)));
+    const b  = (H>=0 && H<=120) ? V2 : ((H>=180 && H<=300) ? V : ((H>=120 && H<=180) ? mix(V2,V,(H-120)/60) : ((H>=300 && H<=360) ? mix(V,V2,(H-300)/60) : 0)));
 
-    if (s === 0)
-        rgb.r = rgb.g = rgb.b = v;
-    else {
-        let t1 = v, t2 = (255 - s) * v / 255, t3 = (t1 - t2) * (h % 60) / 60;
-
-        if (h === 360) h = 0;
-
-        if (h < 60) {
-            rgb.r = t1;
-            rgb.b = t2;
-            rgb.g = t2 + t3
-            return rgb
-        }
-        if (h < 120) {
-            rgb.g = t1;
-            rgb.b = t2;
-            rgb.r = t1 - t3
-            return rgb
-        }
-        if (h < 180) {
-            rgb.g = t1;
-            rgb.r = t2;
-            rgb.b = t2 + t3
-            return rgb
-        }
-        if (h < 240) {
-            rgb.b = t1;
-            rgb.r = t2;
-            rgb.g = t1 - t3
-            return rgb
-        }
-        if (h < 300) {
-            rgb.b = t1;
-            rgb.g = t2;
-            rgb.r = t2 + t3
-            return rgb
-        }
-        if (h < 360) {
-            rgb.r = t1;
-            rgb.g = t2;
-            rgb.b = t1 - t3
-            return rgb
-        }
-        rgb.r = 0;
-        rgb.g = 0;
-        rgb.b = 0
-
-    }
-    return rgb
+    return {
+        r : Math.round(r * 255),
+        g : Math.round(g * 255),
+        b : Math.round(b * 255)
+    };
 }

@@ -36,7 +36,7 @@ export default class GizmoSystem {
         depthSystem.frameBuffer.startMapping()
         this.shaderSameSize.use()
         mesh.use()
-        gpu.disable(gpu.CULL_FACE)
+
         for (let i = 0; i < transforms.length; i++) {
             this.shaderSameSize.bindForUse({
                 viewMatrix: view,
@@ -49,8 +49,9 @@ export default class GizmoSystem {
             })
             gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
         }
-        gpu.enable(gpu.CULL_FACE)
+
         mesh.finish()
+        window.gpu.bindVertexArray(null)
         depthSystem.frameBuffer.stopMapping()
         return depthSystem.frameBuffer
     }

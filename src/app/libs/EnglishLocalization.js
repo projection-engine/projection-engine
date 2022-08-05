@@ -139,6 +139,8 @@ export default class EnglishLocalization {
             ERROR: "Some error occurred"
         },
         COMPONENT_EDITOR: {
+            MATERIAL_LOADED: "Material loaded successfully",
+            ERROR_LOADING_FILE: "Error loading file.",
             SPECULAR_PROBE: "Specular probe",
             MULTIPLIER: "Multiplier",
             INTENSITY:"Intensity",
@@ -231,13 +233,16 @@ export default class EnglishLocalization {
         }
     }
     static COMPONENTS = {
-        COLOR_PICKER: {
-            CANCEL: "Cancel",
-            ACCEPT: "Ok"
+        FRAME: {
+            ABOUT: "About",
+            EXIT: "Exit",
+            TITLE: "Projection Engine",
+            VERSION: "2.1.0 Alpha",
+            FOOTER: "This program comes with absolutely no warranty.",
+            MIT: "MIT License",
+            COPYRIGHT: "Copyright (c) 2022 Projection Engine"
         },
-        SEARCH: {
-            SEARCH: "Search"
-        },
+
         SELECTOR: {
             EMPTY: "Empty",
             NOTHING: "Nothing found",

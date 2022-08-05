@@ -25,10 +25,10 @@
     let inputLinks
     $: {
         const out = [], inp = []
-        links.filter(l => {
-            if (l.source.includes(node.id))
+        links.forEach(l => {
+            if (l.source && l.source.includes(node.id))
                 out.push(l)
-            if (l.target.includes(node.id))
+            if (l.target && l.target.includes(node.id))
                 inp.push(l)
         })
         outputLinks = out
@@ -136,7 +136,7 @@
             <div class="content">
                 <div
                         class="column"
-                        style={node.output.length > 0  ? `max-width: calc(${width} - 75px)` : "width: 100%"}>
+                        style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
                     {#each node.inputs as a, i}
                         <NodeInput
                                 handleLink={handleLink}
@@ -150,7 +150,7 @@
                 {#if node.output.length > 0}
                     <div
                             class="column"
-                            style="justify-content: flex-end; width: 50%"
+                            style="justify-content: flex-end; max-width:75%"
                     >
                         {#each node.output as a, i}
                             <NodeOutput
@@ -217,6 +217,7 @@
         overflow: visible;
         border-radius: 0 0 3px 3px;
         background-color: var(--pj-background-primary);
+        justify-content: space-between;
     }
 
 </style>

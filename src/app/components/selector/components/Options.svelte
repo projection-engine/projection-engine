@@ -25,30 +25,24 @@
 
 <div class="search-wrapper">
 
-    <Input searchString={searchString} setSearchString={v => searchString = v} width={"100%"} placeholder={translate("SEARCH")}>
+    <Input searchString={searchString} setSearchString={v => searchString = v} width={"100%"}
+           placeholder={translate("SEARCH")}>
         <Icon slot="icon">search</Icon>
     </Input>
-    {#if type === "material"}
+    {#if type === "material" || type === "script"}
         <button
                 class="reset-button"
                 on:click={() => {
                 handleChange(undefined, () => setState({name: translate("EMPTY")}))
             }}
-
         >
-            <ToolTip>{translate("DEFAULT_MATERIAL")}</ToolTip>
-            <Icon>clear</Icon>
-        </button>
-    {/if}
-    {#if type === "script"}
-        <button
-                class="reset-button"
-
-                on:click={() => {
-                handleChange(undefined, () => setState({name: translate("EMPTY")}))
-            }}
-        >
-            <ToolTip>{translate("REMOVE_SCRIPT")}</ToolTip>
+            <ToolTip>
+                {#if type === "script"}
+                    {translate("REMOVE_SCRIPT")}
+                {:else}
+                    {translate("DEFAULT_MATERIAL")}
+                {/if}
+            </ToolTip>
             <Icon>clear</Icon>
         </button>
     {/if}
@@ -76,9 +70,10 @@
 <style>
     .content-wrapper {
         margin-top: 4px;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
         align-content: flex-start;
+        --card-size: 75px;
+        grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));
 
         gap: 4px;
 
@@ -102,14 +97,14 @@
     .search-wrapper {
         width: 100%;
         padding: 4px;
-        display: grid;
-        grid-auto-flow: column;
+        display: flex;
         align-items: center;
-        align-content: center;
-        justify-content: space-between;
+        border-bottom: var(--pj-border-primary);
+        background: var(--pj-background-primary);
     }
 
     .reset-button {
+        border: none;
         height: 20px !important;
         width: 20px !important;
         padding: 0 !important;

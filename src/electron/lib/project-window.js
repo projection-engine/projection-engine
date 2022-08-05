@@ -8,13 +8,11 @@ const windowLifeCycle = require("./window-life-cycle");
 const loader = require("../events/project-loader/project-loader");
 const loadMetadata = require("../events/project-loader/lib/load-metadata");
 
-const CHANNELS = require("../../static/CHANNELS");
 const getBasePath = require("./get-base-path");
 const os = require("os");
 const RELATIVE_PATH_LOGO = "../../assets/logo.png"
 
 module.exports = function ProjectWindow(handleClose, data) {
-    console.log(data)
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     const window = new BrowserWindow({
