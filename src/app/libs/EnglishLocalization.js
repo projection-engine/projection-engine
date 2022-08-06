@@ -51,6 +51,7 @@ export default class EnglishLocalization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            LAYOUT: "Layout",
             ADD: "Add",
             ADD_DETAILS: "Add entity",
             CAMERA: "Camera",
@@ -138,7 +139,8 @@ export default class EnglishLocalization {
             SAVED: "Saved",
             ERROR: "Some error occurred"
         },
-        COMPONENT_EDITOR: {
+        INSPECTOR: {
+            SCRIPT_NOT_FOUND: "Script not found",
             MATERIAL_LOADED: "Material loaded successfully",
             ERROR_LOADING_FILE: "Error loading file.",
             SPECULAR_PROBE: "Specular probe",
@@ -157,7 +159,7 @@ export default class EnglishLocalization {
             ENABLED: "Enabled",
             RENDERING: "Rendering features",
             POST_PROCESSING: "Editor post-processing",
-            TITLE: "Component editor",
+            TITLE: "Inspector",
             SCRIPTS: "Scripts",
             ORTHO_PROJECTION: "Orthographic projection",
             PROJECTION_SIZE: "Orthographic size",
@@ -191,9 +193,17 @@ export default class EnglishLocalization {
             CASTS_SHADOWS: "Casts shadows",
             SIZE: "Size",
             LINK_COMPONENT: "Add custom component",
-            REMOVE_COMPONENT: "Remove custom component"
+            REMOVE_COMPONENT: "Remove custom component",
+            CAMERA: "Camera",
+            DIRECTIONAL_LIGHT: "Directional light",
+            MESH: "Mesh",
+            POINT_LIGHT: "Point Light",
+            PROBE: "Probe",
+            TRANSFORMATION: "Transformation"
         },
         FILES: {
+
+            OPENING_FILE: "Opening file",
             SEARCH: "Search",
             SELECT: "Select",
             TITLE: "Content Browser",
@@ -253,7 +263,7 @@ export default class EnglishLocalization {
         VIEWS: {
             CLOSE: "Close",
             HIERARCHY: "Hierarchy",
-            COMP_EDITOR: "Component Editor",
+            INSPECTOR: "Inspector",
             CONTENT_BROWSER: "Content Browser",
             SHADER_EDITOR: "Shader Editor",
             CONSOLE: "Console"

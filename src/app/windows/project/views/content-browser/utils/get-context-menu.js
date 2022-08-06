@@ -3,10 +3,9 @@ import handleDelete from "./handle-delete"
 import AsyncFS from "../../../libs/AsyncFS"
 
 import FileSystem from "../../../libs/FileSystem"
-import SYSTEM_TEMPLATE from "../templates/SYSTEM_TEMPLATE"
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
-import COMPONENT_TEMPLATE from "../templates/COMPONENT_TEMPLATE";
+import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
 
 
 const {shell} = window.require("electron")
@@ -171,17 +170,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             onClick: async () => null
         },
         {divider: true, requiredTrigger: "data-wrapper"},
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("NEW_SYSTEM"),
-            icon: "memory",
-            onClick: async () => {
-                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_SYSTEM"), FILE_TYPES.SYSTEM)
 
-                await window.fileSystem.writeAsset(path, SYSTEM_TEMPLATE)
-                FileStoreController.refreshFiles().catch()
-            }
-        },
         {
             requiredTrigger: "data-wrapper",
             label: translate("NEW_COMPONENT"),

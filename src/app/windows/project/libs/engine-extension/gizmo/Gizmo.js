@@ -6,7 +6,6 @@ import getEntityTranslation from "./getEntityTranslation"
 import INFORMATION_CONTAINER from "../../../static/misc/INFORMATION_CONTAINER"
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportPicker from "../../engine/services/ViewportPicker";
-import EngineLoop from "../../engine/libs/loop/EngineLoop";
 
 let gpu
 export default class Gizmo {

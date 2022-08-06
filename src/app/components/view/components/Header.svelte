@@ -39,7 +39,7 @@
         </button>
         <button class="button" on:click={() => switchView(VIEWS.COMPONENT)}>
             <Icon styles="font-size: 1rem">category</Icon>
-            {translate("COMP_EDITOR")}
+            {translate("INSPECTOR")}
         </button>
         <button  class="button" on:click={() => switchView(VIEWS.FILES)}>
             <Icon styles="font-size: 1rem">folder</Icon>

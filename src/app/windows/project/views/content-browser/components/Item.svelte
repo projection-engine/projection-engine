@@ -7,6 +7,7 @@
     import Preview from "../../../../../components/preview/Preview.svelte";
     import getFileIcon from "../utils/get-file-icon";
     import FileStoreController from "../../../stores/FileStoreController";
+    import EnglishLocalization from "../../../../../libs/EnglishLocalization";
 
     const {shell} = window.require("electron")
 
@@ -32,6 +33,7 @@
         childrenQuantity,
         icon: getFileIcon(data.type)
     }
+    const translate = key => EnglishLocalization.PROJECT.FILES[key]
 </script>
 <div
         on:dragover={(e) => {
@@ -54,8 +56,10 @@
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={() => {
         if (type === 1) {
-            if (data.type === FILE_TYPES.SYSTEM.replace(".", "") || data.type === FILE_TYPES.COMPONENT.replace(".", ""))
+            if (data.type === FILE_TYPES.COMPONENT.replace(".", "")){
                 shell.openPath(FileStoreController.ASSETS_PATH + FileSystem.sep + data.id).catch()
+                alert.pushAlert(translate("OPENING_FILE") + " (" +currentLabel +")", "info")
+            }
             else
                 setSelected(data.id)
         } else {
@@ -95,31 +99,31 @@
         <div class="icon">
             <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
             <div
-                title={"Files"}
-                class="floating-icon-wrapper"
+                    title={"Files"}
+                    class="floating-icon-wrapper"
             >
                 {childrenQuantity}
             </div>
         </div>
     {:else}
-        <div class="icon" >
+        <div class="icon">
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
                     {metadata.icon}
                 </Icon>
 
-                <div class= "floating-icon-wrapper">
+                <div class="floating-icon-wrapper">
                     <Icon>{metadata.icon}</Icon>
                 </div>
             </Preview>
         </div>
     {/if}
-    {#if onRename === data.id} ?
+    {#if onRename === data.id}
         <Input
                 onEnter={() => submitRename(currentLabel)}
                 onBlur={() => submitRename(currentLabel)}
-                setSearchString={e => currentLabel = e.target.value}
+                setSearchString={e => currentLabel = e}
                 searchString={currentLabel}
         />
     {:else }
@@ -189,12 +193,15 @@
         padding: 4px 4px 0;
     }
 
-    .file:hover,
-    .file:active {
+    .file:hover {
         border-color: transparent;
         background: var(--pj-background-primary);
     }
 
+    .file:active {
+        border-color: transparent;
+        background: var(--pj-accent-color);
+    }
 
 
 </style>

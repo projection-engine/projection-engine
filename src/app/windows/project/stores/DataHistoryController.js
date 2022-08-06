@@ -10,8 +10,8 @@ export default class DataHistoryController {
     index = -1
     history = []
 
-    pushChange({target, entityID, component, key, changeValue}){
-        if(target=== DataHistoryController.targets.entity || target=== DataHistoryController.targets.settings){
+    pushChange({target, entityID, component, key, changeValue}) {
+        if (target === DataHistoryController.targets.entity || target === DataHistoryController.targets.settings) {
             this.history.push({
                 target,
                 entityID,
@@ -19,17 +19,17 @@ export default class DataHistoryController {
                 key,
                 changeValue: typeof changeValue === "object" ? structuredClone(changeValue) : changeValue
             })
-            if(this.history.length > 10)
+            if (this.history.length > 10)
                 this.history.shift()
 
             this.index = this.history.length - 1
         }
     }
 
-    undo(){
+    undo() {
         if (this.index > 0 && this.history[this.index - 1]) {
             this.index -= 1
-            if(this.history[this.index].target === DataHistoryController.targets.settings)
+            if (this.history[this.index].target === DataHistoryController.targets.settings)
                 alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_SETTINGS, "info")
             else
                 alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.UNDO_ENTITIES, "info")
@@ -37,23 +37,28 @@ export default class DataHistoryController {
 
         }
     }
-    redo(){
+
+    redo() {
         if (this.index < 10 && this.history[this.index + 1]) {
             this.index += 1
-            if(this.history[this.index].target === DataHistoryController.targets.settings)
+            if (this.history[this.index].target === DataHistoryController.targets.settings)
                 alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_SETTINGS, "info")
             else
                 alert.pushAlert(EnglishLocalization.PROJECT.ALERTS.REDO_ENTITIES, "info")
             this.#apply()
         }
     }
-    #apply(){
+
+    #apply() {
         const currentAction = this.history[this.index]
-        if(currentAction.target === DataHistoryController.targets.entity){
+        if (currentAction.target === DataHistoryController.targets.entity) {
             const entity = DataStoreController.engine.entities.get(currentAction.entityID)
-            entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
+            if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
+                entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
+            else
+                entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
             DataStoreController.updateEngine()
-        }else {
+        } else {
             DataStoreController.settings = currentAction.changeValue
             settingsStore.set(currentAction.changeValue)
         }

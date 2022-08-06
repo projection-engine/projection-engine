@@ -60,46 +60,34 @@
 
 .tab.viewport-tabs {
     outline: none;
-    height: 17px;
-    font-size: 0.7rem;
     border: none;
-    color: var(--pj-color-secondary);
-    padding: 0 8px;
-    cursor: pointer;
-    background: none;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    white-space: nowrap;
-    overflow: hidden;
+    background: transparent;
+    font-size: .7rem;
+    color: white;
+    width: 100%;
+    max-height: 25px;
+    min-height: 25px;
 }
 
 
 .tab-wrapper.viewport-tabs {
     display: flex;
     align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    max-height: 25px;
+    min-height: 25px;
 }
 
 
 .tab-wrapper.viewport-tabs[data-highlight="true"] {
-    background: var(--pj-border-primary);
-    font-weight: 550;
-
-    border-radius: 3px;
-}
-
-.tab-wrapper.viewport-tabs[data-highlight="true"] > .tab {
-    cursor: default;
-    font-weight: 550;
+    border-left: var(--pj-accent-color) 3px solid;
 }
 
 
 .tab-wrapper.viewport-tabs[data-highlight="false"]:active > .tab {
     color: var(--pj-accent-color);
     background: var(--pj-background-tertiary);
-
 }
 
 .tab-wrapper.viewport-tabs[data-highlight="false"]:hover > .tab {

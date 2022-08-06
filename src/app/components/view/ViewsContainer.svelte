@@ -45,11 +45,9 @@
             ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
             ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
             ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
+            opacity: ${overlay ? ".5" : "1"};
         `}
 >
-    {#if overlay}
-        <div class="overlay"></div>
-    {/if}
     {#each tabs as view, vI}
         <View
                 hidden={hidden}

@@ -14,6 +14,7 @@ import EditorCamera from "./camera/EditorCamera"
 import CameraEvents from "./camera/CameraEvents"
 import sphere from "./data/SPHERE.json"
 import camera from "./data/CAMERA.json"
+import EngineLoop from "../engine/libs/loop/EngineLoop";
 
 export default class EditorEngine extends Renderer {
     gizmo
@@ -22,7 +23,7 @@ export default class EditorEngine extends Renderer {
     static sphereMesh
 
     constructor(resolution) {
-        super(resolution )
+        super(resolution)
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 
@@ -76,49 +77,27 @@ export default class EditorEngine extends Renderer {
     }
 
     refreshProbes() {
-        this.renderingPass.diffuseProbe.step = STEPS_CUBE_MAP.BASE
-        this.renderingPass.specularProbe.step = STEPS_LIGHT_PROBE.GENERATION
+        EngineLoop.renderMap.get("diffuseProbe").step = STEPS_CUBE_MAP.BASE
+        EngineLoop.renderMap.get("specularProbe").step = STEPS_LIGHT_PROBE.GENERATION
     }
 
-    updatePackage(prodEnv, params, scripts) {
+    updatePackage(prodEnv, params) {
         this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
         else
             this.cameraEvents.stopTracking()
 
-        this.camera.zNear = params.zNear
-        this.camera.zFar = params.zFar
-        this.camera.fov = params.fov
-
-        this.camera.distortion = params.distortion
-        this.camera.distortionStrength = params.distortionStrength
-        this.camera.chromaticAberration = params.chromaticAberration
-        this.camera.chromaticAberrationStrength = params.chromaticAberrationStrength
-        this.camera.filmGrain = params.filmGrain
-        this.camera.filmGrainStrength = params.filmGrainStrength
-        this.camera.bloom = params.bloom
-        this.camera.bloomStrength = params.bloomStrength
-        this.camera.bloomThreshold = params.bloomThreshold
-        this.camera.gamma = params.gamma
-        this.camera.exposure = params.exposure
-
-        const bBox = window.gpu.canvas.getBoundingClientRect()
-        this.camera.aspectRatio = bBox.width / bBox.height
-        this.camera.updateProjection()
-
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
 
-        Packager.build({
-            params: {
+        Packager.build(
+            {
                 ...params,
                 camera: prodEnv ? this.rootCamera : this.camera,
                 gizmo: this.gizmo,
-                cursor: this.cursor
-            },
-            onWrap: this.editorSystem,
-            scripts,
-        })
+                cursor: this.cursor,
+                onWrap: prodEnv ? null : this.editorSystem,
+            })
     }
 
     arrayToObject(arr) {

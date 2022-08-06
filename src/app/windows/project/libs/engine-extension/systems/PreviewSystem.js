@@ -2,7 +2,6 @@ import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/libs/instances/MeshInstance"
 import EditorCamera from "../camera/EditorCamera"
-import SHADING_MODELS from "../../../static/misc/SHADING_MODELS"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import MaterialInstance from "../../engine/libs/instances/MaterialInstance"
 import MaterialRenderer from "../../engine/services/MaterialRenderer";

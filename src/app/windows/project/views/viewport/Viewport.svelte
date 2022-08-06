@@ -105,18 +105,18 @@
         on:mouseup={onMouseUp}
         on:click={onClick}
         on:dragover={e => {
-        e.preventDefault()
-        hovered  = true
-    }}
-        on:dragleave={e => {
-        e.preventDefault()
-        hovered  = false
-    }}
+            e.preventDefault()
+            hovered  = true
+        }}
+            on:dragleave={e => {
+            e.preventDefault()
+            hovered  = false
+        }}
         on:drop={e => {
-        e.preventDefault()
-        hovered  = false
-        importData(e)
-    }}
+            e.preventDefault()
+            hovered  = false
+            importData(e)
+        }}
         class={"viewport"}
         class:hovered={hovered}
 >

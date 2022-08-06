@@ -1,7 +1,7 @@
 <script>
     import CameraTab from "../components/settings/CameraSettings.svelte"
     import ViewportTab from "../components/settings/3DCursorSettings.svelte"
-    // import Transform from "../../component-editor/views/Transform"
+    // import Transform from "../../inspector/views/Transform"
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";

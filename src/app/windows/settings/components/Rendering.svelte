@@ -1,9 +1,9 @@
 <script>
-    import Range from "../../../../../components/range/Range.svelte";
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Range from "../../../components/range/Range.svelte";
+    import Accordion from "../../../components/accordion/Accordion.svelte";
     import {onDestroy} from "svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
-    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import DataStoreController from "../../project/stores/DataStoreController";
+    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
 
     export let translate
     let settings = {}

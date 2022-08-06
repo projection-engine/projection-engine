@@ -1,6 +1,6 @@
 import Entity from "../../../libs/engine/libs/basic/Entity";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import FolderComponent from "../../../libs/engine/components/FolderComponent";
+import FolderComponent from "../../../libs/engine/libs/components/FolderComponent";
 import DataStoreController from "../../../stores/DataStoreController";
 import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
 

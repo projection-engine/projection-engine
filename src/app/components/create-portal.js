@@ -3,6 +3,7 @@ export default function createPortal(index, fullSize=true) {
 
     return {
         create(ref) {
+            this.parentElement = ref.parentElement
             portal = document.createElement('div')
             portal.style.position = "absolute"
             portal.style.zIndex = "-1"
@@ -12,6 +13,8 @@ export default function createPortal(index, fullSize=true) {
             }
             portal.style.top = "0"
             portal.style.left = "0"
+
+
             document.body.appendChild(portal)
             portal.appendChild(ref)
         },

@@ -1,5 +1,5 @@
 import DataStoreController from "../stores/DataStoreController";
-import loadSystems from "./load-systems";
+import loadScripts from "./load-scripts";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -14,7 +14,7 @@ export default function getFrameOptions(engine, s) {
         {
             label: engine.executingAnimation ? "Stop" : "Play",
             icon: engine.executingAnimation ? "pause" : "play_arrow",
-            onClick: async () => loadSystems(engine)
+            onClick: async () => loadScripts(engine)
         },
         {divider: true},
         {

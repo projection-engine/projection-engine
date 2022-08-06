@@ -91,7 +91,8 @@
         style={accentColor ? "--accent-color: " + accentColor : undefined}
 >
     {#if label}
-        <div style="min-width: {minLabelWidth}; color: {disabled ? "#999" : "var(--pj-color-secondary)"};" data-overflow="-">
+        <div style={`min-width: ${minLabelWidth}; color: ${disabled ? "#999" : "var(--pj-color-secondary)"};`}
+             data-overflow="-">
             {label}
             {#if !disabled}
                 <ToolTip>
@@ -110,7 +111,7 @@
             display: ${focused ? undefined : "none"};
             cursor: text;
             background: var(--pj-background-quaternary);
-            border-radius: ${!accentColor ? "3px" : undefined}
+            border-radius: ${!accentColor ? "3px" : undefined};
         `}
             class={"draggable"}
             on:blur={() => focused = false}
@@ -143,7 +144,7 @@
             color: ${disabled ? "#999" : undefined};
             cursor: ${disabled ? "default" : undefined};
             background: ${disabled ? "var(--background-0)" : undefined};
-            borderRadius: ${!accentColor || disabled ? "3px" : undefined};
+            border-radius: ${!accentColor ? "3px" : undefined};
         `}
             class={"draggable"}
     ></div>

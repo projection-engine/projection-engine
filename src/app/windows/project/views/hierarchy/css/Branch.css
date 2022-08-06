@@ -4,9 +4,7 @@
   border-left: transparent 2px solid;
 }
 
-.wrapper.hierarchy-branch:nth-child(odd) {
-  background: var(--pj-background-secondary);
-}
+
 
 .wrapper.hierarchy-branch > .content {
   display: none;

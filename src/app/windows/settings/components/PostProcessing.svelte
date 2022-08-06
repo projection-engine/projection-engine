@@ -1,7 +1,7 @@
 <script>
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import Range from "../../../../../components/range/Range.svelte";
-    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import Accordion from "../../../components/accordion/Accordion.svelte";
+    import Range from "../../../components/range/Range.svelte";
+    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
 
     export let translate
     export let selected

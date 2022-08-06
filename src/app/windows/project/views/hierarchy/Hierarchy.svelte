@@ -71,21 +71,6 @@
 
     }
 
-
-    // $: {
-    //     const newOpen = {...open}
-    //     const openStructure = (entity) => {
-    //         if (entity.parent)
-    //             openStructure(entity.parent)
-    //         newOpen[entity.id] = true
-    //     }
-    //     for (let i = 0; i < engine.selected.length; i++) {
-    //         const entity = window.renderer.entitiesMap.get(engine.selected[i])
-    //         openStructure(entity)
-    //     }
-    //     open = newOpen
-    // }
-
 </script>
 <Header
         orientation={orientation}
@@ -100,7 +85,7 @@
             searchString={searchedEntity}
             setSearchString={v => searchedEntity = v}
     />
-    <button class={"button"} on:click={createFolder}>
+    <button style="border: none" on:click={createFolder}>
         <Icon>create_new_folder</Icon>
     </button>
 </Header>

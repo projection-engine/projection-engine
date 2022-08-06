@@ -7,6 +7,5 @@ export const fileStore = writable({
     images: [],
     meshes: [],
     materials: [],
-    systems: [],
     components: []
 });

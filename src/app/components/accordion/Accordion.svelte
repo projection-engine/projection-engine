@@ -1,22 +1,30 @@
 <script>
     export let type = ""
     export let title
+    let open = false
 </script>
 
 
-<details class="accordion">
-    <summary class="summary">
-        <span data-icon="-" data-accordion={"true"} style="font-size: 1.25rem">expand_more</span>
+<div class="accordion">
+    <div class="summary">
+        <span
+                data-icon="-"
+                style={`transform: ${open ? "none" : "rotate(-90deg)"}; cursor: pointer;font-size: 1.25rem`}
+                on:click={() => open = !open}
+                data-accordion={"true"}
+        >
+            expand_more
+        </span>
         {#if title}
             {title}
         {:else}
             <slot name="header"/>
         {/if}
-    </summary>
-    <div class="content" style={`display: ${type ? type : "grid"}`}>
+    </div>
+    <div class="content" style={`display: ${open ? (type ? type : "grid") : "none"}`}>
         <slot/>
     </div>
-</details>
+</div>
 
 <style>
     .accordion {
@@ -31,8 +39,8 @@
         border-radius: 3px;
     }
 
-    .accordion:not([open]) > summary > span[data-accordion="true"] {
-        transform: rotate(-90deg);
+    .accordion:not([open]) > .summary > span[data-accordion="true"] {
+
     }
 
     .content {
@@ -56,7 +64,6 @@
 
         position: relative;
         user-select: none;
-        cursor: pointer;
 
         color: var(--pj-color-secondary);
         width: 100%;

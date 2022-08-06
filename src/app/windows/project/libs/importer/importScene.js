@@ -1,6 +1,6 @@
 import Entity from "../engine/libs/basic/Entity"
 import COMPONENTS from "../engine/data/COMPONENTS"
-import FolderComponent from "../engine/components/FolderComponent"
+import FolderComponent from "../engine/libs/components/FolderComponent"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../engine/libs/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"

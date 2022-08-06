@@ -9,6 +9,6 @@ export default function handleLink(src, target, isExecution, links, setLinks) {
             target: target
         })
     } else
-        alert.pushAlert("Missing component-editor on entity", "error")
+        alert.pushAlert("Missing inspector on entity", "error")
     setLinks(c)
 }

@@ -7,6 +7,7 @@
     let wrapper
     let mountingPoint
     let bBox, bodyBBox
+    const portal = createPortal(999, false)
     const handleMouseMove = (event) => {
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
@@ -25,7 +26,7 @@
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
         document.addEventListener("mousemove", handleMouseMove)
-        mountingPoint.parentElement.addEventListener(
+        portal.parentElement.addEventListener(
             "mouseleave",
             () => {
                 document.removeEventListener("mousemove", handleMouseMove)
@@ -34,15 +35,15 @@
             {once: true}
         )
     }
-    const portal = createPortal(999, false)
+
     $: open ? portal.open() : portal.close()
     onMount(() => {
-        mountingPoint.parentElement.addEventListener("mouseenter", hover)
         portal.create(wrapper)
+        portal.parentElement.addEventListener("mouseenter", hover)
     })
     onDestroy(() => {
         try{
-            mountingPoint.parentElement.removeEventListener("mouseenter", hover)
+            portal.parentElement.removeEventListener("mouseenter", hover)
             portal.destroy()
         }catch(err){
             console.log(err)
@@ -50,8 +51,6 @@
     })
 </script>
 
-
-<span style="display: none" bind:this={mountingPoint}></span>
 
 <div class="container" bind:this={wrapper}>
     {#if content}

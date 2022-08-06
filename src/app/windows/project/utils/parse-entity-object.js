@@ -1,18 +1,18 @@
 import FileSystem from "../libs/FileSystem"
 import Entity from "../libs/engine/libs/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
-import DirectionalLightComponent from "../libs/engine/components/DirectionalLightComponent"
-import MeshComponent from "../libs/engine/components/MeshComponent"
+import DirectionalLightComponent from "../libs/engine/libs/components/DirectionalLightComponent"
+import MeshComponent from "../libs/engine/libs/components/MeshComponent"
 import DATA_TYPES from "../libs/engine/data/DATA_TYPES"
 import TextureInstance from "../libs/engine/libs/instances/TextureInstance"
-import PointLightComponent from "../libs/engine/components/PointLightComponent"
+import PointLightComponent from "../libs/engine/libs/components/PointLightComponent"
 
-import TransformComponent from "../libs/engine/components/TransformComponent"
+import TransformComponent from "../libs/engine/libs/components/TransformComponent"
 import Transformation from "../libs/engine/services/Transformation"
-import FolderComponent from "../libs/engine/components/FolderComponent"
-import ProbeComponent from "../libs/engine/components/ProbeComponent"
-import CameraComponent from "../libs/engine/components/CameraComponent"
-import Component from "../libs/engine/libs/basic/Component";
+import FolderComponent from "../libs/engine/libs/components/FolderComponent"
+import ProbeComponent from "../libs/engine/libs/components/ProbeComponent"
+import CameraComponent from "../libs/engine/libs/components/CameraComponent"
+import componentConstructor from "../libs/component-constructor";
 
 async function readFromRegistry(fileID) {
     return new Promise(resolve => {
@@ -127,14 +127,9 @@ export default async function parseEntityObject(entity) {
                     component.changed = true
             }
         }
-        else if(k !== COMPONENTS.PICK) {
-            const newComp = new Component()
-            const data = entity.components[k]
-            Object.keys(data).forEach(k => {
-                newComp[k]= data[k]
-            })
-            parsedEntity.components[k] = newComp
-        }
+
     }
+    for (let i = 0; i < parsedEntity.scripts.length; i++)
+        await componentConstructor(parsedEntity, parsedEntity.scripts[i].id, false)
     return parsedEntity
 }

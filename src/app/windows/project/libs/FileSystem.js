@@ -342,16 +342,7 @@ export default class FileSystem {
                 })
             })
         }))
-        promises.push(...systemsReg.map(i => {
-            return new Promise(resolve => {
-                const split = i.path.split(FileSystem.sep)
-                resolve({
-                    type: FILE_TYPES.SYSTEM,
-                    registryID: i.id,
-                    name: split[split.length - 1].split(".")[0]
-                })
-            })
-        }))
+
         promises.push(...componentsReg.map(i => {
             return new Promise(resolve => {
                 const split = i.path.split(FileSystem.sep)
@@ -373,7 +364,7 @@ export default class FileSystem {
                 images: res.filter(f => f.type === FILE_TYPES.IMAGE),
                 meshes: res.filter(f => f.type === FILE_TYPES.MESH),
                 materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
-                systems: res.filter(f => f.type === FILE_TYPES.SYSTEM),
+
                 components: res.filter(f => f.type === FILE_TYPES.COMPONENT),
             })
         else
@@ -381,7 +372,6 @@ export default class FileSystem {
                 images: res.filter(f => f.type === FILE_TYPES.IMAGE),
                 meshes: res.filter(f => f.type === FILE_TYPES.MESH),
                 materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
-                systems: res.filter(f => f.type === FILE_TYPES.SYSTEM),
                 components: res.filter(f => f.type === FILE_TYPES.COMPONENT),
             }
     }

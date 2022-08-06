@@ -9,12 +9,12 @@
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 
-    export let isNative
+
     export let selected
     export let submit
     export let translate
     export let attribute
-    $: label = translate(label) ? translate(label) : attribute.label
+    $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
     $: value = selected[attribute.key]
     $: isDisabled = selected[attribute.disabledIf]
 
@@ -32,6 +32,7 @@
                 }
                 submit(attribute.key, v)
             }}
+            variant="embedded"
             onFinish={v => submit(attribute.key, v, true)}
             minValue={attribute.min}
             maxValue={attribute.max}

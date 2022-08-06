@@ -2,7 +2,7 @@
     import Console from "../../../windows/project/views/console/Console.svelte";
     import Hierarchy from "../../../windows/project/views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../windows/project/views/content-browser/ContentBrowser.svelte";
-    import ComponentEditor from "../../../windows/project/views/component-editor/ComponentEditor.svelte";
+    import ComponentEditor from "../../../windows/project/views/inspector/Inspector.svelte";
     import VIEWS from "../VIEWS";
     import ShaderEditor from "../../../windows/project/views/shader-editor/ShaderEditor.svelte";
 

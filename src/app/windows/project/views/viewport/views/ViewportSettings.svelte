@@ -1,49 +1,28 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Shading from "../components/options/ShadingOption.svelte";
     import Entity from "../../../libs/engine/libs/basic/Entity";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import ProbeComponent from "../../../libs/engine/components/ProbeComponent";
-    import TransformComponent from "../../../libs/engine/components/TransformComponent";
+    import ProbeComponent from "../../../libs/engine/libs/components/ProbeComponent";
+    import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
     import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
-    import CameraComponent from "../../../libs/engine/components/CameraComponent";
+    import CameraComponent from "../../../libs/engine/libs/components/CameraComponent";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import PointLightComponent from "../../../libs/engine/components/PointLightComponent";
-    import DirectionalLightComponent from "../../../libs/engine/components/DirectionalLightComponent";
-    import ViewportTemplates from "../components/ViewTemplates.svelte";
+    import PointLightComponent from "../../../libs/engine/libs/components/PointLightComponent";
+    import DirectionalLightComponent from "../../../libs/engine/libs/components/DirectionalLightComponent";
+    import Layout from "../components/Layout.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
 
     export let settings
     export let translate
-    let fullscreen = false
+
     let ref
-
-    const handleFullscreen = () => {
-        fullscreen = document.fullscreenElement;
-    }
-
-
-    const onClickFullscreen = () => {
-        if (!fullscreen) {
-            ref.parentNode.requestFullscreen()
-                .then(() => fullscreen = true)
-                .catch()
-        } else
-            document.exitFullscreen()
-                .catch()
-                .finally(() => fullscreen = false)
-    }
-
     let engine = {}
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
-    onMount(() => document.addEventListener("fullscreenchange", handleFullscreen))
-    onDestroy(() => {
-        document.removeEventListener("fullscreenchange", handleFullscreen)
-        unsubscribeEngine()
-    })
+    onDestroy(() => unsubscribeEngine())
 
     const createCM = (asDiffuse) => {
         const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
@@ -59,78 +38,75 @@
 
 </script>
 
-{#if !fullscreen}
-    <div class={"options"} bind:this={ref}>
-        <div class="left-content">
-            <button class="dropdown" on:click={onClickFullscreen}>
-                <Icon>fullscreen</Icon>
-            </button>
-            <Dropdown>
-                <button slot="button" class="dropdown">
-                    <Icon>visibility</Icon>
-                    <div data-overflow="-">
-                        {translate("VISIBLE")}
-                    </div>
-                </button>
 
-                <button on:click={() => {
+<div class={"options"} bind:this={ref}>
+    <div class="left-content">
+        <Dropdown>
+            <button slot="button" class="dropdown">
+                <Icon>visibility</Icon>
+                <div data-overflow="-">
+                    {translate("VISIBLE")}
+                </div>
+            </button>
+
+            <button on:click={() => {
                     DataStoreController.updateSettings({...settings, gridVisibility: !settings.gridVisibility})
                 }}>
-                    {#if settings.gridVisibility}
-                        <Icon>check</Icon>
-                    {/if}
-                    {translate("GRID")}
-                </button>
+                {#if settings.gridVisibility}
+                    <Icon>check</Icon>
+                {/if}
+                {translate("GRID")}
+            </button>
 
-                <button on:click={() => DataStoreController.updateSettings({...settings, iconsVisibility: !settings.iconsVisibility})}>
-                    {#if settings.iconsVisibility}
-                        <Icon>check</Icon>
-                    {/if}
-                    {translate("ICONS")}
-                </button>
+            <button on:click={() => DataStoreController.updateSettings({...settings, iconsVisibility: !settings.iconsVisibility})}>
+                {#if settings.iconsVisibility}
+                    <Icon>check</Icon>
+                {/if}
+                {translate("ICONS")}
+            </button>
 
-                <button
-                        on:click={() => {
+            <button
+                    on:click={() => {
                         const v = !settings.cameraAnimation
                         DataStoreController.updateSettings({...settings, cameraAnimation: v})
                         window.renderer.camera.animated = v
                     }}
-                >
-                    {#if settings.cameraAnimation}
-                        <Icon>check</Icon>
-                    {/if}
-                    {translate("CAM_ANIM")}
-                </button>
+            >
+                {#if settings.cameraAnimation}
+                    <Icon>check</Icon>
+                {/if}
+                {translate("CAM_ANIM")}
+            </button>
 
-                <button on:click={() => DataStoreController.updateSettings({...settings, background: !settings.background})}>
-                    {#if settings.background}
-                        <Icon>check</Icon>
-                    {/if}
-                    {translate("BACKGROUND")}
-                </button>
+            <button on:click={() => DataStoreController.updateSettings({...settings, background: !settings.background})}>
+                {#if settings.background}
+                    <Icon>check</Icon>
+                {/if}
+                {translate("BACKGROUND")}
+            </button>
 
-                <div class={"range-wrapper"}>
-                    <Range
-                            label={translate("ICON_SIZE")}
-                            value={settings.iconSize}
-                            maxValue={5} minValue={.1}
-                            onFinish={v => DataStoreController.updateSettings({...settings, iconSize: v})}
-                    />
-                </div>
-            </Dropdown>
+            <div class={"range-wrapper"}>
+                <Range
+                        label={translate("ICON_SIZE")}
+                        value={settings.iconSize}
+                        maxValue={5} minValue={.1}
+                        onFinish={v => DataStoreController.updateSettings({...settings, iconSize: v})}
+                />
+            </div>
+        </Dropdown>
 
-            <Dropdown>
-                <button slot="button" class="dropdown">
-                    {translate("ADD")}
-                    <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
-                </button>
+        <Dropdown>
+            <button slot="button" class="dropdown">
+                {translate("ADD")}
+                <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
+            </button>
 
-                <div class={"divider-wrapper"}>
-                    {translate("LIGHTS")}
-                    <div data-divider="-"></div>
-                </div>
-                <button
-                        on:click={() =>  {
+            <div class={"divider-wrapper"}>
+                {translate("LIGHTS")}
+                <div data-divider="-"></div>
+            </div>
+            <button
+                    on:click={() =>  {
                         const actor = new Entity(undefined, translate("POINT_LIGHT"))
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                         const transformComponent = new TransformComponent()
@@ -140,13 +116,13 @@
                         actor.components[COMPONENTS.TRANSFORM] = transformComponent
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
-                >
-                    <Icon>lightbulb</Icon>
-                    {translate("POINT_LIGHT")}
-                </button>
+            >
+                <Icon>lightbulb</Icon>
+                {translate("POINT_LIGHT")}
+            </button>
 
-                <button
-                        on:click={() => {
+            <button
+                    on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
 
                         const transformComponent = new TransformComponent()
@@ -158,31 +134,31 @@
 
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
-                >
-                    <Icon>light_mode</Icon>
-                    {translate("DIRECTIONAL_LIGHT")}
-                </button>
+            >
+                <Icon>light_mode</Icon>
+                {translate("DIRECTIONAL_LIGHT")}
+            </button>
 
-                <div class={"divider-wrapper"}>
-                    {translate("AMBIENT")}
-                    <div data-divider="-"></div>
-                </div>
+            <div class={"divider-wrapper"}>
+                {translate("AMBIENT")}
+                <div data-divider="-"></div>
+            </div>
 
 
-                <button on:click={() => createCM()}>
-                    <Icon>lens_blur</Icon>
-                    {translate("SPECULAR_PROBE")}
-                </button>
-                <button on:click={() => createCM(true)}>
-                    <Icon>lens_blur</Icon>
-                    {translate("DIFFUSE_PROBE")}
-                </button>
-                <div class={"divider-wrapper"}>
-                    {translate("UTILS")}
-                    <div data-divider="-"></div>
-                </div>
-                <button
-                        on:click={() => {
+            <button on:click={() => createCM()}>
+                <Icon>lens_blur</Icon>
+                {translate("SPECULAR_PROBE")}
+            </button>
+            <button on:click={() => createCM(true)}>
+                <Icon>lens_blur</Icon>
+                {translate("DIFFUSE_PROBE")}
+            </button>
+            <div class={"divider-wrapper"}>
+                {translate("UTILS")}
+                <div data-divider="-"></div>
+            </div>
+            <button
+                    on:click={() => {
                         const actor = new Entity(undefined, translate("CAMERA"))
                         actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
@@ -195,25 +171,23 @@
 
                         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
-                >
-                    <Icon>videocam</Icon>
-                    {translate("CAMERA")}
-                </button>
-            </Dropdown>
-        </div>
-
-        <ViewportTemplates translate={translate}/>
-        <div class="right-content">
-            <Shading translate={translate}/>
-        </div>
+            >
+                <Icon>videocam</Icon>
+                {translate("CAMERA")}
+            </button>
+        </Dropdown>
+        <Layout translate={translate}/>
     </div>
-{/if}
+
+
+    <div class="right-content">
+        <Shading translate={translate}/>
+    </div>
+</div>
 
 <style>
     .options {
-        display: grid;
-        grid-template-columns: 200px calc(100% - 400px) 200px;
-        align-items: center;
+        display: flex;
 
         width: 100%;
         padding: 0 2px;
@@ -265,7 +239,7 @@
         color: var(--pj-color-secondary);
     }
 
-    .divider-wrapper{
+    .divider-wrapper {
         display: flex;
         align-items: center;
         align-content: center;

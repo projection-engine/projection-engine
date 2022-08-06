@@ -5,6 +5,7 @@
     import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
     import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
     import DataStoreController from "../../../stores/DataStoreController";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
 
     export let selected
@@ -26,11 +27,12 @@
         }
     }
 </script>
+<Accordion title={translate("MESH")}>
 
-<Selector
-        selected={selected.meshID}
-        type={"mesh"}
-        handleChange={(src) => {
+    <Selector
+            selected={selected.meshID}
+            type={"mesh"}
+            handleChange={(src) => {
             let data = window.renderer.meshes.get(src.registryID)
             if (!data)
                 handleDrop(src.registryID,  "meshID")
@@ -40,11 +42,11 @@
             else
                 submit(src.registryID,  "meshID")
         }}
-/>
-<Selector
-        selected={selected.materialID}
-        type={"material"}
-        handleChange={async src => {
+    />
+    <Selector
+            selected={selected.materialID}
+            type={"material"}
+            handleChange={async src => {
             if (src) {
                 const file = await loadFile(src)
                 if (file && file.response){
@@ -73,4 +75,6 @@
 
 
         }}
-/>
+    />
+
+</Accordion>
