@@ -247,7 +247,7 @@ export default class EnglishLocalization {
             ABOUT: "About",
             EXIT: "Exit",
             TITLE: "Projection Engine",
-            VERSION: "2.1.0 Alpha",
+            VERSION: "2.2.0 Alpha",
             FOOTER: "This program comes with absolutely no warranty.",
             MIT: "MIT License",
             COPYRIGHT: "Copyright (c) 2022 Projection Engine"

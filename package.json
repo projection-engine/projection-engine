@@ -1,6 +1,6 @@
 {
   "name": "projection-engine",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "description": "Projection Engine is a 3D graphics engine written from ground up to be fast and easy to use",
   "main": "src/electron/index.js",
   "scripts": {
