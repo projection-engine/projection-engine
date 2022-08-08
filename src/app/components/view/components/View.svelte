@@ -50,7 +50,7 @@
         flex-direction: column;
         align-items: flex-start;
         align-content: flex-start;
-        background-color: var(--pj-background-secondary);
+        background-color: var(--pj-background-tertiary);
         border-radius: 5px;
     }
 </style>

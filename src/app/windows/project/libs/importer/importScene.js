@@ -1,6 +1,5 @@
 import Entity from "../engine/libs/basic/Entity"
 import COMPONENTS from "../engine/data/COMPONENTS"
-import FolderComponent from "../engine/libs/components/FolderComponent"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../engine/libs/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
@@ -21,7 +20,7 @@ export default async function importScene(reg, onlyReturn) {
     if (file) {
         const folder = new Entity()
         folder.name = file.name
-        folder.components[COMPONENTS.FOLDER] = new FolderComponent()
+
         for (let i in file.nodes) {
             const data = await loopNodes(file.nodes[i], folder)
             meshes.push(...data.meshes)
@@ -56,7 +55,7 @@ async function loopNodes(node, parent) {
     entity.name = node.name
     entity.parent = parent
     parent.children.push(entity)
-    entity.components[COMPONENTS.FOLDER] = new FolderComponent()
+
     for (let m in node.primitives) {
         const primitive = node.primitives[m]
         const reg = await window.fileSystem.readRegistryFile(primitive)

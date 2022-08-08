@@ -2,7 +2,7 @@
     import FileSystem from "../../libs/FileSystem"
     import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
@@ -45,7 +45,7 @@
             })
         return response
     })();
-    const translate = key => EnglishLocalization.PROJECT.FILES[key]
+    const translate = key => Localization.PROJECT.FILES[key]
 
 
 </script>
@@ -112,7 +112,6 @@
         height: 100%;
         display: flex;
         overflow: hidden;
-        padding: 4px;
     }
 </style>
 

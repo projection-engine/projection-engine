@@ -84,7 +84,6 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
-        padding: 4px;
     }
 
 </style>

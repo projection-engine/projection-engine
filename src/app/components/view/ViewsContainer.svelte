@@ -1,6 +1,7 @@
 <script>
     import ResizableBar from "../resizable/ResizableBar.svelte";
     import View from "./components/View.svelte";
+    import VIEWS from "./VIEWS";
 
     export let resizePosition
     export let topOffset = undefined
@@ -98,7 +99,7 @@
         {/if}
     {/each}
     <button
-            on:click={() => setTabs([...tabs, "console"])}
+            on:click={() => setTabs([...tabs, VIEWS.CONSOLE])}
             style={`
                 left: ${orientation === "vertical" ? tabs.length === 0 ? leftOffset : "10px" : "100%"};
                 top: ${topOffset ? `calc(100% - ${topOffset})` : "100%"};
@@ -130,14 +131,6 @@
         display: flex;
         flex-direction: column;
         gap: 0;
-    }
-
-    .overlay{
-        position: absolute;
-        z-index: 999;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,.5);
     }
 
     .extend-view {

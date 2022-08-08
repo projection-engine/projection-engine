@@ -8,7 +8,7 @@
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
@@ -91,7 +91,7 @@
             })
     }
 
-    const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
     $: {
         if (isReady)
             EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)

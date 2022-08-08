@@ -1,4 +1,4 @@
-import EnglishLocalization from "../../../libs/EnglishLocalization";
+import Localization from "../../../libs/Localization";
 import AsyncFS from "../../../libs/AsyncFS";
 import FileSystem from "../../../libs/FileSystem"
 
@@ -25,9 +25,9 @@ export default async function refreshProjects(path) {
         }
         return data.filter(e => e !== undefined).map(e => {
             let res = {...e}
-            if (!res.meta) res.meta = {name: EnglishLocalization.HOME.HOME.CREATE}
+            if (!res.meta) res.meta = {name: Localization.HOME.HOME.CREATE}
             if (!res.settings) res.settings = {}
-            if (!res.meta.name) res.meta.name = EnglishLocalization.HOME.HOME.CREATE
+            if (!res.meta.name) res.meta.name = Localization.HOME.HOME.CREATE
             return res
         })
     }

@@ -2,6 +2,7 @@
     import Icon from "../../Icon/Icon.svelte";
     import {onMount} from "svelte";
     import Shortcut from "./Shortcut.svelte";
+    import Localization from "../../../libs/Localization";
 
     export let options = []
     export let selected
@@ -13,11 +14,33 @@
     let mounted = false
     onMount(() => callback())
     $: callback(selected)
-    $: optionsToRender = options.filter(o => !o.requiredTrigger || o.requiredTrigger === trigger)
+    let optionsToRender
+    let isSubMenu = false
+    let parentLabel
+    $: {
+        optionsToRender = options.filter(o => !o.requiredTrigger || o.requiredTrigger === trigger)
+    }
 
 </script>
 
 
+{#if isSubMenu}
+    <button
+            class="button"
+            on:click={() => {
+                    isSubMenu = false
+                    optionsToRender = options.filter(o => !o.requiredTrigger || o.requiredTrigger === trigger)
+                    parentLabel = false
+                }}
+    >
+        <div class="inline">
+            <div class="icon">
+                <Icon>chevron_left</Icon>
+            </div>
+            <div data-overflow="-">{parentLabel}</div>
+        </div>
+    </button>
+{/if}
 {#each optionsToRender as option}
     {#if option.divider}
         <div class="divider"></div>
@@ -26,9 +49,15 @@
                 disabled={option.disabled ? true : undefined}
                 class="button"
                 on:click={() => {
-            option.onClick(selected, event)
-            close()
-        }}
+                    if(option.children){
+                        optionsToRender = option.children
+                        isSubMenu = true
+                        parentLabel = option.label
+                        return
+                    }
+                    option.onClick(selected, event)
+                    close()
+                }}
         >
             <div class="inline">
                 <div class="icon">
@@ -38,7 +67,14 @@
                 </div>
                 <div data-overflow="-">{option.label}</div>
             </div>
-            <Shortcut shortcut={option.shortcut}/>
+            {#if option.children}
+                <div class="icon">
+                    <Icon>chevron_right</Icon>
+                </div>
+            {:else}
+                <Shortcut shortcut={option.shortcut}/>
+            {/if}
+
         </button>
     {/if}
 {/each}

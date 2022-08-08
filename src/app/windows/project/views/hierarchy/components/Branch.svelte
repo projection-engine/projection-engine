@@ -31,15 +31,15 @@
 
     $: icon = (() => {
         if (nodeRef) {
-            if (nodeRef.components[COMPONENTS.FOLDER])
-                return "inventory_2"
             if (nodeRef.components[COMPONENTS.POINT_LIGHT])
                 return "lightbulb"
             if (nodeRef.components[COMPONENTS.DIRECTIONAL_LIGHT])
                 return "light_mode"
             if (nodeRef.components[COMPONENTS.PROBE])
                 return "lens_blur"
-            return "category"
+            if (nodeRef.components[COMPONENTS.MESH])
+                return "view_in_ar"
+            return "inventory_2"
         }
     })();
 
@@ -55,7 +55,7 @@
             data-open={open[nodeRef.id] ? "-" : ""}
             data-selected={""}
             data-parentopen={open[nodeRef.parent?.id] ? "-" : ""}
-            style={"padding-left:" +  (depth * 16 + "px")}
+            style={"padding-left:" +  (depth * 23 + "px")}
             on:mousedown={e => {
             if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
                 setSelected(nodeRef.id, e.ctrlKey)
@@ -117,7 +117,7 @@
                     <Icon>arrow_drop_down</Icon>
                 </button>
             {:else}
-                <div style="width: 25px"></div>
+                <div class="buttonSmall hierarchy-branch"></div>
             {/if}
             <div class="info hierarchy-branch">
                 <button

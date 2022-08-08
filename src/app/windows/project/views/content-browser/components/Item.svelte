@@ -7,7 +7,7 @@
     import Preview from "../../../../../components/preview/Preview.svelte";
     import getFileIcon from "../utils/get-file-icon";
     import FileStoreController from "../../../stores/FileStoreController";
-    import EnglishLocalization from "../../../../../libs/EnglishLocalization";
+    import Localization from "../../../../../libs/Localization";
 
     const {shell} = window.require("electron")
 
@@ -33,7 +33,7 @@
         childrenQuantity,
         icon: getFileIcon(data.type)
     }
-    const translate = key => EnglishLocalization.PROJECT.FILES[key]
+    const translate = key => Localization.PROJECT.FILES[key]
 </script>
 <div
         on:dragover={(e) => {
@@ -86,10 +86,6 @@
     {#if metadata.type === FILE_TYPES.COMPONENT}
         <div class="icon">
             <Icon styles="font-size: 3.5rem; ">extension</Icon>
-        </div>
-    {:else if metadata.type === FILE_TYPES.SYSTEM}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">memory</Icon>
         </div>
     {:else if metadata.type === FILE_TYPES.SCENE}
         <div class="icon">

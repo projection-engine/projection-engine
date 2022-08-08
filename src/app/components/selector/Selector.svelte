@@ -2,7 +2,7 @@
 
     import FileStoreController from "../../windows/project/stores/FileStoreController";
     import {onDestroy} from "svelte";
-    import EnglishLocalization from "../../libs/EnglishLocalization";
+    import Localization from "../../libs/Localization";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
@@ -12,7 +12,7 @@
     export let handleChange
     export let selected
 
-    const translate = key => EnglishLocalization.COMPONENTS.SELECTOR[key]
+    const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
     const unsubscribeStore = FileStoreController.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())

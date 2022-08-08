@@ -48,7 +48,7 @@ export default class ViewportActions {
             const found = window.renderer.entitiesMap.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.parent = window.renderer.entitiesMap.get(parent)
+                clone.parent = parent ? window.renderer.entitiesMap.get(parent) : undefined
                 block.push(clone)
             }
         })

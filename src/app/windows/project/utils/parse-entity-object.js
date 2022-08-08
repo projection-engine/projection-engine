@@ -9,7 +9,6 @@ import PointLightComponent from "../libs/engine/libs/components/PointLightCompon
 
 import TransformComponent from "../libs/engine/libs/components/TransformComponent"
 import Transformation from "../libs/engine/services/Transformation"
-import FolderComponent from "../libs/engine/libs/components/FolderComponent"
 import ProbeComponent from "../libs/engine/libs/components/ProbeComponent"
 import CameraComponent from "../libs/engine/libs/components/CameraComponent"
 import componentConstructor from "../libs/component-constructor";
@@ -93,7 +92,6 @@ const ENTITIES = {
         }
         return component
     },
-    [COMPONENTS.FOLDER]: async (entity, k) => new FolderComponent(entity.components[k].id),
     [COMPONENTS.PROBE]: async (entity, k) => new ProbeComponent(entity.components[k].id),
     [COMPONENTS.CAMERA]: async (entity, k) => new CameraComponent(entity.components[k].id)
 

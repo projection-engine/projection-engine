@@ -84,9 +84,6 @@
 
     .image {
         width: clamp(75px, 10vw, 350px);
-        background: var(--pj-background-tertiary);
-
-        border: var(--pj-border-primary) 1px solid;
         border-radius: 5px;
     }
 

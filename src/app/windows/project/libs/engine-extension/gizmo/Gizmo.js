@@ -98,7 +98,7 @@ export default class Gizmo {
     }
 
     #testClick() {
-        if (!this.mainEntity || this.mainEntity?.isFolder)
+        if (!this.mainEntity || !this.mainEntity.components[COMPONENTS.TRANSFORM])
             return
         const camera = window.renderer.camera
         const mX = this.#translateMatrix(this.xGizmo.components)

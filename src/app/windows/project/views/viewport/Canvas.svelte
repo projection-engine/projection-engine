@@ -4,7 +4,7 @@
     import {onDestroy, onMount} from "svelte";
     import EditorEngine from "../../libs/engine-extension/EditorEngine";
     import updateRenderer from "./utils/update-renderer";
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import getShortcuts from "./utils/get-shortcuts";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
@@ -21,7 +21,7 @@
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
     const shortcutBinding = bindShortcut({
-        focusTargetLabel: EnglishLocalization.PROJECT.VIEWPORT.TITLE,
+        focusTargetLabel: Localization.PROJECT.VIEWPORT.TITLE,
         focusTargetIcon: "window",
         actions: getShortcuts()
     })

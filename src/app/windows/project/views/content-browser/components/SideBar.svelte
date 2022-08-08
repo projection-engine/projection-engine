@@ -113,6 +113,8 @@
         gap: 2px;
         overflow-y: auto;
         width: 300px;
+        padding: 4px;
+        background: var(--pj-background-secondary);
     }
 
 

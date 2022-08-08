@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../libs/EnglishLocalization";
+    import Localization from "../../../libs/Localization";
     import Input from "../../../components/input/Input.svelte";
     import Dropdown from "../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../components/Icon/Icon.svelte";
@@ -8,7 +8,7 @@
 
     const {ipcRenderer, shell} = window.require("electron")
 
-    const translate = (key) => EnglishLocalization.HOME.CARD[key]
+    const translate = (key) => Localization.HOME.CARD[key]
 
     export let open = () => null
     export let data = {meta: {}}

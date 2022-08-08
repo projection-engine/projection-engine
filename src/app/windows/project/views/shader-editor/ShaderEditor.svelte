@@ -5,7 +5,7 @@
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
     import FileSystem from "../../libs/FileSystem"
     import compiler from "./libs/compiler"
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";
@@ -26,7 +26,7 @@
 
     const GRID_SIZE = 20
     const {shell} = window.require("electron")
-    const translate = key => EnglishLocalization.PROJECT.SHADER_EDITOR[key]
+    const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
     let engine
     let fileStore

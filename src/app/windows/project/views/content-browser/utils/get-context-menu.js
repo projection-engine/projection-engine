@@ -6,6 +6,7 @@ import FileSystem from "../../../libs/FileSystem"
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
+import importFile from "./import-file";
 
 
 const {shell} = window.require("electron")
@@ -22,6 +23,12 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         return n
     }
     return [
+        {
+            requiredTrigger: "data-wrapper",
+            label: translate("IMPORT"),
+            onClick: () => importFile(currentDirectory)
+        },
+        {divider: true, requiredTrigger: "data-wrapper"},
         {
             requiredTrigger: "data-folder",
             label: translate("RENAME"),
@@ -107,6 +114,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("FORWARD"),
             onClick: () => navigationHistory.forwardDir()
         },
+
         {divider: true, requiredTrigger: "data-wrapper"},
         {
             requiredTrigger: "data-wrapper",
@@ -147,40 +155,38 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("OPEN_WITH_EXPLORER"),
             icon: "open_in_new",
             onClick: () => {
-                shell.showItemInFolder(FileStoreController.ASSETS_PATH+ FileSystem.sep + currentDirectory.id)
+                shell.showItemInFolder(FileStoreController.ASSETS_PATH + FileSystem.sep + currentDirectory.id)
             }
         },
         {divider: true, requiredTrigger: "data-wrapper"},
         {
             requiredTrigger: "data-wrapper",
-            label: translate("NEW_MATERIAL"),
-            icon: "texture",
-            onClick: async () => {
-                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_MATERIAL"), ".material")
-                window.fileSystem.writeAsset(path, JSON.stringify({}))
-                    .then(() => {
-                        FileStoreController.refreshFiles()
-                    })
-            }
-        },
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("NEW_MATERIAL_INSTANCE"),
-            icon: "texture",
-            onClick: async () => null
-        },
-        {divider: true, requiredTrigger: "data-wrapper"},
+            label: translate("CREATE"),
+           children: [
+               {
+                   label: translate("NEW_MATERIAL"),
+                   icon: "texture",
+                   onClick: async () => {
+                       let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_MATERIAL"), ".material")
+                       window.fileSystem.writeAsset(path, JSON.stringify({}))
+                           .then(() => {
+                               FileStoreController.refreshFiles()
+                           })
+                   }
+               },
 
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("NEW_COMPONENT"),
-            icon: "extension",
-            onClick: async () => {
-                let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
+               {
+                   label: translate("NEW_COMPONENT"),
+                   icon: "extension",
+                   onClick: async () => {
+                       let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
 
-                await window.fileSystem.writeAsset(path, COMPONENT_TEMPLATE)
-                FileStoreController.refreshFiles().catch()
-            }
+                       await window.fileSystem.writeAsset(path, COMPONENT_TEMPLATE)
+                       FileStoreController.refreshFiles().catch()
+                   }
+               },
+           ]
         },
+
     ]
 }

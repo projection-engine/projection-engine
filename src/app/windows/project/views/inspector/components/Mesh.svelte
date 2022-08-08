@@ -6,6 +6,9 @@
     import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
     import DataStoreController from "../../../stores/DataStoreController";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Icon from "../../../../../../../out/linux/resources/app/src/app/components/Icon/Icon.svelte";
+    import getComponentInfo from "../../../utils/get-component-info";
+    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 
 
     export let selected
@@ -27,8 +30,15 @@
         }
     }
 </script>
-<Accordion title={translate("MESH")}>
-
+<Accordion>
+    <svelte:fragment slot="header">
+        <div class="icon">
+            <Icon styles="font-size: .9rem">
+                {getComponentInfo(COMPONENTS.MESH, selected)}
+            </Icon>
+        </div>
+        {translate("MESH")}
+    </svelte:fragment>
     <Selector
             selected={selected.meshID}
             type={"mesh"}
@@ -78,3 +88,13 @@
     />
 
 </Accordion>
+
+<style>
+    .icon {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

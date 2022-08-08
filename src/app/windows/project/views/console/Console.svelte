@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -16,7 +16,7 @@
         console.removeTarget(ref)
     })
 
-    const translate = key => EnglishLocalization.PROJECT.CONSOLE[key]
+    const translate = key => Localization.PROJECT.CONSOLE[key]
 
 
 </script>

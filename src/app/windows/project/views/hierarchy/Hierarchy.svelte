@@ -1,9 +1,8 @@
 <script>
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
-    import Icon from "../../../../components/Icon/Icon.svelte";
-    import createFolder from "./utils/create-folder";
+
     import Branch from "./components/Branch.svelte"
     import {v4} from "uuid"
     import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
@@ -17,12 +16,12 @@
     export let hidden = false
     export let switchView
     export let orientation
-    const TRIGGERS = ["data-node"]
+    const TRIGGERS = ["data-node", "data-self"]
     let searchedEntity = ""
     let engine = {}
     let settings = {}
 
-    const translate = key => EnglishLocalization.PROJECT.HIERARCHY[key]
+    const translate = key => Localization.PROJECT.HIERARCHY[key]
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
     const ID = v4()
     const scroller = infiniteScroll(v => maxDepth = v, v => offset = v)
@@ -85,14 +84,12 @@
             searchString={searchedEntity}
             setSearchString={v => searchedEntity = v}
     />
-    <button style="border: none" on:click={createFolder}>
-        <Icon>create_new_folder</Icon>
-    </button>
+
 </Header>
 {#if !hidden}
     <div
             bind:this={ref}
-            data-self={"self"}
+            data-self={"-"}
             data-offset={offset}
             class={"wrapper"}
             id={"tree-view-" + ID}
@@ -134,7 +131,5 @@
 
         height: 100%;
         max-height: 100%;
-        color: var(--pj-color-tertiary);
-        background: var(--pj-background-tertiary);
     }
 </style>

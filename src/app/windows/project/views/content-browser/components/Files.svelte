@@ -26,7 +26,8 @@
     function map(arr, items) {
         return arr.map(e => {
             return {
-                ...e, children: e.isFolder ? items.filter(i => {
+                ...e,
+                children: e.isFolder ? items.filter(i => {
                     return typeof i.parent === "string" && i.parent === e.id
                 }).length : 0,
             }
@@ -154,7 +155,7 @@
         padding: 8px;
         gap: 8px;
         border-radius: 5px;
-        background: var(--pj-background-tertiary);
+
         min-height: 100%;
         position: relative;
         display: grid;

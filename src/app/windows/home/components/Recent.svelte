@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../libs/EnglishLocalization";
+    import Localization from "../../../libs/Localization";
     import logo from "../../../../assets/logo.png"
 
     export let open = () => null
@@ -15,7 +15,7 @@
     }
     $: toShow = Array.isArray(projects) ? getRecent( projects ) : []
 
-    const translate = (key) => EnglishLocalization.HOME.CARD[key]
+    const translate = (key) => Localization.HOME.CARD[key]
 </script>
 
 {#if toShow && toShow.length > 0}

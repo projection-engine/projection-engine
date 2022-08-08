@@ -5,7 +5,7 @@
 </script>
 
 
-<div class="accordion">
+<div class="accordion" style={open ? undefined : "overflow: hidden; height: 25px;"}>
     <div class="summary">
         <span
                 data-icon="-"
@@ -29,32 +29,27 @@
 <style>
     .accordion {
         display: grid;
-        border: var(--pj-border-primary) 1px solid !important;
+        border: var(--pj-border-primary) 1px solid;
         max-width: 100%;
-        overflow: hidden;
         background-color: var(--pj-background-primary);
         user-select: none;
-        max-height: unset !important;
-        min-height: unset !important;
         border-radius: 3px;
     }
 
-    .accordion:not([open]) > .summary > span[data-accordion="true"] {
-
-    }
 
     .content {
         gap: 4px;
         padding: 4px;
         max-width: 100%;
         overflow: hidden;
-        background: var(--pj-background-secondary);
+        background: var(--pj-background-tertiary);
     }
 
     .summary {
         height: 25px;
-        background-color: var(--pj-border-primary) !important;
-        border-radius: 0 !important;
+        background-color: var(--pj-background-primary) !important;
+        border: none;
+        border-radius: 3px;
         font-size: 0.7rem !important;
         font-weight: 550;
 

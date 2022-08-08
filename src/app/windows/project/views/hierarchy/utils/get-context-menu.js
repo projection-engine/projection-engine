@@ -1,18 +1,24 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Entity from "../../../libs/engine/libs/basic/Entity";
-import FolderComponent from "../../../libs/engine/libs/components/FolderComponent";
 import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
+import CameraComponent from "../../../libs/engine/libs/components/CameraComponent";
+import PointLightComponent from "../../../libs/engine/libs/components/PointLightComponent";
+import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
+import DirectionalLightComponent from "../../../libs/engine/libs/components/DirectionalLightComponent";
 
-function createFolder() {
-    const newEntity = new Entity()
-    newEntity.name = "New folder"
-    newEntity.components[COMPONENTS.FOLDER] = new FolderComponent()
+function createEntity(component) {
+    const entity = new Entity(undefined, "New Entity")
+    if (component) {
+        entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+        entity.components[component.key] = new component.ref(undefined, entity)
+    }
     DataStoreController.engine.dispatchEntities({
-        type: ENTITY_ACTIONS.ADD, payload: newEntity
+        type: ENTITY_ACTIONS.ADD, payload: entity
     })
 }
+
 const getHierarchy = (start) => {
     const result = []
     const direct = start.children
@@ -23,13 +29,43 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getContextMenu(){
+export default function getContextMenu() {
     return [
+
         {
             requiredTrigger: "data-self",
-            label: "Create folder",
-            icon: "create_new_folder",
-            onClick: () => createFolder(DataStoreController.engine.dispatchEntities)
+            label: "Empty entity",
+            onClick: () => createEntity()
+        },
+        {
+            requiredTrigger: "data-self",
+            label: "Light",
+            children: [
+                {
+                    label: "Directional light",
+                    onClick: () => createEntity({ref: DirectionalLightComponent, key: COMPONENTS.DIRECTIONAL_LIGHT})
+                },
+                {
+                    label: "Point light",
+                    onClick: () => createEntity({ref: PointLightComponent, key: COMPONENTS.POINT_LIGHT})
+                },
+            ]
+        },
+        {
+            requiredTrigger: "data-self",
+            label: "Camera",
+            onClick: () => createEntity({ref: CameraComponent, key: COMPONENTS.CAMERA})
+        },
+        {divider: true, requiredTrigger: "data-self"},
+        {
+            requiredTrigger: "data-self",
+            label: "Paste",
+            onClick: () => ViewportActions.paste()
+        },
+        {
+            requiredTrigger: "data-node",
+            label: "Paste",
+            onClick: (target) => ViewportActions.paste(target.getAttribute("data-node"))
         },
 
         {
@@ -37,11 +73,7 @@ export default function getContextMenu(){
             label: "Copy",
             onClick: (target) => ViewportActions.copy(false, target.getAttribute("data-node"))
         },
-        {
-            requiredTrigger: "data-node",
-            label: "Paste on hierarchy",
-            onClick: (target) => ViewportActions.paste(target.getAttribute("data-node"))
-        },
+
         {
             requiredTrigger: "data-node",
             label: "Duplicate",
@@ -69,13 +101,16 @@ export default function getContextMenu(){
             }
         },
 
-        {divider: true},
+        {requiredTrigger: "data-node", divider: true},
         {
             requiredTrigger: "data-node",
             label: "Deselect",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                DataStoreController.updateEngine({...DataStoreController.engine, selected: DataStoreController.engine.selected.filter(s => s !== t)})
+                DataStoreController.updateEngine({
+                    ...DataStoreController.engine,
+                    selected: DataStoreController.engine.selected.filter(s => s !== t)
+                })
             }
         },
         {
@@ -84,16 +119,22 @@ export default function getContextMenu(){
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toDeselect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
-                DataStoreController.updateEngine({...DataStoreController.engine, selected: DataStoreController.engine.selected.filter(s => toDeselect.includes(s))})
+                DataStoreController.updateEngine({
+                    ...DataStoreController.engine,
+                    selected: DataStoreController.engine.selected.filter(s => toDeselect.includes(s))
+                })
             }
         },
-        {divider: true},
+        {requiredTrigger: "data-node", divider: true},
         {
             requiredTrigger: "data-node",
             label: "Select",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                DataStoreController.updateEngine({...DataStoreController.engine, selected:[... DataStoreController.engine.selected, t] })
+                DataStoreController.updateEngine({
+                    ...DataStoreController.engine,
+                    selected: [...DataStoreController.engine.selected, t]
+                })
             }
         },
         {
@@ -102,7 +143,10 @@ export default function getContextMenu(){
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toSelect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
-                DataStoreController.updateEngine({...DataStoreController.engine, selected:[...DataStoreController.engine.selected, ...toSelect] })
+                DataStoreController.updateEngine({
+                    ...DataStoreController.engine,
+                    selected: [...DataStoreController.engine.selected, ...toSelect]
+                })
             }
         },
         {

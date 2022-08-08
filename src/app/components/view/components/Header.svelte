@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../libs/EnglishLocalization";
+    import Localization from "../../../libs/Localization";
     import Dropdown from "../../dropdown/Dropdown.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../Icon/Icon.svelte";
@@ -10,7 +10,7 @@
     export let orientation
     export let hidden
     export let switchView
-    const translate = key => EnglishLocalization.COMPONENTS.VIEWS[key]
+    const translate = key => Localization.COMPONENTS.VIEWS[key]
 </script>
 <div
     class:headerHidden={hidden}

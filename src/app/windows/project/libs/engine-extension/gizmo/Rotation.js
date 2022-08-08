@@ -180,7 +180,7 @@ export default class Rotation {
 
 
     #testClick() {
-        if(!this.mainEntity || this.mainEntity?.isFolder)
+        if (!this.mainEntity || !this.mainEntity.components[COMPONENTS.TRANSFORM])
             return
         const camera = window.renderer.camera
         const mX = this.#rotateMatrix("x", this.xGizmo.components[COMPONENTS.TRANSFORM])

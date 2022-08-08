@@ -8,6 +8,7 @@
     let contextMenu
     let contextProps = {}
     let open = false
+
     function checkMouseOffset(startPosition, event) {
         return Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10
     }
@@ -17,7 +18,7 @@
         if (event.clientX + bBox.width > document.body.offsetWidth)
             target.style.left = ((event.clientX - 8) - bBox.width / 2) + "px"
         else
-            target.style.left = (event.clientX - 8)+ "px"
+            target.style.left = (event.clientX - 8) + "px"
 
         if (event.clientY + bBox.height > document.body.offsetHeight) {
             target.style.top = (event.clientY + 8) - bBox.height + "px"
@@ -31,26 +32,32 @@
         if (startPosition && !locked && window.contextMenu?.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
-                const targets = document.elementsFromPoint(event.clientX, event.clientY)
-                    .filter(t => {
-                        let hasAttribute = false
-                        const attributes = Array.from(t.attributes)
-                        for (let i = 0; i < attributes.length; i++) {
-                            const attr = attributes[i]
-                            if (!attr.nodeName.includes("data-"))
-                                continue
-                            const has = window.contextMenu.focused.triggers.find(f => attr.nodeName === f)
-                            if (has)
-                                hasAttribute = hasAttribute || has
+                let targetElement
+                const allElements = document.elementsFromPoint(event.clientX, event.clientY)
 
-                        }
-                        if (hasAttribute)
-                            return t
-                    })
+                for (let i = 0; i < allElements.length; i++) {
+                    const currentElement = allElements[i]
+                    let hasAttribute = false
+                    const attributes = Array.from(currentElement.attributes)
 
-                if (targets[0]) {
+                    for (let i = 0; i < attributes.length; i++) {
+                        const attr = attributes[i]
+                        if (!attr.nodeName.includes("data-"))
+                            continue
+                        const has = window.contextMenu.focused.triggers.find(f => attr.nodeName === f)
+                        if (has)
+                            hasAttribute = hasAttribute || has
+
+                    }
+                    if (hasAttribute) {
+                        targetElement = currentElement
+                        break;
+                    }
+                }
+
+                if (targetElement) {
                     let trigger
-                    Array.from(targets[0].attributes).forEach((attr) => {
+                    Array.from(targetElement.attributes).forEach((attr) => {
                         const has = window.contextMenu.focused.triggers.find((f) => attr.nodeName === f)
                         if (has)
                             trigger = has
@@ -58,15 +65,15 @@
 
                     open = true
                     contextProps = {
-                        options:window.contextMenu.focused.options,
-                        selected: targets[0],
+                        options: window.contextMenu.focused.options,
+                        selected: targetElement,
                         trigger,
                         event,
                         close: () => {
                             open = false
                             contextMenu.style.zIndex = "-1"
                         },
-                        callback:() => setPlacementOffset(contextMenu, event),
+                        callback: () => setPlacementOffset(contextMenu, event),
                         open: true
                     }
                 }
@@ -88,7 +95,7 @@
                 startPosition = {x: event.clientX, y: event.clientY}
                 window.contextMenu.focused = focused
             }
-        }else if(!contextMenu.contains(event.target)) {
+        } else if (!contextMenu.contains(event.target)) {
             open = false
             contextMenu.style.zIndex = "-1"
         }
@@ -109,8 +116,8 @@
 </script>
 
 <div
-    class="wrapper"
-    bind:this={contextMenu}
+        class="wrapper"
+        bind:this={contextMenu}
 >
     {#if open}
         <Options {...contextProps}/>

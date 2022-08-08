@@ -1,6 +1,6 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
-    import EnglishLocalization from "../../../../../../libs/EnglishLocalization";
+    import Localization from "../../../../../../libs/Localization";
     import DataStoreController from "../../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
 
@@ -15,7 +15,7 @@
         radius: window.renderer.camera.radius
     }
 
-    const translate = (key) => EnglishLocalization.PROJECT.VIEWPORT[key]
+    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
 </script>
 

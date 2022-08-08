@@ -3,7 +3,9 @@
     import ComponentAttribute from "./ComponentAttribute.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
+    import getComponentInfo from "../../../utils/get-component-info";
 
+    export let key
     export let index
     export let selected
     export let submit
@@ -14,6 +16,11 @@
 
 <Accordion>
     <svelte:fragment slot="header">
+        <div class="icon">
+            <Icon styles="font-size: .9rem">
+                {getComponentInfo(key, selected)}
+            </Icon>
+        </div>
         {title}
         {#if index != null}
             <button
@@ -55,6 +62,7 @@
         {/each}
     {/if}
 </Accordion>
+
 <style>
     .fieldset {
         border: none;
@@ -66,5 +74,13 @@
     legend {
         font-size: .75rem;
         font-weight: 550;
+    }
+
+    .icon {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

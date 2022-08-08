@@ -27,16 +27,34 @@
 
         try {
             const id = JSON.parse(e.dataTransfer.getData("text"))[0]
-            const ref = FileStoreController.data.components.find(s => s.registryID === id)
-            if (!ref) {
-                alert.pushAlert(translate("SCRIPT_NOT_FOUND"), "error")
+            let type = "SCRIPT"
+            let itemFound = FileStoreController.data.components.find(s => s.registryID === id)
+            if (!itemFound) {
+                itemFound = FileStoreController.data.meshes.find(s => s.registryID === id)
+                type = "MESH"
+            }
+            if (!itemFound) {
+                itemFound = FileStoreController.data.materials.find(s => s.registryID === id)
+                type = "MATERIAL"
+            }
+
+            if (!itemFound) {
+                alert.pushAlert(translate("COULD_NOT_FIND"), "error")
                 console.error(id)
                 return
             }
-            await componentConstructor(entity, id)
+            switch(type){
+                case "SCRIPT":
+                    await componentConstructor(entity, id)
+                    break
+                case "MESH":
+                    break
+                case "MATERIAL":
+                    break
+            }
         } catch (err) {
             console.error(err, e.dataTransfer.getData("text"))
-            alert.pushAlert(translate("SCRIPT_NOT_FOUND"), "error")
+            alert.pushAlert(translate("COULD_NOT_FIND"), "error")
         }
     }
 </script>
@@ -77,6 +95,7 @@
             />
         {:else}
             <ComponentLayout
+                    key={componentKey}
                     translate={translate}
                     selected={component}
                     submit={(key, value, save) => {
@@ -134,10 +153,11 @@
 <style>
 
     .wrapper {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        align-content: flex-start;
         gap: 4px;
-
+        overflow-y: auto;
+        max-height: 100%;
         width: 100%;
         max-width: 100%;
         padding: 4px 4px 32px;

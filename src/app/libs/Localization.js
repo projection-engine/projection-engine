@@ -1,4 +1,4 @@
-export default class EnglishLocalization {
+export default class Localization {
     static HOME = {
         HOME: {
             DELETE: "Deleting project",
@@ -140,7 +140,7 @@ export default class EnglishLocalization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
-            SCRIPT_NOT_FOUND: "Script not found",
+            COULD_NOT_FIND: "Could not find component for item",
             MATERIAL_LOADED: "Material loaded successfully",
             ERROR_LOADING_FILE: "Error loading file.",
             SPECULAR_PROBE: "Specular probe",
@@ -202,7 +202,7 @@ export default class EnglishLocalization {
             TRANSFORMATION: "Transformation"
         },
         FILES: {
-
+            CREATE: "Create",
             OPENING_FILE: "Opening file",
             SEARCH: "Search",
             SELECT: "Select",

@@ -1,5 +1,5 @@
 <script>
-    import EnglishLocalization from "../../../../libs/EnglishLocalization";
+    import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import Input from "../../../../components/input/Input.svelte";
     import DataStoreController from "../../stores/DataStoreController";
@@ -11,6 +11,9 @@
     import FileStoreController from "../../stores/FileStoreController";
     import {v4} from "uuid";
     import componentConstructor from "../../libs/component-constructor";
+    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import getNativeComponents from "./utils/get-native-components";
+    import TransformComponent from "../../libs/engine/libs/components/TransformComponent";
 
     export let hidden = false
     export let switchView
@@ -24,8 +27,8 @@
         unsubscribeEngine()
         unsubscribeStore()
     })
-
-    const translate = key => EnglishLocalization.PROJECT.INSPECTOR[key]
+    const nativeComponents = getNativeComponents()
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
 </script>
 <Header
         orientation={orientation}
@@ -50,8 +53,21 @@
                 <Icon>add</Icon>
                 <ToolTip content={translate("LINK_COMPONENT")}/>
             </button>
+            {#each nativeComponents as [key, instance, label, icon]}
+                <button
+                        on:click={() =>{
+                    if(!engine.selectedEntity.components[COMPONENTS.TRANSFORM])
+                        engine.selectedEntity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                    if(!engine.selectedEntity.components[key])
+                        engine.selectedEntity.components[key] = new instance(undefined, engine.selectedEntity)
+                }}>
+                    <Icon>{icon}</Icon>
+                    {label}
+                </button>
+            {/each}
+            <div class="divider"></div>
             {#each store.components as script}
-                <button on:click={async () => componentConstructor(engine.selectedEntity, script.registryID).catch()}>
+                <button on:click={() => componentConstructor(engine.selectedEntity, script.registryID).catch()}>
                     {script.name}
                 </button>
             {/each}
@@ -67,13 +83,39 @@
                     translate={translate}
                     engine={engine}
             />
+        {:else}
+            <div class="empty">
+                <Icon styles="font-size: 100px">category</Icon>
+                {translate("TITLE")}
+            </div>
         {/if}
     </div>
 {/if}
 
 
 <style>
+    .divider {
+        width: 100%;
+        height: 1px;
+        background: var(--pj-border-primary);
+    }
 
+    .empty {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: grid;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+        width: 100%;
+        height: 100%;
+        font-weight: 550;
+        font-size: .85rem;
+        color: var(--pj-color-quaternary);
+    }
 
     .button {
         padding: 0 !important;
