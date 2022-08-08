@@ -14,6 +14,7 @@
     import DataStoreController from "./stores/DataStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
+    import ROUTES from "../../../static/ROUTES";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -31,6 +32,13 @@
     let isMetadataLoaded = false
 
     onMount(() => {
+        ipcRenderer.on(
+            ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
+            (event, data) => {
+                DataStoreController.updateSettings(data)
+                alert.pushAlert("Updating settings", "info")
+            }
+        )
         InitializeWindow()
         loadProjectMetadata((m, s) => {
             DataStoreController.updateSettings({...settings, ...s})
@@ -139,7 +147,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        background-color: var(--pj-background-primary);
+        background-color: var(--pj-background-quaternary);
     }
 
     .content {

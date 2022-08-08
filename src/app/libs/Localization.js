@@ -40,7 +40,10 @@ export default class Localization {
     }
     static SETTINGS = {
         MAIN: {
-            TITLE: "Preferences"
+            PREFERENCES: "Preferences",
+            APPLY: "Apply",
+            POST_PROCESSING: "Post processing",
+            RENDERING: "Rendering"
         }
     }
     static PROJECT = {

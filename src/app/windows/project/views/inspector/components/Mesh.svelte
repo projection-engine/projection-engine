@@ -7,7 +7,7 @@
     import DataStoreController from "../../../stores/DataStoreController";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Icon from "../../../../../../../out/linux/resources/app/src/app/components/Icon/Icon.svelte";
-    import getComponentInfo from "../../../utils/get-component-info";
+    import getComponentIcon from "../../../utils/get-component-icon";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 
 
@@ -34,7 +34,7 @@
     <svelte:fragment slot="header">
         <div class="icon">
             <Icon styles="font-size: .9rem">
-                {getComponentInfo(COMPONENTS.MESH, selected)}
+                {getComponentIcon(COMPONENTS.MESH, selected)}
             </Icon>
         </div>
         {translate("MESH")}

@@ -3,7 +3,7 @@
     import ComponentAttribute from "./ComponentAttribute.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
-    import getComponentInfo from "../../../utils/get-component-info";
+    import getComponentIcon from "../../../utils/get-component-icon";
 
     export let key
     export let index
@@ -18,7 +18,7 @@
     <svelte:fragment slot="header">
         <div class="icon">
             <Icon styles="font-size: .9rem">
-                {getComponentInfo(key, selected)}
+                {getComponentIcon(key, selected)}
             </Icon>
         </div>
         {title}

@@ -2,7 +2,6 @@
     import Icon from "../../Icon/Icon.svelte";
     import {onMount} from "svelte";
     import Shortcut from "./Shortcut.svelte";
-    import Localization from "../../../libs/Localization";
 
     export let options = []
     export let selected

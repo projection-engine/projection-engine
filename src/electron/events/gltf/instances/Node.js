@@ -1,10 +1,10 @@
 const {mat4, quat} = require("gl-matrix")
-const getPrimitive = require("../utils/getPrimitive")
+const getPrimitive = require("../utils/get-primitive")
 const PrimitiveProcessor = require("./PrimitiveProcessor")
 const {v4} = require("uuid")
 const FILE_TYPES = require("../../../../static/FILE_TYPES")
 const REG_PATH = require("../../../../static/REG_PATH")
-const parseMaterial = require("../utils/parseMaterial")
+const parseMaterial = require("../utils/parse-material")
 const PREVIEW_PATH = require("../../../../static/PREVIEW_PATH")
 
 const fs = require("fs")

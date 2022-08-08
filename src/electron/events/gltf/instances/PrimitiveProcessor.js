@@ -1,6 +1,13 @@
 const {vec3} = require("gl-matrix")
-const groupInto  = require("../utils/groupInto")
 
+function groupInto(size, mainArray) {
+    let arrayOfArrays = [];
+    for (let i = 0; i < mainArray.length; i += size) {
+        arrayOfArrays.push(mainArray.slice(i, i + size));
+    }
+
+    return arrayOfArrays
+}
 
 module.exports =  class PrimitiveProcessor {
     static computeNormals(indices, vertices) {

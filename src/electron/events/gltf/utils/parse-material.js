@@ -1,6 +1,6 @@
 
 const {Node, getNormalizedName} = require("../instances/Node")
-const prepareMaterial = require("./prepareMaterial")
+const prepareMaterial = require("./prepare-material")
 const {v4} = require("uuid")
 const FILE_TYPES = require("../../../../static/FILE_TYPES")
 

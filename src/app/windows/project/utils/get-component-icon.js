@@ -1,6 +1,6 @@
 import COMPONENTS from "../libs/engine/data/COMPONENTS";
 
-export default function getComponentInfo(key, component) {
+export default function getComponentIcon(key, component) {
 
     switch (key) {
         case COMPONENTS.TRANSFORM:
@@ -11,16 +11,8 @@ export default function getComponentInfo(key, component) {
             return "lightbulb"
         case COMPONENTS.DIRECTIONAL_LIGHT:
             return "light_mode"
-        case COMPONENTS.SPOT_LIGHT:
-            return "flashlight_on"
-        case COMPONENTS.PHYSICS:
-            return "public"
-        case COMPONENTS.COLLIDER:
-            return "compare_arrows"
         case COMPONENTS.CAMERA:
             return "videocam"
-        case COMPONENTS.LINE:
-            return "arrow_right_alt"
         case COMPONENTS.PROBE:
             return "lens_blur"
         default:

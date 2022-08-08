@@ -2,49 +2,51 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import Range from "../../../components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
+    import Localization from "../../../libs/Localization";
 
-    export let translate
-    export let selected
-    export let submit
+    export let settings
+    export let update
+
+    const translate = (key) => Localization.PROJECT.INSPECTOR[key]
 </script>
 
 <Accordion title={"Lens distortion"}>
     <Checkbox
-        checked={selected.distortion}
+        checked={settings.distortion}
         handleCheck={() => {
-                    submit("distortion",  !selected.distortion)
+                    update("distortion",  !settings.distortion)
 
         }}
         label={"Enabled"}
     />
     <Range
         label={"Strength"}
-        disabled={!selected.distortion}
+        disabled={!settings.distortion}
         onFinish={v => {
-            submit("distortionStrength",  v)
+            update("distortionStrength",  v)
         }}
         incrementPercentage={.01}
         precision={3}
 
-        value={selected.distortionStrength} maxValue={10} minValue={0}
+        value={settings.distortionStrength} maxValue={10} minValue={0}
     />
 </Accordion>
 
 <Accordion title={"Chromatic aberration"}>
     <Checkbox
-        checked={selected.chromaticAberration}
-        handleCheck={() => submit("chromaticAberration", !selected.chromaticAberration)}
+        checked={settings.chromaticAberration}
+        handleCheck={() => update("chromaticAberration", !settings.chromaticAberration)}
         label={"Enabled"}
     />
     <Range
         label={"Strength"}
-        disabled={!selected.chromaticAberration}
+        disabled={!settings.chromaticAberration}
         onFinish={v => {
-            submit("chromaticAberrationStrength",  v)
+            update("chromaticAberrationStrength",  v)
         }}
         incrementPercentage={.01}
         precision={3}
-        value={selected.chromaticAberrationStrength}
+        value={settings.chromaticAberrationStrength}
         maxValue={10}
         minValue={0}
     />
@@ -52,52 +54,52 @@
 
 <Accordion title={"Film grain"}>
     <Checkbox
-        checked={selected.filmGrain}
-        handleCheck={() => submit("filmGrain",  !selected.filmGrain)}
+        checked={settings.filmGrain}
+        handleCheck={() => update("filmGrain",  !settings.filmGrain)}
         label={"Enabled"}
     />
 
     <Range
         label={"Strength"}
-        disabled={!selected.filmGrain}
+        disabled={!settings.filmGrain}
         onFinish={v => {
-            submit("filmGrainStrength",  v)
+            update("filmGrainStrength",  v)
         }}
         incrementPercentage={.001}
         precision={3}
-        value={selected.filmGrainStrength} maxValue={10} minValue={0}
+        value={settings.filmGrainStrength} maxValue={10} minValue={0}
     />
 </Accordion>
 
 <Accordion title={"Bloom"}>
     <Checkbox
 
-        checked={selected.bloom}
-        handleCheck={() => submit("bloom",  !selected.bloom)}
+        checked={settings.bloom}
+        handleCheck={() => update("bloom",  !settings.bloom)}
         label={"Enabled"}
     />
 
     <Range
         label={"Strength"}
 
-        disabled={!selected.bloom}
+        disabled={!settings.bloom}
         onFinish={v => {
-            submit("bloomStrength",  v)
+            update("bloomStrength",  v)
         }}
         incrementPercentage={.001}
         precision={3}
-        value={selected.bloomStrength} maxValue={10} minValue={0}/>
+        value={settings.bloomStrength} maxValue={10} minValue={0}/>
 
     <Range
         label={"Threshold"}
 
-        disabled={!selected.bloom}
+        disabled={!settings.bloom}
         incrementPercentage={.001}
         precision={3}
         onFinish={v => {
-            submit("bloomThreshold",  v)
+            update("bloomThreshold",  v)
         }}
-        value={selected.bloomThreshold}
+        value={settings.bloomThreshold}
 
         maxValue={1} minValue={0}
     />
@@ -112,9 +114,9 @@
         minValue={.1}
         maxValue={10}
         onFinish={v => {
-            submit("gamma",  v)
+            update("gamma",  v)
         }}
-        value={selected.gamma}
+        value={settings.gamma}
     />
 
     <Range
@@ -125,9 +127,9 @@
         precision={3}
         maxValue={10}
         onFinish={v => {
-            submit("exposure",  v)
+            update("exposure",  v)
         }}
-        value={selected.exposure}
+        value={settings.exposure}
     />
 </Accordion>
 

@@ -1,7 +1,7 @@
 const Buffer = require("./instances/Buffer")
 const Accessor = require("./instances/Accessor")
 const Scene = require("./instances/Scene")
-const createDirectory = require("./utils/createDirectory")
+const createDirectory = require("./utils/create-directory")
 
 module.exports = async function glTF(root, fileSRC, projectPath, file, options, filePath) {
     createDirectory(root)

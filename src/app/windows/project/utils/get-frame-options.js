@@ -1,5 +1,6 @@
 import DataStoreController from "../stores/DataStoreController";
 import loadScripts from "./load-scripts";
+import ROUTES from "../../../../static/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -46,26 +47,11 @@ export default function getFrameOptions(engine, s) {
                     label: "Preferences",
                     icon: "settings",
                     onClick: () => {
-                        // const settingsClone = {}
-                        // Object.keys(settings).map(k => {
-                        //     settingsClone[k] = settings[k]
-                        // })
-                        // ipcRenderer.send(
-                        //     ROUTES.OPEN_NEW_WINDOW,
-                        //     {
-                        //         type: WINDOWS.SETTINGS,
-                        //         windowSettings: {
-                        //             width: 625,
-                        //             height: 750,
-                        //             minWidth: 300,
-                        //             minHeight: 500 ,
-                        //
-                        //         },
-                        //         windowProps:settingsClone
-                        //     })
-                        // ipcRenderer.once(WINDOWS.SETTINGS + ROUTES.CLOSE_NEW_WINDOW, (event, data) => {
-                        //     console.log(data, event)
-                        // })
+                        const settingsClone = structuredClone(settings)
+                        ipcRenderer.send(
+                            ROUTES.OPEN_SETTINGS + sessionStorage.getItem("electronWindowID"),
+                            settingsClone
+                        )
                     },
                 },
             ]

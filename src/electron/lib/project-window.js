@@ -11,6 +11,7 @@ const loadMetadata = require("../events/project-loader/lib/load-metadata");
 const getBasePath = require("./get-base-path");
 const os = require("os");
 const RELATIVE_PATH_LOGO = "../../assets/logo.png"
+const settingsWindow = require("./settings-window");
 
 module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
@@ -37,7 +38,9 @@ module.exports = function ProjectWindow(handleClose, data) {
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA + data.id, async event => {
         event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) +"projects" + path.sep + data.id))
     })
-
+    ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
+      settingsWindow(data.id, window, settingsData)
+    })
     windowLifeCycle(
         data.id,
         window,
