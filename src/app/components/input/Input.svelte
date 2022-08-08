@@ -11,6 +11,7 @@
     export let noAutoSubmit = false
     export let placeholder = ""
     export let onEnter = () => null
+    export let directChange
 
     let changed = false
     let timeout, input
@@ -43,12 +44,13 @@
         class="input"
         bind:this={input}
         on:input={e => {
+            if(directChange)
+                directChange(e.target.value)
             changed = true
             if(!noAutoSubmit)
                 onChange(e.target)
         }}
         on:blur={(e) => {
-            console.log(changed)
             if(onBlur)
             onBlur(changed, e.currentTarget.value)
         }}

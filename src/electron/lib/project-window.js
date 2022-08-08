@@ -17,8 +17,8 @@ module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     const window = new BrowserWindow({
-        width: Math.max(width / 2, 800),
-        height: Math.max(height / 2, 600),
+        width: width / 2,
+        height: height / 2,
 
         frame: false,
         webPreferences: {

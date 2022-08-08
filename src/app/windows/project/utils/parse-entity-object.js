@@ -1,4 +1,4 @@
-import FileSystem from "../libs/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import Entity from "../libs/engine/libs/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
 import DirectionalLightComponent from "../libs/engine/libs/components/DirectionalLightComponent"

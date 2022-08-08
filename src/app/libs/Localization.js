@@ -1,13 +1,14 @@
 export default class Localization {
     static HOME = {
         HOME: {
+            PROJECT_NAME: "My project",
             DELETE: "Deleting project",
             RENAME: "Project renamed",
             RENAME_ERROR: "Error renaming project",
             LOADING: "Loading projects",
             TITLE: "Projection Engine",
             PROJECTS: "Your projects",
-            CREATE: "New project",
+            CREATE: "Create project",
             EMPTY: "No projects found",
             SEARCH: "Search",
             PROJECT_CREATED: "Project created"
@@ -54,6 +55,7 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            EMPTY_ENTITY: "Empty Entity",
             LAYOUT: "Layout",
             ADD: "Add",
             ADD_DETAILS: "Add entity",

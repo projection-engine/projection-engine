@@ -1,5 +1,5 @@
 <script>
-    import FileSystem from "../../../libs/FileSystem"
+    import FileSystem from "../../../../../libs/FileSystem"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../../static/FILE_TYPES";
@@ -192,11 +192,13 @@
     .file:hover {
         border-color: transparent;
         background: var(--pj-background-primary);
+        box-shadow: var(--pj-boxshadow);
     }
 
     .file:active {
+        box-shadow: none;
         border-color: transparent;
-        background: var(--pj-accent-color);
+        background: var(--pj-accent-color) !important;
     }
 
 

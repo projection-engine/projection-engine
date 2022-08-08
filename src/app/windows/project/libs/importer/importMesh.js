@@ -4,7 +4,7 @@ import TransformComponent from "../engine/libs/components/TransformComponent"
 
 import MeshComponent from "../engine/libs/components/MeshComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
-import FileSystem from "../FileSystem"
+import FileSystem from "../../../../libs/FileSystem"
 import FALLBACK_MATERIAL from "../engine/data/FALLBACK_MATERIAL"
 import DataStoreController from "../../stores/DataStoreController";
 

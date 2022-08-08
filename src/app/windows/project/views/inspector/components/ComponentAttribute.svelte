@@ -6,14 +6,15 @@
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
 
+    export let selected = undefined
+    export let submit = undefined
+    export let translate = undefined
+    export let attribute = undefined
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 
 
-    export let selected
-    export let submit
-    export let translate
-    export let attribute
+
     $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
     $: value = selected[attribute.key]
     $: isDisabled = selected[attribute.disabledIf]

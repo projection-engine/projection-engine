@@ -64,11 +64,12 @@
         cursor: unset;
     }
     .wrapper{
+        border: var(--pj-border-primary) 1px solid;
         display: flex;
         align-items: center;
         gap: 4px;
         font-size: .7rem;
-        background: var(--pj-border-primary);
+        background: var(--pj-background-primary);
         border-radius: 3px;
         height: 25px;
         width: 100%;

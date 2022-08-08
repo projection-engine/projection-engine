@@ -1,5 +1,5 @@
 <script>
-    import FileSystem from "../../libs/FileSystem"
+    import FileSystem from "../../../../libs/FileSystem"
     import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
     import Localization from "../../../../libs/Localization";
@@ -10,9 +10,9 @@
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
     import Files from "./components/Files.svelte";
 
-    export let hidden
-    export let switchView
-    export let orientation
+    export let hidden = undefined
+    export let switchView = undefined
+    export let orientation = undefined
 
 
 

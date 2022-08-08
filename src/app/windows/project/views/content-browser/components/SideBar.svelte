@@ -1,14 +1,14 @@
 <script>
     import handleDropFolder from "../utils/handle-drop-folder"
-    import FileSystem from "../../../libs/FileSystem"
+    import FileSystem from "../../../../../libs/FileSystem"
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
-    export let translate
-    export let bookmarks
-    export let setCurrentDirectory
-    export let items
-    export let currentDirectory
+    export let translate = undefined
+    export let bookmarks = undefined
+    export let setCurrentDirectory = undefined
+    export let items = undefined
+    export let currentDirectory = undefined
 
     $: assets = items.filter(item => item.isFolder && !item.parent)
 

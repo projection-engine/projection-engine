@@ -1,7 +1,7 @@
 <script>
 
-    import AsyncFS from "../../../libs/AsyncFS"
-    import FileSystem from "../../../libs/FileSystem"
+    import AsyncFS from "../../../../../libs/AsyncFS"
+    import FileSystem from "../../../../../libs/FileSystem"
     import importFile from "../utils/import-file"
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";

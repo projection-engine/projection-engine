@@ -1,5 +1,5 @@
 import importScene from "../../../libs/importer/importScene"
-import FileSystem from "../../../libs/FileSystem"
+import FileSystem from "../../../../../libs/FileSystem"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
 import DataStoreController from "../../../stores/DataStoreController";
@@ -10,7 +10,6 @@ export default async function importFile(currentDirectory) {
     const engineCopy = {...DataStoreController.engine}
     const toImport = await window.fileSystem.openDialog()
     if (toImport.length > 0) {
-        alert.pushAlert("Loading content-browser", "info")
         if (toImport.filter(e => e.includes("gltf")).length > 0) {
             alert.pushAlert("Loading scene", "info")
             const result = await window.fileSystem.importFile(FileStoreController.ASSETS_PATH + currentDirectory.id, toImport)

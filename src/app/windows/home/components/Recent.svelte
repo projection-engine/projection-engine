@@ -2,8 +2,8 @@
     import Localization from "../../../libs/Localization";
     import logo from "../../../../assets/logo.png"
 
-    export let open = () => null
-    export let projects = []
+    export let open =undefined
+    export let projects =undefined
     function getRecent(projects){
         return projects.sort((a, b) => {
             if (a.meta?.lastModification < b.meta?.lastModification)

@@ -24,7 +24,7 @@
         {title}
         {#if index != null}
             <button
-                    style="margin-left: auto; display: flex; align-items: center; justify-content: center; height: 25px"
+                    class="button"
                     on:click={() => {
                         const entity = DataStoreController.engine.selectedEntity
                        entity.scripts[index] = undefined
@@ -82,5 +82,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .button {
+        border: none;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
     }
 </style>

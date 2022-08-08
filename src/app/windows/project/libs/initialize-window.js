@@ -2,7 +2,7 @@ import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 import initializeConsole from "./initializer/initializeConsole"
 import initializeEntityWorker from "./initializer/initializeEntityWorker"
 import initializeBlueprints from "./initializer/initializeBlueprints"
-import FileSystem from "./FileSystem";
+import FileSystem from "../../../libs/FileSystem";
 
 
 export default function InitializeWindow( ) {

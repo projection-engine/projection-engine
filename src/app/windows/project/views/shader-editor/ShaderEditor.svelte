@@ -3,7 +3,7 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
-    import FileSystem from "../../libs/FileSystem"
+    import FileSystem from "../../../../libs/FileSystem"
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";

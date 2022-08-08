@@ -4,10 +4,10 @@
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import Localization from "../../libs/Localization";
     import Sidebar from "./components/Sidebar.svelte";
-    import Icon from "../../../../out/linux/resources/app/src/app/components/Icon/Icon.svelte";
     import ResizableBar from "../../components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";
-    import Rendering from "../../../../out/win32/resources/app/src/app/windows/settings/components/Rendering.svelte";
+    import Rendering from "./components/Rendering.svelte";
+    import Icon from "../../components/Icon/Icon.svelte";
 
     const {ipcRenderer} = window.require('electron')
     let settings
@@ -119,13 +119,14 @@
     }
 
     .button:hover {
-        color: var(--pj-color-secondary);
-        background: var(--pj-background-primary);
+        box-shadow: rgba(0,0,0,.5) 2px 2px 5px 2px;
+        color: var(--pj-color-secondary) !important;
     }
 
     .button:active {
         background: var(--pj-background-tertiary);
     }
+
 
     .form {
         width: 100%;

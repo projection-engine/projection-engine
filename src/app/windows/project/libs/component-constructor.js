@@ -1,5 +1,5 @@
 import FileStoreController from "../stores/FileStoreController";
-import FileSystem from "./FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import DataStoreController from "../stores/DataStoreController";
 import Packager from "./engine/libs/builder/Packager";
 

@@ -3,7 +3,7 @@ import COMPONENTS from "../engine/data/COMPONENTS"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../engine/libs/instances/MeshInstance"
 import {ENTITY_ACTIONS} from "../engine-extension/entityReducer"
-import FileSystem from "../FileSystem"
+import FileSystem from "../../../../libs/FileSystem"
 import {vec4} from "gl-matrix"
 import DataStoreController from "../../stores/DataStoreController";
 import FileStoreController from "../../stores/FileStoreController";

@@ -143,7 +143,8 @@
         width: 100vw;
         height: 35px;
         user-select: none;
-        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x: auto;
         background: var(--pj-background-primary);
         border-bottom: var(--pj-border-primary) 1px solid;
     }

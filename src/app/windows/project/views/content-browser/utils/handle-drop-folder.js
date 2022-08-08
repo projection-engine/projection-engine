@@ -1,5 +1,5 @@
-import AsyncFS from "../../../libs/AsyncFS"
-import FileSystem from "../../../libs/FileSystem"
+import AsyncFS from "../../../../../libs/AsyncFS"
+import FileSystem from "../../../../../libs/FileSystem"
 import FileStoreController from "../../../stores/FileStoreController";
 
 const pathResolve = window.require("path")

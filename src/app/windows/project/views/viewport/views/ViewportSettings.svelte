@@ -101,6 +101,12 @@
                 <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
             </button>
 
+            <button
+                    on:click={() => engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})}
+            >
+                <Icon>inventory_2</Icon>
+                {translate("EMPTY_ENTITY")}
+            </button>
             <div class={"divider-wrapper"}>
                 {translate("LIGHTS")}
                 <div data-divider="-"></div>
@@ -138,6 +144,7 @@
                 <Icon>light_mode</Icon>
                 {translate("DIRECTIONAL_LIGHT")}
             </button>
+
 
             <div class={"divider-wrapper"}>
                 {translate("AMBIENT")}

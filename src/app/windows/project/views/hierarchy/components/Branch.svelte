@@ -6,14 +6,14 @@
     import "../css/Branch.css"
 
     const LEFT_BUTTON = 0
-    export let depth
-    export let nodeRef
-    export let open
-    export let setOpen
-    export let selected
-    export let setSelected
-    export let lockedEntity
-    export let setLockedEntity
+    export let depth = undefined
+    export let nodeRef = undefined
+    export let open = undefined
+    export let setOpen = undefined
+    export let selected = undefined
+    export let setSelected = undefined
+    export let lockedEntity = undefined
+    export let setLockedEntity = undefined
 
     let ref
     let active = true

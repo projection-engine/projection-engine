@@ -1,6 +1,6 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import FileSystem from "../../../windows/project/libs/FileSystem";
+    import FileSystem from "../../../libs/FileSystem";
     import Icon from "../../Icon/Icon.svelte";
 
     export let state

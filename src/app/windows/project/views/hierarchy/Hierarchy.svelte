@@ -11,11 +11,12 @@
     import infiniteScroll from "../../libs/infinite-scroll";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
+    import Icon from "../../../../components/Icon/Icon.svelte";
 
 
-    export let hidden = false
-    export let switchView
-    export let orientation
+    export let hidden = undefined
+    export let switchView = undefined
+    export let orientation = undefined
     const TRIGGERS = ["data-node", "data-self"]
     let searchedEntity = ""
     let engine = {}
@@ -34,7 +35,7 @@
     let entities = engine.entities
     let lastChangeID
     $: {
-        if(engine.changeID !== lastChangeID) {
+        if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
             entities = engine.entities
         }
@@ -94,13 +95,14 @@
             class={"wrapper"}
             id={"tree-view-" + ID}
     >
-        {#each toRender as e, i}
-            {#if i < maxDepth}
-                <Branch
-                        nodeRef={toRender[i + offset].node}
-                        depth={toRender[i + offset].depth}
-                        selected={engine.selected}
-                        setSelected={(entity, ctrlKey) => {
+        {#if toRender.length > 0}
+            {#each toRender as e, i}
+                {#if i < maxDepth}
+                    <Branch
+                            nodeRef={toRender[i + offset].node}
+                            depth={toRender[i + offset].depth}
+                            selected={engine.selected}
+                            setSelected={(entity, ctrlKey) => {
                             if (ctrlKey) {
                                 if (!engine.selected.includes(entity))
                                     DataStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
@@ -109,19 +111,41 @@
                             } else
                                 DataStoreController.updateEngine({...engine, selected: [entity]})
                         }}
-                        lockedEntity={engine.lockedEntity}
-                        setLockedEntity={v => DataStoreController.updateEngine({...engine, lockedEntity: v})}
-                        internalID={ID}
-                        open={open}
-                        setOpen={v => open = v}
+                            lockedEntity={engine.lockedEntity}
+                            setLockedEntity={v => DataStoreController.updateEngine({...engine, lockedEntity: v})}
+                            internalID={ID}
+                            open={open}
+                            setOpen={v => open = v}
 
-                />
-            {/if}
-        {/each}
+                    />
+                {/if}
+            {/each}
+        {:else}
+            <div class="empty">
+                <Icon styles="font-size: 75px">account_tree</Icon>
+                {translate("TITLE")}
+            </div>
+        {/if}
     </div>
 {/if}
 
 <style>
+    .empty {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: grid;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+        width: 100%;
+        height: 100%;
+
+        font-size: .8rem;
+        color: var(--pj-color-quaternary);
+    }
     .wrapper {
         position: relative;
         display: grid;

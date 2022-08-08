@@ -33,6 +33,7 @@
 
 <div class={"wrapper"} style={settings.visible.sideBarViewport ? "right: 25px" : undefined}>
 
+
     <div
             class={"gizmo-wrapper"}
             on:mousedown={({currentTarget}) => currentTarget.isFocused = true}
@@ -128,120 +129,119 @@
         </div>
     </div>
 
-    <div class="vertical-options">
-        <Dropdown hideArrow={true}>
-            <button slot="button" class="option">
-                <Icon>videocam</Icon>
-                <ToolTip>
-                    Camera position
-                </ToolTip>
-            </button>
+    <Dropdown noBackground={true} hideArrow={true}>
+        <button slot="button" class="option">
+            <Icon>videocam</Icon>
+            <ToolTip>
+                Camera position
+            </ToolTip>
+        </button>
 
-            <button on:click={() => updateCameraPlacement(0, Math.PI /2)}>
-                {translate("TOP")}
-            </button>
-            <button on:click={() => updateCameraPlacement(0, -Math.PI /2)}>
-                {translate("BOTTOM")}
-            </button>
-            <button on:click={() => updateCameraPlacement(Math.PI, 0)}>
-                {translate("LEFT")}
-            </button>
-            <button on:click={() => updateCameraPlacement(0, 0)}>
-                {translate("RIGHT")}
-            </button>
-            <button on:click={() => updateCameraPlacement(Math.PI/2, 0)}>
-                {translate("FRONT")}
-            </button>
-            <button on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}>
-                {translate("BACK")}
-            </button>
-        </Dropdown>
+        <button on:click={() => updateCameraPlacement(0, Math.PI /2)}>
+            {translate("TOP")}
+        </button>
+        <button on:click={() => updateCameraPlacement(0, -Math.PI /2)}>
+            {translate("BOTTOM")}
+        </button>
+        <button on:click={() => updateCameraPlacement(Math.PI, 0)}>
+            {translate("LEFT")}
+        </button>
+        <button on:click={() => updateCameraPlacement(0, 0)}>
+            {translate("RIGHT")}
+        </button>
+        <button on:click={() => updateCameraPlacement(Math.PI/2, 0)}>
+            {translate("FRONT")}
+        </button>
+        <button on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}>
+            {translate("BACK")}
+        </button>
+    </Dropdown>
 
-        <button
-                on:click={() => {
+    <button
+            on:click={() => {
                 const negated = !window.renderer.camera.ortho
                 window.renderer.camera.ortho = negated
                 window.renderer.camera.updateProjection()
                 cameraIsOrtho  = negated
             }}
-                class="option"
-        >
-            <ToolTip>
-                {translate("SWITCH_PROJECTION")}
-            </ToolTip>
-            {#if !cameraIsOrtho}
-                <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
-                    <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
-                </div>
-            {:else}
-                <Icon styles="font-size: 1rem">grid_on</Icon>
-            {/if}
-        </button>
+            class="option"
+    >
+        <ToolTip>
+            {translate("SWITCH_PROJECTION")}
+        </ToolTip>
+        {#if !cameraIsOrtho}
+            <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
+                <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
+            </div>
+        {:else}
+            <Icon styles="font-size: 1rem">grid_on</Icon>
+        {/if}
+    </button>
 
-        <div style="margin-top: clamp(4px, 1vh, 16px)" class="option" on:mousedown={e => handleGrab(e, window.renderer.camera, 0)}>
-            <ToolTip>
-                {translate("DRAG_X_ZOOM")}
-            </ToolTip>
-            <Icon>zoom_in</Icon>
-        </div>
-        <div
+    <div class="option" on:mousedown={e => handleGrab(e, window.renderer.camera, 0)}>
+        <ToolTip>
+            {translate("DRAG_X_ZOOM")}
+        </ToolTip>
+        <Icon>zoom_in</Icon>
+    </div>
+    <div
             class="option"
             on:mousedown={e => handleGrab(e, window.renderer.camera, 1)}
             on:dblclick={() => {
                 window.renderer.camera.centerOn = [0, 0, 0]
                 window.renderer.camera.updateViewMatrix()
             }}>
-            <ToolTip>
-                <div>{translate("DRAG_X_DIR")}</div>
-                <div>{translate("DRAG_Y_DIR")}</div>
-                <div>{translate("DOUBLE_CLICK")}</div>
-            </ToolTip>
-            <Icon>back_hand</Icon>
-        </div>
+        <ToolTip>
+            <div>{translate("DRAG_X_DIR")}</div>
+            <div>{translate("DRAG_Y_DIR")}</div>
+            <div>{translate("DOUBLE_CLICK")}</div>
+        </ToolTip>
+        <Icon>back_hand</Icon>
     </div>
+
 </div>
 
 
 <style>
-    .vertical-options{
-        display: grid;
-        gap: clamp(2px, .25vh, 8px);
-        align-content: flex-start;
-    }
-    .option {
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--pj-color-secondary);
-        background: var(--pj-background-secondary);
-        border: var(--pj-border-primary) 1px solid;
-        cursor: pointer;
-    }
-    .option:active{
-        color: var(--pj-accent-color);
-        border-color: var(--pj-accent-color);
-    }
     .wrapper {
         display: grid;
-        align-content: flex-start;
+        align-items: flex-start;
+        justify-content: center;
         justify-items: center;
-        gap: 4px;
+
+        gap: 2px;
         height: fit-content;
         transition: 150ms ease-in;
         position: absolute;
         right: 0;
-        top: 28px;
+        top: 25px;
         z-index: 15;
+
     }
+
+    .option {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--pj-background-secondary);
+        cursor: pointer;
+    }
+
+    .option:active {
+        color: var(--pj-accent-color);
+        border-color: var(--pj-accent-color);
+    }
+
 
     .gizmo-wrapper {
         overflow: hidden;
         border-radius: 50%;
         padding: 4px;
         transition: 150ms linear;
+        border: var(--pj-transparent-border) 1px solid;
     }
 
     .gizmo-wrapper:hover {

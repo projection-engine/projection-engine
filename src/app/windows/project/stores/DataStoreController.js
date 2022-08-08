@@ -2,7 +2,7 @@ import {engine} from "./engine-store";
 import {settingsStore} from "./settings-store";
 import ENGINE from "../static/misc/ENGINE";
 import {SETTINGS} from "../../../../static/WINDOWS";
-import FileSystem from "../libs/FileSystem"
+import FileSystem from "../../../libs/FileSystem"
 import DataHistoryController from "./DataHistoryController";
 
 let initialized = false

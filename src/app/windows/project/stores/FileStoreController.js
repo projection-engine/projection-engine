@@ -1,7 +1,7 @@
 import {get} from "svelte/store";
 import {fileStore} from "./file-store";
-import {getCall} from "../libs/AsyncFS";
-import FileSystem from "../libs/FileSystem"
+import {getCall} from "../../../libs/AsyncFS";
+import FileSystem from "../../../libs/FileSystem"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../../static/ROUTES";
 

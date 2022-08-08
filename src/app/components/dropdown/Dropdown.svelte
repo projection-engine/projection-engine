@@ -5,12 +5,13 @@
     import "./css/dropdown.css"
     import createPortal from "../create-portal";
 
-    export let width = ""
-    export let styles = ""
-    export let disabled = false
-    export let hideArrow = false
-    export let onOpen = () => null
-    export let onClose = () => null
+    export let noBackground = undefined
+    export let width  = undefined
+    export let styles  = undefined
+    export let disabled = undefined
+    export let hideArrow  = undefined
+    export let onOpen = undefined
+    export let onClose = undefined
     let open = false
     let modal
     let button
@@ -48,7 +49,7 @@
                 open = true
             }
         }}
-        class={open ? "highlight dropdown" : undefined}
+        class={open && !noBackground ? "highlight dropdown" : undefined}
         style={(hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;") + "width: " + width}
 >
 

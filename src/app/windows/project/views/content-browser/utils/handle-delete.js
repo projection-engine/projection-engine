@@ -1,4 +1,4 @@
-import FileSystem from "../../../libs/FileSystem"
+import FileSystem from "../../../../../libs/FileSystem"
 import FileStoreController from "../../../stores/FileStoreController";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {

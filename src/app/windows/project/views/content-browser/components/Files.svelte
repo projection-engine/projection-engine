@@ -1,6 +1,6 @@
 <script>
     import getContextMenu from "../utils/get-context-menu"
-    import FileSystem from "../../../libs/FileSystem"
+    import FileSystem from "../../../../../libs/FileSystem"
     import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";

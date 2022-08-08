@@ -1,8 +1,8 @@
 import createNewFolder from "./create-new-folder"
 import handleDelete from "./handle-delete"
-import AsyncFS from "../../../libs/AsyncFS"
+import AsyncFS from "../../../../../libs/AsyncFS"
 
-import FileSystem from "../../../libs/FileSystem"
+import FileSystem from "../../../../../libs/FileSystem"
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";

@@ -1,18 +1,14 @@
 <script>
     import Range from "../../../components/range/Range.svelte";
     import Accordion from "../../../components/accordion/Accordion.svelte";
-    import {onDestroy} from "svelte";
-    import DataStoreController from "../../project/stores/DataStoreController";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
+    import Localization from "../../../libs/Localization";
 
-    export let translate
-    let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
-    onDestroy(() => unsubscribeSettings())
+    export let settings
+    export let update
 
-    function update(key, value){
-        DataStoreController.updateSettings({...settings, [key]: value})
-    }
+    const translate = (key) => Localization.PROJECT.INSPECTOR[key]
+
 </script>
 
 

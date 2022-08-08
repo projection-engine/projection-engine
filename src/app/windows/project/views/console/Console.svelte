@@ -4,9 +4,9 @@
     import Icon from "../../../../components/Icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
 
-    export let hidden
-    export let switchView
-    export let orientation
+    export let hidden = undefined
+    export let switchView = undefined
+    export let orientation = undefined
     let ref
 
     onMount(() => {

@@ -22,6 +22,11 @@
 	-webkit-font-smoothing: antialiased;
 }
 
+svg {
+	-webkit-backface-visibility: hidden;
+	-webkit-transform: translateZ(0) scale(1.0, 1.0);
+	transform: translateZ(0);
+}
 html,
 body {
 	padding: 0;
@@ -40,6 +45,7 @@ body {
 	--pj-background-quaternary-light:rgba(32, 32, 32, 0.95) ;
 	--pj-border-primary: #3f3f3f;
 	--pj-border-secondary: #5b5b5b;
+	--pj-transparent-border: rgba(63, 63, 63, .5);
 	--pj-color-primary: #f7f7f7;
 	--pj-color-secondary: #f1f1f1;
 	--pj-color-tertiary: #eaeaea;

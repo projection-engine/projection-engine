@@ -1,4 +1,4 @@
-import FileSystem from "../../../libs/FileSystem";
+import FileSystem from "../../../../../libs/FileSystem";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import BOARD_SIZE from "../data/BOARD_SIZE";

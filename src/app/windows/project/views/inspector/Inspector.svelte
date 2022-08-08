@@ -15,9 +15,9 @@
     import getNativeComponents from "./utils/get-native-components";
     import TransformComponent from "../../libs/engine/libs/components/TransformComponent";
 
-    export let hidden = false
-    export let switchView
-    export let orientation
+    export let hidden = undefined
+    export let switchView = undefined
+    export let orientation = undefined
 
     let engine = {}
     let store = {}
@@ -79,13 +79,12 @@
     <div class="content">
         {#if engine.selectedEntity != null}
             <Components
-
                     translate={translate}
                     engine={engine}
             />
         {:else}
             <div class="empty">
-                <Icon styles="font-size: 100px">category</Icon>
+                <Icon styles="font-size: 75px">category</Icon>
                 {translate("TITLE")}
             </div>
         {/if}
@@ -112,8 +111,8 @@
         justify-items: center;
         width: 100%;
         height: 100%;
-        font-weight: 550;
-        font-size: .85rem;
+
+        font-size: .8rem;
         color: var(--pj-color-quaternary);
     }
 

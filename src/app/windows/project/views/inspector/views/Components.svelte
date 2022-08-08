@@ -5,6 +5,9 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import FileStoreController from "../../../stores/FileStoreController";
     import componentConstructor from "../../../libs/component-constructor";
+    import MeshComponent from "../../../libs/engine/libs/components/MeshComponent";
+    import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
+    import importData from "../../../libs/importer/import";
 
 
     export let translate
@@ -48,6 +51,15 @@
                     await componentConstructor(entity, id)
                     break
                 case "MESH":
+                    if(!entity.components[COMPONENTS.MESH]) {
+                        entity.components[COMPONENTS.MESH] = new MeshComponent()
+                        if(!entity.components[COMPONENTS.TRANSFORM])
+                        entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                    }
+                    importData(id,  true,true)
+                        .then(() => {
+                            entity.components[COMPONENTS.MESH].meshID = id
+                        })
                     break
                 case "MATERIAL":
                     break

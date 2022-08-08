@@ -10,10 +10,10 @@
 
     const translate = (key) => Localization.HOME.CARD[key]
 
-    export let open = () => null
+    export let open =undefined
     export let data = {meta: {}}
-    export let onRename = () => null
-    export let onDelete = () => null
+    export let onRename =undefined
+    export let onDelete =undefined
 
     let name = data.meta.name
     let openForChange = false

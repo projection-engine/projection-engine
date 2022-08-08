@@ -1,6 +1,8 @@
 import Localization from "../../../libs/Localization";
+
+import FileSystem from "../../../libs/FileSystem";
 import AsyncFS from "../../../libs/AsyncFS";
-import FileSystem from "../../../libs/FileSystem"
+
 
 export default async function refreshProjects(path) {
     const [e, res] = await AsyncFS.readdir(path)
