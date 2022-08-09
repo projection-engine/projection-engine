@@ -4,6 +4,7 @@ import Conversion from "../../../libs/engine/services/Conversion";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
 import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
+import Renderer from "../../../libs/engine/Renderer";
 
 const  MAX_DELTA = 50
 
@@ -35,7 +36,7 @@ export default function onViewportClick(event, settings, engine, setContext) {
     if (!picked)
         picked = pickMesh(meshesMap, event.clientX, event.clientY)
     if (picked > 0) {
-        const entities = Array.from(window.renderer.entitiesMap.values())
+        const entities = Array.from(Renderer.entitiesMap.values())
         const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
         if (entity) {
             if (event.ctrlKey) {

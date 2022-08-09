@@ -7,6 +7,7 @@ import CameraComponent from "../../../libs/engine/libs/components/CameraComponen
 import PointLightComponent from "../../../libs/engine/libs/components/PointLightComponent";
 import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
 import DirectionalLightComponent from "../../../libs/engine/libs/components/DirectionalLightComponent";
+import Renderer from "../../../libs/engine/Renderer";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")
@@ -79,7 +80,7 @@ export default function getContextMenu() {
             label: "Duplicate",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const entity = window.renderer.entitiesMap.get(t)
+                const entity = Renderer.entitiesMap.get(t)
                 if (entity)
                     DataStoreController.engine.dispatchEntities({
                         type: ENTITY_ACTIONS.ADD,
@@ -93,7 +94,7 @@ export default function getContextMenu() {
             icon: "delete",
             onClick: (node) => {
                 const t = node.getAttribute("data-node")
-                const toRemove = getHierarchy(window.renderer.entitiesMap.get(t)).map(e => e.id)
+                const toRemove = getHierarchy(Renderer.entitiesMap.get(t)).map(e => e.id)
                 DataStoreController.engine.dispatchEntities({
                     type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
                 }, {...DataStoreController.engine, selected: []})
@@ -118,7 +119,7 @@ export default function getContextMenu() {
             label: "Deselect hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toDeselect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
+                const toDeselect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
                 DataStoreController.updateEngine({
                     ...DataStoreController.engine,
                     selected: DataStoreController.engine.selected.filter(s => toDeselect.includes(s))
@@ -142,7 +143,7 @@ export default function getContextMenu() {
             label: "Select hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toSelect = [t, ...getHierarchy(window.renderer.entitiesMap.get(t))]
+                const toSelect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
                 DataStoreController.updateEngine({
                     ...DataStoreController.engine,
                     selected: [...DataStoreController.engine.selected, ...toSelect]
@@ -155,7 +156,7 @@ export default function getContextMenu() {
             icon: "place",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const entity = window.renderer.entitiesMap.get(t)
+                const entity = Renderer.entitiesMap.get(t)
                 const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
                 if (entity && comp) {
                     const t = comp.translation

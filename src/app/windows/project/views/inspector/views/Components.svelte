@@ -8,6 +8,9 @@
     import MeshComponent from "../../../libs/engine/libs/components/MeshComponent";
     import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
     import importData from "../../../libs/importer/import";
+    import loadMaterial from "../utils/load-material";
+    import Renderer from "../../../libs/engine/Renderer";
+    import Entity from "../components/Entity.svelte";
 
 
     export let translate
@@ -36,6 +39,7 @@
                 itemFound = FileStoreController.data.meshes.find(s => s.registryID === id)
                 type = "MESH"
             }
+
             if (!itemFound) {
                 itemFound = FileStoreController.data.materials.find(s => s.registryID === id)
                 type = "MATERIAL"
@@ -46,22 +50,23 @@
                 console.error(id)
                 return
             }
-            switch(type){
+            switch (type) {
                 case "SCRIPT":
                     await componentConstructor(entity, id)
                     break
                 case "MESH":
-                    if(!entity.components[COMPONENTS.MESH]) {
+                    if (!entity.components[COMPONENTS.MESH]) {
                         entity.components[COMPONENTS.MESH] = new MeshComponent()
-                        if(!entity.components[COMPONENTS.TRANSFORM])
-                        entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                        if (!entity.components[COMPONENTS.TRANSFORM])
+                            entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                     }
-                    importData(id,  true,true)
-                        .then(() => {
-                            entity.components[COMPONENTS.MESH].meshID = id
-                        })
+                    await importData(id, true, true)
+                    entity.components[COMPONENTS.MESH].meshID = id
                     break
                 case "MATERIAL":
+                    await loadMaterial(id, (value, key) => {
+                        entity.components[COMPONENTS.MESH][key] = value
+                    })
                     break
             }
         } catch (err) {
@@ -83,6 +88,7 @@
         }}
         on:drop={onDrop}
 >
+    <Entity entity={entity} translate={translate}/>
     {#each components as [componentKey, component]}
         {#if componentKey === COMPONENTS.MESH}
             <Mesh

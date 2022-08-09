@@ -2,6 +2,7 @@ import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import * as shaderCode from "../shaders/SELECTED.glsl"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
+import Renderer from "../../engine/Renderer";
 
 export default class SelectedSystem {
 
@@ -24,13 +25,13 @@ export default class SelectedSystem {
     }
 
 
-    execute(selected, meshesMap, camera, entitiesMap) {
+    execute(selected, meshesMap, camera) {
         const length = selected.length
         if (length > 0) {
             this.shader.use()
             this.frameBuffer.startMapping()
             for (let m = 0; m < length; m++) {
-                const current = entitiesMap.get(selected[m])
+                const current = Renderer.entitiesMap.get(selected[m])
                 if (!current || !current.active)
                     continue
                 const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)

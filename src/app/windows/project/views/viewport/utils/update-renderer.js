@@ -3,6 +3,7 @@ import Entity from "../../../libs/engine/libs/basic/Entity";
 import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
 import Transformation from "../../../libs/engine/services/Transformation";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import Renderer from "../../../libs/engine/Renderer";
 
 
 function getCursor() {
@@ -37,7 +38,7 @@ export default function updateRenderer( engine, settings) {
         renderer.camera.updateViewMatrix()
     }
 
-    renderer.entitiesMap = entities
+    Renderer.entitiesMap = entities
     renderer.meshes = meshes
     renderer.materials = materials
     renderer.camera.animated = settings.cameraAnimation

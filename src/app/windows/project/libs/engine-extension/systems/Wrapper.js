@@ -17,7 +17,7 @@ export default class Wrapper {
         this.backgroundSystem = new BackgroundSystem()
     }
 
-    execute(options, data, entities, entitiesMap, after) {
+    execute(options, data, isAfter) {
         const {
             meshes,
             meshesMap
@@ -30,7 +30,7 @@ export default class Wrapper {
             canExecutePhysicsAnimation
         } = options
 
-        if(!after) {
+        if(!isAfter) {
             this.backgroundSystem.execute(data, options)
             this.gridSystem.execute(options)
         }
@@ -38,7 +38,7 @@ export default class Wrapper {
             gpu.enable(gpu.BLEND)
             gpu.blendFunc(gpu.SRC_ALPHA, gpu.ONE_MINUS_SRC_ALPHA)
             if (!canExecutePhysicsAnimation)
-                this.billboardSystem.execute(data, options, entitiesMap)
+                this.billboardSystem.execute(data, options)
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
                 gpu.clear(gpu.DEPTH_BUFFER_BIT)
                 this.gizmoSystem.execute(
@@ -46,11 +46,11 @@ export default class Wrapper {
                     meshesMap,
                     selected,
                     camera,
-                    entitiesMap,
+
                     gizmo,
                     transformationType
                 )
-                this.selectedSystem.execute(selected, meshesMap, camera, entitiesMap)
+                this.selectedSystem.execute(selected, meshesMap, camera)
             }
         }
 

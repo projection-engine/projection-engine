@@ -61,7 +61,6 @@ export default class GizmoSystem {
         meshesMap,
         selected,
         camera,
-        entities,
         gizmo,
         transformationType = TRANSFORMATION_TYPE.GLOBAL
     ) {

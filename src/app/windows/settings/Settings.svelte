@@ -76,7 +76,7 @@
         >
             <Icon>restart_alt</Icon>
         </button>
-        <button disabled={!changed} on:click={() => apply(false)} class="button">
+        <button disabled={!changed} on:click={() => apply(false)} data-accentbutton="-">
             <Icon>check</Icon>
             {translate("APPLY")}
         </button>
@@ -111,21 +111,7 @@
         padding: 0 4px;
     }
 
-    .button {
-        display: flex;
-        align-items: center;
-        background: var(--pj-accent-color);
-        border: none;
-    }
 
-    .button:hover {
-        box-shadow: rgba(0,0,0,.5) 2px 2px 5px 2px;
-        color: var(--pj-color-secondary) !important;
-    }
-
-    .button:active {
-        background: var(--pj-background-tertiary);
-    }
 
 
     .form {

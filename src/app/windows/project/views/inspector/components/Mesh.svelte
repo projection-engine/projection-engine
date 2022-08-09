@@ -10,26 +10,14 @@
     import getComponentIcon from "../../../utils/get-component-icon";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../components/Icon/Icon.svelte";
+    import FileStoreController from "../../../stores/FileStoreController";
+    import loadMaterial from "../utils/load-material";
 
 
     export let selected
     export let submit
     export let translate
-    const loadFile = async (src, type = "json") => {
-        const rs = await window.fileSystem.readRegistryFile(src.registryID)
-        if (rs) {
-            const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, type)
-            if (file)
-                return file
-            else {
-                alert.pushAlert(
-                    translate("ERROR_LOADING_FILE"),
-                    "error"
-                )
-                return null
-            }
-        }
-    }
+
 </script>
 <Accordion>
     <svelte:fragment slot="header">
@@ -57,35 +45,7 @@
     <Selector
             selected={selected.materialID}
             type={"material"}
-            handleChange={async src => {
-            if (src) {
-                const file = await loadFile(src)
-                if (file && file.response){
-                    const exists = DataStoreController.engine.materials.find(m => m.id === src.registryID)
-                    if (!exists) {
-                        let newMat
-                        await new Promise(resolve => {
-                            newMat = new MaterialInstance({
-                                id: src.registryID,
-                                onCompiled:() => resolve(),
-                                settings: file.response.settings,
-                                vertex: file.response.vertexShader,
-                                fragment: file.response.shader,
-                                uniformData: file.response.uniformData
-                            })
-                        })
-                        const newMaterials = [...DataStoreController.engine.materials, newMat]
-                        DataStoreController.updateEngine({...DataStoreController.engine, materials: newMaterials})
-                        alert.pushAlert(translate("MATERIAL_LOADED"), "success")
-                        window.renderer.materials = newMaterials
-                    }
-                    submit(src.registryID, "materialID")
-                }
-            } else
-              submit(FALLBACK_MATERIAL, "materialID")
-
-
-        }}
+            handleChange={async src => loadMaterial(src?.registryID, submit)}
     />
 
 </Accordion>

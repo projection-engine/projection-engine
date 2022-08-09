@@ -63,7 +63,7 @@
         color: var(--pj-color-secondary);
         width: 100%;
         max-width: 100%;
-        padding: 2px 6px !important;
+        padding: 0 4px;
 
         display: flex;
         justify-content: flex-start;

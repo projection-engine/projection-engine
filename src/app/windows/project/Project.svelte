@@ -16,6 +16,8 @@
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../static/ROUTES";
 
+
+
     const {ipcRenderer} = window.require("electron")
 
     let engine
@@ -77,6 +79,7 @@
                     DataStoreController.updateEngine(engine)
                 })
         }
+
     }
 
     const updateView = (key, newView) => {

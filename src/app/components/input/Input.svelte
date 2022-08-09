@@ -9,10 +9,11 @@
     export let setSearchString = () => null
     export let searchString = ""
     export let noAutoSubmit = false
-    export let placeholder = ""
-    export let onEnter = () => null
-    export let directChange
-
+    export let placeholder = undefined
+    export let onEnter = undefined
+    export let directChange = undefined
+    export let minWidth = undefined
+    export let hasBorder = undefined
     let changed = false
     let timeout, input
     const onChange = (input) => {
@@ -32,7 +33,7 @@
 
 <div
     class="wrapper"
-    style="width: {width}; height: {height}; padding: {noPadding ? 0 : "initial"}"
+    style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? "min-width:" +minWidth + ";" : ""} width: ${width}; height: ${height}; padding: ${noPadding ? 0 : "initial"}`}
 >
     {#if $$slots.icon}
         <div class="icon-wrapper">
@@ -42,6 +43,7 @@
     <input
         placeholder={placeholder}
         class="input"
+        draggable={false}
         bind:this={input}
         on:input={e => {
             if(directChange)
@@ -57,7 +59,8 @@
         on:keydown={e => {
             if(e.code === ENTER){
                setSearchString(e.target.value)
-                onEnter(e.target.value)
+               if(onEnter)
+                    onEnter(e.target.value)
                 changed = false
             }
         }}

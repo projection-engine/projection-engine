@@ -37,10 +37,10 @@
     onDestroy(() => unsubscribeEngine())
 
 </script>
-<div class="wrapper" style={hidden ? "border: none" : undefined}>
+<div data-vertdivider="-"></div>
     {#if view.navigation}
-        <div class="buttonGroup" style="width: 100%">
-            <div class="buttonGroup">
+        <div class="button-group" style="width: 100%">
+            <div class="button-group">
                 <button
                         class="settings-button"
                         on:click={() => navigationHistory.returnDir()}
@@ -68,7 +68,7 @@
                     </Icon>
                     <ToolTip content={translate("PARENT_DIR")}/>
                 </button>
-                <div class="divider"></div>
+                <div data-vertdivider="-"></div>
                 <button
                         disabled="{loading}"
                         class="settings-button"
@@ -128,7 +128,9 @@
 
                 </Dropdown>
             </div>
+            <div data-vertdivider="-"></div>
             <Input
+                    minWidth="250px"
                     height="23px"
                     width={"100%"}
                     searchString={currentDirectory.id}
@@ -143,6 +145,7 @@
                     }}
             />
             <Input
+                    minWidth="250px"
                     height="23px"
                     searchString={searchString}
                     setSearchString={setSearchString}
@@ -154,7 +157,7 @@
         </div>
     {/if}
 
-    <div class="buttonGroup" style="justify-content: flex-end">
+    <div class="button-group" style="justify-content: flex-end">
         <Dropdown>
             <button slot="button" style="padding-left: 8px; border: none">
                 {translate("VIEW")}
@@ -190,7 +193,7 @@
                 {translate("SELECT_INVERT")}
             </button>
         </Dropdown>
-        <div class="divider"></div>
+        <div data-vertdivider="-"></div>
         <button
                 style="width: 75px; gap: 4px; padding: 0 16px"
                 class="settings-button"
@@ -200,7 +203,7 @@
             {translate("IMPORT")}
         </button>
     </div>
-</div>
+
 <style>
     .settings-button {
         height: 23px;
@@ -219,26 +222,7 @@
         color: #999;
     }
 
-    .divider {
-        width: 2px;
-        height: 20px;
-        min-width: 2px;
-        margin: 0 4px;
-        background: var(--pj-background-tertiary);
-    }
-
-    .wrapper {
-        height: 100%;
-        padding-left: 4px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        max-height: 35px;
-        border-left: var(--pj-background-tertiary) 2px solid;
-    }
-
-    .buttonGroup {
+    .button-group {
         display: flex;
         justify-content: flex-start;
         align-items: center;

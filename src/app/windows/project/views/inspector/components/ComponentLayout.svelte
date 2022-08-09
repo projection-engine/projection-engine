@@ -39,7 +39,7 @@
     {#if Array.isArray(selected.props)}
         {#each selected.props as propAttr}
             {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
-                <fieldset class="fieldset">
+                <fieldset>
                     <legend>{translate(propAttr.label) ? translate(propAttr.label) : propAttr.label}</legend>
                     {#each propAttr.children as attribute}
                         <ComponentAttribute
@@ -64,17 +64,6 @@
 </Accordion>
 
 <style>
-    .fieldset {
-        border: none;
-        border-top: var(--pj-border-primary) 1px solid;
-        display: grid;
-        gap: 4px;
-    }
-
-    legend {
-        font-size: .75rem;
-        font-weight: 550;
-    }
 
     .icon {
         width: 25px;

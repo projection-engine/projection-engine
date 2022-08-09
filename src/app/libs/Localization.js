@@ -117,8 +117,12 @@ export default class Localization {
             SEARCH: "Search"
         },
         CONSOLE: {
+            TOGGLE_CLEAR_ON_PLAY: "Clear on play",
             TITLE: "Console",
-            CLEAR: "Clear"
+            CLEAR: "Clear",
+            TOGGLE_ERRORS: "Toggle errors",
+            TOGGLE_WARNINGS: "Toggle warnings",
+            TOGGLE_LOGS: "Toggle logs"
         },
         SHADER_EDITOR: {
             ADD: "Add",
@@ -145,6 +149,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            VISUALIZING_ENTITY: "Visualizing entity",
             COULD_NOT_FIND: "Could not find component for item",
             MATERIAL_LOADED: "Material loaded successfully",
             ERROR_LOADING_FILE: "Error loading file.",
@@ -172,7 +177,8 @@ export default class Localization {
             VIEW_PLANES: "View Planes",
             FAR: "Far",
             NEAR: "Near",
-            ENTITY_NAME: "Entity Name",
+            MY_ENTITY: "My entity",
+            NAME: "Name",
             STOP_SIMULATION: "Stop the simulation to change attributes.",
             TRANSLATION: "Translation",
             ROTATION: "Rotation",
@@ -197,8 +203,9 @@ export default class Localization {
             ATTENUATION: "Attenuation",
             CASTS_SHADOWS: "Casts shadows",
             SIZE: "Size",
-            LINK_COMPONENT: "Add custom component",
-            REMOVE_COMPONENT: "Remove custom component",
+            ADD_COMPONENT: "Add component",
+            QUERY_KEY: "Query key",
+            REMOVE_COMPONENT: "Remove component",
             CAMERA: "Camera",
             DIRECTIONAL_LIGHT: "Directional light",
             MESH: "Mesh",

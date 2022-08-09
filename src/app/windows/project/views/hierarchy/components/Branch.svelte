@@ -4,6 +4,7 @@
     import ENTITY_WORKER_ACTIONS from "../../../static/misc/ENTITY_WORKER_ACTIONS";
     import Packager from "../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
+    import Renderer from "../../../libs/engine/Renderer";
 
     const LEFT_BUTTON = 0
     export let depth = undefined
@@ -73,19 +74,14 @@
         e.preventDefault()
         ref.style.background = "transparent";
         const src = e.dataTransfer.getData("text")
-        const entityDragged = window.renderer.entitiesMap.get(src)
+        const entityDragged = Renderer.entitiesMap.get(src)
         if(entityDragged) {
-
-            //if(entityDragged.parent)
-                //entityDragged.parent.children =entityDragged.parent.children.filter(c => c.id  !== entityDragged.id)
-
-            // entityDragged.parent = nodeRef
             nodeRef.children.push(entityDragged)
 
             window.entityWorker.postMessage({
-            type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-            payload: window.renderer.entitiesMap
-        })
+                type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
+                payload: Renderer.entitiesMap
+            })
         }
     }}
     >
@@ -140,8 +136,8 @@
             <button
                     class="buttonSmall hierarchy-branch"
                     on:click={() => {
-                window.renderer.entitiesMap.get(nodeRef.id).active = !active
-                Packager.lights()
+                Renderer.entitiesMap.get(nodeRef.id).active = !active
+                Packager.packageLights()
                 if(!active)
                     window.renderer.activeEntitiesSize--
                 else

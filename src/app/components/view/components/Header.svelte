@@ -80,13 +80,16 @@
     .header {
         display: flex;
         align-items: center;
+        align-content: center;
         width: 100%;
-        height: 30px;
+        min-height: 28px;
+        max-height: 28px;
         background-color: var(--pj-background-primary);
         padding: 2px;
         gap: 2px;
 
-        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x:auto ;
         max-width: 100%;
     }
 

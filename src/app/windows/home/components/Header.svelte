@@ -87,7 +87,7 @@ onDestroy(() => {
         </div>
         <div class="footer">
             <button
-                    class="button"
+                    data-accentbutton="-"
                     on:click={() => create(input)}>
                 <Icon>check</Icon>
                 {translate("CREATE")}
@@ -129,23 +129,6 @@ onDestroy(() => {
         z-index: 999;
     }
 
-    .button {
-        height: 25px;
-        font-size: .75rem;
-        display: flex;
-        align-items: center;
-        background: var(--pj-accent-color);
-        border: none;
-    }
-
-    .button:hover {
-        box-shadow: rgba(0,0,0,.5) 2px 2px 5px 2px;
-        color: var(--pj-color-secondary) !important;
-    }
-
-    .button:active {
-        background: var(--pj-background-tertiary);
-    }
 
     .title-wrapper {
         color: var(--pj-color-secondary);

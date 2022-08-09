@@ -37,6 +37,7 @@
     })
 
     $: {
+        console.trace(document.getElementsByTagName('*').length)
         shortcutBinding.rebind(canvasRef)
         if (canvasRef && !initialized) {
             initialized = true

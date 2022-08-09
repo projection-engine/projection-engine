@@ -1,5 +1,6 @@
 import {ENTITY_ACTIONS} from "./engine-extension/entityReducer";
 import DataStoreController from "../stores/DataStoreController";
+import Renderer from "./engine/Renderer";
 
 export default class ViewportActions {
     static toCopy
@@ -45,10 +46,10 @@ export default class ViewportActions {
         let block = []
         const engineCopy = {...engine}
         ViewportActions.toCopy.forEach(t => {
-            const found = window.renderer.entitiesMap.get(t)
+            const found = Renderer.entitiesMap.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.parent = parent ? window.renderer.entitiesMap.get(parent) : undefined
+                clone.parent = parent ? Renderer.entitiesMap.get(parent) : undefined
                 block.push(clone)
             }
         })

@@ -4,6 +4,7 @@ import ENGINE from "../static/misc/ENGINE";
 import {SETTINGS} from "../../../../static/WINDOWS";
 import FileSystem from "../../../libs/FileSystem"
 import DataHistoryController from "./DataHistoryController";
+import Renderer from "../libs/engine/Renderer";
 
 let initialized = false
 export default class DataStoreController {
@@ -68,7 +69,7 @@ export default class DataStoreController {
     }
 
     static async save(){
-        const entities = Array.from(window.renderer.entitiesMap.values())
+        const entities = Array.from(Renderer.entitiesMap.values())
         const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
         if (metaData) {
             await updateSettings(metaData, DataStoreController.settings)
@@ -139,7 +140,7 @@ async function removeDeletedEntities() {
     const all = await Promise.all(allEntities.map(e => window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + e, "json", true)))
     for (let i = 0; i < all.length; i++) {
         const entity = all[i]
-        if (!entity || window.renderer.entitiesMap.get(entity.id))
+        if (!entity || Renderer.entitiesMap.get(entity.id))
             continue
         await window.fileSystem.deleteFile("logic" + FileSystem.sep + entity.id + ".entity")
     }
