@@ -10,7 +10,7 @@
     export let onDrag
     export let node
     export let submitNodeVariable
-
+    let isBeingLinked = false
 
     $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key) : undefined
 
@@ -31,12 +31,23 @@
             data-dtype={"input"}
             data-disabled={`${attribute.disabled || attribute.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
             data-highlight={link ? "-" : undefined}
+            on:dragover={e => {
+                e.preventDefault()
+                isBeingLinked = true
+            }}
+            on:dragleave={e => {
+                e.preventDefault()
+                isBeingLinked = false
+            }}
             on:drop={e => {
+               isBeingLinked = false
                 e.preventDefault()
                 onDrag.setDragType(undefined)
                 if (!attribute.disabled)
                     linkNodes(e, attribute, node, handleLink)
-            }}></span>
+            }}
+            class:outlined={isBeingLinked}
+        ></span>
     {/if}
     {#if link}
         {attribute.label}
@@ -50,3 +61,9 @@
 
     {/if}
 </div>
+
+<style>
+    .outlined{
+        outline: 2px var(--pj-accent-color) solid;
+    }
+</style>

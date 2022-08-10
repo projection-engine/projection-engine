@@ -22,7 +22,15 @@ export default async function parseFile(file, setNodes, setLinks) {
                 Object.keys(node).forEach(o => {
                     if (o !== "inputs" && o !== "output") {
                         if (o === "texture" && i instanceof TextureSample) i[o] = FileStoreController.data.images.find(i => i.registryID === node[o].registryID)
-                        else nodeInstance[o] = node[o]
+                        else {
+                            const input = nodeInstance.inputs.find(i => i.key === o)
+                            if(input && input.onChange) {
+                                nodeInstance[o] = node[o]
+                                input.onChange(node[o])
+                            }
+                            else
+                                nodeInstance[o] = node[o]
+                        }
                     }
                 })
                 nodeInstance.x = node.x + BOARD_SIZE / 2

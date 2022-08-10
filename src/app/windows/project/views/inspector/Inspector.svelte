@@ -1,20 +1,10 @@
 <script>
     import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
-    import Input from "../../../../components/input/Input.svelte";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import Components from "./views/Components.svelte";
-    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
-    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import FileStoreController from "../../stores/FileStoreController";
-    import {v4} from "uuid";
-    import componentConstructor from "../../libs/component-constructor";
-    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
-    import getNativeComponents from "./utils/get-native-components";
-    import TransformComponent from "../../libs/engine/libs/components/TransformComponent";
-    import Entity from "./components/Entity.svelte";
 
     export let hidden = undefined
     export let switchView = undefined

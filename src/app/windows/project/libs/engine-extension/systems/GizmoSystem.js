@@ -8,13 +8,12 @@ import getPickerId from "../../engine/utils/get-picker-id"
 import * as shaderCode from "../../engine/data/shaders/PICK.glsl"
 import EngineLoop from "../../engine/libs/loop/EngineLoop";
 
-let gpu, depthSystem
+let depthSystem
 export default class GizmoSystem {
     targetGizmo
     selectedEntities = []
 
     constructor() {
-        gpu = window.gpu
 
 
         this.gizmoShader = new ShaderInstance(gizmoShaderCode.vertex, gizmoShaderCode.fragment)
@@ -36,7 +35,7 @@ export default class GizmoSystem {
         depthSystem.frameBuffer.startMapping()
         this.shaderSameSize.use()
         mesh.use()
-
+        gpu.disable(gpu.CULL_FACE)
         for (let i = 0; i < transforms.length; i++) {
             this.shaderSameSize.bindForUse({
                 viewMatrix: view,
@@ -49,9 +48,9 @@ export default class GizmoSystem {
             })
             gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
         }
-
+        gpu.enable(gpu.CULL_FACE)
         mesh.finish()
-        window.gpu.bindVertexArray(null)
+        gpu.bindVertexArray(null)
         depthSystem.frameBuffer.stopMapping()
         return depthSystem.frameBuffer
     }
@@ -64,10 +63,13 @@ export default class GizmoSystem {
         gizmo,
         transformationType = TRANSFORMATION_TYPE.GLOBAL
     ) {
+
         if (!depthSystem)
             depthSystem = EngineLoop.renderMap.get("depthPrePass")
-        if (selected.length > 0 && this.selectedEntities.length > 0 && this.targetGizmo)
+        if (selected.length > 0 && this.selectedEntities.length > 0 && this.targetGizmo) {
+            gpu.clear(gpu.DEPTH_BUFFER_BIT)
             this.targetGizmo.execute(meshes, meshesMap, this.selectedEntities, transformationType)
+        }
         else if (this.targetGizmo) {
             this.targetGizmo = undefined
             this.selectedEntities = []

@@ -20,8 +20,9 @@ precision mediump float;
 
 out vec4 finalColor;
 uniform float gamma;
+uniform vec3 color;
+
 void main(void){
-    finalColor = vec4(vec3(pow(.2, gamma)), 1.);
-   
+    finalColor = vec4(vec3(pow(color.r, gamma),pow(color.g, gamma),pow(color.b, gamma)), 1.);
 }
 `

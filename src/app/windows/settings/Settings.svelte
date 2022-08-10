@@ -8,6 +8,7 @@
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
     import Icon from "../../components/Icon/Icon.svelte";
+    import ViewportSettings from "./components/ViewportSettings.svelte";
 
     const {ipcRenderer} = window.require('electron')
     let settings
@@ -65,7 +66,18 @@
                             settings = {...settings, [key]: value}
                         }}
                     />
+                {:else if tab === 2}
+                    <h3>{translate("VIEWPORT")}</h3>
+                    <ViewportSettings
+                            translate={translate}
+                            settings={settings}
+                            update={(key, value) => {
+                                changed = true
+                            settings = {...settings, [key]: value}
+                        }}
+                    />
                 {/if}
+
             </div>
         {/if}
     </div>

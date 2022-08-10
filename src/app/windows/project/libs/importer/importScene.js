@@ -1,4 +1,4 @@
-import Entity from "../engine/libs/basic/Entity"
+import Entity from "../engine/templates/basic/Entity"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {initializeEntity} from "./importMesh"
 import MeshInstance from "../engine/libs/instances/MeshInstance"

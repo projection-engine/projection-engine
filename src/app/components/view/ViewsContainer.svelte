@@ -46,7 +46,7 @@
             ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
             ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
             ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
-            opacity: ${overlay ? ".5" : "1"};
+            opacity: ${overlay ? ".75" : "1"};
         `}
 >
     {#each tabs as view, vI}

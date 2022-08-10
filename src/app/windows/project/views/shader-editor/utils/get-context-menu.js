@@ -32,13 +32,19 @@ export default function getContextMenu(nodes, setNodes, setSelected, selected, l
             requiredTrigger: "data-link",
             label: "Delete link",
             icon: "delete",
-            onClick: (node) =>links.filter(l => {
-                const test = {
-                    t: l.target.id + l.target.attribute.key,
-                    s: l.source.id + l.source.attribute.key,
-                }
-                return (test.t + "-" + test.s) !== node.getAttribute("data-link")
-            })
+            onClick: (node) => {
+                const toTest =node.getAttribute("data-link")
+                setLinks(links.filter(l => {
+                    if (!l?.target?.attribute || !l?.source?.attribute)
+                        return false
+                    const test = {
+                        t: l.target.id + l.target.attribute.key,
+                        s: l.source.id + l.source.attribute.key,
+                    }
+
+                    return (test.t + "-" + test.s) !== toTest
+                }))
+            }
         },
         {
             requiredTrigger: "data-group",

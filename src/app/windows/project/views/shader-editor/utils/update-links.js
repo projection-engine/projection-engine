@@ -1,11 +1,9 @@
 import getBezierCurve from "./get-bezier-curve";
-import LINK_WIDTH from "../data/LINK_WIDTH";
 
 export default function updateLinks(mappedLinks, ref) {
     if (!ref)
         return
 
-    console.trace()
     const scale = window.blueprints.scale
     try {
 
@@ -29,11 +27,11 @@ export default function updateLinks(mappedLinks, ref) {
                 const curve = getBezierCurve(
                     {
                         x: (sourceBBox.x + bounding.x + OFFSET) / scale,
-                        y: (sourceBBox.y + bounding.y + OFFSET + LINK_WIDTH * 2) / scale
+                        y: (sourceBBox.y + bounding.y + OFFSET) / scale
                     },
                     {
                         x1: (targetBBox.x + bounding.x + OFFSET) / scale,
-                        y1: (targetBBox.y + bounding.y + OFFSET + LINK_WIDTH * 2) / scale
+                        y1: (targetBBox.y + bounding.y + OFFSET) / scale
                     })
 
                 if (linkPath.getAttribute("d") !== curve)

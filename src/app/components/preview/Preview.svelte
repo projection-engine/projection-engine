@@ -13,7 +13,6 @@
             AsyncFS.read(path).then(res => {
                 if (!res[0]) {
                     src = res[1]
-                    console.log(src)
                     error = false
                 } else
                     error = true

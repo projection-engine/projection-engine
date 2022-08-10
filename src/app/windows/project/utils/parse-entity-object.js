@@ -1,16 +1,16 @@
 import FileSystem from "../../../libs/FileSystem"
-import Entity from "../libs/engine/libs/basic/Entity"
+import Entity from "../libs/engine/templates/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
-import DirectionalLightComponent from "../libs/engine/libs/components/DirectionalLightComponent"
-import MeshComponent from "../libs/engine/libs/components/MeshComponent"
+import DirectionalLightComponent from "../libs/engine/templates/components/DirectionalLightComponent"
+import MeshComponent from "../libs/engine/templates/components/MeshComponent"
 import DATA_TYPES from "../libs/engine/data/DATA_TYPES"
 import TextureInstance from "../libs/engine/libs/instances/TextureInstance"
-import PointLightComponent from "../libs/engine/libs/components/PointLightComponent"
+import PointLightComponent from "../libs/engine/templates/components/PointLightComponent"
 
-import TransformComponent from "../libs/engine/libs/components/TransformComponent"
+import TransformComponent from "../libs/engine/templates/components/TransformComponent"
 import Transformation from "../libs/engine/services/Transformation"
-import ProbeComponent from "../libs/engine/libs/components/ProbeComponent"
-import CameraComponent from "../libs/engine/libs/components/CameraComponent"
+import ProbeComponent from "../libs/engine/templates/components/ProbeComponent"
+import CameraComponent from "../libs/engine/templates/components/CameraComponent"
 import componentConstructor from "../libs/component-constructor";
 
 async function readFromRegistry(fileID) {

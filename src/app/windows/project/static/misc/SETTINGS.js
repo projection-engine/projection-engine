@@ -41,7 +41,7 @@ export default {
     preferencesVisibility: false,
     distortionStrength: 1,
     chromaticAberrationStrength: 1,
-
+    backgroundColor: [.2, .2, .2],
     fov: 60 * toRad,
     zNear: .1,
     zFar: 100000,

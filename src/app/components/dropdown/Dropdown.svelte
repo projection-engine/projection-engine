@@ -28,7 +28,7 @@
         }
     }
 
-    const portal = createPortal(500)
+    const portal = createPortal(500, false)
     $: open ? portal.open() : portal.close()
     onMount(() => {
         portal.create(modal)

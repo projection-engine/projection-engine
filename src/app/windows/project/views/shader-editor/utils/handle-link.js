@@ -1,6 +1,6 @@
-export default function handleLink(src, target, isExecution, links, setLinks) {
+export default function handleLink(src, target,  links, setLinks) {
     let c = [...links]
-    const existing = c.filter(c => (c.target.id === target.id && c.target.attribute.key === target.attribute.key) || (isExecution && c.source.id === src.id && c.source.attribute.key === src.attribute.key))
+    const existing = c.filter(c => c.target.id === target.id && c.target.attribute.key === target.attribute.key)
     c = c.filter(cc => !existing.find(e => e === cc))
     if (!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired)) {
 

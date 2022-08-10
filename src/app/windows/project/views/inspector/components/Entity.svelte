@@ -1,20 +1,21 @@
 <script>
 
-import Input from "../../../../../components/input/Input.svelte";
-import DataStoreController from "../../../stores/DataStoreController";
-import {v4} from "uuid";
-import Icon from "../../../../../components/Icon/Icon.svelte";
-import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-import FileStoreController from "../../../stores/FileStoreController";
-import {onDestroy} from "svelte";
-import getNativeComponents from "../utils/get-native-components";
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
-import componentConstructor from "../../../libs/component-constructor";
-import Accordion from "../../../../../components/accordion/Accordion.svelte";
-import Renderer from "../../../libs/engine/Renderer";
-const nativeComponents = getNativeComponents()
+    import Input from "../../../../../components/input/Input.svelte";
+    import DataStoreController from "../../../stores/DataStoreController";
+    import {v4} from "uuid";
+    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import FileStoreController from "../../../stores/FileStoreController";
+    import {onDestroy} from "svelte";
+    import getNativeComponents from "../utils/get-native-components";
+    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+    import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
+    import componentConstructor from "../../../libs/component-constructor";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Renderer from "../../../libs/engine/Renderer";
+
+    const nativeComponents = getNativeComponents()
 
 export let entity
 export let translate

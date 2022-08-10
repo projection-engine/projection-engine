@@ -11,6 +11,9 @@
     <button class="button" data-highlight={tab === 1? "-" : undefined} on:click={() => setTab(1)}>
         {translate("POST_PROCESSING")}
     </button>
+    <button class="button" data-highlight={tab === 2? "-" : undefined} on:click={() => setTab(2)}>
+        {translate("VIEWPORT")}
+    </button>
 </div>
 
 <style>

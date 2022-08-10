@@ -12,7 +12,7 @@ export default class BackgroundSystem {
 
     execute(data, options) {
 
-        const {camera, gamma, background} = options
+        const {camera, gamma, background, backgroundColor} = options
         if(background) {
             window.gpu.depthMask(false)
             this.shader.use()
@@ -21,7 +21,8 @@ export default class BackgroundSystem {
             this.shader.bindForUse({
                 projectionMatrix: this.projection,
                 viewMatrix: camera.viewMatrix,
-                gamma: gamma
+                gamma: gamma,
+                color: backgroundColor
             })
 
             window.gpu.drawArrays(window.gpu.TRIANGLES, 0, 36)

@@ -1,16 +1,11 @@
 <script>
-    import FileSystem from "../../../../../libs/FileSystem"
     import importData from "../../../libs/importer/import"
     import Selector from "../../../../../components/selector/Selector.svelte";
-    import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
-    import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
-    import DataStoreController from "../../../stores/DataStoreController";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
     import getComponentIcon from "../../../utils/get-component-icon";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import FileStoreController from "../../../stores/FileStoreController";
     import loadMaterial from "../utils/load-material";
 
 

@@ -1,4 +1,4 @@
-import PickComponent from "../engine/libs/components/PickComponent"
+import PickComponent from "../engine/templates/components/PickComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"

@@ -4,15 +4,15 @@
     import Range from "../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Shading from "../components/options/ShadingOption.svelte";
-    import Entity from "../../../libs/engine/libs/basic/Entity";
+    import Entity from "../../../libs/engine/templates/basic/Entity";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import ProbeComponent from "../../../libs/engine/libs/components/ProbeComponent";
-    import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
+    import ProbeComponent from "../../../libs/engine/templates/components/ProbeComponent";
+    import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
     import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
-    import CameraComponent from "../../../libs/engine/libs/components/CameraComponent";
+    import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import PointLightComponent from "../../../libs/engine/libs/components/PointLightComponent";
-    import DirectionalLightComponent from "../../../libs/engine/libs/components/DirectionalLightComponent";
+    import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";
+    import DirectionalLightComponent from "../../../libs/engine/templates/components/DirectionalLightComponent";
     import Layout from "../components/Layout.svelte";
     import DataStoreController from "../../../stores/DataStoreController";
 
@@ -36,6 +36,7 @@
         engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
 
+    $: if(window.renderer?.camera) window.renderer.camera.animated = settings.cameraAnimation
 </script>
 
 
@@ -66,11 +67,7 @@
             </button>
 
             <button
-                    on:click={() => {
-                        const v = !settings.cameraAnimation
-                        DataStoreController.updateSettings({...settings, cameraAnimation: v})
-                        window.renderer.camera.animated = v
-                    }}
+                    on:click={() => DataStoreController.updateSettings({...settings, cameraAnimation: settings.cameraAnimation})}
             >
                 {#if settings.cameraAnimation}
                     <Icon>check</Icon>

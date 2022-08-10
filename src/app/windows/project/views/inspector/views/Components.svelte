@@ -5,11 +5,10 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import FileStoreController from "../../../stores/FileStoreController";
     import componentConstructor from "../../../libs/component-constructor";
-    import MeshComponent from "../../../libs/engine/libs/components/MeshComponent";
-    import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
+    import MeshComponent from "../../../libs/engine/templates/components/MeshComponent";
+    import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
     import importData from "../../../libs/importer/import";
     import loadMaterial from "../utils/load-material";
-    import Renderer from "../../../libs/engine/Renderer";
     import Entity from "../components/Entity.svelte";
 
 

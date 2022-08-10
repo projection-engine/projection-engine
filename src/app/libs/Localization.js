@@ -26,25 +26,26 @@ export default class Localization {
         },
 
     }
-    static HELP = {
-        MAIN: {
-            TITLE: "Projection Engine",
-            CLOSE: "Close",
-            BODY: `
-            <strong>
-            	v1.1.0 Alpha
-			</strong>
-			<br>
-            <div>2022 | Gustavo Roque</div>
-            `
-        }
-    }
+
     static SETTINGS = {
         MAIN: {
+            BACKGROUND: "Background",
             PREFERENCES: "Preferences",
             APPLY: "Apply",
             POST_PROCESSING: "Post processing",
-            RENDERING: "Rendering"
+            RENDERING: "Rendering",
+            VIEWPORT: "Viewport",
+            ENABLED: "Enabled",
+            COLOR: "Color",
+
+            EDITOR: "Editor",
+            SIDE_BAR: "Viewport side-bar",
+            METRICS: "Viewport metrics",
+            SHORTCUTS: "Shortcuts",
+            GRID_VISIBILITY: "Show grid",
+            ICON_VISIBILITY: "Show icons",
+            CAMERA_ANIMATION: "Camera smoothing",
+            ICON_SIZE: "Icons size"
         }
     }
     static PROJECT = {
@@ -87,7 +88,7 @@ export default class Localization {
             GRID: "Grid",
             ICONS: "Icons",
             FPS: "Frames per second",
-            CAM_ANIM: "Camera Animations",
+            CAM_ANIM: "Camera smoothing",
             ICON_SIZE: "Icon size",
             SHADING_LIGHT: "Light only",
             SHADING_UNLIT: "Unlit",
@@ -260,7 +261,7 @@ export default class Localization {
             ABOUT: "About",
             EXIT: "Exit",
             TITLE: "Projection Engine",
-            VERSION: "2.2.0 Alpha",
+            VERSION: "2.4.0 Alpha",
             FOOTER: "This program comes with absolutely no warranty.",
             MIT: "MIT License",
             COPYRIGHT: "Copyright (c) 2022 Projection Engine"

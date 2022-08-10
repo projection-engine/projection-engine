@@ -1,12 +1,12 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import Entity from "../../../libs/engine/libs/basic/Entity";
+import Entity from "../../../libs/engine/templates/basic/Entity";
 import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
-import CameraComponent from "../../../libs/engine/libs/components/CameraComponent";
-import PointLightComponent from "../../../libs/engine/libs/components/PointLightComponent";
-import TransformComponent from "../../../libs/engine/libs/components/TransformComponent";
-import DirectionalLightComponent from "../../../libs/engine/libs/components/DirectionalLightComponent";
+import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
+import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";
+import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
+import DirectionalLightComponent from "../../../libs/engine/templates/components/DirectionalLightComponent";
 import Renderer from "../../../libs/engine/Renderer";
 
 function createEntity(component) {

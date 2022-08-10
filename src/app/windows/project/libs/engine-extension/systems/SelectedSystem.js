@@ -15,63 +15,63 @@ export default class SelectedSystem {
             shaderCode.vertex,
             shaderCode.fragment
         )
-
-        this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h)
-            .texture({
-                precision: window.gpu.R16F,
-                format: window.gpu.RED,
-                type: window.gpu.FLOAT
-            })
+        const TEXTURE = {
+            precision: gpu.R16F,
+            format: gpu.RED,
+            type: gpu.FLOAT
+        }
+        this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h).texture(TEXTURE)
     }
 
+    drawToBuffer(selected, meshesMap, camera){
+        const length = selected.length
+        if (length === 0)
+            return
+        gpu.disable(gpu.DEPTH_TEST)
+        this.shader.use()
+        this.frameBuffer.startMapping()
+        for (let m = 0; m < length; m++) {
+            const current = Renderer.entitiesMap.get(selected[m])
+            if (!current || !current.active)
+                continue
+            const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)
+            if (!mesh)
+                continue
+            const t = current.components[COMPONENTS.TRANSFORM]
+            gpu.bindVertexArray(mesh.VAO)
+            gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, mesh.indexVBO)
 
-    execute(selected, meshesMap, camera) {
+            mesh.vertexVBO.enable()
+            this.shader.bindForUse({
+                projectionMatrix: camera.projectionMatrix,
+                transformMatrix: t.transformationMatrix,
+                viewMatrix: camera.viewMatrix
+            })
+
+            gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
+        }
+        this.frameBuffer.stopMapping()
+        gpu.bindVertexArray(null)
+        gpu.enable(gpu.DEPTH_TEST)
+    }
+    drawSilhouette(selected) {
         const length = selected.length
         if (length > 0) {
-            this.shader.use()
-            this.frameBuffer.startMapping()
-            for (let m = 0; m < length; m++) {
-                const current = Renderer.entitiesMap.get(selected[m])
-                if (!current || !current.active)
-                    continue
-                const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)
-                if (!mesh)
-                    continue
-                const t = current.components[COMPONENTS.TRANSFORM]
-                this.drawMesh(
-                    mesh,
-                    camera.viewMatrix,
-                    camera.projectionMatrix,
-                    t.transformationMatrix
-                )
-            }
-
-            this.frameBuffer.stopMapping()
-
-
             this.shaderSilhouette.use()
             this.shaderSilhouette.bindForUse({
                 silhouette: this.frameBuffer.colors[0]
             })
             this.frameBuffer.draw()
-            window.gpu.bindVertexArray(null)
+            gpu.bindVertexArray(null)
         }
     }
 
-    drawMesh(
+    #drawMesh(
         mesh,
         viewMatrix,
         projectionMatrix,
         transformMatrix
     ) {
-        mesh.use()
-        this.shader.bindForUse({
-            projectionMatrix,
-            transformMatrix,
-            viewMatrix
-        })
 
-        window.gpu.drawElements(window.gpu.TRIANGLES, mesh.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
-        mesh.finish()
     }
 }

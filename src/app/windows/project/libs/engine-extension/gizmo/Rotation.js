@@ -197,7 +197,8 @@ export default class Rotation {
             camera.ortho
         )
         const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
-        const pickID = Math.round(255 * (dd[0]))
+        const pickID = Math.round(255 * dd[0])
+
         this.clickedAxis = pickID
 
         if (pickID === 0)

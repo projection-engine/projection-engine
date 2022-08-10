@@ -15,6 +15,7 @@
     export let setSelected
     export let submitNodeVariable
     export let canvas
+    export let onDrag
     let pathRef
     let ref
 
@@ -139,6 +140,7 @@
                         style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
                     {#each node.inputs as a, i}
                         <NodeInput
+                                onDrag={onDrag}
                                 handleLink={handleLink}
                                 attribute={a}
                                 node={node}
@@ -157,6 +159,7 @@
                                     onDragEnd={() => pathRef.setAttribute("d", undefined)}
                                     data={a}
                                     node={node}
+                                    onDrag={onDrag}
                                     handleLinkDrag={handleLinkDrag}
                                     inputLinks={inputLinks}
                                     outputLinks={outputLinks}

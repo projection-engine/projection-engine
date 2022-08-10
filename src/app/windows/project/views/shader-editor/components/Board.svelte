@@ -11,11 +11,11 @@
     import BOARD_SIZE from "../data/BOARD_SIZE";
     import getContextMenu from "../utils/get-context-menu";
     import {onDestroy, onMount} from "svelte";
-    import updateLinks from "../utils/update-links";
     import Node from "./node/Node.svelte";
     import resolveLinks from "../utils/resolve-links";
     import onMutation from "../libs/on-mutation";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
+    import handleLink from "../utils/handle-link";
 
     export let links
     export let setLinks
@@ -35,7 +35,6 @@
 
     let ref
     let internalID = v4()
-    let mappedLinks = []
     let dragType
     $: resolvedLinks = resolveLinks(links)
 
@@ -50,27 +49,10 @@
 
         ref.style.transform = "scale(" + s + ")"
         window.blueprints.scale = s
-        updateLinks(mappedLinks, ref)
     }
 
-    function updateLinkRendering(resolvedLinks){
-        if(!resolvedLinks)
-            return
-        mappedLinks = resolvedLinks.map(l => {
-            const linkPath = document.getElementById(l.target + "-" + l.source)
-            return {
-                target: document.getElementById(l.target),
-                source: document.getElementById(l.source),
-                linkPath
-            }
-        })
-        updateLinks(mappedLinks, ref)
-    }
-    $:  {
-        updateLinkRendering(resolvedLinks)
-    }
 
-    const mutationObserver = new MutationObserver(e => onMutation(links, ref, e))
+    const mutationObserver = new MutationObserver(e => onMutation(resolvedLinks, ref, e))
     onMount(() => {
         if (ref && ref.parentElement) {
             ref.parentElement.scrollTop = BOARD_SIZE / 2
@@ -80,12 +62,12 @@
         mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
     })
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
-    $: contextMenuBinding.rebind( getContextMenu(
+    $: contextMenuBinding.rebind(getContextMenu(
         nodes,
         setNodes,
         setSelected,
         selected,
-        resolvedLinks,
+        links,
         setLinks
     ))
 
@@ -95,8 +77,12 @@
             ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})
         mutationObserver.disconnect()
     })
-
-
+    let timeout
+    $: {
+        console.log(links)
+        clearTimeout(timeout)
+        timeout = setTimeout(() => onMutation(resolvedLinks, ref, []), 250)
+    }
 </script>
 
 <div class="wrapper">
@@ -115,8 +101,10 @@
             data-board={"BOARD"}
             style="height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
             on:drop={event => {
+               event.preventDefault()
+                console.log(isOpen)
                 if(isOpen){
-                event.preventDefault()
+
                 const foundNodes = handleDropBoard(event.dataTransfer.getData("text"))
                 if (foundNodes)
                     handleDropNode(foundNodes, event, ref, nodes, setNodes)
@@ -161,7 +149,7 @@
                         stroke-width={LINK_WIDTH}
                         id={l.target + "-" + l.source}
                         d=""
-                />
+                ></path>
             {/each}
             {#each nodes as node}
                 {#if !node.isComment }
@@ -177,7 +165,9 @@
                                 }}
                             selected={selected}
                             node={node}
-                            handleLink={() => null}
+                            handleLink={(src, target) => {
+                                handleLink(src, target, links, setLinks)
+                            }}
                             submitNodeVariable={submitNodeVariable}
                     />
                 {/if}

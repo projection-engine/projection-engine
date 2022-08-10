@@ -1,8 +1,8 @@
 import MeshInstance from "../engine/libs/instances/MeshInstance"
-import Entity from "../engine/libs/basic/Entity"
-import TransformComponent from "../engine/libs/components/TransformComponent"
+import Entity from "../engine/templates/basic/Entity"
+import TransformComponent from "../engine/templates/components/TransformComponent"
 
-import MeshComponent from "../engine/libs/components/MeshComponent"
+import MeshComponent from "../engine/templates/components/MeshComponent"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import FileSystem from "../../../../libs/FileSystem"
 import FALLBACK_MATERIAL from "../engine/data/FALLBACK_MATERIAL"
