@@ -1,11 +1,15 @@
 import DataStoreController from "../stores/DataStoreController";
 import componentConstructor from "../libs/component-constructor";
+import ENVIRONMENT from "../libs/engine/data/ENVIRONMENT";
+import Renderer from "../libs/engine/Renderer";
 
 const {shell} = window.require("electron")
 
 export default async function loadScripts(engine) {
     const newValue = !engine.executingAnimation
-    const scripts = []
+    DataStoreController.updateEngine({...engine, executingAnimation: newValue})
+    if(newValue)
+    Renderer.environment = ENVIRONMENT.EXECUTION
     const entities = window.renderer.entities
     try {
         if (newValue) {
@@ -15,7 +19,7 @@ export default async function loadScripts(engine) {
                     await componentConstructor(current, current.scripts[s]?.id, false)
                 }
         }
-        DataStoreController.updateEngine({...engine, executingAnimation: newValue, scripts})
+
     } catch (err) {
         console.error(err)
         if (newValue)

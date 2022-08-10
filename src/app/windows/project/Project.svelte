@@ -15,6 +15,7 @@
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../static/ROUTES";
+    import Entity from "./libs/engine/libs/basic/Entity";
 
 
 

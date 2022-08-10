@@ -1,6 +1,6 @@
-const BRANCH_SIZE = 23, DELAY = 500
+const  DELAY = 500
 
-export default function infiniteScroll(setMaxDepth, setOffset) {
+export default function infiniteScroll(setMaxDepth, setOffset, BRANCH_SIZE=23) {
     let timeout
     const updateSize = () => {
         clearTimeout(timeout)

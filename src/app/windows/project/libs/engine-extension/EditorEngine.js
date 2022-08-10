@@ -27,7 +27,7 @@ export default class EditorEngine extends Renderer {
         this.camera = new EditorCamera()
         this.cameraEvents = new CameraEvents(this.camera)
 
-        this.environment = ENVIRONMENT.DEV
+        Renderer.environment = ENVIRONMENT.DEV
         this.editorSystem = new Wrapper(resolution)
         this.debugMaterial = new MaterialInstance({
             vertex: shaderCode.vertex,
@@ -82,14 +82,13 @@ export default class EditorEngine extends Renderer {
     }
 
     updatePackage(prodEnv, params) {
-        this.environment = prodEnv ? ENVIRONMENT.PROD : ENVIRONMENT.DEV
+        Renderer.environment = prodEnv ? ENVIRONMENT.EXECUTION : ENVIRONMENT.DEV
         if (!prodEnv)
             this.cameraEvents.startTracking()
         else
             this.cameraEvents.stopTracking()
 
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
-
         Packager.build(
             {
                 ...params,

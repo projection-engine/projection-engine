@@ -117,12 +117,13 @@ export default class Localization {
             SEARCH: "Search"
         },
         CONSOLE: {
+            VIEW: "View",
             TOGGLE_CLEAR_ON_PLAY: "Clear on play",
             TITLE: "Console",
             CLEAR: "Clear",
-            TOGGLE_ERRORS: "Toggle errors",
-            TOGGLE_WARNINGS: "Toggle warnings",
-            TOGGLE_LOGS: "Toggle logs"
+            ERRORS: "Show errors",
+            WARNINGS: "Show warnings",
+            LOGS: "Show logs"
         },
         SHADER_EDITOR: {
             ADD: "Add",

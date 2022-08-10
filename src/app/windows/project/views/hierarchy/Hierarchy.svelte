@@ -25,7 +25,6 @@
     const translate = key => Localization.PROJECT.HIERARCHY[key]
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
     const ID = v4()
-    const scroller = infiniteScroll(v => maxDepth = v, v => offset = v)
 
     let open = {}
     let toRender = []
@@ -42,10 +41,12 @@
     }
     const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu())
+    const scroller = infiniteScroll(v => maxDepth = v, v => offset = v)
     onMount(() => scroller.onMount(ref))
     onDestroy(() => {
-        unsubscribeEngine()
         scroller.onDestroy()
+
+        unsubscribeEngine()
         contextMenuBinding.onDestroy()
     })
     $: {
@@ -96,8 +97,8 @@
             id={"tree-view-" + ID}
     >
         {#if toRender.length > 0}
-            {#each toRender as e, i}
-                {#if i < maxDepth}
+            {#each toRender as _, i}
+                {#if i < maxDepth && toRender[i + offset]}
                     <Branch
                             nodeRef={toRender[i + offset].node}
                             depth={toRender[i + offset].depth}

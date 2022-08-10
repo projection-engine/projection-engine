@@ -10,13 +10,14 @@ import {uglify} from "rollup-plugin-uglify";
 
 const PRODUCTION = !process.env.ROLLUP_WATCH;
 const common = (inputFile, outputFile, cssFile) => ({
+
     input: `src/app/windows/${inputFile}.js`,
     output: {
         sourcemap: true,
         format: 'iife',
         name: 'app',
         file: `public/build/${outputFile}.js`,
-
+        strict: false
     },
     plugins: [
         svelte({
