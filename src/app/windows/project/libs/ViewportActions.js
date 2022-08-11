@@ -1,9 +1,9 @@
-import {ENTITY_ACTIONS} from "./engine-extension/entityReducer";
+import dispatchEntities, {ENTITY_ACTIONS} from "./engine-extension/dispatch-entities";
 import DataStoreController from "../stores/DataStoreController";
 import Renderer from "./engine/Renderer";
 
 export default class ViewportActions {
-    static toCopy
+    static toCopy = []
 
     static copy(single, target, engine) {
         ViewportActions.toCopy = target ? target : (single ? [engine.selected[0]] : engine.selected)
@@ -12,16 +12,10 @@ export default class ViewportActions {
 
     static deleteSelected() {
         const engine = DataStoreController.engine
-        const engineCopy = {...engine}
-        const s = [...engineCopy.selected]
-        engineCopy.selected = []
-        engineCopy.lockedEntity = undefined
-
-        engineCopy.dispatchEntities({
+        dispatchEntities({
             type: ENTITY_ACTIONS.REMOVE_BLOCK,
-            payload: s
+            payload: [...engine.selected]
         })
-        DataStoreController.updateEngine(engineCopy)
     }
 
     static invertSelection() {
@@ -42,9 +36,9 @@ export default class ViewportActions {
     }
 
     static paste(parent) {
-        const engine = DataStoreController.engine
         let block = []
-        const engineCopy = {...engine}
+        if (!ViewportActions.toCopy)
+            return
         ViewportActions.toCopy.forEach(t => {
             const found = Renderer.entitiesMap.get(t)
             if (found) {
@@ -53,22 +47,24 @@ export default class ViewportActions {
                 block.push(clone)
             }
         })
-        engineCopy.dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
-        engineCopy.selected = block.map(b => b.id)
+
+        dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         alert.pushAlert(`Pasted ${ViewportActions.toCopy.length} entities.`, "info")
-        DataStoreController.updateEngine(engineCopy)
+
     }
 
     static group() {
         const engine = DataStoreController.engine
         ViewportActions.toCopy = engine.selected
         if (engine.selected.length > 1)
-            engine.dispatchEntities({
+            dispatchEntities({
                 type: ENTITY_ACTIONS.LINK_MULTIPLE,
                 payload: engine.selected
             })
     }
-
+    static selectAll() {
+        DataStoreController.updateEngine({...DataStoreController.engine, selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)})
+    }
     static fixateActive() {
         const engine = DataStoreController.engine
         if (engine.selected[0])

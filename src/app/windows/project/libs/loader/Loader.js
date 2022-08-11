@@ -1,0 +1,157 @@
+import dispatchEntities, {ENTITY_ACTIONS} from "../engine-extension/dispatch-entities"
+import FileSystem from "../../../../libs/FileSystem"
+import COMPONENTS from "../engine/data/COMPONENTS"
+import {vec4} from "gl-matrix"
+import FILE_TYPES from "../../../../../static/FILE_TYPES";
+import DataStoreController from "../../stores/DataStoreController";
+import FileStoreController from "../../stores/FileStoreController";
+import Entity from "../engine/templates/basic/Entity";
+import loopNodesScene from "./utils/loop-nodes-scene";
+import MeshInstance from "../engine/libs/instances/MeshInstance";
+import initializeEntity from "./utils/initialize-entity";
+
+export default class Loader {
+    static async mesh(objLoaded, id) {
+        let mesh,
+            entity,
+            existsMesh = false,
+            material
+        try {
+            mesh = window.renderer.meshes.get(objLoaded.id)
+            if (!mesh) {
+                mesh = new MeshInstance({
+                    ...objLoaded,
+                    id: id,
+                    wireframeBuffer: true
+                })
+
+                if (objLoaded.material && !DataStoreController.engine.materials.find(m => m.id === objLoaded.material)) {
+                    const rs = await window.fileSystem.readRegistryFile(objLoaded.material)
+                    if (rs) {
+                        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, "json")
+                        if (file && file.response)
+                            material = {
+                                ...file.response,
+                                id: objLoaded.material
+                            }
+                    }
+                }
+            } else
+                existsMesh = true
+            entity = initializeEntity(objLoaded, mesh.id)
+        } catch (e) {
+            console.error(e)
+            alert.pushAlert("Some error occurred", "error")
+        }
+
+        return {
+            mesh,
+            material,
+            entity,
+            existsMesh
+        }
+    }
+
+    static async scene(path, onlyReturn) {
+        const file = await window.fileSystem.readFile(
+            FileStoreController.ASSETS_PATH + FileSystem.sep + path, "json")
+
+        const meshes = []
+        const entities = []
+
+        try {
+            if (file) {
+                const folder = new Entity()
+                folder.name = path.split(FileSystem.sep).pop().replace(FILE_TYPES.SCENE, "")
+
+                for (let i = 0; i < file.nodes.length; i++) {
+                    const data = await loopNodesScene(file.nodes[i], folder, i)
+                    meshes.push(...data.meshes)
+                    entities.push(...data.children)
+                }
+                entities.push(folder)
+                if (!onlyReturn) {
+                    const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                    entities.forEach(e => {
+                        if (e.components && e.components[COMPONENTS.TRANSFORM]) {
+                            const transform = e.components[COMPONENTS.TRANSFORM]
+                            vec4.add(transform.translation, transform.translation, cursorPoint)
+                            transform.changed = true
+                        }
+                    })
+
+                    for (let i = 0; i < meshes.length; i++)
+                        DataStoreController.engine.meshes.set(meshes[i].id, meshes[i])
+                    dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+                }
+            } else
+                alert.pushAlert("Some error occurred", "error")
+        } catch (error) {
+            console.error(error)
+            alert.pushAlert("Some error occurred", "error")
+        }
+
+        return {meshes, entities}
+    }
+
+    static async load(event, asID) {
+        const items = [], meshes = []
+
+        if (asID)
+            items.push(event)
+        else
+            try {
+                items.push(...JSON.parse(event.dataTransfer.getData("text")))
+            } catch (e) {
+                console.error(e)
+                alert.pushAlert("Error loading file", "error")
+            }
+
+        for (let i = 0; i < items.length; i++) {
+            const data = items[i]
+            const res = await window.fileSystem.readRegistryFile(data)
+            if (res)
+                switch ("." + res.path.split(".").pop()) {
+                    case FILE_TYPES.MESH: {
+                        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
+                        const meshData = await Loader.mesh(file, data)
+                        if (meshData.mesh !== undefined)
+                            meshes.push(meshData)
+                        else
+                            alert.pushAlert("Error importing mesh.", "error")
+                        break
+                    }
+                    case FILE_TYPES.SCENE:
+                        await Loader.scene(res.path)
+                        break
+                    default:
+                        alert.pushAlert("Error importing file.", "error")
+                        break
+                }
+        }
+
+        if (meshes.length > 0) {
+            const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
+            for (let i = 0; i < newMeshes.length; i++)
+                DataStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
+            if (!asID) {
+                const toLoad = meshes
+                    .map(m => m.entity)
+                    .filter(m => m !== undefined)
+                if (!toLoad.length)
+                    return
+                const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                toLoad.forEach(e => {
+                    if (e.components && e.components[COMPONENTS.TRANSFORM]) {
+                        const transform = e.components[COMPONENTS.TRANSFORM]
+                        vec4.add(transform.translation, transform.translation, cursorPoint)
+                        transform.changed = true
+                    }
+                })
+                dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
+                alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
+            }
+        }
+    }
+
+}

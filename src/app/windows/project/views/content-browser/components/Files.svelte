@@ -4,7 +4,7 @@
     import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
-    import File from "./Item.svelte";
+    import Item from "./Item.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import bindShortcut from "../../shortcuts/libs/bind-shortcut";
     import getShortcuts from "../utils/get-shortcuts";
@@ -23,6 +23,7 @@
     export let navigationHistory
     export let setCurrentDirectory
     let ref
+
     function map(arr, items) {
         return arr.map(e => {
             return {
@@ -90,7 +91,8 @@
         />
         {#if filesToRender.length > 0}
             {#each filesToRender as child, index}
-                <File
+                <Item
+                        currentDirectory={currentDirectory}
                         reset={() => {
                             setSelected([])
                             setSearchString("")

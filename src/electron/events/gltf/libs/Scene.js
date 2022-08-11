@@ -1,13 +1,17 @@
-const {Node, getNormalizedName} = require("./Node")
+const Node = require("./Node")
 const {v4} = require("uuid")
 const FILE_TYPES = require("../../../../static/FILE_TYPES")
 const createDirectory = require("../utils/create-directory")
 const path = require("path")
+const writeData = require("../utils/write-data");
+const getNormalizedName = require("../utils/get-normalized-name")
+
 module.exports = class Scene {
     nodes = []
     scene = {}
 
-    constructor(allNodes, scene) {
+    constructor(allNodes, scene, index) {
+        this.index = index
         this.scene = scene
         for (let i in scene.nodes) {
             const n = scene.nodes[i]
@@ -17,7 +21,8 @@ module.exports = class Scene {
     }
 
     async load(projectPath, rootPath, meshes, accessors, options, idsToLoad, fileSourcePath, materials, textures, images) {
-        const scenePath = rootPath + path.sep + getNormalizedName(this.scene.name) + path.sep
+        const partialPath = rootPath + path.sep + getNormalizedName(this.scene.name, this.index)
+        const scenePath = partialPath + path.sep
         const nodes = this.nodes.map(n => new Node(n, this.allNodes, undefined, projectPath))
         createDirectory(scenePath)
         createDirectory(scenePath + "primitives")
@@ -28,8 +33,8 @@ module.exports = class Scene {
             nodes: nodes.map(n => n.childNodes())
         }
         idsToLoad.push(id)
-        await Node.writeData(
-            rootPath + path.sep + getNormalizedName(this.scene.name) + FILE_TYPES.SCENE,
+        await writeData(
+            partialPath + FILE_TYPES.SCENE,
             data,
             id,
             projectPath

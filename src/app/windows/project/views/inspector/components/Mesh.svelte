@@ -1,5 +1,5 @@
 <script>
-    import importData from "../../../libs/importer/import"
+    import Loader from "../../../libs/loader/Loader"
     import Selector from "../../../../../components/selector/Selector.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
@@ -13,6 +13,12 @@
     export let submit
     export let translate
 
+    const loadMesh = async (src) => {
+
+        if (!window.renderer.meshes.get(src.registryID))
+            await Loader.load(src.registryID, true)
+        submit(src.registryID, "meshID")
+    }
 </script>
 <Accordion>
     <svelte:fragment slot="header">
@@ -26,16 +32,7 @@
     <Selector
             selected={selected.meshID}
             type={"mesh"}
-            handleChange={(src) => {
-            let data = window.renderer.meshes.get(src.registryID)
-            if (!data)
-                importData(src.registryID, true)
-                    .then(() => {
-                        submit(src.registryID,  "meshID")
-                    })
-            else
-                submit(src.registryID,  "meshID")
-        }}
+            handleChange={loadMesh}
     />
     <Selector
             selected={selected.materialID}

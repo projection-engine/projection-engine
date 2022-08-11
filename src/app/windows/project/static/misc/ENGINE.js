@@ -1,5 +1,3 @@
-import entityReducer from "../../libs/engine-extension/entityReducer";
-
 export default {
     meta: {},
     meshes: new Map(),
@@ -12,8 +10,5 @@ export default {
     scripts: [],
     changeID: undefined,
     selectedEntity: undefined,
-    lockedEntity: undefined,
-    dispatchEntities (packageData, state) {
-        entityReducer(packageData, this.entities, state)
-    }
+    lockedEntity: undefined
 }

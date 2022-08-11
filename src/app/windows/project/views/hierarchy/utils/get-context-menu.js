@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Entity from "../../../libs/engine/templates/basic/Entity";
-import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
+import dispatchEntities, {ENTITY_ACTIONS} from "../../../libs/engine-extension/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
@@ -15,7 +15,7 @@ function createEntity(component) {
         entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
         entity.components[component.key] = new component.ref(undefined, entity)
     }
-    DataStoreController.engine.dispatchEntities({
+    dispatchEntities({
         type: ENTITY_ACTIONS.ADD, payload: entity
     })
 }
@@ -63,6 +63,22 @@ export default function getContextMenu() {
             label: "Paste",
             onClick: () => ViewportActions.paste()
         },
+        {divider: true, requiredTrigger: "data-self"},
+        {
+            requiredTrigger: "data-self",
+            label: "Select all",
+            onClick: () => ViewportActions.selectAll()
+        },
+        {
+            requiredTrigger: "data-self",
+            label: "Invert selection",
+            onClick: () => ViewportActions.invertSelection()
+        },
+        {
+            requiredTrigger: "data-self",
+            label: "Select none",
+            onClick: () => DataStoreController.updateEngine({...DataStoreController.engine, selected: []})
+        },
         {
             requiredTrigger: "data-node",
             label: "Paste",
@@ -82,7 +98,7 @@ export default function getContextMenu() {
                 const t = target.getAttribute("data-node")
                 const entity = Renderer.entitiesMap.get(t)
                 if (entity)
-                    DataStoreController.engine.dispatchEntities({
+                    dispatchEntities({
                         type: ENTITY_ACTIONS.ADD,
                         payload: entity.clone()
                     })
@@ -95,9 +111,9 @@ export default function getContextMenu() {
             onClick: (node) => {
                 const t = node.getAttribute("data-node")
                 const toRemove = getHierarchy(Renderer.entitiesMap.get(t)).map(e => e.id)
-                DataStoreController.engine.dispatchEntities({
+                dispatchEntities({
                     type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
-                }, {...DataStoreController.engine, selected: []})
+                })
 
             }
         },

@@ -4,7 +4,6 @@ import * as cameraShaderCode from "../shaders/GIZMO.glsl"
 import * as iconShaderCode from "../shaders/ICON.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import COMPONENTS from "../../engine/data/COMPONENTS"
-import {createVAO} from "../../engine/utils/utils"
 import VBOInstance from "../../engine/libs/instances/VBOInstance"
 import pointLightIcon from "../../../static/icons/point_light.png"
 import directionalLightIcon from "../../../static/icons/directional_light.png"
@@ -29,7 +28,9 @@ export default class IconsSystem {
         this.selectedShader = new ShaderInstance(iconShaderCode.selectedVertex, iconShaderCode.selectedFragment)
 
 
-        this.vao = createVAO()
+        this.vao = gpu.createVertexArray()
+        gpu.bindVertexArray(this.vao)
+
         this.vertexVBO = new VBOInstance(0, PLANE, gpu.ARRAY_BUFFER, 3, gpu.FLOAT, false)
 
         this.pointLightTexture = new TextureInstance(pointLightIcon, false)

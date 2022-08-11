@@ -8,7 +8,7 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ProbeComponent from "../../../libs/engine/templates/components/ProbeComponent";
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
-    import {ENTITY_ACTIONS} from "../../../libs/engine-extension/entityReducer";
+    import dispatchEntities, {ENTITY_ACTIONS} from "../../../libs/engine-extension/dispatch-entities";
     import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";
@@ -33,7 +33,7 @@
         actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
-        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+        dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
 
     $: if(window.renderer?.camera) window.renderer.camera.animated = settings.cameraAnimation
@@ -99,7 +99,7 @@
             </button>
 
             <button
-                    on:click={() => engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})}
+                    on:click={() => dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})}
             >
                 <Icon>inventory_2</Icon>
                 {translate("EMPTY_ENTITY")}
@@ -117,7 +117,7 @@
                         transformComponent.lockedRotation = true
                         transformComponent.lockedScaling = true
                         actor.components[COMPONENTS.TRANSFORM] = transformComponent
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                        dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
             >
                 <Icon>lightbulb</Icon>
@@ -135,7 +135,7 @@
                         actor.components[COMPONENTS.TRANSFORM] = transformComponent
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
 
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                        dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
             >
                 <Icon>light_mode</Icon>
@@ -173,7 +173,7 @@
                         actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
 
 
-                        engine.dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                        dispatchEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
             >
                 <Icon>videocam</Icon>

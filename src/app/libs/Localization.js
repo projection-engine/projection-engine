@@ -216,6 +216,7 @@ export default class Localization {
             TRANSFORMATION: "Transformation"
         },
         FILES: {
+            SUCCESSFUL_DELETE: "Items deleted",
             CREATE: "Create",
             OPENING_FILE: "Opening file",
             SEARCH: "Search",

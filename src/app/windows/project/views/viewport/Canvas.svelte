@@ -12,6 +12,8 @@
     import Packager from "../../libs/engine/libs/builder/Packager";
 
     export let onReady
+    export let isExecuting
+
     const TRIGGERS = ["data-viewport"]
     let canvasRef = null
     let initialized = false
@@ -37,7 +39,6 @@
     })
 
     $: {
-        console.trace(document.getElementsByTagName('*').length)
         shortcutBinding.rebind(canvasRef)
         if (canvasRef && !initialized) {
             initialized = true
@@ -60,7 +61,7 @@
         data-viewport="-"
         bind:this={canvasRef}
         id={RENDER_TARGET}
-        style={`width: ${settings.visible.sideBarViewport ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent`}
+        style={`width: ${settings.visible.sideBarViewport && !isExecuting ? "calc(100% - 23px)" : "100%"}; height: 100%; background: transparent`}
         width={settings.resolution[0]}
         height={settings.resolution[1]}
 ></canvas>

@@ -1,5 +1,6 @@
 import FileSystem from "../../../../../libs/FileSystem"
 import FileStoreController from "../../../stores/FileStoreController";
+import Localization from "../../../../../libs/Localization";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
@@ -33,4 +34,5 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
     }
 
     await FileStoreController.refreshFiles()
+    alert.pushAlert(Localization.PROJECT.FILES.SUCCESSFUL_DELETE, "success")
 }

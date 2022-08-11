@@ -32,7 +32,7 @@
     let offset = 0
     let maxDepth = 0
     let entities = engine.entities
-    let lastChangeID
+    let lastChangeID = engine.changeID
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
@@ -56,7 +56,6 @@
         })
         window.addEntityWorkerListener(
             payload => {
-                console.log(payload.map(p => p.node))
                 const data = []
                 for (let i = 0; i < payload.length; i++) {
                     if (!payload[i].node.parent || open[payload[i].node.parent.id])
@@ -147,6 +146,7 @@
         font-size: .8rem;
         color: var(--pj-color-quaternary);
     }
+
     .wrapper {
         position: relative;
         display: grid;

@@ -5,7 +5,7 @@
     import loadProject from "./utils/load-project";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import {ENTITY_ACTIONS} from "./libs/engine-extension/entityReducer";
+    import dispatchEntities, {ENTITY_ACTIONS} from "./libs/engine-extension/dispatch-entities";
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./views/shortcuts/Shortcuts.svelte";
     import Canvas from "./views/viewport/Canvas.svelte";
@@ -15,10 +15,17 @@
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../static/ROUTES";
+    import VIEWS from "../../components/view/VIEWS";
 
 
     const {ipcRenderer} = window.require("electron")
 
+    const EXECUTION_VIEW =  {
+        name: "Default",
+        bottom: [VIEWS.CONSOLE],
+        left: [],
+        right: []
+    }
     let engine
     let settings
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
@@ -54,8 +61,13 @@
         right: []
     }
     $: {
-        if (isMetadataLoaded && settings.views[settings.currentView])
+        if(engine.executingAnimation)
+            view = EXECUTION_VIEW
+        else if (isMetadataLoaded && settings.views[settings.currentView])
             view = settings.views[settings.currentView]
+    }
+    $: {
+
 
         if (isReady && !isDataLoaded) {
             isDataLoaded = true
@@ -71,7 +83,7 @@
                         mapped.push(await parseEntityObject(entities[i].data))
                     }
 
-                    engine.dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                    dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
                 },
                 material => {
                     engine.materials.push(material)
@@ -115,6 +127,7 @@
             {#if isMetadataLoaded}
                 <Viewport isReady={isReady}>
                     <Canvas
+                            isExecuting={engine.executingAnimation}
                             slot="canvas"
                             onReady={() => isReady = true}
                     />

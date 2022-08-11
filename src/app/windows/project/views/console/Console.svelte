@@ -132,7 +132,7 @@
                     class:error={toRender[i + offset].type === TYPES.ERROR}
                     class:warn={toRender[i + offset].type === TYPES.WARN}
                     class:log={toRender[i + offset].type === TYPES.LOG}
-                    style={i + offset > 0 && toRender[i + offset - 1].blockID !== toRender[i + offset].blockID ? "border-bottom: var(--pj-border-secondary) 1px solid;" : undefined}
+                    style={i + offset === 0 || (i + offset > 0 && toRender[i + offset - 1].blockID !== toRender[i + offset].blockID) ? "border-bottom: var(--pj-border-secondary) 1px solid;" : undefined}
             >
                 {#if !toRender[i + offset].notFirstOnBlock}
                     {#if toRender[i + offset].type === TYPES.ERROR}

@@ -7,9 +7,9 @@
     import componentConstructor from "../../../libs/component-constructor";
     import MeshComponent from "../../../libs/engine/templates/components/MeshComponent";
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
-    import importData from "../../../libs/importer/import";
     import loadMaterial from "../utils/load-material";
     import Entity from "../components/Entity.svelte";
+    import Loader from "../../../libs/loader/Loader";
 
 
     export let translate
@@ -59,7 +59,7 @@
                         if (!entity.components[COMPONENTS.TRANSFORM])
                             entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                     }
-                    await importData(id, true, true)
+                    await Loader.load(id, true)
                     entity.components[COMPONENTS.MESH].meshID = id
                     break
                 case "MATERIAL":

@@ -3,6 +3,7 @@ import AsyncFS from "./AsyncFS"
 import IMAGE_WORKER_ACTIONS from "../windows/project/libs/engine/data/IMAGE_WORKER_ACTIONS"
 import FILE_TYPES from "../../static/FILE_TYPES";
 import FileStoreController from "../windows/project/stores/FileStoreController";
+import ROUTES from "../../static/ROUTES";
 
 const pathRequire = window.require("path")
 
@@ -105,8 +106,7 @@ export default class FileSystem {
                             await this.createRegistryEntry(fileID, newRoot.replace(this.path + FileSystem.sep + "assets" + FileSystem.sep, "") + ".pimg")
                         } else
                             alert.pushAlert("Error importing image", "error")
-                    } else
-                        alert.pushAlert("Image already exists", "error")
+                    }
                     break
                 }
                 case "gltf":
@@ -114,11 +114,8 @@ export default class FileSystem {
                         file: name.split(".")[0],
                         ids: await new Promise(resolve => {
                             const listenID = v4().toString()
-                            ipcRenderer.once("import-gltf-" + listenID, (ev, data) => {
-                                resolve(data)
-                            })
-
-                            ipcRenderer.send("import-gltf", {
+                            ipcRenderer.once(ROUTES.IMPORT_GLTF + listenID, (ev, data) => resolve(data))
+                            ipcRenderer.send(ROUTES.IMPORT_GLTF, {
                                 filePath: filePath,
                                 newRoot,
                                 options: {},
@@ -200,7 +197,7 @@ export default class FileSystem {
         for (let i = 0; i < files.length; i++) {
             const filename = pathRequire.join(startPath, files[i])
             const stat = (await AsyncFS.lstat(filename))[1]
-            if (stat.isDirectory) {
+            if (stat && stat.isDirectory) {
                 res.push(...(await this.fromDirectory(filename, extension)))
             } else if (filename.indexOf(extension) >= 0) res.push(files[i])
         }
@@ -301,7 +298,7 @@ export default class FileSystem {
         return pathRequire.resolve(path)
     }
 
-    async refresh(autoPush=true) {
+    async refresh(autoPush = true) {
         const reg = await this.readRegistry()
         const imagesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.IMAGE)),
             meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
@@ -355,10 +352,8 @@ export default class FileSystem {
         }))
 
 
-
-
         const res = await Promise.all(promises)
-        if(autoPush)
+        if (autoPush)
             FileStoreController.updateStore({
                 ...FileStoreController.data,
                 images: res.filter(f => f.type === FILE_TYPES.IMAGE),

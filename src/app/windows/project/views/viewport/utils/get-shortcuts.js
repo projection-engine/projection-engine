@@ -13,9 +13,7 @@ export default function getShortcuts() {
         {
             label: "Select all",
             require: [KEYS.KeyA],
-            callback: () =>  {
-                DataStoreController.updateEngine({...DataStoreController.engine, selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)})
-            }
+            callback: () =>  ViewportActions.selectAll()
         },
         {
             label: "Select",

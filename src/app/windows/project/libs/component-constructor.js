@@ -32,7 +32,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    Packager.linkScript(data, entity, scriptID)
+    Packager.linkScript(data, entity, scriptID, reg.path)
 
     if (autoUpdate)
         DataStoreController.updateEngine()

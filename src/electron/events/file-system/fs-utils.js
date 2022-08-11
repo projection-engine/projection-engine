@@ -74,13 +74,13 @@ module.exports = function FS() {
         event.sender.send("read-registry-" + listenID, result)
     })
 
-    ipcMain.on("import-gltf", async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
+    ipcMain.on(ROUTES.IMPORT_GLTF , async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
         fsUtils.readFile(path.resolve(filePath), async (e, data) => {
             if (!e) {
                 const file = data.toString()
                 const idsToLoad = await glTF(newRoot, fileName, projectPath, file, options, filePath, listenID)
-                event.sender.send("import-gltf" + listenID, idsToLoad)
-            } else event.sender.send("import-gltf" + listenID, [])
+                event.sender.send( ROUTES.IMPORT_GLTF + listenID, idsToLoad)
+            } else event.sender.send(ROUTES.IMPORT_GLTF  + listenID, [])
         })
     })
 

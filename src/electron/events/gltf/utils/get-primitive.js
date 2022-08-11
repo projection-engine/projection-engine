@@ -1,13 +1,10 @@
-module.exports = function getPrimitive(p, materials = []) {
-    const primitive = {...p}
-    primitive.attributes = Object.keys(primitive.attributes).map(name => ({
-        name,
-        index: primitive.attributes[name]
-    }))
-
-    if (typeof primitive.material !== "undefined") {
-        primitive.material = materials[primitive.material]
-    }
+module.exports = function getPrimitive(data) {
+    const primitive = {...data}
+    primitive.attributes = Object.keys(primitive.attributes)
+        .map(name => ({
+            name,
+            index: primitive.attributes[name]
+        }))
 
 
     const vert = primitive.attributes.find(d => d.name === "POSITION")

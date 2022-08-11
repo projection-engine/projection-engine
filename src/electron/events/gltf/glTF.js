@@ -1,6 +1,6 @@
-const Buffer = require("./instances/Buffer")
-const Accessor = require("./instances/Accessor")
-const Scene = require("./instances/Scene")
+const Buffer = require("./libs/Buffer")
+const Accessor = require("./libs/Accessor")
+const Scene = require("./libs/Scene")
 const createDirectory = require("./utils/create-directory")
 
 module.exports = async function glTF(root, fileSRC, projectPath, file, options, filePath) {
@@ -12,7 +12,7 @@ module.exports = async function glTF(root, fileSRC, projectPath, file, options, 
         await Promise.all(buffers.map(b => b.initialize()))
         parsed.buffers = null
         const accessors = parsed.accessors.map(a => new Accessor(a, buffers, parsed.bufferViews))
-        const scenes = parsed.scenes.map(s => new Scene(parsed.nodes, s))
+        const scenes = parsed.scenes.map((s, i) => new Scene(parsed.nodes, s, i))
         await Promise.all(scenes.map(s => s.load(projectPath, root, parsed.meshes, accessors, options, idsToLoad, fileSourcePath, parsed.materials, parsed.textures, parsed.images)))
     } catch (error) {
         console.error(error)

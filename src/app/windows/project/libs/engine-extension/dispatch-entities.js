@@ -16,16 +16,29 @@ export const ENTITY_ACTIONS = {
 }
 
 
-export default function entityReducer({type, payload}, state, engineState = DataStoreController.engine) {
+function removeHierarchy(state, entity) {
+    if (!entity)
+        return
+    for (let c = 0; c < entity.children.length; c++)
+        removeHierarchy(state, entity.children[c])
+    state.delete(entity.id)
+}
+
+export default function dispatchEntities({type, payload}) {
+    const engine = DataStoreController.engine
+    const state = engine.entities
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
+            engine.fixedEntity = undefined
+            engine.selected = []
+
             const entity = state.get(payload.entityID)
-            if(!entity)
+            if (!entity)
                 return;
             state.delete(entity.id)
-             entity.children.forEach(child => {
-                 state.delete(child.id)
-             })
+            entity.children.forEach(child => {
+                state.delete(child.id)
+            })
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
             const values = state.values()
@@ -40,22 +53,27 @@ export default function entityReducer({type, payload}, state, engineState = Data
             break
         }
         case ENTITY_ACTIONS.CLEAR:
+            engine.fixedEntity = undefined
+            engine.selected = []
             state.clear()
             break
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
             state.set(entity.id, entity)
+            engine.fixedEntity = undefined
+            engine.selected = [entity.id]
             break
         }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             const block = payload
+            engine.selected = []
+            engine.fixedEntity = undefined
+
             if (Array.isArray(block)) {
-                for (let i = 0; i < block.length; i++)
-                    state.delete(block[i])
-                const values = state.values()
-                for (let i = 0; i < values.length; i++) {
-                    if (values[i]?.parent)
-                        state.delete(values[i].parent.id)
+                for (let i = 0; i < block.length; i++) {
+                    const currentID = block[i]
+                    const entity = state.get(currentID)
+                    removeHierarchy(state, entity)
                 }
             }
             break
@@ -63,11 +81,17 @@ export default function entityReducer({type, payload}, state, engineState = Data
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
             const block = payload
+            const selected = []
             if (Array.isArray(block))
                 for (let i = 0; i < block.length; i++) {
                     const e = block[i]
+                    selected.push(e.id)
                     state.set(e.id, e)
                 }
+            if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {
+                engine.fixedEntity = undefined
+                engine.selected = selected
+            }
             break
         }
         default:
@@ -98,8 +122,7 @@ export default function entityReducer({type, payload}, state, engineState = Data
         payload: state,
         actionID: changeID
     })
-    window.addEntityWorkerListener(() => {
-        DataStoreController.updateEngine({...engineState, changeID})
-    }, changeID)
+    const changes = {...engine, entities: state, changeID}
+    window.addEntityWorkerListener(() => DataStoreController.updateEngine(changes), changeID)
 
 }

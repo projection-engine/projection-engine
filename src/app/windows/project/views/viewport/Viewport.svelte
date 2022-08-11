@@ -1,6 +1,5 @@
 <script>
     import GIZMOS from "../../static/misc/GIZMOS"
-    import importData from "../../libs/importer/import"
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
     import Conversion from "../../libs/engine/services/Conversion";
@@ -19,6 +18,7 @@
     import drawIconsToBuffer from "./utils/draw-icons-to-buffer";
     import EngineLoop from "../../libs/engine/libs/loop/EngineLoop";
     import ViewportPicker from "../../libs/engine/services/ViewportPicker";
+    import Loader from "../../libs/loader/Loader";
 
     export let isReady = false
 
@@ -108,14 +108,14 @@
             e.preventDefault()
             hovered  = true
         }}
-            on:dragleave={e => {
+        on:dragleave={e => {
             e.preventDefault()
             hovered  = false
         }}
-        on:drop={e => {
+        on:drop={async e => {
             e.preventDefault()
             hovered  = false
-            importData(e)
+            await Loader.load(e)
         }}
         class={"viewport"}
         class:hovered={hovered}

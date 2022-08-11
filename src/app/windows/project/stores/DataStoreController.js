@@ -12,13 +12,15 @@ export default class DataStoreController {
     static settings = SETTINGS
     static history = new DataHistoryController()
 
-    static undo(){
+    static undo() {
         DataStoreController.history.undo()
     }
-    static redo(){
+
+    static redo() {
         DataStoreController.history.redo()
     }
-    static saveEntity(entityID, component, key, changeValue){
+
+    static saveEntity(entityID, component, key, changeValue) {
 
         DataStoreController.history.pushChange({
             target: DataHistoryController.targets.entity,
@@ -28,19 +30,22 @@ export default class DataStoreController {
             key
         })
     }
+
     static getSettings(onChange) {
         return settingsStore.subscribe(newValue => {
             onChange(newValue)
         })
     }
+
     static getEngine(onChange) {
         return engine.subscribe(newValue => {
             onChange(newValue)
         })
     }
-    static updateSettings(value=DataStoreController.settings) {
 
-        if(initialized) {
+    static updateSettings(value = DataStoreController.settings) {
+
+        if (initialized) {
             DataStoreController.history.pushChange({
                 target: DataHistoryController.targets.settings,
                 changeValue: DataStoreController.settings
@@ -55,7 +60,7 @@ export default class DataStoreController {
         settingsStore.set({...value})
     }
 
-    static updateEngine(value= DataStoreController.engine) {
+    static updateEngine(value = DataStoreController.engine) {
         let updated = {...value}
         if (value.selected.length > 0 || value.lockedEntity)
             updated.selectedEntity = value.entities.get(value.lockedEntity ? value.lockedEntity : value.selected[0])
@@ -68,7 +73,8 @@ export default class DataStoreController {
         engine.set(updated)
     }
 
-    static async save(){
+    static async save() {
+        alert.pushAlert("Saving project", "info")
         const entities = Array.from(Renderer.entitiesMap.values())
         const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
         if (metaData) {
@@ -84,7 +90,7 @@ export default class DataStoreController {
                 return
             }
             alert.pushAlert(
-                "Project saved.",
+                "Project saved",
                 "success"
             )
             return

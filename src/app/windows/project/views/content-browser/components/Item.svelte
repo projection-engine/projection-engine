@@ -17,11 +17,11 @@
     export let data
     export let selected
     export let setSelected
-    export let hook
     export let onRename
     export let submitRename
     export let items
     export let setCurrentDirectory
+    export let currentDirectory
     let currentLabel
     $: {
         currentLabel = data.name
@@ -49,7 +49,7 @@
         on:drop={e => {
         e.preventDefault()
         //e.currentTarget.parentNode.classList.removehovered)
-        handleDropFolder(e.dataTransfer.getData("text"), data.id, hook)
+        handleDropFolder(e.dataTransfer.getData("text"), data.id, currentDirectory, setCurrentDirectory)
     }}
         onContextMenu={() => setSelected(data.id)}
         data-file={type === 0 ? undefined : data.id}
@@ -81,6 +81,7 @@
         on:click={setSelected}
         style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (FileStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
+        title={currentLabel}
 >
 
     {#if metadata.type === FILE_TYPES.COMPONENT}
