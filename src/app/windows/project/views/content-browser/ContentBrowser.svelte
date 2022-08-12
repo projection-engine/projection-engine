@@ -8,7 +8,7 @@
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
-    import Files from "./components/Files.svelte";
+    import Files from "./components/Browser.svelte";
 
     export let hidden = undefined
     export let switchView = undefined

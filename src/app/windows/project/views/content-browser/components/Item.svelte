@@ -23,9 +23,7 @@
     export let setCurrentDirectory
     export let currentDirectory
     let currentLabel
-    $: {
-        currentLabel = data.name
-    }
+    $: currentLabel = data.name
     $: isSelected = selected.includes(data.id)
     $: metadata = {
         path: window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + data.registryID + FILE_TYPES.PREVIEW,
@@ -35,6 +33,7 @@
     }
     const translate = key => Localization.PROJECT.FILES[key]
 </script>
+
 <div
         on:dragover={(e) => {
         if (type === 0) {
@@ -172,7 +171,6 @@
         min-height: 20px;
     }
 
-
     .file {
         position: relative;
         overflow: hidden;
@@ -183,6 +181,7 @@
         flex-direction: column;
         justify-content: space-between;
         height: 115px;
+        max-width: 115px;
         width: 115px;
         outline: transparent 2px solid;
         cursor: pointer;

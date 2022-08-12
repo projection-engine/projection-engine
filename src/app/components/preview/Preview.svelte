@@ -1,6 +1,5 @@
 <script>
 
-    import {onMount} from "svelte";
     import AsyncFS from "../../libs/AsyncFS";
 
     export let drawOnError
@@ -8,7 +7,7 @@
     let error = false
 
     let src
-    onMount(async () => {
+    $: {
         try {
             AsyncFS.read(path).then(res => {
                 if (!res[0]) {
@@ -20,8 +19,7 @@
         } catch (err) {
             error = true
         }
-    })
-
+    }
 </script>
 
 {#if error}

@@ -16,8 +16,8 @@
     let ref
 
     $: orientationName = orientation === "horizontal" ? "height" : "width"
-
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
+
 </script>
 
 
@@ -32,7 +32,7 @@
         }}
             onResizeEnd={() => {
             const bBox = ref.getBoundingClientRect()
-            if (bBox[orientation] <= 30)
+            if (bBox[orientationName] <= 30)
                 hidden = true
         }}
     />

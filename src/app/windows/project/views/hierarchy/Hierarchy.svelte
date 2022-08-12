@@ -7,11 +7,11 @@
     import {v4} from "uuid"
     import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
     import DataStoreController from "../../stores/DataStoreController";
-    import {onDestroy, onMount} from "svelte";
-    import infiniteScroll from "../../libs/infinite-scroll";
+    import {onDestroy} from "svelte";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import Icon from "../../../../components/Icon/Icon.svelte";
+    import InfiniteScroller from "../../libs/InfiniteScroller.svelte";
 
 
     export let hidden = undefined
@@ -41,11 +41,9 @@
     }
     const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu())
-    const scroller = infiniteScroll(v => maxDepth = v, v => offset = v)
-    onMount(() => scroller.onMount(ref))
-    onDestroy(() => {
-        scroller.onDestroy()
 
+
+    onDestroy(() => {
         unsubscribeEngine()
         contextMenuBinding.onDestroy()
     })
@@ -68,9 +66,16 @@
             },
             ID
         )
-
     }
-
+    const updateSelection = (entity, ctrlKey) => {
+        if (ctrlKey) {
+            if (!engine.selected.includes(entity))
+                DataStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
+            else
+                DataStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
+        } else
+            DataStoreController.updateEngine({...engine, selected: [entity]})
+    }
 </script>
 <Header
         orientation={orientation}
@@ -91,10 +96,14 @@
     <div
             bind:this={ref}
             data-self={"-"}
-            data-offset={offset}
             class={"wrapper"}
             id={"tree-view-" + ID}
     >
+        <InfiniteScroller
+                setMaxDepth={v => maxDepth = v}
+                setOffset={v => offset = v}
+                data={toRender}
+        />
         {#if toRender.length > 0}
             {#each toRender as _, i}
                 {#if i < maxDepth && toRender[i + offset]}
@@ -102,21 +111,12 @@
                             nodeRef={toRender[i + offset].node}
                             depth={toRender[i + offset].depth}
                             selected={engine.selected}
-                            setSelected={(entity, ctrlKey) => {
-                            if (ctrlKey) {
-                                if (!engine.selected.includes(entity))
-                                    DataStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
-                                else
-                                    DataStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
-                            } else
-                                DataStoreController.updateEngine({...engine, selected: [entity]})
-                        }}
+                            setSelected={updateSelection}
                             lockedEntity={engine.lockedEntity}
                             setLockedEntity={v => DataStoreController.updateEngine({...engine, lockedEntity: v})}
                             internalID={ID}
                             open={open}
                             setOpen={v => open = v}
-
                     />
                 {/if}
             {/each}

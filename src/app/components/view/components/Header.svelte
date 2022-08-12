@@ -84,7 +84,7 @@
         width: 100%;
         min-height: 28px;
         max-height: 28px;
-        background-color: var(--pj-background-primary);
+        background-color: var(--pj-background-secondary);
         padding: 2px;
         gap: 2px;
 

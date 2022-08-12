@@ -20,7 +20,7 @@
 
     const {ipcRenderer} = window.require("electron")
 
-    const EXECUTION_VIEW =  {
+    const EXECUTION_VIEW = {
         name: "Default",
         bottom: [VIEWS.CONSOLE],
         left: [],
@@ -61,7 +61,7 @@
         right: []
     }
     $: {
-        if(engine.executingAnimation)
+        if (engine.executingAnimation)
             view = EXECUTION_VIEW
         else if (isMetadataLoaded && settings.views[settings.currentView])
             view = settings.views[settings.currentView]
@@ -115,15 +115,17 @@
     }}
     />
     <ContextMenu/>
-    <div class="content">
-        <div class="middle">
-            <ViewsContainer
-                    overlay={engine.executingAnimation}
-                    setTabs={(tabs) => updateView("left", tabs)}
-                    tabs={view.left}
-                    orientation={"vertical"}
-                    resizePosition={"top"}
-            />
+    <div class="middle">
+
+        <ViewsContainer
+                overlay={engine.executingAnimation}
+                setTabs={(tabs) => updateView("left", tabs)}
+                tabs={view.left}
+                leftOffset={"8px"}
+                orientation={"vertical"}
+                resizePosition={"top"}
+        />
+        <div class="content">
             {#if isMetadataLoaded}
                 <Viewport isReady={isReady}>
                     <Canvas
@@ -135,19 +137,19 @@
             {/if}
             <ViewsContainer
                     overlay={engine.executingAnimation}
-                    setTabs={(tabs) => updateView("right", tabs)}
-                    tabs={view.right}
-                    orientation={"vertical"}
-                    leftOffset={"0%"}
+                    setTabs={(tabs) => updateView("bottom", tabs)}
+                    tabs={view.bottom}
                     resizePosition={"top"}
+                    orientation={"horizontal"}
             />
         </div>
         <ViewsContainer
                 overlay={engine.executingAnimation}
-                setTabs={(tabs) => updateView("bottom", tabs)}
-                tabs={view.bottom}
+                setTabs={(tabs) => updateView("right", tabs)}
+                tabs={view.right}
+                orientation={"vertical"}
+                leftOffset={"0%"}
                 resizePosition={"top"}
-                orientation={"horizontal"}
         />
     </div>
     <Shortcuts isEngineReady={isMetadataLoaded}/>
@@ -172,7 +174,6 @@
         background-color: var(--pj-background-quaternary);
         display: flex;
         flex-direction: column;
-        padding: 3px;
         user-select: none;
     }
 
@@ -181,5 +182,7 @@
         height: 100%;
         overflow: hidden;
         display: flex;
+
+        padding: 3px;
     }
 </style>

@@ -6,9 +6,9 @@
     import Debug from "../../libs/engine/libs/debug/Debug";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import DataStoreController from "../../stores/DataStoreController";
-    import infiniteScroll from "../../libs/infinite-scroll";
     import {v4} from "uuid";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import InfiniteScroller from "../../libs/InfiniteScroller.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -26,11 +26,10 @@
     let engine
     let changed
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
-    const scroller = infiniteScroll(v => maxDepth = v, v => offset = v, 18)
+    const LINE_HEIGHT = 18
     const TYPES = Debug.TYPES
 
     onMount(() => {
-        scroller.onMount(ref)
         Debug.registerConsole(internalID, (md, messages) => {
             metadata = md
             toRender = messages
@@ -39,9 +38,7 @@
     })
     onDestroy(() => {
         Debug.unregisterConsole(internalID)
-        scroller.onDestroy()
         unsubscribeEngine()
-
     })
 
     const translate = key => Localization.PROJECT.CONSOLE[key]
@@ -88,7 +85,6 @@
         {translate("TOGGLE_CLEAR_ON_PLAY")}
     </button>
     <div class="metadata">
-
         <Dropdown>
             <button slot="button" style="border: none">
                 {translate("VIEW")}
@@ -124,7 +120,13 @@
     </div>
 </Header>
 
-<div class="wrapper" bind:this={ref} data-offset={offset}>
+<div class="wrapper" bind:this={ref}>
+    <InfiniteScroller
+            setMaxDepth={v => maxDepth = v}
+            setOffset={v => offset = v}
+            branchSize={LINE_HEIGHT}
+            data={toRender}
+    />
     {#each toRender as _, i}
         {#if i < maxDepth && toRender[i + offset]}
             <div
