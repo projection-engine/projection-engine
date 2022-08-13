@@ -1,6 +1,7 @@
 import dispatchEntities, {ENTITY_ACTIONS} from "../stores/dispatch-entities";
 import DataStoreController from "../stores/DataStoreController";
 import Renderer from "./engine/Renderer";
+import COMPONENTS from "./engine/data/COMPONENTS";
 
 export default class ViewportActions {
     static toCopy = []
@@ -8,6 +9,17 @@ export default class ViewportActions {
     static copy(single, target, engine) {
         ViewportActions.toCopy = target ? target : (single ? [engine.selected[0]] : engine.selected)
         alert.pushAlert(`Entities copied (${engine.selected.length}).`, "info")
+    }
+
+    static focus(entity) {
+        if (!entity || entity.components[COMPONENTS.TRANSFORM])
+            return
+        const comp = entity.components[COMPONENTS.TRANSFORM]
+        const t = comp.translation
+
+        window.renderer.camera.radius = 10
+        window.renderer.camera.centerOn = t
+        window.renderer.camera.updateViewMatrix()
     }
 
     static deleteSelected() {
@@ -62,9 +74,14 @@ export default class ViewportActions {
                 payload: engine.selected
             })
     }
+
     static selectAll() {
-        DataStoreController.updateEngine({...DataStoreController.engine, selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)})
+        DataStoreController.updateEngine({
+            ...DataStoreController.engine,
+            selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
+        })
     }
+
     static fixateActive() {
         const engine = DataStoreController.engine
         if (engine.selected[0])

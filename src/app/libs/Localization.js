@@ -49,6 +49,10 @@ export default class Localization {
         }
     }
     static PROJECT = {
+        INFO: {
+            VERSION: "2.5.0-alpha",
+
+        },
         ALERTS: {
             UNDO_SETTINGS: "Undoing settings modification.",
             REDO_SETTINGS: "Redoing settings modification.",
@@ -262,7 +266,7 @@ export default class Localization {
             ABOUT: "About",
             EXIT: "Exit",
             TITLE: "Projection Engine",
-            VERSION: "2.4.0 Alpha",
+            VERSION: Localization.PROJECT.INFO.VERSION,
             FOOTER: "This program comes with absolutely no warranty.",
             MIT: "MIT License",
             COPYRIGHT: "Copyright (c) 2022 Projection Engine"

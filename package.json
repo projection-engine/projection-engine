@@ -1,6 +1,6 @@
 {
   "name": "projection-engine",
-  "version": "2.4.0-alpha",
+  "version": "2.5.0-alpha",
   "description": "Projection Engine is a 3D graphics engine written from ground up to be fast and easy to use",
   "main": "src/electron/index.js",
   "scripts": {
@@ -51,6 +51,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
+    "hotkeys-js": "^3.9.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

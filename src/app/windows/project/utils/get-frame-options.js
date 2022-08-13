@@ -72,23 +72,12 @@ export default function getFrameOptions(engine, s) {
                     },
                 },
                 {
-                    label: "Viewport Metrics",
-                    icon: !settings.visible.metricsViewport ? undefined : "check",
+                    label: "Metrics",
+                    icon: !settings.visible.metrics ? undefined : "check",
                     onClick: () => {
                         settings.visible = {
                             ...settings.visible,
-                            metricsViewport: !settings.visible.metricsViewport
-                        }
-                        DataStoreController.updateSettings(settings)
-                    },
-                },
-                {
-                    label: "Shortcuts",
-                    icon: !settings.visible.shortcuts ? undefined : "check",
-                    onClick: () => {
-                        settings.visible = {
-                            ...settings.visible,
-                            shortcuts: !settings.visible.shortcuts
+                            metrics: !settings.visible.metrics
                         }
                         DataStoreController.updateSettings(settings)
                     },

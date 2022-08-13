@@ -14,7 +14,6 @@
 
 <VerticalTabs
         absolute={true}
-        globalStyle={settings.visible.metricsViewport ? "bottom: 25px" : undefined}
         tabs={[
         {
             label: translate("CAMERA"),

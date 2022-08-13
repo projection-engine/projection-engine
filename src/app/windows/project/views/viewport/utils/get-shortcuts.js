@@ -33,6 +33,11 @@ export default function getShortcuts() {
             }
         },
         {
+            label: "Focus",
+            require: [KEYS.Home],
+            callback: () => ViewportActions.focus(DataStoreController.engine.selectedEntity)
+        },
+        {
             label: "Scale",
             require: [KEYS.KeyS],
             callback: () => {

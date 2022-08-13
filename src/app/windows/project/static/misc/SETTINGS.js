@@ -68,7 +68,6 @@ export default {
     INITIALIZED: false,
     visible: {
         sideBarViewport: true,
-        metricsViewport: true,
-        shortcuts: true
+        metrics: true
     }
 }

@@ -7,7 +7,7 @@
     import InitializeWindow from "./libs/initialize-window";
     import dispatchEntities, {ENTITY_ACTIONS} from "./stores/dispatch-entities";
     import getFrameOptions from "./utils/get-frame-options";
-    import Shortcuts from "./views/shortcuts/Shortcuts.svelte";
+    import Shortcuts from "./views/metrics/Metrics.svelte";
     import Canvas from "./views/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import parseEntityObject from "./utils/parse-entity-object";

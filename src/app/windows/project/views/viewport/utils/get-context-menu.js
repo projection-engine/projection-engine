@@ -1,6 +1,7 @@
 import updateCursor from "./update-cursor"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import DataStoreController from "../../../stores/DataStoreController";
+import ViewportActions from "../../../libs/ViewportActions";
 
 export default function getContextMenu(engine) {
 
@@ -8,7 +9,10 @@ export default function getContextMenu(engine) {
         {
             label: "Select all",
             onClick: () => {
-              DataStoreController.updateEngine({...engine, selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)})
+                DataStoreController.updateEngine({
+                    ...engine,
+                    selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
+                })
             },
             shortcut: ["A"]
         },
@@ -102,19 +106,7 @@ export default function getContextMenu(engine) {
         {
             label: "Focus",
             icon: "place",
-            onClick: () => {
-
-                const entity = engine.selectedEntity
-                const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
-                if (entity && comp) {
-                    const t = comp.translation
-
-                    window.renderer.camera.radius = 10
-                    window.renderer.camera.centerOn = t
-
-                    window.renderer.camera.updateViewMatrix()
-                }
-            }
+            onClick: () => ViewportActions.focus(engine.selectedEntity)
         },
         {
             label: "Fixate active",
@@ -136,7 +128,7 @@ export default function getContextMenu(engine) {
             shortcut: ["Delete"],
             icon: "delete_forever",
             label: "Delete",
-            onClick:  () => DataStoreController.deleteSelected()
+            onClick: () => DataStoreController.deleteSelected()
         },
 
     ]

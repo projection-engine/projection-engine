@@ -94,7 +94,7 @@
             <button
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
-                    data-highlight={settings.gizmo === GIZMOS.NONE ? "filled" : undefined}
+                    data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
                     on:click={() => DataStoreController.updateSettings({...settings, gizmo: GIZMOS.NONE})}>
                 <Icon>highlight_alt</Icon>
                 <ToolTip content={translate("SELECTION")}/>

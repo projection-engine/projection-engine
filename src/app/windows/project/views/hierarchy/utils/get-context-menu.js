@@ -194,19 +194,7 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Focus",
             icon: "place",
-            onClick: (target) => {
-                const t = target.getAttribute("data-node")
-                const entity = Renderer.entitiesMap.get(t)
-                const comp = entity ? entity.components[COMPONENTS.TRANSFORM] : undefined
-                if (entity && comp) {
-                    const t = comp.translation
-
-                    window.renderer.camera.radius = 10
-                    window.renderer.camera.centerOn = t
-
-                    window.renderer.camera.updateViewMatrix()
-                }
-            }
+            onClick: (target) => ViewportActions.focus(Renderer.entitiesMap.get(target.getAttribute("data-node")))
         },
     ]
 }

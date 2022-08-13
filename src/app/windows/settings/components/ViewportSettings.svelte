@@ -21,18 +21,11 @@
             label={translate("SIDE_BAR")}
     />
     <Checkbox
-            checked={settings.visible.metricsViewport}
+            checked={settings.visible.metrics}
             handleCheck={() => {
-            update("visible",  {...settings.visible, metricsViewport: !settings.visible.metricsViewport})
+            update("visible",  {...settings.visible, metrics: !settings.visible.metrics})
         }}
             label={translate("METRICS")}
-    />
-    <Checkbox
-            checked={settings.visible.shortcuts}
-            handleCheck={() => {
-            update("visible",  {...settings.visible, shortcuts: !settings.visible.shortcuts})
-        }}
-            label={translate("SHORTCUTS")}
     />
 </Accordion>
 

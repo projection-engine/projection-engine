@@ -96,7 +96,7 @@
         if (isReady)
             EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     }
-    $: isSelectBoxDisabled = settings.gizmo === GIZMOS.CURSOR
+    $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 </script>
 
 
@@ -136,39 +136,30 @@
             {/if}
         {/if}
     </div>
-
-    <div
-            id={INFORMATION_CONTAINER.CONTAINER}
-            class={"info-container"}
-            style={"display:"  + (settings.visible.metricsViewport ? "flex" : "none")}>
-        <div id={INFORMATION_CONTAINER.FPS}></div>
-        <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
-    </div>
-
     {#if !engine.executingAnimation}
         <SelectBox
                 targetElementID={RENDER_TARGET}
                 disabled={isSelectBoxDisabled}
                 setSelected={(_, startCoords, endCoords) => {
-            if (startCoords && endCoords) {
-                drawIconsToBuffer()
-                const depthFBO = EngineLoop.renderMap.get("depthPrePass").frameBuffer
-                const size = {
-                    w: depthFBO.width,
-                    h: depthFBO.height
-                }
-                const nStart = Conversion.toQuadCoord(startCoords, size)
-                const nEnd = Conversion.toQuadCoord(endCoords, size)
+                    if (startCoords && endCoords) {
+                        drawIconsToBuffer()
+                        const depthFBO = EngineLoop.renderMap.get("depthPrePass").frameBuffer
+                        const size = {
+                            w: depthFBO.width,
+                            h: depthFBO.height
+                        }
+                        const nStart = Conversion.toQuadCoord(startCoords, size)
+                        const nEnd = Conversion.toQuadCoord(endCoords, size)
 
-                try {
-                    const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
-                    WORKER.postMessage({entities: window.renderer.entities, data})
-                    WORKER.onmessage = ({data: selected}) => DataStoreController.updateEngine({...engine, selected })
-                } catch (err) {
-                    console.error(err, startCoords, nStart)
-                }
-            }
-        }}
+                        try {
+                            const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
+                            WORKER.postMessage({entities: window.renderer.entities, data})
+                            WORKER.onmessage = ({data: selected}) => DataStoreController.updateEngine({...engine, selected })
+                        } catch (err) {
+                            console.error(err, startCoords, nStart)
+                        }
+                    }
+                }}
                 target={RENDER_TARGET}
                 selected={[]}
                 nodes={[]}
@@ -196,22 +187,4 @@
     }
 
 
-    .info-container {
-        height: 23px;
-        font-size: .7rem;
-        display: flex;
-        gap: 4px;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 4px;
-        background: var(--pj-background-tertiary);
-        color: var(--pj-color-secondary);
-    }
-
-    .info-container > * {
-        display: flex;
-        gap: 4px;
-        justify-content: flex-start;
-        align-items: center;
-    }
 </style>

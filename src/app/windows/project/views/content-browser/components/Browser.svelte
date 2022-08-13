@@ -5,12 +5,12 @@
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
-    import bindShortcut from "../../shortcuts/libs/bind-shortcut";
     import getShortcuts from "../utils/get-shortcuts";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
+    import HotKeys from "../../metrics/libs/HotKeys";
 
     export let fileType
     export let setFileType
@@ -24,34 +24,29 @@
     export let navigationHistory
     export let setCurrentDirectory
 
-    let cardDimensions = {
-        width: 115,
-        height: 115
-    }
+    let cardDimensions = {width: 115, height: 115}
     let ref
     let maxDepth = 0
     let offset = 0
     let currentItem
     let elementsPerRow = 0
-
     let resizeOBS
+
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
-    const shortcutBinding = bindShortcut({
-        focusTargetLabel: translate("TITLE"),
-        focusTargetIcon: "folder",
-        actions: shortcutOptions
-    })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
     $: contextMenuOptions = getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
-    $: shortcutOptions = getShortcuts(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected)
     $: contextMenuBinding.rebind(contextMenuOptions)
-    $: shortcutBinding.rebind(ref, false, shortcutOptions)
 
     onMount(() => {
-        shortcutBinding.onMount(ref)
+        HotKeys.bindAction(
+            ref,
+            getShortcuts(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected),
+            "folder",
+            translate("TITLE")
+        )
         elementsPerRow = Math.round(ref.offsetWidth / cardDimensions.height)
         let timeout
         resizeOBS = new ResizeObserver(() => {
@@ -61,7 +56,7 @@
         resizeOBS.observe(ref)
     })
     onDestroy(() => {
-        shortcutBinding.onDestroy(ref)
+        HotKeys.unbindAction(ref)
         contextMenuBinding.onDestroy()
         resizeOBS.disconnect()
     })

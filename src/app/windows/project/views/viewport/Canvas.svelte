@@ -1,6 +1,5 @@
 <script>
     import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
-    import bindShortcut from "../shortcuts/libs/bind-shortcut";
     import {onDestroy, onMount} from "svelte";
     import EditorRenderer from "../../libs/engine-extension/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
@@ -10,51 +9,46 @@
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import Packager from "../../libs/engine/libs/builder/Packager";
+    import HotKeys from "../metrics/libs/HotKeys";
 
     export let onReady
     export let isExecuting
 
     const TRIGGERS = ["data-viewport"]
     let canvasRef = null
-    let initialized = false
     let done = false
     let engine = {}
     let settings = {}
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
     const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
-    const shortcutBinding = bindShortcut({
-        focusTargetLabel: Localization.PROJECT.VIEWPORT.TITLE,
-        focusTargetIcon: "window",
-        actions: getShortcuts()
-    })
 
     const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu(engine))
-    onMount(() => shortcutBinding.onMount(canvasRef))
+
+    onMount(() => {
+        HotKeys.bindAction(
+            canvasRef,
+            getShortcuts(),
+            "window",
+            Localization.PROJECT.VIEWPORT.TITLE
+        )
+        Packager.buildWindow(canvasRef, window.imageWorker)
+            .then(() => {
+                window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
+                onReady()
+                done = true
+                DataStoreController.updateEngine({...engine, viewportInitialized: true})
+            })
+    })
+
     onDestroy(() => {
-        shortcutBinding.onDestroy(canvasRef)
+        HotKeys.unbindAction(canvasRef)
         unsubscribeEngine()
         unsubscribeSettings()
         contextMenuBinding.onDestroy()
     })
 
-    $: {
-        shortcutBinding.rebind(canvasRef)
-        if (canvasRef && !initialized) {
-            initialized = true
-            Packager.buildWindow(canvasRef, window.imageWorker)
-                .then(() => {
-                    window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
-                    onReady()
-                    done = true
-                    DataStoreController.updateEngine({...engine, viewportInitialized: true})
-                })
-
-        }
-        if (done)
-            updateRenderer(  engine, settings)
-    }
-
+    $: if (done) updateRenderer(engine, settings)
 </script>
 
 <canvas
