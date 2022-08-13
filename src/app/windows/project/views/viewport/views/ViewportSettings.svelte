@@ -8,7 +8,7 @@
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import ProbeComponent from "../../../libs/engine/templates/components/ProbeComponent";
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
-    import dispatchEntities, {ENTITY_ACTIONS} from "../../../libs/engine-extension/dispatch-entities";
+    import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
     import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";

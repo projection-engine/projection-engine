@@ -1,4 +1,4 @@
-import COMPONENTS from "../../engine/data/COMPONENTS"
+import COMPONENTS from "../../../../engine/data/COMPONENTS"
 
 export default function getEntityTranslation(el) {
     const comp = el.components[COMPONENTS.TRANSFORM]

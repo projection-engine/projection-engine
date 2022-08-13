@@ -1,5 +1,5 @@
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
-import * as shaderCode from "../shaders/SELECTED.glsl"
+import * as shaderCode from "../templates/shaders/SELECTED.glsl"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
 import Renderer from "../../engine/Renderer";

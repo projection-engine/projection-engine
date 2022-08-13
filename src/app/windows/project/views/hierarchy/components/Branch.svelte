@@ -5,6 +5,8 @@
     import Packager from "../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
     import Renderer from "../../../libs/engine/Renderer";
+    import DataStoreController from "../../../stores/DataStoreController";
+    import {v4} from "uuid";
 
     const LEFT_BUTTON = 0
     export let depth = undefined
@@ -44,6 +46,50 @@
         }
     })();
 
+    const handler = (e) => {
+        switch (e.type){
+            case "mousedown":
+                if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
+                    setSelected(nodeRef.id, e.ctrlKey)
+                break
+            case "dragstart":
+                e.dataTransfer.setData("text", nodeRef.id)
+                break
+            case "dragleave":
+                e.preventDefault()
+                ref.style.background = "transparent";
+                break
+            case "dragover":
+                e.preventDefault()
+                ref.style.background = "rgb(203 110 53 / 50%)";
+                break
+            case "drop":{
+
+                e.preventDefault()
+                ref.style.background = "transparent";
+                const src = e.dataTransfer.getData("text")
+                const entityDragged = Renderer.entitiesMap.get(src)
+                console.log(entityDragged)
+                if(entityDragged) {
+                    entityDragged.parent = nodeRef
+                    nodeRef.children.push(entityDragged)
+
+
+                    const ID = v4()
+                    window.addEntityWorkerListener(() => {
+                        DataStoreController.updateEngine({...DataStoreController.engine, changeID: ID})
+                    }, ID)
+                    window.entityWorker.postMessage({
+                        type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
+                        payload: Renderer.entitiesMap,
+                        actionID: ID
+                    })
+
+                }
+                break
+            }
+        }
+    }
 
 </script>
 
@@ -57,33 +103,13 @@
             data-selected={""}
             data-parentopen={open[nodeRef.parent?.id] ? "-" : ""}
             style={"padding-left:" +  (depth * 23 + "px")}
-            on:mousedown={e => {
-            if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
-                setSelected(nodeRef.id, e.ctrlKey)
-    }}
-            on:dragover={e => {
-        e.preventDefault()
+            on:mousedown={handler}
+            on:dragover={handler}
+            on:dragleave={handler}
+            on:drop={handler}
+            on:dragstart={handler}
+            draggable="true"
 
-        ref.style.background = "rgb(203 110 53 / 50%)";
-    }}
-            on:dragleave={e => {
-        e.preventDefault()
-        ref.style.background = "transparent";
-    }}
-            on:drop={e => {
-        e.preventDefault()
-        ref.style.background = "transparent";
-        const src = e.dataTransfer.getData("text")
-        const entityDragged = Renderer.entitiesMap.get(src)
-        if(entityDragged) {
-            nodeRef.children.push(entityDragged)
-
-            window.entityWorker.postMessage({
-                type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-                payload: Renderer.entitiesMap
-            })
-        }
-    }}
     >
         <div class="summary hierarchy-branch">
             {#if nodeRef.children.length > 0}
@@ -125,25 +151,22 @@
                 </button>
                 <div
                         class="label hierarchy-branch"
-                        draggable="true"
-                        onDragStart={e => {
-                    e.dataTransfer.setData("text", nodeRef.id)
-                }}
                 >
                     {nodeRef.name}
                 </div>
             </div>
             <button
                     class="buttonSmall hierarchy-branch"
+                    style="margin-right: 8px"
                     on:click={() => {
-                Renderer.entitiesMap.get(nodeRef.id).active = !active
-                Packager.packageLights()
-                if(!active)
-                    window.renderer.activeEntitiesSize--
-                else
-                    window.renderer.activeEntitiesSize++
-                active = !active
-            }}>
+                        Renderer.entitiesMap.get(nodeRef.id).active = !active
+                        Packager.packageLights()
+                        if(!active)
+                            window.renderer.activeEntitiesSize--
+                        else
+                            window.renderer.activeEntitiesSize++
+                        active = !active
+                    }}>
                 <Icon styles="font-size: .9rem">
                     {#if active}
                         visibility

@@ -10,7 +10,7 @@
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
-    import InfiniteScroller from "../../../libs/InfiniteScroller.svelte";
+    import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
 
     export let fileType
     export let setFileType

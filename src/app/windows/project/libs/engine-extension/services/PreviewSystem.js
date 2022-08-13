@@ -1,12 +1,12 @@
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/libs/instances/MeshInstance"
-import EditorCamera from "../camera/EditorCamera"
+import EditorCamera from "../libs/camera/EditorCamera"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import MaterialInstance from "../../engine/libs/instances/MaterialInstance"
 import MaterialRenderer from "../../engine/services/MaterialRenderer";
 import Renderer from "../../engine/Renderer";
-import EditorEngine from "../EditorEngine";
+import EditorRenderer from "../EditorRenderer";
 
 function toBase64( fbo) {
     const gpu = window.gpu
@@ -109,7 +109,7 @@ export default class PreviewSystem {
         else if (materialMesh instanceof MaterialInstance){
             const [ viewMatrix, camPosition ] = this.cameraData
             MaterialRenderer.drawMesh({
-                mesh: EditorEngine.sphereMesh,
+                mesh: EditorRenderer.sphereMesh,
                 camPosition,
                 viewMatrix,
                 projectionMatrix: this.projection,
@@ -129,7 +129,7 @@ export default class PreviewSystem {
         }
         this.frameBuffer.stopMapping()
         response= toBase64(this.frameBuffer)
-        EditorEngine.sphereMesh.finish()
+        EditorRenderer.sphereMesh.finish()
         window.gpu.bindVertexArray(null)
         return response
     }

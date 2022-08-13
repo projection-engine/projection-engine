@@ -1,13 +1,14 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import COMPONENTS from "../../engine/data/COMPONENTS"
-import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-import Conversion from "../../engine/services/Conversion"
-import getEntityTranslation from "./getEntityTranslation"
-import INFORMATION_CONTAINER from "../../../static/misc/INFORMATION_CONTAINER"
-import DataStoreController from "../../../stores/DataStoreController";
-import ViewportPicker from "../../engine/services/ViewportPicker";
+import COMPONENTS from "../../../../engine/data/COMPONENTS"
+import TRANSFORMATION_TYPE from "../../../../../static/misc/TRANSFORMATION_TYPE"
+import Conversion from "../../../../engine/services/Conversion"
+import getEntityTranslation from "../utils/get-entity-translation"
+import INFORMATION_CONTAINER from "../../../../../static/misc/INFORMATION_CONTAINER"
+import DataStoreController from "../../../../../stores/DataStoreController";
+import ViewportPicker from "../../../../engine/services/ViewportPicker";
+import EngineLoop from "../../../../engine/libs/loop/EngineLoop";
 
-let gpu
+let transformationSystem
 export default class Gizmo {
     target = []
     clickedAxis = -1
@@ -33,8 +34,6 @@ export default class Gizmo {
     key
 
     constructor(sys) {
-
-        gpu = window.gpu
         this.drawID = (...params) => sys.drawToDepthSampler(...params)
         this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
         this.gizmoShader = sys.gizmoShader
@@ -120,7 +119,6 @@ export default class Gizmo {
         if (pickID === 0)
             this.onMouseUp(true)
         else {
-
             this.tracking = true
             window.gpu.canvas.requestPointerLock()
             this.renderTarget.style.display = "block"
@@ -134,12 +132,15 @@ export default class Gizmo {
         selected,
         transformationType
     ) {
+        if (!transformationSystem)
+            transformationSystem = EngineLoop.miscMap.get("transformations")
         if (!selected[0]) {
             this.mainEntity = undefined
             return
         }
+
         this.transformationType = transformationType
-        if (!this.translation || this.mainEntity !== selected[0]) {
+        if (!this.translation || transformationSystem.hasUpdatedItem || this.mainEntity !== selected[0]) {
             this.targetEntities = selected
             this.mainEntity = selected[0]
             this.translation = getEntityTranslation(this.mainEntity)
@@ -147,7 +148,9 @@ export default class Gizmo {
                 const t = this.mainEntity.components[COMPONENTS.TRANSFORM]
                 this.targetRotation = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
             }
-        } else {
+        }
+
+        if (this.translation && this.mainEntity === selected[0]) {
             if (this.updateTransformationRealtime)
                 this.translation = getEntityTranslation(this.mainEntity)
             this.#drawGizmo()

@@ -1,8 +1,8 @@
-import Entity from "../../engine/templates/basic/Entity"
-import COMPONENTS from "../../engine/data/COMPONENTS"
-import PickComponent from "../../engine/templates/components/PickComponent"
-import TransformComponent from "../../engine/templates/components/TransformComponent"
-import Transformation from "../../engine/services/Transformation"
+import Entity from "../../../../engine/templates/basic/Entity"
+import COMPONENTS from "../../../../engine/data/COMPONENTS"
+import PickComponent from "../../../../engine/templates/components/PickComponent"
+import TransformComponent from "../../../../engine/templates/components/TransformComponent"
+import Transformation from "../../../../engine/services/Transformation"
 
 export default function mapEntity(axis, type) {
     const e = new Entity(undefined)

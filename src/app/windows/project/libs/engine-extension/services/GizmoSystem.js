@@ -1,9 +1,9 @@
-import Translation from "../gizmo/Translation"
-import Rotation from "../gizmo/Rotation"
-import Scale from "../gizmo/Scale"
+import Translation from "../libs/gizmo/Translation"
+import Rotation from "../libs/gizmo/Rotation"
+import Scale from "../libs/gizmo/Scale"
 import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
-import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
+import * as gizmoShaderCode from "../templates/shaders/GIZMO.glsl"
 import getPickerId from "../../engine/utils/get-picker-id"
 import * as shaderCode from "../../engine/data/shaders/PICK.glsl"
 import EngineLoop from "../../engine/libs/loop/EngineLoop";

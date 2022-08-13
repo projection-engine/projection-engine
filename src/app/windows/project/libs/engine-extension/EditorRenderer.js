@@ -1,8 +1,8 @@
 import Renderer from "../engine/Renderer"
 import {STEPS_CUBE_MAP} from "../engine/libs/passes/rendering/SpecularProbePass"
-import Wrapper from "./systems/Wrapper"
+import Wrapper from "./services/Wrapper"
 import MaterialInstance from "../engine/libs/instances/MaterialInstance"
-import * as debugCode from "./shaders/DEBUG.glsl"
+import * as debugCode from "./templates/shaders/DEBUG.glsl"
 import * as shaderCode from "../engine/data/shaders/FALLBACK.glsl"
 import DATA_TYPES from "../engine/data/DATA_TYPES"
 import SHADING_MODELS from "../../static/misc/SHADING_MODELS"
@@ -10,13 +10,13 @@ import {STEPS_LIGHT_PROBE} from "../engine/libs/passes/rendering/DiffuseProbePas
 import Packager from "../engine/libs/builder/Packager"
 import ENVIRONMENT from "../engine/data/ENVIRONMENT"
 import MeshInstance from "../engine/libs/instances/MeshInstance"
-import EditorCamera from "./camera/EditorCamera"
-import CameraEvents from "./camera/CameraEvents"
+import EditorCamera from "./libs/camera/EditorCamera"
+import CameraEvents from "./libs/camera/CameraEvents"
 import sphere from "./data/SPHERE.json"
 import camera from "./data/CAMERA.json"
 import EngineLoop from "../engine/libs/loop/EngineLoop";
 
-export default class EditorEngine extends Renderer {
+export default class EditorRenderer extends Renderer {
     gizmo
     cursor
     selected = []
@@ -44,7 +44,7 @@ export default class EditorEngine extends Renderer {
             id: "shading-models"
         })
 
-        EditorEngine.sphereMesh = new MeshInstance({
+        EditorRenderer.sphereMesh = new MeshInstance({
             ...sphere,
             uvs: [],
             tangents: [],

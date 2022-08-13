@@ -1,11 +1,11 @@
 import {vec4} from "gl-matrix"
-import MeshInstance from "../../engine/libs/instances/MeshInstance"
-import COMPONENTS from "../../engine/data/COMPONENTS"
-import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-import Gizmo from "./Gizmo"
-import mapEntity from "./mapEntity"
+import MeshInstance from "../../../engine/libs/instances/MeshInstance"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
+import TRANSFORMATION_TYPE from "../../../../static/misc/TRANSFORMATION_TYPE"
+import Gizmo from "./libs/Gizmo"
+import mapEntity from "./utils/map-entity"
 
-import mesh from "../data/SCALE_GIZMO.json"
+import mesh from "../../data/SCALE_GIZMO.json"
 
 const MOVEMENT_SCALE = .001
 

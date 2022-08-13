@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Entity from "../../../libs/engine/templates/basic/Entity";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../libs/engine-extension/dispatch-entities";
+import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
@@ -30,9 +30,32 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getContextMenu() {
-    return [
+export default function getContextMenu(open, setOpen) {
+    const SELECTION = [
 
+        {
+            label: "Select all",
+            onClick: () => ViewportActions.selectAll()
+        },
+        {
+            label: "Invert selection",
+            onClick: () => ViewportActions.invertSelection()
+        },
+        {
+            label: "Select none",
+            onClick: () => DataStoreController.updateEngine({...DataStoreController.engine, selected: []})
+        },
+        {
+            label: "Close all",
+            onClick: () => setOpen({})
+        }
+    ]
+    return [
+        ...SELECTION.map(v => ({
+            ...v,
+            requiredTrigger: "data-self"
+        })),
+        {divider: true, requiredTrigger: "data-self"},
         {
             requiredTrigger: "data-self",
             label: "Empty entity",
@@ -63,28 +86,29 @@ export default function getContextMenu() {
             label: "Paste",
             onClick: () => ViewportActions.paste()
         },
-        {divider: true, requiredTrigger: "data-self"},
+        {divider: true, requiredTrigger: "data-node"},
+        ...SELECTION.map(v => ({
+            ...v,
+            requiredTrigger: "data-node"
+        })),
+        {divider: true, requiredTrigger: "data-node"},
         {
-            requiredTrigger: "data-self",
-            label: "Select all",
-            onClick: () => ViewportActions.selectAll()
-        },
-        {
-            requiredTrigger: "data-self",
-            label: "Invert selection",
-            onClick: () => ViewportActions.invertSelection()
-        },
-        {
-            requiredTrigger: "data-self",
-            label: "Select none",
-            onClick: () => DataStoreController.updateEngine({...DataStoreController.engine, selected: []})
+            requiredTrigger: "data-node",
+            label: "Close parent",
+            onClick: (target) => {
+                const newOpen = {...open}
+                const node = Renderer.entitiesMap.get(target.getAttribute("data-node"))
+                if (!node)
+                    return
+                delete newOpen[node.parent.id]
+                setOpen(newOpen)
+            }
         },
         {
             requiredTrigger: "data-node",
             label: "Paste",
             onClick: (target) => ViewportActions.paste(target.getAttribute("data-node"))
         },
-
         {
             requiredTrigger: "data-node",
             label: "Copy",

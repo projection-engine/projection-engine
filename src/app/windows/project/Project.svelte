@@ -5,7 +5,7 @@
     import loadProject from "./utils/load-project";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import dispatchEntities, {ENTITY_ACTIONS} from "./libs/engine-extension/dispatch-entities";
+    import dispatchEntities, {ENTITY_ACTIONS} from "./stores/dispatch-entities";
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./views/shortcuts/Shortcuts.svelte";
     import Canvas from "./views/viewport/Canvas.svelte";

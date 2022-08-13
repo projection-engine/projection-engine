@@ -1,5 +1,5 @@
 import {mat4, quat} from "gl-matrix"
-import CameraPostProcessing from "../../engine/templates/basic/CameraPostProcessing";
+import CameraPostProcessing from "../../../engine/templates/basic/CameraPostProcessing";
 
 export default class EditorCamera extends CameraPostProcessing{
     radius = 25

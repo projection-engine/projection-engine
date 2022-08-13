@@ -1,6 +1,6 @@
 import FileSystem from "../../../../../libs/FileSystem"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../libs/engine-extension/dispatch-entities";
+import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";

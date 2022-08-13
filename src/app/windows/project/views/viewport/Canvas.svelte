@@ -2,7 +2,7 @@
     import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
     import bindShortcut from "../shortcuts/libs/bind-shortcut";
     import {onDestroy, onMount} from "svelte";
-    import EditorEngine from "../../libs/engine-extension/EditorEngine";
+    import EditorRenderer from "../../libs/engine-extension/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
     import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
@@ -44,7 +44,7 @@
             initialized = true
             Packager.buildWindow(canvasRef, window.imageWorker)
                 .then(() => {
-                    window.renderer = new EditorEngine({w: settings.resolution[0], h: settings.resolution[1]})
+                    window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
                     onReady()
                     done = true
                     DataStoreController.updateEngine({...engine, viewportInitialized: true})

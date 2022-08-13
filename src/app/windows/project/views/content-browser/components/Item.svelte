@@ -194,12 +194,4 @@
         background: var(--pj-background-primary);
         box-shadow: var(--pj-boxshadow);
     }
-
-    .file:active {
-        box-shadow: none;
-        border-color: transparent;
-        background: var(--pj-accent-color) !important;
-    }
-
-
 </style>

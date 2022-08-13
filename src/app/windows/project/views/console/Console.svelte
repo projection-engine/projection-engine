@@ -8,7 +8,7 @@
     import DataStoreController from "../../stores/DataStoreController";
     import {v4} from "uuid";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
-    import InfiniteScroller from "../../libs/InfiniteScroller.svelte";
+    import InfiniteScroller from "../../../../components/infinite-scroller/InfiniteScroller.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -217,6 +217,7 @@
 
 
     .wrapper {
+        position: relative;
         font-size: .7rem;
 
         width: 100%;

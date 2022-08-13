@@ -74,13 +74,14 @@ onDestroy(() => {
 </div>
 <div bind:this={modal} class="modal">
     <div class="container">
-        <div style="padding: 16px 8px; ">
-            <h4 style="margin-top: 0px">
+        <div style="padding: 8px; width: 100%">
+            <h4 style="margin-top: 0; margin-bottom: 8px">
                 {translate("CREATE")}
             </h4>
             <Input
                     placeholder={translate("PROJECT_NAME")}
                     onEnter={create}
+                    width="100%"
                     height={"25px"}
                     directChange={v => input = v}
             />
@@ -88,6 +89,7 @@ onDestroy(() => {
         <div class="footer">
             <button
                     data-accentbutton="-"
+                    class="button"
                     on:click={() => create(input)}>
                 <Icon>check</Icon>
                 {translate("CREATE")}
@@ -97,6 +99,10 @@ onDestroy(() => {
 </div>
 
 <style>
+    .button{
+        display: flex;
+        align-items: center;
+    }
     .container{
         width: 50vw;
         height: fit-content;

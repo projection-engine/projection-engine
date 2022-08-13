@@ -29,11 +29,10 @@ onDestroy(() => {
 </script>
 
 
-<Dropdown hideArrow={true} disabled={store.components.length === 0}>
+<Dropdown hideArrow={true}>
     <button
             slot="button"
             data-accentbutton="-"
-            disabled={store.components.length === 0}
             style="width: 100%;"
     >
         <Icon>add</Icon>

@@ -1,18 +1,19 @@
-import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
-import * as gizmoShaderCode from "../shaders/GIZMO.glsl"
+import ShaderInstance from "../../../engine/libs/instances/ShaderInstance"
+import * as gizmoShaderCode from "../../templates/shaders/GIZMO.glsl"
 
 import {mat4, quat, vec3} from "gl-matrix"
-import MeshInstance from "../../engine/libs/instances/MeshInstance"
-import TextureInstance from "../../engine/libs/instances/TextureInstance"
-import circle from "../../../static/icons/circle.png"
-import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-import COMPONENTS from "../../engine/data/COMPONENTS"
-import Conversion from "../../engine/services/Conversion"
-import getEntityTranslation from "./getEntityTranslation"
-import mapEntity from "./mapEntity"
-import mesh from "../data/ROTATION_GIZMO.json"
-import DataStoreController from "../../../stores/DataStoreController";
-import ViewportPicker from "../../engine/services/ViewportPicker";
+import MeshInstance from "../../../engine/libs/instances/MeshInstance"
+import TextureInstance from "../../../engine/libs/instances/TextureInstance"
+import circle from "../../../../static/icons/circle.png"
+import TRANSFORMATION_TYPE from "../../../../static/misc/TRANSFORMATION_TYPE"
+import COMPONENTS from "../../../engine/data/COMPONENTS"
+import Conversion from "../../../engine/services/Conversion"
+import getEntityTranslation from "./utils/get-entity-translation"
+import mapEntity from "./utils/map-entity"
+import mesh from "../../data/ROTATION_GIZMO.json"
+import DataStoreController from "../../../../stores/DataStoreController";
+import ViewportPicker from "../../../engine/services/ViewportPicker";
+import EngineLoop from "../../../engine/libs/loop/EngineLoop";
 
 const CSS = {
     backdropFilter: "blur(10px) brightness(70%)",
@@ -28,7 +29,7 @@ const CSS = {
     fontSize: ".75rem",
     display: "none"
 }
-let gpu
+let transformationSystem
 const toDeg = 57.29, toRad = 3.1415 / 180
 export default class Rotation {
     clickedAxis = -1
@@ -45,8 +46,8 @@ export default class Rotation {
     started = false
 
     constructor(sys) {
-        gpu = window.gpu
-        const targetID = window.gpu.canvas.id + "-gizmo"
+
+        const targetID = gpu.canvas.id + "-gizmo"
         if (document.getElementById(targetID) !== null)
             this.renderTarget = document.getElementById(targetID)
         else {
@@ -222,18 +223,24 @@ export default class Rotation {
         selected,
         transformationType
     ) {
+        if (!transformationSystem)
+            transformationSystem = EngineLoop.miscMap.get("transformations")
         if(!selected[0]) {
             this.mainEntity = undefined
             return
         }
         this.transformationType = transformationType
-        if (!this.translation || this.mainEntity !== selected[0]) {
+        if (!this.translation || transformationSystem.hasUpdatedItem || this.mainEntity !== selected[0]) {
             this.targetEntities = selected
             this.mainEntity = selected[0]
             this.translation = getEntityTranslation(this.mainEntity)
-            if (this.translation)
-                this.targetRotation = this.mainEntity.components[COMPONENTS.TRANSFORM].rotationQuat
-        } else
+            if (this.translation) {
+                const t = this.mainEntity.components[COMPONENTS.TRANSFORM]
+                this.targetRotation = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
+            }
+        }
+
+        if (this.translation && this.mainEntity === selected[0])
             this.#drawGizmo()
     }
 

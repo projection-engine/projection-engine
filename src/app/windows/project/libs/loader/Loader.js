@@ -1,4 +1,4 @@
-import dispatchEntities, {ENTITY_ACTIONS} from "../engine-extension/dispatch-entities"
+import dispatchEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-entities"
 import FileSystem from "../../../../libs/FileSystem"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"

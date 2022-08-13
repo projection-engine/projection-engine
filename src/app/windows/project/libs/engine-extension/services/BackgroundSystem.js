@@ -1,4 +1,4 @@
-import * as shaderCode from "../shaders/SKYBOX.glsl"
+import * as shaderCode from "../templates/shaders/SKYBOX.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import {mat4} from "gl-matrix"
 import Renderer from "../../engine/Renderer";

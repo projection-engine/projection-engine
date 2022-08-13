@@ -11,7 +11,7 @@
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import Icon from "../../../../components/Icon/Icon.svelte";
-    import InfiniteScroller from "../../libs/InfiniteScroller.svelte";
+    import InfiniteScroller from "../../../../components/infinite-scroller/InfiniteScroller.svelte";
 
 
     export let hidden = undefined
@@ -40,13 +40,12 @@
         }
     }
     const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS)
-    $: contextMenuBinding.rebind(getContextMenu())
-
-
+    $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
     onDestroy(() => {
         unsubscribeEngine()
         contextMenuBinding.onDestroy()
     })
+
     $: {
         window.entityWorker.postMessage({
             type: ENTITY_WORKER_ACTIONS.GET_HIERARCHY,
@@ -96,7 +95,7 @@
     <div
             bind:this={ref}
             data-self={"-"}
-            class={"wrapper"}
+            class="wrapper"
             id={"tree-view-" + ID}
     >
         <InfiniteScroller
@@ -152,7 +151,8 @@
         display: grid;
         align-content: flex-start;
         width: 100%;
-        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x: auto;
 
         height: 100%;
         max-height: 100%;

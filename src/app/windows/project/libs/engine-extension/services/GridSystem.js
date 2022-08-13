@@ -1,4 +1,4 @@
-import * as shaderCode from "../shaders/GRID.glsl"
+import * as shaderCode from "../templates/shaders/GRID.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import QuadInstance from "../../engine/libs/instances/QuadInstance"
 
