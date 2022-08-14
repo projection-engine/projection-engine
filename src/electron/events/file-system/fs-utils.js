@@ -6,7 +6,7 @@ const {directoryStructure} = require("./fs-essentials")
 const {dialog, ipcMain} = require("electron")
 const fsUtils = require("fs")
 const path = require("path")
-const ROUTES = require("../../../static/ROUTES")
+const ROUTES = require("../../../assets/ROUTES")
 
 
 module.exports = function FS() {

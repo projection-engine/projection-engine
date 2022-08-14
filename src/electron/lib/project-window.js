@@ -1,8 +1,8 @@
 const {BrowserWindow, ipcMain, screen} = require("electron")
 const Window = require("../Windows")
-const FRAME_EVENTS = require("../../static/FRAME_EVENTS")
+const FRAME_EVENTS = require("../../assets/FRAME_EVENTS")
 const path = require("path");
-const ROUTES = require("../../static/ROUTES");
+const ROUTES = require("../../assets/ROUTES");
 const {v4} = require("uuid");
 const windowLifeCycle = require("./window-life-cycle");
 const loader = require("../events/project-loader/project-loader");
@@ -10,7 +10,7 @@ const loadMetadata = require("../events/project-loader/lib/load-metadata");
 
 const getBasePath = require("./get-base-path");
 const os = require("os");
-const RELATIVE_PATH_LOGO = "../../assets/logo.png"
+const RELATIVE_PATH_LOGO = "../../data/logo.png"
 const settingsWindow = require("./settings-window");
 
 module.exports = function ProjectWindow(handleClose, data) {

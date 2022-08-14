@@ -1,6 +1,6 @@
 const getPrimitive = require("../utils/get-primitive")
 const {v4} = require("uuid")
-const FILE_TYPES = require("../../../../static/FILE_TYPES")
+const FILE_TYPES = require("../../../../assets/FILE_TYPES")
 const parseMaterial = require("../utils/parse-material")
 const writeData = require("../utils/write-data");
 const getNormalizedName = require("../utils/get-normalized-name")

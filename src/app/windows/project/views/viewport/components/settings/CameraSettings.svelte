@@ -1,6 +1,6 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
-    import Localization from "../../../../../../libs/Localization";
+    import Localization from "../../../../../../data/Localization";
     import DataStoreController from "../../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
 

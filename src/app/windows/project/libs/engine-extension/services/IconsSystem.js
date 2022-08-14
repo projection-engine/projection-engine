@@ -5,9 +5,9 @@ import * as iconShaderCode from "../templates/shaders/ICON.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import VBOInstance from "../../engine/libs/instances/VBOInstance"
-import pointLightIcon from "../../../static/icons/point_light.png"
-import directionalLightIcon from "../../../static/icons/directional_light.png"
-import probeIcon from "../../../static/icons/probe.png"
+import pointLightIcon from "../../../data/icons/point_light.png"
+import directionalLightIcon from "../../../data/icons/directional_light.png"
+import probeIcon from "../../../data/icons/probe.png"
 import EngineLoop from "../../engine/libs/loop/EngineLoop";
 import Renderer from "../../engine/Renderer";
 

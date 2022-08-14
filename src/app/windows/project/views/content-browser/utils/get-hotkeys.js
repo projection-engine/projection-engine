@@ -1,6 +1,6 @@
 import selection from "./selection";
 import SELECTION_TYPES from "../templates/SELECTION_TYPES";
-import FilesAPI from "../../../../../libs/files/FilesAPI";
+import FilesAPI from "../../../../../data/files/FilesAPI";
 import handleDelete from "./handle-delete";
 import KEYS from "../../../libs/engine/data/KEYS";
 import FileStoreController from "../../../stores/FileStoreController";

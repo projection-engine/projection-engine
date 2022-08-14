@@ -1,5 +1,5 @@
-import ENTITY_WORKER_ACTIONS from "../windows/project/static/misc/ENTITY_WORKER_ACTIONS"
-import COMPONENTS from "../windows/project/libs/engine/data/COMPONENTS"
+import ENTITY_WORKER_ACTIONS from "../../windows/project/data/misc/ENTITY_WORKER_ACTIONS"
+import COMPONENTS from "../../windows/project/libs/engine/data/COMPONENTS"
 
 export default function entityWorker() {
     const src = `

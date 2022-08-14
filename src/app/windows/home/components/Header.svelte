@@ -2,10 +2,10 @@
 
     import Input from "../../../components/input/Input.svelte";
     import Icon from "../../../components/Icon/Icon.svelte";
-    import FilesAPI from "../../../libs/files/FilesAPI";
+    import FilesAPI from "../../../data/files/FilesAPI";
     import {onDestroy, onMount} from "svelte";
     import createPortal from "../../../components/create-portal";
-    import AssetAPI from "../../../libs/files/AssetAPI";
+    import AssetAPI from "../../../data/files/AssetAPI";
 
     export let setProjectsToShow
     export let projectsToShow

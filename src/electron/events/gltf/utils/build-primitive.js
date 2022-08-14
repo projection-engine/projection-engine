@@ -1,4 +1,4 @@
-const FILE_TYPES = require("../../../../static/FILE_TYPES");
+const FILE_TYPES = require("../../../../assets/FILE_TYPES");
 const getPrimitive = require("./get-primitive");
 const {v4} = require("uuid");
 const PrimitiveProcessor = require("../libs/PrimitiveProcessor");

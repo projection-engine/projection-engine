@@ -1,6 +1,6 @@
 <script>
     import handleDropFolder from "../utils/handle-drop-folder"
-    import FilesAPI from "../../../../../libs/files/FilesAPI"
+    import FilesAPI from "../../../../../data/files/FilesAPI"
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 

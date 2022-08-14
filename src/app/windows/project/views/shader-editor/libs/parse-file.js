@@ -1,9 +1,9 @@
-import FilesAPI from "../../../../../libs/files/FilesAPI";
+import FilesAPI from "../../../../../data/files/FilesAPI";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import BOARD_SIZE from "../data/BOARD_SIZE";
 import FileStoreController from "../../../stores/FileStoreController";
-import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+import RegistryAPI from "../../../../../data/files/RegistryAPI";
 
 export default async function parseFile(file, setNodes, setLinks) {
     const res = await RegistryAPI.readRegistryFile(file.registryID)

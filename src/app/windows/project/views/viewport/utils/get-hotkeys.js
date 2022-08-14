@@ -1,7 +1,7 @@
 import KEYS from "../../../libs/engine/data/KEYS";
 import ViewportActions from "../../../libs/ViewportActions";
 import DataStoreController from "../../../stores/DataStoreController";
-import GIZMOS from "../../../static/misc/GIZMOS";
+import GIZMOS from "../../../data/misc/GIZMOS";
 
 export default function getHotkeys() {
     return [

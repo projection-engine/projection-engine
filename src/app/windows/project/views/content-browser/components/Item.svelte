@@ -1,13 +1,13 @@
 <script>
-    import FilesAPI from "../../../../../libs/files/FilesAPI"
+    import FilesAPI from "../../../../../data/files/FilesAPI"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
-    import FILE_TYPES from "../../../../../../static/FILE_TYPES";
+    import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
     import getFileIcon from "../utils/get-file-icon";
     import FileStoreController from "../../../stores/FileStoreController";
-    import Localization from "../../../../../libs/Localization";
+    import Localization from "../../../../../data/Localization";
 
     const {shell} = window.require("electron")
 

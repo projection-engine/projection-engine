@@ -1,11 +1,11 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../data/Localization";
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
 
     import Branch from "./components/Branch.svelte"
     import {v4} from "uuid"
-    import ENTITY_WORKER_ACTIONS from "../../static/misc/ENTITY_WORKER_ACTIONS"
+    import ENTITY_WORKER_ACTIONS from "../../data/misc/ENTITY_WORKER_ACTIONS"
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
@@ -39,7 +39,9 @@
             entities = engine.entities
         }
     }
-    const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS)
+    const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS, (trigger, element) => {
+        DataStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
+    })
     $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
     onDestroy(() => {
         unsubscribeEngine()
@@ -89,7 +91,6 @@
             searchString={searchedEntity}
             setSearchString={v => searchedEntity = v}
     />
-
 </Header>
 {#if !hidden}
     <div

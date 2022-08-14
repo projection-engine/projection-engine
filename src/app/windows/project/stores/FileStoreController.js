@@ -1,11 +1,11 @@
 import {get} from "svelte/store";
 import {fileStore} from "./file-store";
-import {getCall} from "../../../libs/NodeFS";
-import FilesAPI from "../../../libs/files/FilesAPI"
+import {getCall} from "../../../data/NodeFS";
+import FilesAPI from "../../../data/files/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
-import ROUTES from "../../../../static/ROUTES";
+import ROUTES from "../../../../assets/ROUTES";
 import ContentBrowser from "../views/content-browser/ContentBrowser.svelte";
-import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
+import ContentBrowserAPI from "../../../data/files/ContentBrowserAPI";
 
 export default class FileStoreController {
     static data = get(fileStore)

@@ -1,9 +1,9 @@
 <script>
-    import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
+    import RENDER_TARGET from "../../data/misc/RENDER_TARGET";
     import {onDestroy, onMount} from "svelte";
     import EditorRenderer from "../../libs/engine-extension/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../data/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";

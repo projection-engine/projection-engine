@@ -1,20 +1,20 @@
 <script>
-    import GIZMOS from "../../static/misc/GIZMOS"
+    import GIZMOS from "../../data/misc/GIZMOS"
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
     import Conversion from "../../libs/engine/services/Conversion";
-    import entitySearchWorker from "../../../../web-workers/entity-search-worker";
+    import entitySearchWorker from "../../../../data/web-workers/entity-search-worker";
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
-    import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
-    import Localization from "../../../../libs/Localization";
+    import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
+    import Localization from "../../../../data/Localization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import SelectBox from "../../../../components/select-box/SelectBox.svelte";
-    import RENDER_TARGET from "../../static/misc/RENDER_TARGET";
+    import RENDER_TARGET from "../../data/misc/RENDER_TARGET";
     import drawIconsToBuffer from "./utils/draw-icons-to-buffer";
     import EngineLoop from "../../libs/engine/libs/loop/EngineLoop";
     import ViewportPicker from "../../libs/engine/services/ViewportPicker";

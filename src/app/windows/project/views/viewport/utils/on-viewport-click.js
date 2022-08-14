@@ -1,4 +1,4 @@
-import GIZMOS from "../../../static/misc/GIZMOS"
+import GIZMOS from "../../../data/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
 import Conversion from "../../../libs/engine/services/Conversion";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";

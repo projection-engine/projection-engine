@@ -1,6 +1,6 @@
-import FilesAPI from "../../../../../libs/files/FilesAPI"
+import FilesAPI from "../../../../../data/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
-import Localization from "../../../../../libs/Localization";
+import Localization from "../../../../../data/Localization";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries

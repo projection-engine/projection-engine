@@ -13,7 +13,8 @@
 
     let mounted = false
     onMount(() => {
-        onFocus(trigger, selected)
+        if (onFocus)
+            onFocus(trigger, selected)
         callback()
     })
     let optionsToRender

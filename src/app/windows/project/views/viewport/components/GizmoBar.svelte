@@ -1,6 +1,6 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../static/misc/TRANSFORMATION_TYPE"
-    import GIZMOS from "../../../static/misc/GIZMOS"
+    import TRANSFORMATION_TYPE from "../../../data/misc/TRANSFORMATION_TYPE"
+    import GIZMOS from "../../../data/misc/GIZMOS"
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import "../css/Viewport.css"

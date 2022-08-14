@@ -1,15 +1,15 @@
 import dispatchEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-entities"
-import FilesAPI from "../../../../libs/files/FilesAPI"
+import FilesAPI from "../../../../data/files/FilesAPI"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
-import FILE_TYPES from "../../../../../static/FILE_TYPES";
+import FILE_TYPES from "../../../../../assets/FILE_TYPES";
 import DataStoreController from "../../stores/DataStoreController";
 import FileStoreController from "../../stores/FileStoreController";
 import Entity from "../engine/templates/basic/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import MeshInstance from "../engine/libs/instances/MeshInstance";
 import initializeEntity from "./utils/initialize-entity";
-import RegistryAPI from "../../../../libs/files/RegistryAPI";
+import RegistryAPI from "../../../../data/files/RegistryAPI";
 
 export default class Loader {
     static async mesh(objLoaded, id) {

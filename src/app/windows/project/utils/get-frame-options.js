@@ -1,6 +1,6 @@
 import DataStoreController from "../stores/DataStoreController";
 import loadScripts from "./load-scripts";
-import ROUTES from "../../../../static/ROUTES";
+import ROUTES from "../../../../assets/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 

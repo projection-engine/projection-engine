@@ -1,8 +1,8 @@
-import NodeFS from "../../../../../libs/NodeFS"
-import FilesAPI from "../../../../../libs/files/FilesAPI"
+import NodeFS from "../../../../../data/NodeFS"
+import FilesAPI from "../../../../../data/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
-import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+import RegistryAPI from "../../../../../data/files/RegistryAPI";
+import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
 
 const pathResolve = window.require("path")
 export default async function handleDropFolder(event, target, currentDirectory, setCurrentDirectory) {

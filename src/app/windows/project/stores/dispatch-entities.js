@@ -1,7 +1,7 @@
 import PickComponent from "../libs/engine/templates/components/PickComponent"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
 import {v4} from "uuid"
-import ENTITY_WORKER_ACTIONS from "../static/misc/ENTITY_WORKER_ACTIONS"
+import ENTITY_WORKER_ACTIONS from "../data/misc/ENTITY_WORKER_ACTIONS"
 import DataStoreController from "./DataStoreController";
 
 export const ENTITY_ACTIONS = {

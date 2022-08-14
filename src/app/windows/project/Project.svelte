@@ -14,7 +14,7 @@
     import DataStoreController from "./stores/DataStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
-    import ROUTES from "../../../static/ROUTES";
+    import ROUTES from "../../../assets/ROUTES";
     import VIEWS from "../../components/view/VIEWS";
 
 

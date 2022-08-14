@@ -3,9 +3,9 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
-    import FilesAPI from "../../../../libs/files/FilesAPI"
+    import FilesAPI from "../../../../data/files/FilesAPI"
     import compiler from "./libs/compiler"
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../data/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";

@@ -1,8 +1,8 @@
-import NodeFS from "../../../../../libs/NodeFS"
-import FilesAPI from "../../../../../libs/files/FilesAPI"
+import NodeFS from "../../../../../data/NodeFS"
+import FilesAPI from "../../../../../data/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
-import Localization from "../../../../../libs/Localization";
-import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+import Localization from "../../../../../data/Localization";
+import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
 
 export default async function onCreate(parent) {
     const directories = await ContentBrowserAPI.foldersFromDirectory(FileStoreController.ASSETS_PATH + parent)

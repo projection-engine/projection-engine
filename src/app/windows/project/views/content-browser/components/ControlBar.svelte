@@ -1,7 +1,7 @@
 <script>
 
-    import NodeFS from "../../../../../libs/NodeFS"
-    import FilesAPI from "../../../../../libs/files/FilesAPI"
+    import NodeFS from "../../../../../data/NodeFS"
+    import FilesAPI from "../../../../../data/files/FilesAPI"
     import importFile from "../utils/import-file"
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
@@ -9,11 +9,11 @@
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../../components/input/Input.svelte";
-    import FILE_TYPES from "../../../../../../static/FILE_TYPES"
+    import FILE_TYPES from "../../../../../../assets/FILE_TYPES"
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
     import FileStoreController from "../../../stores/FileStoreController";
-    import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+    import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
 
     export let translate
     export let setSelected

@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../../libs/files/FilesAPI"
+import FilesAPI from "../../../../../data/files/FilesAPI"
 
 export default class NavigationHistory {
 

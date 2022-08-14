@@ -4,7 +4,7 @@
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import CAMERA_GIZMO from "../../../static/misc/CAMERA_GIZMO"
+    import CAMERA_GIZMO from "../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
     import DataStoreController from "../../../stores/DataStoreController";
 

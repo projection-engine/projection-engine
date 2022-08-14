@@ -1,4 +1,4 @@
-import GIZMOS from "../../../static/misc/GIZMOS";
+import GIZMOS from "../../../data/misc/GIZMOS";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Renderer from "../../../libs/engine/Renderer";
 

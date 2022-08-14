@@ -1,14 +1,14 @@
 import createNewFolder from "./create-new-folder"
 import handleDelete from "./handle-delete"
-import NodeFS from "../../../../../libs/NodeFS"
+import NodeFS from "../../../../../data/NodeFS"
 
-import FilesAPI from "../../../../../libs/files/FilesAPI"
+import FilesAPI from "../../../../../data/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
-import FILE_TYPES from "../../../../../../static/FILE_TYPES";
+import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
 import importFile from "./import-file";
-import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
-import AssetAPI from "../../../../../libs/files/AssetAPI";
+import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
+import AssetAPI from "../../../../../data/files/AssetAPI";
 
 
 const {shell} = window.require("electron")
@@ -186,6 +186,18 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                         await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
                         FileStoreController.refreshFiles().catch()
                     }
+                },
+
+                {
+                    label: translate("NEW_LEVEL"),
+                    icon: "level",
+                    disabled: true
+                },
+                {
+                    label: translate("NEW_STYLESHEET"),
+                    icon: "level",
+
+                    disabled: true
                 },
             ]
         },

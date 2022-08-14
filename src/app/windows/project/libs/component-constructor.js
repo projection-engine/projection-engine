@@ -1,8 +1,8 @@
 import FileStoreController from "../stores/FileStoreController";
-import FilesAPI from "../../../libs/files/FilesAPI"
+import FilesAPI from "../../../data/files/FilesAPI"
 import DataStoreController from "../stores/DataStoreController";
 import Packager from "./engine/libs/builder/Packager";
-import RegistryAPI from "../../../libs/files/RegistryAPI";
+import RegistryAPI from "../../../data/files/RegistryAPI";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     const found = entity.scripts.findIndex(s => s.id === scriptID)

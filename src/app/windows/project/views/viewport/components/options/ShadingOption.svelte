@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../../../static/misc/SHADING_MODELS"
+    import SHADING_MODELS from "../../../../data/misc/SHADING_MODELS"
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
     import DataStoreController from "../../../../stores/DataStoreController";

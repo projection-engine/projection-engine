@@ -3,7 +3,7 @@ const fs = require("fs");
 const {v4} = require("uuid");
 const writeData = require("./write-data");
 const getNormalizedName = require("../utils/get-normalized-name")
-const FILE_TYPES = require("../../../../static/FILE_TYPES");
+const FILE_TYPES = require("../../../../assets/FILE_TYPES");
 
 
 module.exports = async function loadTexture(basePath, texture, textures, images, partialPath, projectPath, name, index) {

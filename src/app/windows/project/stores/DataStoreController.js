@@ -1,12 +1,12 @@
 import {engine} from "./engine-store";
 import {settingsStore} from "./settings-store";
-import ENGINE from "../static/misc/ENGINE";
-import {SETTINGS} from "../../../../static/WINDOWS";
-import FilesAPI from "../../../libs/files/FilesAPI"
+import ENGINE from "../data/misc/ENGINE";
+import {SETTINGS} from "../../../../assets/WINDOWS";
+import FilesAPI from "../../../data/files/FilesAPI"
 import DataHistoryController from "./DataHistoryController";
 import Renderer from "../libs/engine/Renderer";
-import AssetAPI from "../../../libs/files/AssetAPI";
-import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
+import AssetAPI from "../../../data/files/AssetAPI";
+import ContentBrowserAPI from "../../../data/files/ContentBrowserAPI";
 
 let initialized = false
 export default class DataStoreController {

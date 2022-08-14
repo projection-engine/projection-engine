@@ -1,7 +1,7 @@
-import Localization from "../../../libs/Localization";
+import Localization from "../../../data/Localization";
 
-import FilesAPI from "../../../libs/files/FilesAPI";
-import NodeFS from "../../../libs/NodeFS";
+import FilesAPI from "../../../data/files/FilesAPI";
+import NodeFS from "../../../data/NodeFS";
 
 
 export default async function refreshProjects(path) {

@@ -1,9 +1,9 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import COMPONENTS from "../../../../engine/data/COMPONENTS"
-import TRANSFORMATION_TYPE from "../../../../../static/misc/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../../../../data/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../../../engine/services/Conversion"
 import getEntityTranslation from "../utils/get-entity-translation"
-import INFORMATION_CONTAINER from "../../../../../static/misc/INFORMATION_CONTAINER"
+import INFORMATION_CONTAINER from "../../../../../data/misc/INFORMATION_CONTAINER"
 import DataStoreController from "../../../../../stores/DataStoreController";
 import ViewportPicker from "../../../../engine/services/ViewportPicker";
 import EngineLoop from "../../../../engine/libs/loop/EngineLoop";

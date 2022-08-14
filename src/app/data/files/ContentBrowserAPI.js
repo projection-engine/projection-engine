@@ -1,10 +1,10 @@
 import NodeFS from "../NodeFS";
 import FilesAPI from "./FilesAPI";
-import FILE_TYPES from "../../../static/FILE_TYPES";
+import FILE_TYPES from "../../../assets/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/data/IMAGE_WORKER_ACTIONS";
-import ROUTES from "../../../static/ROUTES";
+import ROUTES from "../../../assets/ROUTES";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")

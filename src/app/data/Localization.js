@@ -220,6 +220,8 @@ export default class Localization {
             TRANSFORMATION: "Transformation"
         },
         FILES: {
+            NEW_STYLESHEET: "New Stylesheet",
+            NEW_LEVEL: "New Level",
             SUCCESSFUL_DELETE: "Items deleted",
             CREATE: "Create",
             OPENING_FILE: "Opening file",
@@ -242,10 +244,10 @@ export default class Localization {
             REFRESH: "Refresh",
             REFRESHING: "Refreshing content-browser",
             GO_TO_PARENT: "Go to parent",
-            NEW_SYSTEM: "New system",
-            NEW_COMPONENT: "New component",
-            NEW_MATERIAL: "New material",
-            NEW_MATERIAL_INSTANCE: "New material instance",
+
+            NEW_COMPONENT: "New Component",
+            NEW_MATERIAL: "New Material",
+            NEW_MATERIAL_INSTANCE: "New Material Instance",
 
             ASSETS: "Assets",
             BOOKMARKS: "Bookmarks",

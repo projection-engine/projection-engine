@@ -1,9 +1,9 @@
 import {v4, v4 as uuidv4} from "uuid"
 import NodeFS from "../NodeFS"
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/data/IMAGE_WORKER_ACTIONS"
-import FILE_TYPES from "../../../static/FILE_TYPES";
+import FILE_TYPES from "../../../assets/FILE_TYPES";
 import FileStoreController from "../../windows/project/stores/FileStoreController";
-import ROUTES from "../../../static/ROUTES";
+import ROUTES from "../../../assets/ROUTES";
 import RegistryAPI from "./RegistryAPI";
 
 const pathRequire = window.require("path")

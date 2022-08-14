@@ -1,6 +1,6 @@
 import DataStoreController from "./DataStoreController";
 import {settingsStore} from "./settings-store";
-import Localization from "../../../libs/Localization";
+import Localization from "../../../data/Localization";
 
 export default class DataHistoryController {
     static targets = {

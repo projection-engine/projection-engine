@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../data/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";

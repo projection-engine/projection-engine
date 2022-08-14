@@ -1,11 +1,11 @@
 <script>
-    import SHORTCUTS_ID from "../../static/misc/SHORTCUTS_ID"
+    import SHORTCUTS_ID from "../../data/misc/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import DataStoreController from "../../stores/DataStoreController";
     import HotKeys from "./libs/HotKeys";
-    import Localization from "../../../../libs/Localization";
-    import INFORMATION_CONTAINER from "../../static/misc/INFORMATION_CONTAINER";
+    import Localization from "../../../../data/Localization";
+    import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     const {shell} = window.require("electron")
     let settings = {}

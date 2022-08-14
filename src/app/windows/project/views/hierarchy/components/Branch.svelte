@@ -1,7 +1,7 @@
 <script>
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import ENTITY_WORKER_ACTIONS from "../../../static/misc/ENTITY_WORKER_ACTIONS";
+    import ENTITY_WORKER_ACTIONS from "../../../data/misc/ENTITY_WORKER_ACTIONS";
     import Packager from "../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
     import Renderer from "../../../libs/engine/Renderer";

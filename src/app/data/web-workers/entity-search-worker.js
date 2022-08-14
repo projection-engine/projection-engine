@@ -1,4 +1,4 @@
-import COMPONENTS from "../windows/project/libs/engine/data/COMPONENTS";
+import COMPONENTS from "../../windows/project/libs/engine/data/COMPONENTS";
 
 export default function entitySearchWorker(){
     const src = ` 

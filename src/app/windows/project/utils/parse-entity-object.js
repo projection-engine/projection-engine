@@ -1,4 +1,4 @@
-import FilesAPI from "../../../libs/files/FilesAPI"
+import FilesAPI from "../../../data/files/FilesAPI"
 import Entity from "../libs/engine/templates/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
 import DirectionalLightComponent from "../libs/engine/templates/components/DirectionalLightComponent"
@@ -12,7 +12,7 @@ import Transformation from "../libs/engine/services/Transformation"
 import ProbeComponent from "../libs/engine/templates/components/ProbeComponent"
 import CameraComponent from "../libs/engine/templates/components/CameraComponent"
 import componentConstructor from "../libs/component-constructor";
-import RegistryAPI from "../../../libs/files/RegistryAPI";
+import RegistryAPI from "../../../data/files/RegistryAPI";
 
 async function readFromRegistry(fileID) {
     return new Promise(resolve => {

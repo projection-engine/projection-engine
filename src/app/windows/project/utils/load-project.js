@@ -1,7 +1,7 @@
-import CHANNELS from "../../../../static/CHANNELS";
+import CHANNELS from "../../../../assets/CHANNELS";
 import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
 import parseMaterialObject from "./parse-material-object";
-import ROUTES from "../../../../static/ROUTES";
+import ROUTES from "../../../../assets/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 export default function loadProject(callbackMesh, callbackEntities, callbackMaterials){

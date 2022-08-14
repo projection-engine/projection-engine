@@ -4,15 +4,15 @@
     import Card from "./components/Card.svelte";
     import Header from "./components/Header.svelte";
     import Recent from "./components/Recent.svelte";
-    import Localization from "../../libs/Localization";
-    import ROUTES from "../../../static/ROUTES";
+    import Localization from "../../data/Localization";
+    import ROUTES from "../../../assets/ROUTES";
     import getBasePath from "../../../electron/lib/get-base-path";
     import {onMount} from "svelte";
 
     import refreshProjects from "./utils/refresh-projects";
     import Alert from "../../components/alert/Alert.svelte";
-    import FilesAPI from "../../libs/files/FilesAPI";
-    import NodeFS from "../../libs/NodeFS";
+    import FilesAPI from "../../data/files/FilesAPI";
+    import NodeFS from "../../data/NodeFS";
 
     const pathLib = window.require("path")
     const os =  window.require("os")

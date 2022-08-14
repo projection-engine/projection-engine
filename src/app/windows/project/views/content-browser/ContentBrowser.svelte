@@ -1,8 +1,8 @@
 <script>
-    import FilesAPI from "../../../../libs/files/FilesAPI"
+    import FilesAPI from "../../../../data/files/FilesAPI"
     import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../data/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
