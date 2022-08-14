@@ -126,7 +126,24 @@ a {
 	background: var(--pj-background-tertiary);
 }
 
+*[data-empty="-"]{
 
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: grid;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	justify-items: center;
+	width: 100%;
+	height: 100%;
+
+	font-size: .8rem;
+	color: var(--pj-color-quaternary);
+
+}
 
 ::-webkit-scrollbar {
 	width: 5px;

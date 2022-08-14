@@ -3,11 +3,11 @@
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
     import Conversion from "../../libs/engine/services/Conversion";
-    import entitySearchWorker from "../../../../data/web-workers/entity-search-worker";
+    import entitySearchWorker from "../../../../libs/web-workers/entity-search-worker";
     import ViewportSettings from "./views/ViewportSettings.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import SideOptions from "./views/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";

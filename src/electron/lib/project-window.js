@@ -10,7 +10,7 @@ const loadMetadata = require("../events/project-loader/lib/load-metadata");
 
 const getBasePath = require("./get-base-path");
 const os = require("os");
-const RELATIVE_PATH_LOGO = "../../data/logo.png"
+const RELATIVE_LOGO_PATH = "../../assets/logo.png"
 const settingsWindow = require("./settings-window");
 
 module.exports = function ProjectWindow(handleClose, data) {
@@ -30,7 +30,7 @@ module.exports = function ProjectWindow(handleClose, data) {
             nodeIntegrationInWorker: true
         },
         autoHideMenuBar: true,
-        icon: path.resolve(__dirname, RELATIVE_PATH_LOGO)
+        icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
     ipcMain.on(ROUTES.LOAD_PROJECT + data.id, async event => {
         await loader(data.id, event.sender)

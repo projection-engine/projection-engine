@@ -1,7 +1,7 @@
 <script>
 
-    import NodeFS from "../../../../../data/NodeFS"
-    import FilesAPI from "../../../../../data/files/FilesAPI"
+    import NodeFS from "../../../../../libs/NodeFS"
+    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import importFile from "../utils/import-file"
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
@@ -12,8 +12,8 @@
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES"
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
-    import FileStoreController from "../../../stores/FileStoreController";
-    import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
+    import CBStoreController from "../../../stores/CBStoreController";
+    import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
     export let translate
     export let setSelected
@@ -75,7 +75,7 @@
                         class="settings-button"
                         on:click={() => {
                         alert.pushAlert(translate("REFRESHING"), "info")
-                        FileStoreController.refreshFiles().then(() => loading = false).catch()
+                        CBStoreController.refreshFiles().then(() => loading = false).catch()
                     }}
                 >
                     <Icon>sync</Icon>
@@ -86,11 +86,11 @@
                         on:click={async () => {
                         let path = currentDirectory.id + FilesAPI.sep + translate("NEW_FOLDER")
 
-                        const existing = ContentBrowserAPI.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
+                        const existing = ContentBrowserAPI.foldersFromDirectory(CBStoreController.ASSETS_PATH + currentDirectory.id)
                         if (existing.length > 0)
                             path += " - " + existing.length
-                        await NodeFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
-                        FileStoreController.refreshFiles().then(() => loading = false).catch()
+                        await NodeFS.mkdir(CBStoreController.ASSETS_PATH + path, {})
+                        CBStoreController.refreshFiles().then(() => loading = false).catch()
                     }}
 
                 >
@@ -102,9 +102,9 @@
                         data-highlight={starred ? "-" : undefined}
                         on:click={() => {
                         if (starred)
-                            FileStoreController.removeBookmark(currentDirectory.id)
+                            CBStoreController.removeBookmark(currentDirectory.id)
                         else
-                            FileStoreController.addBookmark(currentDirectory.id)
+                            CBStoreController.addBookmark(currentDirectory.id)
                     }}
                 >
                     <Icon>star</Icon>
@@ -139,7 +139,7 @@
                     noPlaceHolder={true}
                     noAutoSubmit={true}
                     setSearchString={async (path) => {
-                        if (await NodeFS.exists(FileStoreController.ASSETS_PATH + path))
+                        if (await NodeFS.exists(CBStoreController.ASSETS_PATH + path))
                         setCurrentDirectory({
                             id: path
                         })

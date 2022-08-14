@@ -2,7 +2,7 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import Icon from "../Icon/Icon.svelte";
     import logo from '../../../assets/logo.png';
-    import Localization from "../../data/Localization";
+    import Localization from "../../libs/Localization";
     import About from "./About.svelte";
 
     const {ipcRenderer} = window.require("electron")

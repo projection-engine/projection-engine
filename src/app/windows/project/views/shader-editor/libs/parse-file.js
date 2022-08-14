@@ -1,9 +1,9 @@
-import FilesAPI from "../../../../../data/files/FilesAPI";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import BOARD_SIZE from "../data/BOARD_SIZE";
-import FileStoreController from "../../../stores/FileStoreController";
-import RegistryAPI from "../../../../../data/files/RegistryAPI";
+import CBStoreController from "../../../stores/CBStoreController";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 export default async function parseFile(file, setNodes, setLinks) {
     const res = await RegistryAPI.readRegistryFile(file.registryID)
@@ -22,7 +22,7 @@ export default async function parseFile(file, setNodes, setLinks) {
                     continue
                 Object.keys(node).forEach(o => {
                     if (o !== "inputs" && o !== "output") {
-                        if (o === "texture" && i instanceof TextureSample) i[o] = FileStoreController.data.images.find(i => i.registryID === node[o].registryID)
+                        if (o === "texture" && i instanceof TextureSample) i[o] = CBStoreController.data.images.find(i => i.registryID === node[o].registryID)
                         else {
                             const input = nodeInstance.inputs.find(i => i.key === o)
                             if(input && input.onChange) {

@@ -2,7 +2,7 @@ import {v4, v4 as uuidv4} from "uuid"
 import NodeFS from "../NodeFS"
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/data/IMAGE_WORKER_ACTIONS"
 import FILE_TYPES from "../../../assets/FILE_TYPES";
-import FileStoreController from "../../windows/project/stores/FileStoreController";
+import CBStoreController from "../../windows/project/stores/CBStoreController";
 import ROUTES from "../../../assets/ROUTES";
 import RegistryAPI from "./RegistryAPI";
 
@@ -53,7 +53,7 @@ export default class FilesAPI {
 
         for (let i = 0; i < FilesAPI.registry.length; i++) {
             const r = FilesAPI.registry[i]
-            const rPath = FilesAPI.resolvePath(FileStoreController.ASSETS_PATH + FilesAPI.sep + r.path)
+            const rPath = FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + r.path)
             if (rPath.includes(currentPath))
                 await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + r.id + ".reg"))
         }

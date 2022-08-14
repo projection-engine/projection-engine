@@ -2,8 +2,8 @@ import Node from "./Node"
 import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES"
 import IMAGE_WORKER_ACTIONS from "../../../../libs/engine/data/IMAGE_WORKER_ACTIONS"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import FilesAPI from "../../../../../../data/files/FilesAPI"
-import RegistryAPI from "../../../../../../data/files/RegistryAPI";
+import FilesAPI from "../../../../../../libs/files/FilesAPI"
+import RegistryAPI from "../../../../../../libs/files/RegistryAPI";
 
 
 export const TEXTURE_TYPES = {

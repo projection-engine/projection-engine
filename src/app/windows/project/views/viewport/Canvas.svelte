@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import EditorRenderer from "../../libs/engine-extension/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";

@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../../data/files/FilesAPI"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 
 export default class NavigationHistory {
 
@@ -9,7 +9,7 @@ export default class NavigationHistory {
     }
 
     returnDir() {
-        // const subtraction = this.index === this.data.length?
+        // const subtraction = this.index === this.libs.length?
         if (this.index > 0 && this.data[this.index - 1]) {
             this.index -= 1
             this.setCurrentDirectory({

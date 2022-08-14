@@ -45,6 +45,7 @@
                         if (!attr.nodeName.includes("data-"))
                             continue
                         const has = window.contextMenu.focused.triggers.find(f => attr.nodeName === f)
+
                         if (has)
                             hasAttribute = hasAttribute || has
 

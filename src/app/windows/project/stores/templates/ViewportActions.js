@@ -1,8 +1,8 @@
-import DataStoreController from "./DataStoreController";
+import DataStoreController from "../DataStoreController";
 import {settingsStore} from "./settings-store";
-import Localization from "../../../data/Localization";
+import Localization from "../../../../libs/Localization";
 
-export default class DataHistoryController {
+export default class ViewportActions {
     static targets = {
         settings: "SETTINGS",
         entity: "ENTITY"
@@ -11,7 +11,7 @@ export default class DataHistoryController {
     history = []
 
     pushChange({target, entityID, component, key, changeValue}) {
-        if (target === DataHistoryController.targets.entity || target === DataHistoryController.targets.settings) {
+        if (target === ViewportActions.targets.entity || target === ViewportActions.targets.settings) {
             this.history.push({
                 target,
                 entityID,
@@ -29,7 +29,7 @@ export default class DataHistoryController {
     undo() {
         if (this.index > 0 && this.history[this.index - 1]) {
             this.index -= 1
-            if (this.history[this.index].target === DataHistoryController.targets.settings)
+            if (this.history[this.index].target === ViewportActions.targets.settings)
                 alert.pushAlert(Localization.PROJECT.ALERTS.UNDO_SETTINGS, "info")
             else
                 alert.pushAlert(Localization.PROJECT.ALERTS.UNDO_ENTITIES, "info")
@@ -41,7 +41,7 @@ export default class DataHistoryController {
     redo() {
         if (this.index < 10 && this.history[this.index + 1]) {
             this.index += 1
-            if (this.history[this.index].target === DataHistoryController.targets.settings)
+            if (this.history[this.index].target === ViewportActions.targets.settings)
                 alert.pushAlert(Localization.PROJECT.ALERTS.REDO_SETTINGS, "info")
             else
                 alert.pushAlert(Localization.PROJECT.ALERTS.REDO_ENTITIES, "info")
@@ -51,7 +51,7 @@ export default class DataHistoryController {
 
     #apply() {
         const currentAction = this.history[this.index]
-        if (currentAction.target === DataHistoryController.targets.entity) {
+        if (currentAction.target === ViewportActions.targets.entity) {
             const entity = DataStoreController.engine.entities.get(currentAction.entityID)
             if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
                 entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue

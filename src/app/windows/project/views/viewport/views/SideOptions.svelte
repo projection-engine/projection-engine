@@ -33,9 +33,9 @@
             props: !selectedEntity ? {} : {
                 selected: selectedEntity.views[COMPONENTS.TRANSFORM],
                 entityID: selectedEntity.id,
-                submitRotation: (axis, data) => updateEntityTransformation(axis, data, "rotation", selectedEntity),
-                submitScaling: (axis, data) => updateEntityTransformation(axis, data, "scaling", selectedEntity),
-                submitTranslation: (axis, data) => updateEntityTransformation(axis, data, "translation", selectedEntity),
+                submitRotation: (axis, libs) => updateEntityTransformation(axis, libs, "rotation", selectedEntity),
+                submitScaling: (axis, libs) => updateEntityTransformation(axis, libs, "scaling", selectedEntity),
+                submitTranslation: (axis, libs) => updateEntityTransformation(axis, libs, "translation", selectedEntity),
             }
         }
 

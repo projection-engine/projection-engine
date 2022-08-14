@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../../data/files/FilesAPI";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 
 function map(check, items, elementsPerRow) {
     let newArr = []

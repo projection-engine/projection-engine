@@ -1,9 +1,9 @@
 import selection from "./selection";
 import SELECTION_TYPES from "../templates/SELECTION_TYPES";
-import FilesAPI from "../../../../../data/files/FilesAPI";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import handleDelete from "./handle-delete";
 import KEYS from "../../../libs/engine/data/KEYS";
-import FileStoreController from "../../../stores/FileStoreController";
+import CBStoreController from "../../../stores/CBStoreController";
 
 export default function getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected){
     return  [
@@ -56,13 +56,13 @@ export default function getHotkeys(translate, currentDirectory, setCurrentDirect
             label: translate("CUT"),
             require: [KEYS.ControlLeft, KEYS.KeyX],
             callback: () => {
-                FileStoreController.toCut = selected
+                CBStoreController.toCut = selected
             }
         },
         {
             label: translate("PASTE"),
             require: [KEYS.ControlLeft, KEYS.KeyV],
-            callback: () => FileStoreController.paste(currentDirectory.id, setCurrentDirectory)
+            callback: () => CBStoreController.paste(currentDirectory.id, setCurrentDirectory)
         }
     ]
 }

@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Entity from "../../../libs/engine/templates/basic/Entity";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
+import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
@@ -132,14 +132,7 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Remove entity",
             icon: "delete",
-            onClick: (node) => {
-                const t = node.getAttribute("data-node")
-                const toRemove = getHierarchy(Renderer.entitiesMap.get(t)).map(e => e.id)
-                dispatchEntities({
-                    type: ENTITY_ACTIONS.REMOVE_BLOCK, payload: [...toRemove, t]
-                })
-
-            }
+            onClick: (node) => dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: node.getAttribute("data-node")})
         },
 
         {requiredTrigger: "data-node", divider: true},

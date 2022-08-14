@@ -1,6 +1,6 @@
 <script>
 
-    import NodeFS from "../../data/NodeFS";
+    import NodeFS from "../../libs/NodeFS";
 
     export let drawOnError
     export let path

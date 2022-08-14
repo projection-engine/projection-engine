@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../data/Localization";
+    import Localization from "../../../libs/Localization";
     import logo from "../../../../assets/logo.png"
 
     export let open =undefined

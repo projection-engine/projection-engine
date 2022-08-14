@@ -6,7 +6,7 @@
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import FileStoreController from "../../../stores/FileStoreController";
+    import CBStoreController from "../../../stores/CBStoreController";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../utils/get-native-components";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
@@ -21,7 +21,7 @@ export let entity
 export let translate
 
 let store = {}
-const unsubscribeStore = FileStoreController.getStore(v => store = v)
+const unsubscribeStore = CBStoreController.getStore(v => store = v)
 onDestroy(() => {
     unsubscribeStore()
 })

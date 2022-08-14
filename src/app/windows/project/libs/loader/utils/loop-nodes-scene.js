@@ -1,8 +1,8 @@
 import Entity from "../../engine/templates/basic/Entity";
-import FilesAPI from "../../../../../data/files/FilesAPI";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import MeshInstance from "../../engine/libs/instances/MeshInstance";
 import initializeEntity from "./initialize-entity";
-import RegistryAPI from "../../../../../data/files/RegistryAPI";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 export default async function loopNodesScene(node, parent, index=0) {
     const meshes = [], children = []

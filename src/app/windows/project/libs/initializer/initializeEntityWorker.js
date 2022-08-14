@@ -1,4 +1,4 @@
-import entityWorker from "../../../../data/web-workers/entity-worker";
+import entityWorker from "../../../../libs/web-workers/entity-worker";
 
 export default function initializeEntityWorker() {
     const listeners = {}

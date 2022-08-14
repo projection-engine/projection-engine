@@ -1,6 +1,6 @@
 import {writable} from 'svelte/store';
 
-export const fileStore = writable({
+export const contentBrowserStore = writable({
     bookmarks: [],
     isLoading: true,
     items: [],

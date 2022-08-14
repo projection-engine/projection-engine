@@ -1,18 +1,18 @@
-import {engine} from "./engine-store";
-import {settingsStore} from "./settings-store";
+import {engine} from "./templates/engine-store";
+import {settingsStore} from "./templates/settings-store";
 import ENGINE from "../data/misc/ENGINE";
 import {SETTINGS} from "../../../../assets/WINDOWS";
-import FilesAPI from "../../../data/files/FilesAPI"
-import DataHistoryController from "./DataHistoryController";
+import FilesAPI from "../../../libs/files/FilesAPI"
+import ViewportActions from "./templates/ViewportActions";
 import Renderer from "../libs/engine/Renderer";
-import AssetAPI from "../../../data/files/AssetAPI";
-import ContentBrowserAPI from "../../../data/files/ContentBrowserAPI";
+import AssetAPI from "../../../libs/files/AssetAPI";
+import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 
 let initialized = false
 export default class DataStoreController {
     static engine = ENGINE
     static settings = SETTINGS
-    static history = new DataHistoryController()
+    static history = new ViewportActions()
 
     static undo() {
         DataStoreController.history.undo()
@@ -25,7 +25,7 @@ export default class DataStoreController {
     static saveEntity(entityID, component, key, changeValue) {
 
         DataStoreController.history.pushChange({
-            target: DataHistoryController.targets.entity,
+            target: ViewportActions.targets.entity,
             changeValue,
             entityID,
             component,
@@ -49,11 +49,11 @@ export default class DataStoreController {
 
         if (initialized) {
             DataStoreController.history.pushChange({
-                target: DataHistoryController.targets.settings,
+                target: ViewportActions.targets.settings,
                 changeValue: DataStoreController.settings
             })
             DataStoreController.history.pushChange({
-                target: DataHistoryController.targets.settings,
+                target: ViewportActions.targets.settings,
                 changeValue: value
             })
         }
@@ -69,8 +69,6 @@ export default class DataStoreController {
         else
             updated.selectedEntity = undefined
 
-
-        // TODO - SAVE PREVIOUS VERSION
         DataStoreController.engine = updated
         engine.set(updated)
     }

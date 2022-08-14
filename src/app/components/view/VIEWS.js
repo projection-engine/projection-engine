@@ -3,5 +3,6 @@ export default {
     COMPONENT: "component", 
     FILES: "files", 
     BLUEPRINT: "blueprint",
-    CONSOLE: "console"
+    CONSOLE: "console",
+    UI: "UI"
 }

@@ -35,7 +35,8 @@
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
-        setSelected(element.getAttribute(trigger))
+        if (trigger !== TRIGGERS[0])
+            setSelected(element.getAttribute(trigger))
     })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)

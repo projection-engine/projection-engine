@@ -5,6 +5,7 @@
     import ComponentEditor from "../../../windows/project/views/inspector/Inspector.svelte";
     import VIEWS from "../VIEWS";
     import ShaderEditor from "../../../windows/project/views/shader-editor/ShaderEditor.svelte";
+    import UIHierarchy from "../../../windows/project/views/ui-hierarchy/UIHierarchy.svelte";
 
     export let styles
     export let extendView
@@ -25,6 +26,8 @@
                 return ContentBrowser
             case VIEWS.CONSOLE:
                 return Console
+            case VIEWS.UI:
+                return UIHierarchy
             default:
                 return null
         }

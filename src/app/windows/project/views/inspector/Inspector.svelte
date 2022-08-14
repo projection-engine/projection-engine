@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
@@ -44,7 +44,7 @@
                     engine={engine}
             />
         {:else}
-            <div class="empty">
+            <div data-empty="-">
                 <Icon styles="font-size: 75px">category</Icon>
                 {translate("TITLE")}
             </div>
@@ -54,24 +54,6 @@
 
 
 <style>
-
-
-    .empty {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: grid;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-        width: 100%;
-        height: 100%;
-
-        font-size: .8rem;
-        color: var(--pj-color-quaternary);
-    }
 
 
     .content {

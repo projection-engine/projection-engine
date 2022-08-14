@@ -18,7 +18,7 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
             n.y = (current.y - 25) / window.shaderEditor.scale
             return n
         } else
-            alert.pushAlert("Cannot add two data of " + n.name, "error")
+            alert.pushAlert("Cannot add two libs of " + n.name, "error")
     }
     if (Array.isArray(dataToPush)) {
         const result = dataToPush.map(d => doIt(d)).flat()

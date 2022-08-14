@@ -4,7 +4,7 @@
     import Icon from "../../../../components/Icon/Icon.svelte";
     import DataStoreController from "../../stores/DataStoreController";
     import HotKeys from "./libs/HotKeys";
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     const {shell} = window.require("electron")

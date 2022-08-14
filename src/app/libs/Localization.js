@@ -49,6 +49,10 @@ export default class Localization {
         }
     }
     static PROJECT = {
+        UI: {
+            TITLE: "UI Hierarchy",
+            SEARCH: "Search"
+        },
         INFO: {
             VERSION: "2.5.0-alpha",
 
@@ -282,6 +286,7 @@ export default class Localization {
             SEARCH: "Search"
         },
         VIEWS: {
+            UI: "UI Hierarchy",
             CLOSE: "Close",
             HIERARCHY: "Hierarchy",
             INSPECTOR: "Inspector",

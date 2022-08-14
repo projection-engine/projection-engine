@@ -2,10 +2,10 @@ import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 
 import initializeEntityWorker from "./initializer/initializeEntityWorker"
 import initializeBlueprints from "./initializer/initializeBlueprints"
-import FilesAPI from "../../../data/files/FilesAPI";
+import FilesAPI from "../../../libs/files/FilesAPI";
 import BOARD_SIZE from "../views/shader-editor/data/BOARD_SIZE";
 import compiler from "../views/shader-editor/libs/compiler";
-import AssetAPI from "../../../data/files/AssetAPI";
+import AssetAPI from "../../../libs/files/AssetAPI";
 
 
 export default function InitializeWindow( ) {

@@ -1,17 +1,17 @@
-import FilesAPI from "../../../../../data/files/FilesAPI"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
+import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
-import FileStoreController from "../../../stores/FileStoreController";
+import CBStoreController from "../../../stores/CBStoreController";
 import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
 import Loader from "../../../libs/loader/Loader";
-import RegistryAPI from "../../../../../data/files/RegistryAPI";
-import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()
     if (toImport.length > 0) {
-        const result = await ContentBrowserAPI.importFile(FileStoreController.ASSETS_PATH + currentDirectory.id, toImport)
+        const result = await ContentBrowserAPI.importFile(CBStoreController.ASSETS_PATH + currentDirectory.id, toImport)
         if (toImport.filter(e => e.includes("gltf")).length > 0) {
             let newEntities = [], newMeshes = []
             for (let i in result) {
@@ -38,6 +38,6 @@ export default async function importFile(currentDirectory) {
             dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
         }
         alert.pushAlert("Import successful", "success")
-        FileStoreController.refreshFiles().catch()
+        CBStoreController.refreshFiles().catch()
     }
 }

@@ -17,6 +17,7 @@
             onFocus(trigger, selected)
         callback()
     })
+    $: if(selected) callback()
     let optionsToRender
     let isSubMenu = false
     let parentLabel

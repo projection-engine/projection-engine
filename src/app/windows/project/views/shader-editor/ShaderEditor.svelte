@@ -3,13 +3,13 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
-    import FilesAPI from "../../../../data/files/FilesAPI"
+    import FilesAPI from "../../../../libs/files/FilesAPI"
     import compiler from "./libs/compiler"
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";
-    import FileStoreController from "../../stores/FileStoreController";
+    import CBStoreController from "../../stores/CBStoreController";
     import parseFile from "./libs/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
@@ -30,7 +30,7 @@
 
     let engine
     let fileStore
-    const unsubscribeFiles = FileStoreController.getStore(v => fileStore = v)
+    const unsubscribeFiles = CBStoreController.getStore(v => fileStore = v)
     const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
     onDestroy(() => {
         unsubscribeEngine()

@@ -1,14 +1,14 @@
 import createNewFolder from "./create-new-folder"
 import handleDelete from "./handle-delete"
-import NodeFS from "../../../../../data/NodeFS"
+import NodeFS from "../../../../../libs/NodeFS"
 
-import FilesAPI from "../../../../../data/files/FilesAPI"
-import FileStoreController from "../../../stores/FileStoreController";
+import FilesAPI from "../../../../../libs/files/FilesAPI"
+import CBStoreController from "../../../stores/CBStoreController";
 import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
 import importFile from "./import-file";
-import ContentBrowserAPI from "../../../../../data/files/ContentBrowserAPI";
-import AssetAPI from "../../../../../data/files/AssetAPI";
+import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+import AssetAPI from "../../../../../libs/files/AssetAPI";
 
 
 const {shell} = window.require("electron")
@@ -56,19 +56,19 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             requiredTrigger: "data-folder",
             label: translate("OPEN_WITH_EXPLORER"),
             onClick: (node) => {
-                shell.showItemInFolder(FilesAPI.resolvePath(FileStoreController.ASSETS_PATH + FilesAPI.sep + node.getAttribute("data-folder") + FilesAPI.sep))
+                shell.showItemInFolder(FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + node.getAttribute("data-folder") + FilesAPI.sep))
             }
         },
         {divider: true, requiredTrigger: "data-folder"},
         {
             requiredTrigger: "data-folder",
             label: translate("CUT"),
-            onClick: (node) => FileStoreController.toCut = [node.getAttribute("data-folder")]
+            onClick: (node) => CBStoreController.toCut = [node.getAttribute("data-folder")]
         },
         {
             requiredTrigger: "data-folder",
             label: translate("PASTE"),
-            onClick: (node) => FileStoreController.paste(node.getAttribute("data-folder"), setCurrentDirectory)
+            onClick: (node) => CBStoreController.paste(node.getAttribute("data-folder"), setCurrentDirectory)
         },
 
         // FILE
@@ -91,19 +91,19 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         {
             requiredTrigger: "data-file",
             label: translate("CUT"),
-            onClick: (node) => FileStoreController.toCut = [node.getAttribute("data-file")]
+            onClick: (node) => CBStoreController.toCut = [node.getAttribute("data-file")]
         },
         {
             requiredTrigger: "data-file",
             label: translate("PASTE"),
-            onClick: (node) => FileStoreController.paste(node.getAttribute("data-file"), setCurrentDirectory)
+            onClick: (node) => CBStoreController.paste(node.getAttribute("data-file"), setCurrentDirectory)
         },
 
         // WRAPPER
         {
             requiredTrigger: "data-wrapper",
             label: translate("PASTE"),
-            onClick: () => FileStoreController.paste(currentDirectory, setCurrentDirectory)
+            onClick: () => CBStoreController.paste(currentDirectory, setCurrentDirectory)
         },
         {divider: true, requiredTrigger: "data-wrapper"},
         {
@@ -124,7 +124,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             icon: "refresh",
             onClick: () => {
                 alert.pushAlert(translate("REFRESHING"), "info")
-                FileStoreController.refreshFiles().catch()
+                CBStoreController.refreshFiles().catch()
             }
         },
         {
@@ -143,13 +143,13 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             icon: "create_new_folder",
             onClick: async () => {
                 let path = currentDirectory.id + FilesAPI.sep + "New folder"
-                const existing = await ContentBrowserAPI.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
+                const existing = await ContentBrowserAPI.foldersFromDirectory(CBStoreController.ASSETS_PATH + currentDirectory.id)
                 if (existing.length > 0)
                     path += " - " + existing.length
 
-                const [e] = await NodeFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
+                const [e] = await NodeFS.mkdir(CBStoreController.ASSETS_PATH + path, {})
                 if (!e)
-                    FileStoreController.refreshFiles().catch()
+                    CBStoreController.refreshFiles().catch()
             }
         },
         {
@@ -157,7 +157,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("OPEN_WITH_EXPLORER"),
             icon: "open_in_new",
             onClick: () => {
-                shell.showItemInFolder(FilesAPI.resolvePath(FileStoreController.ASSETS_PATH + FilesAPI.sep + currentDirectory.id))
+                shell.showItemInFolder(FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + currentDirectory.id))
             }
         },
         {divider: true, requiredTrigger: "data-wrapper"},
@@ -172,7 +172,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_MATERIAL"), ".material")
                         AssetAPI.writeAsset(path, JSON.stringify({}))
                             .then(() => {
-                                FileStoreController.refreshFiles()
+                                CBStoreController.refreshFiles()
                             })
                     }
                 },
@@ -184,20 +184,31 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
 
                         await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
-                        FileStoreController.refreshFiles().catch()
+                        CBStoreController.refreshFiles().catch()
                     }
                 },
 
                 {
                     label: translate("NEW_LEVEL"),
-                    icon: "level",
-                    disabled: true
+                    icon: "play_circle_filled",
+                    onClick: async () => {
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_LEVEL"), FILE_TYPES.LEVEL)
+
+                        await AssetAPI.writeAsset(path, JSON.stringify({
+                            entities: []
+                        }))
+                        CBStoreController.refreshFiles().catch()
+                    }
                 },
                 {
                     label: translate("NEW_STYLESHEET"),
-                    icon: "level",
+                    icon: "css",
+                    onClick: async () => {
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_STYLESHEET"), FILE_TYPES.STYLESHEET)
 
-                    disabled: true
+                        await AssetAPI.writeAsset(path, "")
+                        CBStoreController.refreshFiles().catch()
+                    }
                 },
             ]
         },

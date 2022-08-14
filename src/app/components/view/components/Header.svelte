@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../data/Localization";
+    import Localization from "../../../libs/Localization";
     import Dropdown from "../../dropdown/Dropdown.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../Icon/Icon.svelte";
@@ -53,6 +53,11 @@
             <Icon styles="font-size: 1rem">terminal</Icon>
             {translate("CONSOLE")}
         </button>
+        <button class="button" on:click={() => switchView(VIEWS.UI)}>
+            <Icon styles="font-size: 1rem">forest</Icon>
+            {translate("UI")}
+        </button>
+
     </Dropdown>
     {#if !hidden}
         <slot/>

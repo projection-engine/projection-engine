@@ -2,7 +2,7 @@
     import {onMount} from "svelte";
     import ROUTES from "../../../assets/ROUTES";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
-    import Localization from "../../data/Localization";
+    import Localization from "../../libs/Localization";
     import Sidebar from "./components/Sidebar.svelte";
     import ResizableBar from "../../components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";

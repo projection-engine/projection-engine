@@ -3,7 +3,7 @@
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import FileStoreController from "../../../stores/FileStoreController";
+    import CBStoreController from "../../../stores/CBStoreController";
     import componentConstructor from "../../../libs/component-constructor";
     import MeshComponent from "../../../libs/engine/templates/components/MeshComponent";
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
@@ -33,14 +33,14 @@
         try {
             const id = JSON.parse(e.dataTransfer.getData("text"))[0]
             let type = "SCRIPT"
-            let itemFound = FileStoreController.data.components.find(s => s.registryID === id)
+            let itemFound = CBStoreController.data.components.find(s => s.registryID === id)
             if (!itemFound) {
-                itemFound = FileStoreController.data.meshes.find(s => s.registryID === id)
+                itemFound = CBStoreController.data.meshes.find(s => s.registryID === id)
                 type = "MESH"
             }
 
             if (!itemFound) {
-                itemFound = FileStoreController.data.materials.find(s => s.registryID === id)
+                itemFound = CBStoreController.data.materials.find(s => s.registryID === id)
                 type = "MATERIAL"
             }
 

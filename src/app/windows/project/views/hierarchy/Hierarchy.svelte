@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../data/Localization";
+    import Localization from "../../../../libs/Localization";
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
 
@@ -40,6 +40,7 @@
         }
     }
     const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS, (trigger, element) => {
+        if (trigger === TRIGGERS[0])
         DataStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
     })
     $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
@@ -111,8 +112,9 @@
                             nodeRef={toRender[i + offset].node}
                             depth={toRender[i + offset].depth}
                             selected={engine.selected}
-                            setSelected={updateSelection}
+
                             lockedEntity={engine.lockedEntity}
+                            setSelected={updateSelection}
                             setLockedEntity={v => DataStoreController.updateEngine({...engine, lockedEntity: v})}
                             internalID={ID}
                             open={open}
@@ -121,7 +123,7 @@
                 {/if}
             {/each}
         {:else}
-            <div class="empty">
+            <div data-empty="-">
                 <Icon styles="font-size: 75px">account_tree</Icon>
                 {translate("TITLE")}
             </div>
@@ -130,22 +132,6 @@
 {/if}
 
 <style>
-    .empty {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: grid;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-        width: 100%;
-        height: 100%;
-
-        font-size: .8rem;
-        color: var(--pj-color-quaternary);
-    }
 
     .wrapper {
         position: relative;

@@ -1,13 +1,13 @@
 <script>
-    import FilesAPI from "../../../../../data/files/FilesAPI"
+    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
     import getFileIcon from "../utils/get-file-icon";
-    import FileStoreController from "../../../stores/FileStoreController";
-    import Localization from "../../../../../data/Localization";
+    import CBStoreController from "../../../stores/CBStoreController";
+    import Localization from "../../../../../libs/Localization";
 
     const {shell} = window.require("electron")
 
@@ -55,8 +55,9 @@
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={() => {
         if (type === 1) {
-            if (data.type === FILE_TYPES.COMPONENT.replace(".", "")){
-                shell.openPath(FileStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
+            const fileType = "." +data.type
+            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET){
+                shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" +currentLabel +")", "info")
             }
             else
@@ -78,7 +79,7 @@
     }}
         draggable="{onRename !== data.id}"
         on:click={setSelected}
-        style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (FileStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
+        style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (CBStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
         title={currentLabel}
 >
@@ -90,6 +91,14 @@
     {:else if metadata.type === FILE_TYPES.SCENE}
         <div class="icon">
             <Icon styles="font-size: 3.5rem; ">inventory_2</Icon>
+        </div>
+    {:else if metadata.type === FILE_TYPES.STYLESHEET}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">css</Icon>
+        </div>
+    {:else if metadata.type === FILE_TYPES.LEVEL}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">play_circle_filled</Icon>
         </div>
     {:else if metadata.type === "folder"}
         <div class="icon">

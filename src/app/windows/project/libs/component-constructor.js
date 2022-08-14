@@ -1,8 +1,8 @@
-import FileStoreController from "../stores/FileStoreController";
-import FilesAPI from "../../../data/files/FilesAPI"
+import CBStoreController from "../stores/CBStoreController";
+import FilesAPI from "../../../libs/files/FilesAPI"
 import DataStoreController from "../stores/DataStoreController";
 import Packager from "./engine/libs/builder/Packager";
-import RegistryAPI from "../../../data/files/RegistryAPI";
+import RegistryAPI from "../../../libs/files/RegistryAPI";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     const found = entity.scripts.findIndex(s => s.id === scriptID)
@@ -17,11 +17,11 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         if (autoUpdate)
             DataStoreController.updateEngine()
 
-        alert.pushAlert("Error loading data")
+        alert.pushAlert("Error loading libs")
         return
     }
 
-    const data = await FilesAPI.readFile(FileStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+    const data = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
     if (!data) {
         if (found > -1) {
             entity.scripts[found] = undefined
@@ -29,7 +29,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         }
         if (autoUpdate)
             DataStoreController.updateEngine()
-        alert.pushAlert("Error loading data")
+        alert.pushAlert("Error loading libs")
         return
     }
 

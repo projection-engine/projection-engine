@@ -1,4 +1,4 @@
-import dispatchEntities, {ENTITY_ACTIONS} from "../stores/dispatch-entities";
+import dispatchEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-entities";
 import DataStoreController from "../stores/DataStoreController";
 import Renderer from "./engine/Renderer";
 import COMPONENTS from "./engine/data/COMPONENTS";

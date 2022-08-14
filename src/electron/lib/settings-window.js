@@ -4,11 +4,10 @@ const FRAME_EVENTS = require("../../assets/FRAME_EVENTS")
 const path = require("path");
 const ROUTES = require("../../assets/ROUTES");
 const {v4} = require("uuid");
-const ProjectWindow = require("./project-window")
+
 const windowLifeCycle = require("./window-life-cycle");
-const RELATIVE_LOGO_PATH = "../../data/logo.png"
+const RELATIVE_LOGO_PATH = "../../assets/logo.png"
 const {screen} = require('electron')
-const loader = require("../events/project-loader/project-loader");
 
 module.exports = function settingsWindow(windowID, parent, settingsData) {
     const internalID = v4() + windowID

@@ -11,7 +11,7 @@
 <!--                {#if status.info && status.info.length > 0}-->
 <!--                    {#each status.info as s, i}-->
 <!--                        <Accordion title={s?.label}>-->
-<!--                            {s.data}-->
+<!--                            {s.libs}-->
 <!--                        </Accordion>-->
 <!--                    {/each}-->
 <!--                {:else}-->

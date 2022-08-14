@@ -6,7 +6,7 @@ const ROUTES = require("../../assets/ROUTES");
 const {v4} = require("uuid");
 const ProjectWindow = require("./project-window")
 const windowLifeCycle = require("./window-life-cycle");
-const RELATIVE_LOGO_PATH = "../../data/logo.png"
+const RELATIVE_LOGO_PATH = "../../assets/logo.png"
 const {screen} = require('electron')
 
 module.exports = function HomeWindow() {
