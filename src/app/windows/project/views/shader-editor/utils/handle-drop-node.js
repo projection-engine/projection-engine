@@ -14,8 +14,8 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
                 x: mousePlacement.x,
                 y: mousePlacement.y
             }
-            n.x = (current.x - 100) / window.blueprints.scale
-            n.y = (current.y - 25) / window.blueprints.scale
+            n.x = (current.x - 100) / window.shaderEditor.scale
+            n.y = (current.y - 25) / window.shaderEditor.scale
             return n
         } else
             alert.pushAlert("Cannot add two libs of " + n.name, "error")

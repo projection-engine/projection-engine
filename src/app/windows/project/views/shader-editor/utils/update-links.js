@@ -4,7 +4,7 @@ export default function updateLinks(mappedLinks, ref) {
     if (!ref)
         return
 
-    const scale = window.blueprints.scale
+    const scale = window.shaderEditor.scale
     try {
 
         let parentBBox = ref.getBoundingClientRect()

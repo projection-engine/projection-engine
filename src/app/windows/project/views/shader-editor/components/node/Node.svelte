@@ -44,7 +44,7 @@
         nodeInfo = NODE_INFO[key] ? NODE_INFO[key] : {}
     }
     const handleLinkDrag = (event) => {
-        const scale = window.blueprints.scale
+        const scale = window.shaderEditor.scale
         const parent = ref?.parentNode.parentNode
         const bBox = event.currentTarget.getBoundingClientRect()
         let parentBBox = parent.getBoundingClientRect()

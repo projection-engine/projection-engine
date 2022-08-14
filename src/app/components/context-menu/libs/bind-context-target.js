@@ -1,10 +1,11 @@
-export default function bindContextTarget(targetID, triggers) {
+export default function bindContextTarget(targetID, triggers, onFocus) {
     return {
 
         rebind: (options) => {
             window.contextMenu.targets[targetID] = {
                 options,
-                triggers
+                triggers,
+                onFocus
             }
         },
         onDestroy() {

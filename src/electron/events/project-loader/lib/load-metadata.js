@@ -1,4 +1,4 @@
-const {fromDirectory} = require("./fs-operations")
+
 const {readFile} = require( "../../file-system/fs-essentials")
 const pathRequire = require("path")
 module.exports =  async function loadMetadata(projectPath) {

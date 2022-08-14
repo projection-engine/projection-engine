@@ -10,7 +10,7 @@ export default class HotKeys {
         HotKeys.#onUpdate = () => onUpdate(HotKeys.views.get(HotKeys.activeView))
 
         function handler(event) {
-            console.log(event.repeat)
+
             if (event.repeat)
                 return
             // event.preventDefault()
@@ -24,14 +24,16 @@ export default class HotKeys {
                     HotKeys.holding.set(KEYS.ControlLeft, true)
                     HotKeys.holding.set(KEYS.ControlRight, true)
                 }
+
                 HotKeys.holding.set(event.code, true)
+                console.log(event.code, HotKeys.holding)
                 for (let i = 0; i < keysToTest; i++) {
                     const currentAction = activeView.actions[i]
                     let valid = true
                     const required = currentAction.require
                     for (let j = 0; j < required.length; j++)
                         valid = valid && HotKeys.holding.get(required[j])
-                    if (valid && !currentAction.disabled && currentAction.callback !== undefined)
+                    if (valid && !currentAction.disabled && currentAction.callback != null)
                         currentAction.callback()
                 }
             } else {

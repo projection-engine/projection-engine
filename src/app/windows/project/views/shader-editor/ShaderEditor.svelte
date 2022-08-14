@@ -3,7 +3,7 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
-    import FileSystem from "../../../../libs/FileSystem"
+    import FilesAPI from "../../../../libs/files/FilesAPI"
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
@@ -90,7 +90,7 @@
         <button
                 disabled={!openFile?.registryID}
                 class="button"
-                on:click={() => window.blueprints.save(openFile, nodes, links, translate).catch()}>
+                on:click={() => window.shaderEditor.save(openFile, nodes, links, translate).catch()}>
             <Icon>save</Icon>
             {translate("SAVE")}
         </button>
@@ -143,12 +143,12 @@
                 class="button"
 
                 on:click={e => {
-                if (window.blueprints.grid === GRID_SIZE) {
-                    window.blueprints.grid = 1
+                if (window.shaderEditor.grid === GRID_SIZE) {
+                    window.shaderEditor.grid = 1
                     e.currentTarget.setAttribute("data-highlight", "")
 
                 } else {
-                    window.blueprints.grid = GRID_SIZE
+                    window.shaderEditor.grid = GRID_SIZE
                     e.currentTarget.setAttribute("data-highlight", "-")
 
                 }
@@ -162,8 +162,8 @@
                 disabled={!openFile.registryID}
                 on:click={async () => {
                     const {shader} = await compiler(nodes, links)
-                    const newFile = window.fileSystem.temp + FileSystem.sep + openFile.registryID + ".log"
-                    await window.fileSystem.writeFile(newFile, shader, true)
+                    const newFile = FilesAPI.temp + FilesAPI.sep + openFile.registryID + ".log"
+                    await FilesAPI.writeFile(newFile, shader, true)
                     shell.openPath(newFile).catch()
                 }}
         >

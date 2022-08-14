@@ -2,7 +2,8 @@ import Node from "./Node"
 import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES"
 import IMAGE_WORKER_ACTIONS from "../../../../libs/engine/data/IMAGE_WORKER_ACTIONS"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import FileSystem from "../../../../../../libs/FileSystem"
+import FilesAPI from "../../../../../../libs/files/FilesAPI"
+import RegistryAPI from "../../../../../../libs/files/RegistryAPI";
 
 
 export const TEXTURE_TYPES = {
@@ -122,9 +123,9 @@ export default class TextureSample extends Node {
         this.uniformName = `sampler${index}`
         if (this.texture?.registryID) {
             try {
-                const res = await window.fileSystem.readRegistryFile(this.texture?.registryID)
+                const res = await RegistryAPI.readRegistryFile(this.texture?.registryID)
                 if (res) {
-                    const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, true)
+                    const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, true)
                     uniforms.push({
                         label: this.name,
                         key: this.uniformName,

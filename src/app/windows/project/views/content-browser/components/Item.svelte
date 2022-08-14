@@ -1,5 +1,5 @@
 <script>
-    import FileSystem from "../../../../../libs/FileSystem"
+    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../../static/FILE_TYPES";
@@ -26,7 +26,7 @@
     $: currentLabel = data.name
     $: isSelected = selected.includes(data.id)
     $: metadata = {
-        path: window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + data.registryID + FILE_TYPES.PREVIEW,
+        path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
         childrenQuantity,
         icon: getFileIcon(data.type)
@@ -56,7 +56,7 @@
         on:dblclick={() => {
         if (type === 1) {
             if (data.type === FILE_TYPES.COMPONENT.replace(".", "")){
-                shell.openPath(FileStoreController.ASSETS_PATH + FileSystem.sep + data.id).catch()
+                shell.openPath(FileStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" +currentLabel +")", "info")
             }
             else

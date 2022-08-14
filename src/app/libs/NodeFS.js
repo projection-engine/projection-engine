@@ -12,7 +12,7 @@ export function getCall(channel, data) {
     })
 }
 
-export default class AsyncFS {
+export default class NodeFS {
 
     static async read(path, options = {}) {
         return (await getCall("fs-read", {path, options}))

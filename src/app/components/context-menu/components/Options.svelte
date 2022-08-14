@@ -4,6 +4,7 @@
     import Shortcut from "./Shortcut.svelte";
 
     export let options = []
+    export let onFocus
     export let selected
     export let trigger
     export let event
@@ -11,14 +12,14 @@
     export let callback = () => null
 
     let mounted = false
-    onMount(() => callback())
-    $: callback(selected)
+    onMount(() => {
+        onFocus(trigger, selected)
+        callback()
+    })
     let optionsToRender
     let isSubMenu = false
     let parentLabel
-    $: {
-        optionsToRender = options.filter(o => !o.requiredTrigger || o.requiredTrigger === trigger)
-    }
+    $: optionsToRender = options.filter(o => !o.requiredTrigger || o.requiredTrigger === trigger)
 
 </script>
 

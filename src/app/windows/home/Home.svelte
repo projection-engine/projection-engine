@@ -8,11 +8,11 @@
     import ROUTES from "../../../static/ROUTES";
     import getBasePath from "../../../electron/lib/get-base-path";
     import {onMount} from "svelte";
-    import loadGlobalLocalization from "../../libs/load-global-localization";
+
     import refreshProjects from "./utils/refresh-projects";
     import Alert from "../../components/alert/Alert.svelte";
-    import FileSystem from "../../libs/FileSystem";
-    import AsyncFS from "../../libs/AsyncFS";
+    import FilesAPI from "../../libs/files/FilesAPI";
+    import NodeFS from "../../libs/NodeFS";
 
     const pathLib = window.require("path")
     const os =  window.require("os")
@@ -28,12 +28,10 @@
     }
 
     onMount(() => {
-        loadGlobalLocalization()
         const b = getBasePath(os, pathLib)
         localStorage.setItem("basePath", b)
-
-        AsyncFS.mkdir(b).catch()
-        refreshProjects(b + "projects" + FileSystem.sep).then(r => projectsToShow = r).catch()
+        NodeFS.mkdir(b).catch()
+        refreshProjects(b + "projects" + FilesAPI.sep).then(r => projectsToShow = r).catch()
     })
 
 </script>
@@ -68,11 +66,11 @@
                         open={() => openProject(p)}
                         data={p}
                         onRename={async newName => {
-                            const pathName = pathLib.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + p.id + FileSystem.sep + ".meta")
-                            const [error, res] = await AsyncFS.read(pathName)
+                            const pathName = pathLib.resolve(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + p.id + FilesAPI.sep + ".meta")
+                            const [error, res] = await NodeFS.read(pathName)
                             if (res && !error){
 
-                                await AsyncFS.write(pathName, JSON.stringify({
+                                await NodeFS.write(pathName, JSON.stringify({
                                     ...JSON.parse(res),
                                     name: newName
                                 }))
@@ -80,8 +78,8 @@
                             }
                             }}
                         onDelete={async () => {
-                            await AsyncFS.rm(
-                                pathLib.resolve(localStorage.getItem("basePath") + "projects" + FileSystem.sep + p.id),
+                            await NodeFS.rm(
+                                pathLib.resolve(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + p.id),
                                 {recursive: true, force: true})
                             projectsToShow = projectsToShow.filter(e => e.id !== p.id)
                         }}

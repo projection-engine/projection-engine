@@ -1,14 +1,15 @@
 import FileStoreController from "../../../stores/FileStoreController";
-import FileSystem from "../../../../../libs/FileSystem";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import Localization from "../../../../../libs/Localization";
 import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
 import DataStoreController from "../../../stores/DataStoreController";
 import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 const loadFile = async (ID) => {
-    const rs = await window.fileSystem.readRegistryFile(ID)
+    const rs = await RegistryAPI.readRegistryFile(ID)
     if (rs) {
-        const file = await window.fileSystem.readFile(FileStoreController.ASSETS_PATH + FileSystem.sep + rs.path, "json")
+        const file = await FilesAPI.readFile(FileStoreController.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
         if (file)
             return file
         else {

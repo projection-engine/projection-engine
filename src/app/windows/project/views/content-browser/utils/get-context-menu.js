@@ -1,12 +1,14 @@
 import createNewFolder from "./create-new-folder"
 import handleDelete from "./handle-delete"
-import AsyncFS from "../../../../../libs/AsyncFS"
+import NodeFS from "../../../../../libs/NodeFS"
 
-import FileSystem from "../../../../../libs/FileSystem"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
 import importFile from "./import-file";
+import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+import AssetAPI from "../../../../../libs/files/AssetAPI";
 
 
 const {shell} = window.require("electron")
@@ -15,7 +17,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         let n = path + ext
         let it = 0
 
-        while (await window.fileSystem.assetExists(n)) {
+        while (await AssetAPI.assetExists(n)) {
             it++
             n = path + `(${it})` + ext
         }
@@ -54,7 +56,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             requiredTrigger: "data-folder",
             label: translate("OPEN_WITH_EXPLORER"),
             onClick: (node) => {
-                shell.showItemInFolder(FileSystem.resolvePath(FileStoreController.ASSETS_PATH + FileSystem.sep + node.getAttribute("data-folder") + FileSystem.sep))
+                shell.showItemInFolder(FilesAPI.resolvePath(FileStoreController.ASSETS_PATH + FilesAPI.sep + node.getAttribute("data-folder") + FilesAPI.sep))
             }
         },
         {divider: true, requiredTrigger: "data-folder"},
@@ -130,7 +132,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("GO_TO_PARENT"),
 
             onClick: () => {
-                if (currentDirectory.id !== FileSystem.sep)
+                if (currentDirectory.id !== FilesAPI.sep)
                     navigationHistory.goToParent()
             }
         },
@@ -140,12 +142,12 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("NEW_FOLDER"),
             icon: "create_new_folder",
             onClick: async () => {
-                let path = currentDirectory.id + FileSystem.sep + "New folder"
-                const existing = await window.fileSystem.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
+                let path = currentDirectory.id + FilesAPI.sep + "New folder"
+                const existing = await ContentBrowserAPI.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
                 if (existing.length > 0)
                     path += " - " + existing.length
 
-                const [e] = await AsyncFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
+                const [e] = await NodeFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
                 if (!e)
                     FileStoreController.refreshFiles().catch()
             }
@@ -155,7 +157,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             label: translate("OPEN_WITH_EXPLORER"),
             icon: "open_in_new",
             onClick: () => {
-                shell.showItemInFolder(FileSystem.resolvePath(FileStoreController.ASSETS_PATH + FileSystem.sep + currentDirectory.id))
+                shell.showItemInFolder(FilesAPI.resolvePath(FileStoreController.ASSETS_PATH + FilesAPI.sep + currentDirectory.id))
             }
         },
         {divider: true, requiredTrigger: "data-wrapper"},
@@ -167,8 +169,8 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                     label: translate("NEW_MATERIAL"),
                     icon: "texture",
                     onClick: async () => {
-                        let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_MATERIAL"), ".material")
-                        window.fileSystem.writeAsset(path, JSON.stringify({}))
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_MATERIAL"), ".material")
+                        AssetAPI.writeAsset(path, JSON.stringify({}))
                             .then(() => {
                                 FileStoreController.refreshFiles()
                             })
@@ -179,9 +181,9 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                     label: translate("NEW_COMPONENT"),
                     icon: "extension",
                     onClick: async () => {
-                        let path = await check(currentDirectory.id + FileSystem.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
 
-                        await window.fileSystem.writeAsset(path, COMPONENT_TEMPLATE)
+                        await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
                         FileStoreController.refreshFiles().catch()
                     }
                 },

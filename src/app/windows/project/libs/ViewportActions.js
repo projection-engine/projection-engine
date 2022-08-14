@@ -12,13 +12,10 @@ export default class ViewportActions {
     }
 
     static focus(entity) {
-        if (!entity || entity.components[COMPONENTS.TRANSFORM])
+        if (!entity || !entity.components[COMPONENTS.TRANSFORM])
             return
-        const comp = entity.components[COMPONENTS.TRANSFORM]
-        const t = comp.translation
-
         window.renderer.camera.radius = 10
-        window.renderer.camera.centerOn = t
+        window.renderer.camera.centerOn = entity.components[COMPONENTS.TRANSFORM].translation
         window.renderer.camera.updateViewMatrix()
     }
 

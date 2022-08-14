@@ -1,4 +1,4 @@
-import FileSystem from "../../../../../libs/FileSystem"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 
 export default class NavigationHistory {
 
@@ -29,12 +29,12 @@ export default class NavigationHistory {
 
     goToParent(currentDirectory) {
         const found = currentDirectory.id
-        const split = found.split(FileSystem.sep)
+        const split = found.split(FilesAPI.sep)
         split.pop()
-        if (!split.join(FileSystem.sep))
-            this.setCurrentDirectory({id: FileSystem.sep})
+        if (!split.join(FilesAPI.sep))
+            this.setCurrentDirectory({id: FilesAPI.sep})
         else
-            this.setCurrentDirectory({id: split.join(FileSystem.sep)})
+            this.setCurrentDirectory({id: split.join(FilesAPI.sep)})
     }
 
     updateCurrentDirectory(v, currentDirectory) {

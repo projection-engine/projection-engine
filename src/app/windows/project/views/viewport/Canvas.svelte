@@ -5,7 +5,7 @@
     import updateRenderer from "./utils/update-renderer";
     import Localization from "../../../../libs/Localization";
     import DataStoreController from "../../stores/DataStoreController";
-    import getShortcuts from "./utils/get-shortcuts";
+    import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import Packager from "../../libs/engine/libs/builder/Packager";
@@ -28,7 +28,7 @@
     onMount(() => {
         HotKeys.bindAction(
             canvasRef,
-            getShortcuts(),
+            getHotkeys(),
             "window",
             Localization.PROJECT.VIEWPORT.TITLE
         )

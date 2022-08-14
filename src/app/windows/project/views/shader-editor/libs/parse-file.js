@@ -1,13 +1,14 @@
-import FileSystem from "../../../../../libs/FileSystem";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import BOARD_SIZE from "../data/BOARD_SIZE";
 import FileStoreController from "../../../stores/FileStoreController";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 export default async function parseFile(file, setNodes, setLinks) {
-    const res = await window.fileSystem.readRegistryFile(file.registryID)
+    const res = await RegistryAPI.readRegistryFile(file.registryID)
     if (res) {
-        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
+        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
 
         if (file && Object.keys(file).length > 0) {
             const newNodes = []

@@ -1,5 +1,5 @@
 import dispatchEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-entities"
-import FileSystem from "../../../../libs/FileSystem"
+import FilesAPI from "../../../../libs/files/FilesAPI"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../static/FILE_TYPES";
@@ -9,6 +9,7 @@ import Entity from "../engine/templates/basic/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import MeshInstance from "../engine/libs/instances/MeshInstance";
 import initializeEntity from "./utils/initialize-entity";
+import RegistryAPI from "../../../../libs/files/RegistryAPI";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
@@ -25,10 +26,10 @@ export default class Loader {
                     wireframeBuffer: true
                 })
 
-                if (objLoaded.material && !DataStoreController.engine.materials.find(m => m.id === objLoaded.material)) {
-                    const rs = await window.fileSystem.readRegistryFile(objLoaded.material)
+                if (objLoaded.material && !window.renderer.materials.find(m => m.id === objLoaded.material)) {
+                    const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
-                        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + rs.path, "json")
+                        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + rs.path, "json")
                         if (file && file.response)
                             material = {
                                 ...file.response,
@@ -53,8 +54,8 @@ export default class Loader {
     }
 
     static async scene(path, onlyReturn) {
-        const file = await window.fileSystem.readFile(
-            FileStoreController.ASSETS_PATH + FileSystem.sep + path, "json")
+        const file = await FilesAPI.readFile(
+            FileStoreController.ASSETS_PATH + FilesAPI.sep + path, "json")
 
         const meshes = []
         const entities = []
@@ -62,7 +63,7 @@ export default class Loader {
         try {
             if (file) {
                 const folder = new Entity()
-                folder.name = path.split(FileSystem.sep).pop().replace(FILE_TYPES.SCENE, "")
+                folder.name = path.split(FilesAPI.sep).pop().replace(FILE_TYPES.SCENE, "")
 
                 for (let i = 0; i < file.nodes.length; i++) {
                     const data = await loopNodesScene(file.nodes[i], folder, i)
@@ -109,11 +110,11 @@ export default class Loader {
 
         for (let i = 0; i < items.length; i++) {
             const data = items[i]
-            const res = await window.fileSystem.readRegistryFile(data)
+            const res = await RegistryAPI.readRegistryFile(data)
             if (res)
                 switch ("." + res.path.split(".").pop()) {
                     case FILE_TYPES.MESH: {
-                        const file = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + res.path, "json")
+                        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
                         const meshData = await Loader.mesh(file, data)
                         if (meshData.mesh !== undefined)
                             meshes.push(meshData)

@@ -1,11 +1,12 @@
 import FileStoreController from "../stores/FileStoreController";
-import FileSystem from "../../../libs/FileSystem"
+import FilesAPI from "../../../libs/files/FilesAPI"
 import DataStoreController from "../stores/DataStoreController";
 import Packager from "./engine/libs/builder/Packager";
+import RegistryAPI from "../../../libs/files/RegistryAPI";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     const found = entity.scripts.findIndex(s => s.id === scriptID)
-    const reg = await window.fileSystem.readRegistryFile(scriptID)
+    const reg = await RegistryAPI.readRegistryFile(scriptID)
 
     if (!reg) {
 
@@ -20,7 +21,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    const data = await window.fileSystem.readFile(FileStoreController.ASSETS_PATH + FileSystem.sep + reg.path)
+    const data = await FilesAPI.readFile(FileStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
     if (!data) {
         if (found > -1) {
             entity.scripts[found] = undefined

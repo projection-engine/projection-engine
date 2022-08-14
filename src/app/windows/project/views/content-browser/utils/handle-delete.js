@@ -1,4 +1,4 @@
-import FileSystem from "../../../../../libs/FileSystem"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 import FileStoreController from "../../../stores/FileStoreController";
 import Localization from "../../../../../libs/Localization";
 
@@ -14,23 +14,23 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
         const relatedFiles =  FileStoreController.data.items.filter(item => item.id.includes(currentItem.id))
         for (let j = 0; j < relatedFiles.length; j++) {
             const currentFile = relatedFiles[j]
-            await window.fileSystem.deleteFile(
-                "assets" + FileSystem.sep + currentFile.id,
+            await FilesAPI.deleteFile(
+                FileStoreController.ASSETS_PATH + FilesAPI.sep + currentFile.id,
                 {
                     recursive: true,
                     force: true
                 })
             if (currentDirectory.id === currentFile.id)
-                setCurrentDirectory({id: FileSystem.sep})
+                setCurrentDirectory({id: FilesAPI.sep})
         }
-        await window.fileSystem.deleteFile(
-            "assets" + FileSystem.sep + file.id,
+        await FilesAPI.deleteFile(
+            FileStoreController.ASSETS_PATH+ FilesAPI.sep + file.id,
             {
                 recursive: true,
                 force: true
             })
         if (currentDirectory.id === file.id)
-            setCurrentDirectory({id: FileSystem.sep})
+            setCurrentDirectory({id: FilesAPI.sep})
     }
 
     await FileStoreController.refreshFiles()

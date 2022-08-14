@@ -2,50 +2,51 @@
 
     import Input from "../../../components/input/Input.svelte";
     import Icon from "../../../components/Icon/Icon.svelte";
-    import FileSystem from "../../../libs/FileSystem";
+    import FilesAPI from "../../../libs/files/FilesAPI";
     import {onDestroy, onMount} from "svelte";
     import createPortal from "../../../components/create-portal";
+    import AssetAPI from "../../../libs/files/AssetAPI";
 
     export let setProjectsToShow
-export let projectsToShow
-export let setSearchString
-export let searchString
-export let translate
+    export let projectsToShow
+    export let setSearchString
+    export let searchString
+    export let translate
 
-let openInput = false
-let modal
-let input = ""
-const create = async (name) => {
-    const res = await FileSystem.createProject(!name ? translate("PROJECT_NAME") : name)
-    setProjectsToShow([
-        ...projectsToShow,
-        {
-            id: res,
-            meta: {name: name, creationDate: (new Date()).toLocaleDateString()}
-        }
-    ])
+    let openInput = false
+    let modal
+    let input = ""
+    const create = async (name) => {
+        const res = await AssetAPI.createProject(!name ? translate("PROJECT_NAME") : name)
+        setProjectsToShow([
+            ...projectsToShow,
+            {
+                id: res,
+                meta: {name: name, creationDate: (new Date()).toLocaleDateString()}
+            }
+        ])
 
-    alert.pushAlert(translate("PROJECT_CREATED"), "success")
-    openInput = false
-    input = ""
-}
-
-function handler(event) {
-    if (!modal.firstChild.contains(event.target))
+        alert.pushAlert(translate("PROJECT_CREATED"), "success")
         openInput = false
+        input = ""
+    }
 
-}
+    function handler(event) {
+        if (!modal.firstChild.contains(event.target))
+            openInput = false
 
-const portal = createPortal(999)
-$: openInput ? portal.open() : portal.close()
-onMount(() => {
-    portal.create(modal)
-    document.addEventListener("mousedown", handler)
-})
-onDestroy(() => {
-    portal.destroy()
-    document.removeEventListener("mousedown", handler)
-})
+    }
+
+    const portal = createPortal(999)
+    $: openInput ? portal.open() : portal.close()
+    onMount(() => {
+        portal.create(modal)
+        document.addEventListener("mousedown", handler)
+    })
+    onDestroy(() => {
+        portal.destroy()
+        document.removeEventListener("mousedown", handler)
+    })
 </script>
 
 
@@ -99,11 +100,12 @@ onDestroy(() => {
 </div>
 
 <style>
-    .button{
+    .button {
         display: flex;
         align-items: center;
     }
-    .container{
+
+    .container {
         width: 50vw;
         height: fit-content;
 
@@ -124,6 +126,7 @@ onDestroy(() => {
         justify-content: space-between;
         padding: 0 4px;
     }
+
     .modal {
         display: flex;
         align-items: center;
@@ -159,7 +162,7 @@ onDestroy(() => {
         margin: 0;
     }
 
-    .input-creation{
+    .input-creation {
         display: flex;
         align-items: center;
         gap: 4px;

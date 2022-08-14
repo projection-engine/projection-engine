@@ -1,7 +1,8 @@
 import Entity from "../../engine/templates/basic/Entity";
-import FileSystem from "../../../../../libs/FileSystem";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import MeshInstance from "../../engine/libs/instances/MeshInstance";
 import initializeEntity from "./initialize-entity";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 export default async function loopNodesScene(node, parent, index=0) {
     const meshes = [], children = []
@@ -12,9 +13,9 @@ export default async function loopNodesScene(node, parent, index=0) {
 
     for (let m = 0;  m < node.primitives.length; m++) {
         const primitive = node.primitives[m]
-        const reg = await window.fileSystem.readRegistryFile(primitive)
+        const reg = await RegistryAPI.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + reg.path, "json")
+            const meshData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path, "json")
 
             const instance = new MeshInstance({
                 ...meshData,

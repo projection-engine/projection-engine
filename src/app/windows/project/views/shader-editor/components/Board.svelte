@@ -41,14 +41,14 @@
 
     const handleWheel = (e) => {
         e.preventDefault()
-        let s = window.blueprints.scale
+        let s = window.shaderEditor.scale
         if (e.wheelDelta > 0 && s < 3)
             s += s * .1
         else if (e.wheelDelta < 0 && s >= .5)
             s -= s * .1
 
         ref.style.transform = "scale(" + s + ")"
-        window.blueprints.scale = s
+        window.shaderEditor.scale = s
     }
 
 

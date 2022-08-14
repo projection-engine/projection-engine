@@ -1,4 +1,4 @@
-import FileSystem from "../../../../../libs/FileSystem";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 
 function map(check, items, elementsPerRow) {
     let newArr = []
@@ -31,7 +31,7 @@ export default function getFilesToRender(currentDirectory, fileType, items, sear
             items,
             elementsPerRow
         )
-    if (currentDirectory.id !== FileSystem.sep)
+    if (currentDirectory.id !== FilesAPI.sep)
         return map(
             file => file.parent === currentDirectory.id,
             items,

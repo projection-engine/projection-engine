@@ -1,4 +1,4 @@
-import FileSystem from "../../../libs/FileSystem"
+import FilesAPI from "../../../libs/files/FilesAPI"
 import Entity from "../libs/engine/templates/basic/Entity"
 import COMPONENTS from "../libs/engine/data/COMPONENTS"
 import DirectionalLightComponent from "../libs/engine/templates/components/DirectionalLightComponent"
@@ -12,14 +12,15 @@ import Transformation from "../libs/engine/services/Transformation"
 import ProbeComponent from "../libs/engine/templates/components/ProbeComponent"
 import CameraComponent from "../libs/engine/templates/components/CameraComponent"
 import componentConstructor from "../libs/component-constructor";
+import RegistryAPI from "../../../libs/files/RegistryAPI";
 
 async function readFromRegistry(fileID) {
     return new Promise(resolve => {
-        window.fileSystem.readRegistryFile(fileID)
+        RegistryAPI.readRegistryFile(fileID)
             .then(lookUpTable => {
 
                 if (lookUpTable) {
-                    window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "assets" + FileSystem.sep + lookUpTable.path)
+                    FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + lookUpTable.path)
                         .then(fileData => {
                             if (fileData) resolve(fileData)
                             else resolve(null)

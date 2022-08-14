@@ -66,6 +66,7 @@
                     open = true
                     contextProps = {
                         options: window.contextMenu.focused.options,
+                        onFocus: window.contextMenu.focused.onFocus,
                         selected: targetElement,
                         trigger,
                         event,

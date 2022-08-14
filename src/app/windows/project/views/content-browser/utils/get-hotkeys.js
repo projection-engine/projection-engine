@@ -1,11 +1,11 @@
 import selection from "./selection";
 import SELECTION_TYPES from "../templates/SELECTION_TYPES";
-import FileSystem from "../../../../../libs/FileSystem";
+import FilesAPI from "../../../../../libs/files/FilesAPI";
 import handleDelete from "./handle-delete";
 import KEYS from "../../../libs/engine/data/KEYS";
 import FileStoreController from "../../../stores/FileStoreController";
 
-export default function getShortcuts( translate, currentDirectory, setCurrentDirectory, setSelected, selected){
+export default function getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected){
     return  [
         {
             label: translate("SELECT_ALL"),
@@ -28,15 +28,15 @@ export default function getShortcuts( translate, currentDirectory, setCurrentDir
             label: translate("BACK"),
             require: [KEYS.Backspace],
             callback: () => {
-                if(currentDirectory.id !== FileSystem.sep) {
+                if(currentDirectory.id !== FilesAPI.sep) {
                     const found = currentDirectory.id
                     if (found) {
-                        const split = found.split(FileSystem.sep)
+                        const split = found.split(FilesAPI.sep)
                         split.pop()
                         if (split.length === 1)
-                            setCurrentDirectory({id: FileSystem.sep})
+                            setCurrentDirectory({id: FilesAPI.sep})
                         else
-                            setCurrentDirectory({id: split.join(FileSystem.sep)})
+                            setCurrentDirectory({id: split.join(FilesAPI.sep)})
                     }
                 }
             }

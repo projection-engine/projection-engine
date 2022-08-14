@@ -1,21 +1,23 @@
-import FileSystem from "../../../../../libs/FileSystem"
+import FilesAPI from "../../../../../libs/files/FilesAPI"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-entities";
 import DataStoreController from "../../../stores/DataStoreController";
 import FileStoreController from "../../../stores/FileStoreController";
 import FILE_TYPES from "../../../../../../static/FILE_TYPES";
 import Loader from "../../../libs/loader/Loader";
+import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
 export default async function importFile(currentDirectory) {
-    const toImport = await window.fileSystem.openDialog()
+    const toImport = await ContentBrowserAPI.openDialog()
     if (toImport.length > 0) {
-        const result = await window.fileSystem.importFile(FileStoreController.ASSETS_PATH + currentDirectory.id, toImport)
+        const result = await ContentBrowserAPI.importFile(FileStoreController.ASSETS_PATH + currentDirectory.id, toImport)
         if (toImport.filter(e => e.includes("gltf")).length > 0) {
             let newEntities = [], newMeshes = []
             for (let i in result) {
                 const current = result[i]
                 for (let j in current.ids) {
-                    const res = await window.fileSystem.readRegistryFile(current.ids[j])
+                    const res = await RegistryAPI.readRegistryFile(current.ids[j])
                     if (res) {
                         const {meshes, entities} = await Loader.scene(res.path, true)
                         newEntities.push(...entities)
@@ -25,7 +27,7 @@ export default async function importFile(currentDirectory) {
                             if (e && e.components[COMPONENTS.MESH]) {
                                 const mesh = meshes.find(m => m.id === e.components[COMPONENTS.MESH].meshID)
                                 const preview = window.renderer.generateMeshPreview(e, mesh)
-                                await window.fileSystem.writeFile(FileSystem.sep + "previews" + FileSystem.sep + mesh.id + FILE_TYPES.PREVIEW, preview)
+                                await FilesAPI.writeFile(FilesAPI.sep + "previews" + FilesAPI.sep + mesh.id + FILE_TYPES.PREVIEW, preview)
                             }
                         }
                     }

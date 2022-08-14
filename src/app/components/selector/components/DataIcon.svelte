@@ -1,13 +1,13 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import FileSystem from "../../../libs/FileSystem";
+    import FilesAPI from "../../../libs/files/FilesAPI";
     import Icon from "../../Icon/Icon.svelte";
 
     export let state
     export let type
     let previewPath
     $: {
-        if(state) previewPath =  window.fileSystem.path + FileSystem.sep + "previews" + FileSystem.sep + state.registryID + ".preview"
+        if(state) previewPath =  FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + state.registryID + ".preview"
     }
 </script>
 

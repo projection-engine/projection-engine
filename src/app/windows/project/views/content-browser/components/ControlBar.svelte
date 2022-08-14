@@ -1,7 +1,7 @@
 <script>
 
-    import AsyncFS from "../../../../../libs/AsyncFS"
-    import FileSystem from "../../../../../libs/FileSystem"
+    import NodeFS from "../../../../../libs/NodeFS"
+    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import importFile from "../utils/import-file"
     import DataStoreController from "../../../stores/DataStoreController";
     import {onDestroy} from "svelte";
@@ -13,6 +13,7 @@
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
     import FileStoreController from "../../../stores/FileStoreController";
+    import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
     export let translate
     export let setSelected
@@ -59,7 +60,7 @@
                         class="settings-button"
 
                         on:click={() => {
-                            if(currentDirectory.id === FileSystem.sep)
+                            if(currentDirectory.id === FilesAPI.sep)
                                 return
                             navigationHistory.goToParent(currentDirectory)
                         }}
@@ -83,12 +84,12 @@
                 <button
                         class="settings-button"
                         on:click={async () => {
-                        let path = currentDirectory.id + FileSystem.sep + translate("NEW_FOLDER")
+                        let path = currentDirectory.id + FilesAPI.sep + translate("NEW_FOLDER")
 
-                        const existing = window.fileSystem.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
+                        const existing = ContentBrowserAPI.foldersFromDirectory(FileStoreController.ASSETS_PATH + currentDirectory.id)
                         if (existing.length > 0)
                             path += " - " + existing.length
-                        await AsyncFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
+                        await NodeFS.mkdir(FileStoreController.ASSETS_PATH + path, {})
                         FileStoreController.refreshFiles().then(() => loading = false).catch()
                     }}
 
@@ -138,7 +139,7 @@
                     noPlaceHolder={true}
                     noAutoSubmit={true}
                     setSearchString={async (path) => {
-                        if (await AsyncFS.exists(FileStoreController.ASSETS_PATH + path))
+                        if (await NodeFS.exists(FileStoreController.ASSETS_PATH + path))
                         setCurrentDirectory({
                             id: path
                         })

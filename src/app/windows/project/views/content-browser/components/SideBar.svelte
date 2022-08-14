@@ -1,6 +1,6 @@
 <script>
     import handleDropFolder from "../utils/handle-drop-folder"
-    import FileSystem from "../../../../../libs/FileSystem"
+    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
@@ -22,7 +22,7 @@
             {translate("ASSETS")}
         </div>
         <div
-                data-highlight={currentDirectory.id === FileSystem.sep ? "-" : undefined}
+                data-highlight={currentDirectory.id === FilesAPI.sep ? "-" : undefined}
                 class="folder"
                 on:dragover={e => {
                         e.preventDefault()
@@ -35,9 +35,9 @@
                 on:drop={e => {
                         e.preventDefault()
                         //e.target.classList.removehovered)
-                        handleDropFolder(e.dataTransfer.getData("text"), FileSystem.sep, currentDirectory, setCurrentDirectory)
+                        handleDropFolder(e.dataTransfer.getData("text"), FilesAPI.sep, currentDirectory, setCurrentDirectory)
                     }}
-                on:click={() => setCurrentDirectory({id: FileSystem.sep})}
+                on:click={() => setCurrentDirectory({id: FilesAPI.sep})}
         >
             <Icon styles={{fontSize: "1.1rem"}}>arrow_upward</Icon>
             ...

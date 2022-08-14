@@ -1,5 +1,5 @@
 <script>
-    import FileSystem from "../../../../libs/FileSystem"
+    import FilesAPI from "../../../../libs/files/FilesAPI"
     import {onDestroy} from "svelte";
     import FileStoreController from "../../stores/FileStoreController";
     import Localization from "../../../../libs/Localization";
@@ -20,7 +20,7 @@
     const unsubscribeStore = FileStoreController.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
-    let currentDirectory = {id: FileSystem.sep}
+    let currentDirectory = {id: FilesAPI.sep}
     let selected = []
     let fileType = undefined
     let searchString = ""
@@ -36,7 +36,7 @@
             return p ? [findParent(p), {name: p.name, path: p.id}] : []
         }
         const response = [{
-            path: FileSystem.sep
+            path: FilesAPI.sep
         }, findParent(currentDirectory)].flat(Number.POSITIVE_INFINITY)
         if (currentDirectory.name)
             response.push({

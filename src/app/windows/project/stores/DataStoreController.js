@@ -2,9 +2,11 @@ import {engine} from "./engine-store";
 import {settingsStore} from "./settings-store";
 import ENGINE from "../static/misc/ENGINE";
 import {SETTINGS} from "../../../../static/WINDOWS";
-import FileSystem from "../../../libs/FileSystem"
+import FilesAPI from "../../../libs/files/FilesAPI"
 import DataHistoryController from "./DataHistoryController";
 import Renderer from "../libs/engine/Renderer";
+import AssetAPI from "../../../libs/files/AssetAPI";
+import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 
 let initialized = false
 export default class DataStoreController {
@@ -76,14 +78,14 @@ export default class DataStoreController {
     static async save() {
         alert.pushAlert("Saving project", "info")
         const entities = Array.from(Renderer.entitiesMap.values())
-        const metaData = await window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + ".meta")
+        const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
             await updateSettings(metaData, DataStoreController.settings)
             await removeDeletedEntities()
             try {
 
                 for (let i = 0; i < entities.length; i++)
-                    await window.fileSystem.updateEntity(parseEntity(entities[i]), entities[i].id)
+                    await AssetAPI.updateEntity(parseEntity(entities[i]), entities[i].id)
             } catch (err) {
                 console.error(err)
                 alert.pushAlert("Error saving project", "error")
@@ -122,32 +124,32 @@ async function updateSettings(metaData, settings) {
     const meshes = window.renderer.meshes
     const materials = window.renderer.materials
     const old = JSON.parse(metaData.toString())
-    await window.fileSystem
-        .updateProject(
-            {
-                ...old,
-                entities: entities.length,
-                meshes: meshes.length,
-                materials: materials.length,
-                lastModification: (new Date()).toDateString(),
-                creation: settings.creationDate
-            },
-            {
-                ...settings,
-                cameraPosition: window.renderer.camera.centerOn,
-                yaw: window.renderer.camera.yaw,
-                pitch: window.renderer.camera.pitch,
-            }
-        )
+    await AssetAPI.updateProject(
+        {
+            ...old,
+            entities: entities.length,
+            meshes: meshes.length,
+            materials: materials.length,
+            lastModification: (new Date()).toDateString(),
+            creation: settings.creationDate
+        },
+        {
+            ...settings,
+            cameraPosition: window.renderer.camera.centerOn,
+            yaw: window.renderer.camera.yaw,
+            pitch: window.renderer.camera.pitch,
+        }
+    )
 }
 
 async function removeDeletedEntities() {
-    const allEntities = await window.fileSystem.fromDirectory(window.fileSystem.path + FileSystem.sep + "logic", ".entity")
-    const all = await Promise.all(allEntities.map(e => window.fileSystem.readFile(window.fileSystem.path + FileSystem.sep + "logic" + FileSystem.sep + e, "json", true)))
+    const LOGIC_PATH = FilesAPI.path + FilesAPI.sep + "logic" + FilesAPI.sep
+    const allEntities = await ContentBrowserAPI.fromDirectory(FilesAPI.path + FilesAPI.sep + "logic", ".entity")
+    const all = await Promise.all(allEntities.map(e => FilesAPI.readFile(LOGIC_PATH + e, "json", true)))
     for (let i = 0; i < all.length; i++) {
         const entity = all[i]
         if (!entity || Renderer.entitiesMap.get(entity.id))
             continue
-        await window.fileSystem.deleteFile("logic" + FileSystem.sep + entity.id + ".entity")
+        await FilesAPI.deleteFile(LOGIC_PATH + entity.id + ".entity")
     }
 }

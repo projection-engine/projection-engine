@@ -5,7 +5,7 @@
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
-    import getShortcuts from "../utils/get-shortcuts";
+    import getHotkeys from "../utils/get-hotkeys";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
@@ -34,16 +34,23 @@
 
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
-    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
+    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
+        setSelected(element.getAttribute(trigger))
+    })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
-    $: contextMenuOptions = getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, v => currentItem = v, translate)
-    $: contextMenuBinding.rebind(contextMenuOptions)
+    $: contextMenuBinding.rebind(getContextMenu(
+        currentDirectory,
+        setCurrentDirectory,
+        navigationHistory,
+        v => currentItem = v,
+        translate
+    ))
 
     onMount(() => {
         HotKeys.bindAction(
             ref,
-            getShortcuts(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected),
+            getHotkeys(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected),
             "folder",
             translate("TITLE")
         )

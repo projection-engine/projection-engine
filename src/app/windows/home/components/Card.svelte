@@ -4,7 +4,7 @@
     import Dropdown from "../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../components/Icon/Icon.svelte";
     import "../css/card.css"
-    import FileSystem from "../../../libs/FileSystem";
+    import FilesAPI from "../../../libs/files/FilesAPI";
 
     const {ipcRenderer, shell} = window.require("electron")
 
@@ -74,7 +74,7 @@
             </button>
 
             <button
-                on:click={() => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FileSystem.sep + data.id)}
+                on:click={() => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + data.id)}
             >
                 <Icon>folder</Icon>
                 {translate("SHOW_IN_EXPLORER")}

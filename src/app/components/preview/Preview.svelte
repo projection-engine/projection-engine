@@ -1,6 +1,6 @@
 <script>
 
-    import AsyncFS from "../../libs/AsyncFS";
+    import NodeFS from "../../libs/NodeFS";
 
     export let drawOnError
     export let path
@@ -9,7 +9,7 @@
     let src
     $: {
         try {
-            AsyncFS.read(path).then(res => {
+            NodeFS.read(path).then(res => {
                 if (!res[0]) {
                     src = res[1]
                     error = false

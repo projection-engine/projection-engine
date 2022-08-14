@@ -7,8 +7,8 @@ export default function dragNode(event, target, parent){
         },
         current = {}
     const handleMouseMove = (ev) => {
-        current.x = Math.round(((ev.clientX + bounding.x)/  window.blueprints.scale )/ window.blueprints.grid) * window.blueprints.grid
-        current.y = Math.round(((ev.clientY + bounding.y) /  window.blueprints.scale) / window.blueprints.grid) * window.blueprints.grid
+        current.x = Math.round(((ev.clientX + bounding.x)/  window.shaderEditor.scale )/ window.shaderEditor.grid) * window.shaderEditor.grid
+        current.y = Math.round(((ev.clientY + bounding.y) /  window.shaderEditor.scale) / window.shaderEditor.grid) * window.shaderEditor.grid
         target?.setAttribute("transform", `translate(${current.x} ${current.y})`)
     }
 
