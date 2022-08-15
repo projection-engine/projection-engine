@@ -1,11 +1,7 @@
 <script>
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import ENTITY_WORKER_ACTIONS from "../../../data/misc/ENTITY_WORKER_ACTIONS";
     import "../../hierarchy/css/Branch.css"
-    import Renderer from "../../../libs/engine/Renderer";
-    import DataStoreController from "../../../stores/DataStoreController";
-    import {v4} from "uuid";
+    import UIRenderer from "../../../libs/engine/UIRenderer";
 
     const LEFT_BUTTON = 0
     export let depth = 0
@@ -14,7 +10,6 @@
     export let setOpen = undefined
     export let selected = undefined
     export let setSelected = undefined
-
 
     let ref
     $: {
@@ -51,23 +46,11 @@
                 e.preventDefault()
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
-                const entityDragged = Renderer.entitiesMap.get(src)
-                console.log(entityDragged)
+                const entityDragged = UIRenderer.entities.get(src)
+
                 if (entityDragged) {
                     entityDragged.parent = node
                     node.children.push(entityDragged)
-
-
-                    const ID = v4()
-                    window.addEntityWorkerListener(() => {
-                        DataStoreController.updateEngine({...DataStoreController.engine, changeID: ID})
-                    }, ID)
-                    window.entityWorker.postMessage({
-                        type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-                        payload: Renderer.entitiesMap,
-                        actionID: ID
-                    })
-
                 }
                 break
             }
@@ -100,7 +83,6 @@
                         data-open={open[node.id] ? "-" : ""}
                         class="buttonSmall hierarchy-branch"
                         on:click={() => {
-                            console.log(open[node.id])
                         if (!open[node.id])
                             setOpen({...open, [node.id]: true})
                         else {
@@ -128,9 +110,7 @@
                 <div class="buttonIcon hierarchy-branch">
                     <Icon>category</Icon>
                 </div>
-                <div
-                        class="label hierarchy-branch"
-                >
+                <div class="label hierarchy-branch">
                     {node.name}
                 </div>
             </div>

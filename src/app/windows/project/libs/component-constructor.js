@@ -1,6 +1,6 @@
 import CBStoreController from "../stores/CBStoreController";
 import FilesAPI from "../../../libs/files/FilesAPI"
-import DataStoreController from "../stores/DataStoreController";
+import RendererStoreController from "../stores/RendererStoreController";
 import Packager from "./engine/libs/builder/Packager";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 
@@ -15,7 +15,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            DataStoreController.updateEngine()
+            RendererStoreController.updateEngine()
 
         alert.pushAlert("Error loading libs")
         return
@@ -28,7 +28,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            DataStoreController.updateEngine()
+            RendererStoreController.updateEngine()
         alert.pushAlert("Error loading libs")
         return
     }
@@ -36,5 +36,5 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
     Packager.linkScript(data, entity, scriptID, reg.path)
 
     if (autoUpdate)
-        DataStoreController.updateEngine()
+        RendererStoreController.updateEngine()
 }

@@ -3,7 +3,7 @@
     import NodeFS from "../../../../../libs/NodeFS"
     import FilesAPI from "../../../../../libs/files/FilesAPI"
     import importFile from "../utils/import-file"
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
@@ -34,7 +34,7 @@
     $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
 
     let engine = {}
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     onDestroy(() => unsubscribeEngine())
 
 </script>

@@ -5,13 +5,13 @@
     import loadProject from "./utils/load-project";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import dispatchEntities, {ENTITY_ACTIONS} from "./stores/templates/dispatch-entities";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "./stores/templates/dispatch-renderer-entities";
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./views/metrics/Metrics.svelte";
     import Canvas from "./views/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import parseEntityObject from "./utils/parse-entity-object";
-    import DataStoreController from "./stores/DataStoreController";
+    import RendererStoreController from "./stores/RendererStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../assets/ROUTES";
@@ -28,8 +28,8 @@
     }
     let engine
     let settings
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
 
     onDestroy(() => {
         unsubscribeSettings()
@@ -43,13 +43,13 @@
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
             (event, data) => {
-                DataStoreController.updateSettings(data)
+                RendererStoreController.updateSettings(data)
                 alert.pushAlert("Updating settings", "info")
             }
         )
         InitializeWindow()
         loadProjectMetadata((m, s) => {
-            DataStoreController.updateSettings({...settings, ...s})
+            RendererStoreController.updateSettings({...settings, ...s})
             engine.meta = m
             isMetadataLoaded = true
         })
@@ -74,7 +74,7 @@
             loadProject(
                 mesh => {
                     engine.meshes.set(mesh.id, mesh)
-                    DataStoreController.updateEngine(engine)
+                    RendererStoreController.updateEngine(engine)
                 },
                 async entities => {
 
@@ -83,11 +83,11 @@
                         mapped.push(await parseEntityObject(entities[i].data))
                     }
 
-                    dispatchEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
                 },
                 material => {
                     engine.materials.push(material)
-                    DataStoreController.updateEngine(engine)
+                    RendererStoreController.updateEngine(engine)
                 })
         }
 
@@ -98,7 +98,7 @@
         const copy = [...s.views]
         copy[s.currentView] = {...view, [key]: newView}
         s.views = copy
-        DataStoreController.updateSettings(s)
+        RendererStoreController.updateSettings(s)
     }
     $: frameOptions = getFrameOptions(engine, settings)
 </script>

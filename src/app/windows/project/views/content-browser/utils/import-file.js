@@ -1,7 +1,7 @@
 import FilesAPI from "../../../../../libs/files/FilesAPI"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-entities";
-import DataStoreController from "../../../stores/DataStoreController";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../../../stores/RendererStoreController";
 import CBStoreController from "../../../stores/CBStoreController";
 import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
 import Loader from "../../../libs/loader/Loader";
@@ -34,8 +34,8 @@ export default async function importFile(currentDirectory) {
                 }
             }
             for(let i =0; i < newMeshes.length; i++)
-                DataStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
-            dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
+                RendererStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
+            dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
         }
         alert.pushAlert("Import successful", "success")
         CBStoreController.refreshFiles().catch()

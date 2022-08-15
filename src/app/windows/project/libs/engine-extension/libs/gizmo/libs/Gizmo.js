@@ -4,7 +4,7 @@ import TRANSFORMATION_TYPE from "../../../../../data/misc/TRANSFORMATION_TYPE"
 import Conversion from "../../../../engine/services/Conversion"
 import getEntityTranslation from "../utils/get-entity-translation"
 import INFORMATION_CONTAINER from "../../../../../data/misc/INFORMATION_CONTAINER"
-import DataStoreController from "../../../../../stores/DataStoreController";
+import RendererStoreController from "../../../../../stores/RendererStoreController";
 import ViewportPicker from "../../../../engine/services/ViewportPicker";
 import EngineLoop from "../../../../engine/libs/loop/EngineLoop";
 
@@ -42,7 +42,7 @@ export default class Gizmo {
     onMouseMove() {
         if (!this.started) {
             this.started = true
-            DataStoreController.saveEntity(
+            RendererStoreController.saveEntity(
                 this.mainEntity.id,
                 COMPONENTS.TRANSFORM,
                 this.key,
@@ -70,7 +70,7 @@ export default class Gizmo {
 
     onMouseUp() {
         if (this.totalMoved !== 0) {
-            DataStoreController.saveEntity(
+            RendererStoreController.saveEntity(
                 this.mainEntity.id,
                 COMPONENTS.TRANSFORM,
                 this.key,

@@ -6,7 +6,7 @@
     import Branch from "./components/Branch.svelte"
     import {v4} from "uuid"
     import ENTITY_WORKER_ACTIONS from "../../data/misc/ENTITY_WORKER_ACTIONS"
-    import DataStoreController from "../../stores/DataStoreController";
+    import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
@@ -23,7 +23,7 @@
     let settings = {}
 
     const translate = key => Localization.PROJECT.HIERARCHY[key]
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     const ID = v4()
 
     let open = {}
@@ -41,7 +41,7 @@
     }
     const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS, (trigger, element) => {
         if (trigger === TRIGGERS[0])
-        DataStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
+        RendererStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
     })
     $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
     onDestroy(() => {
@@ -72,11 +72,11 @@
     const updateSelection = (entity, ctrlKey) => {
         if (ctrlKey) {
             if (!engine.selected.includes(entity))
-                DataStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
+                RendererStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
             else
-                DataStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
+                RendererStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
         } else
-            DataStoreController.updateEngine({...engine, selected: [entity]})
+            RendererStoreController.updateEngine({...engine, selected: [entity]})
     }
 </script>
 <Header
@@ -115,7 +115,7 @@
 
                             lockedEntity={engine.lockedEntity}
                             setSelected={updateSelection}
-                            setLockedEntity={v => DataStoreController.updateEngine({...engine, lockedEntity: v})}
+                            setLockedEntity={v => RendererStoreController.updateEngine({...engine, lockedEntity: v})}
                             internalID={ID}
                             open={open}
                             setOpen={v => open = v}

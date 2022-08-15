@@ -3,15 +3,15 @@
     import updateCursor from "./utils/update-cursor"
     import onViewportClick from "./utils/on-viewport-click"
     import Conversion from "../../libs/engine/services/Conversion";
-    import entitySearchWorker from "../../../../libs/web-workers/entity-search-worker";
-    import ViewportSettings from "./views/ViewportSettings.svelte";
+    import viewportSelectionBoxWorker from "../../../../libs/web-workers/viewport-selection-box-worker";
+    import ViewportSettings from "./components/Header.svelte";
     import CameraBar from "./components/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Localization from "../../../../libs/Localization";
     import GizmoBar from "./components/GizmoBar.svelte";
-    import SideOptions from "./views/SideOptions.svelte";
+    import SideOptions from "./components/SideOptions.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
-    import DataStoreController from "../../stores/DataStoreController";
+    import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import SelectBox from "../../../../components/select-box/SelectBox.svelte";
     import RENDER_TARGET from "../../data/misc/RENDER_TARGET";
@@ -19,152 +19,61 @@
     import EngineLoop from "../../libs/engine/libs/loop/EngineLoop";
     import ViewportPicker from "../../libs/engine/services/ViewportPicker";
     import Loader from "../../libs/loader/Loader";
+    import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
+    import EditorLayout from "./layouts/EditorLayout.svelte";
 
     export let isReady = false
 
-    const LEFT_BUTTON = 0
-    let WORKER = entitySearchWorker()
-    let gizmoSystem
-    let hovered = false
-    let latestTranslation
+    let currentTab = VIEWPORT_TABS.EDITOR
+    $: {
+        if (engine.executingAnimation)
+            currentTab = VIEWPORT_TABS.PLAY
+        else
+            currentTab = VIEWPORT_TABS.EDITOR
+    }
 
     let engine = {}
     let settings = {}
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeSettings()
     })
 
-    const id = sessionStorage.getItem("electronWindowID")
-
-    function handleMouse(e) {
-        if (e.type === "mousemove") {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
-            updateCursor(latestTranslation)
-        } else
-            document.removeEventListener("mousemove", handleMouse)
-    }
-
-    function gizmoMouseMove(event) {
-        if (gizmoSystem && gizmoSystem.targetGizmo)
-            gizmoSystem.targetGizmo.onMouseMove(event)
-    }
-
-    function onMouseDown(e) {
-        if (!window.renderer)
-            return
-        e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
-        if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
-            updateCursor(latestTranslation)
-            document.addEventListener("mousemove", handleMouse)
-            document.addEventListener("mouseup", handleMouse, {once: true})
-        }
-        if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
-            gizmoSystem = window.renderer.editorSystem.gizmoSystem
-            if (gizmoSystem.targetGizmo) {
-                gizmoSystem.targetGizmo.onMouseDown(e)
-                e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
-                e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
-            }
-        }
-    }
-
-    function onMouseUp(event) {
-        if (gizmoSystem && gizmoSystem.targetGizmo) {
-            gizmoSystem.targetGizmo.onMouseUp()
-            event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
-        }
-    }
-
-    function onClick(event) {
-        if (!window.renderer)
-            return
-        onViewportClick(
-            event,
-            settings,
-            engine,
-            (data) => {
-                DataStoreController.updateEngine({...engine, selected: data})
-            })
-    }
-
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
+    $: if (isReady) EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
+
+
     $: {
-        if (isReady)
-            EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
+        if (isReady) {
+            if (settings.visible.sideBarViewport && !engine.executingAnimation)
+                gpu.canvas.style.width = "calc(100% - 23px)"
+            else
+                gpu.canvas.style.width = "100%"
+        }
     }
-    $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 </script>
 
 
-<div
-        on:mousedown={onMouseDown}
-        on:mouseup={onMouseUp}
-        on:click={onClick}
-        on:dragover={e => {
-            e.preventDefault()
-            hovered  = true
-        }}
-        on:dragleave={e => {
-            e.preventDefault()
-            hovered  = false
-        }}
-        on:drop={async e => {
-            e.preventDefault()
-            hovered  = false
-            await Loader.load(e)
-        }}
-        class={"viewport"}
-        class:hovered={hovered}
->
-
+<div class="viewport">
     {#if !engine.executingAnimation}
-        <ViewportSettings translate={translate} settings={settings}/>
+        <ViewportSettings
+                engine={engine}
+                currentTab={currentTab}
+                setCurrentTab={v => currentTab = v}
+                translate={translate}
+                settings={settings}
+        />
     {/if}
     <div class="wrapper">
         <slot name="canvas"/>
-        {#if !engine.executingAnimation}
-            {#if isReady }
-                <GizmoBar translate={translate}/>
-                <CameraBar translate={translate}/>
-            {/if}
-            {#if isReady && settings.visible.sideBarViewport}
-                <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
-            {/if}
+        {#if currentTab === VIEWPORT_TABS.EDITOR && isReady}
+            <EditorLayout settings={settings} engine={engine} translate={translate} isReady={isReady}/>
         {/if}
-    </div>
-    {#if !engine.executingAnimation}
-        <SelectBox
-                targetElementID={RENDER_TARGET}
-                disabled={isSelectBoxDisabled}
-                setSelected={(_, startCoords, endCoords) => {
-                    if (startCoords && endCoords) {
-                        drawIconsToBuffer()
-                        const depthFBO = EngineLoop.renderMap.get("depthPrePass").frameBuffer
-                        const size = {
-                            w: depthFBO.width,
-                            h: depthFBO.height
-                        }
-                        const nStart = Conversion.toQuadCoord(startCoords, size)
-                        const nEnd = Conversion.toQuadCoord(endCoords, size)
 
-                        try {
-                            const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
-                            WORKER.postMessage({entities: window.renderer.entities, data})
-                            WORKER.onmessage = ({data: selected}) => DataStoreController.updateEngine({...engine, selected })
-                        } catch (err) {
-                            console.error(err, startCoords, nStart)
-                        }
-                    }
-                }}
-                target={RENDER_TARGET}
-                selected={[]}
-                nodes={[]}
-        />
-    {/if}
+    </div>
+
 </div>
 
 <style>
@@ -184,6 +93,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+        position: relative;
     }
 
 

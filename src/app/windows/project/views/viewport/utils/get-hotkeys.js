@@ -1,6 +1,6 @@
 import KEYS from "../../../libs/engine/data/KEYS";
 import ViewportActions from "../../../libs/ViewportActions";
-import DataStoreController from "../../../stores/DataStoreController";
+import RendererStoreController from "../../../stores/RendererStoreController";
 import GIZMOS from "../../../data/misc/GIZMOS";
 
 export default function getHotkeys() {
@@ -16,35 +16,35 @@ export default function getHotkeys() {
         {
             require: [KEYS.KeyG],
             callback: () => {
-                const settings = DataStoreController.settings
-                DataStoreController.updateSettings({...settings, gizmo: GIZMOS.TRANSLATION})
+                const settings = RendererStoreController.settings
+                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.TRANSLATION})
             }
         },
         {
             require: [KEYS.Home],
-            callback: () => ViewportActions.focus(DataStoreController.engine.selectedEntity)
+            callback: () => ViewportActions.focus(RendererStoreController.engine.selectedEntity)
         },
         {
             require: [KEYS.KeyS],
             callback: () => {
-                const settings = DataStoreController.settings
-                DataStoreController.updateSettings({...settings, gizmo: GIZMOS.SCALE})
+                const settings = RendererStoreController.settings
+                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.SCALE})
             }
         },
         {
             require: [KEYS.KeyR],
             callback: () => {
-                const settings = DataStoreController.settings
-                DataStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})
+                const settings = RendererStoreController.settings
+                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})
             }
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyZ],
-            callback: () => DataStoreController.undo()
+            callback: () => RendererStoreController.undo()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyY],
-            callback: () => DataStoreController.redo()
+            callback: () => RendererStoreController.redo()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyP],

@@ -1,7 +1,7 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import Entity from "../../../libs/engine/templates/basic/Entity";
-import dispatchEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-entities";
-import DataStoreController from "../../../stores/DataStoreController";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
 import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";
@@ -15,7 +15,7 @@ function createEntity(component) {
         entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
         entity.components[component.key] = new component.ref(undefined, entity)
     }
-    dispatchEntities({
+    dispatchRendererEntities({
         type: ENTITY_ACTIONS.ADD, payload: entity
     })
 }
@@ -43,7 +43,7 @@ export default function getContextMenu(open, setOpen) {
         },
         {
             label: "Select none",
-            onClick: () => DataStoreController.updateEngine({...DataStoreController.engine, selected: []})
+            onClick: () => RendererStoreController.updateEngine({...RendererStoreController.engine, selected: []})
         },
         {
             label: "Close all",
@@ -122,7 +122,7 @@ export default function getContextMenu(open, setOpen) {
                 const t = target.getAttribute("data-node")
                 const entity = Renderer.entitiesMap.get(t)
                 if (entity)
-                    dispatchEntities({
+                    dispatchRendererEntities({
                         type: ENTITY_ACTIONS.ADD,
                         payload: entity.clone()
                     })
@@ -132,7 +132,7 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Remove entity",
             icon: "delete",
-            onClick: (node) => dispatchEntities({type: ENTITY_ACTIONS.REMOVE, payload: node.getAttribute("data-node")})
+            onClick: (node) => dispatchRendererEntities({type: ENTITY_ACTIONS.REMOVE, payload: node.getAttribute("data-node")})
         },
 
         {requiredTrigger: "data-node", divider: true},
@@ -141,9 +141,9 @@ export default function getContextMenu(open, setOpen) {
             label: "Deselect",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                DataStoreController.updateEngine({
-                    ...DataStoreController.engine,
-                    selected: DataStoreController.engine.selected.filter(s => s !== t)
+                RendererStoreController.updateEngine({
+                    ...RendererStoreController.engine,
+                    selected: RendererStoreController.engine.selected.filter(s => s !== t)
                 })
             }
         },
@@ -153,9 +153,9 @@ export default function getContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toDeselect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
-                DataStoreController.updateEngine({
-                    ...DataStoreController.engine,
-                    selected: DataStoreController.engine.selected.filter(s => toDeselect.includes(s))
+                RendererStoreController.updateEngine({
+                    ...RendererStoreController.engine,
+                    selected: RendererStoreController.engine.selected.filter(s => toDeselect.includes(s))
                 })
             }
         },
@@ -165,9 +165,9 @@ export default function getContextMenu(open, setOpen) {
             label: "Select",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                DataStoreController.updateEngine({
-                    ...DataStoreController.engine,
-                    selected: [...DataStoreController.engine.selected, t]
+                RendererStoreController.updateEngine({
+                    ...RendererStoreController.engine,
+                    selected: [...RendererStoreController.engine.selected, t]
                 })
             }
         },
@@ -177,9 +177,9 @@ export default function getContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toSelect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
-                DataStoreController.updateEngine({
-                    ...DataStoreController.engine,
-                    selected: [...DataStoreController.engine.selected, ...toSelect]
+                RendererStoreController.updateEngine({
+                    ...RendererStoreController.engine,
+                    selected: [...RendererStoreController.engine.selected, ...toSelect]
                 })
             }
         },

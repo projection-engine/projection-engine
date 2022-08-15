@@ -2,7 +2,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import ComponentAttribute from "./ComponentAttribute.svelte";
     import Icon from "../../../../../components/Icon/Icon.svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import getComponentIcon from "../../../utils/get-component-icon";
 
     export let key
@@ -26,10 +26,10 @@
             <button
                     class="button"
                     on:click={() => {
-                        const entity = DataStoreController.engine.selectedEntity
+                        const entity = RendererStoreController.engine.selectedEntity
                        entity.scripts[index] = undefined
                        entity.scripts = entity.scripts.filter(e => e)
-                        DataStoreController.updateEngine()
+                        RendererStoreController.updateEngine()
                     }}
             >
                 <Icon>delete_forever</Icon>

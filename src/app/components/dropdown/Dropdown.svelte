@@ -6,12 +6,13 @@
     import createPortal from "../create-portal";
 
     export let noBackground = undefined
-    export let width  = undefined
-    export let styles  = undefined
+    export let width = undefined
+    export let styles = undefined
     export let disabled = undefined
-    export let hideArrow  = undefined
+    export let hideArrow = undefined
     export let onOpen = undefined
     export let onClose = undefined
+    export let buttonStyles = ""
     let open = false
     let modal
     let button
@@ -50,7 +51,7 @@
             }
         }}
         class={open && !noBackground ? "highlight dropdown" : undefined}
-        style={(hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;") + "width: " + width}
+        style={((hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;")) + buttonStyles + " width: " + width}
 >
 
     <slot name="button"/>

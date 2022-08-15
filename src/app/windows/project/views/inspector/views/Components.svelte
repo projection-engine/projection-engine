@@ -1,5 +1,5 @@
 <script>
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
@@ -94,14 +94,14 @@
                     translate={translate}
                     selected={component}
                     submit={async (value, key) => {
-                            DataStoreController.saveEntity(
+                            RendererStoreController.saveEntity(
                                 engine.selectedEntity.id,
                                 componentKey,
                                 key,
                                 component[key]
                             )
                             component[key] = value
-                            DataStoreController.saveEntity(
+                            RendererStoreController.saveEntity(
                                 engine.selectedEntity.id,
                                 componentKey,
                                 key,
@@ -117,7 +117,7 @@
                     selected={component}
                     submit={(key, value, save) => {
                             if(!savedState){
-                                DataStoreController.saveEntity(
+                                RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
                                      componentKey,
                                       key,
@@ -127,7 +127,7 @@
                             }
                             component[key] = value
                             if(save)
-                                DataStoreController.saveEntity(
+                                RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
                                      componentKey,
                                       key,
@@ -145,7 +145,7 @@
                 selected={script}
                 submit={(key, value, save) => {
                             if(!savedState){
-                                DataStoreController.saveEntity(
+                                RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
                                      index,
                                       key,
@@ -155,7 +155,7 @@
                             }
                             script[key] = value
                             if(save)
-                                DataStoreController.saveEntity(
+                                RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
                                      index,
                                       key,

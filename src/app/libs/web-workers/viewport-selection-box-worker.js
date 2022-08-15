@@ -1,6 +1,6 @@
 import COMPONENTS from "../../windows/project/libs/engine/data/COMPONENTS";
 
-export default function entitySearchWorker(){
+export default function viewportSelectionBoxWorker(){
     const src = ` 
     self.onmessage = ({data: {entities, data}}) => {
         const COMPONENTS = ${JSON.stringify(COMPONENTS)}

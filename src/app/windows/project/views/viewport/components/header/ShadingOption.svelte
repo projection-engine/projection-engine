@@ -2,13 +2,13 @@
     import SHADING_MODELS from "../../../../data/misc/SHADING_MODELS"
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
-    import DataStoreController from "../../../../stores/DataStoreController";
+    import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import EngineLoop from "../../../../libs/engine/libs/loop/EngineLoop";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
     onDestroy(() => unsubscribeSettings())
     export let translate = () => null
     $: shading = (() => {

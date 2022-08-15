@@ -1,9 +1,19 @@
-function createComponent(component) {
+import dispatchUiEntities from "../../../stores/templates/dispatch-ui-entities";
+import {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import UIElement from "../../../libs/engine/templates/basic/UIElement";
+import UIRenderer from "../../../libs/engine/UIRenderer";
 
-}
 
-function createElement(component) {
+function createElement(parent) {
+    const entity = new UIElement()
+    entity.parent = UIRenderer.entities.get(parent)
+    if (entity.parent)
+        entity.parent.children.push(entity)
 
+    dispatchUiEntities({
+        type: ENTITY_ACTIONS.ADD,
+        payload: entity
+    })
 }
 
 export default function getContextMenu(open, setOpen) {
@@ -11,18 +21,13 @@ export default function getContextMenu(open, setOpen) {
     return [
         {
             requiredTrigger: "data-self",
-            label: "New Component",
-            onClick: () => createComponent()
-        },
-        {
-            requiredTrigger: "data-node",
-            label: "New Component",
-            onClick: () => createComponent()
+            label: "New Element",
+            onClick: () => createElement()
         },
         {
             requiredTrigger: "data-node",
             label: "New Element",
-            onClick: () => createElement()
+            onClick: node => createElement(node.getAttribute("data-node"))
         },
 
         {divider: true, requiredTrigger: "data-self"},
@@ -52,7 +57,10 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Remove entity",
             icon: "delete",
-            onClick: (node) => null
+            onClick: (node) => dispatchUiEntities({
+                type: ENTITY_ACTIONS.REMOVE,
+                payload: node.getAttribute("data-node")
+            })
         },
 
         {

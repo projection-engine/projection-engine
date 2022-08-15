@@ -1,12 +1,12 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
     import Localization from "../../../../../../libs/Localization";
-    import DataStoreController from "../../../../stores/DataStoreController";
+    import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
     onDestroy(() => unsubscribeSettings())
     let state = {
         zFar: settings.zFar,

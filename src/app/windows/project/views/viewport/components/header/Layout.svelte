@@ -1,16 +1,16 @@
 <script>
-    import VIEWS from "../../../../../components/view/VIEWS";
-    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import "../css/Viewport.css"
+    import VIEWS from "../../../../../../components/view/VIEWS";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import "../../css/Viewport.css"
     import {onDestroy} from "svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
-    import KEYS from "../../../libs/engine/data/KEYS";
+    import RendererStoreController from "../../../../stores/RendererStoreController";
+    import KEYS from "../../../../libs/engine/data/KEYS";
 
     export let translate
 
     let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
 </script>
@@ -29,7 +29,7 @@
             <input
                     on:dblclick={(e) => {
                         e.currentTarget.type = "text"
-                        DataStoreController.updateSettings({...settings, currentView: i})
+                        RendererStoreController.updateSettings({...settings, currentView: i})
                     }}
                     on:input={e => {
                        v.name = e.target.value
@@ -41,7 +41,7 @@
                         }
                     }}
                     on:blur={e => e.currentTarget.type = "button"}
-                    on:click={() => DataStoreController.updateSettings({...settings, currentView: i})}
+                    on:click={() => RendererStoreController.updateSettings({...settings, currentView: i})}
                     class={"tab viewport-tabs"}
                     data-view={i}
                     type="button"
@@ -54,7 +54,7 @@
                                 if (i === obj.currentView)
                                     obj.currentView = 0
                                 obj.views = obj.views.filter((_, index) => i !== index)
-                                DataStoreController.updateSettings(obj)
+                                RendererStoreController.updateSettings(obj)
                          }}
 style="width: 25px; height: 25px; display: flex; align-items: center; justify-content: center"
                 >
@@ -74,7 +74,7 @@ style="width: 25px; height: 25px; display: flex; align-items: center; justify-co
                         right: [VIEWS.HIERARCHY],
                         left: []
                     }]
-                    DataStoreController.updateSettings({...settings, views})
+                    RendererStoreController.updateSettings({...settings, views})
 
                 }}
                 class={"tab viewport-tabs"}

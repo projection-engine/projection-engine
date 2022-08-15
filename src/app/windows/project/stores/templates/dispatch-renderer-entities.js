@@ -2,7 +2,8 @@ import PickComponent from "../../libs/engine/templates/components/PickComponent"
 import COMPONENTS from "../../libs/engine/data/COMPONENTS"
 import {v4} from "uuid"
 import ENTITY_WORKER_ACTIONS from "../../data/misc/ENTITY_WORKER_ACTIONS"
-import DataStoreController from "../DataStoreController";
+import RendererStoreController from "../RendererStoreController";
+import removeHierarchy from "../utils/remove-hierarchy";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -16,29 +17,17 @@ export const ENTITY_ACTIONS = {
 }
 
 
-function removeHierarchy(state, entity) {
-    if (!entity)
-        return
-    for (let c = 0; c < entity.children.length; c++)
-        removeHierarchy(state, entity.children[c])
-    state.delete(entity.id)
-}
 
-export default function dispatchEntities({type, payload}) {
-    const engine = DataStoreController.engine
+export default function dispatchRendererEntities({type, payload}) {
+    const engine = RendererStoreController.engine
     const state = engine.entities
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
             engine.fixedEntity = undefined
             engine.selected = []
 
-            const entity = state.get(payload.entityID)
-            if (!entity)
-                return;
-            state.delete(entity.id)
-            entity.children.forEach(child => {
-                state.delete(child.id)
-            })
+            const entity = state.get(payload)
+            removeHierarchy(state, entity)
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
             const values = state.values()
@@ -52,11 +41,6 @@ export default function dispatchEntities({type, payload}) {
             }
             break
         }
-        case ENTITY_ACTIONS.CLEAR:
-            engine.fixedEntity = undefined
-            engine.selected = []
-            state.clear()
-            break
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
             state.set(entity.id, entity)
@@ -119,7 +103,7 @@ export default function dispatchEntities({type, payload}) {
     const changeID = v4()
 
     const changes = {...engine, entities: state, changeID}
-    window.addEntityWorkerListener(() => DataStoreController.updateEngine(changes), changeID)
+    window.addEntityWorkerListener(() => RendererStoreController.updateEngine(changes), changeID)
     window.entityWorker.postMessage({
         type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
         payload: state,

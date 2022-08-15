@@ -1,4 +1,4 @@
-import DataStoreController from "../DataStoreController";
+import RendererStoreController from "../RendererStoreController";
 import {settingsStore} from "./settings-store";
 import Localization from "../../../../libs/Localization";
 
@@ -52,14 +52,14 @@ export default class ViewportActions {
     #apply() {
         const currentAction = this.history[this.index]
         if (currentAction.target === ViewportActions.targets.entity) {
-            const entity = DataStoreController.engine.entities.get(currentAction.entityID)
+            const entity = RendererStoreController.engine.entities.get(currentAction.entityID)
             if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
                 entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
             else
                 entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
-            DataStoreController.updateEngine()
+            RendererStoreController.updateEngine()
         } else {
-            DataStoreController.settings = currentAction.changeValue
+            RendererStoreController.settings = currentAction.changeValue
             settingsStore.set(currentAction.changeValue)
         }
     }

@@ -2,7 +2,7 @@
     import SHORTCUTS_ID from "../../data/misc/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
-    import DataStoreController from "../../stores/DataStoreController";
+    import RendererStoreController from "../../stores/RendererStoreController";
     import HotKeys from "./libs/HotKeys";
     import Localization from "../../../../libs/Localization";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
@@ -12,7 +12,7 @@
     let activeView
     let initialized = false
 
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
 
     onMount(() => HotKeys.initializeListener(v => activeView = v))
     onDestroy(() => unsubscribeSettings())

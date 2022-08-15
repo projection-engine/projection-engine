@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
-    import DataStoreController from "../../stores/DataStoreController";
+    import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import Components from "./views/Components.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
@@ -11,7 +11,7 @@
     export let orientation = undefined
 
     let engine = {}
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     onDestroy(() => {
         unsubscribeEngine()
     })

@@ -6,7 +6,7 @@
     import FilesAPI from "../../../../libs/files/FilesAPI"
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
-    import DataStoreController from "../../stores/DataStoreController";
+    import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";
     import CBStoreController from "../../stores/CBStoreController";
@@ -31,7 +31,7 @@
     let engine
     let fileStore
     const unsubscribeFiles = CBStoreController.getStore(v => fileStore = v)
-    const unsubscribeEngine = DataStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeFiles()

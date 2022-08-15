@@ -12,7 +12,6 @@ export default function entityWorker() {
            
             switch (type) {
             case ENTITY_WORKER_ACTIONS.GET_HIERARCHY: {
-                console.log(entities)
                 self.postMessage({actionID, payload: hierarchy})
                 break
             }
@@ -35,36 +34,11 @@ export default function entityWorker() {
                 self.postMessage({actionID})
                 break
             }
-            case ENTITY_WORKER_ACTIONS.GET_UNUSED_DATA: {
-                if(updated) {
-                    const {materials, meshes} = payload
-                    const meshesFiltered = meshes.reduce((obj, currentValue) => {
-                            obj[currentValue] = currentValue
-                            return obj
-                        }, {}),
-                        materialsFiltered = {...materials}
-                    const values = entities.values()
-        
-                    for (let i = 0; i < values.length; i++) {
-                        const meshComp = values[i].components[COMPONENTS.MESH]
-        
-                        if (meshComp !== undefined) {
-                            delete meshesFiltered[meshComp.meshID]
-                            delete materialsFiltered[meshComp.materialID]
-                        }
-                    }
-        
-                    self.postMessage({actionID, payload: {meshesFiltered, materialsFiltered}})
-                }
-                else
-                    self.postMessage({actionID, payload: {meshesFiltered: {}, materialsFiltered: {}}})
-                break
-            }
+         
             default:
                 break
             }
-        
-        
+            
         }
     `
     const workerBlob = new Blob([src], {type: "application/javascript"});

@@ -26,10 +26,28 @@
     const ID = v4()
 
     let open = {}
-    $: toRender = searchedEntity ? store.entities.filter(e => e.name.includes(searchString)) : store.entities
+    let toRender = []
     let ref
     let offset = 0
     let maxDepth = 0
+    $: {
+        let data = []
+        const callback = (node, depth) => {
+            data.push({node, depth})
+            for (let i = 0; i < node.children.length; i++)
+                callback(node.children[i], depth + 1)
+        }
+        const arr = Array.from(store.entities.values())
+        for (let i = 0; i < arr.length; i++) {
+            if (!searchedEntity) {
+                if (arr[i].parent !== undefined)
+                    continue
+                callback(arr[i], 0)
+            } else if (arr[i].name.includes(searchedEntity))
+                data.push({node: arr[i], depth: 0})
+        }
+        toRender = data
+    }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS, (trigger, element) => {
         if (trigger === TRIGGERS[0])
             UIStoreController.updateStore({...store, selected: [element.getAttribute(trigger)]})
@@ -80,12 +98,12 @@
             {#each toRender as _, i}
                 {#if i < maxDepth && toRender[i + offset]}
                     <Node
-                        depth={toRender[i + offset].depth}
-                        open={open}
-                        setOpen={v => open = v}
-                        selected={store.selected}
-                        setSelected={updateSelection}
-                        node={toRender[i + offset]}
+                            depth={toRender[i + offset].depth}
+                            open={open}
+                            setOpen={v => open = v}
+                            selected={store.selected}
+                            setSelected={updateSelection}
+                            node={toRender[i + offset].node}
                     />
                 {/if}
             {/each}

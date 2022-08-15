@@ -1,30 +1,31 @@
 import {engine} from "./templates/engine-store";
 import {settingsStore} from "./templates/settings-store";
 import ENGINE from "../data/misc/ENGINE";
-import {SETTINGS} from "../../../../assets/WINDOWS";
+
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ViewportActions from "./templates/ViewportActions";
 import Renderer from "../libs/engine/Renderer";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
+import SETTINGS from "../data/misc/SETTINGS";
 
 let initialized = false
-export default class DataStoreController {
+export default class RendererStoreController {
     static engine = ENGINE
     static settings = SETTINGS
     static history = new ViewportActions()
 
     static undo() {
-        DataStoreController.history.undo()
+        RendererStoreController.history.undo()
     }
 
     static redo() {
-        DataStoreController.history.redo()
+        RendererStoreController.history.redo()
     }
 
     static saveEntity(entityID, component, key, changeValue) {
 
-        DataStoreController.history.pushChange({
+        RendererStoreController.history.pushChange({
             target: ViewportActions.targets.entity,
             changeValue,
             entityID,
@@ -45,31 +46,31 @@ export default class DataStoreController {
         })
     }
 
-    static updateSettings(value = DataStoreController.settings) {
+    static updateSettings(value = RendererStoreController.settings) {
 
         if (initialized) {
-            DataStoreController.history.pushChange({
+            RendererStoreController.history.pushChange({
                 target: ViewportActions.targets.settings,
-                changeValue: DataStoreController.settings
+                changeValue: RendererStoreController.settings
             })
-            DataStoreController.history.pushChange({
+            RendererStoreController.history.pushChange({
                 target: ViewportActions.targets.settings,
                 changeValue: value
             })
         }
         initialized = true
-        DataStoreController.settings = value
+        RendererStoreController.settings = value
         settingsStore.set({...value})
     }
 
-    static updateEngine(value = DataStoreController.engine) {
+    static updateEngine(value = RendererStoreController.engine) {
         let updated = {...value}
         if (value.selected.length > 0 || value.lockedEntity)
             updated.selectedEntity = value.entities.get(value.lockedEntity ? value.lockedEntity : value.selected[0])
         else
             updated.selectedEntity = undefined
 
-        DataStoreController.engine = updated
+        RendererStoreController.engine = updated
         engine.set(updated)
     }
 
@@ -78,7 +79,7 @@ export default class DataStoreController {
         const entities = Array.from(Renderer.entitiesMap.values())
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
-            await updateSettings(metaData, DataStoreController.settings)
+            await updateSettings(metaData, RendererStoreController.settings)
             await removeDeletedEntities()
             try {
 

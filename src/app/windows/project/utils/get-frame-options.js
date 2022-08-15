@@ -1,4 +1,4 @@
-import DataStoreController from "../stores/DataStoreController";
+import RendererStoreController from "../stores/RendererStoreController";
 import loadScripts from "./load-scripts";
 import ROUTES from "../../../../assets/ROUTES";
 
@@ -10,7 +10,7 @@ export default function getFrameOptions(engine, s) {
         {
             label: "Save",
             icon: "save",
-            onClick: () => DataStoreController.save().catch()
+            onClick: () => RendererStoreController.save().catch()
         },
         {
             label: engine.executingAnimation ? "Stop" : "Play",
@@ -32,13 +32,13 @@ export default function getFrameOptions(engine, s) {
             options: [
                 {
                     label: "Undo",
-                    onClick: () => DataStoreController.undo(),
+                    onClick: () => RendererStoreController.undo(),
 
                     shortcut: "Ctrl - Z"
                 },
                 {
                     label: "Redo",
-                    onClick: () => DataStoreController.redo(),
+                    onClick: () => RendererStoreController.redo(),
 
                     shortcut: "Ctrl - Y"
                 },
@@ -68,7 +68,7 @@ export default function getFrameOptions(engine, s) {
                             ...settings.visible,
                             sideBarViewport: !settings.visible.sideBarViewport
                         }
-                        DataStoreController.updateSettings(settings)
+                        RendererStoreController.updateSettings(settings)
                     },
                 },
                 {
@@ -79,7 +79,7 @@ export default function getFrameOptions(engine, s) {
                             ...settings.visible,
                             metrics: !settings.visible.metrics
                         }
-                        DataStoreController.updateSettings(settings)
+                        RendererStoreController.updateSettings(settings)
                     },
                 }
             ]

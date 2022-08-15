@@ -1,14 +1,14 @@
 <script>
-    import CameraTab from "../components/settings/CameraSettings.svelte"
-    import ViewportTab from "../components/settings/3DCursorSettings.svelte"
+    import CameraTab from "./settings/CameraSettings.svelte"
+    import ViewportTab from "./settings/3DCursorSettings.svelte"
     // import Transform from "../../inspector/views/Transform"
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
 
     export let translate
     let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
     onDestroy(() => unsubscribeSettings())
 </script>
 

@@ -1,5 +1,5 @@
-import dispatchEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-entities";
-import DataStoreController from "../stores/DataStoreController";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../stores/RendererStoreController";
 import Renderer from "./engine/Renderer";
 import COMPONENTS from "./engine/data/COMPONENTS";
 
@@ -20,15 +20,15 @@ export default class ViewportActions {
     }
 
     static deleteSelected() {
-        const engine = DataStoreController.engine
-        dispatchEntities({
+        const engine = RendererStoreController.engine
+        dispatchRendererEntities({
             type: ENTITY_ACTIONS.REMOVE_BLOCK,
             payload: [...engine.selected]
         })
     }
 
     static invertSelection() {
-        const engine = DataStoreController.engine
+        const engine = RendererStoreController.engine
         const newArr = []
         const notValid = {}
         const engineCopy = {...engine}
@@ -41,7 +41,7 @@ export default class ViewportActions {
                 newArr.push(entities[i].id)
         }
         engineCopy.selected = newArr
-        DataStoreController.updateEngine(engineCopy)
+        RendererStoreController.updateEngine(engineCopy)
     }
 
     static paste(parent) {
@@ -57,31 +57,31 @@ export default class ViewportActions {
             }
         })
 
-        dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
+        dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         alert.pushAlert(`Pasted ${ViewportActions.toCopy.length} entities.`, "info")
 
     }
 
     static group() {
-        const engine = DataStoreController.engine
+        const engine = RendererStoreController.engine
         ViewportActions.toCopy = engine.selected
         if (engine.selected.length > 1)
-            dispatchEntities({
+            dispatchRendererEntities({
                 type: ENTITY_ACTIONS.LINK_MULTIPLE,
                 payload: engine.selected
             })
     }
 
     static selectAll() {
-        DataStoreController.updateEngine({
-            ...DataStoreController.engine,
+        RendererStoreController.updateEngine({
+            ...RendererStoreController.engine,
             selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
         })
     }
 
     static fixateActive() {
-        const engine = DataStoreController.engine
+        const engine = RendererStoreController.engine
         if (engine.selected[0])
-            DataStoreController.updateEngine({...engine, lockedEntity: engine.selected[0]})
+            RendererStoreController.updateEngine({...engine, lockedEntity: engine.selected[0]})
     }
 }

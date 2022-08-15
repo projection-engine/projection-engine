@@ -64,6 +64,9 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            PLAY: "Game",
+            EDITOR: "Scene Editor",
+            UI: "UI Editor",
             EMPTY_ENTITY: "Empty Entity",
             LAYOUT: "Layout",
             ADD: "Add",

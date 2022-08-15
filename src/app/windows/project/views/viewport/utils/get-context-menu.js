@@ -1,6 +1,6 @@
 import updateCursor from "./update-cursor"
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import DataStoreController from "../../../stores/DataStoreController";
+import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 
 export default function getContextMenu(engine) {
@@ -9,7 +9,7 @@ export default function getContextMenu(engine) {
         {
             label: "Select all",
             onClick: () => {
-                DataStoreController.updateEngine({
+                RendererStoreController.updateEngine({
                     ...engine,
                     selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
                 })
@@ -18,7 +18,7 @@ export default function getContextMenu(engine) {
         },
         {
             label: "Invert selection",
-            onClick: () => DataStoreController.invertSelection(),
+            onClick: () => RendererStoreController.invertSelection(),
             shortcut: ["Ctrl", "I"]
         }
     ]
@@ -28,20 +28,20 @@ export default function getContextMenu(engine) {
         ...base,
         {
             label: "Copy",
-            onClick: () => DataStoreController.copy(false),
+            onClick: () => RendererStoreController.copy(false),
             icon: "copy_all",
             shortcut: ["Ctrl", "C"]
         },
         {
             label: "Paste",
-            onClick: () => DataStoreController.paste(),
+            onClick: () => RendererStoreController.paste(),
             icon: "content_paste_go",
             shortcut: ["Ctrl", "V"]
         },
         {divider: true},
         {
             label: "Group entities",
-            onClick: () => DataStoreController.group(),
+            onClick: () => RendererStoreController.group(),
             shortcut: ["Ctrl", "P"]
         },
         {divider: true},
@@ -128,7 +128,7 @@ export default function getContextMenu(engine) {
             shortcut: ["Delete"],
             icon: "delete_forever",
             label: "Delete",
-            onClick: () => DataStoreController.deleteSelected()
+            onClick: () => RendererStoreController.deleteSelected()
         },
 
     ]

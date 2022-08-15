@@ -1,7 +1,7 @@
 <script>
 
     import Input from "../../../../../components/input/Input.svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
@@ -72,7 +72,7 @@ onDestroy(() => {
             hasBorder={true}
             setSearchString={v => {
                 entity.name = v
-                DataStoreController.updateEngine({...DataStoreController.engine, changeID: v4()})
+                RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
             }}
                 searchString={entity.name}
                 placeholder={translate("MY_ENTITY")}

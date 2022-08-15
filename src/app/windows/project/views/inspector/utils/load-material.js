@@ -2,7 +2,7 @@ import CBStoreController from "../../../stores/CBStoreController";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import Localization from "../../../../../libs/Localization";
 import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
-import DataStoreController from "../../../stores/DataStoreController";
+import RendererStoreController from "../../../stores/RendererStoreController";
 import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
@@ -29,7 +29,7 @@ export default async function loadMaterial(ID, submit) {
             submit(FALLBACK_MATERIAL, "materialID")
             return
         }
-        const exists = DataStoreController.engine.materials.find(m => m.id === ID)
+        const exists = RendererStoreController.engine.materials.find(m => m.id === ID)
         if (!exists) {
             let newMat
             await new Promise(resolve => {
@@ -42,8 +42,8 @@ export default async function loadMaterial(ID, submit) {
                     uniformData: file.response.uniformData
                 })
             })
-            const newMaterials = [...DataStoreController.engine.materials, newMat]
-            DataStoreController.updateEngine({...DataStoreController.engine, materials: newMaterials})
+            const newMaterials = [...RendererStoreController.engine.materials, newMat]
+            RendererStoreController.updateEngine({...RendererStoreController.engine, materials: newMaterials})
             alert.pushAlert(Localization.PROJECT.INSPECTOR.MATERIAL_LOADED, "success")
             window.renderer.materials = newMaterials
         }

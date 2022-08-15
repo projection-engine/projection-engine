@@ -6,7 +6,7 @@
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import CAMERA_GIZMO from "../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
 
     let requested = false
     let camera = window.renderer.camera
@@ -25,7 +25,7 @@
     let cameraIsOrtho = false
 
     let settings = {}
-    const unsubscribeSettings = DataStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
 
@@ -214,7 +214,7 @@
         transition: 150ms ease-in;
         position: absolute;
         right: 0;
-        top: 25px;
+        top: 2px;
         z-index: 15;
 
     }

@@ -1,9 +1,9 @@
-import dispatchEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-entities"
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../../libs/files/FilesAPI"
 import COMPONENTS from "../engine/data/COMPONENTS"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../assets/FILE_TYPES";
-import DataStoreController from "../../stores/DataStoreController";
+import RendererStoreController from "../../stores/RendererStoreController";
 import CBStoreController from "../../stores/CBStoreController";
 import Entity from "../engine/templates/basic/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
@@ -82,8 +82,8 @@ export default class Loader {
                     })
 
                     for (let i = 0; i < meshes.length; i++)
-                        DataStoreController.engine.meshes.set(meshes[i].id, meshes[i])
-                    dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+                        RendererStoreController.engine.meshes.set(meshes[i].id, meshes[i])
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                 }
             } else
                 alert.pushAlert("Some error occurred", "error")
@@ -134,7 +134,7 @@ export default class Loader {
         if (meshes.length > 0) {
             const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
             for (let i = 0; i < newMeshes.length; i++)
-                DataStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
+                RendererStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
             if (!asID) {
                 const toLoad = meshes
                     .map(m => m.entity)
@@ -149,7 +149,7 @@ export default class Loader {
                         transform.changed = true
                     }
                 })
-                dispatchEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
+                dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
                 alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
             }
         }

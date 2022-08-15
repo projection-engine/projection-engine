@@ -12,8 +12,8 @@ export default class UIStoreController {
     }
     static updateStore(v = UIStoreController.data) {
         const value = {...v}
-        if (value.selected.length > 0 || value.lockedEntity)
-            value.selectedEntity = value.entities.find(v => v.id === value.selected[0])
+        if (value.selected.length > 0)
+            value.selectedEntity = value.entities.get(value.selected[0])
         else
             value.selectedEntity = undefined
 

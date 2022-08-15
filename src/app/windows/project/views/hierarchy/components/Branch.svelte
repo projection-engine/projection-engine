@@ -5,7 +5,7 @@
     import Packager from "../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
     import Renderer from "../../../libs/engine/Renderer";
-    import DataStoreController from "../../../stores/DataStoreController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import {v4} from "uuid";
 
     const LEFT_BUTTON = 0
@@ -77,7 +77,7 @@
 
                     const ID = v4()
                     window.addEntityWorkerListener(() => {
-                        DataStoreController.updateEngine({...DataStoreController.engine, changeID: ID})
+                        RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: ID})
                     }, ID)
                     window.entityWorker.postMessage({
                         type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,

@@ -11,7 +11,7 @@ import Conversion from "../../../engine/services/Conversion"
 import getEntityTranslation from "./utils/get-entity-translation"
 import mapEntity from "./utils/map-entity"
 import mesh from "../../data/ROTATION_GIZMO.json"
-import DataStoreController from "../../../../stores/DataStoreController";
+import RendererStoreController from "../../../../stores/RendererStoreController";
 import ViewportPicker from "../../../engine/services/ViewportPicker";
 import EngineLoop from "../../../engine/libs/loop/EngineLoop";
 
@@ -87,7 +87,7 @@ export default class Rotation {
     }
 
     onMouseUp() {
-        DataStoreController.saveEntity(
+        RendererStoreController.saveEntity(
             this.mainEntity.id,
             COMPONENTS.TRANSFORM,
             "rotationQuat",
@@ -117,7 +117,7 @@ export default class Rotation {
     onMouseMove(event) {
         if(!this.started){
             this.started = true
-            DataStoreController.saveEntity(
+            RendererStoreController.saveEntity(
                 this.mainEntity.id,
                 COMPONENTS.TRANSFORM,
                 "rotationQuat",
