@@ -27,6 +27,7 @@ export default class AssetAPI {
     }
 
 
+
     static async updateEntity(entity, id) {
 
         const p = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "logic")

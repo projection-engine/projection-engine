@@ -1,13 +1,13 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../data/misc/TRANSFORMATION_TYPE"
-    import GIZMOS from "../../../data/misc/GIZMOS"
-    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import "../css/Viewport.css"
-    import ResizableBar from "../../../../../components/resizable/ResizableBar.svelte";
-    import GizmoGridSettings from "./settings/GizmoGridSettings.svelte";
+    import TRANSFORMATION_TYPE from "../../../../data/misc/TRANSFORMATION_TYPE"
+    import GIZMOS from "../../../../data/misc/GIZMOS"
+    import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import "../../css/Viewport.css"
+    import ResizableBar from "../../../../../../components/resizable/ResizableBar.svelte";
+    import GizmoGridSettings from "../settings/GizmoGridSettings.svelte";
     import {onDestroy, onMount} from "svelte";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import RendererStoreController from "../../../../stores/RendererStoreController";
 
     const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
     const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]

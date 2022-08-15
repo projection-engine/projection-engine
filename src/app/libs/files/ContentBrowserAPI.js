@@ -9,6 +9,17 @@ import ROUTES from "../../../assets/ROUTES";
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
 
+function mapAsset(reg, type) {
+    return reg.map(i => new Promise(resolve => {
+        const split = i.path.split(FilesAPI.sep)
+        resolve({
+            type,
+            registryID: i.id,
+            name: split[split.length - 1].split(".")[0]
+        })
+    }))
+}
+
 export default class ContentBrowserAPI {
 
     static async rename(from, to) {
@@ -58,6 +69,7 @@ export default class ContentBrowserAPI {
         }
         return res
     }
+
     static async openDialog() {
         return await new Promise(resolve => {
             const listenID = v4().toString()
@@ -67,6 +79,7 @@ export default class ContentBrowserAPI {
             ipcRenderer.send("open-file-dialog", {listenID})
         })
     }
+
     static async foldersFromDirectory(startPath) {
         if (!(await NodeFS.exists(startPath))) return []
         let res = []
@@ -87,60 +100,54 @@ export default class ContentBrowserAPI {
             meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
             materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
             componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
+            stylesheetReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.STYLESHEET)),
+            levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             promises = []
 
-        promises.push(...imagesReg.map(i => {
-            return new Promise(resolve => {
-                const split = i.path.split(FilesAPI.sep)
-                resolve({
-                    type: FILE_TYPES.IMAGE,
-                    registryID: i.id,
-                    name: split[split.length - 1]
-                })
-            })
-        }))
 
-        promises.push(...meshesReg.map(i => {
-            return new Promise(resolve => {
-                const split = i.path.split(FilesAPI.sep)
-                resolve({
-                    type: FILE_TYPES.MESH,
-                    registryID: i.id,
-                    name: split[split.length - 1]
-                })
-
-            })
-        }))
-        promises.push(...materialsReg.map(i => {
-            return new Promise(resolve => {
-                const split = i.path.split(FilesAPI.sep)
-                resolve({
-                    type: FILE_TYPES.MATERIAL,
-                    registryID: i.id,
-                    name: split[split.length - 1].split(".")[0]
-                })
-            })
-        }))
-
-        promises.push(...componentsReg.map(i => {
-            return new Promise(resolve => {
-                const split = i.path.split(FilesAPI.sep)
-                resolve({
-                    type: FILE_TYPES.COMPONENT,
-                    registryID: i.id,
-                    name: split[split.length - 1].split(".")[0]
-                })
-            })
-        }))
+        promises.push(...mapAsset(imagesReg, FILE_TYPES.IMAGE))
+        promises.push(...mapAsset(meshesReg, FILE_TYPES.MESH))
+        promises.push(...mapAsset(materialsReg, FILE_TYPES.MATERIAL))
+        promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
+        promises.push(...mapAsset(stylesheetReg, FILE_TYPES.STYLESHEET))
+        promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
 
 
-        const res = await Promise.all(promises)
-        return {
-            images: res.filter(f => f.type === FILE_TYPES.IMAGE),
-            meshes: res.filter(f => f.type === FILE_TYPES.MESH),
-            materials: res.filter(f => f.type === FILE_TYPES.MATERIAL),
-            components: res.filter(f => f.type === FILE_TYPES.COMPONENT),
+        const loadedPromises = await Promise.all(promises)
+        const result = {
+            images: [],
+            meshes: [],
+            materials: [],
+            components: [],
+            stylesheets: [],
+            levels: []
         }
+        for (let i = 0; i < loadedPromises.length; i++) {
+            const current = loadedPromises[i]
+            switch (current.type) {
+                case FILE_TYPES.IMAGE:
+                    result.images.push(current)
+                    break
+                case FILE_TYPES.MESH:
+                    result.meshes.push(current)
+                    break
+                case FILE_TYPES.MATERIAL:
+                    result.materials.push(current)
+                    break
+                case FILE_TYPES.COMPONENT:
+                    result.components.push(current)
+                    break
+                case FILE_TYPES.STYLESHEET:
+                    result.stylesheets.push(current)
+                    break
+                case FILE_TYPES.LEVEL:
+                    result.levels.push(current)
+                    break
+                default:
+                    break
+            }
+        }
+        return result
     }
 
     static async importFile(targetDir, filesToLoad) {
@@ -195,8 +202,6 @@ export default class ContentBrowserAPI {
         }
         return result
     }
-
-
 
 
 }

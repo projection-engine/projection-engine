@@ -8,6 +8,7 @@
     import getFileIcon from "../utils/get-file-icon";
     import CBStoreController from "../../../stores/CBStoreController";
     import Localization from "../../../../../libs/Localization";
+    import RendererStoreController from "../../../stores/RendererStoreController";
 
     const {shell} = window.require("electron")
 
@@ -32,6 +33,22 @@
         icon: getFileIcon(data.type)
     }
     const translate = key => Localization.PROJECT.FILES[key]
+    const onDbClick = () => {
+        if (type === 1) {
+            const fileType = "." + data.type
+            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET) {
+                shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
+                alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
+            } else if (fileType === FILE_TYPES.LEVEL) {
+                alert.pushAlert(translate("OPENING_LEVEL") + " (" + currentLabel + ")", "info")
+                RendererStoreController.updateLevel(data)
+            } else
+                setSelected(data.id)
+        } else {
+            reset()
+            setCurrentDirectory(data)
+        }
+    }
 </script>
 
 <div
@@ -53,20 +70,7 @@
         onContextMenu={() => setSelected(data.id)}
         data-file={type === 0 ? undefined : data.id}
         data-folder={type !== 0 ? undefined : data.id}
-        on:dblclick={() => {
-        if (type === 1) {
-            const fileType = "." +data.type
-            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET){
-                shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
-                alert.pushAlert(translate("OPENING_FILE") + " (" +currentLabel +")", "info")
-            }
-            else
-                setSelected(data.id)
-        } else {
-            reset()
-            setCurrentDirectory(data)
-        }
-    }}
+        on:dblclick={onDbClick}
         id={data.id}
         on:dragstart={(event) => {
         if (event.ctrlKey) {
@@ -98,15 +102,12 @@
         </div>
     {:else if metadata.type === FILE_TYPES.LEVEL}
         <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">play_circle_filled</Icon>
+            <Icon styles="font-size: 3.5rem; ">forest</Icon>
         </div>
     {:else if metadata.type === "folder"}
         <div class="icon">
             <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
-            <div
-                    title={"Files"}
-                    class="floating-icon-wrapper"
-            >
+            <div title="Files" class="floating-icon-wrapper">
                 {childrenQuantity}
             </div>
         </div>

@@ -1,6 +1,5 @@
 <script>
     import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
-    import Entity from "../../../inspector/components/Entity.svelte";
     import CameraComponent from "../../../../libs/engine/templates/components/CameraComponent";
     import TransformComponent from "../../../../libs/engine/templates/components/TransformComponent";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
@@ -12,6 +11,9 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import Layout from "./Layout.svelte";
     import ShadingOption from "./ShadingOption.svelte";
+    import PointLightComponent from "../../../../libs/engine/templates/components/PointLightComponent";
+    import DirectionalLightComponent from "../../../../libs/engine/templates/components/DirectionalLightComponent";
+    import Entity from "../../../../libs/engine/templates/basic/Entity";
 
 
     export let settings
@@ -188,12 +190,11 @@
         width: fit-content;
         --color-to-apply: white;
         font-size: 0.7rem;
-        height: 17px;
+        height: 18px;
         border-radius: 3px;
         overflow: hidden;
-        padding: 0 !important;
-        padding-left: 4px !important;
-        border: none !important;
+        padding: 0 0 0 4px;
+        border: none;
     }
 
     .left-content {

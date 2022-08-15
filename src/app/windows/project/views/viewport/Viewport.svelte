@@ -5,11 +5,11 @@
     import Conversion from "../../libs/engine/services/Conversion";
     import viewportSelectionBoxWorker from "../../../../libs/web-workers/viewport-selection-box-worker";
     import ViewportSettings from "./components/Header.svelte";
-    import CameraBar from "./components/CameraBar.svelte";
+    import CameraBar from "./components/columns/CameraBar.svelte";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Localization from "../../../../libs/Localization";
-    import GizmoBar from "./components/GizmoBar.svelte";
-    import SideOptions from "./components/SideOptions.svelte";
+    import GizmoBar from "./components/columns/GizmoBar.svelte";
+    import SideOptions from "./components/QuickAccess.svelte";
     import COMPONENTS from "../../libs/engine/data/COMPONENTS";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
@@ -47,7 +47,7 @@
 
     $: {
         if (isReady) {
-            if (settings.visible.sideBarViewport && !engine.executingAnimation)
+            if (settings.visible.sideBarViewport && currentTab === VIEWPORT_TABS.EDITOR)
                 gpu.canvas.style.width = "calc(100% - 23px)"
             else
                 gpu.canvas.style.width = "100%"

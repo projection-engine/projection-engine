@@ -1,7 +1,7 @@
 <script>
 
-    import CAMERA_GIZMO from "../../../data/misc/CAMERA_GIZMO"
-    import updateCameraPlacement from "../utils/update-camera-placement"
+    import CAMERA_GIZMO from "../../../../data/misc/CAMERA_GIZMO"
+    import updateCameraPlacement from "../../utils/update-camera-placement"
     import {onMount} from "svelte";
 
     let requested = false

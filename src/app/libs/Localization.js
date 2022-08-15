@@ -64,6 +64,7 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            DEFAULT_LEVEL: "Default",
             PLAY: "Game",
             EDITOR: "Scene Editor",
             UI: "UI Editor",
@@ -231,6 +232,7 @@ export default class Localization {
             NEW_LEVEL: "New Level",
             SUCCESSFUL_DELETE: "Items deleted",
             CREATE: "Create",
+            OPENING_LEVEL: "Opening level",
             OPENING_FILE: "Opening file",
             SEARCH: "Search",
             SELECT: "Select",

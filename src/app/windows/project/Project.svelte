@@ -80,7 +80,7 @@
 
                     const mapped = []
                     for (let i = 0; i < entities.length; i++) {
-                        mapped.push(await parseEntityObject(entities[i].data))
+                        mapped.push(await parseEntityObject(entities[i]))
                     }
 
                     dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})

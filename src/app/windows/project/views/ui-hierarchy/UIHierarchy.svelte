@@ -73,7 +73,7 @@
         hidden={hidden}
         switchView={switchView}
         title={translate("TITLE")}
-        icon={"forest"}
+        icon={"grid_view"}
 >
     <Input
             width={"100%"}
@@ -109,7 +109,7 @@
             {/each}
         {:else}
             <div data-empty="-">
-                <Icon styles="font-size: 75px">forest</Icon>
+                <Icon styles="font-size: 75px">grid_view</Icon>
                 {translate("TITLE")}
             </div>
         {/if}

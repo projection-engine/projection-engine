@@ -18,6 +18,7 @@
     import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
+    import CBStoreController from "../../../stores/CBStoreController";
 
     export let settings
     export let translate
@@ -26,20 +27,54 @@
     export let engine
     let ref
 
-
+    let store = {}
+    const unsubscribe = CBStoreController.getStore(v => store = v)
+    onDestroy(() => unsubscribe())
 
     $: if (window.renderer?.camera) window.renderer.camera.animated = settings.cameraAnimation
 </script>
 
 
 <div class={"options"} bind:this={ref}>
-    <Dropdown buttonStyles="border-radius: 3px; height: 17px; background: var(--pj-border-primary);">
+    <Dropdown buttonStyles="border-radius: 3px; height: 18px; background: var(--pj-border-primary);">
+        <button slot="button" class="dropdown">
+            <Icon>forest</Icon>
+            <div data-overflow="-">
+                {#if engine.currentLevel}
+                    {engine.currentLevel.name}
+                {:else}
+                    {translate("DEFAULT_LEVEL")}
+                {/if}
+            </div>
+        </button>
+        <button on:click={() => {
+                RendererStoreController.updateEngine({...engine, currentLevel: undefined})
+            }}>
+            {#if !engine.currentLevel}
+                <Icon>check</Icon>
+            {/if}
+            {translate("DEFAULT_LEVEL")}
+        </button>
+        <div data-divider="-"></div>
+        {#each store.levels as level}
+            <button on:click={() => {
+                RendererStoreController.updateLevel(level)
+            }}>
+                {#if engine.currentLevel?.registryID === level.registryID}
+                    <Icon>check</Icon>
+                {/if}
+                {level.name}
+            </button>
+        {/each}
+    </Dropdown>
+    <div data-vertdivider="-" style="height: 15px"></div>
+    <Dropdown>
         <button slot="button" class="dropdown">
             {#if currentTab === VIEWPORT_TABS.EDITOR}
                 <Icon>account_tree</Icon>
                 <div data-overflow="-">{translate("EDITOR")}</div>
             {:else}
-                <Icon>forest</Icon>
+                <Icon>grid_view</Icon>
                 <div data-overflow="-">{translate("UI")}</div>
             {/if}
 
@@ -62,6 +97,7 @@
             {translate("UI")}
         </button>
     </Dropdown>
+    <div data-vertdivider="-" style="height: 15px"></div>
     <EditorHeader
             settings={settings}
             engine={engine}
@@ -79,19 +115,16 @@
         height: 23px;
         user-select: none;
     }
+
     .dropdown {
         display: flex;
         align-items: center;
         gap: 4px;
-
-        width: fit-content;
-        --color-to-apply: white;
         font-size: 0.7rem;
-        height: 17px;
+        height: 18px;
         border-radius: 3px;
         overflow: hidden;
-        padding: 0 !important;
-        padding-left: 4px !important;
-        border: none !important;
+        padding: 0 0 0 4px;
+        border: none;
     }
 </style>

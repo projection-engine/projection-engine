@@ -10,5 +10,7 @@ export default {
     scripts: [],
     changeID: undefined,
     selectedEntity: undefined,
-    lockedEntity: undefined
+    lockedEntity: undefined,
+
+    currentLevel: undefined
 }

@@ -8,6 +8,9 @@ import Renderer from "../libs/engine/Renderer";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import SETTINGS from "../data/misc/SETTINGS";
+import CBStoreController from "./CBStoreController";
+import RegistryAPI from "../../../libs/files/RegistryAPI";
+import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 
 let initialized = false
 export default class RendererStoreController {
@@ -33,6 +36,7 @@ export default class RendererStoreController {
             key
         })
     }
+
 
     static getSettings(onChange) {
         return settingsStore.subscribe(newValue => {
@@ -73,18 +77,46 @@ export default class RendererStoreController {
         RendererStoreController.engine = updated
         engine.set(updated)
     }
+    static async updateLevel(level){
+        if(!level){
+            // DEFAULT
+        }else{
+            const {registryID} = level
+            try{
+                const reg = await RegistryAPI.readRegistryFile(registryID)
+                if(!reg)
+                    throw new Error("Error loading level")
+                const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+                // TODO
+            }catch (err){
+                console.error(err)
+                alert.pushAlert("Error loading level.")
+            }
+        }
+    }
 
     static async save() {
         alert.pushAlert("Saving project", "info")
         const entities = Array.from(Renderer.entitiesMap.values())
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
-            await updateSettings(metaData, RendererStoreController.settings)
-            await removeDeletedEntities()
-            try {
+            let pathToWrite
+            pathElse:if (!RendererStoreController.engine.currentLevel)
+                pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
+            else {
+                const reg = RegistryAPI.readRegistryFile(RendererStoreController.engine.currentLevel.registryID)
+                if (!reg) {
+                    alert.pushAlert("Level not found, a new one will be created.", "alert")
+                    pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
+                    break pathElse
+                }
+                pathToWrite = CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path
+            }
 
-                for (let i = 0; i < entities.length; i++)
-                    await AssetAPI.updateEntity(parseEntity(entities[i]), entities[i].id)
+            await updateSettings(metaData, RendererStoreController.settings)
+
+            try {
+                await FilesAPI.writeFile(pathToWrite, serializeData({entities: entities.map(e => e.serializable())}), true)
             } catch (err) {
                 console.error(err)
                 alert.pushAlert("Error saving project", "error")
@@ -100,9 +132,9 @@ export default class RendererStoreController {
     }
 }
 
-function parseEntity(entity) {
+function serializeData(level) {
     return JSON.stringify(
-        entity.serializable(),
+        level,
         (key, value) => {
             if (value instanceof Int8Array ||
                 value instanceof Uint8Array ||

@@ -119,11 +119,11 @@ a {
 	height: 1px;
 }
 *[data-vertdivider="-"]{
-	width: 2px;
+	width: 1px;
 	height: 20px;
-	min-width: 2px;
+	min-width: 1px;
 	margin: 0 4px;
-	background: var(--pj-background-tertiary);
+	background: var(--pj-border-primary);
 }
 
 *[data-empty="-"]{

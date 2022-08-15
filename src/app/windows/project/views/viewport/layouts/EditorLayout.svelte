@@ -5,9 +5,9 @@
     import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
-    import SideOptions from "../components/SideOptions.svelte";
-    import CameraBar from "../components/CameraBar.svelte";
-    import GizmoBar from "../components/GizmoBar.svelte";
+    import SideOptions from "../components/QuickAccess.svelte";
+    import CameraBar from "../components/columns/CameraBar.svelte";
+    import GizmoBar from "../components/columns/GizmoBar.svelte";
     import updateCursor from "../utils/update-cursor";
     import GIZMOS from "../../../data/misc/GIZMOS";
     import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
