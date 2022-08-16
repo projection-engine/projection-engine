@@ -2,7 +2,6 @@
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import {onDestroy, onMount} from "svelte";
-    import loadProject from "./utils/load-project";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "./stores/templates/dispatch-renderer-entities";
@@ -67,30 +66,10 @@
             view = settings.views[settings.currentView]
     }
     $: {
-
-
         if (isReady && !isDataLoaded) {
             isDataLoaded = true
-            loadProject(
-                mesh => {
-                    engine.meshes.set(mesh.id, mesh)
-                    RendererStoreController.updateEngine(engine)
-                },
-                async entities => {
-
-                    const mapped = []
-                    for (let i = 0; i < entities.length; i++) {
-                        mapped.push(await parseEntityObject(entities[i]))
-                    }
-
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
-                },
-                material => {
-                    engine.materials.push(material)
-                    RendererStoreController.updateEngine(engine)
-                })
+            RendererStoreController.loadLevel()
         }
-
     }
 
     const updateView = (key, newView) => {

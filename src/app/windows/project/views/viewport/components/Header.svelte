@@ -47,9 +47,7 @@
                 {/if}
             </div>
         </button>
-        <button on:click={() => {
-                RendererStoreController.updateEngine({...engine, currentLevel: undefined})
-            }}>
+        <button on:click={() => RendererStoreController.loadLevel()}>
             {#if !engine.currentLevel}
                 <Icon>check</Icon>
             {/if}
@@ -57,9 +55,7 @@
         </button>
         <div data-divider="-"></div>
         {#each store.levels as level}
-            <button on:click={() => {
-                RendererStoreController.updateLevel(level)
-            }}>
+            <button on:click={() => RendererStoreController.loadLevel(level)}>
                 {#if engine.currentLevel?.registryID === level.registryID}
                     <Icon>check</Icon>
                 {/if}

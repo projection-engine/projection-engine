@@ -4,9 +4,11 @@ const CHANNELS = require( "../../../../assets/CHANNELS")
 
 const fs = require("fs")
 const path = require("path")
+const getBasePath = require("../../../lib/get-base-path");
+const os = require("os");
 
-module.exports =  function cleanUpRegistry(projectPath, listenID, sender) {
-    
+module.exports =  function cleanUpRegistry(projectID, sender) {
+    const projectPath = getBasePath(os, path) + "projects" + path.sep + projectID
     readRegistry(projectPath + path.sep + REG_PATH).then(reg => {
         const promises = []
         for (let i in reg) {
@@ -34,7 +36,7 @@ module.exports =  function cleanUpRegistry(projectPath, listenID, sender) {
         Promise.all(promises)
             .then(res => {
                 if(res.filter(s => s).length > 0)
-                    sender.send(CHANNELS.CLEAN_UP + "-" + listenID, undefined)
+                    sender.send(CHANNELS.CLEAN_UP + "-" + projectID, undefined)
             })
     })
 }

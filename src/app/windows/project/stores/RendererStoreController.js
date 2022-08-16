@@ -11,7 +11,14 @@ import SETTINGS from "../data/misc/SETTINGS";
 import CBStoreController from "./CBStoreController";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
+import ROUTES from "../../../../assets/ROUTES";
+import CHANNELS from "../../../../assets/CHANNELS";
+import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
+import parseMaterialObject from "../utils/parse-material-object";
+import parseEntityObject from "../utils/parse-entity-object";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
 
+const {ipcRenderer} = window.require("electron")
 let initialized = false
 export default class RendererStoreController {
     static engine = ENGINE
@@ -77,22 +84,63 @@ export default class RendererStoreController {
         RendererStoreController.engine = updated
         engine.set(updated)
     }
-    static async updateLevel(level){
-        if(!level){
-            // DEFAULT
-        }else{
+
+    static async loadLevel(level) {
+        const projectID = sessionStorage.getItem("electronWindowID")
+        const IPC = ROUTES.LOAD_LEVEL + projectID
+        let pathToLevel
+        if (!level) {
+            pathToLevel = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
+            RendererStoreController.engine.currentLevel = undefined
+        } else {
             const {registryID} = level
-            try{
+            try {
                 const reg = await RegistryAPI.readRegistryFile(registryID)
-                if(!reg)
+                if (!reg)
                     throw new Error("Error loading level")
-                const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
-                // TODO
-            }catch (err){
+                pathToLevel = CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path
+                RendererStoreController.engine.currentLevel = level
+            } catch (err) {
                 console.error(err)
                 alert.pushAlert("Error loading level.")
             }
         }
+
+        RendererStoreController.engine.meshes.forEach(m => m.delete())
+        RendererStoreController.engine.meshes = new Map()
+        window.renderer.meshes = RendererStoreController.engine.meshes
+        RendererStoreController.engine.materials.forEach(m => m.delete())
+        RendererStoreController.engine.materials = []
+        window.renderer.materials = RendererStoreController.engine.materials
+
+        ipcRenderer.on(
+            CHANNELS.ENTITIES + projectID,
+            async (ev, entities) => {
+                console.log(entities)
+                const mapped = []
+                for (let i = 0; i < entities.length; i++)
+                    mapped.push(await parseEntityObject(entities[i]))
+                dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+
+            })
+
+        ipcRenderer.on(
+            CHANNELS.MESH + projectID,
+            (ev, data) => {
+
+                const mesh = new MeshInstance(data)
+                RendererStoreController.engine.meshes.set(mesh.id, mesh)
+                RendererStoreController.updateEngine()
+            })
+
+        ipcRenderer.on(
+            CHANNELS.MATERIAL + projectID,
+            async (ev, data) => {
+                RendererStoreController.engine.materials.push(await parseMaterialObject(data.result, data.id))
+                RendererStoreController.updateEngine()
+            })
+
+        ipcRenderer.send(IPC, pathToLevel)
     }
 
     static async save() {
@@ -104,19 +152,24 @@ export default class RendererStoreController {
             pathElse:if (!RendererStoreController.engine.currentLevel)
                 pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
             else {
-                const reg = RegistryAPI.readRegistryFile(RendererStoreController.engine.currentLevel.registryID)
+                const reg = await RegistryAPI.readRegistryFile(RendererStoreController.engine.currentLevel.registryID)
                 if (!reg) {
                     alert.pushAlert("Level not found, a new one will be created.", "alert")
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
-                pathToWrite = CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path
+                pathToWrite = FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
             }
 
             await updateSettings(metaData, RendererStoreController.settings)
 
             try {
-                await FilesAPI.writeFile(pathToWrite, serializeData({entities: entities.map(e => e.serializable())}), true)
+                console.log(pathToWrite)
+                await FilesAPI.writeFile(
+                    pathToWrite,
+                    serializeData({entities: entities.map(e => e.serializable())}),
+                    true
+                )
             } catch (err) {
                 console.error(err)
                 alert.pushAlert("Error saving project", "error")

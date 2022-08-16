@@ -64,6 +64,8 @@ export default function dispatchRendererEntities({type, payload}) {
         }
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
+            if(type === ENTITY_ACTIONS.DISPATCH_BLOCK)
+                state.clear()
             const block = payload
             const selected = []
             if (Array.isArray(block))

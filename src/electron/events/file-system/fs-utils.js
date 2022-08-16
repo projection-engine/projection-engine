@@ -9,7 +9,7 @@ const path = require("path")
 const ROUTES = require("../../../assets/ROUTES")
 
 
-module.exports = function FS() {
+module.exports = function() {
     ipcMain.on("read-file", async (event, {pathName, type, listenID}) => {
         const result = await new Promise(resolve => {
             fsUtils.readFile(path.resolve(pathName), (e, res) => {

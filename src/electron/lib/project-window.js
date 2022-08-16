@@ -5,17 +5,19 @@ const path = require("path");
 const ROUTES = require("../../assets/ROUTES");
 const {v4} = require("uuid");
 const windowLifeCycle = require("./window-life-cycle");
-const loader = require("../events/project-loader/project-loader");
 const loadMetadata = require("../events/project-loader/lib/load-metadata");
 
 const getBasePath = require("./get-base-path");
 const os = require("os");
 const RELATIVE_LOGO_PATH = "../../assets/logo.png"
 const settingsWindow = require("./settings-window");
+const loadLevel = require("../events/project-loader/load-level");
+const cleanUpRegistry = require("../events/project-loader/lib/clean-up-registry");
 
 module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
+    let firstTime = false
     const window = new BrowserWindow({
         width: width / 2,
         height: height / 2,
@@ -32,14 +34,18 @@ module.exports = function ProjectWindow(handleClose, data) {
         autoHideMenuBar: true,
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
-    ipcMain.on(ROUTES.LOAD_PROJECT + data.id, async event => {
-        await loader(data.id, event.sender)
+    ipcMain.on(ROUTES.LOAD_LEVEL + data.id, async (event, pathToLevel) => {
+        if (!firstTime) {
+            firstTime = true
+            cleanUpRegistry(data.id, event.sender)
+        }
+        loadLevel(event.sender, pathToLevel, data.id).catch(err => console.error(err))
     })
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA + data.id, async event => {
-        event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) +"projects" + path.sep + data.id))
+        event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) + "projects" + path.sep + data.id))
     })
     ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
-      settingsWindow(data.id, window, settingsData)
+        settingsWindow(data.id, window, settingsData)
     })
     windowLifeCycle(
         data.id,

@@ -41,7 +41,7 @@
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
                 alert.pushAlert(translate("OPENING_LEVEL") + " (" + currentLabel + ")", "info")
-                RendererStoreController.updateLevel(data)
+                RendererStoreController.loadLevel(data)
             } else
                 setSelected(data.id)
         } else {
