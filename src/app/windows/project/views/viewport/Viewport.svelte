@@ -24,13 +24,7 @@
 
     export let isReady = false
 
-    let currentTab = VIEWPORT_TABS.EDITOR
-    $: {
-        if (engine.executingAnimation)
-            currentTab = VIEWPORT_TABS.PLAY
-        else
-            currentTab = VIEWPORT_TABS.EDITOR
-    }
+
 
     let engine = {}
     let settings = {}
@@ -41,13 +35,20 @@
         unsubscribeSettings()
     })
 
+    $: {
+        if (engine.executingAnimation)
+            RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.PLAY})
+        else if(settings.viewportTab === VIEWPORT_TABS.PLAY)
+            RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.EDITOR})
+    }
+
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
+
     $: if (isReady) EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
-
-
+    $: console.log(settings)
     $: {
         if (isReady) {
-            if (settings.visible.sideBarViewport && currentTab === VIEWPORT_TABS.EDITOR)
+            if (settings.visible.sideBarViewport && settings.viewportTab === VIEWPORT_TABS.EDITOR)
                 gpu.canvas.style.width = "calc(100% - 23px)"
             else
                 gpu.canvas.style.width = "100%"
@@ -60,15 +61,13 @@
     {#if !engine.executingAnimation}
         <ViewportSettings
                 engine={engine}
-                currentTab={currentTab}
-                setCurrentTab={v => currentTab = v}
                 translate={translate}
                 settings={settings}
         />
     {/if}
     <div class="wrapper">
         <slot name="canvas"/>
-        {#if currentTab === VIEWPORT_TABS.EDITOR && isReady}
+        {#if settings.viewportTab === VIEWPORT_TABS.EDITOR && isReady}
             <EditorLayout settings={settings} engine={engine} translate={translate} isReady={isReady}/>
         {/if}
 

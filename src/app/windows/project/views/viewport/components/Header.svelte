@@ -23,7 +23,6 @@
     export let settings
     export let translate
     export let setCurrentTab
-    export let currentTab
     export let engine
     let ref
 
@@ -66,28 +65,27 @@
     <div data-vertdivider="-" style="height: 15px"></div>
     <Dropdown>
         <button slot="button" class="dropdown">
-            {#if currentTab === VIEWPORT_TABS.EDITOR}
+            {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                 <Icon>account_tree</Icon>
                 <div data-overflow="-">{translate("EDITOR")}</div>
             {:else}
                 <Icon>grid_view</Icon>
                 <div data-overflow="-">{translate("UI")}</div>
             {/if}
-
         </button>
         <button on:click={() => loadScripts(engine)}>
             <Icon>play_arrow</Icon>
             {translate("PLAY")}
         </button>
         <div data-divider="-"></div>
-        <button on:click={() => setCurrentTab(VIEWPORT_TABS.EDITOR)}>
-            {#if currentTab === VIEWPORT_TABS.EDITOR}
+        <button on:click={() =>RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.EDITOR})}>
+            {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                 <Icon>check</Icon>
             {/if}
             {translate("EDITOR")}
         </button>
-        <button on:click={() => setCurrentTab(VIEWPORT_TABS.UI)}>
-            {#if currentTab === VIEWPORT_TABS.UI}
+        <button on:click={() =>RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.UI})}>
+            {#if settings.viewportTab === VIEWPORT_TABS.UI}
                 <Icon>check</Icon>
             {/if}
             {translate("UI")}

@@ -12,6 +12,8 @@
     import HotKeys from "../metrics/libs/HotKeys";
     import UIRenderer from "../../libs/engine/UIRenderer";
     import UI_RENDER_TARGET from "../../data/misc/UI_RENDER_TARGET";
+    import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
+    import UIStoreController from "../../stores/UIStoreController";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -19,14 +21,16 @@
     let done = false
     let engine = {}
     let settings = {}
+    let ui
+    let uiStore = {}
     const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
-
+    const unsubscribeUI = UIStoreController.getStore(v => uiStore = v)
     const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu(engine))
 
     onMount(() => {
-        UIRenderer.renderTarget = document.getElementById(UI_RENDER_TARGET)
+        UIRenderer.renderTarget = ui
         HotKeys.bindAction(
             canvasRef,
             getHotkeys(),
@@ -48,17 +52,24 @@
         unsubscribeSettings()
         contextMenuBinding.onDestroy()
     })
+
+    $: renderUI = engine.executingAnimation || settings.viewportTab === VIEWPORT_TABS.UI
     $: {
-        if (engine.executingAnimation)
+        if (uiStore.entities.length > 0 && renderUI)
+            UIRenderer.restart()
+    }
+    $: {
+        if (renderUI)
             UIRenderer.start()
         else
             UIRenderer.stop()
     }
+
     $: if (done) updateRenderer(engine, settings)
 </script>
 
 
-<div style={engine.executingAnimation ? undefined : "display: none;"} id={UI_RENDER_TARGET} class="ui"></div>
+<div style={renderUI ? undefined : "display: none;"} id={UI_RENDER_TARGET} bind:this={ui} class="ui"></div>
 <canvas
         data-viewport="-"
         bind:this={canvasRef}

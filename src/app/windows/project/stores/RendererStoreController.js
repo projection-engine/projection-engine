@@ -70,8 +70,9 @@ export default class RendererStoreController {
             })
         }
         initialized = true
+        console.log(value.viewportTab)
         RendererStoreController.settings = value
-        settingsStore.set({...value})
+        settingsStore.set(value)
     }
 
     static updateEngine(value = RendererStoreController.engine) {

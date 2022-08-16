@@ -1,3 +1,5 @@
+import VIEWPORT_TABS from "./VIEWPORT_TABS";
+
 export default {
     meta: {},
     meshes: new Map(),
@@ -12,5 +14,6 @@ export default {
     selectedEntity: undefined,
     lockedEntity: undefined,
 
-    currentLevel: undefined
+    currentLevel: undefined,
+    viewportTab: VIEWPORT_TABS.EDITOR
 }

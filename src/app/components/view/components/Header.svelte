@@ -54,7 +54,7 @@
             {translate("CONSOLE")}
         </button>
         <button class="button" on:click={() => switchView(VIEWS.UI)}>
-            <Icon styles="font-size: 1rem">forest</Icon>
+            <Icon styles="font-size: 1rem">grid_view</Icon>
             {translate("UI")}
         </button>
 

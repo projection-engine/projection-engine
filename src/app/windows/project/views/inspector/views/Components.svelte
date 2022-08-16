@@ -10,11 +10,14 @@
     import loadMaterial from "../utils/load-material";
     import Entity from "../components/Entity.svelte";
     import Loader from "../../../libs/loader/Loader";
+    import {onDestroy, onMount} from "svelte";
 
 
     export let translate
     export let engine
 
+
+    let ref
     let entity
     let components
     let savedState
@@ -25,97 +28,109 @@
         components = Object.entries(entity.components).filter(([k]) => k !== COMPONENTS.PICK)
         scripts = entity.scripts
     }
-    const onDrop = async e => {
+    const handler = async (e) => {
         e.preventDefault()
+        switch (e.type) {
+            case "dragleave":
+                e.currentTarget.style.opacity = "1"
+                break
+            case "dragover":
+                e.currentTarget.style.opacity = ".5"
+                break
+            case "drop":
+                e.currentTarget.style.opacity = "1"
 
-        e.currentTarget.style.opacity = "1"
-
-        try {
-            const id = JSON.parse(e.dataTransfer.getData("text"))[0]
-            let type = "SCRIPT"
-            let itemFound = CBStoreController.data.components.find(s => s.registryID === id)
-            if (!itemFound) {
-                itemFound = CBStoreController.data.meshes.find(s => s.registryID === id)
-                type = "MESH"
-            }
-
-            if (!itemFound) {
-                itemFound = CBStoreController.data.materials.find(s => s.registryID === id)
-                type = "MATERIAL"
-            }
-
-            if (!itemFound) {
-                alert.pushAlert(translate("COULD_NOT_FIND"), "error")
-                console.error(id)
-                return
-            }
-            switch (type) {
-                case "SCRIPT":
-                    await componentConstructor(entity, id)
-                    break
-                case "MESH":
-                    if (!entity.components[COMPONENTS.MESH]) {
-                        entity.components[COMPONENTS.MESH] = new MeshComponent()
-                        if (!entity.components[COMPONENTS.TRANSFORM])
-                            entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                try {
+                    const id = JSON.parse(e.dataTransfer.getData("text"))[0]
+                    let type = "SCRIPT"
+                    let itemFound = CBStoreController.data.components.find(s => s.registryID === id)
+                    if (!itemFound) {
+                        itemFound = CBStoreController.data.meshes.find(s => s.registryID === id)
+                        type = "MESH"
                     }
-                    await Loader.load(id, true)
-                    entity.components[COMPONENTS.MESH].meshID = id
-                    break
-                case "MATERIAL":
-                    await loadMaterial(id, (value, key) => {
-                        entity.components[COMPONENTS.MESH][key] = value
-                    })
-                    break
-            }
-        } catch (err) {
-            console.error(err, e.dataTransfer.getData("text"))
-            alert.pushAlert(translate("COULD_NOT_FIND"), "error")
+
+                    if (!itemFound) {
+                        itemFound = CBStoreController.data.materials.find(s => s.registryID === id)
+                        type = "MATERIAL"
+                    }
+
+                    if (!itemFound) {
+                        alert.pushAlert(translate("COULD_NOT_FIND"), "error")
+                        console.error(id)
+                        return
+                    }
+                    switch (type) {
+                        case "SCRIPT":
+                            await componentConstructor(entity, id)
+                            break
+                        case "MESH":
+                            if (!entity.components[COMPONENTS.MESH]) {
+                                entity.components[COMPONENTS.MESH] = new MeshComponent()
+                                if (!entity.components[COMPONENTS.TRANSFORM])
+                                    entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                            }
+                            await Loader.load(id, true)
+                            entity.components[COMPONENTS.MESH].meshID = id
+                            break
+                        case "MATERIAL":
+                            await loadMaterial(id, (value, key) => {
+                                entity.components[COMPONENTS.MESH][key] = value
+                            })
+                            break
+                    }
+                } catch (err) {
+                    console.error(err, e.dataTransfer.getData("text"))
+                    alert.pushAlert(translate("COULD_NOT_FIND"), "error")
+                }
+                break
         }
     }
+    onMount(() => {
+        const parent = ref.parentElement
+        parent.addEventListener("dragleave", handler)
+        parent.addEventListener("dragover", handler)
+        parent.addEventListener("drop", handler)
+
+    })
+    onDestroy(() => {
+        const parent = ref.parentElement
+        parent.removeEventListener("dragleave", handler)
+        parent.removeEventListener("dragover", handler)
+        parent.removeEventListener("drop", handler)
+    })
+
 </script>
 
-<div
-        class="wrapper"
-        on:dragleave={e => {
-            e.preventDefault()
-            e.currentTarget.style.opacity = "1"
-        }}
-        on:dragover={e => {
-            e.preventDefault()
-            e.currentTarget.style.opacity = ".5"
-        }}
-        on:drop={onDrop}
->
-    <Entity entity={entity} translate={translate}/>
-    {#each components as [componentKey, component]}
-        {#if componentKey === COMPONENTS.MESH}
-            <Mesh
-                    translate={translate}
-                    selected={component}
-                    submit={async (value, key) => {
-                            RendererStoreController.saveEntity(
-                                engine.selectedEntity.id,
-                                componentKey,
-                                key,
-                                component[key]
-                            )
-                            component[key] = value
-                            RendererStoreController.saveEntity(
-                                engine.selectedEntity.id,
-                                componentKey,
-                                key,
-                                value
-                            )
-                        }}
+<span bind:this={ref} style="display: none"></span>
+<Entity entity={entity} translate={translate}/>
+{#each components as [componentKey, component]}
+    {#if componentKey === COMPONENTS.MESH}
+        <Mesh
+                translate={translate}
+                selected={component}
+                submit={async (value, key) => {
+                        RendererStoreController.saveEntity(
+                            engine.selectedEntity.id,
+                            componentKey,
+                            key,
+                            component[key]
+                        )
+                        component[key] = value
+                        RendererStoreController.saveEntity(
+                            engine.selectedEntity.id,
+                            componentKey,
+                            key,
+                            value
+                        )
+                    }}
 
-            />
-        {:else}
-            <ComponentLayout
-                    key={componentKey}
-                    translate={translate}
-                    selected={component}
-                    submit={(key, value, save) => {
+        />
+    {:else}
+        <ComponentLayout
+                key={componentKey}
+                translate={translate}
+                selected={component}
+                submit={(key, value, save) => {
                             if(!savedState){
                                 RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
@@ -134,16 +149,16 @@
                                       value
                                 )
                         }}
-            />
+        />
 
-        {/if}
-    {/each}
-    {#each scripts as script, index}
-        <ComponentLayout
-                index={index}
-                translate={translate}
-                selected={script}
-                submit={(key, value, save) => {
+    {/if}
+{/each}
+{#each scripts as script, index}
+    <ComponentLayout
+            index={index}
+            translate={translate}
+            selected={script}
+            submit={(key, value, save) => {
                             if(!savedState){
                                 RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
@@ -162,24 +177,6 @@
                                       value
                                 )
                         }}
-        />
-    {/each}
-</div>
+    />
+{/each}
 
-
-<style>
-
-    .wrapper {
-        display: grid;
-        align-content: flex-start;
-        gap: 4px;
-        overflow-y: auto;
-        max-height: 100%;
-        width: 100%;
-        max-width: 100%;
-        padding: 4px 4px 32px;
-        color: var(--pj-color-primary);
-        overflow-x: hidden;
-        height: 100%;
-    }
-</style>
