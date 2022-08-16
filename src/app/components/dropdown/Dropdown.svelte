@@ -18,21 +18,24 @@
     let button
     $: if (modal && button) transformModal(open, modal, button)
 
+    function close() {
+        if (onClose && open)
+            onClose()
+        open = false
+        modal.style.display = "none"
+        modal.style.zIndex = "-1"
+    }
 
     function handler(event) {
-        if (!modal.contains(event.target) || event.target.getAttribute("data-closedropdown") === "-") {
-            if (onClose && open)
-                onClose()
-            open = false
-            modal.style.display = "none"
-            modal.style.zIndex = "-1"
-        }
+        if (!modal.contains(event.target))
+            close()
     }
 
     const portal = createPortal(500, false)
     $: open ? portal.open() : portal.close()
     onMount(() => {
         portal.create(modal)
+        modal.closeDropdown = () => close()
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
@@ -62,6 +65,7 @@
             style={styles}
             class="modal dropdown"
             bind:this={modal}
+
     >
         <slot/>
     </div>

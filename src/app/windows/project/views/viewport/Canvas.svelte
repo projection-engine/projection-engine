@@ -52,11 +52,13 @@
         unsubscribeSettings()
         contextMenuBinding.onDestroy()
     })
-
+    let lastSize = 0
     $: renderUI = engine.executingAnimation || settings.viewportTab === VIEWPORT_TABS.UI
     $: {
-        if (uiStore.entities.length > 0 && renderUI)
+        if (uiStore.entities.size > lastSize && renderUI) {
             UIRenderer.restart()
+            lastSize = uiStore.entities.size
+        }
     }
     $: {
         if (renderUI)
@@ -85,7 +87,10 @@
         top: 0;
         width: 100%;
         height: 100%;
-        z-index: 999;
+        z-index: 1;
+    }
+    .ui > * {
+        all: initial;
     }
 
 </style>

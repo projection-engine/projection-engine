@@ -15,7 +15,8 @@ export default class HotKeys {
                 return
             // event.preventDefault()
             const activeView = HotKeys.views.get(HotKeys.activeView)
-            if (document.activeElement?.tagName === "INPUT" || !activeView)
+            const tagName= document.activeElement?.tagName
+            if (tagName === "INPUT" || tagName === "TEXTAREA"|| !activeView)
                 return
 
             const keysToTest = activeView.actions.length

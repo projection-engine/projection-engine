@@ -5,15 +5,29 @@
     import UIStoreController from "../../../stores/UIStoreController";
 
     export let initial
+    export let isInput
     export let selected
 
     let key = initial ? initial[0] : ""
     let value = initial ? initial[1] : ""
     const translate = key => Localization.PROJECT.UI[key]
     const submit = () => {
+
+        if (!isInput) {
+            value = ""
+            key = ""
+        }
         selected.styles[key] = value
+        selected.updateStyles()
         UIStoreController.updateStore()
-        if (!initial) {
+
+    }
+
+    const clear = () => {
+        if (!isInput) {
+            delete selected.styles[key]
+            UIStoreController.updateStore()
+        } else {
             value = ""
             key = ""
         }
@@ -36,15 +50,14 @@
             setSearchString={v => value = v}
     />
 
-    <button on:click={() => {
-            delete selected.styles[key]
-            UIStoreController.updateStore()
-        }}>
+    <button on:click={clear}>
         <Icon>close</Icon>
     </button>
-    <button on:click={submit}>
-        <Icon>check</Icon>
-    </button>
+    {#if !isInput}
+        <button on:click={submit}>
+            <Icon>check</Icon>
+        </button>
+    {/if}
 </div>
 
 <style>

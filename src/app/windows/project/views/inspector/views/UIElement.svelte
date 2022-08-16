@@ -4,10 +4,18 @@
     import Input from "../../../../../components/input/Input.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import StyleField from "../components/StyleField.svelte";
+    import TextArea from "../../../../../components/input/TextArea.svelte";
 
     export let translate
     export let store
     export let selected
+
+    $: valid = Object.values(selected.styles).length
+
+    const updateTag = (ev, tag) => {
+        selected.tag = tag
+        ev.currentTarget.parentElement.closeDropdown()
+    }
 </script>
 
 <Dropdown>
@@ -20,13 +28,13 @@
             Input
         {/if}
     </button>
-    <button data-closedropdown="-" on:click={() => selected.tag = "div"}>
+    <button on:click={e => updateTag(e, "div")}>
         Container
     </button>
-    <button data-closedropdown="-" on:click={() => selected.tag = "input"}>
+    <button on:click={e => updateTag(e, "input")}>
         Input
     </button>
-    <button data-closedropdown="-" on:click={() => selected.tag = "button"}>
+    <button on:click={e => updateTag(e, "button")}>
         Button
     </button>
 </Dropdown>
@@ -38,24 +46,37 @@
     </svelte:fragment>
     <fieldset>
         <legend>Text Content</legend>
-        <Input placeholder={"TEXT_CONTENT"} searchString={selected.textContent}
-               setSearchString={v => selected.textContent = v}/>
+        <TextArea
+                placeholder={"TEXT_CONTENT"}
+                value={selected.textContent}
+                setValue={v => {
+                    console.log(v)
+                    selected.textContent = v
+                }}
+        />
     </fieldset>
 
     <fieldset>
         <legend>Classname</legend>
-        <Input placeholder={"CSS_CLASS"} searchString={selected.className}
-               setSearchString={v => selected.className = v}/>
+        <Input
+                hasBorder={true}
+                placeholder={"CSS_CLASS"}
+                searchString={selected.className}
+               setSearchString={v => selected.className = v}
+        />
     </fieldset>
 </Accordion>
 <Accordion>
     <svelte:fragment slot="header">
         Styles
     </svelte:fragment>
+    <StyleField selected={selected} isInput={true}/>
+    {#if valid}
+        <div data-divider="-"></div>
+    {/if}
     {#each Object.entries(selected.styles) as initial}
         <StyleField selected={selected} initial={initial}/>
     {/each}
-    <StyleField selected={selected}/>
 </Accordion>
 
 

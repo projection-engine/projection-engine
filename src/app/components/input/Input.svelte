@@ -3,7 +3,7 @@
 
     const DELAY = 250, ENTER = "Enter"
     export let width = "initial"
-    export let height= "initial"
+    export let height = "initial"
     export let onBlur = () => null
     export let noPadding = false
     export let setSearchString = () => null
@@ -23,17 +23,13 @@
             changed = false
         }, DELAY)
     }
-    const updateInput = (s=searchString) => {
-        if(s)
-            input.value= s
-    }
-    onMount(updateInput)
+    onMount(() => input.value = searchString)
     $: if(input) input.value = searchString
 </script>
 
 <div
-    class="wrapper"
-    style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? "min-width:" +minWidth + ";" : ""} width: ${width}; height: ${height}; padding: ${noPadding ? 0 : "initial"}`}
+        class="wrapper"
+        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? "min-width:" +minWidth + ";" : ""} width: ${width}; height: ${height}; padding: ${noPadding ? 0 : "initial"}`}
 >
     {#if $$slots.icon}
         <div class="icon-wrapper">
@@ -41,22 +37,22 @@
         </div>
     {/if}
     <input
-        placeholder={placeholder}
-        class="input"
-        draggable={false}
-        bind:this={input}
-        on:input={e => {
+            placeholder={placeholder}
+
+            draggable={false}
+            bind:this={input}
+            on:input={e => {
             if(directChange)
                 directChange(e.target.value)
             changed = true
             if(!noAutoSubmit)
                 onChange(e.target)
         }}
-        on:blur={(e) => {
+            on:blur={(e) => {
             if(onBlur)
             onBlur(changed, e.currentTarget.value)
         }}
-        on:keydown={e => {
+            on:keydown={e => {
             if(e.code === ENTER){
                setSearchString(e.target.value)
                if(onEnter)
@@ -79,20 +75,20 @@
         border-radius: 3px;
         width: 100%;
         max-width: 250px;
-        color: var(--pj-color-secondary);
+
         background: var(--pj-background-tertiary);
     }
 
-    .input {
+    input {
         font-size: .7rem;
-        border-radius: 5px;
         border: none;
         background: transparent;
         outline: none;
         width: 100%;
         color: var(--pj-color-secondary);
     }
-    .icon-wrapper{
+
+    .icon-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
