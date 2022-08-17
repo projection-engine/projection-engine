@@ -39,7 +39,7 @@ export default function updateRenderer( engine, settings) {
     }
 
     Renderer.entitiesMap = entities
-    renderer.meshes = meshes
+    Renderer.meshes = meshes
     renderer.materials = materials
     renderer.camera.animated = settings.cameraAnimation
     renderer.gizmo = settings.gizmo

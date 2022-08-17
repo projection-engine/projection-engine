@@ -10,11 +10,11 @@ export default class BackgroundSystem {
         this.projection=  mat4.perspective([], 1.57, 1, .1, 1000)
     }
 
-    execute(data, options) {
+    execute() {
 
-        const {camera, gamma, background, backgroundColor} = options
+        const {camera, gamma, background, backgroundColor} = Renderer.params
         if(background) {
-            window.gpu.depthMask(false)
+            gpu.depthMask(false)
             this.shader.use()
 
             Renderer.cubeBuffer.enable()
@@ -25,10 +25,10 @@ export default class BackgroundSystem {
                 color: backgroundColor
             })
 
-            window.gpu.drawArrays(window.gpu.TRIANGLES, 0, 36)
+            gpu.drawArrays(gpu.TRIANGLES, 0, 36)
             Renderer.cubeBuffer.disable()
 
-            window.gpu.depthMask(true)
+            gpu.depthMask(true)
         }
     }
 }

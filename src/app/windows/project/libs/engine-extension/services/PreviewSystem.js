@@ -59,8 +59,8 @@ export default class PreviewSystem {
         ]
     }
 
-    execute(options, data, materialMesh, meshEntity) {
-        const {elapsed} = options
+    execute(data, materialMesh, meshEntity) {
+        const {elapsed} = Renderer.params
         let response
         this.frameBuffer.startMapping()
 

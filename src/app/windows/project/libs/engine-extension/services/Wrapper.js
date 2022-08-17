@@ -4,6 +4,7 @@ import GizmoSystem from "./GizmoSystem"
 import SelectedSystem from "./SelectedSystem"
 import PreviewSystem from "./PreviewSystem"
 import BackgroundSystem from "./BackgroundSystem"
+import Renderer from "../../engine/Renderer";
 
 export default class Wrapper {
     constructor( resolution) {
@@ -15,24 +16,21 @@ export default class Wrapper {
         this.backgroundSystem = new BackgroundSystem()
     }
 
-    execute(options, data, isDuringFrameComposition, isDuringBinging) {
-        const {
-            meshes,
-            meshesMap
-        } = data
+    execute(isDuringFrameComposition, isDuringBinging) {
+        const meshes = Renderer.data.meshes
         const {
             selected,
             camera,
             transformationType,
             gizmo,
             canExecutePhysicsAnimation
-        } = options
+        } = Renderer.params
 
         if(!isDuringFrameComposition && !isDuringBinging)
-            this.selectedSystem.drawToBuffer(selected, meshesMap, camera)
+            this.selectedSystem.drawToBuffer(selected, camera)
         else if(!isDuringFrameComposition) {
-            this.backgroundSystem.execute(data, options)
-            this.gridSystem.execute(options)
+            this.backgroundSystem.execute()
+            this.gridSystem.execute()
         }
         else if(isDuringFrameComposition){
 
@@ -40,12 +38,11 @@ export default class Wrapper {
             gpu.blendFunc(gpu.SRC_ALPHA, gpu.ONE_MINUS_SRC_ALPHA)
 
             if (!canExecutePhysicsAnimation)
-                this.billboardSystem.execute(data, options)
+                this.billboardSystem.execute( )
             if (gizmo !== undefined && !canExecutePhysicsAnimation) {
                 this.selectedSystem.drawSilhouette(selected)
                 this.gizmoSystem.execute(
                     meshes,
-                    meshesMap,
                     selected,
                     camera,
 

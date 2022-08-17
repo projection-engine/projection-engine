@@ -3,7 +3,5 @@ import {writable} from 'svelte/store';
 export const uiStore = writable({
     selected: [],
     selectedElement: undefined,
-    entities: new Map(),
-    isExecuting: false,
-    lockedEntity: undefined
+    entities: new Map()
 });

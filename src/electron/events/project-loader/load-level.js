@@ -7,19 +7,20 @@ const loadMaterials = require("./lib/load-materials");
 const getBasePath = require("../../lib/get-base-path");
 const os = require("os");
 const path = require("path");
+const DEFAULT = {entities: [], uiElements: []}
 
 module.exports = async function(sender, levelPath, projectID) {
     const projectPath = getBasePath(os, path) + "projects" + path.sep + projectID
-    let entities
+    let level
     console.log(levelPath)
     try{
-        entities = (fs.existsSync(levelPath) ? JSON.parse((await readFile(levelPath))[1]) : {entities: []}).entities
+        level = (fs.existsSync(levelPath) ? JSON.parse((await readFile(levelPath))[1]) : DEFAULT)
     }catch (err){
         console.error(err)
-        entities = []
+        level = DEFAULT
     }
-
-    sender.send(CHANNELS.ENTITIES + projectID, entities)
+    const entities = level.entities
+    sender.send(CHANNELS.ENTITIES + projectID, level)
     const toLoadData = {
         meshes: new Set(),
         materials: new Set()

@@ -159,21 +159,21 @@ export default class IconsSystem {
         return result
     }
 
-    execute(data, options) {
+    execute( ) {
         const {
             pointLights,
             directionalLights,
             cameras,
             diffuseProbes,
             specularProbes
-        } = data
+        } = Renderer.data
         const {
             camera,
             iconsVisibility,
             iconSize,
             cursor,
             selected
-        } = options
+        } = Renderer.params
 
         if (!transformationSystem)
             transformationSystem = EngineLoop.miscMap.get("transformations")

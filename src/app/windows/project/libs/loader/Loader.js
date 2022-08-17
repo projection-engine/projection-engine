@@ -10,6 +10,7 @@ import loopNodesScene from "./utils/loop-nodes-scene";
 import MeshInstance from "../engine/libs/instances/MeshInstance";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
+import Renderer from "../engine/Renderer";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
@@ -18,7 +19,7 @@ export default class Loader {
             existsMesh = false,
             material
         try {
-            mesh = window.renderer.meshes.get(objLoaded.id)
+            mesh = Renderer.meshes.get(objLoaded.id)
             if (!mesh) {
                 mesh = new MeshInstance({
                     ...objLoaded,

@@ -1,6 +1,7 @@
 import * as shaderCode from "../templates/shaders/GRID.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import QuadInstance from "../../engine/libs/instances/QuadInstance"
+import Renderer from "../../engine/Renderer";
 
 export default class GridSystem {
     constructor() {
@@ -8,11 +9,11 @@ export default class GridSystem {
         this.grid = new QuadInstance()
     }
 
-    execute(options) {
+    execute() {
         const {
             gridVisibility,
             camera
-        } = options
+        } = Renderer.params
         if(gridVisibility && !camera.ortho) {
             this.gridShader.use()
             this.gridShader.bindForUse({

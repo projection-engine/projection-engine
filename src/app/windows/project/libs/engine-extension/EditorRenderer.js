@@ -61,11 +61,11 @@ export default class EditorRenderer extends Renderer {
     }
 
     generatePreview(material) {
-        return this.editorSystem.previewSystem.execute(this.params, this.data, material)
+        return this.editorSystem.previewSystem.execute(this.data, material)
     }
 
     generateMeshPreview(entity, mesh) {
-        return this.editorSystem.previewSystem.execute(this.params, this.data, mesh, entity)
+        return this.editorSystem.previewSystem.execute(this.data, mesh, entity)
     }
 
     get gizmos() {
@@ -92,7 +92,7 @@ export default class EditorRenderer extends Renderer {
         Packager.build(
             {
                 ...params,
-                camera: prodEnv ? this.rootCamera : this.camera,
+                camera: prodEnv ? Renderer.rootCamera : this.camera,
                 gizmo: this.gizmo,
                 cursor: this.cursor,
                 onWrap: prodEnv ? null : this.editorSystem,

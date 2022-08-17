@@ -8,24 +8,25 @@
     import MeshComponent from "../../../libs/engine/templates/components/MeshComponent";
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
     import loadMaterial from "../utils/load-material";
-    import Entity from "../components/Entity.svelte";
+
     import Loader from "../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
+    import Entity from "../../../libs/engine/templates/basic/Entity";
+    import UIElement from "../../../libs/engine/templates/basic/UIElement";
 
 
     export let translate
     export let engine
-
+    export let entity
 
     let ref
-    let entity
     let components
     let savedState
     let scripts
 
     $: {
-        entity = engine.selectedEntity
-        components = Object.entries(entity.components).filter(([k]) => k !== COMPONENTS.PICK)
+        if (entity instanceof Entity)
+            components = Object.entries(entity.components).filter(([k]) => k !== COMPONENTS.PICK)
         scripts = entity.scripts
     }
     const handler = async (e) => {
@@ -64,6 +65,8 @@
                             await componentConstructor(entity, id)
                             break
                         case "MESH":
+                            if (entity instanceof UIElement)
+                                break
                             if (!entity.components[COMPONENTS.MESH]) {
                                 entity.components[COMPONENTS.MESH] = new MeshComponent()
                                 if (!entity.components[COMPONENTS.TRANSFORM])
@@ -73,6 +76,8 @@
                             entity.components[COMPONENTS.MESH].meshID = id
                             break
                         case "MATERIAL":
+                            if (entity instanceof UIElement)
+                                break
                             await loadMaterial(id, (value, key) => {
                                 entity.components[COMPONENTS.MESH][key] = value
                             })
@@ -102,13 +107,13 @@
 </script>
 
 <span bind:this={ref} style="display: none"></span>
-<Entity entity={entity} translate={translate}/>
-{#each components as [componentKey, component]}
-    {#if componentKey === COMPONENTS.MESH}
-        <Mesh
-                translate={translate}
-                selected={component}
-                submit={async (value, key) => {
+{#if entity instanceof Entity}
+    {#each components as [componentKey, component]}
+        {#if componentKey === COMPONENTS.MESH}
+            <Mesh
+                    translate={translate}
+                    selected={component}
+                    submit={async (value, key) => {
                         RendererStoreController.saveEntity(
                             engine.selectedEntity.id,
                             componentKey,
@@ -124,13 +129,13 @@
                         )
                     }}
 
-        />
-    {:else}
-        <ComponentLayout
-                key={componentKey}
-                translate={translate}
-                selected={component}
-                submit={(key, value, save) => {
+            />
+        {:else}
+            <ComponentLayout
+                    key={componentKey}
+                    translate={translate}
+                    selected={component}
+                    submit={(key, value, save) => {
                             if(!savedState){
                                 RendererStoreController.saveEntity(
                                     engine.selectedEntity.id,
@@ -149,10 +154,13 @@
                                       value
                                 )
                         }}
-        />
+            />
 
-    {/if}
-{/each}
+        {/if}
+    {/each}
+{:else if scripts.length > 0}
+    <div data-divider="-"></div>
+{/if}
 {#each scripts as script, index}
     <ComponentLayout
             index={index}

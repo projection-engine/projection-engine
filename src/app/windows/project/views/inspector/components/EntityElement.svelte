@@ -14,18 +14,27 @@
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Renderer from "../../../libs/engine/Renderer";
+    import Entity from "../../../libs/engine/templates/basic/Entity";
+    import UIStoreController from "../../../stores/UIStoreController";
 
     const nativeComponents = getNativeComponents()
 
-export let entity
-export let translate
+    export let entity
+    export let translate
 
-let store = {}
-const unsubscribeStore = CBStoreController.getStore(v => store = v)
-onDestroy(() => {
-    unsubscribeStore()
-})
+    let store = {}
+    const unsubscribeStore = CBStoreController.getStore(v => store = v)
+    onDestroy(() => {
+        unsubscribeStore()
+    })
 
+    const renameEntity = (v) => {
+        entity.name = v
+        if (entity instanceof Entity)
+            RendererStoreController.updateEngine()
+        else
+            UIStoreController.updateStore()
+    }
 </script>
 
 
@@ -39,19 +48,22 @@ onDestroy(() => {
         {translate("ADD_COMPONENT")}
         <ToolTip content={translate("ADD_COMPONENT")}/>
     </button>
-    {#each nativeComponents as [key, instance, label, icon]}
-        <button
-                on:click={() =>{
+    {#if entity instanceof Entity}
+        {#each nativeComponents as [key, instance, label, icon]}
+            <button
+                    on:click={() =>{
                     if(!entity.components[COMPONENTS.TRANSFORM])
                         entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
                     if(!entity.components[key])
                         entity.components[key] = new instance(undefined, entity)
                 }}>
-            <Icon>{icon}</Icon>
-            {label}
-        </button>
-    {/each}
-    <div class="divider"></div>
+                <Icon>{icon}</Icon>
+                {label}
+            </button>
+        {/each}
+        <div class="divider"></div>
+    {/if}
+
     {#each store.components as script}
         <button on:click={() => componentConstructor(entity, script.registryID).catch()}>
             {script.name}
@@ -68,12 +80,9 @@ onDestroy(() => {
     <fieldset>
         <legend>{translate("NAME")}</legend>
         <Input
-            width="100%"
-            hasBorder={true}
-            setSearchString={v => {
-                entity.name = v
-                RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
-            }}
+                width="100%"
+                hasBorder={true}
+                setSearchString={renameEntity}
                 searchString={entity.name}
                 placeholder={translate("MY_ENTITY")}
         />
@@ -82,9 +91,9 @@ onDestroy(() => {
     <fieldset>
         <legend>{translate("QUERY_KEY")}</legend>
         <Input
-            width="100%"
-            hasBorder={true}
-            setSearchString={v => {
+                width="100%"
+                hasBorder={true}
+                setSearchString={v => {
                 Renderer.queryMap.delete(entity.queryKey)
                 Renderer.queryMap.set(v, entity)
                 entity.queryKey = v

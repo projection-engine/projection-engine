@@ -17,6 +17,9 @@ import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
 import parseMaterialObject from "../utils/parse-material-object";
 import parseEntityObject from "../utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
+import UIRenderer from "../libs/engine/UIRenderer";
+import UIStoreController from "./UIStoreController";
+import parseUiElement from "../utils/parse-ui-element";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false
@@ -109,20 +112,32 @@ export default class RendererStoreController {
 
         RendererStoreController.engine.meshes.forEach(m => m.delete())
         RendererStoreController.engine.meshes = new Map()
-        window.renderer.meshes = RendererStoreController.engine.meshes
+        Renderer.meshes = RendererStoreController.engine.meshes
         RendererStoreController.engine.materials.forEach(m => m.delete())
         RendererStoreController.engine.materials = []
         window.renderer.materials = RendererStoreController.engine.materials
 
         ipcRenderer.on(
             CHANNELS.ENTITIES + projectID,
-            async (ev, entities) => {
-                console.log(entities)
+            async (_, data) => {
+                const {entities, uiElements} = data
+
                 const mapped = []
+
                 for (let i = 0; i < entities.length; i++)
                     mapped.push(await parseEntityObject(entities[i]))
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
 
+                if (!uiElements)
+                    return
+                let newEntities = new Map()
+                for (let i = 0; i < uiElements.length; i++)
+                    newEntities.set(uiElements[i].id, parseUiElement(uiElements[i]))
+                UIStoreController.updateStore({
+                    selected: [],
+                    selectedElement: undefined,
+                    entities: newEntities
+                })
             })
 
         ipcRenderer.on(
@@ -165,10 +180,12 @@ export default class RendererStoreController {
             await updateSettings(metaData, RendererStoreController.settings)
 
             try {
-                console.log(pathToWrite)
                 await FilesAPI.writeFile(
                     pathToWrite,
-                    serializeData({entities: entities.map(e => e.serializable())}),
+                    serializeData({
+                        entities: entities.map(e => e.serializable()),
+                        uiElements: Array.from(UIRenderer.entities.values())
+                    }),
                     true
                 )
             } catch (err) {
@@ -206,7 +223,7 @@ function serializeData(level) {
 
 async function updateSettings(metaData, settings) {
     const entities = window.renderer.entities
-    const meshes = window.renderer.meshes
+    const meshes = Renderer.meshes
     const materials = window.renderer.materials
     const old = JSON.parse(metaData.toString())
     await AssetAPI.updateProject(

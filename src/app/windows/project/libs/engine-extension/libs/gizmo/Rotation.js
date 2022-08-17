@@ -219,7 +219,6 @@ export default class Rotation {
 
     execute(
         meshes,
-        meshesMap,
         selected,
         transformationType
     ) {
@@ -296,11 +295,11 @@ export default class Rotation {
         gpu.enable(gpu.CULL_FACE)
     }
 
-    #draw(t, axis, id) {
+    #draw(transformMatrix, axis, id) {
         const camera = window.renderer.camera
         this.gizmoShader.bindForUse({
             viewMatrix: camera.viewMatrix,
-            transformMatrix: t,
+            transformMatrix,
             projectionMatrix: camera.projectionMatrix,
             axis,
             translation: this.translation,

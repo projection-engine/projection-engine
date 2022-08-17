@@ -57,7 +57,6 @@ export default class GizmoSystem {
 
     execute(
         meshes,
-        meshesMap,
         selected,
         camera,
         gizmo,
@@ -68,7 +67,7 @@ export default class GizmoSystem {
             depthSystem = EngineLoop.renderMap.get("depthPrePass")
         if (selected.length > 0 && this.selectedEntities.length > 0 && this.targetGizmo) {
             gpu.clear(gpu.DEPTH_BUFFER_BIT)
-            this.targetGizmo.execute(meshes, meshesMap, this.selectedEntities, transformationType)
+            this.targetGizmo.execute(meshes, this.selectedEntities, transformationType)
         }
         else if (this.targetGizmo) {
             this.targetGizmo = undefined

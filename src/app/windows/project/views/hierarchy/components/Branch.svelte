@@ -161,10 +161,7 @@
                     on:click={() => {
                         Renderer.entitiesMap.get(nodeRef.id).active = !active
                         Packager.packageLights()
-                        if(!active)
-                            window.renderer.activeEntitiesSize--
-                        else
-                            window.renderer.activeEntitiesSize++
+
                         active = !active
                     }}>
                 <Icon styles="font-size: .9rem">

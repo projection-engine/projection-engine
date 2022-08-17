@@ -18,41 +18,49 @@
     }
 </script>
 
-<Dropdown>
-    <button slot="button" class="button-dropdown">
-        {#if selected.tag === "div"}
-            Container
-        {:else if selected.tag === "button"}
-            Button
-        {:else if selected.tag === "input"}
-            Input
-        {/if}
-    </button>
-    <button on:click={e => updateTag(e, "div")}>
-        Container
-    </button>
-    <button on:click={e => updateTag(e, "input")}>
-        Input
-    </button>
-    <button on:click={e => updateTag(e, "button")}>
-        Button
-    </button>
-</Dropdown>
+
 
 
 <Accordion>
     <svelte:fragment slot="header">
         Attributes
     </svelte:fragment>
+    <Dropdown>
+        <button slot="button" class="button-dropdown">
+            {#if selected.tag === "div"}
+                Container
+            {:else if selected.tag === "button"}
+                Button
+            {:else if selected.tag === "input"}
+                Input
+            {/if}
+        </button>
+        <button on:click={e => updateTag(e, "div")}>
+            Container
+        </button>
+        <button on:click={e => updateTag(e, "input")}>
+            Input
+        </button>
+        <button on:click={e => updateTag(e, "button")}>
+            Button
+        </button>
+    </Dropdown>
+
+    <fieldset>
+        <legend>Layout block</legend>
+        <TextArea
+                placeholder={"LAYOUT_BLOCK"}
+                value={selected.layoutBlock}
+                setValue={v => selected.layoutBlock = v}
+        />
+    </fieldset>
+
     <fieldset>
         <legend>Text Content</legend>
         <TextArea
                 placeholder={"TEXT_CONTENT"}
                 value={selected.textContent}
-                setValue={v => {
-                    console.log(v)
-                    selected.textContent = v
-                }}
+                setValue={v => selected.textContent = v}
         />
     </fieldset>
 

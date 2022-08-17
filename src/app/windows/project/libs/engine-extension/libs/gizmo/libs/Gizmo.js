@@ -55,7 +55,7 @@ export default class Gizmo {
         if (!this.renderTarget)
             this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
 
-        const w = window.gpu.canvas.width, h = window.gpu.canvas.height
+        const w = gpu.canvas.width, h = gpu.canvas.height
         const x = event.clientX
         const y = event.clientY
 
@@ -120,7 +120,7 @@ export default class Gizmo {
             this.onMouseUp(true)
         else {
             this.tracking = true
-            window.gpu.canvas.requestPointerLock()
+            gpu.canvas.requestPointerLock()
             this.renderTarget.style.display = "block"
         }
     }
@@ -128,7 +128,6 @@ export default class Gizmo {
 
     execute(
         meshes,
-        meshesMap,
         selected,
         transformationType
     ) {
@@ -188,8 +187,8 @@ export default class Gizmo {
         const mZ = this.#translateMatrix(this.zGizmo.components)
 
         this.gizmoShader.use()
-        window.gpu.bindVertexArray(this.xyz.VAO)
-        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
+        gpu.bindVertexArray(this.xyz.VAO)
+        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
         this.xyz.vertexVBO.enable()
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
             this.#draw(mX, 1, this.xGizmo.components[COMPONENTS.PICK].pickID)
@@ -199,15 +198,15 @@ export default class Gizmo {
             this.#draw(mZ, 3, this.zGizmo.components[COMPONENTS.PICK].pickID)
 
         this.xyz.vertexVBO.disable()
-        window.gpu.bindVertexArray(null)
-        window.gpu.bindBuffer(window.gpu.ELEMENT_ARRAY_BUFFER, null)
+        gpu.bindVertexArray(null)
+        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, null)
     }
 
-    #draw(t, axis, id) {
+    #draw(transformMatrix, axis, id) {
         const camera = window.renderer.camera
         this.gizmoShader.bindForUse({
             viewMatrix: camera.viewMatrix,
-            transformMatrix: t,
+            transformMatrix,
             projectionMatrix: camera.projectionMatrix,
             camPos: camera.position,
             translation: this.translation,
@@ -216,6 +215,6 @@ export default class Gizmo {
             uID: [...id, 1],
             cameraIsOrthographic: camera.ortho
         })
-        window.gpu.drawElements(window.gpu.TRIANGLES, this.xyz.verticesQuantity, window.gpu.UNSIGNED_INT, 0)
+        gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }
 }

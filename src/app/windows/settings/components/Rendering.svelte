@@ -3,6 +3,7 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../libs/Localization";
+    import Renderer from "../../project/libs/engine/Renderer";
 
     export let settings
     export let update
@@ -65,7 +66,7 @@
             precision={0}
             minValue={0}
             maxValue={100}
-            handleChange={v => window.renderer.params.ssrMaxSteps = v}
+            handleChange={v => Renderer.params.ssrMaxSteps = v}
             value={settings.ssrMaxSteps}
     />
     <Range
@@ -78,7 +79,7 @@
             precision={4}
             minValue={.05}
             maxValue={1}
-            handleChange={v => window.renderer.params.ssrStepSize = v}
+            handleChange={v => Renderer.params.ssrStepSize = v}
             value={settings.ssrStepSize}
     />
 </Accordion>
@@ -102,7 +103,7 @@
             precision={0}
             minValue={0}
             maxValue={100}
-            handleChange={v => window.renderer.params.ssgiQuality = v}
+            handleChange={v => Renderer.params.ssgiQuality = v}
             value={settings.ssgiQuality}
     />
 
@@ -117,7 +118,7 @@
             minValue={0}
             maxValue={10}
             handleChange={v => {
-                window.renderer.params.ssgiBrightness = v
+                Renderer.params.ssgiBrightness = v
             }}
             value={settings.ssgiBrightness}
     />
@@ -132,7 +133,7 @@
             precision={4}
             minValue={.05}
             maxValue={1}
-            handleChange={v => window.renderer.params.ssgiStepSize = v}
+            handleChange={v => Renderer.params.ssgiStepSize = v}
             value={settings.ssgiStepSize}
     />
 

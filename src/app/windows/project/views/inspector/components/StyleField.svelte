@@ -12,15 +12,16 @@
     let value = initial ? initial[1] : ""
     const translate = key => Localization.PROJECT.UI[key]
     const submit = () => {
-
-        if (!isInput) {
-            value = ""
-            key = ""
-        }
+        if (initial)
+            delete selected.styles[initial[0]]
         selected.styles[key] = value
         selected.updateStyles()
         UIStoreController.updateStore()
 
+        if (isInput) {
+            value = ""
+            key = ""
+        }
     }
 
     const clear = () => {

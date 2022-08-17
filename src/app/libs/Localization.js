@@ -165,7 +165,11 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
-            VISUALIZING_ENTITY: "Visualizing entity",
+            FOCUSED_ON_ENGINE: "Priority on: Entity",
+            FOCUSED_ON_UI: "Priority on: UI element",
+
+            EDITING_ELEMENT: "Editing element",
+            EDITING_ENTITY: "Editing entity",
             COULD_NOT_FIND: "Could not find component for item",
             MATERIAL_LOADED: "Material loaded successfully",
             ERROR_LOADING_FILE: "Error loading file.",

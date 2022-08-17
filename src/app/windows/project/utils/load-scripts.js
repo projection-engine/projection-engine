@@ -2,6 +2,7 @@ import RendererStoreController from "../stores/RendererStoreController";
 import componentConstructor from "../libs/component-constructor";
 import ENVIRONMENT from "../libs/engine/data/ENVIRONMENT";
 import Renderer from "../libs/engine/Renderer";
+import UIRenderer from "../libs/engine/UIRenderer";
 
 const {shell} = window.require("electron")
 
@@ -10,7 +11,7 @@ export default async function loadScripts(engine) {
     RendererStoreController.updateEngine({...engine, executingAnimation: newValue})
     if(newValue)
     Renderer.environment = ENVIRONMENT.EXECUTION
-    const entities = window.renderer.entities
+    const entities = [...Array.from(Renderer.entitiesMap.values()), ...Array.from(UIRenderer.entities.values())]
     try {
         if (newValue) {
             for (let i = 0; i < entities.length; i++) {

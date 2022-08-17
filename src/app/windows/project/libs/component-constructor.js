@@ -3,8 +3,16 @@ import FilesAPI from "../../../libs/files/FilesAPI"
 import RendererStoreController from "../stores/RendererStoreController";
 import Packager from "./engine/libs/builder/Packager";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
+import Entity from "./engine/templates/basic/Entity";
+import UIStoreController from "../stores/UIStoreController";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
+    const updateStore = () => {
+        if(entity instanceof Entity)
+            RendererStoreController.updateEngine()
+        else
+            UIStoreController.updateStore()
+    }
     const found = entity.scripts.findIndex(s => s.id === scriptID)
     const reg = await RegistryAPI.readRegistryFile(scriptID)
 
@@ -15,7 +23,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            RendererStoreController.updateEngine()
+            updateStore()
 
         alert.pushAlert("Error loading libs")
         return
@@ -28,7 +36,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            RendererStoreController.updateEngine()
+            updateStore()
         alert.pushAlert("Error loading libs")
         return
     }
@@ -36,5 +44,5 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
     Packager.linkScript(data, entity, scriptID, reg.path)
 
     if (autoUpdate)
-        RendererStoreController.updateEngine()
+        updateStore()
 }

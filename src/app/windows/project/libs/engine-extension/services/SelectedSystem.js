@@ -23,7 +23,7 @@ export default class SelectedSystem {
         this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h).texture(TEXTURE)
     }
 
-    drawToBuffer(selected, meshesMap, camera){
+    drawToBuffer(selected, camera){
         const length = selected.length
         if (length === 0)
             return
@@ -34,7 +34,7 @@ export default class SelectedSystem {
             const current = Renderer.entitiesMap.get(selected[m])
             if (!current || !current.active)
                 continue
-            const mesh = meshesMap.get(current.components[COMPONENTS.MESH]?.meshID)
+            const mesh = Renderer.meshes.get(current.components[COMPONENTS.MESH]?.meshID)
             if (!mesh)
                 continue
             const t = current.components[COMPONENTS.TRANSFORM]

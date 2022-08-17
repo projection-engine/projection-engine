@@ -21,9 +21,9 @@
     import Loader from "../../libs/loader/Loader";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
+    import UILayout from "./layouts/UILayout.svelte";
 
     export let isReady = false
-
 
 
     let engine = {}
@@ -38,14 +38,13 @@
     $: {
         if (engine.executingAnimation)
             RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.PLAY})
-        else if(settings.viewportTab === VIEWPORT_TABS.PLAY)
+        else if (settings.viewportTab === VIEWPORT_TABS.PLAY)
             RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.EDITOR})
     }
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
     $: if (isReady) EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
-    $: console.log(settings)
     $: {
         if (isReady) {
             if (settings.visible.sideBarViewport && settings.viewportTab === VIEWPORT_TABS.EDITOR)
@@ -69,6 +68,8 @@
         <slot name="canvas"/>
         {#if settings.viewportTab === VIEWPORT_TABS.EDITOR && isReady}
             <EditorLayout settings={settings} engine={engine} translate={translate} isReady={isReady}/>
+        {:else if settings.viewportTab === VIEWPORT_TABS.UI}
+            <UILayout />
         {/if}
 
     </div>
