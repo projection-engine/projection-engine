@@ -102,6 +102,7 @@ export default class ContentBrowserAPI {
             componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
             stylesheetReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.STYLESHEET)),
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
+            uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
             promises = []
 
 
@@ -111,7 +112,7 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
         promises.push(...mapAsset(stylesheetReg, FILE_TYPES.STYLESHEET))
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
-
+        promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
 
         const loadedPromises = await Promise.all(promises)
         const result = {
@@ -120,8 +121,10 @@ export default class ContentBrowserAPI {
             materials: [],
             components: [],
             stylesheets: [],
-            levels: []
+            levels: [],
+            uiLayouts: []
         }
+
         for (let i = 0; i < loadedPromises.length; i++) {
             const current = loadedPromises[i]
             switch (current.type) {
@@ -142,6 +145,9 @@ export default class ContentBrowserAPI {
                     break
                 case FILE_TYPES.LEVEL:
                     result.levels.push(current)
+                    break
+                case FILE_TYPES.UI_LAYOUT:
+                    result.uiLayouts.push(current)
                     break
                 default:
                     break

@@ -31,7 +31,7 @@
         align-items: center;
         gap: 4px;
         padding: 3px;
-        overflow: hidden;
+        overflow-y: auto;
         border-radius: 3px;
         width: 100%;
         max-width: 250px;

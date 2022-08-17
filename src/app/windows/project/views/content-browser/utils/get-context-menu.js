@@ -9,6 +9,7 @@ import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
 import importFile from "./import-file";
 import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 import AssetAPI from "../../../../../libs/files/AssetAPI";
+import UI_TEMPLATE from "../templates/UI_TEMPLATE";
 
 
 const {shell} = window.require("electron")
@@ -18,12 +19,12 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         let it = 0
 
         while (await AssetAPI.assetExists(n)) {
-            it++
             n = path + `(${it})` + ext
+            it++
         }
-
         return n
     }
+
     return [
         {
             requiredTrigger: "data-wrapper",
@@ -206,7 +207,17 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
                     onClick: async () => {
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_STYLESHEET"), FILE_TYPES.STYLESHEET)
 
-                        await AssetAPI.writeAsset(path, "")
+                        await AssetAPI.writeAsset(path, UI_TEMPLATE.CSS)
+                        CBStoreController.refreshFiles().catch()
+                    }
+                },
+                {
+                    label: translate("NEW_UI_LAYOUT"),
+                    icon: "view_quilt",
+                    onClick: async () => {
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
+
+                        await AssetAPI.writeAsset(path, UI_TEMPLATE.LAYOUT)
                         CBStoreController.refreshFiles().catch()
                     }
                 },

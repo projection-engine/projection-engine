@@ -165,6 +165,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            FROM_LAYOUT: "Load from UI Layout",
             FOCUSED_ON_ENGINE: "Priority on: Entity",
             FOCUSED_ON_UI: "Priority on: UI element",
 
@@ -234,6 +235,7 @@ export default class Localization {
             TRANSFORMATION: "Transformation"
         },
         FILES: {
+            NEW_UI_LAYOUT: "New UI Layout",
             NEW_STYLESHEET: "New Stylesheet",
             NEW_LEVEL: "New Level",
             SUCCESSFUL_DELETE: "Items deleted",

@@ -97,7 +97,6 @@
     <div class="middle">
 
         <ViewsContainer
-                overlay={engine.executingAnimation}
                 setTabs={(tabs) => updateView("left", tabs)}
                 tabs={view.left}
                 leftOffset={"8px"}
@@ -115,7 +114,6 @@
                 </Viewport>
             {/if}
             <ViewsContainer
-                    overlay={engine.executingAnimation}
                     setTabs={(tabs) => updateView("bottom", tabs)}
                     tabs={view.bottom}
                     resizePosition={"top"}
@@ -123,7 +121,6 @@
             />
         </div>
         <ViewsContainer
-                overlay={engine.executingAnimation}
                 setTabs={(tabs) => updateView("right", tabs)}
                 tabs={view.right}
                 orientation={"vertical"}

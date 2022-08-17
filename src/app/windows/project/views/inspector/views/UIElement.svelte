@@ -2,13 +2,20 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../../components/input/Input.svelte";
-    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import StyleField from "../components/StyleField.svelte";
     import TextArea from "../../../../../components/input/TextArea.svelte";
+    import {onDestroy} from "svelte";
+    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesAPI from "../../../../../libs/files/FilesAPI";
+    import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+    import UIStoreController from "../../../stores/UIStoreController";
 
     export let translate
-    export let store
     export let selected
+
+    let store
+    const unsubscribe = CBStoreController.getStore(v => store = v)
+    onDestroy(() => unsubscribe())
 
     $: valid = Object.values(selected.styles).length
 
@@ -16,9 +23,18 @@
         selected.tag = tag
         ev.currentTarget.parentElement.closeDropdown()
     }
+    const updateLayout = async (e, layout) => {
+        const t = e.currentTarget.parentElement
+        try {
+            const reg = await RegistryAPI.readRegistryFile(layout.registryID)
+            selected.layoutBlock = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+            t.closeDropdown()
+            UIStoreController.updateStore()
+        } catch (err) {
+            console.error(err)
+        }
+    }
 </script>
-
-
 
 
 <Accordion>
@@ -48,6 +64,17 @@
 
     <fieldset>
         <legend>Layout block</legend>
+        <Dropdown>
+            <button slot="button" class="button-dropdown">
+                {translate("FROM_LAYOUT")}
+            </button>
+            {#each store.uiLayouts as layout}
+                <button on:click={(e) => updateLayout(e, layout)}>
+                    {layout.name}
+                </button>
+            {/each}
+
+        </Dropdown>
         <TextArea
                 placeholder={"LAYOUT_BLOCK"}
                 value={selected.layoutBlock}
@@ -70,7 +97,7 @@
                 hasBorder={true}
                 placeholder={"CSS_CLASS"}
                 searchString={selected.className}
-               setSearchString={v => selected.className = v}
+                setSearchString={v => selected.className = v}
         />
     </fieldset>
 </Accordion>

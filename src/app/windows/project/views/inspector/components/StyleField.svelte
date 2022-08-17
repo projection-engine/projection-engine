@@ -25,19 +25,21 @@
     }
 
     const clear = () => {
-        if (!isInput) {
-            delete selected.styles[key]
-            UIStoreController.updateStore()
-        } else {
-            value = ""
-            key = ""
-        }
+        console.log(key)
+        delete selected.styles[key]
+        console.log(selected.styles[key])
+        selected.updateStyles()
+        UIStoreController.updateStore()
     }
 </script>
 
 <div class="input">
-    <Input height="20px" width="fit-content" searchString={key} placeholder={translate("KEY")}
-           setSearchString={v => key = v}/>
+    <Input
+            height="20px"
+            width="fit-content"
+            searchString={key} placeholder={translate("KEY")}
+            setSearchString={v => key = v}
+    />
     :
     <Input
             height="20px"
@@ -51,12 +53,13 @@
             setSearchString={v => value = v}
     />
 
-    <button on:click={clear}>
-        <Icon>close</Icon>
+
+    <button on:click={submit}>
+        <Icon>check</Icon>
     </button>
     {#if !isInput}
-        <button on:click={submit}>
-            <Icon>check</Icon>
+        <button on:click={clear}>
+            <Icon>close</Icon>
         </button>
     {/if}
 </div>

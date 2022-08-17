@@ -36,7 +36,7 @@
     const onDbClick = () => {
         if (type === 1) {
             const fileType = "." + data.type
-            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET) {
+            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET|| fileType === FILE_TYPES.UI_LAYOUT)  {
                 shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
@@ -49,30 +49,7 @@
             setCurrentDirectory(data)
         }
     }
-</script>
-
-<div
-        on:dragover={(e) => {
-        if (type === 0) {
-            e.preventDefault()
-          //  e.currentTarget.classList.addhovered)
-        }
-    }}
-        on:dragleave={(e) => {
-        e.preventDefault()
-        //e.currentTarget.classList.removehovered)
-    }}
-        on:drop={e => {
-        e.preventDefault()
-        //e.currentTarget.parentNode.classList.removehovered)
-        handleDropFolder(e.dataTransfer.getData("text"), data.id, currentDirectory, setCurrentDirectory)
-    }}
-        onContextMenu={() => setSelected(data.id)}
-        data-file={type === 0 ? undefined : data.id}
-        data-folder={type !== 0 ? undefined : data.id}
-        on:dblclick={onDbClick}
-        id={data.id}
-        on:dragstart={(event) => {
+    const onDragStart = (event) => {
         if (event.ctrlKey) {
             const selected = selected.map(s => {
                 return items.find(i => i.id === s)
@@ -80,7 +57,25 @@
             event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
         } else
             event.dataTransfer.setData("text", JSON.stringify([type === 1 ? data.registryID : data.id]))
+    }
+
+</script>
+
+<div
+        on:dragover={(e) => {if (type === 0) e.preventDefault()}}
+        on:dragleave={(e) => {
+        e.preventDefault()
     }}
+        on:drop={e => {
+        e.preventDefault()
+        handleDropFolder(e.dataTransfer.getData("text"), data.id, currentDirectory, setCurrentDirectory)
+    }}
+        onContextMenu={() => setSelected(data.id)}
+        data-file={type === 0 ? undefined : data.id}
+        data-folder={type !== 0 ? undefined : data.id}
+        on:dblclick={onDbClick}
+        id={data.id}
+        on:dragstart={onDragStart}
         draggable="{onRename !== data.id}"
         on:click={setSelected}
         style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (CBStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
@@ -104,6 +99,11 @@
         <div class="icon">
             <Icon styles="font-size: 3.5rem; ">forest</Icon>
         </div>
+    {:else if metadata.type === FILE_TYPES.UI_LAYOUT}
+        <div class="icon">
+            <Icon styles="font-size: 3.5rem; ">view_quilt</Icon>
+        </div>
+
     {:else if metadata.type === "folder"}
         <div class="icon">
             <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
