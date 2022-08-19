@@ -2,83 +2,26 @@
     import Localization from "../../../../libs/Localization";
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
-
-    import Branch from "./components/Branch.svelte"
     import {v4} from "uuid"
-    import ENTITY_WORKER_ACTIONS from "../../data/misc/ENTITY_WORKER_ACTIONS"
-    import RendererStoreController from "../../stores/RendererStoreController";
-    import {onDestroy} from "svelte";
-    import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
-    import getContextMenu from "./utils/get-context-menu";
     import Icon from "../../../../components/Icon/Icon.svelte";
-    import InfiniteScroller from "../../../../components/infinite-scroller/InfiniteScroller.svelte";
+    import EngineHierarchyView from "./engine/EngineHierarchyView.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import UIHierarchy from "./ui/UIHierarchyView.svelte";
+    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
 
 
     export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
-    const TRIGGERS = ["data-node", "data-self"]
-    let searchedEntity = ""
-    let engine = {}
-    let settings = {}
-
-    const translate = key => Localization.PROJECT.HIERARCHY[key]
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    let search = ""
     const ID = v4()
-
-    let open = {}
-    let toRender = []
-    let ref
-    let offset = 0
-    let maxDepth = 0
-    let entities = engine.entities
-    let lastChangeID = engine.changeID
-    $: {
-        if (engine.changeID !== lastChangeID) {
-            lastChangeID = engine.changeID
-            entities = engine.entities
-        }
-    }
-    const contextMenuBinding = bindContextTarget("tree-view-" + ID, TRIGGERS, (trigger, element) => {
-        if (trigger === TRIGGERS[0])
-        RendererStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
-    })
-    $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
-    onDestroy(() => {
-        unsubscribeEngine()
-        contextMenuBinding.onDestroy()
-    })
-
-    $: {
-        window.entityWorker.postMessage({
-            type: ENTITY_WORKER_ACTIONS.GET_HIERARCHY,
-            actionID: ID
-        })
-        window.addEntityWorkerListener(
-            payload => {
-                const data = []
-                for (let i = 0; i < payload.length; i++) {
-                    if (!payload[i].node.parent || open[payload[i].node.parent.id])
-                        data.push({
-                            depth: payload[i].depth,
-                            node: entities.get(payload[i].node.id)
-                        })
-                }
-                toRender = data
-            },
-            ID
-        )
-    }
-    const updateSelection = (entity, ctrlKey) => {
-        if (ctrlKey) {
-            if (!engine.selected.includes(entity))
-                RendererStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
-            else
-                RendererStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
-        } else
-            RendererStoreController.updateEngine({...engine, selected: [entity]})
-    }
+    const translate = key => Localization.PROJECT.HIERARCHY[key]
+    let viewTab = 0
+    let filteredComponent = undefined
 </script>
+
+
 <Header
         orientation={orientation}
         hidden={hidden}
@@ -86,52 +29,96 @@
         title={translate("TITLE")}
         icon={"account_tree"}
 >
+    <div data-vertdivider="-" style="	margin: 0 2px;"></div>
+    <Dropdown hideArrow={true}>
+        <button slot="button" class="dropdown">
+            <Icon styles="font-size: .9rem">
+                {#if viewTab === 0}
+                    public
+                {:else}
+                    grid_view
+                {/if}
+            </Icon>
+            <ToolTip>{translate("HIERARCHY_SOURCE")}</ToolTip>
+        </button>
+        <button on:click={() => viewTab = 0} class="button">
+            {#if viewTab === 0}
+                <Icon styles="font-size: .9rem">
+                    check
+                </Icon>
+            {/if}
+            {translate("ENGINE")}
+        </button>
+        <button on:click={() => viewTab = 1} class="button">
+            {#if viewTab === 1}
+                <Icon styles="font-size: .9rem">
+                    check
+                </Icon>
+            {/if}
+            {translate("UI")}
+        </button>
+    </Dropdown>
+
     <Input
+            hasBorder={true}
             width={"100%"}
+            height="20px"
             placeholder={translate("SEARCH")}
-            searchString={searchedEntity}
-            setSearchString={v => searchedEntity = v}
+            searchString={search}
+            setSearchString={v => search = v}
     />
+    {#if viewTab === 0}
+        <Dropdown hideArrow={true}>
+            <button slot="button" class="dropdown">
+                <Icon styles="font-size: .9rem">filter_alt</Icon>
+                <ToolTip>{translate("COMPONENT_FILTER")}</ToolTip>
+            </button>
+            {#each Object.keys(COMPONENTS) as key}
+                {#if key !== "PICK"}
+                    <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}
+                            class="button">
+                        {#if filteredComponent === key}
+                            <Icon styles="font-size: .9rem">
+                                check
+                            </Icon>
+                        {/if}
+                        {translate(key)}
+                    </button>
+                {/if}
+            {/each}
+        </Dropdown>
+    {/if}
 </Header>
 {#if !hidden}
     <div
-            bind:this={ref}
             data-self={"-"}
             class="wrapper"
-            id={"tree-view-" + ID}
+            id={ID}
     >
-        <InfiniteScroller
-                setMaxDepth={v => maxDepth = v}
-                setOffset={v => offset = v}
-                data={toRender}
-        />
-        {#if toRender.length > 0}
-            {#each toRender as _, i}
-                {#if i < maxDepth && toRender[i + offset]}
-                    <Branch
-                            nodeRef={toRender[i + offset].node}
-                            depth={toRender[i + offset].depth}
-                            selected={engine.selected}
-
-                            lockedEntity={engine.lockedEntity}
-                            setSelected={updateSelection}
-                            setLockedEntity={v => RendererStoreController.updateEngine({...engine, lockedEntity: v})}
-                            internalID={ID}
-                            open={open}
-                            setOpen={v => open = v}
-                    />
-                {/if}
-            {/each}
+        {#if viewTab === 0}
+            <EngineHierarchyView searchString={search.toLowerCase()} filteredComponent={filteredComponent} translate={translate} ID={ID}/>
         {:else}
-            <div data-empty="-">
-                <Icon styles="font-size: 75px">account_tree</Icon>
-                {translate("TITLE")}
-            </div>
+            <UIHierarchy searchString={search.toLowerCase()} translate={translate} ID={ID}/>
         {/if}
     </div>
 {/if}
 
+
 <style>
+    .dropdown {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+
+    .button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
 
     .wrapper {
         position: relative;

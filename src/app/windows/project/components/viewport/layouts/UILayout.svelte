@@ -1,28 +1,28 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import UIStoreController from "../../../stores/UIStoreController";
-    import UI_RENDER_TARGET from "../../../data/misc/UI_RENDER_TARGET";
+    import UIRenderer from "../../../libs/engine/UIRenderer";
 
     let store = {}
     const unsubscribe = UIStoreController.getStore(v => store = v)
     let renderTarget
     let lastHovered
-    let lastOutline
+    let lastStyle
     const handler = e => {
         switch (e.type) {
             case "click":
                 break
             case "mouseout":
                 if (lastHovered)
-                    lastHovered.style.outline = lastOutline
+                    lastHovered.style.opacity = lastStyle
                 break
             case "mouseover":
                 if (lastHovered )
-                    lastHovered.style.outline = lastOutline
+                    lastHovered.style.opacity = lastStyle
                 if(lastHovered !== e.target) {
                     lastHovered = e.target
-                    lastOutline =e.target.style.outline
-                    e.target.style.outline = "yellow 2px solid"
+                    lastStyle =e.target.style.opacity
+                    e.target.style.opacity = ".5"
                 }
 
                 break
@@ -32,7 +32,7 @@
     }
     let ref
     onMount(() => {
-        renderTarget = document.getElementById(UI_RENDER_TARGET)
+        renderTarget = UIRenderer.renderTarget
         renderTarget.addEventListener("click", handler)
         renderTarget.addEventListener("mouseover", handler)
         renderTarget.addEventListener("mouseout", handler)

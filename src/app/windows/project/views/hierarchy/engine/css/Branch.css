@@ -43,10 +43,10 @@
 
 
 .buttonSmall.hierarchy-branch {
-  min-height: 23px;
-  min-width: 23px;
-  max-height: 23px;
-  max-width: 23px;
+  min-height: 18px;
+  min-width: 18px;
+  max-height: 18px;
+  max-width: 18px;
   outline: none;
   border: none;
   background: none;

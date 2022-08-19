@@ -4,7 +4,6 @@ import {getCall} from "../../../libs/NodeFS";
 import FilesAPI from "../../../libs/files/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../../assets/ROUTES";
-import ContentBrowser from "../views/content-browser/ContentBrowser.svelte";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 
 export default class CBStoreController {

@@ -49,11 +49,14 @@ export default class Localization {
         }
     }
     static PROJECT = {
-        UI: {
-            TITLE: "UI Hierarchy",
-            SEARCH: "Search",
-            KEY: "Key",
-            VALUE: "Value"
+        CONTROL: {
+            LEVEL: "Level",
+            BUILD_PROBES: "Build probes",
+            BUILDING_PROBES: "Building probes",
+            PLAY: "Play",
+            STOP: "Stop",
+            SAVE: "Save",
+            DEFAULT_LEVEL: "Default",
         },
         INFO: {
             VERSION: "2.5.0-alpha",
@@ -66,7 +69,7 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
-            DEFAULT_LEVEL: "Default",
+
             PLAY: "Game",
             EDITOR: "Scene Editor",
             UI: "UI Editor",
@@ -127,9 +130,23 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            TRANSFORM: "Transformation",
+            DIRECTIONAL_LIGHT:"Directional Light",
+            POINT_LIGHT: "Point Light",
+            MESH: "Mesh",
+            CAMERA: "Camera",
+            PROBE: "Probe",
+
+            COMPONENT_FILTER: "Filter by component",
+            HIERARCHY_SOURCE: "Change hierarchy view",
+            ENGINE: "Engine",
+            UI: "UI",
             TITLE: "Hierarchy",
             NEW_FOLDER: "New Folder",
-            SEARCH: "Search"
+            SEARCH: "Search",
+
+            KEY: "Key",
+            VALUE: "Value"
         },
         CONSOLE: {
             VIEW: "View",
@@ -176,10 +193,10 @@ export default class Localization {
             ERROR_LOADING_FILE: "Error loading file.",
             SPECULAR_PROBE: "Specular probe",
             MULTIPLIER: "Multiplier",
-            INTENSITY:"Intensity",
+            INTENSITY: "Intensity",
             INTENSITY_COLOR: "Intensity & color",
             DISTORTION: "Distortion",
-            THRESHOLD:"Threshold" ,
+            THRESHOLD: "Threshold",
             BLOOM: "Bloom",
             COLOR_CORRECTION: "Color correction",
             GAMMA: "Gamma",

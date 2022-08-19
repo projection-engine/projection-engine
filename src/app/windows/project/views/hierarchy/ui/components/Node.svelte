@@ -1,7 +1,7 @@
 <script>
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import "../../hierarchy/css/Branch.css"
-    import UIRenderer from "../../../libs/engine/UIRenderer";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import "../../engine/css/Branch.css"
+    import UIRenderer from "../../../../libs/engine/UIRenderer";
 
     const LEFT_BUTTON = 0
     export let depth = 0
@@ -68,7 +68,7 @@
             data-open={open[node.id] ? "-" : ""}
             data-selected={""}
             data-parentopen={open[node.parent?.id] ? "-" : ""}
-            style={"padding-left:" +  (depth * 23 + "px")}
+            style={"padding-left:" +  (depth * 18 + "px")}
             on:mousedown={handler}
             on:dragover={handler}
             on:dragleave={handler}

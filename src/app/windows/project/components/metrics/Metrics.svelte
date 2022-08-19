@@ -6,7 +6,7 @@
     import HotKeys from "./libs/HotKeys";
     import Localization from "../../../../libs/Localization";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
-    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+
     const {shell} = window.require("electron")
     let settings = {}
     let activeView

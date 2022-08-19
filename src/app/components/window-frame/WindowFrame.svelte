@@ -44,7 +44,7 @@
             {/if}
         </Dropdown>
         {#if label}
-            <h6 class={"title"} data-overflow="-">{label}</h6>
+            <div class={"title"} data-overflow="-">{label}</div>
         {/if}
         {#each options as option}
             {#if option.divider}
@@ -210,6 +210,7 @@
         margin-bottom: 0;
         margin-top: 0;
         max-width: 10vw;
+        font-size: .7rem;
     }
 
 

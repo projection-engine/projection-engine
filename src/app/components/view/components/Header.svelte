@@ -53,10 +53,6 @@
             <Icon styles="font-size: 1rem">terminal</Icon>
             {translate("CONSOLE")}
         </button>
-        <button class="button" on:click={() => switchView(VIEWS.UI)}>
-            <Icon styles="font-size: 1rem">grid_view</Icon>
-            {translate("UI")}
-        </button>
 
     </Dropdown>
     {#if !hidden}
@@ -68,7 +64,6 @@
     .button{
         height: 20px;
     }
-
 
     .title {
         background: var(--pj-background-tertiary);
@@ -90,7 +85,7 @@
         min-height: 28px;
         max-height: 28px;
         background-color: var(--pj-background-secondary);
-        padding: 2px;
+        padding: 0 2px;
         gap: 2px;
 
         overflow-y: hidden;

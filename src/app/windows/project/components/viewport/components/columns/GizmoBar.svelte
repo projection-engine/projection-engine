@@ -171,9 +171,8 @@
         width: fit-content;
         max-height: calc(100% - 55px);
         position: absolute;
-        left: 0;
-        padding-left: 4px;
-        top: 4px;
+        left: 2px;
+        top: 2px;
         z-index: 15;
         height: fit-content;
         display: flex;

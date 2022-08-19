@@ -1,13 +1,13 @@
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import Entity from "../../../libs/engine/templates/basic/Entity";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../../../stores/RendererStoreController";
-import ViewportActions from "../../../libs/ViewportActions";
-import CameraComponent from "../../../libs/engine/templates/components/CameraComponent";
-import PointLightComponent from "../../../libs/engine/templates/components/PointLightComponent";
-import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
-import DirectionalLightComponent from "../../../libs/engine/templates/components/DirectionalLightComponent";
-import Renderer from "../../../libs/engine/Renderer";
+import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
+import Entity from "../../../../libs/engine/templates/basic/Entity";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../../../../stores/RendererStoreController";
+import ViewportActions from "../../../../libs/ViewportActions";
+import CameraComponent from "../../../../libs/engine/templates/components/CameraComponent";
+import PointLightComponent from "../../../../libs/engine/templates/components/PointLightComponent";
+import TransformComponent from "../../../../libs/engine/templates/components/TransformComponent";
+import DirectionalLightComponent from "../../../../libs/engine/templates/components/DirectionalLightComponent";
+import Renderer from "../../../../libs/engine/Renderer";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")

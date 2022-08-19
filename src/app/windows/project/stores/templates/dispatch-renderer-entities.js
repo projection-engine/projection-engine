@@ -1,7 +1,6 @@
 import PickComponent from "../../libs/engine/templates/components/PickComponent"
 import COMPONENTS from "../../libs/engine/data/COMPONENTS"
 import {v4} from "uuid"
-import ENTITY_WORKER_ACTIONS from "../../data/misc/ENTITY_WORKER_ACTIONS"
 import RendererStoreController from "../RendererStoreController";
 import removeHierarchy from "../utils/remove-hierarchy";
 
@@ -105,12 +104,5 @@ export default function dispatchRendererEntities({type, payload}) {
     const changeID = v4()
 
     const changes = {...engine, entities: state, changeID}
-    window.addEntityWorkerListener(() => RendererStoreController.updateEngine(changes), changeID)
-    window.entityWorker.postMessage({
-        type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-        payload: state,
-        actionID: changeID
-    })
-
-
+    RendererStoreController.updateEngine(changes)
 }

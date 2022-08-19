@@ -24,12 +24,12 @@
         }, DELAY)
     }
     onMount(() => input.value = searchString)
-    $: if(input) input.value = searchString
+    $: if (input) input.value = searchString
 </script>
 
 <div
         class="wrapper"
-        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? "min-width:" +minWidth + ";" : ""} width: ${width}; height: ${height}; padding: ${noPadding ? 0 : "initial"}`}
+        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? `min-width: ${minWidth};` : ""} ${height ? `max-height: ${height};` : ""} ${width ? `max-width: ${width};` : ""} ${noPadding ? `noPadding: ${noPadding};` : ""}`}
 >
     {#if $$slots.icon}
         <div class="icon-wrapper">
@@ -66,7 +66,6 @@
 <style>
     .wrapper {
         height: 23px;
-        min-height: 23px;
         display: flex;
         align-items: center;
         gap: 4px;

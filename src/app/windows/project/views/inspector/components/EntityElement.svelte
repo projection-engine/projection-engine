@@ -2,7 +2,6 @@
 
     import Input from "../../../../../components/input/Input.svelte";
     import RendererStoreController from "../../../stores/RendererStoreController";
-    import {v4} from "uuid";
     import Icon from "../../../../../components/Icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";

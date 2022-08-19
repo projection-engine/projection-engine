@@ -44,6 +44,13 @@
 
 
 <style>
+    h4{
+        font-size: .85rem;
+        font-weight: 550;
+    }
+    strong{
+        font-weight: 550;
+    }
     .wrapper {
         margin-bottom: 16px;
         display: flex;

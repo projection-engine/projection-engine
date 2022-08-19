@@ -7,7 +7,6 @@
     import Icon from "../../../../components/Icon/Icon.svelte";
     import UIStoreController from "../../stores/UIStoreController";
     import UIElement from "./views/UIElement.svelte";
-    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Entity from "../../libs/engine/templates/basic/Entity";
     import EntityElement from "./components/EntityElement.svelte";
 

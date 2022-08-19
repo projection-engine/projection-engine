@@ -1,11 +1,10 @@
 <script>
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import ENTITY_WORKER_ACTIONS from "../../../data/misc/ENTITY_WORKER_ACTIONS";
-    import Packager from "../../../libs/engine/libs/builder/Packager";
+    import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
+    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Packager from "../../../../libs/engine/libs/builder/Packager";
     import "../css/Branch.css"
-    import Renderer from "../../../libs/engine/Renderer";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import Renderer from "../../../../libs/engine/Renderer";
+    import RendererStoreController from "../../../../stores/RendererStoreController";
     import {v4} from "uuid";
 
     const LEFT_BUTTON = 0
@@ -47,7 +46,7 @@
     })();
 
     const handler = (e) => {
-        switch (e.type){
+        switch (e.type) {
             case "mousedown":
                 if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
                     setSelected(nodeRef.id, e.ctrlKey)
@@ -63,28 +62,19 @@
                 e.preventDefault()
                 ref.style.background = "rgb(203 110 53 / 50%)";
                 break
-            case "drop":{
+            case "drop": {
 
                 e.preventDefault()
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
                 const entityDragged = Renderer.entitiesMap.get(src)
                 console.log(entityDragged)
-                if(entityDragged) {
+                if (entityDragged) {
                     entityDragged.parent = nodeRef
                     nodeRef.children.push(entityDragged)
 
-
                     const ID = v4()
-                    window.addEntityWorkerListener(() => {
-                        RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: ID})
-                    }, ID)
-                    window.entityWorker.postMessage({
-                        type: ENTITY_WORKER_ACTIONS.UPDATE_ENTITIES,
-                        payload: Renderer.entitiesMap,
-                        actionID: ID
-                    })
-
+                    RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: ID})
                 }
                 break
             }
@@ -102,7 +92,7 @@
             data-open={open[nodeRef.id] ? "-" : ""}
             data-selected={""}
             data-parentopen={open[nodeRef.parent?.id] ? "-" : ""}
-            style={"padding-left:" +  (depth * 23 + "px")}
+            style={"padding-left:" +  (depth * 18 + "px")}
             on:mousedown={handler}
             on:dragover={handler}
             on:dragleave={handler}

@@ -2,7 +2,7 @@
 
     import NodeFS from "../../../../../libs/NodeFS"
     import FilesAPI from "../../../../../libs/files/FilesAPI"
-    import importFile from "../utils/import-file"
+    import importFile from "../../../libs/import-file"
     import RendererStoreController from "../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";

@@ -1,32 +1,26 @@
 import RendererStoreController from "../stores/RendererStoreController";
-import loadScripts from "./load-scripts";
 import ROUTES from "../../../../assets/ROUTES";
+import importFile from "../libs/import-file";
+import CBStoreController from "../stores/CBStoreController";
 
 const {ipcRenderer} = window.require("electron")
 
-export default function getFrameOptions(engine, s) {
-    const settings = {...s}
+export default function getFrameOptions(engine, settings) {
+
     return [
-        {
-            label: "Save",
-            icon: "save",
-            onClick: () => RendererStoreController.save().catch()
-        },
-        {
-            label: engine.executingAnimation ? "Stop" : "Play",
-            icon: engine.executingAnimation ? "pause" : "play_arrow",
-            onClick: async () => loadScripts(engine)
-        },
-        {divider: true},
-        {
-            label: "Recompile probes",
-            icon: "refresh",
-            onClick: () => {
-                alert.pushAlert("Recompiling probes", "info")
-                window.renderer.refreshProbes()
+        {label: "File",
+        options: [
+            {
+                label: "Save",
+                onClick: () => RendererStoreController.save().catch(),
+                shortcut: "Ctrl - S"
+            },
+            {divider: true},
+            {
+                label: "Import asset",
+                onClick: () => importFile(CBStoreController.ASSETS_PATH)
             }
-        },
-        {divider: true},
+        ]},
         {
             label: "Edit",
             options: [
@@ -83,28 +77,6 @@ export default function getFrameOptions(engine, s) {
                     },
                 }
             ]
-        },
-        {
-            label: "Help",
-            options: [
-                {
-                    label: "About",
-                    onClick: () => {
-                        // ipcRenderer.send(ROUTES.OPEN_NEW_WINDOW, {
-                        //     type: WINDOWS.HELP,
-                        //     windowSettings: {
-                        //         maxWidth: 300,
-                        //         maxHeight: 300,
-                        //         minWidth: 300,
-                        //         minHeight: 300,
-                        //         modal: true
-                        //     }
-                        // })
-                    },
-                    icon: "info",
-                }
-
-            ]
-        },
+        }
     ]
 }

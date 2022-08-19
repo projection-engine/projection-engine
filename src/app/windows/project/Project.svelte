@@ -2,19 +2,18 @@
     import Alert from "../../components/alert/Alert.svelte";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import {onDestroy, onMount} from "svelte";
-    import Viewport from "./views/viewport/Viewport.svelte";
+    import Viewport from "./components/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "./stores/templates/dispatch-renderer-entities";
     import getFrameOptions from "./utils/get-frame-options";
-    import Shortcuts from "./views/metrics/Metrics.svelte";
-    import Canvas from "./views/viewport/Canvas.svelte";
+    import Shortcuts from "./components/metrics/Metrics.svelte";
+    import Canvas from "./components/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
-    import parseEntityObject from "./utils/parse-entity-object";
     import RendererStoreController from "./stores/RendererStoreController";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../assets/ROUTES";
     import VIEWS from "../../components/view/VIEWS";
+    import ControlOptions from "./components/control-options/ControlOptions.svelte";
 
 
     const {ipcRenderer} = window.require("electron")
@@ -93,6 +92,7 @@
         maximizeEvent: true
     }}
     />
+    <ControlOptions/>
     <ContextMenu/>
     <div class="middle">
 
@@ -159,6 +159,6 @@
         overflow: hidden;
         display: flex;
 
-        padding: 3px;
+        padding: 0 3px 3px;
     }
 </style>

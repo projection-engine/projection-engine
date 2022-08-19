@@ -1,12 +1,12 @@
-import FilesAPI from "../../../../../libs/files/FilesAPI"
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../../../stores/RendererStoreController";
-import CBStoreController from "../../../stores/CBStoreController";
-import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
-import Loader from "../../../libs/loader/Loader";
-import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
+import FilesAPI from "../../../libs/files/FilesAPI"
+import COMPONENTS from "./engine/data/COMPONENTS";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../stores/RendererStoreController";
+import CBStoreController from "../stores/CBStoreController";
+import FILE_TYPES from "../../../../assets/FILE_TYPES";
+import Loader from "./loader/Loader";
+import RegistryAPI from "../../../libs/files/RegistryAPI";
+import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()

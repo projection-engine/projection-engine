@@ -98,6 +98,9 @@
 
 
 <style>
+    strong{
+        font-weight: 550;
+    }
     .wrapper {
         position: relative;
         width: 100%;

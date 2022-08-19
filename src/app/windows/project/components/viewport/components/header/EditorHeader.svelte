@@ -9,7 +9,6 @@
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Range from "../../../../../../components/range/Range.svelte";
-    import Layout from "./Layout.svelte";
     import ShadingOption from "./ShadingOption.svelte";
     import PointLightComponent from "../../../../libs/engine/templates/components/PointLightComponent";
     import DirectionalLightComponent from "../../../../libs/engine/templates/components/DirectionalLightComponent";
@@ -174,7 +173,6 @@
             {translate("CAMERA")}
         </button>
     </Dropdown>
-    <Layout translate={translate}/>
 </div>
 
 <div class="right-content">

@@ -10,7 +10,7 @@
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
-    import HotKeys from "../../metrics/libs/HotKeys";
+    import HotKeys from "../../../components/metrics/libs/HotKeys";
 
     export let fileType
     export let setFileType

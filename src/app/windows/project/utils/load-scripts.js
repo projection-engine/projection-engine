@@ -6,7 +6,8 @@ import UIRenderer from "../libs/engine/UIRenderer";
 
 const {shell} = window.require("electron")
 
-export default async function loadScripts(engine) {
+export default async function loadScripts() {
+    const engine = RendererStoreController.engine
     const newValue = !engine.executingAnimation
     RendererStoreController.updateEngine({...engine, executingAnimation: newValue})
     if(newValue)
