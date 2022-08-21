@@ -1,12 +1,12 @@
 import dispatchUiEntities from "../../../../stores/templates/dispatch-ui-entities";
 import {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
 import UIElement from "../../../../libs/engine/templates/basic/UIElement";
-import UIRenderer from "../../../../libs/engine/UIRenderer";
+import UserInterfaceController from "../../../../libs/engine/UserInterfaceController";
 
 
 function createElement(parent) {
     const entity = new UIElement()
-    entity.parent = UIRenderer.entities.get(parent)
+    entity.parent = UserInterfaceController.entities.get(parent)
     if (entity.parent)
         entity.parent.children.push(entity)
 
@@ -16,7 +16,7 @@ function createElement(parent) {
     })
 }
 
-export default function getContextMenu(open, setOpen) {
+export default function getContextMenu() {
 
     return [
         {

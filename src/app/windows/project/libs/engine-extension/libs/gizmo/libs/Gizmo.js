@@ -6,7 +6,8 @@ import getEntityTranslation from "../utils/get-entity-translation"
 import INFORMATION_CONTAINER from "../../../../../data/misc/INFORMATION_CONTAINER"
 import RendererStoreController from "../../../../../stores/RendererStoreController";
 import ViewportPicker from "../../../../engine/services/ViewportPicker";
-import EngineLoop from "../../../../engine/libs/loop/EngineLoop";
+import LoopAPI from "../../../../engine/libs/apis/LoopAPI";
+import CameraAPI from "../../../../engine/libs/apis/CameraAPI";
 
 let transformationSystem
 export default class Gizmo {
@@ -99,18 +100,18 @@ export default class Gizmo {
     #testClick() {
         if (!this.mainEntity || !this.mainEntity.components[COMPONENTS.TRANSFORM])
             return
-        const camera = window.renderer.camera
+
         const mX = this.#translateMatrix(this.xGizmo.components)
         const mY = this.#translateMatrix(this.yGizmo.components)
         const mZ = this.#translateMatrix(this.zGizmo.components)
         const FBO = this.drawID(
             this.xyz,
-            camera.viewMatrix,
-            camera.projectionMatrix,
+            CameraAPI.viewMatrix,
+            CameraAPI.projectionMatrix,
             [mX, mY, mZ],
-            camera.position,
+            CameraAPI.position,
             this.translation,
-            camera.ortho
+            CameraAPI.isOrthographic
         )
         const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * (dd[0]))
@@ -132,7 +133,7 @@ export default class Gizmo {
         transformationType
     ) {
         if (!transformationSystem)
-            transformationSystem = EngineLoop.miscMap.get("transformations")
+            transformationSystem = LoopAPI.miscMap.get("transformations")
         if (!selected[0]) {
             this.mainEntity = undefined
             return
@@ -203,17 +204,16 @@ export default class Gizmo {
     }
 
     #draw(transformMatrix, axis, id) {
-        const camera = window.renderer.camera
         this.gizmoShader.bindForUse({
-            viewMatrix: camera.viewMatrix,
+            viewMatrix: CameraAPI.viewMatrix,
             transformMatrix,
-            projectionMatrix: camera.projectionMatrix,
-            camPos: camera.position,
+            projectionMatrix: CameraAPI.projectionMatrix,
+            camPos: CameraAPI.position,
             translation: this.translation,
             axis,
             selectedAxis: this.clickedAxis,
             uID: [...id, 1],
-            cameraIsOrthographic: camera.ortho
+            cameraIsOrthographic: CameraAPI.isOrthographic
         })
         gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }

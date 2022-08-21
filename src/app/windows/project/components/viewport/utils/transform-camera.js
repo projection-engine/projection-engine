@@ -1,3 +1,5 @@
+import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
+
 export function rotateY(angle, vec) {
     const matrix = new Array(4)
     for (let i = 0; i < 4; i++) {
@@ -17,7 +19,7 @@ export function rotateY(angle, vec) {
 }
 
 
-export function handleGrab(event, camera, type) {
+export function handleGrab(event, type) {
     let requested = false
     const handleMouseMove = (e) => {
         if (!requested) {
@@ -28,19 +30,19 @@ export function handleGrab(event, camera, type) {
 
         const incrementX = ((0.1) * e.movementX),
             incrementY = ((0.1) * e.movementY),
-            c = [...camera.centerOn]
+            c = [...CameraTracker.centerOn]
 
         if (type === 1) {
-            const newPosition = rotateY(camera.yaw, [incrementX, 0, 0])
+            const newPosition = rotateY(CameraTracker.yaw, [incrementX, 0, 0])
             c[0] += newPosition[0]
             c[1] -= incrementY
             c[2] += newPosition[2]
 
-            camera.centerOn = c
-            camera.updateViewMatrix()
+            CameraTracker.centerOn = c
+            CameraTracker.update()
         } else {
-            camera.radius += (0.1) * e.movementX
-            camera.updateViewMatrix()
+            CameraTracker.radius += (0.1) * e.movementX
+            CameraTracker.update()
         }
     }
     const handleMouseUp = () => {

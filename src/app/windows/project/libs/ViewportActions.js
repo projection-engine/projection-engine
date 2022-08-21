@@ -1,7 +1,8 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import RendererStoreController from "../stores/RendererStoreController";
-import Renderer from "./engine/Renderer";
+import RendererController from "./engine/RendererController";
 import COMPONENTS from "./engine/data/COMPONENTS";
+import CameraTracker from "./engine-extension/libs/CameraTracker";
 
 export default class ViewportActions {
     static toCopy = []
@@ -14,9 +15,9 @@ export default class ViewportActions {
     static focus(entity) {
         if (!entity || !entity.components[COMPONENTS.TRANSFORM])
             return
-        window.renderer.camera.radius = 10
-        window.renderer.camera.centerOn = entity.components[COMPONENTS.TRANSFORM].translation
-        window.renderer.camera.updateViewMatrix()
+        CameraTracker.radius = 10
+        CameraTracker.centerOn = entity.components[COMPONENTS.TRANSFORM].translation
+        CameraTracker.update()
     }
 
     static deleteSelected() {
@@ -49,10 +50,10 @@ export default class ViewportActions {
         if (!ViewportActions.toCopy)
             return
         ViewportActions.toCopy.forEach(t => {
-            const found = Renderer.entitiesMap.get(t)
+            const found = RendererController.entitiesMap.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.parent = parent ? Renderer.entitiesMap.get(parent) : undefined
+                clone.parent = parent ? RendererController.entitiesMap.get(parent) : undefined
                 block.push(clone)
             }
         })

@@ -1,6 +1,6 @@
 <script>
     import Node from "./components/Node.svelte"
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import Icon from "../../../../../components/Icon/Icon.svelte";
@@ -50,7 +50,7 @@
         if (trigger === TRIGGERS[0])
             UIStoreController.updateStore({...store, selected: [element.getAttribute(trigger)]})
     })
-    $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
+    onMount(() => contextMenuBinding.rebind(getContextMenu()))
     onDestroy(() => {
         unsubscribe()
         contextMenuBinding.onDestroy()

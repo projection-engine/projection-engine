@@ -1,49 +1,34 @@
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
 import {mat4} from "gl-matrix"
 import MeshInstance from "../../engine/libs/instances/MeshInstance"
-import EditorCamera from "../libs/camera/EditorCamera"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import MaterialInstance from "../../engine/libs/instances/MaterialInstance"
 import MaterialRenderer from "../../engine/services/MaterialRenderer";
-import Renderer from "../../engine/Renderer";
+import RendererController from "../../engine/RendererController";
 import EditorRenderer from "../EditorRenderer";
+import BundlerAPI from "../../engine/libs/apis/BundlerAPI";
 
-function toBase64( fbo) {
-    const gpu = window.gpu
-    const canvas = document.createElement("canvas")
-    canvas.width = SIZE
-    canvas.height = SIZE
-    const context = canvas.getContext("2d")
-    const width =SIZE, height =SIZE
-    gpu.bindFramebuffer(gpu.FRAMEBUFFER, fbo.FBO)
-    let data = new Float32Array(width * height * 4)
-    gpu.readPixels(0, 0, width, height, gpu.RGBA, gpu.FLOAT, data)
-    for(let i =0; i < data.length;  i += 4){
-        data[i] *= 255
-        data[i + 1] *= 255
-        data[i + 2] *= 255
-        data[i + 3] = 255
-    }
 
-    let imageData = context.createImageData(width, height)
-    imageData.data.set(data)
-    context.putImageData(imageData, 0, 0)
-    gpu.bindFramebuffer(gpu.FRAMEBUFFER, null)
-    data =canvas.toDataURL()
-
-    return data
+function getCameraData(pitch, yaw, radius, centerOn) {
+    const position = []
+    const cosPitch = Math.cos(pitch)
+    position[0] = radius * cosPitch * Math.cos(yaw) + centerOn[0]
+    position[1] = radius * Math.sin(pitch) + centerOn[1]
+    position[2] = radius * cosPitch * Math.sin(yaw) + centerOn[2]
+    return [mat4.lookAt([], position, centerOn, [0, 1, 0]), position]
 }
 
-const SIZE = 300, RADIAN_60 =1.0472, RADIAN_90=1.57
+const RADIAN_60 = 1.0472, RADIAN_90 = 1.57
 export default class PreviewSystem {
     identity = mat4.create()
+
     constructor() {
-        this.frameBuffer = new FramebufferInstance( SIZE, SIZE)
+        this.frameBuffer = new FramebufferInstance(300, 300)
             .texture({precision: window.gpu.RGBA32F, format: window.gpu.RGBA, type: window.gpu.FLOAT})
 
-        this.cameraData = EditorCamera.update(0, RADIAN_90, 2.5, [0,0,0])
+        this.cameraData = getCameraData(0, RADIAN_90, 2.5, [0, 0, 0])
         this.projection = mat4.perspective([], RADIAN_60, 1, .1, 10000)
-        this.pointLightData =[
+        this.pointLightData = [
             [
                 0, 0, 10, 0,
                 1, 1, 1, 0,
@@ -60,31 +45,30 @@ export default class PreviewSystem {
     }
 
     execute(data, materialMesh, meshEntity) {
-        const {elapsed} = Renderer.params
+        const {elapsed} = RendererController.params
         let response
         this.frameBuffer.startMapping()
 
 
-
-        if(meshEntity && materialMesh instanceof MeshInstance){
+        if (meshEntity && materialMesh instanceof MeshInstance) {
             const maxX = materialMesh.maxBoundingBox[0] - materialMesh.minBoundingBox[0],
                 maxY = materialMesh.maxBoundingBox[1] - materialMesh.minBoundingBox[1],
                 maxZ = materialMesh.maxBoundingBox[2] - materialMesh.minBoundingBox[2]
             const radius = Math.max(maxX, maxY, maxZ)
-            const cam = EditorCamera.update(0, RADIAN_90, radius + 2, meshEntity.components[COMPONENTS.TRANSFORM].translation)
-            const transformMatrix =meshEntity.components[COMPONENTS.TRANSFORM].transformationMatrix
+            const cam = getCameraData(0, RADIAN_90, radius + 2, meshEntity.components[COMPONENTS.TRANSFORM].translation)
+            const transformMatrix = meshEntity.components[COMPONENTS.TRANSFORM].transformationMatrix
             const pointLightData = [[
-                0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1]/2, radius * 10, 0,
+                0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1] / 2, radius * 10, 0,
                 1, 1, 1, 0,
                 .5, 0, 0, 0,
                 100, .1, 0, 0
             ],
-            [
-                0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1]/2, -radius * 10, 0,
-                1, 1, 1, 0,
-                .5, 0, 0, 0,
-                100, .1, 0, 0
-            ]]
+                [
+                    0, meshEntity.components[COMPONENTS.TRANSFORM].translation[1] / 2, -radius * 10, 0,
+                    1, 1, 1, 0,
+                    .5, 0, 0, 0,
+                    100, .1, 0, 0
+                ]]
 
             MaterialRenderer.drawMesh({
                 mesh: materialMesh,
@@ -92,7 +76,7 @@ export default class PreviewSystem {
                 viewMatrix: cam[0],
                 projectionMatrix: this.projection,
                 transformMatrix,
-                material: Renderer.fallbackMaterial,
+                material: RendererController.fallbackMaterial,
                 normalMatrix: this.identity,
                 directionalLightsQuantity: 0,
                 directionalLightsData: [],
@@ -105,9 +89,8 @@ export default class PreviewSystem {
                 useCubeMapShader: true
             })
             materialMesh.finish()
-        }
-        else if (materialMesh instanceof MaterialInstance){
-            const [ viewMatrix, camPosition ] = this.cameraData
+        } else if (materialMesh instanceof MaterialInstance) {
+            const [viewMatrix, camPosition] = this.cameraData
             MaterialRenderer.drawMesh({
                 mesh: EditorRenderer.sphereMesh,
                 camPosition,
@@ -128,7 +111,7 @@ export default class PreviewSystem {
             })
         }
         this.frameBuffer.stopMapping()
-        response= toBase64(this.frameBuffer)
+        response = BundlerAPI.framebufferToImage(this.frameBuffer.FBO)
         EditorRenderer.sphereMesh.finish()
         window.gpu.bindVertexArray(null)
         return response

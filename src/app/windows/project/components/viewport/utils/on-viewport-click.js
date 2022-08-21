@@ -3,21 +3,21 @@ import drawIconsToBuffer from "./draw-icons-to-buffer"
 import Conversion from "../../../libs/engine/services/Conversion";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
-import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
-import Renderer from "../../../libs/engine/Renderer";
+import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
+import RendererController from "../../../libs/engine/RendererController";
 
 const  MAX_DELTA = 50
 
 function pickIcon(coords) {
     drawIconsToBuffer()
-    const picked = ViewportPicker.depthPick(EngineLoop.renderMap.get("depthPrePass").frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(LoopAPI.renderMap.get("depthPrePass").frameBuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
 function pickMesh(meshesMap, x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
     const coords = Conversion.toQuadCoord({x, y}, {w, h})
-    const picked = ViewportPicker.depthPick(EngineLoop.renderMap.get("depthPrePass").frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(LoopAPI.renderMap.get("depthPrePass").frameBuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
@@ -28,14 +28,14 @@ export default function onViewportClick(event, settings, engine, setContext) {
     const deltaY = Math.abs(event.currentTarget.startedCoords.y - event.clientY)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
-    const meshesMap = Renderer.data.meshesMap
+    const meshesMap = RendererController.data.meshesMap
     const target = event.currentTarget.getBoundingClientRect()
     const coords = [event.clientX - target.left, event.clientY - target.top]
     let picked = pickIcon(coords)
     if (!picked)
         picked = pickMesh(meshesMap, event.clientX, event.clientY)
     if (picked > 0) {
-        const entities = Array.from(Renderer.entitiesMap.values())
+        const entities = Array.from(RendererController.entitiesMap.values())
         const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
         if (entity) {
             if (event.ctrlKey) {

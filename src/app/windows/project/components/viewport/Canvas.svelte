@@ -8,9 +8,9 @@
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
-    import Packager from "../../libs/engine/libs/builder/Packager";
+    import BundlerAPI from "../../libs/engine/libs/apis/BundlerAPI";
     import HotKeys from "../metrics/libs/HotKeys";
-    import UIRenderer from "../../libs/engine/UIRenderer";
+    import UserInterfaceController from "../../libs/engine/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import UIStoreController from "../../stores/UIStoreController";
 
@@ -34,7 +34,7 @@
             "window",
             Localization.PROJECT.VIEWPORT.TITLE
         )
-        Packager.buildWindow(canvasRef, window.imageWorker)
+        BundlerAPI.buildWindow(canvasRef, window.imageWorker)
             .then(() => {
                 window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
                 onReady()
@@ -53,15 +53,15 @@
     $: renderUI = engine.executingAnimation || settings.viewportTab === VIEWPORT_TABS.UI
     $: {
         if (uiStore.entities.size > lastSize && renderUI && window.gpu) {
-            UIRenderer.restart()
+            UserInterfaceController.restart()
             lastSize = uiStore.entities.size
         }
     }
     $: {
         if (renderUI && window.gpu)
-            UIRenderer.start()
+            UserInterfaceController.start()
         else
-            UIRenderer.stop()
+            UserInterfaceController.stop()
     }
 
     $: if (done) updateRenderer(engine, settings)

@@ -1,7 +1,7 @@
 import CBStoreController from "../stores/CBStoreController";
 import FilesAPI from "../../../libs/files/FilesAPI"
 import RendererStoreController from "../stores/RendererStoreController";
-import Packager from "./engine/libs/builder/Packager";
+import BundlerAPI from "./engine/libs/apis/BundlerAPI";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import Entity from "./engine/templates/basic/Entity";
 import UIStoreController from "../stores/UIStoreController";
@@ -41,7 +41,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    Packager.linkScript(data, entity, scriptID, reg.path)
+    BundlerAPI.linkScript(data, entity, scriptID, reg.path)
 
     if (autoUpdate)
         updateStore()

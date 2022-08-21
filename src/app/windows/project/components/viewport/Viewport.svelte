@@ -4,7 +4,7 @@
     import Localization from "../../../../libs/Localization";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import EngineLoop from "../../libs/engine/libs/loop/EngineLoop";
+    import LoopAPI from "../../libs/engine/libs/apis/LoopAPI";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
@@ -30,7 +30,7 @@
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
-    $: if (isReady) EngineLoop.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
+    $: if (isReady) LoopAPI.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     $: {
         if (isReady) {
             if (settings.visible.sideBarViewport && settings.viewportTab === VIEWPORT_TABS.EDITOR)

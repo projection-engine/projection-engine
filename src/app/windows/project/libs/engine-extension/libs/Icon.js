@@ -1,19 +1,19 @@
-let gpu
+import CameraAPI from "../../engine/libs/apis/CameraAPI";
+
 export default class Icon {
     bufferSize = 0
     constructor() {
-        gpu = window.gpu
-        this.transformVBO = window.gpu.createBuffer()
+        this.transformVBO = gpu.createBuffer()
     }
     static start(VBO, VAO, shader) {
-        window.gpu.bindVertexArray(VAO)
+        gpu.bindVertexArray(VAO)
         VBO.enable()
         shader.use()
     }
     static end(VBO) {
         VBO.disable()
-        window.gpu.bindVertexArray(null)
-        window.gpu.bindBuffer(window.gpu.ARRAY_BUFFER, null)
+        gpu.bindVertexArray(null)
+        gpu.bindBuffer(gpu.ARRAY_BUFFER, null)
     }
 
     updateBuffer(data){
@@ -39,15 +39,15 @@ export default class Icon {
         gpu.vertexAttribDivisor(3, 1)
         gpu.vertexAttribDivisor(4, 1)
     }
-    draw(texture, camera, iconSize, shader) {
+    draw(texture, iconSize, shader) {
         if (this.bufferSize > 0) {
             gpu.bindBuffer(gpu.ARRAY_BUFFER, this.transformVBO)
             this.bind()
             shader.bindForUse({
-                cameraPosition: camera.position,
+                cameraPosition: CameraAPI.position,
                 iconSampler: texture,
-                viewMatrix: camera.viewMatrix,
-                projectionMatrix: camera.projectionMatrix,
+                viewMatrix: CameraAPI.viewMatrix,
+                projectionMatrix: CameraAPI.projectionMatrix,
                 iconSize
             })
             gpu.drawArraysInstanced(gpu.TRIANGLES, 0, 6, this.bufferSize)

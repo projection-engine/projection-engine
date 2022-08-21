@@ -1,22 +1,21 @@
-import Renderer from "../engine/Renderer"
+import RendererController from "../engine/RendererController"
 import {STEPS_CUBE_MAP} from "../engine/libs/passes/rendering/SpecularProbePass"
 import Wrapper from "./services/Wrapper"
 import MaterialInstance from "../engine/libs/instances/MaterialInstance"
-import * as debugCode from "./templates/shaders/DEBUG.glsl"
+import * as debugCode from "./templates/DEBUG.glsl"
 import * as shaderCode from "../engine/data/shaders/FALLBACK.glsl"
 import DATA_TYPES from "../engine/data/DATA_TYPES"
 import SHADING_MODELS from "../../data/misc/SHADING_MODELS"
 import {STEPS_LIGHT_PROBE} from "../engine/libs/passes/rendering/DiffuseProbePass"
-import Packager from "../engine/libs/builder/Packager"
+import BundlerAPI from "../engine/libs/apis/BundlerAPI"
 import ENVIRONMENT from "../engine/data/ENVIRONMENT"
 import MeshInstance from "../engine/libs/instances/MeshInstance"
-import EditorCamera from "./libs/camera/EditorCamera"
-import CameraEvents from "./libs/camera/CameraEvents"
 import sphere from "./data/SPHERE.json"
 import camera from "./data/CAMERA.json"
-import EngineLoop from "../engine/libs/loop/EngineLoop";
+import LoopAPI from "../engine/libs/apis/LoopAPI";
+import CameraTracker from "./libs/CameraTracker";
 
-export default class EditorRenderer extends Renderer {
+export default class EditorRenderer extends RendererController {
     gizmo
     cursor
     selected = []
@@ -24,10 +23,7 @@ export default class EditorRenderer extends Renderer {
 
     constructor(resolution) {
         super(resolution)
-        this.camera = new EditorCamera()
-        this.cameraEvents = new CameraEvents(this.camera)
-
-        Renderer.environment = ENVIRONMENT.DEV
+        RendererController.environment = ENVIRONMENT.DEV
         this.editorSystem = new Wrapper(resolution)
         this.debugMaterial = new MaterialInstance({
             vertex: shaderCode.vertex,
@@ -77,22 +73,21 @@ export default class EditorRenderer extends Renderer {
     }
 
     refreshProbes() {
-        EngineLoop.renderMap.get("diffuseProbe").step = STEPS_CUBE_MAP.BASE
-        EngineLoop.renderMap.get("specularProbe").step = STEPS_LIGHT_PROBE.GENERATION
+        LoopAPI.renderMap.get("diffuseProbe").step = STEPS_CUBE_MAP.BASE
+        LoopAPI.renderMap.get("specularProbe").step = STEPS_LIGHT_PROBE.GENERATION
     }
 
     updatePackage(prodEnv, params) {
-        Renderer.environment = prodEnv ? ENVIRONMENT.EXECUTION : ENVIRONMENT.DEV
+        RendererController.environment = prodEnv ? ENVIRONMENT.EXECUTION : ENVIRONMENT.DEV
         if (!prodEnv)
-            this.cameraEvents.startTracking()
+            CameraTracker.startTracking()
         else
-            this.cameraEvents.stopTracking()
+            CameraTracker.stopTracking()
 
         this.debugMaterial.uniformData.shadingModel = params.shadingModel
-        Packager.build(
+        BundlerAPI.build(
             {
                 ...params,
-                camera: prodEnv ? Renderer.rootCamera : this.camera,
                 gizmo: this.gizmo,
                 cursor: this.cursor,
                 onWrap: prodEnv ? null : this.editorSystem,
@@ -109,7 +104,7 @@ export default class EditorRenderer extends Renderer {
 
     stop() {
         super.stop()
-        this.cameraEvents.stopTracking()
+        CameraTracker.stopTracking()
     }
 
 }

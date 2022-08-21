@@ -15,7 +15,7 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
+    import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -30,7 +30,7 @@
 
     function handleMouse(e) {
         if (e.type === "mousemove") {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera).slice(0, 3)
+            latestTranslation = Conversion.toScreen(e.clientX, e.clientY).slice(0, 3)
             updateCursor(latestTranslation)
         } else
             document.removeEventListener("mousemove", handleMouse)
@@ -46,7 +46,7 @@
             return
         e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
         if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY, renderer.camera, renderer.cursor.components[COMPONENTS.TRANSFORM].translation).slice(0, 3)
+            latestTranslation = Conversion.toScreen(e.clientX, e.clientY).slice(0, 3)
             updateCursor(latestTranslation)
             document.addEventListener("mousemove", handleMouse)
             document.addEventListener("mouseup", handleMouse, {once: true})
@@ -122,7 +122,7 @@
         setSelected={(_, startCoords, endCoords) => {
                     if (startCoords && endCoords) {
                         drawIconsToBuffer()
-                        const depthFBO = EngineLoop.renderMap.get("depthPrePass").frameBuffer
+                        const depthFBO = LoopAPI.renderMap.get("depthPrePass").frameBuffer
                         const size = {
                             w: depthFBO.width,
                             h: depthFBO.height

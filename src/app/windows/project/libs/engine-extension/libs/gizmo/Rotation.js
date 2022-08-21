@@ -1,5 +1,5 @@
 import ShaderInstance from "../../../engine/libs/instances/ShaderInstance"
-import * as gizmoShaderCode from "../../templates/shaders/GIZMO.glsl"
+import * as gizmoShaderCode from "../../templates/GIZMO.glsl"
 
 import {mat4, quat, vec3} from "gl-matrix"
 import MeshInstance from "../../../engine/libs/instances/MeshInstance"
@@ -13,7 +13,8 @@ import mapEntity from "./utils/map-entity"
 import mesh from "../../data/ROTATION_GIZMO.json"
 import RendererStoreController from "../../../../stores/RendererStoreController";
 import ViewportPicker from "../../../engine/services/ViewportPicker";
-import EngineLoop from "../../../engine/libs/loop/EngineLoop";
+import LoopAPI from "../../../engine/libs/apis/LoopAPI";
+import CameraAPI from "../../../engine/libs/apis/CameraAPI";
 
 const CSS = {
     backdropFilter: "blur(10px) brightness(70%)",
@@ -183,19 +184,18 @@ export default class Rotation {
     #testClick() {
         if (!this.mainEntity || !this.mainEntity.components[COMPONENTS.TRANSFORM])
             return
-        const camera = window.renderer.camera
         const mX = this.#rotateMatrix("x", this.xGizmo.components[COMPONENTS.TRANSFORM])
         const mY = this.#rotateMatrix("y", this.yGizmo.components[COMPONENTS.TRANSFORM])
         const mZ = this.#rotateMatrix("z", this.zGizmo.components[COMPONENTS.TRANSFORM])
 
         const FBO = this.drawID(
             this.xyz,
-            camera.viewMatrix,
-            camera.projectionMatrix,
+            CameraAPI.viewMatrix,
+            CameraAPI.projectionMatrix,
             [mX, mY, mZ],
-            camera.position,
+            CameraAPI.position,
             this.translation,
-            camera.ortho
+            CameraAPI.isOrthographic
         )
         const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
         const pickID = Math.round(255 * dd[0])
@@ -223,7 +223,7 @@ export default class Rotation {
         transformationType
     ) {
         if (!transformationSystem)
-            transformationSystem = EngineLoop.miscMap.get("transformations")
+            transformationSystem = LoopAPI.miscMap.get("transformations")
         if(!selected[0]) {
             this.mainEntity = undefined
             return
@@ -296,18 +296,17 @@ export default class Rotation {
     }
 
     #draw(transformMatrix, axis, id) {
-        const camera = window.renderer.camera
         this.gizmoShader.bindForUse({
-            viewMatrix: camera.viewMatrix,
+            viewMatrix: CameraAPI.viewMatrix,
             transformMatrix,
-            projectionMatrix: camera.projectionMatrix,
+            projectionMatrix: CameraAPI.projectionMatrix,
             axis,
             translation: this.translation,
-            camPos: camera.position,
+            camPos: CameraAPI.position,
             uID: [...id, 1],
             selectedAxis: this.clickedAxis,
             circleSampler: this.texture.texture,
-            cameraIsOrthographic: camera.ortho
+            cameraIsOrthographic: CameraAPI.isOrthographic
         })
         gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }

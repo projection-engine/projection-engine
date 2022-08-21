@@ -7,7 +7,7 @@ import CameraComponent from "../../../../libs/engine/templates/components/Camera
 import PointLightComponent from "../../../../libs/engine/templates/components/PointLightComponent";
 import TransformComponent from "../../../../libs/engine/templates/components/TransformComponent";
 import DirectionalLightComponent from "../../../../libs/engine/templates/components/DirectionalLightComponent";
-import Renderer from "../../../../libs/engine/Renderer";
+import RendererController from "../../../../libs/engine/RendererController";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")
@@ -97,7 +97,7 @@ export default function getContextMenu(open, setOpen) {
             label: "Close parent",
             onClick: (target) => {
                 const newOpen = {...open}
-                const node = Renderer.entitiesMap.get(target.getAttribute("data-node"))
+                const node = RendererController.entitiesMap.get(target.getAttribute("data-node"))
                 if (!node)
                     return
                 delete newOpen[node.parent.id]
@@ -120,7 +120,7 @@ export default function getContextMenu(open, setOpen) {
             label: "Duplicate",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const entity = Renderer.entitiesMap.get(t)
+                const entity = RendererController.entitiesMap.get(t)
                 if (entity)
                     dispatchRendererEntities({
                         type: ENTITY_ACTIONS.ADD,
@@ -152,7 +152,7 @@ export default function getContextMenu(open, setOpen) {
             label: "Deselect hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toDeselect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
+                const toDeselect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
                 RendererStoreController.updateEngine({
                     ...RendererStoreController.engine,
                     selected: RendererStoreController.engine.selected.filter(s => toDeselect.includes(s))
@@ -176,7 +176,7 @@ export default function getContextMenu(open, setOpen) {
             label: "Select hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toSelect = [t, ...getHierarchy(Renderer.entitiesMap.get(t))]
+                const toSelect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
                 RendererStoreController.updateEngine({
                     ...RendererStoreController.engine,
                     selected: [...RendererStoreController.engine.selected, ...toSelect]
@@ -187,7 +187,7 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Focus",
             icon: "place",
-            onClick: (target) => ViewportActions.focus(Renderer.entitiesMap.get(target.getAttribute("data-node")))
+            onClick: (target) => ViewportActions.focus(RendererController.entitiesMap.get(target.getAttribute("data-node")))
         },
     ]
 }

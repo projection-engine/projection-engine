@@ -3,7 +3,8 @@ import Entity from "../../../libs/engine/templates/basic/Entity";
 import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
 import Transformation from "../../../libs/engine/services/Transformation";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import Renderer from "../../../libs/engine/Renderer";
+import RendererController from "../../../libs/engine/RendererController";
+import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
 
 
 function getCursor() {
@@ -27,21 +28,22 @@ export default function updateRenderer( engine, settings) {
         scripts
     } = engine
     const renderer = window.renderer
-    if (!renderer.camera.cameraInitialized) {
-        renderer.camera.cameraInitialized = true
+    if (!CameraTracker.cameraInitialized) {
+
+        CameraTracker.cameraInitialized = true
         if (settings.cameraPosition)
-            renderer.camera.centerOn = settings.cameraPosition
+            CameraTracker.centerOn = settings.cameraPosition
         if (typeof settings.yaw === "number")
-            renderer.camera.yaw = settings.yaw
+            CameraTracker.yaw = settings.yaw
         if (typeof settings.pitch === "number")
-            renderer.camera.pitch = settings.pitch
-        renderer.camera.updateViewMatrix()
+            CameraTracker.pitch = settings.pitch
+        CameraTracker.update()
     }
 
-    Renderer.entitiesMap = entities
-    Renderer.meshes = meshes
+    RendererController.entitiesMap = entities
+    RendererController.meshes = meshes
     renderer.materials = materials
-    renderer.camera.animated = settings.cameraAnimation
+    CameraTracker.animated = settings.cameraAnimation
     renderer.gizmo = settings.gizmo
     if (!renderer.cursor)
         renderer.cursor = getCursor()

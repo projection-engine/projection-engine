@@ -1,9 +1,9 @@
 <script>
     import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
     import Icon from "../../../../../../components/Icon/Icon.svelte";
-    import Packager from "../../../../libs/engine/libs/builder/Packager";
+    import BundlerAPI from "../../../../libs/engine/libs/apis/BundlerAPI";
     import "../css/Branch.css"
-    import Renderer from "../../../../libs/engine/Renderer";
+    import RendererController from "../../../../libs/engine/RendererController";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {v4} from "uuid";
 
@@ -67,7 +67,7 @@
                 e.preventDefault()
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
-                const entityDragged = Renderer.entitiesMap.get(src)
+                const entityDragged = RendererController.entitiesMap.get(src)
                 console.log(entityDragged)
                 if (entityDragged) {
                     entityDragged.parent = nodeRef
@@ -149,8 +149,8 @@
                     class="buttonSmall hierarchy-branch"
                     style="margin-right: 8px"
                     on:click={() => {
-                        Renderer.entitiesMap.get(nodeRef.id).active = !active
-                        Packager.packageLights()
+                        RendererController.entitiesMap.get(nodeRef.id).active = !active
+                        BundlerAPI.packageLights()
 
                         active = !active
                     }}>

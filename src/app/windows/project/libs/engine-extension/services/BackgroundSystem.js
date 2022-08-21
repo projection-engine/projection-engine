@@ -1,7 +1,8 @@
-import * as shaderCode from "../templates/shaders/SKYBOX.glsl"
+import * as shaderCode from "../templates/SKYBOX.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import {mat4} from "gl-matrix"
-import Renderer from "../../engine/Renderer";
+import RendererController from "../../engine/RendererController";
+import CameraAPI from "../../engine/libs/apis/CameraAPI";
 
 
 export default class BackgroundSystem {
@@ -12,21 +13,21 @@ export default class BackgroundSystem {
 
     execute() {
 
-        const {camera, gamma, background, backgroundColor} = Renderer.params
+        const {gamma, background, backgroundColor} = RendererController.params
         if(background) {
             gpu.depthMask(false)
             this.shader.use()
 
-            Renderer.cubeBuffer.enable()
+            RendererController.cubeBuffer.enable()
             this.shader.bindForUse({
                 projectionMatrix: this.projection,
-                viewMatrix: camera.viewMatrix,
+                viewMatrix: CameraAPI.viewMatrix,
                 gamma: gamma,
                 color: backgroundColor
             })
 
             gpu.drawArrays(gpu.TRIANGLES, 0, 36)
-            Renderer.cubeBuffer.disable()
+            RendererController.cubeBuffer.disable()
 
             gpu.depthMask(true)
         }

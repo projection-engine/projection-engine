@@ -4,7 +4,7 @@ import ENGINE from "../data/misc/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ViewportActions from "./templates/ViewportActions";
-import Renderer from "../libs/engine/Renderer";
+import RendererController from "../libs/engine/RendererController";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import SETTINGS from "../data/misc/SETTINGS";
@@ -17,9 +17,10 @@ import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
 import parseMaterialObject from "../utils/parse-material-object";
 import parseEntityObject from "../utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UIRenderer from "../libs/engine/UIRenderer";
+import UserInterfaceController from "../libs/engine/UserInterfaceController";
 import UIStoreController from "./UIStoreController";
 import parseUiElement from "../utils/parse-ui-element";
+import CameraTracker from "../libs/engine-extension/libs/CameraTracker";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false
@@ -112,7 +113,7 @@ export default class RendererStoreController {
 
         RendererStoreController.engine.meshes.forEach(m => m.delete())
         RendererStoreController.engine.meshes = new Map()
-        Renderer.meshes = RendererStoreController.engine.meshes
+        RendererController.meshes = RendererStoreController.engine.meshes
         RendererStoreController.engine.materials.forEach(m => m.delete())
         RendererStoreController.engine.materials = []
         window.renderer.materials = RendererStoreController.engine.materials
@@ -161,7 +162,7 @@ export default class RendererStoreController {
 
     static async save() {
         alert.pushAlert("Saving project", "info")
-        const entities = Array.from(Renderer.entitiesMap.values())
+        const entities = Array.from(RendererController.entitiesMap.values())
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
             let pathToWrite
@@ -184,7 +185,7 @@ export default class RendererStoreController {
                     pathToWrite,
                     serializeData({
                         entities: entities.map(e => e.serializable()),
-                        uiElements: Array.from(UIRenderer.entities.values())
+                        uiElements: Array.from(UserInterfaceController.entities.values())
                     }),
                     true
                 )
@@ -223,7 +224,7 @@ function serializeData(level) {
 
 async function updateSettings(metaData, settings) {
     const entities = window.renderer.entities
-    const meshes = Renderer.meshes
+    const meshes = RendererController.meshes
     const materials = window.renderer.materials
     const old = JSON.parse(metaData.toString())
     await AssetAPI.updateProject(
@@ -237,9 +238,9 @@ async function updateSettings(metaData, settings) {
         },
         {
             ...settings,
-            cameraPosition: window.renderer.camera.centerOn,
-            yaw: window.renderer.camera.yaw,
-            pitch: window.renderer.camera.pitch,
+            cameraPosition: CameraTracker.centerOn,
+            yaw: CameraTracker.yaw,
+            pitch: CameraTracker.pitch,
         }
     )
 }
@@ -250,7 +251,7 @@ async function removeDeletedEntities() {
     const all = await Promise.all(allEntities.map(e => FilesAPI.readFile(LOGIC_PATH + e, "json", true)))
     for (let i = 0; i < all.length; i++) {
         const entity = all[i]
-        if (!entity || Renderer.entitiesMap.get(entity.id))
+        if (!entity || RendererController.entitiesMap.get(entity.id))
             continue
         await FilesAPI.deleteFile(LOGIC_PATH + entity.id + ".entity")
     }

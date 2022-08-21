@@ -1,8 +1,8 @@
 import RendererStoreController from "../stores/RendererStoreController";
 import componentConstructor from "../libs/component-constructor";
 import ENVIRONMENT from "../libs/engine/data/ENVIRONMENT";
-import Renderer from "../libs/engine/Renderer";
-import UIRenderer from "../libs/engine/UIRenderer";
+import RendererController from "../libs/engine/RendererController";
+import UserInterfaceController from "../libs/engine/UserInterfaceController";
 
 const {shell} = window.require("electron")
 
@@ -11,8 +11,8 @@ export default async function loadScripts() {
     const newValue = !engine.executingAnimation
     RendererStoreController.updateEngine({...engine, executingAnimation: newValue})
     if(newValue)
-    Renderer.environment = ENVIRONMENT.EXECUTION
-    const entities = [...Array.from(Renderer.entitiesMap.values()), ...Array.from(UIRenderer.entities.values())]
+    RendererController.environment = ENVIRONMENT.EXECUTION
+    const entities = [...Array.from(RendererController.entitiesMap.values()), ...Array.from(UserInterfaceController.entities.values())]
     try {
         if (newValue) {
             for (let i = 0; i < entities.length; i++) {

@@ -3,16 +3,18 @@
     import Localization from "../../../../../../libs/Localization";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
+    import CameraAPI from "../../../../libs/engine/libs/apis/CameraAPI";
+    import CameraTracker from "../../../../libs/engine-extension/libs/CameraTracker";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     let state = {
         zFar: settings.zFar,
         zNear: settings.zNear,
         fov: settings.fov * toDeg,
-        radius: window.renderer.camera.radius
+        radius: CameraTracker.radius
     }
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
@@ -28,8 +30,8 @@
             onFinish={(v) => {
             settings.zFar = v
             state.zFar = v
-            window.renderer.camera.zFar = v
-            window.renderer.camera.updateProjection()
+                CameraAPI.metadata.zFar = v
+            CameraAPI.updateProjection()
         }}
             value={state.zFar}
             handleChange={v => state.zFar = v}
@@ -41,8 +43,8 @@
             onFinish={(v) => {
                 settings.zNear = v
                 state.zNear = v
-                window.renderer.camera.zNear = v
-                window.renderer.camera.updateProjection()
+                    CameraAPI.metadata.zNear = v
+                    CameraAPI.updateProjection()
             }}
             value={state.zNear}
             handleChange={v => state.zNear = v}
@@ -59,8 +61,8 @@
             onFinish={(v) => {
             settings.fov = v * toRad
             state.fov = v
-            window.renderer.camera.fov = v * toRad
-            window.renderer.camera.updateProjection()
+                CameraAPI.metadata.fov = v * toRad
+                CameraAPI.updateProjection()
         }}
             value={state.fov}
             handleChange={v => state.fov = v}
@@ -68,17 +70,17 @@
     <Range
             label={translate("ZOOM")}
             onFinish={(v) => {
-            settings.radius = v
-            state.radius = v
-            window.renderer.camera.radius = v
-            window.renderer.camera.updateViewMatrix()
-        }}
+                settings.radius = v
+                state.radius = v
+                CameraTracker.radius = v
+                CameraTracker.update(true)
+            }}
             hideValue={true}
             value={state.radius}
             handleChange={v => {
-            state.radius = v
-            window.renderer.camera.radius = v
-            window.renderer.camera.updateViewMatrix()
-        }}
+                state.radius = v
+                CameraTracker.radius = v
+                CameraTracker.update(true)
+            }}
     />
 </div>

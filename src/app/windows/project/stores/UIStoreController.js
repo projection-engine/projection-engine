@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {uiStore} from "./templates/user-interface-store";
-import UIRenderer from "../libs/engine/UIRenderer";
+import UserInterfaceController from "../libs/engine/UserInterfaceController";
 
 export default class UIStoreController {
     static data = get(uiStore)
@@ -17,7 +17,7 @@ export default class UIStoreController {
         else
             value.selectedEntity = undefined
 
-        UIRenderer.entities = value.entities
+        UserInterfaceController.entities = value.entities
         UIStoreController.data = value
         uiStore.set(value)
     }

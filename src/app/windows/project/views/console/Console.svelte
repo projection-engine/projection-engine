@@ -3,7 +3,7 @@
     import Header from "../../../../components/view/components/Header.svelte";
     import Icon from "../../../../components/Icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import Debug from "../../libs/engine/libs/debug/Debug";
+    import ConsoleAPI from "../../libs/engine/libs/apis/ConsoleAPI";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {v4} from "uuid";
@@ -27,33 +27,33 @@
     let changed
     const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     const LINE_HEIGHT = 18
-    const TYPES = Debug.TYPES
+    const TYPES = ConsoleAPI.TYPES
 
     onMount(() => {
-        Debug.registerConsole(internalID, (md, messages) => {
+        ConsoleAPI.registerConsole(internalID, (md, messages) => {
             metadata = md
             toRender = messages
             changed = true
         })
     })
     onDestroy(() => {
-        Debug.unregisterConsole(internalID)
+        ConsoleAPI.unregisterConsole(internalID)
         unsubscribeEngine()
     })
 
     const translate = key => Localization.PROJECT.CONSOLE[key]
 
-    $: if (engine.executingAnimation && clearOnPlay) Debug.clear()
+    $: if (engine.executingAnimation && clearOnPlay) ConsoleAPI.clear()
     $: {
         if (changed) {
             changed = false
             const newToRender = []
             for (let i = 0; i < toRender.length; i++) {
-                if (!showLogs && toRender[i].type === Debug.TYPES.LOG)
+                if (!showLogs && toRender[i].type === ConsoleAPI.TYPES.LOG)
                     continue
-                if (!showWarnings && toRender[i].type === Debug.TYPES.WARN)
+                if (!showWarnings && toRender[i].type === ConsoleAPI.TYPES.WARN)
                     continue
-                if (!showErrors && toRender[i].type === Debug.TYPES.ERROR)
+                if (!showErrors && toRender[i].type === ConsoleAPI.TYPES.ERROR)
                     continue
                 newToRender.push(toRender[i])
             }
@@ -69,7 +69,7 @@
         icon={"terminal"}
 >
     <div data-vertdivider="-"></div>
-    <button on:click={() => Debug.clear()} class="button">
+    <button on:click={() => ConsoleAPI.clear()} class="button">
         <Icon>
             clear_all
         </Icon>

@@ -7,28 +7,46 @@
     import CAMERA_GIZMO from "../../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
-
-    let requested = false
-    let camera = window.renderer.camera
-
-    function updateCameraRotation() {
-        const transformationMatrix = camera.getNotTranslatedViewMatrix()
-        camera.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${transformationMatrix})`
-    }
-
-    onMount(() => {
-        camera.gizmoReference = document.getElementById(CAMERA_GIZMO)
-        updateCameraRotation()
-    })
+    import CameraAPI from "../../../../libs/engine/libs/apis/CameraAPI";
+    import CameraTracker from "../../../../libs/engine-extension/libs/CameraTracker";
 
     export let translate
     let cameraIsOrtho = false
+    let requested = false
+
+    onMount(() => {
+        CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO)
+        CameraTracker.update()
+    })
 
     let settings = {}
     const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
+    const onMouseMove = ({currentTarget, movementX, movementY}) => {
+        if (currentTarget.isFocused) {
+            if (!requested) {
+                requested = true
+                currentTarget.requestPointerLock()
+            }
+            if (movementY < 0)
+                CameraTracker.pitch += .01 * Math.abs(movementY)
+            else if (movementY > 0)
+                CameraTracker.pitch -= .01 * Math.abs(movementY)
 
+            if (movementX > 0)
+                CameraTracker.yaw += .01 * Math.abs(movementX)
+            else if (movementX < 0)
+                CameraTracker.yaw -= .01 * Math.abs(movementX)
+
+            CameraTracker.update()
+
+        }
+    }
+    const onMouseUp = ({currentTarget}) => {
+        currentTarget.isFocused = false
+        requested = false
+    }
 </script>
 
 <div class={"wrapper"} style={settings.visible.sideBarViewport ? "right: 25px" : undefined}>
@@ -37,80 +55,43 @@
     <div
             class={"gizmo-wrapper"}
             on:mousedown={({currentTarget}) => currentTarget.isFocused = true}
-            on:mouseup={({currentTarget}) => {
-        currentTarget.isFocused = false
-        requested = false
-    }}
-            on:mousemove={({currentTarget, movementX, movementY}) => {
-        if (currentTarget.isFocused) {
-            if (!requested) {
-                requested = true
-                currentTarget.requestPointerLock()
-            }
-            if (movementY < 0)
-                camera.pitch += .01 * Math.abs(movementY)
-            else if (movementY > 0)
-                camera.pitch -= .01 * Math.abs(movementY)
-
-            if (movementX > 0)
-                camera.yaw += .01 * Math.abs(movementX)
-            else if (movementX < 0)
-                camera.yaw -= .01 * Math.abs(movementX)
-
-            camera.updateViewMatrix()
-            updateCameraRotation()
-        }
-    }}
+            on:mouseup={onMouseUp}
+            on:mousemove={onMouseMove}
     >
         <div class={"camera-view"}>
             <div class={"cube"} id={CAMERA_GIZMO}>
                 <div
                         class={"face front"}
                         style="background: hsl(205, 100%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(Math.PI / 2, 0)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(Math.PI / 2, 0)}
                 >
                     Z+
                 </div>
                 <div
                         class={"face back darker"}
                         style="background: hsl(205, 100%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(Math.PI * 1.5, 0)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}
                 >
                     Z-
                 </div>
                 <div
                         class={"face right"}
                         style="background: hsl(0, 100%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(0, 0)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(0, 0)}
                 >
                     X+
                 </div>
                 <div
                         class={"face left darker"}
                         style="background: hsl(0, 100%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(Math.PI, 0)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(Math.PI, 0)}
                 >
                     X-
                 </div>
                 <div
                         class={"face top darker"}
                         style="background: hsl(120, 88%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(0, Math.PI / 2)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(0, Math.PI / 2)}
 
                 >
                     Y-
@@ -118,10 +99,7 @@
                 <div
                         class={"face bottom"}
                         style="background: hsl(120, 88%, var(--brightness))"
-                        on:click={() => {
-                    updateCameraPlacement(0, -Math.PI / 2)
-                    updateCameraRotation()
-                }}
+                        on:click={() => updateCameraPlacement(0, -Math.PI / 2)}
                 >
                     Y+
                 </div>
@@ -159,9 +137,9 @@
 
     <button
             on:click={() => {
-                const negated = !window.renderer.camera.ortho
-                window.renderer.camera.ortho = negated
-                window.renderer.camera.updateProjection()
+                const negated = !CameraAPI.isOrthographic
+                CameraAPI.isOrthographic = negated
+                CameraAPI.updateProjection()
                 cameraIsOrtho  = negated
             }}
             class="option"
@@ -178,7 +156,7 @@
         {/if}
     </button>
 
-    <div class="option" on:mousedown={e => handleGrab(e, window.renderer.camera, 0)}>
+    <div class="option" on:mousedown={e => handleGrab(e, 0)}>
         <ToolTip>
             {translate("DRAG_X_ZOOM")}
         </ToolTip>
@@ -186,10 +164,10 @@
     </div>
     <div
             class="option"
-            on:mousedown={e => handleGrab(e, window.renderer.camera, 1)}
+            on:mousedown={e => handleGrab(e,  1)}
             on:dblclick={() => {
-                window.renderer.camera.centerOn = [0, 0, 0]
-                window.renderer.camera.updateViewMatrix()
+                CameraTracker.centerOn = [0, 0, 0]
+                CameraTracker.update()
             }}>
         <ToolTip>
             <div>{translate("DRAG_X_DIR")}</div>

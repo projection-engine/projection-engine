@@ -1,8 +1,9 @@
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
-import * as shaderCode from "../templates/shaders/SELECTED.glsl"
+import * as shaderCode from "../templates/SELECTED.glsl"
 import COMPONENTS from "../../engine/data/COMPONENTS"
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
-import Renderer from "../../engine/Renderer";
+import RendererController from "../../engine/RendererController";
+import CameraAPI from "../../engine/libs/apis/CameraAPI";
 
 export default class SelectedSystem {
 
@@ -23,7 +24,7 @@ export default class SelectedSystem {
         this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h).texture(TEXTURE)
     }
 
-    drawToBuffer(selected, camera){
+    drawToBuffer(selected){
         const length = selected.length
         if (length === 0)
             return
@@ -31,10 +32,10 @@ export default class SelectedSystem {
         this.shader.use()
         this.frameBuffer.startMapping()
         for (let m = 0; m < length; m++) {
-            const current = Renderer.entitiesMap.get(selected[m])
+            const current = RendererController.entitiesMap.get(selected[m])
             if (!current || !current.active)
                 continue
-            const mesh = Renderer.meshes.get(current.components[COMPONENTS.MESH]?.meshID)
+            const mesh = RendererController.meshes.get(current.components[COMPONENTS.MESH]?.meshID)
             if (!mesh)
                 continue
             const t = current.components[COMPONENTS.TRANSFORM]
@@ -43,9 +44,9 @@ export default class SelectedSystem {
 
             mesh.vertexVBO.enable()
             this.shader.bindForUse({
-                projectionMatrix: camera.projectionMatrix,
+                projectionMatrix: CameraAPI.projectionMatrix,
                 transformMatrix: t.transformationMatrix,
-                viewMatrix: camera.viewMatrix
+                viewMatrix: CameraAPI.viewMatrix
             })
 
             gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
@@ -64,14 +65,5 @@ export default class SelectedSystem {
             this.frameBuffer.draw()
             gpu.bindVertexArray(null)
         }
-    }
-
-    #drawMesh(
-        mesh,
-        viewMatrix,
-        projectionMatrix,
-        transformMatrix
-    ) {
-
     }
 }

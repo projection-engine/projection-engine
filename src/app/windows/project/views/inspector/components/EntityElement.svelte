@@ -12,7 +12,7 @@
     import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import Renderer from "../../../libs/engine/Renderer";
+    import RendererController from "../../../libs/engine/RendererController";
     import Entity from "../../../libs/engine/templates/basic/Entity";
     import UIStoreController from "../../../stores/UIStoreController";
 
@@ -93,8 +93,8 @@
                 width="100%"
                 hasBorder={true}
                 setSearchString={v => {
-                Renderer.queryMap.delete(entity.queryKey)
-                Renderer.queryMap.set(v, entity)
+                RendererController.queryMap.delete(entity.queryKey)
+                RendererController.queryMap.set(v, entity)
                 entity.queryKey = v
             }}
                 searchString={entity.queryKey}

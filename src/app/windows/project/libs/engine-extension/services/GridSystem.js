@@ -1,7 +1,8 @@
-import * as shaderCode from "../templates/shaders/GRID.glsl"
+import * as shaderCode from "../templates/GRID.glsl"
 import ShaderInstance from "../../engine/libs/instances/ShaderInstance"
 import QuadInstance from "../../engine/libs/instances/QuadInstance"
-import Renderer from "../../engine/Renderer";
+import RendererController from "../../engine/RendererController";
+import CameraAPI from "../../engine/libs/apis/CameraAPI";
 
 export default class GridSystem {
     constructor() {
@@ -10,17 +11,14 @@ export default class GridSystem {
     }
 
     execute() {
-        const {
-            gridVisibility,
-            camera
-        } = Renderer.params
-        if(gridVisibility && !camera.ortho) {
+
+        if (RendererController.params.gridVisibility && !CameraAPI.isOrthographic) {
             this.gridShader.use()
             this.gridShader.bindForUse({
-                viewMatrix:  camera.viewMatrix,
-                projectionMatrix: camera.projectionMatrix,
-                gamma: camera.gamma,
-                exposure: camera.exposure
+                viewMatrix: CameraAPI.viewMatrix,
+                projectionMatrix: CameraAPI.projectionMatrix,
+                gamma: CameraAPI.metadata.gamma,
+                exposure: CameraAPI.metadata.exposure
             })
 
             this.grid.draw()

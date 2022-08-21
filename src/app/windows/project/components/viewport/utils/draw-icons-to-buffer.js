@@ -1,10 +1,11 @@
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import EngineLoop from "../../../libs/engine/libs/loop/EngineLoop";
-import Renderer from "../../../libs/engine/Renderer";
+import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
+import RendererController from "../../../libs/engine/RendererController";
+import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
 
 export default function drawIconsToBuffer() {
-    const depthSystem = EngineLoop.renderMap.get("depthPrePass")
-    const entities = Array.from(Renderer.entitiesMap.values())
+    const depthSystem = LoopAPI.renderMap.get("depthPrePass")
+    const entities = Array.from(RendererController.entitiesMap.values())
     const cameraMesh = window.renderer.cameraMesh
     const shader = depthSystem.shader
 
@@ -30,14 +31,12 @@ export default function drawIconsToBuffer() {
 }
 
 function drawIcon(mesh, meshID, transformMatrix, shader) {
-    let gpu = window.gpu
-    const camera = window.renderer.camera
     mesh.useForDepth()
     shader.bindForUse({
         meshID,
-        projectionMatrix: camera.projectionMatrix,
+        projectionMatrix: CameraAPI.projectionMatrix,
         transformMatrix,
-        viewMatrix: camera.viewMatrix
+        viewMatrix: CameraAPI.viewMatrix
     })
 
     gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)

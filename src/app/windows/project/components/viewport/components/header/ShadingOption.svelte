@@ -4,7 +4,7 @@
     import Icon from "../../../../../../components/Icon/Icon.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import EngineLoop from "../../../../libs/engine/libs/loop/EngineLoop";
+    import LoopAPI from "../../../../libs/engine/libs/apis/LoopAPI";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -52,22 +52,22 @@
     const getTexture = () => {
         switch (shadingModel) {
             case SHADING_MODELS.DEPTH:
-                return EngineLoop.renderMap.get("depthPrePass").depth
+                return LoopAPI.renderMap.get("depthPrePass").depth
             case SHADING_MODELS.AO:
-                return EngineLoop.renderMap.get("ao").texture
+                return LoopAPI.renderMap.get("ao").texture
             case SHADING_MODELS.NORMAL:
-                return EngineLoop.renderMap.get("deferred").frameBuffer.colors[1]
+                return LoopAPI.renderMap.get("deferred").frameBuffer.colors[1]
             case SHADING_MODELS.ALBEDO:
-                return EngineLoop.renderMap.get("deferred").frameBuffer.colors[2]
+                return LoopAPI.renderMap.get("deferred").frameBuffer.colors[2]
         }
 
     }
     $: {
         if (window.renderer) {
             if (shadingModel !== SHADING_MODELS.DETAIL)
-                EngineLoop.ppMap.get("finalPass").workerTexture = getTexture()
+                LoopAPI.ppMap.get("finalPass").workerTexture = getTexture()
             else
-                EngineLoop.ppMap.get("finalPass").workerTexture = EngineLoop.ppMap.get("worker").colors[0]
+                LoopAPI.ppMap.get("finalPass").workerTexture = LoopAPI.ppMap.get("worker").colors[0]
         }
         if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
             shadingModel = SHADING_MODELS.DETAIL

@@ -5,6 +5,8 @@
     import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
+    import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
+    import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
 
     export let settings
     export let translate
@@ -13,7 +15,7 @@
     let ref
 
 
-    $: if (window.renderer?.camera) window.renderer.camera.animated = settings.cameraAnimation
+    $: CameraTracker.animated = settings.cameraAnimation
 </script>
 
 
