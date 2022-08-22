@@ -167,11 +167,11 @@ export default class Gizmo {
         GizmoSystem.gizmoShader.use()
         this.xyz.use()
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
-            Gizmo.drawGizmo(this.xyz, mX, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
+            Gizmo.drawGizmo(this.xyz, mX, 1, this.xGizmo.pickID, GizmoSystem.translation, this.clickedAxis)
         if (this.tracking && this.clickedAxis === 2 || !this.tracking)
-            Gizmo.drawGizmo(this.xyz, mY, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
+            Gizmo.drawGizmo(this.xyz, mY, 2, this.yGizmo.pickID, GizmoSystem.translation, this.clickedAxis)
         if (this.tracking && this.clickedAxis === 3 || !this.tracking)
-            Gizmo.drawGizmo(this.xyz, mZ, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
+            Gizmo.drawGizmo(this.xyz, mZ, 3, this.zGizmo.pickID, GizmoSystem.translation, this.clickedAxis)
         this.xyz.finish()
     }
 

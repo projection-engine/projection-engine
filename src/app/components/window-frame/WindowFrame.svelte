@@ -14,11 +14,11 @@
     const translate = (key) => Localization.COMPONENTS.FRAME[key]
 </script>
 
-<div class={"wrapper"}>
+<div class="wrapper">
     {#if isAboutOpen}
         <About handleClose={() => isAboutOpen = false} translate={translate}/>
     {/if}
-    <div class={"options"}>
+    <div class="options">
         <Dropdown hideArrow={true}>
             <button
                     slot="button"
@@ -141,7 +141,8 @@
         display: flex;
         align-items: center;
         width: 100vw;
-        height: 35px;
+        min-height: 30px;
+        max-height: 30px;
         user-select: none;
         overflow-y: hidden;
         overflow-x: auto;
@@ -163,6 +164,7 @@
 
     .action-wrapper {
         display: flex;
+        gap´: 4px;
         align-items: center;
     }
 
@@ -186,8 +188,8 @@
         align-items: center;
         justify-content: center;
 
-        height: 30px;
-        width: 30px;
+        height: 25px;
+        width: 25px;
         background: var(--pj-background-tertiary);
         border-radius: 3px;
         padding: 4px !important;
@@ -245,8 +247,8 @@
     }
 
     .action-button {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 25px;
         border-radius: 0;
         padding: 0;
         display: flex;

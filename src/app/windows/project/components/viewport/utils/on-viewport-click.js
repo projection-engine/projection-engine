@@ -28,7 +28,7 @@ export default function onViewportClick(event, settings, engine, setContext) {
     const deltaY = Math.abs(event.currentTarget.startedCoords.y - event.clientY)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
-    const meshesMap = RendererController.data.meshesMap
+    const meshesMap = RendererController.meshes
     const target = event.currentTarget.getBoundingClientRect()
     const coords = [event.clientX - target.left, event.clientY - target.top]
     let picked = pickIcon(coords)
@@ -36,7 +36,7 @@ export default function onViewportClick(event, settings, engine, setContext) {
         picked = pickMesh(meshesMap, event.clientX, event.clientY)
     if (picked > 0) {
         const entities = Array.from(RendererController.entitiesMap.values())
-        const entity = entities.find(e => e.components[COMPONENTS.PICK]?.pickIndex === picked)
+        const entity = entities.find(e => e?.pickIndex === picked)
         if (entity) {
             if (event.ctrlKey) {
                 if (engine.selected.find(e => e === entity.id)) {

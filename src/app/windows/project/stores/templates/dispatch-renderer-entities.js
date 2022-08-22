@@ -1,8 +1,8 @@
-import PickComponent from "../../libs/engine/templates/components/PickComponent"
-import COMPONENTS from "../../libs/engine/data/COMPONENTS"
+
 import {v4} from "uuid"
 import RendererStoreController from "../RendererStoreController";
 import removeHierarchy from "../utils/remove-hierarchy";
+import getPickerId from "../../libs/engine/utils/get-picker-id";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -87,7 +87,7 @@ export default function dispatchRendererEntities({type, payload}) {
     const arr = Array.from(state.values())
     for (let i = 0; i < arr.length; i++) {
         const entity = arr[i]
-        entity.components[COMPONENTS.PICK] = new PickComponent(undefined, 2 + i)
+        entity.pickID = getPickerId(i + 3)
         if (!entity.parentCache)
             continue
         const parent = state.get(entity.parentCache)

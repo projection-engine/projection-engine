@@ -51,8 +51,8 @@
         </div>
     </div>
 </div>
-<style>
 
+<style>
     .content {
         padding: 4px 8px;
         position: fixed;

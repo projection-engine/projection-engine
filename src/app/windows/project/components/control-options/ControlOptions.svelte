@@ -93,7 +93,8 @@
     }
 
     .container {
-        height: 25px;
+        min-height: 25px;
+        max-height: 25px;
         width: 100%;
         background: var(--pj-background-quaternary);
         overflow: hidden;

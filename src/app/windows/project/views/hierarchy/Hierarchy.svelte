@@ -74,7 +74,6 @@
                 <ToolTip>{translate("COMPONENT_FILTER")}</ToolTip>
             </button>
             {#each Object.keys(COMPONENTS) as key}
-                {#if key !== "PICK"}
                     <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}
                             class="button">
                         {#if filteredComponent === key}
@@ -84,7 +83,6 @@
                         {/if}
                         {translate(key)}
                     </button>
-                {/if}
             {/each}
         </Dropdown>
     {/if}

@@ -1,8 +1,8 @@
 import Entity from "../../../../engine/templates/basic/Entity"
 import COMPONENTS from "../../../../engine/data/COMPONENTS"
-import PickComponent from "../../../../engine/templates/components/PickComponent"
 import TransformComponent from "../../../../engine/templates/components/TransformComponent"
 import Transformation from "../../../../engine/services/Transformation"
+import getPickerId from "../../../../engine/utils/get-picker-id";
 
 export default function mapEntity(axis, type) {
     const e = new Entity(undefined)
@@ -73,7 +73,7 @@ export default function mapEntity(axis, type) {
         break
     }
 
-    e.components[COMPONENTS.PICK] = new PickComponent(undefined, index - 3)
+    e.pickID = getPickerId(index-3)
     e.components[COMPONENTS.TRANSFORM].translation = t
     e.components[COMPONENTS.TRANSFORM].rotation = r
     e.components[COMPONENTS.TRANSFORM].scaling = s

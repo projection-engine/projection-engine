@@ -21,7 +21,7 @@ export default function drawIconsToBuffer() {
             if (transformationMatrix && !entity.components[COMPONENTS.MESH])
                 drawIcon(
                     entity.components[COMPONENTS.CAMERA] ? cameraMesh : EditorRenderer.cubeMesh,
-                    entity.components[COMPONENTS.PICK].pickID,
+                    entity.pickID,
                     transformationMatrix,
                     shader
                 )

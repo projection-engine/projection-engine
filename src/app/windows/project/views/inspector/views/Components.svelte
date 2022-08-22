@@ -26,7 +26,7 @@
 
     $: {
         if (entity instanceof Entity)
-            components = Object.entries(entity.components).filter(([k]) => k !== COMPONENTS.PICK)
+            components = Object.entries(entity.components)
         scripts = entity.scripts
     }
     const handler = async (e) => {
