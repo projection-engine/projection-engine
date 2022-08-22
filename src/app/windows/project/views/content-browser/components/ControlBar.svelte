@@ -6,7 +6,7 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES"

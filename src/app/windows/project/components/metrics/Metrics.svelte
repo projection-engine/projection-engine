@@ -1,7 +1,7 @@
 <script>
     import SHORTCUTS_ID from "../../data/misc/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../stores/RendererStoreController";
     import HotKeys from "./libs/HotKeys";
     import Localization from "../../../../libs/Localization";

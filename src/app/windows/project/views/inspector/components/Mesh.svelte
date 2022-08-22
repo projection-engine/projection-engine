@@ -4,10 +4,10 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
     import getComponentIcon from "../../../utils/get-component-icon";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import loadMaterial from "../utils/load-material";
-    import RendererController from "../../../libs/engine/RendererController";
+    import RendererController from "../../../libs/engine/production/RendererController";
 
 
     export let selected

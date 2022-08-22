@@ -1,6 +1,6 @@
 <script>
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
-    import Icon from "../../components/Icon/Icon.svelte";
+    import Icon from "../../components/icon/Icon.svelte";
     import Card from "./components/Card.svelte";
     import Header from "./components/Header.svelte";
     import Recent from "./components/Recent.svelte";

@@ -5,7 +5,7 @@ import NodeFS from "../../../../../libs/NodeFS"
 import FilesAPI from "../../../../../libs/files/FilesAPI"
 import CBStoreController from "../../../stores/CBStoreController";
 import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
-import COMPONENT_TEMPLATE from "../../../libs/engine/data/COMPONENT_TEMPLATE";
+import COMPONENT_TEMPLATE from "../../../libs/engine/production/data/COMPONENT_TEMPLATE";
 import importFile from "../../../libs/import-file";
 import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 import AssetAPI from "../../../../../libs/files/AssetAPI";

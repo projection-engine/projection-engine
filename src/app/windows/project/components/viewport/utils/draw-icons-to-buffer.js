@@ -1,8 +1,8 @@
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
-import RendererController from "../../../libs/engine/RendererController";
-import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
-import EditorRenderer from "../../../libs/engine-extension/EditorRenderer";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
+import RendererController from "../../../libs/engine/production/RendererController";
+import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
+import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
 
 export default function drawIconsToBuffer() {
     const depthSystem = LoopAPI.renderMap.get("depthPrePass")

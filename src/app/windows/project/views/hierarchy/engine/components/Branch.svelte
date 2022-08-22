@@ -1,9 +1,9 @@
 <script>
-    import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
-    import BundlerAPI from "../../../../libs/engine/libs/apis/BundlerAPI";
+    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import BundlerAPI from "../../../../libs/engine/production/libs/apis/BundlerAPI";
     import "../css/Branch.css"
-    import RendererController from "../../../../libs/engine/RendererController";
+    import RendererController from "../../../../libs/engine/production/RendererController";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {v4} from "uuid";
 

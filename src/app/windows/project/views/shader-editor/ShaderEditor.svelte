@@ -13,10 +13,10 @@
     import parseFile from "./libs/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
-    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
     import Header from "../../../../components/view/components/Header.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Editor from "./components/Editor.svelte";
 

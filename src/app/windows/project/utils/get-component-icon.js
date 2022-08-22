@@ -1,4 +1,4 @@
-import COMPONENTS from "../libs/engine/data/COMPONENTS";
+import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
 
 export default function getComponentIcon(key, component) {
 

@@ -2,7 +2,7 @@
     import Localization from "../../../libs/Localization";
     import Dropdown from "../../dropdown/Dropdown.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";
-    import Icon from "../../Icon/Icon.svelte";
+    import Icon from "../../icon/Icon.svelte";
     import VIEWS from "../VIEWS";
 
     export let icon

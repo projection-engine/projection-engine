@@ -1,10 +1,10 @@
 <script>
     import SHADING_MODELS from "../../../../data/misc/SHADING_MODELS"
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopAPI from "../../../../libs/engine/libs/apis/LoopAPI";
+    import LoopAPI from "../../../../libs/engine/production/libs/apis/LoopAPI";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}

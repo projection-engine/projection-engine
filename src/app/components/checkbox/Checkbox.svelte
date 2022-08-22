@@ -1,6 +1,6 @@
 <script>
 
-    import Icon from "../Icon/Icon.svelte";
+    import Icon from "../icon/Icon.svelte";
 
     export let checked
     export let handleCheck

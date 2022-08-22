@@ -2,7 +2,7 @@
     import TRANSFORMATION_TYPE from "../../../../data/misc/TRANSFORMATION_TYPE"
     import GIZMOS from "../../../../data/misc/GIZMOS"
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import "../../css/Viewport.css"
     import ResizableBar from "../../../../../../components/resizable/ResizableBar.svelte";
     import GizmoGridSettings from "../settings/GizmoGridSettings.svelte";

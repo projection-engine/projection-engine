@@ -1,12 +1,11 @@
 <script>
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import RendererStoreController from "../../../stores/RendererStoreController";
     import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
-    import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
-    import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
+    import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
     export let settings
     export let translate

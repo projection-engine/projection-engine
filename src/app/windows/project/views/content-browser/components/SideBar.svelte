@@ -1,7 +1,7 @@
 <script>
     import handleDropFolder from "../utils/handle-drop-folder"
     import FilesAPI from "../../../../../libs/files/FilesAPI"
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
     export let translate = undefined

@@ -4,7 +4,7 @@ import ENGINE from "../data/misc/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ViewportActions from "./templates/ViewportActions";
-import RendererController from "../libs/engine/RendererController";
+import RendererController from "../libs/engine/production/RendererController";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import SETTINGS from "../data/misc/SETTINGS";
@@ -13,14 +13,14 @@ import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 import ROUTES from "../../../../assets/ROUTES";
 import CHANNELS from "../../../../assets/CHANNELS";
-import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
-import parseMaterialObject from "../utils/parse-material-object";
-import parseEntityObject from "../utils/parse-entity-object";
+import MeshInstance from "../libs/engine/production/libs/instances/MeshInstance";
+import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
+import parseEntityObject from "../libs/engine/editor/utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UserInterfaceController from "../libs/engine/UserInterfaceController";
+import UserInterfaceController from "../libs/engine/production/UserInterfaceController";
 import UIStoreController from "./UIStoreController";
-import parseUiElement from "../utils/parse-ui-element";
-import CameraTracker from "../libs/engine-extension/libs/CameraTracker";
+import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
+import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false

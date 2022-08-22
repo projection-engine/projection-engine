@@ -1,5 +1,5 @@
-import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
-import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
+import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
+import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 export default function updateCameraPlacement(yaw, pitch) {
     CameraAPI.updateProjection()

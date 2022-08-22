@@ -4,7 +4,7 @@
     import Localization from "../../../../libs/Localization";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopAPI from "../../libs/engine/libs/apis/LoopAPI";
+    import LoopAPI from "../../libs/engine/production/libs/apis/LoopAPI";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";

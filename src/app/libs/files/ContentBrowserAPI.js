@@ -3,7 +3,7 @@ import FilesAPI from "./FilesAPI";
 import FILE_TYPES from "../../../assets/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
-import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/data/IMAGE_WORKER_ACTIONS";
+import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/data/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../assets/ROUTES";
 
 const pathRequire = window.require("path")

@@ -5,7 +5,7 @@
     import Layout from "./Layout.svelte";
     import Localization from "../../../../libs/Localization";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import CBStoreController from "../../stores/CBStoreController";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
 

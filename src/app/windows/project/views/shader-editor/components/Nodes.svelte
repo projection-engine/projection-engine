@@ -2,7 +2,7 @@
     import {allNodes} from "../templates/all-nodes"
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
 
     export let translate
     const parseStr = (str) => {

@@ -1,16 +1,16 @@
 <script>
     import RENDER_TARGET from "../../data/misc/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import EditorRenderer from "../../libs/engine-extension/EditorRenderer";
+    import EditorRenderer from "../../libs/engine/editor/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
     import Localization from "../../../../libs/Localization";
     import RendererStoreController from "../../stores/RendererStoreController";
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
-    import BundlerAPI from "../../libs/engine/libs/apis/BundlerAPI";
+    import BundlerAPI from "../../libs/engine/production/libs/apis/BundlerAPI";
     import HotKeys from "../metrics/libs/HotKeys";
-    import UserInterfaceController from "../../libs/engine/UserInterfaceController";
+    import UserInterfaceController from "../../libs/engine/production/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import UIStoreController from "../../stores/UIStoreController";
 

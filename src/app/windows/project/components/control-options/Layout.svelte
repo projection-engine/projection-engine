@@ -1,9 +1,9 @@
 <script>
     import VIEWS from "../../../../components/view/VIEWS";
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
     import RendererStoreController from "../../stores/RendererStoreController";
-    import KEYS from "../../libs/engine/data/KEYS";
+    import KEYS from "../../libs/engine/production/data/KEYS";
     import Localization from "../../../../libs/Localization";
 
 

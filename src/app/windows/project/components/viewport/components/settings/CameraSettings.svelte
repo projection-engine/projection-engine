@@ -3,8 +3,8 @@
     import Localization from "../../../../../../libs/Localization";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import CameraAPI from "../../../../libs/engine/libs/apis/CameraAPI";
-    import CameraTracker from "../../../../libs/engine-extension/libs/CameraTracker";
+    import CameraAPI from "../../../../libs/engine/production/libs/apis/CameraAPI";
+    import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}

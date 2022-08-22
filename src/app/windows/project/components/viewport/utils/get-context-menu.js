@@ -1,5 +1,5 @@
 import updateCursor from "./update-cursor"
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 

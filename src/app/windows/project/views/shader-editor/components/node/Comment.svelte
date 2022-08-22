@@ -1,5 +1,5 @@
 <script>
-    import KEYS from "../../../../libs/engine/data/KEYS";
+    import KEYS from "../../../../libs/engine/production/data/KEYS";
     import dragNode from "../../utils/drag-node";
     import {onDestroy, onMount} from "svelte";
 

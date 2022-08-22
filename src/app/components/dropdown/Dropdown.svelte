@@ -1,5 +1,5 @@
 <script>
-    import Icon from "../Icon/Icon.svelte";
+    import Icon from "../icon/Icon.svelte";
     import transformModal from "./utils/transform-modal.js";
     import {onDestroy, onMount} from "svelte";
     import "./css/dropdown.css"

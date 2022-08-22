@@ -1,7 +1,7 @@
 <script>
     import Input from "../../../../../components/input/Input.svelte";
     import Localization from "../../../../../libs/Localization";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import UIStoreController from "../../../stores/UIStoreController";
 
     export let initial

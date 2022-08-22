@@ -1,18 +1,19 @@
 <script>
-    import COMPONENTS from "../../../../libs/engine/data/COMPONENTS";
-    import CameraComponent from "../../../../libs/engine/templates/components/CameraComponent";
-    import TransformComponent from "../../../../libs/engine/templates/components/TransformComponent";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
-    import ProbeComponent from "../../../../libs/engine/templates/components/ProbeComponent";
+    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
+    import CameraComponent from "../../../../libs/engine/production/templates/components/CameraComponent";
+    import TransformComponent from "../../../../libs/engine/production/templates/components/TransformComponent";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import ProbeComponent from "../../../../libs/engine/production/templates/components/ProbeComponent";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Range from "../../../../../../components/range/Range.svelte";
     import ShadingOption from "./ShadingOption.svelte";
-    import PointLightComponent from "../../../../libs/engine/templates/components/PointLightComponent";
-    import DirectionalLightComponent from "../../../../libs/engine/templates/components/DirectionalLightComponent";
-    import Entity from "../../../../libs/engine/templates/basic/Entity";
+    import PointLightComponent from "../../../../libs/engine/production/templates/components/PointLightComponent";
+    import DirectionalLightComponent
+        from "../../../../libs/engine/production/templates/components/DirectionalLightComponent";
+    import Entity from "../../../../libs/engine/production/templates/basic/Entity";
 
 
     export let settings

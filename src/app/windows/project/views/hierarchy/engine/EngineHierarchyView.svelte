@@ -5,8 +5,8 @@
     import {onDestroy} from "svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "./components/Branch.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 
     export let ID
     export let translate

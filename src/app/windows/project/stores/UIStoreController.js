@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {uiStore} from "./templates/user-interface-store";
-import UserInterfaceController from "../libs/engine/UserInterfaceController";
+import UserInterfaceController from "../libs/engine/production/UserInterfaceController";
 
 export default class UIStoreController {
     static data = get(uiStore)

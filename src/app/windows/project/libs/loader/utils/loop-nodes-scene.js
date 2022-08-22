@@ -1,6 +1,6 @@
-import Entity from "../../engine/templates/basic/Entity";
+import Entity from "../../engine/production/templates/basic/Entity";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
-import MeshInstance from "../../engine/libs/instances/MeshInstance";
+import MeshInstance from "../../engine/production/libs/instances/MeshInstance";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 

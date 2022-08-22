@@ -1,8 +1,8 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import RendererStoreController from "../stores/RendererStoreController";
-import RendererController from "./engine/RendererController";
-import COMPONENTS from "./engine/data/COMPONENTS";
-import CameraTracker from "./engine-extension/libs/CameraTracker";
+import RendererController from "./engine/production/RendererController";
+import COMPONENTS from "./engine/production/data/COMPONENTS";
+import CameraTracker from "./engine/editor/libs/CameraTracker";
 
 export default class ViewportActions {
     static toCopy = []

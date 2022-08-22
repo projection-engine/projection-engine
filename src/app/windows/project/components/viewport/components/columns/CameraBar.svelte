@@ -1,14 +1,14 @@
 <script>
     import {handleGrab} from "../../utils/transform-camera"
     import updateCameraPlacement from "../../utils/update-camera-placement"
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import CAMERA_GIZMO from "../../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
-    import CameraAPI from "../../../../libs/engine/libs/apis/CameraAPI";
-    import CameraTracker from "../../../../libs/engine-extension/libs/CameraTracker";
+    import CameraAPI from "../../../../libs/engine/production/libs/apis/CameraAPI";
+    import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
 
     export let translate
     let cameraIsOrtho = false

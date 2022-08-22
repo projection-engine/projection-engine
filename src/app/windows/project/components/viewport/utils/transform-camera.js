@@ -1,4 +1,4 @@
-import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
+import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 export function rotateY(angle, vec) {
     const matrix = new Array(4)

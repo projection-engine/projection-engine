@@ -1,6 +1,6 @@
 import CHANNELS from "../../../../assets/CHANNELS";
-import MeshInstance from "../libs/engine/libs/instances/MeshInstance";
-import parseMaterialObject from "./parse-material-object";
+import MeshInstance from "../libs/engine/production/libs/instances/MeshInstance";
+import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
 import ROUTES from "../../../../assets/ROUTES";
 
 const {ipcRenderer} = window.require("electron")

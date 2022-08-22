@@ -1,7 +1,7 @@
 <script>
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import "../../css/Viewport.css"
 
     export let values = []

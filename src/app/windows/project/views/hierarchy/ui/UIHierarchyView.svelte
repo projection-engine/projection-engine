@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import UIStoreController from "../../../stores/UIStoreController";
 

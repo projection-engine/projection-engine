@@ -1,8 +1,8 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../data/misc/RENDER_TARGET";
-    import Conversion from "../../../libs/engine/services/Conversion";
-    import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
+    import Conversion from "../../../libs/engine/production/services/Conversion";
+    import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
@@ -10,13 +10,12 @@
     import GizmoBar from "../components/columns/GizmoBar.svelte";
     import updateCursor from "../utils/update-cursor";
     import GIZMOS from "../../../data/misc/GIZMOS";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
     import onViewportClick from "../utils/on-viewport-click";
     import RendererStoreController from "../../../stores/RendererStoreController";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
-    import GizmoSystem from "../../../libs/engine-extension/services/GizmoSystem";
+    import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
+    import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 
     let WORKER = viewportSelectionBoxWorker()
 

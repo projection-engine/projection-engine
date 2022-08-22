@@ -16,7 +16,7 @@
 <!--                    {/each}-->
 <!--                {:else}-->
 <!--                    <div class="empty">-->
-<!--                        <Icon styles="font-size: 90px">code</Icon>-->
+<!--                        <icon styles="font-size: 90px">code</icon>-->
 <!--                        {translate("NEEDS_COMPILATION")}-->
 <!--                    </div>-->
 <!--                {/if}-->
@@ -37,13 +37,13 @@
 <!--                    {/each}-->
 <!--                {:else}-->
 <!--                    <div class="empty">-->
-<!--                        <Icon styles="font-size: 90px">-->
+<!--                        <icon styles="font-size: 90px">-->
 <!--                            {#if status.messages}-->
 <!--                                check-->
 <!--                            {:else}-->
 <!--                                code-->
 <!--                            {/if}-->
-<!--                        </Icon>-->
+<!--                        </icon>-->
 <!--                        {#if !status.messages}-->
 <!--                            {translate("NEEDS_COMPILATION")}-->
 <!--                        {:else}-->

@@ -1,7 +1,7 @@
 import GIZMOS from "../../../data/misc/GIZMOS";
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import RendererController from "../../../libs/engine/RendererController";
-import GizmoSystem from "../../../libs/engine-extension/services/GizmoSystem";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import RendererController from "../../../libs/engine/production/RendererController";
+import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 
 export default  function bindGizmo(selected, settings) {
     const gizmoSystem = window.renderer.editorSystem.gizmoSystem

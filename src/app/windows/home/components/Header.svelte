@@ -1,7 +1,7 @@
 <script>
 
     import Input from "../../../components/input/Input.svelte";
-    import Icon from "../../../components/Icon/Icon.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import createPortal from "../../../components/create-portal";
     import AssetAPI from "../../../libs/files/AssetAPI";

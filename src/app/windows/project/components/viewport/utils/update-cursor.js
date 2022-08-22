@@ -1,5 +1,5 @@
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import Transformation from "../../../libs/engine/services/Transformation";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import Transformation from "../../../libs/engine/production/services/Transformation";
 
 export default function updateCursor(coords) {
     const t = window.renderer.cursor.components[COMPONENTS.TRANSFORM]

@@ -1,7 +1,7 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
     import FilesAPI from "../../../libs/files/FilesAPI";
-    import Icon from "../../Icon/Icon.svelte";
+    import Icon from "../../icon/Icon.svelte";
 
     export let state
     export let type

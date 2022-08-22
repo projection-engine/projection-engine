@@ -2,18 +2,18 @@
 
     import Input from "../../../../../components/input/Input.svelte";
     import RendererStoreController from "../../../stores/RendererStoreController";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import CBStoreController from "../../../stores/CBStoreController";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../utils/get-native-components";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-    import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import RendererController from "../../../libs/engine/RendererController";
-    import Entity from "../../../libs/engine/templates/basic/Entity";
+    import RendererController from "../../../libs/engine/production/RendererController";
+    import Entity from "../../../libs/engine/production/templates/basic/Entity";
     import UIStoreController from "../../../stores/UIStoreController";
 
     const nativeComponents = getNativeComponents()

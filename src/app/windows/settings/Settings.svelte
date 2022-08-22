@@ -7,7 +7,7 @@
     import ResizableBar from "../../components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
-    import Icon from "../../components/Icon/Icon.svelte";
+    import Icon from "../../components/icon/Icon.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
 
     const {ipcRenderer} = window.require('electron')

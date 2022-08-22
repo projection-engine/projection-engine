@@ -1,10 +1,10 @@
 <script>
-    import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import Selector from "../../../../../../components/selector/Selector.svelte";
     import Range from "../../../../../../components/range/Range.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
 
     export let attribute

@@ -3,7 +3,7 @@
     import AttributeEditor from "./AttributeEditor.svelte";
     import Debug from "./Debug.svelte";
     import {v4} from "uuid";
-    import cloneClass from "../../../libs/engine/utils/clone-class";
+    import cloneClass from "../../../libs/engine/production/utils/clone-class";
     import Board from "./Board.svelte";
     import Material from "../templates/nodes/Material";
 

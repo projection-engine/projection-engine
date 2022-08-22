@@ -4,10 +4,10 @@
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import Components from "./views/Components.svelte";
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import UIStoreController from "../../stores/UIStoreController";
     import UIElement from "./views/UIElement.svelte";
-    import Entity from "../../libs/engine/templates/basic/Entity";
+    import Entity from "../../libs/engine/production/templates/basic/Entity";
     import EntityElement from "./components/EntityElement.svelte";
 
     export let hidden = undefined

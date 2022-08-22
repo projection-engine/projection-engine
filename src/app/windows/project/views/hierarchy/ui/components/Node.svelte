@@ -1,7 +1,7 @@
 <script>
-    import Icon from "../../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import "../../engine/css/Branch.css"
-    import UserInterfaceController from "../../../../libs/engine/UserInterfaceController";
+    import UserInterfaceController from "../../../../libs/engine/production/UserInterfaceController";
 
     const LEFT_BUTTON = 0
     export let depth = 0

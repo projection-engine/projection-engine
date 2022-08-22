@@ -1,7 +1,7 @@
 <script>
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import ComponentAttribute from "./ComponentAttribute.svelte";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../../stores/RendererStoreController";
     import getComponentIcon from "../../../utils/get-component-icon";
 

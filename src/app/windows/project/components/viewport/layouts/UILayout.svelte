@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import UIStoreController from "../../../stores/UIStoreController";
-    import UserInterfaceController from "../../../libs/engine/UserInterfaceController";
+    import UserInterfaceController from "../../../libs/engine/production/UserInterfaceController";
 
     let store = {}
     const unsubscribe = UIStoreController.getStore(v => store = v)

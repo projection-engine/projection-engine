@@ -1,6 +1,6 @@
 <script>
     import Dropdown from "../dropdown/Dropdown.svelte";
-    import Icon from "../Icon/Icon.svelte";
+    import Icon from "../icon/Icon.svelte";
     import logo from '../../../assets/logo.png';
     import Localization from "../../libs/Localization";
     import About from "./About.svelte";

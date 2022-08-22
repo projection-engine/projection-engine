@@ -1,10 +1,9 @@
 import GIZMOS from "../../../data/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import Conversion from "../../../libs/engine/services/Conversion";
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import ViewportPicker from "../../../libs/engine/services/ViewportPicker";
-import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
-import RendererController from "../../../libs/engine/RendererController";
+import Conversion from "../../../libs/engine/production/services/Conversion";
+import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
+import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
+import RendererController from "../../../libs/engine/production/RendererController";
 
 const  MAX_DELTA = 50
 

@@ -3,12 +3,12 @@
     import Input from "../../../../components/input/Input.svelte";
     import Header from "../../../../components/view/components/Header.svelte";
     import {v4} from "uuid"
-    import Icon from "../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import EngineHierarchyView from "./engine/EngineHierarchyView.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import UIHierarchy from "./ui/UIHierarchyView.svelte";
-    import COMPONENTS from "../../libs/engine/data/COMPONENTS";
+    import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
 
 
     export let hidden = undefined

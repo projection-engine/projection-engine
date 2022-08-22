@@ -2,7 +2,7 @@
     import Localization from "../../../libs/Localization";
     import Input from "../../../components/input/Input.svelte";
     import Dropdown from "../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../components/Icon/Icon.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
     import "../css/card.css"
     import FilesAPI from "../../../libs/files/FilesAPI";
 

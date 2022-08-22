@@ -3,7 +3,7 @@
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
     import getFileIcon from "../utils/get-file-icon";
     import CBStoreController from "../../../stores/CBStoreController";

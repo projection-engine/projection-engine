@@ -1,10 +1,10 @@
 import bindGizmo from "./bind-gizmo";
-import Entity from "../../../libs/engine/templates/basic/Entity";
-import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
-import Transformation from "../../../libs/engine/services/Transformation";
-import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
-import RendererController from "../../../libs/engine/RendererController";
-import CameraTracker from "../../../libs/engine-extension/libs/CameraTracker";
+import Entity from "../../../libs/engine/production/templates/basic/Entity";
+import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
+import Transformation from "../../../libs/engine/production/services/Transformation";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import RendererController from "../../../libs/engine/production/RendererController";
+import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 
 function getCursor() {

@@ -2,17 +2,17 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
-    import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import CBStoreController from "../../../stores/CBStoreController";
     import componentConstructor from "../../../libs/component-constructor";
-    import MeshComponent from "../../../libs/engine/templates/components/MeshComponent";
-    import TransformComponent from "../../../libs/engine/templates/components/TransformComponent";
+    import MeshComponent from "../../../libs/engine/production/templates/components/MeshComponent";
+    import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
     import loadMaterial from "../utils/load-material";
 
     import Loader from "../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
-    import Entity from "../../../libs/engine/templates/basic/Entity";
-    import UIElement from "../../../libs/engine/templates/basic/UIElement";
+    import Entity from "../../../libs/engine/production/templates/basic/Entity";
+    import UIElement from "../../../libs/engine/production/templates/basic/UIElement";
 
 
     export let translate

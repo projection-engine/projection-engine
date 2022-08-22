@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../libs/engine/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES";
     import "../../css/NodeIO.css"
 
     export let handleLinkDrag

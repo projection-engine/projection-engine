@@ -106,7 +106,7 @@ export default class Localization {
             ICONS: "Icons",
             FPS: "Frames per second",
             CAM_ANIM: "Camera smoothing",
-            ICON_SIZE: "Icon size",
+            ICON_SIZE: "icon size",
             SHADING_LIGHT: "Light only",
             SHADING_UNLIT: "Unlit",
             SHADING_NORMAL: "Normals",

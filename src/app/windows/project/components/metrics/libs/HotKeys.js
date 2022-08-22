@@ -1,4 +1,4 @@
-import KEYS from "../../../libs/engine/data/KEYS";
+import KEYS from "../../../libs/engine/production/data/KEYS";
 
 export default class HotKeys {
     static activeView

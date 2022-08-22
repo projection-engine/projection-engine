@@ -1,7 +1,7 @@
 <script>
     import getContextMenu from "../utils/get-context-menu"
     import {v4} from "uuid";
-    import Icon from "../../../../../components/Icon/Icon.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";

@@ -3,9 +3,9 @@ import deferredTemplate from "../templates/shaders/deferred-shader"
 import forwardTemplate from "../templates/shaders/forward-shader"
 import resolveRelationship from "./resolve-relationship"
 import unlitTemplate from "../templates/shaders/unlit-shader"
-import MATERIAL_RENDERING_TYPES from "../../../libs/engine/data/MATERIAL_RENDERING_TYPES";
-import cloneClass from "../../../libs/engine/utils/clone-class";
-import {vertex} from "../../../libs/engine/data/shaders/FALLBACK.glsl"
+import MATERIAL_RENDERING_TYPES from "../../../libs/engine/production/data/MATERIAL_RENDERING_TYPES";
+import cloneClass from "../../../libs/engine/production/utils/clone-class";
+import {vertex} from "../../../libs/engine/production/data/shaders/FALLBACK.glsl"
 import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
 
 function getShadingTemplate(type) {

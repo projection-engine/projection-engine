@@ -1,9 +1,9 @@
 import CBStoreController from "../../../stores/CBStoreController";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import Localization from "../../../../../libs/Localization";
-import FALLBACK_MATERIAL from "../../../libs/engine/data/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../libs/engine/production/data/FALLBACK_MATERIAL";
 import RendererStoreController from "../../../stores/RendererStoreController";
-import MaterialInstance from "../../../libs/engine/libs/instances/MaterialInstance";
+import MaterialInstance from "../../../libs/engine/production/libs/instances/MaterialInstance";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
 const loadFile = async (ID) => {
