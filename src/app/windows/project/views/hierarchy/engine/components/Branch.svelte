@@ -41,6 +41,8 @@
                 return "lens_blur"
             if (nodeRef.components[COMPONENTS.MESH])
                 return "view_in_ar"
+            if (nodeRef.components[COMPONENTS.CAMERA])
+                return "videocam"
             return "inventory_2"
         }
     })();
@@ -63,7 +65,6 @@
                 ref.style.background = "rgb(203 110 53 / 50%)";
                 break
             case "drop": {
-
                 e.preventDefault()
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
@@ -99,7 +100,6 @@
             on:drop={handler}
             on:dragstart={handler}
             draggable="true"
-
     >
         <div class="summary hierarchy-branch">
             {#if nodeRef.children.length > 0}

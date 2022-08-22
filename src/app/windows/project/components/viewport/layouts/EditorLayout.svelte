@@ -16,6 +16,7 @@
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
+    import GizmoSystem from "../../../libs/engine-extension/services/GizmoSystem";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -37,8 +38,8 @@
     }
 
     function gizmoMouseMove(event) {
-        if (gizmoSystem && gizmoSystem.targetGizmo)
-            gizmoSystem.targetGizmo.onMouseMove(event)
+        if (GizmoSystem.targetGizmo)
+            GizmoSystem.targetGizmo.onMouseMove(event)
     }
 
     function onMouseDown(e) {
@@ -53,17 +54,17 @@
         }
         if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
             gizmoSystem = window.renderer.editorSystem.gizmoSystem
-            if (gizmoSystem.targetGizmo) {
-                gizmoSystem.targetGizmo.onMouseDown(e)
-                e.currentTarget.targetGizmo = gizmoSystem.targetGizmo
+            if (GizmoSystem.targetGizmo) {
+                GizmoSystem.targetGizmo.onMouseDown(e)
+                e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
                 e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
             }
         }
     }
 
     function onMouseUp(event) {
-        if (gizmoSystem && gizmoSystem.targetGizmo) {
-            gizmoSystem.targetGizmo.onMouseUp()
+        if (GizmoSystem.targetGizmo) {
+            GizmoSystem.targetGizmo.onMouseUp()
             event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
         }
     }

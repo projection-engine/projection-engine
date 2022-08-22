@@ -4,6 +4,14 @@ import COMPONENTS from "../../engine/data/COMPONENTS"
 import FramebufferInstance from "../../engine/libs/instances/FramebufferInstance"
 import RendererController from "../../engine/RendererController";
 import CameraAPI from "../../engine/libs/apis/CameraAPI";
+import Gizmo from "../libs/gizmo/libs/Gizmo";
+import getEntityTranslation from "../libs/gizmo/utils/get-entity-translation";
+import Transformations from "../../engine/libs/passes/misc/Transformations";
+import GizmoSystem from "./GizmoSystem";
+import {mat4} from "gl-matrix";
+import EditorRenderer from "../EditorRenderer";
+
+
 
 export default class SelectedSystem {
 
@@ -24,7 +32,7 @@ export default class SelectedSystem {
         this.frameBuffer = new FramebufferInstance(resolution.w, resolution.h).texture(TEXTURE)
     }
 
-    drawToBuffer(selected){
+    drawToBuffer(selected) {
         const length = selected.length
         if (length === 0)
             return
@@ -55,6 +63,7 @@ export default class SelectedSystem {
         gpu.bindVertexArray(null)
         gpu.enable(gpu.DEPTH_TEST)
     }
+
     drawSilhouette(selected) {
         const length = selected.length
         if (length > 0) {

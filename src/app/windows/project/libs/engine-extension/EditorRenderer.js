@@ -20,6 +20,8 @@ export default class EditorRenderer extends RendererController {
     cursor
     selected = []
     static sphereMesh
+    static cameraMesh
+    static cubeMesh
 
     constructor(resolution) {
         super(resolution)
@@ -45,12 +47,12 @@ export default class EditorRenderer extends RendererController {
             uvs: [],
             tangents: [],
         })
-        this.cameraMesh = new MeshInstance({
+        EditorRenderer.cameraMesh = new MeshInstance({
             ...camera,
             uvs: [],
             tangents: [],
         })
-        this.cubeMesh = new MeshInstance({
+        EditorRenderer.cubeMesh = new MeshInstance({
             vertices: [-1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1],
             indices: [0, 3, 9, 0, 9, 6, 8, 10, 21, 8, 21, 19, 20, 23, 17, 20, 17, 14, 13, 15, 4, 13, 4, 2, 7, 18, 12, 7, 12, 1, 22, 11, 5, 22, 5, 16]
         })

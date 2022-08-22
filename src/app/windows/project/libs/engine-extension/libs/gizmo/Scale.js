@@ -6,6 +6,7 @@ import Gizmo from "./libs/Gizmo"
 import mapEntity from "./utils/map-entity"
 
 import mesh from "../../data/SCALE_GIZMO.json"
+import GizmoSystem from "../../services/GizmoSystem";
 
 const MOVEMENT_SCALE = .001
 
@@ -13,7 +14,6 @@ export default class Scale extends Gizmo {
     target = []
     clickedAxis = -1
     tracking = false
-    rotationTarget = [0, 0, 0, 1]
 
     gridSize = .01
     distanceX = 0
@@ -21,8 +21,8 @@ export default class Scale extends Gizmo {
     distanceZ = 0
     key = "scaling"
 
-    constructor(sys) {
-        super(sys)
+    constructor() {
+        super()
         this.xGizmo = mapEntity("x", "SCALE")
         this.yGizmo = mapEntity("y", "SCALE")
         this.zGizmo = mapEntity("z", "SCALE")
@@ -66,12 +66,12 @@ export default class Scale extends Gizmo {
 
     transformElement(vec) {
         let toApply
-        if (this.transformationType === TRANSFORMATION_TYPE.RELATIVE || this.targetEntities.length > 1)
+        if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.RELATIVE ||  GizmoSystem.selectedEntities.length > 1)
             toApply = vec
         else
-            toApply = vec4.transformQuat([], vec, this.targetEntities[0].components[COMPONENTS.TRANSFORM].rotationQuat)
-        for (let i = 0; i < this.targetEntities.length; i++) {
-            const comp = this.targetEntities[i].components[COMPONENTS.TRANSFORM]
+            toApply = vec4.transformQuat([], vec, GizmoSystem.selectedEntities[0].components[COMPONENTS.TRANSFORM].rotationQuat)
+        for (let i = 0; i <  GizmoSystem.selectedEntities.length; i++) {
+            const comp =  GizmoSystem.selectedEntities[i].components[COMPONENTS.TRANSFORM]
             comp.scaling = [
                 comp.scaling[0] - toApply[0],
                 comp.scaling[1] - toApply[1],

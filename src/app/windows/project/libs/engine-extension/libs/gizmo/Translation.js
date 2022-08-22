@@ -5,17 +5,17 @@ import TRANSFORMATION_TYPE from "../../../../data/misc/TRANSFORMATION_TYPE"
 import Gizmo from "./libs/Gizmo"
 import mapEntity from "./utils/map-entity"
 import mesh from "../../data/TRANSLATION_GIZMO.json"
+import GizmoSystem from "../../services/GizmoSystem";
 
 const MOVEMENT_SCALE = .001
 export default class Translation extends Gizmo {
-    target = []
     clickedAxis = -1
     tracking = false
     currentCoord = undefined
     gridSize = .01
     key = "translation"
-    constructor(sys) {
-        super(sys)
+    constructor() {
+        super()
         this.xGizmo = mapEntity("x", "TRANSLATION")
         this.yGizmo = mapEntity("y", "TRANSLATION")
         this.zGizmo = mapEntity("z", "TRANSLATION")
@@ -67,14 +67,14 @@ export default class Translation extends Gizmo {
     }
 
     transformElement(vec) {
-        let toApply, firstEntity = this.targetEntities[0]
-        if (this.transformationType === TRANSFORMATION_TYPE.GLOBAL || !firstEntity.components[COMPONENTS.TRANSFORM] || this.targetEntities.length > 1)
+        let toApply, firstEntity =  GizmoSystem.mainEntity
+        if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || !firstEntity.components[COMPONENTS.TRANSFORM] ||  GizmoSystem.selectedEntities.length > 1)
             toApply = vec
         else
             toApply = vec4.transformQuat([], vec, firstEntity.components[COMPONENTS.TRANSFORM].rotationQuat)
 
-        for (let i = 0; i < this.targetEntities.length; i++) {
-            const target = this.targetEntities[i]
+        for (let i = 0; i <  GizmoSystem.selectedEntities.length; i++) {
+            const target =  GizmoSystem.selectedEntities[i]
             target.components[COMPONENTS.TRANSFORM].translation = [
                 target.components[COMPONENTS.TRANSFORM].translation[0] - toApply[0],
                 target.components[COMPONENTS.TRANSFORM].translation[1] - toApply[1],

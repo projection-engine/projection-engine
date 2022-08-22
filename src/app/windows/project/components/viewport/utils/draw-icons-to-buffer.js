@@ -2,11 +2,12 @@ import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import LoopAPI from "../../../libs/engine/libs/apis/LoopAPI";
 import RendererController from "../../../libs/engine/RendererController";
 import CameraAPI from "../../../libs/engine/libs/apis/CameraAPI";
+import EditorRenderer from "../../../libs/engine-extension/EditorRenderer";
 
 export default function drawIconsToBuffer() {
     const depthSystem = LoopAPI.renderMap.get("depthPrePass")
     const entities = Array.from(RendererController.entitiesMap.values())
-    const cameraMesh = window.renderer.cameraMesh
+    const cameraMesh = EditorRenderer.cameraMesh
     const shader = depthSystem.shader
 
     shader.use()
@@ -19,7 +20,7 @@ export default function drawIconsToBuffer() {
             const transformationMatrix = entity.components[COMPONENTS.TRANSFORM]?.transformationMatrix
             if (transformationMatrix && !entity.components[COMPONENTS.MESH])
                 drawIcon(
-                    entity.components[COMPONENTS.CAMERA] ? cameraMesh : window.renderer.cubeMesh,
+                    entity.components[COMPONENTS.CAMERA] ? cameraMesh : EditorRenderer.cubeMesh,
                     entity.components[COMPONENTS.PICK].pickID,
                     transformationMatrix,
                     shader

@@ -8,8 +8,9 @@ import RendererStoreController from "../../../../../stores/RendererStoreControll
 import ViewportPicker from "../../../../engine/services/ViewportPicker";
 import LoopAPI from "../../../../engine/libs/apis/LoopAPI";
 import CameraAPI from "../../../../engine/libs/apis/CameraAPI";
+import GizmoSystem from "../../../services/GizmoSystem";
+import Transformations from "../../../../engine/libs/passes/misc/Transformations";
 
-let transformationSystem
 export default class Gizmo {
     target = []
     clickedAxis = -1
@@ -30,24 +31,21 @@ export default class Gizmo {
 
     translation = undefined
     mainEntity = undefined
-    targetEntities = []
     updateTransformationRealtime = false
     key
 
-    constructor(sys) {
-        this.drawID = (...params) => sys.drawToDepthSampler(...params)
+    constructor() {
         this.renderTarget = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
-        this.gizmoShader = sys.gizmoShader
     }
 
     onMouseMove() {
         if (!this.started) {
             this.started = true
             RendererStoreController.saveEntity(
-                this.mainEntity.id,
+                GizmoSystem.mainEntity.id,
                 COMPONENTS.TRANSFORM,
                 this.key,
-                this.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
+                GizmoSystem.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
             )
         }
     }
@@ -72,10 +70,10 @@ export default class Gizmo {
     onMouseUp() {
         if (this.totalMoved !== 0) {
             RendererStoreController.saveEntity(
-                this.mainEntity.id,
+                GizmoSystem.mainEntity.id,
                 COMPONENTS.TRANSFORM,
                 this.key,
-                this.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
+                GizmoSystem.mainEntity.components[COMPONENTS.TRANSFORM][this.key]
             )
         }
         this.totalMoved = 0
@@ -91,26 +89,27 @@ export default class Gizmo {
 
     exit() {
         this.tracking = false
-        this.targetEntities = []
-        this.mainEntity = undefined
-        this.translation = undefined
-        this.targetRotation = undefined
+
+        GizmoSystem.mainEntity = undefined
+        GizmoSystem.translation = undefined
+        GizmoSystem.targetRotation = undefined
+        GizmoSystem.selectedEntities = []
     }
 
     #testClick() {
-        if (!this.mainEntity || !this.mainEntity.components[COMPONENTS.TRANSFORM])
+        if (!GizmoSystem.mainEntity || !GizmoSystem.mainEntity.components[COMPONENTS.TRANSFORM])
             return
 
-        const mX = this.#translateMatrix(this.xGizmo.components)
-        const mY = this.#translateMatrix(this.yGizmo.components)
-        const mZ = this.#translateMatrix(this.zGizmo.components)
-        const FBO = this.drawID(
+        const mX = Gizmo.translateMatrix(this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = Gizmo.translateMatrix(this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = Gizmo.translateMatrix(this.zGizmo.components[COMPONENTS.TRANSFORM])
+        const FBO = GizmoSystem.drawToDepthSampler(
             this.xyz,
             CameraAPI.viewMatrix,
             CameraAPI.projectionMatrix,
             [mX, mY, mZ],
             CameraAPI.position,
-            this.translation,
+            GizmoSystem.translation,
             CameraAPI.isOrthographic
         )
         const dd = ViewportPicker.depthPick(FBO, this.currentCoord)
@@ -127,94 +126,67 @@ export default class Gizmo {
     }
 
 
-    execute(
-        meshes,
-        selected,
-        transformationType
-    ) {
-        if (!transformationSystem)
-            transformationSystem = LoopAPI.miscMap.get("transformations")
-        if (!selected[0]) {
-            this.mainEntity = undefined
-            return
-        }
-
-        this.transformationType = transformationType
-        if (!this.translation || transformationSystem.hasUpdatedItem || this.mainEntity !== selected[0]) {
-            this.targetEntities = selected
-            this.mainEntity = selected[0]
-            this.translation = getEntityTranslation(this.mainEntity)
-            if (this.translation) {
-                const t = this.mainEntity.components[COMPONENTS.TRANSFORM]
-                this.targetRotation = t !== undefined ? t.rotationQuat : [0, 0, 0, 1]
-            }
-        }
-
-        if (this.translation && this.mainEntity === selected[0]) {
+    execute() {
+        if (GizmoSystem.translation && GizmoSystem.mainEntity === GizmoSystem.selectedEntities[0]) {
             if (this.updateTransformationRealtime)
-                this.translation = getEntityTranslation(this.mainEntity)
-            this.#drawGizmo()
+                GizmoSystem.translation = getEntityTranslation(GizmoSystem.mainEntity)
+            this.draw()
         }
     }
 
-    #translateMatrix(components) {
-        const comp = components[COMPONENTS.TRANSFORM]
+    static translateMatrix(comp) {
+
         const matrix = comp.transformationMatrix.slice(0)
 
         const translation = comp.translation,
             rotationQuat = comp.rotationQuat,
             scale = comp.scaling
-        if (this.transformationType === TRANSFORMATION_TYPE.RELATIVE)
+        if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.RELATIVE)
             mat4.fromRotationTranslationScaleOrigin(
                 matrix,
-                quat.multiply([], this.targetRotation, rotationQuat),
-                vec3.add([], this.translation, translation),
+                quat.multiply([], GizmoSystem.targetRotation, rotationQuat),
+                vec3.add([], GizmoSystem.translation, translation),
                 scale,
                 translation
             )
         else {
-            matrix[12] += this.translation[0]
-            matrix[13] += this.translation[1]
-            matrix[14] += this.translation[2]
+            matrix[12] += GizmoSystem.translation[0]
+            matrix[13] += GizmoSystem.translation[1]
+            matrix[14] += GizmoSystem.translation[2]
         }
 
         return matrix
     }
 
-    #drawGizmo() {
+    draw() {
 
-        const mX = this.#translateMatrix(this.xGizmo.components)
-        const mY = this.#translateMatrix(this.yGizmo.components)
-        const mZ = this.#translateMatrix(this.zGizmo.components)
+        const mX = Gizmo.translateMatrix(this.xGizmo.components[COMPONENTS.TRANSFORM])
+        const mY = Gizmo.translateMatrix(this.yGizmo.components[COMPONENTS.TRANSFORM])
+        const mZ = Gizmo.translateMatrix(this.zGizmo.components[COMPONENTS.TRANSFORM])
 
-        this.gizmoShader.use()
-        gpu.bindVertexArray(this.xyz.VAO)
-        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, this.xyz.indexVBO)
-        this.xyz.vertexVBO.enable()
+        GizmoSystem.gizmoShader.use()
+        this.xyz.use()
         if (this.tracking && this.clickedAxis === 1 || !this.tracking)
-            this.#draw(mX, 1, this.xGizmo.components[COMPONENTS.PICK].pickID)
+            Gizmo.drawGizmo(this.xyz, mX, 1, this.xGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
         if (this.tracking && this.clickedAxis === 2 || !this.tracking)
-            this.#draw(mY, 2, this.yGizmo.components[COMPONENTS.PICK].pickID)
+            Gizmo.drawGizmo(this.xyz, mY, 2, this.yGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
         if (this.tracking && this.clickedAxis === 3 || !this.tracking)
-            this.#draw(mZ, 3, this.zGizmo.components[COMPONENTS.PICK].pickID)
-
-        this.xyz.vertexVBO.disable()
-        gpu.bindVertexArray(null)
-        gpu.bindBuffer(gpu.ELEMENT_ARRAY_BUFFER, null)
+            Gizmo.drawGizmo(this.xyz, mZ, 3, this.zGizmo.components[COMPONENTS.PICK].pickID, GizmoSystem.translation, this.clickedAxis)
+        this.xyz.finish()
     }
 
-    #draw(transformMatrix, axis, id) {
-        this.gizmoShader.bindForUse({
+    static drawGizmo(mesh, transformMatrix, axis, id, translation, selectedAxis) {
+        GizmoSystem.gizmoShader.bindForUse({
             viewMatrix: CameraAPI.viewMatrix,
             transformMatrix,
             projectionMatrix: CameraAPI.projectionMatrix,
             camPos: CameraAPI.position,
-            translation: this.translation,
+            translation,
             axis,
-            selectedAxis: this.clickedAxis,
-            uID: [...id, 1],
+            selectedAxis,
+            uID: id,
             cameraIsOrthographic: CameraAPI.isOrthographic
         })
-        gpu.drawElements(gpu.TRIANGLES, this.xyz.verticesQuantity, gpu.UNSIGNED_INT, 0)
+        gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
     }
 }

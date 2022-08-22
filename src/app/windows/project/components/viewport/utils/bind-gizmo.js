@@ -1,29 +1,30 @@
 import GIZMOS from "../../../data/misc/GIZMOS";
 import COMPONENTS from "../../../libs/engine/data/COMPONENTS";
 import RendererController from "../../../libs/engine/RendererController";
+import GizmoSystem from "../../../libs/engine-extension/services/GizmoSystem";
 
 export default  function bindGizmo(selected, settings) {
     const gizmoSystem = window.renderer.editorSystem.gizmoSystem
     const entities = RendererController.entitiesMap
-    gizmoSystem.selectedEntities = selected
+    GizmoSystem.selectedEntities = selected
         .map(s => entities.get(s))
         .filter(c => (settings.gizmo === GIZMOS.TRANSLATION || c.components[COMPONENTS.TRANSFORM] && (settings.gizmo === GIZMOS.ROTATION && !c.components[COMPONENTS.TRANSFORM].lockedRotation || settings.gizmo === GIZMOS.SCALE && !c.components[COMPONENTS.TRANSFORM]?.lockedScaling)))
 
-    if (gizmoSystem.selectedEntities.length > 0) {
+    if (GizmoSystem.selectedEntities.length > 0) {
         switch (settings.gizmo) {
             case GIZMOS.TRANSLATION:
-                gizmoSystem.targetGizmo = gizmoSystem.translationGizmo
+                GizmoSystem.targetGizmo = gizmoSystem.translationGizmo
                 break
             case GIZMOS.ROTATION:
-                gizmoSystem.targetGizmo = gizmoSystem.rotationGizmo
+                GizmoSystem.targetGizmo = gizmoSystem.rotationGizmo
                 break
             case GIZMOS.SCALE:
-                gizmoSystem.targetGizmo = gizmoSystem.scaleGizmo
+                GizmoSystem.targetGizmo = gizmoSystem.scaleGizmo
                 break
         }
-    }else if(gizmoSystem.targetGizmo){
+    }else if(GizmoSystem.targetGizmo){
 
-        gizmoSystem.targetGizmo.exit()
-        gizmoSystem.targetGizmo = undefined
+        GizmoSystem.targetGizmo.exit()
+        GizmoSystem.targetGizmo = undefined
     }
 }

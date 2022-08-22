@@ -33,11 +33,7 @@ export default class Wrapper {
             gpu.blendFunc(gpu.SRC_ALPHA, gpu.ONE_MINUS_SRC_ALPHA)
             this.billboardSystem.execute()
             this.selectedSystem.drawSilhouette(selected)
-            this.gizmoSystem.execute(
-                meshes,
-                selected,
-                transformationType
-            )
+            this.gizmoSystem.execute(transformationType)
         }
     }
 }

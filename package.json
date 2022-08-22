@@ -47,11 +47,9 @@
   },
   "dependencies": {
     "atob": "^2.1.2",
-    "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "hotkeys-js": "^3.9.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
