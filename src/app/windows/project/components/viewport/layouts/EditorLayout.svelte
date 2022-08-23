@@ -66,9 +66,6 @@
             GizmoSystem.targetGizmo.onMouseUp()
             event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
         }
-    }
-
-    function onClick(event) {
         if (!window.renderer)
             return
         onViewportClick(
@@ -79,6 +76,7 @@
                 RendererStoreController.updateEngine({...engine, selected: data})
             })
     }
+
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 
@@ -93,7 +91,6 @@
         const parentElement = gpu.canvas.parentElement
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
-        parentElement.addEventListener("click", onClick)
         parentElement.addEventListener("dragover", dragHandler)
         parentElement.addEventListener("dragleave", dragHandler)
         parentElement.addEventListener("drop", dragHandler)
@@ -102,7 +99,6 @@
         const parentElement = gpu.canvas.parentElement
         parentElement.removeEventListener("mousedown", onMouseDown)
         parentElement.removeEventListener("mouseup", onMouseUp)
-        parentElement.removeEventListener("click", onClick)
         parentElement.removeEventListener("dragover", dragHandler)
         parentElement.removeEventListener("dragleave", dragHandler)
         parentElement.removeEventListener("drop", dragHandler)

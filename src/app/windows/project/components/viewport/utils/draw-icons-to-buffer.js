@@ -40,6 +40,5 @@ function drawIcon(mesh, meshID, transformMatrix, shader) {
         viewMatrix: CameraAPI.viewMatrix
     })
 
-    gpu.drawElements(gpu.TRIANGLES, mesh.verticesQuantity, gpu.UNSIGNED_INT, 0)
-    mesh.finish()
+    mesh.draw()
 }
