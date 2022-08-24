@@ -9,6 +9,8 @@
     import CBStoreController from "../../../stores/CBStoreController";
     import Localization from "../../../../../libs/Localization";
     import RendererStoreController from "../../../stores/RendererStoreController";
+    import {onDestroy, onMount} from "svelte";
+    import dragDrop from "../../../../../components/drag-drop";
 
     const {shell} = window.require("electron")
 
@@ -29,14 +31,13 @@
     $: metadata = {
         path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
-        childrenQuantity,
-        icon: getFileIcon(data.type)
+        childrenQuantity
     }
     const translate = key => Localization.PROJECT.FILES[key]
     const onDbClick = () => {
         if (type === 1) {
             const fileType = "." + data.type
-            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET|| fileType === FILE_TYPES.UI_LAYOUT)  {
+            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.UI_LAYOUT) {
                 shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
@@ -49,62 +50,83 @@
             setCurrentDirectory(data)
         }
     }
-    const onDragStart = (event) => {
-        if (event.ctrlKey) {
-            const selected = selected.map(s => {
-                return items.find(i => i.id === s)
-            }).filter(e => e && !e.isFolder && e.type === "mesh")
-            event.dataTransfer.setData("text", JSON.stringify(selected.map(s => s.registryID)))
-        } else
-            event.dataTransfer.setData("text", JSON.stringify([type === 1 ? data.registryID : data.id]))
+
+    let icon
+    $: {
+        if (type === 0)
+            icon = undefined
+        else
+            switch (metadata.type) {
+                case FILE_TYPES.COMPONENT:
+                    icon = "extension"
+                    break
+                case FILE_TYPES.SCENE:
+                    icon = "inventory_2"
+                    break
+                case FILE_TYPES.STYLESHEET:
+                    icon = "css"
+                    break
+                case FILE_TYPES.LEVEL:
+                    icon = "forest"
+                    break
+                case FILE_TYPES.UI_LAYOUT:
+                    icon = "view_quilt"
+                    break
+                default:
+                    icon = undefined
+                    break
+            }
     }
+    const draggable = dragDrop(true)
+    $: dragDropData = {
+        dragImage: `
+                <span data-icon="-" style="font-size: 70px">${icon}</span>
+                ${data.name}
+            `,
+        onDragOver: () => type === 0 ? "Link folder" : undefined,
+        onDragStart: () => {
+            const ss = selected.map(s => items.find(i => i.id === s)).filter(e => e && !e.isFolder && e.type === "mesh")
+            if (ss.length > 0)
+                return JSON.stringify(ss.map(s => s.registryID))
+            return JSON.stringify([type === 1 ? data.registryID : data.id])
+        }
+    }
+    onMount(() => {
+        draggable.onMount({
+            targetElement: document.getElementById(data.id),
+            onDrop: (data, event) => {
+                handleDropFolder(data, data.id, currentDirectory, setCurrentDirectory)
+            },
+            ...dragDropData
+        })
+    })
+    $: {
+        draggable.dragImage = dragDropData.dragImage
+        draggable.onDragOver = dragDropData.onDragOver
+        draggable.onDragStart = dragDropData.onDragStart
+    }
+    onDestroy(() => {
+        draggable.onDestroy()
+    })
 
 </script>
 
 <div
-        on:dragover={(e) => {if (type === 0) e.preventDefault()}}
-        on:dragleave={(e) => {
-        e.preventDefault()
-    }}
-        on:drop={e => {
-        e.preventDefault()
-        handleDropFolder(e.dataTransfer.getData("text"), data.id, currentDirectory, setCurrentDirectory)
-    }}
-        onContextMenu={() => setSelected(data.id)}
         data-file={type === 0 ? undefined : data.id}
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={onDbClick}
         id={data.id}
-        on:dragstart={onDragStart}
-        draggable="{onRename !== data.id}"
         on:click={setSelected}
         style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (CBStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
         title={currentLabel}
 >
 
-    {#if metadata.type === FILE_TYPES.COMPONENT}
+    {#if icon != null}
         <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">extension</Icon>
+            <Icon styles="font-size: 3.5rem; ">{icon}</Icon>
         </div>
-    {:else if metadata.type === FILE_TYPES.SCENE}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">inventory_2</Icon>
-        </div>
-    {:else if metadata.type === FILE_TYPES.STYLESHEET}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">css</Icon>
-        </div>
-    {:else if metadata.type === FILE_TYPES.LEVEL}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">forest</Icon>
-        </div>
-    {:else if metadata.type === FILE_TYPES.UI_LAYOUT}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">view_quilt</Icon>
-        </div>
-
-    {:else if metadata.type === "folder"}
+    {:else if data.isFolder}
         <div class="icon">
             <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
             <div title="Files" class="floating-icon-wrapper">
@@ -116,11 +138,20 @@
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
-                    {metadata.icon}
+                    {#if metadata.type === FILE_TYPES.MESH}
+                        view_in_ar
+                    {:else}
+                        texture
+                    {/if}
                 </Icon>
-
                 <div class="floating-icon-wrapper">
-                    <Icon>{metadata.icon}</Icon>
+                    <Icon>
+                        {#if metadata.type === FILE_TYPES.MESH}
+                            view_in_ar
+                        {:else}
+                            texture
+                        {/if}
+                    </Icon>
                 </div>
             </Preview>
         </div>

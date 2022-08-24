@@ -25,11 +25,12 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         if (autoUpdate)
             updateStore()
 
-        alert.pushAlert("Error loading libs")
+        alert.pushAlert("Error loading data")
         return
     }
 
     const data = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+
     if (!data) {
         if (found > -1) {
             entity.scripts[found] = undefined
@@ -37,12 +38,13 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         }
         if (autoUpdate)
             updateStore()
-        alert.pushAlert("Error loading libs")
+        alert.pushAlert("Error loading data")
         return
     }
 
-    BundlerAPI.linkScript(data, entity, scriptID, reg.path)
-
+    const result = BundlerAPI.linkScript(data, entity, scriptID, reg.path)
+    if(!result)
+        alert.pushAlert("Error loading data")
     if (autoUpdate)
         updateStore()
 }

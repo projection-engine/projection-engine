@@ -24,7 +24,9 @@ module.exports = async function parsePath (p, registryData, path) {
                         parent: split[split.length - 2] === "assets" ? undefined : parent
                     })
                 else {
+
                     const parsedPath = pathRequire.resolve(path + currentPath).replace(path +pathRequire.sep , "")
+
                     resolve({
                         isFolder: false,
                         name: [...split].pop().split(/\.([a-zA-Z0-9]+)$/)[0],

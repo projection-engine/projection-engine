@@ -1,6 +1,8 @@
 <script>
     import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES";
     import "../../css/NodeIO.css"
+    import dragDrop from "../../../../../../components/drag-drop";
+    import {onDestroy, onMount} from "svelte";
 
     export let handleLinkDrag
     export let onDragEnd
@@ -8,7 +10,6 @@
     export let outputLinks
     export let inputLinks
     export let node
-    export let onDrag
     let wrapperRef
     $: link = outputLinks.find(o => o.sourceKey === data.key)
 
@@ -20,6 +21,25 @@
             return bType
         return aType
     }
+
+    const draggable = dragDrop(true)
+    onMount(() => {
+        draggable.onMount({
+            targetElement: document.getElementById(node.id + data.key),
+            onMouseMove: handleLinkDrag,
+            onDragStart: () => {
+                const nType = data.type === DATA_TYPES.UNDEFINED ? (inputLinks.length === 1 ? inputLinks[0]?.sourceType : getPredominant(inputLinks)) : undefined
+                return {
+                    ...data,
+                    type:data.type === DATA_TYPES.UNDEFINED  ?  nType : data.type,
+                    nodeID: node.id
+                }
+            },
+            onDragEnd
+        })
+    })
+    $: draggable.disabled = (data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0))
+    onDestroy(() => draggable.onDestroy())
 </script>
 <div
         data-link={link ? (link.target + "-" + link.source) : null}
@@ -29,7 +49,7 @@
         style="justify-content: flex-end">
     <div
             data-overflow="-"
-            style={`color: ${data.disabled ? "#999" : data.color}; font-weight: bold`}
+            style={`color: ${data.disabled ? "#999" : data.color};`}
     >
         {data.label}
     </div>
@@ -37,32 +57,10 @@
             id={node.id + data.key}
             class="connection node-io"
 
-            draggable={!(data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)) ? "true" : undefined}
+
             data-dtype={"output"}
             data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
             data-highlight={link ? "-" : undefined}
-            on:dragend={onDragEnd}
-            on:drag={handleLinkDrag}
-            on:dragstart={e => {
-                if (!data.disabled) {
-                    const nType = data.type === DATA_TYPES.UNDEFINED ? (inputLinks.length === 1 ? inputLinks[0]?.sourceType : getPredominant(inputLinks)) : undefined
-                    const attribute = data.type === DATA_TYPES.UNDEFINED ? {
-                        ...data,
-                        type: nType
-                    } : data
-                    e.dataTransfer
-                        .setData(
-                            "text",
-                            JSON.stringify({
-                                id: node.id,
-                                type: "output",
-                                attribute
-                            })
-                        )
-                    onDrag.setDragType(attribute.type)
-                } else
-                    e.preventDefault()
-            }}
     ></span>
 </div>
 

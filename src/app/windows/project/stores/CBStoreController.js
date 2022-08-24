@@ -1,10 +1,11 @@
 import {get} from "svelte/store";
 import {contentBrowserStore} from "./templates/content-browser-store";
-import {getCall} from "../../../libs/NodeFS";
+import NodeFS, {getCall} from "../../../libs/NodeFS";
 import FilesAPI from "../../../libs/files/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../../assets/ROUTES";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
+import Localization from "../../../libs/Localization";
 
 export default class CBStoreController {
     static data = get(contentBrowserStore)
@@ -33,12 +34,23 @@ export default class CBStoreController {
         try{
             const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: CBStoreController.ASSETS_PATH})
             const fileTypes = await ContentBrowserAPI.refresh()
+            console.log(data)
             CBStoreController.updateStore({...CBStoreController.data, items: data, ...fileTypes})
         }
         catch (err){
             console.error(err)
         }
 
+    }
+    static async createFolder(currentDirectory){
+        let path = currentDirectory.id + FilesAPI.sep + Localization.PROJECT.FILES.NEW_FOLDER
+        const existing = await ContentBrowserAPI.foldersFromDirectory(CBStoreController.ASSETS_PATH + currentDirectory.id)
+        if (existing.length > 0)
+            path += " - " + existing.length
+
+        const [e] = await NodeFS.mkdir(CBStoreController.ASSETS_PATH + path, {})
+        if (!e)
+            CBStoreController.refreshFiles().catch()
     }
 
     static updateStore(value = CBStoreController.data) {

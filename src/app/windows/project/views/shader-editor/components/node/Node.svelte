@@ -7,6 +7,7 @@
     import {onDestroy, onMount} from "svelte";
     import NodeInput from "./NodeInput.svelte";
     import NodeOutput from "./NodeOutput.svelte";
+    import Material from "../../templates/nodes/Material";
 
     export let links
     export let node
@@ -43,10 +44,10 @@
             nodeInfo = key[0]
         nodeInfo = NODE_INFO[key] ? NODE_INFO[key] : {}
     }
-    const handleLinkDrag = (event) => {
+    const handleLinkDrag = (event, draggableElement) => {
         const scale = window.shaderEditor.scale
         const parent = ref?.parentNode.parentNode
-        const bBox = event.currentTarget.getBoundingClientRect()
+        const bBox = draggableElement.getBoundingClientRect()
         let parentBBox = parent.getBoundingClientRect()
         const bounding = {
             x: parent.scrollLeft - parentBBox.left,
@@ -102,10 +103,10 @@
                 width = "225px"
                 break
             case 1:
-                width = "150px"
+                width = "175px"
                 break
             default:
-                width = "135px"
+                width = "150px"
                 break
         }
     }
@@ -116,11 +117,13 @@
 <g>
     <g
             bind:this={ref}
+            data-ismaterial="{node instanceof Material}"
             transform={`translate(${node.x} ${node.y})`}
     >
         <foreignObject
                 data-node={node.canBeDeleted ? node.id : undefined}
                 id={node.id}
+
                 on:mousedown={(e) => setSelected(node.id, e.ctrlKey)}
                 class="wrapper"
                 style={isSelected ? "outline: yellow 2px solid" : undefined}
@@ -140,7 +143,6 @@
                         style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
                     {#each node.inputs as a, i}
                         <NodeInput
-                                onDrag={onDrag}
                                 handleLink={handleLink}
                                 attribute={a}
                                 node={node}

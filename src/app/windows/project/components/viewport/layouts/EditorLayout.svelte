@@ -16,6 +16,7 @@
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
+    import dragDrop from "../../../../../components/drag-drop";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -27,6 +28,7 @@
     let gizmoSystem
     let latestTranslation
     const LEFT_BUTTON = 0
+    const startedCoords = {x: 0, y: 0}
 
     function handleMouse(e) {
         if (e.type === "mousemove") {
@@ -44,7 +46,8 @@
     function onMouseDown(e) {
         if (!window.renderer)
             return
-        e.currentTarget.startedCoords = {x: e.clientX, y: e.clientY}
+        startedCoords.x = e.clientX
+        startedCoords.y = e.clientY
         if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
             latestTranslation = Conversion.toScreen(e.clientX, e.clientY).slice(0, 3)
             updateCursor(latestTranslation)
@@ -70,6 +73,7 @@
             return
         onViewportClick(
             event,
+            startedCoords,
             settings,
             engine,
             (data) => {
@@ -80,30 +84,48 @@
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 
-    async function dragHandler(e) {
-        e.preventDefault()
-        if (e.type === "drop") {
-            await Loader.load(e)
-        }
-    }
+
+    const draggable = dragDrop(false)
 
     onMount(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
-        parentElement.addEventListener("dragover", dragHandler)
-        parentElement.addEventListener("dragleave", dragHandler)
-        parentElement.addEventListener("drop", dragHandler)
+
+        draggable.onMount({
+            targetElement: parentElement,
+            onDrop: data => Loader.load(data),
+            onDragOver: () => `
+                <span data-icon="-" style="font-size: 70px">add</span>
+                ${translate("DRAG_DROP")}
+            `
+        })
     })
     onDestroy(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.removeEventListener("mousedown", onMouseDown)
         parentElement.removeEventListener("mouseup", onMouseUp)
-        parentElement.removeEventListener("dragover", dragHandler)
-        parentElement.removeEventListener("dragleave", dragHandler)
-        parentElement.removeEventListener("drop", dragHandler)
     })
+    const setSelectionBox = (_, startCoords, endCoords) => {
+        if (startCoords && endCoords) {
+            drawIconsToBuffer()
+            const depthFBO = LoopAPI.renderMap.get("depthPrePass").frameBuffer
+            const size = {
+                w: depthFBO.width,
+                h: depthFBO.height
+            }
+            const nStart = Conversion.toQuadCoord(startCoords, size)
+            const nEnd = Conversion.toQuadCoord(endCoords, size)
 
+            try {
+                const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
+                WORKER.postMessage({entities: window.renderer.entities, data})
+                WORKER.onmessage = ({data: selected}) => RendererStoreController.updateEngine({...engine, selected})
+            } catch (err) {
+                console.error(err, startCoords, nStart)
+            }
+        }
+    }
 </script>
 
 
@@ -115,26 +137,7 @@
 <SelectBox
         targetElementID={RENDER_TARGET}
         disabled={isSelectBoxDisabled}
-        setSelected={(_, startCoords, endCoords) => {
-                    if (startCoords && endCoords) {
-                        drawIconsToBuffer()
-                        const depthFBO = LoopAPI.renderMap.get("depthPrePass").frameBuffer
-                        const size = {
-                            w: depthFBO.width,
-                            h: depthFBO.height
-                        }
-                        const nStart = Conversion.toQuadCoord(startCoords, size)
-                        const nEnd = Conversion.toQuadCoord(endCoords, size)
-
-                        try {
-                            const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
-                            WORKER.postMessage({entities: window.renderer.entities, data})
-                            WORKER.onmessage = ({data: selected}) => RendererStoreController.updateEngine({...engine, selected })
-                        } catch (err) {
-                            console.error(err, startCoords, nStart)
-                        }
-                    }
-                }}
+        setSelected={setSelectionBox}
         target={RENDER_TARGET}
         selected={[]}
         nodes={[]}

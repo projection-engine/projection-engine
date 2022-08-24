@@ -103,7 +103,7 @@ export default class Loader {
             items.push(event)
         else
             try {
-                items.push(...JSON.parse(event.dataTransfer.getData("text")))
+                items.push(...JSON.parse(event))
             } catch (e) {
                 console.error(e)
                 alert.pushAlert("Error loading file", "error")

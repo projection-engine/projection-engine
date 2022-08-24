@@ -68,7 +68,8 @@
         setSelected,
         selected,
         links,
-        setLinks
+        setLinks,
+        ref?.parentNode
     ))
 
     onDestroy(() => {
@@ -165,9 +166,7 @@
                                 }}
                             selected={selected}
                             node={node}
-                            handleLink={(src, target) => {
-                                handleLink(src, target, links, setLinks)
-                            }}
+                            handleLink={(src, target) => handleLink(src, target, links, setLinks)}
                             submitNodeVariable={submitNodeVariable}
                     />
                 {/if}

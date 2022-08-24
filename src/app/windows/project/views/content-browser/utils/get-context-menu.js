@@ -1,19 +1,14 @@
-import createNewFolder from "./create-new-folder"
 import handleDelete from "./handle-delete"
-import NodeFS from "../../../../../libs/NodeFS"
-
 import FilesAPI from "../../../../../libs/files/FilesAPI"
 import CBStoreController from "../../../stores/CBStoreController";
 import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
 import COMPONENT_TEMPLATE from "../../../libs/engine/production/data/COMPONENT_TEMPLATE";
 import importFile from "../../../libs/import-file";
-import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 import AssetAPI from "../../../../../libs/files/AssetAPI";
 import UI_TEMPLATE from "../templates/UI_TEMPLATE";
 
-
 const {shell} = window.require("electron")
-export default function getContextMenu(currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
+export default function getContextMenu(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
     const check = async (path, ext) => {
         let n = path + ext
         let it = 0
@@ -24,7 +19,34 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
         }
         return n
     }
+    const multiSelectOptions = [
+        {
 
+            label: translate("DELETE"),
+            icon: "delete",
+            onClick: () => handleDelete([...selected], currentDirectory, setCurrentDirectory)
+
+        },
+        {divider: true},
+        {
+
+            label: translate("CUT"),
+            onClick: () => CBStoreController.toCut = [...selected]
+        },
+        {
+            requiredTrigger: "data-folder",
+            label: translate("PASTE"),
+            onClick: (node) => CBStoreController.paste(node.getAttribute("data-folder"), setCurrentDirectory)
+        },
+    ]
+    if (selected.length > 1) {
+        return multiSelectOptions.map(v => {
+            if (!v.requiredTrigger)
+                return [{...v, requiredTrigger: "data-file"}, {...v, requiredTrigger: "data-folder"}]
+
+                return v
+        }).flat()
+    }
     return [
         {
             requiredTrigger: "data-wrapper",
@@ -50,7 +72,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             requiredTrigger: "data-folder",
             label: translate("NEW_FOLDER"),
             icon: "create_new_folder",
-            onClick: (node) => createNewFolder(node.getAttribute("data-folder")).catch()
+            onClick: (node) => CBStoreController.createFolder({id: node.getAttribute("data-folder")}).catch()
         },
 
         {
@@ -142,16 +164,7 @@ export default function getContextMenu(currentDirectory, setCurrentDirectory, na
             requiredTrigger: "data-wrapper",
             label: translate("NEW_FOLDER"),
             icon: "create_new_folder",
-            onClick: async () => {
-                let path = currentDirectory.id + FilesAPI.sep + "New folder"
-                const existing = await ContentBrowserAPI.foldersFromDirectory(CBStoreController.ASSETS_PATH + currentDirectory.id)
-                if (existing.length > 0)
-                    path += " - " + existing.length
-
-                const [e] = await NodeFS.mkdir(CBStoreController.ASSETS_PATH + path, {})
-                if (!e)
-                    CBStoreController.refreshFiles().catch()
-            }
+            onClick: () => CBStoreController.createFolder(currentDirectory).catch()
         },
         {
             requiredTrigger: "data-wrapper",

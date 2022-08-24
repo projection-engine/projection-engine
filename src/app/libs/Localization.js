@@ -68,7 +68,7 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
-
+            DRAG_DROP: "Drop meshes or scenes",
             PLAY: "Game",
             EDITOR: "Scene Editor",
             UI: "UI Editor",

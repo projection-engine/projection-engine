@@ -1,13 +1,33 @@
 import deleteNode from "./delete-node"
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
+import BOARD_SIZE from "../data/BOARD_SIZE";
 
-export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks) {
+export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks, reference) {
     return [
         {
             label: "Select all",
             requiredTrigger: "data-board",
             onClick: () => selection(SELECTION_TYPES.ALL, nodes, setSelected, selected)
+        },
+
+        {
+            label: "Center",
+            requiredTrigger: "data-board",
+            onClick: () => {
+                const material = document.querySelector(`[data-ismaterial="true"]`)
+                if (material) {
+                    const transformation = material
+                        .getAttribute("transform")
+                        .replace("translate(", "")
+                        .replace(")", "")
+                        .split(" ")
+                    console.trace(material, transformation, reference.scrollTop, reference.scrollLeft)
+                    reference.scrollLeft = parseInt(transformation[0]) - 10
+                    reference.scrollTop = parseInt(transformation[1]) - 10
+
+                }
+            }
         },
         // {
         //     label: "Select none",
@@ -33,7 +53,7 @@ export default function getContextMenu(nodes, setNodes, setSelected, selected, l
             label: "Delete link",
             icon: "delete",
             onClick: (node) => {
-                const toTest =node.getAttribute("data-link")
+                const toTest = node.getAttribute("data-link")
                 setLinks(links.filter(l => {
                     if (!l?.target?.attribute || !l?.source?.attribute)
                         return false

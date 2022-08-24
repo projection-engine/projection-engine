@@ -35,12 +35,13 @@
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
-        if (trigger !== TRIGGERS[0])
+        if (trigger !== TRIGGERS[0] && selected.length === 0)
             setSelected(element.getAttribute(trigger))
     })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
     $: contextMenuBinding.rebind(getContextMenu(
+        selected,
         currentDirectory,
         setCurrentDirectory,
         navigationHistory,
@@ -51,15 +52,15 @@
     onMount(() => {
         HotKeys.bindAction(
             ref,
-            getHotkeys(translate, currentDirectory, v => currentDirectory = v, v => selected = v, selected),
+            getHotkeys(translate, currentDirectory,setCurrentDirectory, setSelected, selected),
             "folder",
             translate("TITLE")
         )
-        elementsPerRow = Math.round(ref.offsetWidth / cardDimensions.height)
+        elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8))
         let timeout
         resizeOBS = new ResizeObserver(() => {
             clearTimeout(timeout)
-            setTimeout(() => elementsPerRow = Math.round(ref.offsetWidth / cardDimensions.height), 250)
+            setTimeout(() => elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height+ 8)), 250)
         })
         resizeOBS.observe(ref)
     })
@@ -161,6 +162,7 @@
         display: flex;
         justify-content: flex-start;
         justify-items: flex-start;
+        gap: 4px;
 
         overflow: hidden;
         max-width: 100%;

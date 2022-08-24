@@ -20,11 +20,11 @@ function pickMesh(meshesMap, x, y) {
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
-export default function onViewportClick(event, settings, engine, setContext) {
+export default function onViewportClick(event, startedCoords, settings, engine, setContext) {
     if (gpu.canvas !== event.target || settings.gizmo === GIZMOS.CURSOR)
         return
-    const deltaX = Math.abs(event.currentTarget.startedCoords.x - event.clientX)
-    const deltaY = Math.abs(event.currentTarget.startedCoords.y - event.clientY)
+    const deltaX = Math.abs(startedCoords.x - event.clientX)
+    const deltaY = Math.abs(startedCoords.y - event.clientY)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
     const meshesMap = RendererController.meshes

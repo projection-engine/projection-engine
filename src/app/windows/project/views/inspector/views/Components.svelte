@@ -13,6 +13,7 @@
     import {onDestroy, onMount} from "svelte";
     import Entity from "../../../libs/engine/production/templates/basic/Entity";
     import UIElement from "../../../libs/engine/production/templates/basic/UIElement";
+    import dragDrop from "../../../../../components/drag-drop";
 
 
     export let translate
@@ -29,20 +30,16 @@
             components = Object.entries(entity.components)
         scripts = entity.scripts
     }
-    const handler = async (e) => {
-        e.preventDefault()
-        switch (e.type) {
-            case "dragleave":
-                e.currentTarget.style.opacity = "1"
-                break
-            case "dragover":
-                e.currentTarget.style.opacity = ".5"
-                break
-            case "drop":
-                e.currentTarget.style.opacity = "1"
 
+    const draggable = dragDrop(false)
+    onMount(() => {
+        const parent = ref.parentElement
+        draggable.onMount({
+            targetElement: parent,
+            onDrop: async (data) => {
                 try {
-                    const id = JSON.parse(e.dataTransfer.getData("text"))[0]
+                    const id = JSON.parse(data)[0]
+
                     let type = "SCRIPT"
                     let itemFound = CBStoreController.data.components.find(s => s.registryID === id)
                     if (!itemFound) {
@@ -62,7 +59,7 @@
                     }
                     switch (type) {
                         case "SCRIPT":
-                            await componentConstructor(entity, id)
+                            await componentConstructor(entity, id,  true)
                             break
                         case "MESH":
                             if (entity instanceof UIElement)
@@ -84,25 +81,16 @@
                             break
                     }
                 } catch (err) {
-                    console.error(err, e.dataTransfer.getData("text"))
+                    console.error(err)
                     alert.pushAlert(translate("COULD_NOT_FIND"), "error")
                 }
-                break
-        }
-    }
-    onMount(() => {
-        const parent = ref.parentElement
-        parent.addEventListener("dragleave", handler)
-        parent.addEventListener("dragover", handler)
-        parent.addEventListener("drop", handler)
+            },
+            onDragOver: () =>  "Add component, mesh or material"
+        })
+
 
     })
-    onDestroy(() => {
-        const parent = ref.parentElement
-        parent.removeEventListener("dragleave", handler)
-        parent.removeEventListener("dragover", handler)
-        parent.removeEventListener("drop", handler)
-    })
+    onDestroy(() => draggable.onDestroy())
 
 </script>
 

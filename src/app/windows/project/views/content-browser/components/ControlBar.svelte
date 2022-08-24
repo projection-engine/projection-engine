@@ -39,171 +39,159 @@
 
 </script>
 <div data-vertdivider="-"></div>
-    {#if view.navigation}
-        <div class="button-group" style="width: 100%">
-            <div class="button-group">
-                <button
-                        class="settings-button"
-                        on:click={() => navigationHistory.returnDir()}
-                >
-                    <Icon>arrow_back</Icon>
-                    <ToolTip content={translate("BACK_DIR")}/>
-                </button>
-                <button
-                        class="settings-button"
-                        on:click={() => navigationHistory.forwardDir()}
-                >
-                    <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-                    <ToolTip content={translate("FORWARD_DIR")}/>
-                </button>
-                <button
-                        class="settings-button"
+{#if view.navigation}
+    <div class="button-group" style="width: 100%">
+        <div class="button-group">
+            <button
+                    class="settings-button"
+                    on:click={() => navigationHistory.returnDir()}
+            >
+                <Icon>arrow_back</Icon>
+                <ToolTip content={translate("BACK_DIR")}/>
+            </button>
+            <button
+                    class="settings-button"
+                    on:click={() => navigationHistory.forwardDir()}
+            >
+                <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
+                <ToolTip content={translate("FORWARD_DIR")}/>
+            </button>
+            <button
+                    class="settings-button"
 
-                        on:click={() => {
+                    on:click={() => {
                             if(currentDirectory.id === FilesAPI.sep)
                                 return
                             navigationHistory.goToParent(currentDirectory)
                         }}
-                >
-                    <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right
-                    </Icon>
-                    <ToolTip content={translate("PARENT_DIR")}/>
-                </button>
-                <div data-vertdivider="-"></div>
-                <button
-                        disabled="{loading}"
-                        class="settings-button"
-                        on:click={() => {
+            >
+                <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right
+                </Icon>
+                <ToolTip content={translate("PARENT_DIR")}/>
+            </button>
+            <div data-vertdivider="-"></div>
+            <button
+                    disabled="{loading}"
+                    class="settings-button"
+                    on:click={() => {
                         alert.pushAlert(translate("REFRESHING"), "info")
                         CBStoreController.refreshFiles().then(() => loading = false).catch()
                     }}
-                >
-                    <Icon>sync</Icon>
-                    <ToolTip content={translate("REFRESH")}/>
-                </button>
-                <button
-                        class="settings-button"
-                        on:click={async () => {
-                        let path = currentDirectory.id + FilesAPI.sep + translate("NEW_FOLDER")
-
-                        const existing = ContentBrowserAPI.foldersFromDirectory(CBStoreController.ASSETS_PATH + currentDirectory.id)
-                        if (existing.length > 0)
-                            path += " - " + existing.length
-                        await NodeFS.mkdir(CBStoreController.ASSETS_PATH + path, {})
-                        CBStoreController.refreshFiles().then(() => loading = false).catch()
-                    }}
-
-                >
-                    <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-                    <ToolTip content={translate("CREATE_FOLDER")}/>
-                </button>
-                <button
-                        class="settings-button"
-                        data-highlight={starred ? "-" : undefined}
-                        on:click={() => {
+            >
+                <Icon>sync</Icon>
+                <ToolTip content={translate("REFRESH")}/>
+            </button>
+            <button class="settings-button" on:click={() => CBStoreController.createFolder(currentDirectory).catch()}>
+                <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
+                <ToolTip content={translate("CREATE_FOLDER")}/>
+            </button>
+            <button
+                    class="settings-button"
+                    data-highlight={starred ? "-" : undefined}
+                    on:click={() => {
                         if (starred)
                             CBStoreController.removeBookmark(currentDirectory.id)
                         else
                             CBStoreController.addBookmark(currentDirectory.id)
                     }}
-                >
-                    <Icon>star</Icon>
-                    <ToolTip content={translate("ADD_BOOKMARK")}/>
+            >
+                <Icon>star</Icon>
+                <ToolTip content={translate("ADD_BOOKMARK")}/>
+            </button>
+            <Dropdown disabled={loading} hideArrow={true}>
+                <button class="settings-button" slot="button"
+                        data-highlight={fileType !== undefined ? "-" : undefined}>
+                    <ToolTip content={translate("FILTER_TYPE")}/>
+                    <Icon>filter_alt</Icon>
                 </button>
-                <Dropdown disabled={loading} hideArrow={true}>
-                    <button class="settings-button" slot="button"
-                            data-highlight={fileType !== undefined ? "-" : undefined}>
-                        <ToolTip content={translate("FILTER_TYPE")}/>
-                        <Icon>filter_alt</Icon>
+
+                {#each Object.keys(FILE_TYPES) as k, i}
+                    <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])}
+                            style="text-transform: capitalize">
+                        {#if fileType === FILE_TYPES[k]}
+                            <Icon>check</Icon>
+                        {/if}
+                        {k.toLowerCase().replace("_", " ")}
                     </button>
+                {/each}
 
-                    {#each Object.keys(FILE_TYPES) as k, i}
-                        <button on:click={() => fileType = (fileType === FILE_TYPES[k] ? undefined : FILE_TYPES[k])}
-                                style="text-transform: capitalize">
-                            {#if fileType === FILE_TYPES[k]}
-                                <Icon>check</Icon>
-                            {/if}
-                            {k.toLowerCase().replace("_", " ")}
-                        </button>
-                    {/each}
-
-                </Dropdown>
-            </div>
-            <div data-vertdivider="-"></div>
-            <Input
-                    minWidth="250px"
-                    height="23px"
-                    width={"100%"}
-                    searchString={currentDirectory.id}
-                    noIcon={true}
-                    noPlaceHolder={true}
-                    noAutoSubmit={true}
-                    setSearchString={async (path) => {
+            </Dropdown>
+        </div>
+        <div data-vertdivider="-"></div>
+        <Input
+                minWidth="250px"
+                height="23px"
+                width={"100%"}
+                searchString={currentDirectory.id}
+                noIcon={true}
+                noPlaceHolder={true}
+                noAutoSubmit={true}
+                setSearchString={async (path) => {
                         if (await NodeFS.exists(CBStoreController.ASSETS_PATH + path))
                         setCurrentDirectory({
                             id: path
                         })
                     }}
-            />
-            <Input
-                    minWidth="250px"
-                    height="23px"
-                    searchString={searchString}
-                    setSearchString={setSearchString}
-                    width={"25%"}
-                    placeholder={translate("SEARCH")}
-            >
-                <Icon slot="icon">search</Icon>
-            </Input>
-        </div>
-    {/if}
-
-    <div class="button-group" style="justify-content: flex-end">
-        <Dropdown>
-            <button slot="button" style="padding-left: 8px; border: none">
-                {translate("VIEW")}
-            </button>
-            <button on:click={() => setView({...view, navigation: !view.navigation})}>
-                {#if view.navigation}
-                    <Icon>check</Icon>
-                {/if}
-                {translate("OPTIONS")}
-
-            </button>
-            <button on:click={() => setView({...view, sideBar: !view.sideBar})}>
-                {#if view.sideBar}
-                    <Icon>check</Icon>
-                {/if}
-                {translate("SIDE_BAR")}
-
-            </button>
-
-        </Dropdown>
-        <Dropdown>
-            <button slot="button" style="padding-left: 8px; border: none">
-                {translate("SELECT")}
-            </button>
-            <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory, setSelected, selected)}>
-                {translate("SELECT_ALL")}
-            </button>
-
-            <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory, setSelected, selected)}>
-                {translate("SELECT_NONE")}
-            </button>
-            <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory, setSelected, selected)}>
-                {translate("SELECT_INVERT")}
-            </button>
-        </Dropdown>
-        <div data-vertdivider="-"></div>
-        <button
-                style="width: 75px; gap: 4px; padding: 0 16px"
-                class="settings-button"
-                on:click={() => importFile(currentDirectory)}
+        />
+        <Input
+                minWidth="250px"
+                height="23px"
+                searchString={searchString}
+                setSearchString={setSearchString}
+                width={"25%"}
+                placeholder={translate("SEARCH")}
         >
-            <Icon>open_in_new</Icon>
-            {translate("IMPORT")}
-        </button>
+            <Icon slot="icon">search</Icon>
+        </Input>
     </div>
+{/if}
+
+<div class="button-group" style="justify-content: flex-end">
+    <Dropdown>
+        <button slot="button" style="padding-left: 8px; border: none">
+            {translate("VIEW")}
+        </button>
+        <button on:click={() => setView({...view, navigation: !view.navigation})}>
+            {#if view.navigation}
+                <Icon>check</Icon>
+            {/if}
+            {translate("OPTIONS")}
+
+        </button>
+        <button on:click={() => setView({...view, sideBar: !view.sideBar})}>
+            {#if view.sideBar}
+                <Icon>check</Icon>
+            {/if}
+            {translate("SIDE_BAR")}
+
+        </button>
+
+    </Dropdown>
+    <Dropdown>
+        <button slot="button" style="padding-left: 8px; border: none">
+            {translate("SELECT")}
+        </button>
+        <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory, setSelected, selected)}>
+            {translate("SELECT_ALL")}
+        </button>
+
+        <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory, setSelected, selected)}>
+            {translate("SELECT_NONE")}
+        </button>
+        <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory, setSelected, selected)}>
+            {translate("SELECT_INVERT")}
+        </button>
+    </Dropdown>
+    <div data-vertdivider="-"></div>
+    <button
+            style="width: 75px; gap: 4px; padding: 0 16px"
+            class="settings-button"
+            on:click={() => importFile(currentDirectory)}
+    >
+        <Icon>open_in_new</Icon>
+        {translate("IMPORT")}
+    </button>
+</div>
 
 <style>
     .settings-button {

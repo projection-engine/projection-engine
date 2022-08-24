@@ -44,6 +44,7 @@
     })
 
     onDestroy(() => {
+
         HotKeys.unbindAction(canvasRef)
         unsubscribeEngine()
         unsubscribeSettings()
