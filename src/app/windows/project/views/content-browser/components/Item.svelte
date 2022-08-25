@@ -77,10 +77,20 @@
                     break
             }
     }
+    const getIcon = () => {
+        if (icon)
+            return icon
+        if(type === 0)
+            return "folder"
+        if (metadata.type === FILE_TYPES.MESH)
+            return "view_in_ar"
+        return "texture"
+
+    }
     const draggable = dragDrop(true)
     $: dragDropData = {
         dragImage: `
-                <span data-icon="-" style="font-size: 70px">${icon}</span>
+                <span data-icon="-" style="font-size: 70px">${getIcon()}</span>
                 ${data.name}
             `,
         onDragOver: () => type === 0 ? "Link folder" : undefined,
@@ -136,7 +146,7 @@
     {:else}
         <div class="icon">
             <Preview path={metadata.path}>
-                <img class="image" slot="image" alt="logo" let:src src={src}>
+                <img draggable="false" class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
                     {#if metadata.type === FILE_TYPES.MESH}
                         view_in_ar

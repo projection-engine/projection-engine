@@ -2,6 +2,7 @@ import {v4} from "uuid"
 import RendererStoreController from "../RendererStoreController";
 import removeHierarchy from "../utils/remove-hierarchy";
 import getPickerId from "../../libs/engine/production/utils/get-picker-id";
+import EntityNameController from "./EntityNameController";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -42,6 +43,7 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.ADD: {
             const entity = payload
             state.set(entity.id, entity)
+            EntityNameController.renameEntity(entity.name, entity)
             engine.fixedEntity = undefined
             engine.selected = [entity.id]
             break
@@ -62,8 +64,10 @@ export default function dispatchRendererEntities({type, payload}) {
         }
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
-            if(type === ENTITY_ACTIONS.DISPATCH_BLOCK)
+            if(type === ENTITY_ACTIONS.DISPATCH_BLOCK) {
                 state.clear()
+                EntityNameController.byName.clear()
+            }
             const block = payload
             const selected = []
             if (Array.isArray(block))
@@ -71,6 +75,7 @@ export default function dispatchRendererEntities({type, payload}) {
                     const e = block[i]
                     selected.push(e.id)
                     state.set(e.id, e)
+                    EntityNameController.renameEntity(e.name, e)
                 }
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {
                 engine.fixedEntity = undefined

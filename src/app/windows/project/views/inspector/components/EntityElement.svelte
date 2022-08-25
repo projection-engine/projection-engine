@@ -15,6 +15,7 @@
     import RendererController from "../../../libs/engine/production/RendererController";
     import Entity from "../../../libs/engine/production/templates/basic/Entity";
     import UIStoreController from "../../../stores/UIStoreController";
+    import EntityNameController from "../../../stores/templates/EntityNameController";
 
     const nativeComponents = getNativeComponents()
 
@@ -27,13 +28,7 @@
         unsubscribeStore()
     })
 
-    const renameEntity = (v) => {
-        entity.name = v
-        if (entity instanceof Entity)
-            RendererStoreController.updateEngine()
-        else
-            UIStoreController.updateStore()
-    }
+
 </script>
 
 
@@ -81,7 +76,7 @@
         <Input
                 width="100%"
                 hasBorder={true}
-                setSearchString={renameEntity}
+                setSearchString={v => EntityNameController.renameEntity(v, entity)}
                 searchString={entity.name}
                 placeholder={translate("MY_ENTITY")}
         />

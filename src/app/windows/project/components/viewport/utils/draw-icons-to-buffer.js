@@ -9,8 +9,6 @@ export default function drawIconsToBuffer() {
     const entities = Array.from(RendererController.entitiesMap.values())
     const cameraMesh = EditorRenderer.cameraMesh
     const shader = depthSystem.shader
-
-    shader.use()
     const FBO = depthSystem.frameBuffer
     FBO.startMapping(undefined, undefined, false)
     for (let i = 0; i < entities.length; i++) {

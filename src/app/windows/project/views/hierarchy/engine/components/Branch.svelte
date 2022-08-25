@@ -105,7 +105,7 @@
             {#if nodeRef.children.length > 0}
                 <button
                         data-open={open[nodeRef.id] ? "-" : ""}
-                        class="buttonSmall hierarchy-branch"
+                        class="button-small hierarchy-branch"
                         on:click={() => {
                             console.log(open[nodeRef.id])
                         if (!open[nodeRef.id])
@@ -129,7 +129,7 @@
                     <Icon>arrow_drop_down</Icon>
                 </button>
             {:else}
-                <div class="buttonSmall hierarchy-branch"></div>
+                <div class="button-small hierarchy-branch"></div>
             {/if}
             <div class="info hierarchy-branch">
                 <button
@@ -139,22 +139,19 @@
                 >
                     <Icon>{icon}</Icon>
                 </button>
-                <div
-                        class="label hierarchy-branch"
-                >
+                <div class="label hierarchy-branch">
                     {nodeRef.name}
                 </div>
             </div>
             <button
-                    class="buttonSmall hierarchy-branch"
+                    class="button-small hierarchy-branch"
                     style="margin-right: 8px"
                     on:click={() => {
                         RendererController.entitiesMap.get(nodeRef.id).active = !active
                         BundlerAPI.packageLights()
-
                         active = !active
                     }}>
-                <Icon styles="font-size: .9rem">
+                <Icon styles="font-size: .8rem">
                     {#if active}
                         visibility
                     {:else}

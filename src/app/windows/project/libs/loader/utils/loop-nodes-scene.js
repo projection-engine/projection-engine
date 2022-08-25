@@ -3,10 +3,13 @@ import FilesAPI from "../../../../../libs/files/FilesAPI";
 import MeshInstance from "../../engine/production/libs/instances/MeshInstance";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-
+import RendererController from "../../engine/production/RendererController";
+import {v4} from "uuid";
 export default async function loopNodesScene(node, parent, index=0) {
     const meshes = [], children = []
-    const entity = new Entity(node.id)
+    const exists = RendererController.entitiesMap.get(node.id) != null
+
+    const entity = new Entity(exists ? v4() : node.id)
     entity.name = node.name ? node.name : "entity-" + index
     entity.parent = parent
     parent.children.push(entity)

@@ -69,10 +69,10 @@ body {
     --pj-transparent-border: rgba(63, 63, 63, .5);
     --pj-color-primary: #f7f7f7;
     --pj-color-secondary: #f1f1f1;
-    --pj-color-tertiary: #eaeaea;
-    --pj-color-quaternary: #e7e7e7;
-    --pj-color-quinary: #e5e5e5;
-    --pj-color-senary: #e0e0e0;
+    --pj-color-tertiary: #e9e9e9;
+    --pj-color-quaternary: #e0e0e0;
+    --pj-color-quinary: #dadada;
+    --pj-color-senary: #d5d5d5;
     --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
     --background-input: #545454;
 

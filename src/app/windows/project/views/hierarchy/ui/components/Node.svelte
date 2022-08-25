@@ -81,7 +81,7 @@
             {#if node.children.length > 0}
                 <button
                         data-open={open[node.id] ? "-" : ""}
-                        class="buttonSmall hierarchy-branch"
+                        class="button-small hierarchy-branch"
                         on:click={() => {
                         if (!open[node.id])
                             setOpen({...open, [node.id]: true})
@@ -104,7 +104,7 @@
                     <Icon>arrow_drop_down</Icon>
                 </button>
             {:else}
-                <div class="buttonSmall hierarchy-branch"></div>
+                <div class="button-small hierarchy-branch"></div>
             {/if}
             <div class="info hierarchy-branch">
                 <div class="buttonIcon hierarchy-branch">
