@@ -4,10 +4,10 @@
     import Header from "../../../../components/view/components/Header.svelte";
     import {v4} from "uuid"
     import Icon from "../../../../components/icon/Icon.svelte";
-    import EngineHierarchyView from "./engine/EngineHierarchyView.svelte";
+    import EngineHierarchyView from "./views/EngineView.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import UIHierarchy from "./ui/UIHierarchyView.svelte";
+    import UIHierarchy from "./views/UIView.svelte";
     import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
 
 
@@ -19,6 +19,7 @@
     const translate = key => Localization.PROJECT.HIERARCHY[key]
     let viewTab = 0
     let filteredComponent = undefined
+    let isEmpty = true
 </script>
 
 
@@ -91,12 +92,13 @@
     <div
             data-self={"-"}
             class="wrapper"
+            style={isEmpty ? "background: transparent" : undefined}
             id={ID}
     >
         {#if viewTab === 0}
-            <EngineHierarchyView searchString={search.toLowerCase()} filteredComponent={filteredComponent} translate={translate} ID={ID}/>
+            <EngineHierarchyView setIsEmpty={v => isEmpty = v} searchString={search.toLowerCase()} filteredComponent={filteredComponent} translate={translate} ID={ID}/>
         {:else}
-            <UIHierarchy searchString={search.toLowerCase()} translate={translate} ID={ID}/>
+            <UIHierarchy setIsEmpty={v => isEmpty = v} searchString={search.toLowerCase()} translate={translate} ID={ID}/>
         {/if}
     </div>
 {/if}
@@ -128,5 +130,15 @@
 
         height: 100%;
         max-height: 100%;
+        background: linear-gradient(
+                to bottom,
+                var(--pj-background-tertiary),
+                var(--pj-background-tertiary) 50%,
+                #252525 50%,
+                #252525
+        );
+        /* The rectangle in which to repeat.
+           It can be fully wide in this case */
+        background-size: 100% 46px;
     }
 </style>

@@ -1,11 +1,13 @@
 <script>
-    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
-    import Icon from "../../../../../../components/icon/Icon.svelte";
-    import BundlerAPI from "../../../../libs/engine/production/libs/apis/BundlerAPI";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import BundlerAPI from "../../../libs/engine/production/libs/apis/BundlerAPI";
     import "../css/Branch.css"
-    import RendererController from "../../../../libs/engine/production/RendererController";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
+    import RendererController from "../../../libs/engine/production/RendererController";
+    import RendererStoreController from "../../../stores/RendererStoreController";
     import {v4} from "uuid";
+    import getEngineIcon from "../utils/get-engine-icon";
+    import {onDestroy, onMount} from "svelte";
 
     const LEFT_BUTTON = 0
     export let depth = undefined
@@ -31,21 +33,7 @@
         }
     }
 
-    $: icon = (() => {
-        if (nodeRef) {
-            if (nodeRef.components[COMPONENTS.POINT_LIGHT])
-                return "lightbulb"
-            if (nodeRef.components[COMPONENTS.DIRECTIONAL_LIGHT])
-                return "light_mode"
-            if (nodeRef.components[COMPONENTS.PROBE])
-                return "lens_blur"
-            if (nodeRef.components[COMPONENTS.MESH])
-                return "view_in_ar"
-            if (nodeRef.components[COMPONENTS.CAMERA])
-                return "videocam"
-            return "inventory_2"
-        }
-    })();
+    $: icon = getEngineIcon(nodeRef);
 
     const handler = (e) => {
         switch (e.type) {
@@ -69,7 +57,7 @@
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
                 const entityDragged = RendererController.entitiesMap.get(src)
-                console.log(entityDragged)
+
                 if (entityDragged) {
                     entityDragged.parent = nodeRef
                     nodeRef.children.push(entityDragged)
@@ -82,6 +70,12 @@
         }
     }
 
+    onMount(() => {
+
+    })
+    onDestroy(() => {
+
+    })
 </script>
 
 {#if nodeRef}
@@ -135,7 +129,7 @@
                 <button
                         data-locked={lockedEntity === nodeRef.id ? "-" : ""}
                         class="buttonIcon hierarchy-branch"
-                        on:click={() => lockedEntity === nodeRef.id ? setLockedEntity(undefined) : setLockedEntity(nodeRef.id)}
+                        on:click={() => setLockedEntity(nodeRef.id)}
                 >
                     <Icon>{icon}</Icon>
                 </button>
@@ -145,7 +139,6 @@
             </div>
             <button
                     class="button-small hierarchy-branch"
-                    style="margin-right: 8px"
                     on:click={() => {
                         RendererController.entitiesMap.get(nodeRef.id).active = !active
                         BundlerAPI.packageLights()

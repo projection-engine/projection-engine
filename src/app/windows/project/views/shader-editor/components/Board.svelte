@@ -2,7 +2,7 @@
 
     import {v4} from "uuid";
     import Comment from "./node/Comment.svelte";
-    // import Node from "./node/Node.svelte";
+    // import Node from "./node/UINode.svelte";
     import LINK_WIDTH from "../data/LINK_WIDTH";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import handleBoardScroll from "../utils/handle-board-scroll";

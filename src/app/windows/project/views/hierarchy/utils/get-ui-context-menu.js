@@ -1,7 +1,7 @@
-import dispatchUiEntities from "../../../../stores/templates/dispatch-ui-entities";
-import {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
-import UIElement from "../../../../libs/engine/production/templates/basic/UIElement";
-import UserInterfaceController from "../../../../libs/engine/production/UserInterfaceController";
+import dispatchUiEntities from "../../../stores/templates/dispatch-ui-entities";
+import {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import UIElement from "../../../libs/engine/production/templates/basic/UIElement";
+import UserInterfaceController from "../../../libs/engine/production/UserInterfaceController";
 
 
 function createElement(parent) {
@@ -16,7 +16,7 @@ function createElement(parent) {
     })
 }
 
-export default function getContextMenu() {
+export default function getUiContextMenu() {
 
     return [
         {

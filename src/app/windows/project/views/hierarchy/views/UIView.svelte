@@ -1,8 +1,8 @@
 <script>
-    import Node from "./components/Node.svelte"
+    import Node from "../components/UINode.svelte"
     import {onDestroy, onMount} from "svelte";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
-    import getContextMenu from "./utils/get-context-menu";
+    import getUiContextMenu from "../utils/get-ui-context-menu";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import UIStoreController from "../../../stores/UIStoreController";
@@ -10,6 +10,7 @@
     export let ID
     export let translate
     export let searchString
+    export let setIsEmpty
 
     const TRIGGERS = ["data-node", "data-self"]
     let store = {}
@@ -18,7 +19,7 @@
 
 
     let open = {}
-    let toRender
+    let toRender = []
     let offset = 0
     let maxDepth = 0
 
@@ -50,7 +51,7 @@
         if (trigger === TRIGGERS[0])
             UIStoreController.updateStore({...store, selected: [element.getAttribute(trigger)]})
     })
-    onMount(() => contextMenuBinding.rebind(getContextMenu()))
+    onMount(() => contextMenuBinding.rebind(getUiContextMenu()))
     onDestroy(() => {
         unsubscribe()
         contextMenuBinding.onDestroy()
@@ -65,6 +66,7 @@
         } else
             UIStoreController.updateStore({...store, selected: [entity]})
     }
+    $: setIsEmpty(toRender.length === 0)
 </script>
 
 

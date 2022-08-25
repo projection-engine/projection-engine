@@ -1,10 +1,10 @@
 <script>
     import RendererStoreController from "../../../stores/RendererStoreController";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
-    import getContextMenu from "./utils/get-context-menu";
+    import getEngineContextMenu from "../utils/get-engine-context-menu";
     import {onDestroy} from "svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
-    import Branch from "./components/Branch.svelte";
+    import Branch from "../components/EngineNode.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 
@@ -12,6 +12,7 @@
     export let translate
     export let searchString
     export let filteredComponent
+    export let setIsEmpty
 
     const TRIGGERS = ["data-node", "data-self"]
     let searchedEntity = ""
@@ -26,7 +27,7 @@
     let maxDepth = 0
     let entitiesArray = []
     let mappedEntities = []
-    let lastChangeID = engine.changeID
+    let lastChangeID
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
@@ -37,14 +38,13 @@
         if (trigger === TRIGGERS[0])
             RendererStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
     })
-    $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
+    $: contextMenuBinding.rebind(getEngineContextMenu(open, v => open = v))
     onDestroy(() => {
         unsubscribeEngine()
         contextMenuBinding.onDestroy()
     })
 
     const testSearch = (node) => {
-
         const s = searchString, f = filteredComponent
         return (s && node.name.toLowerCase().includes(s) || !s) &&
             (f && node.components[COMPONENTS[f]] != null || !f)
@@ -68,7 +68,7 @@
         } else {
             for (let i = 0; i < entitiesArray.length; i++)
                 if (testSearch(entitiesArray[i]))
-                    data.push({node: entitiesArray[i], depth: 0})
+                    data.push({node: entitiesArray[i], depth: 1})
             toRender = data
         }
     }
@@ -93,6 +93,7 @@
         } else
             RendererStoreController.updateEngine({...engine, selected: [entity]})
     }
+    $: setIsEmpty(toRender.length === 0)
 </script>
 
 <InfiniteScroller

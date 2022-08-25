@@ -1,14 +1,14 @@
-import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
-import Entity from "../../../../libs/engine/production/templates/basic/Entity";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../../../../stores/RendererStoreController";
-import ViewportActions from "../../../../libs/ViewportActions";
-import CameraComponent from "../../../../libs/engine/production/templates/components/CameraComponent";
-import PointLightComponent from "../../../../libs/engine/production/templates/components/PointLightComponent";
-import TransformComponent from "../../../../libs/engine/production/templates/components/TransformComponent";
+import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import Entity from "../../../libs/engine/production/templates/basic/Entity";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import RendererStoreController from "../../../stores/RendererStoreController";
+import ViewportActions from "../../../libs/ViewportActions";
+import CameraComponent from "../../../libs/engine/production/templates/components/CameraComponent";
+import PointLightComponent from "../../../libs/engine/production/templates/components/PointLightComponent";
+import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
 import DirectionalLightComponent
-    from "../../../../libs/engine/production/templates/components/DirectionalLightComponent";
-import RendererController from "../../../../libs/engine/production/RendererController";
+    from "../../../libs/engine/production/templates/components/DirectionalLightComponent";
+import RendererController from "../../../libs/engine/production/RendererController";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")
@@ -31,7 +31,7 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getContextMenu(open, setOpen) {
+export default function getEngineContextMenu(open, setOpen) {
     const SELECTION = [
 
         {

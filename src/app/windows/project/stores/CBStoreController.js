@@ -18,6 +18,7 @@ export default class CBStoreController {
 
     static getStore(onChange) {
         if (!CBStoreController.initialized) {
+            CBStoreController.initialized = true
             FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "bookmarks.meta", "json")
                 .then(res => {
                     if (res)
@@ -34,7 +35,6 @@ export default class CBStoreController {
         try{
             const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: CBStoreController.ASSETS_PATH})
             const fileTypes = await ContentBrowserAPI.refresh()
-            console.log(data)
             CBStoreController.updateStore({...CBStoreController.data, items: data, ...fileTypes})
         }
         catch (err){

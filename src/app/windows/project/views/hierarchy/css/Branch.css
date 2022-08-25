@@ -102,7 +102,6 @@
 }
 
 .label.hierarchy-branch {
-  cursor: grab;
   width: 100%;
   height: 23px;
   display: flex;
@@ -111,8 +110,5 @@
   overflow: hidden;
   white-space: nowrap;
   color: var(--pj-color-quaternary);
-}
-
-.label.hierarchy-branch:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
