@@ -3,6 +3,7 @@ import RendererStoreController from "../RendererStoreController";
 import removeHierarchy from "../utils/remove-hierarchy";
 import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
+import AXIS from "../../libs/engine/editor/libs/gizmo/AXIS";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -91,7 +92,7 @@ export default function dispatchRendererEntities({type, payload}) {
     const arr = Array.from(state.values())
     for (let i = 0; i < arr.length; i++) {
         const entity = arr[i]
-        entity.pickID = getPickerId(i + 5)
+        entity.pickID = getPickerId(i + AXIS.ZY + 1)
         if (!entity.parentCache)
             continue
         const parent = state.get(entity.parentCache)

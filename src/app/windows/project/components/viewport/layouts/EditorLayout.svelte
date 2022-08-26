@@ -77,6 +77,10 @@
             settings,
             engine,
             (data) => {
+                if (GizmoSystem.wasOnGizmo) {
+                    GizmoSystem.wasOnGizmo = false
+                    return
+                }
                 RendererStoreController.updateEngine({...engine, selected: data})
             })
     }
