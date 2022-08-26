@@ -5,6 +5,7 @@ import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 import RendererController from "../../engine/production/RendererController";
 import {v4} from "uuid";
+
 export default async function loopNodesScene(node, parent, index=0) {
     const meshes = [], children = []
     const exists = RendererController.entitiesMap.get(node.id) != null

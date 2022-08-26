@@ -6,8 +6,7 @@ import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/production/templates/components/CameraComponent";
 import PointLightComponent from "../../../libs/engine/production/templates/components/PointLightComponent";
 import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
-import DirectionalLightComponent
-    from "../../../libs/engine/production/templates/components/DirectionalLightComponent";
+import DirectionalLightComponent from "../../../libs/engine/production/templates/components/DirectionalLightComponent";
 import RendererController from "../../../libs/engine/production/RendererController";
 
 function createEntity(component) {

@@ -86,7 +86,7 @@ export default class RendererStoreController {
 
 
         if (updated.selected.length > 0 || updated.lockedEntity)
-            updated.selectedEntity = updated.entities.get(updated.lockedEntity ? updated.lockedEntity : updated.selected[0])
+            updated.selectedEntity = updated.entities.get(updated.selected[0] ? updated.selected[0] : updated.lockedEntity)
         else
             updated.selectedEntity = undefined
 

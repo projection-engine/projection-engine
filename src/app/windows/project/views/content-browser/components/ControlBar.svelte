@@ -13,7 +13,6 @@
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
     import CBStoreController from "../../../stores/CBStoreController";
-    import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
     export let translate
     export let setSelected

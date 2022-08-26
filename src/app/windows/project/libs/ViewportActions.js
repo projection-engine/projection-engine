@@ -7,9 +7,10 @@ import CameraTracker from "./engine/editor/libs/CameraTracker";
 export default class ViewportActions {
     static toCopy = []
 
-    static copy(single, target, engine) {
-        ViewportActions.toCopy = target ? target : (single ? [engine.selected[0]] : engine.selected)
-        alert.pushAlert(`Entities copied (${engine.selected.length}).`, "info")
+    static copy(single, target) {
+        const e = RendererStoreController.engine
+        ViewportActions.toCopy = target ? target : (single ? [e.selected[0]] : e.selected)
+        alert.pushAlert(`Entities copied (${e.selected.length}).`, "info")
     }
 
     static focus(entity) {
@@ -17,6 +18,7 @@ export default class ViewportActions {
             return
         CameraTracker.radius = 10
         CameraTracker.centerOn = entity.components[COMPONENTS.TRANSFORM].translation
+
         CameraTracker.update()
     }
 

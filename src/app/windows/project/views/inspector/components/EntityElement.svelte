@@ -1,7 +1,6 @@
 <script>
 
     import Input from "../../../../../components/input/Input.svelte";
-    import RendererStoreController from "../../../stores/RendererStoreController";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
@@ -14,7 +13,6 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import RendererController from "../../../libs/engine/production/RendererController";
     import Entity from "../../../libs/engine/production/templates/basic/Entity";
-    import UIStoreController from "../../../stores/UIStoreController";
     import EntityNameController from "../../../stores/templates/EntityNameController";
 
     const nativeComponents = getNativeComponents()

@@ -5,7 +5,6 @@
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
-    import getFileIcon from "../utils/get-file-icon";
     import CBStoreController from "../../../stores/CBStoreController";
     import Localization from "../../../../../libs/Localization";
     import RendererStoreController from "../../../stores/RendererStoreController";

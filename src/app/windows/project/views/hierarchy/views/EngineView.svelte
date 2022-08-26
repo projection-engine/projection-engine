@@ -2,11 +2,15 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import getEngineContextMenu from "../utils/get-engine-context-menu";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "../components/EngineNode.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import dragDrop from "../../../../../components/drag-drop";
+    import {v4} from "uuid";
+    import Entity from "../../../libs/engine/production/templates/basic/Entity";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 
     export let ID
     export let translate
@@ -28,6 +32,7 @@
     let entitiesArray = []
     let mappedEntities = []
     let lastChangeID
+    let ref
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
@@ -94,8 +99,35 @@
             RendererStoreController.updateEngine({...engine, selected: [entity]})
     }
     $: setIsEmpty(toRender.length === 0)
+
+    const draggable = dragDrop()
+    onMount(() => {
+
+        draggable.onMount({
+            targetElement: ref.parentElement,
+            onDrop: (entityDragged, event) => {
+                if (event.ctrlKey) {
+                    if (entityDragged.parent)
+                        entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
+                    entityDragged.parent = undefined
+                    RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
+                } else if(event.shiftKey) {
+                    const clone = entityDragged.clone()
+                    clone.parent = undefined
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
+                }
+            },
+
+            onDragOver: (data) => {
+                if (data instanceof Entity)
+                    return `CTRL to parent | SHIFT to clone`
+                return `<span style="font-size: .9rem;" data-icon="-">clear</span> Invalid entity`
+            }
+        })
+    })
 </script>
 
+<span style="display: none" bind:this={ref}></span>
 <InfiniteScroller
         setMaxDepth={v => maxDepth = v}
         setOffset={v => offset = v}

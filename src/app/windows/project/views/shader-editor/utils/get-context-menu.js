@@ -1,7 +1,6 @@
 import deleteNode from "./delete-node"
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
-import BOARD_SIZE from "../data/BOARD_SIZE";
 
 export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks, reference) {
     return [

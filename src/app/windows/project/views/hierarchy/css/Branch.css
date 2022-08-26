@@ -81,7 +81,6 @@
 .buttonIcon.hierarchy-branch {
   width: 23px;
   height: 23px;
-  color: rgb(203 158 53 / 87%);
   border: none;
   background: none;
   display: flex;
@@ -93,7 +92,6 @@
 }
 
 .buttonIcon.hierarchy-branch[data-locked="-"] {
-
   color:   orangered;
 }
 
