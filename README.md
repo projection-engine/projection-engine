@@ -1,23 +1,25 @@
-## v3.0.0-Alpha
+## v3.1.1-Alpha
 
 ### Additions:
-- UI hierarchy/store and render loop
-- Level system
-- UI Renderer and preview tab for UI
-- QueryAPI for UI elements and engine entities
-- ViewportEventsAPI for controlling event listeners related to the viewport
-- CSS and HTML (.ui) files for UI layouts
-- CameraAPI was created to be a singleton reference for the engine camera and provides utility methods for camera movement.
-- Added component filter for entity hierarchy
+- drag-drop component with drag-over tooltip and custom drag-image html
+- GPU controller (soon will be available on scripts)
 
 ### Reworks:
-- Backend of file system was completely rewritten
-- Mesh, materials and FBOs now tracks active resources to prevent unnecessary API calls
-- Gizmos are now better structured  
-- Entities and UI elements are now stored inside level file instead of separate folder (/logic)
-- Camera system was rewritten to be a singleton.
-- Window frame is now more minimal and a new control bar was added bellow it. 
+- Backend optimization for binding resources
+  - shaders
+  - meshes
+  - frame-buffers
+  - Quads
+- Drag-drop system across everything
+- Icons on viewport
+- Hierarchy (engine) linking
+- Cloning of entity
+- Visuals for hierarchy
 
 ### Fixes:
-- Hierarchy search not working
-- Camera icon not showing on hierarchy
+- Clones of entities
+- Hierarchy linking
+- Copy entity method
+- Focus on entity method
+- Picking inconsistencies
+- Unnecessary content-browser refresh when opening a new view
