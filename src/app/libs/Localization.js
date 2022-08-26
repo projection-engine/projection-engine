@@ -59,7 +59,7 @@ export default class Localization {
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
-            VERSION: "3.0.0-alpha"
+            VERSION: "3.1.1-alpha"
         },
         ALERTS: {
             UNDO_SETTINGS: "Undoing settings modification.",
