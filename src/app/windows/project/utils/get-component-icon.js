@@ -1,10 +1,7 @@
 import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
 
 export default function getComponentIcon(key, component) {
-
     switch (key) {
-        case COMPONENTS.TRANSFORM:
-            return "transform"
         case COMPONENTS.MESH:
             return "category"
         case COMPONENTS.POINT_LIGHT:

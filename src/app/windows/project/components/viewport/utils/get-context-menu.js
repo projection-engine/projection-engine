@@ -1,5 +1,4 @@
 import updateCursor from "./update-cursor"
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 
@@ -64,32 +63,32 @@ export default function getContextMenu(engine) {
         {
             label: "Apply current transformation",
             onClick: () => {
-                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
+                const comp = engine.selectedEntity
                 comp.baseTransformationMatrix = comp.transformationMatrix
 
                 comp.translation = [0, 0, 0]
                 comp.scaling = [1, 1, 1]
-                comp.rotationQuat = [0, 0, 0, 1]
+                comp.rotationQuaternion = [0, 0, 0, 1]
             }
         },
         {
             label: "Move to 3D cursor",
             onClick: () => {
-                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
-                comp.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                const comp = engine.selectedEntity
+                comp.translation = window.renderer.cursor.translation
             }
         },
         {
             label: "Pivot on 3D cursor",
             onClick: () => {
-                const comp = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
-                comp.pivotPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                const comp = engine.selectedEntity
+                comp.pivotPoint = window.renderer.cursor.translation
             }
         },
         {
             label: "3D cursor to origin",
             onClick: () => {
-                const component = engine.selectedEntity.components[COMPONENTS.TRANSFORM]
+                const component = engine.selectedEntity
                 if (component)
                     updateCursor(component.translation.slice(0, 3))
             }

@@ -53,10 +53,13 @@ export default class ViewportActions {
         const currentAction = this.history[this.index]
         if (currentAction.target === ViewportActions.targets.entity) {
             const entity = RendererStoreController.engine.entities.get(currentAction.entityID)
-            if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
-                entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
-            else
-                entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
+            if (currentAction.component != null) {
+                if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
+                    entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
+                else
+                    entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
+            } else
+                entity[currentAction.key] = currentAction.value
             RendererStoreController.updateEngine()
         } else {
             RendererStoreController.settings = currentAction.changeValue

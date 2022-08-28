@@ -1,7 +1,7 @@
 <script>
     import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
     import CameraComponent from "../../../../libs/engine/production/templates/components/CameraComponent";
-    import TransformComponent from "../../../../libs/engine/production/templates/components/TransformComponent";
+    import Movable from "../../../../libs/engine/production/templates/basic/Movable";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ProbeComponent from "../../../../libs/engine/production/templates/components/ProbeComponent";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
@@ -24,10 +24,10 @@
         const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
-        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-        actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-        actor.components[COMPONENTS.TRANSFORM].lockedRotation = true
-        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
+
+        actor.translation = window.renderer.cursor.translation
+        actor.lockedRotation = true
+        actor.lockedScaling = true
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
@@ -106,11 +106,11 @@
                 on:click={() =>  {
                         const actor = new Entity(undefined, translate("POINT_LIGHT"))
                         actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
-                        const transformComponent = new TransformComponent()
-                        transformComponent.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                        transformComponent.lockedRotation = true
-                        transformComponent.lockedScaling = true
-                        actor.components[COMPONENTS.TRANSFORM] = transformComponent
+
+                        actor.translation = window.renderer.cursor.translation
+                        actor.lockedRotation = true
+                        actor.lockedScaling = true
+
                         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                     }}
         >
@@ -122,11 +122,9 @@
                 on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
 
-                        const transformComponent = new TransformComponent()
-                        transformComponent.translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                        transformComponent.lockedRotation = true
-                        transformComponent.lockedScaling = true
-                        actor.components[COMPONENTS.TRANSFORM] = transformComponent
+                        actor.translation = window.renderer.cursor.translation
+                        actor.lockedRotation = true
+                        actor.lockedScaling = true
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
 
                         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
@@ -157,18 +155,14 @@
         </div>
         <button
                 on:click={() => {
-                        const actor = new Entity(undefined, translate("CAMERA"))
-                        actor.components[COMPONENTS.CAMERA] = new CameraComponent()
-
-                        actor.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                        actor.components[COMPONENTS.TRANSFORM].translation = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
-                        actor.components[COMPONENTS.TRANSFORM].rotation = [0, 0, 0]
-                        actor.components[COMPONENTS.TRANSFORM].scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-                        actor.components[COMPONENTS.TRANSFORM].lockedScaling = true
-
-
-                        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                    }}
+                    const actor = new Entity(undefined, translate("CAMERA"))
+                    actor.components[COMPONENTS.CAMERA] = new CameraComponent()
+                    actor.translation = window.renderer.cursor.translation
+                    actor.rotation = [0, 0, 0]
+                    actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
+                    actor.lockedScaling = true
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                }}
         >
             <Icon>videocam</Icon>
             {translate("CAMERA")}

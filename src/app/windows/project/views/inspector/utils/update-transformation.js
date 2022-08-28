@@ -1,9 +1,8 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 
 export default function  updateTransformation(axis, data, key, entity) {
-    const component = entity.components[COMPONENTS.TRANSFORM]
-    const prev = component[key]
-    component[key] = [
+    const prev = entity[key]
+    entity[key] = [
         axis === "x" ? data : prev[0],
         axis === "y" ? data : prev[1],
         axis === "z" ? data : prev[2]

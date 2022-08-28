@@ -8,7 +8,7 @@
     import {onDestroy} from "svelte";
     import getNativeComponents from "../utils/get-native-components";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
+    import Movable from "../../../libs/engine/production/templates/basic/Movable";
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import RendererController from "../../../libs/engine/production/RendererController";
@@ -43,9 +43,7 @@
     {#if entity instanceof Entity}
         {#each nativeComponents as [key, instance, label, icon]}
             <button
-                    on:click={() =>{
-                    if(!entity.components[COMPONENTS.TRANSFORM])
-                        entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
+                on:click={() =>{
                     if(!entity.components[key])
                         entity.components[key] = new instance(undefined, entity)
                 }}>

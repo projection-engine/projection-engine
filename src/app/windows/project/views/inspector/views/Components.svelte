@@ -6,7 +6,7 @@
     import CBStoreController from "../../../stores/CBStoreController";
     import componentConstructor from "../../../libs/component-constructor";
     import MeshComponent from "../../../libs/engine/production/templates/components/MeshComponent";
-    import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
+    import Movable from "../../../libs/engine/production/templates/basic/Movable";
     import loadMaterial from "../utils/load-material";
 
     import Loader from "../../../libs/loader/Loader";
@@ -64,11 +64,9 @@
                         case "MESH":
                             if (entity instanceof UIElement)
                                 break
-                            if (!entity.components[COMPONENTS.MESH]) {
+                            if (!entity.components[COMPONENTS.MESH])
                                 entity.components[COMPONENTS.MESH] = new MeshComponent()
-                                if (!entity.components[COMPONENTS.TRANSFORM])
-                                    entity.components[COMPONENTS.TRANSFORM] = new TransformComponent()
-                            }
+
                             await Loader.load(id, true)
                             entity.components[COMPONENTS.MESH].meshID = id
                             break

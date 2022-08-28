@@ -1,6 +1,6 @@
 import bindGizmo from "./bind-gizmo";
 import Entity from "../../../libs/engine/production/templates/basic/Entity";
-import TransformComponent from "../../../libs/engine/production/templates/components/TransformComponent";
+import Movable from "../../../libs/engine/production/templates/basic/Movable";
 import Transformation from "../../../libs/engine/production/services/Transformation";
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererController from "../../../libs/engine/production/RendererController";
@@ -9,18 +9,14 @@ import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 function getCursor() {
     const entity = new Entity()
-    const t = new TransformComponent()
-    t.lockedRotation = true
-    t.lockedScaling = true
-    t.transformationMatrix = Transformation.transform(t.translation, [0, 0, 0, 1], t.scaling)
-    entity.components[COMPONENTS.TRANSFORM] = t
-
+    entity.lockedRotation = true
+    entity.lockedScaling = true
+    entity.transformationMatrix = Transformation.transform(entity.translation, [0, 0, 0, 1], entity.scaling)
     return entity
 }
 
 export default function updateRenderer( engine, settings) {
     const {
-        meshes,
         materials,
         entities,
         executingAnimation,
@@ -41,7 +37,6 @@ export default function updateRenderer( engine, settings) {
     }
 
     RendererController.entitiesMap = entities
-    RendererController.meshes = meshes
     renderer.materials = materials
     CameraTracker.animated = settings.cameraAnimation
     renderer.gizmo = settings.gizmo

@@ -11,6 +11,7 @@ import MeshInstance from "../engine/production/libs/instances/MeshInstance";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
 import RendererController from "../engine/production/RendererController";
+import GPU from "../engine/production/GPU";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
@@ -19,14 +20,9 @@ export default class Loader {
             existsMesh = false,
             material
         try {
-            mesh = RendererController.meshes.get(objLoaded.id)
+            mesh = GPU.meshes.get(objLoaded.id)
             if (!mesh) {
-                mesh = new MeshInstance({
-                    ...objLoaded,
-                    id: id,
-                    wireframeBuffer: true
-                })
-
+                GPU.allocateMesh(id, objLoaded)
                 if (objLoaded.material && !window.renderer.materials.find(m => m.id === objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
@@ -58,7 +54,6 @@ export default class Loader {
         const file = await FilesAPI.readFile(
             CBStoreController.ASSETS_PATH + FilesAPI.sep + path, "json")
 
-        const meshes = []
         const entities = []
 
         try {
@@ -68,22 +63,17 @@ export default class Loader {
 
                 for (let i = 0; i < file.nodes.length; i++) {
                     const data = await loopNodesScene(file.nodes[i], folder, i)
-                    meshes.push(...data.meshes)
-                    entities.push(...data.children)
+                    entities.push(...data)
                 }
                 entities.push(folder)
                 if (!onlyReturn) {
-                    const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                    const cursorPoint = window.renderer.cursor.translation
                     entities.forEach(e => {
-                        if (e.components && e.components[COMPONENTS.TRANSFORM]) {
-                            const transform = e.components[COMPONENTS.TRANSFORM]
-                            vec4.add(transform.translation, transform.translation, cursorPoint)
-                            transform.changed = true
+                        if (e instanceof Entity) {
+                            vec4.add(e.translation, e.translation, cursorPoint)
+                            e.changed = true
                         }
                     })
-
-                    for (let i = 0; i < meshes.length; i++)
-                        RendererStoreController.engine.meshes.set(meshes[i].id, meshes[i])
                     dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                 }
             } else
@@ -93,7 +83,7 @@ export default class Loader {
             alert.pushAlert("Some error occurred", "error")
         }
 
-        return {meshes, entities}
+        return  entities
     }
 
     static async load(event, asID) {
@@ -133,21 +123,17 @@ export default class Loader {
         }
 
         if (meshes.length > 0) {
-            const newMeshes = meshes.map(m => !m.existsMesh ? m.mesh : undefined).filter(m => m !== undefined)
-            for (let i = 0; i < newMeshes.length; i++)
-                RendererStoreController.engine.meshes.set(newMeshes[i].id, newMeshes[i])
             if (!asID) {
                 const toLoad = meshes
                     .map(m => m.entity)
                     .filter(m => m !== undefined)
                 if (!toLoad.length)
                     return
-                const cursorPoint = window.renderer.cursor.components[COMPONENTS.TRANSFORM].translation
+                const cursorPoint = window.renderer.cursor.translation
                 toLoad.forEach(e => {
-                    if (e.components && e.components[COMPONENTS.TRANSFORM]) {
-                        const transform = e.components[COMPONENTS.TRANSFORM]
-                        vec4.add(transform.translation, transform.translation, cursorPoint)
-                        transform.changed = true
+                    if (e) {
+                        vec4.add(e.translation, e.translation, cursorPoint)
+                        e.changed = true
                     }
                 })
                 dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})

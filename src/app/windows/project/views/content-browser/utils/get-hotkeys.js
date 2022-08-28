@@ -45,7 +45,6 @@ export default function getHotkeys(translate, currentDirectory, setCurrentDirect
         {
             label: translate("DELETE"),
             require: [KEYS.Delete],
-            disabled: selected.length === 0,
             callback: () => {
                 const s = [...selected]
                 setSelected([])

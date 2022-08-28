@@ -5,9 +5,10 @@ import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 import RendererController from "../../engine/production/RendererController";
 import {v4} from "uuid";
+import GPU from "../../engine/production/GPU";
 
 export default async function loopNodesScene(node, parent, index=0) {
-    const meshes = [], children = []
+    const children = []
     const exists = RendererController.entitiesMap.get(node.id) != null
 
     const entity = new Entity(exists ? v4() : node.id)
@@ -21,21 +22,14 @@ export default async function loopNodesScene(node, parent, index=0) {
         if (reg) {
             const meshData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path, "json")
 
-            const instance = new MeshInstance({
-                ...meshData,
-                id: reg.id
-            })
-            meshes.push(instance)
-            children.push(initializeEntity(meshData, instance.id, entity, m + index))
+            GPU.allocateMesh(reg.id, meshData)
+            children.push(initializeEntity(meshData, reg.id, entity, m + index))
         }
     }
     children.push(entity)
 
-    for (let i = 0; i < node.children.length; i++) {
-        const data = await loopNodesScene(node.children[i], entity, i)
-        meshes.push(...data.meshes)
-        children.push(...data.children)
-    }
+    for (let i = 0; i < node.children.length; i++)
+        children.push(...(await loopNodesScene(node.children[i], entity, i)))
 
-    return {meshes, children}
+    return children
 }

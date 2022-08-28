@@ -21,6 +21,7 @@ import UserInterfaceController from "../libs/engine/production/UserInterfaceCont
 import UIStoreController from "./UIStoreController";
 import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
 import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
+import GPU from "../libs/engine/production/GPU";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false
@@ -115,9 +116,7 @@ export default class RendererStoreController {
             }
         }
 
-        RendererStoreController.engine.meshes.forEach(m => m.delete())
-        RendererStoreController.engine.meshes = new Map()
-        RendererController.meshes = RendererStoreController.engine.meshes
+        GPU.meshes.forEach(m => GPU.destroyMesh(m))
         RendererStoreController.engine.materials.forEach(m => m.delete())
         RendererStoreController.engine.materials = []
         window.renderer.materials = RendererStoreController.engine.materials
@@ -145,14 +144,7 @@ export default class RendererStoreController {
                 })
             })
 
-        ipcRenderer.on(
-            CHANNELS.MESH + projectID,
-            (ev, data) => {
-
-                const mesh = new MeshInstance(data)
-                RendererStoreController.engine.meshes.set(mesh.id, mesh)
-                RendererStoreController.updateEngine()
-            })
+        ipcRenderer.on(CHANNELS.MESH + projectID, (ev, data) => GPU.allocateMesh(data.id, data))
 
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,
@@ -228,14 +220,14 @@ function serializeData(level) {
 
 async function updateSettings(metaData, settings) {
     const entities = window.renderer.entities
-    const meshes = RendererController.meshes
+
     const materials = window.renderer.materials
     const old = JSON.parse(metaData.toString())
     await AssetAPI.updateProject(
         {
             ...old,
             entities: entities.length,
-            meshes: meshes.length,
+            meshes: GPU.meshes.size,
             materials: materials.length,
             lastModification: (new Date()).toDateString(),
             creation: settings.creationDate
@@ -247,16 +239,4 @@ async function updateSettings(metaData, settings) {
             pitch: CameraTracker.pitch,
         }
     )
-}
-
-async function removeDeletedEntities() {
-    const LOGIC_PATH = FilesAPI.path + FilesAPI.sep + "logic" + FilesAPI.sep
-    const allEntities = await ContentBrowserAPI.fromDirectory(FilesAPI.path + FilesAPI.sep + "logic", ".entity")
-    const all = await Promise.all(allEntities.map(e => FilesAPI.readFile(LOGIC_PATH + e, "json", true)))
-    for (let i = 0; i < all.length; i++) {
-        const entity = all[i]
-        if (!entity || RendererController.entitiesMap.get(entity.id))
-            continue
-        await FilesAPI.deleteFile(LOGIC_PATH + entity.id + ".entity")
-    }
 }

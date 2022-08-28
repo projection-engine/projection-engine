@@ -14,10 +14,10 @@ export default class ViewportActions {
     }
 
     static focus(entity) {
-        if (!entity || !entity.components[COMPONENTS.TRANSFORM])
+        if (!entity)
             return
         CameraTracker.radius = 10
-        CameraTracker.centerOn = entity.components[COMPONENTS.TRANSFORM].translation
+        CameraTracker.centerOn = entity.translation
 
         CameraTracker.update()
     }

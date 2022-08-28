@@ -4,6 +4,7 @@ import Conversion from "../../../libs/engine/production/services/Conversion";
 import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
 import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
 import RendererController from "../../../libs/engine/production/RendererController";
+import GPU from "../../../libs/engine/production/GPU";
 
 const  MAX_DELTA = 50
 
@@ -13,7 +14,7 @@ function pickIcon(coords) {
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
-function pickMesh(meshesMap, x, y) {
+function pickMesh(x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
     const coords = Conversion.toQuadCoord({x, y}, {w, h})
     const picked = ViewportPicker.depthPick(LoopAPI.renderMap.get("depthPrePass").frameBuffer, coords)
@@ -27,12 +28,12 @@ export default function onViewportClick(event, startedCoords, settings, engine, 
     const deltaY = Math.abs(startedCoords.y - event.clientY)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
-    const meshesMap = RendererController.meshes
+
     const target = event.currentTarget.getBoundingClientRect()
     const coords = [event.clientX - target.left, event.clientY - target.top]
     let picked = pickIcon(coords)
     if (!picked)
-        picked = pickMesh(meshesMap, event.clientX, event.clientY)
+        picked = pickMesh(event.clientX, event.clientY)
     if (picked > 0) {
         const entities = Array.from(RendererController.entitiesMap.values())
         const entity = entities.find(e => e?.pickIndex === picked)

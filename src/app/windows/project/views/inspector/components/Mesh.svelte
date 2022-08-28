@@ -8,6 +8,7 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import loadMaterial from "../utils/load-material";
     import RendererController from "../../../libs/engine/production/RendererController";
+    import GPU from "../../../libs/engine/production/GPU";
 
 
     export let selected
@@ -16,7 +17,7 @@
 
     const loadMesh = async (src) => {
 
-        if (!RendererController.meshes.get(src.registryID))
+        if (!GPU.meshes.get(src.registryID))
             await Loader.load(src.registryID, true)
         submit(src.registryID, "meshID")
     }
