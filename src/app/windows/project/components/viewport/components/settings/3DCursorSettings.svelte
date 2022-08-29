@@ -1,11 +1,12 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
     import {onMount} from "svelte";
+    import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
 
     let state = {}
 
     onMount(() => {
-        const t = window.renderer.cursor.translation
+        const t = EditorRenderer.cursor.translation
         state = {
             x: t[0],
             y: t[1],
@@ -32,7 +33,7 @@
         }}
         incrementPercentage={.01}
         handleChange={e => {
-        const t = window.renderer.cursor
+        const t = EditorRenderer.cursor
         t.translation = [e, t.translation[1], t.translation[2]]
     }}
 />
@@ -51,7 +52,7 @@
             }
         }}
         handleChange={e => {
-        const t = window.renderer.cursor
+        const t = EditorRenderer.cursor
         t.translation = [t.translation[0], e, t.translation[2]]
     }}
 />
@@ -70,7 +71,7 @@
             }
         }}
         handleChange={e => {
-        const t = window.renderer.cursor
+        const t = EditorRenderer.cursor
         t.translation = [ t.translation[0], t.translation[1], e]
     }}
 />

@@ -1,6 +1,7 @@
 import updateCursor from "./update-cursor"
 import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
+import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
 
 export default function getContextMenu(engine) {
 
@@ -75,14 +76,14 @@ export default function getContextMenu(engine) {
             label: "Move to 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity
-                comp.translation = window.renderer.cursor.translation
+                comp.translation = [...EditorRenderer.cursor.translation]
             }
         },
         {
             label: "Pivot on 3D cursor",
             onClick: () => {
                 const comp = engine.selectedEntity
-                comp.pivotPoint = window.renderer.cursor.translation
+                comp.pivotPoint = [...EditorRenderer.cursor.translation]
             }
         },
         {

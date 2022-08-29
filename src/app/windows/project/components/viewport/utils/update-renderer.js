@@ -5,13 +5,7 @@ import RendererController from "../../../libs/engine/production/RendererControll
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 
-function getCursor() {
-    const entity = new Entity()
-    entity.lockedRotation = true
-    entity.lockedScaling = true
-    entity.transformationMatrix = Transformation.transform(entity.translation, [0, 0, 0, 1], entity.scaling)
-    return entity
-}
+
 
 export default function updateRenderer( engine, settings) {
     const {
@@ -38,8 +32,7 @@ export default function updateRenderer( engine, settings) {
     renderer.materials = materials
     CameraTracker.animated = settings.cameraAnimation
     renderer.gizmo = settings.gizmo
-    if (!renderer.cursor)
-        renderer.cursor = getCursor()
+
 
     renderer.updatePackage(
         executingAnimation,

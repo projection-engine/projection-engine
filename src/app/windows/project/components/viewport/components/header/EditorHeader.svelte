@@ -16,6 +16,7 @@
     import MeshComponent from "../../../../libs/engine/production/templates/components/MeshComponent";
     import STATIC_MESHES from "../../../../libs/engine/static/STATIC_MESHES";
     import FALLBACK_MATERIAL from "../../../../libs/engine/production/data/FALLBACK_MATERIAL";
+    import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
 
 
     export let settings
@@ -27,7 +28,7 @@
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
 
-        actor.translation = window.renderer.cursor.translation
+        actor.translation = [...EditorRenderer.cursor.translation]
         actor.lockedRotation = true
         actor.lockedScaling = true
 
@@ -136,7 +137,7 @@
                 const actor = new Entity(undefined, translate("POINT_LIGHT"))
                 actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
 
-                actor.translation = window.renderer.cursor.translation
+                actor.translation = [...EditorRenderer.cursor.translation]
                 actor.lockedRotation = true
                 actor.lockedScaling = true
 
@@ -151,7 +152,7 @@
                 on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
 
-                        actor.translation = window.renderer.cursor.translation
+                        actor.translation = [...EditorRenderer.cursor.translation]
                         actor.lockedRotation = true
                         actor.lockedScaling = true
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
@@ -186,7 +187,7 @@
                 on:click={() => {
                     const actor = new Entity(undefined, translate("CAMERA"))
                     actor.components[COMPONENTS.CAMERA] = new CameraComponent()
-                    actor.translation = window.renderer.cursor.translation
+                    actor.translation = [...EditorRenderer.cursor.translation]
                     actor.rotation = [0, 0, 0]
                     actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
                     actor.lockedScaling = true

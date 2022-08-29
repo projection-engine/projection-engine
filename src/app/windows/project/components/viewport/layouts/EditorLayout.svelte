@@ -32,7 +32,7 @@
 
     function handleMouse(e) {
         if (e.type === "mousemove") {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY).slice(0, 3)
+            latestTranslation = Conversion.toWorldCoordinates(e.clientX, e.clientY).slice(0, 3)
             updateCursor(latestTranslation)
         } else
             document.removeEventListener("mousemove", handleMouse)
@@ -49,7 +49,7 @@
         startedCoords.x = e.clientX
         startedCoords.y = e.clientY
         if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
-            latestTranslation = Conversion.toScreen(e.clientX, e.clientY).slice(0, 3)
+            latestTranslation = Conversion.toWorldCoordinates(e.clientX, e.clientY).slice(0, 3)
             updateCursor(latestTranslation)
             document.addEventListener("mousemove", handleMouse)
             document.addEventListener("mouseup", handleMouse, {once: true})
@@ -94,7 +94,7 @@
     onMount(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.addEventListener("mousedown", onMouseDown)
-        document.addEventListener("mouseup", onMouseUp)
+        parentElement.addEventListener("mouseup", onMouseUp)
 
         draggable.onMount({
             targetElement: parentElement,
@@ -108,7 +108,7 @@
     onDestroy(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.removeEventListener("mousedown", onMouseDown)
-        document.removeEventListener("mouseup", onMouseUp)
+        parentElement.removeEventListener("mouseup", onMouseUp)
     })
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {

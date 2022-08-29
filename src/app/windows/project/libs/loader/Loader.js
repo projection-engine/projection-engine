@@ -8,6 +8,7 @@ import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
 import GPU from "../engine/production/GPU";
+import EditorRenderer from "../engine/editor/EditorRenderer";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
@@ -63,7 +64,7 @@ export default class Loader {
                 }
                 entities.push(folder)
                 if (!onlyReturn) {
-                    const cursorPoint = window.renderer.cursor.translation
+                    const cursorPoint = EditorRenderer.cursor.translation
                     entities.forEach(e => {
                         if (e instanceof Entity) {
                             vec4.add(e.translation, e.translation, cursorPoint)
@@ -125,7 +126,7 @@ export default class Loader {
                     .filter(m => m !== undefined)
                 if (!toLoad.length)
                     return
-                const cursorPoint = window.renderer.cursor.translation
+                const cursorPoint = EditorRenderer.cursor.translation
                 toLoad.forEach(e => {
                     if (e) {
                         vec4.add(e.translation, e.translation, cursorPoint)
