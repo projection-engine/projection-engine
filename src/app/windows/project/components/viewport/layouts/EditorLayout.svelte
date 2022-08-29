@@ -67,7 +67,7 @@
     function onMouseUp(event) {
         if (GizmoSystem.targetGizmo) {
             GizmoSystem.targetGizmo.onMouseUp()
-            event.currentTarget.removeEventListener("mousemove", gizmoMouseMove)
+            gpu.canvas.parentElement.removeEventListener("mousemove", gizmoMouseMove)
         }
         if (!window.renderer)
             return
@@ -94,7 +94,7 @@
     onMount(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.addEventListener("mousedown", onMouseDown)
-        parentElement.addEventListener("mouseup", onMouseUp)
+        document.addEventListener("mouseup", onMouseUp)
 
         draggable.onMount({
             targetElement: parentElement,
@@ -108,7 +108,7 @@
     onDestroy(() => {
         const parentElement = gpu.canvas.parentElement
         parentElement.removeEventListener("mousedown", onMouseDown)
-        parentElement.removeEventListener("mouseup", onMouseUp)
+        document.removeEventListener("mouseup", onMouseUp)
     })
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {

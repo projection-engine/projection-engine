@@ -1,4 +1,3 @@
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import Transformation from "../../../libs/engine/production/services/Transformation";
 
 export default function updateCursor(coords) {

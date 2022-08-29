@@ -1,10 +1,8 @@
 import GIZMOS from "../../../data/misc/GIZMOS";
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererController from "../../../libs/engine/production/RendererController";
 import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 
 export default function bindGizmo(selected, settings) {
-    const gizmoSystem = window.renderer.editorSystem.gizmoSystem
     const entities = RendererController.entitiesMap
     GizmoSystem.selectedEntities = selected
         .map(s => entities.get(s))
@@ -13,13 +11,13 @@ export default function bindGizmo(selected, settings) {
     if (GizmoSystem.selectedEntities.length > 0) {
         switch (settings.gizmo) {
             case GIZMOS.TRANSLATION:
-                GizmoSystem.targetGizmo = gizmoSystem.translationGizmo
+                GizmoSystem.targetGizmo = GizmoSystem.translationGizmo
                 break
             case GIZMOS.ROTATION:
-                GizmoSystem.targetGizmo = gizmoSystem.rotationGizmo
+                GizmoSystem.targetGizmo = GizmoSystem.rotationGizmo
                 break
             case GIZMOS.SCALE:
-                GizmoSystem.targetGizmo = gizmoSystem.scaleGizmo
+                GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
                 break
         }
     } else if (GizmoSystem.targetGizmo) {

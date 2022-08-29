@@ -11,13 +11,13 @@
     export let submit
     export let translate
 
-    $: title = translate(selected.name) ? translate(selected.name) : selected.name
+    $: title =key === "TRANSFORMATION" ? translate("TRANSFORMATION") :( translate(selected.name) ? translate(selected.name) : selected.name)
 </script>
 
 <Accordion>
     <svelte:fragment slot="header">
         <div class="icon">
-            <Icon styles="font-size: .9rem">
+            <Icon styles="font-size: .9rem; width: 1rem">
                 {getComponentIcon(key, selected)}
             </Icon>
         </div>

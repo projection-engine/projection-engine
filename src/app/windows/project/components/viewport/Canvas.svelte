@@ -8,7 +8,6 @@
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
-    import BundlerAPI from "../../libs/engine/production/libs/apis/BundlerAPI";
     import HotKeys from "../metrics/libs/HotKeys";
     import UserInterfaceController from "../../libs/engine/production/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";

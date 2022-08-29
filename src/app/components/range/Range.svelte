@@ -105,7 +105,7 @@
             bind:this={inputRef}
             disabled={disabled}
             autofocus
-            onChange={(e) => onChange(e.target)}
+            on:input={(e) => onChange(e.target)}
             type="number"
             style={`
             display: ${focused ? undefined : "none"};

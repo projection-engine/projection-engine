@@ -3,7 +3,7 @@ import RendererStoreController from "../RendererStoreController";
 import removeHierarchy from "../utils/remove-hierarchy";
 import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
-import AXIS from "../../libs/engine/editor/libs/gizmo/AXIS";
+import AXIS from "../../libs/engine/editor/data/AXIS";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",

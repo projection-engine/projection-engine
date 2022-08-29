@@ -12,6 +12,8 @@ export default function getComponentIcon(key, component) {
             return "videocam"
         case COMPONENTS.PROBE:
             return "lens_blur"
+        case "TRANSFORMATION":
+            return "transformation"
         default:
             return component.icon ? component.icon : "category"
     }

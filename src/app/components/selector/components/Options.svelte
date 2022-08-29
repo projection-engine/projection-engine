@@ -5,6 +5,8 @@
     import Input from "../../input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
+    import FALLBACK_MATERIAL from "../../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
+    import STATIC_MESHES from "../../../windows/project/libs/engine/static/STATIC_MESHES";
 
 
     export let handleChange
@@ -20,7 +22,7 @@
     let searchString = ""
     $: filtered = getType(store, type).filter(e => e.name.toLowerCase().includes(searchString.toLowerCase()))
 
-
+    $: staticMeshes = Object.entries(STATIC_MESHES)
 </script>
 
 <div class="search-wrapper">
@@ -29,25 +31,27 @@
            placeholder={translate("SEARCH")}>
         <Icon slot="icon">search</Icon>
     </Input>
-    {#if type === "material" || type === "script"}
-        <button
-                class="reset-button"
-                on:click={() => {
-                handleChange(undefined, () => setState({name: translate("EMPTY")}))
-            }}
-        >
-            <ToolTip>
-                {#if type === "script"}
-                    {translate("REMOVE_SCRIPT")}
-                {:else}
-                    {translate("DEFAULT_MATERIAL")}
-                {/if}
-            </ToolTip>
-            <Icon>clear</Icon>
-        </button>
-    {/if}
 </div>
 <div class="content-wrapper">
+    {#if type === "material"}
+        <Option
+                type={type}
+                setState={setState}
+                data={{name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}}
+                handleChange={handleChange}
+                state={state}
+        />
+    {:else if type === "mesh"}
+        {#each staticMeshes as sm}
+            <Option
+                    type={type}
+                    setState={setState}
+                    data={{name: translate(sm[0]), registryID: sm[1]}}
+                    handleChange={handleChange}
+                    state={state}
+            />
+        {/each}
+    {/if}
     {#if filtered.length > 0}
         {#each filtered as t, i}
             <Option
@@ -72,13 +76,11 @@
         margin-top: 4px;
         display: grid;
         align-content: flex-start;
-        --card-size: 75px;
-        grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));
-
         gap: 4px;
 
         padding: 4px;
         overflow-y: auto;
+        max-height: 30vh;
     }
 
 
@@ -99,18 +101,7 @@
         padding: 4px;
         display: flex;
         align-items: center;
-        border-bottom: var(--pj-border-primary);
         background: var(--pj-background-primary);
     }
 
-    .reset-button {
-        border: none;
-        height: 20px !important;
-        width: 20px !important;
-        padding: 0 !important;
-        text-align: left;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 </style>

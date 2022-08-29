@@ -6,6 +6,8 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
+    import FALLBACK_MATERIAL from "../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
+    import STATIC_MESHES from "../../windows/project/libs/engine/static/STATIC_MESHES";
 
     export let size
     export let type
@@ -31,9 +33,15 @@
     }
     let state
     $: {
-        const rID = selected?.registryID ? selected?.registryID : selected
-        let data = store[getParsedType()]?.find(e => e.registryID === rID)
-        state = data ? data : {name: translate("EMPTY")}
+        if(selected === FALLBACK_MATERIAL)
+            state = {name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}
+        else if(Object.values(STATIC_MESHES).find(s => s === selected))
+            state = {name: translate(Object.values(STATIC_MESHES).find(s => s === selected)), registryID: selected}
+        else {
+            const rID = selected?.registryID ? selected?.registryID : selected
+            let data = store[getParsedType()]?.find(e => e.registryID === rID)
+            state = data ? data : {name: translate("EMPTY")}
+        }
     }
 
 </script>

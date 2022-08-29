@@ -6,6 +6,10 @@ import GIZMOS from "../../../data/misc/GIZMOS";
 export default function getHotkeys() {
     return [
         {
+            require: [KEYS.ControlLeft, KEYS.KeyS],
+            callback: RendererStoreController.save
+        },
+        {
             require: [KEYS.ControlLeft, KEYS.KeyI],
             callback: ViewportActions.invertSelection
         },

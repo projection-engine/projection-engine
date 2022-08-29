@@ -23,32 +23,35 @@ const loadFile = async (ID) => {
 }
 
 export default async function loadMaterial(ID, submit) {
-    try {
-        const file = await loadFile(ID)
-        if (!file || !file?.response){
-            submit(FALLBACK_MATERIAL, "materialID")
-            return
-        }
-        const exists = RendererStoreController.engine.materials.find(m => m.id === ID)
-        if (!exists) {
-            let newMat
-            await new Promise(resolve => {
-                newMat = new MaterialInstance({
-                    id: ID,
-                    onCompiled: () => resolve(),
-                    settings: file.response.settings,
-                    vertex: file.response.vertexShader,
-                    fragment: file.response.shader,
-                    uniformData: file.response.uniformData
+    if (ID === FALLBACK_MATERIAL)
+        submit(FALLBACK_MATERIAL, "materialID")
+    else
+        try {
+            const file = await loadFile(ID)
+            if (!file || !file?.response) {
+                alert.pushAlert("Please, check if material was compiled correctly")
+                return
+            }
+            const exists = RendererStoreController.engine.materials.find(m => m.id === ID)
+            if (!exists) {
+                let newMat
+                await new Promise(resolve => {
+                    newMat = new MaterialInstance({
+                        id: ID,
+                        onCompiled: () => resolve(),
+                        settings: file.response.settings,
+                        vertex: file.response.vertexShader,
+                        fragment: file.response.shader,
+                        uniformData: file.response.uniformData
+                    })
                 })
-            })
-            const newMaterials = [...RendererStoreController.engine.materials, newMat]
-            RendererStoreController.updateEngine({...RendererStoreController.engine, materials: newMaterials})
-            alert.pushAlert(Localization.PROJECT.INSPECTOR.MATERIAL_LOADED, "success")
-            window.renderer.materials = newMaterials
+                const newMaterials = [...RendererStoreController.engine.materials, newMat]
+                RendererStoreController.updateEngine({...RendererStoreController.engine, materials: newMaterials})
+                alert.pushAlert(Localization.PROJECT.INSPECTOR.MATERIAL_LOADED, "success")
+                window.renderer.materials = newMaterials
+            }
+            submit(ID, "materialID")
+        } catch (err) {
+            console.error(err)
         }
-        submit(ID, "materialID")
-    } catch (err) {
-        console.error(err)
-    }
 }

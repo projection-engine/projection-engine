@@ -1,7 +1,6 @@
 <script>
     import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
     import CameraComponent from "../../../../libs/engine/production/templates/components/CameraComponent";
-    import Movable from "../../../../libs/engine/production/templates/basic/Movable";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ProbeComponent from "../../../../libs/engine/production/templates/components/ProbeComponent";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
@@ -14,6 +13,9 @@
     import DirectionalLightComponent
         from "../../../../libs/engine/production/templates/components/DirectionalLightComponent";
     import Entity from "../../../../libs/engine/production/templates/basic/Entity";
+    import MeshComponent from "../../../../libs/engine/production/templates/components/MeshComponent";
+    import STATIC_MESHES from "../../../../libs/engine/static/STATIC_MESHES";
+    import FALLBACK_MATERIAL from "../../../../libs/engine/production/data/FALLBACK_MATERIAL";
 
 
     export let settings
@@ -31,7 +33,11 @@
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
-
+    const createMesh = (id) => {
+        const actor = new Entity(undefined, translate("MESH_RENDERER"))
+        actor.components[COMPONENTS.MESH] = new MeshComponent(undefined, id, FALLBACK_MATERIAL)
+        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+    }
 </script>
 
 <div class="left-content">
@@ -92,6 +98,7 @@
             <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
         </button>
 
+
         <button
                 on:click={() => dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})}
         >
@@ -99,20 +106,42 @@
             {translate("EMPTY_ENTITY")}
         </button>
         <div class={"divider-wrapper"}>
+            {translate("MESHES")}
+            <div data-divider="-"></div>
+        </div>
+        <button on:click={() => createMesh(STATIC_MESHES.CUBE)}>
+            <Icon>view_in_ar</Icon>
+            {translate("CUBE")}
+        </button>
+        <button on:click={() => createMesh(STATIC_MESHES.SPHERE)}>
+            <Icon>view_in_ar</Icon>
+            {translate("ICO_SPHERE")}
+        </button>
+        <button on:click={() => createMesh(STATIC_MESHES.PLANE)}>
+            <Icon>view_in_ar</Icon>
+            {translate("PLANE")}
+        </button>
+        <button on:click={() => createMesh(STATIC_MESHES.CYLINDER)}>
+            <Icon>view_in_ar</Icon>
+            {translate("CYLINDER")}
+        </button>
+
+
+        <div class={"divider-wrapper"}>
             {translate("LIGHTS")}
             <div data-divider="-"></div>
         </div>
         <button
-                on:click={() =>  {
-                        const actor = new Entity(undefined, translate("POINT_LIGHT"))
-                        actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
+            on:click={() =>  {
+                const actor = new Entity(undefined, translate("POINT_LIGHT"))
+                actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
 
-                        actor.translation = window.renderer.cursor.translation
-                        actor.lockedRotation = true
-                        actor.lockedScaling = true
+                actor.translation = window.renderer.cursor.translation
+                actor.lockedRotation = true
+                actor.lockedScaling = true
 
-                        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                    }}
+                dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+            }}
         >
             <Icon>lightbulb</Icon>
             {translate("POINT_LIGHT")}

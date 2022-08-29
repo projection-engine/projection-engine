@@ -10,6 +10,7 @@ export default class HotKeys {
         HotKeys.#onUpdate = () => onUpdate(HotKeys.views.get(HotKeys.activeView))
 
         function handler(event) {
+            const h = HotKeys.holding
 
             if (event.repeat)
                 return
@@ -22,27 +23,33 @@ export default class HotKeys {
             const keysToTest = activeView.actions.length
             if (event.type === "keydown") {
                 if (event.ctrlKey) {
-                    HotKeys.holding.set(KEYS.ControlLeft, true)
-                    HotKeys.holding.set(KEYS.ControlRight, true)
+                    h.set(KEYS.ControlLeft, true)
+                    h.set(KEYS.ControlRight, true)
                 }
 
-                HotKeys.holding.set(event.code, true)
-                console.log(event.code, HotKeys.holding)
+                h.set(event.code, true)
                 for (let i = 0; i < keysToTest; i++) {
                     const currentAction = activeView.actions[i]
                     let valid = true
                     const required = currentAction.require
-                    for (let j = 0; j < required.length; j++)
-                        valid = valid && HotKeys.holding.get(required[j])
-                    if (valid && !currentAction.disabled && currentAction.callback != null)
-                        currentAction.callback()
+                    let toRemove = 0
+                    if(h.get(KEYS.ControlLeft))
+                        toRemove++
+                    if(h.get(KEYS.ShiftLeft))
+                        toRemove++
+                    if(required.length === (h.size - toRemove)) {
+                        for (let j = 0; j < required.length; j++)
+                            valid = valid && h.get(required[j])
+                        if (valid && !currentAction.disabled && currentAction.callback != null)
+                            currentAction.callback()
+                    }
                 }
             } else {
                 if (event.code === KEYS.ControlLeft || event.code === KEYS.ControlRight) {
-                    HotKeys.holding.delete(KEYS.ControlLeft)
-                    HotKeys.holding.delete(KEYS.ControlRight)
+                    h.delete(KEYS.ControlLeft)
+                    h.delete(KEYS.ControlRight)
                 } else
-                    HotKeys.holding.delete(event.code)
+                    h.delete(event.code)
             }
         }
 

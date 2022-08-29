@@ -1,7 +1,6 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
     import {onMount} from "svelte";
-    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
 
     let state = {}
 

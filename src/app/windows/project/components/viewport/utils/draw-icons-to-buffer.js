@@ -2,8 +2,6 @@ import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
 import RendererController from "../../../libs/engine/production/RendererController";
 import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
-import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
-import IconsSystem from "../../../libs/engine/editor/services/IconsSystem";
 import GPU from "../../../libs/engine/production/GPU";
 import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
 

@@ -6,14 +6,12 @@ import FilesAPI from "../../../libs/files/FilesAPI"
 import ViewportActions from "./templates/ViewportActions";
 import RendererController from "../libs/engine/production/RendererController";
 import AssetAPI from "../../../libs/files/AssetAPI";
-import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import SETTINGS from "../data/misc/SETTINGS";
 import CBStoreController from "./CBStoreController";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 import ROUTES from "../../../../assets/ROUTES";
 import CHANNELS from "../../../../assets/CHANNELS";
-import MeshInstance from "../libs/engine/production/libs/instances/MeshInstance";
 import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
 import parseEntityObject from "../libs/engine/editor/utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";

@@ -9,6 +9,7 @@
     import UIElement from "./views/UIElement.svelte";
     import Entity from "../../libs/engine/production/templates/basic/Entity";
     import EntityElement from "./components/EntityElement.svelte";
+    import ComponentLayout from "./components/ComponentLayout.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -17,6 +18,7 @@
     let engine = {}
     let ui = {}
     let parent
+    let savedState = false
     const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
     const unsubscribeUI = UIStoreController.getStore(v => ui = v)
     onDestroy(() => {
@@ -64,6 +66,7 @@
 
 
     {/if}
+
 </Header>
 {#if !hidden}
     <div class="content">
@@ -77,6 +80,30 @@
                             store={ui}
                     />
                 {/if}
+                <ComponentLayout
+                        key="TRANSFORMATION"
+                        translate={translate}
+                        selected={entity}
+                        submit={(key, value, save) => {
+                            if(!savedState){
+                                RendererStoreController.saveEntity(
+                                        engine.selectedEntity.id,
+                                        undefined,
+                                      key,
+                                      value
+                                )
+                                savedState = true
+                            }
+                            entity[key] = value
+                            if(save)
+                                RendererStoreController.saveEntity(
+                                      engine.selectedEntity.id,
+                                      undefined,
+                                      key,
+                                      value
+                                )
+                        }}
+                />
                 <Components
                         translate={translate}
                         engine={engine}

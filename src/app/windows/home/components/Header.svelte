@@ -51,7 +51,7 @@
 
 <div class="title-wrapper">
     <div class="title">
-        <h2>{translate("PROJECTS")}</h2>
+        <div class="header">{translate("PROJECTS")}</div>
         <Input placeholder={translate("SEARCH")} height={"25px"} setSearchString={v => searchString = v}
                searchString={searchString}>
             <Icon slot="icon" styles="font-size: 1rem">
@@ -99,8 +99,9 @@
 </div>
 
 <style>
-    h2{
-        font-size: 1.5rem;
+    .header{
+        font-weight: 550;
+        font-size: 1.3rem;
     }
     .button {
         display: flex;

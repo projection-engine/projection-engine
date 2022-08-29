@@ -11,10 +11,19 @@
     let settings = {}
     let activeView
     let initialized = false
-
+    let isChanging = false
     const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
 
-    onMount(() => HotKeys.initializeListener(v => activeView = v))
+    onMount(() => {
+        HotKeys.initializeListener(v => activeView = v)
+        const e= document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
+        e.isChanging = () => {
+            if(isChanging)
+                return
+            isChanging = true
+        }
+        e.finished = () => isChanging = false
+    })
     onDestroy(() => unsubscribeSettings())
 </script>
 
@@ -23,21 +32,21 @@
         id={SHORTCUTS_ID}
         style={settings.visible.metrics ? undefined :"display: none"}
 >
-    <div>
-        {#if activeView != null}
+
+        {#if activeView != null && !isChanging}
             <div class="active-view">
                 <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
                 <div>{activeView.label}</div>
             </div>
         {/if}
-    </div>
 
-    <div>
+
+
         <div id={INFORMATION_CONTAINER.CONTAINER} class={"info-container"}>
-            <div id={INFORMATION_CONTAINER.FPS}></div>
+            <div id={INFORMATION_CONTAINER.FPS} style={isChanging ? "display: none" : undefined}></div>
             <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
         </div>
-    </div>
+
     <div class="version" on:click={() => shell.openExternal("https://github.com/projection-engine")}>
         {Localization.PROJECT.INFO.VERSION}
     </div>

@@ -5,7 +5,6 @@ import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/production/templates/components/CameraComponent";
 import PointLightComponent from "../../../libs/engine/production/templates/components/PointLightComponent";
-import Movable from "../../../libs/engine/production/templates/basic/Movable";
 import DirectionalLightComponent from "../../../libs/engine/production/templates/components/DirectionalLightComponent";
 import RendererController from "../../../libs/engine/production/RendererController";
 

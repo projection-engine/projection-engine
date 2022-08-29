@@ -1,8 +1,6 @@
 import bindGizmo from "./bind-gizmo";
 import Entity from "../../../libs/engine/production/templates/basic/Entity";
-import Movable from "../../../libs/engine/production/templates/basic/Movable";
 import Transformation from "../../../libs/engine/production/services/Transformation";
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererController from "../../../libs/engine/production/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 

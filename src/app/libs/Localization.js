@@ -68,6 +68,13 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            MESH_RENDERER: "New mesh renderer",
+            CYLINDER: "Cylinder",
+            CUBE: "Cube",
+            PLANE: "Plane",
+            ICO_SPHERE: "Ico sphere",
+
+            MESHES: "Meshes",
             DRAG_DROP: "Drop meshes or scenes",
             PLAY: "Game",
             EDITOR: "Scene Editor",
@@ -308,6 +315,11 @@ export default class Localization {
         },
 
         SELECTOR: {
+            CUBE: "Cube (Embedded)",
+            SPHERE: "Sphere (Embedded)",
+            PLANE: "Plane (Embedded)",
+            CYLINDER: "Cylinder (Embedded)",
+
             EMPTY: "Empty",
             NOTHING: "Nothing found",
             DEFAULT_MATERIAL: "Default material",

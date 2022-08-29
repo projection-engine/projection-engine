@@ -7,7 +7,6 @@
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import loadMaterial from "../utils/load-material";
-    import RendererController from "../../../libs/engine/production/RendererController";
     import GPU from "../../../libs/engine/production/GPU";
 
 
@@ -16,7 +15,6 @@
     export let translate
 
     const loadMesh = async (src) => {
-
         if (!GPU.meshes.get(src.registryID))
             await Loader.load(src.registryID, true)
         submit(src.registryID, "meshID")

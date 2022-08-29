@@ -7,8 +7,6 @@
     import CBStoreController from "../../../stores/CBStoreController";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../utils/get-native-components";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import Movable from "../../../libs/engine/production/templates/basic/Movable";
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import RendererController from "../../../libs/engine/production/RendererController";

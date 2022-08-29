@@ -1,5 +1,4 @@
 import Entity from "../../engine/production/templates/basic/Entity";
-import Movable from "../../engine/production/templates/basic/Movable";
 import COMPONENTS from "../../engine/production/data/COMPONENTS";
 import MeshComponent from "../../engine/production/templates/components/MeshComponent";
 import FALLBACK_MATERIAL from "../../engine/production/data/FALLBACK_MATERIAL";

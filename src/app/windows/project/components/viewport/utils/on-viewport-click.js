@@ -4,7 +4,6 @@ import Conversion from "../../../libs/engine/production/services/Conversion";
 import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
 import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
 import RendererController from "../../../libs/engine/production/RendererController";
-import GPU from "../../../libs/engine/production/GPU";
 
 const  MAX_DELTA = 50
 
@@ -29,7 +28,7 @@ export default function onViewportClick(event, startedCoords, settings, engine, 
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
 
-    const target = event.currentTarget.getBoundingClientRect()
+    const target =  gpu.canvas.parentElement.getBoundingClientRect()
     const coords = [event.clientX - target.left, event.clientY - target.top]
     let picked = pickIcon(coords)
     if (!picked)

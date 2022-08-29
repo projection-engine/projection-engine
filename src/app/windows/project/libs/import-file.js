@@ -1,7 +1,6 @@
 import FilesAPI from "../../../libs/files/FilesAPI"
 import COMPONENTS from "./engine/production/data/COMPONENTS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../stores/RendererStoreController";
 import CBStoreController from "../stores/CBStoreController";
 import FILE_TYPES from "../../../../assets/FILE_TYPES";
 import Loader from "./loader/Loader";

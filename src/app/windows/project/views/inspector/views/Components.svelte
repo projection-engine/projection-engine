@@ -6,7 +6,6 @@
     import CBStoreController from "../../../stores/CBStoreController";
     import componentConstructor from "../../../libs/component-constructor";
     import MeshComponent from "../../../libs/engine/production/templates/components/MeshComponent";
-    import Movable from "../../../libs/engine/production/templates/basic/Movable";
     import loadMaterial from "../utils/load-material";
 
     import Loader from "../../../libs/loader/Loader";
