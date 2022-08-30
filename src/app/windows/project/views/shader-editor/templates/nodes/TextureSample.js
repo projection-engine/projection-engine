@@ -4,6 +4,7 @@ import IMAGE_WORKER_ACTIONS from "../../../../libs/engine/production/data/IMAGE_
 import NODE_TYPES from "../../data/NODE_TYPES"
 import FilesAPI from "../../../../../../libs/files/FilesAPI"
 import RegistryAPI from "../../../../../../libs/files/RegistryAPI";
+import GPU from "../../../../libs/engine/production/controllers/GPU";
 
 
 export const TEXTURE_TYPES = {
@@ -144,7 +145,7 @@ export default class TextureSample extends Node {
                 } else
                     uniformData.push({
                         key: this.uniformName,
-                        data: await window.imageWorker(
+                        data: await GPU.imageWorker(
                             IMAGE_WORKER_ACTIONS.COLOR_TO_IMAGE,
                             {
                                 color: "rgba(128, 128, 128, 1)",
@@ -159,7 +160,7 @@ export default class TextureSample extends Node {
         } else
             uniformData.push({
                 key: this.uniformName,
-                data: await window.imageWorker(
+                data: await GPU.imageWorker(
                     IMAGE_WORKER_ACTIONS.COLOR_TO_IMAGE,
                     {
                         color: "rgba(128, 128, 128, 1)",

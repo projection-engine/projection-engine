@@ -5,6 +5,8 @@ import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/data/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../assets/ROUTES";
+import CBStoreController from "../../windows/project/stores/CBStoreController";
+import GPU from "../../windows/project/libs/engine/production/controllers/GPU";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
@@ -169,17 +171,19 @@ export default class ContentBrowserAPI {
                 case "png":
                 case "jpg":
                 case "jpeg": {
-                    if (!(await NodeFS.exists(newRoot + ".pimg"))) {
+                    if (!(await NodeFS.exists(newRoot + FILE_TYPES.IMAGE))) {
                         const res = `data:image/${type};base64,` + (await FilesAPI.readFile(filePath, "base64"))
                         if (res) {
-                            await NodeFS.write(newRoot + ".pimg", res)
-                            const reduced = await window.imageWorker(IMAGE_WORKER_ACTIONS.RESIZE_IMAGE, {
-                                image: res,
-                                width: 256,
-                                height: 256
-                            })
-                            await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + fileID + ".preview"), reduced)
-                            await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep, "") + ".pimg")
+                            await NodeFS.write(newRoot + FILE_TYPES.IMAGE, res)
+                            const reduced = await GPU.imageWorker(
+                                IMAGE_WORKER_ACTIONS.RESIZE_IMAGE,
+                                {
+                                    image: res,
+                                    width: 256,
+                                    height: 256
+                                })
+                            await NodeFS.write(FilesAPI.resolvePath(CBStoreController.PREVIEW_PATH + FilesAPI.sep + fileID + FILE_TYPES.PREVIEW), reduced)
+                            await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(CBStoreController.ASSETS_PATH + FilesAPI.sep, "") + FILE_TYPES.IMAGE)
                         } else
                             alert.pushAlert("Error importing image", "error")
                     }

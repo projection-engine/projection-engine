@@ -12,6 +12,9 @@ export default class CBStoreController {
     static initialized = false
     static toCut = []
 
+    static get PREVIEW_PATH(){
+        return FilesAPI.path + FilesAPI.sep + "previews"
+    }
     static get ASSETS_PATH() {
         return FilesAPI.path + FilesAPI.sep + "assets"
     }
