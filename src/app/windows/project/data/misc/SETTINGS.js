@@ -7,7 +7,7 @@ import VIEWS from "../../../../components/view/VIEWS";
 const toRad = Math.PI / 180
 export default {
     projectCreationDate: (new Date()).toDateString(),
-
+    loggingEnabled: true,
     iconsVisibility: true,
     gridVisibility: true,
     shadingModel: SHADING_MODELS.DETAIL,

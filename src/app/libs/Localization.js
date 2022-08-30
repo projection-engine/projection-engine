@@ -59,7 +59,9 @@ export default class Localization {
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
-            VERSION: "3.1.1-alpha"
+            VERSION: "3.2.0-alpha",
+            LOGGING_ENABLED: "Error logging",
+            SHOW_ERROR_LOGS: "Show error logs",
         },
         ALERTS: {
             UNDO_SETTINGS: "Undoing settings modification.",

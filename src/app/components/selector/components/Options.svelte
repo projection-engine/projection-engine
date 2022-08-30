@@ -1,7 +1,6 @@
 <script>
 
     import Icon from "../../icon/Icon.svelte";
-    import ToolTip from "../../tooltip/ToolTip.svelte";
     import Input from "../../input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";

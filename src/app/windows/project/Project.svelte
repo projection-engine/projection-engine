@@ -38,6 +38,7 @@
     let isMetadataLoaded = false
 
     onMount(() => {
+
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
             (event, data) => {

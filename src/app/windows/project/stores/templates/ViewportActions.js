@@ -58,8 +58,10 @@ export default class ViewportActions {
                     entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
                 else
                     entity.components[currentAction.component][currentAction.key] = currentAction.changeValue
-            } else
-                entity[currentAction.key] = currentAction.value
+            } else {
+                entity[currentAction.key] = currentAction.changeValue
+                entity.changed = true
+            }
             RendererStoreController.updateEngine()
         } else {
             RendererStoreController.settings = currentAction.changeValue

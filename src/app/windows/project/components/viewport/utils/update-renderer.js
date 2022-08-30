@@ -1,10 +1,6 @@
 import bindGizmo from "./bind-gizmo";
-import Entity from "../../../libs/engine/production/templates/basic/Entity";
-import Transformation from "../../../libs/engine/production/services/Transformation";
 import RendererController from "../../../libs/engine/production/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
-
-
 
 
 export default function updateRenderer( engine, settings) {

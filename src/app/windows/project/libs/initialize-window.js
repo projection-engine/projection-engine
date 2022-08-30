@@ -3,9 +3,11 @@ import FilesAPI from "../../../libs/files/FilesAPI";
 import BOARD_SIZE from "../views/shader-editor/data/BOARD_SIZE";
 import compiler from "../views/shader-editor/libs/compiler";
 import AssetAPI from "../../../libs/files/AssetAPI";
+import ErrorLoggerAPI from "../../../libs/files/ErrorLoggerAPI";
 
 
-export default function InitializeWindow( ) {
+export default function InitializeWindow() {
+    ErrorLoggerAPI.initialize()
     FilesAPI.initializeFolders()
     Math.mat4 = mat4
     Math.mat3 = mat3
@@ -49,15 +51,15 @@ export default function InitializeWindow( ) {
                 compiled, preview, parsedNodes
             } = await this.compile(nodes, links)
             AssetAPI.updateAsset(
-                    openFile.registryID,
-                    JSON.stringify({
-                        nodes: parsedNodes,
-                        links: links,
-                        response: compiled,
-                        type: compiled.variant
-                    }),
-                    preview
-                )
+                openFile.registryID,
+                JSON.stringify({
+                    nodes: parsedNodes,
+                    links: links,
+                    response: compiled,
+                    type: compiled.variant
+                }),
+                preview
+            )
                 .then(() => alert.pushAlert(translate("SAVED"), "success",))
                 .catch(() => alert.pushAlert(translate("ERROR"), "error"))
         }
