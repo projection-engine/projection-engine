@@ -1,5 +1,5 @@
 import bindGizmo from "./bind-gizmo";
-import RendererController from "../../../libs/engine/production/RendererController";
+import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 

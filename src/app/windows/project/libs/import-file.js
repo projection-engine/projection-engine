@@ -6,7 +6,7 @@ import FILE_TYPES from "../../../../assets/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
-import GPU from "./engine/production/GPU";
+import GPU from "./engine/production/controllers/GPU";
 
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()

@@ -7,7 +7,7 @@
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import loadMaterial from "../utils/load-material";
-    import GPU from "../../../libs/engine/production/GPU";
+    import GPU from "../../../libs/engine/production/controllers/GPU";
 
 
     export let selected

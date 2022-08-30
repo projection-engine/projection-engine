@@ -1,4 +1,4 @@
-import Transformation from "../../../libs/engine/production/services/Transformation";
+import Transformation from "../../../libs/engine/production/libs/Transformation";
 import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
 
 export default function updateCursor(coords) {

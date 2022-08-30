@@ -1,22 +1,23 @@
 import GIZMOS from "../../../data/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import Conversion from "../../../libs/engine/production/services/Conversion";
-import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
-import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
-import RendererController from "../../../libs/engine/production/RendererController";
+import Conversion from "../../../libs/engine/production/libs/Conversion";
+import ViewportPicker from "../../../libs/engine/production/libs/ViewportPicker";
+import LoopController from "../../../libs/engine/production/controllers/LoopController";
+import RendererController from "../../../libs/engine/production/controllers/RendererController";
+import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 
 const  MAX_DELTA = 50
 
 function pickIcon(coords) {
     drawIconsToBuffer()
-    const picked = ViewportPicker.depthPick(LoopAPI.renderMap.get("depthPrePass").frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(DepthPass.framebuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
 function pickMesh(x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
     const coords = Conversion.toQuadCoord({x, y}, {w, h})
-    const picked = ViewportPicker.depthPick(LoopAPI.renderMap.get("depthPrePass").frameBuffer, coords)
+    const picked = ViewportPicker.depthPick(DepthPass.framebuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 

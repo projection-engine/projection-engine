@@ -1,5 +1,5 @@
 import GIZMOS from "../../../data/misc/GIZMOS";
-import RendererController from "../../../libs/engine/production/RendererController";
+import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 
 export default function bindGizmo(selected, settings) {

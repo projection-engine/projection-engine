@@ -1,5 +1,5 @@
-import RendererController from "../../libs/engine/production/RendererController";
-import Entity from "../../libs/engine/production/templates/basic/Entity";
+import RendererController from "../../libs/engine/production/controllers/RendererController";
+import Entity from "../../libs/engine/production/templates/Entity";
 import RendererStoreController from "../RendererStoreController";
 import UIStoreController from "../UIStoreController";
 

@@ -4,6 +4,9 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../../stores/RendererStoreController";
     import getComponentIcon from "../../../utils/get-component-icon";
+    import {v4} from "uuid";
+    import GPU from "../../../libs/engine/production/controllers/GPU";
+    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 
     export let key
     export let index
@@ -11,7 +14,25 @@
     export let submit
     export let translate
 
-    $: title =key === "TRANSFORMATION" ? translate("TRANSFORMATION") :( translate(selected.name) ? translate(selected.name) : selected.name)
+    const removeComponent = () => {
+        const entity = RendererStoreController.engine.selectedEntity
+        if (index != null) {
+            entity.scripts[index] = undefined
+            entity.scripts = entity.scripts.filter(e => e)
+            RendererStoreController.updateEngine()
+        } else {
+            delete entity.components[key]
+            if(Object.values(COMPONENTS).find(c => c === entity.instancingGroupID)) {
+                const group = GPU.instancingGroup.get(entity.instancingGroupID)
+                group.entities.delete(entity.id)
+
+                group.updateBuffer()
+                entity.instancingGroupID = undefined
+            }
+            RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
+        }
+    }
+    $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(selected.name) ? translate(selected.name) : selected.name)
 </script>
 
 <Accordion>
@@ -22,16 +43,8 @@
             </Icon>
         </div>
         {title}
-        {#if index != null}
-            <button
-                    class="button"
-                    on:click={() => {
-                        const entity = RendererStoreController.engine.selectedEntity
-                       entity.scripts[index] = undefined
-                       entity.scripts = entity.scripts.filter(e => e)
-                        RendererStoreController.updateEngine()
-                    }}
-            >
+        {#if key !== "TRANSFORMATION"}
+            <button class="button" on:click={removeComponent}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}

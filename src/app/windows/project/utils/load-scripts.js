@@ -1,8 +1,8 @@
 import RendererStoreController from "../stores/RendererStoreController";
 import componentConstructor from "../libs/component-constructor";
 import ENVIRONMENT from "../libs/engine/production/data/ENVIRONMENT";
-import RendererController from "../libs/engine/production/RendererController";
-import UserInterfaceController from "../libs/engine/production/UserInterfaceController";
+import RendererController from "../libs/engine/production/controllers/RendererController";
+import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 
 const {shell} = window.require("electron")
 

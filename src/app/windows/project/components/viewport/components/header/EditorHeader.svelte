@@ -1,19 +1,19 @@
 <script>
     import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
-    import CameraComponent from "../../../../libs/engine/production/templates/components/CameraComponent";
+    import CameraComponent from "../../../../libs/engine/production/templates/CameraComponent";
     import Icon from "../../../../../../components/icon/Icon.svelte";
-    import ProbeComponent from "../../../../libs/engine/production/templates/components/ProbeComponent";
+    import ProbeComponent from "../../../../libs/engine/production/templates/ProbeComponent";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Range from "../../../../../../components/range/Range.svelte";
     import ShadingOption from "./ShadingOption.svelte";
-    import PointLightComponent from "../../../../libs/engine/production/templates/components/PointLightComponent";
+    import PointLightComponent from "../../../../libs/engine/production/templates/PointLightComponent";
     import DirectionalLightComponent
-        from "../../../../libs/engine/production/templates/components/DirectionalLightComponent";
-    import Entity from "../../../../libs/engine/production/templates/basic/Entity";
-    import MeshComponent from "../../../../libs/engine/production/templates/components/MeshComponent";
+        from "../../../../libs/engine/production/templates/DirectionalLightComponent";
+    import Entity from "../../../../libs/engine/production/templates/Entity";
+    import MeshComponent from "../../../../libs/engine/production/templates/MeshComponent";
     import STATIC_MESHES from "../../../../libs/engine/static/STATIC_MESHES";
     import FALLBACK_MATERIAL from "../../../../libs/engine/production/data/FALLBACK_MATERIAL";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";

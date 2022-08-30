@@ -80,7 +80,7 @@
     })
     let timeout
     $: {
-        console.log(links)
+        // console.log(links)
         clearTimeout(timeout)
         timeout = setTimeout(() => onMutation(resolvedLinks, ref, []), 250)
     }

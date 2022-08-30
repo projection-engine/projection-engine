@@ -3,7 +3,7 @@ import FilesAPI from "../../../libs/files/FilesAPI"
 import RendererStoreController from "../stores/RendererStoreController";
 import BundlerAPI from "./engine/production/libs/apis/BundlerAPI";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
-import Entity from "./engine/production/templates/basic/Entity";
+import Entity from "./engine/production/templates/Entity";
 import UIStoreController from "../stores/UIStoreController";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {

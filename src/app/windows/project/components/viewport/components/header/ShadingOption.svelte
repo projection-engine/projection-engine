@@ -4,7 +4,13 @@
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopAPI from "../../../../libs/engine/production/libs/apis/LoopAPI";
+    import LoopController from "../../../../libs/engine/production/controllers/LoopController";
+    import CompositePass from "../../../../libs/engine/production/templates/passes/CompositePass";
+    import GPU from "../../../../libs/engine/production/controllers/GPU";
+    import STATIC_FRAMEBUFFERS from "../../../../libs/engine/static/STATIC_FRAMEBUFFERS";
+    import DepthPass from "../../../../libs/engine/production/templates/passes/DepthPass";
+    import DeferredPass from "../../../../libs/engine/production/templates/passes/DeferredPass";
+    import AOPass from "../../../../libs/engine/production/templates/passes/AOPass";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -52,22 +58,22 @@
     const getTexture = () => {
         switch (shadingModel) {
             case SHADING_MODELS.DEPTH:
-                return LoopAPI.renderMap.get("depthPrePass").depth
+                return DepthPass.depth
             case SHADING_MODELS.AO:
-                return LoopAPI.renderMap.get("ao").texture
+                return AOPass.filteredSampler
             case SHADING_MODELS.NORMAL:
-                return LoopAPI.renderMap.get("deferred").frameBuffer.colors[1]
+                return DeferredPass.normalSampler
             case SHADING_MODELS.ALBEDO:
-                return LoopAPI.renderMap.get("deferred").frameBuffer.colors[2]
+                return DeferredPass.albedoSampler
         }
 
     }
     $: {
         if (window.renderer) {
             if (shadingModel !== SHADING_MODELS.DETAIL)
-                LoopAPI.ppMap.get("finalPass").workerTexture = getTexture()
+                CompositePass.workerTexture = getTexture()
             else
-                LoopAPI.ppMap.get("finalPass").workerTexture = LoopAPI.ppMap.get("worker").colors[0]
+                CompositePass.workerTexture = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER).colors[0]
         }
         if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
             shadingModel = SHADING_MODELS.DETAIL

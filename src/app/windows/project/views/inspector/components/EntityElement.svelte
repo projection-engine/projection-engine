@@ -9,11 +9,11 @@
     import getNativeComponents from "../utils/get-native-components";
     import componentConstructor from "../../../libs/component-constructor";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import RendererController from "../../../libs/engine/production/RendererController";
-    import Entity from "../../../libs/engine/production/templates/basic/Entity";
+    import RendererController from "../../../libs/engine/production/controllers/RendererController";
+    import Entity from "../../../libs/engine/production/templates/Entity";
     import EntityNameController from "../../../stores/templates/EntityNameController";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import GPU from "../../../libs/engine/production/GPU";
+    import GPU from "../../../libs/engine/production/controllers/GPU";
 
     const nativeComponents = getNativeComponents()
 

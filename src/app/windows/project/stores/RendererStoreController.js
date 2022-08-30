@@ -3,8 +3,8 @@ import {settingsStore} from "./templates/settings-store";
 import ENGINE from "../data/misc/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
-import ViewportActions from "./templates/ViewportActions";
-import RendererController from "../libs/engine/production/RendererController";
+import EngineHistory from "./templates/EngineHistory";
+import RendererController from "../libs/engine/production/controllers/RendererController";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import SETTINGS from "../data/misc/SETTINGS";
 import CBStoreController from "./CBStoreController";
@@ -15,18 +15,18 @@ import CHANNELS from "../../../../assets/CHANNELS";
 import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
 import parseEntityObject from "../libs/engine/editor/utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UserInterfaceController from "../libs/engine/production/UserInterfaceController";
+import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 import UIStoreController from "./UIStoreController";
 import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
 import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
-import GPU from "../libs/engine/production/GPU";
+import GPU from "../libs/engine/production/controllers/GPU";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false
 export default class RendererStoreController {
     static engine = ENGINE
     static settings = SETTINGS
-    static history = new ViewportActions()
+    static history = new EngineHistory()
 
     static undo() {
         RendererStoreController.history.undo()
@@ -39,7 +39,7 @@ export default class RendererStoreController {
     static saveEntity(entityID, component, key, changeValue) {
 
         RendererStoreController.history.pushChange({
-            target: ViewportActions.targets.entity,
+            target: EngineHistory.targets.entity,
             changeValue,
             entityID,
             component,
@@ -64,11 +64,11 @@ export default class RendererStoreController {
 
         if (initialized) {
             RendererStoreController.history.pushChange({
-                target: ViewportActions.targets.settings,
+                target: EngineHistory.targets.settings,
                 changeValue: RendererStoreController.settings
             })
             RendererStoreController.history.pushChange({
-                target: ViewportActions.targets.settings,
+                target: EngineHistory.targets.settings,
                 changeValue: value
             })
         }
@@ -82,8 +82,6 @@ export default class RendererStoreController {
         let updated = {...value}
         if (!updated.lockedEntity)
             updated.lockedEntity = updated.selected[0] ? updated.selected[0] : Array.from(updated.entities.values()).find(e => !e.parent)?.id
-
-
         if (updated.selected.length > 0 || updated.lockedEntity)
             updated.selectedEntity = updated.entities.get(updated.selected[0] ? updated.selected[0] : updated.lockedEntity)
         else

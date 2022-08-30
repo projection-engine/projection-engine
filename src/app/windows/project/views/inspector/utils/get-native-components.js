@@ -1,9 +1,9 @@
 import getComponentIcon from "../../../utils/get-component-icon";
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import DirectionalLightComponent from "../../../libs/engine/production/templates/components/DirectionalLightComponent";
-import PointLightComponent from "../../../libs/engine/production/templates/components/PointLightComponent";
-import CameraComponent from "../../../libs/engine/production/templates/components/CameraComponent";
-import MeshComponent from "../../../libs/engine/production/templates/components/MeshComponent";
+import DirectionalLightComponent from "../../../libs/engine/production/templates/DirectionalLightComponent";
+import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
+import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
+import MeshComponent from "../../../libs/engine/production/templates/MeshComponent";
 
 export default function getNativeComponents(){
     return [

@@ -3,11 +3,11 @@ import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../assets/FILE_TYPES";
 import CBStoreController from "../../stores/CBStoreController";
-import Entity from "../engine/production/templates/basic/Entity";
+import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
-import GPU from "../engine/production/GPU";
+import GPU from "../engine/production/controllers/GPU";
 import EditorRenderer from "../engine/editor/EditorRenderer";
 
 export default class Loader {

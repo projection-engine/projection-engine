@@ -9,7 +9,7 @@
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import dragDrop from "../../../../../components/drag-drop";
     import {v4} from "uuid";
-    import Entity from "../../../libs/engine/production/templates/basic/Entity";
+    import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 
     export let ID

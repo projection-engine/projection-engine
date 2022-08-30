@@ -5,7 +5,8 @@ import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
 import AXIS from "../../libs/engine/editor/data/AXIS";
 import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
-import GPU from "../../libs/engine/production/GPU";
+import GPU from "../../libs/engine/production/controllers/GPU";
+import EngineHistory from "./EngineHistory";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -22,13 +23,18 @@ export const ENTITY_ACTIONS = {
 export default function dispatchRendererEntities({type, payload}) {
     const engine = RendererStoreController.engine
     const state = engine.entities
+    function save(){
+        RendererStoreController.history.pushBlockChange(Array.from(state.values()))
+    }
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
+            save()
             engine.fixedEntity = undefined
             engine.selected = []
 
             const entity = state.get(payload)
             removeHierarchy(state, entity)
+            save()
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
             const values = state.values()
@@ -43,25 +49,30 @@ export default function dispatchRendererEntities({type, payload}) {
             break
         }
         case ENTITY_ACTIONS.ADD: {
+            save()
             const entity = payload
             state.set(entity.id, entity)
             EntityNameController.renameEntity(entity.name, entity)
             engine.fixedEntity = undefined
             engine.selected = [entity.id]
+            save()
             break
+
         }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
+            save()
             const block = payload
             engine.selected = []
             engine.fixedEntity = undefined
 
-            if (Array.isArray(block)) {
+            if (Array.isArray(block))
                 for (let i = 0; i < block.length; i++) {
                     const currentID = block[i]
                     const entity = state.get(currentID)
                     removeHierarchy(state, entity)
                 }
-            }
+
+            save()
             break
         }
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
@@ -70,6 +81,8 @@ export default function dispatchRendererEntities({type, payload}) {
                 state.clear()
                 EntityNameController.byName.clear()
             }
+            else
+                save()
             const block = payload
             const selected = []
             if (Array.isArray(block))
@@ -82,6 +95,7 @@ export default function dispatchRendererEntities({type, payload}) {
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {
                 engine.fixedEntity = undefined
                 engine.selected = selected
+                save()
             }
             break
         }

@@ -6,10 +6,10 @@ export default class ErrorLoggerAPI{
         return localStorage.getItem("basePath") + FilesAPI.sep + ERROR_LOG_FILE
     }
     static initialize(){
-        console.error = (...messages) => {
-            const p = ErrorLoggerAPI.path
-            FilesAPI.writeFile(p, JSON.stringify(messages), true).catch()
-            console.error(...messages)
-        }
+        // console.error = (...messages) => {
+        //     const p = ErrorLoggerAPI.path
+        //     FilesAPI.writeFile(p, JSON.stringify(messages), true).catch()
+        //     console.error(...messages)
+        // }
     }
 }

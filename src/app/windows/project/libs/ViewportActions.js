@@ -1,6 +1,6 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import RendererStoreController from "../stores/RendererStoreController";
-import RendererController from "./engine/production/RendererController";
+import RendererController from "./engine/production/controllers/RendererController";
 import CameraTracker from "./engine/editor/libs/CameraTracker";
 
 export default class ViewportActions {
@@ -36,7 +36,7 @@ export default class ViewportActions {
         const engineCopy = {...engine}
         for (let i in engineCopy.selected)
             notValid[engineCopy.selected[i]] = true
-        const entities = window.renderer.entities
+        const entities = Array.from(RendererController.entitiesMap.values())
 
         for (let i = 0; i < entities.length; i++) {
             if (!notValid[entities[i].id])

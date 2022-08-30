@@ -1,6 +1,6 @@
-import Entity from "../../engine/production/templates/basic/Entity";
+import Entity from "../../engine/production/templates/Entity";
 import COMPONENTS from "../../engine/production/data/COMPONENTS";
-import MeshComponent from "../../engine/production/templates/components/MeshComponent";
+import MeshComponent from "../../engine/production/templates/MeshComponent";
 import FALLBACK_MATERIAL from "../../engine/production/data/FALLBACK_MATERIAL";
 
 export default function initializeEntity(data, meshID, parent, index=0) {

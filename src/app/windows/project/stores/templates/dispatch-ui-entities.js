@@ -1,6 +1,6 @@
 import {v4} from "uuid"
 import UIStoreController from "../UIStoreController";
-import UserInterfaceController from "../../libs/engine/production/UserInterfaceController";
+import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
 import {ENTITY_ACTIONS} from "./dispatch-renderer-entities";
 import removeHierarchy from "../utils/remove-hierarchy";
 

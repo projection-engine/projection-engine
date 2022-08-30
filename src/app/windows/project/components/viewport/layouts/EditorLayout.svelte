@@ -1,8 +1,8 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../data/misc/RENDER_TARGET";
-    import Conversion from "../../../libs/engine/production/services/Conversion";
-    import ViewportPicker from "../../../libs/engine/production/services/ViewportPicker";
+    import Conversion from "../../../libs/engine/production/libs/Conversion";
+    import ViewportPicker from "../../../libs/engine/production/libs/ViewportPicker";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
@@ -14,9 +14,10 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
+    import LoopController from "../../../libs/engine/production/controllers/LoopController";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop";
+    import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -113,7 +114,7 @@
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {
             drawIconsToBuffer()
-            const depthFBO = LoopAPI.renderMap.get("depthPrePass").frameBuffer
+            const depthFBO = DepthPass.framebuffer
             const size = {
                 w: depthFBO.width,
                 h: depthFBO.height

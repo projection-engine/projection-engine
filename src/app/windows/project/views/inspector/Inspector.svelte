@@ -7,7 +7,7 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import UIStoreController from "../../stores/UIStoreController";
     import UIElement from "./views/UIElement.svelte";
-    import Entity from "../../libs/engine/production/templates/basic/Entity";
+    import Entity from "../../libs/engine/production/templates/Entity";
     import EntityElement from "./components/EntityElement.svelte";
     import ComponentLayout from "./components/ComponentLayout.svelte";
 

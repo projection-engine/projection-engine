@@ -1,7 +1,7 @@
 import dispatchUiEntities from "../../../stores/templates/dispatch-ui-entities";
 import {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import UIElement from "../../../libs/engine/production/templates/basic/UIElement";
-import UserInterfaceController from "../../../libs/engine/production/UserInterfaceController";
+import UIElement from "../../../libs/engine/production/templates/UIElement";
+import UserInterfaceController from "../../../libs/engine/production/controllers/UserInterfaceController";
 
 
 function createElement(parent) {

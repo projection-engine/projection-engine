@@ -4,10 +4,11 @@
     import Localization from "../../../../libs/Localization";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopAPI from "../../libs/engine/production/libs/apis/LoopAPI";
+    import LoopController from "../../libs/engine/production/controllers/LoopController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
+    import MetricsPass from "../../libs/engine/production/templates/passes/MetricsPass";
 
     export let isReady = false
 
@@ -30,7 +31,7 @@
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
-    $: if (isReady) LoopAPI.miscMap.get("metrics").renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
+    $: if (isReady) MetricsPass.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     $: {
         if (isReady) {
             if (settings.visible.sideBarViewport && settings.viewportTab === VIEWPORT_TABS.EDITOR)
@@ -40,7 +41,6 @@
         }
     }
 </script>
-
 
 <div class="viewport">
     {#if !engine.executingAnimation}
@@ -53,9 +53,14 @@
     <div class="wrapper">
         <slot name="canvas"/>
         {#if settings.viewportTab === VIEWPORT_TABS.EDITOR && isReady}
-            <EditorLayout settings={settings} engine={engine} translate={translate} isReady={isReady}/>
+            <EditorLayout
+                    settings={settings}
+                    engine={engine}
+                    translate={translate}
+                    isReady={isReady}
+            />
         {:else if settings.viewportTab === VIEWPORT_TABS.UI}
-            <UILayout />
+            <UILayout/>
         {/if}
 
     </div>

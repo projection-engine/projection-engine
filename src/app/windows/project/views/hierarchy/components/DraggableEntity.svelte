@@ -5,8 +5,9 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
-    import Entity from "../../../libs/engine/production/templates/basic/Entity";
+    import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+    import EngineHistory from "../../../stores/templates/EngineHistory";
 
     export let node
     export let lockedEntity
@@ -25,6 +26,7 @@
             onDragStart: () => node,
             onDrop: (entityDragged, event) => {
                 if (event.ctrlKey) {
+
                     if (entityDragged.parent)
                         entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
                     entityDragged.parent = node

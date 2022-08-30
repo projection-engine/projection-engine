@@ -1,16 +1,17 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import LoopAPI from "../../../libs/engine/production/libs/apis/LoopAPI";
-import RendererController from "../../../libs/engine/production/RendererController";
+import LoopController from "../../../libs/engine/production/controllers/LoopController";
+import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
-import GPU from "../../../libs/engine/production/GPU";
+import GPU from "../../../libs/engine/production/controllers/GPU";
 import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
+import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 
 export default function drawIconsToBuffer() {
-    const depthSystem = LoopAPI.renderMap.get("depthPrePass")
+
     const entities = Array.from(RendererController.entitiesMap.values())
 
-    const shader = depthSystem.shader
-    const FBO = depthSystem.frameBuffer
+    const shader = DepthPass.shader
+    const FBO = DepthPass.framebuffer
     FBO.startMapping(undefined, undefined, false)
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]

@@ -9,10 +9,10 @@
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import HotKeys from "../metrics/libs/HotKeys";
-    import UserInterfaceController from "../../libs/engine/production/UserInterfaceController";
+    import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import UIStoreController from "../../stores/UIStoreController";
-    import GPU from "../../libs/engine/production/GPU";
+    import GPU from "../../libs/engine/production/controllers/GPU";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -31,10 +31,10 @@
         HotKeys.bindAction(
             canvasRef,
             getHotkeys(),
-            "window",
+            "public",
             Localization.PROJECT.VIEWPORT.TITLE
         )
-        GPU.initializeContext(canvasRef)
+        GPU.initializeContext(canvasRef, settings.resolution)
             .then(() => {
                 window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
                 onReady()

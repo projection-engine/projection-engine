@@ -5,13 +5,13 @@
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import CBStoreController from "../../../stores/CBStoreController";
     import componentConstructor from "../../../libs/component-constructor";
-    import MeshComponent from "../../../libs/engine/production/templates/components/MeshComponent";
+    import MeshComponent from "../../../libs/engine/production/templates/MeshComponent";
     import loadMaterial from "../utils/load-material";
 
     import Loader from "../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
-    import Entity from "../../../libs/engine/production/templates/basic/Entity";
-    import UIElement from "../../../libs/engine/production/templates/basic/UIElement";
+    import Entity from "../../../libs/engine/production/templates/Entity";
+    import UIElement from "../../../libs/engine/production/templates/UIElement";
     import dragDrop from "../../../../../components/drag-drop";
 
 
