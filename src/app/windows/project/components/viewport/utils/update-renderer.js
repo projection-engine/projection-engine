@@ -27,7 +27,6 @@ export default function updateRenderer( engine, settings) {
     RendererController.entitiesMap = entities
     renderer.materials = materials
     CameraTracker.animated = settings.cameraAnimation
-    renderer.gizmo = settings.gizmo
 
 
     renderer.updatePackage(

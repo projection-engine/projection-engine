@@ -1,5 +1,3 @@
-import Component from "../windows/project/libs/engine/production/templates/Component";
-
 export default class Localization {
     static HOME = {
         HOME: {
