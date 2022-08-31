@@ -1,10 +1,9 @@
 <script>
-    import ViewportSettings from "./components/Header.svelte";
+    import Header from "./components/Header.svelte";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Localization from "../../../../libs/Localization";
     import RendererStoreController from "../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopController from "../../libs/engine/production/controllers/LoopController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
@@ -44,7 +43,7 @@
 
 <div class="viewport">
     {#if !engine.executingAnimation}
-        <ViewportSettings
+        <Header
                 engine={engine}
                 translate={translate}
                 settings={settings}

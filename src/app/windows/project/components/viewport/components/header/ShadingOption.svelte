@@ -4,7 +4,6 @@
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
-    import LoopController from "../../../../libs/engine/production/controllers/LoopController";
     import CompositePass from "../../../../libs/engine/production/templates/passes/CompositePass";
     import GPU from "../../../../libs/engine/production/controllers/GPU";
     import STATIC_FRAMEBUFFERS from "../../../../libs/engine/static/STATIC_FRAMEBUFFERS";

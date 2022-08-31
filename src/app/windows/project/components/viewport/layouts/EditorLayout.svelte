@@ -14,7 +14,6 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import LoopController from "../../../libs/engine/production/controllers/LoopController";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop";
     import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";

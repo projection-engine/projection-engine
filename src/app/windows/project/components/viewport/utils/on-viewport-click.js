@@ -2,7 +2,6 @@ import GIZMOS from "../../../data/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
 import Conversion from "../../../libs/engine/production/libs/Conversion";
 import ViewportPicker from "../../../libs/engine/production/libs/ViewportPicker";
-import LoopController from "../../../libs/engine/production/controllers/LoopController";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 

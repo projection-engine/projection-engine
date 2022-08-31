@@ -41,10 +41,7 @@
 {#if view.navigation}
     <div class="button-group" style="width: 100%">
         <div class="button-group">
-            <button
-                    class="settings-button"
-                    on:click={() => navigationHistory.returnDir()}
-            >
+            <button class="settings-button" on:click={() => navigationHistory.returnDir()}>
                 <Icon>arrow_back</Icon>
                 <ToolTip content={translate("BACK_DIR")}/>
             </button>
@@ -215,6 +212,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 2px;
+
     }
 
 </style>

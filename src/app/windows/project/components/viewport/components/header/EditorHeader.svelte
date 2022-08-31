@@ -10,13 +10,13 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import ShadingOption from "./ShadingOption.svelte";
     import PointLightComponent from "../../../../libs/engine/production/templates/PointLightComponent";
-    import DirectionalLightComponent
-        from "../../../../libs/engine/production/templates/DirectionalLightComponent";
+    import DirectionalLightComponent from "../../../../libs/engine/production/templates/DirectionalLightComponent";
     import Entity from "../../../../libs/engine/production/templates/Entity";
     import MeshComponent from "../../../../libs/engine/production/templates/MeshComponent";
     import STATIC_MESHES from "../../../../libs/engine/static/STATIC_MESHES";
     import FALLBACK_MATERIAL from "../../../../libs/engine/production/data/FALLBACK_MATERIAL";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
+    import SpriteComponent from "../../../../libs/engine/production/templates/SpriteComponent";
 
 
     export let settings
@@ -133,7 +133,7 @@
             <div data-divider="-"></div>
         </div>
         <button
-            on:click={() =>  {
+                on:click={() =>  {
                 const actor = new Entity(undefined, translate("POINT_LIGHT"))
                 actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
 
@@ -196,6 +196,17 @@
         >
             <Icon>videocam</Icon>
             {translate("CAMERA")}
+        </button>
+        <button
+                on:click={() => {
+                    const actor = new Entity(undefined, translate("SPRITE_RENDERER"))
+                    actor.components[COMPONENTS.SPRITE] = new SpriteComponent()
+
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
+                }}
+        >
+            <Icon>image</Icon>
+            {translate("SPRITE")}
         </button>
     </Dropdown>
 </div>

@@ -6,7 +6,6 @@ import EntityNameController from "./EntityNameController";
 import AXIS from "../../libs/engine/editor/data/AXIS";
 import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
 import GPU from "../../libs/engine/production/controllers/GPU";
-import EngineHistory from "./EngineHistory";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",

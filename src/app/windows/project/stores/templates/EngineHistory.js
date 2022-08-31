@@ -1,7 +1,6 @@
 import RendererStoreController from "../RendererStoreController";
 import {settingsStore} from "./settings-store";
 import Localization from "../../../../libs/Localization";
-import {engine} from "./engine-store";
 import {v4} from "uuid";
 
 const MAX_DEPTH = 10

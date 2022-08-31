@@ -1,3 +1,5 @@
+import Component from "../windows/project/libs/engine/production/templates/Component";
+
 export default class Localization {
     static HOME = {
         HOME: {
@@ -72,6 +74,8 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            SPRITE: "Sprite",
+            SPRITE_RENDERER: "New sprite renderer",
             MESH_RENDERER: "New mesh renderer",
             CYLINDER: "Cylinder",
             CUBE: "Cube",
@@ -141,7 +145,7 @@ export default class Localization {
         },
         HIERARCHY: {
             TRANSFORM: "Transformation",
-            DIRECTIONAL_LIGHT:"Directional Light",
+            DIRECTIONAL_LIGHT: "Directional Light",
             POINT_LIGHT: "Point Light",
             MESH: "Mesh",
             CAMERA: "Camera",
@@ -259,7 +263,18 @@ export default class Localization {
             MESH: "Mesh",
             POINT_LIGHT: "Point Light",
             PROBE: "Probe",
-            TRANSFORMATION: "Transformation"
+            TRANSFORMATION: "Transformation",
+
+            IMAGE: "Image",
+            COLOR: "Color",
+            USE_IMAGE_COLORS: "Keep image colors",
+            COLOR_TO_OVERRIDE: "Color to override",
+
+            BACKGROUND: "Background",
+            BACKGROUND_COLOR: "Background color",
+            ALPHA: "Alpha",
+            ALWAYS_FACE_CAMERA: "Always face camera"
+
         },
         FILES: {
             NEW_UI_LAYOUT: "New UI Layout",

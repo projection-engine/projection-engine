@@ -12,7 +12,6 @@
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../assets/ROUTES";
-    import VIEWS from "../../components/view/VIEWS";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
 
     const {ipcRenderer} = window.require("electron")

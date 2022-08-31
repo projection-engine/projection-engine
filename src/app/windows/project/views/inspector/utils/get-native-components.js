@@ -4,12 +4,14 @@ import DirectionalLightComponent from "../../../libs/engine/production/templates
 import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
 import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
 import MeshComponent from "../../../libs/engine/production/templates/MeshComponent";
+import SpriteComponent from "../../../libs/engine/production/templates/SpriteComponent";
 
 export default function getNativeComponents(){
     return [
         [COMPONENTS.MESH, MeshComponent, "Mesh", getComponentIcon(COMPONENTS.MESH)],
         [COMPONENTS.CAMERA, CameraComponent, "Camera", getComponentIcon(COMPONENTS.CAMERA)],
         [COMPONENTS.POINT_LIGHT, PointLightComponent, "Point Light", getComponentIcon(COMPONENTS.POINT_LIGHT)],
-        [COMPONENTS.DIRECTIONAL_LIGHT, DirectionalLightComponent, "Directional Light", getComponentIcon(COMPONENTS.DIRECTIONAL_LIGHT)]
+        [COMPONENTS.DIRECTIONAL_LIGHT, DirectionalLightComponent, "Directional Light", getComponentIcon(COMPONENTS.DIRECTIONAL_LIGHT)],
+        [COMPONENTS.SPRITE, SpriteComponent, "Sprite", getComponentIcon(COMPONENTS.SPRITE)]
     ]
 }

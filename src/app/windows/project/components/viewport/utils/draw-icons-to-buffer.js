@@ -1,5 +1,4 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import LoopController from "../../../libs/engine/production/controllers/LoopController";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
 import GPU from "../../../libs/engine/production/controllers/GPU";

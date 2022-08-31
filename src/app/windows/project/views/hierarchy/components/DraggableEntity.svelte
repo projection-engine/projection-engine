@@ -7,7 +7,6 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-    import EngineHistory from "../../../stores/templates/EngineHistory";
 
     export let node
     export let lockedEntity

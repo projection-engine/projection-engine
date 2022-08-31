@@ -14,6 +14,8 @@ export default function getComponentIcon(key, component) {
             return "lens_blur"
         case "TRANSFORMATION":
             return "transformation"
+        case COMPONENTS.SPRITE:
+            return "image"
         default:
             return component.icon ? component.icon : "category"
     }
