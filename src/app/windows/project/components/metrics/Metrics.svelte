@@ -8,6 +8,7 @@
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../../../libs/files/ErrorLoggerAPI";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
 
     const {shell} = window.require("electron")
     let settings = {}
@@ -40,6 +41,7 @@
         <div class="active-view">
             <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
             <div>{activeView.label}</div>
+            <ToolTip content={translate("ACTIVE_SHORTCUTS")}/>
         </div>
     {/if}
 

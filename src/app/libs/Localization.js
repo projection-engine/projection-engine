@@ -11,7 +11,8 @@ export default class Localization {
             CREATE: "Create project",
             EMPTY: "No projects found",
             SEARCH: "Search",
-            PROJECT_CREATED: "Project created"
+            PROJECT_CREATED: "Project created",
+            DONE: "Done"
         },
 
         CARD: {
@@ -59,6 +60,7 @@ export default class Localization {
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
+            ACTIVE_SHORTCUTS: "Hotkeys: Active view",
             VERSION: "3.2.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",

@@ -2,6 +2,7 @@ import SHADING_MODELS from "./SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../../../components/view/VIEWS";
+import VIEWPORT_TABS from "./VIEWPORT_TABS";
 
 
 const toRad = Math.PI / 180
@@ -11,6 +12,7 @@ export default {
     iconsVisibility: true,
     gridVisibility: true,
     shadingModel: SHADING_MODELS.DETAIL,
+    viewportTab: VIEWPORT_TABS.EDITOR,
 
     gizmo: GIZMOS.TRANSLATION,
 
@@ -58,12 +60,26 @@ export default {
     cameraAnimation: true,
     background: true,
     // VIEWS
-    views: [{
-        name: "Default",
-        bottom: [VIEWS.FILES, VIEWS.CONSOLE],
-        left: [],
-        right: [VIEWS.HIERARCHY, VIEWS.COMPONENT]
-    }],
+    views: [
+        {
+            name: "Level",
+            bottom: [VIEWS.FILES],
+            left: [],
+            right: [VIEWS.HIERARCHY, VIEWS.COMPONENT]
+        },
+        {
+            name: "Debug",
+            bottom: [VIEWS.CONSOLE],
+            left: [],
+            right: []
+        },
+        {
+            name: "Shading",
+            bottom: [VIEWS.BLUEPRINT],
+            left: [],
+            right: [VIEWS.HIERARCHY, VIEWS.COMPONENT]
+        }
+    ],
     currentView: 0,
     INITIALIZED: false,
     visible: {

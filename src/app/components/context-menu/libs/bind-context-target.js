@@ -1,15 +1,17 @@
+import HotKeys from "../../../windows/project/components/metrics/libs/HotKeys";
+
 export default function bindContextTarget(targetID, triggers, onFocus) {
     return {
 
         rebind: (options) => {
-            window.contextMenu.targets[targetID] = {
+            HotKeys.data.targets[targetID] = {
                 options,
                 triggers,
                 onFocus
             }
         },
         onDestroy() {
-            delete window.contextMenu.targets[targetID]
+            delete HotKeys.data.targets[targetID]
         }
     }
 }

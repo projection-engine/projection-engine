@@ -23,6 +23,8 @@ export const ENTITY_ACTIONS = {
 export default function dispatchRendererEntities({type, payload}) {
     const engine = RendererStoreController.engine
     const state = engine.entities
+    let changeID = v4()
+
     function save(){
         RendererStoreController.history.pushBlockChange(Array.from(state.values()))
     }
@@ -139,8 +141,5 @@ export default function dispatchRendererEntities({type, payload}) {
 
     }
 
-    const changeID = v4()
-
-    const changes = {...engine, entities: state, changeID}
-    RendererStoreController.updateEngine(changes)
+    RendererStoreController.updateEngine({...engine, entities: state, changeID})
 }

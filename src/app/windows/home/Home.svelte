@@ -99,7 +99,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        background-color: var(--pj-background-secondary);
+        background-color: var(--pj-background-tertiary);
     }
 
     .wrapper-projects {

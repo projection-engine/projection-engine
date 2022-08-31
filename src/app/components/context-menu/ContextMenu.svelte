@@ -1,6 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import Options from "./components/Options.svelte";
+    import HotKeys from "../../windows/project/components/metrics/libs/HotKeys";
 
     const RIGHT_BUTTON = 2
 
@@ -29,7 +30,7 @@
     }
 
     const handleContext = (event) => {
-        if (startPosition && !locked && window.contextMenu?.focused) {
+        if (startPosition && !locked && HotKeys.data.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
@@ -44,7 +45,7 @@
                         const attr = attributes[i]
                         if (!attr.nodeName.includes("data-"))
                             continue
-                        const has = window.contextMenu.focused.triggers.find(f => attr.nodeName === f)
+                        const has = HotKeys.data.focused.triggers.find(f => attr.nodeName === f)
 
                         if (has)
                             hasAttribute = hasAttribute || has
@@ -59,15 +60,15 @@
                 if (targetElement) {
                     let trigger
                     Array.from(targetElement.attributes).forEach((attr) => {
-                        const has = window.contextMenu.focused.triggers.find((f) => attr.nodeName === f)
+                        const has = HotKeys.data.focused.triggers.find((f) => attr.nodeName === f)
                         if (has)
                             trigger = has
                     })
 
                     open = true
                     contextProps = {
-                        options: window.contextMenu.focused.options,
-                        onFocus: window.contextMenu.focused.onFocus,
+                        options: HotKeys.data.focused.options,
+                        onFocus: HotKeys.data.focused.onFocus,
                         selected: targetElement,
                         trigger,
                         event,
@@ -89,13 +90,13 @@
             const elements = document.elementsFromPoint(event.clientX, event.clientY)
             let focused
             for (let i = 0; i < elements.length; i++) {
-                if (!window.contextMenu.targets[elements[i].id])
+                if (!HotKeys.data.targets[elements[i].id])
                     continue
-                focused = window.contextMenu.targets[elements[i].id]
+                focused = HotKeys.data.targets[elements[i].id]
             }
             if (focused) {
                 startPosition = {x: event.clientX, y: event.clientY}
-                window.contextMenu.focused = focused
+                HotKeys.data.focused = focused
             }
         } else if (!contextMenu.contains(event.target)) {
             open = false

@@ -7,6 +7,7 @@ import ErrorLoggerAPI from "../../../libs/files/ErrorLoggerAPI";
 
 
 export default function InitializeWindow() {
+
     ErrorLoggerAPI.initialize()
     FilesAPI.initializeFolders()
     Math.mat4 = mat4
@@ -15,7 +16,7 @@ export default function InitializeWindow() {
     Math.vec3 = vec3
     Math.quat = quat
 
-    window.contextMenu = {targets: {}, focused: undefined}
+
     window.shaderEditor = {
         scale: 1,
         grid: 1,

@@ -39,7 +39,7 @@
     const portal = createPortal(999)
     $: openInput ? portal.open() : portal.close()
     onMount(() => {
-        portal.create(modal)
+        portal.create(modal, {backdropFilter: "blur(2px)"})
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
@@ -49,70 +49,77 @@
 </script>
 
 
-<div class="title-wrapper">
+<div class="wrapper">
     <div class="title">
         <div class="header">{translate("PROJECTS")}</div>
-        <Input placeholder={translate("SEARCH")} height={"25px"} setSearchString={v => searchString = v}
-               searchString={searchString}>
+        <Input
+                hasBorder="true"
+                placeholder={translate("SEARCH")}
+                height={"30px"}
+                setSearchString={v => searchString = v}
+                searchString={searchString}>
             <Icon slot="icon" styles="font-size: 1rem">
                 search
             </Icon>
         </Input>
     </div>
 
-    <div class="input-creation">
-
-        <button
-                on:click={() => openInput = !openInput}
-                class="button"
-        >
-
-            <Icon>add</Icon>
-            {translate("CREATE")}
-        </button>
-    </div>
+    <button on:click={() => openInput = !openInput} data-focusbutton="-">
+        <Icon>add</Icon>
+        {translate("CREATE")}
+    </button>
 </div>
 <div bind:this={modal} class="modal">
     <div class="container">
         <div style="padding: 8px; width: 100%">
-            <h4 style="margin-top: 0; margin-bottom: 8px">
+            <div style="font-size: 1.1rem; font-weight:550; margin-bottom: 8px">
                 {translate("CREATE")}
-            </h4>
+            </div>
             <Input
+                    hasBorder="true"
                     placeholder={translate("PROJECT_NAME")}
                     onEnter={create}
                     width="100%"
-                    height={"25px"}
+                    height={"30px"}
                     directChange={v => input = v}
             />
         </div>
         <div class="footer">
             <button
-                    data-accentbutton="-"
-                    class="button"
+
+                    data-focusbutton="-"
                     on:click={() => create(input)}>
                 <Icon>check</Icon>
-                {translate("CREATE")}
+                {translate("DONE")}
             </button>
         </div>
     </div>
 </div>
 
 <style>
-    .header{
-        font-weight: 550;
-        font-size: 1.3rem;
-    }
-    .button {
+    .wrapper {
+        height: clamp(50px, 7vh, 100px);
+        border-bottom: var(--pj-border-primary) 2px solid;
         display: flex;
+        justify-content: space-between;
         align-items: center;
+        padding-bottom: 8px;
+
+        overflow: hidden;
+        max-width: 100%;
     }
+
+    .header {
+        font-weight: 550;
+        font-size: 1.5rem;
+    }
+
 
     .container {
         width: 50vw;
         height: fit-content;
 
-        background-color: var(--pj-background-tertiary);
+        background-color: var(--pj-background-secondary);
         border: var(--pj-border-primary) 1px solid;
         border-radius: 3px;
         box-shadow: var(--pj-boxshadow);
@@ -142,18 +149,6 @@
     }
 
 
-    .title-wrapper {
-        color: var(--pj-color-secondary);
-        border-bottom: var(--pj-border-primary) 2px solid;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 8px;
-
-        overflow: hidden;
-        max-width: 100%;
-    }
-
     .title {
         display: flex;
         align-items: center;
@@ -165,10 +160,5 @@
         margin: 0;
     }
 
-    .input-creation {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
 
 </style>

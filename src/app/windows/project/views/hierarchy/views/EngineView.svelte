@@ -36,7 +36,7 @@
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
-            entitiesArray = window.renderer.entities
+            entitiesArray = Array.from(engine.entities.values())
         }
     }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS, (trigger, element) => {

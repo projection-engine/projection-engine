@@ -33,8 +33,8 @@
 <Dropdown hideArrow={true}>
     <button
             slot="button"
-            data-accentbutton="-"
-            style="width: 100%;"
+            data-focusbutton="-"
+            style="width: 100%; height: 25px"
     >
         <Icon>add</Icon>
         {translate("ADD_COMPONENT")}

@@ -8,22 +8,21 @@
     const {ipcRenderer} = window.require("electron")
 
     export let pageInfo = {}
-    export let label = ""
+    export let background = undefined
+    export let label = undefined
     export let options = []
+
     let isAboutOpen = false
     const translate = (key) => Localization.COMPONENTS.FRAME[key]
 </script>
 
-<div class="wrapper">
+<div class="wrapper" style={background ? `background: ${background}` : "background: var(--pj-background-quaternary);"}>
     {#if isAboutOpen}
         <About handleClose={() => isAboutOpen = false} translate={translate}/>
     {/if}
     <div class="options">
         <Dropdown hideArrow={true}>
-            <button
-                    slot="button"
-                    class={"logo-button"}
-            >
+            <button slot="button" class={"logo-button"}>
                 <div class={"logo-wrapper"}>
                     <img src={logo} alt={"LOGO"} class={"logo"}/>
                 </div>
@@ -44,7 +43,7 @@
             {/if}
         </Dropdown>
         {#if label}
-            <div class={"title"} data-overflow="-">{label}</div>
+            <div class={"title"} data-overflow="-" >{label}</div>
         {/if}
         {#each options as option}
             {#if option.divider}
@@ -88,7 +87,7 @@
             {/if}
         {/each}
     </div>
-    <div class={"draggable"}></div>
+    <div class="draggable"></div>
     <div class={"action-wrapper"}>
         {#if pageInfo.minimizeEvent}
             <button
@@ -139,32 +138,26 @@
 <style>
     .wrapper {
         display: flex;
-        align-items: center;
+
         width: 100vw;
         min-height: 30px;
         max-height: 30px;
         user-select: none;
-        overflow-y: hidden;
-        overflow-x: auto;
-        background: var(--pj-background-primary);
+        overflow: hidden;
+
         border-bottom: var(--pj-border-primary) 1px solid;
     }
 
     .draggable {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         cursor: grab;
         user-select: none;
         -webkit-app-region: drag;
     }
 
-    .draggable:active {
-        cursor: grabbing;
-    }
-
     .action-wrapper {
         display: flex;
-        gap´: 4px;
         align-items: center;
     }
 
@@ -205,12 +198,11 @@
     }
 
     .title {
+        font-weight: 550;
         text-align: left;
         color: var(--pj-color-secondary);
         white-space: nowrap;
-        margin-right: 16px;
-        margin-bottom: 0;
-        margin-top: 0;
+
         max-width: 10vw;
         font-size: .7rem;
     }
@@ -230,11 +222,12 @@
     }
 
     .options {
-        padding: 0 4px;
+        padding: 0 2px;
         display: flex;
-        height: 100%;
-        gap: 4px;
         align-items: center;
+        min-height: 29px;
+        gap: 4px;
+
     }
 
     .vert-divider {
@@ -247,7 +240,7 @@
     }
 
     .action-button {
-        width: 25px;
+        width: clamp(35px, 2vw, 50px);
         height: 25px;
         border-radius: 0;
         padding: 0;
@@ -255,8 +248,15 @@
         align-items: center;
         justify-content: center;
         border: none;
+        color: var(--pj-color-quinary);
     }
-
+    .action-button:hover{
+        color: var(--pj-accent-color)
+    }
+    .action-button:active{
+        background: var(--pj-accent-color);
+        color: white !important;
+    }
     .icon-container {
         width: 25px;
         height: 25px;

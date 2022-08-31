@@ -29,7 +29,7 @@
 
 <div
         class="wrapper"
-        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? `min-width: ${minWidth};` : ""} ${height ? `max-height: ${height};` : ""} ${width ? `max-width: ${width};` : ""} ${noPadding ? `noPadding: ${noPadding};` : ""}`}
+        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? `min-width: ${minWidth};` : ""} ${height ? `max-height: ${height};min-height: ${height};` : ""} ${width ? `max-width: ${width};` : ""} ${noPadding ? `noPadding: ${noPadding};` : ""}`}
 >
     {#if $$slots.icon}
         <div class="icon-wrapper">

@@ -15,15 +15,7 @@
     import VIEWS from "../../components/view/VIEWS";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
 
-
     const {ipcRenderer} = window.require("electron")
-
-    const EXECUTION_VIEW = {
-        name: "Default",
-        bottom: [VIEWS.CONSOLE],
-        left: [],
-        right: []
-    }
     let engine
     let settings
     const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
@@ -59,12 +51,8 @@
         left: [],
         right: []
     }
-    $: {
-        if (engine.executingAnimation)
-            view = EXECUTION_VIEW
-        else if (isMetadataLoaded && settings.views[settings.currentView])
-            view = settings.views[settings.currentView]
-    }
+    $: view = settings.views[settings.currentView]
+
     $: {
         if (isReady && !isDataLoaded) {
             isDataLoaded = true
@@ -92,6 +80,7 @@
         minimizeEvent: true,
         maximizeEvent: true
     }}
+            background="var(--pj-background-tertiary)"
     />
     <ControlOptions/>
     <ContextMenu/>

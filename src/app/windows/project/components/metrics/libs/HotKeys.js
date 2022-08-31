@@ -1,6 +1,7 @@
 import KEYS from "../../../libs/engine/production/data/KEYS";
 
 export default class HotKeys {
+    static data = {targets: {}, focused: undefined}
     static activeView
     static views = new Map()
     static holding = new Map()

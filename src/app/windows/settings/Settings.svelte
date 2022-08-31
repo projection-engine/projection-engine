@@ -88,7 +88,7 @@
         >
             <Icon>restart_alt</Icon>
         </button>
-        <button disabled={!changed} on:click={() => apply(false)} data-accentbutton="-">
+        <button disabled={!changed} on:click={() => apply(false)} data-focusbutton="-">
             <Icon>check</Icon>
             {translate("APPLY")}
         </button>

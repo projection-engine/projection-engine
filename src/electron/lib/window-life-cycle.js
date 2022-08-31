@@ -4,8 +4,9 @@ const {ipcMain} = require("electron");
 module.exports = function windowLifeCycle(id, window, onClose, openWindow) {
     function maximize() {
         if (window.isMaximized())
-            return
-        window.maximize()
+            window.unmaximize()
+        else
+            window.maximize()
     }
 
     function minimize() {

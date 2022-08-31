@@ -1,19 +1,20 @@
-export default function createPortal(index, fullSize=true) {
+export default function createPortal(index, fullSize = true) {
     let portal
 
     return {
-        create(ref) {
+        create(ref, styles) {
             this.parentElement = ref.parentElement
             portal = document.createElement('div')
             portal.style.position = "absolute"
             portal.style.zIndex = "-1"
-            if(fullSize) {
+            if (fullSize) {
                 portal.style.width = "100vw"
                 portal.style.height = "100vh"
             }
             portal.style.top = "0"
             portal.style.left = "0"
-
+            if (typeof styles === "object")
+                Object.assign(portal.style, styles)
 
             document.body.appendChild(portal)
             portal.appendChild(ref)

@@ -40,19 +40,21 @@
     })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
-    $: contextMenuBinding.rebind(getContextMenu(
-        selected,
-        currentDirectory,
-        setCurrentDirectory,
-        navigationHistory,
-        v => currentItem = v,
-        translate
-    ))
+    $: contextMenuBinding.rebind(
+        getContextMenu(
+            selected,
+            currentDirectory,
+            setCurrentDirectory,
+            navigationHistory,
+            v => currentItem = v,
+            translate
+        )
+    )
 
     onMount(() => {
         HotKeys.bindAction(
             ref,
-            getHotkeys(translate, currentDirectory,setCurrentDirectory, setSelected, selected),
+            getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected),
             "folder",
             translate("TITLE")
         )
@@ -60,7 +62,7 @@
         let timeout
         resizeOBS = new ResizeObserver(() => {
             clearTimeout(timeout)
-            setTimeout(() => elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height+ 8)), 250)
+            setTimeout(() => elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8)), 250)
         })
         resizeOBS.observe(ref)
     })
