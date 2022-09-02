@@ -1,6 +1,6 @@
 <script>
 
-    import CBStoreController from "../../windows/project/stores/CBStoreController";
+    import FilesStore from "../../windows/project/stores/FilesStore";
     import {onDestroy} from "svelte";
     import Localization from "../../libs/Localization";
     import Dropdown from "../dropdown/Dropdown.svelte";
@@ -16,7 +16,7 @@
 
     const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
-    const unsubscribeStore = CBStoreController.getStore(v => store = v)
+    const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
     function getParsedType(){

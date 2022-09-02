@@ -8,6 +8,7 @@
     import NodeInput from "./NodeInput.svelte";
     import NodeOutput from "./NodeOutput.svelte";
     import Material from "../../templates/nodes/Material";
+    import SelectionStore from "../../../../stores/SelectionStore";
 
     export let links
     export let node
@@ -68,23 +69,11 @@
     }
 
     const handleDragStart = (event) => {
-        let isFirst, alreadyFound = false
-        if (!ref.contains(event.target))
+        if (event.button !== 0)
             return
-
-        document.elementsFromPoint(event.clientX, event.clientY)
-            .forEach(e => {
-                if (e.id?.includes("-node") && !alreadyFound && e.id === (node.id + "-node"))
-                    isFirst = true
-                else if (e.id?.includes("-node") && !alreadyFound)
-                    alreadyFound = true
-            })
-
-        if (event.button === 0 && isFirst && !isSelected)
+        if (!SelectionStore.map.get(node.id))
             setSelected(node.id, event.ctrlKey)
-        if (event.button === 0 && ((isSelected && event.ctrlKey) || isFirst)) {
-            dragNode(event, ref, ref.parentNode.parentNode)
-        }
+        dragNode(event, ref, ref.parentNode.parentNode)
     }
 
     onMount(() => {
@@ -92,9 +81,7 @@
             const h = ref.firstChild.scrollHeight + 4
             height = h >= 35 ? h : 55
         }
-        canvas.addEventListener("mousedown", handleDragStart)
     })
-    onDestroy(() => canvas.removeEventListener("mousedown", handleDragStart))
 
     let width
     $: {
@@ -116,28 +103,27 @@
 
 <g>
     <g
-            bind:this={ref}
-            data-ismaterial="{node instanceof Material}"
-            transform={`translate(${node.x} ${node.y})`}
+        bind:this={ref}
+        data-ismaterial="{node instanceof Material}"
+        transform={`translate(${node.x} ${node.y})`}
     >
         <foreignObject
                 data-node={node.canBeDeleted ? node.id : undefined}
                 id={node.id}
-
-                on:mousedown={(e) => setSelected(node.id, e.ctrlKey)}
                 class="wrapper"
                 style={isSelected ? "outline: yellow 2px solid" : undefined}
                 width="{width}"
                 height="{height}"
         >
             <div
-                    class="label"
-                    style="border-color: {nodeInfo.COLOR}"
-                    id={node.id + "-node"}
+                class="label"
+                style="border-color: {nodeInfo.COLOR}"
+                id={node.id + "-node"}
+                on:mousedown={handleDragStart}
             >
                 {node.name}
             </div>
-            <div class="content">
+            <div class="content" on:click={event => setSelected(node.id, event.ctrlKey)}>
                 <div
                         class="column"
                         style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>

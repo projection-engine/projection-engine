@@ -1,14 +1,14 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
     import Localization from "../../../../../../libs/Localization";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import CameraAPI from "../../../../libs/engine/production/libs/CameraAPI";
     import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     let state = {
         zFar: settings.zFar,

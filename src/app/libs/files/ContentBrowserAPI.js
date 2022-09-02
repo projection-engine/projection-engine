@@ -5,7 +5,7 @@ import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/data/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../assets/ROUTES";
-import CBStoreController from "../../windows/project/stores/CBStoreController";
+import FilesStore from "../../windows/project/stores/FilesStore";
 import GPU from "../../windows/project/libs/engine/production/controllers/GPU";
 
 const pathRequire = window.require("path")
@@ -182,8 +182,8 @@ export default class ContentBrowserAPI {
                                     width: 256,
                                     height: 256
                                 })
-                            await NodeFS.write(FilesAPI.resolvePath(CBStoreController.PREVIEW_PATH + FilesAPI.sep + fileID + FILE_TYPES.PREVIEW), reduced)
-                            await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(CBStoreController.ASSETS_PATH + FilesAPI.sep, "") + FILE_TYPES.IMAGE)
+                            await NodeFS.write(FilesAPI.resolvePath(FilesStore.PREVIEW_PATH + FilesAPI.sep + fileID + FILE_TYPES.PREVIEW), reduced)
+                            await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(FilesStore.ASSETS_PATH + FilesAPI.sep, "") + FILE_TYPES.IMAGE)
                         } else
                             alert.pushAlert("Error importing image", "error")
                     }

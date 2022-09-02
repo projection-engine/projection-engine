@@ -1,11 +1,11 @@
 <script>
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import RendererStoreController from "../../../stores/RendererStoreController";
     import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
     import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
     export let translate
@@ -35,13 +35,13 @@
             {translate("PLAY")}
         </button>
         <div data-divider="-"></div>
-        <button on:click={() =>RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.EDITOR})}>
+        <button on:click={() =>SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.EDITOR})}>
             {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                 <Icon>check</Icon>
             {/if}
             {translate("EDITOR")}
         </button>
-        <button on:click={() =>RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.UI})}>
+        <button on:click={() =>SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.UI})}>
             {#if settings.viewportTab === VIEWPORT_TABS.UI}
                 <Icon>check</Icon>
             {/if}

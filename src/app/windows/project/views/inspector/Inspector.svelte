@@ -1,11 +1,11 @@
 <script>
     import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import Components from "./views/Components.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import UIStoreController from "../../stores/UIStoreController";
+    import UIStore from "../../stores/UIStore";
     import UIElement from "./views/UIElement.svelte";
     import Entity from "../../libs/engine/production/templates/Entity";
     import EntityElement from "./components/EntityElement.svelte";
@@ -19,8 +19,8 @@
     let ui = {}
     let parent
     let savedState = false
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
-    const unsubscribeUI = UIStoreController.getStore(v => ui = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeUI = UIStore.getStore(v => ui = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeUI()
@@ -86,7 +86,7 @@
                         selected={entity}
                         submit={(key, value, save) => {
                             if(!savedState){
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                         engine.selectedEntity.id,
                                         undefined,
                                       key,
@@ -96,7 +96,7 @@
                             }
                             entity[key] = value
                             if(save)
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                       engine.selectedEntity.id,
                                       undefined,
                                       key,

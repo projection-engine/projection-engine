@@ -4,15 +4,16 @@
     import EditorRenderer from "../../libs/engine/editor/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
     import Localization from "../../../../libs/Localization";
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import getHotkeys from "./utils/get-hotkeys";
     import bindContextTarget from "../../../../components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import HotKeys from "../metrics/libs/HotKeys";
     import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
-    import UIStoreController from "../../stores/UIStoreController";
+    import UIStore from "../../stores/UIStore";
     import GPU from "../../libs/engine/production/controllers/GPU";
+    import SettingsStore from "../../stores/SettingsStore";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -21,9 +22,9 @@
     let engine = {}
     let settings = {}
     let uiStore = {}
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
-    const unsubscribeUI = UIStoreController.getStore(v => uiStore = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const unsubscribeUI = UIStore.getStore(v => uiStore = v)
     const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu(engine))
 
@@ -39,7 +40,7 @@
                 window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
                 onReady()
                 done = true
-                RendererStoreController.updateEngine({...engine, viewportInitialized: true})
+                EngineStore.updateStore({...engine, viewportInitialized: true})
             })
     })
 

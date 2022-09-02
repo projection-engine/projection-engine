@@ -3,7 +3,7 @@
     import NodeFS from "../../../../../libs/NodeFS"
     import FilesAPI from "../../../../../libs/files/FilesAPI"
     import importFile from "../../../libs/import-file"
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
@@ -12,11 +12,11 @@
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES"
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     export let translate
-    export let setSelected
-    export let selected
+
     export let view
     export let fileType
     export let searchString
@@ -29,11 +29,13 @@
     export let setView
     export let navigationHistory
 
+
     let loading = false
     $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
 
+
     let engine = {}
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     onDestroy(() => unsubscribeEngine())
 
 </script>
@@ -71,13 +73,13 @@
                     class="settings-button"
                     on:click={() => {
                         alert.pushAlert(translate("REFRESHING"), "info")
-                        CBStoreController.refreshFiles().then(() => loading = false).catch()
+                        FilesStore.refreshFiles().then(() => loading = false).catch()
                     }}
             >
                 <Icon>sync</Icon>
                 <ToolTip content={translate("REFRESH")}/>
             </button>
-            <button class="settings-button" on:click={() => CBStoreController.createFolder(currentDirectory).catch()}>
+            <button class="settings-button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
                 <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
                 <ToolTip content={translate("CREATE_FOLDER")}/>
             </button>
@@ -86,9 +88,9 @@
                     data-highlight={starred ? "-" : undefined}
                     on:click={() => {
                         if (starred)
-                            CBStoreController.removeBookmark(currentDirectory.id)
+                            FilesStore.removeBookmark(currentDirectory.id)
                         else
-                            CBStoreController.addBookmark(currentDirectory.id)
+                            FilesStore.addBookmark(currentDirectory.id)
                     }}
             >
                 <Icon>star</Icon>
@@ -123,7 +125,7 @@
                 noPlaceHolder={true}
                 noAutoSubmit={true}
                 setSearchString={async (path) => {
-                        if (await NodeFS.exists(CBStoreController.ASSETS_PATH + path))
+                        if (await NodeFS.exists(FilesStore.ASSETS_PATH + path))
                         setCurrentDirectory({
                             id: path
                         })
@@ -167,14 +169,14 @@
         <button slot="button" style="padding-left: 8px; border: none">
             {translate("SELECT")}
         </button>
-        <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory, setSelected, selected)}>
+        <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory)}>
             {translate("SELECT_ALL")}
         </button>
 
-        <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory, setSelected, selected)}>
+        <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory)}>
             {translate("SELECT_NONE")}
         </button>
-        <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory, setSelected, selected)}>
+        <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory)}>
             {translate("SELECT_INVERT")}
         </button>
     </Dropdown>

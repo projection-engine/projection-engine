@@ -6,10 +6,10 @@
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import CAMERA_GIZMO from "../../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
     import CameraAPI from "../../../../libs/engine/production/libs/CameraAPI";
     import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     export let translate
     let cameraIsOrtho = false
@@ -21,7 +21,7 @@
     })
 
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
     const onMouseMove = ({currentTarget, movementX, movementY}) => {

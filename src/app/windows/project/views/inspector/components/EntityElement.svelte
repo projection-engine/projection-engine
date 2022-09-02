@@ -4,7 +4,7 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../utils/get-native-components";
     import componentConstructor from "../../../libs/component-constructor";
@@ -19,7 +19,7 @@
     export let translate
 
     let store = {}
-    const unsubscribeStore = CBStoreController.getStore(v => store = v)
+    const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => {
         unsubscribeStore()
     })

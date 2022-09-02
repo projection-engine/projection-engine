@@ -9,7 +9,7 @@
     import Selector from "../../../../../components/selector/Selector.svelte";
     import GPU from "../../../libs/engine/production/controllers/GPU";
     import FilesAPI from "../../../../../libs/files/FilesAPI";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
     import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
     export let selected = undefined
@@ -33,7 +33,7 @@
         }
         try {
             const rs = await RegistryAPI.readRegistryFile(registryID)
-            const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + rs.path)
+            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
             await GPU.allocateTexture(file, registryID)
             submit(attribute.key, registryID, true)
         } catch (err) {

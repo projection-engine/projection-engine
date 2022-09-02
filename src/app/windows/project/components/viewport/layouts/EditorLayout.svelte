@@ -11,7 +11,7 @@
 
     import GIZMOS from "../../../data/misc/GIZMOS";
     import onViewportClick from "../utils/on-viewport-click";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
@@ -20,7 +20,6 @@
     import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
     import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
     import {vec3} from "gl-matrix";
-    import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
     import InputEventsAPI from "../../../libs/engine/production/libs/InputEventsAPI";
 
     let WORKER = viewportSelectionBoxWorker()
@@ -100,7 +99,7 @@
                     GizmoSystem.wasOnGizmo = false
                     return
                 }
-                RendererStoreController.updateEngine({...engine, selected: data})
+                EngineStore.updateStore({...engine, selected: data})
             })
     }
 
@@ -143,7 +142,7 @@
             try {
                 const data = PickingAPI.readBlock(depthFBO, nStart, nEnd)
                 WORKER.postMessage({entities: window.renderer.entities, data})
-                WORKER.onmessage = ({data: selected}) => RendererStoreController.updateEngine({...engine, selected})
+                WORKER.onmessage = ({data: selected}) => EngineStore.updateStore({...engine, selected})
             } catch (err) {
                 console.error(err, startCoords, nStart)
             }

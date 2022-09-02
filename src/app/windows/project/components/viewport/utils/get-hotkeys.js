@@ -1,13 +1,15 @@
 import KEYS from "../../../libs/engine/production/data/KEYS";
 import ViewportActions from "../../../libs/ViewportActions";
-import RendererStoreController from "../../../stores/RendererStoreController";
+import EngineStore from "../../../stores/EngineStore";
 import GIZMOS from "../../../data/misc/GIZMOS";
+import SettingsStore from "../../../stores/SettingsStore";
+import ActionHistoryAPI from "../../../stores/ActionHistoryAPI";
 
 export default function getHotkeys() {
     return [
         {
             require: [KEYS.ControlLeft, KEYS.KeyS],
-            callback: RendererStoreController.save
+            callback: EngineStore.save
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyI],
@@ -20,35 +22,35 @@ export default function getHotkeys() {
         {
             require: [KEYS.KeyG],
             callback: () => {
-                const settings = RendererStoreController.settings
-                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.TRANSLATION})
+                const settings = SettingsStore.data
+                SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
             }
         },
         {
             require: [KEYS.Home],
-            callback: () => ViewportActions.focus(RendererStoreController.engine.selectedEntity)
+            callback: () => ViewportActions.focus(EngineStore.engine.selectedEntity)
         },
         {
             require: [KEYS.KeyS],
             callback: () => {
-                const settings = RendererStoreController.settings
-                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.SCALE})
+                const settings = SettingsStore.data
+                SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
             }
         },
         {
             require: [KEYS.KeyR],
             callback: () => {
-                const settings = RendererStoreController.settings
-                RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})
+                const settings = SettingsStore.data
+                SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
             }
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyZ],
-            callback: () => RendererStoreController.undo()
+            callback: () => ActionHistoryAPI.undo()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyY],
-            callback: () => RendererStoreController.redo()
+            callback: () => ActionHistoryAPI.redo()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyP],

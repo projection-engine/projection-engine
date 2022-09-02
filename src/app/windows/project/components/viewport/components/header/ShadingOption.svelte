@@ -2,7 +2,6 @@
     import SHADING_MODELS from "../../../../data/misc/SHADING_MODELS"
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../components/icon/Icon.svelte";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
     import CompositePass from "../../../../libs/engine/production/templates/passes/CompositePass";
     import GPU from "../../../../libs/engine/production/controllers/GPU";
@@ -10,10 +9,11 @@
     import DepthPass from "../../../../libs/engine/production/templates/passes/DepthPass";
     import DeferredPass from "../../../../libs/engine/production/templates/passes/DeferredPass";
     import AOPass from "../../../../libs/engine/production/templates/passes/AOPass";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings=v)
     onDestroy(() => unsubscribeSettings())
     export let translate = () => null
     $: shading = (() => {

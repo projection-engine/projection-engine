@@ -1,5 +1,5 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../stores/RendererStoreController";
+import EngineStore from "../stores/EngineStore";
 import RendererController from "./engine/production/controllers/RendererController";
 import CameraTracker from "./engine/editor/libs/CameraTracker";
 
@@ -7,7 +7,7 @@ export default class ViewportActions {
     static toCopy = []
 
     static copy(single, target) {
-        const e = RendererStoreController.engine
+        const e = EngineStore.engine
         ViewportActions.toCopy = target ? target : (single ? [e.selected[0]] : e.selected)
         alert.pushAlert(`Entities copied (${e.selected.length}).`, "info")
     }
@@ -22,7 +22,7 @@ export default class ViewportActions {
     }
 
     static deleteSelected() {
-        const engine = RendererStoreController.engine
+        const engine = EngineStore.engine
         dispatchRendererEntities({
             type: ENTITY_ACTIONS.REMOVE_BLOCK,
             payload: [...engine.selected]
@@ -30,7 +30,7 @@ export default class ViewportActions {
     }
 
     static invertSelection() {
-        const engine = RendererStoreController.engine
+        const engine = EngineStore.engine
         const newArr = []
         const notValid = {}
         const engineCopy = {...engine}
@@ -43,7 +43,7 @@ export default class ViewportActions {
                 newArr.push(entities[i].id)
         }
         engineCopy.selected = newArr
-        RendererStoreController.updateEngine(engineCopy)
+        EngineStore.updateStore(engineCopy)
     }
 
     static paste(parent) {
@@ -65,7 +65,7 @@ export default class ViewportActions {
     }
 
     static group() {
-        const engine = RendererStoreController.engine
+        const engine = EngineStore.engine
         ViewportActions.toCopy = engine.selected
         if (engine.selected.length > 1)
             dispatchRendererEntities({
@@ -75,15 +75,15 @@ export default class ViewportActions {
     }
 
     static selectAll() {
-        RendererStoreController.updateEngine({
-            ...RendererStoreController.engine,
+        EngineStore.updateStore({
+            ...EngineStore.engine,
             selected: window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
         })
     }
 
     static fixateActive() {
-        const engine = RendererStoreController.engine
+        const engine = EngineStore.engine
         if (engine.selected[0])
-            RendererStoreController.updateEngine({...engine, lockedEntity: engine.selected[0]})
+            EngineStore.updateStore({...engine, lockedEntity: engine.selected[0]})
     }
 }

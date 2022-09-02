@@ -1,18 +1,18 @@
 <script>
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import loadScripts from "../../utils/load-scripts";
     import {onDestroy} from "svelte";
     import Layout from "./Layout.svelte";
     import Localization from "../../../../libs/Localization";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import CBStoreController from "../../stores/CBStoreController";
+    import FilesStore from "../../stores/FilesStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
 
     let engine
     let store
-    const unsubscribe = CBStoreController.getStore(v => store = v)
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribe = FilesStore.getStore(v => store = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribe()
@@ -53,7 +53,7 @@
                 </div>
                 <ToolTip>{translate("LEVEL")}</ToolTip>
             </button>
-            <button on:click={() => RendererStoreController.loadLevel()}>
+            <button on:click={() => EngineStore.loadLevel()}>
                 {#if !engine.currentLevel}
                     <Icon>check</Icon>
                 {/if}
@@ -61,7 +61,7 @@
             </button>
             <div data-divider="-"></div>
             {#each store.levels as level}
-                <button on:click={() => RendererStoreController.loadLevel(level)}>
+                <button on:click={() => EngineStore.loadLevel(level)}>
                     {#if engine.currentLevel?.registryID === level.registryID}
                         <Icon>check</Icon>
                     {/if}

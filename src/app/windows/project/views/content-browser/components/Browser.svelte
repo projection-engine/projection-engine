@@ -11,13 +11,13 @@
     import getFilesToRender from "../utils/get-files-to-render";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import HotKeys from "../../../components/metrics/libs/HotKeys";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     export let fileType
     export let setFileType
     export let searchString
     export let setSearchString
-    export let selected
-    export let setSelected
+
     export let translate
     export let items
     export let currentDirectory
@@ -31,6 +31,14 @@
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
+    let selected = []
+    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
+    function setSelected(data) {
+        const old = {...SelectionStore.data, array: data}
+        if (SelectionStore.TARGET !== SelectionStore.TYPES.CONTENT_BROWSER)
+            old.TARGET = SelectionStore.TYPES.CONTENT_BROWSER
+        SelectionStore.updateStore(old)
+    }
 
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
@@ -58,7 +66,7 @@
             "folder",
             translate("TITLE")
         )
-        elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8))
+        elementsPerRow = Math.round(ref.offsetWidth / (cardDimensions.width + 8))
         let timeout
         resizeOBS = new ResizeObserver(() => {
             clearTimeout(timeout)
@@ -66,7 +74,9 @@
         })
         resizeOBS.observe(ref)
     })
+
     onDestroy(() => {
+        unsubscribe()
         HotKeys.unbindAction(ref)
         contextMenuBinding.onDestroy()
         resizeOBS.disconnect()
@@ -119,7 +129,7 @@
                                 type={child.isFolder ? 0 : 1}
                                 data={child}
                                 childrenQuantity={child.children}
-                                selected={selected}
+
                                 setCurrentDirectory={setCurrentDirectory}
                                 items={items}
                                 setSelected={e => handleSelection(e, child)}
@@ -173,6 +183,7 @@
     }
 
     .content {
+        gap: 4px;
         padding: 8px;
         width: 100%;
         height: 100%;

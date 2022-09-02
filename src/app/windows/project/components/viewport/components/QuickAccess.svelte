@@ -3,12 +3,12 @@
     import ViewportTab from "./settings/3DCursorSettings.svelte"
     // import Transform from "../../inspector/views/Transform"
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
-    import RendererStoreController from "../../../stores/RendererStoreController";
     import {onDestroy} from "svelte";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let translate
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings=v)
     onDestroy(() => unsubscribeSettings())
 </script>
 

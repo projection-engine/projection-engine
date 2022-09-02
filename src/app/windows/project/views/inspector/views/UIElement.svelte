@@ -5,16 +5,16 @@
     import StyleField from "../components/StyleField.svelte";
     import TextArea from "../../../../../components/input/TextArea.svelte";
     import {onDestroy} from "svelte";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
     import FilesAPI from "../../../../../libs/files/FilesAPI";
     import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-    import UIStoreController from "../../../stores/UIStoreController";
+    import UIStore from "../../../stores/UIStore";
 
     export let translate
     export let selected
 
     let store
-    const unsubscribe = CBStoreController.getStore(v => store = v)
+    const unsubscribe = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribe())
 
     $: valid = Object.values(selected.styles).length
@@ -27,9 +27,9 @@
         const t = e.currentTarget.parentElement
         try {
             const reg = await RegistryAPI.readRegistryFile(layout.registryID)
-            selected.layoutBlock = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+            selected.layoutBlock = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
             t.closeDropdown()
-            UIStoreController.updateStore()
+            UIStore.updateStore()
         } catch (err) {
             console.error(err)
         }

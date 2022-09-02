@@ -1,7 +1,7 @@
 import RendererController from "../../libs/engine/production/controllers/RendererController";
 import Entity from "../../libs/engine/production/templates/Entity";
-import RendererStoreController from "../RendererStoreController";
-import UIStoreController from "../UIStoreController";
+import EngineStore from "../EngineStore";
+import UIStore from "../UIStore";
 
 export default class EntityNameController {
     static byName = new Map()
@@ -16,9 +16,9 @@ export default class EntityNameController {
             entity.name = newName
             EntityNameController.byName.set(newName, entity.id)
             if (entity instanceof Entity)
-                RendererStoreController.updateEngine()
+                EngineStore.updateStore()
             else
-                UIStoreController.updateStore()
+                UIStore.updateStore()
         } else{
             {
                 const subWord = ".00"

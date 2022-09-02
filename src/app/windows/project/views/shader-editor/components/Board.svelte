@@ -160,7 +160,7 @@
                             links={resolvedLinks}
                             setSelected={(i, multi) => {
                                     if (multi)
-                                        setSelected(i)
+                                        setSelected([...selected, i])
                                     else
                                         setSelected([i])
                                 }}

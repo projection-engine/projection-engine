@@ -2,7 +2,7 @@
     import dragDrop from "../../../../../components/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
     import Entity from "../../../libs/engine/production/templates/Entity";
@@ -32,7 +32,7 @@
                     node.children.push(entityDragged)
 
                     const ID = v4()
-                    RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: ID})
+                    EngineStore.updateStore({...EngineStore.engine, changeID: ID})
                 } else if(event.shiftKey) {
                     const clone = entityDragged.clone()
                     clone.parent = node

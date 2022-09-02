@@ -272,6 +272,10 @@ export default class Localization {
 
         },
         FILES: {
+            CHILDREN: "Children quantity",
+            ITEM_NAME: "Name",
+            ITEM_TYPE: "Type",
+            REGISTRY_ID: "Registry",
             NEW_UI_LAYOUT: "New UI Layout",
             NEW_STYLESHEET: "New Stylesheet",
             NEW_LEVEL: "New Level",

@@ -7,14 +7,14 @@
     import ResizableBar from "../../../../../../components/resizable/ResizableBar.svelte";
     import GizmoGridSettings from "../settings/GizmoGridSettings.svelte";
     import {onDestroy, onMount} from "svelte";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     const DEFAULT_ROTATION = .1, ROTATION_VALUES = [1, 5, 10, 15, 30, 45, 60, 90]
     const DEFAULT_SCALE = .001, SCALE_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
     const DEFAULT_TRANSLATION = .001, TRANSLATION_VALUES = [.5, 1, 5, 10, 25, 50, 75, 100]
 
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings=v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings=v)
     onDestroy(() => unsubscribeSettings())
 
     let minimal = true
@@ -95,7 +95,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
-                    on:click={() => RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.NONE})}>
+                    on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
                 <Icon>highlight_alt</Icon>
                 <ToolTip content={translate("SELECTION")}/>
                 {#if !minimal}
@@ -107,7 +107,7 @@
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.CURSOR ? "-" : undefined}
                     style="border-top: var(--pj-border-primary) 1px solid"
-                    on:click={() => RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.CURSOR})}>
+                    on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.CURSOR})}>
                 <Icon>adjust</Icon>
                 <ToolTip content={translate("CURSOR")}/>
                 {#if !minimal}
@@ -120,7 +120,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
-                    on:click={() => RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.TRANSLATION})}>
+                    on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
                 <Icon>open_with</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("T_GIZMO")}</div>
@@ -130,7 +130,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
-                    on:click={() => RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.ROTATION})}>
+                    on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
                 <Icon>360</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("R_GIZMO")}</div>
@@ -140,7 +140,7 @@
                     class={"transformation-wrapper gizmo-bar"}
                     data-minimal="{minimal}"
                     data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
-                    on:click={() => RendererStoreController.updateSettings({...settings, gizmo: GIZMOS.SCALE})}>
+                    on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
                 <Icon>open_in_full</Icon>
                 {#if !minimal}
                     <div data-overflow="-">{translate("S_GIZMO")}</div>

@@ -2,13 +2,13 @@
     import VIEWS from "../../../../components/view/VIEWS";
     import Icon from "../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import RendererStoreController from "../../stores/RendererStoreController";
     import KEYS from "../../libs/engine/production/data/KEYS";
     import Localization from "../../../../libs/Localization";
+    import SettingsStore from "../../stores/SettingsStore";
 
 
     let settings = {}
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
@@ -19,7 +19,7 @@
             right: [VIEWS.HIERARCHY],
             left: []
         }]
-        RendererStoreController.updateSettings({...settings, views})
+        SettingsStore.updateStore({...settings, views})
 
     }
     const handler = (e, v, i) => {
@@ -34,7 +34,7 @@
             }
             case "dblclick": {
                 e.currentTarget.type = "text"
-                RendererStoreController.updateSettings({...settings, currentView: i})
+                SettingsStore.updateStore({...settings, currentView: i})
                 break
             }
             case "input":
@@ -44,7 +44,7 @@
                 e.currentTarget.type = "button"
                 break
             case "click":
-                RendererStoreController.updateSettings({...settings, currentView: i})
+                SettingsStore.updateStore({...settings, currentView: i})
                 break
         }
 
@@ -55,7 +55,7 @@
         if (i === obj.currentView)
             obj.currentView = 0
         obj.views = obj.views.filter((_, index) => i !== index)
-        RendererStoreController.updateSettings(obj)
+        SettingsStore.updateStore(obj)
 
     }
 </script>

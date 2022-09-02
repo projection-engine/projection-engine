@@ -3,7 +3,7 @@ import SELECTION_TYPES from "../templates/SELECTION_TYPES";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import handleDelete from "./handle-delete";
 import KEYS from "../../../libs/engine/production/data/KEYS";
-import CBStoreController from "../../../stores/CBStoreController";
+import FilesStore from "../../../stores/FilesStore";
 
 export default function getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected){
     return  [
@@ -55,13 +55,13 @@ export default function getHotkeys(translate, currentDirectory, setCurrentDirect
             label: translate("CUT"),
             require: [KEYS.ControlLeft, KEYS.KeyX],
             callback: () => {
-                CBStoreController.toCut = selected
+                FilesStore.toCut = selected
             }
         },
         {
             label: translate("PASTE"),
             require: [KEYS.ControlLeft, KEYS.KeyV],
-            callback: () => CBStoreController.paste(currentDirectory.id, setCurrentDirectory)
+            callback: () => FilesStore.paste(currentDirectory.id, setCurrentDirectory)
         }
     ]
 }

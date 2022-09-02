@@ -1,7 +1,9 @@
-import RendererStoreController from "../stores/RendererStoreController";
+import EngineStore from "../stores/EngineStore";
 import ROUTES from "../../../../assets/ROUTES";
 import importFile from "../libs/import-file";
-import CBStoreController from "../stores/CBStoreController";
+import FilesStore from "../stores/FilesStore";
+import SettingsStore from "../stores/SettingsStore";
+import ActionHistoryAPI from "../stores/ActionHistoryAPI";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -12,13 +14,13 @@ export default function getFrameOptions(engine, settings) {
         options: [
             {
                 label: "Save",
-                onClick: () => RendererStoreController.save().catch(),
+                onClick: () => EngineStore.save().catch(),
                 shortcut: "Ctrl - S"
             },
             {divider: true},
             {
                 label: "Import asset",
-                onClick: () => importFile(CBStoreController.ASSETS_PATH)
+                onClick: () => importFile(FilesStore.ASSETS_PATH)
             }
         ]},
         {
@@ -26,13 +28,13 @@ export default function getFrameOptions(engine, settings) {
             options: [
                 {
                     label: "Undo",
-                    onClick: () => RendererStoreController.undo(),
+                    onClick: () => ActionHistoryAPI.undo(),
 
                     shortcut: "Ctrl - Z"
                 },
                 {
                     label: "Redo",
-                    onClick: () => RendererStoreController.redo(),
+                    onClick: () => ActionHistoryAPI.redo(),
 
                     shortcut: "Ctrl - Y"
                 },
@@ -62,7 +64,7 @@ export default function getFrameOptions(engine, settings) {
                             ...settings.visible,
                             sideBarViewport: !settings.visible.sideBarViewport
                         }
-                        RendererStoreController.updateSettings(settings)
+                        SettingsStore.updateStore(settings)
                     },
                 },
                 {
@@ -73,7 +75,7 @@ export default function getFrameOptions(engine, settings) {
                             ...settings.visible,
                             metrics: !settings.visible.metrics
                         }
-                        RendererStoreController.updateSettings(settings)
+                        SettingsStore.updateStore(settings)
                     },
                 }
             ]

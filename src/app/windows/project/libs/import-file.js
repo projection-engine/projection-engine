@@ -1,7 +1,7 @@
 import FilesAPI from "../../../libs/files/FilesAPI"
 import COMPONENTS from "./engine/production/data/COMPONENTS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
-import CBStoreController from "../stores/CBStoreController";
+import FilesStore from "../stores/FilesStore";
 import FILE_TYPES from "../../../../assets/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
@@ -12,7 +12,7 @@ import PreviewSystem from "./engine/editor/services/PreviewSystem";
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()
     if (toImport.length > 0) {
-        const result = await ContentBrowserAPI.importFile(CBStoreController.ASSETS_PATH + currentDirectory.id, toImport)
+        const result = await ContentBrowserAPI.importFile(FilesStore.ASSETS_PATH + currentDirectory.id, toImport)
         if (toImport.filter(e => e.includes("gltf")).length > 0) {
             let newEntities = []
             for (let i = 0; i < result.length; i++) {
@@ -36,6 +36,6 @@ export default async function importFile(currentDirectory) {
             dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
         }
         alert.pushAlert("Import successful", "success")
-        CBStoreController.refreshFiles().catch()
+        FilesStore.refreshFiles().catch()
     }
 }

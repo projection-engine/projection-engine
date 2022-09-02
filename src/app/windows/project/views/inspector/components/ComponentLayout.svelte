@@ -2,7 +2,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import ComponentAttribute from "./ComponentAttribute.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import getComponentIcon from "../../../utils/get-component-icon";
     import {v4} from "uuid";
 
@@ -13,14 +13,14 @@
     export let translate
 
     const removeComponent = () => {
-        const entity = RendererStoreController.engine.selectedEntity
+        const entity = EngineStore.engine.selectedEntity
         if (index != null) {
             entity.scripts[index] = undefined
             entity.scripts = entity.scripts.filter(e => e)
-            RendererStoreController.updateEngine()
+            EngineStore.updateStore()
         } else {
             delete entity.components[key]
-            RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
+            EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
         }
     }
     $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(selected.name) ? translate(selected.name) : selected.name)

@@ -2,20 +2,20 @@
     import SHORTCUTS_ID from "../../data/misc/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import RendererStoreController from "../../stores/RendererStoreController";
     import HotKeys from "./libs/HotKeys";
     import Localization from "../../../../libs/Localization";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../../../libs/files/ErrorLoggerAPI";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import SettingsStore from "../../stores/SettingsStore";
 
     const {shell} = window.require("electron")
     let settings = {}
     let activeView
     let initialized = false
     let isChanging = false
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
         HotKeys.initializeListener(v => activeView = v)

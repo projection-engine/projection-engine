@@ -2,7 +2,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/d
 import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../assets/FILE_TYPES";
-import CBStoreController from "../../stores/CBStoreController";
+import FilesStore from "../../stores/FilesStore";
 import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
@@ -49,7 +49,7 @@ export default class Loader {
 
     static async scene(path, onlyReturn) {
         const file = await FilesAPI.readFile(
-            CBStoreController.ASSETS_PATH + FilesAPI.sep + path, "json")
+            FilesStore.ASSETS_PATH + FilesAPI.sep + path, "json")
 
         const entities = []
 

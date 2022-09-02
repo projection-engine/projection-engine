@@ -2,7 +2,7 @@
     import Input from "../../../../../components/input/Input.svelte";
     import Localization from "../../../../../libs/Localization";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import UIStoreController from "../../../stores/UIStoreController";
+    import UIStore from "../../../stores/UIStore";
 
     export let initial
     export let isInput
@@ -16,7 +16,7 @@
             delete selected.styles[initial[0]]
         selected.styles[key] = value
         selected.updateStyles()
-        UIStoreController.updateStore()
+        UIStore.updateStore()
 
         if (isInput) {
             value = ""
@@ -29,7 +29,7 @@
         delete selected.styles[key]
         console.log(selected.styles[key])
         selected.updateStyles()
-        UIStoreController.updateStore()
+        UIStore.updateStore()
     }
 </script>
 

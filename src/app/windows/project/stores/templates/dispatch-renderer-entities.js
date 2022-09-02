@@ -1,9 +1,10 @@
 import {v4} from "uuid"
-import RendererStoreController from "../RendererStoreController";
+import EngineStore from "../EngineStore";
 import removeHierarchy from "../utils/remove-hierarchy";
 import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
 import AXIS from "../../libs/engine/editor/data/AXIS";
+import ActionHistoryAPI from "../ActionHistoryAPI";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -18,12 +19,12 @@ export const ENTITY_ACTIONS = {
 
 
 export default function dispatchRendererEntities({type, payload}) {
-    const engine = RendererStoreController.engine
+    const engine = EngineStore.engine
     const state = engine.entities
     let changeID = v4()
 
     function save(){
-        RendererStoreController.history.pushBlockChange(Array.from(state.values()))
+        ActionHistoryAPI.pushBlockChange(Array.from(state.values()))
     }
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
@@ -120,5 +121,5 @@ export default function dispatchRendererEntities({type, payload}) {
 
     }
 
-    RendererStoreController.updateEngine({...engine, entities: state, changeID})
+    EngineStore.updateStore({...engine, entities: state, changeID})
 }

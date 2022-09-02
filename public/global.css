@@ -238,3 +238,11 @@ legend {
     font-size: .75rem;
     font-weight: 550;
 }
+
+strong{
+    font-weight: 550
+}
+small{
+    font-weight: 400;
+    color: var(--pj-color-quinary)
+}

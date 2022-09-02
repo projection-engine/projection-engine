@@ -1,17 +1,17 @@
-import CBStoreController from "../stores/CBStoreController";
+import FilesStore from "../stores/FilesStore";
 import FilesAPI from "../../../libs/files/FilesAPI"
-import RendererStoreController from "../stores/RendererStoreController";
+import EngineStore from "../stores/EngineStore";
 import BundlerAPI from "./engine/production/libs/BundlerAPI";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import Entity from "./engine/production/templates/Entity";
-import UIStoreController from "../stores/UIStoreController";
+import UIStore from "../stores/UIStore";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     const updateStore = () => {
         if(entity instanceof Entity)
-            RendererStoreController.updateEngine()
+            EngineStore.updateStore()
         else
-            UIStoreController.updateStore()
+            UIStore.updateStore()
     }
     const found = entity.scripts.findIndex(s => s.id === scriptID)
     const reg = await RegistryAPI.readRegistryFile(scriptID)
@@ -29,7 +29,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    const data = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+    const data = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
 
     if (!data) {
         if (found > -1) {

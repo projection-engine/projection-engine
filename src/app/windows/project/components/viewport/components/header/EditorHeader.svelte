@@ -5,7 +5,6 @@
     import ProbeComponent from "../../../../libs/engine/production/templates/ProbeComponent";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-    import RendererStoreController from "../../../../stores/RendererStoreController";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import ShadingOption from "./ShadingOption.svelte";
     import PointLightComponent from "../../../../libs/engine/production/templates/PointLightComponent";
@@ -17,6 +16,7 @@
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
     import SpriteComponent from "../../../../libs/engine/production/templates/SpriteComponent";
     import STATIC_TEXTURES from "../../../../libs/engine/static/STATIC_TEXTURES";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
 
     export let settings
@@ -55,16 +55,14 @@
             </div>
         </button>
 
-        <button on:click={() => {
-                    RendererStoreController.updateSettings({...settings, gridVisibility: !settings.gridVisibility})
-                }}>
+        <button on:click={() => SettingsStore.updateStore({...settings, gridVisibility: !settings.gridVisibility})}>
             {#if settings.gridVisibility}
                 <Icon>check</Icon>
             {/if}
             {translate("GRID")}
         </button>
 
-        <button on:click={() => RendererStoreController.updateSettings({...settings, iconsVisibility: !settings.iconsVisibility})}>
+        <button on:click={() => SettingsStore.updateStore({...settings, iconsVisibility: !settings.iconsVisibility})}>
             {#if settings.iconsVisibility}
                 <Icon>check</Icon>
             {/if}
@@ -72,7 +70,7 @@
         </button>
 
         <button
-                on:click={() => RendererStoreController.updateSettings({...settings, cameraAnimation: settings.cameraAnimation})}
+                on:click={() => SettingsStore.updateStore({...settings, cameraAnimation: settings.cameraAnimation})}
         >
             {#if settings.cameraAnimation}
                 <Icon>check</Icon>
@@ -80,7 +78,7 @@
             {translate("CAM_ANIM")}
         </button>
 
-        <button on:click={() => RendererStoreController.updateSettings({...settings, background: !settings.background})}>
+        <button on:click={() => SettingsStore.updateStore({...settings, background: !settings.background})}>
             {#if settings.background}
                 <Icon>check</Icon>
             {/if}

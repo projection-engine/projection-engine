@@ -1,13 +1,9 @@
-import {engine} from "./templates/engine-store";
-import {settingsStore} from "./templates/settings-store";
 import ENGINE from "../data/misc/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
-import EngineHistory from "./templates/EngineHistory";
+import ActionHistoryAPI from "./ActionHistoryAPI";
 import RendererController from "../libs/engine/production/controllers/RendererController";
-import AssetAPI from "../../../libs/files/AssetAPI";
-import SETTINGS from "../data/misc/SETTINGS";
-import CBStoreController from "./CBStoreController";
+import FilesStore from "./FilesStore";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 import ROUTES from "../../../../assets/ROUTES";
@@ -16,70 +12,28 @@ import parseMaterialObject from "../libs/engine/editor/utils/parse-material-obje
 import parseEntityObject from "../libs/engine/production/utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
-import UIStoreController from "./UIStoreController";
+import UIStore from "./UIStore";
 import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
-import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
 import GPU from "../libs/engine/production/controllers/GPU";
 import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
+import {writable} from "svelte/store";
+import SettingsStore from "./SettingsStore";
 
 const {ipcRenderer} = window.require("electron")
-let initialized = false
-export default class RendererStoreController {
+
+const engine = writable(ENGINE);
+
+export default class EngineStore {
     static engine = ENGINE
-    static settings = SETTINGS
-    static history = new EngineHistory()
 
-    static undo() {
-        RendererStoreController.history.undo()
-    }
-
-    static redo() {
-        RendererStoreController.history.redo()
-    }
-
-    static saveEntity(entityID, component, key, changeValue) {
-
-        RendererStoreController.history.pushChange({
-            target: EngineHistory.targets.entity,
-            changeValue,
-            entityID,
-            component,
-            key
-        })
-    }
-
-
-    static getSettings(onChange) {
-        return settingsStore.subscribe(newValue => {
-            onChange(newValue)
-        })
-    }
-
-    static getEngine(onChange) {
+    static getStore(onChange) {
         return engine.subscribe(newValue => {
             onChange(newValue)
         })
     }
 
-    static updateSettings(value = RendererStoreController.settings) {
 
-        if (initialized) {
-            RendererStoreController.history.pushChange({
-                target: EngineHistory.targets.settings,
-                changeValue: RendererStoreController.settings
-            })
-            RendererStoreController.history.pushChange({
-                target: EngineHistory.targets.settings,
-                changeValue: value
-            })
-        }
-        initialized = true
-        console.log(value.viewportTab)
-        RendererStoreController.settings = value
-        settingsStore.set(value)
-    }
-
-    static updateEngine(value = RendererStoreController.engine) {
+    static updateStore(value = EngineStore.engine) {
         let updated = {...value}
         if (!updated.lockedEntity)
             updated.lockedEntity = updated.selected[0] ? updated.selected[0] : Array.from(updated.entities.values()).find(e => !e.parent)?.id
@@ -88,8 +42,19 @@ export default class RendererStoreController {
         else
             updated.selectedEntity = undefined
 
-        RendererStoreController.engine = updated
+        EngineStore.engine = updated
         engine.set(updated)
+    }
+
+
+    static saveEntity(entityID, component, key, changeValue) {
+        ActionHistoryAPI.pushChange({
+            target: ActionHistoryAPI.targets.entity,
+            changeValue,
+            entityID,
+            component,
+            key
+        })
     }
 
     static async loadLevel(level) {
@@ -98,15 +63,15 @@ export default class RendererStoreController {
         let pathToLevel
         if (!level) {
             pathToLevel = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
-            RendererStoreController.engine.currentLevel = undefined
+            EngineStore.engine.currentLevel = undefined
         } else {
             const {registryID} = level
             try {
                 const reg = await RegistryAPI.readRegistryFile(registryID)
                 if (!reg)
                     throw new Error("Error loading level")
-                pathToLevel = CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path
-                RendererStoreController.engine.currentLevel = level
+                pathToLevel = FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path
+                EngineStore.engine.currentLevel = level
             } catch (err) {
                 console.error(err)
                 alert.pushAlert("Error loading level.")
@@ -114,9 +79,9 @@ export default class RendererStoreController {
         }
 
         GPU.meshes.forEach(m => GPU.destroyMesh(m))
-        RendererStoreController.engine.materials.forEach(m => m.delete())
-        RendererStoreController.engine.materials = []
-        window.renderer.materials = RendererStoreController.engine.materials
+        EngineStore.engine.materials.forEach(m => m.delete())
+        EngineStore.engine.materials = []
+        window.renderer.materials = EngineStore.engine.materials
 
         ipcRenderer.on(
             CHANNELS.ENTITIES + projectID,
@@ -134,7 +99,7 @@ export default class RendererStoreController {
                             continue
                         try {
                             const rs = await RegistryAPI.readRegistryFile(imgID)
-                            const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + rs.path)
+                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
                             await GPU.allocateTexture(file, imgID)
                         } catch (err) {
                             console.error(err)
@@ -149,7 +114,7 @@ export default class RendererStoreController {
                 let newEntities = new Map()
                 for (let i = 0; i < uiElements.length; i++)
                     newEntities.set(uiElements[i].id, parseUiElement(uiElements[i]))
-                UIStoreController.updateStore({
+                UIStore.updateStore({
                     selected: [],
                     selectedElement: undefined,
                     entities: newEntities
@@ -161,8 +126,8 @@ export default class RendererStoreController {
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,
             async (ev, data) => {
-                RendererStoreController.engine.materials.push(await parseMaterialObject(data.result, data.id))
-                RendererStoreController.updateEngine()
+                EngineStore.engine.materials.push(await parseMaterialObject(data.result, data.id))
+                EngineStore.updateStore()
             })
 
         ipcRenderer.send(IPC, pathToLevel)
@@ -174,19 +139,19 @@ export default class RendererStoreController {
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
             let pathToWrite
-            pathElse:if (!RendererStoreController.engine.currentLevel)
+            pathElse:if (!EngineStore.engine.currentLevel)
                 pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
             else {
-                const reg = await RegistryAPI.readRegistryFile(RendererStoreController.engine.currentLevel.registryID)
+                const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
                     alert.pushAlert("Level not found, a new one will be created.", "alert")
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
-                pathToWrite = FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + reg.path)
+                pathToWrite = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
             }
 
-            await updateSettings(metaData, RendererStoreController.settings)
+            await SettingsStore.writeSettings(metaData, SettingsStore.data)
 
             try {
                 await FilesAPI.writeFile(
@@ -230,25 +195,3 @@ function serializeData(level) {
         })
 }
 
-async function updateSettings(metaData, settings) {
-    const entities = window.renderer.entities
-
-    const materials = window.renderer.materials
-    const old = JSON.parse(metaData.toString())
-    await AssetAPI.updateProject(
-        {
-            ...old,
-            entities: entities.length,
-            meshes: GPU.meshes.size,
-            materials: materials.length,
-            lastModification: (new Date()).toDateString(),
-            creation: settings.creationDate
-        },
-        {
-            ...settings,
-            cameraPosition: CameraTracker.centerOn,
-            yaw: CameraTracker.yaw,
-            pitch: CameraTracker.pitch,
-        }
-    )
-}

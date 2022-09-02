@@ -5,43 +5,55 @@
     import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
     import Localization from "../../../../../libs/Localization";
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../../components/drag-drop";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
+    import getTypeName from "../utils/get-type-name";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     const {shell} = window.require("electron")
+    const EMPTY = {map: new Map(), array: []}
 
     export let childrenQuantity
     export let reset
     export let type
     export let data
-    export let selected
+
     export let setSelected
     export let onRename
     export let submitRename
     export let items
     export let setCurrentDirectory
     export let currentDirectory
+    let selected
+    const unsubscribe = SelectionStore.getStore(v => {
+        if(v.TARGET === SelectionStore.TYPES.CONTENT_BROWSER)
+            selected = v
+        else
+            selected = EMPTY
+    })
     let currentLabel
     $: currentLabel = data.name
-    $: isSelected = selected.includes(data.id)
+
     $: metadata = {
         path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
-        childrenQuantity
+        childrenQuantity,
+        typeName: getTypeName(data.type)
     }
     const translate = key => Localization.PROJECT.FILES[key]
     const onDbClick = () => {
         if (type === 1) {
             const fileType = "." + data.type
             if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.UI_LAYOUT) {
-                shell.openPath(CBStoreController.ASSETS_PATH + FilesAPI.sep + data.id).catch()
+                shell.openPath(FilesStore.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
                 alert.pushAlert(translate("OPENING_LEVEL") + " (" + currentLabel + ")", "info")
-                RendererStoreController.loadLevel(data)
+                EngineStore.loadLevel(data)
             } else
                 setSelected(data.id)
         } else {
@@ -53,7 +65,7 @@
     let icon
     $: {
         if (type === 0)
-            icon = undefined
+            icon = childrenQuantity === 0 ? "folder_open" : "folder"
         else
             switch (metadata.type) {
                 case FILE_TYPES.COMPONENT:
@@ -79,8 +91,8 @@
     const getIcon = () => {
         if (icon)
             return icon
-        if(type === 0)
-            return "folder"
+        if (type === 0)
+            return childrenQuantity === 0 ? "folder_open" : "folder"
         if (metadata.type === FILE_TYPES.MESH)
             return "view_in_ar"
         return "texture"
@@ -94,7 +106,7 @@
             `,
         onDragOver: () => type === 0 ? "Link folder" : undefined,
         onDragStart: () => {
-            const ss = selected.map(s => items.find(i => i.id === s)).filter(e => e && !e.isFolder && e.type === "mesh")
+            const ss = selected.array.map(s => items.find(i => i.id === s))
             if (ss.length > 0)
                 return JSON.stringify(ss.map(s => s.registryID))
             return JSON.stringify([type === 1 ? data.registryID : data.id])
@@ -114,7 +126,10 @@
         draggable.onDragOver = dragDropData.onDragOver
         draggable.onDragStart = dragDropData.onDragStart
     }
+
+
     onDestroy(() => {
+        unsubscribe()
         draggable.onDestroy()
     })
 
@@ -126,21 +141,13 @@
         on:dblclick={onDbClick}
         id={data.id}
         on:click={setSelected}
-        style={isSelected ? "background: var(--pj-accent-color-light);" : "" +  (CBStoreController.toCut.includes(data.id) ? "opacity: .5;" : "")}
+        style={selected.map.get(data.id) ? "background: var(--pj-accent-color-light);" : "" +  (FilesStore.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
-        title={currentLabel}
 >
 
     {#if icon != null}
         <div class="icon">
-            <Icon styles="font-size: 3.5rem; ">{icon}</Icon>
-        </div>
-    {:else if data.isFolder}
-        <div class="icon">
-            <Icon styles="font-size: 3.5rem; color: var(--folder-color)">folder</Icon>
-            <div title="Files" class="floating-icon-wrapper">
-                {childrenQuantity}
-            </div>
+            <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
         </div>
     {:else}
         <div class="icon">
@@ -157,8 +164,10 @@
                     <Icon>
                         {#if metadata.type === FILE_TYPES.MESH}
                             view_in_ar
-                        {:else}
+                        {:else if metadata.type === FILE_TYPES.MATERIAL}
                             texture
+                        {:else}
+                            image
                         {/if}
                     </Icon>
                 </div>
@@ -177,9 +186,37 @@
             {currentLabel}
         </div>
     {/if}
+    <ToolTip>
+        <div class="tooltip">
+        <span>
+            <strong>{translate("ITEM_NAME")}: </strong>
+            <small>{currentLabel}</small>
+        </span>
+            {#if type !== 0}
+            <span>
+                <strong>{translate("ITEM_TYPE")}:</strong>
+                <small>{metadata.typeName}</small>
+            </span>
+                <span>
+                <strong>{translate("REGISTRY_ID")}:</strong>
+                <small>{data.registryID}</small>
+            </span>
+            {:else}
+            <span>
+                <strong>{translate("CHILDREN")}:</strong>
+                <small>{childrenQuantity}</small>
+            </span>
+            {/if}
+        </div>
+    </ToolTip>
 </div>
 
 <style>
+
+    .tooltip {
+        display: grid;
+    }
+
     .icon {
         position: relative;
         color: var(--pj-color-secondary);
@@ -195,17 +232,9 @@
 
 
     .floating-icon-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--pj-background-tertiary);
         position: absolute;
-        bottom: 4px;
+        bottom: 0;
         right: 4px;
-        width: 1.3rem;
-        height: 1.3rem;
-        border-radius: 3px;
-        font-size: 0.7rem !important;
     }
 
 

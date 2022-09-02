@@ -2,20 +2,21 @@
     import Header from "./components/Header.svelte";
     import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
     import Localization from "../../../../libs/Localization";
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
     import MetricsPass from "../../libs/engine/production/templates/passes/MetricsPass";
+    import SettingsStore from "../../stores/SettingsStore";
 
     export let isReady = false
 
 
     let engine = {}
     let settings = {}
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeSettings()
@@ -23,9 +24,9 @@
 
     $: {
         if (engine.executingAnimation)
-            RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.PLAY})
+            SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.PLAY})
         else if (settings.viewportTab === VIEWPORT_TABS.PLAY)
-            RendererStoreController.updateSettings({...settings, viewportTab: VIEWPORT_TABS.EDITOR})
+            SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.EDITOR})
     }
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]

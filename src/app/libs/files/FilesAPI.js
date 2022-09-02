@@ -1,6 +1,6 @@
 import {v4} from "uuid"
 import NodeFS from "../NodeFS"
-import CBStoreController from "../../windows/project/stores/CBStoreController";
+import FilesStore from "../../windows/project/stores/FilesStore";
 import RegistryAPI from "./RegistryAPI";
 
 const pathRequire = window.require("path")
@@ -50,7 +50,7 @@ export default class FilesAPI {
 
         for (let i = 0; i < FilesAPI.registry.length; i++) {
             const r = FilesAPI.registry[i]
-            const rPath = FilesAPI.resolvePath(CBStoreController.ASSETS_PATH + FilesAPI.sep + r.path)
+            const rPath = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + r.path)
             if (rPath.includes(currentPath))
                 await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + r.id + ".reg"))
         }

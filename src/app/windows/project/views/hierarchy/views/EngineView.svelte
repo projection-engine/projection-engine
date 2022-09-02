@@ -1,5 +1,5 @@
 <script>
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import getEngineContextMenu from "../utils/get-engine-context-menu";
     import {onDestroy, onMount} from "svelte";
@@ -23,7 +23,7 @@
     let engine = {}
     let settings = {}
 
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
 
     let open = {}
     let toRender = []
@@ -41,7 +41,7 @@
     }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS, (trigger, element) => {
         if (trigger === TRIGGERS[0])
-            RendererStoreController.updateEngine({...engine, selected: [element.getAttribute(trigger)]})
+            EngineStore.updateStore({...engine, selected: [element.getAttribute(trigger)]})
     })
     $: contextMenuBinding.rebind(getEngineContextMenu(open, v => open = v))
     onDestroy(() => {
@@ -92,11 +92,11 @@
     const updateSelection = (entity, ctrlKey) => {
         if (ctrlKey) {
             if (!engine.selected.includes(entity))
-                RendererStoreController.updateEngine({...engine, selected: [...engine.selected, entity]})
+                EngineStore.updateStore({...engine, selected: [...engine.selected, entity]})
             else
-                RendererStoreController.updateEngine({...engine, selected: engine.selected.filter(e => e !== entity)})
+                EngineStore.updateStore({...engine, selected: engine.selected.filter(e => e !== entity)})
         } else
-            RendererStoreController.updateEngine({...engine, selected: [entity]})
+            EngineStore.updateStore({...engine, selected: [entity]})
     }
     $: setIsEmpty(toRender.length === 0)
 
@@ -110,7 +110,7 @@
                     if (entityDragged.parent)
                         entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
                     entityDragged.parent = undefined
-                    RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
+                    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
                 } else if(event.shiftKey) {
                     const clone = entityDragged.clone()
                     clone.parent = undefined
@@ -143,7 +143,7 @@
 
                     lockedEntity={engine.lockedEntity}
                     setSelected={updateSelection}
-                    setLockedEntity={v => RendererStoreController.updateEngine({...engine, lockedEntity: v})}
+                    setLockedEntity={v => EngineStore.updateStore({...engine, lockedEntity: v})}
                     internalID={ID}
                     open={open}
                     setOpen={v => open = v}

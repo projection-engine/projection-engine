@@ -1,14 +1,14 @@
 <script>
     import FilesAPI from "../../../../libs/files/FilesAPI"
     import {onDestroy} from "svelte";
-    import CBStoreController from "../../stores/CBStoreController";
+    import FilesStore from "../../stores/FilesStore";
     import Localization from "../../../../libs/Localization";
     import Header from "../../../../components/view/components/Header.svelte";
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
-    import Files from "./components/Browser.svelte";
+    import Browser from "./components/Browser.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -17,11 +17,11 @@
 
 
     let store = {}
-    const unsubscribeStore = CBStoreController.getStore(v => store = v)
+    const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
     let currentDirectory = {id: FilesAPI.sep}
-    let selected = []
+
     let fileType = undefined
     let searchString = ""
     let view = {
@@ -62,8 +62,7 @@
             setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
             bookmarks={store.bookmarks}
             translate={translate}
-            setSelected={v => selected = v}
-            selected={selected}
+
             fileType={fileType}
             setFileType={v => fileType = v}
             searchString={searchString}
@@ -89,7 +88,7 @@
             <ResizableBar type={"width"}/>
         {/if}
 
-        <Files
+        <Browser
                 items={store.items}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
@@ -100,8 +99,7 @@
 
                 setFileType={v => fileType = v}
                 searchString={searchString}
-                setSelected={v => selected = v}
-                selected={selected}
+
         />
     </div>
 {/if}

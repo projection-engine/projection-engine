@@ -8,18 +8,19 @@
     import Shortcuts from "./components/metrics/Metrics.svelte";
     import Canvas from "./components/viewport/Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
-    import RendererStoreController from "./stores/RendererStoreController";
+    import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
     import ROUTES from "../../../assets/ROUTES";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
+    import SettingsStore from "./stores/SettingsStore";
 
     const PAGE = {closeEvent: true, minimizeEvent: true, maximizeEvent: true}
     const {ipcRenderer} = window.require("electron")
     let engine
     let settings
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
-    const unsubscribeSettings = RendererStoreController.getSettings(v => settings = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onDestroy(() => {
         unsubscribeSettings()
@@ -34,13 +35,13 @@
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
             (event, data) => {
-                RendererStoreController.updateSettings(data)
+                SettingsStore.updateStore(data)
                 alert.pushAlert("Updating settings", "info")
             }
         )
         InitializeWindow()
         loadProjectMetadata((m, s) => {
-            RendererStoreController.updateSettings({...settings, ...s})
+            SettingsStore.updateStore({...settings, ...s})
             engine.meta = m
             isMetadataLoaded = true
         })
@@ -56,7 +57,7 @@
     $: {
         if (isReady && !isDataLoaded) {
             isDataLoaded = true
-            RendererStoreController.loadLevel()
+            EngineStore.loadLevel()
         }
     }
 
@@ -65,7 +66,7 @@
         const copy = [...s.views]
         copy[s.currentView] = {...view, [key]: newView}
         s.views = copy
-        RendererStoreController.updateSettings(s)
+        SettingsStore.updateStore(s)
     }
     $: frameOptions = getFrameOptions(engine, settings)
 </script>

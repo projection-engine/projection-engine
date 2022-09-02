@@ -9,6 +9,8 @@
     let bBox, bodyBBox
     const portal = createPortal(999, false)
     const handleMouseMove = (event) => {
+        if (!wrapper)
+            return
         wrapper.style.left = (event.clientX + 10) + "px"
         wrapper.style.top = (event.clientY + 10) + "px"
 
@@ -20,6 +22,8 @@
         wrapper.style.transform = `translate(${transform.x}, ${transform.y})`
     }
     const hover = (event) => {
+        if (!wrapper)
+            return
         open = true
         bBox = wrapper.getBoundingClientRect()
         bodyBBox = document.body.getBoundingClientRect()
@@ -38,14 +42,16 @@
 
     $: open ? portal.open() : portal.close()
     onMount(() => {
+        if (!wrapper)
+            return
         portal.create(wrapper)
         portal.parentElement.addEventListener("mouseenter", hover)
     })
     onDestroy(() => {
-        try{
+        try {
             portal.parentElement.removeEventListener("mouseenter", hover)
             portal.destroy()
-        }catch(err){
+        } catch (err) {
             console.log(err)
         }
     })

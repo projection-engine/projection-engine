@@ -1,10 +1,10 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import UIStoreController from "../../../stores/UIStoreController";
+    import UIStore from "../../../stores/UIStore";
     import UserInterfaceController from "../../../libs/engine/production/controllers/UserInterfaceController";
 
     let store = {}
-    const unsubscribe = UIStoreController.getStore(v => store = v)
+    const unsubscribe = UIStore.getStore(v => store = v)
     let renderTarget
     let lastHovered
     let lastStyle

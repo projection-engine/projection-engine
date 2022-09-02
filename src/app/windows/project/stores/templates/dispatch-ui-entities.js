@@ -1,12 +1,12 @@
 import {v4} from "uuid"
-import UIStoreController from "../UIStoreController";
+import UIStore from "../UIStore";
 import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
 import {ENTITY_ACTIONS} from "./dispatch-renderer-entities";
 import removeHierarchy from "../utils/remove-hierarchy";
 
 
 export default function dispatchUiEntities({type, payload}) {
-    const data = UIStoreController.data
+    const data = UIStore.data
     const state = UserInterfaceController.entities
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
@@ -66,5 +66,5 @@ export default function dispatchUiEntities({type, payload}) {
 
     }
 
-    UIStoreController.updateStore({...data, entities: state, changeID: v4()})
+    UIStore.updateStore({...data, entities: state, changeID: v4()})
 }

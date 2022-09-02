@@ -1,9 +1,9 @@
 <script>
-    import RendererStoreController from "../../../stores/RendererStoreController";
+    import EngineStore from "../../../stores/EngineStore";
     import ComponentLayout from "../components/ComponentLayout.svelte";
     import Mesh from "../components/Mesh.svelte";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import CBStoreController from "../../../stores/CBStoreController";
+    import FilesStore from "../../../stores/FilesStore";
     import componentConstructor from "../../../libs/component-constructor";
     import MeshComponent from "../../../libs/engine/production/templates/MeshComponent";
     import loadMaterial from "../utils/load-material";
@@ -40,14 +40,14 @@
                     const id = JSON.parse(data)[0]
 
                     let type = "SCRIPT"
-                    let itemFound = CBStoreController.data.components.find(s => s.registryID === id)
+                    let itemFound = FilesStore.data.components.find(s => s.registryID === id)
                     if (!itemFound) {
-                        itemFound = CBStoreController.data.meshes.find(s => s.registryID === id)
+                        itemFound = FilesStore.data.meshes.find(s => s.registryID === id)
                         type = "MESH"
                     }
 
                     if (!itemFound) {
-                        itemFound = CBStoreController.data.materials.find(s => s.registryID === id)
+                        itemFound = FilesStore.data.materials.find(s => s.registryID === id)
                         type = "MATERIAL"
                     }
 
@@ -99,14 +99,14 @@
                     translate={translate}
                     selected={component}
                     submit={async (value, key) => {
-                        RendererStoreController.saveEntity(
+                        EngineStore.saveEntity(
                             engine.selectedEntity.id,
                             componentKey,
                             key,
                             component[key]
                         )
                         component[key] = value
-                        RendererStoreController.saveEntity(
+                        EngineStore.saveEntity(
                             engine.selectedEntity.id,
                             componentKey,
                             key,
@@ -122,7 +122,7 @@
                     selected={component}
                     submit={(key, value, save) => {
                             if(!savedState){
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                     engine.selectedEntity.id,
                                      componentKey,
                                       key,
@@ -132,7 +132,7 @@
                             }
                             component[key] = value
                             if(save)
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                     engine.selectedEntity.id,
                                      componentKey,
                                       key,
@@ -153,7 +153,7 @@
             selected={script}
             submit={(key, value, save) => {
                             if(!savedState){
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                     engine.selectedEntity.id,
                                      index,
                                       key,
@@ -163,7 +163,7 @@
                             }
                             script[key] = value
                             if(save)
-                                RendererStoreController.saveEntity(
+                                EngineStore.saveEntity(
                                     engine.selectedEntity.id,
                                      index,
                                       key,

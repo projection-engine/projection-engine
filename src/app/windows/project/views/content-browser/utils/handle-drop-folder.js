@@ -1,6 +1,6 @@
 import NodeFS from "../../../../../libs/NodeFS"
 import FilesAPI from "../../../../../libs/files/FilesAPI"
-import CBStoreController from "../../../stores/CBStoreController";
+import FilesStore from "../../../stores/FilesStore";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../../../libs/files/ContentBrowserAPI";
 
@@ -38,20 +38,20 @@ export default async function handleDropFolder(event, target, currentDirectory, 
                 return f.id === from || (f.registryID === textData && f.registryID !== undefined)
             })
             if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                ContentBrowserAPI.rename(pathResolve.resolve(CBStoreController.ASSETS_PATH + FilesAPI.sep + from), pathResolve.resolve(CBStoreController.ASSETS_PATH + to))
+                ContentBrowserAPI.rename(pathResolve.resolve(FilesStore.ASSETS_PATH + FilesAPI.sep + from), pathResolve.resolve(FilesStore.ASSETS_PATH + to))
                     .then(() => {
                         if (from === currentDirectory.id) setCurrentDirectory({id: to})
 
-                        CBStoreController.refreshFiles().catch()
+                        FilesStore.refreshFiles().catch()
                     })
             }
         } else if (textData.includes(FilesAPI.sep)) {
-            const newPath = CBStoreController.ASSETS_PATH + FilesAPI.sep + textData.split(FilesAPI.sep).pop()
+            const newPath = FilesStore.ASSETS_PATH + FilesAPI.sep + textData.split(FilesAPI.sep).pop()
             if (!(await NodeFS.exists(newPath))) ContentBrowserAPI
-                .rename(pathResolve.resolve(CBStoreController.ASSETS_PATH + FilesAPI.sep + textData), pathResolve.resolve(newPath))
+                .rename(pathResolve.resolve(FilesStore.ASSETS_PATH + FilesAPI.sep + textData), pathResolve.resolve(newPath))
                 .then(() => {
-                    if (textData === currentDirectory.id) setCurrentDirectory({id: newPath.replace(CBStoreController.ASSETS_PATH, "")})
-                    CBStoreController.refreshFiles().catch()
+                    if (textData === currentDirectory.id) setCurrentDirectory({id: newPath.replace(FilesStore.ASSETS_PATH, "")})
+                    FilesStore.refreshFiles().catch()
                 })
             else alert.pushAlert(
                 "Folder already exists.", "error"

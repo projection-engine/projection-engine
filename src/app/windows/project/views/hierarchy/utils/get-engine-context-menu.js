@@ -1,7 +1,7 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import Entity from "../../../libs/engine/production/templates/Entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import RendererStoreController from "../../../stores/RendererStoreController";
+import EngineStore from "../../../stores/EngineStore";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
 import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
@@ -40,7 +40,7 @@ export default function getEngineContextMenu(open, setOpen) {
         },
         {
             label: "Select none",
-            onClick: () => RendererStoreController.updateEngine({...RendererStoreController.engine, selected: []})
+            onClick: () => EngineStore.updateStore({...EngineStore.engine, selected: []})
         },
         {
             label: "Close all",
@@ -138,9 +138,9 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Deselect",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                RendererStoreController.updateEngine({
-                    ...RendererStoreController.engine,
-                    selected: RendererStoreController.engine.selected.filter(s => s !== t)
+                EngineStore.updateStore({
+                    ...EngineStore.engine,
+                    selected: EngineStore.engine.selected.filter(s => s !== t)
                 })
             }
         },
@@ -150,9 +150,9 @@ export default function getEngineContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toDeselect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
-                RendererStoreController.updateEngine({
-                    ...RendererStoreController.engine,
-                    selected: RendererStoreController.engine.selected.filter(s => toDeselect.includes(s))
+                EngineStore.updateStore({
+                    ...EngineStore.engine,
+                    selected: EngineStore.engine.selected.filter(s => toDeselect.includes(s))
                 })
             }
         },
@@ -162,9 +162,9 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Select",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                RendererStoreController.updateEngine({
-                    ...RendererStoreController.engine,
-                    selected: [...RendererStoreController.engine.selected, t]
+                EngineStore.updateStore({
+                    ...EngineStore.engine,
+                    selected: [...EngineStore.engine.selected, t]
                 })
             }
         },
@@ -174,9 +174,9 @@ export default function getEngineContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toSelect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
-                RendererStoreController.updateEngine({
-                    ...RendererStoreController.engine,
-                    selected: [...RendererStoreController.engine.selected, ...toSelect]
+                EngineStore.updateStore({
+                    ...EngineStore.engine,
+                    selected: [...EngineStore.engine.selected, ...toSelect]
                 })
             }
         },

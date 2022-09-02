@@ -6,10 +6,10 @@
     import FilesAPI from "../../../../libs/files/FilesAPI"
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import {v4} from "uuid";
-    import CBStoreController from "../../stores/CBStoreController";
+    import FilesStore from "../../stores/FilesStore";
     import parseFile from "./libs/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
@@ -19,6 +19,7 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Editor from "./components/Editor.svelte";
+    import SelectionStore from "../../stores/SelectionStore";
 
     export let hidden
     export let switchView
@@ -30,8 +31,8 @@
 
     let engine
     let fileStore
-    const unsubscribeFiles = CBStoreController.getStore(v => fileStore = v)
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeFiles = FilesStore.getStore(v => fileStore = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeFiles()
@@ -41,8 +42,17 @@
     let openFile = {}
     let nodes = []
     let links = []
-    let selected
     let status
+
+    let selected = []
+    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
+
+    function setSelected(data) {
+        const old = {...SelectionStore.data, array: data}
+        if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
+            old.TARGET = SelectionStore.TYPES.SHADER_EDITOR
+        SelectionStore.updateStore(old)
+    }
 
     $: {
         if (engine.selectedEntity && engine.selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
@@ -56,11 +66,8 @@
     }
 
     $: {
-        // nodes  = []
-        // links  = []
         status = {}
-        selected = []
-
+        SelectionStore.updateStore([])
         parseFile(
             openFile,
             (d) => {
@@ -126,15 +133,15 @@
                 {translate("SELECT")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes, v => selected = v, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes, setSelected, selected)}>
                 {translate("ALL")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes, v => selected = v, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes, setSelected, selected)}>
                 {translate("NONE")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes, v => selected = v, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes, setSelected, selected)}>
                 {translate("INVERT")}
             </button>
         </Dropdown>
@@ -177,7 +184,7 @@
             translate={translate}
             isOpen={openFile.registryID !== undefined}
             selected={selected}
-            setSelected={v => selected = v}
+            setSelected={setSelected}
             nodes={nodes}
             setNodes={v => nodes = v}
             links={links}
@@ -212,7 +219,7 @@
         padding-left: 4px;
     }
 
-    .divider{
+    .divider {
         height: 20px;
         background: var(--pj-background-tertiary);
         width: 2px;

@@ -5,7 +5,7 @@
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../libs/engine/production/libs/ConsoleAPI";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import RendererStoreController from "../../stores/RendererStoreController";
+    import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import InfiniteScroller from "../../../../components/infinite-scroller/InfiniteScroller.svelte";
@@ -25,7 +25,7 @@
     let ref
     let engine
     let changed
-    const unsubscribeEngine = RendererStoreController.getEngine(v => engine = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const LINE_HEIGHT = 18
     const TYPES = ConsoleAPI.TYPES
 

@@ -5,7 +5,7 @@
     import getUiContextMenu from "../utils/get-ui-context-menu";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
-    import UIStoreController from "../../../stores/UIStoreController";
+    import UIStore from "../../../stores/UIStore";
 
     export let ID
     export let translate
@@ -15,7 +15,7 @@
     const TRIGGERS = ["data-node", "data-self"]
     let store = {}
 
-    const unsubscribe = UIStoreController.getStore(v => store = v)
+    const unsubscribe = UIStore.getStore(v => store = v)
 
 
     let open = {}
@@ -49,7 +49,7 @@
     }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS, (trigger, element) => {
         if (trigger === TRIGGERS[0])
-            UIStoreController.updateStore({...store, selected: [element.getAttribute(trigger)]})
+            UIStore.updateStore({...store, selected: [element.getAttribute(trigger)]})
     })
     onMount(() => contextMenuBinding.rebind(getUiContextMenu()))
     onDestroy(() => {
@@ -60,11 +60,11 @@
     const updateSelection = (entity, ctrlKey) => {
         if (ctrlKey) {
             if (!engine.selected.includes(entity))
-                UIStoreController.updateStore({...store, selected: [...store.selected, entity]})
+                UIStore.updateStore({...store, selected: [...store.selected, entity]})
             else
-                UIStoreController.updateStore({...store, selected: store.selected.filter(e => e !== entity)})
+                UIStore.updateStore({...store, selected: store.selected.filter(e => e !== entity)})
         } else
-            UIStoreController.updateStore({...store, selected: [entity]})
+            UIStore.updateStore({...store, selected: [entity]})
     }
     $: setIsEmpty(toRender.length === 0)
 </script>

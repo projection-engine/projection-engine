@@ -1,8 +1,12 @@
-import {get} from "svelte/store";
-import {uiStore} from "./templates/user-interface-store";
+import {get, writable} from "svelte/store";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 
-export default class UIStoreController {
+const uiStore = writable({
+    selected: [],
+    selectedElement: undefined,
+    entities: new Map()
+});
+export default class UIStore {
     static data = get(uiStore)
 
     static getStore(onChange) {
@@ -10,7 +14,7 @@ export default class UIStoreController {
             onChange(newValue)
         })
     }
-    static updateStore(v = UIStoreController.data) {
+    static updateStore(v = UIStore.data) {
         const value = {...v}
         if (value.selected.length > 0)
             value.selectedEntity = value.entities.get(value.selected[0])
@@ -18,7 +22,7 @@ export default class UIStoreController {
             value.selectedEntity = undefined
 
         UserInterfaceController.entities = value.entities
-        UIStoreController.data = value
+        UIStore.data = value
         uiStore.set(value)
     }
 }
