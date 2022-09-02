@@ -1,6 +1,6 @@
 <script>
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import BundlerAPI from "../../../libs/engine/production/libs/apis/BundlerAPI";
+    import BundlerAPI from "../../../libs/engine/production/libs/BundlerAPI";
     import "../css/Branch.css"
     import RendererController from "../../../libs/engine/production/controllers/RendererController";
     import DraggableEntity from "./DraggableEntity.svelte";

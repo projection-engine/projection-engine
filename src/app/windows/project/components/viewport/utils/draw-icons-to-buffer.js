@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
-import CameraAPI from "../../../libs/engine/production/libs/apis/CameraAPI";
+import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
 import GPU from "../../../libs/engine/production/controllers/GPU";
 import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
 import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";

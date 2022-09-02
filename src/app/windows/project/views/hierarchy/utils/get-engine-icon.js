@@ -12,6 +12,8 @@ export default function getEngineIcon(nodeRef){
             return "view_in_ar"
         if (nodeRef.components[COMPONENTS.CAMERA])
             return "videocam"
+        if (nodeRef.components[COMPONENTS.SPRITE])
+            return "image"
         return "inventory_2"
     }
 }

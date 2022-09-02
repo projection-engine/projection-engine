@@ -7,7 +7,6 @@
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
-    import Range from "../../../../../../components/range/Range.svelte";
     import ShadingOption from "./ShadingOption.svelte";
     import PointLightComponent from "../../../../libs/engine/production/templates/PointLightComponent";
     import DirectionalLightComponent from "../../../../libs/engine/production/templates/DirectionalLightComponent";
@@ -17,17 +16,22 @@
     import FALLBACK_MATERIAL from "../../../../libs/engine/production/data/FALLBACK_MATERIAL";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
     import SpriteComponent from "../../../../libs/engine/production/templates/SpriteComponent";
+    import STATIC_TEXTURES from "../../../../libs/engine/static/STATIC_TEXTURES";
 
 
     export let settings
     export let engine
     export let translate
 
+    const addSprite = (entity, img) => {
+        entity.components[COMPONENTS.SPRITE] = new SpriteComponent(img)
+        entity.components[COMPONENTS.SPRITE].attributes = [1, 0]
+    }
     const createCM = (asDiffuse) => {
         const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
-
+        addSprite(actor, STATIC_TEXTURES.PROBE)
         actor.translation = [...EditorRenderer.cursor.translation]
         actor.lockedRotation = true
         actor.lockedScaling = true
@@ -82,15 +86,6 @@
             {/if}
             {translate("BACKGROUND")}
         </button>
-
-        <div class={"range-wrapper"}>
-            <Range
-                    label={translate("ICON_SIZE")}
-                    value={settings.iconSize}
-                    maxValue={5} minValue={.1}
-                    onFinish={v => RendererStoreController.updateSettings({...settings, iconSize: v})}
-            />
-        </div>
     </Dropdown>
 
     <Dropdown>
@@ -136,7 +131,7 @@
                 on:click={() =>  {
                 const actor = new Entity(undefined, translate("POINT_LIGHT"))
                 actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
-
+                addSprite(actor, STATIC_TEXTURES.POINT_LIGHT)
                 actor.translation = [...EditorRenderer.cursor.translation]
                 actor.lockedRotation = true
                 actor.lockedScaling = true
@@ -151,7 +146,7 @@
         <button
                 on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
-
+                        addSprite(actor, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
                         actor.translation = [...EditorRenderer.cursor.translation]
                         actor.lockedRotation = true
                         actor.lockedScaling = true
@@ -187,6 +182,7 @@
                 on:click={() => {
                     const actor = new Entity(undefined, translate("CAMERA"))
                     actor.components[COMPONENTS.CAMERA] = new CameraComponent()
+
                     actor.translation = [...EditorRenderer.cursor.translation]
                     actor.rotation = [0, 0, 0]
                     actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
@@ -201,7 +197,6 @@
                 on:click={() => {
                     const actor = new Entity(undefined, translate("SPRITE_RENDERER"))
                     actor.components[COMPONENTS.SPRITE] = new SpriteComponent()
-
                     dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
                 }}
         >

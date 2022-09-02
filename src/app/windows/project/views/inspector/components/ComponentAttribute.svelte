@@ -5,6 +5,12 @@
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
+    import Component from "../../../libs/engine/production/templates/Component";
+    import Selector from "../../../../../components/selector/Selector.svelte";
+    import GPU from "../../../libs/engine/production/controllers/GPU";
+    import FilesAPI from "../../../../../libs/files/FilesAPI";
+    import CBStoreController from "../../../stores/CBStoreController";
+    import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
     export let selected = undefined
     export let submit = undefined
@@ -14,16 +20,30 @@
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 
 
-
     $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
     $: value = selected[attribute.key]
     $: isDisabled = selected[attribute.disabledIf]
 
     let firstSubmit = false
+    const setImage = async ({registryID}) => {
+        const images = GPU.textures
+        if (images.get(registryID) != null) {
+            submit(attribute.key, registryID, true)
+            return;
+        }
+        try {
+            const rs = await RegistryAPI.readRegistryFile(registryID)
+            const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + rs.path)
+            await GPU.allocateTexture(file, registryID)
+            submit(attribute.key, registryID, true)
+        } catch (err) {
+            console.error(err)
+        }
+    }
 </script>
 
 
-{#if attribute.type === "number"}
+{#if attribute.type === Component.propTypes.NUMBER}
     <Range
             handleChange={v => {
                 if(!firstSubmit){
@@ -42,7 +62,7 @@
             isAngle={attribute.isAngle}
             disabled={isDisabled}
     />
-{:else if attribute.type === "array"}
+{:else if attribute.type === Component.propTypes.ARRAY}
     {#each attribute.labels as partial, index}
         <Range
                 disabled={isDisabled}
@@ -70,7 +90,7 @@
                 value={value[index]}
         />
     {/each}
-{:else if attribute.type === "boolean"}
+{:else if attribute.type === Component.propTypes.BOOLEAN}
     <Checkbox
             handleCheck={() => {
                 if(!firstSubmit){
@@ -85,7 +105,7 @@
             checked={value}
             disabled={isDisabled}
     />
-{:else if attribute.type === "options"}
+{:else if attribute.type === Component.propTypes.OPTIONS}
     <Dropdown disabled={isDisabled} width="100%">
         <button slot="button" class="dropdown">
             {label}
@@ -107,7 +127,7 @@
             </button>
         {/each}
     </Dropdown>
-{:else if attribute.type === "string"}
+{:else if attribute.type === Component.propTypes.STRING}
     <Input
             searchString={value}
             setSearchString={v =>  {
@@ -121,7 +141,7 @@
             placeholder={label}
             disabled={isDisabled}
     />
-{:else if attribute.type === "color"}
+{:else if attribute.type === Component.propTypes.COLOR}
     <ColorPicker
             disabled={isDisabled}
             submit={({r,g,b}) =>  {
@@ -135,6 +155,12 @@
             placeholder={label}
             value={value}
             size={"small"}
+    />
+{:else if attribute.type === Component.propTypes.IMAGE}
+    <Selector
+            handleChange={setImage}
+            type="image"
+            selected={value}
     />
 {/if}
 

@@ -4,8 +4,6 @@ import ENVIRONMENT from "../libs/engine/production/data/ENVIRONMENT";
 import RendererController from "../libs/engine/production/controllers/RendererController";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 
-const {shell} = window.require("electron")
-
 export default async function loadScripts() {
     const engine = RendererStoreController.engine
     const newValue = !engine.executingAnimation

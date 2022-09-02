@@ -16,7 +16,7 @@ export default class ViewportActions {
         if (!entity)
             return
         CameraTracker.radius = 10
-        CameraTracker.centerOn = entity.translation
+        CameraTracker.centerOn = [entity.matrix[12], entity.matrix[13], entity.matrix[14]]
 
         CameraTracker.update()
     }

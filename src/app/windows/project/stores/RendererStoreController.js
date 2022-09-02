@@ -13,13 +13,14 @@ import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 import ROUTES from "../../../../assets/ROUTES";
 import CHANNELS from "../../../../assets/CHANNELS";
 import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
-import parseEntityObject from "../libs/engine/editor/utils/parse-entity-object";
+import parseEntityObject from "../libs/engine/production/utils/parse-entity-object";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 import UIStoreController from "./UIStoreController";
 import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
 import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
 import GPU from "../libs/engine/production/controllers/GPU";
+import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
 
 const {ipcRenderer} = window.require("electron")
 let initialized = false
@@ -124,8 +125,23 @@ export default class RendererStoreController {
 
                 const mapped = []
 
-                for (let i = 0; i < entities.length; i++)
-                    mapped.push(await parseEntityObject(entities[i]))
+                for (let i = 0; i < entities.length; i++) {
+                    const entity = await parseEntityObject(entities[i])
+                    const imgID = entity.components[COMPONENTS.SPRITE]?.imageID
+                    if (imgID) {
+                        const images = GPU.textures
+                        if (images.get(imgID) != null)
+                            continue
+                        try {
+                            const rs = await RegistryAPI.readRegistryFile(imgID)
+                            const file = await FilesAPI.readFile(CBStoreController.ASSETS_PATH + FilesAPI.sep + rs.path)
+                            await GPU.allocateTexture(file, imgID)
+                        } catch (err) {
+                            console.error(err)
+                        }
+                    }
+                    mapped.push(entity)
+                }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
 
                 if (!uiElements)

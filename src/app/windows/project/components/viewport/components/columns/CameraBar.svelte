@@ -7,8 +7,9 @@
     import CAMERA_GIZMO from "../../../../data/misc/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
     import RendererStoreController from "../../../../stores/RendererStoreController";
-    import CameraAPI from "../../../../libs/engine/production/libs/apis/CameraAPI";
+    import CameraAPI from "../../../../libs/engine/production/libs/CameraAPI";
     import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
+    import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
 
     export let translate
     let cameraIsOrtho = false
@@ -166,7 +167,7 @@
             class="option"
             on:mousedown={e => handleGrab(e,  1)}
             on:dblclick={() => {
-                CameraTracker.centerOn = [0, 0, 0]
+                CameraTracker.centerOn = [...EditorRenderer.cursor.translation]
                 CameraTracker.update()
             }}>
         <ToolTip>

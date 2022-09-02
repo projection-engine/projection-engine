@@ -1,7 +1,7 @@
-import updateCursor from "./update-cursor"
 import RendererStoreController from "../../../stores/RendererStoreController";
 import ViewportActions from "../../../libs/ViewportActions";
 import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
+import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
 
 export default function getContextMenu(engine) {
 
@@ -90,8 +90,11 @@ export default function getContextMenu(engine) {
             label: "3D cursor to origin",
             onClick: () => {
                 const component = engine.selectedEntity
-                if (component)
-                    updateCursor(component.translation.slice(0, 3))
+                if (component){
+                    const t = EditorRenderer.cursor
+                    t.translation = [component.matrix[12], component.matrix[13], component.matrix[14]]
+                    t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
+                }
             }
         },
         {divider: true},

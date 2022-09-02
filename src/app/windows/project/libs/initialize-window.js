@@ -4,6 +4,8 @@ import BOARD_SIZE from "../views/shader-editor/data/BOARD_SIZE";
 import compiler from "../views/shader-editor/libs/compiler";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import ErrorLoggerAPI from "../../../libs/files/ErrorLoggerAPI";
+import PreviewSystem from "./engine/editor/services/PreviewSystem";
+import MaterialInstance from "./engine/production/controllers/instances/MaterialInstance";
 
 
 export default function InitializeWindow() {
@@ -20,7 +22,7 @@ export default function InitializeWindow() {
     window.shaderEditor = {
         scale: 1,
         grid: 1,
-        async compile(nodes, links) {
+        async compile(nodes, links, isSave) {
             const parsedNodes = nodes.map(n => {
                 const docNode = document.getElementById(n.id).parentNode
                 const transformation = docNode
@@ -41,16 +43,26 @@ export default function InitializeWindow() {
                 }
             })
             const compiled = await compiler(nodes.filter(n => !n.isComment), links)
-            const preview = window.renderer.generatePreview(true)
-
-            return {
-                compiled, preview, parsedNodes
+            let preview
+            if(isSave) {
+                let material
+                await new Promise(resolve => {
+                    material = new MaterialInstance({
+                        vertex: compiled.vertexShader,
+                        fragment: compiled.shader,
+                        onCompiled: () => resolve(),
+                        settings: compiled.settings
+                    })
+                })
+                preview = PreviewSystem.execute(material)
             }
+
+            return {compiled, preview, parsedNodes}
         },
         async save(openFile, nodes, links, translate) {
             const {
                 compiled, preview, parsedNodes
-            } = await this.compile(nodes, links)
+            } = await this.compile(nodes, links, true)
             AssetAPI.updateAsset(
                 openFile.registryID,
                 JSON.stringify({

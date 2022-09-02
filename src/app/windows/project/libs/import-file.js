@@ -7,6 +7,7 @@ import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import GPU from "./engine/production/controllers/GPU";
+import PreviewSystem from "./engine/editor/services/PreviewSystem";
 
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()
@@ -25,7 +26,7 @@ export default async function importFile(currentDirectory) {
                             const e = entities[m]
                             if (e && e.components[COMPONENTS.MESH]) {
                                 const mesh = GPU.meshes.get(e.components[COMPONENTS.MESH].meshID)
-                                const preview = window.renderer.generateMeshPreview(e, mesh)
+                                const preview = PreviewSystem.execute(mesh, e)
                                 await FilesAPI.writeFile(FilesAPI.sep + "previews" + FilesAPI.sep + mesh.id + FILE_TYPES.PREVIEW, preview)
                             }
                         }

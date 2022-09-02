@@ -263,14 +263,11 @@ export default class Localization {
             PROBE: "Probe",
             TRANSFORMATION: "Transformation",
 
+            SPRITE: "Sprite",
             IMAGE: "Image",
-            COLOR: "Color",
-            USE_IMAGE_COLORS: "Keep image colors",
-            COLOR_TO_OVERRIDE: "Color to override",
-
-            BACKGROUND: "Background",
-            BACKGROUND_COLOR: "Background color",
-            ALPHA: "Alpha",
+            KEEP_SAME_SIZE: "Lock viewport size",
+            INSTANCED_RENDERING: "Instanced rendering",
+            QUAD_SIZE: "Viewport size",
             ALWAYS_FACE_CAMERA: "Always face camera"
 
         },

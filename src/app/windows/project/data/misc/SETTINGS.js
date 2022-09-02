@@ -19,7 +19,6 @@ export default {
     gamma: 2.2,
     exposure: 1,
     transformationType: TRANSFORMATION_TYPE.GLOBAL,
-    iconSize: 1,
     bloomStrength: .3,
     bloomThreshold: .85,
 

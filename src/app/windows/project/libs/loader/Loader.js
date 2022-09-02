@@ -64,7 +64,7 @@ export default class Loader {
                 }
                 entities.push(folder)
                 if (!onlyReturn) {
-                    const cursorPoint = EditorRenderer.cursor.translation
+                    const cursorPoint = [EditorRenderer.cursor.matrix[12], EditorRenderer.cursor.matrix[13], EditorRenderer.cursor.matrix[14]]
                     entities.forEach(e => {
                         if (e instanceof Entity) {
                             vec4.add(e.translation, e.translation, cursorPoint)

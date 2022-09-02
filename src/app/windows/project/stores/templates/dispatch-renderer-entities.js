@@ -4,8 +4,6 @@ import removeHierarchy from "../utils/remove-hierarchy";
 import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
 import AXIS from "../../libs/engine/editor/data/AXIS";
-import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
-import GPU from "../../libs/engine/production/controllers/GPU";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -108,24 +106,6 @@ export default function dispatchRendererEntities({type, payload}) {
     const arr = Array.from(state.values())
     for (let i = 0; i < arr.length; i++) {
         const entity = arr[i]
-
-        if (entity.components[COMPONENTS.POINT_LIGHT]) {
-            entity.instancingGroupID = COMPONENTS.POINT_LIGHT
-            entity.changed = true
-            GPU.instancingGroup.get(COMPONENTS.POINT_LIGHT).entities.set(entity.id, entity)
-        }
-        if (entity.components[COMPONENTS.DIRECTIONAL_LIGHT]) {
-            entity.instancingGroupID = COMPONENTS.DIRECTIONAL_LIGHT
-            entity.changed = true
-            GPU.instancingGroup.get(COMPONENTS.DIRECTIONAL_LIGHT).entities.set(entity.id, entity)
-        }
-        if (entity.components[COMPONENTS.PROBE]) {
-            entity.instancingGroupID = COMPONENTS.PROBE
-            entity.changed = true
-            GPU.instancingGroup.get(COMPONENTS.PROBE).entities.set(entity.id, entity)
-        }
-
-
         entity.pickID = getPickerId(i + AXIS.ZY + 1)
         if (!entity.parentCache)
             continue

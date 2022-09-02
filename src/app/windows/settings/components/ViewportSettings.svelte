@@ -1,6 +1,5 @@
 <script>
     import Accordion from "../../../components/accordion/Accordion.svelte";
-    import Range from "../../../components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import ColorPicker from "../../../components/color-picker/ColorPicker.svelte";
 
@@ -69,11 +68,5 @@
             update("cameraAnimation",  !settings.cameraAnimation)
         }}
             label={translate("CAMERA_ANIMATION")}
-    />
-    <Range
-            label={translate("ICON_SIZE")}
-            value={settings.iconSize}
-            maxValue={5} minValue={.1}
-            onFinish={v => update("iconSize", v)}
     />
 </Accordion>

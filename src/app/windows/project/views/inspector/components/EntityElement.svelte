@@ -12,8 +12,6 @@
     import RendererController from "../../../libs/engine/production/controllers/RendererController";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import EntityNameController from "../../../stores/templates/EntityNameController";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import GPU from "../../../libs/engine/production/controllers/GPU";
 
     const nativeComponents = getNativeComponents()
 
@@ -44,13 +42,8 @@
         {#each nativeComponents as [key, instance, label, icon]}
             <button
                     on:click={() =>{
-                    if(!entity.components[key]){
+                    if(!entity.components[key])
                         entity.components[key] = new instance(undefined, entity)
-                        if(key === COMPONENTS.POINT_LIGHT || key === COMPONENTS.DIRECTIONAL_LIGHT || key === COMPONENTS.PROBE){
-                            key.instancingGroupID = key
-                            GPU.instancingGroup.get(key).entities.set(entity.id, entity)
-                        }
-                    }
                 }}>
                 <Icon>{icon}</Icon>
                 {label}

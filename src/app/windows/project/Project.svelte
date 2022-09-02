@@ -14,6 +14,7 @@
     import ROUTES from "../../../assets/ROUTES";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
 
+    const PAGE = {closeEvent: true, minimizeEvent: true, maximizeEvent: true}
     const {ipcRenderer} = window.require("electron")
     let engine
     let settings
@@ -74,11 +75,7 @@
     <WindowFrame
             options={frameOptions}
             label={engine.meta?.name}
-            pageInfo={{
-        closeEvent: true,
-        minimizeEvent: true,
-        maximizeEvent: true
-    }}
+            pageInfo={PAGE}
             background="var(--pj-background-tertiary)"
     />
     <ControlOptions/>

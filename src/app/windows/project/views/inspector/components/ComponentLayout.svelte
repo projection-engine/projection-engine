@@ -5,8 +5,6 @@
     import RendererStoreController from "../../../stores/RendererStoreController";
     import getComponentIcon from "../../../utils/get-component-icon";
     import {v4} from "uuid";
-    import GPU from "../../../libs/engine/production/controllers/GPU";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 
     export let key
     export let index
@@ -22,13 +20,6 @@
             RendererStoreController.updateEngine()
         } else {
             delete entity.components[key]
-            if(Object.values(COMPONENTS).find(c => c === entity.instancingGroupID)) {
-                const group = GPU.instancingGroup.get(entity.instancingGroupID)
-                group.entities.delete(entity.id)
-
-                group.updateBuffer()
-                entity.instancingGroupID = undefined
-            }
             RendererStoreController.updateEngine({...RendererStoreController.engine, changeID: v4()})
         }
     }

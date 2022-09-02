@@ -1,7 +1,7 @@
 import GIZMOS from "../../../data/misc/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import Conversion from "../../../libs/engine/production/libs/Conversion";
-import ViewportPicker from "../../../libs/engine/production/libs/ViewportPicker";
+import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
+import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 
@@ -9,22 +9,22 @@ const  MAX_DELTA = 50
 
 function pickIcon(coords) {
     drawIconsToBuffer()
-    const picked = ViewportPicker.depthPick(DepthPass.framebuffer, coords)
+    const picked = PickingAPI.depthPick(DepthPass.framebuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
 function pickMesh(x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
-    const coords = Conversion.toQuadCoord({x, y}, {w, h})
-    const picked = ViewportPicker.depthPick(DepthPass.framebuffer, coords)
+    const coords = ConversionAPI.toQuadCoord({x, y}, {w, h})
+    const picked = PickingAPI.depthPick(DepthPass.framebuffer, coords)
     return Math.round((picked[1] + picked[2]) * 255)
 }
 
-export default function onViewportClick(event, startedCoords, settings, engine, setContext) {
+export default function onViewportClick(event, mouseDelta, settings, engine, setContext) {
     if (gpu.canvas !== event.target || settings.gizmo === GIZMOS.CURSOR)
         return
-    const deltaX = Math.abs(startedCoords.x - event.clientX)
-    const deltaY = Math.abs(startedCoords.y - event.clientY)
+    const deltaX = Math.abs(mouseDelta.x - event.clientX)
+    const deltaY = Math.abs(mouseDelta.y - event.clientY)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
 

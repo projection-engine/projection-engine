@@ -1,14 +1,14 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../data/misc/RENDER_TARGET";
-    import Conversion from "../../../libs/engine/production/libs/Conversion";
-    import ViewportPicker from "../../../libs/engine/production/libs/ViewportPicker";
+    import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
+    import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
     import CameraBar from "../components/columns/CameraBar.svelte";
     import GizmoBar from "../components/columns/GizmoBar.svelte";
-    import updateCursor from "../utils/update-cursor";
+
     import GIZMOS from "../../../data/misc/GIZMOS";
     import onViewportClick from "../utils/on-viewport-click";
     import RendererStoreController from "../../../stores/RendererStoreController";
@@ -17,6 +17,11 @@
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop";
     import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
+    import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
+    import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
+    import {vec3} from "gl-matrix";
+    import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
+    import InputEventsAPI from "../../../libs/engine/production/libs/InputEventsAPI";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -25,17 +30,30 @@
     export let translate
     export let engine
 
-    let gizmoSystem
-    let latestTranslation
     const LEFT_BUTTON = 0
-    const startedCoords = {x: 0, y: 0}
+    let mouseDelta = {x: 0, y: 0}
+    const CAMERA_DISTANCE = 2
+
+    function transformCursor(e) {
+
+
+        const t = EditorRenderer.cursor
+        mouseDelta.x += e.movementX * CAMERA_DISTANCE
+        mouseDelta.y += e.movementY * CAMERA_DISTANCE
+        t.translation = ConversionAPI.toWorldCoordinates(mouseDelta.x, mouseDelta.y).slice(0, 3)
+        vec3.scale(t.translation, t.translation, 1 / CAMERA_DISTANCE)
+
+        t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
+    }
 
     function handleMouse(e) {
         if (e.type === "mousemove") {
-            latestTranslation = Conversion.toWorldCoordinates(e.clientX, e.clientY).slice(0, 3)
-            updateCursor(latestTranslation)
-        } else
+            transformCursor(e)
+
+        } else {
             document.removeEventListener("mousemove", handleMouse)
+            document.exitPointerLock()
+        }
     }
 
     function gizmoMouseMove(event) {
@@ -46,16 +64,17 @@
     function onMouseDown(e) {
         if (!window.renderer)
             return
-        startedCoords.x = e.clientX
-        startedCoords.y = e.clientY
+
+        mouseDelta = {x: e.clientX, y: e.clientY}
         if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
-            latestTranslation = Conversion.toWorldCoordinates(e.clientX, e.clientY).slice(0, 3)
-            updateCursor(latestTranslation)
+            InputEventsAPI.lockPointer()
+
+            transformCursor(e)
             document.addEventListener("mousemove", handleMouse)
             document.addEventListener("mouseup", handleMouse, {once: true})
         }
         if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
-            gizmoSystem = window.renderer.editorSystem.gizmoSystem
+
             if (GizmoSystem.targetGizmo) {
                 GizmoSystem.targetGizmo.onMouseDown(e)
                 e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
@@ -73,7 +92,7 @@
             return
         onViewportClick(
             event,
-            startedCoords,
+            mouseDelta,
             settings,
             engine,
             (data) => {
@@ -118,11 +137,11 @@
                 w: depthFBO.width,
                 h: depthFBO.height
             }
-            const nStart = Conversion.toQuadCoord(startCoords, size)
-            const nEnd = Conversion.toQuadCoord(endCoords, size)
+            const nStart = ConversionAPI.toQuadCoord(startCoords, size)
+            const nEnd = ConversionAPI.toQuadCoord(endCoords, size)
 
             try {
-                const data = ViewportPicker.readBlock(depthFBO, nStart, nEnd)
+                const data = PickingAPI.readBlock(depthFBO, nStart, nEnd)
                 WORKER.postMessage({entities: window.renderer.entities, data})
                 WORKER.onmessage = ({data: selected}) => RendererStoreController.updateEngine({...engine, selected})
             } catch (err) {
