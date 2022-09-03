@@ -1,7 +1,9 @@
 import Comment from "../templates/nodes/Comment"
+import SelectionStore from "../../../stores/SelectionStore";
 
-export default function addComment(hook) {
-
+export default function addComment(nodes, setNodes) {
+    if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
+        return
     let smallestX,
         smallestY,
         width = 0,
@@ -9,7 +11,7 @@ export default function addComment(hook) {
         biggestX,
         biggestY
 
-    const nodesG = hook.selected.map(h => document.getElementById(h)?.parentNode).filter(n => n)
+    const nodesG = SelectionStore.array.map(h => document.getElementById(h)?.parentNode).filter(n => n)
     nodesG
         .forEach(n => {
             const transformation = n
@@ -29,9 +31,9 @@ export default function addComment(hook) {
                 smallestY = cY
 
             if (!biggestX || cX + cW > biggestX)
-                biggestX = cX+ cW
+                biggestX = cX + cW
             if (!biggestY || cY + cH > biggestY)
-                biggestY = cY+ cH
+                biggestY = cY + cH
 
 
         })
@@ -43,14 +45,9 @@ export default function addComment(hook) {
     smallestX -= 4
     smallestY -= 36
 
-
-
-
-    hook.setNodes(prev => {
-        return [
-            ...prev,
-            new Comment(width, height, smallestX, smallestY)
-        ]
-    })
+    setNodes([
+        ...nodes,
+        new Comment(width, height, smallestX, smallestY)
+    ])
 
 }

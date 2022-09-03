@@ -1,10 +1,11 @@
 import getBezierCurve from "./get-bezier-curve";
+import ShaderEditorController from "../ShaderEditorController";
 
 export default function updateLinks(mappedLinks, ref) {
     if (!ref)
         return
 
-    const scale = window.shaderEditor.scale
+    const scale = ShaderEditorController.scale
     try {
 
         let parentBBox = ref.getBoundingClientRect()

@@ -17,8 +17,8 @@ export default class HotKeys {
                 return
             // event.preventDefault()
             const activeView = HotKeys.views.get(HotKeys.activeView)
-            const tagName= document.activeElement?.tagName
-            if (tagName === "INPUT" || tagName === "TEXTAREA"|| !activeView)
+            const tagName = document.activeElement?.tagName
+            if (tagName === "INPUT" || tagName === "TEXTAREA" || !activeView)
                 return
 
             const keysToTest = activeView.actions.length
@@ -34,11 +34,11 @@ export default class HotKeys {
                     let valid = true
                     const required = currentAction.require
                     let toRemove = 0
-                    if(h.get(KEYS.ControlLeft))
+                    if (h.get(KEYS.ControlLeft))
                         toRemove++
-                    if(h.get(KEYS.ShiftLeft))
+                    if (h.get(KEYS.ShiftLeft))
                         toRemove++
-                    if(required.length === (h.size - toRemove)) {
+                    if (required.length === (h.size - toRemove)) {
                         for (let j = 0; j < required.length; j++)
                             valid = valid && h.get(required[j])
                         if (valid && !currentAction.disabled && currentAction.callback != null)
@@ -64,8 +64,10 @@ export default class HotKeys {
             HotKeys.holding.clear()
             HotKeys.#onUpdate()
         }
-
+        if (HotKeys.views.get(element))
+            HotKeys.unbindAction(element)
         HotKeys.views.set(element, {actions, icon, label, handler})
+
         element.addEventListener("mouseenter", handler)
     }
 

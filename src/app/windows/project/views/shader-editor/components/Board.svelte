@@ -16,6 +16,11 @@
     import onMutation from "../libs/on-mutation";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import handleLink from "../utils/handle-link";
+    import HotKeys from "../../../components/metrics/libs/HotKeys";
+    import getHotkeys from "../../../components/viewport/utils/get-hotkeys";
+    import Localization from "../../../../../libs/Localization";
+    import ShaderEditorController from "../ShaderEditorController";
+    import getShortcuts from "../utils/get-shortcuts";
 
     export let links
     export let setLinks
@@ -41,26 +46,18 @@
 
     const handleWheel = (e) => {
         e.preventDefault()
-        let s = window.shaderEditor.scale
+        let s = ShaderEditorController.scale
         if (e.wheelDelta > 0 && s < 3)
             s += s * .1
         else if (e.wheelDelta < 0 && s >= .5)
             s -= s * .1
 
         ref.style.transform = "scale(" + s + ")"
-        window.shaderEditor.scale = s
+        ShaderEditorController.scale = s
     }
 
 
     const mutationObserver = new MutationObserver(e => onMutation(resolvedLinks, ref, e))
-    onMount(() => {
-        if (ref && ref.parentElement) {
-            ref.parentElement.scrollTop = BOARD_SIZE / 2
-            ref.parentElement.scrollLeft = BOARD_SIZE / 2
-            ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
-        }
-        mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
-    })
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
     $: contextMenuBinding.rebind(getContextMenu(
         nodes,
@@ -69,8 +66,18 @@
         selected,
         links,
         setLinks,
-        ref?.parentNode
+        ref?.parentElement
     ))
+
+    onMount(() => {
+
+        if (ref && ref.parentElement) {
+            ref.parentElement.scrollTop = BOARD_SIZE / 2
+            ref.parentElement.scrollLeft = BOARD_SIZE / 2
+            ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
+        }
+        mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
+    })
 
     onDestroy(() => {
         contextMenuBinding.onDestroy()

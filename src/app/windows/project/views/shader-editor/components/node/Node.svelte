@@ -9,6 +9,7 @@
     import NodeOutput from "./NodeOutput.svelte";
     import Material from "../../templates/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
+    import ShaderEditorController from "../../ShaderEditorController";
 
     export let links
     export let node
@@ -23,7 +24,7 @@
 
     $: isSelected = selected.indexOf(node.id) > -1
 
-    let height
+
     let outputLinks
     let inputLinks
     $: {
@@ -46,7 +47,7 @@
         nodeInfo = NODE_INFO[key] ? NODE_INFO[key] : {}
     }
     const handleLinkDrag = (event, draggableElement) => {
-        const scale = window.shaderEditor.scale
+        const scale = ShaderEditorController.scale
         const parent = ref?.parentNode.parentNode
         const bBox = draggableElement.getBoundingClientRect()
         let parentBBox = parent.getBoundingClientRect()
@@ -76,15 +77,9 @@
         dragNode(event, ref, ref.parentNode.parentNode)
     }
 
-    onMount(() => {
-        if (!height) {
-            const h = ref.firstChild.scrollHeight + 4
-            height = h >= 35 ? h : 55
-        }
-    })
 
-    let width
     $: {
+        let width
         switch (node.size) {
             case 0:
                 width = "225px"
@@ -96,30 +91,35 @@
                 width = "150px"
                 break
         }
+
+        if (ref) {
+            ref.firstChild.setAttribute("height", `0`)
+            setTimeout(() => {
+                const h = ref.firstChild.scrollHeight + 4
+                ref.firstChild.setAttribute("height", `${h >= 35 ? h : 55}`)
+                ref.firstChild.setAttribute("width", `${width}`)
+            }, 0)
+        }
     }
-
-
 </script>
 
 <g>
     <g
-        bind:this={ref}
-        data-ismaterial="{node instanceof Material}"
-        transform={`translate(${node.x} ${node.y})`}
+            bind:this={ref}
+            data-ismaterial="{node instanceof Material}"
+            transform={`translate(${node.x} ${node.y})`}
     >
         <foreignObject
                 data-node={node.canBeDeleted ? node.id : undefined}
                 id={node.id}
                 class="wrapper"
                 style={isSelected ? "outline: yellow 2px solid" : undefined}
-                width="{width}"
-                height="{height}"
         >
             <div
-                class="label"
-                style="border-color: {nodeInfo.COLOR}"
-                id={node.id + "-node"}
-                on:mousedown={handleDragStart}
+                    class="label"
+                    style="border-color: {nodeInfo.COLOR}"
+                    id={node.id + "-node"}
+                    on:mousedown={handleDragStart}
             >
                 {node.name}
             </div>

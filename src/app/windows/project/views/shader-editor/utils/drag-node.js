@@ -1,4 +1,7 @@
-export default function dragNode(event, target, parent){
+import ShaderEditorController from "../ShaderEditorController";
+import SelectionStore from "../../../stores/SelectionStore";
+
+function listenTo(event, target, parent) {
     const nodeBbox = target.getBoundingClientRect(),
         parentBBox = parent.getBoundingClientRect(),
         bounding = {
@@ -6,27 +9,45 @@ export default function dragNode(event, target, parent){
             y: parent.scrollTop - parentBBox.top + nodeBbox.y - event.clientY
         },
         current = {}
+    return [
+        () => {
+            if (current.x === undefined)
+                return
+            if ((nodeBbox.top - parentBBox.top) < 0)
+                current.y = 0
+            if ((nodeBbox.left - parentBBox.left) < 0)
+                current.x = 0
+            if ((nodeBbox.top - parentBBox.top) > parentBBox.height)
+                current.y = parentBBox.height - nodeBbox.height
+            if ((nodeBbox.left - parentBBox.left) > parentBBox.width)
+                current.x = parentBBox.width - nodeBbox.width
+            target.setAttribute("transform", `translate(${current.x} ${current.y})`)
+        },
+        ev => {
+            current.x = Math.round(((ev.clientX + bounding.x) / ShaderEditorController.scale) / ShaderEditorController.grid) * ShaderEditorController.grid
+            current.y = Math.round(((ev.clientY + bounding.y) / ShaderEditorController.scale) / ShaderEditorController.grid) * ShaderEditorController.grid
+
+            target.setAttribute("transform", `translate(${current.x} ${current.y})`)
+        }
+    ]
+}
+
+export default function dragNode(event, target, parent) {
+    let targets = SelectionStore.TARGET === SelectionStore.TYPES.SHADER_EDITOR ? SelectionStore.array : []
+    targets = [...targets.map(v => document.getElementById(v)?.parentElement), target]
+    const callbacks = targets.map(t => listenTo(event, t, parent))
+
     const handleMouseMove = (ev) => {
-        current.x = Math.round(((ev.clientX + bounding.x)/  window.shaderEditor.scale )/ window.shaderEditor.grid) * window.shaderEditor.grid
-        current.y = Math.round(((ev.clientY + bounding.y) /  window.shaderEditor.scale) / window.shaderEditor.grid) * window.shaderEditor.grid
-        target?.setAttribute("transform", `translate(${current.x} ${current.y})`)
+        for (let i = 0; i < callbacks.length; i++)
+            callbacks[i][1](ev)
     }
 
     const handleMouseUp = () => {
-        if (current.x !== undefined) {
-            const bBox = target.getBoundingClientRect()
-            if ((bBox.top - parentBBox.top) < 0)
-                current.y = 0
-            if ((bBox.left - parentBBox.left) < 0)
-                current.x = 0
-            if ((bBox.top - parentBBox.top) > parentBBox.height)
-                current.y = parentBBox.height - bBox.height
-            if ((bBox.left - parentBBox.left) > parentBBox.width)
-                current.x = parentBBox.width - bBox.width
-            target?.setAttribute("transform", `translate(${current.x} ${current.y})`)
-        }
+        for (let i = 0; i < callbacks.length; i++)
+            callbacks[i][0]()
         document.removeEventListener("mousemove", handleMouseMove)
     }
     document.addEventListener("mousemove", handleMouseMove)
     document.addEventListener("mouseup", handleMouseUp, {once: true})
 }
+

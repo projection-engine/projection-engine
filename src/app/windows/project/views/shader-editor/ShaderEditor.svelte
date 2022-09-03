@@ -7,7 +7,7 @@
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
     import FilesStore from "../../stores/FilesStore";
     import parseFile from "./libs/parse-file";
@@ -20,10 +20,14 @@
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Editor from "./components/Editor.svelte";
     import SelectionStore from "../../stores/SelectionStore";
+    import ShaderEditorController from "./ShaderEditorController";
+    import HotKeys from "../../components/metrics/libs/HotKeys";
+    import getShortcuts from "./utils/get-shortcuts";
 
     export let hidden
     export let switchView
     export let orientation
+
 
     const GRID_SIZE = 20
     const {shell} = window.require("electron")
@@ -31,28 +35,39 @@
 
     let engine
     let fileStore
-    const unsubscribeFiles = FilesStore.getStore(v => fileStore = v)
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    onDestroy(() => {
-        unsubscribeEngine()
-        unsubscribeFiles()
-    })
-
-    const internalID = v4()
     let openFile = {}
     let nodes = []
     let links = []
     let status
-
     let selected = []
-    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
+    let ref
 
+    const unsubscribeFiles = FilesStore.getStore(v => fileStore = v)
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
     function setSelected(data) {
         const old = {...SelectionStore.data, array: data}
         if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
             old.TARGET = SelectionStore.TYPES.SHADER_EDITOR
         SelectionStore.updateStore(old)
     }
+    $: {
+        if (ref)
+            HotKeys.bindAction(
+                ref,
+                getShortcuts(openFile, nodes, v => nodes = v, links, v => links = v, setSelected),
+                "texture",
+                Localization.PROJECT.SHADER_EDITOR.TITLE
+            )
+    }
+    onDestroy(() => {
+        unsubscribe()
+        unsubscribeEngine()
+        unsubscribeFiles()
+    })
+
+
+
 
     $: {
         if (engine.selectedEntity && engine.selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
@@ -61,6 +76,7 @@
             if (found) {
                 alert.pushAlert("Editing " + found.name, "info")
                 openFile = found
+                ShaderEditorController.copied.clear()
             }
         }
     }
@@ -97,7 +113,7 @@
         <button
                 disabled={!openFile?.registryID}
                 class="button"
-                on:click={() => window.shaderEditor.save(openFile, nodes, links, translate).catch()}>
+                on:click={() => ShaderEditorController.save(openFile, nodes, links).catch()}>
             <Icon>save</Icon>
             {translate("SAVE")}
         </button>
@@ -150,12 +166,12 @@
                 class="button"
 
                 on:click={e => {
-                if (window.shaderEditor.grid === GRID_SIZE) {
-                    window.shaderEditor.grid = 1
+                if (ShaderEditorController.grid === GRID_SIZE) {
+                    ShaderEditorController.grid = 1
                     e.currentTarget.setAttribute("data-highlight", "")
 
                 } else {
-                    window.shaderEditor.grid = GRID_SIZE
+                    ShaderEditorController.grid = GRID_SIZE
                     e.currentTarget.setAttribute("data-highlight", "-")
 
                 }
@@ -179,20 +195,30 @@
         </button>
     </div>
 </Header>
-{#if !hidden}
-    <Editor
-            translate={translate}
-            isOpen={openFile.registryID !== undefined}
-            selected={selected}
-            setSelected={setSelected}
-            nodes={nodes}
-            setNodes={v => nodes = v}
-            links={links}
-            setLinks={v => links = v}
-    />
-{/if}
+<div style={hidden ? "display: none": undefined} class="wrapper" bind:this={ref}>
+    {#if !hidden}
+        <Editor
+                translate={translate}
+                isOpen={openFile.registryID !== undefined}
+                selected={selected}
+                setSelected={setSelected}
+                nodes={nodes}
+                setNodes={v => nodes = v}
+                links={links}
+                setLinks={v => links = v}
+        />
+
+    {/if}
+</div>
 
 <style>
+    .wrapper {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
     .icon {
         transition: 150ms linear;
         background: linear-gradient(to right bottom, white 25%, #333 75%);

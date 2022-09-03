@@ -16,7 +16,7 @@
     export let translate
     export let isOpen
 
-    const internalID = v4()
+
     $: fallbackSelected = nodes.find(n => n instanceof Material)
 
     const submitNodeVariable = (value, attr, node) => {
@@ -44,20 +44,20 @@
     }
 </script>
 
-<div class="wrapper" id={internalID}>
-    <Board
-            isOpen={isOpen}
-            links={links}
-            setLinks={setLinks}
-            nodes={nodes}
-            setNodes={setNodes}
-            selected={selected}
-            setSelected={setSelected}
-            submitNodeVariable={submitNodeVariable}
-    />
-    {#if isOpen}
-        <VerticalTabs
-                tabs={[{
+
+<Board
+        isOpen={isOpen}
+        links={links}
+        setLinks={setLinks}
+        nodes={nodes}
+        setNodes={setNodes}
+        selected={selected}
+        setSelected={setSelected}
+        submitNodeVariable={submitNodeVariable}
+/>
+{#if isOpen}
+    <VerticalTabs
+            tabs={[{
                 label: translate("NODE"),
                 component: AttributeEditor,
                 props: {
@@ -73,17 +73,6 @@
                 component:Debug
             }
         ]}
-                absolute={false}
-        />
-    {/if}
-</div>
-
-<style>
-    .wrapper {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-    }
-
-</style>
+            absolute={false}
+    />
+{/if}
