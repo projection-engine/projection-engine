@@ -6,16 +6,16 @@
 
     export let initial
     export let isInput
-    export let selected
+    export let component
 
     let key = initial ? initial[0] : ""
     let value = initial ? initial[1] : ""
     const translate = key => Localization.PROJECT.UI[key]
     const submit = () => {
         if (initial)
-            delete selected.styles[initial[0]]
-        selected.styles[key] = value
-        selected.updateStyles()
+            delete component.styles[initial[0]]
+        component.styles[key] = value
+        component.updateStyles()
         UIStore.updateStore()
 
         if (isInput) {
@@ -26,9 +26,9 @@
 
     const clear = () => {
         console.log(key)
-        delete selected.styles[key]
-        console.log(selected.styles[key])
-        selected.updateStyles()
+        delete component.styles[key]
+        console.log(component.styles[key])
+        component.updateStyles()
         UIStore.updateStore()
     }
 </script>

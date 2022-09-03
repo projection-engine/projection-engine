@@ -10,6 +10,8 @@
     import Entity from "../../libs/engine/production/templates/Entity";
     import EntityElement from "./components/EntityElement.svelte";
     import ComponentLayout from "./components/ComponentLayout.svelte";
+    import SelectionStore from "../../stores/SelectionStore";
+    import RendererController from "../../libs/engine/production/controllers/RendererController";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -19,16 +21,45 @@
     let ui = {}
     let parent
     let savedState = false
+    let engineSelectedEntity
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeUI = UIStore.getStore(v => ui = v)
+    const unsubscribeSelection = SelectionStore.getStore(() => {
+        if (SelectionStore.engineSelected[0])
+            engineSelectedEntity = RendererController.entitiesMap.get(SelectionStore.engineSelected[0])
+        else
+            engineSelectedEntity = RendererController.entitiesMap.get(SelectionStore.lockedEntity)
+    })
     onDestroy(() => {
+        unsubscribeSelection()
         unsubscribeEngine()
         unsubscribeUI()
     })
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
     let focusOnEngineEntities = true
-    $: entity = ui.selectedEntity && (!focusOnEngineEntities || !engine.selectedEntity) ? ui.selectedEntity : engine.selectedEntity
+    $: entity = ui.selectedEntity && (!focusOnEngineEntities || !engineSelectedEntity) ? ui.selectedEntity : engineSelectedEntity
+
+    const submitComponent = (key, value, save) => {
+        if (!savedState) {
+            EngineStore.saveEntity(
+                engineSelectedEntity.id,
+                undefined,
+                key,
+                value
+            )
+            savedState = true
+        }
+        entity[key] = value
+        if (save)
+            EngineStore.saveEntity(
+                engineSelectedEntity.id,
+                undefined,
+                key,
+                value
+            )
+    }
 </script>
 <Header
         orientation={orientation}
@@ -75,7 +106,7 @@
                 <EntityElement entity={entity} translate={translate}/>
                 {#if !(entity instanceof Entity)}
                     <UIElement
-                            selected={entity}
+                            component={entity}
                             translate={translate}
                             store={ui}
                     />
@@ -83,30 +114,11 @@
                 <ComponentLayout
                         key="TRANSFORMATION"
                         translate={translate}
-                        selected={entity}
-                        submit={(key, value, save) => {
-                            if(!savedState){
-                                EngineStore.saveEntity(
-                                        engine.selectedEntity.id,
-                                        undefined,
-                                      key,
-                                      value
-                                )
-                                savedState = true
-                            }
-                            entity[key] = value
-                            if(save)
-                                EngineStore.saveEntity(
-                                      engine.selectedEntity.id,
-                                      undefined,
-                                      key,
-                                      value
-                                )
-                        }}
+                        component={entity}
+                        submit={submitComponent}
                 />
                 <Components
                         translate={translate}
-                        engine={engine}
                         entity={entity}
                 />
             </div>

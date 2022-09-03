@@ -1,6 +1,8 @@
-export default function deleteNode(node, nodes, setNodes, links, setLinks, setSelected,) {
+import SelectionStore from "../../../stores/SelectionStore";
+
+export default function deleteNode(node, nodes, setNodes, links, setLinks) {
     const target = node
-    setSelected([])
+    SelectionStore.shaderEditorSelected = []
 
     setLinks(links.filter(el => el.target.id !== target && el.source.id !== target))
     let n = [...nodes]

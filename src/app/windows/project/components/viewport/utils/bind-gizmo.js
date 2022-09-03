@@ -1,6 +1,7 @@
 import GIZMOS from "../../../data/misc/GIZMOS";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
+import SelectionStore from "../../../stores/SelectionStore";
 
 export default function bindGizmo(selected, settings) {
     const entities = RendererController.entitiesMap

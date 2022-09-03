@@ -7,7 +7,7 @@ import ActionHistoryAPI from "../stores/ActionHistoryAPI";
 
 const {ipcRenderer} = window.require("electron")
 
-export default function getFrameOptions(engine, settings) {
+export default function getFrameOptions(settings) {
 
     return [
         {label: "File",

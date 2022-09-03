@@ -1,21 +1,22 @@
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
+import SelectionStore from "../../../stores/SelectionStore";
 
-export default function selection(type, nodes, setSelected, selected) {
+export default function selection(type, nodes) {
     switch (type) {
     case SELECTION_TYPES.INVERT: {
         const toSelect = []
         for (let i = 0; i < nodes.length; i++) {
-            if (!selected.includes(nodes[i].id))
+            if (!SelectionStore.shaderEditorSelected.includes(nodes[i].id))
                 toSelect.push(nodes[i].id)
         }
-        setSelected(toSelect)
+        SelectionStore.shaderEditorSelected = toSelect
         break
     }
     case SELECTION_TYPES.NONE:
-        setSelected([])
+        SelectionStore.shaderEditorSelected = []
         break
     case SELECTION_TYPES.ALL: {
-        setSelected(nodes.map(l => l.id))
+        SelectionStore.shaderEditorSelected = nodes.map(l => l.id)
         break
     }
     default:

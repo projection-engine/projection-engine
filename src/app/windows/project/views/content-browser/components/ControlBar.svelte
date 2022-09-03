@@ -13,7 +13,6 @@
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
     import FilesStore from "../../../stores/FilesStore";
-    import SelectionStore from "../../../stores/SelectionStore";
 
     export let translate
 

@@ -7,11 +7,8 @@ export default {
     entities: new Map(),
     cameraInitialized: false,
     executingAnimation: false,
-    selected: [],
     scripts: [],
     changeID: undefined,
-    selectedEntity: undefined,
-    lockedEntity: undefined,
 
     currentLevel: undefined,
     viewportTab: VIEWPORT_TABS.EDITOR

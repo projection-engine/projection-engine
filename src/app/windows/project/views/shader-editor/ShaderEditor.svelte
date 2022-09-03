@@ -7,8 +7,7 @@
     import compiler from "./libs/compiler"
     import Localization from "../../../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
-    import {v4} from "uuid";
+    import {onDestroy} from "svelte";
     import FilesStore from "../../stores/FilesStore";
     import parseFile from "./libs/parse-file";
     import Material from "./templates/nodes/Material";
@@ -40,22 +39,22 @@
     let links = []
     let status
     let selected = []
+    let selectedEntity
     let ref
 
     const unsubscribeFiles = FilesStore.getStore(v => fileStore = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
-    function setSelected(data) {
-        const old = {...SelectionStore.data, array: data}
-        if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
-            old.TARGET = SelectionStore.TYPES.SHADER_EDITOR
-        SelectionStore.updateStore(old)
-    }
+    const unsubscribe = SelectionStore.getStore(() => {
+        selected = SelectionStore.shaderEditorSelected
+        selectedEntity = SelectionStore.selectedEntity
+    })
+
+
     $: {
         if (ref)
             HotKeys.bindAction(
                 ref,
-                getShortcuts(openFile, nodes, v => nodes = v, links, v => links = v, setSelected),
+                getShortcuts(openFile, nodes, v => nodes = v, links, v => links = v),
                 "texture",
                 Localization.PROJECT.SHADER_EDITOR.TITLE
             )
@@ -67,11 +66,9 @@
     })
 
 
-
-
     $: {
-        if (engine.selectedEntity && engine.selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
-            const mID = engine.selectedEntity.components[COMPONENTS.MESH].materialID
+        if (selectedEntity && selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
+            const mID = selectedEntity.components[COMPONENTS.MESH].materialID
             const found = fileStore.materials.find(m => m.registryID === mID)
             if (found) {
                 alert.pushAlert("Editing " + found.name, "info")
@@ -83,7 +80,7 @@
 
     $: {
         status = {}
-        SelectionStore.updateStore([])
+        SelectionStore.shaderEditorSelected = []
         parseFile(
             openFile,
             (d) => {
@@ -149,15 +146,15 @@
                 {translate("SELECT")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes, setSelected, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
                 {translate("ALL")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes, setSelected, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
                 {translate("NONE")}
             </button>
 
-            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes, setSelected, selected)}>
+            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
                 {translate("INVERT")}
             </button>
         </Dropdown>
@@ -201,7 +198,6 @@
                 translate={translate}
                 isOpen={openFile.registryID !== undefined}
                 selected={selected}
-                setSelected={setSelected}
                 nodes={nodes}
                 setNodes={v => nodes = v}
                 links={links}

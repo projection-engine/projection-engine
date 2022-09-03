@@ -10,7 +10,7 @@
     import GPU from "../../../libs/engine/production/controllers/GPU";
 
 
-    export let selected
+    export let component
     export let submit
     export let translate
 
@@ -24,18 +24,18 @@
     <svelte:fragment slot="header">
         <div class="icon">
             <Icon styles="font-size: .9rem">
-                {getComponentIcon(COMPONENTS.MESH, selected)}
+                {getComponentIcon(COMPONENTS.MESH, component)}
             </Icon>
         </div>
         {translate("MESH")}
     </svelte:fragment>
     <Selector
-            selected={selected.meshID}
+            selected={component.meshID}
             type={"mesh"}
             handleChange={loadMesh}
     />
     <Selector
-            selected={selected.materialID}
+            selected={component.materialID}
             type={"material"}
             handleChange={async src => loadMaterial(src?.registryID, submit)}
     />

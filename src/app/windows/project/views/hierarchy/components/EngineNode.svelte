@@ -4,6 +4,7 @@
     import "../css/Branch.css"
     import RendererController from "../../../libs/engine/production/controllers/RendererController";
     import DraggableEntity from "./DraggableEntity.svelte";
+    import updateSelection from "../utils/update-selection";
 
     const LEFT_BUTTON = 0
     export let depth = undefined
@@ -11,7 +12,6 @@
     export let open = undefined
     export let setOpen = undefined
     export let selected = undefined
-    export let setSelected = undefined
     export let lockedEntity = undefined
     export let setLockedEntity = undefined
 
@@ -62,8 +62,8 @@
             class="wrapper hierarchy-branch"
             style={"padding-left:" +  (depth * 18 + "px")}
             on:mousedown={(e) => {
-                    if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
-                    setSelected(nodeRef.id, e.ctrlKey)
+                if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
+                    updateSelection(nodeRef.id, e.ctrlKey)
             }}
     >
         <div class="summary hierarchy-branch">

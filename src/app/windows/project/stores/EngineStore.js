@@ -35,13 +35,6 @@ export default class EngineStore {
 
     static updateStore(value = EngineStore.engine) {
         let updated = {...value}
-        if (!updated.lockedEntity)
-            updated.lockedEntity = updated.selected[0] ? updated.selected[0] : Array.from(updated.entities.values()).find(e => !e.parent)?.id
-        if (updated.selected.length > 0 || updated.lockedEntity)
-            updated.selectedEntity = updated.entities.get(updated.selected[0] ? updated.selected[0] : updated.lockedEntity)
-        else
-            updated.selectedEntity = undefined
-
         EngineStore.engine = updated
         engine.set(updated)
     }

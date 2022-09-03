@@ -5,15 +5,16 @@
     import EngineStore from "../../../stores/EngineStore";
     import getComponentIcon from "../../../utils/get-component-icon";
     import {v4} from "uuid";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     export let key
     export let index
-    export let selected
+    export let component
     export let submit
     export let translate
 
     const removeComponent = () => {
-        const entity = EngineStore.engine.selectedEntity
+        const entity = SelectionStore.selectedEntity
         if (index != null) {
             entity.scripts[index] = undefined
             entity.scripts = entity.scripts.filter(e => e)
@@ -23,14 +24,14 @@
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
         }
     }
-    $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(selected.name) ? translate(selected.name) : selected.name)
+    $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(component.name) ? translate(component.name) : component.name)
 </script>
 
 <Accordion>
     <svelte:fragment slot="header">
         <div class="icon">
             <Icon styles="font-size: .9rem; width: 1rem">
-                {getComponentIcon(key, selected)}
+                {getComponentIcon(key, component)}
             </Icon>
         </div>
         {title}
@@ -40,14 +41,14 @@
             </button>
         {/if}
     </svelte:fragment>
-    {#if Array.isArray(selected.props)}
-        {#each selected.props as propAttr}
+    {#if Array.isArray(component.props)}
+        {#each component.props as propAttr}
             {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
                 <fieldset>
                     <legend>{translate(propAttr.label) ? translate(propAttr.label) : propAttr.label}</legend>
                     {#each propAttr.children as attribute}
                         <ComponentAttribute
-                                selected={selected}
+                                component={component}
                                 submit={submit}
                                 translate={translate}
                                 attribute={attribute}
@@ -57,7 +58,7 @@
 
             {:else if propAttr.type !== "group"}
                 <ComponentAttribute
-                        selected={selected}
+                        component={component}
                         submit={submit}
                         translate={translate}
                         attribute={propAttr}

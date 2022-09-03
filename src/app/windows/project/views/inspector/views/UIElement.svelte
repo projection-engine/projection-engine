@@ -11,23 +11,23 @@
     import UIStore from "../../../stores/UIStore";
 
     export let translate
-    export let selected
+    export let component
 
     let store
     const unsubscribe = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribe())
 
-    $: valid = Object.values(selected.styles).length
+    $: valid = Object.values(component.styles).length
 
     const updateTag = (ev, tag) => {
-        selected.tag = tag
+        component.tag = tag
         ev.currentTarget.parentElement.closeDropdown()
     }
     const updateLayout = async (e, layout) => {
         const t = e.currentTarget.parentElement
         try {
             const reg = await RegistryAPI.readRegistryFile(layout.registryID)
-            selected.layoutBlock = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+            component.layoutBlock = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
             t.closeDropdown()
             UIStore.updateStore()
         } catch (err) {
@@ -43,11 +43,11 @@
     </svelte:fragment>
     <Dropdown>
         <button slot="button" class="button-dropdown">
-            {#if selected.tag === "div"}
+            {#if component.tag === "div"}
                 Container
-            {:else if selected.tag === "button"}
+            {:else if component.tag === "button"}
                 Button
-            {:else if selected.tag === "input"}
+            {:else if component.tag === "input"}
                 Input
             {/if}
         </button>
@@ -77,8 +77,8 @@
         </Dropdown>
         <TextArea
                 placeholder={"LAYOUT_BLOCK"}
-                value={selected.layoutBlock}
-                setValue={v => selected.layoutBlock = v}
+                value={component.layoutBlock}
+                setValue={v => component.layoutBlock = v}
         />
     </fieldset>
 
@@ -86,8 +86,8 @@
         <legend>Text Content</legend>
         <TextArea
                 placeholder={"TEXT_CONTENT"}
-                value={selected.textContent}
-                setValue={v => selected.textContent = v}
+                value={component.textContent}
+                setValue={v => component.textContent = v}
         />
     </fieldset>
 
@@ -96,8 +96,8 @@
         <Input
                 hasBorder={true}
                 placeholder={"CSS_CLASS"}
-                searchString={selected.className}
-                setSearchString={v => selected.className = v}
+                searchString={component.className}
+                setSearchString={v => component.className = v}
         />
     </fieldset>
 </Accordion>
@@ -105,12 +105,12 @@
     <svelte:fragment slot="header">
         Styles
     </svelte:fragment>
-    <StyleField selected={selected} isInput={true}/>
+    <StyleField component={component} isInput={true}/>
     {#if valid}
         <div data-divider="-"></div>
     {/if}
-    {#each Object.entries(selected.styles) as initial}
-        <StyleField selected={selected} initial={initial}/>
+    {#each Object.entries(component.styles) as initial}
+        <StyleField component={component} initial={initial}/>
     {/each}
 </Accordion>
 

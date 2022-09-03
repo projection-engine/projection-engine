@@ -2,12 +2,12 @@ import deleteNode from "./delete-node"
 import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
 import selection from "./selection"
 
-export default function getContextMenu(nodes, setNodes, setSelected, selected, links, setLinks, reference) {
+export default function getContextMenu(nodes, setNodes, selected, links, setLinks, reference) {
     return [
         {
             label: "Select all",
             requiredTrigger: "data-board",
-            onClick: () => selection(SELECTION_TYPES.ALL, nodes, setSelected, selected)
+            onClick: () => selection(SELECTION_TYPES.ALL, nodes)
         },
 
         {
@@ -44,7 +44,7 @@ export default function getContextMenu(nodes, setNodes, setSelected, selected, l
             label: "Delete",
             icon: "delete",
             onClick: (node) => {
-                deleteNode(node.getAttribute("data-node"), nodes, setNodes, links, setLinks, setSelected)
+                deleteNode(node.getAttribute("data-node"), nodes, setNodes, links, setLinks)
             }
         },
         {

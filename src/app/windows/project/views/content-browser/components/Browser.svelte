@@ -32,19 +32,14 @@
     let elementsPerRow = 0
     let resizeOBS
     let selected = []
-    const unsubscribe = SelectionStore.getStore(v => selected = v.array)
-    function setSelected(data) {
-        const old = {...SelectionStore.data, array: data}
-        if (SelectionStore.TARGET !== SelectionStore.TYPES.CONTENT_BROWSER)
-            old.TARGET = SelectionStore.TYPES.CONTENT_BROWSER
-        SelectionStore.updateStore(old)
-    }
+    const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.contentBrowserSelected)
+
 
     const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
         if (trigger !== TRIGGERS[0] && selected.length === 0)
-            setSelected(element.getAttribute(trigger))
+            SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
     })
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
@@ -58,25 +53,28 @@
             translate
         )
     )
-
+    let timeout
     onMount(() => {
         HotKeys.bindAction(
             ref,
-            getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected),
+            getHotkeys(translate, currentDirectory, setCurrentDirectory),
             "folder",
             translate("TITLE")
         )
         elementsPerRow = Math.round(ref.offsetWidth / (cardDimensions.width + 8))
-        let timeout
+
         resizeOBS = new ResizeObserver(() => {
             clearTimeout(timeout)
-            setTimeout(() => elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8)), 250)
+            setTimeout(() => {
+                if (ref) elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8))
+            }, 250)
         })
         resizeOBS.observe(ref)
     })
 
     onDestroy(() => {
         unsubscribe()
+        clearTimeout(timeout)
         HotKeys.unbindAction(ref)
         contextMenuBinding.onDestroy()
         resizeOBS.disconnect()
@@ -90,7 +88,7 @@
             else
                 toSelect = [child.id]
         }
-        setSelected(toSelect)
+        SelectionStore.contentBrowserSelected = toSelect
     }
 
 </script>
@@ -105,7 +103,7 @@
     <SelectBox
             nodes={items}
             selected={selected}
-            setSelected={setSelected}
+            setSelected={v => SelectionStore.contentBrowserSelected = v}
     />
     <InfiniteScroller
             branchSize={cardDimensions.height}
@@ -122,7 +120,7 @@
                                 cardDimensions={cardDimensions}
                                 currentDirectory={currentDirectory}
                                 reset={() => {
-                                    setSelected([])
+                                            SelectionStore.contentBrowserSelected = []
                                     setSearchString("")
                                     setFileType(undefined)
                                 }}

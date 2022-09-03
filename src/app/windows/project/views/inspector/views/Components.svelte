@@ -16,7 +16,7 @@
 
 
     export let translate
-    export let engine
+
     export let entity
 
     let ref
@@ -97,17 +97,17 @@
         {#if componentKey === COMPONENTS.MESH}
             <Mesh
                     translate={translate}
-                    selected={component}
+                    component={component}
                     submit={async (value, key) => {
                         EngineStore.saveEntity(
-                            engine.selectedEntity.id,
+                            entity.id,
                             componentKey,
                             key,
                             component[key]
                         )
                         component[key] = value
                         EngineStore.saveEntity(
-                            engine.selectedEntity.id,
+                            entity.id,
                             componentKey,
                             key,
                             value
@@ -119,11 +119,11 @@
             <ComponentLayout
                     key={componentKey}
                     translate={translate}
-                    selected={component}
+                    component={component}
                     submit={(key, value, save) => {
                             if(!savedState){
                                 EngineStore.saveEntity(
-                                    engine.selectedEntity.id,
+                                    entity.id,
                                      componentKey,
                                       key,
                                       value
@@ -133,7 +133,7 @@
                             component[key] = value
                             if(save)
                                 EngineStore.saveEntity(
-                                    engine.selectedEntity.id,
+                                    entity.id,
                                      componentKey,
                                       key,
                                       value
@@ -150,11 +150,11 @@
     <ComponentLayout
             index={index}
             translate={translate}
-            selected={script}
+            component={script}
             submit={(key, value, save) => {
                             if(!savedState){
                                 EngineStore.saveEntity(
-                                    engine.selectedEntity.id,
+                                    entity.id,
                                      index,
                                       key,
                                       value
@@ -164,7 +164,7 @@
                             script[key] = value
                             if(save)
                                 EngineStore.saveEntity(
-                                    engine.selectedEntity.id,
+                                    entity.id,
                                      index,
                                       key,
                                       value

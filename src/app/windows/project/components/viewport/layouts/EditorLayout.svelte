@@ -21,6 +21,7 @@
     import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
     import {vec3} from "gl-matrix";
     import InputEventsAPI from "../../../libs/engine/production/libs/InputEventsAPI";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -93,13 +94,12 @@
             event,
             mouseDelta,
             settings,
-            engine,
             (data) => {
                 if (GizmoSystem.wasOnGizmo) {
                     GizmoSystem.wasOnGizmo = false
                     return
                 }
-                EngineStore.updateStore({...engine, selected: data})
+                SelectionStore.engineSelected  = data
             })
     }
 
@@ -154,7 +154,7 @@
 <GizmoBar translate={translate}/>
 <CameraBar translate={translate}/>
 {#if settings.visible.sideBarViewport}
-    <SideOptions translate={translate} selectedEntity={engine.selectedEntity}/>
+    <SideOptions translate={translate}/>
 {/if}
 <SelectBox
         targetElementID={RENDER_TARGET}

@@ -1,7 +1,6 @@
 <script>
     import KEYS from "../../../../libs/engine/production/data/KEYS";
     import dragNode from "../../utils/drag-node";
-    import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../../../stores/SelectionStore";
 
     export let submitName
@@ -29,7 +28,7 @@
 
 <g bind:this={ref} transform={`translate(${node.x} ${node.y})`}>
     <foreignObject
-            on:contextmenu={() => setSelected(node.id)}
+
             data-group={node.id}
             id={node.id}
             class="wrapper"
@@ -56,7 +55,7 @@
         {:else}
             <div
                     class="header"
-                    style="background: rgb({rgb})"
+                    style={`background: rgb(${rgb})`}
                     id={node.id + "-node"}
                     on:doubleclick={() => onEdit = true}
             >

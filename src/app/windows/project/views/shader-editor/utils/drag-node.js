@@ -33,8 +33,7 @@ function listenTo(event, target, parent) {
 }
 
 export default function dragNode(event, target, parent) {
-    let targets = SelectionStore.TARGET === SelectionStore.TYPES.SHADER_EDITOR ? SelectionStore.array : []
-    targets = [...targets.map(v => document.getElementById(v)?.parentElement), target]
+    let targets = SelectionStore.shaderEditorSelected.map(v => document.getElementById(v)?.parentElement)
     const callbacks = targets.map(t => listenTo(event, t, parent))
 
     const handleMouseMove = (ev) => {

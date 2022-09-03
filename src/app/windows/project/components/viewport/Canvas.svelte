@@ -14,6 +14,7 @@
     import UIStore from "../../stores/UIStore";
     import GPU from "../../libs/engine/production/controllers/GPU";
     import SettingsStore from "../../stores/SettingsStore";
+    import SelectionStore from "../../stores/SelectionStore";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -22,13 +23,16 @@
     let engine = {}
     let settings = {}
     let uiStore = {}
+    let selected = []
+    const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeUI = UIStore.getStore(v => uiStore = v)
     const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
-    $: contextMenuBinding.rebind(getContextMenu(engine))
+
 
     onMount(() => {
+        contextMenuBinding.rebind(getContextMenu())
         HotKeys.bindAction(
             canvasRef,
             getHotkeys(),
@@ -66,7 +70,7 @@
             UserInterfaceController.stop()
     }
 
-    $: if (done) updateRenderer(engine, settings)
+    $: if (done) updateRenderer(selected, engine, settings)
 </script>
 
 

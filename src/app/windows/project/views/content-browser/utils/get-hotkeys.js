@@ -4,31 +4,32 @@ import FilesAPI from "../../../../../libs/files/FilesAPI";
 import handleDelete from "./handle-delete";
 import KEYS from "../../../libs/engine/production/data/KEYS";
 import FilesStore from "../../../stores/FilesStore";
+import SelectionStore from "../../../stores/SelectionStore";
 
-export default function getHotkeys(translate, currentDirectory, setCurrentDirectory, setSelected, selected){
-    return  [
+export default function getHotkeys(translate, currentDirectory, setCurrentDirectory) {
+    return [
         {
             label: translate("SELECT_ALL"),
             require: [KEYS.KeyA],
-            callback: () => selection(SELECTION_TYPES.ALL,  currentDirectory, setSelected, selected)
+            callback: () => selection(SELECTION_TYPES.ALL, currentDirectory)
         },
         {
             label: translate("SELECT_NONE"),
             require: [KEYS.AltLeft, KEYS.KeyA],
-            callback: () => selection(SELECTION_TYPES.NONE,  currentDirectory, setSelected, selected)
+            callback: () => selection(SELECTION_TYPES.NONE, currentDirectory)
         },
         {
             label: translate("SELECT_INVERT"),
 
             require: [KEYS.ControlLeft, KEYS.KeyI],
-            callback: () => selection(SELECTION_TYPES.INVERT,  currentDirectory, setSelected, selected)
+            callback: () => selection(SELECTION_TYPES.INVERT, currentDirectory)
         },
 
         {
             label: translate("BACK"),
             require: [KEYS.Backspace],
             callback: () => {
-                if(currentDirectory.id !== FilesAPI.sep) {
+                if (currentDirectory.id !== FilesAPI.sep) {
                     const found = currentDirectory.id
                     if (found) {
                         const split = found.split(FilesAPI.sep)
@@ -46,17 +47,15 @@ export default function getHotkeys(translate, currentDirectory, setCurrentDirect
             label: translate("DELETE"),
             require: [KEYS.Delete],
             callback: () => {
-                const s = [...selected]
-                setSelected([])
+                const s = [...SelectionStore.contentBrowserSelected]
+                SelectionStore.contentBrowserSelected = []
                 handleDelete(s, currentDirectory, setCurrentDirectory)
             }
         },
         {
             label: translate("CUT"),
             require: [KEYS.ControlLeft, KEYS.KeyX],
-            callback: () => {
-                FilesStore.toCut = selected
-            }
+            callback: () => FilesStore.toCut = SelectionStore.contentBrowserSelected
         },
         {
             label: translate("PASTE"),

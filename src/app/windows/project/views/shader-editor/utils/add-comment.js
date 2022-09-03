@@ -2,8 +2,6 @@ import Comment from "../templates/nodes/Comment"
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function addComment(nodes, setNodes) {
-    if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
-        return
     let smallestX,
         smallestY,
         width = 0,
@@ -11,7 +9,7 @@ export default function addComment(nodes, setNodes) {
         biggestX,
         biggestY
 
-    const nodesG = SelectionStore.array.map(h => document.getElementById(h)?.parentNode).filter(n => n)
+    const nodesG = SelectionStore.shaderEditorSelected.map(h => document.getElementById(h)?.parentNode).filter(n => n)
     nodesG
         .forEach(n => {
             const transformation = n

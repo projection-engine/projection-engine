@@ -1,12 +1,12 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
 import Entity from "../../../libs/engine/production/templates/Entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import EngineStore from "../../../stores/EngineStore";
 import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
 import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
 import DirectionalLightComponent from "../../../libs/engine/production/templates/DirectionalLightComponent";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
+import SelectionStore from "../../../stores/SelectionStore";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")
@@ -40,7 +40,7 @@ export default function getEngineContextMenu(open, setOpen) {
         },
         {
             label: "Select none",
-            onClick: () => EngineStore.updateStore({...EngineStore.engine, selected: []})
+            onClick: () => SelectionStore.engineSelected = []
         },
         {
             label: "Close all",
@@ -129,7 +129,10 @@ export default function getEngineContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Remove entity",
             icon: "delete",
-            onClick: (node) => dispatchRendererEntities({type: ENTITY_ACTIONS.REMOVE, payload: node.getAttribute("data-node")})
+            onClick: (node) => dispatchRendererEntities({
+                type: ENTITY_ACTIONS.REMOVE,
+                payload: node.getAttribute("data-node")
+            })
         },
 
         {requiredTrigger: "data-node", divider: true},
@@ -138,10 +141,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Deselect",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                EngineStore.updateStore({
-                    ...EngineStore.engine,
-                    selected: EngineStore.engine.selected.filter(s => s !== t)
-                })
+                SelectionStore.engineSelected = SelectionStore.engineSelected.filter(s => s !== t)
             }
         },
         {
@@ -150,10 +150,7 @@ export default function getEngineContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toDeselect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
-                EngineStore.updateStore({
-                    ...EngineStore.engine,
-                    selected: EngineStore.engine.selected.filter(s => toDeselect.includes(s))
-                })
+                SelectionStore.engineSelected = SelectionStore.engineSelected.filter(s => toDeselect.includes(s))
             }
         },
         {requiredTrigger: "data-node", divider: true},
@@ -162,10 +159,9 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Select",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                EngineStore.updateStore({
-                    ...EngineStore.engine,
-                    selected: [...EngineStore.engine.selected, t]
-                })
+
+                SelectionStore.engineSelected = [...SelectionStore.engineSelected, t]
+
             }
         },
         {
@@ -174,10 +170,8 @@ export default function getEngineContextMenu(open, setOpen) {
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
                 const toSelect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
-                EngineStore.updateStore({
-                    ...EngineStore.engine,
-                    selected: [...EngineStore.engine.selected, ...toSelect]
-                })
+                SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
+
             }
         },
         {

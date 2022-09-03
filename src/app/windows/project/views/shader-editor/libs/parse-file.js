@@ -1,8 +1,4 @@
 import FilesAPI from "../../../../../libs/files/FilesAPI";
-import getNewInstance from "../utils/get-new-instance";
-import TextureSample from "../templates/nodes/TextureSample";
-import BOARD_SIZE from "../data/BOARD_SIZE";
-import FilesStore from "../../../stores/FilesStore";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 import ShaderEditorController from "../ShaderEditorController";
 

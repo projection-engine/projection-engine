@@ -5,6 +5,7 @@ import getPickerId from "../../libs/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
 import AXIS from "../../libs/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../ActionHistoryAPI";
+import SelectionStore from "../SelectionStore";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -23,15 +24,16 @@ export default function dispatchRendererEntities({type, payload}) {
     const state = engine.entities
     let changeID = v4()
 
-    function save(){
+    function save() {
         ActionHistoryAPI.pushBlockChange(Array.from(state.values()))
     }
+
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
+
             save()
             engine.fixedEntity = undefined
-            engine.selected = []
-
+            SelectionStore.engineSelected = []
             const entity = state.get(payload)
             removeHierarchy(state, entity)
             save()
@@ -54,7 +56,7 @@ export default function dispatchRendererEntities({type, payload}) {
             state.set(entity.id, entity)
             EntityNameController.renameEntity(entity.name, entity)
             engine.fixedEntity = undefined
-            engine.selected = [entity.id]
+            SelectionStore.engineSelected = [entity.id]
             save()
             break
 
@@ -62,7 +64,7 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             save()
             const block = payload
-            engine.selected = []
+            SelectionStore.engineSelected = []
             engine.fixedEntity = undefined
 
             if (Array.isArray(block))
@@ -80,8 +82,8 @@ export default function dispatchRendererEntities({type, payload}) {
             if (type === ENTITY_ACTIONS.DISPATCH_BLOCK) {
                 state.clear()
                 EntityNameController.byName.clear()
-            }
-            else
+
+            } else
                 save()
             const block = payload
             const selected = []
@@ -94,9 +96,11 @@ export default function dispatchRendererEntities({type, payload}) {
                 }
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {
                 engine.fixedEntity = undefined
-                engine.selected = selected
+                SelectionStore.engineSelected = selected
                 save()
-            }
+
+            }else
+                SelectionStore.lockedEntity = block[0].id
             break
         }
         default:

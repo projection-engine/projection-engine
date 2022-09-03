@@ -11,6 +11,7 @@
     import {v4} from "uuid";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     export let ID
     export let translate
@@ -33,18 +34,30 @@
     let mappedEntities = []
     let lastChangeID
     let ref
+    let selected = []
+    let lockedEntity
+    const unsubscribeSelection = SelectionStore.getStore(() => {
+        selected = SelectionStore.engineSelected
+        lockedEntity = SelectionStore.lockedEntity
+    })
+    $: console.log(selected)
+
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
             entitiesArray = Array.from(engine.entities.values())
         }
     }
-    const contextMenuBinding = bindContextTarget(ID, TRIGGERS, (trigger, element) => {
-        if (trigger === TRIGGERS[0])
-            EngineStore.updateStore({...engine, selected: [element.getAttribute(trigger)]})
-    })
+    const contextMenuBinding = bindContextTarget(
+        ID,
+        TRIGGERS,
+        (trigger, element) => {
+            if (trigger === TRIGGERS[0])
+                SelectionStore.engineSelected = [element.getAttribute(trigger)]
+        })
     $: contextMenuBinding.rebind(getEngineContextMenu(open, v => open = v))
     onDestroy(() => {
+        unsubscribeSelection()
         unsubscribeEngine()
         contextMenuBinding.onDestroy()
     })
@@ -89,15 +102,6 @@
         }
     }
 
-    const updateSelection = (entity, ctrlKey) => {
-        if (ctrlKey) {
-            if (!engine.selected.includes(entity))
-                EngineStore.updateStore({...engine, selected: [...engine.selected, entity]})
-            else
-                EngineStore.updateStore({...engine, selected: engine.selected.filter(e => e !== entity)})
-        } else
-            EngineStore.updateStore({...engine, selected: [entity]})
-    }
     $: setIsEmpty(toRender.length === 0)
 
     const draggable = dragDrop()
@@ -111,7 +115,7 @@
                         entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
                     entityDragged.parent = undefined
                     EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
-                } else if(event.shiftKey) {
+                } else if (event.shiftKey) {
                     const clone = entityDragged.clone()
                     clone.parent = undefined
                     dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
@@ -139,11 +143,10 @@
             <Branch
                     nodeRef={toRender[i + offset].node}
                     depth={toRender[i + offset].depth}
-                    selected={engine.selected}
+                    selected={selected}
 
-                    lockedEntity={engine.lockedEntity}
-                    setSelected={updateSelection}
-                    setLockedEntity={v => EngineStore.updateStore({...engine, lockedEntity: v})}
+                    lockedEntity={lockedEntity}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
                     internalID={ID}
                     open={open}
                     setOpen={v => open = v}

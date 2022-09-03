@@ -12,7 +12,7 @@
     import FilesStore from "../../../stores/FilesStore";
     import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 
-    export let selected = undefined
+    export let component = undefined
     export let submit = undefined
     export let translate = undefined
     export let attribute = undefined
@@ -21,8 +21,8 @@
 
 
     $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
-    $: value = selected[attribute.key]
-    $: isDisabled = selected[attribute.disabledIf]
+    $: value = component[attribute.key]
+    $: isDisabled = component[attribute.disabledIf]
 
     let firstSubmit = false
     const setImage = async ({registryID}) => {

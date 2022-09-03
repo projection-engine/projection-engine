@@ -15,7 +15,6 @@
     import SelectionStore from "../../../stores/SelectionStore";
 
     const {shell} = window.require("electron")
-    const EMPTY = {map: new Map(), array: []}
 
     export let childrenQuantity
     export let reset
@@ -29,12 +28,7 @@
     export let setCurrentDirectory
     export let currentDirectory
     let selected
-    const unsubscribe = SelectionStore.getStore(v => {
-        if(v.TARGET === SelectionStore.TYPES.CONTENT_BROWSER)
-            selected = v
-        else
-            selected = EMPTY
-    })
+    const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.map)
     let currentLabel
     $: currentLabel = data.name
 
@@ -106,7 +100,7 @@
             `,
         onDragOver: () => type === 0 ? "Link folder" : undefined,
         onDragStart: () => {
-            const ss = selected.array.map(s => items.find(i => i.id === s))
+            const ss = SelectionStore.contentBrowserSelected.map(s => items.find(i => i.id === s))
             if (ss.length > 0)
                 return JSON.stringify(ss.map(s => s.registryID))
             return JSON.stringify([type === 1 ? data.registryID : data.id])
@@ -141,7 +135,7 @@
         on:dblclick={onDbClick}
         id={data.id}
         on:click={setSelected}
-        style={selected.map.get(data.id) ? "background: var(--pj-accent-color-light);" : "" +  (FilesStore.toCut.includes(data.id) ? "opacity: .5;" : "")}
+            style={selected.get(data.id) ? "background: var(--pj-accent-color-light);" : "" +  (FilesStore.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
 >
 

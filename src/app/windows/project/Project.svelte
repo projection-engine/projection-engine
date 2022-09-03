@@ -68,7 +68,7 @@
         s.views = copy
         SettingsStore.updateStore(s)
     }
-    $: frameOptions = getFrameOptions(engine, settings)
+    $: frameOptions = getFrameOptions(settings)
 </script>
 
 <div class="wrapper">

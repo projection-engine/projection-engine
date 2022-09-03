@@ -4,7 +4,6 @@
     import NODE_INFO from "../../data/NODE_INFO";
     import getBezierCurve from "../../utils/get-bezier-curve";
     import dragNode from "../../utils/drag-node";
-    import {onDestroy, onMount} from "svelte";
     import NodeInput from "./NodeInput.svelte";
     import NodeOutput from "./NodeOutput.svelte";
     import Material from "../../templates/nodes/Material";

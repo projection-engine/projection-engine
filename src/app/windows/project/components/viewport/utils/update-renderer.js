@@ -1,16 +1,18 @@
 import bindGizmo from "./bind-gizmo";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
+import SelectionStore from "../../../stores/SelectionStore";
 
 
-export default function updateRenderer( engine, settings) {
+export default function updateRenderer(selected, engine, settings) {
     const {
         materials,
         entities,
         executingAnimation,
-        selected,
+
         scripts
     } = engine
+
     const renderer = window.renderer
     if (!CameraTracker.cameraInitialized) {
 
@@ -35,6 +37,5 @@ export default function updateRenderer( engine, settings) {
         scripts
     )
     bindGizmo(selected, settings)
-
     renderer.start()
 }

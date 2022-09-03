@@ -16,18 +16,14 @@
     import onMutation from "../libs/on-mutation";
     import bindContextTarget from "../../../../../components/context-menu/libs/bind-context-target";
     import handleLink from "../utils/handle-link";
-    import HotKeys from "../../../components/metrics/libs/HotKeys";
-    import getHotkeys from "../../../components/viewport/utils/get-hotkeys";
-    import Localization from "../../../../../libs/Localization";
     import ShaderEditorController from "../ShaderEditorController";
-    import getShortcuts from "../utils/get-shortcuts";
+    import SelectionStore from "../../../stores/SelectionStore";
 
     export let links
     export let setLinks
     export let nodes
     export let setNodes
     export let selected
-    export let setSelected
     export let submitNodeVariable
     export let isOpen
 
@@ -62,7 +58,7 @@
     $: contextMenuBinding.rebind(getContextMenu(
         nodes,
         setNodes,
-        setSelected,
+
         selected,
         links,
         setLinks,
@@ -91,6 +87,12 @@
         clearTimeout(timeout)
         timeout = setTimeout(() => onMutation(resolvedLinks, ref, []), 250)
     }
+    const setSelected = (i, multi) => {
+        if (multi)
+            SelectionStore.shaderEditorSelected = [...SelectionStore.shaderEditorSelected, i]
+        else
+            SelectionStore.shaderEditorSelected = [i]
+    }
 </script>
 
 <div class="wrapper">
@@ -98,7 +100,7 @@
             nodes={nodes}
             selected={selected}
             targetElementID={internalID}
-            setSelected={setSelected}
+            setSelected={v => SelectionStore.shaderEditorSelected = v}
     />
 
     <svg
@@ -125,7 +127,7 @@
                 if (e.button === 2)
                     handleBoardScroll(ref.parentNode)
                 if (e.target === ref)
-                    setSelected([])
+                    SelectionStore.shaderEditorSelected = []
                 }
             }}
     >
@@ -135,7 +137,7 @@
                     <Comment
                             canvas={ref}
                             onDrag={{setDragType: v => dragType = v, dragType}}
-                            setSelected={(i) => setSelected([i])}
+                            setSelected={setSelected }
                             submitName={newName => {
                                     setNodes(nodes.map(p => {
                                             if (p.id === node.id)
@@ -165,12 +167,7 @@
                             canvas={ref}
                             onDrag={{setDragType: v => dragType = v, dragType}}
                             links={resolvedLinks}
-                            setSelected={(i, multi) => {
-                                    if (multi)
-                                        setSelected([...selected, i])
-                                    else
-                                        setSelected([i])
-                                }}
+                            setSelected={setSelected}
                             selected={selected}
                             node={node}
                             handleLink={(src, target) => handleLink(src, target, links, setLinks)}

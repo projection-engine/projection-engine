@@ -3,11 +3,11 @@ import ShaderEditorController from "../ShaderEditorController";
 import SelectionStore from "../../../stores/SelectionStore";
 import addComment from "./add-comment";
 
-export default function getShortcuts(openFile, nodes, setNodes, links, setLinks, setSelected) {
+export default function getShortcuts(openFile, nodes, setNodes, links, setLinks) {
     return [
         { // create group
             require: [KEYS.KeyA],
-            callback: () => setSelected(nodes.map(n => n.id))
+            callback: () => SelectionStore.shaderEditorSelected = nodes.map(n => n.id)
         },
         { // create group
             require: [KEYS.KeyG],
@@ -22,9 +22,9 @@ export default function getShortcuts(openFile, nodes, setNodes, links, setLinks,
             callback: () => {
                 if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
                     return
-                const toCopy = []
-                for (let i = 0; i < SelectionStore.array.length; i++) {
-                    toCopy.push(nodes.find(n => n.id === SelectionStore.array[i]))
+                const toCopy = [], selected = SelectionStore.shaderEditorSelected
+                for (let i = 0; i < selected.length; i++) {
+                    toCopy.push(nodes.find(n => n.id === selected[i]))
                 }
                 ShaderEditorController.copy(toCopy)
 
@@ -36,18 +36,18 @@ export default function getShortcuts(openFile, nodes, setNodes, links, setLinks,
                 if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
                     return
                 const newNodes = [], newLinks = [], map = new Map()
-                for (let i = 0; i < nodes.length; i++){
+                for (let i = 0; i < nodes.length; i++) {
                     const current = nodes[i]
-                    if(!SelectionStore.map.get(current.id)) {
+                    if (!SelectionStore.shaderEditorSelected.get(current.id)) {
                         newNodes.push(current)
                         map.set(current.id, true)
                     }
                 }
-                for(let i = 0; i < links.length; i++){
-                    const current  = links[i]
+                for (let i = 0; i < links.length; i++) {
+                    const current = links[i]
                     const target = current.target.id
                     const source = current.source.id
-                    if(map.get(target) && map.get(source))
+                    if (map.get(target) && map.get(source))
                         newLinks.push(current)
                 }
 

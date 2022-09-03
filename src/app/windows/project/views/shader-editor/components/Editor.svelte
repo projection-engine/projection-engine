@@ -2,13 +2,11 @@
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
     import AttributeEditor from "./AttributeEditor.svelte";
     import Debug from "./Debug.svelte";
-    import {v4} from "uuid";
     import cloneClass from "../../../libs/engine/production/utils/clone-class";
     import Board from "./Board.svelte";
     import Material from "../templates/nodes/Material";
 
     export let selected
-    export let setSelected
     export let nodes
     export let setNodes
     export let links
@@ -42,6 +40,20 @@
         n[classLocation] = clone
         setNodes(n)
     }
+    $: tabs = [
+        {
+            label: translate("NODE"),
+            component: AttributeEditor,
+            props: {
+                selected: selected.length === 0 && fallbackSelected ? fallbackSelected.id : selected[0],
+                nodes,
+                updateNode,
+                submitNodeVariable,
+                translate
+            }
+        },
+        {label: translate("STATUS"), component: Debug}
+    ]
 </script>
 
 
@@ -52,27 +64,11 @@
         nodes={nodes}
         setNodes={setNodes}
         selected={selected}
-        setSelected={setSelected}
         submitNodeVariable={submitNodeVariable}
 />
 {#if isOpen}
     <VerticalTabs
-            tabs={[{
-                label: translate("NODE"),
-                component: AttributeEditor,
-                props: {
-                     selected: selected.length === 0 && fallbackSelected ? fallbackSelected.id : selected[0],
-                    nodes,
-                    updateNode,
-                    submitNodeVariable,
-                    translate
-                }
-            },
-            {
-                label:translate("STATUS"),
-                component:Debug
-            }
-        ]}
+            tabs={tabs}
             absolute={false}
     />
 {/if}
