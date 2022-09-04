@@ -3,77 +3,48 @@ import EngineStore from "./EngineStore";
 import Localization from "../../../libs/Localization";
 import {v4} from "uuid";
 import SettingsStore from "./SettingsStore";
+import UndoRedoAPI from "../../../libs/UndoRedoAPI";
 
-const MAX_DEPTH = 10
 export default class ActionHistoryAPI {
     static targets = {
         settings: "SETTINGS",
         entity: "ENTITY",
         block: "BLOCK"
     }
-    static index = 0
-    static history = [null]
+    static controller = new UndoRedoAPI()
 
     static pushChange({target, entityID, component, key, changeValue}) {
-        if (target === ActionHistoryAPI.targets.entity || target === ActionHistoryAPI.targets.settings) {
-            if (ActionHistoryAPI.index < ActionHistoryAPI.history.length - 1)
-                ActionHistoryAPI.history = ActionHistoryAPI.history.slice(0, ActionHistoryAPI.index + 1);
-
-
-            ActionHistoryAPI.history.push({
-                target,
-                entityID,
-                component,
-                key,
-                changeValue: typeof changeValue === "object" ? structuredClone(changeValue) : changeValue
-            })
-            if (ActionHistoryAPI.history.length > MAX_DEPTH)
-                ActionHistoryAPI.history.shift()
-
-            ActionHistoryAPI.index += 1;
-        }
+        ActionHistoryAPI.controller.save({
+            target,
+            entityID,
+            component,
+            key,
+            changeValue: typeof changeValue === "object" ? structuredClone(changeValue) : changeValue
+        })
     }
 
     static pushBlockChange(original) {
-        if (ActionHistoryAPI.index < ActionHistoryAPI.history.length - 1)
-            ActionHistoryAPI.history = ActionHistoryAPI.history.slice(0, ActionHistoryAPI.index + 1);
-
-        ActionHistoryAPI.history.push({
+        ActionHistoryAPI.controller.save({
             target: ActionHistoryAPI.targets.block,
             currentSet: original
         })
-        if (ActionHistoryAPI.history.length > MAX_DEPTH)
-            ActionHistoryAPI.history.shift()
-
-        ActionHistoryAPI.index += 1
     }
+
 
     static undo() {
-        console.trace(ActionHistoryAPI.history, ActionHistoryAPI.index)
-        if (ActionHistoryAPI.index > 0) {
-            if (ActionHistoryAPI.history[ActionHistoryAPI.index].target === ActionHistoryAPI.targets.settings)
-                alert.pushAlert(Localization.PROJECT.ALERTS.UNDO_SETTINGS, "info")
-            else
-                alert.pushAlert(Localization.PROJECT.ALERTS.UNDO_ENTITIES, "info")
+        const hasToApply = ActionHistoryAPI.controller.undo()
+        if (hasToApply)
             ActionHistoryAPI.#apply()
-            ActionHistoryAPI.index -= 1
-        }
     }
 
-
     static redo() {
-        if (ActionHistoryAPI.index < ActionHistoryAPI.history.length - 1) {
-            ActionHistoryAPI.index += 1
-            if (ActionHistoryAPI.history[ActionHistoryAPI.index].target === ActionHistoryAPI.targets.settings)
-                alert.pushAlert(Localization.PROJECT.ALERTS.REDO_SETTINGS, "info")
-            else
-                alert.pushAlert(Localization.PROJECT.ALERTS.REDO_ENTITIES, "info")
+        const hasToApply = ActionHistoryAPI.controller.redo()
+        if (hasToApply)
             ActionHistoryAPI.#apply()
-        }
     }
 
     static #apply() {
-        const currentAction = ActionHistoryAPI.history[ActionHistoryAPI.index]
+        const currentAction = ActionHistoryAPI.controller.history[ActionHistoryAPI.controller.index]
         if (!currentAction)
             return
         const targets = ActionHistoryAPI.targets

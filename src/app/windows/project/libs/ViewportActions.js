@@ -73,9 +73,7 @@ export default class ViewportActions {
     }
 
     static selectAll() {
-
-        SelectionStore.engineSelected = window.renderer.entities.filter(e => !e.isFolder).map(e => e.id)
-
+        SelectionStore.engineSelected = Array.from(RendererController.entitiesMap.keys())
     }
 
     static fixateActive() {

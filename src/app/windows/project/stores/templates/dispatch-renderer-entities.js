@@ -30,7 +30,6 @@ export default function dispatchRendererEntities({type, payload}) {
 
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
-
             save()
             engine.fixedEntity = undefined
             SelectionStore.engineSelected = []

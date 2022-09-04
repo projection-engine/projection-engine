@@ -26,6 +26,7 @@ const engine = writable(ENGINE);
 export default class EngineStore {
     static engine = ENGINE
 
+
     static getStore(onChange) {
         return engine.subscribe(newValue => {
             onChange(newValue)
@@ -167,6 +168,22 @@ export default class EngineStore {
             return
         }
         alert.pushAlert("Error saving project", "error")
+    }
+
+    static async loadTextureFromImageID(registryID) {
+        const images = GPU.textures
+        if (images.get(registryID) != null)
+            return true
+
+        try {
+            const rs = await RegistryAPI.readRegistryFile(registryID)
+            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
+            await GPU.allocateTexture(file, registryID)
+            return true
+        } catch (err) {
+            console.error(err)
+            return false
+        }
     }
 }
 

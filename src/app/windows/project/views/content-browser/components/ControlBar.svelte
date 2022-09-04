@@ -42,13 +42,13 @@
 {#if view.navigation}
     <div class="button-group" style="width: 100%">
         <div class="button-group">
-            <button class="settings-button" on:click={() => navigationHistory.returnDir()}>
+            <button class="settings-button" on:click={() => navigationHistory.undo()}>
                 <Icon>arrow_back</Icon>
                 <ToolTip content={translate("BACK_DIR")}/>
             </button>
             <button
                     class="settings-button"
-                    on:click={() => navigationHistory.forwardDir()}
+                    on:click={() => navigationHistory.redo()}
             >
                 <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
                 <ToolTip content={translate("FORWARD_DIR")}/>

@@ -1,7 +1,7 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
-import FILE_TYPES from "../../../../../assets/FILE_TYPES";
+import FILE_TYPES, {COMPONENT} from "../../../../../assets/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
 import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
@@ -9,6 +9,10 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
 import GPU from "../engine/production/controllers/GPU";
 import EditorRenderer from "../engine/editor/EditorRenderer";
+import EngineStore from "../../stores/EngineStore";
+import Localization from "../../../../libs/Localization";
+import COMPONENTS from "../engine/production/data/COMPONENTS";
+import SpriteComponent from "../engine/production/templates/SpriteComponent";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
@@ -112,6 +116,15 @@ export default class Loader {
                     }
                     case FILE_TYPES.SCENE:
                         await Loader.scene(res.path)
+                        break
+                    case FILE_TYPES.IMAGE:
+                        const res = await EngineStore.loadTextureFromImageID(data)
+                        if(res){
+                            const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
+                            sprite.components[COMPONENTS.SPRITE] = new SpriteComponent(data)
+
+                            dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
+                        }
                         break
                     default:
                         alert.pushAlert("Error importing file.", "error")

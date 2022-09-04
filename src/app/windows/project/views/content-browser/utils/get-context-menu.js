@@ -132,12 +132,12 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
         {
             requiredTrigger: "data-wrapper",
             label: translate("BACK"),
-            onClick: () => navigationHistory.returnDir()
+            onClick: () => navigationHistory.undo()
         },
         {
             requiredTrigger: "data-wrapper",
             label: translate("FORWARD"),
-            onClick: () => navigationHistory.forwardDir()
+            onClick: () => navigationHistory.redo()
         },
 
         {divider: true, requiredTrigger: "data-wrapper"},

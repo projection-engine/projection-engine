@@ -60,6 +60,7 @@
             )
     }
     onDestroy(() => {
+        HotKeys.unbindAction(ref)
         unsubscribe()
         unsubscribeEngine()
         unsubscribeFiles()

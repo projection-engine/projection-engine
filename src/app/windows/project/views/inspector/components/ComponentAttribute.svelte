@@ -11,6 +11,7 @@
     import FilesAPI from "../../../../../libs/files/FilesAPI";
     import FilesStore from "../../../stores/FilesStore";
     import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+    import EngineStore from "../../../stores/EngineStore";
 
     export let component = undefined
     export let submit = undefined
@@ -26,19 +27,9 @@
 
     let firstSubmit = false
     const setImage = async ({registryID}) => {
-        const images = GPU.textures
-        if (images.get(registryID) != null) {
+        const res = await EngineStore.loadTextureFromImageID(registryID)
+        if (res)
             submit(attribute.key, registryID, true)
-            return;
-        }
-        try {
-            const rs = await RegistryAPI.readRegistryFile(registryID)
-            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
-            await GPU.allocateTexture(file, registryID)
-            submit(attribute.key, registryID, true)
-        } catch (err) {
-            console.error(err)
-        }
     }
 </script>
 
