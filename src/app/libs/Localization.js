@@ -148,6 +148,7 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            FOCUS_LOCKED_ENTITY: "Focus on locked entity",
             TRANSFORM: "Transformation",
             DIRECTIONAL_LIGHT: "Directional Light",
             POINT_LIGHT: "Point Light",

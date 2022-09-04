@@ -17,6 +17,8 @@
 
     let ref
     let active = true
+    let isLockedEntityAChild
+
     $: {
         if (nodeRef && ref) {
             active = nodeRef.active
@@ -52,6 +54,24 @@
         BundlerAPI.packageLights()
         active = !active
     }
+
+    $: {
+        isLockedEntityAChild = false
+        if (lockedEntity && nodeRef && !nodeRef.parent) {
+            const entity = RendererController.entitiesMap.get(lockedEntity)
+            if (entity.parent) {
+                let parent = entity.parent
+                while (parent) {
+                    if (parent === nodeRef) {
+                        isLockedEntityAChild = true
+                        parent = undefined
+                    }
+
+                    parent = parent?.parent
+                }
+            }
+        }
+    }
 </script>
 
 {#if nodeRef}
@@ -60,7 +80,7 @@
             id={nodeRef.id}
             bind:this={ref}
             class="wrapper hierarchy-branch"
-            style={"padding-left:" +  (depth * 18 + "px")}
+            style={"padding-left:" +  (depth * 18 + "px;") + (active ? "" : "opacity: .5") }
             on:mousedown={(e) => {
                 if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
                     updateSelection(nodeRef.id, e.ctrlKey)
@@ -78,7 +98,7 @@
             {:else}
                 <div class="button-small hierarchy-branch"></div>
             {/if}
-            <DraggableEntity node={nodeRef} lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
+            <DraggableEntity setOpen={setOpen} open={open} node={nodeRef} isLockedEntityAChild={isLockedEntityAChild} lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
             <button class="button-small hierarchy-branch" on:click={onHide}>
                 <Icon styles="font-size: .8rem">
                     {#if active}

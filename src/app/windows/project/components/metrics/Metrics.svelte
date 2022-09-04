@@ -48,7 +48,7 @@
 
     <div id={INFORMATION_CONTAINER.CONTAINER} class={"info-container"}>
         <div id={INFORMATION_CONTAINER.FPS} style={isChanging ? "display: none" : undefined}></div>
-        <div id={INFORMATION_CONTAINER.TRANSFORMATION}></div>
+        <div id={INFORMATION_CONTAINER.TRANSFORMATION} style={!isChanging ? "display: none" : undefined}></div>
     </div>
 
     <div class="meta-data">

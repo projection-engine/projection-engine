@@ -7,10 +7,17 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+    import RendererController from "../../../libs/engine/production/controllers/RendererController";
+    import SelectionStore from "../../../stores/SelectionStore";
+    import Localization from "../../../../../libs/Localization";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
 
     export let node
     export let lockedEntity
     export let setLockedEntity
+    export let isLockedEntityAChild
+    export let setOpen
+    export let open
 
     let ref
     let newName
@@ -59,7 +66,27 @@
     >
         <Icon>{icon}</Icon>
     </button>
-    <div class="label hierarchy-branch">
-        {newName}
-    </div>
+    {newName}
+    {#if isLockedEntityAChild}
+        <button
+            data-locked={"-"}
+            class="buttonIcon hierarchy-branch"
+            on:click={() => {
+                const newOpen = {...open}
+                let current = RendererController.entitiesMap.get(lockedEntity)
+                while(current){
+                    newOpen[current.id] = true
+                    current = current?.parent
+                }
+                SelectionStore.engineSelected = [lockedEntity]
+                setOpen(newOpen)
+            }}
+        >
+            <Icon styles="font-size: .9rem">lock</Icon>
+            <ToolTip>
+                {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
+            </ToolTip>
+        </button>
+    {/if}
+
 </div>

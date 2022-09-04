@@ -4,7 +4,7 @@ import Localization from "./Localization";
 import {v4} from "uuid";
 import SettingsStore from "../windows/project/stores/SettingsStore";
 
-const MAX_DEPTH = 10
+const MAX_DEPTH = 50
 export default class UndoRedoAPI {
 
     #onDirtyState = false
