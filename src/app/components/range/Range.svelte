@@ -1,17 +1,17 @@
 <script>
     import ToolTip from "../tooltip/ToolTip.svelte";
+    import {onDestroy, onMount} from "svelte";
+    import KEYS from "../../windows/project/libs/engine/production/data/KEYS";
 
     const toDeg = 180 / Math.PI
     const DELAY = 200
 
-    export let minLabelWidth = undefined;
     export let variant = undefined;
     export let label = undefined;
     export let precision = 2
     export let maxValue = undefined;
     export let minValue = undefined;
     export let onFinish = () => null
-    export let accentColor = undefined;
     export let disabled = undefined;
     export let incrementPercentage = .01
     export let value = "0"
@@ -19,19 +19,18 @@
     export let isAngle
     export let integer = undefined;
 
-    let ref
     let inputRef
-
-
-    let focused = false
     let dragged = false
     let currentValue = 0
+    let mouseIsDown = false
 
     const handleMouseMove = (e) => {
+        if (!document.pointerLockElement)
+            inputRef.requestPointerLock()
+
         let multiplier = e.movementX
         dragged = true
-        const increment = integer ? 1 : Math.abs((incrementPercentage ? incrementPercentage : 0.1) * multiplier)
-
+        let increment = integer ? 1 : Math.abs((incrementPercentage ? incrementPercentage : 0.1) * multiplier)
         if (e.movementX < 0 && (currentValue <= maxValue || !maxValue))
             currentValue = parseFloat((currentValue + increment).toFixed(precision ? precision : 1))
         else if (currentValue >= minValue || !minValue)
@@ -45,54 +44,83 @@
         else if (currentValue < minValue && minValue !== undefined)
             currentValue = minValue
 
-        const prev = (currentValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
-        ref.innerText = prev
-        inputRef.value = prev
-
+        inputRef.value = (currentValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
         if (handleChange)
             handleChange(currentValue)
     }
 
-    let timeout
-    const onChange = (input) => {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
-            let finalValue = parseFloat(input.value)
+    const onChange = (e) => {
+        if (e.type === "keydown" && e.code !== KEYS.Enter)
+            return
+        else if (e.type === "keydown")
+            inputRef.blur()
 
-            if (!isNaN(finalValue)) {
-                if (maxValue !== undefined && finalValue > maxValue)
-                    finalValue = maxValue
-                if (minValue !== undefined && finalValue < minValue)
-                    finalValue = minValue
 
-                if (handleChange)
-                    handleChange(finalValue)
-            }
+        let finalValue = parseFloat(inputRef.value)
 
-            if (onFinish !== undefined)
-                onFinish(finalValue)
-        }, DELAY)
+        if (!isNaN(finalValue)) {
+            if (maxValue !== undefined && finalValue > maxValue)
+                finalValue = maxValue
+            if (minValue !== undefined && finalValue < minValue)
+                finalValue = minValue
+
+            if (handleChange)
+                handleChange(finalValue)
+        }
+
+        if (onFinish !== undefined)
+            onFinish(finalValue)
+
     }
 
     $: {
-        if (!dragged && inputRef && ref) {
+        if (!dragged && inputRef) {
             const parsedValue = isNaN(parseFloat(value)) ? 0 : parseFloat(parseFloat(value).toFixed(precision ? precision : 1))
-            const prev = (parsedValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
-            inputRef.value = prev
-            ref.innerText = prev
+            inputRef.value = (parsedValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
             currentValue = parsedValue
         }
     }
+    const handleMouseUp = (e) => {
+        mouseIsDown = false
+        if (document.pointerLockElement === inputRef)
+            document.exitPointerLock()
+        if (e.target !== inputRef)
+            return
+        if (!dragged)
+            inputRef.focus()
+        else
+            dragged = false
+        if (onFinish !== undefined)
+            onFinish(currentValue)
+
+        document.body.removeEventListener("mousemove", handleMouseMove)
+    }
+    const handleMouseDown = e => {
+        if (disabled || document.activeElement === inputRef)
+            return;
+        e.preventDefault()
+        mouseIsDown = true
+        document.body.addEventListener("mousemove", handleMouseMove)
+
+    }
+    onMount(() => {
+        document.addEventListener("mouseup", handleMouseUp)
+    })
+    onDestroy(() => {
+        document.removeEventListener("mouseup", handleMouseUp)
+    })
 </script>
 
 <div
-        class={"wrapper labeledWrapper"}
+        class={"wrapper"}
         data-variant={variant}
-        style={accentColor ? "--accent-color: " + accentColor : undefined}
+        style={mouseIsDown ? "background: transparent;" : undefined }
 >
-    {#if label}
-        <div style={`min-width: ${minLabelWidth}; color: ${disabled ? "#999" : "var(--pj-color-secondary)"};`}
-             data-overflow="-">
+    {#if label && !mouseIsDown}
+        <div
+                style={`color: ${disabled ? "#999" : "var(--pj-color-tertiary)"};`}
+                class="title"
+        >
             {label}
             {#if !disabled}
                 <ToolTip>
@@ -104,106 +132,83 @@
     <input
             bind:this={inputRef}
             disabled={disabled}
-            autofocus
-            on:input={(e) => onChange(e.target)}
-            type="number"
-            style={`
-            display: ${focused ? undefined : "none"};
-            cursor: text;
-            background: var(--pj-background-quaternary);
-            border-radius: ${!accentColor ? "3px" : undefined};
-        `}
-            class={"draggable"}
-            on:blur={() => focused = false}
-    >
 
-    <div
-            bind:this={ref}
-            data-disabled={`${disabled}`}
-            on:mousedown={() => {
-            if (!focused && !disabled)
-                ref.requestPointerLock()
-        }}
-            on:mousemove={(e) => {
-            if (document.pointerLockElement)
-                handleMouseMove(e)
-        }}
-            on:mouseup={() => {
-            document.exitPointerLock()
-            if (onFinish !== undefined)
-                onFinish(currentValue)
-            if (!disabled) {
-                if (!dragged)
-                    focused = true
-                else
-                    dragged = false
-            }
-        }}
-            style={`
-            display: ${!focused ? undefined : "none"};
-            color: ${disabled ? "#999" : undefined};
-            cursor: ${disabled ? "default" : undefined};
-            background: ${disabled ? "var(--background-0)" : undefined};
-            border-radius: ${!accentColor ? "3px" : undefined};
-        `}
-            class={"draggable"}
-    ></div>
+            on:keydown={onChange}
+            on:mousedown={handleMouseDown}
+            type="number"
+            class="draggable"
+            on:blur={onChange}
+    >
 </div>
 
 <style>
     .wrapper {
-        display: grid;
-        color: var(--pj-color-secondary);
-        border: none;
-        width: 100%;
+        color: var(--pj-color-tertiary);
         align-items: center;
-
-        --accent-color: transparent;
-
         overflow: hidden;
         max-width: 100%;
         user-select: none !important;
         font-size: 0.7rem;
         position: relative;
+        border: none;
+        border-radius: 3px;
+        width: 100%;
+        gap: 2px;
+        height: 23px;
+    }
+
+    .wrapper[data-variant="embedded"] {
+        background: var(--background-input);
+    }
+
+    .title {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 23px;
+        width: fit-content;
+        padding: 0 4px;
+        display: flex;
+        align-items: center
     }
 
     .draggable {
         border: none;
-        border-left: var(--accent-color) 2px solid;
+        border-radius: 3px;
+        height: 23px;
+
         background-color: var(--background-input);
-        border-radius: 0 3px 3px 0;
-        width: inherit;
-        max-width: 100%;
+
+        width: 100%;
+
         overflow: hidden;
         cursor: col-resize;
-        height: 25px;
-        transition: 150ms linear;
         display: flex;
         align-items: center;
         justify-content: center;
         outline: none;
-        color: var(--pj-color-secondary);
+        color: var(--pj-color-tertiary);
         font-size: inherit;
-        text-align: center;
+        font-weight: 400;
+        text-align: right;
     }
 
     .draggable:active,
     .draggable:focus {
-        background-color: var(--pj-background-quaternary) !important;
-        font-weight: 550;
+        background-color: var(--pj-background-primary) !important;
+        cursor: text;
+        text-align: center;
     }
 
     .draggable:hover {
-        background-color: var(--pj-border-primary);
+        background-color: var(--background-input-lighter);
     }
 
-    .draggable[data-disabled="true"],
     .draggable:disabled {
         background: transparent !important;
         border: var(--pj-border-primary) 1px solid;
         color: #999 !important;
         font-weight: normal;
-        border-left: var(--accent-color) 2px solid;
     }
 
     .draggable::-webkit-inner-spin-button {
@@ -215,25 +220,5 @@
         appearance: textfield;
     }
 
-    .labeledWrapper {
-        display: grid;
-        width: 100%;
-        align-items: center;
-        gap: 2px;
-    }
-
-    .labeledWrapper[data-variant="embedded"] {
-        display: flex;
-        align-items: center;
-        background: var(--background-input);
-        border-radius: 3px;
-        padding-left: 4px;
-    }
-
-
-    .labeledWrapper[data-variant="embedded"] > div {
-        min-width: 15px;
-        text-align: left;
-    }
 
 </style>

@@ -21,8 +21,8 @@
         <About handleClose={() => isAboutOpen = false} translate={translate}/>
     {/if}
     <div class="options">
-        <Dropdown hideArrow={true}>
-            <button slot="button" class={"logo-button"}>
+        <Dropdown hideArrow={true} buttonStyles="background: var(--pj-background-tertiary);">
+            <button slot="button" class="logo-button">
                 <div class={"logo-wrapper"}>
                     <img src={logo} alt={"LOGO"} class={"logo"}/>
                 </div>
@@ -183,11 +183,9 @@
 
         height: 25px;
         width: 25px;
-        background: var(--pj-background-tertiary);
         border-radius: 3px;
         padding: 4px !important;
 
-        border: var(--pj-border-primary) 1px solid;
     }
 
     .divider {

@@ -14,14 +14,13 @@
     let ref
 
 
-    $: CameraTracker.animated = settings.cameraAnimation
 </script>
 
 
 <div class={"options"} bind:this={ref}>
 
-    <Dropdown hideArrow={true}>
-        <button slot="button" class="dropdown">
+    <Dropdown hideArrow={true} buttonStyles="background: var(--pj-background-tertiary);">
+        <button slot="button" class="dropdown" >
             <Icon style="font-size: 1rem">
                 {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                     public
@@ -74,8 +73,5 @@
         overflow: hidden;
         min-height: 25px;
         max-height: 25px;
-
-
-        background: var(--pj-background-tertiary);
     }
 </style>

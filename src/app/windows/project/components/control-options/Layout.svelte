@@ -74,13 +74,13 @@
                     type="button"
                     value={v.name}
             >
-            {#if settings.views.length > 1 && settings.currentView !== i}
-                <button on:click={() => removeView(i)} class="remove-button">
+
+                <button disabled={settings.views.length === 0 || settings.currentView === i} on:click={() => removeView(i)} class="remove-button">
                     <Icon styles="font-size: .8rem">
                         clear
                     </Icon>
                 </button>
-            {/if}
+
         </div>
     {/each}
     {#if settings.views.length < 10}

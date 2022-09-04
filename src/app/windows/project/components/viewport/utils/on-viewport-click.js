@@ -5,16 +5,13 @@ import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 import SelectionStore from "../../../stores/SelectionStore";
+import BundlerAPI from "../../../libs/engine/production/libs/BundlerAPI";
 
-const  MAX_DELTA = 50
+const MAX_DELTA = 50
 
-function pickIcon(coords) {
+
+function readPixelData(x, y) {
     drawIconsToBuffer()
-    const picked = PickingAPI.depthPick(DepthPass.framebuffer, coords)
-    return Math.round((picked[1] + picked[2]) * 255)
-}
-
-function pickMesh(x, y) {
     const w = window.gpu.canvas.width, h = window.gpu.canvas.height
     const coords = ConversionAPI.toQuadCoord({x, y}, {w, h})
     const picked = PickingAPI.depthPick(DepthPass.framebuffer, coords)
@@ -29,11 +26,7 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
     if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
         return
     const selected = SelectionStore.engineSelected
-    const target =  gpu.canvas.parentElement.getBoundingClientRect()
-    const coords = [event.clientX - target.left, event.clientY - target.top]
-    let picked = pickIcon(coords)
-    if (!picked)
-        picked = pickMesh(event.clientX, event.clientY)
+    const picked = readPixelData(event.clientX, event.clientY)
     if (picked > 0) {
         const entities = Array.from(RendererController.entitiesMap.values())
         const entity = entities.find(e => e?.pickIndex === picked)

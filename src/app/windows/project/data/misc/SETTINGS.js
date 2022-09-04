@@ -7,6 +7,7 @@ import VIEWPORT_TABS from "./VIEWPORT_TABS";
 
 const toRad = Math.PI / 180
 export default {
+
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,
     iconsVisibility: true,
@@ -56,7 +57,14 @@ export default {
     radius: 1,
     samples: 16,
 
-    cameraAnimation: true,
+    camera: {
+        animated: true,
+        movementSpeed: .01,
+        scrollSpeed: .5,
+        scrollDelay: 100,
+        turnSpeed: .01,
+    },
+
     background: true,
     // VIEWS
     views: [

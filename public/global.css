@@ -59,7 +59,7 @@ body {
     --pj-accent-color-light: rgb(0 149 255 / 50%);
     --pj-accent-color-darker: #006cb9;
     --pj-accent-color: #0095ff;
-    --pj-background-primary: #303030;
+    --pj-background-primary: #3b3b3b;
     --pj-background-secondary: #2b2b2b;
     --pj-background-tertiary: #202020;
     --pj-background-quaternary: #111;
@@ -75,7 +75,7 @@ body {
     --pj-color-senary: #c8c8c8;
     --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
     --background-input: #545454;
-
+    --background-input-lighter: #565656;
     color: var(--pj-color-secondary);
 }
 

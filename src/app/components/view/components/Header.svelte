@@ -16,10 +16,10 @@
     class:headerHidden={hidden}
     class:header={!hidden}
 >
-    <Dropdown hideArrow={true}>
+    <Dropdown hideArrow={true} buttonStyles="background: var(--pj-background-tertiary);">
         <button
                 style={"height: " +  (orientation === "vertical" && hidden ? "fit-content" : "25px")}
-                class={"title"}
+                class="title"
                 slot="button"
         >
             <div class={"icon"}>
@@ -66,17 +66,17 @@
     }
 
     .title {
-        background: var(--pj-background-tertiary);
         padding: 0 !important;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--pj-color-secondary);
+
         min-height: 25px;
         max-height: 25px;
         min-width: 25px;
         max-width: 25px;
     }
+
     .header {
         display: flex;
         align-items: center;

@@ -86,8 +86,8 @@
 
     .content {
         color: var(--pj-color-secondary);
-        padding: 8px;
-        background: rgb(63 63 63 / 90%);
+        padding: 4px;
+        background: var(--pj-background-primary);
         border-radius: 3px;
         width: 250px;
         display: grid;

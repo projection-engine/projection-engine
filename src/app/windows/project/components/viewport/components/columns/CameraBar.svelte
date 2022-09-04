@@ -1,5 +1,5 @@
 <script>
-    import {handleGrab} from "../../utils/transform-camera"
+
     import updateCameraPlacement from "../../utils/update-camera-placement"
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
@@ -157,7 +157,7 @@
         {/if}
     </button>
 
-    <div class="option" on:mousedown={e => handleGrab(e, 0)}>
+    <div class="option" on:mousedown={e => CameraTracker.transformCamera(e, 0)}>
         <ToolTip>
             {translate("DRAG_X_ZOOM")}
         </ToolTip>
@@ -165,7 +165,7 @@
     </div>
     <div
             class="option"
-            on:mousedown={e => handleGrab(e,  1)}
+            on:mousedown={e => CameraTracker.transformCamera(e,  1)}
             on:dblclick={() => {
                 CameraTracker.centerOn = [...EditorRenderer.cursor.translation]
                 CameraTracker.update()
@@ -199,6 +199,7 @@
     }
 
     .option {
+        border: none;
         width: 27px;
         height: 27px;
         border-radius: 50%;

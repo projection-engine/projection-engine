@@ -72,6 +72,12 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            CAMERA_BEHAVIOUR: "Interaction",
+            TURN_SPEED: "Turn speed",
+            MOVEMENT_SPEED: "Movement speed",
+            SCROLL_SPEED: "Scroll speed",
+
+            VIEW: "View",
             SPRITE: "Sprite",
             SPRITE_RENDERER: "New sprite renderer",
             MESH_RENDERER: "New mesh renderer",

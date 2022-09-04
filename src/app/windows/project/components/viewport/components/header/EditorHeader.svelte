@@ -69,10 +69,8 @@
             {translate("ICONS")}
         </button>
 
-        <button
-                on:click={() => SettingsStore.updateStore({...settings, cameraAnimation: settings.cameraAnimation})}
-        >
-            {#if settings.cameraAnimation}
+        <button on:click={() => SettingsStore.updateStore({...settings, camera: {...settings.camera, animated: !settings.camera.animated}})}>
+            {#if settings.camera.animated}
                 <Icon>check</Icon>
             {/if}
             {translate("CAM_ANIM")}

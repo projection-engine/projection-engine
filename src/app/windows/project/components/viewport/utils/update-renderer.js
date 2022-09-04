@@ -2,6 +2,7 @@ import bindGizmo from "./bind-gizmo";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 import SelectionStore from "../../../stores/SelectionStore";
+import {settings} from "../components/Header.svelte";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -28,8 +29,12 @@ export default function updateRenderer(selected, engine, settings) {
 
     RendererController.entitiesMap = entities
     renderer.materials = materials
-    CameraTracker.animated = settings.cameraAnimation
 
+    CameraTracker.animated = settings.camera?.animated
+    CameraTracker.movementSpeed = settings.camera?.movementSpeed
+    CameraTracker.scrollSpeed = settings.camera?.scrollSpeed
+    CameraTracker.scrollDelay = settings.camera?.scrollDelay
+    CameraTracker.turnSpeed = settings.camera?.turnSpeed
 
     renderer.updatePackage(
         executingAnimation,

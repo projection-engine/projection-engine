@@ -9,7 +9,7 @@ import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
 import ROUTES from "../../../../assets/ROUTES";
 import CHANNELS from "../../../../assets/CHANNELS";
 import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
-import parseEntityObject from "../libs/engine/production/utils/parse-entity-object";
+
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 import UIStore from "./UIStore";
@@ -18,6 +18,9 @@ import GPU from "../libs/engine/production/controllers/GPU";
 import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
 import {writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
+import Entity from "../libs/engine/production/templates/Entity";
+import componentConstructor from "../libs/component-constructor";
+import STATIC_TEXTURES from "../libs/engine/static/STATIC_TEXTURES";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -83,14 +86,18 @@ export default class EngineStore {
                 const {entities, uiElements} = data
 
                 const mapped = []
-
+                console.log(entities)
                 for (let i = 0; i < entities.length; i++) {
-                    const entity = await parseEntityObject(entities[i])
+
+                    const entity = await Entity.parseEntityObject(entities[i])
+                    for (let i = 0; i < entity.scripts.length; i++)
+                        await componentConstructor(entity, entity.scripts[i].id, false)
+
                     const imgID = entity.components[COMPONENTS.SPRITE]?.imageID
-                    if (imgID) {
+                    checkTexture: if (imgID) {
                         const images = GPU.textures
-                        if (images.get(imgID) != null)
-                            continue
+                        if (images.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
+                            break checkTexture
                         try {
                             const rs = await RegistryAPI.readRegistryFile(imgID)
                             const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)

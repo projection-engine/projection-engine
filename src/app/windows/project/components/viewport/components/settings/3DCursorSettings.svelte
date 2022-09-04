@@ -2,6 +2,7 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import {onMount} from "svelte";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
+    import TransformationAPI from "../../../../libs/engine/production/libs/TransformationAPI";
 
     let state = {}
 
@@ -13,7 +14,11 @@
             z: t[2]
         }
     })
-
+    const transform = (index, value) => {
+        const c = EditorRenderer.cursor
+        c.translation[index] = value
+        c.transformationMatrix = TransformationAPI.transform(c.translation, [0,0,0,1], c.scaling)
+    }
 </script>
 
 
@@ -32,10 +37,7 @@
             }
         }}
         incrementPercentage={.01}
-        handleChange={e => {
-        const t = EditorRenderer.cursor
-        t.translation = [e, t.translation[1], t.translation[2]]
-    }}
+        handleChange={e => transform(0, e)}
 />
 <Range
         metric={"m"}
@@ -51,10 +53,7 @@
                 y: e
             }
         }}
-        handleChange={e => {
-        const t = EditorRenderer.cursor
-        t.translation = [t.translation[0], e, t.translation[2]]
-    }}
+        handleChange={e => transform(1, e)}
 />
 <Range
         metric={"m"}
@@ -70,8 +69,5 @@
                 z: e
             }
         }}
-        handleChange={e => {
-        const t = EditorRenderer.cursor
-        t.translation = [ t.translation[0], t.translation[1], e]
-    }}
+        handleChange={e => transform(2, e)}
 />
