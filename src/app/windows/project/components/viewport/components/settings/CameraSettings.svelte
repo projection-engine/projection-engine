@@ -5,6 +5,7 @@
     import CameraAPI from "../../../../libs/engine/production/libs/CameraAPI";
     import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}
@@ -130,7 +131,14 @@
             value={state.turnSpeed}
             handleChange={v => updateCamera("turnSpeed", v)}
     />
+    <button on:click={() => updateCamera("animated", !settings.camera.animated, true)}>
+        {#if settings.camera.animated}
+            <Icon>check</Icon>
+        {/if}
+        {translate("CAM_ANIM")}
+    </button>
 </fieldset>
+
 
 <style>
     .wrapper {

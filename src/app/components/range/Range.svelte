@@ -209,6 +209,8 @@
         border: var(--pj-border-primary) 1px solid;
         color: #999 !important;
         font-weight: normal;
+        cursor: default !important;
+        text-align: right;
     }
 
     .draggable::-webkit-inner-spin-button {

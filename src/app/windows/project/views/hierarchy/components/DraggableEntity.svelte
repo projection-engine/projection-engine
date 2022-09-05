@@ -70,12 +70,13 @@
 
     {#if hiddenActiveChildren != null}
         <div class="children">
-            {#each hiddenActiveChildren as entity}
-                {#if entity === lockedEntity}
-                    <button
-                            data-locked={"-"}
-                            class="buttonIcon hierarchy-branch"
-                            on:click={() => {
+            {#each hiddenActiveChildren as entity, i}
+                {#if i < 2}
+                    {#if entity === lockedEntity}
+                        <button
+                                data-locked={"-"}
+                                class="buttonIcon hierarchy-branch"
+                                on:click={() => {
                             const newOpen = {...open}
                             let current = RendererController.entitiesMap.get(entity)
                             while(current){
@@ -85,14 +86,17 @@
                             SelectionStore.engineSelected = [entity]
                             setOpen(newOpen)
                         }}
-                    >
-                        <Icon styles="font-size: .9rem">lock</Icon>
-                        <ToolTip>
-                            {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
-                        </ToolTip>
-                    </button>
-                {:else}
-                    <div class="dot"></div>
+                        >
+                            <Icon styles="font-size: .9rem">lock</Icon>
+                            <ToolTip>
+                                {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
+                            </ToolTip>
+                        </button>
+                    {:else}
+                        <div class="dot">
+                            <ToolTip>{Localization.PROJECT.HIERARCHY.SELECTED_CHILD}</ToolTip>
+                        </div>
+                    {/if}
                 {/if}
             {/each}
         </div>
@@ -106,7 +110,8 @@
         background: var(--pj-accent-color);
         border-radius: 50%;
     }
-    .children{
+
+    .children {
         display: flex;
         gap: 3px;
         align-items: center;

@@ -5,6 +5,7 @@
     import "./css/dropdown.css"
     import createPortal from "../create-portal";
 
+    export let asButton
     export let noBackground = undefined
     export let width = undefined
     export let styles = undefined
@@ -54,7 +55,7 @@
             }
         }}
         class={open && !noBackground ? "highlight dropdown" : undefined}
-        style={((hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;")) + buttonStyles + " width: " + width}
+        style={(asButton ? "max-height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:  var(--pj-border-primary) 1px solid;" : "") + ((hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;")) + buttonStyles + " width: " + width}
 >
 
     <slot name="button"/>

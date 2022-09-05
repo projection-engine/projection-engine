@@ -6,7 +6,7 @@
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
-    import ShadingOption from "./ShadingOption.svelte";
+    import ShadingOption from "./editor/ShadingOption.svelte";
     import PointLightComponent from "../../../../libs/engine/production/templates/PointLightComponent";
     import DirectionalLightComponent from "../../../../libs/engine/production/templates/DirectionalLightComponent";
     import Entity from "../../../../libs/engine/production/templates/Entity";
@@ -17,210 +17,48 @@
     import SpriteComponent from "../../../../libs/engine/production/templates/SpriteComponent";
     import STATIC_TEXTURES from "../../../../libs/engine/static/STATIC_TEXTURES";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import ActiveFeatures from "./editor/ActiveFeatures.svelte";
+    import AddEntity from "./editor/AddEntity.svelte";
+    import GizmoSettings from "./editor/GizmoSettings.svelte";
+    import ViewportActions from "../../../../libs/ViewportActions";
+    import SelectionStore from "../../../../stores/SelectionStore";
 
 
     export let settings
     export let engine
     export let translate
 
-    const addSprite = (entity, img) => {
-        entity.components[COMPONENTS.SPRITE] = new SpriteComponent(img)
-        entity.components[COMPONENTS.SPRITE].attributes = [1, 0]
-    }
-    const createCM = (asDiffuse) => {
-        const actor = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
-        actor.components[COMPONENTS.PROBE] = new ProbeComponent()
-        actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
-        addSprite(actor, STATIC_TEXTURES.PROBE)
-        actor.translation = [...EditorRenderer.cursor.translation]
-        actor.lockedRotation = true
-        actor.lockedScaling = true
 
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-    }
-    const createMesh = (id) => {
-        const actor = new Entity(undefined, translate("MESH_RENDERER"))
-        actor.components[COMPONENTS.MESH] = new MeshComponent(undefined, id, FALLBACK_MATERIAL)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-    }
 </script>
 
 <div class="left-content">
-
+    <ActiveFeatures settings={settings}/>
     <Dropdown>
-        <button slot="button" class="dropdown">
-            <Icon styles="font-size: 1rem">visibility</Icon>
-            <div data-overflow="-">
-                {translate("VISIBLE")}
-            </div>
+        <button slot="button" data-viewbutton="-">
+            {translate("SELECT")}
         </button>
 
-        <button on:click={() => SettingsStore.updateStore({...settings, gridVisibility: !settings.gridVisibility})}>
-            {#if settings.gridVisibility}
-                <Icon>check</Icon>
-            {/if}
-            {translate("GRID")}
+        <button on:click={() => ViewportActions.selectAll()}>
+            {translate("ALL")}
         </button>
 
-        <button on:click={() => SettingsStore.updateStore({...settings, iconsVisibility: !settings.iconsVisibility})}>
-            {#if settings.iconsVisibility}
-                <Icon>check</Icon>
-            {/if}
-            {translate("ICONS")}
+        <button on:click={() => ViewportActions.invertSelection()}>
+            {translate("INVERT")}
         </button>
 
-        <button on:click={() => SettingsStore.updateStore({...settings, camera: {...settings.camera, animated: !settings.camera.animated}})}>
-            {#if settings.camera.animated}
-                <Icon>check</Icon>
-            {/if}
-            {translate("CAM_ANIM")}
-        </button>
-
-        <button on:click={() => SettingsStore.updateStore({...settings, background: !settings.background})}>
-            {#if settings.background}
-                <Icon>check</Icon>
-            {/if}
-            {translate("BACKGROUND")}
+        <button on:click={() => SelectionStore.engineSelected = []}>
+            {translate("NONE")}
         </button>
     </Dropdown>
+    <AddEntity/>
 
-    <Dropdown>
-        <button slot="button" class="dropdown">
-            {translate("ADD")}
-            <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
-        </button>
-
-
-        <button
-                on:click={() => dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})}
-        >
-            <Icon>inventory_2</Icon>
-            {translate("EMPTY_ENTITY")}
-        </button>
-        <div class={"divider-wrapper"}>
-            {translate("MESHES")}
-            <div data-divider="-"></div>
-        </div>
-        <button on:click={() => createMesh(STATIC_MESHES.CUBE)}>
-            <Icon>view_in_ar</Icon>
-            {translate("CUBE")}
-        </button>
-        <button on:click={() => createMesh(STATIC_MESHES.SPHERE)}>
-            <Icon>view_in_ar</Icon>
-            {translate("ICO_SPHERE")}
-        </button>
-        <button on:click={() => createMesh(STATIC_MESHES.PLANE)}>
-            <Icon>view_in_ar</Icon>
-            {translate("PLANE")}
-        </button>
-        <button on:click={() => createMesh(STATIC_MESHES.CYLINDER)}>
-            <Icon>view_in_ar</Icon>
-            {translate("CYLINDER")}
-        </button>
-
-
-        <div class={"divider-wrapper"}>
-            {translate("LIGHTS")}
-            <div data-divider="-"></div>
-        </div>
-        <button
-                on:click={() =>  {
-                const actor = new Entity(undefined, translate("POINT_LIGHT"))
-                actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
-                addSprite(actor, STATIC_TEXTURES.POINT_LIGHT)
-                actor.translation = [...EditorRenderer.cursor.translation]
-                actor.lockedRotation = true
-                actor.lockedScaling = true
-
-                dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            }}
-        >
-            <Icon>lightbulb</Icon>
-            {translate("POINT_LIGHT")}
-        </button>
-
-        <button
-                on:click={() => {
-                        const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
-                        addSprite(actor, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
-                        actor.translation = [...EditorRenderer.cursor.translation]
-                        actor.lockedRotation = true
-                        actor.lockedScaling = true
-                        actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
-
-                        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                    }}
-        >
-            <Icon>light_mode</Icon>
-            {translate("DIRECTIONAL_LIGHT")}
-        </button>
-
-
-        <div class={"divider-wrapper"}>
-            {translate("AMBIENT")}
-            <div data-divider="-"></div>
-        </div>
-
-
-        <button on:click={() => createCM()}>
-            <Icon>lens_blur</Icon>
-            {translate("SPECULAR_PROBE")}
-        </button>
-        <button on:click={() => createCM(true)}>
-            <Icon>lens_blur</Icon>
-            {translate("DIFFUSE_PROBE")}
-        </button>
-        <div class={"divider-wrapper"}>
-            {translate("UTILS")}
-            <div data-divider="-"></div>
-        </div>
-        <button
-                on:click={() => {
-                    const actor = new Entity(undefined, translate("CAMERA"))
-                    actor.components[COMPONENTS.CAMERA] = new CameraComponent()
-
-                    actor.translation = [...EditorRenderer.cursor.translation]
-                    actor.rotation = [0, 0, 0]
-                    actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-                    actor.lockedScaling = true
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                }}
-        >
-            <Icon>videocam</Icon>
-            {translate("CAMERA")}
-        </button>
-        <button
-                on:click={() => {
-                    const actor = new Entity(undefined, translate("SPRITE_RENDERER"))
-                    actor.components[COMPONENTS.SPRITE] = new SpriteComponent()
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-                }}
-        >
-            <Icon>image</Icon>
-            {translate("SPRITE")}
-        </button>
-    </Dropdown>
 </div>
-
+<GizmoSettings settings={settings}/>
 <div class="right-content">
     <ShadingOption translate={translate}/>
 </div>
 
 <style>
-    .dropdown {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        width: fit-content;
-        --color-to-apply: white;
-        font-size: 0.7rem;
-        height: 18px;
-        border-radius: 3px;
-        overflow: hidden;
-        padding: 0 0 0 4px;
-        border: none;
-    }
 
     .left-content {
         display: flex;
@@ -239,23 +77,4 @@
 
     }
 
-    .range-wrapper {
-        user-select: none;
-        display: flex;
-        align-items: center;
-        padding: 4px;
-        gap: 4px;
-        color: var(--pj-color-secondary);
-    }
-
-    .divider-wrapper {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        color: var(--pj-color-primary);
-        gap: 8px;
-        font-size: 0.7rem !important;
-        padding: 2px 6px 0;
-        overflow: hidden;
-    }
 </style>

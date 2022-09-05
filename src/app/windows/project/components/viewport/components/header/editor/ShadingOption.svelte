@@ -1,15 +1,15 @@
 <script>
-    import SHADING_MODELS from "../../../../data/misc/SHADING_MODELS"
-    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import SHADING_MODELS from "../../../../../data/misc/SHADING_MODELS"
+    import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import CompositePass from "../../../../libs/engine/production/templates/passes/CompositePass";
-    import GPU from "../../../../libs/engine/production/controllers/GPU";
-    import STATIC_FRAMEBUFFERS from "../../../../libs/engine/static/STATIC_FRAMEBUFFERS";
-    import DepthPass from "../../../../libs/engine/production/templates/passes/DepthPass";
-    import DeferredPass from "../../../../libs/engine/production/templates/passes/DeferredPass";
-    import AOPass from "../../../../libs/engine/production/templates/passes/AOPass";
-    import SettingsStore from "../../../../stores/SettingsStore";
+    import CompositePass from "../../../../../libs/engine/production/templates/passes/CompositePass";
+    import GPU from "../../../../../libs/engine/production/controllers/GPU";
+    import STATIC_FRAMEBUFFERS from "../../../../../libs/engine/static/STATIC_FRAMEBUFFERS";
+    import DepthPass from "../../../../../libs/engine/production/templates/passes/DepthPass";
+    import DeferredPass from "../../../../../libs/engine/production/templates/passes/DeferredPass";
+    import AOPass from "../../../../../libs/engine/production/templates/passes/AOPass";
+    import SettingsStore from "../../../../../stores/SettingsStore";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -81,7 +81,7 @@
     }
 </script>
 
-<Dropdown>
+<Dropdown asButton={true}>
     <button class="summary" slot="button">
         {#if shadingModel === SHADING_MODELS.DETAIL}
             <div style="--color-to-apply: white" class={"shaded-icon"}></div>

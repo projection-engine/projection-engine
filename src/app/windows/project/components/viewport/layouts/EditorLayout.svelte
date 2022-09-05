@@ -7,7 +7,7 @@
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
     import CameraBar from "../components/columns/CameraBar.svelte";
-    import GizmoBar from "../components/columns/GizmoBar.svelte";
+    import GizmoBar from "../components/header/editor/GizmoSettings.svelte";
 
     import GIZMOS from "../../../data/misc/GIZMOS";
     import onViewportClick from "../utils/on-viewport-click";
@@ -22,6 +22,7 @@
     import {vec3} from "gl-matrix";
     import InputEventsAPI from "../../../libs/engine/production/libs/InputEventsAPI";
     import SelectionStore from "../../../stores/SelectionStore";
+    import GPU from "../../../libs/engine/production/controllers/GPU";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -106,7 +107,6 @@
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 
-
     const draggable = dragDrop(false)
 
     onMount(() => {
@@ -132,17 +132,14 @@
         if (startCoords && endCoords) {
             drawIconsToBuffer()
             const depthFBO = DepthPass.framebuffer
-            const size = {
-                w: depthFBO.width,
-                h: depthFBO.height
-            }
-            const nStart = ConversionAPI.toQuadCoord(startCoords, size)
-            const nEnd = ConversionAPI.toQuadCoord(endCoords, size)
+            console.log(startCoords, endCoords, depthFBO)
+            const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
+            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
 
             try {
                 const data = PickingAPI.readBlock(depthFBO, nStart, nEnd)
                 WORKER.postMessage({entities: window.renderer.entities, data})
-                WORKER.onmessage = ({data: selected}) => EngineStore.updateStore({...engine, selected})
+                WORKER.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
             } catch (err) {
                 console.error(err, startCoords, nStart)
             }
@@ -151,7 +148,6 @@
 </script>
 
 
-<GizmoBar translate={translate}/>
 <CameraBar translate={translate}/>
 {#if settings.visible.sideBarViewport}
     <SideOptions translate={translate}/>

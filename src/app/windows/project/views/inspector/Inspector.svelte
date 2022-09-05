@@ -67,38 +67,7 @@
         switchView={switchView}
         title={translate("TITLE")}
         icon={"category"}
->
-    {#if entity != null}
-        <div data-vertdivider="-"></div>
-        <div style="font-size: .7rem" data-overflow="-">
-            {#if entity instanceof Entity}
-                {translate("EDITING_ENTITY")}
-            {:else}
-                {translate("EDITING_ELEMENT")}
-            {/if}
-        </div>
-        <div data-vertdivider="-"></div>
-        <button
-                class="toggle-button"
-                on:click={() => focusOnEngineEntities = !focusOnEngineEntities}
-        >
-            {#if focusOnEngineEntities}
-                <Icon>account_tree</Icon>
-                <div data-overflow="-">
-                    {translate("FOCUSED_ON_ENGINE")}
-                </div>
-            {:else}
-                <Icon>grid_view</Icon>
-                <div data-overflow="-">
-                    {translate("FOCUSED_ON_UI")}
-                </div>
-            {/if}
-        </button>
-
-
-    {/if}
-
-</Header>
+/>
 {#if !hidden}
     <div class="content">
         {#if entity != null}

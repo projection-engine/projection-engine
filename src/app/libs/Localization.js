@@ -72,6 +72,14 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            SELECT: "Select",
+            ALL: "All",
+            NONE: "None",
+            INVERT: "Invert",
+            TRANSFORMATION_ORIENTATION: "Transformation orientation",
+            LOCAL: "Local",
+            GLOBAL: "Global",
+
             CAMERA_BEHAVIOUR: "Interaction",
             TURN_SPEED: "Turn speed",
             MOVEMENT_SPEED: "Movement speed",
@@ -115,11 +123,9 @@ export default class Localization {
             FRONT: "Front",
             BACK: "Back",
             SWITCH_PROJECTION: "Switch between last Ortho/Perspective",
-            DRAG_X_ZOOM: "Drag X to zoom in/out",
-            DRAG_X_DIR: "- Drag X to move forward/backwards",
-            DRAG_Y_DIR: "- Drag Y to move up/down",
+            MOVE_IN_SCREEN_SPACE: "Move camera in screen-space",
             DOUBLE_CLICK: "- Double click to center",
-            VISIBLE: "Visible",
+
             GRID: "Grid",
             ICONS: "Icons",
             FPS: "Frames per second",
@@ -136,9 +142,11 @@ export default class Localization {
             NEAR: "Near plane",
             FOV: "Field Of View",
             ZOOM: "Zoom",
-            TRANSLATION_GRID: "Translation grid",
-            SCALE_GRID: "Scale grid",
-            ROTATION_GRID: "Rotation Grid",
+
+            MOVEMENT_GRID: "Movement grid",
+            TRANSLATION_GRID: "Translation",
+            SCALE_GRID: "Scale",
+            ROTATION_GRID: "Rotation",
             SELECTION: "Selection",
             CURSOR: "3D Cursor",
             T_GIZMO: "Translation gizmo",
@@ -148,6 +156,7 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            SELECTED_CHILD: "Child entity is selected",
             FOCUS_LOCKED_ENTITY: "Focus on locked entity",
             TRANSFORM: "Transformation",
             DIRECTIONAL_LIGHT: "Directional Light",
@@ -279,6 +288,7 @@ export default class Localization {
 
         },
         FILES: {
+            FILE_TYPE: "File type",
             CHILDREN: "Children quantity",
             ITEM_NAME: "Name",
             ITEM_TYPE: "Type",

@@ -150,15 +150,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                 FilesStore.refreshFiles().catch()
             }
         },
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("GO_TO_PARENT"),
 
-            onClick: () => {
-                if (currentDirectory.id !== FilesAPI.sep)
-                    navigationHistory.goToParent()
-            }
-        },
         {divider: true, requiredTrigger: "data-wrapper"},
         {
             requiredTrigger: "data-wrapper",

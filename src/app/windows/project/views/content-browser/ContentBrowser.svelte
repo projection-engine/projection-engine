@@ -9,11 +9,11 @@
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
     import Browser from "./components/Browser.svelte";
+    import BrowserNavigation from "./components/BrowserNavigation.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
-
 
 
     let store = {}
@@ -58,37 +58,49 @@
         icon={"folder"}
 >
     <ControlBar
-            currentDirectory={currentDirectory}
-            setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-            bookmarks={store.bookmarks}
-            translate={translate}
-
-            fileType={fileType}
             setFileType={v => fileType = v}
+            fileType={fileType}
+            currentDirectory={currentDirectory}
+            translate={translate}
+            view={view}
+            setView={v => view = v}
+
+
             searchString={searchString}
             setSearchString={v => searchString = v}
-            path={path}
-            view={view}
-
-            setView={v => view = v}
-            navigationHistory={navigationHistory}
     />
 </Header>
-{#if !hidden}
-    <div class="wrapper">
-        {#if view.sideBar}
-            <SideBar
-                    items={store.items}
-                    bookmarks={store.bookmarks}
 
+<div class="wrapper">
+    {#if view.sideBar}
+        <SideBar
+                items={store.items}
+                bookmarks={store.bookmarks}
+
+                currentDirectory={currentDirectory}
+                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+                translate={translate}
+        />
+        <ResizableBar type={"width"}/>
+    {/if}
+
+    <div class="browser">
+        {#if view.navigation}
+            <BrowserNavigation
+                    bookmarks={store.bookmarks}
+                    path={path}
                     currentDirectory={currentDirectory}
                     setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-                    translate={translate}
-            />
-            <ResizableBar type={"width"}/>
-        {/if}
 
+
+                    navigationHistory={navigationHistory}
+            />
+        {/if}
         <Browser
+                bookmarks={store.bookmarks}
+                path={path}
+                view={view}
+
                 items={store.items}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
@@ -102,14 +114,24 @@
 
         />
     </div>
-{/if}
+</div>
 
 <style>
+    .browser {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        overflow: hidden;
+    }
+
     .wrapper {
         width: 100%;
         height: 100%;
         display: flex;
         overflow: hidden;
+        background: var(--pj-background-secondary)
     }
 </style>
 

@@ -191,6 +191,9 @@
         align-content: flex-start;
         position: relative;
 
+        background: var(--pj-background-tertiary);
+        border-radius: 3px;
+
     }
 
 </style>

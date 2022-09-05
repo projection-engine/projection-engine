@@ -225,8 +225,6 @@ a {
 }
 
 
-
-
 fieldset {
     border: none;
     border-top: var(--pj-border-primary) 1px solid;
@@ -239,10 +237,26 @@ legend {
     font-weight: 550;
 }
 
-strong{
+strong {
     font-weight: 550
 }
-small{
+
+small {
     font-weight: 400;
     color: var(--pj-color-quinary)
+}
+
+*[data-viewbutton="-"] {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    width: fit-content;
+    --color-to-apply: white;
+    font-size: 0.7rem;
+    height: 18px;
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 0 0 0 4px;
+    border: none;
 }

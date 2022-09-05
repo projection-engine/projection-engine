@@ -8,6 +8,8 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../libs/engine/production/templates/passes/DiffuseProbePass";
+    import SpecularProbePass, {STEPS_CUBE_MAP} from "../../libs/engine/production/templates/passes/SpecularProbePass";
 
     let engine
     let store
@@ -33,7 +35,8 @@
     </button>
     <button on:click={() => {
         alert.pushAlert(translate("BUILDING_PROBES"), "info")
-        window.renderer.refreshProbes()
+        DiffuseProbePass.step = STEPS_CUBE_MAP.BASE
+        SpecularProbePass.step = STEPS_LIGHT_PROBE.GENERATION
     }}>
         <Icon styles="font-size: .85rem">refresh</Icon>
         {translate("BUILD_PROBES")}

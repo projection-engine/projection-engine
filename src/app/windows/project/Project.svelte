@@ -52,6 +52,7 @@
         left: [],
         right: []
     }
+    $: console.log(settings.currentView)
     $: view = settings.views[settings.currentView]
 
     $: {

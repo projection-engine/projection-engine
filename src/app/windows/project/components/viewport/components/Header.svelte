@@ -19,9 +19,9 @@
 
 <div class={"options"} bind:this={ref}>
 
-    <Dropdown hideArrow={true} buttonStyles="background: var(--pj-background-tertiary);">
-        <button slot="button" class="dropdown" >
-            <Icon style="font-size: 1rem">
+    <Dropdown hideArrow={true} asButton={true} buttonStyles="max-width: 22px">
+        <button slot="button"  class="title">
+            <Icon style="font-size: .9rem">
                 {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                     public
                 {:else}
@@ -56,6 +56,18 @@
 </div>
 
 <style>
+
+    .title {
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 22px;
+        min-width: 22px;
+        max-height: 22px;
+        max-width: 22px;
+        border: none;
+    }
     .options {
         display: flex;
         align-items: center;
@@ -67,11 +79,5 @@
         user-select: none;
     }
 
-    .dropdown {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        min-height: 25px;
-        max-height: 25px;
-    }
+
 </style>

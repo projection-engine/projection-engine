@@ -159,7 +159,7 @@
 
     <div class="option" on:mousedown={e => CameraTracker.transformCamera(e, 0)}>
         <ToolTip>
-            {translate("DRAG_X_ZOOM")}
+            {translate("ZOOM")}
         </ToolTip>
         <Icon>zoom_in</Icon>
     </div>
@@ -171,9 +171,7 @@
                 CameraTracker.update()
             }}>
         <ToolTip>
-            <div>{translate("DRAG_X_DIR")}</div>
-            <div>{translate("DRAG_Y_DIR")}</div>
-            <div>{translate("DOUBLE_CLICK")}</div>
+            {translate("MOVE_IN_SCREEN_SPACE")}
         </ToolTip>
         <Icon>back_hand</Icon>
     </div>
