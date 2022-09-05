@@ -6,7 +6,7 @@
     import Recent from "./components/Recent.svelte";
     import Localization from "../../libs/Localization";
     import ROUTES from "../../../assets/ROUTES";
-    import getBasePath from "../../../electron/lib/get-base-path";
+    import getBasePath from "../../../electron/utils/get-base-path";
     import {onMount} from "svelte";
 
     import refreshProjects from "./utils/refresh-projects";

@@ -6,12 +6,10 @@
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
-    import CameraBar from "../components/columns/CameraBar.svelte";
-    import GizmoBar from "../components/header/editor/GizmoSettings.svelte";
+    import CameraBar from "../components/CameraBar.svelte";
 
     import GIZMOS from "../../../data/misc/GIZMOS";
     import onViewportClick from "../utils/on-viewport-click";
-    import EngineStore from "../../../stores/EngineStore";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
@@ -132,7 +130,6 @@
         if (startCoords && endCoords) {
             drawIconsToBuffer()
             const depthFBO = DepthPass.framebuffer
-            console.log(startCoords, endCoords, depthFBO)
             const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
             const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
 

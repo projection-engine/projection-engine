@@ -25,9 +25,7 @@
     }
 
     const clear = () => {
-        console.log(key)
         delete component.styles[key]
-        console.log(component.styles[key])
         component.updateStyles()
         UIStore.updateStore()
     }

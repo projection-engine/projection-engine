@@ -1,8 +1,11 @@
 const {app, BrowserWindow} = require('electron');
-const WindowManager = require("./lib/WindowManager");
-
-const manager = new WindowManager()
-app.on('ready', () => manager.createWindow());
+const FSEvents = require("./libs/file-system");
+const HomeWindow = require("./controllers/HomeWindowController");
+function createEnvironment(){
+    FSEvents()
+    HomeWindow()
+}
+app.on('ready', () => createEnvironment());
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -10,7 +13,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        manager.createWindow();
-    }
+    if (BrowserWindow.getAllWindows().length === 0)
+        createEnvironment()
 });

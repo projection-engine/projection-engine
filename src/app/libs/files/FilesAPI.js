@@ -2,6 +2,8 @@ import {v4} from "uuid"
 import NodeFS from "../NodeFS"
 import FilesStore from "../../windows/project/stores/FilesStore";
 import RegistryAPI from "./RegistryAPI";
+import REG_PATH from "../../../assets/REG_PATH"
+import ROUTES from "../../../assets/ROUTES";
 
 const pathRequire = window.require("path")
 
@@ -23,7 +25,7 @@ export default class FilesAPI {
             await NodeFS.mkdir(FilesAPI.temp)
             if (!await NodeFS.exists(FilesAPI.path + FilesAPI.sep + "previews")) await NodeFS.mkdir(FilesAPI.path + FilesAPI.sep + "previews")
             if (!await NodeFS.exists(FilesAPI.path + FilesAPI.sep + "assets")) await NodeFS.mkdir(FilesAPI.path + FilesAPI.sep + "assets")
-            if (!await NodeFS.exists(FilesAPI.path + FilesAPI.sep + "assetsRegistry")) await NodeFS.mkdir(FilesAPI.path + FilesAPI.sep + "assetsRegistry")
+            if (!await NodeFS.exists(FilesAPI.path + FilesAPI.sep + REG_PATH)) await NodeFS.mkdir(FilesAPI.path + FilesAPI.sep + REG_PATH)
             if (!await NodeFS.exists(FilesAPI.path + FilesAPI.sep + "logic")) await NodeFS.mkdir(FilesAPI.path + FilesAPI.sep + "logic")
             resolve()
         }).catch(err => console.error(err))
@@ -39,8 +41,8 @@ export default class FilesAPI {
     static async readFile(pathName, type) {
         return await new Promise(resolve => {
             const listenID = v4().toString()
-            ipcRenderer.once("read-file-" + listenID, (ev, data) => resolve(data))
-            ipcRenderer.send("read-file", {pathName, type, listenID})
+            ipcRenderer.once(ROUTES.READ_FILE + listenID, (ev, data) => resolve(data))
+            ipcRenderer.send(ROUTES.READ_FILE, {pathName, type, listenID})
         })
     }
 
@@ -52,12 +54,12 @@ export default class FilesAPI {
             const r = FilesAPI.registry[i]
             const rPath = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + r.path)
             if (rPath.includes(currentPath))
-                await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + r.id + ".reg"))
+                await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH + FilesAPI.sep + r.id + ".reg"))
         }
         await NodeFS.rm(currentPath, options)
 
         const rs = await RegistryAPI.findRegistry(currentPath)
-        if (rs) await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + rs.id + ".reg"))
+        if (rs) await NodeFS.rm(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH + FilesAPI.sep + rs.id + ".reg"))
     }
 
     static resolvePath(path) {

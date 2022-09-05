@@ -1,7 +1,7 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
-import FILE_TYPES, {COMPONENT} from "../../../../../assets/FILE_TYPES";
+import FILE_TYPES from "../../../../../assets/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
 import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";

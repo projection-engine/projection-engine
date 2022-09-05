@@ -2,10 +2,10 @@ import {v4} from "uuid"
 
 const {ipcRenderer} = window.require("electron")
 
-export function getCall(channel, data) {
+export function getCall(channel, data, addMiddle=true) {
     return new Promise(resolve => {
         const listenID = v4().toString()
-        ipcRenderer.once(channel + "-" + listenID, (ev, data) => {
+        ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data) => {
             resolve(data)
         })
         ipcRenderer.send(channel, {...data, listenID})

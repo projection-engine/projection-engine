@@ -105,7 +105,6 @@
         if (lastDisabled !== disabled) {
             lastDisabled = disabled
             initialized = false
-            console.log("TRIGGERING")
         }
     }
     $: {
@@ -114,9 +113,7 @@
             if (disabled)
                 ref.parentElement.removeEventListener("mousedown", handleMouseDown)
             if (!initialized && !disabled) {
-                console.log("HERE AGAIN")
                 initialized = true
-
                 ref.parentElement.addEventListener("mousedown", handleMouseDown)
             }
         }

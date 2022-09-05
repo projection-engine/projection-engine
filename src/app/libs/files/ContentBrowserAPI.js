@@ -75,10 +75,10 @@ export default class ContentBrowserAPI {
     static async openDialog() {
         return await new Promise(resolve => {
             const listenID = v4().toString()
-            ipcRenderer.once("dialog-response-" + listenID, (ev, data) => {
+            ipcRenderer.once(ROUTES.FILE_DIALOG + listenID, (ev, data) => {
                 resolve(data)
             })
-            ipcRenderer.send("open-file-dialog", {listenID})
+            ipcRenderer.send(ROUTES.FILE_DIALOG, {listenID})
         })
     }
 

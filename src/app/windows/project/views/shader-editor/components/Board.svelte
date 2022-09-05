@@ -83,7 +83,6 @@
     })
     let timeout
     $: {
-        // console.log(links)
         clearTimeout(timeout)
         timeout = setTimeout(() => onMutation(resolvedLinks, ref, []), 250)
     }
@@ -112,13 +111,13 @@
             style="height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
             on:drop={event => {
                event.preventDefault()
-                console.log(isOpen)
-                if(isOpen){
-
+                if(!isOpen)
+                    return
                 const foundNodes = handleDropBoard(event.dataTransfer.getData("text"))
-                if (foundNodes)
-                    handleDropNode(foundNodes, event, ref, nodes, setNodes)
-                }
+                if (!foundNodes)
+                    return
+                handleDropNode(foundNodes, event, ref, nodes, setNodes)
+
             }}
             bind:this={ref}
             class="board"

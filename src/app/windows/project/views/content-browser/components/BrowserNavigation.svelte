@@ -1,7 +1,6 @@
 <script>
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import FilesStore from "../../../stores/FilesStore";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";

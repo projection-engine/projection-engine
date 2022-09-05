@@ -7,10 +7,6 @@
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Component from "../../../libs/engine/production/templates/Component";
     import Selector from "../../../../../components/selector/Selector.svelte";
-    import GPU from "../../../libs/engine/production/controllers/GPU";
-    import FilesAPI from "../../../../../libs/files/FilesAPI";
-    import FilesStore from "../../../stores/FilesStore";
-    import RegistryAPI from "../../../../../libs/files/RegistryAPI";
     import EngineStore from "../../../stores/EngineStore";
 
     export let component = undefined

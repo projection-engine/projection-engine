@@ -1,5 +1,4 @@
 import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
 import GPU from "../../../libs/engine/production/controllers/GPU";
 import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
@@ -13,7 +12,6 @@ export default function drawIconsToBuffer() {
         const entity = entities[i]
         if (!entity.active || !(entity.components[COMPONENTS.SPRITE] || entity.components[COMPONENTS.CAMERA]))
             continue
-        console.log(entity)
         drawIcon(
             GPU.meshes.get(entity.components[COMPONENTS.CAMERA] ? STATIC_MESHES.CAMERA : STATIC_MESHES.CUBE),
             entity.pickID,

@@ -1,10 +1,6 @@
 <script>
 
-    import NodeFS from "../../../../../libs/NodeFS"
-    import FilesAPI from "../../../../../libs/files/FilesAPI"
     import importFile from "../../../libs/import-file"
-    import EngineStore from "../../../stores/EngineStore";
-    import {onDestroy} from "svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";

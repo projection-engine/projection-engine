@@ -1,8 +1,6 @@
 import bindGizmo from "./bind-gizmo";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
-import SelectionStore from "../../../stores/SelectionStore";
-import {settings} from "../components/Header.svelte";
 
 
 export default function updateRenderer(selected, engine, settings) {

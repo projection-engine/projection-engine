@@ -9,12 +9,8 @@
     import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
     import Range from "../../../../../../../components/range/Range.svelte";
 
-
     export let settings
-
-
     let initialized = false
-
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     const updateGizmoGrid = (key, value, submit) => {
         GizmoSystem[key].gridSize = value
@@ -64,6 +60,7 @@
             <Range
                     variant="embedded"
                     label={translate("TRANSLATION_GRID")}
+                    precision="3"
                     maxValue={10}
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("translationGizmo", v, true)}
@@ -74,6 +71,7 @@
             <Range
                     variant="embedded"
                     label={translate("SCALE_GRID")}
+                    precision="3"
                     maxValue={10}
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("scaleGizmo", v, true)}
@@ -83,6 +81,7 @@
             />
             <Range
                     variant="embedded"
+                    precision="3"
                     label={translate("ROTATION_GRID")}
                     maxValue={360}
                     minValue={0.001}

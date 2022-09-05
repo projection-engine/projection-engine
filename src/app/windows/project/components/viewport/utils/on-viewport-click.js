@@ -5,7 +5,6 @@ import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
 import SelectionStore from "../../../stores/SelectionStore";
-import BundlerAPI from "../../../libs/engine/production/libs/BundlerAPI";
 
 const MAX_DELTA = 50, MIDDLE_BUTTON = 1
 
@@ -19,7 +18,6 @@ function readPixelData(x, y) {
 }
 
 export default function onViewportClick(event, mouseDelta, settings, setContext) {
-    console.log()
     if (gpu.canvas !== event.target || settings.gizmo === GIZMOS.CURSOR || event.button === MIDDLE_BUTTON)
         return
     const deltaX = Math.abs(mouseDelta.x - event.clientX)

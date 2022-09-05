@@ -20,6 +20,7 @@
     {#if isAboutOpen}
         <About handleClose={() => isAboutOpen = false} translate={translate}/>
     {/if}
+
     <div class="options">
         <Dropdown hideArrow={true} buttonStyles="background: var(--pj-background-tertiary);">
             <button slot="button" class="logo-button">
@@ -45,6 +46,7 @@
         {#if label}
             <div class={"title"} data-overflow="-" >{label}</div>
         {/if}
+        <div data-vertdivider="-"></div>
         {#each options as option}
             {#if option.divider}
                 <div class={"divider"}></div>

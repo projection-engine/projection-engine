@@ -111,8 +111,8 @@
         <button
                 disabled={!openFile?.registryID}
                 class="button"
-                on:click={() => ShaderEditorController.save(openFile, nodes, links).catch()}>
-            <Icon>save</Icon>
+                on:click={() => ShaderEditorController.save(openFile, nodes, links).catch(err => console.error(err))}>
+            <Icon styles="font-size: .9rem">save</Icon>
             {translate("SAVE")}
         </button>
         <button
@@ -120,11 +120,11 @@
                 class="button"
                 on:click={() => buildShader(nodes, links, openFile, v => status = v, translate).catch()}
         >
-            <Icon>code</Icon>
+            <Icon styles="font-size: .9rem">code</Icon>
             {translate("COMPILE")}
         </button>
         <div class="divider"></div>
-        <Dropdown disabled={fileStore.materials.length === 0}>
+        <Dropdown asButton="true" disabled={fileStore.materials.length === 0}>
             <button class="button" slot="button">
                 <div class="icon"></div>
                 {openFile.name ? openFile.name : ""}
@@ -162,20 +162,19 @@
 
         <button
                 class="button"
-
                 on:click={e => {
-                if (ShaderEditorController.grid === GRID_SIZE) {
-                    ShaderEditorController.grid = 1
-                    e.currentTarget.setAttribute("data-highlight", "")
+                    if (ShaderEditorController.grid === GRID_SIZE) {
+                        ShaderEditorController.grid = 1
+                        e.currentTarget.setAttribute("data-highlight", "")
 
-                } else {
-                    ShaderEditorController.grid = GRID_SIZE
-                    e.currentTarget.setAttribute("data-highlight", "-")
+                    } else {
+                        ShaderEditorController.grid = GRID_SIZE
+                        e.currentTarget.setAttribute("data-highlight", "-")
 
-                }
-            }}
+                    }
+                }}
         >
-            <Icon>grid_4x4</Icon>
+            <Icon styles="font-size: .9rem">grid_4x4</Icon>
             <ToolTip content={translate("GRID")}/>
         </button>
         <button
@@ -188,7 +187,7 @@
                     shell.openPath(newFile).catch()
                 }}
         >
-            <Icon>code</Icon>
+            <Icon styles="font-size: .9rem">code</Icon>
             <ToolTip content={translate("SOURCE")}/>
         </button>
     </div>

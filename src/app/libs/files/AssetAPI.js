@@ -19,6 +19,7 @@ export default class AssetAPI {
 
 
     static async updateAsset(registryID, fileData, previewImage) {
+        console.log(registryID, fileData)
         const res = await RegistryAPI.readRegistryFile(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)

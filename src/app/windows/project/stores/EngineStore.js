@@ -86,7 +86,6 @@ export default class EngineStore {
                 const {entities, uiElements} = data
 
                 const mapped = []
-                console.log(entities)
                 for (let i = 0; i < entities.length; i++) {
 
                     const entity = await Entity.parseEntityObject(entities[i])

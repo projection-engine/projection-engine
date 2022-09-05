@@ -19,7 +19,7 @@
     }
 </script>
 
-<Dropdown>
+<Dropdown asButton="true">
     <button slot="button" class="button">
         {translate("ADD")}
     </button>
@@ -55,7 +55,7 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        height: 23px;
+        height: 22px;
         border: none;
     }
 

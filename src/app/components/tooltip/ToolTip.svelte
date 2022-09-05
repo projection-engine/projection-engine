@@ -52,7 +52,7 @@
             portal.parentElement.removeEventListener("mouseenter", hover)
             portal.destroy()
         } catch (err) {
-            console.log(err)
+            console.error(err)
         }
     })
 </script>

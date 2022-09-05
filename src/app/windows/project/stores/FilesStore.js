@@ -36,7 +36,7 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try{
-            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FilesStore.ASSETS_PATH})
+            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FilesAPI.path}, false)
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         }

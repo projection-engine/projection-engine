@@ -39,14 +39,14 @@ export default class ShaderEditorController {
     }
 
     static copy(nodes) {
-        for(let i = 0; i < nodes.length; i++)
+        for (let i = 0; i < nodes.length; i++)
             ShaderEditorController.copied.set(nodes[i].id, ShaderEditorController.#serializeNode(nodes[i]))
     }
 
     static paste(updateNodes) {
         const newNodes = []
         ShaderEditorController.copied.forEach(d => {
-            const parsed= ShaderEditorController.parseNode(d)
+            const parsed = ShaderEditorController.parseNode(d)
             parsed.id = v4()
             newNodes.push(parsed)
         })
@@ -76,6 +76,7 @@ export default class ShaderEditorController {
     static async compile(nodes, links, isSave) {
         const parsedNodes = nodes.map(ShaderEditorController.#serializeNode)
         const compiled = await compiler(nodes.filter(n => !n.isComment), links)
+
         let preview
         if (isSave) {
             let material
@@ -87,6 +88,7 @@ export default class ShaderEditorController {
                     settings: compiled.settings
                 })
             })
+
             preview = PreviewSystem.execute(material)
         }
 
@@ -96,7 +98,9 @@ export default class ShaderEditorController {
     static async save(openFile, nodes, links) {
 
         const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
+        console.log(openFile, nodes)
         const {compiled, preview, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
+        console.log(compiled, preview, parsedNodes)
         AssetAPI.updateAsset(
             openFile.registryID,
             JSON.stringify({
@@ -106,8 +110,7 @@ export default class ShaderEditorController {
                 type: compiled.variant
             }),
             preview
-        )
-            .then(() => alert.pushAlert(translate("SAVED"), "success",))
+        ).then(() => alert.pushAlert(translate("SAVED"), "success",))
             .catch(() => alert.pushAlert(translate("ERROR"), "error"))
     }
 }

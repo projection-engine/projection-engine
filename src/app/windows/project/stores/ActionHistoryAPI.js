@@ -1,6 +1,4 @@
 import EngineStore from "./EngineStore";
-
-import Localization from "../../../libs/Localization";
 import {v4} from "uuid";
 import SettingsStore from "./SettingsStore";
 import UndoRedoAPI from "../../../libs/UndoRedoAPI";

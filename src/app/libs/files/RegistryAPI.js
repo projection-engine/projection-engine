@@ -1,6 +1,8 @@
 import {v4 as uuidv4, v4} from "uuid";
 import NodeFS from "../NodeFS";
 import FilesAPI from "./FilesAPI";
+import ROUTES from "../../../assets/ROUTES";
+import REG_PATH from "../../../assets/REG_PATH"
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
@@ -11,11 +13,11 @@ export default class RegistryAPI {
     static async readRegistry() {
         const promise = await new Promise(resolve => {
             const listenID = v4().toString()
-            ipcRenderer.once("read-registry-" + listenID, (ev, data) => {
+            ipcRenderer.once(ROUTES.READ_REGISTRY + listenID, (ev, data) => {
                 resolve(data)
             })
-            ipcRenderer.send("read-registry", {
-                pathName: FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry"),
+            ipcRenderer.send(ROUTES.READ_REGISTRY, {
+                pathName: FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH),
                 listenID
             })
         })
@@ -39,21 +41,21 @@ export default class RegistryAPI {
     static async createRegistryEntry(fID = uuidv4(), path) {
         const pathRe = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets")
         const p = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + path).replace(pathRe, "")
-        await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + fID + ".reg"), JSON.stringify({
+        await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH + FilesAPI.sep + fID + ".reg"), JSON.stringify({
             id: fID, path: p
         }))
     }
 
     static async readRegistryFile(id) {
         try {
-            return await FilesAPI.readFile(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry" + FilesAPI.sep + id + ".reg"), "json")
+            return await FilesAPI.readFile(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH + FilesAPI.sep + id + ".reg"), "json")
         } catch (e) {
             return null
         }
     }
 
     static async findRegistry(p) {
-        const [, res] = await NodeFS.readdir(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assetsRegistry"))
+        const [, res] = await NodeFS.readdir(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH))
         if (res) {
             const registryData = await Promise.all(res.map(data => RegistryAPI.readRegistryFile(data.replace(".reg", ""))))
             const parsedPath = pathRequire.resolve(p)

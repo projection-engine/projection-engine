@@ -44,7 +44,6 @@
                 saturation = hsv.s
                 colorValue = hsv.v
             } else if (Array.isArray(value)) {
-                console.log(value)
                 const hsv = rgb2hsv(value[0], value[1], value[2])
                 hue = hsv.h
                 saturation = hsv.s
@@ -123,7 +122,6 @@
 
         clearTimeout(timeout)
         setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 250)
-        console.log(hsv2Rgb(hue, saturation, colorValue))
         event.target.parentElement.style.setProperty('--hue', hue);
         hsl= {...hsl, h: parseFloat(event.target.value)}
     }

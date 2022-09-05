@@ -5,9 +5,7 @@
     import ProbeComponent from "../../../../../libs/engine/production/templates/ProbeComponent";
     import STATIC_TEXTURES from "../../../../../libs/engine/static/STATIC_TEXTURES";
     import EditorRenderer from "../../../../../libs/engine/editor/EditorRenderer";
-    import dispatchRendererEntities, {
-        ENTITY_ACTIONS
-    } from "../../../../../stores/templates/dispatch-renderer-entities";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../../stores/templates/dispatch-renderer-entities";
     import MeshComponent from "../../../../../libs/engine/production/templates/MeshComponent";
     import FALLBACK_MATERIAL from "../../../../../libs/engine/production/data/FALLBACK_MATERIAL";
     import Localization from "../../../../../../../libs/Localization";

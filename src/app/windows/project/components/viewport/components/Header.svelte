@@ -4,7 +4,6 @@
     import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
-    import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings

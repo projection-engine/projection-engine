@@ -1,5 +1,4 @@
 <script>
-    import handleDropFolder from "../utils/handle-drop-folder"
     import FilesAPI from "../../../../../libs/files/FilesAPI"
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
@@ -24,19 +23,6 @@
         <div
                 data-highlight={currentDirectory.id === FilesAPI.sep ? "-" : undefined}
                 class="folder"
-                on:dragover={e => {
-                        e.preventDefault()
-                        //e.target.classList.addhovered)
-                    }}
-                on:dragleave={e => {
-                        e.preventDefault()
-                        //e.target.classList.removehovered)
-                    }}
-                on:drop={e => {
-                        e.preventDefault()
-                        //e.target.classList.removehovered)
-                        handleDropFolder(e.dataTransfer.getData("text"), FilesAPI.sep, currentDirectory, setCurrentDirectory)
-                    }}
                 on:click={() => setCurrentDirectory({id: FilesAPI.sep})}
         >
             <Icon styles={{fontSize: "1.1rem"}}>arrow_upward</Icon>
@@ -46,19 +32,6 @@
             <div
                     data-highlight={b.id === currentDirectory.id ? "-" : undefined}
                     class="folder"
-                    on:dragover={e => {
-                            e.preventDefault()
-                           // e.target.classList.addhovered)
-                        }}
-                    on:dragleave={e => {
-                            e.preventDefault()
-                            //e.target.classList.removehovered)
-                        }}
-                    on:drop={e => {
-                            e.preventDefault()
-                            //e.target.classList.removehovered)
-                            handleDropFolder(e.dataTransfer.getData("text"), b.id, currentDirectory, setCurrentDirectory)
-                        }}
                     on:click={() => setCurrentDirectory(b)}
             >
                 <Icon styles="color: var(--folder-color)">
@@ -81,20 +54,7 @@
         {#each bookmarks as b, i}
             <div
                     class="folder"
-                    on:dragover={e => {
-                            e.preventDefault()
-                            // e.target.classList.addhovered)
-                        }}
-                    on:dragleave={e => {
-                            e.preventDefault()
-                            // e.target.classList.removehovered)
-                        }}
-                    on:drop={e => {
-                            e.preventDefault()
-                            // e.target.classList.removehovered)
-                            handleDropFolder(e.dataTransfer.getData("text"), b.id, setCurrentDirectory)
-                        }}
-                    on:click={() => setCurrentDirectory({...b, id: b.path})}
+                    on:click={() => setCurrentDirectory({id: b.path})}
             >
 
                 <Icon styles="color: var(--folder-color)">

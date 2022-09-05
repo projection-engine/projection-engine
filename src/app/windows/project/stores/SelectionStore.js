@@ -93,7 +93,6 @@ export default class SelectionStore {
     }
 
     static set lockedEntity(data) {
-        console.log(data)
         SelectionStore.updateStore({...SelectionStore.data, lockedEntity: data, TARGET: TYPES.ENGINE})
     }
 }

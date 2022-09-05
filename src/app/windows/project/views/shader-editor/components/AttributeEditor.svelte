@@ -12,13 +12,6 @@
     export let translate
     let selectedNode
     $: {
-        console.log({
-            selected,
-            nodes,
-            updateNode,
-            submitNodeVariable,
-            translate
-        })
         const index = nodes.findIndex(n => (selected ? n.id === selected : n instanceof Material))
         selectedNode = nodes[index]
     }
