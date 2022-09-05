@@ -14,10 +14,11 @@
     export let selected = undefined
     export let lockedEntity = undefined
     export let setLockedEntity = undefined
+    export let surfaceSelected
 
     let ref
     let active = true
-    let isLockedEntityAChild
+    let hiddenActiveChildren
 
     $: {
         if (nodeRef && ref) {
@@ -56,21 +57,8 @@
     }
 
     $: {
-        isLockedEntityAChild = false
-        if (lockedEntity && nodeRef && !nodeRef.parent) {
-            const entity = RendererController.entitiesMap.get(lockedEntity)
-            if (entity.parent) {
-                let parent = entity.parent
-                while (parent) {
-                    if (parent === nodeRef) {
-                        isLockedEntityAChild = true
-                        parent = undefined
-                    }
-
-                    parent = parent?.parent
-                }
-            }
-        }
+        if(nodeRef && !nodeRef.parent)
+            hiddenActiveChildren = surfaceSelected[nodeRef.id]
     }
 </script>
 
@@ -98,7 +86,7 @@
             {:else}
                 <div class="button-small hierarchy-branch"></div>
             {/if}
-            <DraggableEntity setOpen={setOpen} open={open} node={nodeRef} isLockedEntityAChild={isLockedEntityAChild} lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
+            <DraggableEntity setOpen={setOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren} lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
             <button class="button-small hierarchy-branch" on:click={onHide}>
                 <Icon styles="font-size: .8rem">
                     {#if active}

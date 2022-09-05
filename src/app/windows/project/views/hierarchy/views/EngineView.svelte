@@ -12,6 +12,7 @@
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
+    import RendererController from "../../../libs/engine/production/controllers/RendererController";
 
     export let ID
     export let translate
@@ -36,11 +37,49 @@
     let ref
     let selected = []
     let lockedEntity
+    let surfaceSelected = {}
+    const findSurface = (e) => {
+        const entity = RendererController.entitiesMap.get(e)
+        let surface
+        if (entity.parent) {
+            surface = []
+            let parent = entity.parent
+            while (parent) {
+                if (!parent.parent) {
+                    surface[0] = parent.id
+                    surface[1] = e
+                }
+                parent = parent?.parent
+            }
+        }
+        return surface
+    }
+    $: {
+        const surface = {}
+        if (lockedEntity) {
+            const found = findSurface(lockedEntity)
+            if (found) {
+                if (!surface[found[0]])
+                    surface[found[0]] = []
+                surface[found[0]].push(found[1])
+            }
+            for (let i = 0; i < selected.length; i++) {
+                if (selected[i] === lockedEntity)
+                    continue
+                const found = findSurface(selected[i])
+                if (!found)
+                    continue
+                if (!surface[found[0]])
+                    surface[found[0]] = []
+                surface[found[0]].push(found[1])
+            }
+        }
+        surfaceSelected = surface
+    }
     const unsubscribeSelection = SelectionStore.getStore(() => {
         selected = SelectionStore.engineSelected
         lockedEntity = SelectionStore.lockedEntity
     })
-    $: console.log(selected)
 
     $: {
         if (engine.changeID !== lastChangeID) {
@@ -141,6 +180,7 @@
     {#each toRender as _, i}
         {#if i < maxDepth && toRender[i + offset]}
             <Branch
+                    surfaceSelected={surfaceSelected}
                     nodeRef={toRender[i + offset].node}
                     depth={toRender[i + offset].depth}
                     selected={selected}

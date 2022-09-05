@@ -15,7 +15,7 @@
     export let node
     export let lockedEntity
     export let setLockedEntity
-    export let isLockedEntityAChild
+    export let hiddenActiveChildren
     export let setOpen
     export let open
 
@@ -40,7 +40,7 @@
 
                     const ID = v4()
                     EngineStore.updateStore({...EngineStore.engine, changeID: ID})
-                } else if(event.shiftKey) {
+                } else if (event.shiftKey) {
                     const clone = entityDragged.clone()
                     clone.parent = node
                     node.children.push(clone)
@@ -67,26 +67,48 @@
         <Icon>{icon}</Icon>
     </button>
     {newName}
-    {#if isLockedEntityAChild}
-        <button
-            data-locked={"-"}
-            class="buttonIcon hierarchy-branch"
-            on:click={() => {
-                const newOpen = {...open}
-                let current = RendererController.entitiesMap.get(lockedEntity)
-                while(current){
-                    newOpen[current.id] = true
-                    current = current?.parent
-                }
-                SelectionStore.engineSelected = [lockedEntity]
-                setOpen(newOpen)
-            }}
-        >
-            <Icon styles="font-size: .9rem">lock</Icon>
-            <ToolTip>
-                {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
-            </ToolTip>
-        </button>
-    {/if}
 
+    {#if hiddenActiveChildren != null}
+        <div class="children">
+            {#each hiddenActiveChildren as entity}
+                {#if entity === lockedEntity}
+                    <button
+                            data-locked={"-"}
+                            class="buttonIcon hierarchy-branch"
+                            on:click={() => {
+                            const newOpen = {...open}
+                            let current = RendererController.entitiesMap.get(entity)
+                            while(current){
+                                newOpen[current.id] = true
+                                current = current?.parent
+                            }
+                            SelectionStore.engineSelected = [entity]
+                            setOpen(newOpen)
+                        }}
+                    >
+                        <Icon styles="font-size: .9rem">lock</Icon>
+                        <ToolTip>
+                            {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
+                        </ToolTip>
+                    </button>
+                {:else}
+                    <div class="dot"></div>
+                {/if}
+            {/each}
+        </div>
+    {/if}
 </div>
+
+<style>
+    .dot {
+        width: 5px;
+        height: 5px;
+        background: var(--pj-accent-color);
+        border-radius: 50%;
+    }
+    .children{
+        display: flex;
+        gap: 3px;
+        align-items: center;
+    }
+</style>
