@@ -193,18 +193,15 @@
     </div>
 </Header>
 <div style={hidden ? "display: none": undefined} class="wrapper" bind:this={ref}>
-    {#if !hidden}
-        <Editor
-                translate={translate}
-                isOpen={openFile.registryID !== undefined}
-                selected={selected}
-                nodes={nodes}
-                setNodes={v => nodes = v}
-                links={links}
-                setLinks={v => links = v}
-        />
-
-    {/if}
+    <Editor
+            translate={translate}
+            isOpen={openFile.registryID !== undefined}
+            selected={selected}
+            nodes={nodes}
+            setNodes={v => nodes = v}
+            links={links}
+            setLinks={v => links = v}
+    />
 </div>
 
 <style>

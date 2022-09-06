@@ -43,8 +43,8 @@
         style={`
             flex-direction: ${orientation === "horizontal" ? "row" : undefined};
             ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
-            ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
-            ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "30px" : "unset")};
+            ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "28px" : "unset")};
+            ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "28px" : "unset")};
         `}
 >
     {#each tabs as view, vI}
@@ -52,7 +52,7 @@
                 hidden={hidden}
                 instance={view}
                 styles={`
-                    ${orientationName}: ${hidden ? "30px" : "inherit"};
+                    ${orientationName}: ${hidden ? "28px" : "inherit"};
                 `}
                 switchView={(newView) => {
                         if (!newView) {

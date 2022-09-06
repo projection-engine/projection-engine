@@ -2,6 +2,7 @@ import KEYS from "../../../libs/engine/production/data/KEYS";
 import ShaderEditorController from "../ShaderEditorController";
 import SelectionStore from "../../../stores/SelectionStore";
 import addComment from "./add-comment";
+import Material from "../templates/nodes/Material";
 
 export default function getShortcuts(openFile, nodes, setNodes, links, setLinks) {
     return [
@@ -38,7 +39,7 @@ export default function getShortcuts(openFile, nodes, setNodes, links, setLinks)
                 const newNodes = [], newLinks = [], map = new Map()
                 for (let i = 0; i < nodes.length; i++) {
                     const current = nodes[i]
-                    if (!SelectionStore.shaderEditorSelected.get(current.id)) {
+                    if (!SelectionStore.map.get(current.id) || nodes[i] instanceof Material) {
                         newNodes.push(current)
                         map.set(current.id, true)
                     }

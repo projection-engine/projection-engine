@@ -88,11 +88,11 @@
         </Dropdown>
     {/if}
 </Header>
-{#if !hidden}
+
     <div
             data-self={"-"}
             class="wrapper"
-            style={isEmpty ? "background: transparent" : undefined}
+            style={hidden ? "display: none" :(isEmpty ? "background: transparent" : undefined)}
             id={ID}
     >
         {#if viewTab === 0}
@@ -101,7 +101,6 @@
             <UIHierarchy setIsEmpty={v => isEmpty = v} searchString={search.toLowerCase()} translate={translate} ID={ID}/>
         {/if}
     </div>
-{/if}
 
 
 <style>

@@ -21,7 +21,7 @@ const STYLES = {
     textAlign: "center"
 }
 export default function dragDrop(draggable) {
-    let isDragging, mouseEvent, bBox, dragImageElement, onDragStartEvent, onDragOverEvent, draggableElement,
+    let isDragging, mouseEvent, bBox, dragImageElement, noTargetTransformation, onDragStartEvent, onDragOverEvent, draggableElement,
         disabled, onDragEndEvent
     const findElements = (event) => {
         const elements = document.elementsFromPoint(event.clientX, event.clientY)
@@ -54,6 +54,7 @@ export default function dragDrop(draggable) {
         switch (event.type) {
             case "mousemove":
                 if (!isDragging && (Math.abs(initialClick.x - event.clientX) >= 10 || Math.abs(initialClick.y - event.clientY) >= 10)) {
+                    if(!noTargetTransformation)
                     scale(10)
                     isDragging = true
                     Drag.dragData = onDragStartEvent(mouseEvent)
@@ -150,9 +151,9 @@ export default function dragDrop(draggable) {
 
     }
     return {
-        onMount: ({targetElement, onDragStart, onDrop, onMouseMove, dragImage, onDragOver, onDragEnd}) => {
+        onMount: ({noTransformation, targetElement, onDragStart, onDrop, onMouseMove, dragImage, onDragOver, onDragEnd}) => {
             draggableElement = targetElement
-
+            noTargetTransformation= noTransformation
             dragImageElement = createElement(dragImage ? dragImage : "")
 
             onDragOverEvent = onDragOver

@@ -20,7 +20,7 @@
 
     <Dropdown hideArrow={true} asButton={true} buttonStyles="max-width: 22px">
         <button slot="button"  class="title">
-            <Icon style="font-size: .9rem">
+            <Icon styles="font-size: .9rem">
                 {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
                     public
                 {:else}

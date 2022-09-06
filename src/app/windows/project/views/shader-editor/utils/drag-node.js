@@ -32,7 +32,7 @@ function listenTo(event, target, parent) {
     ]
 }
 
-export default function dragNode(event, target, parent) {
+export default function dragNode(event, parent) {
     let targets = SelectionStore.shaderEditorSelected.map(v => document.getElementById(v)?.parentElement)
     const callbacks = targets.map(t => listenTo(event, t, parent))
 

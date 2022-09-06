@@ -58,7 +58,7 @@
 </script>
 
 
-<div class="container" bind:this={wrapper}>
+<div data-tooltip="-" bind:this={wrapper}>
     {#if content}
         {content}
     {:else}
@@ -67,37 +67,3 @@
 </div>
 
 
-<style>
-    .container {
-        user-select: none;
-        height: auto;
-        min-height: 15px;
-        width: fit-content;
-        max-width: 300px;
-        opacity: 0;
-        animation: show 150ms ease forwards;
-        animation-delay: 250ms;
-        box-shadow: rgb(0 0 0 / 20%) 2px 2px 2px 2px;
-        position: fixed;
-        z-index: 9999;
-
-        background: var(--pj-background-quaternary);
-        border: var(--pj-border-primary) 1px solid;
-        padding: 4px 8px;
-        border-radius: 5px;
-        color: white !important;
-        font-weight: 550;
-
-        font-size: .8rem;
-    }
-
-    @keyframes show {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-</style>

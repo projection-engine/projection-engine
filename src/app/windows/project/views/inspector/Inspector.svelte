@@ -94,50 +94,42 @@
         <div data-overflow="-">{entity.name}</div>
     {/if}
 </Header>
-{#if !hidden}
-    <div class="content">
-        {#if entity != null}
-            <div class="wrapper-content">
-                {#if target === SelectionStore.TYPES.ENGINE}
-                    <EntityElement entity={entity} translate={translate}/>
-                    {#if !(entity instanceof Entity)}
-                        <UIElement
-                                component={entity}
-                                translate={translate}
-                                store={ui}
-                        />
-                    {/if}
-                    <ComponentLayout
-                            key="TRANSFORMATION"
-                            translate={translate}
+<div class="content" style={hidden ? "display: none" : undefined}>
+    {#if entity != null}
+        <div class="wrapper-content">
+            {#if target === SelectionStore.TYPES.ENGINE}
+                <EntityElement entity={entity} translate={translate}/>
+                {#if !(entity instanceof Entity)}
+                    <UIElement
                             component={entity}
-                            submit={submitTransformationChange}
-                    />
-                    <Components
                             translate={translate}
-                            entity={entity}
+                            store={ui}
                     />
-                    {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
-                    <ContentBrowserItem item={entity}/>
                 {/if}
-            </div>
-        {:else}
-            <div data-empty="-">
-                <Icon styles="font-size: 75px">category</Icon>
-                {translate("TITLE")}
-            </div>
-        {/if}
-    </div>
-{/if}
+                <ComponentLayout
+                        key="TRANSFORMATION"
+                        translate={translate}
+                        component={entity}
+                        submit={submitTransformationChange}
+                />
+                <Components
+                        translate={translate}
+                        entity={entity}
+                />
+            {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
+                <ContentBrowserItem item={entity}/>
+            {/if}
+        </div>
+    {:else}
+        <div data-empty="-">
+            <Icon styles="font-size: 75px">category</Icon>
+            {translate("TITLE")}
+        </div>
+    {/if}
+</div>
 
 
 <style>
-
-    .toggle-button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
 
     .content {
         position: relative;

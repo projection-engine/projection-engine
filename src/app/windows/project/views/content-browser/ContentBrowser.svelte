@@ -71,7 +71,7 @@
     />
 </Header>
 
-<div class="wrapper">
+<div class="wrapper" style={hidden ? "display: none" : undefined}>
     {#if view.sideBar}
         <SideBar
                 items={store.items}

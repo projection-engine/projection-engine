@@ -8,12 +8,14 @@ import getNewInstance from "./utils/get-new-instance";
 import TextureSample from "./templates/nodes/TextureSample";
 import FilesStore from "../../stores/FilesStore";
 import {v4} from "uuid";
+import GPU from "../../libs/engine/production/controllers/GPU";
 
 export default class ShaderEditorController {
     static scale = 1
     static grid = 1
     static copied = new Map()
 
+    static connectionOnDrag
     static parseNode(node) {
         if (!node)
             return
@@ -39,6 +41,7 @@ export default class ShaderEditorController {
     }
 
     static copy(nodes) {
+        ShaderEditorController.copied.clear()
         for (let i = 0; i < nodes.length; i++)
             ShaderEditorController.copied.set(nodes[i].id, ShaderEditorController.#serializeNode(nodes[i]))
     }
@@ -46,9 +49,7 @@ export default class ShaderEditorController {
     static paste(updateNodes) {
         const newNodes = []
         ShaderEditorController.copied.forEach(d => {
-            const parsed = ShaderEditorController.parseNode(d)
-            parsed.id = v4()
-            newNodes.push(parsed)
+            newNodes.push(ShaderEditorController.parseNode({...d, id: v4()}))
         })
         updateNodes(newNodes)
     }
@@ -73,22 +74,26 @@ export default class ShaderEditorController {
         }
     }
 
-    static async compile(nodes, links, isSave) {
+    static async compile(nodes, links, isSave, id) {
         const parsedNodes = nodes.map(ShaderEditorController.#serializeNode)
         const compiled = await compiler(nodes.filter(n => !n.isComment), links)
 
         let preview
         if (isSave) {
             let material
-            await new Promise(resolve => {
-                material = new MaterialInstance({
-                    vertex: compiled.vertexShader,
-                    fragment: compiled.shader,
-                    onCompiled: () => resolve(),
-                    settings: compiled.settings
+            if(GPU.materials.get(id)) {
+                material = GPU.materials.get(id)
+                await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
+            }
+            else
+                await new Promise(resolve => {
+                    material = new MaterialInstance({
+                        vertex: compiled.vertexShader,
+                        fragment: compiled.shader,
+                        onCompiled: () => resolve(),
+                        settings: compiled.settings
+                    })
                 })
-            })
-
             preview = PreviewSystem.execute(material)
         }
 
@@ -98,9 +103,9 @@ export default class ShaderEditorController {
     static async save(openFile, nodes, links) {
 
         const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
-        console.log(openFile, nodes)
+
         const {compiled, preview, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
-        console.log(compiled, preview, parsedNodes)
+
         AssetAPI.updateAsset(
             openFile.registryID,
             JSON.stringify({

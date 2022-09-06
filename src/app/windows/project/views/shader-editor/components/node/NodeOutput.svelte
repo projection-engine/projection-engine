@@ -3,9 +3,9 @@
     import "../../css/NodeIO.css"
     import dragDrop from "../../../../../../components/drag-drop";
     import {onDestroy, onMount} from "svelte";
+    import ShaderEditorController from "../../ShaderEditorController";
 
     export let handleLinkDrag
-    export let onDragEnd
     export let data
     export let outputLinks
     export let inputLinks
@@ -22,24 +22,13 @@
         return aType
     }
 
-    const draggable = dragDrop(true)
-    onMount(() => {
-        draggable.onMount({
-            targetElement: document.getElementById(node.id + data.key),
-            onMouseMove: handleLinkDrag,
-            onDragStart: () => {
-                const nType = data.type === DATA_TYPES.UNDEFINED ? (inputLinks.length === 1 ? inputLinks[0]?.sourceType : getPredominant(inputLinks)) : undefined
-                return {
-                    ...data,
-                    type:data.type === DATA_TYPES.UNDEFINED  ?  nType : data.type,
-                    nodeID: node.id
-                }
-            },
-            onDragEnd
-        })
-    })
-    $: draggable.disabled = (data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0))
-    onDestroy(() => draggable.onDestroy())
+    $:  disabled = (data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0))
+    const endDrag = e => {
+        e.preventDefault()
+        if(ShaderEditorController.connectionOnDrag)
+            document.getElementById(ShaderEditorController.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
+        ShaderEditorController.connectionOnDrag  = undefined
+    }
 </script>
 <div
         data-link={link ? (link.target + "-" + link.source) : null}
@@ -54,9 +43,23 @@
         {data.label}
     </div>
     <span
+            draggable={!disabled ? "true" : undefined}
+            on:dragstart={e => {
+                console.trace("HERE")
+                const nType = data.type === DATA_TYPES.UNDEFINED ? (inputLinks.length === 1 ? inputLinks[0]?.sourceType : getPredominant(inputLinks)) : undefined
+                ShaderEditorController.connectionOnDrag = {
+                    ...data,
+                    type:data.type === DATA_TYPES.UNDEFINED  ?  nType : data.type,
+                    nodeID: node.id
+                }
+            }}
+            on:dragend={endDrag}
+            on:drag={e => {
+                handleLinkDrag(e)
+            }}
+            on:drop={endDrag}
             id={node.id + data.key}
             class="connection node-io"
-
 
             data-dtype={"output"}
             data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}

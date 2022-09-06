@@ -8,6 +8,9 @@
     import Material from "../../templates/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorController from "../../ShaderEditorController";
+    import {v4} from "uuid";
+    import {onDestroy, onMount} from "svelte";
+    import InputEventsAPI from "../../../../libs/engine/production/libs/InputEventsAPI";
 
     export let links
     export let node
@@ -15,8 +18,7 @@
     export let selected
     export let setSelected
     export let submitNodeVariable
-    export let canvas
-    let pathRef
+    export let internalID
     let ref
 
     $: isSelected = selected.indexOf(node.id) > -1
@@ -25,7 +27,7 @@
     let inputLinks
     $: {
         const out = [], inp = []
-        for(let i  =0; i < links.length; i++){
+        for (let i = 0; i < links.length; i++) {
             const current = links[i]
             if (current.source && current.source.includes(node.id))
                 out.push(current)
@@ -37,36 +39,41 @@
         inputLinks = inp
     }
 
-
-    const handleLinkDrag = (event, draggableElement) => {
+    let target, canvas
+    const handleLinkDrag = (event) => {
+        const draggableElement = event.currentTarget
+        console.log(event)
+        if (!target) {
+            target = document.getElementById(node.id + "-path")
+            canvas = document.getElementById(internalID)
+        }
         const scale = ShaderEditorController.scale
-        const parent = ref?.parentNode.parentNode
         const bBox = draggableElement.getBoundingClientRect()
-        let parentBBox = parent.getBoundingClientRect()
+        let parentBBox = canvas.getBoundingClientRect()
         const bounding = {
-            x: parent.scrollLeft - parentBBox.left,
-            y: parent.scrollTop - parentBBox.top
+            x: canvas.scrollLeft - parentBBox.left,
+            y: canvas.scrollTop - parentBBox.top
         }
 
         const curve = getBezierCurve(
             {
                 x: (bBox.x + bounding.x + 7.5) / scale,
-                y: (bBox.y + bounding.y + 7.5  ) / scale
+                y: (bBox.y + bounding.y + 7.5) / scale
             },
             {
                 x1: (event.clientX + bounding.x + 7.5) / scale,
-                y1: (event.clientY + bounding.y + 7.5 ) / scale
+                y1: (event.clientY + bounding.y + 7.5) / scale
             })
-
-        pathRef?.setAttribute("d", curve)
+        target.setAttribute("d", curve)
     }
+
 
     const handleDragStart = (event) => {
         if (event.button !== 0)
             return
         if (!SelectionStore.map.get(node.id))
             setSelected(node.id, event.ctrlKey)
-        dragNode(event, ref, ref.parentNode.parentNode)
+        dragNode(event, document.getElementById(internalID))
     }
 
 
@@ -85,7 +92,7 @@
         }
 
         if (ref) {
-            ref.firstChild.setAttribute("height", `0`)
+            ref.firstChild.setAttribute("height", "0")
             setTimeout(() => {
                 const h = ref.firstChild.scrollHeight + 4
                 ref.firstChild.setAttribute("height", `${h >= 35 ? h : 55}`)
@@ -93,69 +100,71 @@
             }, 0)
         }
     }
+    $: isMat = node instanceof Material
 </script>
 
-<g>
-    <g
-            bind:this={ref}
-            data-ismaterial="{node instanceof Material}"
-            transform={`translate(${node.x} ${node.y})`}
+
+<g
+        bind:this={ref}
+        data-ismaterial={isMat ? "true" : undefined}
+        transform={`translate(${node.x} ${node.y})`}
+>
+    <foreignObject
+            data-node={node.canBeDeleted ? node.id : undefined}
+            id={node.id}
+            class="wrapper"
+            style={isSelected ? "outline: yellow 2px solid" : undefined}
     >
-        <foreignObject
-                data-node={node.canBeDeleted ? node.id : undefined}
-                id={node.id}
-                class="wrapper"
-                style={isSelected ? "outline: yellow 2px solid" : undefined}
+        <div
+                class="label"
+                id={node.id + "-node"}
+                on:mousedown={handleDragStart}
         >
+            {node.name}
+        </div>
+        <div class="content" on:click={event => setSelected(node.id, event.ctrlKey)}>
             <div
-                    class="label"
-                    id={node.id + "-node"}
-                    on:mousedown={handleDragStart}
-            >
-                {node.name}
+                    class="column"
+                    style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
+                {#each node.inputs as a, i}
+                    <NodeInput
+                            handleLink={handleLink}
+                            attribute={a}
+                            node={node}
+                            inputLinks={inputLinks}
+                            submitNodeVariable={submitNodeVariable}
+                    />
+                {/each}
             </div>
-            <div class="content" on:click={event => setSelected(node.id, event.ctrlKey)}>
+            {#if node.output.length > 0}
                 <div
                         class="column"
-                        style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
-                    {#each node.inputs as a, i}
-                        <NodeInput
-                                handleLink={handleLink}
-                                attribute={a}
+                        style="justify-content: flex-end; max-width:75%"
+                >
+                    {#each node.output as a, i}
+                        <NodeOutput
+
+                                data={a}
                                 node={node}
+                                handleLinkDrag={handleLinkDrag}
                                 inputLinks={inputLinks}
-                                submitNodeVariable={submitNodeVariable}
+                                outputLinks={outputLinks}
                         />
                     {/each}
                 </div>
-                {#if node.output.length > 0}
-                    <div
-                            class="column"
-                            style="justify-content: flex-end; max-width:75%"
-                    >
-                        {#each node.output as a, i}
-                            <NodeOutput
-                                    onDragEnd={() => pathRef.setAttribute("d", undefined)}
-                                    data={a}
-                                    node={node}
-                                    handleLinkDrag={handleLinkDrag}
-                                    inputLinks={inputLinks}
-                                    outputLinks={outputLinks}
-                            />
-                        {/each}
-                    </div>
-                {/if}
-            </div>
-        </foreignObject>
-    </g>
-    <path
-            bind:this={pathRef}
-            fill={"none"}
-            stroke={"var(--pj-accent-color)"}
-            stroke-width={2}
-            stroke-dasharray={"3,3"}
-            d=""></path>
+            {/if}
+        </div>
+    </foreignObject>
 </g>
+<path
+        id={node.id + "-path"}
+        fill={"none"}
+        stroke={"var(--pj-accent-color)"}
+        stroke-width={2}
+        stroke-dasharray={"3,3"}
+        d=""
+></path>
+
 
 <style>
     .wrapper {

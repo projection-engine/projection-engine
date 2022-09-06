@@ -120,7 +120,7 @@
     </div>
 </Header>
 
-<div class="wrapper" bind:this={ref}>
+<div class="wrapper" bind:this={ref} style={hidden ? "display: none" : undefined}>
     <InfiniteScroller
             setMaxDepth={v => maxDepth = v}
             setOffset={v => offset = v}

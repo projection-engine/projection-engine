@@ -5,6 +5,7 @@
     import "../../css/NodeIO.css"
     import dragDrop from "../../../../../../components/drag-drop";
     import {onDestroy, onMount} from "svelte";
+    import ShaderEditorController from "../../ShaderEditorController";
 
     export let handleLink
     export let attribute
@@ -12,29 +13,18 @@
 
     export let node
     export let submitNodeVariable
-
-    const draggable = dragDrop(false)
-    onMount(() => {
-        if (attribute.accept)
-            draggable.onMount({
-                targetElement: document.getElementById(node.id + attribute.key),
-                onDragOver: (data) => {
-                    if (attribute.accept.includes(data.type) || attribute.accept.includes(DATA_TYPES.ANY))
-                        return "<span data-icon='-' style='font-size: 20px'>check</span>"
-                    return "<span data-icon='-' style='font-size: 20px'>clear</span>"
-                },
-                onDrop: (data) => {
-                    console.trace(data)
-                    if (!attribute.disabled)
-                        linkNodes(data, attribute, node, handleLink)
-                }
-            })
-    })
-    onDestroy(() => {
-        if (attribute.accept) draggable.onDestroy()
-    })
     $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key) : undefined
-
+    const onDrop = e => {
+        if (!attribute.accept)
+            return
+        e.preventDefault()
+        if (ShaderEditorController.connectionOnDrag) {
+            document.getElementById(ShaderEditorController.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
+            if (!attribute.disabled)
+                linkNodes(ShaderEditorController.connectionOnDrag, attribute, node, handleLink)
+            ShaderEditorController.connectionOnDrag = undefined
+        }
+    }
 </script>
 <div
         data-link={link ? (link.target + "-" + link.source) : null}
@@ -52,6 +42,7 @@
                 data-dtype={"input"}
                 data-disabled={`${attribute.disabled || attribute.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
                 data-highlight={link ? "-" : undefined}
+                on:drop={onDrop}
                 style="border-radius: 3px"
 
         ></span>

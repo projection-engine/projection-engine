@@ -5,9 +5,11 @@
     color: var(--pj-color-secondary);
     display: flex;
     align-items: center;
+
     padding: 4px 0 4px 4px;
     gap: 4px;
     height: 27px;
+    overflow: hidden;
 
     --direction: 10px;
 }

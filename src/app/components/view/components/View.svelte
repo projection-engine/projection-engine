@@ -33,7 +33,7 @@
 </script>
 
 {#if component}
-    <div class={"view"} style={styles}>
+    <div class="view" style={styles}>
         <svelte:component this={component} {...{hidden, switchView, extendView}}></svelte:component>
     </div>
 {/if}

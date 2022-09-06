@@ -81,7 +81,7 @@
 <Input
         hasBorder={true}
         width={"250px"}
-        height="20px"
+        height="22px"
         placeholder={translate("SEARCH")}
         searchString={searchString}
         setSearchString={setSearchString}

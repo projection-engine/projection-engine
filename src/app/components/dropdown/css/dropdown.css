@@ -26,9 +26,9 @@
     gap: 4px;
 }
 .highlight.dropdown{
+
     background: var(--pj-accent-color) !important;
     color: white !important;
-    transition: 150ms linear;
 
     border-radius: 3px;
     height: fit-content;

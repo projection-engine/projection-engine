@@ -160,7 +160,7 @@
             {#each nodes as node}
                 {#if !node.isComment }
                     <Node
-                            canvas={ref}
+                            internalID={internalID}
                             links={resolvedLinks}
                             setSelected={setSelected}
                             selected={selected}
