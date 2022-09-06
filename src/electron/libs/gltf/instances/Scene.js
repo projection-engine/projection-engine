@@ -1,6 +1,6 @@
 const Node = require("./Node")
 const {v4} = require("uuid")
-const FILE_TYPES = require("../../../../assets/FILE_TYPES")
+const FILE_TYPES = require("../../../../data/FILE_TYPES")
 const createDirectory = require("../../../utils/gltf/create-directory")
 const path = require("path")
 const writeData = require("../../../utils/gltf/write-data");

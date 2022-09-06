@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import ENGINE from "../data/misc/ENGINE";
+import ENGINE from "../data/ENGINE";
 import EngineStore from "./EngineStore";
 
 const TYPES = {

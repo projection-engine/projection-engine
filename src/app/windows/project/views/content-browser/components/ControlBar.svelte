@@ -8,7 +8,7 @@
 
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
-    import FILE_TYPES from "../../../../../../assets/FILE_TYPES"
+    import FILE_TYPES from "../../../../../../data/FILE_TYPES"
 
     export let translate
     export let view

@@ -1,8 +1,8 @@
 import {v4 as uuidv4, v4} from "uuid";
 import NodeFS from "../NodeFS";
 import FilesAPI from "./FilesAPI";
-import ROUTES from "../../../assets/ROUTES";
-import REG_PATH from "../../../assets/REG_PATH"
+import ROUTES from "../../../data/ROUTES";
+import REG_PATH from "../../../data/REG_PATH"
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")

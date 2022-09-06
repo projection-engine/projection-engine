@@ -1,17 +1,17 @@
 <script>
 
-    import Input from "../../../../../components/input/Input.svelte";
-    import Icon from "../../../../../components/icon/Icon.svelte";
-    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import FilesStore from "../../../stores/FilesStore";
+    import Input from "../../../../../../components/input/Input.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy} from "svelte";
-    import getNativeComponents from "../utils/get-native-components";
-    import componentConstructor from "../../../libs/component-constructor";
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import RendererController from "../../../libs/engine/production/controllers/RendererController";
-    import Entity from "../../../libs/engine/production/templates/Entity";
-    import EntityNameController from "../../../stores/templates/EntityNameController";
+    import getNativeComponents from "../../utils/get-native-components";
+    import componentConstructor from "../../../../libs/component-constructor";
+    import Accordion from "../../../../../../components/accordion/Accordion.svelte";
+    import RendererController from "../../../../libs/engine/production/controllers/RendererController";
+    import Entity from "../../../../libs/engine/production/templates/Entity";
+    import EntityNameController from "../../../../stores/templates/EntityNameController";
 
     const nativeComponents = getNativeComponents()
 

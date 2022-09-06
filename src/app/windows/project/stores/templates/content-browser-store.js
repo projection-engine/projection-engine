@@ -4,7 +4,7 @@ export const contentBrowserStore = writable({
     bookmarks: [],
     isLoading: true,
     items: [],
-    images: [],
+    textures: [],
     meshes: [],
     levels: [],
     stylesheets: [],

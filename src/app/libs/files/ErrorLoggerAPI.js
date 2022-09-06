@@ -1,5 +1,5 @@
 import FilesAPI from "./FilesAPI";
-import ERROR_LOG_FILE from "../../../assets/ERROR_LOG_FILE";
+import ERROR_LOG_FILE from "../../../data/ERROR_LOG_FILE";
 
 export default class ErrorLoggerAPI{
     static get path(){

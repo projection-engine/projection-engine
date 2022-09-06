@@ -26,11 +26,7 @@ export default async function handleRename(item, newName, currentDirectory, setC
                 if (!(await NodeFS.exists(targetPath))) {
                     await ContentBrowserAPI.rename(FilesStore.ASSETS_PATH + item.id, targetPath)
                     FilesStore.refreshFiles().catch()
-                } else
-                    alert.pushAlert(
-                        "Item already exists.",
-                        "error"
-                    )
+                }
             }
             setCurrentItem()
         }

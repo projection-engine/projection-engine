@@ -5,13 +5,9 @@ import NODE_TYPES from "../../data/NODE_TYPES"
 import FilesAPI from "../../../../../../libs/files/FilesAPI"
 import RegistryAPI from "../../../../../../libs/files/RegistryAPI";
 import GPU from "../../../../libs/engine/production/controllers/GPU";
+import FilesStore from "../../../../stores/FilesStore";
 
 
-export const TEXTURE_TYPES = {
-    RGB: "RGB",
-    RGBA: "RGBA",
-    SRGB8_ALPHA8: "SRGB8_ALPHA8"
-}
 export default class TextureSample extends Node {
     uniform = true
     _texture = {}
@@ -30,65 +26,11 @@ export default class TextureSample extends Node {
         })
     }
 
-    format = {
-        format: TEXTURE_TYPES.RGB,
-        internalFormat: TEXTURE_TYPES.RGB,
-
-        label: "RGB"
-    }
-
-    get ft() {
-        return this.format.label
-    }
-
-    set ft(data) {
-        switch (data) {
-        case "RGB":
-            this.format = {
-                format: TEXTURE_TYPES.RGB,
-                internalFormat: TEXTURE_TYPES.RGB,
-                label: data
-            }
-            break
-        case "RGBA":
-            this.format = {
-                label: data,
-                format: TEXTURE_TYPES.RGBA,
-                internalFormat: TEXTURE_TYPES.RGBA
-            }
-            break
-        case "SRGBA":
-            this.format = {
-                label: data,
-                format: TEXTURE_TYPES.RGBA,
-                internalFormat: TEXTURE_TYPES.SRGB8_ALPHA8
-            }
-            break
-        default:
-            break
-        }
-    }
 
     constructor() {
         super(
             [
                 {label: "UV", key: "uv", accept: [DATA_TYPES.VEC2]},
-                {
-                    label: "Flip Y axis",
-                    key: "yFlip",
-                    type: DATA_TYPES.CHECKBOX
-                },
-                {
-                    label: "Format",
-                    key: "ft",
-                    type: DATA_TYPES.OPTIONS,
-                    options: [
-                        {label: "RGB", data: "RGB"},
-                        {label: "RGBA", data: "RGBA"},
-                        {label: "sRGBA", data: "SRGBA"}
-                    ]
-                },
-
                 {label: "Sampler", key: "texture", type: DATA_TYPES.TEXTURE}
             ],
             [
@@ -126,7 +68,6 @@ export default class TextureSample extends Node {
             try {
                 const res = await RegistryAPI.readRegistryFile(this.texture?.registryID)
                 if (res) {
-                    const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, true)
                     uniforms.push({
                         label: this.name,
                         key: this.uniformName,
@@ -135,40 +76,15 @@ export default class TextureSample extends Node {
                         format: {...this.format, yFlip: this.yFlip}
                     })
                     uniformData.push({
-
                         key: this.uniformName,
-                        data: file,
+                        data: this.texture.registryID,
                         type: DATA_TYPES.TEXTURE,
-                        format: this.format,
-                        yFlip: this.yFlip
                     })
-                } else
-                    uniformData.push({
-                        key: this.uniformName,
-                        data: await GPU.imageWorker(
-                            IMAGE_WORKER_ACTIONS.COLOR_TO_IMAGE,
-                            {
-                                color: "rgba(128, 128, 128, 1)",
-                                resolution: 16
-                            }),
-                        type: DATA_TYPES.TEXTURE,
-                        format: this.format
-                    })
+                }
             } catch (error) {
-                alert.pushAlert("Error compiling texture", "error")
+                console.error(error)
             }
-        } else
-            uniformData.push({
-                key: this.uniformName,
-                data: await GPU.imageWorker(
-                    IMAGE_WORKER_ACTIONS.COLOR_TO_IMAGE,
-                    {
-                        color: "rgba(128, 128, 128, 1)",
-                        resolution: 16
-                    }),
-                type: DATA_TYPES.TEXTURE,
-                format: this.format
-            })
+        }
         return `uniform sampler2D sampler${index};`
     }
 

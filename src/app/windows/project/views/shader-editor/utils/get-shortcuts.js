@@ -23,9 +23,9 @@ export default function getShortcuts(openFile, nodes, setNodes, links, setLinks)
                 if (SelectionStore.TARGET !== SelectionStore.TYPES.SHADER_EDITOR)
                     return
                 const toCopy = [], selected = SelectionStore.shaderEditorSelected
-                for (let i = 0; i < selected.length; i++) {
+                for (let i = 0; i < selected.length; i++)
                     toCopy.push(nodes.find(n => n.id === selected[i]))
-                }
+
                 ShaderEditorController.copy(toCopy)
 
             }

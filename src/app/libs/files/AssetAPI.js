@@ -2,16 +2,23 @@ import NodeFS from "../NodeFS";
 import {v4 as uuidv4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
+import FilesStore from "../../windows/project/stores/FilesStore";
 
 export default class AssetAPI {
+    static async readAsset(id) {
+        const reg = await RegistryAPI.readRegistryFile(id)
+        if(reg)
+            return await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+    }
 
     static async assetExists(path) {
-        return await NodeFS.exists(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + path))
+        return await NodeFS.exists(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + path))
     }
 
     static async writeAsset(path, fileData, previewImage, registryID) {
+        console.log(fileData)
         const fileID = registryID !== undefined ? registryID : uuidv4()
-        await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + path), fileData)
+        await NodeFS.write(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + path), fileData)
         if (previewImage)
             await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + registryID + ".preview"), previewImage)
         await RegistryAPI.createRegistryEntry(fileID, path)
@@ -19,14 +26,12 @@ export default class AssetAPI {
 
 
     static async updateAsset(registryID, fileData, previewImage) {
-        console.log(registryID, fileData)
         const res = await RegistryAPI.readRegistryFile(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)
         else
             throw Error("Not found")
     }
-
 
 
     static async updateEntity(entity, id) {

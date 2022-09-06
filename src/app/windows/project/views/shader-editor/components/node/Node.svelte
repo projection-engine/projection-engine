@@ -1,5 +1,4 @@
 <script>
-    import LINK_WIDTH from "../../data/LINK_WIDTH";
     import NODE_TYPES from "../../data/NODE_TYPES";
     import NODE_INFO from "../../data/NODE_INFO";
     import getBezierCurve from "../../utils/get-bezier-curve";
@@ -17,34 +16,28 @@
     export let setSelected
     export let submitNodeVariable
     export let canvas
-    export let onDrag
     let pathRef
     let ref
 
     $: isSelected = selected.indexOf(node.id) > -1
 
-
     let outputLinks
     let inputLinks
     $: {
         const out = [], inp = []
-        links.forEach(l => {
-            if (l.source && l.source.includes(node.id))
-                out.push(l)
-            if (l.target && l.target.includes(node.id))
-                inp.push(l)
-        })
+        for(let i  =0; i < links.length; i++){
+            const current = links[i]
+            if (current.source && current.source.includes(node.id))
+                out.push(current)
+            if (current.target && current.target.includes(node.id))
+                inp.push(current)
+        }
+
         outputLinks = out
         inputLinks = inp
     }
 
-    let nodeInfo
-    $: {
-        let key = (Object.entries(NODE_TYPES).find(([, value]) => value === node.type))
-        if (key)
-            nodeInfo = key[0]
-        nodeInfo = NODE_INFO[key] ? NODE_INFO[key] : {}
-    }
+
     const handleLinkDrag = (event, draggableElement) => {
         const scale = ShaderEditorController.scale
         const parent = ref?.parentNode.parentNode
@@ -58,11 +51,11 @@
         const curve = getBezierCurve(
             {
                 x: (bBox.x + bounding.x + 7.5) / scale,
-                y: (bBox.y + bounding.y + 7.5 + LINK_WIDTH * 2) / scale
+                y: (bBox.y + bounding.y + 7.5  ) / scale
             },
             {
                 x1: (event.clientX + bounding.x + 7.5) / scale,
-                y1: (event.clientY + bounding.y + 7.5 + LINK_WIDTH * 2) / scale
+                y1: (event.clientY + bounding.y + 7.5 ) / scale
             })
 
         pathRef?.setAttribute("d", curve)
@@ -116,7 +109,6 @@
         >
             <div
                     class="label"
-                    style="border-color: {nodeInfo.COLOR}"
                     id={node.id + "-node"}
                     on:mousedown={handleDragStart}
             >
@@ -146,7 +138,6 @@
                                     onDragEnd={() => pathRef.setAttribute("d", undefined)}
                                     data={a}
                                     node={node}
-                                    onDrag={onDrag}
                                     handleLinkDrag={handleLinkDrag}
                                     inputLinks={inputLinks}
                                     outputLinks={outputLinks}
@@ -161,7 +152,7 @@
             bind:this={pathRef}
             fill={"none"}
             stroke={"var(--pj-accent-color)"}
-            stroke-width={LINK_WIDTH}
+            stroke-width={2}
             stroke-dasharray={"3,3"}
             d=""></path>
 </g>
@@ -170,12 +161,14 @@
     .wrapper {
         overflow: visible;
         box-shadow: var(--pj-boxshadow);
-        background: var(--pj-background-secondary);
+        background: var(--pj-background-primary);
         transition: outline 150ms linear;
         outline: transparent 2px solid;
         position: relative;
         border-radius: 3px;
         min-height: 35px;
+
+        color: var(--pj-color-secondary);
         border: var(--pj-border-primary) 1px solid;
     }
 
@@ -186,15 +179,10 @@
         display: flex;
         border-radius: 3px 3px 0 0;
         align-items: center;
-        gap: 3px;
+
         padding: 0 4px;
         font-weight: 550;
         font-size: 0.7rem;
-        color: var(--pj-color-secondary);
-        border-left: transparent 3px solid;
-        background: var(--pj-background-primary);
-        border-bottom: var(--pj-border-primary) 1px solid;
-        transition: color 150ms linear;
     }
 
     .label:active {
@@ -206,7 +194,7 @@
         height: calc(100% - 30px);
         overflow: visible;
         border-radius: 0 0 3px 3px;
-        background-color: var(--pj-background-primary);
+        background-color: var(--pj-background-secondary);
         justify-content: space-between;
     }
 

@@ -210,6 +210,33 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            OPENGL_DOCS: "Learn more",
+            TEXTURE_FILTERING: "Texture filtering function",
+            TEXTURE_MIN_FILTER: "Minifying",
+            TEXTURE_MAG_FILTER: "Magnification",
+
+            NEAREST_MIPMAP_LINEAR: "Nearest mip-map linear",
+            LINEAR_MIPMAP_NEAREST: "Linear mip-map nearest",
+            LINEAR_MIPMAP_LINEAR: "Linear mip-map linear",
+            NEAREST_MIPMAP_NEAREST: "Nearest mip-map nearest",
+
+            NEAREST: "Nearest",
+            LINEAR: "Linear",
+            TEXTURE_WRAPPING: "Wrapping",
+            wrapT: "Vertical",
+            wrapS: "Horizontal",
+            MIRRORED_REPEAT: "Mirrored repeat",
+            REPEAT: "Repeat",
+            CLAMP_TO_EDGE: "Clamp to edge",
+            CLAMP_TO_BORDER: "Clamp to border",
+
+
+
+
+            ALLOCATING_TEXTURE: "Allocating texture",
+            UPDATING_ASSET: "Updating asset",
+            FLIP_Y: "Flip texture",
+            TEXTURE_FORMAT: "Texture format",
             FROM_LAYOUT: "Load from UI Layout",
             FOCUSED_ON_ENGINE: "Priority on: Entity",
             FOCUSED_ON_UI: "Priority on: UI element",

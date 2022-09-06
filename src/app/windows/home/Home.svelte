@@ -5,7 +5,7 @@
     import Header from "./components/Header.svelte";
     import Recent from "./components/Recent.svelte";
     import Localization from "../../libs/Localization";
-    import ROUTES from "../../../assets/ROUTES";
+    import ROUTES from "../../../data/ROUTES";
     import getBasePath from "../../../electron/utils/get-base-path";
     import {onMount} from "svelte";
 

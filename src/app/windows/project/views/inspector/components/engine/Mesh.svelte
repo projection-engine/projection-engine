@@ -1,13 +1,13 @@
 <script>
-    import Loader from "../../../libs/loader/Loader"
-    import Selector from "../../../../../components/selector/Selector.svelte";
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Loader from "../../../../libs/loader/Loader"
+    import Selector from "../../../../../../components/selector/Selector.svelte";
+    import Accordion from "../../../../../../components/accordion/Accordion.svelte";
 
-    import getComponentIcon from "../../../utils/get-component-icon";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import Icon from "../../../../../components/icon/Icon.svelte";
-    import loadMaterial from "../utils/load-material";
-    import GPU from "../../../libs/engine/production/controllers/GPU";
+    import getComponentIcon from "../../../../utils/get-component-icon";
+    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import loadMaterial from "../../utils/load-material";
+    import GPU from "../../../../libs/engine/production/controllers/GPU";
 
 
     export let component

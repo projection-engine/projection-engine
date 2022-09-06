@@ -22,7 +22,7 @@ export default class ShaderEditorController {
             return;
         Object.keys(node).forEach(o => {
             if (o !== "inputs" && o !== "output") {
-                if (o === "texture" && nodeInstance instanceof TextureSample) nodeInstance[o] = FilesStore.data.images.find(i => i.registryID === node[o].registryID)
+                if (o === "texture" && nodeInstance instanceof TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
                 else {
                     const input = nodeInstance.inputs.find(i => i.key === o)
                     if (input && input.onChange) {

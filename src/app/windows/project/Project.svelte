@@ -11,7 +11,7 @@
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../../components/view/ViewsContainer.svelte";
     import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
-    import ROUTES from "../../../assets/ROUTES";
+    import ROUTES from "../../../data/ROUTES";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
 

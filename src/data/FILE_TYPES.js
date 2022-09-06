@@ -5,7 +5,7 @@ module.exports =  {
     UI_LAYOUT: ".ui",
     COMPONENT: ".component",
     MATERIAL: ".material",
-    IMAGE: ".pimg",
+    TEXTURE: ".texture",
     REGISTRY: ".reg",
     SCENE: ".scene",
     PREVIEW: ".preview",

@@ -1,4 +1,4 @@
-import GIZMOS from "../../../data/misc/GIZMOS"
+import GIZMOS from "../../../data/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
 import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
 import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";

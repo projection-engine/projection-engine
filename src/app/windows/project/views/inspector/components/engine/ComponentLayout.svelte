@@ -1,11 +1,11 @@
 <script>
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import Accordion from "../../../../../../components/accordion/Accordion.svelte";
     import ComponentAttribute from "./ComponentAttribute.svelte";
-    import Icon from "../../../../../components/icon/Icon.svelte";
-    import EngineStore from "../../../stores/EngineStore";
-    import getComponentIcon from "../../../utils/get-component-icon";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import EngineStore from "../../../../stores/EngineStore";
+    import getComponentIcon from "../../../../utils/get-component-icon";
     import {v4} from "uuid";
-    import SelectionStore from "../../../stores/SelectionStore";
+    import SelectionStore from "../../../../stores/SelectionStore";
 
     export let key
     export let index

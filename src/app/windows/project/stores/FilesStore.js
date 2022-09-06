@@ -3,7 +3,7 @@ import {contentBrowserStore} from "./templates/content-browser-store";
 import NodeFS, {getCall} from "../../../libs/NodeFS";
 import FilesAPI from "../../../libs/files/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
-import ROUTES from "../../../../assets/ROUTES";
+import ROUTES from "../../../../data/ROUTES";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
 import Localization from "../../../libs/Localization";
 

@@ -1,7 +1,7 @@
 import ActionHistoryAPI from "./ActionHistoryAPI";
 import RendererController from "../libs/engine/production/controllers/RendererController";
 import AssetAPI from "../../../libs/files/AssetAPI";
-import SETTINGS from "../data/misc/SETTINGS";
+import SETTINGS from "../data/SETTINGS";
 import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
 import GPU from "../libs/engine/production/controllers/GPU";
 import {get, writable} from "svelte/store";

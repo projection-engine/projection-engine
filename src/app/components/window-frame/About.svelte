@@ -1,7 +1,7 @@
 <script>
     import createPortal from "../create-portal";
     import {onDestroy, onMount} from "svelte";
-    import logo from '../../../assets/logo.png';
+    import logo from '../../../data/logo.png';
 
 
     export let handleClose

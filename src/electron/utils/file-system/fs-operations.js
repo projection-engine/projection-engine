@@ -1,8 +1,8 @@
-const FILE_TYPES = require("../../../assets/FILE_TYPES")
+const FILE_TYPES = require("../../../data/FILE_TYPES")
 const readFile = require("./read-file")
 const lstat = require("./read-file")
 const readdir = require("./readdir")
-const REG_PATH = require("../../../assets/REG_PATH")
+const REG_PATH = require("../../../data/REG_PATH")
 
 const pathRequire = require("path")
 const fs = require("fs")

@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readFile = require("../utils/file-system/read-file")
-const CHANNELS = require("../../assets/CHANNELS");
+const CHANNELS = require("../../data/CHANNELS");
 const COMPONENTS = require("../../app/windows/project/libs/engine/production/data/COMPONENTS");
 const loadMeshes = require("../utils/level-loader/load-meshes");
 const loadMaterials = require("../utils/level-loader/load-materials");

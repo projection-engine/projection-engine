@@ -1,8 +1,8 @@
 const fs = require("fs")
 const path = require("path")
-const REG_PATH = require("../../../assets/REG_PATH")
-const FILE_TYPES = require("../../../assets/FILE_TYPES")
-const PREVIEW_PATH = require("../../../assets/PREVIEW_PATH")
+const REG_PATH = require("../../../data/REG_PATH")
+const FILE_TYPES = require("../../../data/FILE_TYPES")
+const PREVIEW_PATH = require("../../../data/PREVIEW_PATH")
 
 module.exports = async function writeData(pathName, data, regID, projectPath, preview) {
     return new Promise(resolve => {

@@ -41,7 +41,6 @@ export default async function handleDropFolder(event, target, currentDirectory, 
                 ContentBrowserAPI.rename(pathResolve.resolve(FilesStore.ASSETS_PATH + FilesAPI.sep + from), pathResolve.resolve(FilesStore.ASSETS_PATH + to))
                     .then(() => {
                         if (from === currentDirectory.id) setCurrentDirectory({id: to})
-
                         FilesStore.refreshFiles().catch()
                     })
             }

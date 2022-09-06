@@ -1,5 +1,5 @@
 import EngineStore from "../stores/EngineStore";
-import ROUTES from "../../../../assets/ROUTES";
+import ROUTES from "../../../../data/ROUTES";
 import importFile from "../libs/import-file";
 import FilesStore from "../stores/FilesStore";
 import SettingsStore from "../stores/SettingsStore";

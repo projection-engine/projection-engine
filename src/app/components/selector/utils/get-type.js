@@ -3,7 +3,7 @@
 export default function getType(store, type) {
     switch (type) {
         case "image":
-            return store.images
+            return store.textures
         case "material":
             return store.materials
         case "mesh":

@@ -77,6 +77,7 @@
     }
 
     .header {
+        font-size: .7rem;
         display: flex;
         align-items: center;
         align-content: center;
@@ -93,6 +94,7 @@
     }
 
     .headerHidden {
+        font-size: .7rem;
         height: 100%;
         width: 100%;
         background-color: var(--pj-background-primary);

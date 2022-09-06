@@ -22,7 +22,7 @@
     function getParsedType(){
         switch (type){
             case "image":
-                return "images"
+                return "textures"
             case "material":
                 return "materials"
             case "mesh":

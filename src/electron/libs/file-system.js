@@ -1,7 +1,7 @@
 const {ipcMain, dialog} = require("electron")
 const fs = require("fs")
 const pathRequire = require("path")
-const ROUTES = require("../../assets/ROUTES");
+const ROUTES = require("../../data/ROUTES");
 const {readRegistry} = require("../utils/file-system/fs-operations");
 const parsePath = require("../utils/file-system/parse-content-browser-data");
 const glTF = require("./glTF");
@@ -10,7 +10,7 @@ const lstat = require("../utils/file-system/lstat")
 const rm = require("../utils/file-system/rm")
 const readdir = require("../utils/file-system/readdir")
 const directoryStructure = require("../utils/file-system/directory-structure")
-const REG_PATH = require("../../assets/REG_PATH")
+const REG_PATH = require("../../data/REG_PATH")
 
 module.exports = function () {
     ipcMain.on("fs-read", async (event, data) => {

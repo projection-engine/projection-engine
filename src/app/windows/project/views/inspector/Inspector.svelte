@@ -8,10 +8,13 @@
     import UIStore from "../../stores/UIStore";
     import UIElement from "./views/UIElement.svelte";
     import Entity from "../../libs/engine/production/templates/Entity";
-    import EntityElement from "./components/EntityElement.svelte";
-    import ComponentLayout from "./components/ComponentLayout.svelte";
+    import EntityElement from "./components/engine/EntityElement.svelte";
+    import ComponentLayout from "./components/engine/ComponentLayout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import RendererController from "../../libs/engine/production/controllers/RendererController";
+    import FilesStore from "../../stores/FilesStore";
+    import ContentBrowser from "../content-browser/ContentBrowser.svelte";
+    import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -21,16 +24,13 @@
     let ui = {}
     let parent
     let savedState = false
-    let engineSelectedEntity
+    let selectionStore
+    let entity
+
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeUI = UIStore.getStore(v => ui = v)
-    const unsubscribeSelection = SelectionStore.getStore(() => {
-        if (SelectionStore.engineSelected[0])
-            engineSelectedEntity = RendererController.entitiesMap.get(SelectionStore.engineSelected[0])
-        else
-            engineSelectedEntity = RendererController.entitiesMap.get(SelectionStore.lockedEntity)
-    })
+    const unsubscribeSelection = SelectionStore.getStore(v => selectionStore = v)
     onDestroy(() => {
         unsubscribeSelection()
         unsubscribeEngine()
@@ -39,12 +39,33 @@
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
     let focusOnEngineEntities = true
-    $: entity = ui.selectedEntity && (!focusOnEngineEntities || !engineSelectedEntity) ? ui.selectedEntity : engineSelectedEntity
+    $: target = selectionStore.TARGET
+    $:{
+        if (!selectionStore.array[0])
+            entity = undefined
+        else {
+            const T = SelectionStore.TYPES
+            switch (target) {
+                case T.CONTENT_BROWSER:
+                    entity = FilesStore.data.items.find(i => i.id === selectionStore.array[0])
+                    break
+                case T.SHADER_EDITOR:
+                    // TODO
+                    break
+                case T.ENGINE:
+                    entity = RendererController.entitiesMap.get(selectionStore.array[0])
+                    break
+                default:
+                    entity = undefined
+                    break
+            }
+        }
+    }
 
-    const submitComponent = (key, value, save) => {
+    const submitTransformationChange = (key, value, save) => {
         if (!savedState) {
             EngineStore.saveEntity(
-                engineSelectedEntity.id,
+                entity.id,
                 undefined,
                 key,
                 value
@@ -54,7 +75,7 @@
         entity[key] = value
         if (save)
             EngineStore.saveEntity(
-                engineSelectedEntity.id,
+                entity.id,
                 undefined,
                 key,
                 value
@@ -67,29 +88,38 @@
         switchView={switchView}
         title={translate("TITLE")}
         icon={"category"}
-/>
+>
+    {#if entity}
+        <div data-vertdivider="-"></div>
+        <div data-overflow="-">{entity.name}</div>
+    {/if}
+</Header>
 {#if !hidden}
     <div class="content">
         {#if entity != null}
             <div class="wrapper-content">
-                <EntityElement entity={entity} translate={translate}/>
-                {#if !(entity instanceof Entity)}
-                    <UIElement
-                            component={entity}
+                {#if target === SelectionStore.TYPES.ENGINE}
+                    <EntityElement entity={entity} translate={translate}/>
+                    {#if !(entity instanceof Entity)}
+                        <UIElement
+                                component={entity}
+                                translate={translate}
+                                store={ui}
+                        />
+                    {/if}
+                    <ComponentLayout
+                            key="TRANSFORMATION"
                             translate={translate}
-                            store={ui}
+                            component={entity}
+                            submit={submitTransformationChange}
                     />
+                    <Components
+                            translate={translate}
+                            entity={entity}
+                    />
+                    {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
+                    <ContentBrowserItem item={entity}/>
                 {/if}
-                <ComponentLayout
-                        key="TRANSFORMATION"
-                        translate={translate}
-                        component={entity}
-                        submit={submitComponent}
-                />
-                <Components
-                        translate={translate}
-                        entity={entity}
-                />
             </div>
         {:else}
             <div data-empty="-">

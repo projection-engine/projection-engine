@@ -1,8 +1,8 @@
-import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
+import FILE_TYPES from "../../../../../../data/FILE_TYPES";
 
 export default function getFileIcon(type) {
     switch ("." + type) {
-    case FILE_TYPES.IMAGE:
+    case FILE_TYPES.TEXTURE:
         return "image"
     case FILE_TYPES.MATERIAL:
         return "texture"

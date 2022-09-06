@@ -1,10 +1,10 @@
 <script>
     import Header from "./components/Header.svelte";
-    import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
+    import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Localization from "../../../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
     import MetricsPass from "../../libs/engine/production/templates/passes/MetricsPass";

@@ -14,9 +14,6 @@
     export let state
     export let store
     export let translate
-    $: images = store.images
-    $: meshes = store.meshes
-
 
     let searchString = ""
     $: filtered = getType(store, type).filter(e => e.name.toLowerCase().includes(searchString.toLowerCase()))

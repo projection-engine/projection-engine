@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../../data/misc/RENDER_TARGET";
+    import RENDER_TARGET from "../../../data/RENDER_TARGET";
     import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
     import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
@@ -8,7 +8,7 @@
     import SideOptions from "../components/QuickAccess.svelte";
     import CameraBar from "../components/CameraBar.svelte";
 
-    import GIZMOS from "../../../data/misc/GIZMOS";
+    import GIZMOS from "../../../data/GIZMOS";
     import onViewportClick from "../utils/on-viewport-click";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";

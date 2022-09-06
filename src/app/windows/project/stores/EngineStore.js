@@ -1,15 +1,13 @@
-import ENGINE from "../data/misc/ENGINE";
+import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ActionHistoryAPI from "./ActionHistoryAPI";
 import RendererController from "../libs/engine/production/controllers/RendererController";
 import FilesStore from "./FilesStore";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
-import DEFAULT_LEVEL from "../../../../assets/DEFAULT_LEVEL"
-import ROUTES from "../../../../assets/ROUTES";
-import CHANNELS from "../../../../assets/CHANNELS";
-import parseMaterialObject from "../libs/engine/editor/utils/parse-material-object";
-
+import DEFAULT_LEVEL from "../../../../data/DEFAULT_LEVEL"
+import ROUTES from "../../../../data/ROUTES";
+import CHANNELS from "../../../../data/CHANNELS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 import UIStore from "./UIStore";
@@ -21,6 +19,7 @@ import SettingsStore from "./SettingsStore";
 import Entity from "../libs/engine/production/templates/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../libs/engine/static/STATIC_TEXTURES";
+import MaterialInstance from "../libs/engine/production/controllers/instances/MaterialInstance";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -94,16 +93,10 @@ export default class EngineStore {
 
                     const imgID = entity.components[COMPONENTS.SPRITE]?.imageID
                     checkTexture: if (imgID) {
-                        const images = GPU.textures
-                        if (images.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
+                        const textures = GPU.textures
+                        if (textures.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
                             break checkTexture
-                        try {
-                            const rs = await RegistryAPI.readRegistryFile(imgID)
-                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
-                            await GPU.allocateTexture(file, imgID)
-                        } catch (err) {
-                            console.error(err)
-                        }
+                        await EngineStore.loadTextureFromImageID(imgID)
                     }
                     mapped.push(entity)
                 }
@@ -126,7 +119,7 @@ export default class EngineStore {
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,
             async (ev, data) => {
-                EngineStore.engine.materials.push(await parseMaterialObject(data.result, data.id))
+                EngineStore.engine.materials.push(await MaterialInstance.parseMaterialObject(data.result, data.id))
                 EngineStore.updateStore()
             })
 
@@ -177,14 +170,18 @@ export default class EngineStore {
     }
 
     static async loadTextureFromImageID(registryID) {
-        const images = GPU.textures
-        if (images.get(registryID) != null)
+        if (GPU.textures.get(registryID) != null)
             return true
 
         try {
             const rs = await RegistryAPI.readRegistryFile(registryID)
-            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path)
-            await GPU.allocateTexture(file, registryID)
+            const textureData = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+
+            await GPU.allocateTexture({
+                ...textureData,
+                img: textureData.base64,
+                yFlip: textureData.flipY
+            }, registryID)
             return true
         } catch (err) {
             console.error(err)

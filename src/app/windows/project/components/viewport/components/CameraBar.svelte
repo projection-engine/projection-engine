@@ -4,7 +4,7 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import CAMERA_GIZMO from "../../../data/misc/CAMERA_GIZMO"
+    import CAMERA_GIZMO from "../../../data/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
     import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
     import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";

@@ -5,6 +5,7 @@ import FALLBACK_MATERIAL from "../../../libs/engine/production/data/FALLBACK_MAT
 import EngineStore from "../../../stores/EngineStore";
 import MaterialInstance from "../../../libs/engine/production/controllers/instances/MaterialInstance";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
+import GPU from "../../../libs/engine/production/controllers/GPU";
 
 const loadFile = async (ID) => {
     const rs = await RegistryAPI.readRegistryFile(ID)
@@ -36,14 +37,13 @@ export default async function loadMaterial(ID, submit) {
             if (!exists) {
                 let newMat
                 await new Promise(resolve => {
-                    newMat = new MaterialInstance({
-                        id: ID,
+                    newMat = GPU.allocateMaterial({
                         onCompiled: () => resolve(),
                         settings: file.response.settings,
                         vertex: file.response.vertexShader,
                         fragment: file.response.shader,
                         uniformData: file.response.uniformData
-                    })
+                    }, ID)
                 })
                 const newMaterials = [...EngineStore.engine.materials, newMat]
                 EngineStore.updateStore({...EngineStore.engine, materials: newMaterials})

@@ -3,7 +3,7 @@ const fs = require("fs");
 const {v4} = require("uuid");
 const writeData = require("../../../utils/gltf/write-data");
 const getNormalizedName = require("../../../utils/gltf/get-normalized-name")
-const FILE_TYPES = require("../../../../assets/FILE_TYPES");
+const FILE_TYPES = require("../../../../data/FILE_TYPES");
 
 
 module.exports =
@@ -32,7 +32,7 @@ module.exports =
                 const imageBase64 =fetched ?  `data:image/${imgURI.uri.split(".").pop()};base64, ` + file : "data:image/png;base64, " + file
                 const id = v4().toString()
 
-                await writeData(path.resolve(partialPath + getNormalizedName("image-asset-" + name, index) + FILE_TYPES.IMAGE), imageBase64, id, projectPath, imageBase64)
+                await writeData(path.resolve(partialPath + getNormalizedName("texture-asset-" + name, index) + FILE_TYPES.TEXTURE), imageBase64, id, projectPath, imageBase64)
                 return id
             }
         }

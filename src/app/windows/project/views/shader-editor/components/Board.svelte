@@ -2,8 +2,6 @@
 
     import {v4} from "uuid";
     import Comment from "./node/Comment.svelte";
-    // import Node from "./node/UINode.svelte";
-    import LINK_WIDTH from "../data/LINK_WIDTH";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import handleBoardScroll from "../utils/handle-board-scroll";
     import handleDropNode from "../utils/handle-drop-node";
@@ -36,7 +34,6 @@
 
     let ref
     let internalID = v4()
-    let dragType
     $: resolvedLinks = resolveLinks(links)
 
 
@@ -135,7 +132,7 @@
                 {#if node.isComment}
                     <Comment
                             canvas={ref}
-                            onDrag={{setDragType: v => dragType = v, dragType}}
+
                             setSelected={setSelected }
                             submitName={newName => {
                                     setNodes(nodes.map(p => {
@@ -155,7 +152,7 @@
                         data-link={l.target + "-" + l.source}
                         fill={"none"}
                         stroke={"#fff"}
-                        stroke-width={LINK_WIDTH}
+                        stroke-width={2}
                         id={l.target + "-" + l.source}
                         d=""
                 ></path>
@@ -164,7 +161,6 @@
                 {#if !node.isComment }
                     <Node
                             canvas={ref}
-                            onDrag={{setDragType: v => dragType = v, dragType}}
                             links={resolvedLinks}
                             setSelected={setSelected}
                             selected={selected}

@@ -1,12 +1,12 @@
 const {BrowserWindow, ipcMain} = require("electron")
 const Window = require("./EntryPointController")
-const FRAME_EVENTS = require("../../assets/FRAME_EVENTS")
+const FRAME_EVENTS = require("../../data/FRAME_EVENTS")
 const path = require("path");
-const ROUTES = require("../../assets/ROUTES");
+const ROUTES = require("../../data/ROUTES");
 const {v4} = require("uuid");
 const ProjectWindow = require("./ProjectWindowController")
 const windowLifeCycle = require("../utils/window-life-cycle");
-const RELATIVE_LOGO_PATH = "../../assets/logo.png"
+const RELATIVE_LOGO_PATH = "../../data/logo.png"
 const {screen} = require('electron')
 
 module.exports = function HomeWindow() {

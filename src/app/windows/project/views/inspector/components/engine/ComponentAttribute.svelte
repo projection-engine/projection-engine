@@ -1,13 +1,13 @@
 <script>
 
-    import Range from "../../../../../components/range/Range.svelte";
-    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
-    import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
-    import Input from "../../../../../components/input/Input.svelte";
-    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import Component from "../../../libs/engine/production/templates/Component";
-    import Selector from "../../../../../components/selector/Selector.svelte";
-    import EngineStore from "../../../stores/EngineStore";
+    import Range from "../../../../../../components/range/Range.svelte";
+    import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
+    import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
+    import Input from "../../../../../../components/input/Input.svelte";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import Component from "../../../../libs/engine/production/templates/Component";
+    import Selector from "../../../../../../components/selector/Selector.svelte";
+    import EngineStore from "../../../../stores/EngineStore";
 
     export let component = undefined
     export let submit = undefined

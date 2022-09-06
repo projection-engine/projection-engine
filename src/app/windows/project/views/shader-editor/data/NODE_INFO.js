@@ -21,39 +21,12 @@ export default {
         ICON: "functions"
     },
 
-    VARIABLE: {
-        COLOR: "#62D714",
-        LABEL: "Variable",
-        ICON: "settings"
-    },
-    START_POINT: {
-        COLOR: "red",
-        LABEL: "Starting point",
-        ICON: "output"
-    },
     BRANCH:  {
         COLOR: "white",
         LABEL: "Branch",
         ICON: "fork_right"
     },
 
-
-    GETTER:  {
-        COLOR: "green",
-        LABEL: "Getter",
-        ICON: "trending_flat"
-    },
-    SETTER:  {
-        COLOR: "orange",
-        LABEL: "Setter",
-        ICON: "tune"
-    },
-    REFERENCE:  {
-        COLOR: "gray",
-        LABEL: "Reference",
-        ICON: "keyboard_double_arrow_down",
-        ROTATE: "-90deg"
-    },
 
     OUTPUT: {
         COLOR: "white",

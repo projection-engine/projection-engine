@@ -1,4 +1,4 @@
-import GIZMOS from "../../../data/misc/GIZMOS";
+import GIZMOS from "../../../data/GIZMOS";
 import RendererController from "../../../libs/engine/production/controllers/RendererController";
 import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 

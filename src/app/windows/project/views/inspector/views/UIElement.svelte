@@ -2,7 +2,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../../components/input/Input.svelte";
-    import StyleField from "../components/StyleField.svelte";
+    import StyleField from "../components/engine/StyleField.svelte";
     import TextArea from "../../../../../components/input/TextArea.svelte";
     import {onDestroy} from "svelte";
     import FilesStore from "../../../stores/FilesStore";

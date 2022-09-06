@@ -1,4 +1,4 @@
-import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
+import FILE_TYPES from "../../../../../../data/FILE_TYPES";
 
 export default function getTypeName(type) {
     switch ("." + type) {
@@ -14,8 +14,8 @@ export default function getTypeName(type) {
             return "Component"
         case FILE_TYPES.MATERIAL:
             return "Material"
-        case FILE_TYPES.IMAGE:
-            return "Image"
+        case FILE_TYPES.TEXTURE:
+            return "Texture"
 
         case FILE_TYPES.SCENE:
             return "Scene"

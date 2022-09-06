@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
-    import ComponentLayout from "../components/ComponentLayout.svelte";
-    import Mesh from "../components/Mesh.svelte";
+    import ComponentLayout from "../components/engine/ComponentLayout.svelte";
+    import Mesh from "../components/engine/Mesh.svelte";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
     import FilesStore from "../../../stores/FilesStore";
     import componentConstructor from "../../../libs/component-constructor";

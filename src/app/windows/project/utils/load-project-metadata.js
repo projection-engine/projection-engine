@@ -1,4 +1,4 @@
-import ROUTES from "../../../../assets/ROUTES";
+import ROUTES from "../../../../data/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 export default function loadProjectMetadata(callbackMetaData){

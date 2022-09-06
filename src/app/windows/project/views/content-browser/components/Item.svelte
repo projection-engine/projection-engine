@@ -2,7 +2,7 @@
     import FilesAPI from "../../../../../libs/files/FilesAPI"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../../components/input/Input.svelte";
-    import FILE_TYPES from "../../../../../../assets/FILE_TYPES";
+    import FILE_TYPES from "../../../../../../data/FILE_TYPES";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Preview from "../../../../../components/preview/Preview.svelte";
     import FilesStore from "../../../stores/FilesStore";
@@ -126,7 +126,9 @@
         unsubscribe()
         draggable.onDestroy()
     })
+    $: isOnRename = onRename === data.id
 
+    $: draggable.disabled= isOnRename
 </script>
 
 <div
@@ -135,7 +137,7 @@
         on:dblclick={onDbClick}
         id={data.id}
         on:click={setSelected}
-            style={selected.get(data.id) ? "background: var(--pj-accent-color-light);" : "" +  (FilesStore.toCut.includes(data.id) ? "opacity: .5;" : "")}
+        style={selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "") +  (FilesStore.toCut.includes(data.id) ? "opacity: .5;" : "")}
         class="file"
 >
 
@@ -154,26 +156,17 @@
                         texture
                     {/if}
                 </Icon>
-                <div class="floating-icon-wrapper">
-                    <Icon>
-                        {#if metadata.type === FILE_TYPES.MESH}
-                            view_in_ar
-                        {:else if metadata.type === FILE_TYPES.MATERIAL}
-                            texture
-                        {:else}
-                            image
-                        {/if}
-                    </Icon>
-                </div>
             </Preview>
         </div>
     {/if}
-    {#if onRename === data.id}
+    {#if isOnRename}
         <Input
+                hasBorder="true"
                 onEnter={() => submitRename(currentLabel)}
                 onBlur={() => submitRename(currentLabel)}
                 setSearchString={e => currentLabel = e}
                 searchString={currentLabel}
+                noAutoSubmit="true"
         />
     {:else }
         <div data-overflow="-" class="label">
@@ -223,14 +216,6 @@
         overflow: hidden;
         border-radius: 5px;
     }
-
-
-    .floating-icon-wrapper {
-        position: absolute;
-        bottom: 0;
-        right: 4px;
-    }
-
 
     .image {
         max-height: 100%;

@@ -2,7 +2,7 @@ import FilesAPI from "../../../libs/files/FilesAPI"
 import COMPONENTS from "./engine/production/data/COMPONENTS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import FilesStore from "../stores/FilesStore";
-import FILE_TYPES from "../../../../assets/FILE_TYPES";
+import FILE_TYPES from "../../../../data/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";

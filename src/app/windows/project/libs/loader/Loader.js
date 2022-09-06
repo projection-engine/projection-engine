@@ -1,7 +1,7 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
-import FILE_TYPES from "../../../../../assets/FILE_TYPES";
+import FILE_TYPES from "../../../../../data/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
 import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
@@ -117,16 +117,18 @@ export default class Loader {
                     case FILE_TYPES.SCENE:
                         await Loader.scene(res.path)
                         break
-                    case FILE_TYPES.IMAGE:
+                    case FILE_TYPES.TEXTURE: {
                         const res = await EngineStore.loadTextureFromImageID(data)
-                        if(res){
+                        if (res) {
                             const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
                             sprite.components[COMPONENTS.SPRITE] = new SpriteComponent(data)
 
                             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
                         }
                         break
+                    }
                     default:
+                        console.error(new Error("Not valid file type"))
                         alert.pushAlert("Error importing file.", "error")
                         break
                 }

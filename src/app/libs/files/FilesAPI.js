@@ -2,8 +2,8 @@ import {v4} from "uuid"
 import NodeFS from "../NodeFS"
 import FilesStore from "../../windows/project/stores/FilesStore";
 import RegistryAPI from "./RegistryAPI";
-import REG_PATH from "../../../assets/REG_PATH"
-import ROUTES from "../../../assets/ROUTES";
+import REG_PATH from "../../../data/REG_PATH"
+import ROUTES from "../../../data/ROUTES";
 
 const pathRequire = window.require("path")
 

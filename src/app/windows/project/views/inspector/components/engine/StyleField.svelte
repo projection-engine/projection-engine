@@ -1,8 +1,8 @@
 <script>
-    import Input from "../../../../../components/input/Input.svelte";
-    import Localization from "../../../../../libs/Localization";
-    import Icon from "../../../../../components/icon/Icon.svelte";
-    import UIStore from "../../../stores/UIStore";
+    import Input from "../../../../../../components/input/Input.svelte";
+    import Localization from "../../../../../../libs/Localization";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import UIStore from "../../../../stores/UIStore";
 
     export let initial
     export let isInput

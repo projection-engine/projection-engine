@@ -55,7 +55,7 @@
             }
         }}
         class={open && !noBackground ? "highlight dropdown" : undefined}
-        style={(asButton ? "max-height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:  var(--pj-border-primary) 1px solid;" : "") + ((hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;")) + buttonStyles + " width: " + width}
+        style={(asButton ? "max-height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;" : "") + ((hideArrow ? "height: fit-content; max-width: 100%;" : "display: flex; align-items: center; max-width: 100%;")) + buttonStyles + " width: " + width}
 >
 
     <slot name="button"/>

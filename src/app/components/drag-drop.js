@@ -49,6 +49,8 @@ export default function dragDrop(draggable) {
     }
     let timeout, initialClick = {x: 0, y: 0}, clickTimeout
     const handler = (event) => {
+        if (disabled)
+            return;
         switch (event.type) {
             case "mousemove":
                 if (!isDragging && (Math.abs(initialClick.x - event.clientX) >= 10 || Math.abs(initialClick.y - event.clientY) >= 10)) {
@@ -77,8 +79,8 @@ export default function dragDrop(draggable) {
                         "mouseout",
                         () => {
                             target.dragDropListeners.removeOverlay(dragImageElement)
-                            if(Drag.tooltip)
-                            Drag.tooltip.style.opacity = 1
+                            if (Drag.tooltip)
+                                Drag.tooltip.style.opacity = 1
                         },
                         {once: true}
                     )

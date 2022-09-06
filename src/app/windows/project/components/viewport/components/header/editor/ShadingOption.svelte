@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../../../../data/misc/SHADING_MODELS"
+    import SHADING_MODELS from "../../../../../data/SHADING_MODELS"
     import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";

@@ -112,7 +112,7 @@
             autoClose={true}
     />
 
-{:else if type === DATA_TYPES.OPTIONS}
+{:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}
 
     <Dropdown>
         <button slot="button" class="dropdown">

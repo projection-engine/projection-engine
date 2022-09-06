@@ -1,10 +1,10 @@
 <script>
-    import SHORTCUTS_ID from "../../data/misc/SHORTCUTS_ID"
+    import SHORTCUTS_ID from "../../data/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import HotKeys from "./libs/HotKeys";
     import Localization from "../../../../libs/Localization";
-    import INFORMATION_CONTAINER from "../../data/misc/INFORMATION_CONTAINER";
+    import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../../../libs/files/ErrorLoggerAPI";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";

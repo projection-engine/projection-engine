@@ -1,6 +1,6 @@
 const {readRegistry} = require( "../file-system/fs-operations")
-const REG_PATH = require( "../../../assets/REG_PATH")
-const CHANNELS = require( "../../../assets/CHANNELS")
+const REG_PATH = require( "../../../data/REG_PATH")
+const CHANNELS = require( "../../../data/CHANNELS")
 
 const fs = require("fs")
 const path = require("path")

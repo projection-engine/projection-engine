@@ -1,6 +1,6 @@
 const fs = require("fs")
 const pathRequire = require("path")
-const ASSETS_PATH = require("../../../assets/ASSETS_PATH")
+const ASSETS_PATH = require("../../../data/ASSETS_PATH")
 
 module.exports = async function (p, registryData, projectPath) {
     if (typeof p !== "string")

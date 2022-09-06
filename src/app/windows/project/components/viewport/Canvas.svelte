@@ -1,5 +1,5 @@
 <script>
-    import RENDER_TARGET from "../../data/misc/RENDER_TARGET"
+    import RENDER_TARGET from "../../data/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
     import EditorRenderer from "../../libs/engine/editor/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
@@ -10,11 +10,12 @@
     import getContextMenu from "./utils/get-context-menu";
     import HotKeys from "../metrics/libs/HotKeys";
     import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
-    import VIEWPORT_TABS from "../../data/misc/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import UIStore from "../../stores/UIStore";
     import GPU from "../../libs/engine/production/controllers/GPU";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
+    import AssetAPI from "../../../../libs/files/AssetAPI";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -39,7 +40,7 @@
             "public",
             Localization.PROJECT.VIEWPORT.TITLE
         )
-        GPU.initializeContext(canvasRef, settings.resolution)
+        GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
             .then(() => {
                 window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
                 onReady()

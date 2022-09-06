@@ -1,7 +1,7 @@
 <script>
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
-    import VIEWPORT_TABS from "../../../data/misc/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
     import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
     import SettingsStore from "../../../stores/SettingsStore";

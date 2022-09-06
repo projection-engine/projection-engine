@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import ROUTES from "../../../assets/ROUTES";
+    import ROUTES from "../../../data/ROUTES";
     import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
     import Localization from "../../libs/Localization";
     import Sidebar from "./components/Sidebar.svelte";

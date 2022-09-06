@@ -6,13 +6,8 @@ export default {
     VOID_FUNCTION: 3,
 
     VARIABLE: 5,
-    START_POINT: 6,
+
     BRANCH: 7,
-
-
-    GETTER: 8,
-    SETTER: 9,
-    REFERENCE: 10,
 
 
     STATIC: 12,
