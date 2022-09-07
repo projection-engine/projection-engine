@@ -1,5 +1,5 @@
 <script>
-    import dragDrop from "../../../../../components/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
     import EngineStore from "../../../stores/EngineStore";
@@ -88,13 +88,11 @@
                         }}
                         >
                             <Icon styles="font-size: .9rem">lock</Icon>
-                            <ToolTip>
-                                {Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}
-                            </ToolTip>
+                            <ToolTip content={Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}/>
                         </button>
                     {:else}
                         <div class="dot">
-                            <ToolTip>{Localization.PROJECT.HIERARCHY.SELECTED_CHILD}</ToolTip>
+                            <ToolTip content={Localization.PROJECT.HIERARCHY.SELECTED_CHILD}/>
                         </div>
                     {/if}
                 {/if}

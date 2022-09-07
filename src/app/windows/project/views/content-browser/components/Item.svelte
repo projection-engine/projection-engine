@@ -9,7 +9,7 @@
     import Localization from "../../../../../libs/Localization";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import dragDrop from "../../../../../components/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import getTypeName from "../utils/get-type-name";
     import SelectionStore from "../../../stores/SelectionStore";
@@ -128,7 +128,38 @@
     })
     $: isOnRename = onRename === data.id
 
-    $: draggable.disabled= isOnRename
+    $: draggable.disabled = isOnRename
+    let toolTipContent
+    $: {
+        let body
+        if (type !== 0)
+            body = `
+        <div>
+            <strong>${translate("ITEM_TYPE")}:</strong>
+            <small>${metadata.typeName}</small>
+        </div>
+        <div>
+            <strong>${translate("REGISTRY_ID")}:</strong>
+            <small>${data.registryID}</small>
+        </div>
+`
+        else
+            body = `
+            <div>
+                <strong>${translate("CHILDREN")}:</strong>
+                <small>${childrenQuantity}</small>
+            </div>
+`
+        toolTipContent = `
+         <div style="   display: grid;">
+            <div>
+                <strong>${translate("ITEM_NAME")}: </strong>
+                <small>${currentLabel}</small>
+            </div>
+            ${body}
+        </div>
+        `
+    }
 </script>
 
 <div
@@ -173,36 +204,10 @@
             {currentLabel}
         </div>
     {/if}
-    <ToolTip>
-        <div class="tooltip">
-        <span>
-            <strong>{translate("ITEM_NAME")}: </strong>
-            <small>{currentLabel}</small>
-        </span>
-            {#if type !== 0}
-            <span>
-                <strong>{translate("ITEM_TYPE")}:</strong>
-                <small>{metadata.typeName}</small>
-            </span>
-                <span>
-                <strong>{translate("REGISTRY_ID")}:</strong>
-                <small>{data.registryID}</small>
-            </span>
-            {:else}
-            <span>
-                <strong>{translate("CHILDREN")}:</strong>
-                <small>{childrenQuantity}</small>
-            </span>
-            {/if}
-        </div>
-    </ToolTip>
+    <ToolTip content={toolTipContent}/>
 </div>
 
 <style>
-
-    .tooltip {
-        display: grid;
-    }
 
     .icon {
         position: relative;

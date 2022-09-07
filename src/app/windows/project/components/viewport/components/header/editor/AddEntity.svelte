@@ -41,7 +41,7 @@
 <Dropdown>
     <button slot="button" data-viewbutton="-">
         {translate("ADD")}
-        <ToolTip>{translate("ADD_DETAILS")}</ToolTip>
+        <ToolTip content={translate("ADD_DETAILS")}/>
     </button>
 
 

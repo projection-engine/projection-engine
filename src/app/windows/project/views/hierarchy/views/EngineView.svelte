@@ -7,7 +7,7 @@
     import Branch from "../components/EngineNode.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-    import dragDrop from "../../../../../components/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import {v4} from "uuid";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
@@ -95,11 +95,7 @@
                 SelectionStore.engineSelected = [element.getAttribute(trigger)]
         })
     $: contextMenuBinding.rebind(getEngineContextMenu(open, v => open = v))
-    onDestroy(() => {
-        unsubscribeSelection()
-        unsubscribeEngine()
-        contextMenuBinding.onDestroy()
-    })
+
 
     const testSearch = (node) => {
         const s = searchString, f = filteredComponent
@@ -167,6 +163,12 @@
                 return `<span style="font-size: .9rem;" data-icon="-">clear</span> Invalid entity`
             }
         })
+    })
+    onDestroy(() => {
+        unsubscribeSelection()
+        unsubscribeEngine()
+        contextMenuBinding.onDestroy()
+        draggable.onDestroy()
     })
 </script>
 

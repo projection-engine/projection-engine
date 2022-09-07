@@ -111,9 +111,7 @@
     <Dropdown noBackground={true} hideArrow={true}>
         <button slot="button" class="option">
             <Icon>videocam</Icon>
-            <ToolTip>
-                Camera position
-            </ToolTip>
+            <ToolTip content={translate("CAMERA_POSITION")}/>
         </button>
 
         <button on:click={() => updateCameraPlacement(0, Math.PI /2)}>
@@ -145,9 +143,7 @@
             }}
             class="option"
     >
-        <ToolTip>
-            {translate("SWITCH_PROJECTION")}
-        </ToolTip>
+        <ToolTip content={translate("SWITCH_PROJECTION")}/>
         {#if !cameraIsOrtho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
                 <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
@@ -158,9 +154,7 @@
     </button>
 
     <div class="option" on:mousedown={e => CameraTracker.transformCamera(e, 0)}>
-        <ToolTip>
-            {translate("ZOOM")}
-        </ToolTip>
+        <ToolTip content={translate("ZOOM")}/>
         <Icon>zoom_in</Icon>
     </div>
     <div
@@ -170,9 +164,8 @@
                 CameraTracker.centerOn = [...EditorRenderer.cursor.translation]
                 CameraTracker.update()
             }}>
-        <ToolTip>
-            {translate("MOVE_IN_SCREEN_SPACE")}
-        </ToolTip>
+        <ToolTip content={translate("MOVE_IN_SCREEN_SPACE")}/>
+
         <Icon>back_hand</Icon>
     </div>
 

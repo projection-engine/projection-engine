@@ -91,7 +91,7 @@
 >
     {#if entity}
         <div data-vertdivider="-"></div>
-        <div data-overflow="-">{entity.name}</div>
+        <div style="font-size: .75rem" data-overflow="-">{entity.name}</div>
     {/if}
 </Header>
 <div class="content" style={hidden ? "display: none" : undefined}>

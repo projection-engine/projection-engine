@@ -1,36 +1,38 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import createPortal from "../create-portal";
+    import ToolTipController from "./ToolTipController";
 
     let open = false
     export let content = ""
     let wrapper
     let mountingPoint
     let bBox, bodyBBox
-    const portal = createPortal(999, false)
+    let isMounted
+    let targetParent
+
     const handleMouseMove = (event) => {
-        if (!wrapper)
-            return
-        wrapper.style.left = (event.clientX + 10) + "px"
-        wrapper.style.top = (event.clientY + 10) + "px"
+
+        ToolTipController.element.style.left = (event.clientX + 10) + "px"
+        ToolTipController.element.style.top = (event.clientY + 10) + "px"
 
         let transform = {x: "0px", y: "0px"}
         if ((event.clientX + 10 + bBox.width) >= bodyBBox.width)
             transform.x = "calc(-100% - 10px)"
         if ((event.clientY + 10 + bBox.height) >= bodyBBox.height)
             transform.y = "calc(-100% - 10px)"
-        wrapper.style.transform = `translate(${transform.x}, ${transform.y})`
+        ToolTipController.element.style.transform = `translate(${transform.x}, ${transform.y})`
     }
+
     const hover = (event) => {
-        if (!wrapper)
-            return
+
         open = true
-        bBox = wrapper.getBoundingClientRect()
+        bBox = ToolTipController.element.getBoundingClientRect()
         bodyBBox = document.body.getBoundingClientRect()
-        wrapper.style.left = (event.clientX + 10) + "px"
-        wrapper.style.top = (event.clientY + 10) + "px"
+        ToolTipController.element.style.left = (event.clientX + 10) + "px"
+        ToolTipController.element.style.top = (event.clientY + 10) + "px"
         document.addEventListener("mousemove", handleMouseMove)
-        portal.parentElement.addEventListener(
+        targetParent.addEventListener(
             "mouseleave",
             () => {
                 document.removeEventListener("mousemove", handleMouseMove)
@@ -40,30 +42,25 @@
         )
     }
 
-    $: open ? portal.open() : portal.close()
-    onMount(() => {
-        if (!wrapper)
-            return
-        portal.create(wrapper)
-        portal.parentElement.addEventListener("mouseenter", hover)
-    })
-    onDestroy(() => {
-        try {
-            portal.parentElement.removeEventListener("mouseenter", hover)
-            portal.destroy()
-        } catch (err) {
-            console.error(err)
+    $: open ? ToolTipController.portal.open() : ToolTipController.portal.close()
+
+    $: {
+        if(open){
+            ToolTipController.element.innerHTML = content
         }
+    }
+    onMount(() => {
+        ToolTipController.initialize()
+        targetParent = wrapper.parentElement
+        targetParent.addEventListener("mouseenter", hover)
+        isMounted = true
     })
+    onDestroy(() => targetParent.removeEventListener("mouseenter", hover))
+
 </script>
 
-
-<div data-tooltip="-" bind:this={wrapper}>
-    {#if content}
-        {content}
-    {:else}
-        <slot/>
-    {/if}
-</div>
-
+{#if !isMounted}
+    <div bind:this={wrapper}>
+    </div>
+{/if}
 

@@ -34,9 +34,8 @@
                 {translate("GLOBAL")}
 
             {/if}
-            <ToolTip>
-                {translate("TRANSFORMATION_ORIENTATION")}
-            </ToolTip>
+            <ToolTip content={translate("TRANSFORMATION_ORIENTATION")}/>
+
         </button>
 
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "" : "-"}
@@ -53,7 +52,7 @@
     <Dropdown asButton={true}>
         <button slot="button" class="dropdown">
             <Icon styles="font-size: .9rem">straighten</Icon>
-            <ToolTip>{translate("MOVEMENT_GRID")}</ToolTip>
+            <ToolTip content={translate("MOVEMENT_GRID")}/>
         </button>
         <fieldset class="dropdown-content">
             <legend>{translate("MOVEMENT_GRID")}</legend>
@@ -114,21 +113,21 @@
                 data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
             <Icon styles="font-size: .9rem">open_with</Icon>
-            <ToolTip>{translate("T_GIZMO")}</ToolTip>
+            <ToolTip content={translate("T_GIZMO")}/>
         </button>
         <button
                 class="button"
                 data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
             <Icon styles="font-size: .9rem">360</Icon>
-            <ToolTip>{translate("R_GIZMO")}</ToolTip>
+            <ToolTip content={translate("R_GIZMO")}/>
         </button>
         <button
                 class="button"
                 data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
             <Icon styles="font-size: .9rem">open_in_full</Icon>
-            <ToolTip>{translate("S_GIZMO")}</ToolTip>
+            <ToolTip content={translate("S_GIZMO")}/>
         </button>
     </div>
 </div>

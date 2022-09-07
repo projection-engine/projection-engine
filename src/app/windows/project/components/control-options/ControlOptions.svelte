@@ -54,7 +54,7 @@
                         {translate("DEFAULT_LEVEL")}
                     {/if}
                 </div>
-                <ToolTip>{translate("LEVEL")}</ToolTip>
+                <ToolTip content={translate("LEVEL")}/>
             </button>
             <button on:click={() => EngineStore.loadLevel()}>
                 {#if !engine.currentLevel}

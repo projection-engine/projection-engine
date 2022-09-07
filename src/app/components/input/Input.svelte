@@ -25,6 +25,7 @@
     }
     onMount(() => input.value = searchString)
     $: if (input) input.value = searchString
+
 </script>
 
 <div

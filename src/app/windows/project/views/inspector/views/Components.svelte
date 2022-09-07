@@ -12,7 +12,10 @@
     import {onDestroy, onMount} from "svelte";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import UIElement from "../../../libs/engine/production/templates/UIElement";
-    import dragDrop from "../../../../../components/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
+    import Localization from "../../../../../libs/Localization";
+    import SpriteComponent from "../../../libs/engine/production/templates/SpriteComponent";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 
 
     export let translate
@@ -45,7 +48,10 @@
                         itemFound = FilesStore.data.meshes.find(s => s.registryID === id)
                         type = "MESH"
                     }
-
+                    if (!itemFound) {
+                        itemFound = FilesStore.data.textures.find(s => s.registryID === id)
+                        type = "IMAGE"
+                    }
                     if (!itemFound) {
                         itemFound = FilesStore.data.materials.find(s => s.registryID === id)
                         type = "MATERIAL"
@@ -53,12 +59,11 @@
 
                     if (!itemFound) {
                         alert.pushAlert(translate("COULD_NOT_FIND"), "error")
-                        console.error(id)
-                        return
+                        throw new Error("File not found")
                     }
                     switch (type) {
                         case "SCRIPT":
-                            await componentConstructor(entity, id,  true)
+                            await componentConstructor(entity, id, true)
                             break
                         case "MESH":
                             if (entity instanceof UIElement)
@@ -76,13 +81,21 @@
                                 entity.components[COMPONENTS.MESH][key] = value
                             })
                             break
+                        case "IMAGE": {
+                            const res = await EngineStore.loadTextureFromImageID(id)
+                            if (res)
+                                entity.components[COMPONENTS.SPRITE] = new SpriteComponent(data)
+                            break
+                        }
+                        default:
+                            break
                     }
                 } catch (err) {
                     console.error(err)
                     alert.pushAlert(translate("COULD_NOT_FIND"), "error")
                 }
             },
-            onDragOver: () =>  "Add component, mesh or material"
+            onDragOver: () => translate("ADD_DRAG_DROP")
         })
 
 

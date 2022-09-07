@@ -13,7 +13,7 @@
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
-    import dragDrop from "../../../../../components/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
     import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
     import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
@@ -122,6 +122,7 @@
         })
     })
     onDestroy(() => {
+        draggable.onDestroy()
         const parentElement = gpu.canvas.parentElement
         parentElement.removeEventListener("mousedown", onMouseDown)
         parentElement.removeEventListener("mouseup", onMouseUp)

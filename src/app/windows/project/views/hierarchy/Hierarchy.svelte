@@ -40,7 +40,7 @@
                     grid_view
                 {/if}
             </Icon>
-            <ToolTip>{translate("HIERARCHY_SOURCE")}</ToolTip>
+            <ToolTip content={translate("HIERARCHY_SOURCE")}/>
         </button>
         <button on:click={() => viewTab = 0} class="button">
             {#if viewTab === 0}
@@ -72,7 +72,7 @@
         <Dropdown hideArrow={true}>
             <button slot="button" class="dropdown">
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
-                <ToolTip>{translate("COMPONENT_FILTER")}</ToolTip>
+                <ToolTip content={translate("COMPONENT_FILTER")}/>
             </button>
             {#each Object.keys(COMPONENTS) as key}
                     <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}

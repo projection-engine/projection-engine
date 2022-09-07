@@ -72,6 +72,7 @@ export default class Localization {
             REDO_ENTITIES: "Redoing entity modification.",
         },
         VIEWPORT: {
+            CAMERA_POSITION: "Camera position",
             SELECT: "Select",
             ALL: "All",
             NONE: "None",
@@ -210,6 +211,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            ADD_DRAG_DROP: "Add component, mesh, texture or material",
             OPENGL_DOCS: "Learn more",
             TEXTURE_FILTERING: "Texture filtering function",
             TEXTURE_MIN_FILTER: "Minifying",

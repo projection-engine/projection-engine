@@ -1,7 +1,7 @@
 <script>
     import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES";
     import "../../css/NodeIO.css"
-    import dragDrop from "../../../../../../components/drag-drop";
+    import dragDrop from "../../../../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import ShaderEditorController from "../../ShaderEditorController";
 

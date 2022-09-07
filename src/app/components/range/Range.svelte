@@ -123,9 +123,7 @@
         >
             {label}
             {#if !disabled}
-                <ToolTip>
-                    {label}
-                </ToolTip>
+                <ToolTip content={label}/>
             {/if}
         </div>
     {/if}
