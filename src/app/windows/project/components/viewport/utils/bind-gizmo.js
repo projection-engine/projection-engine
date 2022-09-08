@@ -1,9 +1,9 @@
 import GIZMOS from "../../../data/GIZMOS";
-import RendererController from "../../../libs/engine/production/controllers/RendererController";
+import Engine from "../../../libs/engine/production/Engine";
 import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
 
 export default function bindGizmo(selected, settings) {
-    const entities = RendererController.entitiesMap
+    const entities = Engine.entitiesMap
     GizmoSystem.selectedEntities = selected
         .map(s => entities.get(s))
         .filter(c => settings.gizmo === GIZMOS.TRANSLATION || settings.gizmo === GIZMOS.ROTATION && !c.lockedRotation || settings.gizmo === GIZMOS.SCALE && !c.lockedScaling)

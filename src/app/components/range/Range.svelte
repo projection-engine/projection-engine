@@ -2,6 +2,8 @@
     import ToolTip from "../tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
     import KEYS from "../../windows/project/libs/engine/production/data/KEYS";
+    import Icon from "../../../../out/projection-engine-win32-x64/resources/app/src/app/components/icon/Icon.svelte";
+    import Localization from "../../libs/Localization";
 
     const toDeg = 180 / Math.PI
     const DELAY = 200
@@ -11,19 +13,26 @@
     export let precision = 2
     export let maxValue = undefined;
     export let minValue = undefined;
-    export let onFinish = () => null
+    export let onFinish = undefined
     export let disabled = undefined;
     export let incrementPercentage = .01
-    export let value = "0"
+    export let value = 0
+
     export let handleChange
     export let isAngle
     export let integer = undefined;
 
+    let changed = false
+    let originalValue
     let inputRef
     let dragged = false
     let currentValue = 0
-    let mouseIsDown = false
 
+    $: {
+        console.log(originalValue, value)
+        if(!changed)
+            originalValue = value
+    }
     const handleMouseMove = (e) => {
         if (!document.pointerLockElement)
             inputRef.requestPointerLock()
@@ -43,7 +52,8 @@
             currentValue = maxValue
         else if (currentValue < minValue && minValue !== undefined)
             currentValue = minValue
-
+        if(!changed)
+            changed = true
         inputRef.value = (currentValue * (isAngle ? toDeg : 1)).toFixed(precision ? precision : 1)
         if (handleChange)
             handleChange(currentValue)
@@ -71,6 +81,8 @@
         if (onFinish !== undefined)
             onFinish(finalValue)
 
+        if(!changed)
+            changed = true
     }
 
     $: {
@@ -81,7 +93,6 @@
         }
     }
     const handleMouseUp = (e) => {
-        mouseIsDown = false
         if (document.pointerLockElement === inputRef)
             document.exitPointerLock()
         if (e.target !== inputRef)
@@ -99,7 +110,6 @@
         if (disabled || document.activeElement === inputRef)
             return;
         e.preventDefault()
-        mouseIsDown = true
         document.body.addEventListener("mousemove", handleMouseMove)
 
     }
@@ -114,12 +124,11 @@
 <div
         class={"wrapper"}
         data-variant={variant}
-        style={mouseIsDown ? "background: transparent;" : undefined }
 >
-    {#if label && !mouseIsDown}
+    {#if label }
         <div
-                style={`color: ${disabled ? "#999" : "var(--pj-color-tertiary)"};`}
-                class="title"
+            style={`color: ${disabled ? "#999" : "var(--pj-color-tertiary)"};`}
+            class="title"
         >
             {label}
             {#if !disabled}
@@ -134,15 +143,41 @@
             on:keydown={onChange}
             on:mousedown={handleMouseDown}
             type="number"
+            style={variant === "embedded" ? "text-align: right;" : "text-align: center;"}
             class="draggable"
             on:blur={onChange}
     >
+    {#if originalValue != null}
+        <button on:click={() => {
+            if (onFinish !== undefined)
+                onFinish(originalValue)
+            else if (handleChange)
+                handleChange(originalValue)
+        }} class="reset-button">
+            <Icon styles="font-size: .9rem">undo</Icon>
+            <ToolTip content={Localization.COMPONENTS.RANGE.UNDO}/>
+        </button>
+    {/if}
 </div>
 
 <style>
-    .wrapper {
-        color: var(--pj-color-tertiary);
+    .reset-button{
+        border: none;
+        width: 23px;
+        height: 23px;
+        display: flex;
         align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+    .wrapper {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        color: var(--pj-color-tertiary);
+
         overflow: hidden;
         max-width: 100%;
         user-select: none !important;
@@ -151,13 +186,9 @@
         border: none;
         border-radius: 3px;
         width: 100%;
-        gap: 2px;
         height: 23px;
     }
 
-    .wrapper[data-variant="embedded"] {
-        background: var(--background-input);
-    }
 
     .title {
         position: absolute;
@@ -175,7 +206,7 @@
         border-radius: 3px;
         height: 23px;
 
-        background-color: var(--background-input);
+        background: var(--background-input);
 
         width: 100%;
 
@@ -185,17 +216,17 @@
         align-items: center;
         justify-content: center;
         outline: none;
-        color: var(--pj-color-tertiary);
-        font-size: inherit;
-        font-weight: 400;
-        text-align: right;
+        color: var(--pj-color-quaternary);
+        font-weight: normal;
+
+        font-size: 0.7rem;
     }
 
     .draggable:active,
     .draggable:focus {
         background-color: var(--pj-background-primary) !important;
         cursor: text;
-        text-align: center;
+
     }
 
     .draggable:hover {
@@ -206,9 +237,7 @@
         background: transparent !important;
         border: var(--pj-border-primary) 1px solid;
         color: #999 !important;
-        font-weight: normal;
         cursor: default !important;
-        text-align: right;
     }
 
     .draggable::-webkit-inner-spin-button {

@@ -6,7 +6,7 @@
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import CAMERA_GIZMO from "../../../data/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
-    import CameraAPI from "../../../libs/engine/production/libs/CameraAPI";
+    import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
     import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
     import SettingsStore from "../../../stores/SettingsStore";

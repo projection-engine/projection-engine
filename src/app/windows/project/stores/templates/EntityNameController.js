@@ -1,4 +1,4 @@
-import RendererController from "../../libs/engine/production/controllers/RendererController";
+import Engine from "../../libs/engine/production/Engine";
 import Entity from "../../libs/engine/production/templates/Entity";
 import EngineStore from "../EngineStore";
 import UIStore from "../UIStore";
@@ -10,7 +10,7 @@ export default class EntityNameController {
         const found = EntityNameController.byName.get(newName)
         let validName = true
         if (found) {
-            validName = !RendererController.entitiesMap.get(found)
+            validName = !Engine.entitiesMap.get(found)
         }
         if (validName) {
             entity.name = newName

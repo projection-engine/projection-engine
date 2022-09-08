@@ -9,7 +9,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../libs/component-constructor";
     import Accordion from "../../../../../../components/accordion/Accordion.svelte";
-    import RendererController from "../../../../libs/engine/production/controllers/RendererController";
+    import Engine from "../../../../libs/engine/production/Engine";
     import Entity from "../../../../libs/engine/production/templates/Entity";
     import EntityNameController from "../../../../stores/templates/EntityNameController";
 
@@ -82,8 +82,8 @@
                 width="100%"
                 hasBorder={true}
                 setSearchString={v => {
-                RendererController.queryMap.delete(entity.queryKey)
-                RendererController.queryMap.set(v, entity)
+                Engine.queryMap.delete(entity.queryKey)
+                Engine.queryMap.set(v, entity)
                 entity.queryKey = v
             }}
                 searchString={entity.queryKey}

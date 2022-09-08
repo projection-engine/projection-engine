@@ -1,6 +1,6 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
-import RendererController from "./engine/production/controllers/RendererController";
+import Engine from "./engine/production/Engine";
 import CameraTracker from "./engine/editor/libs/CameraTracker";
 import SelectionStore from "../stores/SelectionStore";
 
@@ -49,10 +49,10 @@ export default class ViewportActions {
         if (!ViewportActions.toCopy)
             return
         ViewportActions.toCopy.forEach(t => {
-            const found = RendererController.entitiesMap.get(t)
+            const found = Engine.entitiesMap.get(t)
             if (found) {
                 const clone = found.clone()
-                clone.parent = parent ? RendererController.entitiesMap.get(parent) : undefined
+                clone.parent = parent ? Engine.entitiesMap.get(parent) : undefined
                 block.push(clone)
             }
         })
@@ -73,7 +73,7 @@ export default class ViewportActions {
     }
 
     static selectAll() {
-        SelectionStore.engineSelected = Array.from(RendererController.entitiesMap.keys())
+        SelectionStore.engineSelected = Array.from(Engine.entitiesMap.keys())
     }
 
     static fixateActive() {

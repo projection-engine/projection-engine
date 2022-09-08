@@ -2,7 +2,7 @@ import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ActionHistoryAPI from "./ActionHistoryAPI";
-import RendererController from "../libs/engine/production/controllers/RendererController";
+import Engine from "../libs/engine/production/Engine";
 import FilesStore from "./FilesStore";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../data/DEFAULT_LEVEL"
@@ -12,14 +12,15 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-ren
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 import UIStore from "./UIStore";
 import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
-import GPU from "../libs/engine/production/controllers/GPU";
+import GPU from "../libs/engine/production/GPU";
 import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
 import {writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
 import Entity from "../libs/engine/production/templates/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../libs/engine/static/STATIC_TEXTURES";
-import MaterialInstance from "../libs/engine/production/controllers/instances/MaterialInstance";
+import MaterialInstance from "../libs/engine/production/instances/MaterialInstance";
+import FALLBACK_MATERIAL from "../libs/engine/production/data/FALLBACK_MATERIAL";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -75,9 +76,13 @@ export default class EngineStore {
         }
 
         GPU.meshes.forEach(m => GPU.destroyMesh(m))
-        EngineStore.engine.materials.forEach(m => m.delete())
-        EngineStore.engine.materials = []
-        window.renderer.materials = EngineStore.engine.materials
+        const materials = Array.from(GPU.materials.entries())
+        for (let i = 0; i < materials.length; i++) {
+            if (materials[i][0] === FALLBACK_MATERIAL)
+                continue
+            materials[i][1].delete()
+            GPU.materials.delete(materials[i][0])
+        }
 
         ipcRenderer.on(
             CHANNELS.ENTITIES + projectID,
@@ -119,8 +124,12 @@ export default class EngineStore {
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,
             async (ev, data) => {
-                EngineStore.engine.materials.push(await MaterialInstance.parseMaterialObject(data.result, data.id))
-                EngineStore.updateStore()
+                if (data && data.result)
+                    GPU.allocateMaterial({
+                        ...data.result,
+                        fragment: data.result.shader,
+                        vertex: data.result.vertexShader
+                    }, data.id)
             })
 
         ipcRenderer.send(IPC, pathToLevel)
@@ -128,7 +137,7 @@ export default class EngineStore {
 
     static async save() {
         alert.pushAlert("Saving project", "info")
-        const entities = Array.from(RendererController.entitiesMap.values())
+        const entities = Array.from(Engine.entitiesMap.values())
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
             let pathToWrite

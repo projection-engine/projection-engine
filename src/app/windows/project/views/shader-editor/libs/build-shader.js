@@ -1,5 +1,6 @@
 import compiler from "./compiler"
-import {trimString} from "../../../libs/engine/production/controllers/instances/ShaderInstance";
+import {trimString} from "../../../libs/engine/production/instances/ShaderInstance";
+import GPU from "../../../libs/engine/production/GPU";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
 
@@ -14,7 +15,7 @@ export default async function buildShader(nodes, links, openFile, setStatus, tra
     } = await compiler(nodes.filter(n => !n.isComment), links)
 
     if (shader) {
-        const currentMaterial = window.renderer.materials.find(m => m.id === openFile.registryID)
+        const currentMaterial = GPU.materials.get(openFile.registryID)
         let promise
         if (!currentMaterial)
             alert.pushAlert(translate("NOT_APPLIED"), "alert")

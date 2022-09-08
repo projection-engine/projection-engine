@@ -2,13 +2,13 @@ import Entity from "../../engine/production/templates/Entity";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import RendererController from "../../engine/production/controllers/RendererController";
+import Engine from "../../engine/production/Engine";
 import {v4} from "uuid";
-import GPU from "../../engine/production/controllers/GPU";
+import GPU from "../../engine/production/GPU";
 
 export default async function loopNodesScene(node, parent, index=0) {
     const children = []
-    const exists = RendererController.entitiesMap.get(node.id) != null
+    const exists = Engine.entitiesMap.get(node.id) != null
 
     const entity = new Entity(exists ? v4() : node.id)
     entity.name = node.name ? node.name : "entity-" + index
@@ -22,6 +22,8 @@ export default async function loopNodesScene(node, parent, index=0) {
             const meshData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path, "json")
 
             GPU.allocateMesh(reg.id, meshData)
+
+
             children.push(initializeEntity(meshData, reg.id, entity, m + index))
         }
     }

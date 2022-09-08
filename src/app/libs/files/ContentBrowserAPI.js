@@ -6,7 +6,7 @@ import {v4 as uuidv4, v4} from "uuid";
 import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/data/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../data/ROUTES";
 import FilesStore from "../../windows/project/stores/FilesStore";
-import GPU from "../../windows/project/libs/engine/production/controllers/GPU";
+import GPU from "../../windows/project/libs/engine/production/GPU";
 import TEXTURE_TEMPLATE from "../../../data/TEXTURE_TEMPLATE";
 
 const pathRequire = window.require("path")

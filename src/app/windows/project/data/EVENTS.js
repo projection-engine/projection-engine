@@ -1,6 +1,6 @@
 export default {
     LOADING: "Loading",
-    PROJECT_DATA: "Loading project libs",
+    PROJECT_DATA: "Loading project apis",
     PROJECT_DELETE: "Deleting project",
     PROJECT_LIST: "Loading projects",
     PROJECT_SAVE: "Saving project",
@@ -12,11 +12,11 @@ export default {
 
     REFRESHING: "Refreshing content-browser",
     LOADING_VIEWPORT: "Loading viewport",
-    PACKAGING_DATA: "Packaging libs for download.",
+    PACKAGING_DATA: "Packaging apis for download.",
     LOADING_MATERIAL: "Loading material",
-    LOAD_FILES: "Loading libs",
+    LOAD_FILES: "Loading apis",
     COMPILING: "Compiling",
     UPDATING_SYSTEMS: "Compiling systems",
-    LOADING_MESHES: "Loading libs",
+    LOADING_MESHES: "Loading apis",
     SAVING_MESH: "Saving mesh"
 }

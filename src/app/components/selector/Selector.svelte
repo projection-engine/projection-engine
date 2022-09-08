@@ -47,7 +47,7 @@
 
 </script>
 
-<Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);"
+<Dropdown asButton={true} styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
           buttonStyles="max-width: 100%; overflow: hidden; width: 100%">
     <button
             slot="button"

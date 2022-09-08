@@ -4,7 +4,7 @@ import Localization from "../../../../../libs/Localization";
 import FALLBACK_MATERIAL from "../../../libs/engine/production/data/FALLBACK_MATERIAL";
 import EngineStore from "../../../stores/EngineStore";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import GPU from "../../../libs/engine/production/controllers/GPU";
+import GPU from "../../../libs/engine/production/GPU";
 
 const loadFile = async (ID) => {
     const rs = await RegistryAPI.readRegistryFile(ID)
@@ -27,16 +27,16 @@ export default async function loadMaterial(ID, submit) {
         submit(FALLBACK_MATERIAL, "materialID")
     else
         try {
+            alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
             const file = await loadFile(ID)
             if (!file || !file?.response) {
                 alert.pushAlert("Please, check if material was compiled correctly")
                 return
             }
-            const exists = EngineStore.engine.materials.find(m => m.id === ID)
+            const exists = GPU.materials.get(ID) != null
             if (!exists) {
-                let newMat
                 await new Promise(resolve => {
-                    newMat = GPU.allocateMaterial({
+                    GPU.allocateMaterial({
                         onCompiled: () => resolve(),
                         settings: file.response.settings,
                         vertex: file.response.vertexShader,
@@ -44,10 +44,6 @@ export default async function loadMaterial(ID, submit) {
                         uniformData: file.response.uniformData
                     }, ID)
                 })
-                const newMaterials = [...EngineStore.engine.materials, newMat]
-                EngineStore.updateStore({...EngineStore.engine, materials: newMaterials})
-                alert.pushAlert(Localization.PROJECT.INSPECTOR.MATERIAL_LOADED, "success")
-                window.renderer.materials = newMaterials
             }
             submit(ID, "materialID")
         } catch (err) {

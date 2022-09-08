@@ -1,8 +1,8 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../data/RENDER_TARGET";
-    import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
-    import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
+    import ConversionAPI from "../../../libs/engine/production/apis/ConversionAPI";
+    import PickingAPI from "../../../libs/engine/production/apis/PickingAPI";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
@@ -14,13 +14,13 @@
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
-    import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
+    import DepthPass from "../../../libs/engine/production/passes/DepthPass";
     import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
-    import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
+    import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
     import {vec3} from "gl-matrix";
-    import InputEventsAPI from "../../../libs/engine/production/libs/InputEventsAPI";
+    import InputEventsAPI from "../../../libs/engine/production/apis/InputEventsAPI";
     import SelectionStore from "../../../stores/SelectionStore";
-    import GPU from "../../../libs/engine/production/controllers/GPU";
+    import GPU from "../../../libs/engine/production/GPU";
 
     let WORKER = viewportSelectionBoxWorker()
 

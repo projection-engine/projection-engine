@@ -1,8 +1,8 @@
 <script>
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import BundlerAPI from "../../../libs/engine/production/libs/BundlerAPI";
+    import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
     import "../css/Branch.css"
-    import RendererController from "../../../libs/engine/production/controllers/RendererController";
+    import Engine from "../../../libs/engine/production/Engine";
     import DraggableEntity from "./DraggableEntity.svelte";
     import updateSelection from "../utils/update-selection";
 
@@ -51,7 +51,7 @@
         }
     }
     const onHide = () => {
-        RendererController.entitiesMap.get(nodeRef.id).active = !active
+        Engine.entitiesMap.get(nodeRef.id).active = !active
         BundlerAPI.packageLights()
         active = !active
     }

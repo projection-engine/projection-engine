@@ -7,7 +7,7 @@ import Entity from "../engine/production/templates/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
-import GPU from "../engine/production/controllers/GPU";
+import GPU from "../engine/production/GPU";
 import EditorRenderer from "../engine/editor/EditorRenderer";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../../libs/Localization";
@@ -24,7 +24,7 @@ export default class Loader {
             mesh = GPU.meshes.get(objLoaded.id)
             if (!mesh) {
                 mesh = GPU.allocateMesh(id, objLoaded)
-                if (objLoaded.material && !window.renderer.materials.find(m => m.id === objLoaded.material)) {
+                if (objLoaded.material && !GPU.materials.get(objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
                         const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + rs.path, "json")

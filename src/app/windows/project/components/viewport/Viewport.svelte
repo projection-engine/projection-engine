@@ -7,7 +7,7 @@
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./layouts/EditorLayout.svelte";
     import UILayout from "./layouts/UILayout.svelte";
-    import MetricsPass from "../../libs/engine/production/templates/passes/MetricsPass";
+    import MetricsPass from "../../libs/engine/production/passes/MetricsPass";
     import SettingsStore from "../../stores/SettingsStore";
 
     export let isReady = false

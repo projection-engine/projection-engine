@@ -6,7 +6,7 @@ import FILE_TYPES from "../../../../data/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
-import GPU from "./engine/production/controllers/GPU";
+import GPU from "./engine/production/GPU";
 import PreviewSystem from "./engine/editor/services/PreviewSystem";
 
 export default async function importFile(currentDirectory) {

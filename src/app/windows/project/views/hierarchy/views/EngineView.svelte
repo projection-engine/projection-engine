@@ -12,7 +12,7 @@
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import RendererController from "../../../libs/engine/production/controllers/RendererController";
+    import Engine from "../../../libs/engine/production/Engine";
 
     export let ID
     export let translate
@@ -39,7 +39,7 @@
     let lockedEntity
     let surfaceSelected = {}
     const findSurface = (e, open) => {
-        const entity = RendererController.entitiesMap.get(e)
+        const entity = Engine.entitiesMap.get(e)
         if(!entity)
             return
         let surface

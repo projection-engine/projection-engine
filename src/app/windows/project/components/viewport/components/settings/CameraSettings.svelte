@@ -2,10 +2,10 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import Localization from "../../../../../../libs/Localization";
     import {onDestroy} from "svelte";
-    import CameraAPI from "../../../../libs/engine/production/libs/CameraAPI";
+    import CameraAPI from "../../../../libs/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../../stores/SettingsStore";
-    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
     let settings = {}
@@ -38,6 +38,7 @@
     <Range
             minLabelWidth={"30px"}
             label={translate("FAR")}
+            variant="embedded"
             incrementPercentage={1}
             onFinish={(v) => {
                 settings.zFar = v
@@ -53,6 +54,7 @@
     />
     <Range
             minLabelWidth={"30px"}
+            variant="embedded"
             label={translate("NEAR")}
             onFinish={(v) => {
                 settings.zNear = v
@@ -71,6 +73,7 @@
 
 
     <Range
+            variant="embedded"
             minLabelWidth={"30px"}
             label={translate("FOV")}
             minValue={10}
@@ -91,6 +94,7 @@
             }}
     />
     <Range
+            variant="embedded"
             label={translate("ZOOM")}
             onFinish={(v) => {
                 settings.radius = v
@@ -110,6 +114,7 @@
 <fieldset class="wrapper">
     <legend>{translate("CAMERA_BEHAVIOUR")}</legend>
     <Range
+            variant="embedded"
             precision={4}
             incrementPercentage={.001}
             label={translate("MOVEMENT_SPEED")}
@@ -118,12 +123,14 @@
             handleChange={v => updateCamera("movementSpeed", v)}
     />
     <Range
+            variant="embedded"
             label={translate("SCROLL_SPEED")}
             onFinish={(v) => updateCamera("scrollSpeed", v, true)}
             value={state.scrollSpeed}
             handleChange={v => updateCamera("scrollSpeed", v)}
     />
     <Range
+            variant="embedded"
             precision={4}
             incrementPercentage={.001}
             label={translate("TURN_SPEED")}
@@ -131,17 +138,25 @@
             value={state.turnSpeed}
             handleChange={v => updateCamera("turnSpeed", v)}
     />
-    <button on:click={() => updateCamera("animated", !settings.camera.animated, true)}>
-        {#if settings.camera.animated}
-            <Icon>check</Icon>
-        {/if}
-        {translate("CAM_ANIM")}
-    </button>
+    <Checkbox
+        checked={settings.camera.animated}
+        handleCheck={() => updateCamera("animated", !settings.camera.animated, true)}
+        label={translate("CAM_ANIM")}
+    />
 </fieldset>
 
 
 <style>
     .wrapper {
         padding: 2px;
+    }
+    .button{
+        border: none;
+        background: var(--background-input);
+
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        justify-content: flex-start;
     }
 </style>

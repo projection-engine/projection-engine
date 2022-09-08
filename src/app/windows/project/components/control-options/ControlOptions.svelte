@@ -8,8 +8,8 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../libs/engine/production/templates/passes/DiffuseProbePass";
-    import SpecularProbePass, {STEPS_CUBE_MAP} from "../../libs/engine/production/templates/passes/SpecularProbePass";
+    import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../libs/engine/production/passes/DiffuseProbePass";
+    import SpecularProbePass, {STEPS_CUBE_MAP} from "../../libs/engine/production/passes/SpecularProbePass";
 
     let engine
     let store

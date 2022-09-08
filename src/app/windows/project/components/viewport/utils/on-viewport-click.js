@@ -1,9 +1,9 @@
 import GIZMOS from "../../../data/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import ConversionAPI from "../../../libs/engine/production/libs/ConversionAPI";
-import PickingAPI from "../../../libs/engine/production/libs/PickingAPI";
-import RendererController from "../../../libs/engine/production/controllers/RendererController";
-import DepthPass from "../../../libs/engine/production/templates/passes/DepthPass";
+import ConversionAPI from "../../../libs/engine/production/apis/ConversionAPI";
+import PickingAPI from "../../../libs/engine/production/apis/PickingAPI";
+import Engine from "../../../libs/engine/production/Engine";
+import DepthPass from "../../../libs/engine/production/passes/DepthPass";
 import SelectionStore from "../../../stores/SelectionStore";
 
 const MAX_DELTA = 50, MIDDLE_BUTTON = 1
@@ -27,7 +27,7 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
     const selected = SelectionStore.engineSelected
     const picked = readPixelData(event.clientX, event.clientY)
     if (picked > 0) {
-        const entities = Array.from(RendererController.entitiesMap.values())
+        const entities = Array.from(Engine.entitiesMap.values())
         const entity = entities.find(e => e?.pickIndex === picked)
         if (entity) {
             if (event.ctrlKey) {

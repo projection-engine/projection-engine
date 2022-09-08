@@ -2,7 +2,7 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import {onMount} from "svelte";
     import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
-    import TransformationAPI from "../../../../libs/engine/production/libs/TransformationAPI";
+    import TransformationAPI from "../../../../libs/engine/production/apis/TransformationAPI";
 
     let state = {}
 

@@ -5,7 +5,7 @@ import ViewportActions from "../../../libs/ViewportActions";
 import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
 import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
 import DirectionalLightComponent from "../../../libs/engine/production/templates/DirectionalLightComponent";
-import RendererController from "../../../libs/engine/production/controllers/RendererController";
+import Engine from "../../../libs/engine/production/Engine";
 import SelectionStore from "../../../stores/SelectionStore";
 
 function createEntity(component) {
@@ -94,7 +94,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Close parent",
             onClick: (target) => {
                 const newOpen = {...open}
-                const node = RendererController.entitiesMap.get(target.getAttribute("data-node"))
+                const node = Engine.entitiesMap.get(target.getAttribute("data-node"))
                 if (!node)
                     return
                 delete newOpen[node.parent.id]
@@ -117,7 +117,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Duplicate",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const entity = RendererController.entitiesMap.get(t)
+                const entity = Engine.entitiesMap.get(t)
                 if (entity)
                     dispatchRendererEntities({
                         type: ENTITY_ACTIONS.ADD,
@@ -149,7 +149,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Deselect hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toDeselect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
+                const toDeselect = [t, ...getHierarchy(Engine.entitiesMap.get(t))]
                 SelectionStore.engineSelected = SelectionStore.engineSelected.filter(s => toDeselect.includes(s))
             }
         },
@@ -169,7 +169,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Select hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toSelect = [t, ...getHierarchy(RendererController.entitiesMap.get(t))]
+                const toSelect = [t, ...getHierarchy(Engine.entitiesMap.get(t))]
                 SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
 
             }
@@ -178,7 +178,7 @@ export default function getEngineContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Focus",
             icon: "place",
-            onClick: (target) => ViewportActions.focus(RendererController.entitiesMap.get(target.getAttribute("data-node")))
+            onClick: (target) => ViewportActions.focus(Engine.entitiesMap.get(target.getAttribute("data-node")))
         },
     ]
 }

@@ -1,6 +1,6 @@
 import ViewportActions from "../../../libs/ViewportActions";
 import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
-import TransformationAPI from "../../../libs/engine/production/libs/TransformationAPI";
+import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function getContextMenu() {

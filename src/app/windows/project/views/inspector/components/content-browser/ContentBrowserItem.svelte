@@ -8,7 +8,7 @@
     import TEXTURE_FORMATS from "../../../../libs/engine/production/data/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../../../libs/files/AssetAPI";
-    import GPU from "../../../../libs/engine/production/controllers/GPU";
+    import GPU from "../../../../libs/engine/production/GPU";
     import TEXTURE_FILTERING from "../../../../libs/engine/production/data/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../libs/engine/production/data/texture/TEXTURE_WRAPPING";
 

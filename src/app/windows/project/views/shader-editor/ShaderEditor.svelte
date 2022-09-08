@@ -8,11 +8,9 @@
     import Localization from "../../../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import FilesStore from "../../stores/FilesStore";
     import parseFile from "./libs/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
-    import COMPONENTS from "../../libs/engine/production/data/COMPONENTS";
     import Header from "../../../../components/view/components/Header.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
@@ -33,7 +31,6 @@
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
     let engine
-    let fileStore
     let openFile = {}
     let nodes = []
     let links = []
@@ -42,7 +39,7 @@
     let selectedEntity
     let ref
 
-    const unsubscribeFiles = FilesStore.getStore(v => fileStore = v)
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribe = SelectionStore.getStore(() => {
         selected = SelectionStore.shaderEditorSelected
@@ -63,21 +60,7 @@
         HotKeys.unbindAction(ref)
         unsubscribe()
         unsubscribeEngine()
-        unsubscribeFiles()
     })
-
-
-    $: {
-        if (selectedEntity && selectedEntity.components[COMPONENTS.MESH] && !openFile.registryID) {
-            const mID = selectedEntity.components[COMPONENTS.MESH].materialID
-            const found = fileStore.materials.find(m => m.registryID === mID)
-            if (found) {
-                alert.pushAlert("Editing " + found.name, "info")
-                openFile = found
-                ShaderEditorController.copied.clear()
-            }
-        }
-    }
 
     $: {
         status = {}
@@ -211,15 +194,6 @@
         width: 100%;
         overflow: hidden;
     }
-
-    .icon {
-        background: linear-gradient(to right bottom, white 25%, #333 75%);
-        min-width: 13px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-    }
-
     .button {
         display: flex;
         align-items: center;

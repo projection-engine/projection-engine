@@ -1,5 +1,5 @@
 import bindGizmo from "./bind-gizmo";
-import RendererController from "../../../libs/engine/production/controllers/RendererController";
+import Engine from "../../../libs/engine/production/Engine";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
 
 
@@ -25,9 +25,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraTracker.update()
     }
 
-    RendererController.entitiesMap = entities
-    renderer.materials = materials
-
+    Engine.entitiesMap = entities
     CameraTracker.animated = settings.camera?.animated
     CameraTracker.movementSpeed = settings.camera?.movementSpeed
     CameraTracker.scrollSpeed = settings.camera?.scrollSpeed

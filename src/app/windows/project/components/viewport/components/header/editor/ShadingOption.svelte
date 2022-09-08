@@ -3,12 +3,12 @@
     import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import CompositePass from "../../../../../libs/engine/production/templates/passes/CompositePass";
-    import GPU from "../../../../../libs/engine/production/controllers/GPU";
+    import CompositePass from "../../../../../libs/engine/production/passes/CompositePass";
+    import GPU from "../../../../../libs/engine/production/GPU";
     import STATIC_FRAMEBUFFERS from "../../../../../libs/engine/static/STATIC_FRAMEBUFFERS";
-    import DepthPass from "../../../../../libs/engine/production/templates/passes/DepthPass";
-    import DeferredPass from "../../../../../libs/engine/production/templates/passes/DeferredPass";
-    import AOPass from "../../../../../libs/engine/production/templates/passes/AOPass";
+    import DepthPass from "../../../../../libs/engine/production/passes/DepthPass";
+    import DeferredPass from "../../../../../libs/engine/production/passes/DeferredPass";
+    import AOPass from "../../../../../libs/engine/production/passes/AOPass";
     import SettingsStore from "../../../../../stores/SettingsStore";
 
     let shadingModel = SHADING_MODELS.DETAIL

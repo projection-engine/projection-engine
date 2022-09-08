@@ -61,15 +61,15 @@ export default class Localization {
         },
         INFO: {
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "3.2.0-alpha",
+            VERSION: "4.0.1-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
         ALERTS: {
-            UNDO_SETTINGS: "Undoing settings modification.",
-            REDO_SETTINGS: "Redoing settings modification.",
-            UNDO_ENTITIES: "Undoing entity modification.",
-            REDO_ENTITIES: "Redoing entity modification.",
+            UNDO_SETTINGS: "Undo: settings.",
+            REDO_SETTINGS: "Redo: settings.",
+            UNDO_ENTITIES: "Undo: entity.",
+            REDO_ENTITIES: "Redo: entity.",
         },
         VIEWPORT: {
             CAMERA_POSITION: "Camera position",
@@ -211,6 +211,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            LOADING_MATERIAL: "Loading material",
             ADD_DRAG_DROP: "Add component, mesh, texture or material",
             OPENGL_DOCS: "Learn more",
             TEXTURE_FILTERING: "Texture filtering function",
@@ -366,6 +367,9 @@ export default class Localization {
         }
     }
     static COMPONENTS = {
+        RANGE: {
+          UNDO: "Use original value"
+        },
         FRAME: {
             ABOUT: "About",
             EXIT: "Exit",

@@ -1,7 +1,7 @@
 import EngineStore from "../stores/EngineStore";
 import componentConstructor from "../libs/component-constructor";
 import ENVIRONMENT from "../libs/engine/production/data/ENVIRONMENT";
-import RendererController from "../libs/engine/production/controllers/RendererController";
+import Engine from "../libs/engine/production/Engine";
 import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
 
 export default async function loadScripts() {
@@ -9,8 +9,8 @@ export default async function loadScripts() {
     const newValue = !engine.executingAnimation
     EngineStore.updateStore({...engine, executingAnimation: newValue})
     if (newValue)
-        RendererController.environment = ENVIRONMENT.EXECUTION
-    const entities = [...Array.from(RendererController.entitiesMap.values()), ...Array.from(UserInterfaceController.entities.values())]
+        Engine.environment = ENVIRONMENT.EXECUTION
+    const entities = [...Array.from(Engine.entitiesMap.values()), ...Array.from(UserInterfaceController.entities.values())]
     try {
         if (newValue) {
             for (let i = 0; i < entities.length; i++) {

@@ -11,7 +11,7 @@
     import EntityElement from "./components/engine/EntityElement.svelte";
     import ComponentLayout from "./components/engine/ComponentLayout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import RendererController from "../../libs/engine/production/controllers/RendererController";
+    import Engine from "../../libs/engine/production/Engine";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
 
@@ -52,7 +52,7 @@
                     // TODO
                     break
                 case T.ENGINE:
-                    entity = RendererController.entitiesMap.get(selectionStore.array[0])
+                    entity = Engine.entitiesMap.get(selectionStore.array[0])
                     break
                 default:
                     entity = undefined

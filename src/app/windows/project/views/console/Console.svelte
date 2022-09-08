@@ -3,7 +3,7 @@
     import Header from "../../../../components/view/components/Header.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../libs/engine/production/libs/ConsoleAPI";
+    import ConsoleAPI from "../../libs/engine/production/apis/ConsoleAPI";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";

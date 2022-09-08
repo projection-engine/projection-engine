@@ -12,7 +12,7 @@
     import UserInterfaceController from "../../libs/engine/production/controllers/UserInterfaceController";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import UIStore from "../../stores/UIStore";
-    import GPU from "../../libs/engine/production/controllers/GPU";
+    import GPU from "../../libs/engine/production/GPU";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
     import AssetAPI from "../../../../libs/files/AssetAPI";

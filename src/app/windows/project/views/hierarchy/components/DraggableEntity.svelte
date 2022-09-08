@@ -7,7 +7,7 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import Entity from "../../../libs/engine/production/templates/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-    import RendererController from "../../../libs/engine/production/controllers/RendererController";
+    import Engine from "../../../libs/engine/production/Engine";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../../libs/Localization";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
@@ -79,7 +79,7 @@
                                 class="buttonIcon hierarchy-branch"
                                 on:click={() => {
                             const newOpen = {...open}
-                            let current = RendererController.entitiesMap.get(entity)
+                            let current = Engine.entitiesMap.get(entity)
                             while(current){
                                 newOpen[current.id] = true
                                 current = current?.parent
