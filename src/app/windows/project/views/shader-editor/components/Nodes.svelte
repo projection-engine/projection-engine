@@ -3,8 +3,10 @@
     import Input from "../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
+    import "../../../../../components/selector/css/selector.css"
 
     export let translate
+
     const parseStr = (str) => {
         return str.toLowerCase().replace(/\s/g, "")
     }
@@ -20,14 +22,14 @@
 </script>
 
 <Dropdown asButton="true">
-    <button slot="button" class="button">
+    <button slot="button" class="button selector">
         {translate("ADD")}
     </button>
-    <div class="modalAvailableNodes">
-        <div class="contentAvailableNodes">
+    <div class="modal-available-nodes selector">
+        <div class="content-available-nodes selector">
             {#each nodes as d, i}
                 <div
-                    class="optionAvailableNodes"
+                    class="option-available-nodes selector"
                     draggable="true"
                     on:dragstart={e => e.dataTransfer.setData("text", d.dataTransfer)}
                 >
@@ -36,7 +38,7 @@
                 </div>
             {/each}
         </div>
-        <div class="headerAvailableNodes">
+        <div class="header-available-nodes selector">
             <Input
                 width={"100%"}
                 searchString={searchString}
@@ -49,70 +51,3 @@
     </div>
 </Dropdown>
 
-<style>
-
-    .button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        height: 22px;
-        border: none;
-    }
-
-
-    .modalAvailableNodes{
-        max-height: 350px;
-        width: 100%;
-        max-width: unset;
-
-        display: grid;
-        gap: 4px;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .headerAvailableNodes {
-        position: sticky;
-        bottom: 0;
-        background: var(--pj-background-secondary);
-        width: 100%;
-
-        padding:4px ;
-        color: var(--pj-color-secondary);
-        font-size: 0.8rem;
-        font-weight: 550;
-    }
-
-    .contentAvailableNodes {
-        display: grid;
-        gap: 2px;
-        width: 100%;
-        padding:4px ;
-    }
-    .optionAvailableNodes {
-        width: 100%;
-        height: 30px;
-        border-radius: 3px;
-        padding: 4px !important;
-        transition: 150ms linear;
-        cursor: grab;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 4px;
-        font-size: 0.7rem;
-        font-weight: 550;
-        background-color: var(--pj-background-primary);
-        border: transparent 1px dashed;
-        color: var(--pj-color-secondary);
-    }
-
-    .optionAvailableNodes:hover {
-        color: var(--pj-accent-color);
-    }
-
-    .optionAvailableNodes:active {
-        cursor: grabbing;
-        border-color: var(--pj-accent-color);
-    }
-</style>

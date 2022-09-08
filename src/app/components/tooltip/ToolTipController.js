@@ -1,4 +1,3 @@
-import {onDestroy, onMount} from "svelte";
 import createPortal from "../create-portal";
 
 export default class ToolTipController {

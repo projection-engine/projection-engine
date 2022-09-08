@@ -22,13 +22,13 @@
     import ShaderEditorController from "./ShaderEditorController";
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getShortcuts from "./utils/get-shortcuts";
+    import Selector from "../../../../components/selector/Selector.svelte";
 
     export let hidden
     export let switchView
     export let orientation
 
 
-    const GRID_SIZE = 20
     const {shell} = window.require("electron")
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
@@ -111,7 +111,11 @@
         <button
                 disabled={!openFile?.registryID}
                 class="button"
-                on:click={() => ShaderEditorController.save(openFile, nodes, links).catch(err => console.error(err))}>
+                on:click={() => {
+                    buildShader(nodes, links, openFile, v => status = v, translate).then(() => {
+                        ShaderEditorController.save(openFile, nodes, links).catch(err => console.error(err))
+                    })
+                }}>
             <Icon styles="font-size: .9rem">save</Icon>
             {translate("SAVE")}
         </button>
@@ -124,19 +128,14 @@
             {translate("COMPILE")}
         </button>
         <div class="divider"></div>
-        <Dropdown asButton="true" disabled={fileStore.materials.length === 0}>
-            <button class="button" slot="button">
-                <div class="icon"></div>
-                {openFile.name ? openFile.name : ""}
-            </button>
+        <Selector
+                size="small"
+                type="material"
+                noDefault="true"
+                handleChange={v => openFile = v}
+                selected={openFile}
+        />
 
-
-            {#each fileStore.materials as m, i}
-                <button on:click={ () => openFile = m}>
-                    {m.name}
-                </button>
-            {/each}
-        </Dropdown>
         {#if openFile.registryID}
             <Nodes translate={translate}/>
         {/if}
@@ -162,13 +161,14 @@
 
         <button
                 class="button"
+                data-highlight="-"
                 on:click={e => {
-                    if (ShaderEditorController.grid === GRID_SIZE) {
+                    if (ShaderEditorController.grid === ShaderEditorController.GRID_SIZE) {
                         ShaderEditorController.grid = 1
                         e.currentTarget.setAttribute("data-highlight", "")
 
                     } else {
-                        ShaderEditorController.grid = GRID_SIZE
+                        ShaderEditorController.grid = ShaderEditorController.GRID_SIZE
                         e.currentTarget.setAttribute("data-highlight", "-")
 
                     }
@@ -213,7 +213,6 @@
     }
 
     .icon {
-        transition: 150ms linear;
         background: linear-gradient(to right bottom, white 25%, #333 75%);
         min-width: 13px;
         width: 13px;

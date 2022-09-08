@@ -105,7 +105,7 @@
             on:contextmenu={e => e.preventDefault()}
 
             data-board={"BOARD"}
-            style="height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
+            style="position: relative; height: {BOARD_SIZE}px;width: {BOARD_SIZE}px"
             on:drop={event => {
                event.preventDefault()
                 if(!isOpen)

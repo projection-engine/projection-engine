@@ -233,8 +233,6 @@ export default class Localization {
             CLAMP_TO_BORDER: "Clamp to border",
 
 
-
-
             ALLOCATING_TEXTURE: "Allocating texture",
             UPDATING_ASSET: "Updating asset",
             FLIP_Y: "Flip texture",
@@ -379,6 +377,10 @@ export default class Localization {
         },
 
         SELECTOR: {
+            IMAGE: "Texture",
+            MATERIAL: "Material",
+            MESH: "Mesh",
+
             CUBE: "Cube (Embedded)",
             SPHERE: "Sphere (Embedded)",
             PLANE: "Plane (Embedded)",
@@ -386,7 +388,7 @@ export default class Localization {
 
             EMPTY: "Empty",
             NOTHING: "Nothing found",
-            DEFAULT_MATERIAL: "Default material",
+            DEFAULT_MATERIAL: "Default material (Embedded)",
             REMOVE_SCRIPT: "Remove script",
             SEARCH: "Search"
         },

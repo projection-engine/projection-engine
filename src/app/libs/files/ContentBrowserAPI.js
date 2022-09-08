@@ -7,7 +7,7 @@ import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/d
 import ROUTES from "../../../data/ROUTES";
 import FilesStore from "../../windows/project/stores/FilesStore";
 import GPU from "../../windows/project/libs/engine/production/controllers/GPU";
-import TEXTURE_TEMPLATE from "../../windows/project/data/TEXTURE_TEMPLATE";
+import TEXTURE_TEMPLATE from "../../../data/TEXTURE_TEMPLATE";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")

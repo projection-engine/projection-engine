@@ -57,7 +57,7 @@
     }
 
     $: {
-        if(nodeRef && !nodeRef.parent)
+        if(nodeRef)
             hiddenActiveChildren = surfaceSelected[nodeRef.id]
     }
 </script>

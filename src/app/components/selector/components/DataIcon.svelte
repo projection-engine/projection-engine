@@ -14,17 +14,17 @@
 {#if type === "mesh"}
     <Preview path={previewPath}>
         <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
-        <Icon slot="icon" styles="font-size: 2rem">view_in_ar</Icon>
+        <Icon slot="icon">view_in_ar</Icon>
     </Preview>
 {:else if type === "image"}
     <Preview path={previewPath}>
         <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
-        <Icon slot="icon" styles="font-size: 2rem">image</Icon>
+        <Icon slot="icon" >image</Icon>
     </Preview>
 {:else if type === "material"}
     <Preview path={previewPath}>
         <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
-        <Icon slot="icon" styles="font-size: 2rem">texture</Icon>
+        <Icon slot="icon">texture</Icon>
     </Preview>
 {/if}
 <style>

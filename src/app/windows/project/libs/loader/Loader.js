@@ -15,7 +15,7 @@ import COMPONENTS from "../engine/production/data/COMPONENTS";
 import SpriteComponent from "../engine/production/templates/SpriteComponent";
 
 export default class Loader {
-    static async mesh(objLoaded, id) {
+    static async mesh(objLoaded, id, asID) {
         let mesh,
             entity,
             existsMesh = false,
@@ -23,7 +23,7 @@ export default class Loader {
         try {
             mesh = GPU.meshes.get(objLoaded.id)
             if (!mesh) {
-                GPU.allocateMesh(id, objLoaded)
+                mesh = GPU.allocateMesh(id, objLoaded)
                 if (objLoaded.material && !window.renderer.materials.find(m => m.id === objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
@@ -37,7 +37,8 @@ export default class Loader {
                 }
             } else
                 existsMesh = true
-            entity = initializeEntity(objLoaded, mesh.id)
+
+            entity = asID ? null : initializeEntity(objLoaded, mesh.id)
         } catch (e) {
             console.error(e)
             alert.pushAlert("Some error occurred", "error")
@@ -107,7 +108,7 @@ export default class Loader {
                 switch ("." + res.path.split(".").pop()) {
                     case FILE_TYPES.MESH: {
                         const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
-                        const meshData = await Loader.mesh(file, data)
+                        const meshData = await Loader.mesh(file, data, asID)
                         if (meshData.mesh !== undefined)
                             meshes.push(meshData)
                         else

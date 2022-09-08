@@ -2,6 +2,7 @@ import compiler from "./compiler"
 import {trimString} from "../../../libs/engine/production/controllers/instances/ShaderInstance";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
+
     alert.pushAlert(translate("COMPILING"), "info")
     const {
         shader,
@@ -17,13 +18,11 @@ export default async function buildShader(nodes, links, openFile, setStatus, tra
         let promise
         if (!currentMaterial)
             alert.pushAlert(translate("NOT_APPLIED"), "alert")
-        else {
-
+        else
             promise = new Promise(resolve => {
                 currentMaterial.shader = [shader, vertexShader, uniformData, (shaderMessage) => resolve(shaderMessage), settings]
                 currentMaterial.cubeMapShader = [cubeMapShader.code, vertexShader]
             })
-        }
         const m = await promise
         const message = m ? m : {messages: []}
         const shaderSplit = trimString(shader).split(";")

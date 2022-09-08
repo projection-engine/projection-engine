@@ -6,6 +6,7 @@
     import Option from "./Option.svelte";
     import FALLBACK_MATERIAL from "../../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../windows/project/libs/engine/static/STATIC_MESHES";
+    import "../css/selector.css"
 
 
     export let handleChange
@@ -14,58 +15,72 @@
     export let state
     export let store
     export let translate
+    export let noDefault
 
     let searchString = ""
-    $: filtered = getType(store, type).filter(e => e.name.toLowerCase().includes(searchString.toLowerCase()))
+    let filtered
+    $: {
+        const temp = getType(store, type), s = searchString.toLowerCase()
+        if (searchString)
+            filtered = temp.filter(e => e.name.toLowerCase().includes(s))
+        else
+            filtered = temp
+    }
 
     $: staticMeshes = Object.entries(STATIC_MESHES)
 </script>
 
-<div class="search-wrapper">
-
-    <Input searchString={searchString} setSearchString={v => searchString = v} width={"100%"}
-           placeholder={translate("SEARCH")}>
-        <Icon slot="icon">search</Icon>
-    </Input>
+<div class="modal-available-nodes selector">
+    <div class="content-available-nodes selector">
+        {#if !noDefault}
+            {#if type === "material"}
+                <Option
+                        type={type}
+                        setState={setState}
+                        data={{name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}}
+                        handleChange={handleChange}
+                        state={state}
+                />
+            {:else if type === "mesh"}
+                {#each staticMeshes as sm}
+                    <Option
+                            type={type}
+                            setState={setState}
+                            data={{name: translate(sm[0]), registryID: sm[1]}}
+                            handleChange={handleChange}
+                            state={state}
+                    />
+                {/each}
+            {/if}
+        {/if}
+        {#if filtered.length > 0}
+            {#each filtered as t, i}
+                <Option
+                        type={type}
+                        setState={setState}
+                        data={t}
+                        handleChange={handleChange}
+                        state={state}
+                />
+            {/each}
+        {:else}
+            <div class="nothing">
+                <Icon styles="font-size: 2rem">folder</Icon>
+                {translate("NOTHING")}
+            </div>
+        {/if}
+    </div>
+    <div class="header-available-nodes selector">
+        <Input
+                width={"100%"}
+                searchString={searchString}
+                setSearchString={v => searchString  = v}
+                placeholder={translate("SEARCH")}
+        >
+            <Icon slot="icon">search</Icon>
+        </Input>
+    </div>
 </div>
-<div class="content-wrapper">
-    {#if type === "material"}
-        <Option
-                type={type}
-                setState={setState}
-                data={{name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}}
-                handleChange={handleChange}
-                state={state}
-        />
-    {:else if type === "mesh"}
-        {#each staticMeshes as sm}
-            <Option
-                    type={type}
-                    setState={setState}
-                    data={{name: translate(sm[0]), registryID: sm[1]}}
-                    handleChange={handleChange}
-                    state={state}
-            />
-        {/each}
-    {/if}
-    {#if filtered.length > 0}
-        {#each filtered as t, i}
-            <Option
-                    type={type}
-                    setState={setState}
-                    data={t}
-                    handleChange={handleChange}
-                    state={state}
-            />
-        {/each}
-    {:else}
-        <div class="nothing">
-            <Icon styles="font-size: 2rem">folder</Icon>
-            {translate("NOTHING")}
-        </div>
-    {/if}
-</div>
-
 
 <style>
     .content-wrapper {

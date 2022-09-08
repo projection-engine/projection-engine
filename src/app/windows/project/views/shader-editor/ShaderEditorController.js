@@ -11,11 +11,14 @@ import {v4} from "uuid";
 import GPU from "../../libs/engine/production/controllers/GPU";
 
 export default class ShaderEditorController {
+    static GRID_SIZE = 20
     static scale = 1
-    static grid = 1
+    static grid = ShaderEditorController.GRID_SIZE
     static copied = new Map()
 
+
     static connectionOnDrag
+
     static parseNode(node) {
         if (!node)
             return
@@ -81,11 +84,10 @@ export default class ShaderEditorController {
         let preview
         if (isSave) {
             let material
-            if(GPU.materials.get(id)) {
+            if (GPU.materials.get(id)) {
                 material = GPU.materials.get(id)
                 await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
-            }
-            else
+            } else
                 await new Promise(resolve => {
                     material = new MaterialInstance({
                         vertex: compiled.vertexShader,

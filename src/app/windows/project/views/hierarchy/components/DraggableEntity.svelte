@@ -56,6 +56,7 @@
         })
     })
     onDestroy(() => draggable.onDestroy())
+    $: console.log(hiddenActiveChildren)
 </script>
 <div class="info hierarchy-branch" bind:this={ref}>
     <button

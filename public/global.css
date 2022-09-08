@@ -87,7 +87,6 @@ button {
     border: var(--pj-border-primary) 1px solid;
     border-radius: 3px;
     cursor: pointer;
-    transition: 150ms linear;
     font-size: .7rem;
 }
 

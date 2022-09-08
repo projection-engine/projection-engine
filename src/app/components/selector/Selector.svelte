@@ -9,18 +9,18 @@
     import FALLBACK_MATERIAL from "../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../windows/project/libs/engine/static/STATIC_MESHES";
 
-    export let size
+
     export let type
     export let handleChange
     export let selected
-
+    export let noDefault
     const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
-    function getParsedType(){
-        switch (type){
+    function getParsedType() {
+        switch (type) {
             case "image":
                 return "textures"
             case "material":
@@ -31,11 +31,12 @@
                 return undefined
         }
     }
+
     let state
     $: {
-        if(selected === FALLBACK_MATERIAL)
+        if (selected === FALLBACK_MATERIAL)
             state = {name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}
-        else if(Object.values(STATIC_MESHES).find(s => s === selected))
+        else if (Object.values(STATIC_MESHES).find(s => s === selected))
             state = {name: translate(Object.values(STATIC_MESHES).find(s => s === selected)), registryID: selected}
         else {
             const rID = selected?.registryID ? selected?.registryID : selected
@@ -46,10 +47,11 @@
 
 </script>
 
-<Dropdown hideArrow={true} styles="width: clamp(250px, 20vw, 500px);" buttonStyles="max-width: 100%; overflow: hidden;" >
+<Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);"
+          buttonStyles="max-width: 100%; overflow: hidden; width: 100%">
     <button
             slot="button"
-            style={`max-height: ${size === "small" ? "25px" : "43px"}; min-height:  ${size === "small" ? "25px" : "43px"}; width: 100%`}
+            style={`width: 100%; border: none`}
     >
         <ToolTip content={state.name}/>
         <div class="wrapper">
@@ -57,11 +59,12 @@
                 {state.name}
             </div>
             <small>
-                {type}
+                {translate(type.toUpperCase())}
             </small>
         </div>
     </button>
     <Options
+            noDefault={noDefault}
             translate={translate}
             handleChange={handleChange}
             type={type}
@@ -79,9 +82,10 @@
     .wrapper {
         max-width: 100%;
         position: relative;
-        overflow:hidden;
+        overflow: hidden;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 4px;
         height: 100%;
     }

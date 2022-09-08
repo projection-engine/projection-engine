@@ -1,6 +1,4 @@
 <script>
-    import NODE_TYPES from "../../data/NODE_TYPES";
-    import NODE_INFO from "../../data/NODE_INFO";
     import getBezierCurve from "../../utils/get-bezier-curve";
     import dragNode from "../../utils/drag-node";
     import NodeInput from "./NodeInput.svelte";
@@ -8,9 +6,6 @@
     import Material from "../../templates/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorController from "../../ShaderEditorController";
-    import {v4} from "uuid";
-    import {onDestroy, onMount} from "svelte";
-    import InputEventsAPI from "../../../../libs/engine/production/libs/InputEventsAPI";
 
     export let links
     export let node
@@ -171,7 +166,6 @@
         overflow: visible;
         box-shadow: var(--pj-boxshadow);
         background: var(--pj-background-primary);
-        transition: outline 150ms linear;
         outline: transparent 2px solid;
         position: relative;
         border-radius: 3px;

@@ -87,4 +87,10 @@
         background: var(--pj-background-tertiary);
         border: var(--pj-border-primary) 1px solid;
     }
+    .button:active {
+        color: var(--pj-accent-color);
+        background: var(--pj-background-primary);
+    }
+
+
 </style>

@@ -8,7 +8,7 @@ module.exports = async function writeData(pathName, data, regID, projectPath, pr
     return new Promise(resolve => {
         fs.writeFile(
             pathName,
-            JSON.stringify(data),
+            typeof data === "string" ? data : JSON.stringify(data),
             () => {
                 fs.writeFile(
                     projectPath + path.sep + REG_PATH + path.sep + regID + FILE_TYPES.REGISTRY,

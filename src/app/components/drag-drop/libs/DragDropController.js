@@ -1,4 +1,5 @@
 import pixel from "../data/pixel.png"
+
 export default class DragDropController {
     static tooltip
     static dragData

@@ -7,16 +7,21 @@
     export let data
     export let handleChange
     export let state
+
+    const onClick = e => {
+
+        e.currentTarget.parentElement.parentElement.parentElement.closeDropdown()
+        setState(data)
+        if(handleChange)
+            handleChange(data, () => setState({name: "Empty"}))
+    }
 </script>
 
 <button
-        data-closedropdown="-"
-        class="option"
+
+        class="option-available-nodes selector"
         data-highlight={state.registryID === data.registryID ? `-` : undefined}
-        on:click={() => {
-        setState(data)
-        handleChange(data, () => setState({name: "Empty"}))
-    }}
+        on:click={onClick}
 >
     <DataIcon state={data} type={type}/>
     <div data-overflow="-">
@@ -24,32 +29,3 @@
     </div>
     <ToolTip content={data.name}/>
 </button>
-
-<style>
-
-    .option {
-        position: relative;
-
-        width: 100%;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-items: flex-start;
-        gap: 2px;
-        font-size: 0.7rem;
-        font-weight: 550;
-        color: var(--pj-color-secondary);
-        text-align: center;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .option:hover {
-        background: var(--pj-background-secondary);
-    }
-
-    .option:active {
-        background: var(--pj-background-primary);
-    }
-
-</style>

@@ -3,7 +3,6 @@ import FilesAPI from "../../../../../libs/files/FilesAPI";
 import Localization from "../../../../../libs/Localization";
 import FALLBACK_MATERIAL from "../../../libs/engine/production/data/FALLBACK_MATERIAL";
 import EngineStore from "../../../stores/EngineStore";
-import MaterialInstance from "../../../libs/engine/production/controllers/instances/MaterialInstance";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
 import GPU from "../../../libs/engine/production/controllers/GPU";
 

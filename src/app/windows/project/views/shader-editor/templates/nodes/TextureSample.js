@@ -1,11 +1,7 @@
 import Node from "./Node"
 import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES"
-import IMAGE_WORKER_ACTIONS from "../../../../libs/engine/production/data/IMAGE_WORKER_ACTIONS"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import FilesAPI from "../../../../../../libs/files/FilesAPI"
 import RegistryAPI from "../../../../../../libs/files/RegistryAPI";
-import GPU from "../../../../libs/engine/production/controllers/GPU";
-import FilesStore from "../../../../stores/FilesStore";
 
 
 export default class TextureSample extends Node {
@@ -67,17 +63,17 @@ export default class TextureSample extends Node {
         if (this.texture?.registryID) {
             try {
                 const res = await RegistryAPI.readRegistryFile(this.texture?.registryID)
+                console.log(res, this.texture)
                 if (res) {
                     uniforms.push({
                         label: this.name,
                         key: this.uniformName,
-                        value: this.texture.registryID,
+                        value: res.id,
                         type: DATA_TYPES.TEXTURE,
-                        format: {...this.format, yFlip: this.yFlip}
                     })
                     uniformData.push({
                         key: this.uniformName,
-                        data: this.texture.registryID,
+                        data: res.id,
                         type: DATA_TYPES.TEXTURE,
                     })
                 }

@@ -1,6 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import createPortal from "../create-portal";
     import ToolTipController from "./ToolTipController";
 
     let open = false

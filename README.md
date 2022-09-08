@@ -9,6 +9,7 @@
   - Integrated with inspector
   - Single instance on engine, causing less memory being wasted by replicating same image texture on the GPU
   - Real time update for settings change
+  - glTF loader integrated with new texture format
 - Hierarchy improvements:
   - There will always be a locked entity (except when there is no entity present on level)
   - Quick access button to locked entity will appear on top-level parent, by clicking it the hierarchy will be open to highlight entity
@@ -52,6 +53,10 @@
 - Viewport picking not working most of the time
 - Home key not moving camera correctly
 - Shader editor compiler not working in some cases
+- Selector showing deleted files
+- When saving material the instance is not updated
+- Linking mesh to component causes error
 
 ## Other
 - Visual refinements to themes and buttons/inputs
+- Selector visual simplified

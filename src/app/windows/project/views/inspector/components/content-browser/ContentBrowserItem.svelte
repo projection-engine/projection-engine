@@ -1,6 +1,4 @@
 <script>
-    import Input from "../../../../../../components/input/Input.svelte";
-    import ContentBrowserAPI from "../../../../../../libs/files/ContentBrowserAPI";
     import Localization from "../../../../../../libs/Localization";
     import FilesStore from "../../../../stores/FilesStore";
     import FilesAPI from "../../../../../../libs/files/FilesAPI";
@@ -62,7 +60,7 @@
         <legend>{translate("TEXTURE_FORMAT")}</legend>
         <Dropdown asButton="true" buttonStyles={B}>
             <button slot="button" class="dropdown">
-                {data?.format}
+                {data?.internalFormat}
             </button>
             <button on:click={() => updateAsset("format", TEXTURE_FORMATS.RGB)}>
                 RGB
@@ -71,7 +69,7 @@
                 RGBA
             </button>
             <button on:click={() => updateAsset("format", TEXTURE_FORMATS.SRGBA)}>
-                sRGBA
+                SRGB8_ALPHA8
             </button>
         </Dropdown>
     </fieldset>

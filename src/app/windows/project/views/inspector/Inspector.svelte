@@ -13,7 +13,6 @@
     import SelectionStore from "../../stores/SelectionStore";
     import RendererController from "../../libs/engine/production/controllers/RendererController";
     import FilesStore from "../../stores/FilesStore";
-    import ContentBrowser from "../content-browser/ContentBrowser.svelte";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
 
     export let hidden = undefined

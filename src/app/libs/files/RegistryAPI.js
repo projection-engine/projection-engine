@@ -3,34 +3,52 @@ import NodeFS from "../NodeFS";
 import FilesAPI from "./FilesAPI";
 import ROUTES from "../../../data/ROUTES";
 import REG_PATH from "../../../data/REG_PATH"
+import FilesStore from "../../windows/project/stores/FilesStore";
 
-const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
+const fs = window.require("fs")
 
 export default class RegistryAPI {
     static registry = []
 
     static async readRegistry() {
+        const registryPath = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH)
         const promise = await new Promise(resolve => {
             const listenID = v4().toString()
             ipcRenderer.once(ROUTES.READ_REGISTRY + listenID, (ev, data) => {
                 resolve(data)
             })
             ipcRenderer.send(ROUTES.READ_REGISTRY, {
-                pathName: FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH),
+                pathName: registryPath,
                 listenID
             })
         })
-        RegistryAPI.registry = promise
-        return promise
+
+        const response = {}
+        for(let i = 0; i < promise.length; i++){
+            const current = promise[i]
+            const pathToFind = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + current.path)
+
+            if(!fs.existsSync(pathToFind))
+                await FilesAPI.deleteFile(current.registryPath)
+            else {
+                // REPEATED REGISTRY ENTRY
+                console.log(response[current.path])
+                if(response[current.path])
+                    await FilesAPI.deleteFile(response[current.path].registryPath)
+                response[current.path] = current
+            }
+        }
+        RegistryAPI.registry = Object.values(response)
+        return Object.values(response)
     }
 
     static async updateRegistry(from, to, registryData) {
-        const assetsResolved = pathRequire.resolve(FilesAPI.path + FilesAPI.sep + "assets")
-        const fromResolved = pathRequire.resolve(from).replace(assetsResolved, "")
-        const toResolved = pathRequire.resolve(to)
+        const assetsResolved = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets")
+        const fromResolved = FilesAPI.resolvePath(from).replace(assetsResolved, "")
+        const toResolved = FilesAPI.resolvePath(to)
         const registryFound = registryData.find(reg => {
-            const regResolved = pathRequire.resolve(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path).replace(assetsResolved, "")
+            const regResolved = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path).replace(assetsResolved, "")
             return regResolved === fromResolved
         })
         if (registryFound) await NodeFS.write(registryFound.registryPath, JSON.stringify({
@@ -58,7 +76,7 @@ export default class RegistryAPI {
         const [, res] = await NodeFS.readdir(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + REG_PATH))
         if (res) {
             const registryData = await Promise.all(res.map(data => RegistryAPI.readRegistryFile(data.replace(".reg", ""))))
-            const parsedPath = pathRequire.resolve(p)
+            const parsedPath = FilesAPI.resolvePath(p)
             return registryData.filter(f => f !== undefined).find(f => parsedPath.includes(f.path))
         }
     }

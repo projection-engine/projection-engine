@@ -38,18 +38,25 @@
     let selected = []
     let lockedEntity
     let surfaceSelected = {}
-    const findSurface = (e) => {
+    const findSurface = (e, open) => {
         const entity = RendererController.entitiesMap.get(e)
+        if(!entity)
+            return
         let surface
         if (entity.parent) {
             surface = []
-            let parent = entity.parent
-            while (parent) {
-                if (!parent.parent) {
-                    surface[0] = parent.id
+            let current = entity.parent
+            while (current) {
+                const breakTime =  !open[current?.id] && open[current?.parent?.id]
+                console.log(breakTime, current)
+                if (!current.parent || breakTime) {
+
+                    surface[0] = current.id
                     surface[1] = e
+                    break
                 }
-                parent = parent?.parent
+
+                current = current?.parent
             }
         }
         return surface
@@ -57,7 +64,7 @@
     $: {
         const surface = {}
         if (lockedEntity) {
-            const found = findSurface(lockedEntity)
+            const found = findSurface(lockedEntity, open)
             if (found) {
                 if (!surface[found[0]])
                     surface[found[0]] = []
@@ -66,7 +73,7 @@
             for (let i = 0; i < selected.length; i++) {
                 if (selected[i] === lockedEntity)
                     continue
-                const found = findSurface(selected[i])
+                const found = findSurface(selected[i], open)
                 if (!found)
                     continue
                 if (!surface[found[0]])

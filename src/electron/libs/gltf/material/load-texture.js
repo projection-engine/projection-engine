@@ -5,9 +5,8 @@ const writeData = require("../../../utils/gltf/write-data");
 const getNormalizedName = require("../../../utils/gltf/get-normalized-name")
 const FILE_TYPES = require("../../../../data/FILE_TYPES");
 
-
-module.exports =
-    async function loadTexture(basePath, texture, textures, images, partialPath, projectPath, name, index) {
+const TEXTURE_TEMPLATE = require("../../../../data/TEXTURE_TEMPLATE")
+module.exports = async function loadTexture(basePath, texture, textures, images, partialPath, projectPath, name, index) {
         const source = texture.index !== undefined ? textures[texture.index] : undefined
         const imgURI = source !== undefined ? images[source.source] : undefined
 
@@ -32,7 +31,7 @@ module.exports =
                 const imageBase64 =fetched ?  `data:image/${imgURI.uri.split(".").pop()};base64, ` + file : "data:image/png;base64, " + file
                 const id = v4().toString()
 
-                await writeData(path.resolve(partialPath + getNormalizedName("texture-asset-" + name, index) + FILE_TYPES.TEXTURE), imageBase64, id, projectPath, imageBase64)
+                await writeData(path.resolve(partialPath + getNormalizedName("texture-asset-" + name, index) + FILE_TYPES.TEXTURE), JSON.stringify({...TEXTURE_TEMPLATE, base64: imageBase64}), id, projectPath, imageBase64)
                 return id
             }
         }

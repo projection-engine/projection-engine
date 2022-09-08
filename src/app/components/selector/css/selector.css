@@ -1,0 +1,95 @@
+
+
+.button.selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    border: none;
+}
+
+.modal-available-nodes.selector{
+    max-height: 350px;
+    width: 100%;
+    max-width: unset;
+
+    display: grid;
+    gap: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.header-available-nodes.selector {
+    position: sticky;
+    bottom: 0;
+    background: var(--pj-background-secondary);
+    width: 100%;
+
+    padding:4px ;
+    color: var(--pj-color-secondary);
+    font-size: 0.8rem;
+    font-weight: 550;
+}
+
+.content-available-nodes.selector {
+    display: grid;
+    gap: 2px;
+    width: 100%;
+    padding:4px ;
+}
+.option-available-nodes.selector[draggable] {
+    width: 100%;
+    height: 30px;
+    border-radius: 3px;
+    padding: 0 4px !important;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 550;
+    background-color: var(--pj-background-primary);
+    border: transparent 1px dashed;
+    color: var(--pj-color-secondary);
+}
+
+.option-available-nodes.selector:hover[draggable]  {
+    color: var(--pj-accent-color);
+}
+
+.option-available-nodes.selector:active[draggable]  {
+    cursor: grabbing;
+    border-color: var(--pj-accent-color);
+}
+
+
+
+
+.option-available-nodes.selector {
+    width: 100%;
+    height: 30px;
+    border-radius: 3px;
+    padding: 2px !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 550;
+    background-color: var(--pj-background-primary);
+    border: none;
+    color: var(--pj-color-secondary);
+}
+
+.option-available-nodes.selector:hover {
+    color: var(--pj-accent-color);
+}
+
+.option-available-nodes.selector:active{
+    background: var(--pj-accent-color);
+    color: white;
+}
+
+

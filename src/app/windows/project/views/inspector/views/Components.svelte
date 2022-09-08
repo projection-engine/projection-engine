@@ -13,9 +13,7 @@
     import Entity from "../../../libs/engine/production/templates/Entity";
     import UIElement from "../../../libs/engine/production/templates/UIElement";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
-    import Localization from "../../../../../libs/Localization";
     import SpriteComponent from "../../../libs/engine/production/templates/SpriteComponent";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 
 
     export let translate
