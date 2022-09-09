@@ -8,7 +8,6 @@
     import {onDestroy, onMount} from "svelte";
     import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
-    import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let translate
@@ -161,7 +160,7 @@
             class="option"
             on:mousedown={e => CameraTracker.transformCamera(e,  1)}
             on:dblclick={() => {
-                CameraTracker.centerOn = [...EditorRenderer.cursor.translation]
+                CameraTracker.centerOn = [...window.engineCursor.translation]
                 CameraTracker.update()
             }}>
         <ToolTip content={translate("MOVE_IN_SCREEN_SPACE")}/>

@@ -1,5 +1,4 @@
 import ViewportActions from "../../../libs/ViewportActions";
-import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
 import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 
@@ -60,14 +59,14 @@ export default function getContextMenu() {
             label: "Move to 3D cursor",
             onClick: () => {
                 const comp = SelectionStore.selectedEntity
-                comp.translation = [...EditorRenderer.cursor.translation]
+                comp.translation = [...window.engineCursor.translation]
             }
         },
         {
             label: "Pivot on 3D cursor",
             onClick: () => {
                 const comp = SelectionStore.selectedEntity
-                comp.pivotPoint = [...EditorRenderer.cursor.translation]
+                comp.pivotPoint = [...window.engineCursor.translation]
             }
         },
         {
@@ -75,7 +74,7 @@ export default function getContextMenu() {
             onClick: () => {
                 const component = SelectionStore.selectedEntity
                 if (component) {
-                    const t = EditorRenderer.cursor
+                    const t = window.engineCursor
                     t.translation = [component.matrix[12], component.matrix[13], component.matrix[14]]
                     t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
                 }

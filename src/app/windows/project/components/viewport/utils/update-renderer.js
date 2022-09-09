@@ -1,6 +1,9 @@
 import bindGizmo from "./bind-gizmo";
 import Engine from "../../../libs/engine/production/Engine";
 import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
+import ENVIRONMENT from "../../../libs/engine/production/data/ENVIRONMENT";
+import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
+import Wrapper from "../../../libs/engine/editor/services/Wrapper";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -12,7 +15,6 @@ export default function updateRenderer(selected, engine, settings) {
         scripts
     } = engine
 
-    const renderer = window.renderer
     if (!CameraTracker.cameraInitialized) {
 
         CameraTracker.cameraInitialized = true
@@ -32,11 +34,18 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.scrollDelay = settings.camera?.scrollDelay
     CameraTracker.turnSpeed = settings.camera?.turnSpeed
 
-    renderer.updatePackage(
-        executingAnimation,
-        {selected, ...settings},
-        scripts
-    )
+    Engine.environment = executingAnimation ? ENVIRONMENT.EXECUTION : ENVIRONMENT.DEV
+    if (!executingAnimation)
+        CameraTracker.startTracking()
+    else
+        CameraTracker.stopTracking()
+    BundlerAPI.build(
+        {
+            ...settings,
+            selected,
+            onWrap: executingAnimation ? null : Wrapper,
+        })
+
     bindGizmo(selected, settings)
-    renderer.start()
+    Engine.start()
 }

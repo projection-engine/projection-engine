@@ -10,6 +10,7 @@
     import DeferredPass from "../../../../../libs/engine/production/passes/DeferredPass";
     import AOPass from "../../../../../libs/engine/production/passes/AOPass";
     import SettingsStore from "../../../../../stores/SettingsStore";
+    import Engine from "../../../../../libs/engine/production/Engine";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -68,7 +69,7 @@
 
     }
     $: {
-        if (window.renderer) {
+        if (Engine.isReady) {
             if (shadingModel !== SHADING_MODELS.DETAIL)
                 CompositePass.workerTexture = getTexture()
             else

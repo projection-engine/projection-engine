@@ -1,7 +1,6 @@
 <script>
     import RENDER_TARGET from "../../data/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import EditorRenderer from "../../libs/engine/editor/EditorRenderer";
     import updateRenderer from "./utils/update-renderer";
     import Localization from "../../../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
@@ -16,6 +15,8 @@
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
     import AssetAPI from "../../../../libs/files/AssetAPI";
+    import Engine from "../../libs/engine/production/Engine";
+    import initializer from "../../libs/engine/editor/initializer";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -42,7 +43,7 @@
         )
         GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
             .then(() => {
-                window.renderer = new EditorRenderer({w: settings.resolution[0], h: settings.resolution[1]})
+                initializer()
                 onReady()
                 done = true
                 EngineStore.updateStore({...engine, viewportInitialized: true})

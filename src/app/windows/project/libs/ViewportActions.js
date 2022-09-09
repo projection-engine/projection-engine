@@ -35,7 +35,7 @@ export default class ViewportActions {
         const oldSelected = SelectionStore.engineSelected
         for (let i = 0; i < oldSelected.length; i++)
             notValid[oldSelected[i]] = true
-        const entities = window.renderer.entities
+        const entities = Engine.entities
         for (let i = 0; i < entities.length; i++) {
             if (!notValid[entities[i].id])
                 newArr.push(entities[i].id)

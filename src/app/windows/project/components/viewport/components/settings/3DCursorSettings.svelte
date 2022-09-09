@@ -1,13 +1,12 @@
 <script>
     import Range from "../../../../../../components/range/Range.svelte";
     import {onMount} from "svelte";
-    import EditorRenderer from "../../../../libs/engine/editor/EditorRenderer";
     import TransformationAPI from "../../../../libs/engine/production/apis/TransformationAPI";
 
     let state = {}
 
     onMount(() => {
-        const t = EditorRenderer.cursor.translation
+        const t = window.engineCursor.translation
         state = {
             x: t[0],
             y: t[1],
@@ -15,7 +14,7 @@
         }
     })
     const transform = (index, value) => {
-        const c = EditorRenderer.cursor
+        const c = window.engineCursor
         c.translation[index] = value
         c.transformationMatrix = TransformationAPI.transform(c.translation, [0,0,0,1], c.scaling)
     }

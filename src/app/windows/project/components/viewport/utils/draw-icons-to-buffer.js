@@ -3,9 +3,10 @@ import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
 import GPU from "../../../libs/engine/production/GPU";
 import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
 import DepthPass from "../../../libs/engine/production/passes/DepthPass";
+import Engine from "../../../libs/engine/production/Engine";
 
 export default function drawIconsToBuffer() {
-    const entities = window.renderer.entities
+    const entities = Engine.entities
     const FBO = DepthPass.framebuffer
     FBO.startMapping(undefined, undefined, false)
     for (let i = 0; i < entities.length; i++) {

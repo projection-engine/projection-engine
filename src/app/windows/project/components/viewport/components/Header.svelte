@@ -2,9 +2,10 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
-    import loadScripts from "../../../utils/load-scripts";
     import EditorHeader from "./header/EditorHeader.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
+    import EntityStateController from "../../../libs/engine/editor/EntityStateController";
+    import EngineStore from "../../../stores/EngineStore";
 
     export let settings
     export let translate
@@ -13,6 +14,12 @@
     let ref
 
 
+    const play = () => {
+        if(!EngineStore.engine.executingAnimation)
+            EntityStateController.startPlayState()
+        else
+            EntityStateController.stopPlayState()
+    }
 </script>
 
 
@@ -28,7 +35,7 @@
                 {/if}
             </Icon>
         </button>
-        <button on:click={() => loadScripts(engine)}>
+        <button on:click={play}>
             <Icon>play_arrow</Icon>
             {translate("PLAY")}
         </button>

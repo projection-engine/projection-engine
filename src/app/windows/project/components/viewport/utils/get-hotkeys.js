@@ -29,7 +29,7 @@ export default function getHotkeys() {
         },
         {
             require: [KEYS.Home],
-            callback: () => ViewportActions.focus(SelectionStore.selectedEntity)
+            callback: () => ViewportActions.focus(EngineStore.engine.entities.get(SelectionStore.engineSelected[0] != null? SelectionStore.engineSelected[0]: SelectionStore.lockedEntity))
         },
         {
             require: [KEYS.KeyS],

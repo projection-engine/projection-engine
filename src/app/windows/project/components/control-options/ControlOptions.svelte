@@ -1,6 +1,5 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
-    import loadScripts from "../../utils/load-scripts";
     import {onDestroy} from "svelte";
     import Layout from "./Layout.svelte";
     import Localization from "../../../../libs/Localization";
@@ -10,6 +9,7 @@
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../libs/engine/production/passes/DiffuseProbePass";
     import SpecularProbePass, {STEPS_CUBE_MAP} from "../../libs/engine/production/passes/SpecularProbePass";
+    import EntityStateController from "../../libs/engine/editor/EntityStateController";
 
     let engine
     let store
@@ -25,7 +25,12 @@
 
 <div class="container">
 
-    <button on:click={() => loadScripts().catch()}>
+    <button on:click={() => {
+        if(!EngineStore.engine.executingAnimation)
+            EntityStateController.startPlayState()
+        else
+            EntityStateController.stopPlayState()
+    }}>
         <Icon styles="font-size: .85rem">play_arrow</Icon>
         {#if engine.executingAnimation}
             {translate("STOP")}

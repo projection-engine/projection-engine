@@ -39,12 +39,18 @@
         </button>
 
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "" : "-"}
-                on:click={() => settings.transformationType = TRANSFORMATION_TYPE.GLOBAL}>
+                on:click={() => {
+                    settings.transformationType = TRANSFORMATION_TYPE.GLOBAL
+                    GizmoSystem.transformationType = TRANSFORMATION_TYPE.GLOBAL
+                }}>
             <Icon>language</Icon>
             {translate("GLOBAL")}
         </button>
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "-" : ""}
-                on:click={() => settings.transformationType = TRANSFORMATION_TYPE.RELATIVE}>
+                on:click={() => {
+                    settings.transformationType = TRANSFORMATION_TYPE.RELATIVE
+                    GizmoSystem.transformationType = TRANSFORMATION_TYPE.RELATIVE
+                }}>
             <Icon>place</Icon>
             {translate("LOCAL")}
         </button>

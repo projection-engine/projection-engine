@@ -4,7 +4,6 @@
     import Entity from "../../../../../libs/engine/production/templates/Entity";
     import ProbeComponent from "../../../../../libs/engine/production/templates/ProbeComponent";
     import STATIC_TEXTURES from "../../../../../libs/engine/static/STATIC_TEXTURES";
-    import EditorRenderer from "../../../../../libs/engine/editor/EditorRenderer";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../../stores/templates/dispatch-renderer-entities";
     import MeshComponent from "../../../../../libs/engine/production/templates/MeshComponent";
     import FALLBACK_MATERIAL from "../../../../../libs/engine/production/data/FALLBACK_MATERIAL";
@@ -27,7 +26,7 @@
         actor.components[COMPONENTS.PROBE] = new ProbeComponent()
         actor.components[COMPONENTS.PROBE].specularProbe = !asDiffuse
         addSprite(actor, STATIC_TEXTURES.PROBE)
-        actor.translation = [...EditorRenderer.cursor.translation]
+        actor.translation = [...window.engineCursor.translation]
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
     }
     const createMesh = (id) => {
@@ -80,7 +79,7 @@
                 const actor = new Entity(undefined, translate("POINT_LIGHT"))
                 actor.components[COMPONENTS.POINT_LIGHT] = new PointLightComponent()
                 addSprite(actor, STATIC_TEXTURES.POINT_LIGHT)
-                actor.translation = [...EditorRenderer.cursor.translation]
+                actor.translation = [...window.engineCursor.translation]
                 actor.lockedRotation = true
                 actor.lockedScaling = true
 
@@ -95,7 +94,7 @@
             on:click={() => {
                         const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
                         addSprite(actor, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
-                        actor.translation = [...EditorRenderer.cursor.translation]
+                        actor.translation = [...window.engineCursor.translation]
                         actor.lockedRotation = true
                         actor.lockedScaling = true
                         actor.components[COMPONENTS.DIRECTIONAL_LIGHT] = new DirectionalLightComponent(undefined, actor)
@@ -131,7 +130,7 @@
                     const actor = new Entity(undefined, translate("CAMERA"))
                     actor.components[COMPONENTS.CAMERA] = new CameraComponent()
 
-                    actor.translation = [...EditorRenderer.cursor.translation]
+                    actor.translation = [...window.engineCursor.translation]
                     actor.rotation = [0, 0, 0]
                     actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
                     actor.lockedScaling = true

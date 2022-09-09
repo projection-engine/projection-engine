@@ -8,7 +8,6 @@ import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
 import GPU from "../engine/production/GPU";
-import EditorRenderer from "../engine/editor/EditorRenderer";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../../libs/Localization";
 import COMPONENTS from "../engine/production/data/COMPONENTS";
@@ -69,7 +68,7 @@ export default class Loader {
                 }
                 entities.push(folder)
                 if (!onlyReturn) {
-                    const cursorPoint = [EditorRenderer.cursor.matrix[12], EditorRenderer.cursor.matrix[13], EditorRenderer.cursor.matrix[14]]
+                    const cursorPoint = [window.engineCursor.matrix[12], window.engineCursor.matrix[13], window.engineCursor.matrix[14]]
                     entities.forEach(e => {
                         if (e instanceof Entity) {
                             vec4.add(e.translation, e.translation, cursorPoint)
@@ -142,7 +141,7 @@ export default class Loader {
                     .filter(m => m !== undefined)
                 if (!toLoad.length)
                     return
-                const cursorPoint = EditorRenderer.cursor.translation
+                const cursorPoint = window.engineCursor.translation
                 toLoad.forEach(e => {
                     if (e) {
                         vec4.add(e.translation, e.translation, cursorPoint)

@@ -15,12 +15,14 @@
     import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import DepthPass from "../../../libs/engine/production/passes/DepthPass";
-    import EditorRenderer from "../../../libs/engine/editor/EditorRenderer";
     import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
     import {vec3} from "gl-matrix";
     import InputEventsAPI from "../../../libs/engine/production/apis/InputEventsAPI";
     import SelectionStore from "../../../stores/SelectionStore";
     import GPU from "../../../libs/engine/production/GPU";
+    import Engine from "../../../libs/engine/production/Engine";
+    import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
+    import ScreenSpaceGizmo from "../../../libs/engine/editor/libs/ScreenSpaceGizmo";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -34,14 +36,9 @@
     const CAMERA_DISTANCE = 2
 
     function transformCursor(e) {
-
-
-        const t = EditorRenderer.cursor
-        mouseDelta.x += e.movementX * CAMERA_DISTANCE
-        mouseDelta.y += e.movementY * CAMERA_DISTANCE
-        t.translation = ConversionAPI.toWorldCoordinates(mouseDelta.x, mouseDelta.y).slice(0, 3)
-        vec3.scale(t.translation, t.translation, 1 / CAMERA_DISTANCE)
-
+        const translation = ScreenSpaceGizmo.onMouseMove(e, .1)
+        const t = window.engineCursor
+        vec3.add(t.translation, t.translation, translation)
         t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
     }
 
@@ -61,11 +58,21 @@
     }
 
     function onMouseDown(e) {
-        if (!window.renderer)
+        if (!Engine.isReady)
             return
+        const b = gpu.canvas.getBoundingClientRect()
+        console.log({
+            converted: ConversionAPI.toScreenCoordinates([...window.engineCursor.translation]),
+            actual: [e.clientX, e.clientY],
+            relative: [e.clientX - b.left, e.clientY - b.top]
+        })
 
         mouseDelta = {x: e.clientX, y: e.clientY}
         if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
+            ScreenSpaceGizmo.cameraDistance = Math.max(vec3.length(vec3.sub([], window.engineCursor.translation, CameraAPI.position)), 50)
+            const b = gpu.canvas.getBoundingClientRect()
+            ScreenSpaceGizmo.mouseDelta.x = b.width / 2
+            ScreenSpaceGizmo.mouseDelta.y = b.height / 2
             InputEventsAPI.lockPointer()
 
             transformCursor(e)
@@ -87,7 +94,7 @@
             GizmoSystem.targetGizmo.onMouseUp()
             gpu.canvas.parentElement.removeEventListener("mousemove", gizmoMouseMove)
         }
-        if (!window.renderer)
+        if (!Engine.isReady)
             return
         onViewportClick(
             event,
@@ -98,7 +105,7 @@
                     GizmoSystem.wasOnGizmo = false
                     return
                 }
-                SelectionStore.engineSelected  = data
+                SelectionStore.engineSelected = data
             })
     }
 
@@ -136,7 +143,7 @@
 
             try {
                 const data = PickingAPI.readBlock(depthFBO, nStart, nEnd)
-                WORKER.postMessage({entities: window.renderer.entities, data})
+                WORKER.postMessage({entities: Engine.entities, data})
                 WORKER.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
             } catch (err) {
                 console.error(err, startCoords, nStart)
