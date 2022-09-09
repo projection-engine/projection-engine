@@ -5,10 +5,13 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import rgb2hsv from "./utils/rgb-2-hsv";
     import hsv2Rgb from "./utils/hsv-2-rgb";
+    import Localization from "../../libs/Localization";
+    import ToolTip from "../tooltip/ToolTip.svelte";
+    import Range from "../range/Range.svelte";
 
     export let submit = () => null
     let changed = false
-    export let size = 250
+    const WIDTH = 200
     export let height = "25px"
     export let value
     export let label
@@ -20,14 +23,16 @@
     let picker, canvas
     let button
     let hsl = {}
+    let timeout
+
 
     function updateBasedOnValues() {
         if (!canvas || changed)
             return
         boundingBox = canvas.getBoundingClientRect()
 
-        const x = (saturation / 100) * size
-        const y = (1 - colorValue / 100) * size
+        const x = (saturation / 100) * boundingBox.width
+        const y = (1 - colorValue / 100) * boundingBox.height
         picker.style.left = x + "px"
         picker.style.top = y + "px"
         hsl = hsv2Hsl(hue, saturation, colorValue)
@@ -35,7 +40,7 @@
     }
 
     $: {
-        if (value) {
+        if (value && !changed) {
             if (typeof value === "string") {
                 const split = value.match(/[\d.]+/g)
                 const [r, g, b] = split.map(v => parseFloat(v))
@@ -64,12 +69,12 @@
     function handler(event) {
         switch (event.type) {
             case "mousemove": {
-                changed = true
+
                 if (focused || clicked) {
                     const x = event.clientX - boundingBox.x
                     const y = event.clientY - boundingBox.y
-                    const percentageX = x / size
-                    const percentageY = 1 - y / size
+                    const percentageX = x / boundingBox.width
+                    const percentageY = 1 - y / boundingBox.height
 
                     saturation = percentageX * 100
                     if (saturation > 100)
@@ -85,26 +90,27 @@
                     if (colorValue <= 100 || saturation <= 100)
                         hsl = hsv2Hsl(hue, saturation, colorValue)
                 }
+                clearTimeout(timeout)
+                timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
+
                 break
             }
             case "mousedown":
+                changed = true
                 boundingBox = canvas.getBoundingClientRect()
                 clicked = true
                 break
             case "mouseup":
+                clearTimeout(timeout)
+                timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
+
                 clicked = false
-                if (changed)
-                    submit(hsv2Rgb(hue, saturation, colorValue))
+
                 break
         }
 
     }
 
-    onDestroy(() => {
-        canvas.removeEventListener("mousemove", handler)
-        canvas.removeEventListener("mousedown", handler)
-        document.body.removeEventListener("mouseup", handler)
-    })
     onMount(() => {
         picker = document.getElementById(internalID + "-picker")
         canvas = document.getElementById(internalID + "-canvas")
@@ -112,26 +118,34 @@
         updateBasedOnValues()
         canvas.addEventListener("mousemove", handler)
         canvas.addEventListener("mousedown", handler)
-        document.body.addEventListener("mouseup", handler)
+        document.addEventListener("mouseup", handler)
     })
-    let timeout
+
+    onDestroy(() => {
+        canvas.removeEventListener("mousemove", handler)
+        canvas.removeEventListener("mousedown", handler)
+        document.removeEventListener("mouseup", handler)
+    })
 
     function handleInputChange(event) {
         changed = true
-        hue= parseFloat(event.target.value)
+        hue = parseFloat(event.target.value)
+        // event.target.parentElement.style.setProperty('--hue', parseFloat(event.target.value));
+        hsl = {...hsl, h: parseFloat(event.target.value)}
 
         clearTimeout(timeout)
-        setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 250)
-        event.target.parentElement.style.setProperty('--hue', hue);
-        hsl= {...hsl, h: parseFloat(event.target.value)}
+        timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
+
     }
+
+    const translate = key => Localization.COMPONENTS.COLOR[key]
 </script>
 
 
 <Dropdown
         hideArrow="true"
         width="100%"
-        styles={`width: ${size + 16}px;`}
+        styles="width: {WIDTH + 32}px; overflow: hidden"
         disabled={disabled}
 >
     <div
@@ -140,25 +154,105 @@
             bind:this={button}
             class="dropdown"
             disabled={disabled}>
+
         {#if label}
-            <div class="label" style="height: {height};">
-                {label}
-            </div>
+            <ToolTip content={label}/>
         {/if}
     </div>
-    <div class="container" style="--hue: {hue}; width: {size + 16}px; height:  {size + 48}px; ">
-        <div style="width: {size}px; height: {size}px" class="canvas" id="{internalID}-canvas">
+    <div class="container" style="--hue: {hue}; width: {WIDTH + 32}px; height: {WIDTH + 48}px; ">
+        {#if label}
+            <b>
+                {label}
+            </b>
+        {/if}
+        <div style="width: 100%; height: {WIDTH}px" class="canvas" id="{internalID}-canvas">
             <div class="picker" id="{internalID}-picker"></div>
         </div>
         <input
-                on:change={handleInputChange}
+                on:input={handleInputChange}
                 type="range"
+
                 value={hue}
                 max="360"
         >
+
+        <div data-divider="-"></div>
+        <div class="section-wrapper">
+            <Range
+                    variant="embedded"
+                    value={hue}
+                    label="H"
+                    onFinish={v => hue = v}
+                    handleChange={v => {
+                        clearTimeout(timeout)
+                        timeout = setTimeout(() => {
+                            hue = v
+                            updateBasedOnValues()
+                            submit(hsv2Rgb(v, saturation, colorValue))
+                        }, 50)
+                    }}
+                    minValue={0}
+                    maxValue={360}
+                    noOriginal={true}
+            />
+            <Range
+                    noOriginal={true}
+                    variant="embedded"
+                    value={saturation}
+                    label="S"
+                    handleChange={v => {
+                        clearTimeout(timeout)
+                        timeout = setTimeout(() => {
+                            saturation = v
+                            updateBasedOnValues()
+                            submit(hsv2Rgb(hue, v, colorValue))
+                        }, 50)
+                    }}
+                    onFinish={v => saturation = v}
+                    minValue={0}
+                    maxValue={100}
+            />
+            <Range
+                    noOriginal={true}
+                    variant="embedded"
+                    value={colorValue}
+                    label="V"
+                    handleChange={v => {
+                        clearTimeout(timeout)
+                        timeout = setTimeout(() => {
+                            colorValue = v
+                            updateBasedOnValues()
+                            submit(hsv2Rgb(hue, saturation, v))
+                        }, 50)
+                    }}
+                    onFinish={v => colorValue = v}
+                    minValue={0}
+                    maxValue={100}
+            />
+
+        </div>
     </div>
 </Dropdown>
 <style>
+
+    small {
+        font-size: .7rem;
+        color: var(--pj-color-quaternary);
+    }
+
+    b {
+        font-weight: 550;
+        font-size: .7rem;
+    }
+
+    .section-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+    }
+
+
     .dropdown {
         border-radius: 3px;
         overflow: hidden;
@@ -172,30 +266,19 @@
         opacity: .9;
     }
 
-    .label {
-        display: flex;
-        align-items: center;
-
-        font-weight: 550;
-        position: absolute;
-        left: 0;
-        padding: 4px;
-        font-size: .7rem;
-        background: rgba(32, 32, 32, .3);
-        color: var(--pj-color-secondary);
-    }
-
     .container {
+        overflow: hidden;
         box-sizing: border-box;
-        display: grid;
-        justify-items: center;
-        align-content: center;
-        gap: 16px;
-        padding: 8px;
+        display: flex;
+        flex-direction: column;
 
+
+        gap: 8px;
+        padding: 4px;
 
         --hue: 0;
         --box-shadow: 0 0 0 1px rgba(0, 0, 0, .025), 0 1px 5px rgba(0, 0, 0, 0.25);
+
     }
 
     input {
@@ -230,14 +313,19 @@
         cursor: ew-resize;
         background-color: hsl(var(--hue), 100%, 50%) !important;
         border: 4px solid white;
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
         box-shadow: var(--box-shadow);
         transform: translateY(-7px);
     }
 
+    input[type=range]::-webkit-slider-thumb:hover {
+        transform: translateY(-7px) scale(1.1);
+    }
+
     input[type=range]::-webkit-slider-thumb:active {
+        opacity: .5;
         transform: translateY(-7px) scale(1.1);
     }
 

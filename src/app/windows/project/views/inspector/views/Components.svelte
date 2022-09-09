@@ -14,6 +14,7 @@
     import UIElement from "../../../libs/engine/production/templates/UIElement";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import SpriteComponent from "../../../libs/engine/production/templates/SpriteComponent";
+    import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
 
 
     export let translate
@@ -132,6 +133,8 @@
                     translate={translate}
                     component={component}
                     submit={(key, value, save) => {
+                        if(componentKey === COMPONENTS.DIRECTIONAL_LIGHT || componentKey === COMPONENTS.POINT_LIGHT)
+                            BundlerAPI.packageLights(true)
                             if(!savedState){
                                 EngineStore.saveEntity(
                                     entity.id,

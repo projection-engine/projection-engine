@@ -17,28 +17,65 @@
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
 
-    const updateAsset = (key, value) => {
+    const updateAsset = async (key, value, d=data) => {
+        let temp = {...d}
         if (key === "format")
-            data = {...data, ...value}
+            temp = {...temp, ...value}
         else
-            data = {...data, [key]: value}
+            temp = {...temp, [key]: value}
 
+
+        if (key === "flipY" || temp === "flipX") {
+            const canvas = document.createElement("canvas"),
+                ctx = canvas.getContext('2d'),
+                img = new Image()
+
+            img.src = temp.base64
+            await new Promise(resolve => {
+                img.onload = () => {
+                    const width = img.naturalWidth, height = img.naturalHeight
+
+                    canvas.width = width
+                    canvas.height = height
+                    let scaleH = temp.flipX ? -1 : 1, // Set horizontal scale to -1 if flip horizontal
+                        scaleV = temp.flipY ? -1 : 1, // Set verical scale to -1 if flip vertical
+                        posX = temp.flipX ? width * -1 : 0, // Set x position to -100% if flip horizontal
+                        posY = temp.flipY ? height * -1 : 0; // Set y position to -100% if flip vertical
+
+                    ctx.save(); // Save the current state
+                    ctx.scale(scaleH, scaleV); // Set scale to flip the image
+                    ctx.drawImage(img, posX, posY, width, height); // draw the image
+                    ctx.restore();
+
+                    temp.base64 = canvas.toDataURL()
+                    resolve()
+                }
+            })
+
+        }
         alert.pushAlert(translate("UPDATING_ASSET"), "alert")
-        AssetAPI.updateAsset(item.registryID, JSON.stringify(data)).catch()
+        AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
-        if ("." + item.type === FILE_TYPES.TEXTURE && GPU.textures.get(item.registryID)) {
+        if (GPU.textures.get(item.registryID) != null) {
             alert.pushAlert(translate("ALLOCATING_TEXTURE"), "alert")
             GPU.destroyTexture(item.registryID)
             GPU.allocateTexture({
-                ...data,
-                img: data.base64,
-                yFlip: data.flipY
+                ...temp,
+                img: temp.base64
             }, item.registryID)
         }
+        data = temp
     }
 </script>
+<fieldset>
+    <legend>{translate("FLIP_TEXTURE")}</legend>
 
-<Checkbox label={translate("FLIP_Y")} checked={data?.flipY} handleCheck={() => updateAsset("flipY", !data.flipY)}/>
+    <Checkbox label={translate("FLIP_Y")} checked={data?.flipY}
+              handleCheck={ async () => await updateAsset("flipY", !data.flipY, data)}/>
+    <Checkbox label={translate("FLIP_X")} checked={data?.flipX}
+              handleCheck={async() => await updateAsset("flipX", !data.flipX, data)}/>
+</fieldset>
+
 <fieldset>
     <legend>{translate("TEXTURE_FORMAT")}</legend>
     <Dropdown asButton="true" buttonStyles={B}>
@@ -126,7 +163,8 @@
     {/each}
 </fieldset>
 
-<div class="link" on:click={() => shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
+<div class="link"
+     on:click={() => shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
     <Icon>help</Icon>
     {translate("OPENGL_DOCS")}
 </div>

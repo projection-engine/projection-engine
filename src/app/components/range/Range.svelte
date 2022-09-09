@@ -18,6 +18,7 @@
     export let disabled = undefined;
     export let incrementPercentage = .01
     export let value = 0
+    export let noOriginal
 
     export let handleChange
     export let isAngle
@@ -30,7 +31,6 @@
     let currentValue = 0
 
     $: {
-        console.log(originalValue, value)
         if(!changed)
             originalValue = value
     }
@@ -148,7 +148,7 @@
             class="draggable"
             on:blur={onChange}
     >
-    {#if originalValue != null && !disabled}
+    {#if originalValue != null && !disabled && !noOriginal}
         <button on:click={() => {
             if (onFinish !== undefined)
                 onFinish(originalValue)

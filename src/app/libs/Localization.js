@@ -157,6 +157,7 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            DEACTIVATE: "Activate/Deactivate entity",
             SELECTED_CHILD: "Child entity is selected",
             FOCUS_LOCKED_ENTITY: "Focus on locked entity",
             TRANSFORM: "Transformation",
@@ -211,6 +212,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            COLOR: "Color",
             MATERIAL_UPDATED: "Material updated",
             CREATION_DATE: "Creation date",
             CHILDREN: "Children",
@@ -245,7 +247,9 @@ export default class Localization {
 
             ALLOCATING_TEXTURE: "Allocating texture",
             UPDATING_ASSET: "Updating asset",
-            FLIP_Y: "Flip texture",
+            FLIP_Y: "Y",
+            FLIP_X: "X",
+            FLIP_TEXTURE: "Flip texture",
             TEXTURE_FORMAT: "Texture format",
             FROM_LAYOUT: "Load from UI Layout",
             FOCUSED_ON_ENGINE: "Priority on: Entity",
@@ -404,6 +408,11 @@ export default class Localization {
             DEFAULT_MATERIAL: "Default material (Embedded)",
             REMOVE_SCRIPT: "Remove script",
             SEARCH: "Search"
+        },
+        COLOR: {
+            HUE: "Hue",
+            SATURATION: "Saturation",
+            VALUE: "Value"
         },
         VIEWS: {
             UI: "UI Hierarchy",

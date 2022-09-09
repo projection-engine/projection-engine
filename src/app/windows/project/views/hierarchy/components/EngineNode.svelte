@@ -5,6 +5,10 @@
     import Engine from "../../../libs/engine/production/Engine";
     import DraggableEntity from "./DraggableEntity.svelte";
     import updateSelection from "../utils/update-selection";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
+    import Localization from "../../../../../libs/Localization";
+    import EngineStore from "../../../stores/EngineStore";
+    import {v4} from "uuid";
 
     const LEFT_BUTTON = 0
     export let depth = undefined
@@ -17,12 +21,10 @@
     export let surfaceSelected
 
     let ref
-    let active = true
     let hiddenActiveChildren
 
     $: {
         if (nodeRef && ref) {
-            active = nodeRef.active
             const length = selected.length
             let is = false
             for (let i = 0; i < length; i++)
@@ -50,10 +52,14 @@
             setOpen(newOpen)
         }
     }
+    const loopHierarchy = (entity, newValue) => {
+        for(let i = 0; i < entity.children.length; i++)
+            loopHierarchy(entity.children[i], newValue)
+        entity.active = newValue
+    }
     const onHide = () => {
-        Engine.entitiesMap.get(nodeRef.id).active = !active
-        BundlerAPI.packageLights()
-        active = !active
+        loopHierarchy(nodeRef, !nodeRef.active)
+        EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }
 
     $: {
@@ -68,7 +74,7 @@
             id={nodeRef.id}
             bind:this={ref}
             class="wrapper hierarchy-branch"
-            style={"padding-left:" +  (depth * 18 + "px;") + (active ? "" : "opacity: .5") }
+            style={"padding-left:" +  (depth * 18 + "px;") + (nodeRef.active ? "" : "opacity: .5") }
             on:mousedown={(e) => {
                 if (e.button === LEFT_BUTTON && e.target.nodeName !== "BUTTON" && e.target.nodeName !== "SPAN")
                     updateSelection(nodeRef.id, e.ctrlKey)
@@ -88,8 +94,9 @@
             {/if}
             <DraggableEntity setOpen={setOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren} lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
             <button class="button-small hierarchy-branch" on:click={onHide}>
+                <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
                 <Icon styles="font-size: .8rem">
-                    {#if active}
+                    {#if nodeRef.active}
                         visibility
                     {:else}
                         visibility_off

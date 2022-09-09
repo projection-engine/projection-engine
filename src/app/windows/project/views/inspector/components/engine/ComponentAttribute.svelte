@@ -139,7 +139,7 @@
                 }
                 submit(attribute.key, [r, g, b], true)
             }}
-            placeholder={label}
+            label={label}
             value={value}
             size={"small"}
     />
