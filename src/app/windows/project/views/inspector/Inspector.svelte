@@ -95,8 +95,8 @@
 </Header>
 <div class="content" style={hidden ? "display: none" : undefined}>
     {#if entity != null}
-        <div class="wrapper-content">
-            {#if target === SelectionStore.TYPES.ENGINE}
+        {#if target === SelectionStore.TYPES.ENGINE}
+            <div class="wrapper-content">
                 <EntityElement entity={entity} translate={translate}/>
                 {#if !(entity instanceof Entity)}
                     <UIElement
@@ -115,10 +115,12 @@
                         translate={translate}
                         entity={entity}
                 />
-            {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
-                <ContentBrowserItem item={entity}/>
-            {/if}
-        </div>
+            </div>
+        {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
+            <ContentBrowserItem item={entity}/>
+        {/if}
+
+
     {:else}
         <div data-empty="-">
             <Icon styles="font-size: 75px">category</Icon>

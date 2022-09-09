@@ -21,32 +21,56 @@
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getShortcuts from "./utils/get-shortcuts";
     import Selector from "../../../../components/selector/Selector.svelte";
+    import ViewStateController from "../../../../components/view/ViewStateController";
 
     export let hidden
     export let switchView
     export let orientation
-
+    export let viewID
+    export let viewIndex
 
     const {shell} = window.require("electron")
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
-    let engine
+
     let openFile = {}
     let nodes = []
     let links = []
     let status
+
+    let ref
     let selected = []
     let selectedEntity
-    let ref
-
-
+    let engine
+    let needsInitialization = false
+    let wasInitialized = false
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribe = SelectionStore.getStore(() => {
         selected = SelectionStore.shaderEditorSelected
         selectedEntity = SelectionStore.selectedEntity
     })
 
-
+    $: {
+        if (wasInitialized) {
+            const newState = {
+                openFile,
+                nodes,
+                links,
+                status,
+            }
+            ViewStateController.updateState(viewID, viewIndex, newState)
+        } else {
+            const state = ViewStateController.getState(viewID, viewIndex)
+            if (state != null) {
+                openFile = state.openFile
+                nodes = state.nodes
+                links = state.links
+                status = state.status
+                needsInitialization = false
+            }
+            wasInitialized = true
+        }
+    }
     $: {
         if (ref)
             HotKeys.bindAction(
@@ -63,23 +87,26 @@
     })
 
     $: {
-        status = {}
-        SelectionStore.shaderEditorSelected = []
-        parseFile(
-            openFile,
-            (d) => {
-                const found = d.find(dd => dd instanceof Material)
-                if (found)
-                    nodes = d
-                else {
-                    const newMat = new Material()
-                    newMat.x = newMat.x + BOARD_SIZE / 2
-                    newMat.y = newMat.y + BOARD_SIZE / 2
-                    nodes = [...d, newMat]
-                }
-            },
-            v => links = v
-        ).catch()
+        if(needsInitialization) {
+            status = {}
+            SelectionStore.shaderEditorSelected = []
+            parseFile(
+                openFile,
+                (d) => {
+                    const found = d.find(dd => dd instanceof Material)
+                    if (found)
+                        nodes = d
+                    else {
+                        const newMat = new Material()
+                        newMat.x = newMat.x + BOARD_SIZE / 2
+                        newMat.y = newMat.y + BOARD_SIZE / 2
+                        nodes = [...d, newMat]
+                    }
+                },
+                v => links = v
+            ).catch()
+            needsInitialization = false
+        }
     }
 </script>
 <Header
@@ -115,7 +142,10 @@
                 size="small"
                 type="material"
                 noDefault="true"
-                handleChange={v => openFile = v}
+                handleChange={v => {
+                    openFile = v
+                    needsInitialization = true
+                }}
                 selected={openFile}
         />
 
@@ -194,6 +224,7 @@
         width: 100%;
         overflow: hidden;
     }
+
     .button {
         display: flex;
         align-items: center;

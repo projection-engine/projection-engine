@@ -2,8 +2,9 @@
     import ToolTip from "../tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
     import KEYS from "../../windows/project/libs/engine/production/data/KEYS";
-    import Icon from "../../../../out/projection-engine-win32-x64/resources/app/src/app/components/icon/Icon.svelte";
+
     import Localization from "../../libs/Localization";
+    import Icon from "../icon/Icon.svelte";
 
     const toDeg = 180 / Math.PI
     const DELAY = 200
@@ -147,7 +148,7 @@
             class="draggable"
             on:blur={onChange}
     >
-    {#if originalValue != null}
+    {#if originalValue != null && !disabled}
         <button on:click={() => {
             if (onFinish !== undefined)
                 onFinish(originalValue)

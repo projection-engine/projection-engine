@@ -33,7 +33,6 @@
         }
     }
 
-
     $: value = node[attribute.key]
     const label = attribute.label, type = attribute.type
 </script>

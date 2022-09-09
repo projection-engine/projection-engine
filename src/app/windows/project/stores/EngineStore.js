@@ -19,7 +19,6 @@ import SettingsStore from "./SettingsStore";
 import Entity from "../libs/engine/production/templates/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../libs/engine/static/STATIC_TEXTURES";
-import MaterialInstance from "../libs/engine/production/instances/MaterialInstance";
 import FALLBACK_MATERIAL from "../libs/engine/production/data/FALLBACK_MATERIAL";
 
 const {ipcRenderer} = window.require("electron")

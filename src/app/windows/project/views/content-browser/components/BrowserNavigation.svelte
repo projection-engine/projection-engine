@@ -51,8 +51,7 @@
                             navigationHistory.goToParent(currentDirectory)
                         }}
     >
-        <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right
-        </Icon>
+        <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
         <ToolTip content={translate("PARENT_DIR")}/>
     </button>
     <div data-vertdivider="-"></div>
@@ -60,9 +59,9 @@
             disabled="{loading}"
             class="button"
             on:click={() => {
-                        alert.pushAlert(translate("REFRESHING"), "info")
-                        FilesStore.refreshFiles().then(() => loading = false).catch()
-                    }}
+                    alert.pushAlert(translate("REFRESHING"), "info")
+                    FilesStore.refreshFiles().then(() => loading = false).catch()
+                }}
     >
         <Icon styles="font-size: .9rem">sync</Icon>
         <ToolTip content={translate("REFRESH")}/>

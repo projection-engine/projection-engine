@@ -85,6 +85,7 @@
     <div class="middle">
 
         <ViewsContainer
+                id="left"
                 setTabs={(tabs) => updateView("left", tabs)}
                 tabs={view.left}
                 leftOffset={"8px"}
@@ -102,6 +103,7 @@
                 </Viewport>
             {/if}
             <ViewsContainer
+                    id="bottom"
                     setTabs={(tabs) => updateView("bottom", tabs)}
                     tabs={view.bottom}
                     resizePosition={"top"}
@@ -109,6 +111,7 @@
             />
         </div>
         <ViewsContainer
+                id="right"
                 setTabs={(tabs) => updateView("right", tabs)}
                 tabs={view.right}
                 orientation={"vertical"}

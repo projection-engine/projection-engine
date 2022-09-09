@@ -9,7 +9,7 @@
     export let orientation
     export let tabs
     export let setTabs
-
+    export let id
 
     let hidden = false
     let ref
@@ -51,6 +51,8 @@
         <View
                 hidden={hidden}
                 instance={view}
+                id={id}
+                index={vI}
                 styles={`
                     ${orientationName}: ${hidden ? "28px" : "inherit"};
                 `}

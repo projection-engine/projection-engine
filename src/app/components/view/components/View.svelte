@@ -11,6 +11,8 @@
     export let switchView
     export let hidden
     export let instance
+    export let id
+    export let index
 
 
     $: component = (() => {
@@ -34,7 +36,7 @@
 
 {#if component}
     <div class="view" style={styles}>
-        <svelte:component this={component} {...{hidden, switchView, extendView}}></svelte:component>
+        <svelte:component this={component} {...{hidden, switchView, extendView, viewID: id, viewIndex: index}}></svelte:component>
     </div>
 {/if}
 

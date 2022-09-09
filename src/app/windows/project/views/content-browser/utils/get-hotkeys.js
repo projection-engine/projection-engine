@@ -24,7 +24,14 @@ export default function getHotkeys(translate, currentDirectory, setCurrentDirect
             require: [KEYS.ControlLeft, KEYS.KeyI],
             callback: () => selection(SELECTION_TYPES.INVERT, currentDirectory)
         },
-
+        {
+            label: translate("BACK"),
+            require: [KEYS.F5],
+            callback: () => {
+                alert.pushAlert(translate("REFRESHING"), "info")
+                FilesStore.refreshFiles().catch()
+            }
+        },
         {
             label: translate("BACK"),
             require: [KEYS.Backspace],

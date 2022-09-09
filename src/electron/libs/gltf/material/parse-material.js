@@ -77,6 +77,7 @@ module.exports = async function parseMaterial(basePath, data, textures, images, 
                             newMaterial.response.uniforms[index].value = texture
 
                             index = newMaterial.response.uniformData.findIndex(v => v.data === "ALBEDO-SAMPLER")
+                            console.log(index)
                             newMaterial.response.uniformData[index].data = texture
                             break
                         }

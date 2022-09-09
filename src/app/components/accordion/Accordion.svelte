@@ -5,7 +5,7 @@
 </script>
 
 
-<div class="accordion" style={open ? undefined : "overflow: hidden; height: 25px;"}>
+<div class="accordion" style={open ? undefined : "overflow: hidden; height: 25px; min-height: 25px;"}>
     <div class="summary">
         <span
                 data-icon="-"
@@ -46,6 +46,7 @@
     }
 
     .summary {
+        min-height: 25px;
         height: 25px;
         background-color: var(--pj-background-primary) !important;
         border: none;

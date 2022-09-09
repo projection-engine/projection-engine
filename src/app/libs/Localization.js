@@ -61,7 +61,7 @@ export default class Localization {
         },
         INFO: {
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "4.0.1-alpha",
+            VERSION: "4.1.1-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
@@ -211,6 +211,15 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            MATERIAL_UPDATED: "Material updated",
+            CREATION_DATE: "Creation date",
+            CHILDREN: "Children",
+            FILE_SIZE: "Size (MB)",
+            FILE_EXTENSION: "Extension",
+            REGISTRY_ID: "File ID",
+            ASSETS_PATH: "Path",
+            MORE_INFO: "More info",
+
             LOADING_MATERIAL: "Loading material",
             ADD_DRAG_DROP: "Add component, mesh, texture or material",
             OPENGL_DOCS: "Learn more",
