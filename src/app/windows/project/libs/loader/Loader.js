@@ -3,15 +3,15 @@ import FilesAPI from "../../../../libs/files/FilesAPI"
 import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../../../data/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
-import Entity from "../engine/production/templates/Entity";
+import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../../libs/files/RegistryAPI";
-import GPU from "../engine/production/GPU";
+import GPU from "../../../../../../public/engine/production/GPU";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../../libs/Localization";
-import COMPONENTS from "../engine/production/data/COMPONENTS";
-import SpriteComponent from "../engine/production/templates/SpriteComponent";
+import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
+import SpriteComponent from "../../../../../../public/engine/production/components/rendering/SpriteComponent";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {

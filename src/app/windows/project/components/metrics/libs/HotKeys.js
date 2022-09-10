@@ -1,4 +1,6 @@
-import KEYS from "../../../libs/engine/production/data/KEYS";
+import KEYS from "../../../../../../../public/engine/production/data/KEYS";
+import ENVIRONMENT from "../../../../../../../public/engine/production/data/ENVIRONMENT";
+import Engine from "../../../../../../../public/engine/production/Engine";
 
 export default class HotKeys {
     static data = {targets: {}, focused: undefined}
@@ -13,7 +15,7 @@ export default class HotKeys {
         function handler(event) {
             const h = HotKeys.holding
 
-            if (event.repeat)
+            if (event.repeat || Engine.environment !== ENVIRONMENT.DEV)
                 return
             // event.preventDefault()
             const activeView = HotKeys.views.get(HotKeys.activeView)

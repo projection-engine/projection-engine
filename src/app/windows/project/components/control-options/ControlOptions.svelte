@@ -7,9 +7,9 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../libs/engine/production/passes/DiffuseProbePass";
-    import SpecularProbePass, {STEPS_CUBE_MAP} from "../../libs/engine/production/passes/SpecularProbePass";
-    import EntityStateController from "../../libs/engine/editor/EntityStateController";
+    import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../../../../../public/engine/production/passes/DiffuseProbePass";
+    import SpecularProbePass, {STEPS_CUBE_MAP} from "../../../../../../public/engine/production/passes/SpecularProbePass";
+    import EntityStateController from "../../../../../../public/engine/editor/EntityStateController";
 
     let engine
     let store

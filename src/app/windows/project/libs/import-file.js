@@ -1,13 +1,13 @@
 import FilesAPI from "../../../libs/files/FilesAPI"
-import COMPONENTS from "./engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../public/engine/production/data/COMPONENTS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import FilesStore from "../stores/FilesStore";
 import FILE_TYPES from "../../../../data/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import ContentBrowserAPI from "../../../libs/files/ContentBrowserAPI";
-import GPU from "./engine/production/GPU";
-import PreviewSystem from "./engine/editor/services/PreviewSystem";
+import GPU from "../../../../../public/engine/production/GPU";
+import PreviewSystem from "../../../../../public/engine/editor/services/PreviewSystem";
 
 export default async function importFile(currentDirectory) {
     const toImport = await ContentBrowserAPI.openDialog()

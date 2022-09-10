@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
 
 export default function getEngineIcon(nodeRef){
     if (nodeRef) {
@@ -9,7 +9,7 @@ export default function getEngineIcon(nodeRef){
         if (nodeRef.components[COMPONENTS.PROBE])
             return "lens_blur"
         if (nodeRef.components[COMPONENTS.MESH])
-            return "view_in_ar"
+            return "category"
         if (nodeRef.components[COMPONENTS.CAMERA])
             return "videocam"
         if (nodeRef.components[COMPONENTS.SPRITE])

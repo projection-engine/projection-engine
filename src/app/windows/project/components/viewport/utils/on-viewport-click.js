@@ -1,9 +1,9 @@
 import GIZMOS from "../../../data/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import ConversionAPI from "../../../libs/engine/production/apis/ConversionAPI";
-import PickingAPI from "../../../libs/engine/production/apis/PickingAPI";
-import Engine from "../../../libs/engine/production/Engine";
-import DepthPass from "../../../libs/engine/production/passes/DepthPass";
+import ConversionAPI from "../../../../../../../public/engine/production/apis/ConversionAPI";
+import PickingAPI from "../../../../../../../public/engine/production/apis/PickingAPI";
+import Engine from "../../../../../../../public/engine/production/Engine";
+import DepthPass from "../../../../../../../public/engine/production/passes/DepthPass";
 import SelectionStore from "../../../stores/SelectionStore";
 
 const MAX_DELTA = 50, MIDDLE_BUTTON = 1

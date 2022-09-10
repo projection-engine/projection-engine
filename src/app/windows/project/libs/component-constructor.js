@@ -1,18 +1,14 @@
 import FilesStore from "../stores/FilesStore";
 import FilesAPI from "../../../libs/files/FilesAPI"
 import EngineStore from "../stores/EngineStore";
-import BundlerAPI from "./engine/production/apis/BundlerAPI";
+import BundlerAPI from "../../../../../public/engine/production/apis/BundlerAPI";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
-import Entity from "./engine/production/templates/Entity";
+import Entity from "../../../../../public/engine/production/instances/entity/Entity";
 import UIStore from "../stores/UIStore";
+import SelectionStore from "../stores/SelectionStore";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
-    const updateStore = () => {
-        if(entity instanceof Entity)
-            EngineStore.updateStore()
-        else
-            UIStore.updateStore()
-    }
+
     const found = entity.scripts.findIndex(s => s.id === scriptID)
     const reg = await RegistryAPI.readRegistryFile(scriptID)
 
@@ -23,7 +19,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            updateStore()
+            SelectionStore.updateStore()
 
         alert.pushAlert("Error loading data")
         return
@@ -37,7 +33,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
             entity.scripts = entity.scripts.filter(e => e)
         }
         if (autoUpdate)
-            updateStore()
+            SelectionStore.updateStore()
         alert.pushAlert("Error loading data")
         return
     }
@@ -46,5 +42,5 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
     if(!result)
         alert.pushAlert("Error loading data")
     if (autoUpdate)
-        updateStore()
+        SelectionStore.updateStore()
 }

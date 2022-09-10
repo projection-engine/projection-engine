@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
 
 export default function  updateTransformation(axis, data, key, entity) {
     const prev = entity[key]

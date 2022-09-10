@@ -3,14 +3,14 @@
     import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import CompositePass from "../../../../../libs/engine/production/passes/CompositePass";
-    import GPU from "../../../../../libs/engine/production/GPU";
-    import STATIC_FRAMEBUFFERS from "../../../../../libs/engine/static/STATIC_FRAMEBUFFERS";
-    import DepthPass from "../../../../../libs/engine/production/passes/DepthPass";
-    import DeferredPass from "../../../../../libs/engine/production/passes/DeferredPass";
-    import AOPass from "../../../../../libs/engine/production/passes/AOPass";
+    import CompositePass from "../../../../../../../../../public/engine/production/passes/CompositePass";
+    import GPU from "../../../../../../../../../public/engine/production/GPU";
+    import STATIC_FRAMEBUFFERS from "../../../../../../../../../public/engine/static/STATIC_FRAMEBUFFERS";
+    import DepthPass from "../../../../../../../../../public/engine/production/passes/DepthPass";
+    import DeferredPass from "../../../../../../../../../public/engine/production/passes/DeferredPass";
+    import AOPass from "../../../../../../../../../public/engine/production/passes/AOPass";
     import SettingsStore from "../../../../../stores/SettingsStore";
-    import Engine from "../../../../../libs/engine/production/Engine";
+    import Engine from "../../../../../../../../../public/engine/production/Engine";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -27,11 +27,11 @@
             case SHADING_MODELS.ALBEDO:
                 return {
                     label: "SHADING_UNLIT",
-                    icon: "flat"
+                    icon: "category"
                 }
             case SHADING_MODELS.NORMAL:
                 return {
-                    icon: "view_in_ar",
+                    icon: "category",
                     label: "SHADING_NORMAL"
                 }
             case SHADING_MODELS.DEPTH:

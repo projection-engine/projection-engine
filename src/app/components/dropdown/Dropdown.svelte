@@ -14,6 +14,9 @@
     export let onOpen = undefined
     export let onClose = undefined
     export let buttonStyles = ""
+    export let closeOnClick = undefined
+
+
     let open = false
     let modal
     let button
@@ -28,7 +31,7 @@
     }
 
     function handler(event) {
-        if (!modal.contains(event.target))
+        if (!modal.contains(event.target)  && !button.contains(event.target))
             close()
     }
 
@@ -37,12 +40,24 @@
     onMount(() => {
         portal.create(modal)
         modal.closeDropdown = () => close()
-        document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
         portal.destroy()
-        document.removeEventListener("mousedown", handler)
+        document.removeEventListener("click", handler)
     })
+
+    $: {
+        if(modal) {
+            if (open) {
+                document.addEventListener("click", handler)
+                if(!modal.initialized) {
+                    modal.initialized = true
+                    Array.from(modal.children).forEach(c => c.closeDropdown = () => close())
+                }
+            } else
+                document.removeEventListener("click", handler)
+        }
+    }
 </script>
 
 <div
@@ -57,7 +72,7 @@
         class={(open && !noBackground ? "highlight dropdown" : "")}
         class:button={asButton}
         class:wrapper={true}
-        style={(width ?  `width: ${width}` : "" ) + buttonStyles }
+        style={(width ?  `width: ${width};` : "" ) + buttonStyles }
 >
 
     <slot name="button"/>

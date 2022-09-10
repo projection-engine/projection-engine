@@ -9,9 +9,11 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../libs/component-constructor";
     import Accordion from "../../../../../../components/accordion/Accordion.svelte";
-    import Engine from "../../../../libs/engine/production/Engine";
-    import Entity from "../../../../libs/engine/production/templates/Entity";
+    import Engine from "../../../../../../../../public/engine/production/Engine";
+    import Entity from "../../../../../../../../public/engine/production/instances/entity/Entity";
     import EntityNameController from "../../../../stores/templates/EntityNameController";
+    import EngineStore from "../../../../stores/EngineStore";
+    import SelectionStore from "../../../../stores/SelectionStore";
 
     const nativeComponents = getNativeComponents()
 
@@ -28,7 +30,7 @@
 </script>
 
 
-<Dropdown hideArrow={true}>
+<Dropdown hideArrow={true} closeOnClick={true}>
     <button
             slot="button"
             data-focusbutton="-"
@@ -41,9 +43,12 @@
     {#if entity instanceof Entity}
         {#each nativeComponents as [key, instance, label, icon]}
             <button
-                    on:click={() =>{
+                on:click={(e) =>{
                     if(!entity.components[key])
                         entity.components[key] = new instance(undefined, entity)
+
+                    SelectionStore.updateStore()
+                    e.target.closeDropdown()
                 }}>
                 <Icon>{icon}</Icon>
                 {label}
@@ -53,7 +58,10 @@
     {/if}
 
     {#each store.components as script}
-        <button on:click={() => componentConstructor(entity, script.registryID).catch()}>
+        <button on:click={(e) => {
+            componentConstructor(entity, script.registryID).catch()
+            e.target.closeDropdown()
+        }}>
             {script.name}
         </button>
     {/each}

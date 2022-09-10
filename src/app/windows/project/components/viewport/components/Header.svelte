@@ -4,7 +4,7 @@
     import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
     import EditorHeader from "./header/EditorHeader.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
-    import EntityStateController from "../../../libs/engine/editor/EntityStateController";
+    import EntityStateController from "../../../../../../../public/engine/editor/EntityStateController";
     import EngineStore from "../../../stores/EngineStore";
 
     export let settings

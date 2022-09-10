@@ -1,7 +1,7 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
-import Engine from "./engine/production/Engine";
-import CameraTracker from "./engine/editor/libs/CameraTracker";
+import Engine from "../../../../../public/engine/production/Engine";
+import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracker";
 import SelectionStore from "../stores/SelectionStore";
 
 export default class ViewportActions {

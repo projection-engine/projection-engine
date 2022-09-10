@@ -3,7 +3,7 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../libs/Localization";
-    import Engine from "../../project/libs/engine/production/Engine";
+    import Engine from "../../../../../public/engine/production/Engine";
 
     export let settings
     export let update

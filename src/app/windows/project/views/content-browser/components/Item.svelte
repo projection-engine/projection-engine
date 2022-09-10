@@ -88,7 +88,7 @@
         if (type === 0)
             return childrenQuantity === 0 ? "folder_open" : "folder"
         if (metadata.type === FILE_TYPES.MESH)
-            return "view_in_ar"
+            return "category"
         return "texture"
 
     }
@@ -182,7 +182,7 @@
                 <img draggable="false" class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
                     {#if metadata.type === FILE_TYPES.MESH}
-                        view_in_ar
+                        category
                     {:else}
                         texture
                     {/if}

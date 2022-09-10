@@ -1,9 +1,9 @@
 import bindGizmo from "./bind-gizmo";
-import Engine from "../../../libs/engine/production/Engine";
-import CameraTracker from "../../../libs/engine/editor/libs/CameraTracker";
-import ENVIRONMENT from "../../../libs/engine/production/data/ENVIRONMENT";
-import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
-import Wrapper from "../../../libs/engine/editor/services/Wrapper";
+import Engine from "../../../../../../../public/engine/production/Engine";
+import CameraTracker from "../../../../../../../public/engine/editor/libs/CameraTracker";
+import ENVIRONMENT from "../../../../../../../public/engine/production/data/ENVIRONMENT";
+import BundlerAPI from "../../../../../../../public/engine/production/apis/BundlerAPI";
+import Wrapper from "../../../../../../../public/engine/editor/services/Wrapper";
 
 
 export default function updateRenderer(selected, engine, settings) {

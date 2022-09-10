@@ -7,11 +7,11 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import UIStore from "../../stores/UIStore";
     import UIElement from "./views/UIElement.svelte";
-    import Entity from "../../libs/engine/production/templates/Entity";
+    import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
     import EntityElement from "./components/engine/EntityElement.svelte";
     import ComponentLayout from "./components/engine/ComponentLayout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import Engine from "../../libs/engine/production/Engine";
+    import Engine from "../../../../../../public/engine/production/Engine";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
 

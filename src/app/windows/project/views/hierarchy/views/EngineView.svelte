@@ -6,13 +6,13 @@
     import InfiniteScroller from "../../../../../components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "../components/EngineNode.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import {v4} from "uuid";
-    import Entity from "../../../libs/engine/production/templates/Entity";
+    import Entity from "../../../../../../../public/engine/production/instances/entity/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Engine from "../../../libs/engine/production/Engine";
+    import Engine from "../../../../../../../public/engine/production/Engine";
 
     export let ID
     export let translate

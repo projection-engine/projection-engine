@@ -1,7 +1,7 @@
 import Node from "./Node"
-import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES"
+import DATA_TYPES from "../../../../../../../../public/engine/production/data/DATA_TYPES"
 import NODE_TYPES from "../../data/NODE_TYPES"
-import MATERIAL_RENDERING_TYPES from "../../../../libs/engine/production/data/MATERIAL_RENDERING_TYPES"
+import MATERIAL_RENDERING_TYPES from "../../../../../../../../public/engine/production/data/MATERIAL_RENDERING_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float";
 
 function enableAll(ref) {

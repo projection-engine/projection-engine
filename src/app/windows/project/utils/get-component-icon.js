@@ -1,4 +1,4 @@
-import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../public/engine/production/data/COMPONENTS";
 
 export default function getComponentIcon(key, component) {
     switch (key) {
@@ -16,6 +16,16 @@ export default function getComponentIcon(key, component) {
             return "transformation"
         case COMPONENTS.SPRITE:
             return "image"
+
+
+        case COMPONENTS.SPHERE_COLLIDER:
+            return "circle"
+        case COMPONENTS.BOX_COLLIDER:
+            return "view_in_ar"
+        case COMPONENTS.RIGID_BODY:
+            return "language"
+        case COMPONENTS.CAPSULE_COLLIDER:
+            return "language"
         default:
             return component.icon ? component.icon : "category"
     }

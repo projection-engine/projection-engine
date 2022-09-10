@@ -4,7 +4,7 @@
     import ToolTip from "../../../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import SettingsStore from "../../../../../stores/SettingsStore";
-    import GizmoSystem from "../../../../../libs/engine/editor/services/GizmoSystem";
+    import GizmoSystem from "../../../../../../../../../public/engine/editor/services/GizmoSystem";
     import Localization from "../../../../../../../libs/Localization";
     import Dropdown from "../../../../../../../components/dropdown/Dropdown.svelte";
     import Range from "../../../../../../../components/range/Range.svelte";

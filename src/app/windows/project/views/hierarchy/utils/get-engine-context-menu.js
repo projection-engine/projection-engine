@@ -1,11 +1,11 @@
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import Entity from "../../../libs/engine/production/templates/Entity";
+import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
+import Entity from "../../../../../../../public/engine/production/instances/entity/Entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import ViewportActions from "../../../libs/ViewportActions";
-import CameraComponent from "../../../libs/engine/production/templates/CameraComponent";
-import PointLightComponent from "../../../libs/engine/production/templates/PointLightComponent";
-import DirectionalLightComponent from "../../../libs/engine/production/templates/DirectionalLightComponent";
-import Engine from "../../../libs/engine/production/Engine";
+import CameraComponent from "../../../../../../../public/engine/production/components/misc/CameraComponent";
+import PointLightComponent from "../../../../../../../public/engine/production/components/rendering/PointLightComponent";
+import DirectionalLightComponent from "../../../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
+import Engine from "../../../../../../../public/engine/production/Engine";
 import SelectionStore from "../../../stores/SelectionStore";
 
 function createEntity(component) {

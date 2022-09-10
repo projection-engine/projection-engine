@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
+import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
 
 const uiStore = writable({
     selected: [],

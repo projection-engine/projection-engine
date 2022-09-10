@@ -7,7 +7,7 @@ export default function getFileIcon(type) {
     case FILE_TYPES.MATERIAL:
         return "texture"
     case FILE_TYPES.MESH:
-        return "view_in_ar"
+        return "category"
     default:
         return
     }

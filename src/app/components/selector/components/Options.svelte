@@ -4,8 +4,8 @@
     import Input from "../../input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import FALLBACK_MATERIAL from "../../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
-    import STATIC_MESHES from "../../../windows/project/libs/engine/static/STATIC_MESHES";
+    import FALLBACK_MATERIAL from "../../../../../public/engine/production/data/FALLBACK_MATERIAL";
+    import STATIC_MESHES from "../../../../../public/engine/static/STATIC_MESHES";
     import "../css/selector.css"
 
 

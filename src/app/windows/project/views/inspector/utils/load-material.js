@@ -1,9 +1,9 @@
 import FilesStore from "../../../stores/FilesStore";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import Localization from "../../../../../libs/Localization";
-import FALLBACK_MATERIAL from "../../../libs/engine/production/data/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../../../../../public/engine/production/data/FALLBACK_MATERIAL";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import GPU from "../../../libs/engine/production/GPU";
+import GPU from "../../../../../../../public/engine/production/GPU";
 
 const loadFile = async (ID) => {
     const rs = await RegistryAPI.readRegistryFile(ID)

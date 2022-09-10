@@ -4,10 +4,10 @@
     import Accordion from "../../../../../../components/accordion/Accordion.svelte";
 
     import getComponentIcon from "../../../../utils/get-component-icon";
-    import COMPONENTS from "../../../../libs/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../../../../public/engine/production/data/COMPONENTS";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import loadMaterial from "../../utils/load-material";
-    import GPU from "../../../../libs/engine/production/GPU";
+    import GPU from "../../../../../../../../public/engine/production/GPU";
 
 
     export let component

@@ -1,9 +1,9 @@
-import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
-import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
-import GPU from "../../../libs/engine/production/GPU";
-import STATIC_MESHES from "../../../libs/engine/static/STATIC_MESHES";
-import DepthPass from "../../../libs/engine/production/passes/DepthPass";
-import Engine from "../../../libs/engine/production/Engine";
+import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
+import CameraAPI from "../../../../../../../public/engine/production/apis/CameraAPI";
+import GPU from "../../../../../../../public/engine/production/GPU";
+import STATIC_MESHES from "../../../../../../../public/engine/static/STATIC_MESHES";
+import DepthPass from "../../../../../../../public/engine/production/passes/DepthPass";
+import Engine from "../../../../../../../public/engine/production/Engine";
 
 export default function drawIconsToBuffer() {
     const entities = Engine.entities

@@ -1,10 +1,10 @@
-import Entity from "../../engine/production/templates/Entity";
+import Entity from "../../../../../../../public/engine/production/instances/entity/Entity";
 import FilesAPI from "../../../../../libs/files/FilesAPI";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../../libs/files/RegistryAPI";
-import Engine from "../../engine/production/Engine";
+import Engine from "../../../../../../../public/engine/production/Engine";
 import {v4} from "uuid";
-import GPU from "../../engine/production/GPU";
+import GPU from "../../../../../../../public/engine/production/GPU";
 
 export default async function loopNodesScene(node, parent, index=0) {
     const children = []

@@ -6,8 +6,8 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
-    import FALLBACK_MATERIAL from "../../windows/project/libs/engine/production/data/FALLBACK_MATERIAL";
-    import STATIC_MESHES from "../../windows/project/libs/engine/static/STATIC_MESHES";
+    import FALLBACK_MATERIAL from "../../../../public/engine/production/data/FALLBACK_MATERIAL";
+    import STATIC_MESHES from "../../../../public/engine/static/STATIC_MESHES";
 
 
     export let type

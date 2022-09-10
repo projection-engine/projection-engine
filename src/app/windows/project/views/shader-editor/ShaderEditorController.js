@@ -1,14 +1,14 @@
 import BOARD_SIZE from "./data/BOARD_SIZE";
 import compiler from "./libs/compiler";
-import MaterialInstance from "../../libs/engine/production/instances/MaterialInstance";
-import PreviewSystem from "../../libs/engine/editor/services/PreviewSystem";
+import MaterialInstance from "../../../../../../public/engine/production/instances/MaterialInstance";
+import PreviewSystem from "../../../../../../public/engine/editor/services/PreviewSystem";
 import AssetAPI from "../../../../libs/files/AssetAPI";
 import Localization from "../../../../libs/Localization";
 import getNewInstance from "./utils/get-new-instance";
 import TextureSample from "./templates/nodes/TextureSample";
 import FilesStore from "../../stores/FilesStore";
 import {v4} from "uuid";
-import GPU from "../../libs/engine/production/GPU";
+import GPU from "../../../../../../public/engine/production/GPU";
 
 export default class ShaderEditorController {
     static GRID_SIZE = 20

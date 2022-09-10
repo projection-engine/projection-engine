@@ -1,9 +1,9 @@
 import {v4} from "uuid"
 import EngineStore from "../EngineStore";
 import removeHierarchy from "../utils/remove-hierarchy";
-import getPickerId from "../../libs/engine/production/utils/get-picker-id";
+import getPickerId from "../../../../../../public/engine/production/utils/get-picker-id";
 import EntityNameController from "./EntityNameController";
-import AXIS from "../../libs/engine/editor/data/AXIS";
+import AXIS from "../../../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
 

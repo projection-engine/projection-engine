@@ -1,9 +1,9 @@
 <script>
-    import DATA_TYPES from "../../../../libs/engine/production/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../../../../../public/engine/production/data/DATA_TYPES";
     import Range from "../../../../../../components/range/Range.svelte";
 
     import AssetAPI from "../../../../../../libs/files/AssetAPI";
-    import GPU from "../../../../libs/engine/production/GPU";
+    import GPU from "../../../../../../../../public/engine/production/GPU";
     import Localization from "../../../../../../libs/Localization";
     import Selector from "../../../../../../components/selector/Selector.svelte";
 

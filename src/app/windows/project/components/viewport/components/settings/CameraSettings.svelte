@@ -2,8 +2,8 @@
     import Range from "../../../../../../components/range/Range.svelte";
     import Localization from "../../../../../../libs/Localization";
     import {onDestroy} from "svelte";
-    import CameraAPI from "../../../../libs/engine/production/apis/CameraAPI";
-    import CameraTracker from "../../../../libs/engine/editor/libs/CameraTracker";
+    import CameraAPI from "../../../../../../../../public/engine/production/apis/CameraAPI";
+    import CameraTracker from "../../../../../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
 

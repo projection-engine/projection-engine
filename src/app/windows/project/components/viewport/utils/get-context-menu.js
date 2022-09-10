@@ -1,5 +1,5 @@
 import ViewportActions from "../../../libs/ViewportActions";
-import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
+import TransformationAPI from "../../../../../../../public/engine/production/apis/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function getContextMenu() {

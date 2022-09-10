@@ -2,19 +2,19 @@
     import EngineStore from "../../../stores/EngineStore";
     import ComponentLayout from "../components/engine/ComponentLayout.svelte";
     import Mesh from "../components/engine/Mesh.svelte";
-    import COMPONENTS from "../../../libs/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
     import FilesStore from "../../../stores/FilesStore";
     import componentConstructor from "../../../libs/component-constructor";
-    import MeshComponent from "../../../libs/engine/production/templates/MeshComponent";
+    import MeshComponent from "../../../../../../../public/engine/production/components/rendering/MeshComponent";
     import loadMaterial from "../utils/load-material";
 
     import Loader from "../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
-    import Entity from "../../../libs/engine/production/templates/Entity";
-    import UIElement from "../../../libs/engine/production/templates/UIElement";
+    import Entity from "../../../../../../../public/engine/production/instances/entity/Entity";
+    import UIElement from "../../../../../../../public/engine/production/instances/entity/UIElement";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
-    import SpriteComponent from "../../../libs/engine/production/templates/SpriteComponent";
-    import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
+    import SpriteComponent from "../../../../../../../public/engine/production/components/rendering/SpriteComponent";
+    import BundlerAPI from "../../../../../../../public/engine/production/apis/BundlerAPI";
 
 
     export let translate

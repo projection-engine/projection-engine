@@ -1,5 +1,5 @@
-import Engine from "../../libs/engine/production/Engine";
-import Entity from "../../libs/engine/production/templates/Entity";
+import Engine from "../../../../../../public/engine/production/Engine";
+import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
 import EngineStore from "../EngineStore";
 import UIStore from "../UIStore";
 

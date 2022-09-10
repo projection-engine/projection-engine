@@ -1,6 +1,6 @@
 import GIZMOS from "../../../data/GIZMOS";
-import Engine from "../../../libs/engine/production/Engine";
-import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
+import Engine from "../../../../../../../public/engine/production/Engine";
+import GizmoSystem from "../../../../../../../public/engine/editor/services/GizmoSystem";
 
 export default function bindGizmo(selected, settings) {
     const entities = Engine.entitiesMap

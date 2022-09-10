@@ -3,12 +3,12 @@
     import FILE_TYPES from "../../../../../../../data/FILE_TYPES";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-    import TEXTURE_FORMATS from "../../../../libs/engine/production/data/texture/TEXTURE_FORMATS";
+    import TEXTURE_FORMATS from "../../../../../../../../public/engine/production/data/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../../../libs/files/AssetAPI";
-    import GPU from "../../../../libs/engine/production/GPU";
-    import TEXTURE_FILTERING from "../../../../libs/engine/production/data/texture/TEXTURE_FILTERING";
-    import TEXTURE_WRAPPING from "../../../../libs/engine/production/data/texture/TEXTURE_WRAPPING";
+    import GPU from "../../../../../../../../public/engine/production/GPU";
+    import TEXTURE_FILTERING from "../../../../../../../../public/engine/production/data/texture/TEXTURE_FILTERING";
+    import TEXTURE_WRAPPING from "../../../../../../../../public/engine/production/data/texture/TEXTURE_WRAPPING";
 
     const {shell} = window.require("electron")
     const B = "height: 35px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"

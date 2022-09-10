@@ -1,9 +1,9 @@
 import ActionHistoryAPI from "./ActionHistoryAPI";
-import Engine from "../libs/engine/production/Engine";
+import Engine from "../../../../../public/engine/production/Engine";
 import AssetAPI from "../../../libs/files/AssetAPI";
 import SETTINGS from "../data/SETTINGS";
-import CameraTracker from "../libs/engine/editor/libs/CameraTracker";
-import GPU from "../libs/engine/production/GPU";
+import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracker";
+import GPU from "../../../../../public/engine/production/GPU";
 import {get, writable} from "svelte/store";
 
 let initialized = false

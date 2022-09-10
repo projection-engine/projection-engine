@@ -1,7 +1,7 @@
 <script>
     import ToolTip from "../tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import KEYS from "../../windows/project/libs/engine/production/data/KEYS";
+    import KEYS from "../../../../public/engine/production/data/KEYS";
 
     import Localization from "../../libs/Localization";
     import Icon from "../icon/Icon.svelte";

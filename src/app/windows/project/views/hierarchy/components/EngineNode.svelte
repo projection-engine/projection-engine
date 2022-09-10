@@ -1,8 +1,8 @@
 <script>
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import BundlerAPI from "../../../libs/engine/production/apis/BundlerAPI";
+    import BundlerAPI from "../../../../../../../public/engine/production/apis/BundlerAPI";
     import "../css/Branch.css"
-    import Engine from "../../../libs/engine/production/Engine";
+    import Engine from "../../../../../../../public/engine/production/Engine";
     import DraggableEntity from "./DraggableEntity.svelte";
     import updateSelection from "../utils/update-selection";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";

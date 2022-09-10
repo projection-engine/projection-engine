@@ -2,7 +2,7 @@
     import VerticalTabs from "../../../../../components/vertical-tab/VerticalTabs.svelte";
     import AttributeEditor from "./AttributeEditor.svelte";
     import Debug from "./Debug.svelte";
-    import cloneClass from "../../../libs/engine/production/utils/clone-class";
+    import cloneClass from "../../../../../../../public/engine/production/utils/clone-class";
     import Board from "./Board.svelte";
     import Material from "../templates/nodes/Material";
 

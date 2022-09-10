@@ -3,10 +3,10 @@ import FilesAPI from "./FilesAPI";
 import FILE_TYPES from "../../../data/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
-import IMAGE_WORKER_ACTIONS from "../../windows/project/libs/engine/production/data/IMAGE_WORKER_ACTIONS";
+import IMAGE_WORKER_ACTIONS from "../../../../public/engine/production/data/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../data/ROUTES";
 import FilesStore from "../../windows/project/stores/FilesStore";
-import GPU from "../../windows/project/libs/engine/production/GPU";
+import GPU from "../../../../public/engine/production/GPU";
 import TEXTURE_TEMPLATE from "../../../data/TEXTURE_TEMPLATE";
 
 const pathRequire = window.require("path")

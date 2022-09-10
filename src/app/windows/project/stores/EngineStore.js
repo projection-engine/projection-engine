@@ -2,24 +2,24 @@ import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../../../libs/files/FilesAPI"
 import ActionHistoryAPI from "./ActionHistoryAPI";
-import Engine from "../libs/engine/production/Engine";
+import Engine from "../../../../../public/engine/production/Engine";
 import FilesStore from "./FilesStore";
 import RegistryAPI from "../../../libs/files/RegistryAPI";
 import DEFAULT_LEVEL from "../../../../data/DEFAULT_LEVEL"
 import ROUTES from "../../../../data/ROUTES";
 import CHANNELS from "../../../../data/CHANNELS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UserInterfaceController from "../libs/engine/production/controllers/UserInterfaceController";
+import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
 import UIStore from "./UIStore";
-import parseUiElement from "../libs/engine/editor/utils/parse-ui-element";
-import GPU from "../libs/engine/production/GPU";
-import COMPONENTS from "../libs/engine/production/data/COMPONENTS";
+import parseUiElement from "../../../../../public/engine/editor/utils/parse-ui-element";
+import GPU from "../../../../../public/engine/production/GPU";
+import COMPONENTS from "../../../../../public/engine/production/data/COMPONENTS";
 import {writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
-import Entity from "../libs/engine/production/templates/Entity";
+import Entity from "../../../../../public/engine/production/instances/entity/Entity";
 import componentConstructor from "../libs/component-constructor";
-import STATIC_TEXTURES from "../libs/engine/static/STATIC_TEXTURES";
-import FALLBACK_MATERIAL from "../libs/engine/production/data/FALLBACK_MATERIAL";
+import STATIC_TEXTURES from "../../../../../public/engine/static/STATIC_TEXTURES";
+import FALLBACK_MATERIAL from "../../../../../public/engine/production/data/FALLBACK_MATERIAL";
 
 const {ipcRenderer} = window.require("electron")
 

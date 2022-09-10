@@ -1,8 +1,8 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../data/RENDER_TARGET";
-    import ConversionAPI from "../../../libs/engine/production/apis/ConversionAPI";
-    import PickingAPI from "../../../libs/engine/production/apis/PickingAPI";
+    import ConversionAPI from "../../../../../../../public/engine/production/apis/ConversionAPI";
+    import PickingAPI from "../../../../../../../public/engine/production/apis/PickingAPI";
     import viewportSelectionBoxWorker from "../../../../../libs/web-workers/viewport-selection-box-worker";
     import SelectBox from "../../../../../components/select-box/SelectBox.svelte";
     import SideOptions from "../components/QuickAccess.svelte";
@@ -12,17 +12,17 @@
     import onViewportClick from "../utils/on-viewport-click";
     import Loader from "../../../libs/loader/Loader";
     import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import GizmoSystem from "../../../libs/engine/editor/services/GizmoSystem";
+    import GizmoSystem from "../../../../../../../public/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
-    import DepthPass from "../../../libs/engine/production/passes/DepthPass";
-    import TransformationAPI from "../../../libs/engine/production/apis/TransformationAPI";
+    import DepthPass from "../../../../../../../public/engine/production/passes/DepthPass";
+    import TransformationAPI from "../../../../../../../public/engine/production/apis/TransformationAPI";
     import {vec3} from "gl-matrix";
-    import InputEventsAPI from "../../../libs/engine/production/apis/InputEventsAPI";
+    import InputEventsAPI from "../../../../../../../public/engine/production/apis/InputEventsAPI";
     import SelectionStore from "../../../stores/SelectionStore";
-    import GPU from "../../../libs/engine/production/GPU";
-    import Engine from "../../../libs/engine/production/Engine";
-    import CameraAPI from "../../../libs/engine/production/apis/CameraAPI";
-    import ScreenSpaceGizmo from "../../../libs/engine/editor/libs/ScreenSpaceGizmo";
+    import GPU from "../../../../../../../public/engine/production/GPU";
+    import Engine from "../../../../../../../public/engine/production/Engine";
+    import CameraAPI from "../../../../../../../public/engine/production/apis/CameraAPI";
+    import ScreenSpaceGizmo from "../../../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
 
     let WORKER = viewportSelectionBoxWorker()
 
