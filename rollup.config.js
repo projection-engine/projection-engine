@@ -11,7 +11,7 @@ import {uglify} from "rollup-plugin-uglify";
 const PRODUCTION = !process.env.ROLLUP_WATCH;
 const common = (inputFile, outputFile, cssFile) => ({
 
-    input: `src/app/windows/${inputFile}.js`,
+    input: `src/frontend/${inputFile}.js`,
     output: {
         sourcemap: true,
         format: 'iife',

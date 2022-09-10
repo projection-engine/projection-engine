@@ -1,0 +1,3 @@
+[submodule "public/engine"]
+	path = public/engine
+	url = git@github.com:projection-engine/engine.git

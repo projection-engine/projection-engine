@@ -230,11 +230,14 @@ fieldset {
     border-top: var(--pj-border-primary) 1px solid;
     display: grid;
     gap: 4px;
+    padding: 2px;
 }
 
 legend {
-    font-size: .75rem;
+    font-size: .7rem;
     font-weight: 550;
+    padding: 0 2px;
+    color: var(--pj-color-tertiary);
 }
 
 strong {

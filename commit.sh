@@ -20,19 +20,20 @@ case $TYPE in
           TYPE="[MIX] - "
           ;;
 esac
+
 MESSAGE=$TYPE
 MESSAGE+="["$M"]"
 
 
 
-cd src/app/windows/project/libs/engine
+cd public/engine
 git add --all
 git commit -m "$MESSAGE"
-git push origin v4.x.x-alpha
+git push origin v4.2.x-alpha
 
-cd ../../../../../
+cd ../../
 git add --all
 git commit -m "$MESSAGE"
-git push origin v4.x.x-alpha
+git push origin v4.2.x-alpha
 
 sleep 5s
