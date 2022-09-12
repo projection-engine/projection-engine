@@ -10,7 +10,7 @@ import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
 import GPU from "../../../../../public/engine/production/GPU";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
-import COMPONENTS from "../../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {

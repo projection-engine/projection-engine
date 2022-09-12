@@ -3,7 +3,7 @@ import deferredTemplate from "../templates/shaders/deferred-shader"
 import forwardTemplate from "../templates/shaders/forward-shader"
 import resolveRelationship from "./resolve-relationship"
 import unlitTemplate from "../templates/shaders/unlit-shader"
-import MATERIAL_RENDERING_TYPES from "../../../../../../public/engine/production/data/MATERIAL_RENDERING_TYPES";
+import MATERIAL_RENDERING_TYPES from "../../../../../../public/engine/static/MATERIAL_RENDERING_TYPES";
 import {vertex} from "../../../../../../public/engine/production/shaders/FALLBACK.glsl"
 import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
 import cloneClass from "../../../utils/clone-class";

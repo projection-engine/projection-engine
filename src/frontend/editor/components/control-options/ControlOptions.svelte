@@ -9,7 +9,7 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import DiffuseProbePass, {STEPS_LIGHT_PROBE} from "../../../../../public/engine/production/passes/DiffuseProbePass";
     import SpecularProbePass, {STEPS_CUBE_MAP} from "../../../../../public/engine/production/passes/SpecularProbePass";
-    import EntityStateController from "../../../../../public/engine/editor/EntityStateController";
+    import EntityStateController from "../../libs/EntityStateController";
 
     let engine
     let store

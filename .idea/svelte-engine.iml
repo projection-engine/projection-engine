@@ -5,7 +5,6 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/public/engine/physics" />
       <excludeFolder url="file://$MODULE_DIR$/public/build" />
     </content>
     <orderEntry type="inheritedJdk" />

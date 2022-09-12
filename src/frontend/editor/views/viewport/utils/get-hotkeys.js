@@ -1,4 +1,4 @@
-import KEYS from "../../../../../../public/engine/production/data/KEYS";
+import KEYS from "../../../../../../public/engine/static/KEYS";
 import ViewportActions from "../../../libs/ViewportActions";
 import EngineStore from "../../../stores/EngineStore";
 import GIZMOS from "../../../data/GIZMOS";

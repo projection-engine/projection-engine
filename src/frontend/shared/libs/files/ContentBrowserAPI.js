@@ -3,7 +3,7 @@ import FilesAPI from "./FilesAPI";
 import FILE_TYPES from "../../../../static/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
-import IMAGE_WORKER_ACTIONS from "../../../../../public/engine/production/data/IMAGE_WORKER_ACTIONS";
+import IMAGE_WORKER_ACTIONS from "../../../../../public/engine/static/IMAGE_WORKER_ACTIONS";
 import ROUTES from "../../../../static/ROUTES";
 import FilesStore from "../../../editor/stores/FilesStore";
 import GPU from "../../../../../public/engine/production/GPU";

@@ -1,7 +1,7 @@
 import FilesStore from "../../../stores/FilesStore";
 import FilesAPI from "../../../../shared/libs/files/FilesAPI";
 import Localization from "../../../../shared/libs/Localization";
-import FALLBACK_MATERIAL from "../../../../../../public/engine/production/data/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../../../../public/engine/static/FALLBACK_MATERIAL";
 import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 import GPU from "../../../../../../public/engine/production/GPU";
 

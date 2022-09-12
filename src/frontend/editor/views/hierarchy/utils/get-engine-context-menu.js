@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS";
 import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import ViewportActions from "../../../libs/ViewportActions";

@@ -88,6 +88,7 @@
                 id="left"
                 setTabs={(tabs) => updateView("left", tabs)}
                 tabs={view.left}
+                reducedOpacity={engine.executingAnimation}
                 leftOffset={"8px"}
                 orientation={"vertical"}
                 resizePosition={"top"}
@@ -103,6 +104,7 @@
                 </Viewport>
             {/if}
             <ViewsContainer
+                    reducedOpacity={engine.executingAnimation}
                     id="bottom"
                     setTabs={(tabs) => updateView("bottom", tabs)}
                     tabs={view.bottom}
@@ -111,6 +113,7 @@
             />
         </div>
         <ViewsContainer
+                reducedOpacity={engine.executingAnimation}
                 id="right"
                 setTabs={(tabs) => updateView("right", tabs)}
                 tabs={view.right}

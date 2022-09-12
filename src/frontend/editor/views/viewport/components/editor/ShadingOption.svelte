@@ -5,7 +5,7 @@
     import {onDestroy} from "svelte";
     import CompositePass from "../../../../../../../public/engine/production/passes/CompositePass";
     import GPU from "../../../../../../../public/engine/production/GPU";
-    import STATIC_FRAMEBUFFERS from "../../../../../../../public/engine/static/STATIC_FRAMEBUFFERS";
+    import STATIC_FRAMEBUFFERS from "../../../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
     import DepthPass from "../../../../../../../public/engine/production/passes/DepthPass";
     import DeferredPass from "../../../../../../../public/engine/production/passes/DeferredPass";
     import AOPass from "../../../../../../../public/engine/production/passes/AOPass";

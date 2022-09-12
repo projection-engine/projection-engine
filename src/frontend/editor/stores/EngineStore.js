@@ -13,13 +13,13 @@ import UserInterfaceController from "../../../../public/engine/production/contro
 import UIStore from "./UIStore";
 import parseUiElement from "../../../../public/engine/editor/utils/parse-ui-element";
 import GPU from "../../../../public/engine/production/GPU";
-import COMPONENTS from "../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import {writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
 import Entity from "../../../../public/engine/production/instances/entity/Entity";
 import componentConstructor from "../libs/component-constructor";
-import STATIC_TEXTURES from "../../../../public/engine/static/STATIC_TEXTURES";
-import FALLBACK_MATERIAL from "../../../../public/engine/production/data/FALLBACK_MATERIAL";
+import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
+import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
 
 const {ipcRenderer} = window.require("electron")
 

@@ -2,7 +2,7 @@
     import VIEWS from "../../../shared/components/view/VIEWS";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import KEYS from "../../../../../public/engine/production/data/KEYS";
+    import KEYS from "../../../../../public/engine/static/KEYS";
     import Localization from "../../../shared/libs/Localization";
     import SettingsStore from "../../stores/SettingsStore";
 

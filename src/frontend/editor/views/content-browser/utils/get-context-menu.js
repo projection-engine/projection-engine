@@ -2,7 +2,7 @@ import handleDelete from "./handle-delete"
 import FilesAPI from "../../../../shared/libs/files/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import FILE_TYPES from "../../../../../static/FILE_TYPES";
-import COMPONENT_TEMPLATE from "../../../../../../public/engine/production/data/COMPONENT_TEMPLATE";
+import COMPONENT_TEMPLATE from "../../../../../../public/engine/static/COMPONENT_TEMPLATE";
 import importFile from "../../../libs/import-file";
 import AssetAPI from "../../../../shared/libs/files/AssetAPI";
 import UI_TEMPLATE from "../templates/UI_TEMPLATE";

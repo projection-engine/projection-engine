@@ -1,7 +1,7 @@
 import bindGizmo from "./bind-gizmo";
 import Engine from "../../../../../../public/engine/production/Engine";
 import CameraTracker from "../../../../../../public/engine/editor/libs/CameraTracker";
-import ENVIRONMENT from "../../../../../../public/engine/production/data/ENVIRONMENT";
+import ENVIRONMENT from "../../../../../../public/engine/static/ENVIRONMENT";
 import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
 import Wrapper from "../../../../../../public/engine/editor/services/Wrapper";
 

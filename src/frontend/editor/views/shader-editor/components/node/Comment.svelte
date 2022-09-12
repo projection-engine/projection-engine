@@ -1,5 +1,5 @@
 <script>
-    import KEYS from "../../../../../../../public/engine/production/data/KEYS";
+    import KEYS from "../../../../../../../public/engine/static/KEYS";
     import dragNode from "../../utils/drag-node";
     import SelectionStore from "../../../../stores/SelectionStore";
 

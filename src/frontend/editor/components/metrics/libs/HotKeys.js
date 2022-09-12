@@ -1,5 +1,5 @@
-import KEYS from "../../../../../../public/engine/production/data/KEYS";
-import ENVIRONMENT from "../../../../../../public/engine/production/data/ENVIRONMENT";
+import KEYS from "../../../../../../public/engine/static/KEYS";
+import ENVIRONMENT from "../../../../../../public/engine/static/ENVIRONMENT";
 import Engine from "../../../../../../public/engine/production/Engine";
 
 export default class HotKeys {

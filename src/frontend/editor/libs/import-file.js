@@ -1,5 +1,5 @@
 import FilesAPI from "../../shared/libs/files/FilesAPI"
-import COMPONENTS from "../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import FilesStore from "../stores/FilesStore";
 import FILE_TYPES from "../../../static/FILE_TYPES";

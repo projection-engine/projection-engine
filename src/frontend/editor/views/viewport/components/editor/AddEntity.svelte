@@ -1,11 +1,11 @@
 <script>
-    import COMPONENTS from "../../../../../../../public/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../../../public/engine/static/COMPONENTS";
     import Entity from "../../../../../../../public/engine/production/instances/entity/Entity";
-    import STATIC_TEXTURES from "../../../../../../../public/engine/static/STATIC_TEXTURES";
+    import STATIC_TEXTURES from "../../../../../../../public/engine/static/resources/STATIC_TEXTURES";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Localization from "../../../../../shared/libs/Localization";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import STATIC_MESHES from "../../../../../../../public/engine/static/STATIC_MESHES";
+    import STATIC_MESHES from "../../../../../../../public/engine/static/resources/STATIC_MESHES";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
 

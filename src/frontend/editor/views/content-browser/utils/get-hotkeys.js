@@ -2,7 +2,7 @@ import selection from "./selection";
 import SELECTION_TYPES from "../templates/SELECTION_TYPES";
 import FilesAPI from "../../../../shared/libs/files/FilesAPI";
 import handleDelete from "./handle-delete";
-import KEYS from "../../../../../../public/engine/production/data/KEYS";
+import KEYS from "../../../../../../public/engine/static/KEYS";
 import FilesStore from "../../../stores/FilesStore";
 import SelectionStore from "../../../stores/SelectionStore";
 

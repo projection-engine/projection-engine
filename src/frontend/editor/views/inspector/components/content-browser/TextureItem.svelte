@@ -2,12 +2,12 @@
     import Localization from "../../../../../shared/libs/Localization";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import TEXTURE_FORMATS from "../../../../../../../public/engine/production/data/texture/TEXTURE_FORMATS";
+    import TEXTURE_FORMATS from "../../../../../../../public/engine/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
     import GPU from "../../../../../../../public/engine/production/GPU";
-    import TEXTURE_FILTERING from "../../../../../../../public/engine/production/data/texture/TEXTURE_FILTERING";
-    import TEXTURE_WRAPPING from "../../../../../../../public/engine/production/data/texture/TEXTURE_WRAPPING";
+    import TEXTURE_FILTERING from "../../../../../../../public/engine/static/texture/TEXTURE_FILTERING";
+    import TEXTURE_WRAPPING from "../../../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
 
     const {shell} = window.require("electron")

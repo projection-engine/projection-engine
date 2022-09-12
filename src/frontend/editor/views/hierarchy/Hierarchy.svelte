@@ -8,7 +8,7 @@
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import UIHierarchy from "./views/UIView.svelte";
-    import COMPONENTS from "../../../../../public/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
 
 
     export let hidden = undefined

@@ -1,14 +1,14 @@
 <script>
     import ToolTip from "../tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import KEYS from "../../../../../public/engine/production/data/KEYS";
+    import KEYS from "../../../../../public/engine/static/KEYS";
 
     import Localization from "../../libs/Localization";
     import Icon from "../icon/Icon.svelte";
     import getPercentage from "./utils/get-percentage";
 
     const toDeg = 180 / Math.PI
-    const DELAY = 200
+
 
     export let label = undefined;
     export let precision = 2
@@ -200,12 +200,14 @@
         width: 100%;
         height: 23px;
     }
-    .wrapper:active,
+    .wrapper:active{
+        background: var(--pj-background-primary);
+    }
     .wrapper:focus-within {
         background: var(--pj-background-primary) !important;
     }
     .wrapper:hover {
-        background-color: var(--background-input-lighter);
+        background: var(--background-input-lighter);
     }
 
     .title {

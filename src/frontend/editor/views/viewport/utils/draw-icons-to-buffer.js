@@ -1,7 +1,7 @@
-import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS";
 import CameraAPI from "../../../../../../public/engine/production/apis/CameraAPI";
 import GPU from "../../../../../../public/engine/production/GPU";
-import STATIC_MESHES from "../../../../../../public/engine/static/STATIC_MESHES";
+import STATIC_MESHES from "../../../../../../public/engine/static/resources/STATIC_MESHES";
 import DepthPass from "../../../../../../public/engine/production/passes/DepthPass";
 import Engine from "../../../../../../public/engine/production/Engine";
 

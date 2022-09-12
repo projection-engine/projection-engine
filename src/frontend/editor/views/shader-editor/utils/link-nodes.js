@@ -1,4 +1,4 @@
-import DATA_TYPES from "../../../../../../public/engine/production/data/DATA_TYPES";
+import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES";
 
 export default function linkNodes(data, inputData, node, handleLink) {
     if (inputData.accept.includes(data.type) || inputData.accept.includes(DATA_TYPES.ANY))

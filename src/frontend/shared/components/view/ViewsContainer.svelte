@@ -7,6 +7,7 @@
     export let topOffset = undefined
     export let leftOffset = undefined
     export let orientation
+    export let reducedOpacity
     export let tabs
     export let setTabs
     export let id
@@ -45,6 +46,7 @@
             ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
             ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "28px" : "unset")};
             ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "28px" : "unset")};
+            opacity: ${reducedOpacity ? ".75" : "1"};
         `}
 >
     {#each tabs as view, vI}

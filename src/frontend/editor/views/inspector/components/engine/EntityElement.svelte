@@ -21,11 +21,7 @@
 
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
-    onDestroy(() => {
-        unsubscribeStore()
-    })
-
-
+    onDestroy(() => unsubscribeStore())
 </script>
 
 

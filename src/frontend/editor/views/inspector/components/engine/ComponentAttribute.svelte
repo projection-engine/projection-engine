@@ -22,7 +22,7 @@
 
     $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
     $: value = component[attribute.key]
-    $: isDisabled = component[attribute.disabledIf]
+    $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
     let firstSubmit = false
     const setImage = async ({registryID}) => {
@@ -117,7 +117,7 @@
     />
 {:else if attribute.type === Component.propTypes.OPTIONS}
     <Dropdown disabled={isDisabled} width="100%">
-        <button slot="button" class="dropdown">
+        <button slot="button" disabled={isDisabled}  class="dropdown">
             {label}
         </button>
         {#each attribute.options as option}
@@ -200,7 +200,8 @@
         width: 100%;
         border: none;
     }
-    .reset-button{
+
+    .reset-button {
         border: none;
         min-width: 17px;
         min-height: 17px;

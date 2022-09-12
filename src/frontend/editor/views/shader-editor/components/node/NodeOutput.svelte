@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../../../../public/engine/production/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../../../../public/engine/static/DATA_TYPES";
     import "../../css/NodeIO.css"
     import ShaderEditorController from "../../ShaderEditorController";
 

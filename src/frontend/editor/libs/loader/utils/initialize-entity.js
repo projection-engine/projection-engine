@@ -1,6 +1,6 @@
 import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
-import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
-import FALLBACK_MATERIAL from "../../../../../../public/engine/production/data/FALLBACK_MATERIAL";
+import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS";
+import FALLBACK_MATERIAL from "../../../../../../public/engine/static/FALLBACK_MATERIAL";
 
 export default function initializeEntity(data, meshID, parent, index=0) {
     const entity = new Entity()

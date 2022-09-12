@@ -5,6 +5,8 @@
     import EngineStore from "../../../../stores/EngineStore";
     import getComponentIcon from "../../../../utils/get-component-icon";
     import SelectionStore from "../../../../stores/SelectionStore";
+    import Engine from "../../../../../../../public/engine/production/Engine";
+    import {v4} from "uuid";
 
     export let key
     export let index
@@ -13,15 +15,18 @@
     export let translate
 
     const removeComponent = () => {
+
         const entity = SelectionStore.selectedEntity
+        if (!entity)
+            return
         if (index != null) {
             entity.scripts[index] = undefined
             entity.scripts = entity.scripts.filter(e => e)
-            EngineStore.updateStore()
-        } else {
+        } else
             entity.components.delete(key)
-            SelectionStore.updateStore()
-        }
+
+        SelectionStore.updateStore()
+        EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }
     $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(component.name) ? translate(component.name) : component.name)
 </script>
@@ -35,7 +40,7 @@
         </div>
         {title}
         {#if key !== "TRANSFORMATION"}
-            <button class="button" on:click={removeComponent}>
+            <button class="button" on:click={() => removeComponent()}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}

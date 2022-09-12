@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../../../../public/engine/production/data/DATA_TYPES";
+    import DATA_TYPES from "../../../../../../../public/engine/static/DATA_TYPES";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";

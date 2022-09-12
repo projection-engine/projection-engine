@@ -6,7 +6,7 @@
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "../components/EngineNode.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
+    import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {v4} from "uuid";
     import Entity from "../../../../../../public/engine/production/instances/entity/Entity";

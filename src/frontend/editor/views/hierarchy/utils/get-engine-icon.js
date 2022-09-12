@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../../public/engine/production/data/COMPONENTS";
+import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS";
 
 export default function getEngineIcon(nodeRef){
     if (nodeRef) {
