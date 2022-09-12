@@ -1,7 +1,7 @@
-import Localization from "../../libs/Localization";
+import Localization from "../../shared/libs/Localization";
 
-import FilesAPI from "../../libs/files/FilesAPI";
-import NodeFS from "../../libs/NodeFS";
+import FilesAPI from "../../shared/libs/files/FilesAPI";
+import NodeFS from "../../shared/libs/NodeFS";
 
 
 export default async function refreshProjects(path) {
@@ -16,7 +16,7 @@ export default async function refreshProjects(path) {
             const [, stat] = await NodeFS.lstat(filename)
             if (stat && stat.isDirectory) {
                 const [, meta] = await NodeFS.read(filename + "/.meta")
-                const [, settings] = await NodeFS.read(filename + "/.settings")
+                const [, settings] = await NodeFS.read(filename + "/.preferences")
                 const parts = filename.split(FilesAPI.sep)
                 data.push({
                     id: parts.pop(),

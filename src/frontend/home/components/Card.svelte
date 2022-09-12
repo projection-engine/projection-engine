@@ -1,10 +1,10 @@
 <script>
-    import Localization from "../../libs/Localization";
-    import Input from "../../components/input/Input.svelte";
-    import Dropdown from "../../components/dropdown/Dropdown.svelte";
-    import Icon from "../../components/icon/Icon.svelte";
+    import Localization from "../../shared/libs/Localization";
+    import Input from "../../shared/components/input/Input.svelte";
+    import Dropdown from "../../shared/components/dropdown/Dropdown.svelte";
+    import Icon from "../../shared/components/icon/Icon.svelte";
     import "../css/card.css"
-    import FilesAPI from "../../libs/files/FilesAPI";
+    import FilesAPI from "../../shared/libs/files/FilesAPI";
 
     const {ipcRenderer, shell} = window.require("electron")
 

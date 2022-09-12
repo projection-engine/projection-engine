@@ -1,0 +1,72 @@
+<script>
+    import {onDestroy, onMount} from "svelte";
+    import ToolTipController from "./ToolTipController";
+
+    let open = false
+    export let content = ""
+    let wrapper
+    let mountingPoint
+    let bBox, bodyBBox
+    let isMounted
+    let targetParent
+
+    const handleMouseMove = (event) => {
+
+        ToolTipController.element.style.left = (event.clientX + 10) + "px"
+        ToolTipController.element.style.top = (event.clientY + 10) + "px"
+
+        let transform = {x: "0px", y: "0px"}
+        if ((event.clientX + 10 + bBox.width) >= bodyBBox.width)
+            transform.x = "calc(-100% - 10px)"
+        if ((event.clientY + 10 + bBox.height) >= bodyBBox.height)
+            transform.y = "calc(-100% - 10px)"
+        ToolTipController.element.style.transform = `translate(${transform.x}, ${transform.y})`
+    }
+
+    const hover = (event) => {
+
+        open = true
+        bBox = ToolTipController.element.getBoundingClientRect()
+        bodyBBox = document.body.getBoundingClientRect()
+        ToolTipController.element.style.left = (event.clientX + 10) + "px"
+        ToolTipController.element.style.top = (event.clientY + 10) + "px"
+        document.addEventListener("mousemove", handleMouseMove)
+        targetParent.addEventListener(
+            "mouseleave",
+            () => {
+                document.removeEventListener("mousemove", handleMouseMove)
+                open = false
+            },
+            {once: true}
+        )
+    }
+
+    $: {
+        if(open) {
+            ToolTipController.portal.open()
+            ToolTipController.closeCurrent = () => open = false
+        }
+        else
+            ToolTipController.portal.close()
+    }
+
+    $: {
+        if(open)
+            ToolTipController.element.innerHTML = content
+
+    }
+    onMount(() => {
+        ToolTipController.initialize()
+        targetParent = wrapper.parentElement
+        targetParent.addEventListener("mouseenter", hover)
+        isMounted = true
+    })
+    onDestroy(() => targetParent.removeEventListener("mouseenter", hover))
+
+</script>
+
+{#if !isMounted}
+    <div bind:this={wrapper}>
+    </div>
+{/if}
+

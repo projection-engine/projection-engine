@@ -13,7 +13,7 @@ module.exports = async function loadTexture(basePath, texture, textures, images,
         if (imgURI !== undefined) {
             let file, fetched = false
 
-            if (typeof imgURI.uri === "string" && imgURI.uri.includes("static:image"))
+            if (typeof imgURI.uri === "string" && imgURI.uri.includes("data:image"))
                 file = imgURI.uri
             else {
                 file = await new Promise(resolve => {
@@ -28,7 +28,7 @@ module.exports = async function loadTexture(basePath, texture, textures, images,
                 fetched = true
             }
             if (file) {
-                const imageBase64 =fetched ?  `data:image/${imgURI.uri.split(".").pop()};base64, ` + file : "static:image/png;base64, " + file
+                const imageBase64 =fetched ?  `data:image/${imgURI.uri.split(".").pop()};base64, ` + file : "data:image/png;base64, " + file
                 const id = v4().toString()
 
                 await writeData(path.resolve(partialPath + getNormalizedName("texture-asset-" + name, index) + FILE_TYPES.TEXTURE), JSON.stringify({...TEXTURE_TEMPLATE, base64: imageBase64}), id, projectPath, imageBase64)

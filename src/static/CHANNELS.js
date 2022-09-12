@@ -1,5 +1,5 @@
 module.exports =  {
-    SEND: "load-project",
+    SEND: "load-editor",
     ENTITIES: "ENTITIES",
     MESH: "mesh",
     MATERIAL: "material",

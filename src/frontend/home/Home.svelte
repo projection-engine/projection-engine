@@ -1,18 +1,18 @@
 <script>
-    import WindowFrame from "../components/window-frame/WindowFrame.svelte";
-    import Icon from "../components/icon/Icon.svelte";
+    import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
+    import Icon from "../shared/components/icon/Icon.svelte";
     import Card from "./components/Card.svelte";
     import Header from "./components/Header.svelte";
     import Recent from "./components/Recent.svelte";
-    import Localization from "../libs/Localization";
+    import Localization from "../shared/libs/Localization";
     import ROUTES from "../../static/ROUTES";
     import getBasePath from "../../backend/utils/get-base-path";
     import {onMount} from "svelte";
 
     import refreshProjects from "./utils/refresh-projects";
-    import Alert from "../components/alert/Alert.svelte";
-    import FilesAPI from "../libs/files/FilesAPI";
-    import NodeFS from "../libs/NodeFS";
+    import Alert from "../shared/components/alert/Alert.svelte";
+    import FilesAPI from "../shared/libs/files/FilesAPI";
+    import NodeFS from "../shared/libs/NodeFS";
 
     const pathLib = window.require("path")
     const os =  window.require("os")

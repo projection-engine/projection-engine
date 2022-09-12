@@ -1,10 +1,10 @@
 <script>
 
-    import Input from "../../components/input/Input.svelte";
-    import Icon from "../../components/icon/Icon.svelte";
+    import Input from "../../shared/components/input/Input.svelte";
+    import Icon from "../../shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import createPortal from "../../components/create-portal";
-    import AssetAPI from "../../libs/files/AssetAPI";
+    import createPortal from "../../shared/components/create-portal";
+    import AssetAPI from "../../shared/libs/files/AssetAPI";
 
     export let setProjectsToShow
     export let projectsToShow

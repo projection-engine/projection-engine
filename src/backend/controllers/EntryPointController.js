@@ -5,9 +5,9 @@ module.exports = class Window{
         return path.join(require.main.filename, '../../../public/home-window.html')
     }
     static get settings(){
-        return path.join(require.main.filename, '../../../public/settings-window.html')
+        return path.join(require.main.filename, '../../../public/preferences-window.html')
     }
     static get project(){
-        return path.join(require.main.filename, '../../../public/project-window.html')
+        return path.join(require.main.filename, '../../../public/editor-window.html')
     }
 }

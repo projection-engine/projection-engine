@@ -47,8 +47,8 @@ const common = (inputFile, outputFile, cssFile) => ({
 
 export default [
     common("home/root", "home", "home"),
-    common("project/root", "project", "project"),
-    common("settings/root", "settings", "settings")
+    common("editor/root", "editor", "editor"),
+    common("preferences/root", "preferences", "preferences")
 ]
 
 function serve() {

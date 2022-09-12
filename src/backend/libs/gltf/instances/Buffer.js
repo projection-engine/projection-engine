@@ -25,7 +25,7 @@ module.exports =  class Buffer {
         }
     }
     #getBufferData(str) {
-        let byteCharacters = atob(str.replace("static:application/octet-stream;base64,", ""))
+        let byteCharacters = atob(str.replace("data:application/octet-stream;base64,", ""))
         let dv = new DataView(new ArrayBuffer(byteCharacters.length))
         Array.from(byteCharacters).forEach((char, i) => {
             dv.setUint8(i, char.charCodeAt(0))

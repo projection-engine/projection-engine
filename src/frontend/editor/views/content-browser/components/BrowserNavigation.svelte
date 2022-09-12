@@ -1,0 +1,120 @@
+<script>
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import FilesStore from "../../../stores/FilesStore";
+    import EngineStore from "../../../stores/EngineStore";
+    import {onDestroy} from "svelte";
+    import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+
+    import Input from "../../../../shared/components/input/Input.svelte";
+    import NodeFS from "../../../../shared/libs/NodeFS";
+    import Localization from "../../../../shared/libs/Localization";
+
+    export let bookmarks
+    export let currentDirectory
+    export let setCurrentDirectory
+    export let fileType
+
+    export let path
+    export let navigationHistory
+
+
+    let loading = false
+    $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
+
+
+    let engine = {}
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    onDestroy(() => unsubscribeEngine())
+    const translate = key => Localization.PROJECT.FILES[key]
+</script>
+
+<div class="wrapper">
+
+    <button class="button" on:click={() => navigationHistory.undo()}>
+        <Icon styles="font-size: .9rem">arrow_back</Icon>
+        <ToolTip content={translate("BACK_DIR")}/>
+    </button>
+    <button
+            class="button"
+            on:click={() => navigationHistory.redo()}
+    >
+        <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
+        <ToolTip content={translate("FORWARD_DIR")}/>
+    </button>
+    <button
+            class="button"
+
+            on:click={() => {
+                            if(currentDirectory.id === FilesAPI.sep)
+                                return
+                            navigationHistory.goToParent(currentDirectory)
+                        }}
+    >
+        <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
+        <ToolTip content={translate("PARENT_DIR")}/>
+    </button>
+    <div data-vertdivider="-"></div>
+    <button
+            disabled="{loading}"
+            class="button"
+            on:click={() => {
+                    alert.pushAlert(translate("REFRESHING"), "info")
+                    FilesStore.refreshFiles().then(() => loading = false).catch()
+                }}
+    >
+        <Icon styles="font-size: .9rem">sync</Icon>
+        <ToolTip content={translate("REFRESH")}/>
+    </button>
+    <button class="button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
+        <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
+        <ToolTip content={translate("CREATE_FOLDER")}/>
+    </button>
+    <button
+            class="button"
+            data-highlight={starred ? "-" : undefined}
+            on:click={() => {
+                        if (starred)
+                            FilesStore.removeBookmark(currentDirectory.id)
+                        else
+                            FilesStore.addBookmark(currentDirectory.id)
+                    }}
+    >
+        <Icon styles="font-size: .9rem">star</Icon>
+        <ToolTip content={translate("ADD_BOOKMARK")}/>
+    </button>
+
+    <div data-vertdivider="-"></div>
+    <Input
+            hasBorder={true}
+            width={"250px"}
+            height="22px"
+            placeholder={translate("SEARCH")}
+            searchString={currentDirectory.id}
+            noAutoSubmit={true}
+            setSearchString={async (path) => {
+                if (await NodeFS.exists(FilesStore.ASSETS_PATH + path))
+                setCurrentDirectory({id: path })
+            }}
+    />
+
+</div>
+
+
+<style>
+    .wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+    }
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    width: 22px;
+    background: var(--pj-border-primary);
+}
+</style>
