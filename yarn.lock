@@ -587,6 +587,10 @@ ajv@^6.12.3:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+"ammo.js@https://github.com/projection-engine/ammo.js.git":
+  version "0.0.2"
+  resolved "https://github.com/projection-engine/ammo.js.git#0ee88b7573bda50c1958b82de87c81a731927c4c"
+
 ansi-escapes@^4.2.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.3.2.tgz#6b2291d1db7d98b6521d5f1efa42d0f3a9feb65e"

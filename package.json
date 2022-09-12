@@ -50,7 +50,8 @@
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ammo.js": "https://github.com/projection-engine/ammo.js.git"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.50",

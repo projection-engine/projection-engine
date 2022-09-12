@@ -16,7 +16,7 @@
     const transform = (index, value) => {
         const c = window.engineCursor
         c.translation[index] = value
-        c.transformationMatrix = TransformationAPI.transform(c.translation, [0,0,0,1], c.scaling)
+        c.matrix = TransformationAPI.transform(c.translation, [0,0,0,1], c.scaling)
     }
 </script>
 

@@ -1,6 +1,7 @@
 import ViewportActions from "../../../libs/ViewportActions";
 import TransformationAPI from "../../../../../../public/engine/production/apis/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
+import {vec3} from "gl-matrix";
 
 export default function getContextMenu() {
     return [
@@ -48,7 +49,7 @@ export default function getContextMenu() {
             label: "Apply current transformation",
             onClick: () => {
                 const comp = SelectionStore.selectedEntity
-                comp.baseTransformationMatrix = comp.transformationMatrix
+                comp.baseTransformationMatrix = comp.matrix
 
                 comp.translation = [0, 0, 0]
                 comp.scaling = [1, 1, 1]
@@ -59,14 +60,14 @@ export default function getContextMenu() {
             label: "Move to 3D cursor",
             onClick: () => {
                 const comp = SelectionStore.selectedEntity
-                comp.translation = [...window.engineCursor.translation]
+                vec3.copy(comp.translation, window.engineCursor.translation)
             }
         },
         {
             label: "Pivot on 3D cursor",
             onClick: () => {
                 const comp = SelectionStore.selectedEntity
-                comp.pivotPoint = [...window.engineCursor.translation]
+                vec3.copy(comp.pivotPoint, window.engineCursor.translation)
             }
         },
         {
@@ -75,8 +76,9 @@ export default function getContextMenu() {
                 const component = SelectionStore.selectedEntity
                 if (component) {
                     const t = window.engineCursor
-                    t.translation = [component.matrix[12], component.matrix[13], component.matrix[14]]
-                    t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
+                    vec3.copy(t.translation, component.absoluteTranslation)
+
+                    t.matrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
                 }
             }
         },

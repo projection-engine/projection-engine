@@ -35,14 +35,14 @@
             originalValue = value
     }
     $: percentageFilled = minValue != null && maxValue != null ? getPercentage(currentValue, maxValue) : undefined
-
+    $: incrementData = (incrementPercentage ? incrementPercentage : 0.1)
     const handleMouseMove = (e) => {
         if (!document.pointerLockElement)
             inputRef.requestPointerLock()
 
-        const multiplier = -e.movementX * .1
+        const multiplier = -e.movementX
         dragged = true
-        let increment = integer ? 1 : Math.abs((incrementPercentage ? incrementPercentage : 0.1) * multiplier)
+        let increment = integer ? 1 : Math.abs(incrementData * multiplier)
         if (multiplier < 0 && (currentValue <= maxValue || !maxValue))
             currentValue = parseFloat((currentValue + increment).toFixed(precision ? precision : 1))
         else if (currentValue >= minValue || !minValue)
@@ -200,12 +200,15 @@
         width: 100%;
         height: 23px;
     }
-    .wrapper:active{
+
+    .wrapper:active {
         background: var(--pj-background-primary);
     }
+
     .wrapper:focus-within {
         background: var(--pj-background-primary) !important;
     }
+
     .wrapper:hover {
         background: var(--background-input-lighter);
     }

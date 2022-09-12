@@ -8,6 +8,7 @@
     import STATIC_MESHES from "../../../../../../../public/engine/static/resources/STATIC_MESHES";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import {vec3} from "gl-matrix";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 
@@ -21,7 +22,8 @@
         const p = actor.addComponent(COMPONENTS.PROBE)
         p.specularProbe = !asDiffuse
         addSprite(actor, STATIC_TEXTURES.PROBE)
-        actor.translation = [...window.engineCursor.translation]
+        vec3.copy(actor.translation, window.engineCursor.translation)
+
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
         e.target.closeDropdown()
     }
@@ -82,7 +84,7 @@
             const actor = new Entity(undefined, translate("POINT_LIGHT"))
             actor.addComponent(COMPONENTS.POINT_LIGHT)
             addSprite(actor, STATIC_TEXTURES.POINT_LIGHT)
-            actor.translation = [...window.engineCursor.translation]
+            vec3.copy(actor.translation, window.engineCursor.translation)
             actor.lockedRotation = true
             actor.lockedScaling = true
 
@@ -98,7 +100,7 @@
         on:click={(e) => {
             const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
             addSprite(actor, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
-            actor.translation = [...window.engineCursor.translation]
+            vec3.copy(actor.translation, window.engineCursor.translation)
             actor.lockedRotation = true
             actor.lockedScaling = true
             actor.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
@@ -133,8 +135,8 @@
             const actor = new Entity(undefined, translate("CAMERA"))
             actor.addComponent(COMPONENTS.CAMERA)
 
-            actor.translation = [...window.engineCursor.translation]
-            actor.rotation = [0, 0, 0]
+            vec3.copy(actor.translation, window.engineCursor.translation)
+
             actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
             actor.lockedScaling = true
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})

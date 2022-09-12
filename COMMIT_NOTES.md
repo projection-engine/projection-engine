@@ -1,8 +1,4 @@
-- Initializing culling component
-- Reworked colliders to be a single component (Physics collider)
-- rigid body initializer 
-- collider initializer
-- Physics system structure
-- Fixed play/stop entityStateController
-- Fixed removal of components
-- Initial physics implementation
+- Entity serialization for play state fixed
+- Added wireframe for collider visualization
+- Added absoluteTranslation to Movable entity
+- Removed transformationMatrix getter/setter from Movable entity

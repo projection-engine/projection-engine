@@ -33,13 +33,11 @@
 
     const LEFT_BUTTON = 0
     let mouseDelta = {x: 0, y: 0}
-    const CAMERA_DISTANCE = 2
-
     function transformCursor(e) {
         const translation = ScreenSpaceGizmo.onMouseMove(e, .1)
         const t = window.engineCursor
         vec3.add(t.translation, t.translation, translation)
-        t.transformationMatrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
+        t.matrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
     }
 
     function handleMouse(e) {

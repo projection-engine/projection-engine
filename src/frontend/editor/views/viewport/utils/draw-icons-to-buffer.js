@@ -16,7 +16,7 @@ export default function drawIconsToBuffer() {
         drawIcon(
             GPU.meshes.get(entity.components.get(COMPONENTS.CAMERA) ? STATIC_MESHES.EDITOR.CAMERA : STATIC_MESHES.PRODUCTION.CUBE),
             entity.pickID,
-            entity.transformationMatrix,
+            entity.matrix,
         )
     }
 

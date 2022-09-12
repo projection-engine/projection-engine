@@ -15,6 +15,7 @@
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
     import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Entity from "../../../../../public/engine/production/instances/entity/Entity";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -69,7 +70,7 @@
             }
         }
 
-        if(!targetInstance && SelectionStore.lockedEntity){
+        if (!targetInstance && SelectionStore.lockedEntity) {
             targetInstance = Engine.entitiesMap.get(SelectionStore.lockedEntity)
             targetType = translate("ENGINE")
         }
@@ -115,7 +116,7 @@
 </Header>
 <div class="content" style={hidden ? "display: none" : undefined}>
     {#if entity != null}
-        {#if target === SelectionStore.TYPES.ENGINE}
+        {#if target === SelectionStore.TYPES.ENGINE || entity instanceof Entity}
             <div class="wrapper-content">
                 <EntityElement entity={entity} translate={translate}/>
                 {#if entity instanceof UIElement}
