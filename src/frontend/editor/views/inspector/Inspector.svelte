@@ -40,7 +40,7 @@
     })
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
-    let focusOnEngineEntities = true
+
     $: target = selectionStore.TARGET
     $:{
         let targetInstance

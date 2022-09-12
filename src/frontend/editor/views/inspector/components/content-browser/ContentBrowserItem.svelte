@@ -9,6 +9,7 @@
     import ItemMetadata from "./ItemMetadata.svelte";
     import MaterialItem from "./MaterialItem.svelte";
     import SceneItem from "./SceneItem.svelte";
+    import MeshItem from "./MeshItem.svelte";
 
     const {shell} = window.require("electron")
 
@@ -41,6 +42,8 @@
         <ComponentItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.MATERIAL && data?.response != null}
         <MaterialItem data={data} item={item}/>
+    {:else if fileType === FILE_TYPES.MESH}
+        <MeshItem item={item}/>
     {:else}
         <div class="empty-wrapper">
             <div data-empty="-" style="position: relative">

@@ -1,4 +1,1 @@
-- Entity serialization for play state fixed
-- Added wireframe for collider visualization
-- Added absoluteTranslation to Movable entity
-- Removed transformationMatrix getter/setter from Movable entity
+- Inspector view for mesh file
