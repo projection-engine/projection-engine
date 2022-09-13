@@ -1,1 +1,6 @@
-- Inspector view for mesh file
+- Movement structure reworked
+- Multi-thread support for transformation
+- Rollup configuration extended to support workers and minimized electron backend
+- Enabled SharedArrayBuffer
+- Shared array buffer integrated with Movable element
+- Code better organized now

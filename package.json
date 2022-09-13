@@ -2,7 +2,7 @@
   "name": "projection-engine",
   "version": "3.1.1-alpha",
   "description": "Projection Engine is a 3D graphics engine written from ground up to be fast and easy to use",
-  "main": "src/backend/index.js",
+  "main": "public/build/electron.js",
   "scripts": {
     "start": "concurrently \"yarn svelte-dev\" \"electron-forge start\"",
     "package": "yarn svelte-build && electron-forge package",
