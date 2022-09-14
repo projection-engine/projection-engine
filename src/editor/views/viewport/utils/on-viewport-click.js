@@ -16,19 +16,16 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
     const selected = SelectionStore.engineSelected
     drawIconsToBuffer()
     const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(event.clientX, event.clientY))
-    if (!entity) return;
+
+    if (!entity) {
+        setContext([])
+        return;
+    }
     if (event.ctrlKey) {
         if (selected.find(e => e === entity.id))
             setContext(selected.filter(s => s !== entity.id))
         else
             setContext([...selected, entity.id])
-
-    }
-    else {
-        if (selected.length !== 1 || selected[0] !== entity.id)
-            setContext([entity.id])
-
-        if (selected.length > 0)
-            setContext([])
-    }
+    } else
+        setContext([entity.id])
 }

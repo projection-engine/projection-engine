@@ -1,10 +1,6 @@
 const loadTexture = require("./load-texture")
-const writeData = require("../../../utils/gltf/write-data");
-const path = require("path");
-const getNormalizedName = require("../../../utils/gltf/get-normalized-name");
-const FILE_TYPES = require("../../../../../src/static/FILE_TYPES");
 const PBR_MATERIAL = require("../../../../../src/static/PBR_MATERIAL_SAMPLE.json")
-const {v4} = require("uuid")
+
 module.exports = async function parseMaterial(basePath, data, textures, images, partialPath, projectPath, index) {
     const getTexture = (sampler, name) => loadTexture(
         basePath,
@@ -77,7 +73,6 @@ module.exports = async function parseMaterial(basePath, data, textures, images, 
                             newMaterial.response.uniforms[index].value = texture
 
                             index = newMaterial.response.uniformData.findIndex(v => v.data === "ALBEDO-SAMPLER")
-                            console.log(index)
                             newMaterial.response.uniformData[index].data = texture
                             break
                         }

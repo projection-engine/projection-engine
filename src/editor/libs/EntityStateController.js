@@ -12,7 +12,7 @@ export default class EntityStateController {
     static async startPlayState() {
         if (EntityStateController.#isPlaying)
             return
-
+        Engine.environment = ENVIRONMENT.EXECUTION
         alert.pushAlert("Saving state", "alert")
 
         EntityStateController.#state = Engine.entities.map(e => Entity.serializeComplexObject(e.serializable()))
@@ -34,12 +34,14 @@ export default class EntityStateController {
         }
 
         EngineStore.updateStore({...engine, executingAnimation: true})
-        Engine.environment = ENVIRONMENT.EXECUTION
+
     }
 
     static async stopPlayState() {
         if (!EntityStateController.#isPlaying)
             return
+        Engine.environment = ENVIRONMENT.DEV
+
         alert.pushAlert("Restoring state", "alert")
         const mapped = []
         for (let i = 0; i < EntityStateController.#state.length; i++) {
@@ -52,7 +54,6 @@ export default class EntityStateController {
         dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
         const engine = EngineStore.engine
         EngineStore.updateStore({...engine, executingAnimation: false})
-        Engine.environment = ENVIRONMENT.DEV
 
         EntityStateController.#isPlaying = false
     }

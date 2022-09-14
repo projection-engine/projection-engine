@@ -120,10 +120,7 @@
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
-            onDrop: (event) => {
-                console.log(event, data)
-                handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory)
-            },
+            onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
             ...dragDropData
         })
     })

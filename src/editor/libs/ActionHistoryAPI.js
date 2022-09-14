@@ -22,7 +22,6 @@ export default class ActionHistoryAPI {
         else if(typeof changeValue === "object")
             value = structuredClone(changeValue)
         else value = changeValue
-        console.log(value, changeValue)
         ActionHistoryAPI.controller.save({
             target,
             entityID,
@@ -71,7 +70,6 @@ export default class ActionHistoryAPI {
                     else
                         entity.components.get(currentAction.component)[currentAction.key] = currentAction.changeValue
                 } else {
-                    console.log(entity[currentAction.key], currentAction.changeValue)
                     if (entity[currentAction.key]?.buffer != null) {
                         for (let i = 0; i < currentAction.changeValue.length; i++)
                             entity[currentAction.key][i] = currentAction.changeValue[i]

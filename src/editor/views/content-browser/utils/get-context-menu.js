@@ -119,7 +119,6 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                 label: m.name,
                 icon: "",
                 onClick: async () => {
-                    console.log(m)
                     const nodeName = m.name
                     const nodeID = m.registryID
                     const regFile = await RegistryAPI.readRegistryFile(nodeID)

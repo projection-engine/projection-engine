@@ -63,7 +63,7 @@ export default class TextureSample extends Node {
         if (this.texture?.registryID) {
             try {
                 const res = await RegistryAPI.readRegistryFile(this.texture?.registryID)
-                console.log(res, this.texture)
+
                 if (res) {
                     uniforms.push({
                         label: this.name,

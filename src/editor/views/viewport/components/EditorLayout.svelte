@@ -25,10 +25,11 @@
     import {vec3} from "gl-matrix";
     import SelectionStore from "../../../stores/SelectionStore";
     import ScreenSpaceGizmo from "../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
+    import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
 
     let WORKER = viewportSelectionBoxWorker()
 
-    export let isReady
+
     export let settings
     export let translate
     export let engine
@@ -59,17 +60,11 @@
     }
 
     function onMouseDown(e) {
-        if (!Engine.isReady)
+        if (!Engine.isReady || e.button !== LEFT_BUTTON)
             return
-        const b = gpu.canvas.getBoundingClientRect()
-        console.log({
-            converted: ConversionAPI.toScreenCoordinates([...window.engineCursor.translation]),
-            actual: [e.clientX, e.clientY],
-            relative: [e.clientX - b.left, e.clientY - b.top]
-        })
 
         mouseDelta = {x: e.clientX, y: e.clientY}
-        if (e.button === LEFT_BUTTON && settings.gizmo === GIZMOS.CURSOR && e.target === window.gpu.canvas || e.target === e.currentTarget) {
+        if (settings.gizmo === GIZMOS.CURSOR) {
             ScreenSpaceGizmo.cameraDistance = Math.max(vec3.length(vec3.sub([], window.engineCursor.translation, CameraAPI.position)), 50)
             const b = gpu.canvas.getBoundingClientRect()
             ScreenSpaceGizmo.mouseDelta.x = b.width / 2
@@ -79,21 +74,20 @@
             transformCursor(e)
             document.addEventListener("mousemove", handleMouse)
             document.addEventListener("mouseup", handleMouse, {once: true})
+            return
         }
-        if (e.button === LEFT_BUTTON && settings.gizmo !== GIZMOS.CURSOR) {
+        if (GizmoSystem.targetGizmo) {
+            GizmoSystem.targetGizmo.onMouseDown(e)
+            e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
+            document.addEventListener("mousemove", gizmoMouseMove)
+        }
 
-            if (GizmoSystem.targetGizmo) {
-                GizmoSystem.targetGizmo.onMouseDown(e)
-                e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
-                e.currentTarget.addEventListener("mousemove", gizmoMouseMove)
-            }
-        }
     }
 
     function onMouseUp(event) {
         if (GizmoSystem.targetGizmo) {
             GizmoSystem.targetGizmo.onMouseUp()
-            gpu.canvas.parentElement.removeEventListener("mousemove", gizmoMouseMove)
+            document.removeEventListener("mousemove", gizmoMouseMove)
         }
         if (!Engine.isReady)
             return
@@ -102,6 +96,7 @@
             mouseDelta,
             settings,
             (data) => {
+                console.trace(GizmoSystem.wasOnGizmo, data, "IM HERE")
                 if (GizmoSystem.wasOnGizmo) {
                     GizmoSystem.wasOnGizmo = false
                     return
@@ -115,7 +110,7 @@
 
     const draggable = dragDrop(false)
     onMount(() => {
-        const parentElement = gpu.canvas.parentElement
+        const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
 

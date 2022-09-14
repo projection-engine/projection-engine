@@ -16,7 +16,6 @@ export default class AssetAPI {
     }
 
     static async writeAsset(path, fileData, previewImage, registryID) {
-        console.log(fileData)
         const fileID = registryID !== undefined ? registryID : uuidv4()
         await NodeFS.write(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + path), fileData)
         if (previewImage)
