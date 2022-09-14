@@ -8,7 +8,7 @@
     import bindContextTarget from "../../../shared/components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import HotKeys from "../../components/metrics/libs/HotKeys";
-    import UserInterfaceController from "../../../../public/engine/production/controllers/UserInterfaceController";
+    import UIAPI from "../../../../public/engine/production/apis/utils/UIAPI";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import UIStore from "../../stores/UIStore";
     import GPU from "../../../../public/engine/production/GPU";
@@ -61,15 +61,15 @@
     $: renderUI = engine.executingAnimation || settings.viewportTab === VIEWPORT_TABS.UI
     $: {
         if (uiStore.entities.size > lastSize && renderUI && window.gpu) {
-            UserInterfaceController.restart()
+            UIAPI.restart()
             lastSize = uiStore.entities.size
         }
     }
     $: {
         if (renderUI && window.gpu)
-            UserInterfaceController.start()
+            UIAPI.start()
         else
-            UserInterfaceController.stop()
+            UIAPI.stop()
     }
 
     $: if (done) updateRenderer(selected, engine, settings)

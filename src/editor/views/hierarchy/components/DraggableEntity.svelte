@@ -5,13 +5,13 @@
     import EngineStore from "../../../stores/EngineStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
-    import Entity from "../../../../../public/engine/production/instances/entity/Entity";
+    import Entity from "../../../../../public/engine/production/instances/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-    import Engine from "../../../../../public/engine/production/Engine";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
+    import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 
     export let node
     export let lockedEntity
@@ -79,7 +79,7 @@
                                 class="buttonIcon hierarchy-branch"
                                 on:click={() => {
                             const newOpen = {...open}
-                            let current = Engine.entitiesMap.get(entity)
+                            let current = QueryAPI.getEntityByID(entity)
                             while(current){
                                 newOpen[current.id] = true
                                 current = current?.parent

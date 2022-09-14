@@ -1,6 +1,6 @@
 <script>
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json";
-    import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
+    import Entity from "../../../../../../public/engine/production/instances/Entity";
     import STATIC_TEXTURES from "../../../../../../public/engine/static/resources/STATIC_TEXTURES";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
     import Localization from "../../../../../shared/libs/Localization";

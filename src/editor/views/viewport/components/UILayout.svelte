@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import UIStore from "../../../stores/UIStore";
-    import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
+    import UIAPI from "../../../../../public/engine/production/apis/utils/UIAPI";
 
     let store = {}
     const unsubscribe = UIStore.getStore(v => store = v)
@@ -32,7 +32,7 @@
     }
     let ref
     onMount(() => {
-        renderTarget = UserInterfaceController.renderTarget
+        renderTarget = UIAPI.renderTarget
         renderTarget.addEventListener("click", handler)
         renderTarget.addEventListener("mouseover", handler)
         renderTarget.addEventListener("mouseout", handler)

@@ -1,4 +1,4 @@
-import {Engine, Entity, ENVIRONMENT, UserInterfaceController} from "../../../public/engine/production";
+import {Engine, Entity, ENVIRONMENT, UIAPI} from "../../../public/engine/production";
 
 
 import componentConstructor from "./component-constructor";
@@ -20,7 +20,7 @@ export default class EntityStateController {
 
 
         const engine = EngineStore.engine
-        const entities = [...Engine.entities, ...Array.from(UserInterfaceController.entities.values())]
+        const entities = [...Engine.entities, ...Array.from(UIAPI.entities.values())]
 
         try {
             for (let i = 0; i < entities.length; i++) {

@@ -1,7 +1,7 @@
-import Engine from "../../../../public/engine/production/Engine";
-import Entity from "../../../../public/engine/production/instances/entity/Entity";
+import Entity from "../../../../public/engine/production/instances/Entity";
 import EngineStore from "../EngineStore";
 import UIStore from "../UIStore";
+import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
 export default class EntityNameController {
     static byName = new Map()
@@ -10,7 +10,7 @@ export default class EntityNameController {
         const found = EntityNameController.byName.get(newName)
         let validName = true
         if (found) {
-            validName = !Engine.entitiesMap.get(found)
+            validName = !QueryAPI.getEntityByID(found)
         }
         if (validName) {
             entity.name = newName

@@ -121,11 +121,14 @@
 
         draggable.onMount({
             targetElement: gpu.canvas,
-            onDrop: data => Loader.load(data),
-            onDragOver: () => `
-                <span data-icon="-" style="font-size: 70px">add</span>
-                ${translate("DRAG_DROP")}
-            `
+            onDrop: (data, event) => Loader.load(data, false, event.clientX, event.clientY),
+            onDragOver: () => {
+
+                return `
+                    <span data-icon="-" style="font-size: 70px">add</span>
+                    ${translate("DRAG_DROP")}
+                `
+            }
         })
     })
     onDestroy(() => {

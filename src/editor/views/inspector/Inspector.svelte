@@ -10,12 +10,12 @@
     import EntityElement from "./components/engine/EntityElement.svelte";
     import ComponentLayout from "./components/engine/ComponentLayout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import Engine from "../../../../public/engine/production/Engine";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import UserInterfaceController from "../../../../public/engine/production/controllers/UserInterfaceController";
+    import UIAPI from "../../../../public/engine/production/apis/utils/UIAPI";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Entity from "../../../../public/engine/production/instances/entity/Entity";
+    import Entity from "../../../../public/engine/production/instances/Entity";
+    import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -57,11 +57,11 @@
                     // TODO
                     break
                 case T.ENGINE:
-                    targetInstance = Engine.entitiesMap.get(selectionStore.array[0])
+                    targetInstance = QueryAPI.getEntityByID(selectionStore.array[0])
                     targetType = translate("ENGINE")
                     break
                 case T.UI:
-                    targetInstance = UserInterfaceController.entities.get(selectionStore.array[0])
+                    targetInstance = UIAPI.entities.get(selectionStore.array[0])
                     targetType = translate("UI")
                     break
                 default:
@@ -71,7 +71,7 @@
         }
 
         if (!targetInstance && SelectionStore.lockedEntity) {
-            targetInstance = Engine.entitiesMap.get(SelectionStore.lockedEntity)
+            targetInstance = QueryAPI.getEntityByID(SelectionStore.lockedEntity)
             targetType = translate("ENGINE")
         }
         entity = targetInstance

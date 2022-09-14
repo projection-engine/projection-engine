@@ -1,5 +1,2 @@
-- Initializing material instance structure
-- Fixed bugs related to transformation threads
-- Fixing buffer layout shifted by 1 index
-- Fixing shader editor RGB node dividing color by 255
-- Reactivating error logger
+ - Fixing bugs
+ - 

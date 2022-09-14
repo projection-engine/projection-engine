@@ -2,11 +2,12 @@ import FilesAPI from "../../../../shared/libs/files/FilesAPI";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 import {v4} from "uuid";
-import {Engine, Entity, GPU} from "../../../../../public/engine/production";
+import {Entity, GPU} from "../../../../../public/engine/production";
+import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 
 export default async function loopNodesScene(node, parent, index=0) {
     const children = []
-    const exists = Engine.entitiesMap.get(node.id) != null
+    const exists = QueryAPI.getEntityByID(node.id) != null
 
     const entity = new Entity(exists ? v4() : node.id)
     entity.name = node.name ? node.name : "entity-" + index

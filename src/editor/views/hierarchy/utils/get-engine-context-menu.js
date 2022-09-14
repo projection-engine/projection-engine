@@ -1,9 +1,9 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
-import Entity from "../../../../../public/engine/production/instances/entity/Entity";
+import Entity from "../../../../../public/engine/production/instances/Entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import ViewportActions from "../../../libs/ViewportActions";
-import Engine from "../../../../../public/engine/production/Engine";
 import SelectionStore from "../../../stores/SelectionStore";
+import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 
 function createEntity(component) {
     const entity = new Entity(undefined, "New Entity")
@@ -91,7 +91,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Close parent",
             onClick: (target) => {
                 const newOpen = {...open}
-                const node = Engine.entitiesMap.get(target.getAttribute("data-node"))
+                const node = QueryAPI.getEntityByID(target.getAttribute("data-node"))
                 if (!node)
                     return
                 delete newOpen[node.parent.id]
@@ -114,7 +114,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Duplicate",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const entity = Engine.entitiesMap.get(t)
+                const entity = QueryAPI.getEntityByID(t)
                 if (entity)
                     dispatchRendererEntities({
                         type: ENTITY_ACTIONS.ADD,
@@ -146,7 +146,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Deselect hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toDeselect = [t, ...getHierarchy(Engine.entitiesMap.get(t))]
+                const toDeselect = [t, ...getHierarchy(QueryAPI.getEntityByID(t))]
                 SelectionStore.engineSelected = SelectionStore.engineSelected.filter(s => toDeselect.includes(s))
             }
         },
@@ -166,7 +166,7 @@ export default function getEngineContextMenu(open, setOpen) {
             label: "Select hierarchy",
             onClick: (target) => {
                 const t = target.getAttribute("data-node")
-                const toSelect = [t, ...getHierarchy(Engine.entitiesMap.get(t))]
+                const toSelect = [t, ...getHierarchy(QueryAPI.getEntityByID(t))]
                 SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
 
             }
@@ -175,7 +175,7 @@ export default function getEngineContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Focus",
             icon: "place",
-            onClick: (target) => ViewportActions.focus(Engine.entitiesMap.get(target.getAttribute("data-node")))
+            onClick: (target) => ViewportActions.focus(QueryAPI.getEntityByID(target.getAttribute("data-node")))
         },
     ]
 }

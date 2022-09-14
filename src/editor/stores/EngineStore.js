@@ -9,14 +9,14 @@ import DEFAULT_LEVEL from "../../static/DEFAULT_LEVEL"
 import ROUTES from "../../static/ROUTES";
 import CHANNELS from "../../static/CHANNELS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UserInterfaceController from "../../../public/engine/production/controllers/UserInterfaceController";
+import UIAPI from "../../../public/engine/production/apis/utils/UIAPI";
 import UIStore from "./UIStore";
 import parseUiElement from "../../../public/engine/editor/utils/parse-ui-element";
 import GPU from "../../../public/engine/production/GPU";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
 import {writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
-import Entity from "../../../public/engine/production/instances/entity/Entity";
+import Entity from "../../../public/engine/production/instances/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
@@ -159,7 +159,7 @@ export default class EngineStore {
                     pathToWrite,
                     Entity.serializeComplexObject({
                         entities: entities.map(e => e.serializable()),
-                        uiElements: Array.from(UserInterfaceController.entities.values())
+                        uiElements: Array.from(UIAPI.entities.values())
                     }),
                     true
                 )

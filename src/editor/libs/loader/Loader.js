@@ -12,6 +12,10 @@ import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
 import {Entity} from "../../../../public/engine/production";
+import loadMaterial from "../../views/inspector/utils/load-material";
+import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
+import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+import ActionHistoryAPI from "../ActionHistoryAPI";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -87,7 +91,7 @@ export default class Loader {
         return  entities
     }
 
-    static async load(event, asID) {
+    static async load(event, asID, mouseX, mouseY) {
         const items = [], meshes = []
 
         if (asID)
@@ -126,6 +130,31 @@ export default class Loader {
 
                             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
                         }
+                        break
+                    }
+                    case FILE_TYPES.MATERIAL: {
+
+                        const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(mouseX, mouseY))
+                        if(!entity || !entity.components.get(COMPONENTS.MESH)) return;
+
+                        await loadMaterial(data, () => {
+                            ActionHistoryAPI.pushChange({
+                                target: ActionHistoryAPI.targets.entity,
+                                entityID: entity.id,
+                                component: COMPONENTS.MESH,
+                                key: "materialID",
+                                changeValue: entity.components.get(COMPONENTS.MESH).materialID
+                            })
+                            entity.components.get(COMPONENTS.MESH).materialID = data
+                            ActionHistoryAPI.pushChange({
+                                target: ActionHistoryAPI.targets.entity,
+                                entityID: entity.id,
+                                component: COMPONENTS.MESH,
+                                key: "materialID",
+                                changeValue: data
+                            })
+                        })
+
                         break
                     }
                     default:

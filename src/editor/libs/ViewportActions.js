@@ -4,6 +4,7 @@ import EngineStore from "../stores/EngineStore";
 import SelectionStore from "../stores/SelectionStore";
 import {Engine} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
+import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
 
 export default class ViewportActions {
     static toCopy = []
@@ -56,10 +57,10 @@ export default class ViewportActions {
         if (!ViewportActions.toCopy)
             return
         ViewportActions.toCopy.forEach(t => {
-            const found = Engine.entitiesMap.get(t)
+            const found = QueryAPI.getEntityByID(t)
             if (found) {
                 const clone = found.clone()
-                const targetParent = parent ? Engine.entitiesMap.get(parent) : undefined
+                const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
                 clone.parent = targetParent
                 if(targetParent)
                     targetParent.children.push(clone)

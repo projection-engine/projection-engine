@@ -7,6 +7,7 @@
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import FILE_TYPES from "../../../../../static/CHANNELS";
+    import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
 
 
     export let data
@@ -50,9 +51,8 @@
         await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
 
         if (GPU.materials.get(item.registryID) != null) {
-            // TODO - OTHER STRUCTURE FOR INSTANCE
-            const instance = GPU.materials.get(isInstance ? data.original : item.registryID)
-            await instance.updateUniformData(isInstance ? temp.uniformData : temp.response.uniformData)
+            const instance =  GPU.materials.get(item.registryID)
+            await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
             alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
             GPU.cleanUpTextures()
 

@@ -1,12 +1,12 @@
 import dispatchUiEntities from "../../../stores/templates/dispatch-ui-entities";
 import {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import UIElement from "../../../../../public/engine/production/instances/entity/UIElement";
-import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
+import UIElement from "../../../../../public/engine/production/instances/UIElement";
+import UIAPI from "../../../../../public/engine/production/apis/utils/UIAPI";
 
 
 function createElement(parent) {
     const entity = new UIElement()
-    entity.parent = UserInterfaceController.entities.get(parent)
+    entity.parent = UIAPI.entities.get(parent)
     if (entity.parent)
         entity.parent.children.push(entity)
 

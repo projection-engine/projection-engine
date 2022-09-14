@@ -1,7 +1,7 @@
 <script>
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import "../css/Branch.css"
-    import UserInterfaceController from "../../../../../public/engine/production/controllers/UserInterfaceController";
+    import UIAPI from "../../../../../public/engine/production/apis/utils/UIAPI";
 
     const LEFT_BUTTON = 0
     export let depth = 0
@@ -46,7 +46,7 @@
                 e.preventDefault()
                 ref.style.background = "transparent";
                 const src = e.dataTransfer.getData("text")
-                const entityDragged = UserInterfaceController.entities.get(src)
+                const entityDragged = UIAPI.entities.get(src)
 
                 if (entityDragged) {
                     entityDragged.parent = node

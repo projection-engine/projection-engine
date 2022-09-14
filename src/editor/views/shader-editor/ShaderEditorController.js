@@ -1,6 +1,6 @@
 import BOARD_SIZE from "./data/BOARD_SIZE";
 import compiler from "./libs/compiler";
-import MaterialInstance from "../../../../public/engine/production/instances/MaterialInstance";
+import MaterialController from "../../../../public/engine/production/instances/MaterialController";
 import PreviewSystem from "../../../../public/engine/editor/services/PreviewSystem";
 import AssetAPI from "../../../shared/libs/files/AssetAPI";
 import Localization from "../../../shared/libs/Localization";
@@ -15,8 +15,6 @@ export default class ShaderEditorController {
     static scale = 1
     static grid = ShaderEditorController.GRID_SIZE
     static copied = new Map()
-
-
     static connectionOnDrag
 
     static parseNode(node) {
@@ -89,7 +87,7 @@ export default class ShaderEditorController {
                 await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
             } else
                 await new Promise(resolve => {
-                    material = new MaterialInstance({
+                    material = new MaterialController({
                         vertex: compiled.vertexShader,
                         fragment: compiled.shader,
                         onCompiled: () => resolve(),

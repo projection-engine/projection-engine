@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import UserInterfaceController from "../../../public/engine/production/controllers/UserInterfaceController";
+import UIAPI from "../../../public/engine/production/apis/utils/UIAPI";
 
 const uiStore = writable({
     selected: [],
@@ -21,7 +21,7 @@ export default class UIStore {
         else
             value.selectedEntity = undefined
 
-        UserInterfaceController.entities = value.entities
+        UIAPI.entities = value.entities
         UIStore.data = value
         uiStore.set(value)
     }

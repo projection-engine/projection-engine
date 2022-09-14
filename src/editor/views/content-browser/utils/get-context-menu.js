@@ -112,32 +112,38 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
 
         },
         {
-            requiredTrigger: "data-material",
+            requiredTrigger: "data-wrapper",
             label: translate("NEW_MATERIAL_INSTANCE"),
             icon: "tune",
-            onClick: async (node) => {
-                const nodeName = node.getAttribute("data-name")
-                const nodeID = node.getAttribute("data-file")
-                const regFile = await RegistryAPI.readRegistryFile(nodeID)
-                if (!regFile) {
-                    alert.pushAlert("Material not found", "error")
-                    return
-                }
-                const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
-                if (!file?.response) {
-                    alert.pushAlert("Material not compiled", "error")
-                    return
-                }
+            children: FilesStore.data.materials.map(m => ({
+                label: m.name,
+                icon: "",
+                onClick: async () => {
+                    console.log(m)
+                    const nodeName = m.name
+                    const nodeID = m.registryID
+                    const regFile = await RegistryAPI.readRegistryFile(nodeID)
+                    if (!regFile) {
+                        alert.pushAlert("Material not found", "error")
+                        return
+                    }
+                    const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
+                    if (!file?.response) {
+                        alert.pushAlert("Material not compiled", "error")
+                        return
+                    }
 
-                let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
-                await AssetAPI.writeAsset(path, JSON.stringify({
-                    original: nodeID,
-                    uniforms: file.response.uniforms,
-                    uniformData: file.response.uniformData
-                }))
-                await FilesStore.refreshFiles()
+                    let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
+                    await AssetAPI.writeAsset(path, JSON.stringify({
+                        original: nodeID,
+                        uniforms: file.response.uniforms,
+                        uniformData: file.response.uniformData
+                    }))
+                    await FilesStore.refreshFiles()
 
-            }
+                }
+            }))
+
         },
         {divider: true, requiredTrigger: "data-file"},
         {

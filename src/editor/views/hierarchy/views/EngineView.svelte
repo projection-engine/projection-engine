@@ -9,10 +9,10 @@
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {v4} from "uuid";
-    import Entity from "../../../../../public/engine/production/instances/entity/Entity";
+    import Entity from "../../../../../public/engine/production/instances/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Engine from "../../../../../public/engine/production/Engine";
+    import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 
     export let ID
     export let translate
@@ -39,7 +39,7 @@
     let lockedEntity
     let surfaceSelected = {}
     const findSurface = (e, open) => {
-        const entity = Engine.entitiesMap.get(e)
+        const entity = QueryAPI.getEntityByID(e)
         if(!entity)
             return
         let surface

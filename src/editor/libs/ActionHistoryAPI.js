@@ -11,15 +11,6 @@ export default class ActionHistoryAPI {
     }
     static controller = new UndoRedoAPI()
 
-    static #cloneObject(obj) {
-        if (Array.isArray(obj)) {
-            const temp = []
-            for (let i = 0; i < obj.length; i++)
-                temp[i] = obj[i]
-            return temp
-        }
-        return obj
-    }
 
     static pushChange({target, entityID, component, key, changeValue}) {
         let value

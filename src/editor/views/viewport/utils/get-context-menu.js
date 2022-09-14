@@ -1,5 +1,5 @@
 import ViewportActions from "../../../libs/ViewportActions";
-import TransformationAPI from "../../../../../public/engine/production/apis/TransformationAPI";
+import TransformationAPI from "../../../../../public/engine/production/apis/math/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import {vec3} from "gl-matrix";
 

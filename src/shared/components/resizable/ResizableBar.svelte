@@ -30,7 +30,7 @@
             }
 
         } catch (err) {
-            console.error(err)
+            console.warn(err)
             document.removeEventListener("mousemove", handleMouseMove)
         }
     }
@@ -42,7 +42,7 @@
             ref.parentNode.style.userSelect = "default"
             document.removeEventListener("mousemove", handleMouseMove)
         } catch (err) {
-            console.error(err)
+            console.warn(err)
             document.removeEventListener("mousemove", handleMouseMove)
         }
     }
@@ -77,7 +77,7 @@
                 ref.nextElementSibling.style.height = initial.initialH2
             }
         } catch (err) {
-            console.error(err)
+            console.warn(err)
         }
     }
     let resize, mutation

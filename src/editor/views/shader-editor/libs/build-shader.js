@@ -1,5 +1,5 @@
 import compiler from "./compiler"
-import {trimString} from "../../../../../public/engine/production/instances/ShaderInstance";
+import {trimString} from "../../../../../public/engine/production/instances/ShaderController";
 import GPU from "../../../../../public/engine/production/GPU";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){

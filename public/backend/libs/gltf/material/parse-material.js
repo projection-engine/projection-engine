@@ -16,7 +16,7 @@ module.exports = async function parseMaterial(basePath, data, textures, images, 
         name,
         index
     )
-    const ID = v4()
+
     try {
         const images = {
             ao: undefined,

@@ -1,13 +1,13 @@
 import {v4} from "uuid"
 import UIStore from "../UIStore";
-import UserInterfaceController from "../../../../public/engine/production/controllers/UserInterfaceController";
+import UIAPI from "../../../../public/engine/production/apis/utils/UIAPI";
 import {ENTITY_ACTIONS} from "./dispatch-renderer-entities";
 import removeHierarchy from "../utils/remove-hierarchy";
 
 
 export default function dispatchUiEntities({type, payload}) {
     const data = UIStore.data
-    const state = UserInterfaceController.entities
+    const state = UIAPI.entities
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
             data.selected = []

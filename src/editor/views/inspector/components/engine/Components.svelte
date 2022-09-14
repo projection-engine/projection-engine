@@ -8,8 +8,8 @@
 
     import Loader from "../../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
-    import Entity from "../../../../../../public/engine/production/instances/entity/Entity";
-    import UIElement from "../../../../../../public/engine/production/instances/entity/UIElement";
+    import Entity from "../../../../../../public/engine/production/instances/Entity";
+    import UIElement from "../../../../../../public/engine/production/instances/UIElement";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
     import Localization from "../../../../../shared/libs/Localization";
