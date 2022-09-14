@@ -19,6 +19,8 @@ export default function getTypeName(type) {
 
         case FILE_TYPES.SCENE:
             return "Scene"
+        case FILE_TYPES.MATERIAL_INSTANCE:
+            return "Material Instance"
         default:
             return ""
     }

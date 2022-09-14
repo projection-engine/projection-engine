@@ -214,6 +214,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            SHOW_ON_CB: "Show on content browser",
             ALLOCATING_MESH: "Allocating mesh",
             REGENERATE_NORMALS_AND_TANGENTS: "Regenerate normal and tangents",
             RENDERING: "Rendering",

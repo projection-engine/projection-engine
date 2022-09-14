@@ -23,6 +23,7 @@
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
+    export let internalID
 
     let onDrag = false
     let cardDimensions = {width: 115, height: 115}
@@ -36,7 +37,6 @@
     const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.contentBrowserSelected)
 
 
-    const internalID = v4()
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
         if (trigger !== TRIGGERS[0] && selected.length === 0)
@@ -54,9 +54,11 @@
             translate
         )
     )
-    function onDragEnd(){
+
+    function onDragEnd() {
         onDrag = false
     }
+
     let timeout
     onMount(() => {
         document.addEventListener("dragend", onDragEnd)

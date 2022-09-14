@@ -111,39 +111,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             onClick: (node) => handleDelete(node.getAttribute("data-file"), currentDirectory, setCurrentDirectory)
 
         },
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("NEW_MATERIAL_INSTANCE"),
-            icon: "tune",
-            children: FilesStore.data.materials.map(m => ({
-                label: m.name,
-                icon: "",
-                onClick: async () => {
-                    const nodeName = m.name
-                    const nodeID = m.registryID
-                    const regFile = await RegistryAPI.readRegistryFile(nodeID)
-                    if (!regFile) {
-                        alert.pushAlert("Material not found", "error")
-                        return
-                    }
-                    const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
-                    if (!file?.response) {
-                        alert.pushAlert("Material not compiled", "error")
-                        return
-                    }
 
-                    let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
-                    await AssetAPI.writeAsset(path, JSON.stringify({
-                        original: nodeID,
-                        uniforms: file.response.uniforms,
-                        uniformData: file.response.uniformData
-                    }))
-                    await FilesStore.refreshFiles()
-
-                }
-            }))
-
-        },
         {divider: true, requiredTrigger: "data-file"},
         {
             requiredTrigger: "data-file",
@@ -196,6 +164,40 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             }
         },
         {divider: true, requiredTrigger: "data-wrapper"},
+        {
+            requiredTrigger: "data-wrapper",
+            label: translate("NEW_MATERIAL_INSTANCE"),
+            icon: "tune",
+            children: FilesStore.data.materials.map(m => ({
+                label: m.name,
+                icon: "",
+                onClick: async () => {
+                    const nodeName = m.name
+                    const nodeID = m.registryID
+                    const regFile = await RegistryAPI.readRegistryFile(nodeID)
+                    if (!regFile) {
+                        alert.pushAlert("Material not found", "error")
+                        return
+                    }
+                    const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path, "json")
+                    console.log(file, FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
+                    if (!file?.response) {
+                        alert.pushAlert("Material not compiled", "error")
+                        return
+                    }
+
+                    let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
+                    await AssetAPI.writeAsset(path, JSON.stringify({
+                        original: nodeID,
+                        uniforms: file.response.uniforms,
+                        uniformData: file.response.uniformData
+                    }))
+                    await FilesStore.refreshFiles()
+
+                }
+            }))
+
+        },
         {
             requiredTrigger: "data-wrapper",
             label: translate("CREATE"),

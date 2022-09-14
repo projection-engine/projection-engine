@@ -1,6 +1,6 @@
 <script>
     import FilesAPI from "../../../shared/libs/files/FilesAPI"
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
     import Localization from "../../../shared/libs/Localization";
     import Header from "../../../shared/components/view/components/Header.svelte";
@@ -10,12 +10,14 @@
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
     import Browser from "./components/Browser.svelte";
     import BrowserNavigation from "./components/BrowserNavigation.svelte";
+    import {v4} from "uuid";
+    import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
 
     export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
 
-
+    const internalID = v4()
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
@@ -47,7 +49,14 @@
     })();
     const translate = key => Localization.PROJECT.FILES[key]
 
-
+    onMount(() => {
+        GlobalContentBrowserController.subscribe(internalID, newDir => {
+            navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
+        })
+    })
+    onDestroy(() => {
+        GlobalContentBrowserController.unsubscribe(internalID)
+    })
 </script>
 
 <Header
@@ -97,6 +106,7 @@
             />
         {/if}
         <Browser
+                internalID={internalID}
                 bookmarks={store.bookmarks}
                 path={path}
                 view={view}

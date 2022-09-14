@@ -5,7 +5,8 @@
     import NodeFS from "../../../../../shared/libs/NodeFS";
     import FilesStore from "../../../../stores/FilesStore";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-
+    import getTypeName from "../../../content-browser/utils/get-type-name";
+    import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
 
     export let item
     let data
@@ -19,6 +20,11 @@
                 data = {...res[1], size: res[1].size / (1024 * 1024)}
             })
     }
+    const showInFolder = () => {
+        const id = item.id.split(FilesAPI.sep)
+        id.pop()
+        GlobalContentBrowserController.pushCurrentDirectory(id.join(FilesAPI.sep))
+    }
 </script>
 
 <Accordion title={translate("MORE_INFO")}>
@@ -30,13 +36,13 @@
 
         <div class="section">
             <ToolTip content={item.type}/>
-            <b>{translate("FILE_EXTENSION")}: </b><small data-overflow="-">{item.type}</small>
+            <b>{translate("FILE_EXTENSION")}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
         </div>
         <div class="section">
             <ToolTip content={item.registryID}/>
             <b>{translate("REGISTRY_ID")}: </b><small data-overflow="-">{item.registryID}</small>
         </div>
-        {:else}
+    {:else}
         <div class="section">
             <ToolTip content={item.children}/>
             <b>{translate("CHILDREN")}: </b><small data-overflow="-">{item.children}</small>
@@ -48,12 +54,28 @@
     </div>
     <div class="section">
         <ToolTip content={item.id}/>
-        <b>{translate("ASSETS_PATH")}: </b><small data-overflow="-">{item.id}</small>
+        <b>{translate("ASSETS_PATH")}: </b>
+        <small
+                data-overflow="-"
+                class="link"
+                on:click={showInFolder}
+        >
+            {item.id}
+            <ToolTip content={translate("SHOW_ON_CB")}/>
+        </small>
     </div>
 
 </Accordion>
 
 <style>
+    .link {
+        cursor: pointer;
+    }
+
+    .link:hover {
+        text-decoration: underline;
+    }
+
     small {
         font-size: .7rem;
         color: var(--pj-color-quaternary);
