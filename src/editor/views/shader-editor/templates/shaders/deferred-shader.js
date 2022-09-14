@@ -44,10 +44,10 @@ void main(){
 
 export const vertex = (bodyOperations, inputs, functions) => {
     return `#version 300 es
-layout (location = 1) in vec3 position;
-layout (location = 2) in vec3 normal;
-layout (location = 3) in vec2 uvTexture;
-layout (location = 4) in vec3 tangentVec;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 uvTexture;
+layout (location = 3) in vec3 tangentVec;
 
 uniform mat4 viewMatrix;
 uniform mat4 transformMatrix;

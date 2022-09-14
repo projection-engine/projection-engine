@@ -1,7 +1,7 @@
 import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../../shared/libs/files/FilesAPI"
-import ActionHistoryAPI from "./ActionHistoryAPI";
+import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 import Engine from "../../../public/engine/production/Engine";
 import FilesStore from "./FilesStore";
 import RegistryAPI from "../../shared/libs/files/RegistryAPI";

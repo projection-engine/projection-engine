@@ -13,20 +13,10 @@
     const {shell} = window.require("electron")
     let settings = {}
     let activeView
-    let initialized = false
-    let isChanging = false
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    onMount(() => {
-        HotKeys.initializeListener(v => activeView = v)
-        const e = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
-        e.isChanging = () => {
-            if (isChanging)
-                return
-            isChanging = true
-        }
-        e.finished = () => isChanging = false
-    })
+
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    onMount(() => HotKeys.initializeListener(v => activeView = v))
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
 </script>
@@ -37,7 +27,7 @@
         style={settings.visible.metrics ? undefined :"display: none"}
 >
 
-    {#if activeView != null && !isChanging}
+    {#if activeView != null}
         <div class="active-view">
             <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
             <div>{activeView.label}</div>
@@ -48,7 +38,6 @@
 
     <div id={INFORMATION_CONTAINER.CONTAINER} class={"info-container"}>
         <div id={INFORMATION_CONTAINER.FPS} ></div>
-        <div id={INFORMATION_CONTAINER.TRANSFORMATION} style={!isChanging ? "display: none" : undefined}></div>
     </div>
 
     <div class="meta-data">

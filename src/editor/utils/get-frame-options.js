@@ -3,7 +3,7 @@ import ROUTES from "../../static/ROUTES";
 import importFile from "../libs/import-file";
 import FilesStore from "../stores/FilesStore";
 import SettingsStore from "../stores/SettingsStore";
-import ActionHistoryAPI from "../stores/ActionHistoryAPI";
+import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 
 const {ipcRenderer} = window.require("electron")
 

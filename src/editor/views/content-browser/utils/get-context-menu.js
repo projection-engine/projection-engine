@@ -6,6 +6,7 @@ import COMPONENT_TEMPLATE from "../../../../../public/engine/static/COMPONENT_TE
 import importFile from "../../../libs/import-file";
 import AssetAPI from "../../../../shared/libs/files/AssetAPI";
 import UI_TEMPLATE from "../templates/UI_TEMPLATE";
+import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 
 const {shell} = window.require("electron")
 export default function getContextMenu(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
@@ -44,7 +45,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             if (!v.requiredTrigger)
                 return [{...v, requiredTrigger: "data-file"}, {...v, requiredTrigger: "data-folder"}]
 
-                return v
+            return v
         }).flat()
     }
     return [
@@ -110,6 +111,34 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             onClick: (node) => handleDelete(node.getAttribute("data-file"), currentDirectory, setCurrentDirectory)
 
         },
+        {
+            requiredTrigger: "data-material",
+            label: translate("NEW_MATERIAL_INSTANCE"),
+            icon: "tune",
+            onClick: async (node) => {
+                const nodeName = node.getAttribute("data-name")
+                const nodeID = node.getAttribute("data-file")
+                const regFile = await RegistryAPI.readRegistryFile(nodeID)
+                if (!regFile) {
+                    alert.pushAlert("Material not found", "error")
+                    return
+                }
+                const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
+                if (!file?.response) {
+                    alert.pushAlert("Material not compiled", "error")
+                    return
+                }
+
+                let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
+                await AssetAPI.writeAsset(path, JSON.stringify({
+                    original: nodeID,
+                    uniforms: file.response.uniforms,
+                    uniformData: file.response.uniformData
+                }))
+                await FilesStore.refreshFiles()
+
+            }
+        },
         {divider: true, requiredTrigger: "data-file"},
         {
             requiredTrigger: "data-file",
@@ -152,12 +181,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
         },
 
         {divider: true, requiredTrigger: "data-wrapper"},
-        {
-            requiredTrigger: "data-wrapper",
-            label: translate("NEW_FOLDER"),
-            icon: "create_new_folder",
-            onClick: () => FilesStore.createFolder(currentDirectory).catch()
-        },
+
         {
             requiredTrigger: "data-wrapper",
             label: translate("OPEN_WITH_EXPLORER"),
@@ -172,10 +196,15 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             label: translate("CREATE"),
             children: [
                 {
+                    label: translate("NEW_FOLDER"),
+                    icon: "create_new_folder",
+                    onClick: () => FilesStore.createFolder(currentDirectory).catch()
+                },
+                {
                     label: translate("NEW_MATERIAL"),
                     icon: "texture",
                     onClick: async () => {
-                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_MATERIAL"), ".material")
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_MATERIAL"), FILE_TYPES.MATERIAL)
                         AssetAPI.writeAsset(path, JSON.stringify({}))
                             .then(() => {
                                 FilesStore.refreshFiles()

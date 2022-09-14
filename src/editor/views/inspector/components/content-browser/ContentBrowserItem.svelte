@@ -22,7 +22,7 @@
 
     $: {
 
-        if (fileType === FILE_TYPES.TEXTURE || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.SCENE) {
+        if (fileType === FILE_TYPES.TEXTURE || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE || fileType === FILE_TYPES.SCENE) {
             FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fileType !== FILE_TYPES.COMPONENT && fileType !== FILE_TYPES.STYLESHEET ? "json" : undefined).then(res => data = res)
         } else
             data = undefined
@@ -41,7 +41,7 @@
     {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET}
         <ComponentItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.MATERIAL && data?.response != null}
-        <MaterialItem data={data} item={item}/>
+        <MaterialItem data={data} item={item} fileType={fileType}/>
     {:else if fileType === FILE_TYPES.MESH}
         <MeshItem item={item}/>
     {:else}

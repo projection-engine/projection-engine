@@ -57,19 +57,19 @@ export default class ContentBrowserAPI {
     }
 
 
-    static async fromDirectory(startPath, extension) {
-        if (!(await NodeFS.exists(startPath))) return []
-        let res = []
-        let files = (await NodeFS.readdir(startPath))[1]
-        for (let i = 0; i < files.length; i++) {
-            const filename = pathRequire.join(startPath, files[i])
-            const stat = (await NodeFS.lstat(filename))[1]
-            if (stat && stat.isDirectory) {
-                res.push(...(await ContentBrowserAPI.fromDirectory(filename, extension)))
-            } else if (filename.indexOf(extension) >= 0) res.push(files[i])
-        }
-        return res
-    }
+    // static async fromDirectory(startPath, extension) {
+    //     if (!(await NodeFS.exists(startPath))) return []
+    //     let res = []
+    //     let files = (await NodeFS.readdir(startPath))[1]
+    //     for (let i = 0; i < files.length; i++) {
+    //         const filename = pathRequire.join(startPath, files[i])
+    //         const stat = (await NodeFS.lstat(filename))[1]
+    //         if (stat && stat.isDirectory) {
+    //             res.push(...(await ContentBrowserAPI.fromDirectory(filename, extension)))
+    //         } else if (filename.indexOf(extension) >= 0) res.push(files[i])
+    //     }
+    //     return res
+    // }
 
     static async openDialog() {
         return await new Promise(resolve => {
@@ -104,6 +104,7 @@ export default class ContentBrowserAPI {
             stylesheetReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.STYLESHEET)),
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
+            materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
             promises = []
 
 
@@ -114,6 +115,7 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(stylesheetReg, FILE_TYPES.STYLESHEET))
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
+        promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
 
         const loadedPromises = await Promise.all(promises)
         const result = {
@@ -123,7 +125,8 @@ export default class ContentBrowserAPI {
             components: [],
             stylesheets: [],
             levels: [],
-            uiLayouts: []
+            uiLayouts: [],
+            materialInstances: []
         }
 
         for (let i = 0; i < loadedPromises.length; i++) {
@@ -149,6 +152,9 @@ export default class ContentBrowserAPI {
                     break
                 case FILE_TYPES.UI_LAYOUT:
                     result.uiLayouts.push(current)
+                    break
+                case FILE_TYPES.MATERIAL_INSTANCE:
+                    result.materialInstances.push(current)
                     break
                 default:
                     break

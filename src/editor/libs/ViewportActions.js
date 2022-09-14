@@ -55,7 +55,6 @@ export default class ViewportActions {
         let block = []
         if (!ViewportActions.toCopy)
             return
-        console.log(ViewportActions.toCopy)
         ViewportActions.toCopy.forEach(t => {
             const found = Engine.entitiesMap.get(t)
             if (found) {

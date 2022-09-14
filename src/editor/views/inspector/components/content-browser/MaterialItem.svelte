@@ -6,51 +6,60 @@
     import GPU from "../../../../../../public/engine/production/GPU";
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-
-    import ContentBrowserAPI from "../../../../../shared/libs/files/ContentBrowserAPI";
-    import FilesStore from "../../../../stores/FilesStore";
+    import FILE_TYPES from "../../../../../static/CHANNELS";
 
 
     export let data
     export let item
+    export let fileType
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
+
     let temp
     $: temp = {...data}
-    $: exists = GPU.materials.get(item.registryID) != null
-    const updateAsset = async (index, value) => {
 
-        temp = {
-            ...temp,
-            response: {
-                ...temp.response,
-                uniforms: temp.response.uniforms.map((u, i) => {
-                    if (i === index)
-                        return {...u, value}
-                    return u
-                }),
-                uniformData: temp.response.uniformData.map((u, i) => {
-                    if (i === index)
-                        return {...u, data: value}
-                    return u
-                })
+    $: isInstance = fileType === FILE_TYPES.MATERIAL
+
+    const updateAsset = async (index, value) => {
+        const uniforms = {
+            uniforms: temp.response.uniforms.map((u, i) => {
+                if (i === index)
+                    return {...u, value}
+                return u
+            }),
+            uniformData: temp.response.uniformData.map((u, i) => {
+                if (i === index)
+                    return {...u, data: value}
+                return u
+            })
+        }
+        if (isInstance)
+            temp = {
+                ...temp,
+                response: {
+                    ...temp.response,
+                    ...uniforms
+                }
             }
+        else {
+            temp = uniforms
+            temp.original = data.original
         }
 
         alert.pushAlert(translate("UPDATING_ASSET"), "alert")
         await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
-        ContentBrowserAPI
-        if (exists) {
-            const instance = GPU.materials.get(item.registryID)
-            await instance.updateUniformData(temp.response.uniformData)
+
+        if (GPU.materials.get(item.registryID) != null) {
+            // TODO - OTHER STRUCTURE FOR INSTANCE
+            const instance = GPU.materials.get(isInstance ? data.original : item.registryID)
+            await instance.updateUniformData(isInstance ? temp.uniformData : temp.response.uniformData)
             alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
             GPU.cleanUpTextures()
-            const fileTypes = await ContentBrowserAPI.refresh()
-            FilesStore.updateStore({...FilesStore.data, ...fileTypes})
+
+            // const fileTypes = await ContentBrowserAPI.refresh()
+            // FilesStore.updateStore({...FilesStore.data, ...fileTypes})
         }
     }
-
-
 </script>
 
 

@@ -1,4 +1,3 @@
-
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
 import {Entity, FALLBACK_MATERIAL} from "../../../../../public/engine/production";
 

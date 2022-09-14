@@ -4,7 +4,7 @@ import removeHierarchy from "../utils/remove-hierarchy";
 
 import EntityNameController from "./EntityNameController";
 import AXIS from "../../../../public/engine/editor/data/AXIS";
-import ActionHistoryAPI from "../ActionHistoryAPI";
+import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
 import {getPickerId} from "../../../../public/engine/production";
 

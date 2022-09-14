@@ -3,18 +3,12 @@
     import RENDER_TARGET from "../../../data/RENDER_TARGET";
     import {
         ConversionAPI,
-        PickingAPI,
         DepthPass,
-        TransformationAPI,
-        InputEventsAPI,
-        GPU,
         Engine,
-        BundlerAPI,
-        KEYS,
-        DiffuseProbePass,
-        SpecularProbePass,
-        ENVIRONMENT,
-        FALLBACK_MATERIAL,
+        GPU,
+        InputEventsAPI,
+        PickingAPI,
+        TransformationAPI,
     } from "../../../../../public/engine/production";
 
     import viewportSelectionBoxWorker from "../utils/viewport-selection-box-worker";

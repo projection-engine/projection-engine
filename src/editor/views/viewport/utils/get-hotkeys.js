@@ -3,7 +3,7 @@ import ViewportActions from "../../../libs/ViewportActions";
 import EngineStore from "../../../stores/EngineStore";
 import GIZMOS from "../../../data/GIZMOS";
 import SettingsStore from "../../../stores/SettingsStore";
-import ActionHistoryAPI from "../../../stores/ActionHistoryAPI";
+import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function getHotkeys() {

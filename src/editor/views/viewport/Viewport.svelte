@@ -9,6 +9,7 @@
     import UILayout from "./components/UILayout.svelte";
     import MetricsPass from "../../../../public/engine/production/passes/misc/MetricsPass";
     import SettingsStore from "../../stores/SettingsStore";
+    import GizmoToolTip from "./components/GizmoToolTip.svelte";
 
     export let isReady = false
 
@@ -40,6 +41,8 @@
                 gpu.canvas.style.width = "100%"
         }
     }
+
+
 </script>
 
 <div class="viewport">
@@ -64,7 +67,7 @@
         {/if}
 
     </div>
-
+    <GizmoToolTip/>
 </div>
 
 <style>

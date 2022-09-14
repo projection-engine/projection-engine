@@ -1,18 +1,4 @@
-import {
-    ConversionAPI,
-    PickingAPI,
-    DepthPass,
-    TransformationAPI,
-    InputEventsAPI,
-    GPU,
-    Engine,
-    BundlerAPI,
-    KEYS,
-    DiffuseProbePass,
-    SpecularProbePass,
-    ENVIRONMENT,
-    FALLBACK_MATERIAL,
-} from "../../../../../public/engine/production";
+import {Engine, ENVIRONMENT, KEYS,} from "../../../../../public/engine/production";
 
 
 export default class HotKeys {

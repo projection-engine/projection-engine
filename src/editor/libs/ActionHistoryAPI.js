@@ -1,6 +1,6 @@
-import EngineStore from "./EngineStore";
+import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
-import SettingsStore from "./SettingsStore";
+import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
 
 export default class ActionHistoryAPI {
@@ -10,25 +10,34 @@ export default class ActionHistoryAPI {
         block: "BLOCK"
     }
     static controller = new UndoRedoAPI()
-    static #cloneObject(obj){
-        console.log(obj)
-        if(Array.isArray(obj)){
+
+    static #cloneObject(obj) {
+        if (Array.isArray(obj)) {
             const temp = []
-            for(let i = 0; i < obj.length; i++){
+            for (let i = 0; i < obj.length; i++)
                 temp[i] = obj[i]
-            }
             return temp
         }
-        return  obj
+        return obj
     }
 
     static pushChange({target, entityID, component, key, changeValue}) {
+        let value
+        if(changeValue?.buffer != null){
+            value = []
+            for(let i =0; i < changeValue.length; i++)
+                value[i] = changeValue[i]
+        }
+        else if(typeof changeValue === "object")
+            value = structuredClone(changeValue)
+        else value = changeValue
+        console.log(value, changeValue)
         ActionHistoryAPI.controller.save({
             target,
             entityID,
             component,
             key,
-            changeValue: typeof changeValue === "object" ? structuredClone(ActionHistoryAPI.#cloneObject(changeValue)) : changeValue
+            changeValue: value
         })
     }
 
@@ -71,7 +80,13 @@ export default class ActionHistoryAPI {
                     else
                         entity.components.get(currentAction.component)[currentAction.key] = currentAction.changeValue
                 } else {
-                    entity[currentAction.key] = currentAction.changeValue
+                    console.log(entity[currentAction.key], currentAction.changeValue)
+                    if (entity[currentAction.key]?.buffer != null) {
+                        for (let i = 0; i < currentAction.changeValue.length; i++)
+                            entity[currentAction.key][i] = currentAction.changeValue[i]
+                    }
+                    else
+                        entity[currentAction.key] = currentAction.changeValue
                     entity.changed = true
                 }
                 EngineStore.updateStore()

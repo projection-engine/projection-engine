@@ -62,7 +62,7 @@ export default class Localization {
         },
         INFO: {
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "4.1.1-alpha",
+            VERSION: "5.0.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },

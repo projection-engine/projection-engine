@@ -32,8 +32,8 @@ void main(){
 
 export const vertexSkybox = `
 #version 300 es
-layout (location = 1) in vec3 position;
-layout (location = 3) in vec2 uvTexture;
+layout (location = 0) in vec3 position;
+layout (location = 2) in vec2 uvTexture;
 
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;

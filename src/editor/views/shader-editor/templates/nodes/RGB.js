@@ -32,21 +32,21 @@ export default class RGB extends Node {
             this.uniformName = `COLOR_RGB${index}`
             uniformData.push({
                 key: this.uniformName,
-                data: v.map(i => i / 255),
+                data: v,
                 type: DATA_TYPES.VEC3
             })
             uniforms.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3,
-                value: v.map(i => i / 255),
+                value: v,
                 normalized: true
             })
 
             return `uniform vec3 ${this.uniformName};`
         } else {
             this.uniformName = `COLOR_RGB${index}`
-            return `#define ${this.uniformName} vec3(${checkGlslFloat(v[0] / 255)}, ${checkGlslFloat(v[1] / 255)}, ${checkGlslFloat(v[2] / 255)})`
+            return `#define ${this.uniformName} vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2] )})`
         }
     }
 

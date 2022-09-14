@@ -1,20 +1,4 @@
-import {
-    ConversionAPI,
-    PickingAPI,
-    DepthPass,
-    TransformationAPI,
-    InputEventsAPI,
-    GPU,
-    Engine,
-    BundlerAPI,
-    KEYS,
-    DiffuseProbePass,
-    SpecularProbePass,
-    ENVIRONMENT,
-    FALLBACK_MATERIAL,
-    Entity,
-    UserInterfaceController
-} from "../../../public/engine/production";
+import {Engine, Entity, ENVIRONMENT, UserInterfaceController} from "../../../public/engine/production";
 
 
 import componentConstructor from "./component-constructor";

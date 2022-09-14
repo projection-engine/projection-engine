@@ -59,7 +59,7 @@
             setCurrentDirectory(data)
         }
     }
-
+    $: isMaterial = metadata.type === FILE_TYPES.MATERIAL
     let icon
     $: {
         if (type === 0)
@@ -81,6 +81,10 @@
                 case FILE_TYPES.UI_LAYOUT:
                     icon = "view_quilt"
                     break
+                case FILE_TYPES.MATERIAL_INSTANCE:
+                    icon = "tune"
+                    break
+
                 default:
                     icon = undefined
                     break
@@ -173,7 +177,9 @@
 </script>
 
 <div
+        data-material={isMaterial ? data.id : undefined}
         data-file={type === 0 ? undefined : data.id}
+        data-name={currentLabel}
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={onDbClick}
         bind:this={ref}

@@ -3,7 +3,6 @@ import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
-import GizmoSystem from "../../../public/engine/editor/services/GizmoSystem";
 
 
 const toRad = Math.PI / 180
