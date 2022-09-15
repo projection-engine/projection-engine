@@ -2,13 +2,14 @@ import ViewportActions from "../../../libs/ViewportActions";
 import TransformationAPI from "../../../../../public/engine/production/apis/math/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import {vec3} from "gl-matrix";
+import {Engine} from "../../../../../public/engine/production";
 
 export default function getContextMenu() {
     return [
 
         {
             label: "Select all",
-            onClick: () => SelectionStore.engineSelected = renderer.entities.filter(e => !e.isFolder).map(e => e.id),
+            onClick: () => SelectionStore.engineSelected = Engine.entities.map(e => e.id),
             shortcut: ["A"]
         },
         {

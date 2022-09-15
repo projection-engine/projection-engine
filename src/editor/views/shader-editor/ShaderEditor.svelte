@@ -139,6 +139,7 @@
         </button>
         <div class="divider"></div>
         <Selector
+                mergeMaterials={false}
                 size="small"
                 type="material"
                 noDefault="true"

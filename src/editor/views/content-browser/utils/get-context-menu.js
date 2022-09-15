@@ -180,20 +180,19 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                         return
                     }
                     const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path, "json")
-                    console.log(file, FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path)
-                    if (!file?.response) {
+                    console.log(file)
+                    if (!file?.response)
                         alert.pushAlert("Material not compiled", "error")
-                        return
+                    else {
+                        let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
+                        console.log(path, currentDirectory.id + FilesAPI.sep + nodeName + "-instance")
+                        await AssetAPI.writeAsset(path, JSON.stringify({
+                            original: nodeID,
+                            uniforms: file.response.uniforms,
+                            uniformData: file.response.uniformData
+                        }))
+                        await FilesStore.refreshFiles()
                     }
-
-                    let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
-                    await AssetAPI.writeAsset(path, JSON.stringify({
-                        original: nodeID,
-                        uniforms: file.response.uniforms,
-                        uniformData: file.response.uniformData
-                    }))
-                    await FilesStore.refreshFiles()
-
                 }
             }))
 

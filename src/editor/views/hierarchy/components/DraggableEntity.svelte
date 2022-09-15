@@ -30,7 +30,6 @@
             targetElement: ref,
             onDragStart: () => node,
             onDrop: (entityDragged, event) => {
-                console.log("ON NODE")
                 if (event.ctrlKey) {
 
                     if (entityDragged.parent)
@@ -66,9 +65,9 @@
     >
         <Icon>{icon}</Icon>
     </button>
-    <span on:click={(e) => updateSelection(node.id, e.ctrlKey)}>
-    {node.name}
-    </span>
+    <div class="node" on:click={(e) => updateSelection(node.id, e.ctrlKey)}>
+        {node.name}
+    </div>
     {#if hiddenActiveChildren != null}
         <div class="children">
             {#each hiddenActiveChildren as entity, i}
@@ -103,6 +102,11 @@
 </div>
 
 <style>
+    .node{
+        height: 23px;
+        line-height: 23px;
+
+    }
     .dot {
         width: 5px;
         height: 5px;

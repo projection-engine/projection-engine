@@ -32,15 +32,15 @@ export default class Float extends Node {
         if (this.uniform) {
             this.uniformName = `FLOAT_VAR${index}`
             uniformData.push({
+                label: this.name,
                 key: this.uniformName,
-                data: this.v,
-                type: DATA_TYPES.FLOAT
+                type: DATA_TYPES.FLOAT,
+                data: this.v
             })
             uniforms.push({
                 label: this.name,
                 key: this.uniformName,
-                type: DATA_TYPES.FLOAT,
-                value: this.v
+                type: DATA_TYPES.FLOAT
             })
 
             return `uniform float ${this.uniformName};`

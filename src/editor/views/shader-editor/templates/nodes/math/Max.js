@@ -21,9 +21,6 @@ export default class Max extends Node {
         return NODE_TYPES.FUNCTION
     }
 
-    async  getInputInstance() {
-        return ""
-    }
 
     getFunctionCall({a={name: this.a},b={name: this.b}}, index) {
         this.maxRes = "maxRes" + index

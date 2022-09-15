@@ -1,5 +1,6 @@
 import {get, writable} from "svelte/store";
 import EngineStore from "./EngineStore";
+import {Engine} from "../../../public/engine/production";
 
 const TYPES = {
     ENGINE: "ENGINE",
@@ -43,10 +44,10 @@ export default class SelectionStore {
         if (SelectionStore.TARGET === TYPES.ENGINE) {
             const selected = SelectionStore.engineSelected
             if (!value.lockedEntity)
-                value.lockedEntity = selected[0] ? selected[0] : Array.from(EngineStore.engine.entities.values()).find(e => !e.parent)?.id
+                value.lockedEntity = selected[0] ? selected[0] : Engine.entities.find(e => !e.parent)?.id
 
             if (selected.length > 0 || value.lockedEntity)
-                value.selectedEntity = EngineStore.engine.entities.get(selected[0] ? selected[0] : value.lockedEntity)
+                value.selectedEntity = Engine.entitiesMap.get(selected[0] ? selected[0] : value.lockedEntity)
             else
                 value.selectedEntity = undefined
         } else

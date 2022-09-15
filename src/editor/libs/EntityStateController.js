@@ -4,6 +4,7 @@ import {Engine, Entity, ENVIRONMENT, UIAPI} from "../../../public/engine/product
 import componentConstructor from "./component-constructor";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
+import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
 
 export default class EntityStateController {
     static #state = []
@@ -34,7 +35,7 @@ export default class EntityStateController {
         }
 
         EngineStore.updateStore({...engine, executingAnimation: true})
-
+        CameraTracker.stopTracking()
     }
 
     static async stopPlayState() {
@@ -56,6 +57,7 @@ export default class EntityStateController {
         EngineStore.updateStore({...engine, executingAnimation: false})
 
         EntityStateController.#isPlaying = false
+        CameraTracker.startTracking()
     }
 
 }

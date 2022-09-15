@@ -6,88 +6,140 @@
     import GPU from "../../../../../../public/engine/production/GPU";
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import FILE_TYPES from "../../../../../static/CHANNELS";
+
     import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
+    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
+    import FILE_TYPES from "../../../../../static/FILE_TYPES";
+    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import FilesStore from "../../../../stores/FilesStore";
+    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import compareObjects from "../../utils/compare-objects";
 
 
     export let data
     export let item
-    export let fileType
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     let temp
-    $: temp = {...data}
+    $: temp = data ? {...data} : undefined
+    let originalMat
+    let timeout
+    let wasUpdated = false
 
-    $: isInstance = fileType === FILE_TYPES.MATERIAL
+    async function load(ID) {
+        if (wasUpdated)
+            return
+        wasUpdated = true
+        const reg = await RegistryAPI.readRegistryFile(ID)
 
-    const updateAsset = async (index, value) => {
-        const uniforms = {
-            uniforms: temp.response.uniforms.map((u, i) => {
-                if (i === index)
-                    return {...u, value}
-                return u
-            }),
-            uniformData: temp.response.uniformData.map((u, i) => {
+        if (!reg)
+            alert.pushAlert("Instance no longer valid", "error")
+        else {
+            originalMat = await FilesAPI.readFile(FilesStore.ASSETS_PATH + reg.path, "json")
+            if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
+                temp = {...temp, uniforms: originalMat.response.uniforms, uniformData: originalMat.response.uniformData}
+                await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+            }
+        }
+    }
+
+    $: isInstance = item.id.includes(FILE_TYPES.MATERIAL_INSTANCE)
+    $: {
+        if (isInstance && data?.original != null)
+            load(data.original)
+    }
+
+    $: uniforms = isInstance ? temp?.uniformData : temp?.response?.uniformData
+$: console.log(data, temp, uniforms)
+    const updateAsset = (index, value, t) => {
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+            const update = uniforms.map((u, i) => {
                 if (i === index)
                     return {...u, data: value}
                 return u
             })
-        }
-        if (isInstance)
-            temp = {
-                ...temp,
-                response: {
-                    ...temp.response,
-                    ...uniforms
+            alert.pushAlert(translate("UPDATING_ASSET"), "alert")
+            if (!isInstance) {
+                temp = {
+                    ...temp,
+                    response: {
+                        ...temp.response,
+                        uniformData: update
+                    }
                 }
+                await AssetAPI.updateAsset(item.registryID, JSON.stringify({
+                    ...temp,
+                    response: {
+                        ...temp.response,
+                        uniformData: update
+                    }
+                }))
             }
-        else {
-            temp = uniforms
-            temp.original = data.original
-        }
+            else {
+                await AssetAPI.updateAsset(item.registryID, JSON.stringify({...temp, uniformData: update}))
+                temp = {...temp, uniformData: update}
+            }
 
-        alert.pushAlert(translate("UPDATING_ASSET"), "alert")
-        await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+            if (GPU.materials.get(item.registryID) != null) {
+                const instance = GPU.materials.get(item.registryID)
+                await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
+                alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
+                GPU.cleanUpTextures()
+            }
+        }, t ? t : 0)
 
-        if (GPU.materials.get(item.registryID) != null) {
-            const instance =  GPU.materials.get(item.registryID)
-            await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
-            alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
-            GPU.cleanUpTextures()
-
-            // const fileTypes = await ContentBrowserAPI.refresh()
-            // FilesStore.updateStore({...FilesStore.data, ...fileTypes})
-        }
     }
 </script>
 
 
-{#each temp.response.uniforms as uniform, i}
-    {#if uniform.type === DATA_TYPES.TEXTURE}
+{#if uniforms != null}
+    {#each uniforms as uniform, i}
         <div class="section">
-            <small>{uniform.label}</small>
-            <Selector
-                    type="image"
-                    selected={uniform.value}
-                    handleChange={v => {
+            {#if uniform.type === DATA_TYPES.TEXTURE}
+
+                <small>{uniform.label}</small>
+                <Selector
+                        type="image"
+                        selected={uniform.data}
+                        handleChange={v => {
                   updateAsset(i, v.registryID)
                 }}
-            />
+                />
+
+            {/if}
+            {#if uniform.type === DATA_TYPES.FLOAT}
+                <Range
+                        value={uniform.data}
+                        onFinish={v => {
+                        updateAsset(i, v)
+                    }}
+                />
+            {/if}
+            {#if uniform.type === DATA_TYPES.VEC3 && uniform.isColor }
+                <small>{uniform.label}</small>
+                <ColorPicker
+                        value={uniform.data.map(e => e * 255)}
+                        label={uniform.label}
+                        submit={({r,g,b}) => {
+                            console.trace([r/255,g/255,b/255])
+                            updateAsset(i, [r/255,g/255,b/255], 750)
+                        }}
+                />
+            {/if}
         </div>
-    {/if}
-    {#if uniform.type === DATA_TYPES.FLOAT}
-        <Range
-                value={uniform.value}
-                onFinish={v => {
-                updateAsset(i, v)
-            }}
-        />
-    {/if}
-{/each}
+    {/each}
+{/if}
 
 <style>
+    small {
+        font-size: .7rem;
+
+    }
+
     .section {
+        padding: 0 4px;
         display: grid;
         gap: 2px;
         width: 100%;

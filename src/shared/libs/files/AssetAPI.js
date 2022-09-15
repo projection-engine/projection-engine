@@ -33,12 +33,6 @@ export default class AssetAPI {
     }
 
 
-    static async updateEntity(entity, id) {
-
-        const p = FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "logic")
-        await NodeFS.write(FilesAPI.resolvePath(p + FilesAPI.sep + id + ".entity"), entity)
-    }
-
     static async updateProject(meta, settings) {
         if (meta) await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + ".meta"), JSON.stringify(meta))
         if (settings) {

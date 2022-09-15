@@ -5,6 +5,7 @@ import GIZMOS from "../../../data/GIZMOS";
 import SettingsStore from "../../../stores/SettingsStore";
 import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
 import SelectionStore from "../../../stores/SelectionStore";
+import {Engine} from "../../../../../public/engine/production";
 
 export default function getHotkeys() {
     return [
@@ -29,7 +30,7 @@ export default function getHotkeys() {
         },
         {
             require: [KEYS.Home],
-            callback: () => ViewportActions.focus(EngineStore.engine.entities.get(SelectionStore.engineSelected[0] != null? SelectionStore.engineSelected[0]: SelectionStore.lockedEntity))
+            callback: () => ViewportActions.focus(Engine.entitiesMap.get(SelectionStore.engineSelected[0] != null? SelectionStore.engineSelected[0]: SelectionStore.lockedEntity))
         },
         {
             require: [KEYS.KeyS],

@@ -68,10 +68,10 @@ export default class TextureSample extends Node {
                     uniforms.push({
                         label: this.name,
                         key: this.uniformName,
-                        value: res.id,
                         type: DATA_TYPES.TEXTURE,
                     })
                     uniformData.push({
+                        label: this.name,
                         key: this.uniformName,
                         data: res.id,
                         type: DATA_TYPES.TEXTURE,

@@ -6,7 +6,7 @@ import EntityNameController from "./EntityNameController";
 import AXIS from "../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
-import {getPickerId} from "../../../../public/engine/production";
+import {BundlerAPI, Engine, getPickerId} from "../../../../public/engine/production";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -21,12 +21,11 @@ export const ENTITY_ACTIONS = {
 
 
 export default function dispatchRendererEntities({type, payload}) {
-    const engine = EngineStore.engine
-    const state = engine.entities
+
     let changeID = v4()
 
     function save() {
-        ActionHistoryAPI.pushBlockChange(Array.from(state.values()))
+        ActionHistoryAPI.pushBlockChange(Array.from(Engine.entitiesMap.values()))
     }
 
     switch (type) {
@@ -38,16 +37,18 @@ export default function dispatchRendererEntities({type, payload}) {
                 array: [],
                 lockedEntity: undefined
             })
-            const entity = state.get(payload)
-            removeHierarchy(state, entity)
+            const entity = Engine.entitiesMap.get(payload)
+            if (entity.parent)
+                entity.parent.children = entity.parent.children.filter(e => e !== entity)
+            removeHierarchy(Engine.entitiesMap, entity)
             save()
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
-            const values = state.values()
+            const values = Engine.entities
             for (let i = 0; i < values.length; i++) {
                 const s = values[i]
                 if (payload.indexOf(s.id) > 0) {
-                    const found = state.get(payload[0])
+                    const found = Engine.entitiesMap.get(payload[0])
                     s.parent = found
                     found.children.push(s)
                 }
@@ -57,7 +58,7 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.ADD: {
             save()
             const entity = payload
-            state.set(entity.id, entity)
+
             EntityNameController.renameEntity(entity.name, entity)
             SelectionStore.updateStore({
                 ...SelectionStore.data,
@@ -65,14 +66,14 @@ export default function dispatchRendererEntities({type, payload}) {
                 array: [entity.id],
                 lockedEntity: undefined
             })
-
+            BundlerAPI.addEntity(payload)
             save()
             break
 
         }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             save()
-            const block = payload
+            console.log(payload)
             SelectionStore.updateStore({
                 ...SelectionStore.data,
                 TARGET: SelectionStore.TYPES.ENGINE,
@@ -80,11 +81,11 @@ export default function dispatchRendererEntities({type, payload}) {
                 lockedEntity: undefined
             })
 
-            if (Array.isArray(block))
-                for (let i = 0; i < block.length; i++) {
-                    const currentID = block[i]
-                    const entity = state.get(currentID)
-                    removeHierarchy(state, entity)
+            if (Array.isArray(payload))
+                for (let i = 0; i < payload.length; i++) {
+                    const currentID = payload[i]
+                    const entity = Engine.entitiesMap.get(currentID)
+                    removeHierarchy(Engine.entitiesMap, entity)
                 }
 
             save()
@@ -93,7 +94,7 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
             if (type === ENTITY_ACTIONS.DISPATCH_BLOCK) {
-                state.clear()
+                Engine.entitiesMap.forEach(e => BundlerAPI.removeEntity(e.id))
                 EntityNameController.byName.clear()
 
             } else
@@ -104,7 +105,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 for (let i = 0; i < block.length; i++) {
                     const e = block[i]
                     selected.push(e.id)
-                    state.set(e.id, e)
+                    BundlerAPI.addEntity(e)
                     EntityNameController.renameEntity(e.name, e)
                 }
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {
@@ -125,13 +126,13 @@ export default function dispatchRendererEntities({type, payload}) {
     }
 
 
-    const arr = Array.from(state.values())
+    const arr = Engine.entities
     for (let i = 0; i < arr.length; i++) {
         const entity = arr[i]
         entity.pickID = getPickerId(i + AXIS.ZY + 1)
         if (!entity.parentCache)
             continue
-        const parent = state.get(entity.parentCache)
+        const parent = Engine.entitiesMap.get(entity.parentCache)
 
         if (parent) {
             entity.parentCache = undefined
@@ -142,5 +143,5 @@ export default function dispatchRendererEntities({type, payload}) {
 
     }
 
-    EngineStore.updateStore({...engine, entities: state, changeID})
+    EngineStore.updateStore({...EngineStore.engine, changeID})
 }

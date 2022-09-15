@@ -2,6 +2,8 @@ import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
+import {BundlerAPI, Engine} from "../../../public/engine/production";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 
 export default class ActionHistoryAPI {
     static targets = {
@@ -11,15 +13,18 @@ export default class ActionHistoryAPI {
     }
     static controller = new UndoRedoAPI()
 
+    static clear() {
+        ActionHistoryAPI.controller.index = 0
+        ActionHistoryAPI.controller.history = [null]
+    }
 
     static pushChange({target, entityID, component, key, changeValue}) {
         let value
-        if(changeValue?.buffer != null){
+        if (changeValue?.buffer != null) {
             value = []
-            for(let i =0; i < changeValue.length; i++)
+            for (let i = 0; i < changeValue.length; i++)
                 value[i] = changeValue[i]
-        }
-        else if(typeof changeValue === "object")
+        } else if (typeof changeValue === "object")
             value = structuredClone(changeValue)
         else value = changeValue
         ActionHistoryAPI.controller.save({
@@ -63,7 +68,7 @@ export default class ActionHistoryAPI {
                 break
             }
             case targets.entity: {
-                const entity = EngineStore.engine.entities.get(currentAction.entityID)
+                const entity = Engine.entitiesMap.get(currentAction.entityID)
                 if (currentAction.component != null) {
                     if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
                         entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
@@ -73,8 +78,7 @@ export default class ActionHistoryAPI {
                     if (entity[currentAction.key]?.buffer != null) {
                         for (let i = 0; i < currentAction.changeValue.length; i++)
                             entity[currentAction.key][i] = currentAction.changeValue[i]
-                    }
-                    else
+                    } else
                         entity[currentAction.key] = currentAction.changeValue
                     entity.changed = true
                 }
@@ -82,14 +86,23 @@ export default class ActionHistoryAPI {
                 break
             }
             case targets.block:
-                const {currentSet} = currentAction
-                const entities = EngineStore.engine.entities
-                entities.clear()
-                for (let i = 0; i < currentSet.length; i++) {
-                    const current = currentSet[i]
-                    entities.set(current.id, current)
+                const newEntities = currentAction.currentSet
+                const oldEntities = [...Engine.entities]
+                for (let i = 0; i < newEntities.length; i++) {
+                    const e = newEntities[i]
+                    if (Engine.entitiesMap.get(e.id) != null)
+                        continue
+                    if (e.parent && !e.parent.children.includes(e))
+                        e.parent.children.push(e)
+                    BundlerAPI.addEntity(e)
                 }
-                EngineStore.updateStore({...EngineStore.engine, entities, changeID: v4()})
+                for (let i = 0; i < oldEntities.length; i++) {
+                    const e = oldEntities[i]
+                    if (newEntities.includes(e))
+                        continue
+                    BundlerAPI.removeEntity(e.id)
+                }
+                EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
                 break
             default:
                 break

@@ -96,7 +96,6 @@
             mouseDelta,
             settings,
             (data) => {
-                console.trace(GizmoSystem.wasOnGizmo, data, "IM HERE")
                 if (GizmoSystem.wasOnGizmo) {
                     GizmoSystem.wasOnGizmo = false
                     return

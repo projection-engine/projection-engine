@@ -13,6 +13,7 @@
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
+    import {Engine} from "../../../../../public/engine/production";
 
     export let ID
     export let translate
@@ -91,7 +92,7 @@
     $: {
         if (engine.changeID !== lastChangeID) {
             lastChangeID = engine.changeID
-            entitiesArray = Array.from(engine.entities.values())
+            entitiesArray = Engine.entities
         }
     }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS)

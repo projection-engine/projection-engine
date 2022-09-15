@@ -8,29 +8,18 @@
     import Options from "./components/Options.svelte";
     import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
+    import getType from "./utils/get-type";
 
 
     export let type
     export let handleChange
     export let selected
     export let noDefault
+    export let mergeMaterials = true
     const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
-
-    function getParsedType() {
-        switch (type) {
-            case "image":
-                return "textures"
-            case "material":
-                return "materials"
-            case "mesh":
-                return "meshes"
-            default:
-                return undefined
-        }
-    }
 
     let state
     $: {
@@ -40,7 +29,7 @@
             state = {name: translate(Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)), registryID: selected}
         else {
             const rID = selected?.registryID ? selected?.registryID : selected
-            let data = store[getParsedType()]?.find(e => e.registryID === rID)
+            let data = getType(store, type, mergeMaterials).find(e => e.registryID === rID)
             state = data ? data : {name: translate("EMPTY")}
         }
     }
@@ -63,6 +52,7 @@
         </div>
     </button>
     <Options
+            mergeMaterials={mergeMaterials}
             noDefault={noDefault}
             translate={translate}
             handleChange={handleChange}

@@ -8,7 +8,6 @@
     import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
 
-
     export let handleChange
     export let type
     export let setState
@@ -16,11 +15,11 @@
     export let store
     export let translate
     export let noDefault
-
+export let mergeMaterials
     let searchString = ""
     let filtered
     $: {
-        const temp = getType(store, type), s = searchString.toLowerCase()
+        const temp = getType(store, type, mergeMaterials), s = searchString.toLowerCase()
         if (searchString)
             filtered = temp.filter(e => e.name.toLowerCase().includes(s))
         else

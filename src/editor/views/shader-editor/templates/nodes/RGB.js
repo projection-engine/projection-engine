@@ -31,16 +31,16 @@ export default class RGB extends Node {
         if (this.uniform) {
             this.uniformName = `COLOR_RGB${index}`
             uniformData.push({
+                label: this.name,
                 key: this.uniformName,
+                type: DATA_TYPES.VEC3,
                 data: v,
-                type: DATA_TYPES.VEC3
+                isColor: true
             })
             uniforms.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3,
-                value: v,
-                normalized: true
             })
 
             return `uniform vec3 ${this.uniformName};`

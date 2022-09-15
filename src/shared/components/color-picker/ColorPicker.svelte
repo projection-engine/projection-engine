@@ -24,8 +24,18 @@
     let button
     let hsl = {}
     let timeout
+    let initializationChanged = false
+    let wasDown = false
 
-
+    function s(){
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            if (changed) {
+                submit(hsv2Rgb(hue, saturation, colorValue))
+                changed = false
+            }
+        }, 50)
+    }
     function updateBasedOnValues() {
         if (!canvas || changed)
             return
@@ -36,11 +46,10 @@
         picker.style.left = x + "px"
         picker.style.top = y + "px"
         hsl = hsv2Hsl(hue, saturation, colorValue)
-
     }
 
     $: {
-        if (value && !changed) {
+        if (value && !initializationChanged) {
             if (typeof value === "string") {
                 const split = value.match(/[\d.]+/g)
                 const [r, g, b] = split.map(v => parseFloat(v))
@@ -60,7 +69,7 @@
                 colorValue = hsv.v
             }
             updateBasedOnValues()
-            changed = false
+            initializationChanged = false
         }
 
     }
@@ -69,7 +78,8 @@
     function handler(event) {
         switch (event.type) {
             case "mousemove": {
-
+                if(!initializationChanged)
+                    initializationChanged = true
                 if (focused || clicked) {
                     const x = event.clientX - boundingBox.x
                     const y = event.clientY - boundingBox.y
@@ -90,21 +100,21 @@
                     if (colorValue <= 100 || saturation <= 100)
                         hsl = hsv2Hsl(hue, saturation, colorValue)
                 }
-                clearTimeout(timeout)
-                timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
-
+                s()
                 break
             }
             case "mousedown":
+                wasDown = true
                 changed = true
                 boundingBox = canvas.getBoundingClientRect()
                 clicked = true
                 break
             case "mouseup":
-                clearTimeout(timeout)
-                timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
-
-                clicked = false
+                if (wasDown) {
+                    s()
+                    wasDown = false
+                    clicked = false
+                }
 
                 break
         }
@@ -132,10 +142,7 @@
         hue = parseFloat(event.target.value)
         // event.target.parentElement.style.setProperty('--hue', parseFloat(event.target.value));
         hsl = {...hsl, h: parseFloat(event.target.value)}
-
-        clearTimeout(timeout)
-        timeout = setTimeout(() => submit(hsv2Rgb(hue, saturation, colorValue)), 50)
-
+        s()
     }
 
     const translate = key => Localization.COMPONENTS.COLOR[key]

@@ -1,11 +1,14 @@
 
 
-export default function getType(store, type) {
+export default function getType(store, type, mergeMaterials) {
     switch (type) {
         case "image":
             return store.textures
         case "material":
-            return store.materials
+            if(mergeMaterials)
+            return [...store.materials,  ...store.materialInstances]
+            else
+                return store.materials
         case "mesh":
             return store.meshes
         case "script":

@@ -1,6 +1,12 @@
-- Translation gizmo now shows line for single axis transformation
-- LineAPI changed to support 3 initial directions
-    - X - `LineAPI.draw([1, 0, 0])`
-    - Y - `LineAPI.draw([0, 1, 0])`
-    - Z - `LineAPI.draw([0, 0, 1])`
-- Added line shader to GIZMO.glsl
+- Fixed hierarchy node hard to select;
+- Improvements to engine store
+- Reworked bundlerAPI to integrate with scripts (ability ton spawn or de-spawn entities)
+- Fixed register physics body
+- Localization for physics components
+- Fixed multi-deletion of entities
+- Fixed color picker auto-submit
+- Fixed material instance initialization
+- Material compilation process changed to improve inspector experience
+- Added color picker to material inspector
+- Material instance now loads with level
+- Changing levels now clears action history and selection

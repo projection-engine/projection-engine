@@ -4,16 +4,11 @@ import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracke
 import ENVIRONMENT from "../../../../../public/engine/static/ENVIRONMENT";
 import BundlerAPI from "../../../../../public/engine/production/apis/BundlerAPI";
 import Wrapper from "../../../../../public/engine/editor/services/Wrapper";
+import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
 
 
 export default function updateRenderer(selected, engine, settings) {
-    const {
-        materials,
-        entities,
-        executingAnimation,
-
-        scripts
-    } = engine
+    const {executingAnimation} = engine
 
     if (!CameraTracker.cameraInitialized) {
 
@@ -27,25 +22,37 @@ export default function updateRenderer(selected, engine, settings) {
         CameraTracker.update()
     }
 
-    Engine.entitiesMap = entities
+
     CameraTracker.animated = settings.camera?.animated
     CameraTracker.movementSpeed = settings.camera?.movementSpeed
     CameraTracker.scrollSpeed = settings.camera?.scrollSpeed
     CameraTracker.scrollDelay = settings.camera?.scrollDelay
     CameraTracker.turnSpeed = settings.camera?.turnSpeed
 
-    Engine.environment = executingAnimation ? ENVIRONMENT.EXECUTION : ENVIRONMENT.DEV
-    if (!executingAnimation)
-        CameraTracker.startTracking()
-    else
-        CameraTracker.stopTracking()
-    BundlerAPI.build(
-        {
-            ...settings,
-            selected,
-            onWrap: executingAnimation ? null : Wrapper,
-        })
+    if (!settings.executingAnimation) {
+        CameraAPI.metadata.zNear = settings.zNear
+        CameraAPI.metadata.zFar = settings.zFar
+        CameraAPI.metadata.fov = settings.fov
+        CameraAPI.metadata.distortion = settings.distortion
+        CameraAPI.metadata.distortionStrength = settings.distortionStrength
+        CameraAPI.metadata.chromaticAberration = settings.chromaticAberration
+        CameraAPI.metadata.chromaticAberrationStrength = settings.chromaticAberrationStrength
+        CameraAPI.metadata.filmGrain = settings.filmGrain
+        CameraAPI.metadata.filmGrainStrength = settings.filmGrainStrength
+        CameraAPI.metadata.bloom = settings.bloom
+        CameraAPI.metadata.bloomStrength = settings.bloomStrength
+        CameraAPI.metadata.bloomThreshold = settings.bloomThreshold
+        CameraAPI.metadata.gamma = settings.gamma
+        CameraAPI.metadata.exposure = settings.exposure
+    }
 
+    Engine.params = {
+        ...settings,
+        selected,
+        onWrap: executingAnimation ? null : Wrapper,
+    }
+    if(!executingAnimation)
+        CameraTracker.startTracking()
     bindGizmo(selected, settings)
     Engine.start()
 }

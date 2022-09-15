@@ -39,15 +39,15 @@ export default class Vec3 extends Node {
 
             this.uniformName = `VEC3_VAR${index}`
             uniformData.push({
+                label: this.name,
                 key: this.uniformName,
-                data: this.v,
-                type: DATA_TYPES.VEC3
+                type: DATA_TYPES.VEC3,
+                data: this.v
             })
             uniforms.push({
                 label: this.name,
                 key: this.uniformName,
-                type: DATA_TYPES.VEC3,
-                value: this.v
+                type: DATA_TYPES.VEC3
             })
 
             return `uniform float ${this.uniformName};`

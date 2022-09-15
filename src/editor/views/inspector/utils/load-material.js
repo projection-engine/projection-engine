@@ -9,16 +9,12 @@ import FILE_TYPES from "../../../../static/FILE_TYPES";
 const loadFile = async (rs) => {
 
     const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
-    if (file)
-        return file
-    else {
+    if (!file)
         alert.pushAlert(
             Localization.PROJECT.INSPECTOR.ERROR_LOADING_FILE,
             "error"
         )
-        return null
-    }
-
+    return file
 }
 
 export default async function loadMaterial(ID, submit) {
@@ -31,18 +27,22 @@ export default async function loadMaterial(ID, submit) {
                 return
             const isInstance = reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE)
 
-            if (GPU.materials.get(ID) != null) {
+            if (!GPU.materials.get(ID)) {
                 alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
+
                 const file = await loadFile(reg)
-                if (!file || !file.original && !file.response) {
+                console.log(file, isInstance)
+                if (!file || isInstance && !file.original || !isInstance && !file.response) {
                     alert.pushAlert("Please, check if material was compiled correctly")
                     return
                 }
-                if(isInstance && !GPU.materials.get(file.original)) {
-                    await loadMaterial(file.original, () => null)
-                    GPU.allocateMaterialInstance(file)
+                if (isInstance) {
+                    if (!GPU.materials.get(file.original))
+                        await loadMaterial(file.original, () => null)
+                    await GPU.allocateMaterialInstance(file, ID)
+
                 }
-                else
+                else {
                     await new Promise(resolve => {
                         GPU.allocateMaterial({
                             onCompiled: () => resolve(),
@@ -52,6 +52,7 @@ export default async function loadMaterial(ID, submit) {
                             uniformData: file.response.uniformData
                         }, ID)
                     })
+                }
             }
             submit(ID, "materialID")
         } catch (err) {

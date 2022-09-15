@@ -35,7 +35,7 @@ export default class SettingsStore {
     }
 
     static async writeSettings(metaData, settings) {
-        const entities = Array.from(Engine.entitiesMap.values())
+        const entities = Engine.entities
 
         const old = JSON.parse(metaData.toString())
         await AssetAPI.updateProject(

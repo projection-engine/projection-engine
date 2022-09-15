@@ -19,13 +19,6 @@ export default class Saturate extends Node {
         return NODE_TYPES.FUNCTION
     }
 
-
-     
-
-    async  getInputInstance() {
-        return ""
-    }
-
     getFunctionCall({a={name: this.a}}, index) {
         this.saturateRes = "saturateRes" + index
         if(a)

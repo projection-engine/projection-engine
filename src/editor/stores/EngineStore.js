@@ -20,6 +20,8 @@ import Entity from "../../../public/engine/production/instances/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
+import SelectionStore from "./SelectionStore";
+import loadMaterial from "../views/inspector/utils/load-material";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -82,10 +84,17 @@ export default class EngineStore {
             materials[i][1].delete()
             GPU.materials.delete(materials[i][0])
         }
-
+        SelectionStore.updateStore({
+            ...SelectionStore.data,
+            TARGET: SelectionStore.TYPES.ENGINE,
+            array: [],
+            lockedEntity: undefined
+        })
+        ActionHistoryAPI.clear()
         ipcRenderer.on(
             CHANNELS.ENTITIES + projectID,
             async (_, data) => {
+
                 const {entities, uiElements} = data
 
                 const mapped = []
@@ -123,12 +132,14 @@ export default class EngineStore {
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,
             async (ev, data) => {
-                if (data && data.result)
+                if (data?.result != null)
                     GPU.allocateMaterial({
                         ...data.result,
                         fragment: data.result.shader,
                         vertex: data.result.vertexShader
                     }, data.id)
+                else if (data != null)
+                    await loadMaterial(data.id, () => null)
             })
 
         ipcRenderer.send(IPC, pathToLevel)
@@ -136,7 +147,7 @@ export default class EngineStore {
 
     static async save() {
         alert.pushAlert("Saving editor", "info")
-        const entities = Array.from(Engine.entitiesMap.values())
+        const entities = Engine.entities
         const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
         if (metaData) {
             let pathToWrite

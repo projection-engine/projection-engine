@@ -214,6 +214,14 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            MASS: "Mass",
+            COLLISION_TYPE:"Collision type",
+            CENTER: "Center",
+            HEIGHT: "Height",
+            DIRECTION: "Direction",
+            PHYSICS_COLLIDER: "Physics collider",
+            RIGID_BODY: "Rigid body",
+
             SHOW_ON_CB: "Show on content browser",
             ALLOCATING_MESH: "Allocating mesh",
             REGENERATE_NORMALS_AND_TANGENTS: "Regenerate normal and tangents",
