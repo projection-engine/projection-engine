@@ -1,3 +1,6 @@
-- Tweaks to rendering structure
-- SSGI fixed
-- Depth reconstructed normal fixed
+- Translation gizmo now shows line for single axis transformation
+- LineAPI changed to support 3 initial directions
+    - X - `LineAPI.draw([1, 0, 0])`
+    - Y - `LineAPI.draw([0, 1, 0])`
+    - Z - `LineAPI.draw([0, 0, 1])`
+- Added line shader to GIZMO.glsl
