@@ -25,14 +25,14 @@
         vec3.copy(actor.translation, window.engineCursor.translation)
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-        e.target.closeDropdown()
+        e.currentTarget.closeDropdown()
     }
     const createMesh = (id, e) => {
         const actor = new Entity(undefined, translate("MESH_RENDERER"))
         const m = actor.addComponent(COMPONENTS.MESH)
         m.meshID = id
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-        e.target.closeDropdown()
+        e.currentTarget.closeDropdown()
     }
 
 </script>
@@ -47,7 +47,7 @@
     <button
         on:click={(e) => {
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})
-            e.target.closeDropdown()
+            e.currentTarget.closeDropdown()
         }}
     >
         <Icon>inventory_2</Icon>
@@ -89,7 +89,7 @@
             actor.lockedScaling = true
 
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            e.target.closeDropdown()
+            e.currentTarget.closeDropdown()
         }}
     >
         <Icon>lightbulb</Icon>
@@ -106,7 +106,7 @@
             actor.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
 
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            e.target.closeDropdown()
+            e.currentTarget.closeDropdown()
         }}
     >
         <Icon>light_mode</Icon>
@@ -140,7 +140,7 @@
             actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
             actor.lockedScaling = true
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            e.target.closeDropdown()
+            e.currentTarget.closeDropdown()
         }}
     >
         <Icon>videocam</Icon>
@@ -151,7 +151,7 @@
             const actor = new Entity(undefined, translate("SPRITE_RENDERER"))
             actor.addComponent(COMPONENTS.SPRITE)
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
-            e.target.closeDropdown()
+            e.currentTarget.closeDropdown()
         }}
     >
         <Icon>image</Icon>

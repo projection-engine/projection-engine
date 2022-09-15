@@ -1,12 +1,10 @@
-- Fixed hierarchy node hard to select;
-- Improvements to engine store
-- Reworked bundlerAPI to integrate with scripts (ability ton spawn or de-spawn entities)
-- Fixed register physics body
-- Localization for physics components
-- Fixed multi-deletion of entities
-- Fixed color picker auto-submit
-- Fixed material instance initialization
-- Material compilation process changed to improve inspector experience
-- Added color picker to material inspector
-- Material instance now loads with level
-- Changing levels now clears action history and selection
+- Bug fix: Sprite renderer still renders disabled entity
+- Optimization: CameraAPI allocating new array for every update loop
+- Optimization: CameraAPI staticViewMatrix changed from a getter to an actual matrix
+- Bug fix: Fixed material instance when initializing texture error occurs due to it not having required attributes
+- Added timeout to BundlerAPI.packageLights
+- Fixed directional light shadows update
+- ShadowMapPass reworked to integrate with BundlerAPI
+- Range input pointer lock fixed
+- Directional light matrix updates when packaging lights
+- Fixed broken deferred shaders due to point light not being included on array

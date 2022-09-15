@@ -37,8 +37,7 @@
     $: percentageFilled = minValue != null && maxValue != null ? getPercentage(currentValue, maxValue) : undefined
     $: incrementData = (incrementPercentage ? incrementPercentage : 0.1)
     const handleMouseMove = (e) => {
-        if (!document.pointerLockElement)
-            inputRef.requestPointerLock()
+
 
         const multiplier = -e.movementX
         dragged = true
@@ -113,10 +112,20 @@
         if (disabled || document.activeElement === inputRef)
             return;
         e.preventDefault()
+
+
+        if (!document.pointerLockElement)
+            inputRef.requestPointerLock()
         document.body.addEventListener("mousemove", handleMouseMove)
 
     }
     onMount(() => {
+
+        document.onpointerlockerror = (err) => {
+            console.log(err)
+
+            document.exitPointerLock()
+        }
         document.addEventListener("mouseup", handleMouseUp)
     })
     onDestroy(() => {

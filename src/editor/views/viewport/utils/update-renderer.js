@@ -5,6 +5,7 @@ import ENVIRONMENT from "../../../../../public/engine/static/ENVIRONMENT";
 import BundlerAPI from "../../../../../public/engine/production/apis/BundlerAPI";
 import Wrapper from "../../../../../public/engine/editor/services/Wrapper";
 import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
+import ShadowMapPass from "../../../../../public/engine/production/passes/rendering/ShadowMapPass";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -46,6 +47,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
     }
 
+    ShadowMapPass.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
     Engine.params = {
         ...settings,
         selected,

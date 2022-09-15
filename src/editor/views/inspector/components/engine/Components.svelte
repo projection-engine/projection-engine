@@ -13,6 +13,10 @@
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
     import Localization from "../../../../../shared/libs/Localization";
+    import PointLightComponent
+        from "../../../../../../public/engine/production/components/rendering/PointLightComponent";
+    import DirectionalLightComponent
+        from "../../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
 
     export let entity
     const translate = key => Localization.PROJECT.INSPECTOR[key]
@@ -106,25 +110,27 @@
                 translate={translate}
                 component={component}
                 submit={(key, value, save) => {
-                        if(componentKey === COMPONENTS.DIRECTIONAL_LIGHT || componentKey === COMPONENTS.POINT_LIGHT)
+                        if(component instanceof DirectionalLightComponent || component instanceof PointLightComponent){
+                            entity.needsLightUpdate = true
                             BundlerAPI.packageLights(true)
-                            if(!savedState){
-                                EngineStore.saveEntity(
-                                    entity.id,
-                                     componentKey,
-                                      key,
-                                      value
-                                )
-                                savedState = true
-                            }
-                            component[key] = value
-                            if(save)
-                                EngineStore.saveEntity(
-                                    entity.id,
-                                     componentKey,
-                                      key,
-                                      value
-                                )
+                        }
+                        if(!savedState){
+                            EngineStore.saveEntity(
+                                entity.id,
+                                 componentKey,
+                                  key,
+                                  value
+                            )
+                            savedState = true
+                        }
+                        component[key] = value
+                        if(save)
+                            EngineStore.saveEntity(
+                                entity.id,
+                                 componentKey,
+                                  key,
+                                  value
+                            )
                         }}
         />
 
