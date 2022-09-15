@@ -185,7 +185,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                         alert.pushAlert("Material not compiled", "error")
                     else {
                         let path = await check(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
-                        console.log(path, currentDirectory.id + FilesAPI.sep + nodeName + "-instance")
+
                         await AssetAPI.writeAsset(path, JSON.stringify({
                             original: nodeID,
                             uniforms: file.response.uniforms,

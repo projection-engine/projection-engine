@@ -24,7 +24,6 @@
 
         if (fileType === FILE_TYPES.TEXTURE || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE || fileType === FILE_TYPES.SCENE) {
             FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fileType !== FILE_TYPES.COMPONENT && fileType !== FILE_TYPES.STYLESHEET ? "json" : undefined).then(res => {
-                console.log(res)
                 data = res
             })
         } else

@@ -51,7 +51,7 @@
     }
 
     $: uniforms = isInstance ? temp?.uniformData : temp?.response?.uniformData
-$: console.log(data, temp, uniforms)
+
     const updateAsset = (index, value, t) => {
         clearTimeout(timeout)
         timeout = setTimeout(async () => {

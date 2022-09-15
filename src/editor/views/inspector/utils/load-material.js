@@ -31,7 +31,7 @@ export default async function loadMaterial(ID, submit) {
                 alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
 
                 const file = await loadFile(reg)
-                console.log(file, isInstance)
+
                 if (!file || isInstance && !file.original || !isInstance && !file.response) {
                     alert.pushAlert("Please, check if material was compiled correctly")
                     return

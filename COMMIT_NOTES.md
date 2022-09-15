@@ -1,10 +1,1 @@
-- Bug fix: Sprite renderer still renders disabled entity
-- Optimization: CameraAPI allocating new array for every update loop
-- Optimization: CameraAPI staticViewMatrix changed from a getter to an actual matrix
-- Bug fix: Fixed material instance when initializing texture error occurs due to it not having required attributes
-- Added timeout to BundlerAPI.packageLights
-- Fixed directional light shadows update
-- ShadowMapPass reworked to integrate with BundlerAPI
-- Range input pointer lock fixed
-- Directional light matrix updates when packaging lights
-- Fixed broken deferred shaders due to point light not being included on array
+- Removing "console.log"
