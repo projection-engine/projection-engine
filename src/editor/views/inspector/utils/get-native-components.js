@@ -11,18 +11,20 @@ import PhysicsColliderComponent
     from "../../../../../public/engine/production/components/physics/PhysicsColliderComponent";
 import RigidBodyComponent from "../../../../../public/engine/production/components/physics/RigidBodyComponent";
 import CullingComponent from "../../../../../public/engine/production/components/misc/CullingComponent";
+import UIComponent from "../components/engine/UIComponent.svelte";
 
-export default function getNativeComponents(){
+export default function getNativeComponents() {
     return [
-        [COMPONENTS.MESH, MeshComponent, "Mesh", getComponentIcon(COMPONENTS.MESH)],
-        [COMPONENTS.CAMERA, CameraComponent, "Camera", getComponentIcon(COMPONENTS.CAMERA)],
-        [COMPONENTS.POINT_LIGHT, PointLightComponent, "Point Light", getComponentIcon(COMPONENTS.POINT_LIGHT)],
-        [COMPONENTS.DIRECTIONAL_LIGHT, DirectionalLightComponent, "Directional Light", getComponentIcon(COMPONENTS.DIRECTIONAL_LIGHT)],
-        [COMPONENTS.SPRITE, SpriteComponent, "Sprite", getComponentIcon(COMPONENTS.SPRITE)],
+        [COMPONENTS.MESH, "Mesh", getComponentIcon(COMPONENTS.MESH)],
+        [COMPONENTS.CAMERA, "Camera", getComponentIcon(COMPONENTS.CAMERA)],
+        [COMPONENTS.POINT_LIGHT, "Point Light", getComponentIcon(COMPONENTS.POINT_LIGHT)],
+        [COMPONENTS.DIRECTIONAL_LIGHT, "Directional Light", getComponentIcon(COMPONENTS.DIRECTIONAL_LIGHT)],
+        [COMPONENTS.SPRITE, "Sprite", getComponentIcon(COMPONENTS.SPRITE)],
 
-        [COMPONENTS.PROBE, ProbeComponent, "Probe", getComponentIcon(COMPONENTS.PROBE)],
-        [COMPONENTS.PHYSICS_COLLIDER, PhysicsColliderComponent, "Physics collider", getComponentIcon(COMPONENTS.PHYSICS_COLLIDER)],
-        [COMPONENTS.RIGID_BODY, RigidBodyComponent, "Rigid body", getComponentIcon(COMPONENTS.RIGID_BODY)],
-        [COMPONENTS.CULLING, CullingComponent, "Culling", getComponentIcon(COMPONENTS.CULLING)],
+        [COMPONENTS.PROBE, "Probe", getComponentIcon(COMPONENTS.PROBE)],
+        [COMPONENTS.PHYSICS_COLLIDER, "Physics collider", getComponentIcon(COMPONENTS.PHYSICS_COLLIDER)],
+        [COMPONENTS.RIGID_BODY, "Rigid body", getComponentIcon(COMPONENTS.RIGID_BODY)],
+        [COMPONENTS.CULLING, "Culling", getComponentIcon(COMPONENTS.CULLING)],
+        [COMPONENTS.UI, "UI wrapper", getComponentIcon(COMPONENTS.UI)],
     ]
 }

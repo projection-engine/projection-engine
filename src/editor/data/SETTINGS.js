@@ -13,7 +13,6 @@ export default {
     iconsVisibility: true,
     gridVisibility: true,
     shadingModel: SHADING_MODELS.DETAIL,
-    viewportTab: VIEWPORT_TABS.EDITOR,
 
     gizmo: GIZMOS.TRANSLATION,
 

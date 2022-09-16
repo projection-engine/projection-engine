@@ -47,11 +47,7 @@
                 }
             },
             dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">${icon}</span> ${node.name}</div>`,
-            onDragOver: (data) => {
-                if (data instanceof Entity)
-                    return `CTRL to parent | SHIFT to clone`
-                return `<span style="font-size: .9rem;" data-icon="-">clear</span> Invalid entity`
-            }
+            onDragOver: () =>`CTRL to parent | SHIFT to clone`
         })
     })
     onDestroy(() => draggable.onDestroy())
@@ -105,7 +101,7 @@
     .node{
         height: 23px;
         line-height: 23px;
-
+color: var(--pj-color-quaternary);
     }
     .dot {
         width: 5px;

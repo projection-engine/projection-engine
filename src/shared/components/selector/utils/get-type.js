@@ -13,6 +13,8 @@ export default function getType(store, type, mergeMaterials) {
             return store.meshes
         case "script":
             return store.scripts
+        case "ui":
+            return store.uiLayouts
         default:
             return []
     }

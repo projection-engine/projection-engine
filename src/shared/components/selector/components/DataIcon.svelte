@@ -7,7 +7,7 @@
     export let type
     let previewPath
     $: {
-        if(state) previewPath =  FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + state.registryID + ".preview"
+        if (state) previewPath = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + state.registryID + ".preview"
     }
 </script>
 
@@ -19,16 +19,18 @@
 {:else if type === "image"}
     <Preview path={previewPath}>
         <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
-        <Icon slot="icon" >image</Icon>
+        <Icon slot="icon">image</Icon>
     </Preview>
 {:else if type === "material"}
     <Preview path={previewPath}>
         <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
         <Icon slot="icon">texture</Icon>
     </Preview>
+{:else if type === "ui"}
+    <Icon slot="icon">widgets</Icon>
 {/if}
 <style>
-    .img{
+    .img {
         object-fit: fill;
         max-height: 100%;
         border-radius: 3px;

@@ -5,7 +5,7 @@
     import FILE_TYPES from "../../../../../static/FILE_TYPES";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import TextureItem from "./TextureItem.svelte";
-    import ComponentItem from "./ComponentItem.svelte";
+    import CodeItem from "./CodeItem.svelte";
     import ItemMetadata from "./ItemMetadata.svelte";
     import MaterialItem from "./MaterialItem.svelte";
     import SceneItem from "./SceneItem.svelte";
@@ -22,8 +22,8 @@
 
     $: {
 
-        if (fileType === FILE_TYPES.TEXTURE || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE || fileType === FILE_TYPES.SCENE) {
-            FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fileType !== FILE_TYPES.COMPONENT && fileType !== FILE_TYPES.STYLESHEET ? "json" : undefined).then(res => {
+        if (fileType !== FILE_TYPES.MESH && fileType !== FILE_TYPES.LEVEL) {
+            FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fileType === FILE_TYPES.TEXTURE && fileType === FILE_TYPES.SCENE&& fileType === FILE_TYPES.MATERIAL && fileType === FILE_TYPES.MATERIAL_INSTANCE? "json" : undefined).then(res => {
                 data = res
             })
         } else
@@ -40,8 +40,8 @@
         <TextureItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.SCENE}
         <SceneItem data={data}/>
-    {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET}
-        <ComponentItem data={data} item={item}/>
+    {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.UI_LAYOUT}
+        <CodeItem data={data} item={item}/>
     {:else if data != null && (fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE)}
         <MaterialItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.MESH}

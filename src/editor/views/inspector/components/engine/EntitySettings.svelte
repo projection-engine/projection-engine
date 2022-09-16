@@ -35,21 +35,19 @@
         {translate("ADD_COMPONENT")}
         <ToolTip content={translate("ADD_COMPONENT")}/>
     </button>
-    {#if entity instanceof Entity}
-        {#each nativeComponents as [key, instance, label, icon]}
-            <button
+
+    {#each nativeComponents as [key,  label, icon]}
+        <button
                 on:click={(e) =>{
                     entity.addComponent(key)
                     SelectionStore.updateStore()
                     e.target.closeDropdown()
                 }}>
-                <Icon>{icon}</Icon>
-                {label}
-            </button>
-        {/each}
-        <div class="divider"></div>
-    {/if}
-
+            <Icon>{icon}</Icon>
+            {label}
+        </button>
+    {/each}
+    <div class="divider"></div>
     {#each store.components as script}
         <button on:click={(e) => {
             componentConstructor(entity, script.registryID).catch()

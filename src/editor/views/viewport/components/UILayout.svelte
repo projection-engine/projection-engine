@@ -1,48 +1,104 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import UIStore from "../../../stores/UIStore";
-    import UIAPI from "../../../../../public/engine/production/apis/utils/UIAPI";
+    import BundlerAPI from "../../../../../public/engine/production/apis/BundlerAPI";
+    import {Engine} from "../../../../../public/engine/production";
+    import EngineStore from "../../../stores/EngineStore";
+    import SelectionStore from "../../../stores/SelectionStore";
 
-    let store = {}
-    const unsubscribe = UIStore.getStore(v => store = v)
-    let renderTarget
-    let lastHovered
-    let lastStyle
+
+    let ref
+    let tooltip
+    let bBox
+    let engine
+    const unsubscribe = EngineStore.getStore(v => engine = v)
+
     const handler = e => {
         switch (e.type) {
             case "click":
+                console.log("HERE")
+                if(tooltip.hovered)
+                if (e.ctrl)
+                    SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
+                else
+                    SelectionStore.engineSelected = [tooltip.hovered.id]
+                tooltip.style.zIndex = "-1"
                 break
-            case "mouseout":
-                if (lastHovered)
-                    lastHovered.style.opacity = lastStyle
+            case "mouseleave":
+                tooltip.style.zIndex = "-1"
                 break
-            case "mouseover":
-                if (lastHovered )
-                    lastHovered.style.opacity = lastStyle
-                if(lastHovered !== e.target) {
-                    lastHovered = e.target
-                    lastStyle =e.target.style.opacity
-                    e.target.style.opacity = ".5"
-                }
+            case "mouseenter":
 
+                bBox = e.target.getBoundingClientRect()
+                tooltip.style.width = bBox.width + "px"
+                tooltip.style.height = bBox.height + "px"
+                tooltip.style.top = bBox.top + "px"
+                tooltip.style.left = bBox.left + "px"
+                tooltip.style.zIndex = "999"
+                tooltip.addEventListener("mouseleave", handler, {once: true})
+                tooltip.addEventListener("click", handler, {once: true})
+                const entity = Engine.entitiesMap.get(e.target.getAttribute("data-engineentityid"))
+                tooltip.innerHTML = `
+                    <div style="backdrop-filter: blur(10px) brightness(70%); padding: 8px; border-radius: 3px;">
+                        ${entity.name}
+                    </div>
+                `
+                tooltip.hovered = entity
                 break
             default:
                 break
         }
     }
-    let ref
+
+    function update() {
+        const targets = document.querySelectorAll("[data-enginewrapper='-']")
+        targets.forEach(t => {
+            t.removeEventListener("mouseenter", handler)
+            t.addEventListener("mouseenter", handler)
+        })
+    }
+
+    $: {
+        if (BundlerAPI.uiMountingPoint != null && engine.changeID)
+            update()
+    }
     onMount(() => {
-        renderTarget = UIAPI.renderTarget
-        renderTarget.addEventListener("click", handler)
-        renderTarget.addEventListener("mouseover", handler)
-        renderTarget.addEventListener("mouseout", handler)
+        console.log(ref)
+        if (!BundlerAPI.uiMountingPoint)
+            BundlerAPI.buildUI(ref)
+        update()
     })
     onDestroy(() => {
-        renderTarget.removeEventListener("click", handler)
-        renderTarget.removeEventListener("mouseover", handler)
-        renderTarget.removeEventListener("mouseout", handler)
         unsubscribe()
+        BundlerAPI.destroyUI()
     })
+
 </script>
 
-<span style="display: none" bind:this={ref}></span>
+<div class="tooltip" bind:this={tooltip}></div>
+<span class="wrapper" bind:this={ref}></span>
+
+<style>
+    .tooltip {
+        position: fixed;
+        background: rgba(0, 149, 255, .5);
+
+        font-size: .8rem;
+        font-weight: 550;
+        z-index: -1;
+        display: grid;
+        align-content: center;
+        align-items: center;
+        justify-content: right;
+        padding: 4px;
+    }
+
+    .wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--pj-background-tertiary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
+        background-size: 20px 20px;
+    }
+</style>

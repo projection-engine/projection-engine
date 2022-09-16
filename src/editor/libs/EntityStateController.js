@@ -1,4 +1,4 @@
-import {Engine, Entity, ENVIRONMENT, UIAPI} from "../../../public/engine/production";
+import {BundlerAPI, Engine, Entity, ENVIRONMENT} from "../../../public/engine/production";
 
 
 import componentConstructor from "./component-constructor";
@@ -21,7 +21,7 @@ export default class EntityStateController {
 
 
         const engine = EngineStore.engine
-        const entities = [...Engine.entities, ...Array.from(UIAPI.entities.values())]
+        const entities = Engine.entities
 
         try {
             for (let i = 0; i < entities.length; i++) {
@@ -34,6 +34,7 @@ export default class EntityStateController {
             alert.pushAlert("Some error occurred", "error")
         }
 
+        BundlerAPI.buildUI()
         EngineStore.updateStore({...engine, executingAnimation: true})
         CameraTracker.stopTracking()
     }
@@ -58,6 +59,12 @@ export default class EntityStateController {
 
         EntityStateController.#isPlaying = false
         CameraTracker.startTracking()
+
+        BundlerAPI.destroyUI()
+        if(BundlerAPI.uiMountingPoint && BundlerAPI.uiMountingPoint.parentNode) {
+            BundlerAPI.uiMountingPoint.parentNode.removeChild(BundlerAPI.uiMountingPoint)
+            BundlerAPI.uiMountingPoint = undefined
+        }
     }
 
 }

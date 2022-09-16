@@ -5,7 +5,7 @@ import {Entity, FALLBACK_MATERIAL} from "../../../../../public/engine/production
 export default function initializeEntity(data, meshID, parent, index=0) {
     const entity = new Entity()
     entity.name = data.name ? data.name : "primitive-" + index
-    if (parent && parent instanceof Entity) {
+    if (parent != null) {
         entity.parent = parent
         parent.children.push(entity)
     }

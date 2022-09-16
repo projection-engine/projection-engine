@@ -214,6 +214,18 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            IMPORT_LAYOUT: "Import UI layout",
+            CODE_PREVIEW: "Code preview",
+            ANCHOR_ELEMENT_ID: "Anchor element",
+            ELEMENT_ID: "Element ID",
+            UI_COMPONENT: "UI component",
+            UI_WRAPPER: "Content wrapper",
+            WRAP_CONTENT: "Wrap content",
+            WRAPPER_ID: "Wrapper ID",
+            WRAPPER_STYLES: "Wrapper styles",
+            VALUE: "Value",
+            KEY: "Key",
+
             MASS: "Mass",
             COLLISION_TYPE:"Collision type",
             CENTER: "Center",
@@ -420,6 +432,7 @@ export default class Localization {
         },
 
         SELECTOR: {
+            UI: "UI layout",
             IMAGE: "Texture",
             MATERIAL: "Material",
             MESH: "Mesh",

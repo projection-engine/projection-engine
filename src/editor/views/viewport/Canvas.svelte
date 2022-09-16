@@ -8,14 +8,13 @@
     import bindContextTarget from "../../../shared/components/context-menu/libs/bind-context-target";
     import getContextMenu from "./utils/get-context-menu";
     import HotKeys from "../../components/metrics/libs/HotKeys";
-    import UIAPI from "../../../../public/engine/production/apis/utils/UIAPI";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
-    import UIStore from "../../stores/UIStore";
     import GPU from "../../../../public/engine/production/GPU";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
     import AssetAPI from "../../../shared/libs/files/AssetAPI";
     import initializer from "../../../../public/engine/editor/initializer";
+    import {BundlerAPI} from "../../../../public/engine/production";
 
     export let onReady
     const TRIGGERS = ["data-viewport"]
@@ -23,12 +22,10 @@
     let done = false
     let engine = {}
     let settings = {}
-    let uiStore = {}
     let selected = []
     const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeUI = UIStore.getStore(v => uiStore = v)
     const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
 
 
@@ -50,27 +47,12 @@
     })
 
     onDestroy(() => {
-        unsubscribeUI()
         unsubscribeSelection()
         HotKeys.unbindAction(canvasRef)
         unsubscribeEngine()
         unsubscribeSettings()
         contextMenuBinding.onDestroy()
     })
-    let lastSize = 0
-    $: renderUI = engine.executingAnimation || settings.viewportTab === VIEWPORT_TABS.UI
-    $: {
-        if (uiStore.entities.size > lastSize && renderUI && window.gpu) {
-            UIAPI.restart()
-            lastSize = uiStore.entities.size
-        }
-    }
-    $: {
-        if (renderUI && window.gpu)
-            UIAPI.start()
-        else
-            UIAPI.stop()
-    }
 
     $: if (done) updateRenderer(selected, engine, settings)
 </script>

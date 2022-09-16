@@ -1,11 +1,12 @@
 <script>
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import ComponentAttribute from "./ComponentAttribute.svelte";
+    import ComponentAttribute from "./Property.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import EngineStore from "../../../../stores/EngineStore";
     import getComponentIcon from "../../../../utils/get-component-icon";
     import SelectionStore from "../../../../stores/SelectionStore";
     import {v4} from "uuid";
+    import removeComponent from "../../utils/remove-component";
 
     export let key
     export let index
@@ -13,24 +14,11 @@
     export let submit
     export let translate
 
-    const removeComponent = () => {
 
-        const entity = SelectionStore.selectedEntity
-        if (!entity)
-            return
-        if (index != null) {
-            entity.scripts[index] = undefined
-            entity.scripts = entity.scripts.filter(e => e)
-        } else
-            entity.components.delete(key)
-
-        SelectionStore.updateStore()
-        EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
-    }
     $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(component.name) ? translate(component.name) : component.name)
 </script>
 
-<Accordion>
+<Accordion startOpen={ key === "TRANSFORMATION"}>
     <svelte:fragment slot="header">
         <div class="icon">
             <Icon styles="font-size: .9rem; width: 1rem">
@@ -39,7 +27,7 @@
         </div>
         {title}
         {#if key !== "TRANSFORMATION"}
-            <button class="button" on:click={() => removeComponent()}>
+            <button class="button" on:click={() => removeComponent(index, key)}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}

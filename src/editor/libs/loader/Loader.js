@@ -74,10 +74,8 @@ export default class Loader {
                 if (!onlyReturn) {
                     const cursorPoint = [...window.engineCursor.absoluteTranslation]
                     entities.forEach(e => {
-                        if (e instanceof Entity) {
-                            vec4.add(e.translation, e.translation, cursorPoint)
-                            e.changed = true
-                        }
+                        vec4.add(e.translation, e.translation, cursorPoint)
+                        e.changed = true
                     })
                     dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                 }
@@ -88,7 +86,7 @@ export default class Loader {
             alert.pushAlert("Some error occurred", "error")
         }
 
-        return  entities
+        return entities
     }
 
     static async load(event, asID, mouseX, mouseY) {
@@ -135,7 +133,7 @@ export default class Loader {
                     case FILE_TYPES.MATERIAL: {
 
                         const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(mouseX, mouseY))
-                        if(!entity || !entity.components.get(COMPONENTS.MESH)) return;
+                        if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
 
                         await loadMaterial(data, () => {
                             ActionHistoryAPI.pushChange({

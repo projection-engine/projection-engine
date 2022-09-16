@@ -9,9 +9,6 @@ import DEFAULT_LEVEL from "../../static/DEFAULT_LEVEL"
 import ROUTES from "../../static/ROUTES";
 import CHANNELS from "../../static/CHANNELS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "./templates/dispatch-renderer-entities";
-import UIAPI from "../../../public/engine/production/apis/utils/UIAPI";
-import UIStore from "./UIStore";
-import parseUiElement from "../../../public/engine/editor/utils/parse-ui-element";
 import GPU from "../../../public/engine/production/GPU";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
 import {writable} from "svelte/store";
@@ -95,7 +92,7 @@ export default class EngineStore {
             CHANNELS.ENTITIES + projectID,
             async (_, data) => {
 
-                const {entities, uiElements} = data
+                const {entities} = data
 
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
@@ -114,17 +111,6 @@ export default class EngineStore {
                     mapped.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
-
-                if (!uiElements)
-                    return
-                let newEntities = new Map()
-                for (let i = 0; i < uiElements.length; i++)
-                    newEntities.set(uiElements[i].id, parseUiElement(uiElements[i]))
-                UIStore.updateStore({
-                    selected: [],
-                    selectedElement: undefined,
-                    entities: newEntities
-                })
             })
 
         ipcRenderer.on(CHANNELS.MESH + projectID, (ev, data) => GPU.allocateMesh(data.id, data))
@@ -169,8 +155,7 @@ export default class EngineStore {
                 await FilesAPI.writeFile(
                     pathToWrite,
                     Entity.serializeComplexObject({
-                        entities: entities.map(e => e.serializable()),
-                        uiElements: Array.from(UIAPI.entities.values())
+                        entities: entities.map(e => e.serializable())
                     }),
                     true
                 )

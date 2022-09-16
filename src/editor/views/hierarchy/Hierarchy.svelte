@@ -7,7 +7,7 @@
     import EngineHierarchyView from "./views/EngineView.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import UIHierarchy from "./views/UIView.svelte";
+
     import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
 
 
@@ -17,7 +17,7 @@
     let search = ""
     const ID = v4()
     const translate = key => Localization.PROJECT.HIERARCHY[key]
-    let viewTab = 0
+
     let filteredComponent = undefined
     let isEmpty = true
 </script>
@@ -31,35 +31,6 @@
         icon={"account_tree"}
 >
     <div data-vertdivider="-" style="	margin: 0 2px;"></div>
-    <Dropdown hideArrow={true}>
-        <button slot="button" class="dropdown">
-            <Icon styles="font-size: .9rem">
-                {#if viewTab === 0}
-                    public
-                {:else}
-                    grid_view
-                {/if}
-            </Icon>
-            <ToolTip content={translate("HIERARCHY_SOURCE")}/>
-        </button>
-        <button on:click={() => viewTab = 0} class="button">
-            {#if viewTab === 0}
-                <Icon styles="font-size: .9rem">
-                    check
-                </Icon>
-            {/if}
-            {translate("ENGINE")}
-        </button>
-        <button on:click={() => viewTab = 1} class="button">
-            {#if viewTab === 1}
-                <Icon styles="font-size: .9rem">
-                    check
-                </Icon>
-            {/if}
-            {translate("UI")}
-        </button>
-    </Dropdown>
-
     <Input
             hasBorder={true}
             width={"100%"}
@@ -68,39 +39,40 @@
             searchString={search}
             setSearchString={v => search = v}
     />
-    {#if viewTab === 0}
-        <Dropdown hideArrow={true}>
-            <button slot="button" class="dropdown">
-                <Icon styles="font-size: .9rem">filter_alt</Icon>
-                <ToolTip content={translate("COMPONENT_FILTER")}/>
+
+    <Dropdown hideArrow={true}>
+        <button slot="button" class="dropdown">
+            <Icon styles="font-size: .9rem">filter_alt</Icon>
+            <ToolTip content={translate("COMPONENT_FILTER")}/>
+        </button>
+        {#each Object.keys(COMPONENTS) as key}
+            <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}
+                    class="button">
+                {#if filteredComponent === key}
+                    <Icon styles="font-size: .9rem">
+                        check
+                    </Icon>
+                {/if}
+                {translate(key)}
             </button>
-            {#each Object.keys(COMPONENTS) as key}
-                    <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}
-                            class="button">
-                        {#if filteredComponent === key}
-                            <Icon styles="font-size: .9rem">
-                                check
-                            </Icon>
-                        {/if}
-                        {translate(key)}
-                    </button>
-            {/each}
-        </Dropdown>
-    {/if}
+        {/each}
+    </Dropdown>
 </Header>
 
-    <div
-            data-self={"-"}
-            class="wrapper"
-            style={hidden ? "display: none" :(isEmpty ? "background: transparent" : undefined)}
-            id={ID}
-    >
-        {#if viewTab === 0}
-            <EngineHierarchyView setIsEmpty={v => isEmpty = v} searchString={search.toLowerCase()} filteredComponent={filteredComponent} translate={translate} ID={ID}/>
-        {:else}
-            <UIHierarchy setIsEmpty={v => isEmpty = v} searchString={search.toLowerCase()} translate={translate} ID={ID}/>
-        {/if}
-    </div>
+<div
+        data-self={"-"}
+        class="wrapper"
+        style={hidden ? "display: none" :(isEmpty ? "background: transparent" : undefined)}
+        id={ID}
+>
+    <EngineHierarchyView
+            setIsEmpty={v => isEmpty = v}
+            searchString={search.toLowerCase()}
+            filteredComponent={filteredComponent}
+            translate={translate}
+            ID={ID}
+    />
+</div>
 
 
 <style>

@@ -14,6 +14,7 @@
     export let directChange = undefined
     export let minWidth = undefined
     export let hasBorder = undefined
+    export let disabled
     let changed = false
     let timeout, input
     const onChange = (input) => {
@@ -39,7 +40,7 @@
     {/if}
     <input
             placeholder={placeholder}
-
+            disabled={disabled}
             draggable={false}
             bind:this={input}
             on:input={e => {
@@ -87,6 +88,11 @@
         outline: none;
         width: 100%;
 
+    }
+
+    input:disabled {
+        color: #999;
+        cursor: default;
     }
 
     .icon-wrapper {

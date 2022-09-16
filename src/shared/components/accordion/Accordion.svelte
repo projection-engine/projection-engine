@@ -5,8 +5,9 @@
     export let type = ""
     export let title
     export let background
+    export let startOpen
 
-    let open = true
+    let open = startOpen === true
 </script>
 
 

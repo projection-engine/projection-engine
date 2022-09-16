@@ -163,11 +163,7 @@
                 }
             },
 
-            onDragOver: (data) => {
-                if (data instanceof Entity)
-                    return `CTRL to parent | SHIFT to clone`
-                return `<span style="font-size: .9rem;" data-icon="-">clear</span> Invalid entity`
-            }
+            onDragOver: () =>  `CTRL to parent | SHIFT to clone`
         })
     })
     onDestroy(() => {

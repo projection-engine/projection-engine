@@ -5,14 +5,12 @@
     import {onDestroy} from "svelte";
     import Components from "./components/engine/Components.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import UIStore from "../../stores/UIStore";
-    import UIElement from "./components/UIElement.svelte";
-    import EntityElement from "./components/engine/EntityElement.svelte";
-    import ComponentLayout from "./components/engine/ComponentLayout.svelte";
+    import UIElement from "./components/engine/UIComponent.svelte";
+    import EntityElement from "./components/engine/EntitySettings.svelte";
+    import ComponentLayout from "./components/engine/Layout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import UIAPI from "../../../../public/engine/production/apis/utils/UIAPI";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../public/engine/production/instances/Entity";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
@@ -31,12 +29,10 @@
 
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeUI = UIStore.getStore(v => ui = v)
     const unsubscribeSelection = SelectionStore.getStore(v => selectionStore = v)
     onDestroy(() => {
         unsubscribeSelection()
         unsubscribeEngine()
-        unsubscribeUI()
     })
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
@@ -59,10 +55,6 @@
                 case T.ENGINE:
                     targetInstance = QueryAPI.getEntityByID(selectionStore.array[0])
                     targetType = translate("ENGINE")
-                    break
-                case T.UI:
-                    targetInstance = UIAPI.entities.get(selectionStore.array[0])
-                    targetType = translate("UI")
                     break
                 default:
                     targetInstance = undefined
@@ -116,7 +108,7 @@
 </Header>
 <div class="content" style={hidden ? "display: none" : undefined}>
     {#if entity != null}
-        {#if target === SelectionStore.TYPES.ENGINE || entity instanceof Entity}
+        {#if entity instanceof Entity}
             <div class="wrapper-content">
                 <EntityElement entity={entity} translate={translate}/>
                 {#if entity instanceof UIElement}
@@ -141,8 +133,6 @@
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
             <ContentBrowserItem item={entity}/>
         {/if}
-
-
     {:else}
         <div data-empty="-">
             <Icon styles="font-size: 75px">category</Icon>

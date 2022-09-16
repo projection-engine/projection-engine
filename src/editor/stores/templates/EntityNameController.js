@@ -1,6 +1,5 @@
 import Entity from "../../../../public/engine/production/instances/Entity";
 import EngineStore from "../EngineStore";
-import UIStore from "../UIStore";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
 export default class EntityNameController {
@@ -15,10 +14,7 @@ export default class EntityNameController {
         if (validName) {
             entity.name = newName
             EntityNameController.byName.set(newName, entity.id)
-            if (entity instanceof Entity)
-                EngineStore.updateStore()
-            else
-                UIStore.updateStore()
+            EngineStore.updateStore()
         } else{
             {
                 const subWord = ".00"

@@ -6,8 +6,5 @@ export default function removeHierarchy(state, entity) {
     for (let c = 0; c < entity.children.length; c++)
         removeHierarchy(state, entity.children[c])
 
-    if (entity instanceof Entity)
-        BundlerAPI.removeEntity(entity.id)
-    else
-        state.delete(entity.id)
+    BundlerAPI.removeEntity(entity.id)
 }

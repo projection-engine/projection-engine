@@ -1,6 +1,6 @@
 <script>
     import EngineStore from "../../../../stores/EngineStore";
-    import ComponentLayout from "./ComponentLayout.svelte";
+    import ComponentLayout from "./Layout.svelte";
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json";
     import FilesStore from "../../../../stores/FilesStore";
     import componentConstructor from "../../../../libs/component-constructor";
@@ -9,7 +9,7 @@
     import Loader from "../../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
     import Entity from "../../../../../../public/engine/production/instances/Entity";
-    import UIElement from "../../../../../../public/engine/production/instances/UIElement";
+
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
     import Localization from "../../../../../shared/libs/Localization";
@@ -17,6 +17,7 @@
         from "../../../../../../public/engine/production/components/rendering/PointLightComponent";
     import DirectionalLightComponent
         from "../../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
+    import UIComponent from "./UIComponent.svelte";
 
     export let entity
     const translate = key => Localization.PROJECT.INSPECTOR[key]
@@ -26,8 +27,7 @@
     let scripts
 
     $: {
-        if (entity instanceof Entity)
-            components = Array.from(entity.components.entries())
+        components = Array.from(entity.components.entries())
         scripts = entity.scripts
     }
 
@@ -64,8 +64,6 @@
                             await componentConstructor(entity, id, true)
                             break
                         case "MESH":
-                            if (entity instanceof UIElement)
-                                break
                             if (!entity.components.get(COMPONENTS.MESH))
                                 entity.addComponent(COMPONENTS.MESH)
 
@@ -73,8 +71,6 @@
                             entity.components.get(COMPONENTS.MESH).meshID = id
                             break
                         case "MATERIAL":
-                            if (entity instanceof UIElement)
-                                break
                             await loadMaterial(id, (value, key) => {
                                 entity.components.get(COMPONENTS.MESH)[key] = value
                             })
@@ -100,68 +96,71 @@
 
     })
     onDestroy(() => draggable.onDestroy())
+    const submit = (key, value, save, componentKey, component) => {
+        if (component instanceof DirectionalLightComponent || component instanceof PointLightComponent) {
+            entity.needsLightUpdate = true
+            BundlerAPI.packageLights(true)
+        }
+        if (!savedState) {
+            EngineStore.saveEntity(
+                entity.id,
+                componentKey,
+                key,
+                value
+            )
+            savedState = true
+        }
+        component[key] = value
+        if (save)
+            EngineStore.saveEntity(
+                entity.id,
+                componentKey,
+                key,
+                value
+            )
+    }
+    $: console.log(components)
 </script>
 
 <span bind:this={ref} style="display: none"></span>
-{#if entity instanceof Entity}
-    {#each components as [componentKey, component]}
+{#each components as [componentKey, component]}
+    {#if componentKey === COMPONENTS.UI}
+        <UIComponent entity={entity}  submit={(k, v) => submit(k, v, true, componentKey, component)}/>
+    {:else}
         <ComponentLayout
                 key={componentKey}
                 translate={translate}
                 component={component}
-                submit={(key, value, save) => {
-                        if(component instanceof DirectionalLightComponent || component instanceof PointLightComponent){
-                            entity.needsLightUpdate = true
-                            BundlerAPI.packageLights(true)
-                        }
-                        if(!savedState){
-                            EngineStore.saveEntity(
-                                entity.id,
-                                 componentKey,
-                                  key,
-                                  value
-                            )
-                            savedState = true
-                        }
-                        component[key] = value
-                        if(save)
-                            EngineStore.saveEntity(
-                                entity.id,
-                                 componentKey,
-                                  key,
-                                  value
-                            )
-                        }}
+                submit={(k, v, s) => submit(k,v,s, componentKey, component)}
         />
+    {/if}
+{/each}
 
-    {/each}
-{:else if scripts.length > 0}
-    <div data-divider="-"></div>
-{/if}
 {#each scripts as script, index}
     <ComponentLayout
             index={index}
             translate={translate}
             component={script}
+
             submit={(key, value, save) => {
-                            if(!savedState){
-                                EngineStore.saveEntity(
-                                    entity.id,
-                                     index,
-                                      key,
-                                      value
-                                )
-                                savedState = true
-                            }
-                            script[key] = value
-                            if(save)
-                                EngineStore.saveEntity(
-                                    entity.id,
-                                     index,
-                                      key,
-                                      value
-                                )
-                        }}
+                if(!savedState){
+                    EngineStore.saveEntity(
+                        entity.id,
+                         index,
+                          key,
+                          value
+                    )
+                    savedState = true
+                }
+                script[key] = value
+                if(save)
+                    EngineStore.saveEntity(
+                        entity.id,
+                         index,
+                          key,
+                          value
+                    )
+            }}
     />
 {/each}
 

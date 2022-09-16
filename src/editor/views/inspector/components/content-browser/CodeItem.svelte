@@ -1,15 +1,18 @@
 <script>
+    import Localization from "../../../../../shared/libs/Localization";
+
     export let data
 </script>
- <pre>
-    <code>
-        {data}
-    </code>
-</pre>
+
+<fieldset>
+    <legend>{Localization.PROJECT.INSPECTOR.CODE_PREVIEW}</legend>
+    <pre>{data}</pre>
+</fieldset>
 <style>
     pre {
+        vertical-align: top;
+        padding: 4px;
         margin: 0;
-        min-height: 35vh;
         font-size: .7rem;
         overflow: auto;
         max-width: 100%;

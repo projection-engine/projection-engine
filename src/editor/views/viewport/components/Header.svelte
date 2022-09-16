@@ -6,83 +6,66 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import EntityStateController from "../../../libs/EntityStateController";
     import EngineStore from "../../../stores/EngineStore";
+    import {BundlerAPI} from "../../../../../public/engine/production";
 
     export let settings
     export let translate
-    export let setCurrentTab
     export let engine
+    export let setViewportTab
+    export let viewportTab
     let ref
 
-
-    const play = () => {
-        if(!EngineStore.engine.executingAnimation)
-            EntityStateController.startPlayState()
-        else
-            EntityStateController.stopPlayState()
-    }
 </script>
 
 
-<div class={"options"} bind:this={ref}>
 
-    <Dropdown hideArrow={true} asButton={true} buttonStyles="max-width: 22px">
-        <button slot="button"  class="title">
+    <Dropdown hideArrow={true} asButton={true}>
+        <button slot="button" class="title">
             <Icon styles="font-size: .9rem">
-                {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
+                {#if viewportTab === VIEWPORT_TABS.EDITOR}
                     public
                 {:else}
-                    grid_view
+                    widgets
                 {/if}
             </Icon>
+            <small data-overflow="-">
+                {#if viewportTab === VIEWPORT_TABS.EDITOR}
+                    {translate("EDITOR")}
+                {:else}
+                    {translate("UI")}
+                {/if}
+            </small>
         </button>
-        <button on:click={play}>
-            <Icon>play_arrow</Icon>
-            {translate("PLAY")}
-        </button>
-        <div data-divider="-"></div>
-        <button on:click={() =>SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.EDITOR})}>
-            {#if settings.viewportTab === VIEWPORT_TABS.EDITOR}
+
+        <button on:click={() =>setViewportTab(VIEWPORT_TABS.EDITOR)}>
+            {#if viewportTab === VIEWPORT_TABS.EDITOR}
                 <Icon>check</Icon>
             {/if}
             {translate("EDITOR")}
         </button>
-        <button on:click={() =>SettingsStore.updateStore({...settings, viewportTab: VIEWPORT_TABS.UI})}>
-            {#if settings.viewportTab === VIEWPORT_TABS.UI}
+        <button on:click={() =>setViewportTab( VIEWPORT_TABS.UI)}>
+            {#if viewportTab === VIEWPORT_TABS.UI}
                 <Icon>check</Icon>
             {/if}
             {translate("UI")}
         </button>
     </Dropdown>
     <div data-vertdivider="-" style="height: 15px"></div>
-    <EditorHeader
-            settings={settings}
-            engine={engine}
-            translate={translate}
-    />
-</div>
+
 
 <style>
+    small {
+        font-size: .7rem;
+    }
 
     .title {
-        padding: 0 !important;
         display: flex;
         align-items: center;
-        justify-content: center;
-        min-height: 22px;
-        min-width: 22px;
-        max-height: 22px;
-        max-width: 22px;
-        border: none;
-    }
-    .options {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        width: 100%;
+        gap: 2px;
+
         padding: 0 2px;
-        min-height: 28px;
-        max-height: 28px;
-        user-select: none;
+
+        border: none;
     }
 
 

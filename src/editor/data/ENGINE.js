@@ -8,6 +8,5 @@ export default {
     scripts: [],
     changeID: undefined,
 
-    currentLevel: undefined,
-    viewportTab: VIEWPORT_TABS.EDITOR
+    currentLevel: undefined
 }

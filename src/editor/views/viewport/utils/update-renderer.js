@@ -56,5 +56,4 @@ export default function updateRenderer(selected, engine, settings) {
     if(!executingAnimation)
         CameraTracker.startTracking()
     bindGizmo(selected, settings)
-    Engine.start()
 }

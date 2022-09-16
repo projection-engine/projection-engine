@@ -1,1 +1,16 @@
-- Release 5.0.0 alpha
+- Completely new structure for managing components and entities with the BundlerAPI
+  - Fixes component addition not affecting renderer
+  - Fixed removal also not affecting renderer
+- Added new view for UI editing
+- Removed old UI entities structure and integrated with main engine entities as a component
+- UI component form
+- Added UI canvas interaction with hover and click
+- Fixed lockedEntity form not showing on inspector
+- Integrated inspector with UI layout file types
+- Added Label to code preview on inspector
+- Integration of the [Monaco Editor](https://github.com/microsoft/monaco-editor)
+- Fixed activation or deactivation of entity not causing engine to update component information (ex: lights not being included on shaders)
+- Deactivated entities will not be included on UI rendering
+- Added initialization state to CameraTracker
+- Fixed gizmo tooltip not showing
+  

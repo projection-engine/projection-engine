@@ -7,7 +7,7 @@ const loadMaterials = require("../utils/level-loader/load-materials");
 const getBasePath = require("../utils/get-base-path");
 const os = require("os");
 const path = require("path");
-const DEFAULT = {entities: [], uiElements: []}
+const DEFAULT = {entities: []}
 
 module.exports = async function(sender, levelPath, projectID) {
     const projectPath = getBasePath(os, path) + "projects" + path.sep + projectID

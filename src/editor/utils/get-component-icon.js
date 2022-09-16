@@ -25,6 +25,8 @@ export default function getComponentIcon(key, component) {
 
         case COMPONENTS.CULLING:
             return "disabled_visible"
+        case COMPONENTS.UI:
+            return "widgets"
         default:
             return component.icon ? component.icon : "category"
     }

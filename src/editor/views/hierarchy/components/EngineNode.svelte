@@ -7,7 +7,6 @@
     import EngineStore from "../../../stores/EngineStore";
     import {v4} from "uuid";
 
-    const LEFT_BUTTON = 0
     export let depth = undefined
     export let nodeRef = undefined
     export let open = undefined

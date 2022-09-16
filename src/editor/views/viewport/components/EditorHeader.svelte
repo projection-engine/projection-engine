@@ -16,6 +16,7 @@
 </script>
 
 <div class="left-content">
+    <slot name="switch-button"/>
     <ActiveFeatures settings={settings}/>
     <Dropdown>
         <button slot="button" data-viewbutton="-">
@@ -35,7 +36,6 @@
         </button>
     </Dropdown>
     <AddEntity/>
-
 </div>
 <GizmoSettings settings={settings}/>
 <div class="right-content">

@@ -2,22 +2,22 @@
     import Input from "../../../../../shared/components/input/Input.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import UIStore from "../../../../stores/UIStore";
+    import {BundlerAPI} from "../../../../../../public/engine/production";
 
     export let initial
     export let isInput
     export let component
+    export let submit
 
     let key = initial ? initial[0] : ""
     let value = initial ? initial[1] : ""
-    const translate = key => Localization.PROJECT.UI[key]
-    const submit = () => {
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
+    const s = () => {
+        const copy  = {...component.wrapperStyles}
         if (initial)
-            delete component.styles[initial[0]]
-        component.styles[key] = value
-        component.updateStyles()
-        UIStore.updateStore()
-
+            delete copy[initial[0]]
+        copy[key] = value
+        submit(copy)
         if (isInput) {
             value = ""
             key = ""
@@ -25,9 +25,9 @@
     }
 
     const clear = () => {
-        delete component.styles[key]
-        component.updateStyles()
-        UIStore.updateStore()
+        const copy  = {...component.wrapperStyles}
+        delete copy[key]
+        submit(copy)
     }
 </script>
 
@@ -44,7 +44,7 @@
             width="fit-content"
             onEnter={v => {
                 value = v
-                submit()
+                s()
             }}
             searchString={value}
             placeholder={translate("VALUE")}
@@ -52,7 +52,7 @@
     />
 
 
-    <button on:click={submit}>
+    <button on:click={s}>
         <Icon>check</Icon>
     </button>
     {#if !isInput}
