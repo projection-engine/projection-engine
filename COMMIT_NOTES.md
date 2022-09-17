@@ -1,10 +1,1 @@
-- Added inertia to rigid body
-- Fixed physics not updating state when starting play
-- Fixed negative values for collision component
-- Fixed box collider not rotating with entity
-- Fixed new project error initializing
-- CameraAPI is now integrated with a worker, all transformations are done there
-- Fixed rotation gizmo
-- Removed rotation/scaling locking
-- Fixed content browser scroll not re-setting when changing directories
-- Fixed renaming entity not updating hierarchy or inspector
+- Release v5.1.0-alpha
