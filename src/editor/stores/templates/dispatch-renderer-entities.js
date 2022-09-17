@@ -110,7 +110,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 save()
 
             } else
-                SelectionStore.lockedEntity = block[0].id
+                SelectionStore.lockedEntity = block[0]?.id
             break
         }
         default:

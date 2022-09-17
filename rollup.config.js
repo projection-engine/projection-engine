@@ -79,6 +79,7 @@ export default [
         ]
     },
     worker("public/engine/production/movement-worker.js", "public/build/movement-worker.js"),
+    worker("public/engine/production/camera-worker.js", "public/build/camera-worker.js"),
     common("home/root", "home"),
     common("editor/root", "editor"),
     common("preferences/root", "preferences")

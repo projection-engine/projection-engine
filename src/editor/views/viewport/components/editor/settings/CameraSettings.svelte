@@ -43,12 +43,12 @@
             onFinish={(v) => {
                 settings.zFar = v
                 state.zFar = v
-                CameraAPI.metadata.zFar = v
+                CameraAPI.zFar = v
                 CameraAPI.updateProjection()
             }}
             value={state.zFar}
             handleChange={v => {
-                CameraAPI.metadata.zFar = v
+                CameraAPI.zFar = v
                 CameraAPI.updateProjection()
             }}
     />
@@ -60,13 +60,13 @@
                 settings.zNear = v
 
                 state.zNear = v
-                CameraAPI.metadata.zNear = v
+                CameraAPI.zNear = v
                 CameraAPI.updateProjection()
             }}
             value={state.zNear}
             handleChange={v => {
                 state.zNear = v
-                CameraAPI.metadata.zNear = v
+                CameraAPI.zNear = v
                 CameraAPI.updateProjection()
             }}
     />
@@ -84,12 +84,12 @@
                 const value = v * toRad
                 settings.fov = value
                 state.fov = value
-                CameraAPI.metadata.fov = value
+                CameraAPI.fov = value
                 CameraAPI.updateProjection()
             }}
             value={state.fov}
             handleChange={v => {
-                CameraAPI.metadata.fov = v * toRad
+                CameraAPI.fov = v * toRad
                 CameraAPI.updateProjection()
             }}
     />

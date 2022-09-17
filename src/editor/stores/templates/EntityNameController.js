@@ -1,6 +1,8 @@
 import Entity from "../../../../public/engine/production/instances/Entity";
 import EngineStore from "../EngineStore";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+import {v4} from "uuid";
+import SelectionStore from "../SelectionStore";
 
 export default class EntityNameController {
     static byName = new Map()
@@ -14,7 +16,9 @@ export default class EntityNameController {
         if (validName) {
             entity.name = newName
             EntityNameController.byName.set(newName, entity.id)
-            EngineStore.updateStore()
+            EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+            SelectionStore.updateStore()
+
         } else{
             {
                 const subWord = ".00"

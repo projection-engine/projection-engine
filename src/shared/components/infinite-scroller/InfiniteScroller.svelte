@@ -5,6 +5,7 @@
     export let setOffset
     export let branchSize = 23
     export let data = []
+    export let resetWhen
 
     const DELAY = 500
     let timeout
@@ -14,7 +15,15 @@
     let bar
     let target
     let isOnDrag = false
+    let lastLength
 
+    $: {
+        if(lastLength !== data.length) {
+            lastLength = data.length
+            offset = 0
+            setOffset(0)
+        }
+    }
     const updateSize = () => {
         clearTimeout(timeout)
         timeout = setTimeout(() => {

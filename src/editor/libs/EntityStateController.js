@@ -56,7 +56,7 @@ export default class EntityStateController {
         try {
             for (let i = 0; i < entities.length; i++) {
                 const current = entities[i]
-                PhysicsPass.registerRigidBody(current)
+                PhysicsPass.removeRigidBody(current)
                 for (let s = 0; s < current.scripts.length; s++)
                     await componentConstructor(current, current.scripts[s]?.id, false)
             }

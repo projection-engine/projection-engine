@@ -6,8 +6,6 @@ export default function bindGizmo(selected, settings) {
     const entities = Engine.entitiesMap
     GizmoSystem.selectedEntities = selected
         .map(s => entities.get(s))
-        .filter(c => settings.gizmo === GIZMOS.TRANSLATION || settings.gizmo === GIZMOS.ROTATION && !c.lockedRotation || settings.gizmo === GIZMOS.SCALE && !c.lockedScaling)
-
     if (GizmoSystem.selectedEntities.length > 0) {
         switch (settings.gizmo) {
             case GIZMOS.TRANSLATION:

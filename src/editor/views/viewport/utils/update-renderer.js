@@ -31,9 +31,10 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.turnSpeed = settings.camera?.turnSpeed
 
     if (!settings.executingAnimation) {
-        CameraAPI.metadata.zNear = settings.zNear
-        CameraAPI.metadata.zFar = settings.zFar
-        CameraAPI.metadata.fov = settings.fov
+        CameraAPI.zNear = settings.zNear
+        CameraAPI.zFar = settings.zFar
+        CameraAPI.fov = settings.fov
+
         CameraAPI.metadata.distortion = settings.distortion
         CameraAPI.metadata.distortionStrength = settings.distortionStrength
         CameraAPI.metadata.chromaticAberration = settings.chromaticAberration

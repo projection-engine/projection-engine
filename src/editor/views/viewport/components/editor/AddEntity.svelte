@@ -85,8 +85,6 @@
             actor.addComponent(COMPONENTS.POINT_LIGHT)
             addSprite(actor, STATIC_TEXTURES.POINT_LIGHT)
             vec3.copy(actor.translation, window.engineCursor.translation)
-            actor.lockedRotation = true
-            actor.lockedScaling = true
 
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
             e.currentTarget.closeDropdown()
@@ -101,8 +99,7 @@
             const actor = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
             addSprite(actor, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
             vec3.copy(actor.translation, window.engineCursor.translation)
-            actor.lockedRotation = true
-            actor.lockedScaling = true
+
             actor.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
 
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
@@ -138,7 +135,7 @@
             vec3.copy(actor.translation, window.engineCursor.translation)
 
             actor.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
-            actor.lockedScaling = true
+
             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: actor})
             e.currentTarget.closeDropdown()
         }}

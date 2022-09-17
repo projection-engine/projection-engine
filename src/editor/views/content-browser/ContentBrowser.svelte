@@ -57,6 +57,7 @@
     onDestroy(() => {
         GlobalContentBrowserController.unsubscribe(internalID)
     })
+
 </script>
 
 <Header
@@ -100,8 +101,6 @@
                     path={path}
                     currentDirectory={currentDirectory}
                     setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-
-
                     navigationHistory={navigationHistory}
             />
         {/if}
