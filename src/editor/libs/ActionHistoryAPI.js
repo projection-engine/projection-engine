@@ -2,7 +2,7 @@ import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
-import {BundlerAPI, Engine} from "../../../public/engine/production";
+import {EntityAPI, Engine} from "../../../public/engine/production";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 
 export default class ActionHistoryAPI {
@@ -94,13 +94,13 @@ export default class ActionHistoryAPI {
                         continue
                     if (e.parent && !e.parent.children.includes(e))
                         e.parent.children.push(e)
-                    BundlerAPI.addEntity(e)
+                    EntityAPI.addEntity(e)
                 }
                 for (let i = 0; i < oldEntities.length; i++) {
                     const e = oldEntities[i]
                     if (newEntities.includes(e))
                         continue
-                    BundlerAPI.removeEntity(e.id)
+                    EntityAPI.removeEntity(e.id)
                 }
                 EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
                 break

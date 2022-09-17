@@ -63,7 +63,7 @@
         gap: 2px;
         overflow-y: auto;
         width: 300px;
-        padding: 0 4px;
+        padding-left: 3px;
         background: var(--pj-background-secondary);
     }
 

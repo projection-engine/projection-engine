@@ -180,7 +180,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                         return
                     }
                     const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path, "json")
-                    console.log(file)
+
                     if (!file?.response)
                         alert.pushAlert("Material not compiled", "error")
                     else {

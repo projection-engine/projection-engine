@@ -1,4 +1,8 @@
-- Fixed deletion hotkey
-- Fixed EditorLayout not removing click event listeners from viewport
-- Added UI header with some new options
-- Added UI context menu
+- Reworked InputEventsAPI
+- Fixed physics pass not updating on time
+- Reworked UI component styles
+- Fixed multiple bugs related to play/stop state
+- Fixed bugs related to UI rendering
+
+
+    

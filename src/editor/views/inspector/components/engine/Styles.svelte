@@ -2,79 +2,108 @@
     import Input from "../../../../../shared/components/input/Input.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import {BundlerAPI} from "../../../../../../public/engine/production";
+    import {EntityAPI, KEYS} from "../../../../../../public/engine/production";
 
     export let initial
     export let isInput
     export let component
     export let submit
-
+    let ref
     let key = initial ? initial[0] : ""
     let value = initial ? initial[1] : ""
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
-    const s = () => {
-        const copy  = {...component.wrapperStyles}
-        if (initial)
-            delete copy[initial[0]]
-        copy[key] = value
-        submit(copy)
-        if (isInput) {
-            value = ""
-            key = ""
+    let changed = false
+    $: {
+        console.log(initial)
+        if (ref && initial != null) {
+            const inputs = ref.querySelectorAll("input")
+            inputs[0].value = initial[0]
+            inputs[1].value = initial[1]
+            value = initial[1]
+            key = initial[0]
         }
     }
 
-    const clear = () => {
-        const copy  = {...component.wrapperStyles}
-        delete copy[key]
-        submit(copy)
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
+    const save = () => {
+        if(!changed)
+            return
+
+        console.log(key, value)
+        if (isInput && value && key) {
+            submit(key, value)
+            value = ""
+            key = ""
+            const inputs = ref.querySelectorAll("input")
+            inputs[0].value = ""
+            inputs[1].value = ""
+            inputs[0].blur()
+            inputs[1].blur()
+        }
+        else
+            submit(key, value)
+
+    }
+
+    function apply(v, isKey) {
+
+        if (isKey)
+            key = v
+        else
+            value = v
+        if (!v) {
+            if (isInput)
+                return
+            submit(key, value)
+        } else
+            save()
+        changed = false
     }
 </script>
 
-<div class="input">
-    <Input
-            height="20px"
-            width="fit-content"
-            searchString={key} placeholder={translate("KEY")}
-            setSearchString={v => key = v}
+<div class="wrapper" bind:this={ref}>
+    <input
+            on:input={() => changed = true}
+            placeholder={translate("KEY")}
+            on:blur={e => apply(e.currentTarget.value, true)}
+            on:keydown={e => {
+                if(e.code !== KEYS.Enter)
+                  return
+                apply(e.currentTarget.value, true)
+            }}
     />
     :
-    <Input
-            height="20px"
-            width="fit-content"
-            onEnter={v => {
-                value = v
-                s()
-            }}
-            searchString={value}
+    <input
+            on:input={() => changed = true}
             placeholder={translate("VALUE")}
-            setSearchString={v => value = v}
+            on:blur={e => apply(e.currentTarget.value)}
+            on:keydown={e => {
+                if(e.code !== KEYS.Enter)
+                  return
+                apply(e.currentTarget.value)
+            }}
     />
 
-
-    <button on:click={s}>
-        <Icon>check</Icon>
-    </button>
-    {#if !isInput}
-        <button on:click={clear}>
-            <Icon>close</Icon>
-        </button>
-    {/if}
 </div>
 
 <style>
-    button {
-        border: none;
-        width: 20px;
-        height: 20px;
+
+    .wrapper {
         display: flex;
         align-items: center;
-        justify-content: center;
+        overflow: hidden;
     }
 
-    .input {
-        display: flex;
-        align-items: center;
-        gap: 4px;
+    input {
+        font-size: .7rem;
+        border: none;
+        background: none;
+        outline: none;
+        color: var(--pj-color-tertiary);
+        width: 100%;
+        overflow: hidden;
+    }
+
+    input:first-child {
+        color: green;
     }
 </style>

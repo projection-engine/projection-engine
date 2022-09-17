@@ -1,4 +1,4 @@
-import {BundlerAPI, Entity} from "../../../../public/engine/production";
+import {EntityAPI, Entity} from "../../../../public/engine/production";
 
 export default function removeHierarchy(state, entity) {
     if (!entity)
@@ -6,5 +6,5 @@ export default function removeHierarchy(state, entity) {
     for (let c = 0; c < entity.children.length; c++)
         removeHierarchy(state, entity.children[c])
 
-    BundlerAPI.removeEntity(entity.id)
+    EntityAPI.removeEntity(entity.id)
 }

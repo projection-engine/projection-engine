@@ -6,7 +6,7 @@ import EntityNameController from "./EntityNameController";
 import AXIS from "../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
-import {BundlerAPI, Engine, getPickerId} from "../../../../public/engine/production";
+import {EntityAPI, Engine, getPickerId} from "../../../../public/engine/production";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -70,14 +70,13 @@ export default function dispatchRendererEntities({type, payload}) {
                 array: [entity.id],
                 lockedEntity: undefined
             })
-            BundlerAPI.addEntity(payload)
+            EntityAPI.addEntity(payload)
             save()
             break
 
         }
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             save()
-            console.log(payload)
             if (Array.isArray(payload))
                 for (let i = 0; i < payload.length; i++)
                     deleteEntity(Engine.entitiesMap.get(payload[i]), true)
@@ -87,7 +86,7 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.DISPATCH_BLOCK:
         case ENTITY_ACTIONS.PUSH_BLOCK: {
             if (type === ENTITY_ACTIONS.DISPATCH_BLOCK) {
-                Engine.entitiesMap.forEach(e => BundlerAPI.removeEntity(e.id))
+                Engine.entitiesMap.forEach(e => EntityAPI.removeEntity(e.id))
                 EntityNameController.byName.clear()
 
             } else
@@ -98,7 +97,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 for (let i = 0; i < block.length; i++) {
                     const e = block[i]
                     selected.push(e.id)
-                    BundlerAPI.addEntity(e)
+                    EntityAPI.addEntity(e)
                     EntityNameController.renameEntity(e.name, e)
                 }
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {

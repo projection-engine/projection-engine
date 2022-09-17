@@ -3,7 +3,7 @@
     import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./components/editor/EditorLayout.svelte";
     import UILayout from "./components/ui/UILayout.svelte";
@@ -14,6 +14,8 @@
     import {CameraTracker} from "../../../../public/engine/editor";
     import EditorHeader from "./components/editor/EditorHeader.svelte";
     import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
+    import HotKeys from "../../components/metrics/libs/HotKeys";
+    import getHotkeys from "./utils/get-hotkeys";
 
     export let isReady = false
 
@@ -23,7 +25,17 @@
     let settings = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    let ref
+    onMount(() => {
+        HotKeys.bindAction(
+            ref,
+            getHotkeys(),
+            "public",
+            Localization.PROJECT.VIEWPORT.TITLE
+        )
+    })
     onDestroy(() => {
+        HotKeys.unbindAction(ref)
         unsubscribeEngine()
         unsubscribeSettings()
     })
@@ -36,8 +48,8 @@
         if (isReady) {
             if (!engine.executingAnimation) {
                 if (viewportTab === VIEWPORT_TABS.EDITOR) {
-                    CameraTracker.startTracking()
                     Engine.start()
+                    CameraTracker.startTracking()
                     gpu.canvas.style.opacity = "1"
                     if (settings.visible.sideBarViewport)
                         gpu.canvas.style.width = "calc(100% - 23px)"
@@ -61,7 +73,7 @@
 
 </script>
 
-<div class="viewport">
+<div class="viewport" bind:this={ref}>
     {#if !engine.executingAnimation}
         <div class="header">
             {#if viewportTab === VIEWPORT_TABS.EDITOR}

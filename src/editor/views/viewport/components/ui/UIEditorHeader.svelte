@@ -6,15 +6,12 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import GIZMOS from "../../../../data/GIZMOS";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import addUiElement from "../../utils/add-ui-element";
 
     export let settings
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
-    function addNew() {
-        const e = new Entity(undefined, "UI-Node")
-        e.addComponent(COMPONENTS.UI)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
-    }
+
 
     function selectAll() {
         const m = [], size = Engine.entities.length
@@ -35,7 +32,7 @@
 </script>
 
 <div class="left-content">
-    <button on:click={addNew}>
+    <button on:click={addUiElement}>
         <Icon styles="font-size: .9rem">add</Icon>
         {translate("ADD_ELEMENT")}
     </button>

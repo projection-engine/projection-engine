@@ -15,6 +15,7 @@
     export let minWidth = undefined
     export let hasBorder = undefined
     export let disabled
+
     let changed = false
     let timeout, input
     const onChange = (input) => {

@@ -30,40 +30,46 @@
     }
 
     const handleContext = (event) => {
+        console.log(event)
         if (startPosition && !locked && HotKeys.data.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
-                const allElements = document.elementsFromPoint(event.clientX, event.clientY)
+                const allowAll = !HotKeys.data.focused.triggers || HotKeys.data.focused.triggers.length === 0
+                if (allowAll)
+                    targetElement = event.target
+                else {
+                    const allElements = document.elementsFromPoint(event.clientX, event.clientY)
+                    for (let i = 0; i < allElements.length; i++) {
+                        const currentElement = allElements[i]
+                        let hasAttribute = false
+                        const attributes = Array.from(currentElement.attributes)
 
-                for (let i = 0; i < allElements.length; i++) {
-                    const currentElement = allElements[i]
-                    let hasAttribute = false
-                    const attributes = Array.from(currentElement.attributes)
+                        for (let i = 0; i < attributes.length; i++) {
+                            const attr = attributes[i]
+                            if (!attr.nodeName.includes("data-"))
+                                continue
+                            const has = HotKeys.data.focused.triggers.find(f => attr.nodeName === f)
 
-                    for (let i = 0; i < attributes.length; i++) {
-                        const attr = attributes[i]
-                        if (!attr.nodeName.includes("data-"))
-                            continue
-                        const has = HotKeys.data.focused.triggers.find(f => attr.nodeName === f)
+                            if (has)
+                                hasAttribute = hasAttribute || has
 
-                        if (has)
-                            hasAttribute = hasAttribute || has
-
-                    }
-                    if (hasAttribute) {
-                        targetElement = currentElement
-                        break;
+                        }
+                        if (hasAttribute) {
+                            targetElement = currentElement
+                            break;
+                        }
                     }
                 }
 
                 if (targetElement) {
-                    let trigger
-                    Array.from(targetElement.attributes).forEach((attr) => {
-                        const has = HotKeys.data.focused.triggers.find((f) => attr.nodeName === f)
-                        if (has)
-                            trigger = has
-                    })
+                    let trigger = allowAll ? targetElement : undefined
+                    if(!trigger)
+                        Array.from(targetElement.attributes).forEach((attr) => {
+                            const has = HotKeys.data.focused.triggers.find((f) => attr.nodeName === f)
+                            if (has)
+                                trigger = has
+                        })
 
                     open = true
                     contextProps = {

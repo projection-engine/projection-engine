@@ -1,6 +1,7 @@
 import HotKeys from "../../../../editor/components/metrics/libs/HotKeys";
 
 export default function bindContextTarget(targetID, triggers, onFocus) {
+
     return {
 
         rebind: (options) => {

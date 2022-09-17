@@ -6,7 +6,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import EntityStateController from "../../../libs/EntityStateController";
     import EngineStore from "../../../stores/EngineStore";
-    import {BundlerAPI} from "../../../../../public/engine/production";
+    import {EntityAPI} from "../../../../../public/engine/production";
     import Localization from "../../../../shared/libs/Localization";
 
     export let settings

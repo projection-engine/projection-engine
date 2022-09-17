@@ -14,7 +14,8 @@
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
-    import {BundlerAPI, Engine} from "../../../../../../public/engine/production";
+    import {EntityAPI, Engine} from "../../../../../../public/engine/production";
+    import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
 
     export let entity
     export let submit
@@ -22,15 +23,15 @@
     let target
     $: target = entity
     $: component = target.components.get(COMPONENTS.UI)
-    $: styles = Object.entries(component.wrapperStyles)
+    $: styles = component.wrapperStyles
     $: hasStyles = styles.length > 0
-    $: console.log(target, component, styles)
+
     const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     function update(key, value) {
         submit(key, value)
         target = entity
-        BundlerAPI.updateUIEntity(entity)
+        UIAPI.updateUIEntity(entity)
     }
 
     async function loadUILayout(reg) {
@@ -81,20 +82,34 @@
         <StyleField
                 component={component}
                 isInput={true}
-
-                submit={v => {
-                    update("wrapperStyles", v)
-                    if (component.__element != null)
-                        Object.assign(component.__element.style, component.wrapperStyles)
+                submit={(key, value) => {
+                  if(!key || !value)
+                      return
+                    update("wrapperStyles", [...styles, [key, value]])
                 }}
         />
         {#if hasStyles}
             <div data-divider="-"></div>
         {/if}
-        {#each styles as style}
+        {#each styles as style, i}
             <StyleField
                     component={component}
-                    submit={v => update("wrapperStyles", v)}
+                    submit={(key, value) => {
+                        const existingKey = styles.findIndex(s => s[0] === key)
+                        const newData = [...styles]
+                        if(key && value){
+                            if(existingKey > -1 && existingKey !== i){
+                                newData[existingKey] = [key, value]
+                                newData.splice(i, 1);
+                            }
+                            else
+                                newData[i] = [key, value]
+                        }
+                        else
+                            newData.splice(i, 1);
+
+                        update("wrapperStyles", newData)
+                    }}
                     initial={style}
             />
         {/each}

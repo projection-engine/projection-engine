@@ -4,16 +4,13 @@ import SelectionStore from "../../../stores/SelectionStore";
 import {vec3} from "gl-matrix";
 import {COMPONENTS, Engine, Entity} from "../../../../../public/engine/production";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import addUiElement from "./add-ui-element";
 
 export default function getUIContextMenu() {
     return [
         {
             label: "New element",
-            onClick: () =>  {
-                const e = new Entity(undefined, "UI-Node")
-                e.addComponent(COMPONENTS.UI)
-                dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
-            }
+            onClick: addUiElement
         },
 
         {divider: true},

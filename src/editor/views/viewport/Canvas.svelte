@@ -14,7 +14,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import AssetAPI from "../../../shared/libs/files/AssetAPI";
     import initializer from "../../../../public/engine/editor/initializer";
-    import {BundlerAPI} from "../../../../public/engine/production";
+    import {EntityAPI} from "../../../../public/engine/production";
 
     export let onReady
 
@@ -27,12 +27,7 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onMount(() => {
-        HotKeys.bindAction(
-            canvasRef,
-            getHotkeys(),
-            "public",
-            Localization.PROJECT.VIEWPORT.TITLE
-        )
+
         GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
             .then(() => {
                 initializer()
@@ -44,7 +39,7 @@
 
     onDestroy(() => {
         unsubscribeSelection()
-        HotKeys.unbindAction(canvasRef)
+
         unsubscribeEngine()
         unsubscribeSettings()
     })

@@ -3,7 +3,7 @@ import FilesAPI from "../../shared/libs/files/FilesAPI"
 import RegistryAPI from "../../shared/libs/files/RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
 import Localization from "../../shared/libs/Localization";
-import {BundlerAPI} from "../../../public/engine/production";
+import {EntityAPI} from "../../../public/engine/production";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
 
@@ -36,7 +36,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    const result = BundlerAPI.linkScript(data, entity, scriptID, reg.path)
+    const result = EntityAPI.linkScript(data, entity, scriptID, reg.path)
     if(!result)
         alert.pushAlert(Localization.PROJECT.ALERTS.ERROR_LOADING)
     if (autoUpdate)

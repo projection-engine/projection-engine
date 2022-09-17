@@ -217,6 +217,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            INERTIA: "Inertia",
             IMPORT_LAYOUT: "Import UI layout",
             CODE_PREVIEW: "Code preview",
             ANCHOR_ELEMENT_ID: "Anchor element",

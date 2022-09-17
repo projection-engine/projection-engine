@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
+    import EntityAPI from "../../../../../../public/engine/production/apis/EntityAPI";
     import {Engine} from "../../../../../../public/engine/production";
     import EngineStore from "../../../../stores/EngineStore";
     import SelectionStore from "../../../../stores/SelectionStore";
@@ -9,48 +9,45 @@
     import RENDER_TARGET from "../../../../data/RENDER_TARGET";
     import getContextMenu from "../../utils/get-context-menu";
     import getUIContextMenu from "../../utils/get-UI-context-menu";
+    import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
+    import SettingsStore from "../../../../stores/SettingsStore";
+    import {v4} from "uuid";
 
     export let engine
     export let settings
     $: isOnSelection = settings.gizmo === GIZMOS.NONE
     let ref
     let tooltip
-    let bBox
+    const INTERNAL_ID = v4()
 
     const handler = e => {
-        if(!isOnSelection) {
-            e.preventDefault()
+        if (!isOnSelection)
             return
-        }
         switch (e.type) {
             case "click":
-                console.log("HERE")
                 if (tooltip.hovered)
                     if (e.ctrl)
                         SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
                     else
                         SelectionStore.engineSelected = [tooltip.hovered.id]
                 tooltip.style.zIndex = "-1"
+                SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
                 break
             case "mouseleave":
                 tooltip.style.zIndex = "-1"
                 break
             case "mouseenter":
-
-                bBox = e.target.getBoundingClientRect()
+                const bBox = e.target.getBoundingClientRect()
+                const iframeBBox = ref.firstChild.getBoundingClientRect()
                 tooltip.style.width = bBox.width + "px"
                 tooltip.style.height = bBox.height + "px"
-                tooltip.style.top = bBox.top + "px"
-                tooltip.style.left = bBox.left + "px"
-                tooltip.style.zIndex = "999"
+                tooltip.style.top = (bBox.top + iframeBBox.top) + "px"
+                tooltip.style.left = (bBox.left + iframeBBox.left) + "px"
+                tooltip.style.zIndex = "500"
                 tooltip.addEventListener("mouseleave", handler, {once: true})
                 tooltip.addEventListener("click", handler, {once: true})
                 const entity = Engine.entitiesMap.get(e.target.getAttribute("data-engineentityid"))
-                tooltip.innerHTML = `
-                    <div style="backdrop-filter: blur(10px) brightness(70%); padding: 8px; border-radius: 3px;">
-                        ${entity.name}
-                    </div>
-                `
+                tooltip.innerHTML = `<div style="backdrop-filter: blur(10px) brightness(70%); padding: 8px; border-radius: 3px;">${entity.name}</div>`
                 tooltip.hovered = entity
                 break
             default:
@@ -59,8 +56,7 @@
     }
 
     function update() {
-        contextMenuBinding.rebind(getUIContextMenu())
-        const targets = document.querySelectorAll("[data-enginewrapper='-']")
+        const targets = UIAPI.document.querySelectorAll("[data-enginewrapper='-']")
         targets.forEach(t => {
             t.removeEventListener("mouseenter", handler)
             t.addEventListener("mouseenter", handler)
@@ -68,25 +64,18 @@
     }
 
     $: {
-        if (BundlerAPI.uiMountingPoint != null && engine.changeID)
+        if (UIAPI.uiMountingPoint != null && engine.changeID)
             update()
     }
 
-    const contextMenuBinding = bindContextTarget(RENDER_TARGET,  ["data-viewport"])
     onMount(() => {
-        if (!BundlerAPI.uiMountingPoint)
-            BundlerAPI.buildUI(ref)
+        UIAPI.buildUI(ref)
         update()
     })
-    onDestroy(() => {
-        BundlerAPI.destroyUI()
-        contextMenuBinding.onDestroy()
-    })
-
 </script>
 
-<div class="tooltip" bind:this={tooltip}></div>
-<span class="wrapper" bind:this={ref}></span>
+<div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
+<div class="wrapper ui" bind:this={ref} ></div>
 
 <style>
     .tooltip {
@@ -103,7 +92,8 @@
         padding: 4px;
     }
 
-    .wrapper {
+    .wrapper.ui {
+
         overflow: hidden;
         position: absolute;
         top: 0;

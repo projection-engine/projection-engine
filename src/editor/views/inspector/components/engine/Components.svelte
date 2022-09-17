@@ -11,7 +11,7 @@
     import Entity from "../../../../../../public/engine/production/instances/Entity";
 
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
-    import BundlerAPI from "../../../../../../public/engine/production/apis/BundlerAPI";
+    import EntityAPI from "../../../../../../public/engine/production/apis/EntityAPI";
     import Localization from "../../../../../shared/libs/Localization";
     import PointLightComponent
         from "../../../../../../public/engine/production/components/rendering/PointLightComponent";
@@ -99,7 +99,7 @@
     const submit = (key, value, save, componentKey, component) => {
         if (component instanceof DirectionalLightComponent || component instanceof PointLightComponent) {
             entity.needsLightUpdate = true
-            BundlerAPI.packageLights(true)
+            EntityAPI.packageLights(true)
         }
         if (!savedState) {
             EngineStore.saveEntity(
@@ -119,7 +119,6 @@
                 value
             )
     }
-    $: console.log(components)
 </script>
 
 <span bind:this={ref} style="display: none"></span>
