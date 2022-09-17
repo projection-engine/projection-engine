@@ -17,7 +17,7 @@
     import {BundlerAPI} from "../../../../public/engine/production";
 
     export let onReady
-    const TRIGGERS = ["data-viewport"]
+
     let canvasRef = null
     let done = false
     let engine = {}
@@ -26,11 +26,7 @@
     const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const contextMenuBinding = bindContextTarget(RENDER_TARGET, TRIGGERS)
-
-
     onMount(() => {
-        contextMenuBinding.rebind(getContextMenu())
         HotKeys.bindAction(
             canvasRef,
             getHotkeys(),
@@ -51,7 +47,6 @@
         HotKeys.unbindAction(canvasRef)
         unsubscribeEngine()
         unsubscribeSettings()
-        contextMenuBinding.onDestroy()
     })
 
     $: if (done) updateRenderer(selected, engine, settings)

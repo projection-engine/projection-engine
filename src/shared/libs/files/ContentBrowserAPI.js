@@ -101,7 +101,6 @@ export default class ContentBrowserAPI {
             meshesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MESH)),
             materialsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL)),
             componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
-            stylesheetReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.STYLESHEET)),
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
             materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
@@ -112,7 +111,7 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(meshesReg, FILE_TYPES.MESH))
         promises.push(...mapAsset(materialsReg, FILE_TYPES.MATERIAL))
         promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
-        promises.push(...mapAsset(stylesheetReg, FILE_TYPES.STYLESHEET))
+
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
         promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
@@ -123,7 +122,7 @@ export default class ContentBrowserAPI {
             meshes: [],
             materials: [],
             components: [],
-            stylesheets: [],
+
             levels: [],
             uiLayouts: [],
             materialInstances: []
@@ -143,9 +142,6 @@ export default class ContentBrowserAPI {
                     break
                 case FILE_TYPES.COMPONENT:
                     result.components.push(current)
-                    break
-                case FILE_TYPES.STYLESHEET:
-                    result.stylesheets.push(current)
                     break
                 case FILE_TYPES.LEVEL:
                     result.levels.push(current)

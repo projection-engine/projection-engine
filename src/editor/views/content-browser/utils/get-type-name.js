@@ -6,8 +6,6 @@ export default function getTypeName(type) {
             return "Mesh"
         case FILE_TYPES.LEVEL:
             return "Level"
-        case FILE_TYPES.STYLESHEET:
-            return "Stylesheet"
         case FILE_TYPES.UI_LAYOUT:
             return "UI layout"
         case FILE_TYPES.COMPONENT:

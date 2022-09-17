@@ -5,14 +5,15 @@
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
-    import EditorLayout from "./components/EditorLayout.svelte";
-    import UILayout from "./components/UILayout.svelte";
+    import EditorLayout from "./components/editor/EditorLayout.svelte";
+    import UILayout from "./components/ui/UILayout.svelte";
     import MetricsPass from "../../../../public/engine/production/passes/misc/MetricsPass";
     import SettingsStore from "../../stores/SettingsStore";
-    import GizmoToolTip from "./components/GizmoToolTip.svelte";
+    import GizmoToolTip from "./components/editor/GizmoToolTip.svelte";
     import {Engine} from "../../../../public/engine/production";
     import {CameraTracker} from "../../../../public/engine/editor";
-    import EditorHeader from "./components/EditorHeader.svelte";
+    import EditorHeader from "./components/editor/EditorHeader.svelte";
+    import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
 
     export let isReady = false
 
@@ -33,7 +34,7 @@
     $: if (engine.executingAnimation) viewportTab = VIEWPORT_TABS.EDITOR
     $: {
         if (isReady) {
-            if(!engine.executingAnimation) {
+            if (!engine.executingAnimation) {
                 if (viewportTab === VIEWPORT_TABS.EDITOR) {
                     CameraTracker.startTracking()
                     Engine.start()
@@ -48,7 +49,7 @@
                     gpu.canvas.style.width = "100%"
                     gpu.canvas.style.opacity = "0"
                 }
-            }else{
+            } else {
                 CameraTracker.stopTracking()
                 Engine.start()
                 gpu.canvas.style.opacity = "1"
@@ -63,21 +64,30 @@
 <div class="viewport">
     {#if !engine.executingAnimation}
         <div class="header">
-
-            <EditorHeader
-                    settings={settings}
-                    engine={engine}
-                    translate={translate}
-            >
+            {#if viewportTab === VIEWPORT_TABS.EDITOR}
+                <EditorHeader
+                        settings={settings}
+                        engine={engine}
+                >
+                    <Header
+                            setViewportTab={v => viewportTab = v}
+                            viewportTab={viewportTab}
+                            engine={engine}
+                            settings={settings}
+                            slot="switch-button"
+                    />
+                </EditorHeader>
+            {:else if viewportTab === VIEWPORT_TABS.UI}
                 <Header
                         setViewportTab={v => viewportTab = v}
                         viewportTab={viewportTab}
                         engine={engine}
-                        translate={translate}
                         settings={settings}
-                        slot="switch-button"
                 />
-            </EditorHeader>
+                <UIEditorHeader
+                    settings={settings}
+                />
+            {/if}
         </div>
     {/if}
     <div class="wrapper">
@@ -91,7 +101,7 @@
                         isReady={isReady}
                 />
             {:else if viewportTab === VIEWPORT_TABS.UI}
-                <UILayout/>
+                <UILayout engine={engine} settings={settings}/>
             {/if}
         {/if}
     </div>

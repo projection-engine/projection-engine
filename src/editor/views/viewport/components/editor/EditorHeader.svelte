@@ -1,17 +1,17 @@
 <script>
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import ShadingOption from "./editor/ShadingOption.svelte";
-    import ActiveFeatures from "./editor/ActiveFeatures.svelte";
-    import AddEntity from "./editor/AddEntity.svelte";
-    import GizmoSettings from "./editor/GizmoSettings.svelte";
-    import ViewportActions from "../../../libs/ViewportActions";
-    import SelectionStore from "../../../stores/SelectionStore";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import ShadingOption from "./ShadingOption.svelte";
+    import ActiveFeatures from "./ActiveFeatures.svelte";
+    import AddEntity from "./AddEntity.svelte";
+    import GizmoSettings from "./GizmoSettings.svelte";
+    import ViewportActions from "../../../../libs/ViewportActions";
+    import SelectionStore from "../../../../stores/SelectionStore";
+    import Localization from "../../../../../shared/libs/Localization";
 
 
     export let settings
     export let engine
-    export let translate
-
+    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
 </script>
 
@@ -39,7 +39,7 @@
 </div>
 <GizmoSettings settings={settings}/>
 <div class="right-content">
-    <ShadingOption translate={translate}/>
+    <ShadingOption />
 </div>
 
 <style>

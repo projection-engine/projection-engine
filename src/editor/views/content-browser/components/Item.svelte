@@ -46,7 +46,7 @@
     const onDbClick = () => {
         if (type === 1) {
             const fileType = "." + data.type
-            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.UI_LAYOUT) {
+            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT) {
                 shell.openPath(FilesStore.ASSETS_PATH + FilesAPI.sep + data.id).catch()
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
@@ -72,9 +72,7 @@
                 case FILE_TYPES.SCENE:
                     icon = "inventory_2"
                     break
-                case FILE_TYPES.STYLESHEET:
-                    icon = "css"
-                    break
+
                 case FILE_TYPES.LEVEL:
                     icon = "forest"
                     break

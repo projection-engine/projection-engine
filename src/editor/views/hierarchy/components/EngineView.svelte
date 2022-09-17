@@ -1,10 +1,10 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
     import bindContextTarget from "../../../../shared/components/context-menu/libs/bind-context-target";
-    import getEngineContextMenu from "../utils/get-engine-context-menu";
+    import getContextMenu from "../utils/get-context-menu";
     import {onDestroy, onMount} from "svelte";
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
-    import Branch from "../components/EngineNode.svelte";
+    import Branch from "./EngineNode.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
@@ -22,7 +22,7 @@
     export let setIsEmpty
 
     const TRIGGERS = ["data-node", "data-self"]
-    let searchedEntity = ""
+
     let engine = {}
     let settings = {}
 
@@ -96,7 +96,7 @@
         }
     }
     const contextMenuBinding = bindContextTarget(ID, TRIGGERS)
-    $: contextMenuBinding.rebind(getEngineContextMenu(open, v => open = v))
+    $: contextMenuBinding.rebind(getContextMenu(open, v => open = v))
 
 
     const testSearch = (node) => {

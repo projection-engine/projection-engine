@@ -4,7 +4,7 @@
     import Header from "../../../shared/components/view/components/Header.svelte";
     import {v4} from "uuid"
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import EngineHierarchyView from "./views/EngineView.svelte";
+    import EngineHierarchyView from "./components/EngineView.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
 

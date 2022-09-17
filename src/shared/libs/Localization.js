@@ -74,6 +74,9 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            PICKER: "Element picker",
+            SELECT_ALL: "Select all",
+            ADD_ELEMENT: "Add element",
             CAMERA_POSITION: "Camera position",
             SELECT: "Select",
             ALL: "All",
@@ -373,7 +376,6 @@ export default class Localization {
             ITEM_TYPE: "Type",
             REGISTRY_ID: "Registry",
             NEW_UI_LAYOUT: "New UI Layout",
-            NEW_STYLESHEET: "New Stylesheet",
             NEW_LEVEL: "New Level",
             SUCCESSFUL_DELETE: "Items deleted",
             CREATE: "Create",

@@ -242,22 +242,12 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                     }
                 },
                 {
-                    label: translate("NEW_STYLESHEET"),
-                    icon: "css",
-                    onClick: async () => {
-                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_STYLESHEET"), FILE_TYPES.STYLESHEET)
-
-                        await AssetAPI.writeAsset(path, UI_TEMPLATE.CSS)
-                        FilesStore.refreshFiles().catch()
-                    }
-                },
-                {
                     label: translate("NEW_UI_LAYOUT"),
                     icon: "view_quilt",
                     onClick: async () => {
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
 
-                        await AssetAPI.writeAsset(path, UI_TEMPLATE.LAYOUT)
+                        await AssetAPI.writeAsset(path, UI_TEMPLATE)
                         FilesStore.refreshFiles().catch()
                     }
                 },

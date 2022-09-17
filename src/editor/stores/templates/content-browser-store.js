@@ -7,7 +7,6 @@ export const contentBrowserStore = writable({
     textures: [],
     meshes: [],
     levels: [],
-    stylesheets: [],
     materials: [],
     materialInstances: [],
     components: [],

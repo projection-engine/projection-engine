@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../../data/RENDER_TARGET";
+    import RENDER_TARGET from "../../../../data/RENDER_TARGET";
     import {
         ConversionAPI,
         DepthPass,
@@ -9,23 +9,25 @@
         InputEventsAPI,
         PickingAPI,
         TransformationAPI,
-    } from "../../../../../public/engine/production";
+    } from "../../../../../../public/engine/production";
 
-    import viewportSelectionBoxWorker from "../utils/viewport-selection-box-worker";
-    import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
+    import viewportSelectionBoxWorker from "../../utils/viewport-selection-box-worker";
+    import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
     import SideOptions from "./QuickAccess.svelte";
     import CameraBar from "./CameraBar.svelte";
 
-    import GIZMOS from "../../../data/GIZMOS";
-    import onViewportClick from "../utils/on-viewport-click";
-    import Loader from "../../../libs/loader/Loader";
-    import drawIconsToBuffer from "../utils/draw-icons-to-buffer";
-    import GizmoSystem from "../../../../../public/engine/editor/services/GizmoSystem";
-    import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
+    import GIZMOS from "../../../../data/GIZMOS";
+    import onViewportClick from "../../utils/on-viewport-click";
+    import Loader from "../../../../libs/loader/Loader";
+    import drawIconsToBuffer from "../../utils/draw-icons-to-buffer";
+    import GizmoSystem from "../../../../../../public/engine/editor/services/GizmoSystem";
+    import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import {vec3} from "gl-matrix";
-    import SelectionStore from "../../../stores/SelectionStore";
-    import ScreenSpaceGizmo from "../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
-    import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
+    import SelectionStore from "../../../../stores/SelectionStore";
+    import ScreenSpaceGizmo from "../../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
+    import CameraAPI from "../../../../../../public/engine/production/apis/camera/CameraAPI";
+    import bindContextTarget from "../../../../../shared/components/context-menu/libs/bind-context-target";
+    import getContextMenu from "../../utils/get-context-menu";
 
     let WORKER = viewportSelectionBoxWorker()
 
@@ -107,8 +109,11 @@
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 
+    const contextMenuBinding = bindContextTarget(RENDER_TARGET,  ["data-viewport"])
+
     const draggable = dragDrop(false)
     onMount(() => {
+        contextMenuBinding.rebind(getContextMenu())
         const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
@@ -126,8 +131,9 @@
         })
     })
     onDestroy(() => {
+        contextMenuBinding.onDestroy()
         draggable.onDestroy()
-        const parentElement = gpu.canvas.parentElement
+        const parentElement = gpu.canvas
         parentElement.removeEventListener("mousedown", onMouseDown)
         parentElement.removeEventListener("mouseup", onMouseUp)
     })

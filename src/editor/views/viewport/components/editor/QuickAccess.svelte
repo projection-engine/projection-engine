@@ -1,9 +1,9 @@
 <script>
     import CameraTab from "./settings/CameraSettings.svelte"
     import ViewportTab from "./settings/3DCursorSettings.svelte"
-    import VerticalTabs from "../../../../shared/components/vertical-tab/VerticalTabs.svelte";
+    import VerticalTabs from "../../../../../shared/components/vertical-tab/VerticalTabs.svelte";
     import {onDestroy} from "svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     export let translate
     let settings = {}

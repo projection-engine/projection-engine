@@ -2,18 +2,20 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
-    import EditorHeader from "./EditorHeader.svelte";
+    import EditorHeader from "./editor/EditorHeader.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import EntityStateController from "../../../libs/EntityStateController";
     import EngineStore from "../../../stores/EngineStore";
     import {BundlerAPI} from "../../../../../public/engine/production";
+    import Localization from "../../../../shared/libs/Localization";
 
     export let settings
-    export let translate
+
     export let engine
     export let setViewportTab
     export let viewportTab
     let ref
+    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
 </script>
 

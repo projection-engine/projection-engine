@@ -15,7 +15,7 @@ export default function getHotkeys() {
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyI],
-            callback: ViewportActions.invertSelection
+            callback: () => ViewportActions.invertSelection()
         },
         {
             require: [KEYS.KeyA],
@@ -56,25 +56,25 @@ export default function getHotkeys() {
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyP],
-            callback: ViewportActions.group
+            callback: () =>  ViewportActions.group()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyF],
-            callback: ViewportActions.fixateActive
+            callback: () =>  ViewportActions.fixateActive()
         },
 
         {
             require: [KEYS.ControlLeft, KEYS.KeyC],
-            callback: ViewportActions.copy
+            callback: () =>  ViewportActions.copy()
         },
 
         {
             require: [KEYS.Delete],
-            callback: ViewportActions.deleteSelected
+            callback: () =>  ViewportActions.deleteSelected()
         },
         {
             require: [KEYS.ControlLeft, KEYS.KeyV],
-            callback: ViewportActions.paste
+            callback: () =>  ViewportActions.paste()
         }
     ]
 }

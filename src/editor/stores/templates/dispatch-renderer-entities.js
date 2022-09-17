@@ -15,10 +15,23 @@ export const ENTITY_ACTIONS = {
     DISPATCH_BLOCK: "DISPATCH_BLOCK",
     PUSH_BLOCK: "PUSH_BLOCK",
     REMOVE_BLOCK: "REMOVE_BLOCK",
-    CLEAR: "CLEAR",
     LINK_MULTIPLE: "LINK_MULTIPLE"
 }
 
+function deleteEntity(entity, single) {
+    if (!entity)
+        return
+    if (!single)
+        SelectionStore.updateStore({
+            ...SelectionStore.data,
+            TARGET: SelectionStore.TYPES.ENGINE,
+            array: [],
+            lockedEntity: undefined
+        })
+    if (entity.parent)
+        entity.parent.children = entity.parent.children.filter(e => e !== entity)
+    removeHierarchy(Engine.entitiesMap, entity)
+}
 
 export default function dispatchRendererEntities({type, payload}) {
 
@@ -31,16 +44,7 @@ export default function dispatchRendererEntities({type, payload}) {
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
             save()
-            SelectionStore.updateStore({
-                ...SelectionStore.data,
-                TARGET: SelectionStore.TYPES.ENGINE,
-                array: [],
-                lockedEntity: undefined
-            })
-            const entity = Engine.entitiesMap.get(payload)
-            if (entity.parent)
-                entity.parent.children = entity.parent.children.filter(e => e !== entity)
-            removeHierarchy(Engine.entitiesMap, entity)
+            deleteEntity(Engine.entitiesMap.get(payload))
             save()
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
@@ -74,20 +78,9 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.REMOVE_BLOCK: {
             save()
             console.log(payload)
-            SelectionStore.updateStore({
-                ...SelectionStore.data,
-                TARGET: SelectionStore.TYPES.ENGINE,
-                array: [],
-                lockedEntity: undefined
-            })
-
             if (Array.isArray(payload))
-                for (let i = 0; i < payload.length; i++) {
-                    const currentID = payload[i]
-                    const entity = Engine.entitiesMap.get(currentID)
-                    removeHierarchy(Engine.entitiesMap, entity)
-                }
-
+                for (let i = 0; i < payload.length; i++)
+                    deleteEntity(Engine.entitiesMap.get(payload[i]), true)
             save()
             break
         }

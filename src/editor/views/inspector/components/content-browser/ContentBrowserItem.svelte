@@ -40,7 +40,7 @@
         <TextureItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.SCENE}
         <SceneItem data={data}/>
-    {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.STYLESHEET || fileType === FILE_TYPES.UI_LAYOUT}
+    {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT}
         <CodeItem data={data} item={item}/>
     {:else if data != null && (fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE)}
         <MaterialItem data={data} item={item}/>

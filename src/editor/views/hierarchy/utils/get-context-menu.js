@@ -24,7 +24,7 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getEngineContextMenu(open, setOpen) {
+export default function getContextMenu(open, setOpen) {
     const SELECTION = [
 
         {

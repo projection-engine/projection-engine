@@ -11,12 +11,14 @@
     import AOPass from "../../../../../../public/engine/production/passes/rendering/AOPass";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Engine from "../../../../../../public/engine/production/Engine";
+    import Localization from "../../../../../shared/libs/Localization";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings=v)
     onDestroy(() => unsubscribeSettings())
-    export let translate = () => null
+    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
+
     $: shading = (() => {
         switch (shadingModel) {
             case SHADING_MODELS.LIGHT_ONLY:

@@ -1,14 +1,14 @@
 <script>
 
-    import updateCameraPlacement from "../utils/update-camera-placement"
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import CAMERA_GIZMO from "../../../data/CAMERA_GIZMO"
+    import updateCameraPlacement from "../../utils/update-camera-placement"
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import CAMERA_GIZMO from "../../../../data/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
-    import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
-    import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracker";
-    import SettingsStore from "../../../stores/SettingsStore";
+    import CameraAPI from "../../../../../../public/engine/production/apis/camera/CameraAPI";
+    import CameraTracker from "../../../../../../public/engine/editor/libs/CameraTracker";
+    import SettingsStore from "../../../../stores/SettingsStore";
 
     export let translate
     let cameraIsOrtho = false
