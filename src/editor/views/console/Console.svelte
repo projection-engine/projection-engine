@@ -9,6 +9,7 @@
     import {v4} from "uuid";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import InfiniteScroller from "../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
+    import createPortal from "../../../shared/components/create-portal";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -28,6 +29,13 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const LINE_HEIGHT = 18
     const TYPES = ConsoleAPI.TYPES
+    let modal
+    let objectOpen
+
+    function handler(event) {
+        if (!modal.firstChild.contains(event.target))
+            objectOpen = undefined
+    }
 
     onMount(() => {
         ConsoleAPI.registerConsole(internalID, (md, messages) => {
@@ -35,10 +43,15 @@
             toRender = messages
             changed = true
         })
+        portal.create(modal, {backdropFilter: "blur(2px)"})
+        document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
         ConsoleAPI.unregisterConsole(internalID)
         unsubscribeEngine()
+
+        portal.destroy()
+        document.removeEventListener("mousedown", handler)
     })
 
     const translate = key => Localization.PROJECT.CONSOLE[key]
@@ -60,6 +73,10 @@
             toRender = newToRender
         }
     }
+
+    const portal = createPortal(999)
+    $: objectOpen != null ? portal.open() : portal.close()
+
 </script>
 <Header
         orientation={orientation}
@@ -135,6 +152,10 @@
                     class:warn={toRender[i + offset].type === TYPES.WARN}
                     class:log={toRender[i + offset].type === TYPES.LOG}
                     style={i + offset === 0 || (i + offset > 0 && toRender[i + offset - 1].blockID !== toRender[i + offset].blockID) ? "border-bottom: var(--pj-border-secondary) 1px solid;" : undefined}
+                    on:click={() => {
+                        if(toRender[i + offset].object)
+                            objectOpen =toRender[i + offset].object
+                    }}
             >
                 {#if !toRender[i + offset].notFirstOnBlock}
                     {#if toRender[i + offset].type === TYPES.ERROR}
@@ -147,16 +168,21 @@
                         </Icon>
                     {/if}
                 {/if}
+                {#if toRender[i + offset].object}
+                    <ToolTip content={translate("CLICK_TO_SHOW_OBJECT")}/>
+                {/if}
                 <pre>{toRender[i + offset].message}</pre>
                 <div style="text-align: right; width: 100%">
-                {#if !toRender[i + offset].notFirstOnBlock}
-                    {toRender[i].src}
-                {/if}
+                    {#if !toRender[i + offset].notFirstOnBlock}
+                        {toRender[i].src}
+                    {/if}
                 </div>
             </div>
         {/if}
     {/each}
-
+</div>
+<div bind:this={modal} class="container-modal">
+    <pre data-pre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
 </div>
 
 <style>
@@ -223,6 +249,24 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+    }
+
+    .container-modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 50vw;
+        height: fit-content;
+        max-height: 75vh;
+        overflow-y: auto;
+
+        background-color: var(--pj-background-secondary);
+        border: var(--pj-border-primary) 1px solid;
+        border-radius: 3px;
+        box-shadow: var(--pj-boxshadow);
+        color: var(--pj-color-secondary);
     }
 
 </style>

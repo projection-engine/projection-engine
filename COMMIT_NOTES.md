@@ -1,4 +1,3 @@
-- Rewritten main window
-- Including releases list
-- Changed window initial sizes
-- including marked.js
+- Object preview on console
+- Fixed inspector bug with localization
+- Fixed inspector form not updating correctly

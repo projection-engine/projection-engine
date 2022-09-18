@@ -111,15 +111,7 @@
 
 {:else if attribute.type === Component.propTypes.BOOLEAN}
     <Checkbox
-            handleCheck={() => {
-                if(!firstSubmit){
-                    firstSubmit = true
-                    submit(attribute.key, !value)
-                    return
-                }
-                submit(attribute.key, !value, true)
-
-            }}
+            handleCheck={() => submit(attribute.key, !value, true)}
             label={label}
             checked={value}
             disabled={isDisabled}
@@ -130,14 +122,7 @@
             {label}
         </button>
         {#each attribute.options as option}
-            <button on:click={() =>  {
-               if(!firstSubmit){
-                    firstSubmit = true
-                    submit(attribute.key, option.value)
-                    return
-                }
-                submit(attribute.key, option.value, true)
-            }}>
+            <button on:click={() =>  submit(attribute.key, option.value, true)}>
                 {#if translate(option.label)}
                     {translate(option.label)}
                 {:else}
@@ -149,28 +134,16 @@
 {:else if attribute.type === Component.propTypes.STRING}
     <Input
             searchString={value}
-            setSearchString={v =>  {
-                if(!firstSubmit){
-                    firstSubmit = true
-                    submit(attribute.key, v)
-                    return
-                }
-                submit(attribute.key, v, true)
-            }}
+            setSearchString={v => submit(attribute.key, v, true)}
+            onEnter={v => submit(attribute.key, v, true)}
+            onBlur={(_,v) => submit(attribute.key, v, true)}
             placeholder={label}
             disabled={isDisabled}
     />
 {:else if attribute.type === Component.propTypes.COLOR}
     <ColorPicker
             disabled={isDisabled}
-            submit={({r,g,b}) =>  {
-                if(!firstSubmit){
-                    firstSubmit = true
-                    submit(attribute.key, [r, g, b])
-                    return
-                }
-                submit(attribute.key, [r, g, b], true)
-            }}
+            submit={({r,g,b}) => submit(attribute.key, [r, g, b], true)}
             label={label}
             value={value}
             size={"small"}

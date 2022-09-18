@@ -252,6 +252,16 @@ small {
     color: var(--pj-color-quinary)
 }
 
+pre[data-pre="-"]{
+    vertical-align: top;
+    padding: 4px;
+    margin: 0;
+    font-size: .7rem;
+    overflow: auto;
+    max-width: 100%;
+    color: var(--pj-color-tertiary);
+}
+
 *[data-viewbutton="-"] {
     display: flex;
     align-items: center;
@@ -275,7 +285,7 @@ small {
     width: fit-content;
     max-width: 300px;
     opacity: 0;
-
+overflow: hidden;
     box-shadow: rgb(0 0 0 / 20%) 2px 2px 2px 2px;
     position: fixed;
     z-index: 9999;

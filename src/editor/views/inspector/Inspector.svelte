@@ -19,6 +19,9 @@
     export let switchView = undefined
     export let orientation = undefined
 
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
+
+
     let ui = {}
     let parent
     let savedState = false
@@ -60,8 +63,6 @@
 
     })
     onDestroy(() => unsubscribeSelection())
-
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     const submitTransformationChange = (key, value, save) => {
         if (!savedState) {

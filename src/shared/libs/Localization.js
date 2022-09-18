@@ -188,6 +188,7 @@ export default class Localization {
             VALUE: "Value"
         },
         CONSOLE: {
+            CLICK_TO_SHOW_OBJECT: "Click to show object",
             VIEW: "View",
             TOGGLE_CLEAR_ON_PLAY: "Clear on play",
             TITLE: "Console",

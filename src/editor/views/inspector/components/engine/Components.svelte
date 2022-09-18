@@ -17,6 +17,7 @@
     import DirectionalLightComponent
         from "../../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
     import UIComponent from "./UIComponent.svelte";
+    import SelectionStore from "../../../../stores/SelectionStore";
 
     export let entity
     const translate = key => Localization.PROJECT.INSPECTOR[key]
@@ -95,6 +96,7 @@
     })
     onDestroy(() => draggable.onDestroy())
     const submit = (key, value, save, componentKey, component) => {
+        console.trace(key, value)
         if (component instanceof DirectionalLightComponent || component instanceof PointLightComponent) {
             entity.needsLightUpdate = true
             EntityAPI.packageLights(true)
@@ -109,13 +111,15 @@
             savedState = true
         }
         component[key] = value
-        if (save)
+        if (save) {
+            SelectionStore.updateStore()
             EngineStore.saveEntity(
                 entity.id,
                 componentKey,
                 key,
                 value
             )
+        }
     }
 </script>
 
@@ -142,6 +146,7 @@
             component={script}
 
             submit={(key, value, save) => {
+
                 if(!savedState){
                     EngineStore.saveEntity(
                         entity.id,
