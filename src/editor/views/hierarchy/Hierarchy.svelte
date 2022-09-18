@@ -4,11 +4,14 @@
     import Header from "../../../shared/components/view/components/Header.svelte";
     import {v4} from "uuid"
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import EngineHierarchyView from "./components/EngineView.svelte";
+    import EngineHierarchyView from "./components/View.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
 
     import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
+    import {onDestroy, onMount} from "svelte";
+    import HotKeys from "../../components/metrics/libs/HotKeys";
+    import getHotkeys from "../viewport/utils/get-hotkeys";
 
 
     export let hidden = undefined
@@ -20,6 +23,18 @@
 
     let filteredComponent = undefined
     let isEmpty = true
+    let ref
+    onMount(() => {
+        HotKeys.bindAction(
+            ref,
+            getHotkeys(),
+            "public",
+            Localization.PROJECT.VIEWPORT.TITLE
+        )
+    })
+    onDestroy(() => {
+        HotKeys.unbindAction(ref)
+    })
 </script>
 
 
@@ -64,6 +79,7 @@
         class="wrapper"
         style={hidden ? "display: none" :(isEmpty ? "background: transparent" : undefined)}
         id={ID}
+        bind:this={ref}
 >
     <EngineHierarchyView
             setIsEmpty={v => isEmpty = v}

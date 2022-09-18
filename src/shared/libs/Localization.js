@@ -217,6 +217,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            NO_UNIFORMS: "No dynamic inputs found",
             INERTIA: "Inertia",
             IMPORT_LAYOUT: "Import UI layout",
             CODE_PREVIEW: "Code preview",

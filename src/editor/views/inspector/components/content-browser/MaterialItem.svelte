@@ -14,6 +14,7 @@
     import FilesStore from "../../../../stores/FilesStore";
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
 
 
     export let data
@@ -26,7 +27,6 @@
     let originalMat
     let timeout
     let wasUpdated = false
-
     async function load(ID) {
         if (wasUpdated)
             return
@@ -76,8 +76,7 @@
                         uniformData: update
                     }
                 }))
-            }
-            else {
+            } else {
                 await AssetAPI.updateAsset(item.registryID, JSON.stringify({...temp, uniformData: update}))
                 temp = {...temp, uniformData: update}
             }
@@ -94,7 +93,7 @@
 </script>
 
 
-{#if uniforms != null}
+{#if uniforms != null && uniforms.length > 0}
     {#each uniforms as uniform, i}
         <div class="section">
             {#if uniform.type === DATA_TYPES.TEXTURE}
@@ -130,12 +129,24 @@
             {/if}
         </div>
     {/each}
+{:else}
+    <div class="empty-wrapper">
+        <div data-empty="-" style="position: relative">
+            <Icon styles="font-size: 75px">texture</Icon>
+            {translate("NO_UNIFORMS")}
+        </div>
+    </div>
 {/if}
 
 <style>
     small {
         font-size: .7rem;
 
+    }
+
+    .empty-wrapper {
+        position: relative;
+        height: 100%;
     }
 
     .section {

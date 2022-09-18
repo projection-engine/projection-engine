@@ -1,6 +1,6 @@
 import {COMPONENTS, Entity} from "../../../../../public/engine/production";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-import UI_TEMPLATE from "../../content-browser/templates/UI_TEMPLATE";
+import UI_TEMPLATE from "../../../../../public/engine/static/templates/UI_TEMPLATE";
 
 export default function addUiElement() {
     const e = new Entity(undefined, "UI-Node")

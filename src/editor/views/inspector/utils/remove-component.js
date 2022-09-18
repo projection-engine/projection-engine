@@ -2,9 +2,7 @@ import SelectionStore from "../../../stores/SelectionStore";
 import EngineStore from "../../../stores/EngineStore";
 import {v4} from "uuid";
 
-export default function removeComponent(index, key) {
-
-    const entity = SelectionStore.selectedEntity
+export default function removeComponent(entity,index, key) {
     if (!entity)
         return
     if (index != null) {
@@ -12,6 +10,7 @@ export default function removeComponent(index, key) {
         entity.scripts = entity.scripts.filter(e => e)
     } else
         entity.removeComponent(key)
-    SelectionStore.updateStore()
+
     EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+    SelectionStore.updateStore()
 }

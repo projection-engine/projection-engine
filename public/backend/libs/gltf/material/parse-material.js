@@ -1,5 +1,5 @@
 const loadTexture = require("./load-texture")
-const PBR_MATERIAL = require("../../../../../src/static/PBR_MATERIAL_SAMPLE.json")
+const PBR_MATERIAL = require("../../../PBR_MATERIAL_SAMPLE.json")
 
 module.exports = async function parseMaterial(basePath, data, textures, images, partialPath, projectPath, index) {
     const getTexture = (sampler, name) => loadTexture(

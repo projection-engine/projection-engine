@@ -20,9 +20,7 @@
     export let entity
     export let submit
 
-    let target
-    $: target = entity
-    $: component = target.components.get(COMPONENTS.UI)
+    $: component = entity.components.get(COMPONENTS.UI)
     $: styles = component.wrapperStyles
     $: hasStyles = styles.length > 0
 
@@ -30,7 +28,6 @@
 
     function update(key, value) {
         submit(key, value)
-        target = entity
         UIAPI.updateUIEntity(entity)
     }
 
@@ -54,7 +51,7 @@
             </Icon>
         </div>
         {translate("UI_COMPONENT")}
-        <button class="button" on:click={() => removeComponent(undefined, COMPONENTS.UI)}>
+        <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </svelte:fragment>

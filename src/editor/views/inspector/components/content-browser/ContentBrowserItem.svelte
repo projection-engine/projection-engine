@@ -11,7 +11,7 @@
     import SceneItem from "./SceneItem.svelte";
     import MeshItem from "./MeshItem.svelte";
 
-    const {shell} = window.require("electron")
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE]
 
     export let item
     let data
@@ -23,9 +23,8 @@
     $: {
 
         if (fileType !== FILE_TYPES.MESH && fileType !== FILE_TYPES.LEVEL) {
-            FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fileType === FILE_TYPES.TEXTURE && fileType === FILE_TYPES.SCENE&& fileType === FILE_TYPES.MATERIAL && fileType === FILE_TYPES.MATERIAL_INSTANCE? "json" : undefined).then(res => {
-                data = res
-            })
+            const fType = VALID.includes(fileType) ? "json" : undefined
+            FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fType).then(res => data = res)
         } else
             data = undefined
     }

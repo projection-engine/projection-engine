@@ -5,7 +5,6 @@
     let open = false
     export let content = ""
     let wrapper
-    let mountingPoint
     let bBox, bodyBBox
     let isMounted
     let targetParent
@@ -23,20 +22,25 @@
         ToolTipController.element.style.transform = `translate(${transform.x}, ${transform.y})`
     }
 
+    function close () {
+        document.removeEventListener("mousemove", handleMouseMove)
+        open = false
+        ToolTipController.element.classList.remove("tooltip-animation")
+    }
     const hover = (event) => {
 
         open = true
+
         bBox = ToolTipController.element.getBoundingClientRect()
         bodyBBox = document.body.getBoundingClientRect()
+
+        ToolTipController.element.classList.add("tooltip-animation")
         ToolTipController.element.style.left = (event.clientX + 10) + "px"
         ToolTipController.element.style.top = (event.clientY + 10) + "px"
         document.addEventListener("mousemove", handleMouseMove)
         targetParent.addEventListener(
             "mouseleave",
-            () => {
-                document.removeEventListener("mousemove", handleMouseMove)
-                open = false
-            },
+            close,
             {once: true}
         )
     }
@@ -44,7 +48,10 @@
     $: {
         if(open) {
             ToolTipController.portal.open()
-            ToolTipController.closeCurrent = () => open = false
+            ToolTipController.closeCurrent = () => {
+                close()
+                targetParent.removeEventListener("mouseleave", close)
+            }
         }
         else
             ToolTipController.portal.close()

@@ -11,17 +11,7 @@ import ShadowMapPass from "../../../../../public/engine/production/passes/render
 export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
 
-    if (!CameraTracker.cameraInitialized) {
-
-        CameraTracker.cameraInitialized = true
-        if (settings.cameraPosition)
-            CameraTracker.centerOn = settings.cameraPosition
-        if (typeof settings.yaw === "number")
-            CameraTracker.yaw = settings.yaw
-        if (typeof settings.pitch === "number")
-            CameraTracker.pitch = settings.pitch
-        CameraTracker.update()
-    }
+   CameraTracker.initialize(settings)
 
 
     CameraTracker.animated = settings.camera?.animated

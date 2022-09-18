@@ -25,7 +25,6 @@
     let components
     let savedState
     let scripts
-
     $: {
         components = Array.from(entity.components.entries())
         scripts = entity.scripts
@@ -127,6 +126,7 @@
         <UIComponent entity={entity}  submit={(k, v) => submit(k, v, true, componentKey, component)}/>
     {:else}
         <ComponentLayout
+                entity={entity}
                 key={componentKey}
                 translate={translate}
                 component={component}
@@ -137,6 +137,7 @@
 
 {#each scripts as script, index}
     <ComponentLayout
+            entity={entity}
             index={index}
             translate={translate}
             component={script}

@@ -1,7 +1,7 @@
 <script>
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import "../css/Branch.css"
-    import DraggableEntity from "./DraggableEntity.svelte";
+    import DraggableEntity from "./Draggable.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Localization from "../../../../shared/libs/Localization";
     import EngineStore from "../../../stores/EngineStore";

@@ -47,7 +47,7 @@
                 }
             },
             dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">${icon}</span> ${node.name}</div>`,
-            onDragOver: () =>`CTRL to parent | SHIFT to clone`
+            onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
     onDestroy(() => draggable.onDestroy())
@@ -98,11 +98,14 @@
 </div>
 
 <style>
-    .node{
+    .node {
+        cursor: pointer;
+        width: 100%;
         height: 23px;
         line-height: 23px;
-color: var(--pj-color-quaternary);
+        color: var(--pj-color-quaternary);
     }
+
     .dot {
         width: 5px;
         height: 5px;

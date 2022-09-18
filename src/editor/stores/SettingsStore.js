@@ -52,6 +52,7 @@ export default class SettingsStore {
                 cameraPosition: CameraTracker.centerOn,
                 yaw: CameraTracker.yaw,
                 pitch: CameraTracker.pitch,
+                radius: CameraTracker.radius
             }
         )
     }

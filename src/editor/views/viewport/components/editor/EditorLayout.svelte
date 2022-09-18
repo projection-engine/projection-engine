@@ -43,7 +43,7 @@
         const translation = ScreenSpaceGizmo.onMouseMove(e, .1)
         const t = window.engineCursor
         vec3.add(t.translation, t.translation, translation)
-        t.matrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
+         TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling, t.matrix)
     }
 
     function handleMouse(e) {

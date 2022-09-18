@@ -12,6 +12,8 @@
     import SettingsStore from "../../../../stores/SettingsStore";
     import Engine from "../../../../../../public/engine/production/Engine";
     import Localization from "../../../../../shared/libs/Localization";
+    import STATIC_SHADERS from "../../../../../../public/engine/static/resources/STATIC_SHADERS";
+    import * as shaderCode from "../../../../../../public/engine/production/shaders/DEFERRED.glsl";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
@@ -60,7 +62,7 @@
     const getTexture = () => {
         switch (shadingModel) {
             case SHADING_MODELS.DEPTH:
-                return DepthPass.depth
+                return DepthPass.depthSampler
             case SHADING_MODELS.AO:
                 return AOPass.filteredSampler
             case SHADING_MODELS.NORMAL:
@@ -71,12 +73,19 @@
 
     }
     $: {
-        if (Engine.isReady) {
-            if (shadingModel !== SHADING_MODELS.DETAIL)
-                CompositePass.workerTexture = getTexture()
-            else
-                CompositePass.workerTexture = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER).colors[0]
+        if (Engine.isReady && DeferredPass.ready) {
+            DeferredPass.toScreenUniforms.option = shadingModel
+            if (shadingModel !== SHADING_MODELS.DETAIL) {
+                DeferredPass.toScreenUniforms.uSampler = getTexture()
+                DeferredPass.toScreenShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+            }
+            else {
+                DeferredPass.toScreenShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
+                DeferredPass.toScreenUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
+            }
+                // CompositePass.workerTexture = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER).colors[0]
         }
+
         if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
             shadingModel = SHADING_MODELS.DETAIL
             alert.pushAlert(translate("SHADING_SWITCH"), "info")

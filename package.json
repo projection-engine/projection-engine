@@ -50,7 +50,6 @@
     "electron-squirrel-startup": "^1.0.0",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "monaco-editor": "^0.34.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

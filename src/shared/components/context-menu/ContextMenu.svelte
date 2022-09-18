@@ -30,7 +30,6 @@
     }
 
     const handleContext = (event) => {
-        console.log(event)
         if (startPosition && !locked && HotKeys.data.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {

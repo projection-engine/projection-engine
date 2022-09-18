@@ -13,7 +13,6 @@
     let value = initial ? initial[1] : ""
     let changed = false
     $: {
-        console.log(initial)
         if (ref && initial != null) {
             const inputs = ref.querySelectorAll("input")
             inputs[0].value = initial[0]
@@ -28,7 +27,6 @@
         if(!changed)
             return
 
-        console.log(key, value)
         if (isInput && value && key) {
             submit(key, value)
             value = ""

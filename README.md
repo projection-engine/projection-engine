@@ -1,3 +1,9 @@
+commit 03142e07d37be9e00cd20a05e441328f4063232e
+Author: facobackup <gustavomicaelbarbosa@gmail.com>
+Date:   Sat Sep 17 20:53:07 2022 -0300
+
+    - Release v5.1.0-alpha
+
 commit 4ea346c94922423c670744279a4332405d938fda
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
 Date:   Sat Sep 17 20:39:52 2022 -0300
@@ -31,23 +37,3 @@ Date:   Fri Sep 16 22:47:55 2022 -0300
     - Fixed EditorLayout not removing click event listeners from viewport
     - Added UI header with some new options
     - Added UI context menu
-
-commit 1c291d15d46000f74d739b4613394d9d29fb8988
-Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 16 15:03:55 2022 -0300
-
-    - Completely new structure for managing components and entities with the BundlerAPI
-      - Fixes component addition not affecting renderer
-      - Fixed removal also not affecting renderer
-    - Added new view for UI editing
-    - Removed old UI entities structure and integrated with main engine entities as a component
-    - UI component form
-    - Added UI canvas interaction with hover and click
-    - Fixed lockedEntity form not showing on inspector
-    - Integrated inspector with UI layout file types
-    - Added Label to code preview on inspector
-    - Integration of the [Monaco Editor](https://github.com/microsoft/monaco-editor)
-    - Fixed activation or deactivation of entity not causing engine to update component information (ex: lights not being included on shaders)
-    - Deactivated entities will not be included on UI rendering
-    - Added initialization state to CameraTracker
-    - Fixed gizmo tooltip not showing

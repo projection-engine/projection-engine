@@ -19,41 +19,31 @@
     export let switchView = undefined
     export let orientation = undefined
 
-    let engine = {}
     let ui = {}
     let parent
     let savedState = false
-    let selectionStore
+
+    let target
     let entity
     let targetType
 
-
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSelection = SelectionStore.getStore(v => selectionStore = v)
-    onDestroy(() => {
-        unsubscribeSelection()
-        unsubscribeEngine()
-    })
-
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
-
-    $: target = selectionStore.TARGET
-    $:{
+    const unsubscribeSelection = SelectionStore.getStore(v => {
+        target = v.TARGET
         let targetInstance
-        if (!selectionStore.array[0])
+        if (!v.array[0])
             targetInstance = undefined
         else {
             const T = SelectionStore.TYPES
-            switch (target) {
+            switch (v.TARGET) {
                 case T.CONTENT_BROWSER:
-                    targetInstance = FilesStore.data.items.find(i => i.id === selectionStore.array[0])
+                    targetInstance = FilesStore.data.items.find(i => i.id === v.array[0])
                     targetType = translate("CONTENT_BROWSER")
                     break
                 case T.SHADER_EDITOR:
                     // TODO
                     break
                 case T.ENGINE:
-                    targetInstance = QueryAPI.getEntityByID(selectionStore.array[0])
+                    targetInstance = QueryAPI.getEntityByID(v.array[0])
                     targetType = translate("ENGINE")
                     break
                 default:
@@ -62,12 +52,16 @@
             }
         }
 
-        if (!targetInstance && SelectionStore.lockedEntity) {
-            targetInstance = QueryAPI.getEntityByID(SelectionStore.lockedEntity)
+        if (!targetInstance && v.lockedEntity != null) {
+            targetInstance = QueryAPI.getEntityByID(v.lockedEntity)
             targetType = translate("ENGINE")
         }
         entity = targetInstance
-    }
+
+    })
+    onDestroy(() => unsubscribeSelection())
+
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     const submitTransformationChange = (key, value, save) => {
         if (!savedState) {
@@ -122,6 +116,7 @@
                             key="TRANSFORMATION"
                             translate={translate}
                             component={entity}
+                            entity={entity}
                             submit={submitTransformationChange}
                     />
                 {/if}

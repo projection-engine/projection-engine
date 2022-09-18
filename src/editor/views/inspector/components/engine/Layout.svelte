@@ -11,6 +11,7 @@
     export let key
     export let index
     export let component
+    export let entity
     export let submit
     export let translate
 
@@ -27,7 +28,7 @@
         </div>
         {title}
         {#if key !== "TRANSFORMATION"}
-            <button class="button" on:click={() => removeComponent(index, key)}>
+            <button class="button" on:click={() => removeComponent(entity, index, key)}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}

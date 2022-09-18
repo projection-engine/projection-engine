@@ -4,7 +4,7 @@
     import getContextMenu from "../utils/get-context-menu";
     import {onDestroy, onMount} from "svelte";
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
-    import Branch from "./EngineNode.svelte";
+    import Branch from "./Node.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";

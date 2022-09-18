@@ -28,6 +28,6 @@ export default function getComponentIcon(key, component) {
         case COMPONENTS.UI:
             return "widgets"
         default:
-            return component.icon ? component.icon : "category"
+            return "code"
     }
 }
