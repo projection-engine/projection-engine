@@ -1,4 +1,4 @@
-import {EntityAPI, Engine, Entity, ENVIRONMENT} from "../../../public/engine/production";
+import {Engine, Entity, ENVIRONMENT} from "../../../public/engine/production";
 
 
 import componentConstructor from "./component-constructor";

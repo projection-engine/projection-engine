@@ -1,4 +1,3 @@
-import Entity from "../../../../public/engine/production/instances/Entity";
 import EngineStore from "../EngineStore";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 import {v4} from "uuid";

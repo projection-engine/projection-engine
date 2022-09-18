@@ -1,8 +1,6 @@
 <script>
-    import Input from "../../../../../shared/components/input/Input.svelte";
     import Localization from "../../../../../shared/libs/Localization";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import {EntityAPI, KEYS} from "../../../../../../public/engine/production";
+    import {KEYS} from "../../../../../../public/engine/production";
 
     export let initial
     export let isInput

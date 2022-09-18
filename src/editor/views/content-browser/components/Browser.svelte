@@ -1,6 +1,5 @@
 <script>
     import getContextMenu from "../utils/get-context-menu"
-    import {v4} from "uuid";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";

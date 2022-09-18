@@ -1,10 +1,8 @@
 <script>
     import Localization from "../../shared/libs/Localization";
     import Input from "../../shared/components/input/Input.svelte";
-    import Dropdown from "../../shared/components/dropdown/Dropdown.svelte";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import "../css/ProjectRow.css"
-    import FilesAPI from "../../shared/libs/files/FilesAPI";
 
     const {ipcRenderer} = window.require("electron")
 

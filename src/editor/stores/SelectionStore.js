@@ -1,5 +1,4 @@
 import {get, writable} from "svelte/store";
-import EngineStore from "./EngineStore";
 import {Engine} from "../../../public/engine/production";
 
 const TYPES = {

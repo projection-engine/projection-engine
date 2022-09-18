@@ -8,7 +8,6 @@
 
     import Loader from "../../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";
-    import Entity from "../../../../../../public/engine/production/instances/Entity";
 
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import EntityAPI from "../../../../../../public/engine/production/apis/EntityAPI";

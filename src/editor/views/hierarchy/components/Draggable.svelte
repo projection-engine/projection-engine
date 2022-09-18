@@ -5,7 +5,6 @@
     import EngineStore from "../../../stores/EngineStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
-    import Entity from "../../../../../public/engine/production/instances/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";

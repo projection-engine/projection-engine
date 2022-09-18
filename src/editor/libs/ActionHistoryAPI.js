@@ -2,8 +2,7 @@ import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
-import {EntityAPI, Engine} from "../../../public/engine/production";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
+import {Engine, EntityAPI} from "../../../public/engine/production";
 
 export default class ActionHistoryAPI {
     static targets = {

@@ -1,9 +1,6 @@
 import ViewportActions from "../../../libs/ViewportActions";
-import TransformationAPI from "../../../../../public/engine/production/apis/math/TransformationAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import {vec3} from "gl-matrix";
-import {COMPONENTS, Engine, Entity} from "../../../../../public/engine/production";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
+import {Engine} from "../../../../../public/engine/production";
 import addUiElement from "./add-ui-element";
 
 export default function getUIContextMenu() {

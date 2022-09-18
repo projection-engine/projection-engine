@@ -10,7 +10,6 @@
     import componentConstructor from "../../../../libs/component-constructor";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import Engine from "../../../../../../public/engine/production/Engine";
-    import Entity from "../../../../../../public/engine/production/instances/Entity";
     import EntityNameController from "../../../../stores/templates/EntityNameController";
     import SelectionStore from "../../../../stores/SelectionStore";
 

@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import {marked}  from "marked/lib/marked.esm.js"
+    import {marked} from "marked/lib/marked.esm.js"
 
     export let release
     export let close

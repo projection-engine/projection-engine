@@ -1,4 +1,4 @@
-import {EntityAPI, Entity} from "../../../../public/engine/production";
+import {EntityAPI} from "../../../../public/engine/production";
 
 export default function removeHierarchy(state, entity) {
     if (!entity)

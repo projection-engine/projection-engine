@@ -1,17 +1,5 @@
 import getComponentIcon from "../../../utils/get-component-icon";
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
-import DirectionalLightComponent
-    from "../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
-import PointLightComponent from "../../../../../public/engine/production/components/rendering/PointLightComponent";
-import CameraComponent from "../../../../../public/engine/production/components/misc/CameraComponent";
-import MeshComponent from "../../../../../public/engine/production/components/rendering/MeshComponent";
-import SpriteComponent from "../../../../../public/engine/production/components/rendering/SpriteComponent";
-import ProbeComponent from "../../../../../public/engine/production/components/rendering/ProbeComponent";
-import PhysicsColliderComponent
-    from "../../../../../public/engine/production/components/physics/PhysicsColliderComponent";
-import RigidBodyComponent from "../../../../../public/engine/production/components/physics/RigidBodyComponent";
-import CullingComponent from "../../../../../public/engine/production/components/misc/CullingComponent";
-import UIComponent from "../components/engine/UIComponent.svelte";
 
 export default function getNativeComponents() {
     return [

@@ -2,11 +2,6 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
-    import EditorHeader from "./editor/EditorHeader.svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
-    import EntityStateController from "../../../libs/EntityStateController";
-    import EngineStore from "../../../stores/EngineStore";
-    import {EntityAPI} from "../../../../../public/engine/production";
     import Localization from "../../../../shared/libs/Localization";
 
     export let settings

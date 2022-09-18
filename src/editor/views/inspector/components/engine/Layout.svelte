@@ -2,10 +2,7 @@
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import ComponentAttribute from "./Property.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import EngineStore from "../../../../stores/EngineStore";
     import getComponentIcon from "../../../../utils/get-component-icon";
-    import SelectionStore from "../../../../stores/SelectionStore";
-    import {v4} from "uuid";
     import removeComponent from "../../utils/remove-component";
 
     export let key

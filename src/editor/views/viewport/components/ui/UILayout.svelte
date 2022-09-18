@@ -1,14 +1,8 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import EntityAPI from "../../../../../../public/engine/production/apis/EntityAPI";
+    import {onMount} from "svelte";
     import {Engine} from "../../../../../../public/engine/production";
-    import EngineStore from "../../../../stores/EngineStore";
     import SelectionStore from "../../../../stores/SelectionStore";
     import GIZMOS from "../../../../data/GIZMOS";
-    import bindContextTarget from "../../../../../shared/components/context-menu/libs/bind-context-target";
-    import RENDER_TARGET from "../../../../data/RENDER_TARGET";
-    import getContextMenu from "../../utils/get-context-menu";
-    import getUIContextMenu from "../../utils/get-UI-context-menu";
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
     import {v4} from "uuid";

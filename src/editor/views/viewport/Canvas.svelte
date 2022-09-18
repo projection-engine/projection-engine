@@ -2,19 +2,12 @@
     import RENDER_TARGET from "../../data/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "./utils/update-renderer";
-    import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import getHotkeys from "./utils/get-hotkeys";
-    import bindContextTarget from "../../../shared/components/context-menu/libs/bind-context-target";
-    import getContextMenu from "./utils/get-context-menu";
-    import HotKeys from "../../components/metrics/libs/HotKeys";
-    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import GPU from "../../../../public/engine/production/GPU";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
     import AssetAPI from "../../../shared/libs/files/AssetAPI";
     import initializer from "../../../../public/engine/editor/initializer";
-    import {EntityAPI} from "../../../../public/engine/production";
 
     export let onReady
 

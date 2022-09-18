@@ -10,10 +10,6 @@
     import FilesAPI from "../../shared/libs/files/FilesAPI";
     import ProjectRow from "../components/ProjectRow.svelte";
     import bindContextTarget from "../../shared/components/context-menu/libs/bind-context-target";
-    import SelectionStore from "../../editor/stores/SelectionStore";
-    import getFilesToRender from "../../editor/views/content-browser/utils/get-files-to-render";
-    import getContextMenu from "../../editor/views/content-browser/utils/get-context-menu";
-    import HotKeys from "../../editor/components/metrics/libs/HotKeys";
     import {v4} from "uuid";
     import getProjectContextMenu from "../utils/get-project-context-menu";
 

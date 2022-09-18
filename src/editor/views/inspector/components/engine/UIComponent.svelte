@@ -1,12 +1,9 @@
 <script>
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import Input from "../../../../../shared/components/input/Input.svelte";
     import StyleField from "./Styles.svelte";
-    import TextArea from "../../../../../shared/components/input/TextArea.svelte";
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json"
     import Localization from "../../../../../shared/libs/Localization";
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import getComponentIcon from "../../../../utils/get-component-icon";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
@@ -14,7 +11,6 @@
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
-    import {EntityAPI, Engine} from "../../../../../../public/engine/production";
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
 
     export let entity

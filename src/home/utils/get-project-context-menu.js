@@ -1,5 +1,6 @@
 import NodeFS from "../../shared/libs/NodeFS";
 import FilesAPI from "../../shared/libs/files/FilesAPI";
+
 const { shell} = window.require("electron")
 
 export default function getProjectContextMenu(toRender, setToRender){

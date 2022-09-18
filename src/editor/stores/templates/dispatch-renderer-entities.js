@@ -6,7 +6,7 @@ import EntityNameController from "./EntityNameController";
 import AXIS from "../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
-import {EntityAPI, Engine, getPickerId} from "../../../../public/engine/production";
+import {Engine, EntityAPI, getPickerId} from "../../../../public/engine/production";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",

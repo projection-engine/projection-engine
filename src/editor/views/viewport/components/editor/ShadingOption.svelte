@@ -3,9 +3,7 @@
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
-    import CompositePass from "../../../../../../public/engine/production/passes/post-processing/CompositePass";
     import GPU from "../../../../../../public/engine/production/GPU";
-    import STATIC_FRAMEBUFFERS from "../../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
     import DepthPass from "../../../../../../public/engine/production/passes/rendering/DepthPass";
     import DeferredPass from "../../../../../../public/engine/production/passes/rendering/DeferredPass";
     import AOPass from "../../../../../../public/engine/production/passes/rendering/AOPass";
@@ -13,7 +11,6 @@
     import Engine from "../../../../../../public/engine/production/Engine";
     import Localization from "../../../../../shared/libs/Localization";
     import STATIC_SHADERS from "../../../../../../public/engine/static/resources/STATIC_SHADERS";
-    import * as shaderCode from "../../../../../../public/engine/production/shaders/DEFERRED.glsl";
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}

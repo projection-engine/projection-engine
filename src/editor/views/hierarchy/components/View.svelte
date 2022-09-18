@@ -9,7 +9,6 @@
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {v4} from "uuid";
-    import Entity from "../../../../../public/engine/production/instances/Entity";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
