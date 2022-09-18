@@ -55,8 +55,10 @@
         <Input
                 hasBorder="true"
                 placeholder={translate("SEARCH")}
-                height={"30px"}
-                setSearchString={v => searchString = v}
+                height={"25px"}
+                setSearchString={v =>  setSearchString(v)}
+                onEnter={v =>  setSearchString(v)}
+                onBlur={(_, v) => setSearchString(v)}
                 searchString={searchString}>
             <Icon slot="icon" styles="font-size: 1rem">
                 search
@@ -86,9 +88,9 @@
         </div>
         <div class="footer">
             <button
-
                     data-focusbutton="-"
-                    on:click={() => create(input)}>
+                    on:click={() => create(input)}
+            >
                 <Icon>check</Icon>
                 {translate("DONE")}
             </button>
@@ -99,12 +101,9 @@
 <style>
     .wrapper {
         height: clamp(50px, 7vh, 100px);
-        border-bottom: var(--pj-border-primary) 2px solid;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 8px;
-
         overflow: hidden;
         max-width: 100%;
     }

@@ -14,11 +14,11 @@ module.exports = function settingsWindow(windowID, parent, settingsData) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     const window = new BrowserWindow({
-        minWidth: Math.max(width / 6, 500),
+        minWidth: Math.max(width /6, 500),
         minHeight: Math.max(height / 6, 750),
         frame: false,
 
-        parent: parent,
+        parent,
         webPreferences: {
             webSecurity: false,
             enableRemoteModule: true,

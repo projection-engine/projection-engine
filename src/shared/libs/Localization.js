@@ -1,6 +1,8 @@
 export default class Localization {
     static HOME = {
         HOME: {
+            RELEASE_NOTES: "Release notes",
+            RELEASES: "Releases",
             PROJECT_NAME: "My editor",
             DELETE: "Deleting editor",
             RENAME: "Project renamed",
@@ -12,7 +14,9 @@ export default class Localization {
             EMPTY: "No projects found",
             SEARCH: "Search",
             PROJECT_CREATED: "Project created",
-            DONE: "Done"
+            DONE: "Done",
+            NO_RELEASES: "No releases found",
+            INSTALL: "Install"
         },
 
         CARD: {

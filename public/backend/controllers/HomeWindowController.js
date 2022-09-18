@@ -15,8 +15,8 @@ module.exports = function HomeWindow() {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     const window = new BrowserWindow({
-        minWidth: Math.max(width / 4, 800),
-        minHeight: Math.max(height / 4, 600),
+        minWidth: Math.max(width * .60, 800),
+        minHeight: Math.max(height * .60, 600),
         frame: false,
         webPreferences: {
             webSecurity: false,

@@ -19,8 +19,8 @@ module.exports = function ProjectWindow(handleClose, data) {
     const {width, height} = primaryDisplay.workAreaSize
     let firstTime = false
     const window = new BrowserWindow({
-        width: width / 2,
-        height: height / 2,
+        width: width * .75,
+        height: height * .75,
 
         frame: false,
         webPreferences: {

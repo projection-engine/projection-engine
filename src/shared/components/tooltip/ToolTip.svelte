@@ -68,7 +68,10 @@
         targetParent.addEventListener("mouseenter", hover)
         isMounted = true
     })
-    onDestroy(() => targetParent.removeEventListener("mouseenter", hover))
+    onDestroy(() => {
+        targetParent.removeEventListener("mouseenter", hover)
+        close()
+    })
 
 </script>
 

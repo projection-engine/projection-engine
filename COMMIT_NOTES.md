@@ -1,10 +1,4 @@
-- Reworked shading options
-- Fixed orthographic projection not zooming in
-- Fixed not being able to remove components
-- Fixed 3D cursor not changing position when moving it
-- Fixed inspector not loading content browser files as JSON
-- Fixed hierarchy node selection box
-- Fixed tooltip without delay
-- Fixed hierarchy not updating hotkeys target
-- Fixed grid not rendering with orthographic projection
-- Changed templates for components and ui layouts
+- Rewritten main window
+- Including releases list
+- Changed window initial sizes
+- including marked.js

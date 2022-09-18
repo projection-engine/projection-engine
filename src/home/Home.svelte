@@ -1,9 +1,8 @@
 <script>
     import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
     import Icon from "../shared/components/icon/Icon.svelte";
-    import Card from "./components/Card.svelte";
+    import Card from "./components/ProjectRow.svelte";
     import Header from "./components/Header.svelte";
-    import Recent from "./components/Recent.svelte";
     import Localization from "../shared/libs/Localization";
     import ROUTES from "../static/ROUTES";
     import getBasePath from "../../public/backend/utils/get-base-path";
@@ -13,99 +12,54 @@
     import Alert from "../shared/components/alert/Alert.svelte";
     import FilesAPI from "../shared/libs/files/FilesAPI";
     import NodeFS from "../shared/libs/NodeFS";
+    import Sidebar from "../shared/components/Sidebar.svelte";
+    import Projects from "./views/Projects.svelte";
+    import ReleasesList from "./views/ReleasesList.svelte";
+    import ResizableBar from "../shared/components/resizable/ResizableBar.svelte";
+    import ContextMenu from "../shared/components/context-menu/ContextMenu.svelte";
 
-    const pathLib = window.require("path")
-    const os =  window.require("os")
-    const {ipcRenderer} = window.require("electron")
 
-    let searchString = ""
-    let projectsToShow = []
+    let tab = 0
 
     const translate = (key) => Localization.HOME.HOME[key]
 
-    function openProject(p) {
-        ipcRenderer.send(ROUTES.OPEN_PROJECT+sessionStorage.getItem("electronWindowID"), p)
-    }
-
-    onMount(() => {
-        const b = getBasePath(os, pathLib)
-        localStorage.setItem("basePath", b)
-        NodeFS.mkdir(b).catch()
-        refreshProjects(b + "projects" + FilesAPI.sep).then(r => projectsToShow = r).catch()
-    })
 
 </script>
 
 
 <Alert/>
 <WindowFrame
-    options={[]}
-    label={translate("TITLE")}
-    pageInfo={{
+        background="var(--pj-background-quaternary)"
+        options={[]}
+        label={translate("TITLE")}
+        pageInfo={{
         closeEvent: true,
         minimizeEvent: true,
         maximizeEvent: true
     }}
 />
+<ContextMenu/>
 <div class="wrapper">
-
-    <div class="wrapper-projects">
-        <Header translate={translate} setSearchString={v => searchString = v} searchString={searchString} projectsToShow={projectsToShow} setProjectsToShow={v => projectsToShow = v}/>
-        {#if !searchString}
-            <Recent open={(p) => openProject(p)} projects={projectsToShow}/>
-        {/if}
-        {#if projectsToShow.length === 0}
-            <div class="empty-wrapper">
-                <Icon styles="font-size: 100px; color: #999;">folder</Icon>
-                {translate("EMPTY")}
-            </div>
+    <Sidebar tab={tab} setTab={v => tab = v} options={[
+        ["view_in_ar", translate("PROJECTS")],
+        ["inventory_2", translate("RELEASES")]
+    ]}/>
+    <ResizableBar type="width"/>
+    <div class="tab">
+        {#if tab === 0}
+            <Projects/>
         {:else}
-            <div class="content">
-                {#each projectsToShow as p}
-                    <Card
-                        open={() => openProject(p)}
-                        data={p}
-                        onRename={async newName => {
-                            const pathName = pathLib.resolve(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + p.id + FilesAPI.sep + ".meta")
-                            const [error, res] = await NodeFS.read(pathName)
-                            if (res && !error){
-
-                                await NodeFS.write(pathName, JSON.stringify({
-                                    ...JSON.parse(res),
-                                    name: newName
-                                }))
-                                projectsToShow = [...projectsToShow]
-                            }
-                            }}
-                        onDelete={async () => {
-                            await NodeFS.rm(
-                                pathLib.resolve(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + p.id),
-                                {recursive: true, force: true})
-                            projectsToShow = projectsToShow.filter(e => e.id !== p.id)
-                        }}
-                    />
-                {/each}
-            </div>
+            <ReleasesList/>
         {/if}
     </div>
 </div>
 
 
 <style>
-    .wrapper {
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        background-color: var(--pj-background-tertiary);
-    }
-
-    .wrapper-projects {
+    .tab {
         width: 100%;
         position: relative;
-        overflow-y: auto;
+        overflow: hidden;
         height: 100%;
         padding: 16px 5% 32px;
 
@@ -115,29 +69,14 @@
         gap: 4px;
     }
 
-
-    .title > h2 {
-        margin: 0;
-    }
-    .content {
-        display: grid;
-        gap: 4px;
-        height: fit-content;
-        align-items: flex-start;
+    .wrapper {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        position: relative;
+        background-color: var(--pj-background-tertiary);
     }
 
-    .empty-wrapper {
-        color: #999 !important;
-        display: grid;
-        justify-content: center;
-        justify-items: center;
-        width: 100%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-weight: 550;
-        font-size: 0.8rem;
-    }
 
 </style>

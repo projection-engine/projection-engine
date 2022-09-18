@@ -3,13 +3,14 @@
     import ROUTES from "../static/ROUTES";
     import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
     import Localization from "../shared/libs/Localization";
-    import Sidebar from "./components/Sidebar.svelte";
+
     import ResizableBar from "../shared/components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
     import Icon from "../shared/components/icon/Icon.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import ToolTip from "../shared/components/tooltip/ToolTip.svelte";
+    import Sidebar from "../shared/components/Sidebar.svelte";
 
     const {ipcRenderer} = window.require('electron')
     let settings
@@ -44,7 +45,7 @@
 		}}
     />
     <div class="content">
-        <Sidebar tab={tab} setTab={d => tab = d} translate={translate}/>
+        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("RENDERING"), translate("POST_PROCESSING"), translate("VIEWPORT")]}/>
         {#if settings}
             <ResizableBar type="width"/>
             <div class="form">
