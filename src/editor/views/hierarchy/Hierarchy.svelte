@@ -7,8 +7,6 @@
     import EngineHierarchyView from "./components/View.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-
-    import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
     import {onDestroy, onMount} from "svelte";
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getHotkeys from "../viewport/utils/get-hotkeys";

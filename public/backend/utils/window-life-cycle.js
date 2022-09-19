@@ -21,6 +21,7 @@ module.exports = function windowLifeCycle(id, window, onClose, openWindow) {
         })
     ipcMain.on("minimize" + id, minimize)
     ipcMain.on("maximize" + id, maximize)
+
     ipcMain.once("close" + id, () => {
         ipcMain.removeListener("maximize" + id, maximize)
         ipcMain.removeListener("minimize" + id, minimize)

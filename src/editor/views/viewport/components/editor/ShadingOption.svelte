@@ -1,7 +1,6 @@
 <script>
     import SHADING_MODELS from "../../../../data/SHADING_MODELS"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
     import GPU from "../../../../../../public/engine/production/GPU";
     import DepthPass from "../../../../../../public/engine/production/passes/rendering/DepthPass";

@@ -1,7 +1,2 @@
-- Fixed hierarchy component filter
-- Reworked shading models
-- Optimization to deferred renderer
-- Improvements to scene depth shading model
-- Fixed viewport left view
-- Improvements to error logger
-- Improvements to console view
+- Tracker for open projects
+- Improvements to the backend

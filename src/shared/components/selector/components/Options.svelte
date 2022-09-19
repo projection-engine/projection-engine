@@ -15,7 +15,7 @@
     export let store
     export let translate
     export let noDefault
-export let mergeMaterials
+    export let mergeMaterials
     let searchString = ""
     let filtered
     $: {

@@ -14,6 +14,9 @@ const settingsWindow = require("./SettingsWindowController");
 const loadLevel = require("../libs/level-loader");
 const cleanUpRegistry = require("../utils/level-loader/clean-up-registry");
 
+const OPEN_PROJECTS = require("../../../src/static/OPEN_PROJECTS");
+const fs = require("fs");
+
 module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
@@ -35,6 +38,11 @@ module.exports = function ProjectWindow(handleClose, data) {
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
 
+    window.on("close", () => {
+        updateCache(data.id, false, () => handleClose())
+    })
+    updateCache(data.id, true)
+
     ipcMain.on(ROUTES.LOAD_LEVEL + data.id, async (event, pathToLevel) => {
         if (!firstTime) {
             firstTime = true
@@ -48,15 +56,36 @@ module.exports = function ProjectWindow(handleClose, data) {
     ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
         settingsWindow(data.id, window, settingsData)
     })
+
+
     windowLifeCycle(
         data.id,
         window,
         () => {
-            window.close()
-            handleClose()
+            updateCache(data.id, false, () => {
+                window.close()
+                handleClose()
+            })
         },
         () => window.loadFile(Window.project).catch(() => handleClose())
     )
 
+    return window
+}
 
+function updateCache(id, add, callback) {
+    const cacheFilePath = getBasePath(os, path) + path.sep + OPEN_PROJECTS
+    fs.readFile(cacheFilePath, (err, buffer) => {
+        let currentFile = []
+        if (!err)
+            currentFile = JSON.parse(buffer.toString())
+        if (add)
+            currentFile.push(id)
+        else
+            currentFile = currentFile.filter(e => e !== id)
+        fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {
+            if (callback)
+                callback()
+        })
+    })
 }

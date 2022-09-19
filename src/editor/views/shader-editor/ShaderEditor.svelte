@@ -139,6 +139,7 @@
         </button>
         <div class="divider"></div>
         <Selector
+                styles="max-width: 20vw;"
                 mergeMaterials={false}
                 size="small"
                 type="material"

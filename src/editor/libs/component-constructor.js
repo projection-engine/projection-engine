@@ -2,7 +2,6 @@ import FilesStore from "../stores/FilesStore";
 import FilesAPI from "../../shared/libs/files/FilesAPI"
 import RegistryAPI from "../../shared/libs/files/RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
-import Localization from "../../shared/libs/Localization";
 import {EntityAPI} from "../../../public/engine/production";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {

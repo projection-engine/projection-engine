@@ -16,6 +16,7 @@
     export let selected
     export let noDefault
     export let mergeMaterials = true
+    export let styles = ""
     const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
@@ -36,10 +37,10 @@
 </script>
 
 <Dropdown asButton={true} styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
-          buttonStyles="max-width: 100%; overflow: hidden; width: 100%">
+          buttonStyles={"max-width: 100%; overflow: hidden; width: 100%;" + styles}>
     <button
             slot="button"
-            style={`width: 100%; border: none`}
+            style={`width: 100%; border: none;` + styles}
     >
         <ToolTip content={state.name}/>
         <div class="wrapper">

@@ -27,6 +27,7 @@
                 return ContentBrowser
             case VIEWS.CONSOLE:
                 return Console
+
             default:
                 return null
         }

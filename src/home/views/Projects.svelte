@@ -17,6 +17,9 @@
     const os = window.require("os")
     const {ipcRenderer} = window.require("electron")
 
+    export let openProjects
+    export let addOpenProjects
+
     let searchString = ""
     let projectsToShow = []
     let filtered = []
@@ -24,6 +27,7 @@
     const internalID = v4()
     function openProject(p) {
         ipcRenderer.send(ROUTES.OPEN_PROJECT + sessionStorage.getItem("electronWindowID"), p)
+        addOpenProjects(p)
     }
 
     onMount(() => {
@@ -40,7 +44,6 @@
         contextMenuBinding.onDestroy()
     })
     $: {
-        console.log(searchString)
         if(searchString)
             filtered = projectsToShow.filter(p => p.meta.name && p.meta.name.toLowerCase().includes(searchString.toLowerCase()))
         else
@@ -65,6 +68,7 @@
     <div class="content" id={internalID}>
         {#each filtered as p}
             <ProjectRow
+                    openProjects={openProjects}
                     open={() => openProject(p)}
                     data={p}
                     onRename={async newName => {

@@ -55,6 +55,11 @@ export default class Localization {
         }
     }
     static PROJECT = {
+        CODE_EDITOR: {
+            SAVE: "Save",
+            TITLE: "Code editor",
+
+        },
         CONTROL: {
             LEVEL: "Level",
             BUILD_PROBES: "Build probes",
@@ -451,6 +456,7 @@ export default class Localization {
         },
 
         SELECTOR: {
+            CODE: "Code",
             UI: "UI layout",
             IMAGE: "Texture",
             MATERIAL: "Material",
@@ -473,7 +479,7 @@ export default class Localization {
             VALUE: "Value"
         },
         VIEWS: {
-            UI: "UI Hierarchy",
+            CODE_EDITOR: "Code editor",
             CLOSE: "Close",
             HIERARCHY: "Hierarchy",
             INSPECTOR: "Inspector",

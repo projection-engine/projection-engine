@@ -28,6 +28,8 @@
     </Preview>
 {:else if type === "ui"}
     <Icon slot="icon">widgets</Icon>
+{:else if type === "code"}
+    <Icon slot="icon">code</Icon>
 {/if}
 <style>
     .img {

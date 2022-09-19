@@ -3,6 +3,7 @@
     import Input from "../../shared/components/input/Input.svelte";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import "../css/ProjectRow.css"
+    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -11,7 +12,12 @@
     export let open
     export let data
     export let onRename
+    export let openProjects
+
     let changeDate
+    let hovered
+
+    $: isOpen = openProjects.includes(data.id)
 
     $: {
         if(data.meta.lastModification) {
@@ -42,13 +48,13 @@
             changeDate = translate("NEVER")
     }
 
-    $: console.log(changeDate)
+
     let openForChange = false
 </script>
 
 
-<div class={"wrapper card-home"} data-card={data.id}>
-    <div class={"info card-home"} style="width: 200%">
+<div class={"wrapper card-home"} data-card={data.id} on:mouseenter={() => hovered = true} on:mouseleave={() => hovered = false}>
+    <div class={"info card-home"} style="width: 200%; display: flex; justify-content: unset; gap: 4px">
         {#if openForChange}
             <Input
                 placeholder={data.meta.name}
@@ -73,27 +79,30 @@
             />
         {:else}
             <strong>{data.meta.name}</strong>
+            {#if isOpen}
+                <div class="open-icon" class:hovered={hovered}><small>Project is open</small></div>
+            {/if}
         {/if}
+
     </div>
 
     <div class={"info card-home"} style="justify-content: flex-end; justify-items: flex-end">
         <strong>{changeDate}</strong>
         <small>{translate("LAST_MODIFIED")}</small>
     </div>
-
-
-
+    <div data-vertdivider="-"></div>
     <div class={"section card-home"}>
-        <button class="button card-home" on:click={() => openForChange = true}>
+        <button
+                class="button card-home"
+                on:click={() => openForChange = true}
+        >
             <Icon>edit</Icon>
         </button>
         <button
+                disabled={isOpen}
                 on:click={() => open()}
-                class="button card-home"
-                style="background: var(--pj-border-primary)"
-        >
-            <Icon>open_in_new</Icon>
-        </button>
+                data-focusbutton="-"
+        >Open</button>
     </div>
 </div>
 
@@ -101,5 +110,32 @@
 <style>
     strong{
         font-weight: 550;
+    }
+    .open-icon{
+        width: 10px;
+        height: 10px;
+
+        background: var(--pj-accent-color);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: 150ms linear;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .open-icon > small{
+        opacity: 0;
+    }
+    .hovered{
+        width: fit-content;
+        height: 20px;
+
+        padding: 0 8px;
+
+    }
+    .hovered > small{
+        opacity: 1;
     }
 </style>

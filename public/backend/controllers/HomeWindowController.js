@@ -7,11 +7,12 @@ const {v4} = require("uuid");
 const ProjectWindow = require("./ProjectWindowController")
 const windowLifeCycle = require("../utils/window-life-cycle");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
-const {screen} = require('electron')
+const {screen, app} = require('electron')
 
-module.exports = function HomeWindow() {
-    let projects = [], isClosed = false
+module.exports = function HomeWindow(projects) {
+    let isClosed = false
     this.id = v4()
+
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     const window = new BrowserWindow({
@@ -29,7 +30,15 @@ module.exports = function HomeWindow() {
         autoHideMenuBar: true,
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH),
     });
-
+    app.on('browser-window-focus', (event, win) => {
+        if (win === window) {
+            window.webContents.send(ROUTES.HOME_WINDOW_FOCUS + this.id, true)
+        }
+    })
+    app.on('browser-window-blur', (event, win) => {
+        if (win === window)
+            window.webContents.send(ROUTES.HOME_WINDOW_FOCUS + this.id, false)
+    })
 
     windowLifeCycle(
         this.id,
@@ -42,14 +51,22 @@ module.exports = function HomeWindow() {
     )
 
     ipcMain.on(ROUTES.OPEN_PROJECT + this.id, (event, data) => {
-        const found = projects.find(p => p.id === data.id)
-        if (!found?.window) {
-            ProjectWindow(() => {
-                projects = projects.filter(p => p.id !== data.id)
-                if (!isClosed)
-                    window.show()
+        const found = projects.get(data.id)
+        if (!found) {
+            const projectWindow = ProjectWindow(() => {
+                try {
+                    projects.delete(data.id)
+                    if (!window)
+                        return
+                    if (!isClosed)
+                        window.show()
+                    window.webContents.send(ROUTES.WINDOW_CLOSED + this.id)
+                } catch (err) {
+                    console.error(err)
+                }
+
             }, {...data})
-            projects.push(data)
+            projects.set(data.id, projectWindow.id)
             window.minimize()
         } else
             found.window.show()
