@@ -1,2 +1,2 @@
-- Tracker for open projects
-- Improvements to the backend
+- File watcher backend
+- NodeFS file watcher

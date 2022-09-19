@@ -4,10 +4,13 @@ const {ipcRenderer} = window.require("electron")
 
 export function getCall(channel, data, addMiddle=true) {
     return new Promise(resolve => {
-        const listenID = v4().toString()
+        let listenID = v4().toString()
+        if(data.listenID)
+            listenID = data.listenID
         ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data) => {
             resolve(data)
         })
+
         ipcRenderer.send(channel, {...data, listenID})
     })
 }
@@ -48,5 +51,13 @@ export default class NodeFS {
 
     static async rename(oldPath, newPath) {
         return (await getCall("fs-rename", {oldPath, newPath}))
+    }
+
+
+    static async watch(path, listenID) {
+        return (await getCall("fs-watch", {path,listenID}))
+    }
+    static async unwatch(path, listenID) {
+        return (await getCall("fs-unwatch", {path, listenID}))
     }
 }

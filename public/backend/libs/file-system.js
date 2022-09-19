@@ -12,7 +12,33 @@ const readdir = require("../utils/file-system/readdir")
 const directoryStructure = require("../utils/file-system/directory-structure")
 const REG_PATH = require("../../../src/static/REG_PATH")
 
+const watching = new Map()
+const watchingSignal = new Map()
 module.exports = function () {
+    ipcMain.on("fs-watch", async (event, {path, listenID}) => {
+        const p = pathRequire.resolve(path)
+        const prev = watching.get(p)
+        const callback = {sender: event.sender, id: listenID}
+        watching.set(p, prev ? [...prev, callback] : [callback])
+        if (!prev || prev.length === 0)
+            watchingSignal.set(p, fs.watch(path, () => {
+                const prev = watching.get(p)
+                prev.forEach(callback => callback.sender.send("fs-watch-" + callback.id))
+            }))
+    })
+    ipcMain.on("fs-unwatch", async (event, {path, listenID}) => {
+        const p = pathRequire.resolve(path)
+        const prev = watching.get(p)
+        const watcher = watchingSignal.get(p)
+        if(watcher && (!prev || prev.length === 0))
+             watcher.close()
+
+        const found = prev.findIndex(p => p.id === listenID)
+        if(found > -1) {
+            prev.splice(found, 1);
+            watching.set(p, prev)
+        }
+    })
     ipcMain.on("fs-read", async (event, data) => {
         const {
             path, options, listenID
@@ -141,11 +167,11 @@ module.exports = function () {
         const registryData = (await readRegistry(pathName + pathRequire.sep + REG_PATH)).filter(reg => reg)
         const res = await directoryStructure(pathName)
         for (let i = 0; i < res.length; i++) {
-            try{
+            try {
                 const e = await parsePath(res[i], registryData, pathName)
                 if (e && (e.registryID || e.isFolder))
                     result.push(e)
-            }catch (error){
+            } catch (error) {
                 console.error(error)
             }
         }
