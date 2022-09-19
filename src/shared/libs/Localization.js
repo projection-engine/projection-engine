@@ -65,6 +65,7 @@ export default class Localization {
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
+            NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
             VERSION: "5.1.0-alpha",
             LOGGING_ENABLED: "Error logging",
@@ -78,6 +79,15 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            RECONSTRUCTED_NORMALS: "Reconstructed normals",
+            RECONSTRUCTED_NORMALS_DEF: "Depth reconstruction",
+            DETAIL_DEF: "PBR shading",
+            LIGHT_DEF: "Light details",
+            UNLIT_DEF: "Albedo color",
+            AO_DEF: "Scene AO",
+            DEPTH_DEF: "Linear depth",
+            NORMAL_DEF: "Mesh normals",
+
             PICKER: "Element picker",
             SELECT_ALL: "Select all",
             ADD_ELEMENT: "Add element",

@@ -1,3 +1,7 @@
-- Object preview on console
-- Fixed inspector bug with localization
-- Fixed inspector form not updating correctly
+- Fixed hierarchy component filter
+- Reworked shading models
+- Optimization to deferred renderer
+- Improvements to scene depth shading model
+- Fixed viewport left view
+- Improvements to error logger
+- Improvements to console view

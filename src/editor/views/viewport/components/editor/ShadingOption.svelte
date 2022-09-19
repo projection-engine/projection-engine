@@ -14,43 +14,24 @@
 
     let shadingModel = SHADING_MODELS.DETAIL
     let settings = {}
-    const unsubscribeSettings = SettingsStore.getStore(v => settings=v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
     $: shading = (() => {
         switch (shadingModel) {
             case SHADING_MODELS.LIGHT_ONLY:
-                return {
-                    icon: "light_bulb",
-                    label: "SHADING_LIGHT"
-                }
+                return "SHADING_LIGHT"
             case SHADING_MODELS.ALBEDO:
-                return {
-                    label: "SHADING_UNLIT",
-                    icon: "category"
-                }
+                return "SHADING_UNLIT"
             case SHADING_MODELS.NORMAL:
-                return {
-                    icon: "category",
-                    label: "SHADING_NORMAL"
-                }
+                return "SHADING_NORMAL"
             case SHADING_MODELS.DEPTH:
-                return {
-                    icon: "settings",
-                    label: "SHADING_DEPTH"
-                }
+                return "SHADING_DEPTH"
             case SHADING_MODELS.AO:
-                return {
-                    icon: "settings",
-                    label: "SHADING_AO"
-                }
-
+                return "SHADING_AO"
             case SHADING_MODELS.DETAIL:
-                return {
-                    label: "SHADING_DETAIL",
-                    icon: "shaded"
-                }
+                return "SHADING_DETAIL"
             default:
                 return {}
         }
@@ -66,21 +47,21 @@
                 return DeferredPass.normalSampler
             case SHADING_MODELS.ALBEDO:
                 return DeferredPass.albedoSampler
+            case SHADING_MODELS.REC_NORMALS:
+                return DepthPass.normalSampler
         }
 
     }
     $: {
         if (Engine.isReady && DeferredPass.ready) {
-            DeferredPass.toScreenUniforms.option = shadingModel
+            DeferredPass.deferredUniforms.option = shadingModel
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                DeferredPass.toScreenUniforms.uSampler = getTexture()
-                DeferredPass.toScreenShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                DeferredPass.deferredUniforms.uSampler = getTexture()
+                DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+            } else {
+                DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
+                DeferredPass.deferredUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
             }
-            else {
-                DeferredPass.toScreenShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
-                DeferredPass.toScreenUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
-            }
-                // CompositePass.workerTexture = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER).colors[0]
         }
 
         if (!settings.ao && shadingModel === SHADING_MODELS.AO) {
@@ -90,69 +71,79 @@
     }
 </script>
 
-<Dropdown asButton={true}>
+<Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);">
     <button class="summary" slot="button">
-        {#if shadingModel === SHADING_MODELS.DETAIL}
-            <div style="--color-to-apply: white" class={"shaded-icon"}></div>
-        {:else if shadingModel === SHADING_MODELS.ALBEDO}
-            <div style="--color-to-apply: white" class={"flat-icon"}></div>
-        {:else}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">{shading.icon}</Icon>
-        {/if}
-        <div style="white-space: nowrap">{translate(shading.label)}</div>
+        <div style="--color-to-apply: white" class="shaded-icon"></div>
+        <div style="white-space: nowrap">{translate(shading)}</div>
     </button>
-    <button
-            on:click={() => shadingModel = SHADING_MODELS.DETAIL}
-    >
-        {#if shadingModel === SHADING_MODELS.DETAIL}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_DETAIL")}
-    </button>
-    <button
-            on:click={() => shadingModel = SHADING_MODELS.LIGHT_ONLY}
-    >
-        {#if shadingModel === SHADING_MODELS.LIGHT_ONLY}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_LIGHT")}
-    </button>
-    <button
-            on:click={() => shadingModel = SHADING_MODELS.ALBEDO}
-    >
-        {#if shadingModel === SHADING_MODELS.ALBEDO}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_UNLIT")}
-    </button>
-    <button
-            disabled="{!settings.ao}"
-            on:click={() => shadingModel = SHADING_MODELS.AO}
-    >
-        {#if shadingModel === SHADING_MODELS.AO}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_AO")}
-    </button>
-    <button
-            on:click={() => shadingModel = SHADING_MODELS.DEPTH}
-    >
-        {#if shadingModel === SHADING_MODELS.DEPTH}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_DEPTH")}
-    </button>
-    <button
-            on:click={() => shadingModel = SHADING_MODELS.NORMAL}
-    >
-        {#if shadingModel === SHADING_MODELS.NORMAL}
-            <Icon styles="font-size: 1rem; min-width: 1.1rem">check</Icon>
-        {/if}
-        {translate("SHADING_NORMAL")}
-    </button>
+    <div class="content">
+        <div class="column">
+            <button data-highlight={shadingModel === SHADING_MODELS.DETAIL ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.DETAIL}>
+                {translate("SHADING_DETAIL")}
+                <small>{translate("DETAIL_DEF")}</small>
+            </button>
+            <button disabled on:click={() => shadingModel = SHADING_MODELS.LIGHT_ONLY}>
+                {translate("SHADING_LIGHT")}
+                <small>{translate("LIGHT_DEF")}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.ALBEDO ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.ALBEDO}>
+                {translate("SHADING_UNLIT")}
+                <small>{translate("UNLIT_DEF")}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.REC_NORMALS ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.REC_NORMALS}>
+                {translate("RECONSTRUCTED_NORMALS")}
+                <small>{translate("RECONSTRUCTED_NORMALS_DEF")}</small>
+            </button>
+        </div>
+        <div class="column">
+            <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""} disabled="{!settings.ao}"
+                    on:click={() => shadingModel = SHADING_MODELS.AO}>
+                {translate("SHADING_AO")}
+                <small>{translate("AO_DEF")}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.DEPTH}>
+
+                {translate("SHADING_DEPTH")}
+                <small>{translate("DEPTH_DEF")}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.NORMAL ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.NORMAL}>
+
+                {translate("SHADING_NORMAL")}
+                <small>{translate("NORMAL_DEF")}</small>
+            </button>
+        </div>
+    </div>
 </Dropdown>
 
 <style>
+    .content {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        gap: 3px;
+        padding: 3px;
+    }
+
+    .column {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        gap: 3px;
+    }
+
+    .column > button {
+        border: none;
+        height: 30px;
+        display: grid;
+        justify-content: flex-start;
+        justify-items: flex-start;
+        background: var(--pj-background-secondary);
+    }
 
     .shaded-icon {
         transition: 150ms linear;
@@ -162,16 +153,6 @@
         height: 13px;
         border-radius: 50%;
     }
-
-    .flat-icon {
-        transition: 150ms linear;
-        min-width: 13px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        background: var(--color-to-apply);
-    }
-
 
     .summary {
         display: flex;

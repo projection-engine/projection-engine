@@ -5,5 +5,6 @@ export default {
     DEPTH: 2,
     AO: 3,
     DETAIL: 6,
-    LIGHT_ONLY: 7
+    LIGHT_ONLY: 7,
+    REC_NORMALS: 8
 }

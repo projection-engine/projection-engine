@@ -55,7 +55,6 @@
                     }
 
                     if (!itemFound) {
-                        alert.pushAlert(translate("COULD_NOT_FIND"), "error")
                         throw new Error("File not found")
                     }
                     switch (type) {
@@ -86,7 +85,6 @@
                     }
                 } catch (err) {
                     console.error(err)
-                    alert.pushAlert(translate("COULD_NOT_FIND"), "error")
                 }
             },
             onDragOver: () => translate("ADD_DRAG_DROP")

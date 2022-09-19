@@ -11,8 +11,38 @@
     export let open
     export let data
     export let onRename
+    let changeDate
 
-    $: console.log(data)
+    $: {
+        if(data.meta.lastModification) {
+            let a = new Date()
+            let b = new Date(a.getTime() - 8.64e+7)
+            let c = new Date(data.meta.lastModification)
+
+            b.setHours(0)
+            b.setMinutes(0)
+            b.setSeconds(0, 0)
+
+            a.setHours(0)
+            a.setMinutes(0)
+            a.setSeconds(0, 0)
+
+            c.setHours(0)
+            c.setMinutes(0)
+            c.setSeconds(0, 0)
+
+            if (a.getTime() === c.getTime())
+                changeDate = "Today";
+            else if (b.getTime() === c.getTime())
+                changeDate = "Yesterday";
+            else
+                changeDate = data.meta.lastModification
+        }
+        else
+            changeDate = translate("NEVER")
+    }
+
+    $: console.log(changeDate)
     let openForChange = false
 </script>
 
@@ -47,7 +77,7 @@
     </div>
 
     <div class={"info card-home"} style="justify-content: flex-end; justify-items: flex-end">
-        <strong>{data.meta.lastModification ? data.meta.lastModification : translate("NEVER")}</strong>
+        <strong>{changeDate}</strong>
         <small>{translate("LAST_MODIFIED")}</small>
     </div>
 

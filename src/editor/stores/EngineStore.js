@@ -69,7 +69,6 @@ export default class EngineStore {
                 EngineStore.engine.currentLevel = level
             } catch (err) {
                 console.error(err)
-                alert.pushAlert("Error loading level.")
             }
         }
 
@@ -161,7 +160,6 @@ export default class EngineStore {
                 )
             } catch (err) {
                 console.error(err)
-                alert.pushAlert("Error saving project", "error")
                 return
             }
             alert.pushAlert(

@@ -9,14 +9,25 @@
     import ErrorLoggerAPI from "../../../shared/libs/files/ErrorLoggerAPI";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
+    import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
 
     const {shell} = window.require("electron")
     let settings = {}
     let activeView
-
+    let hasMessage = false
 
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onMount(() => HotKeys.initializeListener(v => activeView = v))
+    onMount(() => {
+        let timeout
+        HotKeys.initializeListener(v => activeView = v)
+        ConsoleAPI.initialize(() => {
+            hasMessage = true
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                hasMessage = false
+            }, 3500)
+        })
+    })
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
 </script>
@@ -37,10 +48,17 @@
 
 
     <div id={INFORMATION_CONTAINER.CONTAINER} class={"info-container"}>
-        <div id={INFORMATION_CONTAINER.FPS} ></div>
+        <div id={INFORMATION_CONTAINER.FPS}></div>
     </div>
 
     <div class="meta-data">
+        {#if hasMessage}
+            <div class="console">
+                <Icon styles="font-size: .9rem; color: darkorange">info</Icon>
+                <div>{translate("NEW_MESSAGE")}</div>
+            </div>
+            <div data-vertdivider="-"></div>
+        {/if}
         <Dropdown hideArrow={true}>
             <button slot="button" class="error-logging">
                 <Icon>bug_report</Icon>
@@ -56,6 +74,7 @@
                 {translate("SHOW_ERROR_LOGS")}
             </button>
         </Dropdown>
+        <div data-vertdivider="-"></div>
         <div class="version" on:click={() => shell.openExternal("https://github.com/projection-engine")}>
             {translate("VERSION")}
         </div>
@@ -63,7 +82,14 @@
 </div>
 
 <style>
-    .error-logging{
+    .console {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        color: var(--pj-color-quinary);
+    }
+
+    .error-logging {
         border: none;
         display: flex;
         align-items: center;
@@ -71,6 +97,7 @@
         width: 25px;
         height: 25px;
     }
+
     .meta-data {
         margin-left: auto;
         display: flex;

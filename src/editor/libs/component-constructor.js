@@ -19,7 +19,6 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         if (autoUpdate)
             SelectionStore.updateStore()
 
-        alert.pushAlert(Localization.PROJECT.ALERTS.ERROR_LOADING)
         return
     }
 
@@ -32,13 +31,10 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         }
         if (autoUpdate)
             SelectionStore.updateStore()
-        alert.pushAlert(Localization.PROJECT.ALERTS.ERROR_LOADING)
         return
     }
 
-    const result = EntityAPI.linkScript(data, entity, scriptID, reg.path)
-    if(!result)
-        alert.pushAlert(Localization.PROJECT.ALERTS.ERROR_LOADING)
+    EntityAPI.linkScript(data, entity, scriptID, reg.path)
     if (autoUpdate)
         SelectionStore.updateStore()
 }

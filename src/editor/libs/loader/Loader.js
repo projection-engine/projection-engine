@@ -99,7 +99,6 @@ export default class Loader {
                 items.push(...JSON.parse(event))
             } catch (e) {
                 console.error(e)
-                alert.pushAlert("Error loading file", "error")
             }
 
         for (let i = 0; i < items.length; i++) {
@@ -157,7 +156,6 @@ export default class Loader {
                     }
                     default:
                         console.error(new Error("Not valid file type"))
-                        alert.pushAlert("Error importing file.", "error")
                         break
                 }
         }

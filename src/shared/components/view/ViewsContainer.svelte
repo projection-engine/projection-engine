@@ -2,6 +2,7 @@
     import ResizableBar from "../resizable/ResizableBar.svelte";
     import View from "./components/View.svelte";
     import VIEWS from "./VIEWS";
+    import ToolTip from "../tooltip/ToolTip.svelte";
 
     export let resizePosition
     export let topOffset = undefined
@@ -21,7 +22,7 @@
 </script>
 
 
-{#if resizePosition !== "bottom" && tabs.length > 0 }
+{#if resizePosition !== "bottom" && tabs.length > 0 &&  resizePosition !== "left"}
     <ResizableBar
             resetTargets={{previous: true, next: false}}
             resetWhen={[hidden]}
@@ -105,11 +106,14 @@
             style={`
                 left: ${orientation === "vertical" ? tabs.length === 0 ? leftOffset : "10px" : "100%"};
                 top: ${topOffset ? `calc(100% - ${topOffset})` : "100%"};
-                transform: ${orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 ? "translate(0, -100%)" : "translate(-100%, -100%)")};
+                transform: ${orientation === "vertical" ? "translate(-100%, -100%)" : (tabs.length === 0 && orientation === "vertical" ? "translate(0, -100%)" : "translate(-100%, -100%)")};
             `}
-            class={"extend-view"}></button>
+            class={"extend-view"}
+    >
+        <ToolTip content="Create new view"/>
+    </button>
 </div>
-{#if resizePosition !== "top" && tabs.length > 1}
+{#if resizePosition !== "top" && tabs.length > 1 || resizePosition === "left" && tabs.length > 0}
     <ResizableBar
             resetTargets={{previous: true, next: false}}
             resetWhen={[hidden]}

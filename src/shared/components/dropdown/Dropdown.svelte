@@ -14,7 +14,6 @@
     export let onOpen = undefined
     export let onClose = undefined
     export let buttonStyles = ""
-    export let closeOnClick = undefined
 
 
     let open = false

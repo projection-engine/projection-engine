@@ -45,6 +45,7 @@
             engine.meta = m
             isMetadataLoaded = true
         })
+
     })
     let view = {
         name: "Default",
@@ -74,6 +75,7 @@
 
 <div class="wrapper">
     <Alert/>
+
     <WindowFrame
             options={frameOptions}
             label={engine.meta?.name}
@@ -91,7 +93,7 @@
                 reducedOpacity={engine.executingAnimation}
                 leftOffset={"8px"}
                 orientation={"vertical"}
-                resizePosition={"top"}
+                resizePosition={"left"}
         />
         <div class="content">
             {#if isMetadataLoaded}

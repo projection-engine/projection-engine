@@ -40,6 +40,5 @@ export default async function handleDropFolder(event, target) {
         }
     } catch (error) {
         console.error(error)
-        alert.pushAlert("Error moving file", "error")
     }
 }

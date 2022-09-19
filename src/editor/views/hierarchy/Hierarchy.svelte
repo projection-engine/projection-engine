@@ -12,6 +12,7 @@
     import {onDestroy, onMount} from "svelte";
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getHotkeys from "../viewport/utils/get-hotkeys";
+    import getNativeComponents from "../inspector/utils/get-native-components";
 
 
     export let hidden = undefined
@@ -35,6 +36,7 @@
     onDestroy(() => {
         HotKeys.unbindAction(ref)
     })
+    $: nativeComponents = getNativeComponents()
 </script>
 
 
@@ -55,20 +57,24 @@
             setSearchString={v => search = v}
     />
 
-    <Dropdown hideArrow={true}>
-        <button slot="button" class="dropdown">
+    <Dropdown hideArrow={true} >
+        <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={translate("COMPONENT_FILTER")}/>
         </button>
-        {#each Object.keys(COMPONENTS) as key}
-            <button on:click={() => filteredComponent=== key ? filteredComponent = undefined : filteredComponent = key}
-                    class="button">
-                {#if filteredComponent === key}
-                    <Icon styles="font-size: .9rem">
-                        check
-                    </Icon>
-                {/if}
-                {translate(key)}
+        {#each nativeComponents as component}
+            <button
+                    data-highlight={component[0] === filteredComponent ?  "-" : undefined}
+                    on:click={e => {
+                        if(filteredComponent=== component[0] )
+                            filteredComponent = undefined
+                        else filteredComponent = component[0]
+                        e.currentTarget.closeDropdown()
+                    }}
+                    class="button"
+            >
+                <Icon styles="font-size: .9rem">{component[2]}</Icon>
+                {component[1]}
             </button>
         {/each}
     </Dropdown>

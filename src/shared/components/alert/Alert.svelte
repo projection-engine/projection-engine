@@ -9,7 +9,7 @@
             target.removeChild(newElement)
         }, {once: true})
     }
-    const pushAlert = (message, type, delay = 3500) => {
+    const pushAlert = (message, type, onClick, delay = 3500) => {
         const newElement = document.createElement("div")
         target.appendChild(newElement)
         target.style.zIndex = "9999"
@@ -43,6 +43,9 @@
             </button>
         </div>
       `
+        if (onClick)
+            newElement.addEventListener("click", onClick, {once: true})
+
         newElement
             .getElementsByTagName("button")[0]
             .addEventListener(
@@ -58,7 +61,7 @@
 
 <div bind:this={target} class="target"></div>
 <style>
-    .target{
+    .target {
         position: fixed;
         z-index: 9999;
         bottom: 8px;
