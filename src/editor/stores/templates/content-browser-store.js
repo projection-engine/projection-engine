@@ -9,6 +9,7 @@ export const contentBrowserStore = writable({
     levels: [],
     materials: [],
     materialInstances: [],
+    simpleMaterials: [],
     components: [],
     uiLayouts: []
 });

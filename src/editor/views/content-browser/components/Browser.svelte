@@ -11,13 +11,12 @@
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import HotKeys from "../../../components/metrics/libs/HotKeys";
     import SelectionStore from "../../../stores/SelectionStore";
+    import Localization from "../../../../shared/libs/Localization";
 
     export let fileType
     export let setFileType
     export let searchString
     export let setSearchString
-
-    export let translate
     export let items
     export let currentDirectory
     export let navigationHistory
@@ -35,7 +34,7 @@
     let selected = []
     const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.contentBrowserSelected)
 
-
+    const translate = key => Localization.PROJECT.FILES[key]
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
     const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
         if (trigger !== TRIGGERS[0] && selected.length === 0)
@@ -49,8 +48,7 @@
             currentDirectory,
             setCurrentDirectory,
             navigationHistory,
-            v => currentItem = v,
-            translate
+            v => currentItem = v
         )
     )
 

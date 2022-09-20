@@ -22,7 +22,9 @@
             {title}
             <ToolTip content={title}/>
         {:else}
-            <slot name="header"/>
+            <div data-overflow="-" class="summary-wrapper">
+                <slot name="header"/>
+            </div>
         {/if}
     </div>
     <div class="content" style={`display: ${open ? (type ? type : "grid") : "none"}`}>
@@ -31,6 +33,11 @@
 </div>
 
 <style>
+    .summary-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .dropdown-button {
         border: none;
         background: none;

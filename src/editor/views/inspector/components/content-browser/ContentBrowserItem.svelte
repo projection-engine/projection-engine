@@ -10,8 +10,9 @@
     import MaterialItem from "./MaterialItem.svelte";
     import SceneItem from "./SceneItem.svelte";
     import MeshItem from "./MeshItem.svelte";
+    import SimpleMaterialItem from "./SimpleMaterialItem.svelte";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE]
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.SIMPLE_MATERIAL, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE]
 
     export let item
     let data
@@ -43,6 +44,8 @@
         <CodeItem data={data} item={item}/>
     {:else if data != null && (fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE)}
         <MaterialItem data={data} item={item}/>
+    {:else if data != null && fileType === FILE_TYPES.SIMPLE_MATERIAL}
+        <SimpleMaterialItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.MESH}
         <MeshItem item={item}/>
     {:else}

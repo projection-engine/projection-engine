@@ -72,7 +72,7 @@
 
 <Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);">
     <button class="summary" slot="button">
-        <div style="--color-to-apply: white" class="shaded-icon"></div>
+        <div style="--color-to-apply: white" data-shaded-material="-"></div>
         <div style="white-space: nowrap">{translate(shading)}</div>
     </button>
     <div class="content">
@@ -144,14 +144,7 @@
         background: var(--pj-background-secondary);
     }
 
-    .shaded-icon {
-        transition: 150ms linear;
-        background: linear-gradient(to right bottom, var(--color-to-apply) 25%, #333 75%);
-        min-width: 13px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-    }
+
 
     .summary {
         display: flex;

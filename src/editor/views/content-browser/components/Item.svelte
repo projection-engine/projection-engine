@@ -72,17 +72,12 @@
                 case FILE_TYPES.SCENE:
                     icon = "inventory_2"
                     break
-
                 case FILE_TYPES.LEVEL:
                     icon = "forest"
                     break
                 case FILE_TYPES.UI_LAYOUT:
                     icon = "view_quilt"
                     break
-                case FILE_TYPES.MATERIAL_INSTANCE:
-                    icon = "tune"
-                    break
-
                 default:
                     icon = undefined
                     break
@@ -184,24 +179,40 @@
 
 >
 
-    {#if icon != null}
-        <div class="icon">
+    <div class="icon">
+        {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
-        </div>
-    {:else}
-        <div class="icon">
+        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE}
+            <div data-shaded-material="-" style="width: 60px; height: 60px"></div>
+            {#if metadata.type !== FILE_TYPES.MATERIAL}
+                <div class="file-type">
+                    <Icon styles="font-size: 1.3rem">
+                        {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE}
+                            copy_all
+                        {:else}
+                            fast_forward
+                        {/if}
+                    </Icon>
+                </div>
+            {/if}
+        {:else if metadata.type === FILE_TYPES.MESH || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
                     {#if metadata.type === FILE_TYPES.MESH}
                         category
                     {:else}
-                        texture
+                        image
                     {/if}
                 </Icon>
             </Preview>
-        </div>
-    {/if}
+            {#if metadata.type === FILE_TYPES.TEXTURE}
+                <div class="file-type">
+                    <Icon styles="font-size: 1.3rem">image</Icon>
+                </div>
+            {/if}
+        {/if}
+    </div>
     {#if isOnRename}
         <Input
                 hasBorder="true"
@@ -220,6 +231,21 @@
 </div>
 
 <style>
+    .file-type {
+        width: 25px;
+        height: 25px;
+
+        position: absolute;
+        bottom: 3px;
+        left: 3px;
+        opacity: .85;
+        border-radius: 3px;
+        backdrop-filter: blur(5px) brightness(85%);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     .icon {
         position: relative;
@@ -235,7 +261,7 @@
     }
 
     .image {
-        max-height: 100%;
+        max-width: 100%;
     }
 
     .label {

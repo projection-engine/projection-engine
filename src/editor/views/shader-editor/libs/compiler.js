@@ -4,9 +4,10 @@ import forwardTemplate from "../templates/shaders/forward-shader"
 import resolveRelationship from "./resolve-relationship"
 import unlitTemplate from "../templates/shaders/unlit-shader"
 import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES";
-import {vertex} from "../../../../../public/engine/production/shaders/FALLBACK.glsl"
+
 import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
 import cloneClass from "../../../utils/clone-class";
+import TEMPLATE_VERTEX_SHADER from "../../../../../public/engine/static/TEMPLATE_VERTEX_SHADER";
 
 
 function getShadingTemplate(type) {
@@ -23,16 +24,9 @@ function getShadingTemplate(type) {
 }
 
 function getShaderVertex(type) {
-    switch (type) {
-        case MATERIAL_RENDERING_TYPES.FORWARD:
-            return vertex
-        case MATERIAL_RENDERING_TYPES.DEFERRED:
-            return vertex
-        case MATERIAL_RENDERING_TYPES.SKYBOX:
-            return vertexSkybox
-        default:
-            return vertex
-    }
+    if(type === MATERIAL_RENDERING_TYPES.SKYBOX)
+        return vertexSkybox
+    return TEMPLATE_VERTEX_SHADER
 }
 
 export default async function compiler(n, links) {

@@ -129,6 +129,8 @@ export default class Loader {
                         }
                         break
                     }
+                    case FILE_TYPES.SIMPLE_MATERIAL:
+                    case FILE_TYPES.MATERIAL_INSTANCE:
                     case FILE_TYPES.MATERIAL: {
 
                         const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(mouseX, mouseY))

@@ -104,6 +104,7 @@ export default class ContentBrowserAPI {
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
             materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
+            simpleMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SIMPLE_MATERIAL)),
             promises = []
 
 
@@ -111,7 +112,7 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(meshesReg, FILE_TYPES.MESH))
         promises.push(...mapAsset(materialsReg, FILE_TYPES.MATERIAL))
         promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
-
+        promises.push(...mapAsset(simpleMaterialReg, FILE_TYPES.MATERIAL_INSTANCE))
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
         promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
@@ -152,6 +153,8 @@ export default class ContentBrowserAPI {
                 case FILE_TYPES.MATERIAL_INSTANCE:
                     result.materialInstances.push(current)
                     break
+
+
                 default:
                     break
             }

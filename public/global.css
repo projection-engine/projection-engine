@@ -316,3 +316,13 @@ overflow: hidden;
         opacity: 1 ;
     }
 }
+
+
+*[data-shaded-material="-"] {
+    transition: 150ms linear;
+    background: linear-gradient(to right bottom, white 25%, #333 75%);
+    min-width: 13px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+}

@@ -237,6 +237,13 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            ALBEDO: "Albedo",
+            NORMAL:"Normal" ,
+            METALLIC: "Metallic",
+            EMISSION: "Emission",
+            ROUGHNESS: "Roughness",
+
+
             NO_UNIFORMS: "No dynamic inputs found",
             INERTIA: "Inertia",
             IMPORT_LAYOUT: "Import UI layout",
@@ -391,7 +398,9 @@ export default class Localization {
             ALWAYS_FACE_CAMERA: "Always face camera"
 
         },
+
         FILES: {
+            NEW_SIMPLE_MATERIAL: "New simple material",
             FILE_TYPE: "File type",
             CHILDREN: "Children quantity",
             ITEM_NAME: "Name",

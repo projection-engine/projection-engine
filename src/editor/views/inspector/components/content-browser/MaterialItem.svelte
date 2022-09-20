@@ -88,7 +88,6 @@
                 GPU.cleanUpTextures()
             }
         }, t ? t : 0)
-
     }
 </script>
 
@@ -97,16 +96,14 @@
     {#each uniforms as uniform, i}
         <div class="section">
             {#if uniform.type === DATA_TYPES.TEXTURE}
-
                 <small>{uniform.label}</small>
                 <Selector
                         type="image"
                         selected={uniform.data}
                         handleChange={v => {
-                  updateAsset(i, v.registryID)
-                }}
+                            updateAsset(i, v.registryID)
+                        }}
                 />
-
             {/if}
             {#if uniform.type === DATA_TYPES.FLOAT}
                 <Range

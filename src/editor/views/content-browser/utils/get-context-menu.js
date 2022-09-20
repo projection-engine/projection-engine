@@ -7,9 +7,12 @@ import importFile from "../../../libs/import-file";
 import AssetAPI from "../../../../shared/libs/files/AssetAPI";
 import UI_TEMPLATE from "../../../../../public/engine/static/templates/UI_TEMPLATE";
 import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
+import Localization from "../../../../shared/libs/Localization";
+import SIMPLE_MATERIAL_TEMPLATE from "../../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
 
 const {shell} = window.require("electron")
-export default function getContextMenu(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem, translate) {
+const translate = key => Localization.PROJECT.FILES[key]
+export default function getContextMenu(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem ) {
     const check = async (path, ext) => {
         let n = path + ext
         let it = 0
@@ -217,6 +220,17 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                             })
                     }
                 },
+                {
+                    label: translate("NEW_SIMPLE_MATERIAL"),
+                    icon: "texture",
+                    onClick: async () => {
+                        let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_SIMPLE_MATERIAL"), FILE_TYPES.SIMPLE_MATERIAL)
+                        AssetAPI.writeAsset(path, JSON.stringify(SIMPLE_MATERIAL_TEMPLATE))
+                            .then(() => {
+                                FilesStore.refreshFiles()
+                            })
+                    }
+                },
 
                 {
                     label: translate("NEW_COMPONENT"),
@@ -231,7 +245,7 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
 
                 {
                     label: translate("NEW_LEVEL"),
-                    icon: "play_circle_filled",
+                    icon: "forest",
                     onClick: async () => {
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_LEVEL"), FILE_TYPES.LEVEL)
 

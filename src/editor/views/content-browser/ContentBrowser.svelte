@@ -106,7 +106,6 @@
         {/if}
         <Browser
                 internalID={internalID}
-                bookmarks={store.bookmarks}
                 path={path}
                 view={view}
 

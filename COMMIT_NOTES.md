@@ -1,10 +1,4 @@
-- Fixed view tab switching error
-- Optimization to hierarchy structure 
-- Fixed component filter for hierarchy
-- Fixed view tabs double click causing current tab to be undefined
-- Fixed view tab removal causing current tab to be undefined
-- Reworked visuals for hierarchy, now an icon for each component will appear alongside the name
-- Implemented "hot-reload" of UI layouts
-- Viewport tab is now integrated with settings (serializable per tab)
-- Reworked initial view layouts
-- Reworked UI component to integrate with UILayout files instead of cloning them
+- Simple material structure initialization
+  - Integration with content browser
+  - Custom form on the inspector
+- Enhanced fallback material to support simple material as a basis

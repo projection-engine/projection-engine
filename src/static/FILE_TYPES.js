@@ -5,6 +5,7 @@ module.exports =  {
     COMPONENT: ".component",
     MATERIAL: ".material",
     MATERIAL_INSTANCE: ".minstance",
+    SIMPLE_MATERIAL: ".smaterial",
     TEXTURE: ".texture",
     REGISTRY: ".reg",
     SCENE: ".scene",
