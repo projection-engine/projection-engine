@@ -1,19 +1,45 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
 
-export default function getEngineIcon(nodeRef){
+export default function getEngineIcon(nodeRef) {
+    let icons = []
     if (nodeRef) {
         if (nodeRef.components.get(COMPONENTS.POINT_LIGHT))
-            return "lightbulb"
+            icons.push({
+                icon: "lightbulb",
+                label: "Point light"
+            })
         if (nodeRef.components.get(COMPONENTS.DIRECTIONAL_LIGHT))
-            return "light_mode"
+            icons.push({
+                icon: "light_mode",
+                label: "Directional light"
+            })
         if (nodeRef.components.get(COMPONENTS.PROBE))
-            return "lens_blur"
+            icons.push({
+                icon: "lens_blur",
+                label: "Probe"
+            })
         if (nodeRef.components.get(COMPONENTS.MESH))
-            return "category"
+
+            icons.push({
+                icon: "category",
+                label: "Mesh renderer"
+            })
         if (nodeRef.components.get(COMPONENTS.CAMERA))
-            return "videocam"
+
+            icons.push({
+                icon: "videocam",
+                label: "Camera"
+            })
         if (nodeRef.components.get(COMPONENTS.SPRITE))
-            return "image"
-        return "inventory_2"
+            icons.push({
+                icon: "image",
+                label: "Sprite"
+            })
+        if (nodeRef.components.get(COMPONENTS.UI))
+            icons.push({
+                icon: "widgets",
+                label: "UI renderer"
+            })
     }
+    return icons
 }

@@ -79,8 +79,13 @@ function updateCache(id, add, callback) {
         let currentFile = []
         if (!err)
             currentFile = JSON.parse(buffer.toString())
-        if (add)
+        if(!Array.isArray(currentFile))
+            currentFile = []
+
+        if (add) {
+            currentFile = currentFile.filter(e => e !== id)
             currentFile.push(id)
+        }
         else
             currentFile = currentFile.filter(e => e !== id)
         fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {

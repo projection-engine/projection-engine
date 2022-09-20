@@ -24,7 +24,7 @@ const getHierarchy = (start) => {
     return result
 }
 
-export default function getContextMenu(open, setOpen) {
+export default function getContextMenu(open, updateOpen) {
     const SELECTION = [
 
         {
@@ -41,7 +41,10 @@ export default function getContextMenu(open, setOpen) {
         },
         {
             label: "Close all",
-            onClick: () => setOpen({})
+            onClick: () => {
+                open.clear()
+                updateOpen()
+            }
         }
     ]
     return [
@@ -90,12 +93,12 @@ export default function getContextMenu(open, setOpen) {
             requiredTrigger: "data-node",
             label: "Close parent",
             onClick: (target) => {
-                const newOpen = {...open}
+
                 const node = QueryAPI.getEntityByID(target.getAttribute("data-node"))
                 if (!node)
                     return
-                delete newOpen[node.parent.id]
-                setOpen(newOpen)
+                open.delete(node.parent.id)
+                updateOpen()
             }
         },
         {

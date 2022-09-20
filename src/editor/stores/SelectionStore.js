@@ -1,5 +1,6 @@
 import {get, writable} from "svelte/store";
 import {Engine} from "../../../public/engine/production";
+import HierarchyController from "../libs/HierarchyController";
 
 const TYPES = {
     ENGINE: "ENGINE",
@@ -49,6 +50,7 @@ export default class SelectionStore {
                 value.selectedEntity = Engine.entitiesMap.get(selected[0] ? selected[0] : value.lockedEntity)
             else
                 value.selectedEntity = undefined
+                HierarchyController.updateSurface(value.lockedEntity, value.array )
         } else
             value.selectedEntity = undefined
 
@@ -63,7 +65,6 @@ export default class SelectionStore {
     static get engineSelected() {
         return SelectionStore.TARGET === TYPES.ENGINE ? SelectionStore.array : []
     }
-
 
 
     static set contentBrowserSelected(data) {
@@ -84,7 +85,7 @@ export default class SelectionStore {
 
 
     static get selectedEntity() {
-        return SelectionStore.TARGET === TYPES.ENGINE ?  SelectionStore.data.selectedEntity : undefined
+        return SelectionStore.TARGET === TYPES.ENGINE ? SelectionStore.data.selectedEntity : undefined
     }
 
 

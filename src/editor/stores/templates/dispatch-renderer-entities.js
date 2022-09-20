@@ -7,6 +7,7 @@ import AXIS from "../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
 import {Engine, EntityAPI, getPickerId} from "../../../../public/engine/production";
+import HierarchyController from "../../libs/HierarchyController";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -134,6 +135,6 @@ export default function dispatchRendererEntities({type, payload}) {
             entity.parent = undefined
 
     }
-
+    HierarchyController.updateHierarchy()
     EngineStore.updateStore({...EngineStore.engine, changeID})
 }

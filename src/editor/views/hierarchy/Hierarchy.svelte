@@ -11,6 +11,9 @@
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getHotkeys from "../viewport/utils/get-hotkeys";
     import getNativeComponents from "../inspector/utils/get-native-components";
+    import dragDrop from "../../../shared/components/drag-drop/drag-drop";
+    import EngineStore from "../../stores/EngineStore";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
 
 
     export let hidden = undefined
@@ -35,6 +38,32 @@
         HotKeys.unbindAction(ref)
     })
     $: nativeComponents = getNativeComponents()
+
+    const draggable = dragDrop()
+    onMount(() => {
+        draggable.onMount({
+            targetElement: ref,
+            onDrop: (entityDragged, event) => {
+
+                if (event.ctrlKey) {
+                    if (entityDragged.parent)
+                        entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
+                    entityDragged.parent = undefined
+                    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+                } else if (event.shiftKey) {
+                    const clone = entityDragged.clone()
+
+                    clone.parentCache = undefined
+                    clone.parent = undefined
+
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
+                }
+            },
+            onDragOver: () => `CTRL to parent | SHIFT to clone`
+        })
+    })
+
+    onDestroy(() => draggable.onDestroy())
 </script>
 
 
@@ -45,7 +74,7 @@
         title={translate("TITLE")}
         icon={"account_tree"}
 >
-    <div data-vertdivider="-" style="	margin: 0 2px;"></div>
+    <div data-vertdivider="-" style="margin: 0 2px;"></div>
     <Input
             hasBorder={true}
             width={"100%"}
@@ -67,7 +96,7 @@
                         if(filteredComponent=== component[0] )
                             filteredComponent = undefined
                         else filteredComponent = component[0]
-                        e.currentTarget.closeDropdown()
+                            e.currentTarget.closeDropdown()
                     }}
                     class="button"
             >

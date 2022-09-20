@@ -98,6 +98,9 @@
 .buttonIcon.hierarchy-branch:active {
   color: rgb(203 110 53);
 }
+.buttonIcon.hierarchy-branch:hover {
+  backdrop-filter: brightness(150%);
+}
 
 .label.hierarchy-branch {
   width: 100%;

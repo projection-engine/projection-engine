@@ -11,34 +11,43 @@ const rm = require("../utils/file-system/rm")
 const readdir = require("../utils/file-system/readdir")
 const directoryStructure = require("../utils/file-system/directory-structure")
 const REG_PATH = require("../../../src/static/REG_PATH")
+const FILE_TYPES = require("../../../src/static/FILE_TYPES");
 
-const watching = new Map()
-const watchingSignal = new Map()
+let watchSignals = []
+
+function unwatch() {
+    for (let i = 0; i < watchSignals.length; i++) {
+        const signal = watchSignals[i]
+        if(signal)
+        signal.close()
+    }
+    watchSignals = []
+}
+
+let filesToWatch = []
 module.exports = function () {
-    ipcMain.on("fs-watch", async (event, {path, listenID}) => {
-        const p = pathRequire.resolve(path)
-        const prev = watching.get(p)
-        const callback = {sender: event.sender, id: listenID}
-        watching.set(p, prev ? [...prev, callback] : [callback])
-        if (!prev || prev.length === 0)
-            watchingSignal.set(p, fs.watch(path, () => {
-                const prev = watching.get(p)
-                prev.forEach(callback => callback.sender.send("fs-watch-" + callback.id))
-            }))
-    })
-    ipcMain.on("fs-unwatch", async (event, {path, listenID}) => {
-        const p = pathRequire.resolve(path)
-        const prev = watching.get(p)
-        const watcher = watchingSignal.get(p)
-        if(watcher && (!prev || prev.length === 0))
-             watcher.close()
+    ipcMain.on("fs-watch", async (ev, path) => {
+        if (watchSignals.length > 0)
+            unwatch()
 
-        const found = prev.findIndex(p => p.id === listenID)
-        if(found > -1) {
-            prev.splice(found, 1);
-            watching.set(p, prev)
+        filesToWatch = await directoryStructure(path)
+
+        for (let i = 0; i < filesToWatch.length; i++) {
+            const file = filesToWatch[i]
+            if (!file.includes(FILE_TYPES.UI_LAYOUT) && !file.includes(FILE_TYPES.COMPONENT))
+                continue
+            watchSignals.push(fs.watch(file, (event) => {
+                if (event === "change")
+                    ev.sender.send("fs-watch", file)
+            }))
         }
+
     })
+
+    ipcMain.on("fs-update-watch", async (ev, path) => {
+        filesToWatch = await directoryStructure(path)
+    })
+    ipcMain.on("fs-unwatch", unwatch)
     ipcMain.on("fs-read", async (event, data) => {
         const {
             path, options, listenID

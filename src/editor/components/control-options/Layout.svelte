@@ -34,7 +34,6 @@
             }
             case "dblclick": {
                 e.currentTarget.type = "text"
-                SettingsStore.updateStore({...settings, currentView: i})
                 break
             }
             case "input":
@@ -50,13 +49,13 @@
 
     }
     const removeView = (i) => {
-
         const obj = {...settings}
         if (i === obj.currentView)
             obj.currentView = 0
+        else
+            obj.currentView--
         obj.views = obj.views.filter((_, index) => i !== index)
         SettingsStore.updateStore(obj)
-
     }
 </script>
 
@@ -74,13 +73,12 @@
                     type="button"
                     value={v.name}
             >
-
-                <button disabled={settings.views.length === 0 || settings.currentView === i} on:click={() => removeView(i)} class="remove-button">
-                    <Icon styles="font-size: .8rem">
-                        clear
-                    </Icon>
-                </button>
-
+            <button disabled={settings.currentView === i} on:click={() => removeView(i)}
+                    class="remove-button">
+                <Icon styles="font-size: .8rem">
+                    clear
+                </Icon>
+            </button>
         </div>
     {/each}
     {#if settings.views.length < 10}
@@ -115,6 +113,7 @@
     }
 
     .remove-button {
+        --pj-accent-color: #ff5555;
         border: none;
         padding: 0;
         background: transparent;

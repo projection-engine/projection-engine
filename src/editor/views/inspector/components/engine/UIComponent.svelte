@@ -12,6 +12,7 @@
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
+    import {Engine} from "../../../../../../public/engine/production";
 
     export let entity
     export let submit
@@ -34,7 +35,8 @@
         const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + ref.path)
         if (!file)
             return
-        update("uiLayoutData", file)
+        Engine.UILayouts.set(reg.registryID, file)
+        update("uiLayoutID", reg.registryID)
     }
 
 </script>
@@ -54,7 +56,7 @@
     <fieldset>
         <legend>{translate("IMPORT_LAYOUT")}</legend>
         <Selector
-                selected={component.uiLayoutData}
+                selected={component.uiLayoutID}
                 type="ui"
                 handleChange={loadUILayout}
         />

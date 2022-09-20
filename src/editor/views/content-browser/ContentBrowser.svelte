@@ -20,7 +20,6 @@
     const internalID = v4()
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
-    onDestroy(() => unsubscribeStore())
 
     let currentDirectory = {id: FilesAPI.sep}
 
@@ -56,6 +55,7 @@
     })
     onDestroy(() => {
         GlobalContentBrowserController.unsubscribe(internalID)
+        unsubscribeStore()
     })
 
 </script>

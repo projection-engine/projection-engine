@@ -10,7 +10,7 @@
     export let depth = undefined
     export let nodeRef = undefined
     export let open = undefined
-    export let setOpen = undefined
+    export let updateOpen = undefined
     export let selected = undefined
     export let lockedEntity = undefined
     export let setLockedEntity = undefined
@@ -31,21 +31,22 @@
     }
 
     const onExpand = () => {
-        if (!open[nodeRef.id])
-            setOpen({...open, [nodeRef.id]: true})
+        if (!open.get(nodeRef.id)) {
+            open.set(nodeRef.id, true)
+            updateOpen()
+        }
         else {
-            const newOpen = {...open}
-            delete newOpen[nodeRef.id]
+            open.delete(nodeRef.id)
             const callback = (node) => {
                 node.children.forEach(c => {
-                    if (newOpen[c.id]) {
-                        delete newOpen[c.id]
+                    if (open.get(c.id)) {
+                        open.delete(c.id)
                         callback(c)
                     }
                 })
             }
             callback(nodeRef)
-            setOpen(newOpen)
+            updateOpen()
         }
     }
     const loopHierarchy = (entity, newValue) => {
@@ -70,7 +71,7 @@
     <div class="summary hierarchy-branch">
         {#if nodeRef.children.length > 0}
             <button
-                    data-open={open[nodeRef.id] ? "-" : ""}
+                    data-open={open.get(nodeRef.id) ? "-" : ""}
                     class="button-small hierarchy-branch"
                     on:click={onExpand}
             >
@@ -79,7 +80,7 @@
         {:else}
             <div class="button-small hierarchy-branch"></div>
         {/if}
-        <DraggableEntity setOpen={setOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
+        <DraggableEntity updateOpen={updateOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
                          lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
         <button class="button-small hierarchy-branch" on:click={onHide}>
             <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>

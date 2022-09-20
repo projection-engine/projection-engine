@@ -16,12 +16,12 @@
     export let lockedEntity
     export let setLockedEntity
     export let hiddenActiveChildren
-    export let setOpen
+    export let updateOpen
     export let open
 
     let ref
 
-    $: icon = getEngineIcon(node)
+    $: icons = getEngineIcon(node)
     const draggable = dragDrop(true)
     onMount(() => {
 
@@ -45,7 +45,7 @@
                     dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
                 }
             },
-            dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">${icon}</span> ${node.name}</div>`,
+            dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">view_in_ar</span> ${node.name}</div>`,
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
@@ -55,14 +55,23 @@
     <button
             data-locked={lockedEntity === node.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"
-            style={icon === "inventory_2" && lockedEntity !== node.id ?   "color: var(--folder-color)" : undefined}
+            style={lockedEntity === node.id ? undefined : "color: var(--folder-color)"}
             on:click={() => setLockedEntity(node.id)}
     >
-        <Icon>{icon}</Icon>
+        <Icon>view_in_ar</Icon>
     </button>
-    <div class="node" on:click={(e) => updateSelection(node.id, e.ctrlKey)}>
+    <div
+            class="node"
+            on:click={(e) => updateSelection(node.id, e.ctrlKey)}
+
+    >
         {node.name}
+        {#each icons as icon}
+            <Icon styles="font-size: .9rem"><ToolTip content={icon.label}/>{icon.icon}</Icon>
+
+        {/each}
     </div>
+
     {#if hiddenActiveChildren != null}
         <div class="children">
             {#each hiddenActiveChildren as entity, i}
@@ -72,15 +81,14 @@
                                 data-locked={"-"}
                                 class="buttonIcon hierarchy-branch"
                                 on:click={() => {
-                            const newOpen = {...open}
-                            let current = QueryAPI.getEntityByID(entity)
-                            while(current){
-                                newOpen[current.id] = true
-                                current = current?.parent
-                            }
-                            SelectionStore.engineSelected = [entity]
-                            setOpen(newOpen)
-                        }}
+                                    let current = QueryAPI.getEntityByID(entity)
+                                    while(current){
+                                        open.set(current.id, true)
+                                        current = current?.parent
+                                    }
+                                    SelectionStore.engineSelected = [entity]
+                                    updateOpen()
+                                }}
                         >
                             <Icon styles="font-size: .9rem">lock</Icon>
                             <ToolTip content={Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}/>
@@ -103,6 +111,13 @@
         height: 23px;
         line-height: 23px;
         color: var(--pj-color-quaternary);
+
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow: hidden;
+
+        white-space: nowrap;
     }
 
     .dot {

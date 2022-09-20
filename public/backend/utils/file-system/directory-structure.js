@@ -5,7 +5,7 @@ const lstat = require("./lstat");
 
 
 module.exports = async function directoryStructure(dir){
-    let results = []
+    const results = []
     if (fs.existsSync(dir)) {
         const [err, list] = await readdir(dir)
         if (err) return []
@@ -16,8 +16,7 @@ module.exports = async function directoryStructure(dir){
             const stat = (await lstat(file))[1]
             results.push(file)
             if (stat && stat.isDirectory) {
-                const res = await directoryStructure(file)
-                results = results.concat(res)
+                results.push(...(await directoryStructure(file)))
                 if (!--pending) return results
             } else if (!--pending) return results
         }

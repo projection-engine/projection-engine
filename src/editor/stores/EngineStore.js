@@ -99,7 +99,6 @@ export default class EngineStore {
                     const entity = Entity.parseEntityObject(entities[i])
                     for (let i = 0; i < entity.scripts.length; i++)
                         await componentConstructor(entity, entity.scripts[i].id, false)
-
                     const imgID = entity.components.get(COMPONENTS.SPRITE)?.imageID
                     checkTexture: if (imgID) {
                         const textures = GPU.textures
@@ -107,6 +106,13 @@ export default class EngineStore {
                             break checkTexture
                         await EngineStore.loadTextureFromImageID(imgID)
                     }
+
+                    const uiID = entity.components.get(COMPONENTS.UI)?.uiLayoutID
+                    if (uiID) {
+                        const rs = await RegistryAPI.readRegistryFile(uiID)
+                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path))
+                    }
+
                     mapped.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})

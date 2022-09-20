@@ -16,11 +16,14 @@
     import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getHotkeys from "./utils/get-hotkeys";
+    import NodeFS from "../../../shared/libs/NodeFS";
+    import FilesStore from "../../stores/FilesStore";
 
     export let isReady = false
+    export let updateView
+    export let viewTab = VIEWPORT_TABS.EDITOR
 
 
-    let viewportTab = VIEWPORT_TABS.EDITOR
     let engine = {}
     let settings = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -43,11 +46,13 @@
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
     $: if (isReady) MetricsPass.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
-    $: if (engine.executingAnimation) viewportTab = VIEWPORT_TABS.EDITOR
+    $: if (engine.executingAnimation) updateView(VIEWPORT_TABS.EDITOR)
+    $: console.log(viewTab)
     $: {
         if (isReady) {
             if (!engine.executingAnimation) {
-                if (viewportTab === VIEWPORT_TABS.EDITOR) {
+                FilesStore.watchFiles()
+                if (viewTab === VIEWPORT_TABS.EDITOR) {
                     Engine.start()
                     CameraTracker.startTracking()
                     gpu.canvas.style.opacity = "1"
@@ -56,12 +61,14 @@
                     else
                         gpu.canvas.style.width = "100%"
                 } else {
+
                     CameraTracker.stopTracking()
                     Engine.stop()
                     gpu.canvas.style.width = "100%"
                     gpu.canvas.style.opacity = "0"
                 }
             } else {
+                FilesStore.unwatchFiles()
                 CameraTracker.stopTracking()
                 Engine.start()
                 gpu.canvas.style.opacity = "1"
@@ -76,43 +83,43 @@
 <div class="viewport" bind:this={ref}>
     {#if !engine.executingAnimation}
         <div class="header">
-            {#if viewportTab === VIEWPORT_TABS.EDITOR}
+            {#if viewTab === VIEWPORT_TABS.EDITOR}
                 <EditorHeader
                         settings={settings}
                         engine={engine}
                 >
                     <Header
-                            setViewportTab={v => viewportTab = v}
-                            viewportTab={viewportTab}
+                            setViewportTab={updateView}
+                            viewportTab={viewTab}
                             engine={engine}
                             settings={settings}
                             slot="switch-button"
                     />
                 </EditorHeader>
-            {:else if viewportTab === VIEWPORT_TABS.UI}
+            {:else if viewTab === VIEWPORT_TABS.UI}
                 <Header
-                        setViewportTab={v => viewportTab = v}
-                        viewportTab={viewportTab}
+                        setViewportTab={updateView}
+                        viewportTab={viewTab}
                         engine={engine}
                         settings={settings}
                 />
                 <UIEditorHeader
-                    settings={settings}
+                        settings={settings}
                 />
             {/if}
         </div>
     {/if}
     <div class="wrapper">
         <slot name="canvas"/>
-        {#if !engine.executingAnimation}
-            {#if viewportTab === VIEWPORT_TABS.EDITOR && isReady}
+        {#if !engine.executingAnimation && isReady}
+            {#if viewTab === VIEWPORT_TABS.EDITOR }
                 <EditorLayout
                         settings={settings}
                         engine={engine}
                         translate={translate}
                         isReady={isReady}
                 />
-            {:else if viewportTab === VIEWPORT_TABS.UI}
+            {:else if viewTab === VIEWPORT_TABS.UI}
                 <UILayout engine={engine} settings={settings}/>
             {/if}
         {/if}

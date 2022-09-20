@@ -14,7 +14,14 @@
     import ROUTES from "../static/ROUTES";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
+    import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
 
+    const FALLBACK = {
+        name: "Default",
+        bottom: [],
+        left: [],
+        right: []
+    }
     const PAGE = {closeEvent: true, minimizeEvent: true, maximizeEvent: true}
     const {ipcRenderer} = window.require("electron")
     let engine
@@ -47,14 +54,9 @@
         })
 
     })
-    let view = {
-        name: "Default",
-        bottom: [],
-        left: [],
-        right: []
-    }
+    let view = FALLBACK
 
-    $: view = settings.views[settings.currentView]
+    $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK
 
     $: {
         if (isReady && !isDataLoaded) {
@@ -97,7 +99,7 @@
         />
         <div class="content">
             {#if isMetadataLoaded}
-                <Viewport isReady={isReady}>
+                <Viewport isReady={isReady} viewTab={view.viewport ? view.viewport : VIEWPORT_TABS.EDITOR} updateView={(viewTab) => updateView("viewport", viewTab)}>
                     <Canvas
                             isExecuting={engine.executingAnimation}
                             slot="canvas"

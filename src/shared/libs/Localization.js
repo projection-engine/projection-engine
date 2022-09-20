@@ -72,7 +72,7 @@ export default class Localization {
         INFO: {
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "5.1.0-alpha",
+            VERSION: "5.2.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },

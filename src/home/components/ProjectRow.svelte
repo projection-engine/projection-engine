@@ -98,11 +98,7 @@
         >
             <Icon>edit</Icon>
         </button>
-        <button
-                disabled={isOpen}
-                on:click={() => open()}
-                data-focusbutton="-"
-        >Open</button>
+        <button on:click={() => open()} data-focusbutton="-">Open</button>
     </div>
 </div>
 
