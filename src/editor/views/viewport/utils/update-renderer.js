@@ -37,11 +37,12 @@ export default function updateRenderer(selected, engine, settings) {
     }
 
     ShadowMapPass.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
-    Engine.params = {
+
+    Engine.updateParams({
         ...settings,
         selected,
         onWrap: executingAnimation ? null : Wrapper,
-    }
+    })
     if(!executingAnimation)
         CameraTracker.startTracking()
     bindGizmo(selected, settings)

@@ -2,23 +2,24 @@
     import {onMount} from "svelte";
     import INFORMATION_CONTAINER from "../../../../data/INFORMATION_CONTAINER";
 
+    let ref
     let isChanging = false
     onMount(() => {
-        const e = document.getElementById(INFORMATION_CONTAINER.TRANSFORMATION)
-        e.isChanging = () => {
+        ref.isChanging = () => {
             if (isChanging)
                 return
             isChanging = true
         }
-        e.finished = () => isChanging = false
+        ref.finished = () => isChanging = false
     })
+    $: console.log(isChanging)
 </script>
 
 
-<div id={INFORMATION_CONTAINER.TRANSFORMATION} style={!isChanging ? "display: none" : undefined} class="tooltip"></div>
+<div id={INFORMATION_CONTAINER.TRANSFORMATION} bind:this={ref} style={!isChanging ? "display: none" : undefined} class="wrapper"></div>
 
 <style>
-    .tooltip{
+    .wrapper{
         position: absolute;
         bottom: 4px;
         left: 4px;
@@ -26,5 +27,6 @@
         padding: 4px;
         border-radius: 3px;
         font-size: .7rem;
+        z-index: 999;
     }
 </style>

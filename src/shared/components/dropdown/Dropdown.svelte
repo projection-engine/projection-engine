@@ -19,7 +19,15 @@
     let open = false
     let modal
     let button
-    $: if (modal && button) transformModal(open, modal, button)
+    $: {
+        if (modal && button && open) {
+            const mutation = new MutationObserver(() => {
+                Array.from(modal.children).forEach(c => c.closeDropdown = () => close())
+                transformModal(modal, button)
+            })
+            mutation.observe(modal, {childList: true})
+        }
+    }
 
     function close() {
         if (onClose && open)
@@ -30,7 +38,7 @@
     }
 
     function handler(event) {
-        if (!modal.contains(event.target)  && !button.contains(event.target))
+        if (!modal.contains(event.target) && !button.contains(event.target))
             close()
     }
 
@@ -45,15 +53,12 @@
         document.removeEventListener("click", handler)
     })
 
+
     $: {
-        if(modal) {
-            if (open) {
+        if (modal) {
+            if (open)
                 document.addEventListener("click", handler)
-                if(!modal.initialized) {
-                    modal.initialized = true
-                    Array.from(modal.children).forEach(c => c.closeDropdown = () => close())
-                }
-            } else
+            else
                 document.removeEventListener("click", handler)
         }
     }
@@ -78,13 +83,16 @@
     {#if !hideArrow}
         <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>
     {/if}
+
     <div
             style={styles}
             class="modal dropdown"
             bind:this={modal}
 
     >
-        <slot/>
+        {#if open}
+            <slot/>
+        {/if}
     </div>
 </div>
 
@@ -101,6 +109,7 @@
         background: var(--pj-background-tertiary);
         border: var(--pj-border-primary) 1px solid;
     }
+
     .button:active {
         color: var(--pj-accent-color);
         background: var(--pj-background-primary);

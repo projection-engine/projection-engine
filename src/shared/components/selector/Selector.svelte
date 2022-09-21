@@ -29,7 +29,10 @@
         if (selected === FALLBACK_MATERIAL)
             state = {name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}
         else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
-            state = {name: translate(Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)), registryID: selected}
+            state = {
+                name: translate(Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)),
+                registryID: selected
+            }
         else {
             const rID = selected?.registryID ? selected?.registryID : selected
             let data = getType(store, type, mergeMaterials).find(e => e.registryID === rID)
@@ -38,9 +41,11 @@
     }
 </script>
 
-<Dropdown disabled={disabled} asButton={true}
-          styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
-          buttonStyles={"max-width: 100%; overflow: hidden; width: 100%;" + styles}>
+<Dropdown
+        disabled={disabled}
+        asButton={true}
+        styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
+        buttonStyles={"max-width: 100%; overflow: hidden; width: 100%;" + styles}>
     <button
             disabled={disabled}
             slot="button"

@@ -22,7 +22,7 @@
     $: fileType = "." + item.type
 
     $: {
-
+        data = undefined
         if (fileType !== FILE_TYPES.MESH && fileType !== FILE_TYPES.LEVEL) {
             const fType = VALID.includes(fileType) ? "json" : undefined
             FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fType).then(res => data = res)

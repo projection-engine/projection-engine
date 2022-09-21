@@ -10,8 +10,9 @@
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
 
     const getUniformObject = (u) => {
+        console.log(temp, u)
         const o = {}
-        SIMPLE_MATERIAL_TEMPLATE.uniformData.forEach(uu => o[uu.key] = uu.data)
+        u.forEach(uu => o[uu.key] = uu.data)
         return o
     }
 
@@ -22,24 +23,29 @@
     $: temp = {...data}
     const translate = key => Localization.PROJECT.INSPECTOR[key]
     $: uniform = getUniformObject(temp.uniformData)
-    const updateAsset = (key, value, t) => {
-        console.log(value)
-        clearTimeout(timeout)
-        timeout = setTimeout(async () => {
-            const update = temp.uniformData.map((u, i) => {
+    const updateAsset = async (key, value) => {
+        temp = {
+            ...temp, uniformData: temp.uniformData.map(u => {
                 if (u.key === key)
                     return {...u, data: value}
                 return u
             })
+        }
+        console.log(temp)
+        if (GPU.materials.get(item.registryID) != null) {
+            const instance = GPU.materials.get(item.registryID)
+            await MaterialAPI.updateMaterialUniforms(temp.uniformData, instance)
+            alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
+            GPU.cleanUpTextures()
+        }
+
+        clearTimeout(timeout)
+
+        timeout = setTimeout(async () => {
+
             alert.pushAlert(translate("UPDATING_ASSET"), "alert")
-            await AssetAPI.updateAsset(item.registryID, JSON.stringify({...temp, uniformData: update}))
-            temp = {...temp, uniformData: update}
-            if (GPU.materials.get(item.registryID) != null) {
-                const instance = GPU.materials.get(item.registryID)
-                await MaterialAPI.updateMaterialUniforms(temp.uniformData, instance)
-                alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
-                GPU.cleanUpTextures()
-            }
+            await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+
         }, 250)
     }
 
@@ -52,10 +58,10 @@
     <legend>{translate("ALBEDO")}</legend>
     <Checkbox
             label={translate("USE_SAMPLER")}
-            checked={settings[0]}
+            checked={settings[0] !== 0}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[0] = !settings[0] ? 0 : 1
+                copy[0] = copy[0] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -88,7 +94,7 @@
                 updateAsset("fallbackValues", newRGB)
             }}
             disabled={settings[0]}
-            label={translate("FALLBACK_ALBEDO")}
+            label={translate("FALLBACK_VALUE")}
             value={[fallbackValues[0] * 255, fallbackValues[1] * 255, fallbackValues[2] * 255]}
     />
 </fieldset>
@@ -100,7 +106,7 @@
             checked={settings[1]}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[1] = !settings[1] ? 0 : 1
+                copy[1] = copy[1] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -131,7 +137,7 @@
             checked={settings[2]}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[2] = !settings[2] ? 0 : 1
+                copy[2] = copy[2] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -141,9 +147,30 @@
             selected={uniform.roughness}
             handleChange={v => updateAsset("roughness", v.registryID)}
     />
-    <Range minValue={0} disabled={!settings[2]} label={translate("SCALE_ROUGHNESS")}/>
+    <Range
+            onFinish={v => {
+                const newRGB = [...settings]
+                newRGB[8] = v
+                updateAsset("settings", newRGB)
+            }}
+            value={settings[8]}
+            minValue={0}
+            disabled={!settings[2]}
+            label={translate("SCALE_ROUGHNESS")}
+    />
     <div data-divider="-"></div>
-    <Range maxValue={1} minValue={0} disabled={settings[2]} label={translate("FALLBACK_ROUGHNESS")}/>
+    <Range
+            onFinish={v => {
+                const newRGB = [...fallbackValues]
+                newRGB[6] = v
+                updateAsset("fallbackValues", newRGB)
+            }}
+            value={fallbackValues[6]}
+            maxValue={1}
+            minValue={0}
+            disabled={settings[2]}
+            label={translate("FALLBACK_VALUE")}
+    />
 </fieldset>
 
 <fieldset>
@@ -153,7 +180,7 @@
             checked={settings[3]}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[3] = !settings[3] ? 0 : 1
+                copy[3] = copy[3] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -163,9 +190,30 @@
             selected={uniform.metallic}
             handleChange={v => updateAsset("metallic", v.registryID)}
     />
-    <Range minValue={0} disabled={!settings[3]} label={translate("SCALE_METALLIC")}/>
+    <Range
+            onFinish={v => {
+                const newRGB = [...settings]
+                newRGB[7] = v
+                updateAsset("settings", newRGB)
+            }}
+            value={settings[7]}
+            minValue={0}
+            disabled={!settings[3]}
+            label={translate("SCALE_METALLIC")}
+    />
     <div data-divider="-"></div>
-    <Range maxValue={1} minValue={0} disabled={settings[3]} label={translate("FALLBACK_METALLIC")}/>
+    <Range
+            onFinish={v => {
+                const newRGB = [...fallbackValues]
+                newRGB[7] = v
+                updateAsset("fallbackValues", newRGB)
+            }}
+            value={fallbackValues[7]}
+            maxValue={1}
+            minValue={0}
+            disabled={settings[3]}
+            label={translate("FALLBACK_VALUE")}
+    />
 </fieldset>
 
 <fieldset>
@@ -175,7 +223,7 @@
             checked={settings[4]}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[4] = !settings[4] ? 0 : 1
+                copy[4] = copy[4] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -185,7 +233,17 @@
             selected={uniform.ao}
             handleChange={v => updateAsset("ao", v.registryID)}
     />
-    <Range minValue={0} disabled={!settings[4]} label={translate("SCALE_AO")}/>
+    <Range
+            onFinish={v => {
+                const newRGB = [...settings]
+                newRGB[6] = v
+                updateAsset("settings", newRGB)
+            }}
+            value={settings[6]}
+            minValue={0}
+            disabled={!settings[4]}
+            label={translate("SCALE_AO")}
+    />
 </fieldset>
 
 <fieldset>
@@ -195,7 +253,7 @@
             checked={settings[5]}
             handleCheck={() => {
                 const copy = [...settings]
-                copy[5] = !settings[5] ? 0 : 1
+                copy[5] = copy[5] === 0 ? 1 : 0
                 updateAsset("settings", copy)
             }}
     />
@@ -211,6 +269,7 @@
                 newRGB[6] = r/255
                 newRGB[7]= g/255
                 newRGB[8]= b/255
+
                 updateAsset("rgbSamplerScales", newRGB)
             }}
             disabled={!settings[5]}
@@ -227,7 +286,7 @@
                 updateAsset("fallbackValues", newRGB)
             }}
             disabled={settings[5]}
-            label={translate("FALLBACK_ALBEDO")}
+            label={translate("FALLBACK_VALUE")}
             value={[fallbackValues[3] * 255, fallbackValues[4] * 255, fallbackValues[5] * 255]}
     />
 

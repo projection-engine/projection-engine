@@ -84,11 +84,30 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            SHADING_STOCHASTIC: "Stochastic normals",
+            STOCHASTIC_DEF: "SSGI normals",
+            SHADING_SSGI: "Global illumination",
+            SSGI_DEF: "SSGI",
+            SHADING_POSITION: "Position",
+            POSITION_DEF: "Fragment position",
+
+            SHADING_METALLIC: "Metallic",
+            METALLIC_DEF: "Material metallic",
+
+            SHADING_ROUGHNESS: "Roughness",
+            ROUGHNESS_DEF: "Material roughness",
+
+            SHADING_AMBIENT: "Ambient",
+            AMBIENT_DEF: "Ambient color (Probes)",
+
+            G_AO_DEF: "Material AO",
+            G_BUFFER: "G-Buffer",
+            SCENE: "Scene",
             RECONSTRUCTED_NORMALS: "Reconstructed normals",
             RECONSTRUCTED_NORMALS_DEF: "Depth reconstruction",
             DETAIL_DEF: "PBR shading",
             LIGHT_DEF: "Light details",
-            UNLIT_DEF: "Albedo color",
+            UNLIT_DEF: "Material albedo",
             AO_DEF: "Scene AO",
             DEPTH_DEF: "Linear depth",
             NORMAL_DEF: "Mesh normals",
@@ -159,7 +178,7 @@ export default class Localization {
             SHADING_LIGHT: "Light only",
             SHADING_UNLIT: "Unlit",
             SHADING_NORMAL: "Normals",
-            SHADING_DEPTH: "Scene Depth",
+            SHADING_DEPTH: "Depth",
             SHADING_AO: "Ambient Occlusion",
             SHADING_DETAIL: "Details",
             SHADING_SWITCH: "Switching to details shading model",
@@ -237,6 +256,11 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            USE_SAMPLER: "Use texture",
+            SCALE_ALBEDO: "Albedo scale",
+            FALLBACK_VALUE: "Fallback value",
+
+            NOISE_SCALE: "Noise scale",
             ALBEDO: "Albedo",
             NORMAL:"Normal" ,
             METALLIC: "Metallic",

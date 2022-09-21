@@ -25,13 +25,13 @@ export default async function loadMaterial(ID, submit) {
             const reg = await RegistryAPI.readRegistryFile(ID)
             if (!reg)
                 return
-            const isInstance = reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE)
-
+            const isInstance = reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) ||reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
+            console.trace(isInstance)
             if (!GPU.materials.get(ID)) {
                 alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
 
                 const file = await loadFile(reg)
-
+                console.trace(file)
                 if (!file || isInstance && !file.original || !isInstance && !file.response) {
                     alert.pushAlert("Please, check if material was compiled correctly")
                     return

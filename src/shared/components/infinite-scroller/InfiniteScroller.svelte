@@ -141,7 +141,7 @@
         border: var(--pj-border-primary) 1px solid;
         border-radius: 3px;
         background: var(--pj-background-tertiary);
-        z-index: 999;
+        z-index: 10;
         overflow: hidden;
     }
 

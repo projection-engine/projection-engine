@@ -32,6 +32,7 @@ export default {
     ssgiStepSize: .5,
     ssr: true,
     ssgi: true,
+    ssgiNoiseScale: 2.,
     ssrStepSize: .1,
     ssrMaxSteps: 50,
 

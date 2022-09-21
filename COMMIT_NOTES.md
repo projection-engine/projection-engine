@@ -1,4 +1,12 @@
-- Simple material structure initialization
-  - Integration with content browser
-  - Custom form on the inspector
-- Enhanced fallback material to support simple material as a basis
+- Shading model added to settings serialization
+- Added more shading models
+- Reworked SSGI contribution to be physically based
+- Fixed gizmo tooltip not rendering
+- Fixed inspector file change 
+- Changed SSGI to consume pre post-processing frame
+- Fixed simple material not applying due to compilation issue
+- Fixed simple material sampler type inputs
+- Reworked modal structure to only render content if open
+- Changed Selector component to implement infinite scroll to prevent performance drops
+- Fixed big performance dips when selecting items
+- Reworked color picker to have canvas only do processing after open

@@ -81,7 +81,7 @@
 </script>
 
 <div class="viewport" bind:this={ref}>
-    {#if !engine.executingAnimation}
+    {#if !engine.executingAnimation && engine.viewportInitialized}
         <div class="header">
             {#if viewTab === VIEWPORT_TABS.EDITOR}
                 <EditorHeader

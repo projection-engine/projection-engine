@@ -7,6 +7,7 @@
     import FALLBACK_MATERIAL from "../../../../../public/engine/static/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
+    import InfiniteScroller from "../../infinite-scroller/InfiniteScroller.svelte";
 
     export let handleChange
     export let type
@@ -18,6 +19,10 @@
     export let mergeMaterials
     let searchString = ""
     let filtered
+    let maxDepth = 0
+    let offset = 0
+    let maxDepthOffset
+
     $: {
         const temp = getType(store, type, mergeMaterials), s = searchString.toLowerCase()
         if (searchString)
@@ -27,10 +32,24 @@
     }
 
     $: staticMeshes = Object.entries(STATIC_MESHES.PRODUCTION)
+    $: {
+        if (type === "mesh")
+            maxDepthOffset = staticMeshes.length
+        else if (type === "material")
+            maxDepthOffset = 1
+        else
+            maxDepthOffset = 0
+    }
 </script>
 
 <div class="modal-available-nodes selector">
     <div class="content-available-nodes selector">
+        <InfiniteScroller
+                branchSize={30}
+                setMaxDepth={v => maxDepth = v}
+                setOffset={v => offset = v}
+                data={filtered}
+        />
         {#if !noDefault}
             {#if type === "material"}
                 <Option
@@ -54,13 +73,15 @@
         {/if}
         {#if filtered.length > 0}
             {#each filtered as t, i}
-                <Option
-                        type={type}
-                        setState={setState}
-                        data={t}
-                        handleChange={handleChange}
-                        state={state}
-                />
+                {#if i < (maxDepth - maxDepthOffset) && filtered[i + offset]}
+                    <Option
+                            type={type}
+                            setState={setState}
+                            data={filtered[i + offset]}
+                            handleChange={handleChange}
+                            state={state}
+                    />
+                {/if}
             {/each}
         {:else}
             <div class="nothing">
@@ -82,17 +103,6 @@
 </div>
 
 <style>
-    .content-wrapper {
-        margin-top: 4px;
-        display: grid;
-        align-content: flex-start;
-        gap: 4px;
-
-        padding: 4px;
-        overflow-y: auto;
-        max-height: 30vh;
-    }
-
 
     .nothing {
         user-select: none;
@@ -106,12 +116,5 @@
         font-weight: 550;
     }
 
-    .search-wrapper {
-        width: 100%;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        background: var(--pj-background-primary);
-    }
 
 </style>

@@ -31,6 +31,7 @@
     let targetType
 
     const unsubscribeSelection = SelectionStore.getStore(v => {
+        console.trace("HERE")
         target = v.TARGET
         let targetInstance
         if (!v.array[0])

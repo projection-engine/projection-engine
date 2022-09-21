@@ -93,6 +93,22 @@
             }}
             label={translate("ENABLED")}
     />
+
+    <Range
+            disabled={!settings.ssgi}
+            label={translate("NOISE_SCALE")}
+            onFinish={v => {
+                update("ssgiNoiseScale", v)
+            }}
+            incrementPercentage={.001}
+            precision={4}
+            minValue={0}
+            handleChange={v => {
+                Engine.params.ssgiNoiseScale = v
+            }}
+            value={settings.ssgiNoiseScale}
+    />
+
     <Range
             disabled={!settings.ssgi}
             label={translate("STEPS")}

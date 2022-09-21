@@ -22,10 +22,7 @@
         <Icon slot="icon">image</Icon>
     </Preview>
 {:else if type === "material"}
-    <Preview path={previewPath}>
-        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
-        <Icon slot="icon">texture</Icon>
-    </Preview>
+    <div data-shaded-material="-"></div>
 {:else if type === "ui"}
     <Icon slot="icon">widgets</Icon>
 {:else if type === "code"}
