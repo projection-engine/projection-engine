@@ -52,7 +52,7 @@ export default class HierarchyController {
     }
 
     static updateHierarchy(){
-        const data = [], entitiesArray = Engine.entities
+        const data = [], entitiesArray = Array.from(Engine.entitiesMap.values())
         const callback = (node, depth) => {
             data.push({node, depth})
             for (let i = 0; i < node.children.length; i++)

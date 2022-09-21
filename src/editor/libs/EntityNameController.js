@@ -1,7 +1,7 @@
-import EngineStore from "../EngineStore";
-import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+import EngineStore from "../stores/EngineStore";
+import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
 import {v4} from "uuid";
-import SelectionStore from "../SelectionStore";
+import SelectionStore from "../stores/SelectionStore";
 
 export default class EntityNameController {
     static byName = new Map()

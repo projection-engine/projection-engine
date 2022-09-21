@@ -51,16 +51,14 @@
             if (!searchString && !filteredComponent) {
                 const data = []
                 for (let i = 0; i < hierarchy.length; i++) {
-                    if (data.length > maxDepth)
-                        break
+
                     if (!hierarchy[i].node.parent || open.get(hierarchy[i].node.parent.id))
                         data.push(hierarchy[i])
                 }
                 toRender = data
             } else {
                 for (let i = 0; i < entities.length; i++) {
-                    if (data.length > maxDepth)
-                        break
+
                     if (testSearch(entities[i]))
                         data.push({node: entities[i], depth: 0})
                 }
@@ -87,7 +85,7 @@
 />
 {#if toRender.length > 0}
     {#each toRender as _, i}
-        {#if toRender[i + offset]}
+        {#if i < maxDepth && toRender[i + offset]}
             <Branch
                     surfaceSelected={surfaceSelected}
                     nodeRef={toRender[i + offset].node}

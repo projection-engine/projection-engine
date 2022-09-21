@@ -15,6 +15,8 @@
     import EngineStore from "../../stores/EngineStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
     import {EntityAPI} from "../../../../public/engine/production";
+    import HierarchyController from "../../libs/HierarchyController";
+    import SelectionStore from "../../stores/SelectionStore";
 
 
     export let hidden = undefined
@@ -48,8 +50,9 @@
 
                 if (event.ctrlKey) {
                     EntityAPI.linkEntities(entityDragged, undefined)
-
+                    SelectionStore.engineSelected = [entityDragged.id]
                     EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+                    HierarchyController.updateHierarchy()
                 } else if (event.shiftKey) {
                     const clone = entityDragged.clone()
 

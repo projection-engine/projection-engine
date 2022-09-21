@@ -1,8 +1,2 @@
-- Reworked GLTF material importer to integrate with simple material
-- Included more material attributes inside glTF imported material
-- Reworked hierarchy view to hide overflow on X axis
-- Added tooltip to hierarchy node (name)
-- Reworked linking structure for entities and integrated it with transformation workers 
-- Fixed single mesh import on Loader (import error)
-- Removed setter for shared buffers on Movable instance
-- Fixed drag drop of scene causing primitives not update with transformation
+- Fixed hierarchy scroll not showing new nodes
+- Fixed some bugs with glTF loader

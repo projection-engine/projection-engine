@@ -1,7 +1,6 @@
 const loadTexture = require("./load-texture")
 const SIMPLE_MATERIAL_TEMPLATE = require("../../../../engine/static/SIMPLE_MATERIAL_TEMPLATE");
 
-
 module.exports = async function parseMaterial(basePath, data, textures, images, partialPath, projectPath, index) {
     const getTexture = (sampler, name) => loadTexture(
         basePath,
@@ -13,6 +12,8 @@ module.exports = async function parseMaterial(basePath, data, textures, images, 
         name,
         index
     )
+    if(!data)
+        return
 
     const settings = SIMPLE_MATERIAL_TEMPLATE.uniformData[0]
     const rgbSamplerScales = SIMPLE_MATERIAL_TEMPLATE.uniformData[1]
@@ -44,16 +45,24 @@ module.exports = async function parseMaterial(basePath, data, textures, images, 
                 settings.data[0] = 1
                 albedo.data = await getTexture(baseColorTexture, "albedo")
             }
+
             if (baseColorFactor != null) {
-                rgbSamplerScales.data[0] = baseColorFactor[0]
-                rgbSamplerScales.data[1] = baseColorFactor[1]
-                rgbSamplerScales.data[2] = baseColorFactor[2]
+                if(settings.data[0] === 1) {
+                    rgbSamplerScales.data[0] = baseColorFactor[0]
+                    rgbSamplerScales.data[1] = baseColorFactor[1]
+                    rgbSamplerScales.data[2] = baseColorFactor[2]
+                }
+                else {
+                    fallbackValues.data[0] = baseColorFactor[0]
+                    fallbackValues.data[1] = baseColorFactor[1]
+                    fallbackValues.data[2] = baseColorFactor[2]
+                }
             }
 
 
             if (metallicRoughnessTexture) {
-                settings.data[2] = settings.data[3] = 1
-                metallic.data = roughness.data = await getTexture(metallicRoughnessTexture, "metallic_roughness")
+                settings.data[3] =  1
+                metallic.data = await getTexture(metallicRoughnessTexture, "metallic_roughness")
             }
             if (metallicFactor != null) {
                 settings.data[3] = 0

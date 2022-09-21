@@ -12,6 +12,7 @@
     import updateSelection from "../utils/update-selection";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
     import {EntityAPI} from "../../../../../public/engine/production";
+    import HierarchyController from "../../../libs/HierarchyController";
 
     export let node
     export let lockedEntity
@@ -32,9 +33,9 @@
             onDrop: (entityDragged, event) => {
                 if (event.ctrlKey) {
                     EntityAPI.linkEntities(entityDragged, node)
-                    node.children.push(entityDragged)
-                    const ID = v4()
-                    EngineStore.updateStore({...EngineStore.engine, changeID: ID})
+                    SelectionStore.engineSelected = [entityDragged.id]
+                    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+                    HierarchyController.updateHierarchy()
                 } else if (event.shiftKey) {
                     const clone = entityDragged.clone()
                     clone.parent = node

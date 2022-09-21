@@ -22,11 +22,12 @@
         ToolTipController.element.style.transform = `translate(${transform.x}, ${transform.y})`
     }
 
-    function close () {
+    function close() {
         document.removeEventListener("mousemove", handleMouseMove)
         open = false
         ToolTipController.element.classList.remove("tooltip-animation")
     }
+
     const hover = (event) => {
 
         open = true
@@ -38,39 +39,41 @@
         ToolTipController.element.style.left = (event.clientX + 10) + "px"
         ToolTipController.element.style.top = (event.clientY + 10) + "px"
         document.addEventListener("mousemove", handleMouseMove)
-        targetParent.addEventListener(
-            "mouseleave",
-            close,
-            {once: true}
-        )
+        if (targetParent)
+            targetParent.addEventListener(
+                "mouseleave",
+                close,
+                {once: true}
+            )
     }
 
     $: {
-        if(open) {
+        if (open) {
             ToolTipController.portal.open()
             ToolTipController.closeCurrent = () => {
                 close()
-                if(targetParent)
-                targetParent.removeEventListener("mouseleave", close)
+                if (targetParent)
+                    targetParent.removeEventListener("mouseleave", close)
             }
-        }
-        else
+        } else
             ToolTipController.portal.close()
     }
 
     $: {
-        if(open)
+        if (open)
             ToolTipController.element.innerHTML = content
 
     }
     onMount(() => {
         ToolTipController.initialize()
         targetParent = wrapper.parentElement
-        targetParent.addEventListener("mouseenter", hover)
+        if (targetParent)
+            targetParent.addEventListener("mouseenter", hover)
         isMounted = true
     })
     onDestroy(() => {
-        targetParent.removeEventListener("mouseenter", hover)
+        if (targetParent)
+            targetParent.removeEventListener("mouseenter", hover)
         close()
     })
 

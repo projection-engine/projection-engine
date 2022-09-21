@@ -2,7 +2,7 @@ import {v4} from "uuid"
 import EngineStore from "../EngineStore";
 import removeHierarchy from "../utils/remove-hierarchy";
 
-import EntityNameController from "./EntityNameController";
+import EntityNameController from "../../libs/EntityNameController";
 import AXIS from "../../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";

@@ -12,7 +12,7 @@
         }
         ref.finished = () => isChanging = false
     })
-    $: console.log(isChanging)
+
 </script>
 
 

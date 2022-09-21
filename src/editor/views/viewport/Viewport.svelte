@@ -46,7 +46,7 @@
 
     $: if (isReady) MetricsPass.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     $: if (engine.executingAnimation) updateView(VIEWPORT_TABS.EDITOR)
-    $: console.log(viewTab)
+
     $: {
         if (isReady) {
             if (!engine.executingAnimation) {

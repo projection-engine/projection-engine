@@ -109,6 +109,8 @@ export default class Loader {
                     case FILE_TYPES.MESH: {
                         const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
                         const meshData = await Loader.mesh(file, data, asID)
+                        if(!meshData)
+                            continue
                         if (meshData.mesh !== undefined)
                             meshes.push(meshData)
                         else

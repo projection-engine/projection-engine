@@ -31,7 +31,7 @@
     async function readOpenProjects() {
         const pathToProjects = localStorage.getItem("basePath")
         const res = await FilesAPI.readFile(pathToProjects + FilesAPI.sep + OPEN_PROJECTS, "json")
-        console.log(res)
+
         if (Array.isArray(res))
             openProjects = res
         else

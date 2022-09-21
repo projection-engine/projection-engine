@@ -21,6 +21,8 @@ export default async function loopNodesScene(node, parent, index = 0) {
         const reg = await RegistryAPI.readRegistryFile(primitive)
         if (reg) {
             const meshData = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+            if(!meshData)
+                continue
             if (meshData.material != null)
                 await loadMaterial(meshData.material, () => null)
             GPU.allocateMesh(reg.id, meshData)

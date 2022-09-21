@@ -9,8 +9,10 @@ function groupInto(size, mainArray) {
     return arrayOfArrays
 }
 
-module.exports =  class PrimitiveProcessor {
+module.exports = class PrimitiveProcessor {
     static computeNormals(indices, vertices) {
+        if (!Array.isArray(indices) || !Array.isArray(vertices))
+            return []
         const faces = groupInto(3, indices)
         const positions = groupInto(3, vertices)
         let quantity = positions.length
@@ -57,6 +59,8 @@ module.exports =  class PrimitiveProcessor {
     }
 
     static computeTangents(indices, vertices, uvs, normals) {
+        if (!Array.isArray(indices) || !Array.isArray(vertices) || !Array.isArray(uvs) || !Array.isArray(normals))
+            return []
         const norm = groupInto(3, normals)
 
         let groupedVertices = groupInto(3, vertices),
@@ -81,7 +85,7 @@ module.exports =  class PrimitiveProcessor {
                 uv2 = groupedUVs[i2]
             let e1 = [], e2 = []
 
-            if(v1 && v0 && v2) {
+            if (v1 && v0 && v2) {
                 vec3.sub(e1, v1, v0)
                 vec3.sub(e2, v2, v0)
 
