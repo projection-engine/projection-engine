@@ -11,6 +11,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
+    import {EntityAPI} from "../../../../../public/engine/production";
 
     export let node
     export let lockedEntity
@@ -30,12 +31,8 @@
             onDragStart: () => node,
             onDrop: (entityDragged, event) => {
                 if (event.ctrlKey) {
-
-                    if (entityDragged.parent)
-                        entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
-                    entityDragged.parent = node
+                    EntityAPI.linkEntities(entityDragged, node)
                     node.children.push(entityDragged)
-
                     const ID = v4()
                     EngineStore.updateStore({...EngineStore.engine, changeID: ID})
                 } else if (event.shiftKey) {
@@ -51,7 +48,8 @@
     })
     onDestroy(() => draggable.onDestroy())
 </script>
-<div class="info hierarchy-branch" bind:this={ref}>
+
+<div class="info hierarchy-branch">
     <button
             data-locked={lockedEntity === node.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"
@@ -61,14 +59,20 @@
         <Icon>view_in_ar</Icon>
     </button>
     <div
+            bind:this={ref}
             class="node"
             on:click={(e) => updateSelection(node.id, e.ctrlKey)}
-
     >
-        {node.name}
-        {#each icons as icon}
-            <Icon styles="font-size: .9rem"><ToolTip content={icon.label}/>{icon.icon}</Icon>
+        <div data-overflow="-">
+            <ToolTip content={node.name}/>
+            {node.name}
+        </div>
 
+        {#each icons as icon}
+            <Icon styles="font-size: .9rem">
+                <ToolTip content={icon.label}/>
+                {icon.icon}
+            </Icon>
         {/each}
     </div>
 

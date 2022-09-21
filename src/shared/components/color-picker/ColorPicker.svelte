@@ -1,10 +1,7 @@
 <script>
     import Dropdown from "../dropdown/Dropdown.svelte";
     import rgb2hsv from "./utils/rgb-2-hsv";
-    import hsv2Rgb from "./utils/hsv-2-rgb";
-    import Localization from "../../libs/Localization";
     import ToolTip from "../tooltip/ToolTip.svelte";
-    import Range from "../range/Range.svelte";
     import ColorCanvas from "./ColorCanvas.svelte";
     import hsv2Hsl from "./utils/hsv-2-hsl";
 

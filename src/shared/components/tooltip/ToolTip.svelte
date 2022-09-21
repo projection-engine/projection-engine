@@ -50,6 +50,7 @@
             ToolTipController.portal.open()
             ToolTipController.closeCurrent = () => {
                 close()
+                if(targetParent)
                 targetParent.removeEventListener("mouseleave", close)
             }
         }

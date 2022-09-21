@@ -31,7 +31,6 @@
     let targetType
 
     const unsubscribeSelection = SelectionStore.getStore(v => {
-        console.trace("HERE")
         target = v.TARGET
         let targetInstance
         if (!v.array[0])
@@ -76,6 +75,7 @@
             savedState = true
         }
         entity[key] = value
+        entity.__changedBuffer[0] = 1
         if (save)
             EngineStore.saveEntity(
                 entity.id,

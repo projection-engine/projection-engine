@@ -11,7 +11,7 @@ import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
-import {Entity} from "../../../../public/engine/production";
+import {Entity, GPU} from "../../../../public/engine/production";
 import loadMaterial from "../../views/inspector/utils/load-material";
 import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
@@ -30,7 +30,7 @@ export default class Loader {
                 if (objLoaded.material && !GPU.materials.get(objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
-                        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + rs.path, "json")
+                        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
                         if (file && file.response)
                             material = {
                                 ...file.response,
@@ -58,9 +58,7 @@ export default class Loader {
     static async scene(path, onlyReturn) {
         const file = await FilesAPI.readFile(
             FilesStore.ASSETS_PATH + FilesAPI.sep + path, "json")
-
         const entities = []
-
         try {
             if (file) {
                 const folder = new Entity()
@@ -73,11 +71,13 @@ export default class Loader {
                 entities.push(folder)
                 if (!onlyReturn) {
                     const cursorPoint = [...window.engineCursor.absoluteTranslation]
+
+                    dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                     entities.forEach(e => {
                         vec4.add(e.translation, e.translation, cursorPoint)
                         e.changed = true
                     })
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+                    console.trace(entities)
                 }
             } else
                 alert.pushAlert("Some error occurred", "error")

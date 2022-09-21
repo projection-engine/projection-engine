@@ -9,15 +9,27 @@ export default function initializeEntity(data, meshID, parent, index=0) {
         entity.parent = parent
         parent.children.push(entity)
     }
-    entity.scaling = data.scaling
-    entity.rotationQuaternion = data.rotationQuaternion
-    entity.translation = data.translation
+    entity._scaling[0] = data.scaling[2]
+    entity._scaling[1] = data.scaling[2]
+    entity._scaling[2] = data.scaling[2]
+
+    entity._translation[0] = data.translation[2]
+    entity._translation[1] = data.translation[2]
+    entity._translation[2] = data.translation[2]
+
+
+    entity._rotationQuat[0] = data.rotationQuaternion[2]
+    entity._rotationQuat[1] = data.rotationQuaternion[2]
+    entity._rotationQuat[2] = data.rotationQuaternion[2]
+    entity._rotationQuat[3] = data.rotationQuaternion[2]
+    entity.changed = true
+
     entity.baseTransformationMatrix = data.baseTransformationMatrix
     if (data.pivotPoint)
         entity.pivotPoint = data.pivotPoint
 
     const e = entity.addComponent(COMPONENTS.MESH)
-    e.materialID = FALLBACK_MATERIAL
+    e.materialID = data.material != null ? data.material : FALLBACK_MATERIAL
     e.meshID = meshID
 
 

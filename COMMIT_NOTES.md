@@ -1,12 +1,8 @@
-- Shading model added to settings serialization
-- Added more shading models
-- Reworked SSGI contribution to be physically based
-- Fixed gizmo tooltip not rendering
-- Fixed inspector file change 
-- Changed SSGI to consume pre post-processing frame
-- Fixed simple material not applying due to compilation issue
-- Fixed simple material sampler type inputs
-- Reworked modal structure to only render content if open
-- Changed Selector component to implement infinite scroll to prevent performance drops
-- Fixed big performance dips when selecting items
-- Reworked color picker to have canvas only do processing after open
+- Reworked GLTF material importer to integrate with simple material
+- Included more material attributes inside glTF imported material
+- Reworked hierarchy view to hide overflow on X axis
+- Added tooltip to hierarchy node (name)
+- Reworked linking structure for entities and integrated it with transformation workers 
+- Fixed single mesh import on Loader (import error)
+- Removed setter for shared buffers on Movable instance
+- Fixed drag drop of scene causing primitives not update with transformation

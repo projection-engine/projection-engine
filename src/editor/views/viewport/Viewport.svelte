@@ -16,7 +16,6 @@
     import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
     import HotKeys from "../../components/metrics/libs/HotKeys";
     import getHotkeys from "./utils/get-hotkeys";
-    import NodeFS from "../../../shared/libs/NodeFS";
     import FilesStore from "../../stores/FilesStore";
 
     export let isReady = false

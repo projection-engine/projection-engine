@@ -3,7 +3,6 @@
     import Input from "../../shared/components/input/Input.svelte";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import "../css/ProjectRow.css"
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
 
     const {ipcRenderer} = window.require("electron")
 

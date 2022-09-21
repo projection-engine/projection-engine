@@ -4,8 +4,10 @@ import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 import {v4} from "uuid";
 import {Entity, GPU} from "../../../../../public/engine/production";
 import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
+import FilesStore from "../../../stores/FilesStore";
+import loadMaterial from "../../../views/inspector/utils/load-material";
 
-export default async function loopNodesScene(node, parent, index=0) {
+export default async function loopNodesScene(node, parent, index = 0) {
     const children = []
     const exists = QueryAPI.getEntityByID(node.id) != null
 
@@ -14,14 +16,14 @@ export default async function loopNodesScene(node, parent, index=0) {
     entity.parent = parent
     parent.children.push(entity)
 
-    for (let m = 0;  m < node.primitives.length; m++) {
+    for (let m = 0; m < node.primitives.length; m++) {
         const primitive = node.primitives[m]
         const reg = await RegistryAPI.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + reg.path, "json")
-
+            const meshData = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+            if (meshData.material != null)
+                await loadMaterial(meshData.material, () => null)
             GPU.allocateMesh(reg.id, meshData)
-
 
             children.push(initializeEntity(meshData, reg.id, entity, m + index))
         }

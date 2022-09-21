@@ -14,6 +14,7 @@
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
     import EngineStore from "../../stores/EngineStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
+    import {EntityAPI} from "../../../../public/engine/production";
 
 
     export let hidden = undefined
@@ -46,9 +47,8 @@
             onDrop: (entityDragged, event) => {
 
                 if (event.ctrlKey) {
-                    if (entityDragged.parent)
-                        entityDragged.parent.children = entityDragged.parent.children.filter(c => c !== entityDragged)
-                    entityDragged.parent = undefined
+                    EntityAPI.linkEntities(entityDragged, undefined)
+
                     EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
                 } else if (event.shiftKey) {
                     const clone = entityDragged.clone()
@@ -84,7 +84,7 @@
             setSearchString={v => search = v}
     />
 
-    <Dropdown hideArrow={true} >
+    <Dropdown hideArrow={true}>
         <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={translate("COMPONENT_FILTER")}/>
@@ -145,8 +145,7 @@
         display: grid;
         align-content: flex-start;
         width: 100%;
-        overflow-y: hidden;
-        overflow-x: auto;
+        overflow: hidden;
 
         height: 100%;
         max-height: 100%;
@@ -157,8 +156,6 @@
                 #252525 50%,
                 #252525
         );
-        /* The rectangle in which to repeat.
-           It can be fully wide in this case */
         background-size: 100% 46px;
     }
 </style>

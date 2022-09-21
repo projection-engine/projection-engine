@@ -54,8 +54,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 const s = values[i]
                 if (payload.indexOf(s.id) > 0) {
                     const found = Engine.entitiesMap.get(payload[0])
-                    s.parent = found
-                    found.children.push(s)
+                    EntityAPI.linkEntities(s, found)
                 }
             }
             break

@@ -1,6 +1,5 @@
 import {v4} from "uuid"
 import FilesStore from "../../editor/stores/FilesStore";
-import FilesAPI from "./files/FilesAPI";
 
 const {ipcRenderer} = window.require("electron")
 

@@ -6,7 +6,6 @@
     import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
-    import SIMPLE_MATERIAL_TEMPLATE from "../../../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
 
     const getUniformObject = (u) => {

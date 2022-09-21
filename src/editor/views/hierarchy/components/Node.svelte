@@ -34,8 +34,7 @@
         if (!open.get(nodeRef.id)) {
             open.set(nodeRef.id, true)
             updateOpen()
-        }
-        else {
+        } else {
             open.delete(nodeRef.id)
             const callback = (node) => {
                 node.children.forEach(c => {
@@ -68,30 +67,28 @@
         class="wrapper hierarchy-branch"
         style={"padding-left:" +  (depth * 18 + "px;") + (nodeRef.active ? "" : "opacity: .5") }
 >
-    <div class="summary hierarchy-branch">
-        {#if nodeRef.children.length > 0}
-            <button
-                    data-open={open.get(nodeRef.id) ? "-" : ""}
-                    class="button-small hierarchy-branch"
-                    on:click={onExpand}
-            >
-                <Icon>arrow_drop_down</Icon>
-            </button>
-        {:else}
-            <div class="button-small hierarchy-branch"></div>
-        {/if}
-        <DraggableEntity updateOpen={updateOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
-                         lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
-        <button class="button-small hierarchy-branch" on:click={onHide}>
-            <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
-            <Icon styles="font-size: .8rem">
-                {#if nodeRef.active}
-                    visibility
-                {:else}
-                    visibility_off
-                {/if}
-            </Icon>
+    {#if nodeRef.children.length > 0}
+        <button
+                data-open={open.get(nodeRef.id) ? "-" : ""}
+                class="button-small hierarchy-branch"
+                on:click={onExpand}
+        >
+            <Icon>arrow_drop_down</Icon>
         </button>
-    </div>
+    {:else}
+        <div class="button-small hierarchy-branch"></div>
+    {/if}
+    <DraggableEntity updateOpen={updateOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
+                     lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
+    <button class="button-small hierarchy-branch" on:click={onHide}>
+        <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
+        <Icon styles="font-size: .8rem">
+            {#if nodeRef.active}
+                visibility
+            {:else}
+                visibility_off
+            {/if}
+        </Icon>
+    </button>
 </div>
 

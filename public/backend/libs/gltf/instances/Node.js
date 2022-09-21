@@ -61,7 +61,7 @@ class Node {
                     )
                     if (matData)
                         await writeData(
-                            partialPath + getNormalizedName(materials[materialIndex].name, materialIndex) + FILE_TYPES.MATERIAL,
+                            partialPath + getNormalizedName(materials[materialIndex].name, materialIndex) + FILE_TYPES.SIMPLE_MATERIAL,
                             matData,
                             materialID,
                             this.projectPath

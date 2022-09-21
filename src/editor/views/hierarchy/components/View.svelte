@@ -2,16 +2,11 @@
     import EngineStore from "../../../stores/EngineStore";
     import bindContextTarget from "../../../../shared/components/context-menu/libs/bind-context-target";
     import getContextMenu from "../utils/get-context-menu";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "./Node.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
-    import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
-    import {v4} from "uuid";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
     import {Engine} from "../../../../../public/engine/production";
     import HierarchyController from "../../../libs/HierarchyController";
 

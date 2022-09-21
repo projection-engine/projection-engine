@@ -1,7 +1,7 @@
 <script>
     import SHADING_MODELS from "../../../../data/SHADING_MODELS"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import {onDestroy, onMount} from "svelte";
+    import {onMount} from "svelte";
     import GPU from "../../../../../../public/engine/production/GPU";
     import DepthPass from "../../../../../../public/engine/production/passes/rendering/DepthPass";
     import DeferredPass from "../../../../../../public/engine/production/passes/rendering/DeferredPass";
@@ -11,8 +11,6 @@
     import Localization from "../../../../../shared/libs/Localization";
     import STATIC_SHADERS from "../../../../../../public/engine/static/resources/STATIC_SHADERS";
     import SSGIPass from "../../../../../../public/engine/production/passes/rendering/SSGIPass";
-    import STATIC_FRAMEBUFFERS from "../../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-    import EngineStore from "../../../../stores/EngineStore";
 
     let shadingModel = SHADING_MODELS.DETAIL
 
