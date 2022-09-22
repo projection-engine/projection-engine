@@ -1,5 +1,5 @@
 
-export default function viewportSelectionBoxWorker(){
+export default function selectionQueryWorker(){
     const src = ` 
     self.onmessage = ({data: {entities, data}}) => {
 

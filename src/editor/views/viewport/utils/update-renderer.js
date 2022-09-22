@@ -4,13 +4,13 @@ import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracke
 import Wrapper from "../../../../../public/engine/editor/services/Wrapper";
 import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
 import ShadowMapPass from "../../../../../public/engine/production/passes/rendering/ShadowMapPass";
+import {GizmoSystem} from "../../../../../public/engine/editor";
 
 
 export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
 
-   CameraTracker.initialize(settings)
-
+    CameraTracker.initialize(settings)
 
     CameraTracker.animated = settings.camera?.animated
     CameraTracker.movementSpeed = settings.camera?.movementSpeed
@@ -35,7 +35,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.gamma = settings.gamma
         CameraAPI.metadata.exposure = settings.exposure
     }
-
+    GizmoSystem.transformationType = settings.transformationType
     ShadowMapPass.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
 
     Engine.updateParams({
@@ -43,7 +43,7 @@ export default function updateRenderer(selected, engine, settings) {
         selected,
         onWrap: executingAnimation ? null : Wrapper,
     })
-    if(!executingAnimation)
+    if (!executingAnimation)
         CameraTracker.startTracking()
     bindGizmo(selected, settings)
 }

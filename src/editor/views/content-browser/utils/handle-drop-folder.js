@@ -26,8 +26,7 @@ export default async function handleDropFolder(event, target) {
                 const toItem = FilesStore.data.items.find(f => f.id === target)
                 const fromItem = FilesStore.data.items.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
                 if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                    const error = await ContentBrowserAPI.rename(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + from), FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep +to))
-
+                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + from), FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + to))
                     await FilesStore.refreshFiles()
                 }
             } else if (textData.includes(FilesAPI.sep)) {

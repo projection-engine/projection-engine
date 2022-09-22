@@ -1,11 +1,11 @@
 import NODE_TYPES from "../data/NODE_TYPES"
-import deferredTemplate from "../templates/shaders/deferred-shader"
-import forwardTemplate from "../templates/shaders/forward-shader"
+import deferredTemplate from "../templates/deferred-shader"
+import forwardTemplate from "../templates/forward-shader"
 import resolveRelationship from "./resolve-relationship"
-import unlitTemplate from "../templates/shaders/unlit-shader"
+import unlitTemplate from "../templates/unlit-shader"
 import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES";
 
-import skyboxShader, {vertexSkybox} from "../templates/shaders/skybox-shader";
+import skyboxShader, {vertexSkybox} from "../templates/skybox-shader";
 import cloneClass from "../../../utils/clone-class";
 import TEMPLATE_VERTEX_SHADER from "../../../../../public/engine/static/TEMPLATE_VERTEX_SHADER";
 

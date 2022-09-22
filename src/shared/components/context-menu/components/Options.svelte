@@ -8,11 +8,13 @@
     export let selected
     export let trigger
     export let event
+    export let metadata
     export let close = () => null
     export let callback = () => null
 
     let mounted = false
     onMount(() => {
+
         if (onFocus)
             onFocus(trigger, selected)
         callback()
@@ -25,7 +27,10 @@
 
 </script>
 
-
+<div class="title">
+    <Icon styles="font-size: .9rem">{metadata.icon}</Icon>
+    <small>{metadata.label}</small>
+</div>
 {#if isSubMenu}
     <button
             class="button"
@@ -57,7 +62,10 @@
                         parentLabel = option.label
                         return
                     }
-                    option.onClick(selected, event)
+                    const callback = option.onClick ? option.onClick : option.callback
+                    if(!callback)
+                        return
+                    callback(selected, event)
                     close()
                 }}
         >
@@ -74,7 +82,7 @@
                     <Icon>chevron_right</Icon>
                 </div>
             {:else}
-                <Shortcut shortcut={option.shortcut}/>
+                <Shortcut shortcut={option.require}/>
             {/if}
 
         </button>
@@ -115,5 +123,17 @@
         align-items: center;
     }
 
-
+    .title{
+        background: var(--pj-background-secondary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: .85rem;
+        height: 25px;
+        padding: 0 4px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        border-bottom: var(--pj-border-primary) 1px solid;
+    }
 </style>

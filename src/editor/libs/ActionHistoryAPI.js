@@ -3,6 +3,7 @@ import {v4} from "uuid";
 import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
 import {Engine, EntityAPI} from "../../../public/engine/production";
+import HierarchyController from "./HierarchyController";
 
 export default class ActionHistoryAPI {
     static targets = {
@@ -92,7 +93,8 @@ export default class ActionHistoryAPI {
                     if (Engine.entitiesMap.get(e.id) != null)
                         continue
                     if (e.parent && !e.parent.children.includes(e))
-                        e.parent.children.push(e)
+                        EntityAPI.linkEntities(e, e.parent)
+
                     EntityAPI.addEntity(e)
                 }
                 for (let i = 0; i < oldEntities.length; i++) {
@@ -101,6 +103,7 @@ export default class ActionHistoryAPI {
                         continue
                     EntityAPI.removeEntity(e.id)
                 }
+                HierarchyController.updateHierarchy()
                 EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
                 break
             default:

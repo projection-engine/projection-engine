@@ -1,4 +1,4 @@
-import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
+import SELECTION_TYPES from "../data/SELECT_ACTIONS"
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function selection(type, nodes) {

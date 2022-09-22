@@ -1,23 +1,22 @@
-import {Engine, ENVIRONMENT, KEYS,} from "../../../../../public/engine/production";
+import {Engine, ENVIRONMENT, KEYS,} from "../../../public/engine/production";
 
 
-export default class HotKeys {
-    static data = {targets: {}, focused: undefined}
+export default class HotKeysController {
+
     static activeView
     static views = new Map()
     static holding = new Map()
     static #onUpdate = () => null
 
     static initializeListener(onUpdate) {
-        HotKeys.#onUpdate = () => onUpdate(HotKeys.views.get(HotKeys.activeView))
+        HotKeysController.#onUpdate = () => onUpdate(HotKeysController.views.get(HotKeysController.activeView))
 
         function handler(event) {
-            const h = HotKeys.holding
+            const h = HotKeysController.holding
 
             if (event.repeat || Engine.environment !== ENVIRONMENT.DEV)
                 return
-            // event.preventDefault()
-            const activeView = HotKeys.views.get(HotKeys.activeView)
+            const activeView = HotKeysController.views.get(HotKeysController.activeView)
             const tagName = document.activeElement?.tagName
             if (tagName === "INPUT" || tagName === "TEXTAREA" || !activeView)
                 return
@@ -27,6 +26,14 @@ export default class HotKeys {
                 if (event.ctrlKey) {
                     h.set(KEYS.ControlLeft, true)
                     h.set(KEYS.ControlRight, true)
+                }
+                if (event.altKey) {
+                    h.set(KEYS.AltRight, true)
+                    h.set(KEYS.AltLeft, true)
+                }
+                if (event.shiftKey) {
+                    h.set(KEYS.ShiftLeft, true)
+                    h.set(KEYS.ShiftRight, true)
                 }
 
                 h.set(event.code, true)
@@ -50,7 +57,16 @@ export default class HotKeys {
                 if (event.code === KEYS.ControlLeft || event.code === KEYS.ControlRight) {
                     h.delete(KEYS.ControlLeft)
                     h.delete(KEYS.ControlRight)
-                } else
+                }
+                else if (event.code === KEYS.AltRight || event.code === KEYS.AltLeft) {
+                    h.delete(KEYS.AltRight)
+                    h.delete(KEYS.AltLeft)
+                }
+                else if (event.code === KEYS.ShiftLeft || event.code === KEYS.ShiftRight) {
+                    h.delete(KEYS.ShiftLeft)
+                    h.delete(KEYS.ShiftRight)
+                }
+                else
                     h.delete(event.code)
             }
         }
@@ -61,23 +77,23 @@ export default class HotKeys {
 
     static bindAction(element, actions, icon, label) {
         const handler = () => {
-            HotKeys.activeView = element
-            HotKeys.holding.clear()
-            HotKeys.#onUpdate()
+            HotKeysController.activeView = element
+            HotKeysController.holding.clear()
+            HotKeysController.#onUpdate()
         }
-        if (HotKeys.views.get(element))
-            HotKeys.unbindAction(element)
-        HotKeys.views.set(element, {actions, icon, label, handler})
+        if (HotKeysController.views.get(element))
+            HotKeysController.unbindAction(element)
+        HotKeysController.views.set(element, {actions, icon, label, handler})
 
         element.addEventListener("mouseenter", handler)
     }
 
     static unbindAction(element) {
-        const found = HotKeys.views.get(element)
+        const found = HotKeysController.views.get(element)
         if (!found)
             return
         const {handler} = found
         element.removeEventListener("mouseenter", handler)
-        HotKeys.views.delete(element)
+        HotKeysController.views.delete(element)
     }
 }

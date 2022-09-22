@@ -1,6 +1,6 @@
-import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
+import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
 
-export default function getComponentIcon(key, component) {
+export default function getComponentIcon(key) {
     switch (key) {
         case COMPONENTS.MESH:
             return "category"

@@ -1,11 +1,11 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import {COMPONENTS, Engine} from "../../../../../../public/engine/production";
+    import {COMPONENTS, Engine, Entity} from "../../../../../../public/engine/production";
     import SelectionStore from "../../../../stores/SelectionStore";
     import GIZMOS from "../../../../data/GIZMOS";
     import SettingsStore from "../../../../stores/SettingsStore";
-    import addUiElement from "../../utils/add-ui-element";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
 
     export let settings
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
@@ -27,6 +27,11 @@
             SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
         else
             SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
+    }
+    function addUiElement() {
+        const e = new Entity(undefined, "UI-Node")
+        e.addComponent(COMPONENTS.UI)
+        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
     }
 </script>
 

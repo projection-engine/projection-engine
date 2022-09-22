@@ -9,6 +9,7 @@ export default class Localization {
             RENAME_ERROR: "Error renaming editor",
             LOADING: "Loading projects",
             TITLE: "Projection Engine",
+            LABEL_PROJECTS: "Projects",
             PROJECTS: "Your projects",
             CREATE: "Create editor",
             EMPTY: "No projects found",

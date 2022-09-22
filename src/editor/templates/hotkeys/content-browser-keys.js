@@ -1,12 +1,12 @@
-import selection from "./selection";
-import SELECTION_TYPES from "../templates/SELECTION_TYPES";
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
-import handleDelete from "./handle-delete";
-import KEYS from "../../../../../public/engine/static/KEYS";
-import FilesStore from "../../../stores/FilesStore";
-import SelectionStore from "../../../stores/SelectionStore";
+import selection from "../../views/content-browser/utils/selection";
+import SELECTION_TYPES from "../../views/content-browser/templates/SELECTION_TYPES";
+import FilesAPI from "../../../shared/libs/files/FilesAPI";
+import handleDelete from "../../views/content-browser/utils/handle-delete";
+import KEYS from "../../../../public/engine/static/KEYS";
+import FilesStore from "../../stores/FilesStore";
+import SelectionStore from "../../stores/SelectionStore";
 
-export default function getHotkeys(translate, currentDirectory, setCurrentDirectory) {
+export default function contentBrowserKeys(translate, currentDirectory, setCurrentDirectory) {
     return [
         {
             label: translate("SELECT_ALL"),

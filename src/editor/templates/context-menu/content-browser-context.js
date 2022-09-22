@@ -1,18 +1,18 @@
-import handleDelete from "./handle-delete"
-import FilesAPI from "../../../../shared/libs/files/FilesAPI"
-import FilesStore from "../../../stores/FilesStore";
-import FILE_TYPES from "../../../../static/FILE_TYPES";
-import COMPONENT_TEMPLATE from "../../../../../public/engine/static/templates/COMPONENT_TEMPLATE";
-import importFile from "../../../libs/import-file";
-import AssetAPI from "../../../../shared/libs/files/AssetAPI";
-import UI_TEMPLATE from "../../../../../public/engine/static/templates/UI_TEMPLATE";
-import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
-import Localization from "../../../../shared/libs/Localization";
-import SIMPLE_MATERIAL_TEMPLATE from "../../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
+import handleDelete from "../../views/content-browser/utils/handle-delete"
+import FilesAPI from "../../../shared/libs/files/FilesAPI"
+import FilesStore from "../../stores/FilesStore";
+import FILE_TYPES from "../../../static/FILE_TYPES";
+import COMPONENT_TEMPLATE from "../../../../public/engine/static/templates/COMPONENT_TEMPLATE";
+import importFile from "../../libs/import-file";
+import AssetAPI from "../../../shared/libs/files/AssetAPI";
+import UI_TEMPLATE from "../../../../public/engine/static/templates/UI_TEMPLATE";
+import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
+import Localization from "../../../shared/libs/Localization";
+import SIMPLE_MATERIAL_TEMPLATE from "../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
-export default function getContextMenu(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem ) {
+export default function contentBrowserContext(selected, currentDirectory, setCurrentDirectory, navigationHistory, setCurrentItem ) {
     const check = async (path, ext) => {
         let n = path + ext
         let it = 0
@@ -29,7 +29,6 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
             label: translate("DELETE"),
             icon: "delete",
             onClick: () => handleDelete([...selected], currentDirectory, setCurrentDirectory)
-
         },
         {divider: true},
         {
@@ -260,7 +259,6 @@ export default function getContextMenu(selected, currentDirectory, setCurrentDir
                     icon: "view_quilt",
                     onClick: async () => {
                         let path = await check(currentDirectory.id + FilesAPI.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
-
                         await AssetAPI.writeAsset(path, UI_TEMPLATE)
                         FilesStore.refreshFiles().catch()
                     }

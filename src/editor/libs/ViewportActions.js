@@ -56,18 +56,19 @@ export default class ViewportActions {
         let block = []
         if (!ViewportActions.toCopy)
             return
-        ViewportActions.toCopy.forEach(t => {
+        for (let i = 0; i < ViewportActions.toCopy.length; i++) {
+            const t = ViewportActions.toCopy[i]
             const found = QueryAPI.getEntityByID(t)
             if (found) {
-                const clone = found.clone()
                 const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
+                if (targetParent === found || !targetParent)
+                    continue
+                const clone = found.clone()
                 clone.parent = targetParent
-                if(targetParent)
-                    targetParent.children.push(clone)
+                targetParent.children.push(clone)
                 block.push(clone)
             }
-        })
-
+        }
         dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
         alert.pushAlert(`Pasted ${ViewportActions.toCopy.length} entities.`, "info")
 

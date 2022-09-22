@@ -2,7 +2,7 @@
     import SHORTCUTS_ID from "../../data/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import HotKeys from "./libs/HotKeys";
+    import HotKeysController from "../../../shared/libs/HotKeysController";
     import Localization from "../../../shared/libs/Localization";
     import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
@@ -19,7 +19,7 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onMount(() => {
         let timeout
-        HotKeys.initializeListener(v => activeView = v)
+        HotKeysController.initializeListener(v => activeView = v)
         ConsoleAPI.initialize(() => {
             hasMessage = true
             clearTimeout(timeout)

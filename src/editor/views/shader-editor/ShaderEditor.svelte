@@ -2,7 +2,7 @@
     import buildShader from "./libs/build-shader"
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
-    import SELECTION_TYPES from "./templates/SELECT_ACTIONS"
+    import SELECTION_TYPES from "./data/SELECT_ACTIONS"
     import FilesAPI from "../../../shared/libs/files/FilesAPI"
     import compiler from "./libs/compiler"
     import Localization from "../../../shared/libs/Localization";
@@ -18,8 +18,8 @@
     import Editor from "./components/Editor.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorController from "./ShaderEditorController";
-    import HotKeys from "../../components/metrics/libs/HotKeys";
-    import getShortcuts from "./utils/get-shortcuts";
+    import HotKeysController from "../../../shared/libs/HotKeysController";
+    import shaderEditorKeys from "../../templates/hotkeys/shader-editor-keys";
     import Selector from "../../../shared/components/selector/Selector.svelte";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
 
@@ -73,15 +73,15 @@
     }
     $: {
         if (ref)
-            HotKeys.bindAction(
+            HotKeysController.bindAction(
                 ref,
-                getShortcuts(openFile, nodes, v => nodes = v, links, v => links = v),
+                shaderEditorKeys(openFile, nodes, v => nodes = v, links, v => links = v),
                 "texture",
                 Localization.PROJECT.SHADER_EDITOR.TITLE
             )
     }
     onDestroy(() => {
-        HotKeys.unbindAction(ref)
+        HotKeysController.unbindAction(ref)
         unsubscribe()
         unsubscribeEngine()
     })

@@ -1,14 +1,15 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
-    import bindContextTarget from "../../../../shared/components/context-menu/libs/bind-context-target";
-    import getContextMenu from "../utils/get-context-menu";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "./Node.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import {Engine} from "../../../../../public/engine/production";
     import HierarchyController from "../../../libs/HierarchyController";
+    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import Localization from "../../../../shared/libs/Localization";
+    import viewportContext from "../../../templates/context-menu/viewport-context";
 
     export let ID
     export let translate
@@ -66,14 +67,23 @@
             }
         }
     }
-    const contextMenuBinding = bindContextTarget(ID, TRIGGERS)
-    $: contextMenuBinding.rebind(getContextMenu(open, () => open = open))
+
+
     $: setIsEmpty(toRender.length === 0)
+
+    onMount(() => ContextMenuController.mount({
+            icon: "account_tree",
+            label: Localization.PROJECT.HIERARCHY.TITLE
+        },
+        viewportContext(),
+        ID,
+        TRIGGERS)
+    )
 
     onDestroy(() => {
         unsubscribeSelection()
         unsubscribeEngine()
-        contextMenuBinding.onDestroy()
+        ContextMenuController.destroy(ID)
     })
 </script>
 

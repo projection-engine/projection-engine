@@ -7,15 +7,16 @@
     import handleDropNode from "../utils/handle-drop-node";
     import handleDropBoard from "../utils/handle-drop-board";
     import BOARD_SIZE from "../data/BOARD_SIZE";
-    import getContextMenu from "../utils/get-context-menu";
+    import shaderEditorContext from "../../../templates/context-menu/shader-editor-context";
     import {onDestroy, onMount} from "svelte";
     import Node from "./node/Node.svelte";
     import resolveLinks from "../utils/resolve-links";
     import onMutation from "../libs/on-mutation";
-    import bindContextTarget from "../../../../shared/components/context-menu/libs/bind-context-target";
     import handleLink from "../utils/handle-link";
     import ShaderEditorController from "../ShaderEditorController";
     import SelectionStore from "../../../stores/SelectionStore";
+    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import Localization from "../../../../shared/libs/Localization";
 
     export let links
     export let setLinks
@@ -49,31 +50,34 @@
         ShaderEditorController.scale = s
     }
 
-
     const mutationObserver = new MutationObserver(e => onMutation(resolvedLinks, ref, e))
-    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS)
-    $: contextMenuBinding.rebind(getContextMenu(
-        nodes,
-        setNodes,
-
-        selected,
-        links,
-        setLinks,
-        ref?.parentElement
-    ))
 
     onMount(() => {
+        ContextMenuController.mount(
+            {
+                icon: "texture",
+                label: Localization.PROJECT.SHADER_EDITOR.TITLE
+            },
+            shaderEditorContext(
+                nodes,
+                setNodes,
 
-        if (ref && ref.parentElement) {
-            ref.parentElement.scrollTop = BOARD_SIZE / 2
-            ref.parentElement.scrollLeft = BOARD_SIZE / 2
-            ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
-        }
+                selected,
+                links,
+                setLinks,
+                ref.parentElement
+            ),
+            internalID,
+            TRIGGERS
+        )
+        ref.parentElement.scrollTop = BOARD_SIZE / 2
+        ref.parentElement.scrollLeft = BOARD_SIZE / 2
+        ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
         mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
     })
 
     onDestroy(() => {
-        contextMenuBinding.onDestroy()
+        ContextMenuController.destroy(internalID)
         if (ref && ref.parentElement)
             ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})
         mutationObserver.disconnect()

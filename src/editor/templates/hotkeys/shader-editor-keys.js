@@ -1,10 +1,10 @@
-import KEYS from "../../../../../public/engine/static/KEYS";
-import ShaderEditorController from "../ShaderEditorController";
-import SelectionStore from "../../../stores/SelectionStore";
-import addComment from "./add-comment";
-import Material from "../templates/nodes/Material";
+import KEYS from "../../../../public/engine/static/KEYS";
+import ShaderEditorController from "../../views/shader-editor/ShaderEditorController";
+import SelectionStore from "../../stores/SelectionStore";
+import addComment from "../../views/shader-editor/utils/add-comment";
+import Material from "../../views/shader-editor/templates/nodes/Material";
 
-export default function getShortcuts(openFile, nodes, setNodes, links, setLinks) {
+export default function shaderEditorKeys(openFile, nodes, setNodes, links, setLinks) {
     return [
         { // create group
             require: [KEYS.KeyA],

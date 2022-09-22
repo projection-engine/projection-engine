@@ -14,9 +14,10 @@
     import {CameraTracker} from "../../../../public/engine/editor";
     import EditorHeader from "./components/editor/EditorHeader.svelte";
     import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
-    import HotKeys from "../../components/metrics/libs/HotKeys";
-    import getHotkeys from "./utils/get-hotkeys";
+    import HotKeysController from "../../../shared/libs/HotKeysController";
+
     import FilesStore from "../../stores/FilesStore";
+    import VIEWPORT_HOTKEYS from "../../templates/VIEWPORT_HOTKEYS";
 
     export let isReady = false
     export let updateView
@@ -29,15 +30,15 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     let ref
     onMount(() => {
-        HotKeys.bindAction(
+        HotKeysController.bindAction(
             ref,
-            getHotkeys(),
+            Object.values(VIEWPORT_HOTKEYS),
             "public",
             Localization.PROJECT.VIEWPORT.TITLE
         )
     })
     onDestroy(() => {
-        HotKeys.unbindAction(ref)
+        HotKeysController.unbindAction(ref)
         unsubscribeEngine()
         unsubscribeSettings()
     })

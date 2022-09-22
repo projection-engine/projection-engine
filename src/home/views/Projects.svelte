@@ -9,9 +9,9 @@
     import refreshProjects from "../utils/refresh-projects";
     import FilesAPI from "../../shared/libs/files/FilesAPI";
     import ProjectRow from "../components/ProjectRow.svelte";
-    import bindContextTarget from "../../shared/components/context-menu/libs/bind-context-target";
     import {v4} from "uuid";
     import getProjectContextMenu from "../utils/get-project-context-menu";
+    import ContextMenuController from "../../shared/libs/ContextMenuController";
 
     const pathLib = window.require("path")
     const os = window.require("os")
@@ -25,26 +25,30 @@
     let filtered = []
     const translate = (key) => Localization.HOME.HOME[key]
     const internalID = v4()
+
     function openProject(p) {
         ipcRenderer.send(ROUTES.OPEN_PROJECT + sessionStorage.getItem("electronWindowID"), p)
         addOpenProjects(p)
     }
 
     onMount(() => {
+        ContextMenuController.mount(
+            {
+                icon: "work",
+                label: Localization.HOME.HOME.LABEL_PROJECTS
+            },
+            getProjectContextMenu(projectsToShow, v => projectsToShow = v),
+            internalID,
+            ["data-card"]
+        )
         const b = getBasePath(os, pathLib)
         localStorage.setItem("basePath", b)
         NodeFS.mkdir(b).catch()
         refreshProjects(b + "projects" + FilesAPI.sep).then(r => projectsToShow = r).catch()
     })
-
-    const contextMenuBinding = bindContextTarget(internalID, ["data-card"])
-    $: contextMenuBinding.rebind(getProjectContextMenu(projectsToShow, v => projectsToShow = v))
-
-    onDestroy(() => {
-        contextMenuBinding.onDestroy()
-    })
+    onDestroy(() => ContextMenuController.destroy(internalID))
     $: {
-        if(searchString)
+        if (searchString)
             filtered = projectsToShow.filter(p => p.meta.name && p.meta.name.toLowerCase().includes(searchString.toLowerCase()))
         else
             filtered = [...projectsToShow]

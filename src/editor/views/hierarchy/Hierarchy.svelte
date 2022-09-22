@@ -8,8 +8,7 @@
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeys from "../../components/metrics/libs/HotKeys";
-    import getHotkeys from "../viewport/utils/get-hotkeys";
+    import HotKeysController from "../../../shared/libs/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
     import EngineStore from "../../stores/EngineStore";
@@ -17,6 +16,7 @@
     import {EntityAPI} from "../../../../public/engine/production";
     import HierarchyController from "../../libs/HierarchyController";
     import SelectionStore from "../../stores/SelectionStore";
+    import VIEWPORT_HOTKEYS from "../../templates/VIEWPORT_HOTKEYS";
 
 
     export let hidden = undefined
@@ -30,15 +30,15 @@
     let isEmpty = true
     let ref
     onMount(() => {
-        HotKeys.bindAction(
+        HotKeysController.bindAction(
             ref,
-            getHotkeys(),
+            Object.values(VIEWPORT_HOTKEYS),
             "public",
             Localization.PROJECT.VIEWPORT.TITLE
         )
     })
     onDestroy(() => {
-        HotKeys.unbindAction(ref)
+        HotKeysController.unbindAction(ref)
     })
     $: nativeComponents = getNativeComponents()
 

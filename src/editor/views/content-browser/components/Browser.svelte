@@ -1,17 +1,18 @@
 <script>
-    import getContextMenu from "../utils/get-context-menu"
+    import contentBrowserContext from "../../../templates/context-menu/content-browser-context"
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
-    import getHotkeys from "../utils/get-hotkeys";
-    import bindContextTarget from "../../../../shared/components/context-menu/libs/bind-context-target";
+    import contentBrowserKeys from "../../../templates/hotkeys/content-browser-keys";
+
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
     import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
-    import HotKeys from "../../../components/metrics/libs/HotKeys";
+    import HotKeysController from "../../../../shared/libs/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
+    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
 
     export let fileType
     export let setFileType
@@ -36,21 +37,10 @@
 
     const translate = key => Localization.PROJECT.FILES[key]
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
-    const contextMenuBinding = bindContextTarget(internalID, TRIGGERS, (trigger, element) => {
-        if (trigger !== TRIGGERS[0] && selected.length === 0)
-            SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
-    })
+
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
-    $: contextMenuBinding.rebind(
-        getContextMenu(
-            selected,
-            currentDirectory,
-            setCurrentDirectory,
-            navigationHistory,
-            v => currentItem = v
-        )
-    )
+
 
     function onDragEnd() {
         onDrag = false
@@ -58,10 +48,29 @@
 
     let timeout
     onMount(() => {
+        ContextMenuController.mount(
+            {
+                icon: "folder",
+                label: translate("TITLE")
+            },
+            contentBrowserContext(
+                selected,
+                currentDirectory,
+                setCurrentDirectory,
+                navigationHistory,
+                v => currentItem = v
+            ),
+            internalID,
+            TRIGGERS,
+            (trigger, element) => {
+                if (trigger !== TRIGGERS[0] && selected.length === 0)
+                    SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
+            }
+        )
         document.addEventListener("dragend", onDragEnd)
-        HotKeys.bindAction(
+        HotKeysController.bindAction(
             ref,
-            getHotkeys(translate, currentDirectory, setCurrentDirectory),
+            contentBrowserKeys(translate, currentDirectory, setCurrentDirectory),
             "folder",
             translate("TITLE")
         )
@@ -80,8 +89,8 @@
         document.removeEventListener("dragend", onDragEnd)
         unsubscribe()
         clearTimeout(timeout)
-        HotKeys.unbindAction(ref)
-        contextMenuBinding.onDestroy()
+        HotKeysController.unbindAction(ref)
+        ContextMenuController.destroy(internalID)
         resizeOBS.disconnect()
     })
 

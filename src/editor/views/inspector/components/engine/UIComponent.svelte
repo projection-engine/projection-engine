@@ -5,7 +5,7 @@
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json"
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import getComponentIcon from "../../../../utils/get-component-icon";
+    import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";

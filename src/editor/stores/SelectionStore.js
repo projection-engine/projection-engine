@@ -50,7 +50,7 @@ export default class SelectionStore {
                 value.selectedEntity = Engine.entitiesMap.get(selected[0] ? selected[0] : value.lockedEntity)
             else
                 value.selectedEntity = undefined
-                HierarchyController.updateSurface(value.lockedEntity, value.array )
+            HierarchyController.updateSurface(value.lockedEntity, value.array)
         } else
             value.selectedEntity = undefined
 
@@ -88,6 +88,12 @@ export default class SelectionStore {
         return SelectionStore.TARGET === TYPES.ENGINE ? SelectionStore.data.selectedEntity : undefined
     }
 
+    static get mainEntity() {
+        const s = SelectionStore.data.selectedEntity
+        const l = SelectionStore.data.lockedEntity
+        const m = SelectionStore.engineSelected[0]
+        return s ? s.id : l ? l : m
+    }
 
     static get lockedEntity() {
         return SelectionStore.data.lockedEntity

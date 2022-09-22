@@ -1,8 +1,8 @@
-import deleteNode from "./delete-node"
-import SELECTION_TYPES from "../templates/SELECT_ACTIONS"
-import selection from "./selection"
+import deleteNode from "../../views/shader-editor/utils/delete-node"
+import SELECTION_TYPES from "../../views/shader-editor/data/SELECT_ACTIONS"
+import selection from "../../views/shader-editor/utils/selection"
 
-export default function getContextMenu(nodes, setNodes, selected, links, setLinks, reference) {
+export default function shaderEditorContext(nodes, setNodes, selected, links, setLinks, reference) {
     return [
         {
             label: "Select all",

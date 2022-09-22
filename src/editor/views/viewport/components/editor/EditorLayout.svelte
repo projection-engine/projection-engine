@@ -11,7 +11,7 @@
         TransformationAPI,
     } from "../../../../../../public/engine/production";
 
-    import viewportSelectionBoxWorker from "../../utils/viewport-selection-box-worker";
+    import selectionQueryWorker from "../../utils/selection-query-worker";
     import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
     import SideOptions from "./QuickAccess.svelte";
     import CameraBar from "./CameraBar.svelte";
@@ -26,10 +26,11 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import ScreenSpaceGizmo from "../../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
     import CameraAPI from "../../../../../../public/engine/production/apis/camera/CameraAPI";
-    import bindContextTarget from "../../../../../shared/components/context-menu/libs/bind-context-target";
-    import getContextMenu from "../../utils/get-context-menu";
+    import viewportContext from "../../../../templates/context-menu/viewport-context";
+    import ContextMenuController from "../../../../../shared/libs/ContextMenuController";
+    import Localization from "../../../../../shared/libs/Localization";
 
-    let WORKER = viewportSelectionBoxWorker()
+    let WORKER = selectionQueryWorker()
 
 
     export let settings
@@ -43,7 +44,7 @@
         const translation = ScreenSpaceGizmo.onMouseMove(e, .1)
         const t = window.engineCursor
         vec3.add(t.translation, t.translation, translation)
-         TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling, t.matrix)
+        TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling, t.matrix)
     }
 
     function handleMouse(e) {
@@ -109,11 +110,18 @@
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
 
-    const contextMenuBinding = bindContextTarget(RENDER_TARGET,  ["data-viewport"])
 
     const draggable = dragDrop(false)
     onMount(() => {
-        contextMenuBinding.rebind(getContextMenu())
+        ContextMenuController.mount(
+            {
+                icon: "public",
+                label: Localization.PROJECT.VIEWPORT.TITLE
+            },
+            viewportContext(),
+            RENDER_TARGET,
+            ["data-viewport"]
+        )
         const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
@@ -131,7 +139,7 @@
         })
     })
     onDestroy(() => {
-        contextMenuBinding.onDestroy()
+        ContextMenuController.destroy(RENDER_TARGET)
         draggable.onDestroy()
         const parentElement = gpu.canvas
         parentElement.removeEventListener("mousedown", onMouseDown)

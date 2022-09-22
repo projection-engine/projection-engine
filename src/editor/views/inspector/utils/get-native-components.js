@@ -1,4 +1,4 @@
-import getComponentIcon from "../../../utils/get-component-icon";
+import getComponentIcon from "./get-component-icon";
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
 
 export default function getNativeComponents() {
