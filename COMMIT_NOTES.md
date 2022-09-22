@@ -1,2 +1,3 @@
-- Fixed context menu on content browser not being updated with directory change
-- Fixed home context menu not working as intended
+- Reworked content browser context menu
+- More hotkeys for content browser
+- Added alert when deleting files

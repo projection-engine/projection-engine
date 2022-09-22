@@ -13,13 +13,12 @@
     export let callback = () => null
 
     let mounted = false
-    onMount(() => {
-
-        if (onFocus)
+    $: {
+        if (onFocus != null && options && !isSubMenu)
             onFocus(trigger, selected)
         callback()
-    })
-    $: if(selected) callback()
+    }
+    onMount(() => callback())
     let optionsToRender
     let isSubMenu = false
     let parentLabel
@@ -123,7 +122,7 @@
         align-items: center;
     }
 
-    .title{
+    .title {
         background: var(--pj-background-secondary);
         display: flex;
         align-items: center;

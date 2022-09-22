@@ -425,6 +425,7 @@ export default class Localization {
         },
 
         FILES: {
+            DELETING_ITEMS: "Deleting items",
             NEW_SIMPLE_MATERIAL: "New simple material",
             FILE_TYPE: "File type",
             CHILDREN: "Children quantity",

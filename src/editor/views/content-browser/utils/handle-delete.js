@@ -5,7 +5,7 @@ import Localization from "../../../../shared/libs/Localization";
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
     FilesStore.removeBlock(itemsToDelete)
-
+    alert.pushAlert(Localization.PROJECT.FILES.DELETING_ITEMS, "info")
     for (let i = 0; i < itemsToDelete.length; i++) {
         const currentItem = itemsToDelete[i]
         const file = FilesStore.data.items.find(e => e.id === currentItem)

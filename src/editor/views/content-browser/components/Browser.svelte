@@ -1,10 +1,9 @@
 <script>
-    import contentBrowserContext from "../../../templates/context-menu/content-browser-context"
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./Item.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
-    import contentBrowserKeys from "../../../templates/hotkeys/content-browser-keys";
+    import contentBrowserActions from "../../../templates/content-browser-actions";
 
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
@@ -48,6 +47,7 @@
 
     $: {
         if (ref) {
+            const actions = contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v)
             HotKeysController.unbindAction(ref)
             ContextMenuController.destroy(internalID)
             ContextMenuController.mount(
@@ -55,23 +55,18 @@
                     icon: "folder",
                     label: translate("TITLE")
                 },
-                contentBrowserContext(
-                    selected,
-                    currentDirectory,
-                    setCurrentDirectory,
-                    navigationHistory,
-                    v => currentItem = v
-                ),
+                actions.contextMenu,
                 internalID,
                 TRIGGERS,
                 (trigger, element) => {
-                    if (trigger !== TRIGGERS[0] && selected.length === 0)
-                        SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
+                    const id = element.getAttribute("data-id")
+                    if (id != null)
+                        SelectionStore.contentBrowserSelected = [id]
                 }
             )
             HotKeysController.bindAction(
                 ref,
-                contentBrowserKeys(translate, currentDirectory, setCurrentDirectory),
+                actions.hotKeys,
                 "folder",
                 translate("TITLE")
             )

@@ -167,6 +167,7 @@
 </script>
 
 <div
+        data-id={data.id}
         data-material={isMaterial ? data.id : undefined}
         data-file={type === 0 ? undefined : data.id}
         data-name={currentLabel}
@@ -174,6 +175,7 @@
         on:dblclick={onDbClick}
         bind:this={ref}
         on:click={setSelected}
+
         style={selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "") +  (FilesStore.toCut.includes(data.id) || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
 
