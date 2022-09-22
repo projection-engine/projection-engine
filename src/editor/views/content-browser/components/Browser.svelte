@@ -46,34 +46,41 @@
         onDrag = false
     }
 
+    $: {
+        if (ref) {
+            HotKeysController.unbindAction(ref)
+            ContextMenuController.destroy(internalID)
+            ContextMenuController.mount(
+                {
+                    icon: "folder",
+                    label: translate("TITLE")
+                },
+                contentBrowserContext(
+                    selected,
+                    currentDirectory,
+                    setCurrentDirectory,
+                    navigationHistory,
+                    v => currentItem = v
+                ),
+                internalID,
+                TRIGGERS,
+                (trigger, element) => {
+                    if (trigger !== TRIGGERS[0] && selected.length === 0)
+                        SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
+                }
+            )
+            HotKeysController.bindAction(
+                ref,
+                contentBrowserKeys(translate, currentDirectory, setCurrentDirectory),
+                "folder",
+                translate("TITLE")
+            )
+        }
+    }
+
     let timeout
     onMount(() => {
-        ContextMenuController.mount(
-            {
-                icon: "folder",
-                label: translate("TITLE")
-            },
-            contentBrowserContext(
-                selected,
-                currentDirectory,
-                setCurrentDirectory,
-                navigationHistory,
-                v => currentItem = v
-            ),
-            internalID,
-            TRIGGERS,
-            (trigger, element) => {
-                if (trigger !== TRIGGERS[0] && selected.length === 0)
-                    SelectionStore.contentBrowserSelected = element.getAttribute(trigger)
-            }
-        )
         document.addEventListener("dragend", onDragEnd)
-        HotKeysController.bindAction(
-            ref,
-            contentBrowserKeys(translate, currentDirectory, setCurrentDirectory),
-            "folder",
-            translate("TITLE")
-        )
         elementsPerRow = Math.round(ref.offsetWidth / (cardDimensions.width + 8))
 
         resizeOBS = new ResizeObserver(() => {
@@ -86,11 +93,14 @@
     })
 
     onDestroy(() => {
+        HotKeysController.unbindAction(ref)
+        ContextMenuController.destroy(internalID)
+
+
         document.removeEventListener("dragend", onDragEnd)
         unsubscribe()
         clearTimeout(timeout)
-        HotKeysController.unbindAction(ref)
-        ContextMenuController.destroy(internalID)
+
         resizeOBS.disconnect()
     })
 

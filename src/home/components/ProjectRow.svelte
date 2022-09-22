@@ -12,9 +12,12 @@
     export let data
     export let onRename
     export let openProjects
+    export let selected
 
+    $: isSelected = selected === data.id
     let changeDate
     let hovered
+
 
     $: isOpen = openProjects.includes(data.id)
 
@@ -52,8 +55,8 @@
 </script>
 
 
-<div class={"wrapper card-home"} data-card={data.id} on:mouseenter={() => hovered = true} on:mouseleave={() => hovered = false}>
-    <div class={"info card-home"} style="width: 200%; display: flex; justify-content: unset; gap: 4px">
+<div style={isSelected ? "border-color: var(--pj-accent-color)" : ""} class="wrapper card-home" data-card={data.id} on:mouseenter={() => hovered = true} on:mouseleave={() => hovered = false}>
+    <div class="info card-home" style="width: 200%; display: flex; justify-content: unset; gap: 4px">
         {#if openForChange}
             <Input
                 placeholder={data.meta.name}

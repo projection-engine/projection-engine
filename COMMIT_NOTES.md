@@ -1,7 +1,2 @@
-- Fixed gizmo transformation problem
-- Fixed scale gizmo not taking entity rotation into consideration
-- Context menu visual rework
-- Hierarchy/viewport context menu merged
-- More options to hierarchy/viewport context menu and hotkeys
-- Improvements to hot keys event tracking
-- Gizmo grid movement rewritten to be more stable
+- Fixed context menu on content browser not being updated with directory change
+- Fixed home context menu not working as intended

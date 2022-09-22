@@ -10,12 +10,11 @@
     import FilesAPI from "../../shared/libs/files/FilesAPI";
     import ProjectRow from "../components/ProjectRow.svelte";
     import {v4} from "uuid";
-    import getProjectContextMenu from "../utils/get-project-context-menu";
     import ContextMenuController from "../../shared/libs/ContextMenuController";
 
     const pathLib = window.require("path")
     const os = window.require("os")
-    const {ipcRenderer} = window.require("electron")
+    const {ipcRenderer, shell} = window.require("electron")
 
     export let openProjects
     export let addOpenProjects
@@ -26,6 +25,8 @@
     const translate = (key) => Localization.HOME.HOME[key]
     const internalID = v4()
 
+    let selected
+
     function openProject(p) {
         ipcRenderer.send(ROUTES.OPEN_PROJECT + sessionStorage.getItem("electronWindowID"), p)
         addOpenProjects(p)
@@ -34,10 +35,24 @@
     onMount(() => {
         ContextMenuController.mount(
             {
-                icon: "work",
+                icon: "view_in_ar",
                 label: Localization.HOME.HOME.LABEL_PROJECTS
             },
-            getProjectContextMenu(projectsToShow, v => projectsToShow = v),
+            [
+                {
+                    icon: "delete_forever",
+                    label: "Delete",
+                    onClick: async () => {
+                        await NodeFS.rm(FilesAPI.resolvePath(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + selected), {recursive: true, force: true})
+                        projectsToShow = projectsToShow.filter(e => e.id !== selected)
+                    }
+                },
+                {
+                    icon: "folder",
+                    label: "Open in explorer",
+                    onClick: async () => shell.showItemInFolder(localStorage.getItem("basePath") + "projects" + FilesAPI.sep + selected)
+                },
+            ],
             internalID,
             ["data-card"]
         )
@@ -69,9 +84,20 @@
         {translate("EMPTY")}
     </div>
 {:else}
-    <div class="content" id={internalID}>
+    <div
+            class="content"
+            id={internalID}
+            on:mousedown={e => {
+
+                const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-card")).filter(e => e != null)
+
+                if(found != null)
+                    selected = found[0]
+            }}
+    >
         {#each filtered as p}
             <ProjectRow
+                    selected={selected}
                     openProjects={openProjects}
                     open={() => openProject(p)}
                     data={p}
@@ -98,11 +124,16 @@
 
 
     .content {
-        display: grid;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
         gap: 2px;
-        height: fit-content;
+
         align-items: flex-start;
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
+
     }
 
     .empty-wrapper {

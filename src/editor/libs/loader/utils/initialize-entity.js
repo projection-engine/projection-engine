@@ -9,19 +9,19 @@ export default function initializeEntity(data, meshID, parent, index=0) {
         entity.parent = parent
         parent.children.push(entity)
     }
-    entity._scaling[0] = data.scaling[2]
-    entity._scaling[1] = data.scaling[2]
+    entity._scaling[0] = data.scaling[0]
+    entity._scaling[1] = data.scaling[1]
     entity._scaling[2] = data.scaling[2]
 
-    entity._translation[0] = data.translation[2]
-    entity._translation[1] = data.translation[2]
+    entity._translation[0] = data.translation[0]
+    entity._translation[1] = data.translation[1]
     entity._translation[2] = data.translation[2]
 
 
-    entity._rotationQuat[0] = data.rotationQuaternion[2]
-    entity._rotationQuat[1] = data.rotationQuaternion[2]
+    entity._rotationQuat[0] = data.rotationQuaternion[0]
+    entity._rotationQuat[1] = data.rotationQuaternion[1]
     entity._rotationQuat[2] = data.rotationQuaternion[2]
-    entity._rotationQuat[3] = data.rotationQuaternion[2]
+    entity._rotationQuat[3] = data.rotationQuaternion[3]
     entity.changed = true
 
     entity.baseTransformationMatrix = data.baseTransformationMatrix

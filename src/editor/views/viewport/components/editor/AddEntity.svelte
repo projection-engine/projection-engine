@@ -4,7 +4,7 @@
     import STATIC_MESHES from "../../../../../../public/engine/static/resources/STATIC_MESHES";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import EntityConstructor from "../../../../templates/EntityConstructor";
+    import EntityConstructor from "../../../../libs/EntityConstructor";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 

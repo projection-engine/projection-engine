@@ -126,7 +126,6 @@ export default class Loader {
                             const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
                             const c = sprite.addComponent(COMPONENTS.SPRITE)
                             c.imageID = data
-
                             dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
                         }
                         break
