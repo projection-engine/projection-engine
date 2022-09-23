@@ -94,7 +94,6 @@
     })
     onDestroy(() => draggable.onDestroy())
     const submit = (key, value, save, componentKey, component) => {
-        console.trace(key, value)
         if (component instanceof DirectionalLightComponent || component instanceof PointLightComponent) {
             entity.needsLightUpdate = true
             EntityAPI.packageLights(true)

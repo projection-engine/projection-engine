@@ -1,3 +1,11 @@
-- Reworked content browser context menu
-- More hotkeys for content browser
-- Added alert when deleting files
+- Fixes to absoluteTranslation
+- Changed camera settings
+- Removing 3D cursor
+- Added fallback material when dropping mesh/scene
+- Improvements to screen space coordinates conversion
+- Option to move selected entities to camera 
+- Implementing QueryAPI across editor
+- Snap to grid now applies to all selected entities
+- Fixed snap to grid not working as intended
+- Added shortcut for grid movement (scale, translation gizmos) by holding ctrl
+- Version update

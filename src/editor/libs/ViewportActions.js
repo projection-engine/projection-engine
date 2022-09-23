@@ -5,6 +5,7 @@ import SelectionStore from "../stores/SelectionStore";
 import {Engine} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
 import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+import {vec3} from "gl-matrix";
 
 export default class ViewportActions {
     static toCopy = []
@@ -19,14 +20,15 @@ export default class ViewportActions {
             ViewportActions.toCopy = [...selected]
     }
 
-    static focus(entity) {
-        if (!entity)
+    static focus() {
+        const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
+        if(!entity)
             return
-        CameraTracker.radius = 10
-        CameraTracker.centerOn[0] = entity.absoluteTranslation[0]
-        CameraTracker.centerOn[1] = entity.absoluteTranslation[1]
-        CameraTracker.centerOn[2] = entity.absoluteTranslation[2]
 
+        CameraTracker.radius = 10
+
+        vec3.copy(CameraTracker.centerOn, entity.absoluteTranslation)
+        console.log(CameraTracker.centerOn, entity.absoluteTranslation)
         CameraTracker.update()
     }
 

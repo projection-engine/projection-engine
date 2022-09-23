@@ -13,10 +13,10 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.initialize(settings)
 
     CameraTracker.animated = settings.camera?.animated
-    CameraTracker.movementSpeed = settings.camera?.movementSpeed
-    CameraTracker.scrollSpeed = settings.camera?.scrollSpeed
-    CameraTracker.scrollDelay = settings.camera?.scrollDelay
-    CameraTracker.turnSpeed = settings.camera?.turnSpeed
+    CameraTracker.movementSpeed = settings.camera?.movementSpeed * .01
+    CameraTracker.scrollSpeed = settings.camera?.scrollSpeed * .5
+    CameraTracker.turnSpeed = settings.camera?.turnSpeed * .01
+
 
     if (!settings.executingAnimation) {
         CameraAPI.zNear = settings.zNear

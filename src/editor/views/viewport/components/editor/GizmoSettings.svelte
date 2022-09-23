@@ -10,7 +10,7 @@
     import Range from "../../../../../shared/components/range/Range.svelte";
 
     export let settings
-    let initialized = false
+
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     const updateGizmoGrid = (key, value, submit) => {
         GizmoSystem[key].gridSize = value
@@ -103,14 +103,6 @@
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
             <Icon styles="font-size: .9rem">highlight_alt</Icon>
             <ToolTip content={translate("SELECTION")}/>
-        </button>
-        <button
-                class="button"
-                data-highlight={settings.gizmo === GIZMOS.CURSOR ? "-" : undefined}
-                style="border-top: var(--pj-border-primary) 1px solid"
-                on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.CURSOR})}>
-            <Icon styles="font-size: .9rem">adjust</Icon>
-            <ToolTip content={translate("CURSOR")}/>
         </button>
 
         <button

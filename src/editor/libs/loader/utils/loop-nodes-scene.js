@@ -2,7 +2,7 @@ import FilesAPI from "../../../../shared/libs/files/FilesAPI";
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 import {v4} from "uuid";
-import {Entity, GPU} from "../../../../../public/engine/production";
+import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../../public/engine/production";
 import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 import FilesStore from "../../../stores/FilesStore";
 import loadMaterial from "../../../views/inspector/utils/load-material";
@@ -24,7 +24,9 @@ export default async function loopNodesScene(node, parent, index = 0) {
             if(!meshData)
                 continue
             if (meshData.material != null)
-                await loadMaterial(meshData.material, () => null)
+                await loadMaterial(meshData.material, (data) => meshData.material = data)
+            else
+                meshData.material = FALLBACK_MATERIAL
             GPU.allocateMesh(reg.id, meshData)
 
             children.push(initializeEntity(meshData, reg.id, entity, m + index))

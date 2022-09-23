@@ -2,6 +2,9 @@ import TransformationAPI from "../../../../public/engine/production/apis/math/Tr
 import SelectionStore from "../../stores/SelectionStore";
 import {vec3} from "gl-matrix";
 import VIEWPORT_HOTKEYS from "../VIEWPORT_HOTKEYS";
+import EntityConstructor from "../../libs/EntityConstructor";
+import {Engine} from "../../../../public/engine/production";
+import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
 export default function viewportContext() {
     return [
@@ -30,35 +33,19 @@ export default function viewportContext() {
                 comp.rotationQuaternion = [0, 0, 0, 1]
             }
         },
-        {
-            label: "Move to 3D cursor",
-            onClick: () => {
-                const comp = SelectionStore.selectedEntity
-                vec3.copy(comp.translation, window.engineCursor.translation)
-            }
-        },
-        {
-            label: "Pivot on 3D cursor",
-            onClick: () => {
-                const comp = SelectionStore.selectedEntity
-                vec3.copy(comp.pivotPoint, window.engineCursor.translation)
-            }
-        },
-        {
-            label: "3D cursor to origin",
-            onClick: () => {
-                const component = SelectionStore.selectedEntity
-                if (component) {
-                    const t = window.engineCursor
-                    vec3.copy(t.translation, component.absoluteTranslation)
 
-                    t.matrix = TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling)
-                }
+        {
+            label: "Move to screen",
+            onClick: () => {
+                const selected = SelectionStore.engineSelected
+                for (let i = 0; i < selected.length; i++)
+                     EntityConstructor.translateEntity(QueryAPI.getEntityByID(selected[i]))
             }
         },
+        VIEWPORT_HOTKEYS.SNAP_TO_GRID,
         {divider: true},
         VIEWPORT_HOTKEYS.FOCUS,
-        VIEWPORT_HOTKEYS.FIXATE_ACTIVE,
-        VIEWPORT_HOTKEYS.SNAP_TO_GRID,
+        VIEWPORT_HOTKEYS.FIXATE_ACTIVE
+
     ]
 }

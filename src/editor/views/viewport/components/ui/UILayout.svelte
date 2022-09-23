@@ -6,6 +6,7 @@
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
     import {v4} from "uuid";
+    import QueryAPI from "../../../../../../public/engine/production/apis/utils/QueryAPI";
 
     export let engine
     export let settings
@@ -40,7 +41,7 @@
                 tooltip.style.zIndex = "500"
                 tooltip.addEventListener("mouseleave", handler, {once: true})
                 tooltip.addEventListener("click", handler, {once: true})
-                const entity = Engine.entitiesMap.get(e.target.getAttribute("data-engineentityid"))
+                const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-engineentityid"))
                 tooltip.innerHTML = `<div style="backdrop-filter: blur(10px) brightness(70%); padding: 8px; border-radius: 3px;">${entity.name}</div>`
                 tooltip.hovered = entity
                 break

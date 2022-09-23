@@ -13,7 +13,6 @@
 
     import selectionQueryWorker from "../../utils/selection-query-worker";
     import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
-    import SideOptions from "./QuickAccess.svelte";
     import CameraBar from "./CameraBar.svelte";
 
     import GIZMOS from "../../../../data/GIZMOS";
@@ -40,22 +39,7 @@
     const LEFT_BUTTON = 0
     let mouseDelta = {x: 0, y: 0}
 
-    function transformCursor(e) {
-        const translation = ScreenSpaceGizmo.onMouseMove(e, .1)
-        const t = window.engineCursor
-        vec3.add(t.translation, t.translation, translation)
-        TransformationAPI.transform(t.translation, [0, 0, 0, 1], t.scaling, t.matrix)
-    }
 
-    function handleMouse(e) {
-        if (e.type === "mousemove") {
-            transformCursor(e)
-
-        } else {
-            document.removeEventListener("mousemove", handleMouse)
-            document.exitPointerLock()
-        }
-    }
 
     function gizmoMouseMove(event) {
         if (GizmoSystem.targetGizmo)
@@ -67,18 +51,7 @@
             return
 
         mouseDelta = {x: e.clientX, y: e.clientY}
-        if (settings.gizmo === GIZMOS.CURSOR) {
-            ScreenSpaceGizmo.cameraDistance = Math.max(vec3.length(vec3.sub([], window.engineCursor.translation, CameraAPI.position)), 50)
-            const b = gpu.canvas.getBoundingClientRect()
-            ScreenSpaceGizmo.mouseDelta.x = b.width / 2
-            ScreenSpaceGizmo.mouseDelta.y = b.height / 2
-            InputEventsAPI.lockPointer()
 
-            transformCursor(e)
-            document.addEventListener("mousemove", handleMouse)
-            document.addEventListener("mouseup", handleMouse, {once: true})
-            return
-        }
         if (GizmoSystem.targetGizmo) {
             GizmoSystem.targetGizmo.onMouseDown(e)
             e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
@@ -165,9 +138,7 @@
 
 
 <CameraBar translate={translate}/>
-{#if settings.visible.sideBarViewport}
-    <SideOptions translate={translate}/>
-{/if}
+
 <SelectBox
         targetElementID={RENDER_TARGET}
         disabled={isSelectBoxDisabled}

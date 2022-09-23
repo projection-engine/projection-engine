@@ -8,6 +8,7 @@ import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
 import {Engine, EntityAPI, getPickerId} from "../../../../public/engine/production";
 import HierarchyController from "../../libs/HierarchyController";
+import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -45,7 +46,7 @@ export default function dispatchRendererEntities({type, payload}) {
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
             save()
-            deleteEntity(Engine.entitiesMap.get(payload))
+            deleteEntity(QueryAPI.getEntityByID(payload))
             save()
             break
         case ENTITY_ACTIONS.LINK_MULTIPLE: {
@@ -53,7 +54,7 @@ export default function dispatchRendererEntities({type, payload}) {
             for (let i = 0; i < values.length; i++) {
                 const s = values[i]
                 if (payload.indexOf(s.id) > 0) {
-                    const found = Engine.entitiesMap.get(payload[0])
+                    const found = QueryAPI.getEntityByID(payload[0])
                     EntityAPI.linkEntities(s, found)
                 }
             }
@@ -79,7 +80,7 @@ export default function dispatchRendererEntities({type, payload}) {
             save()
             if (Array.isArray(payload))
                 for (let i = 0; i < payload.length; i++)
-                    deleteEntity(Engine.entitiesMap.get(payload[i]), true)
+                    deleteEntity(QueryAPI.getEntityByID(payload[i]), true)
             save()
             break
         }
@@ -124,7 +125,7 @@ export default function dispatchRendererEntities({type, payload}) {
         entity.pickID = getPickerId(i + AXIS.ZY + 1)
         if (!entity.parentCache)
             continue
-        const parent = Engine.entitiesMap.get(entity.parentCache)
+        const parent = QueryAPI.getEntityByID(entity.parentCache)
 
         if (parent) {
             entity.parentCache = undefined

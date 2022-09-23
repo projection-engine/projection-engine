@@ -73,7 +73,7 @@ export default class Localization {
         INFO: {
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "5.2.0-alpha",
+            VERSION: "5.7.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
@@ -167,7 +167,7 @@ export default class Localization {
             BOTTOM: "Bottom",
             FRONT: "Front",
             BACK: "Back",
-            SWITCH_PROJECTION: "Switch between last Ortho/Perspective",
+            SWITCH_PROJECTION: "Switch between last Orthographic/Perspective",
             MOVE_IN_SCREEN_SPACE: "Move camera in screen-space",
             DOUBLE_CLICK: "- Double click to center",
 
@@ -193,7 +193,6 @@ export default class Localization {
             SCALE_GRID: "Scale",
             ROTATION_GRID: "Rotation",
             SELECTION: "Selection",
-            CURSOR: "3D Cursor",
             T_GIZMO: "Translation gizmo",
             R_GIZMO: "Rotation gizmo",
             S_GIZMO: "Scale gizmo",

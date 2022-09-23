@@ -118,10 +118,7 @@
                 <ColorPicker
                         value={uniform.data.map(e => e * 255)}
                         label={uniform.label}
-                        submit={({r,g,b}) => {
-                            console.trace([r/255,g/255,b/255])
-                            updateAsset(i, [r/255,g/255,b/255], 750)
-                        }}
+                        submit={({r,g,b}) => updateAsset(i, [r/255,g/255,b/255], 750)}
                 />
             {/if}
         </div>

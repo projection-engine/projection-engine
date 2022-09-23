@@ -56,15 +56,10 @@
                     Engine.start()
                     CameraTracker.startTracking()
                     gpu.canvas.style.opacity = "1"
-                    if (settings.visible.sideBarViewport)
-                        gpu.canvas.style.width = "calc(100% - 23px)"
-                    else
-                        gpu.canvas.style.width = "100%"
                 } else {
 
                     CameraTracker.stopTracking()
                     Engine.stop()
-                    gpu.canvas.style.width = "100%"
                     gpu.canvas.style.opacity = "0"
                 }
             } else {

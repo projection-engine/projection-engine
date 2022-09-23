@@ -49,9 +49,7 @@
     }
 </script>
 
-<div class={"wrapper"} style={settings.visible.sideBarViewport ? "right: 25px" : undefined}>
-
-
+<div class="wrapper">
     <div
             class={"gizmo-wrapper"}
             on:mousedown={({currentTarget}) => currentTarget.isFocused = true}
@@ -160,7 +158,7 @@
             class="option"
             on:mousedown={e => CameraTracker.transformCamera(e,  1)}
             on:dblclick={() => {
-                CameraTracker.centerOn = [...window.engineCursor.translation]
+                CameraTracker.centerOn = [0,0,0]
                 CameraTracker.update()
             }}>
         <ToolTip content={translate("MOVE_IN_SCREEN_SPACE")}/>

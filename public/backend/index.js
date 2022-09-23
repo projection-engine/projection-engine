@@ -28,8 +28,6 @@ async function closeProject(id) {
 }
 
 async function closeAll() {
-    console.trace("-----------------------------------------------------------------")
-
     const p = []
     openProjects.forEach(d => p.push(closeProject(d)))
     await Promise.all(p)

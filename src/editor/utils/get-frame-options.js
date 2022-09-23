@@ -56,18 +56,6 @@ export default function getFrameOptions(settings) {
             label: "Window",
             options: [
                 {
-                    label: "Viewport Sidebar",
-                    icon: !settings.visible.sideBarViewport ? undefined : "check",
-                    onClick: () => {
-
-                        settings.visible = {
-                            ...settings.visible,
-                            sideBarViewport: !settings.visible.sideBarViewport
-                        }
-                        SettingsStore.updateStore(settings)
-                    },
-                },
-                {
                     label: "Metrics",
                     icon: !settings.visible.metrics ? undefined : "check",
                     onClick: () => {

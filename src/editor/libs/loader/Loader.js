@@ -11,11 +11,12 @@ import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
-import {Entity, GPU} from "../../../../public/engine/production";
+import {ConversionAPI, Entity, GPU} from "../../../../public/engine/production";
 import loadMaterial from "../../views/inspector/utils/load-material";
 import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
+import EntityConstructor from "../EntityConstructor";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -70,14 +71,14 @@ export default class Loader {
                 }
                 entities.push(folder)
                 if (!onlyReturn) {
-                    const cursorPoint = [...window.engineCursor.absoluteTranslation]
+                    for (let i = 0; i < entities.length; i++) {
+                        const entity = entities[i]
+                        if (!entity.parent)
+                            EntityConstructor.translateEntity(entity)
+                        entity.changed = true
+                    }
 
                     dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
-                    entities.forEach(e => {
-                        vec4.add(e.translation, e.translation, cursorPoint)
-                        e.changed = true
-                    })
-                    console.trace(entities)
                 }
             } else
                 alert.pushAlert("Some error occurred", "error")
@@ -109,7 +110,7 @@ export default class Loader {
                     case FILE_TYPES.MESH: {
                         const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
                         const meshData = await Loader.mesh(file, data, asID)
-                        if(!meshData)
+                        if (!meshData)
                             continue
                         if (meshData.mesh !== undefined)
                             meshes.push(meshData)
@@ -133,11 +134,10 @@ export default class Loader {
                     case FILE_TYPES.SIMPLE_MATERIAL:
                     case FILE_TYPES.MATERIAL_INSTANCE:
                     case FILE_TYPES.MATERIAL: {
-
                         const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(mouseX, mouseY))
                         if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
 
-                        await loadMaterial(data, () => {
+                        await loadMaterial(data, (matID) => {
                             ActionHistoryAPI.pushChange({
                                 target: ActionHistoryAPI.targets.entity,
                                 entityID: entity.id,
@@ -145,7 +145,7 @@ export default class Loader {
                                 key: "materialID",
                                 changeValue: entity.components.get(COMPONENTS.MESH).materialID
                             })
-                            entity.components.get(COMPONENTS.MESH).materialID = data
+                            entity.components.get(COMPONENTS.MESH).materialID = matID
                             ActionHistoryAPI.pushChange({
                                 target: ActionHistoryAPI.targets.entity,
                                 entityID: entity.id,
@@ -163,23 +163,18 @@ export default class Loader {
                 }
         }
 
-        if (meshes.length > 0) {
-            if (!asID) {
-                const toLoad = meshes
-                    .map(m => m.entity)
-                    .filter(m => m !== undefined)
-                if (!toLoad.length)
-                    return
-                const cursorPoint = window.engineCursor.translation
-                toLoad.forEach(e => {
-                    if (e) {
-                        vec4.add(e.translation, e.translation, cursorPoint)
-                        e.changed = true
-                    }
-                })
-                dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
-                alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
+        if (meshes.length > 0 && !asID) {
+
+
+            const toLoad = meshes.map(m => m.entity).filter(m => m != null)
+            if (!toLoad.length)
+                return
+            for (let i = 0; i < toLoad.length; i++) {
+                const entity = toLoad[i]
+                EntityConstructor.translateEntity(entity)
             }
+            dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
+            alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
         }
     }
 

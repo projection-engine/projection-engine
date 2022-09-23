@@ -7,7 +7,7 @@ import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAP
 const MAX_DELTA = 50, MIDDLE_BUTTON = 1
 
 export default function onViewportClick(event, mouseDelta, settings, setContext) {
-    if (gpu.canvas !== event.target || settings.gizmo === GIZMOS.CURSOR || event.button === MIDDLE_BUTTON)
+    if (gpu.canvas !== event.target || event.button === MIDDLE_BUTTON)
         return
     const deltaX = Math.abs(mouseDelta.x - event.clientX)
     const deltaY = Math.abs(mouseDelta.y - event.clientY)

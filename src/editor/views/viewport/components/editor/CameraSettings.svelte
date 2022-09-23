@@ -1,39 +1,39 @@
 <script>
-    import Range from "../../../../../../shared/components/range/Range.svelte";
-    import Localization from "../../../../../../shared/libs/Localization";
+    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Localization from "../../../../../shared/libs/Localization";
     import {onDestroy} from "svelte";
-    import CameraAPI from "../../../../../../../public/engine/production/apis/camera/CameraAPI";
-    import CameraTracker from "../../../../../../../public/engine/editor/libs/CameraTracker";
-    import SettingsStore from "../../../../../stores/SettingsStore";
-    import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte";
+    import CameraAPI from "../../../../../../public/engine/production/apis/camera/CameraAPI";
+    import CameraTracker from "../../../../../../public/engine/editor/libs/CameraTracker";
+    import SettingsStore from "../../../../stores/SettingsStore";
+    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
 
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
-    let settings = {}
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onDestroy(() => unsubscribeSettings())
+
     let state = {
-        zFar: settings.zFar,
-        zNear: settings.zNear,
-        fov: settings.fov * toDeg,
+        zFar: SettingsStore.data.zFar,
+        zNear: SettingsStore.data.zNear,
+        fov: SettingsStore.data.fov * toDeg,
         radius: CameraTracker.radius,
 
-        movementSpeed: CameraTracker.movementSpeed,
-        scrollSpeed: CameraTracker.scrollSpeed,
-        scrollDelay: CameraTracker.scrollDelay,
-        turnSpeed: CameraTracker.turnSpeed
+        ortho: SettingsStore.data.ortho,
+        animated: SettingsStore.data.camera.animated,
+        movementSpeed: SettingsStore.data.camera.movementSpeed,
+        scrollSpeed: SettingsStore.data.camera.scrollSpeed,
+
+        turnSpeed: SettingsStore.data.camera.turnSpeed
     }
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
     const updateCamera = (key, value, full) => {
         if (full) {
-            SettingsStore.updateStore({...settings, camera: {...settings.camera, [key]: value}})
+            SettingsStore.updateStore({...SettingsStore.data, camera: {...SettingsStore.data.camera, [key]: value}})
             state = {...state, [key]: value}
         }
         CameraTracker[key] = value
     }
 </script>
 
-<fieldset class="wrapper">
+<fieldset>
     <legend>{translate("VIEW")}</legend>
     <Range
             minLabelWidth={"30px"}
@@ -41,7 +41,8 @@
             variant="embedded"
             incrementPercentage={1}
             onFinish={(v) => {
-                settings.zFar = v
+                SettingsStore.updateStore({...SettingsStore.data, zFar: v})
+
                 state.zFar = v
                 CameraAPI.zFar = v
                 CameraAPI.updateProjection()
@@ -57,7 +58,7 @@
             variant="embedded"
             label={translate("NEAR")}
             onFinish={(v) => {
-                settings.zNear = v
+               SettingsStore.updateStore({...SettingsStore.data, zNear: v})
 
                 state.zNear = v
                 CameraAPI.zNear = v
@@ -78,11 +79,11 @@
             label={translate("FOV")}
             minValue={10}
             maxValue={150}
-            disabled={settings.ortho}
+            disabled={state.ortho}
 
             onFinish={(v) => {
                 const value = v * toRad
-                settings.fov = value
+                SettingsStore.updateStore({...SettingsStore.data, fov: value})
                 state.fov = value
                 CameraAPI.fov = value
                 CameraAPI.updateProjection()
@@ -97,7 +98,8 @@
             variant="embedded"
             label={translate("ZOOM")}
             onFinish={(v) => {
-                settings.radius = v
+                SettingsStore.updateStore({...SettingsStore.data, radius: v})
+
                 state.radius = v
                 CameraTracker.radius = v
                 CameraTracker.update(true)
@@ -111,7 +113,7 @@
     />
 </fieldset>
 
-<fieldset class="wrapper">
+<fieldset>
     <legend>{translate("CAMERA_BEHAVIOUR")}</legend>
     <Range
             variant="embedded"
@@ -139,24 +141,16 @@
             handleChange={v => updateCamera("turnSpeed", v)}
     />
     <Checkbox
-        checked={settings.camera.animated}
-        handleCheck={() => updateCamera("animated", !settings.camera.animated, true)}
-        label={translate("CAM_ANIM")}
+            checked={state.animated}
+            handleCheck={() => updateCamera("animated", !state.animated, true)}
+            label={translate("CAM_ANIM")}
     />
 </fieldset>
 
 
 <style>
-    .wrapper {
-        padding: 2px;
-    }
-    .button{
-        border: none;
-        background: var(--background-input);
-
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        justify-content: flex-start;
+    fieldset {
+        padding: 4px;
+        margin-top: 4px;
     }
 </style>

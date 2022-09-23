@@ -13,13 +13,6 @@
 
 <Accordion title={translate("EDITOR")}>
     <Checkbox
-            checked={settings.visible.sideBarViewport}
-            handleCheck={() => {
-            update("visible",  {...settings.visible, sideBarViewport: !settings.visible.sideBarViewport})
-        }}
-            label={translate("SIDE_BAR")}
-    />
-    <Checkbox
             checked={settings.visible.metrics}
             handleCheck={() => {
             update("visible",  {...settings.visible, metrics: !settings.visible.metrics})

@@ -1,5 +1,5 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
-import {Entity, FALLBACK_MATERIAL} from "../../../../../public/engine/production";
+import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../../public/engine/production";
 
 
 export default function initializeEntity(data, meshID, parent, index=0) {
@@ -29,7 +29,7 @@ export default function initializeEntity(data, meshID, parent, index=0) {
         entity.pivotPoint = data.pivotPoint
 
     const e = entity.addComponent(COMPONENTS.MESH)
-    e.materialID = data.material != null ? data.material : FALLBACK_MATERIAL
+    e.materialID = GPU.materials.get(data.material) != null ? data.material : FALLBACK_MATERIAL
     e.meshID = meshID
 
 

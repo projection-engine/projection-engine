@@ -14,7 +14,7 @@ export default function transformModal( modal, button) {
 
     const modalBoundingRect = modal.getBoundingClientRect()
     const body = document.body.getBoundingClientRect()
-    console.trace(modalBoundingRect)
+
     let y = `${halfHeight + offY}px`
     if (modalBoundingRect.y < 0)
         y = "calc(50% + " + ((-modalBoundingRect.y / 2 - offY + halfHeight) / 2) + "px)"
@@ -25,11 +25,8 @@ export default function transformModal( modal, button) {
     let x = "0px"
     if (modalBoundingRect.x < LEFT_LIMIT)
         x = `calc(50% + ${offX}px)`
-    if ((modalBoundingRect.x + modalBoundingRect.width) > body.width) {
-
+    if ((modalBoundingRect.x + modalBoundingRect.width) > body.width)
         x = `calc(-100% + ${buttonBoundingRect.width}px)`
-        console.log(x)
-    }
 
     modal.style.transform = `translate(${x}, ${y})`;
     modal.style.zIndex = "999"

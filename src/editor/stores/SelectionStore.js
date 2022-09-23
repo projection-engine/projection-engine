@@ -1,6 +1,7 @@
 import {get, writable} from "svelte/store";
 import {Engine} from "../../../public/engine/production";
 import HierarchyController from "../libs/HierarchyController";
+import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
 
 const TYPES = {
     ENGINE: "ENGINE",
@@ -45,14 +46,8 @@ export default class SelectionStore {
             const selected = SelectionStore.engineSelected
             if (!value.lockedEntity)
                 value.lockedEntity = selected[0] ? selected[0] : Engine.entities.find(e => !e.parent)?.id
-
-            if (selected.length > 0 || value.lockedEntity)
-                value.selectedEntity = Engine.entitiesMap.get(selected[0] ? selected[0] : value.lockedEntity)
-            else
-                value.selectedEntity = undefined
             HierarchyController.updateSurface(value.lockedEntity, value.array)
-        } else
-            value.selectedEntity = undefined
+        }
 
         SelectionStore.data = value
         selection.set(value)
@@ -85,14 +80,13 @@ export default class SelectionStore {
 
 
     static get selectedEntity() {
-        return SelectionStore.TARGET === TYPES.ENGINE ? SelectionStore.data.selectedEntity : undefined
+        return QueryAPI.getEntityByID(SelectionStore.mainEntity)
     }
 
     static get mainEntity() {
-        const s = SelectionStore.data.selectedEntity
         const l = SelectionStore.data.lockedEntity
         const m = SelectionStore.engineSelected[0]
-        return s ? s.id : l ? l : m
+        return m ? m : l
     }
 
     static get lockedEntity() {

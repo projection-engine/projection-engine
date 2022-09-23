@@ -3,13 +3,14 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import CameraSettings from "./CameraSettings.svelte";
 
     export let settings
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 </script>
 
-<Dropdown>
+<Dropdown styles="width: clamp(250px, 10vw, 550px)">
     <button slot="button" data-viewbutton="-">
         {translate("VIEW")}
     </button>
@@ -34,4 +35,6 @@
         {/if}
         {translate("BACKGROUND")}
     </button>
+    <div data-divider="-"></div>
+    <CameraSettings/>
 </Dropdown>

@@ -4,6 +4,7 @@ import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "../../shared/libs/UndoRedoAPI";
 import {Engine, EntityAPI} from "../../../public/engine/production";
 import HierarchyController from "./HierarchyController";
+import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
 
 export default class ActionHistoryAPI {
     static targets = {
@@ -68,7 +69,7 @@ export default class ActionHistoryAPI {
                 break
             }
             case targets.entity: {
-                const entity = Engine.entitiesMap.get(currentAction.entityID)
+                const entity = QueryAPI.getEntityByID(currentAction.entityID)
                 if (currentAction.component != null) {
                     if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
                         entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue
@@ -90,7 +91,7 @@ export default class ActionHistoryAPI {
                 const oldEntities = [...Engine.entities]
                 for (let i = 0; i < newEntities.length; i++) {
                     const e = newEntities[i]
-                    if (Engine.entitiesMap.get(e.id) != null)
+                    if (QueryAPI.getEntityByID(e.id) != null)
                         continue
                     if (e.parent && !e.parent.children.includes(e))
                         EntityAPI.linkEntities(e, e.parent)

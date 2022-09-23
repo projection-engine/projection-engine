@@ -59,10 +59,9 @@ export default {
 
     camera: {
         animated: true,
-        movementSpeed: .01,
-        scrollSpeed: .5,
-        scrollDelay: 100,
-        turnSpeed: .01,
+        movementSpeed: 1,
+        scrollSpeed: 1,
+        turnSpeed: 1,
     },
 
     gizmoGrid: {
@@ -107,7 +106,6 @@ export default {
     currentView: 0,
     INITIALIZED: false,
     visible: {
-        sideBarViewport: true,
         metrics: true
     }
 }
