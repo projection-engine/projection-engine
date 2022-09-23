@@ -1,1 +1,7 @@
-- new release
+- SSAO rewritten
+- Fixed bloom breaking if already enabled on start
+- SSGI tweaks 
+- SSR tweaks
+- Simple material form reworked
+  - New scalar controls for all textures 
+- Optimization to Preview component (delay was added when scrolling through items)

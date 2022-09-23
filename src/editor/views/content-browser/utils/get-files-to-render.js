@@ -27,7 +27,7 @@ export default function getFilesToRender(currentDirectory, fileType, items, sear
     }
     if (searchString || fileType)
         return map(
-            file => searchString.trim() && file.name.toLowerCase().includes(searchString) || type && file.type === type && !file.isFolder,
+            file => searchString.trim() && file.name.includes(searchString) || type && file.type === type && !file.isFolder,
             items,
             elementsPerRow
         )

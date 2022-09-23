@@ -1,4 +1,4 @@
-import SHADING_MODELS from "./SHADING_MODELS"
+import SHADING_MODELS from "../../../public/engine/editor/templates/SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../shared/components/view/VIEWS";

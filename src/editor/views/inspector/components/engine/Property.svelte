@@ -63,6 +63,8 @@
             onFinish={v => submit(attribute.key, v, true)}
             minValue={attribute.min}
             maxValue={attribute.max}
+            integer={attribute.increment === 1}
+            incrementPercentage={attribute.increment}
             label={label}
             value={value}
             isAngle={attribute.isAngle}
@@ -92,6 +94,7 @@
                     }}
                     minValue={attribute.min}
                     maxValue={attribute.max}
+
                     label={partial}
                     variant="embedded"
                     value={value[index]}

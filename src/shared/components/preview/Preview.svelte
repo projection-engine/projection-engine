@@ -4,25 +4,35 @@
 
     export let drawOnError
     export let path
+    let lastPath
     let error = false
-
+    let timeout
     let src
     $: {
-        try {
-            NodeFS.read(path).then(res => {
-                if (!res[0]) {
-                    src = res[1]
-                    error = false
-                } else
-                    error = true
-            })
-        } catch (err) {
-            error = true
+        if (lastPath !== path) {
+            clearTimeout(timeout)
+            lastPath = path
+
         }
+        src = null
+        timeout = setTimeout(() => {
+            console.log("FETCHING")
+            try {
+                NodeFS.read(path).then(res => {
+                    if (!res[0]) {
+                        src = res[1]
+                        error = false
+                    } else
+                        error = true
+                })
+            } catch (err) {
+                error = true
+            }
+        }, 500)
     }
 </script>
 
-{#if error}
+{#if error || src == null}
     <slot name="icon"/>
 {:else}
     <slot name="image" draggable="false" src={src}/>

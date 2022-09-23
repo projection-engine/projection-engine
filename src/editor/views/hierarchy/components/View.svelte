@@ -34,7 +34,7 @@
 
     const testSearch = (node) => {
         const s = searchString, f = filteredComponent
-        return (s && node.name.toLowerCase().includes(s) || !s) &&
+        return (s && node.name.includes(s) || !s) &&
             (f && node.components.get(f) != null || !f)
     }
 

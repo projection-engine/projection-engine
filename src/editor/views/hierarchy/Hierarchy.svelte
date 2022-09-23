@@ -119,7 +119,7 @@
 >
     <EngineHierarchyView
             setIsEmpty={v => isEmpty = v}
-            searchString={search.toLowerCase()}
+            searchString={search}
             filteredComponent={filteredComponent}
             translate={translate}
             ID={ID}

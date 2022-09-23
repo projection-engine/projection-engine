@@ -7,6 +7,8 @@
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
+    import SIMPLE_MATERIAL_TEMPLATE from "../../../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
+    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
 
     const getUniformObject = (u) => {
         console.log(temp, u)
@@ -23,25 +25,32 @@
     const translate = key => Localization.PROJECT.INSPECTOR[key]
     $: uniform = getUniformObject(temp.uniformData)
     const updateAsset = async (key, value) => {
-        temp = {
-            ...temp, uniformData: temp.uniformData.map(u => {
-                if (u.key === key)
-                    return {...u, data: value}
-                return u
-            })
-        }
-        console.log(temp)
-        if (GPU.materials.get(item.registryID) != null) {
-            const instance = GPU.materials.get(item.registryID)
-            await MaterialAPI.updateMaterialUniforms(temp.uniformData, instance)
-            alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
-            GPU.cleanUpTextures()
-        }
-
         clearTimeout(timeout)
-
         timeout = setTimeout(async () => {
+            let valid = false
+            const old = temp.uniformData
+            if (!old.find(u => u.key === key) && SIMPLE_MATERIAL_TEMPLATE.uniformData.find(u => u.key === key))
+                old.push(SIMPLE_MATERIAL_TEMPLATE.uniformData.find(u => u.key === key))
+            temp = {
+                ...temp, uniformData: old.map(u => {
 
+                    if (u.key === key && JSON.stringify(value) !== JSON.stringify(u.data)) {
+                        valid = true
+                        return {...u, data: value}
+                    }
+                    return u
+                })
+            }
+            console.log(valid)
+            if (!valid)
+                return
+
+            if (GPU.materials.get(item.registryID) != null) {
+                const instance = GPU.materials.get(item.registryID)
+                await MaterialAPI.updateMaterialUniforms(temp.uniformData, instance)
+                alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
+                GPU.cleanUpTextures()
+            }
             alert.pushAlert(translate("UPDATING_ASSET"), "alert")
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
 
@@ -51,10 +60,25 @@
     $: settings = uniform.settings
     $: fallbackValues = uniform.fallbackValues
     $: rgbSamplerScales = uniform.rgbSamplerScales
+    $: linearSamplerScales = uniform.linearSamplerScales ? uniform.linearSamplerScales : SIMPLE_MATERIAL_TEMPLATE.uniformData[2].data
+
+    function updateScales(index, value) {
+        const newRGB = [...rgbSamplerScales]
+        newRGB[index] = value
+
+        updateAsset("rgbSamplerScales", newRGB)
+    }
+
+    function updateLinearScales(index, value) {
+        const newRGB = [...linearSamplerScales]
+        newRGB[index] = value
+
+        updateAsset("linearSamplerScales", newRGB)
+    }
 </script>
 
-<fieldset>
-    <legend>{translate("ALBEDO")}</legend>
+<Accordion>
+    <svelte:fragment slot="header">{translate("ALBEDO")}</svelte:fragment>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[0] !== 0}
@@ -70,19 +94,27 @@
             selected={uniform.albedo}
             handleChange={v => updateAsset("albedo", v.registryID)}
     />
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[0]}
+                label="R"
+                onFinish={v => updateScales(0, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[1]}
+                label="G"
+                onFinish={v => updateScales(1, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[2]}
+                label="B"
+                onFinish={v => updateScales(2, v)}
+        />
+    </div>
 
-    <ColorPicker
-            submit={({r,g,b}) => {
-                const newRGB = [...rgbSamplerScales]
-                newRGB[0] = r/255
-                newRGB[1]= g/255
-                newRGB[2]= b/255
-                updateAsset("rgbSamplerScales", newRGB)
-            }}
-            disabled={!settings[0]}
-            label={translate("SCALE_ALBEDO")}
-            value={[rgbSamplerScales[0] * 255, rgbSamplerScales[1] * 255, rgbSamplerScales[2] * 255]}
-    />
     <div data-divider="-"></div>
     <ColorPicker
             submit={({r,g,b}) => {
@@ -96,10 +128,10 @@
             label={translate("FALLBACK_VALUE")}
             value={[fallbackValues[0] * 255, fallbackValues[1] * 255, fallbackValues[2] * 255]}
     />
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{translate("NORMAL")}</legend>
+<Accordion>
+    <svelte:fragment slot="header">{translate("NORMAL")}</svelte:fragment>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[1]}
@@ -115,22 +147,30 @@
             selected={uniform.normal}
             handleChange={v => updateAsset("normal", v.registryID)}
     />
-    <ColorPicker
-            submit={({r,g,b}) => {
-                const newRGB = [...rgbSamplerScales]
-                newRGB[3] = r/255
-                newRGB[4]= g/255
-                newRGB[5]= b/255
-                updateAsset("rgbSamplerScales", newRGB)
-            }}
-            disabled={!settings[1]}
-            label={translate("SCALE_NORMAL")}
-            value={[rgbSamplerScales[3] * 255, rgbSamplerScales[4] * 255, rgbSamplerScales[5] * 255]}
-    />
-</fieldset>
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[3]}
+                label="R"
+                onFinish={v => updateScales(3, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[4]}
+                label="G"
+                onFinish={v => updateScales(4, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[5]}
+                label="B"
+                onFinish={v => updateScales(5, v)}
+        />
+    </div>
+</Accordion>
 
-<fieldset>
-    <legend>{translate("ROUGHNESS")}</legend>
+<Accordion>
+    <svelte:fragment slot="header">{translate("ROUGHNESS")}</svelte:fragment>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[2]}
@@ -146,17 +186,26 @@
             selected={uniform.roughness}
             handleChange={v => updateAsset("roughness", v.registryID)}
     />
-    <Range
-            onFinish={v => {
-                const newRGB = [...settings]
-                newRGB[8] = v
-                updateAsset("settings", newRGB)
-            }}
-            value={settings[8]}
-            minValue={0}
-            disabled={!settings[2]}
-            label={translate("SCALE_ROUGHNESS")}
-    />
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={linearSamplerScales[6]}
+                label="R"
+                onFinish={v => updateLinearScales(6, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[7]}
+                label="G"
+                onFinish={v => updateLinearScales(7, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[8]}
+                label="B"
+                onFinish={v => updateLinearScales(8, v)}
+        />
+    </div>
     <div data-divider="-"></div>
     <Range
             onFinish={v => {
@@ -170,10 +219,9 @@
             disabled={settings[2]}
             label={translate("FALLBACK_VALUE")}
     />
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{translate("METALLIC")}</legend>
+<Accordion title={translate("METALLIC")}>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[3]}
@@ -189,17 +237,26 @@
             selected={uniform.metallic}
             handleChange={v => updateAsset("metallic", v.registryID)}
     />
-    <Range
-            onFinish={v => {
-                const newRGB = [...settings]
-                newRGB[7] = v
-                updateAsset("settings", newRGB)
-            }}
-            value={settings[7]}
-            minValue={0}
-            disabled={!settings[3]}
-            label={translate("SCALE_METALLIC")}
-    />
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={linearSamplerScales[3]}
+                label="R"
+                onFinish={v => updateLinearScales(3, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[4]}
+                label="G"
+                onFinish={v => updateLinearScales(4, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[5]}
+                label="B"
+                onFinish={v => updateLinearScales(5, v)}
+        />
+    </div>
     <div data-divider="-"></div>
     <Range
             onFinish={v => {
@@ -213,10 +270,10 @@
             disabled={settings[3]}
             label={translate("FALLBACK_VALUE")}
     />
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{translate("AO")}</legend>
+
+<Accordion title={translate("AO")}>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[4]}
@@ -232,21 +289,30 @@
             selected={uniform.ao}
             handleChange={v => updateAsset("ao", v.registryID)}
     />
-    <Range
-            onFinish={v => {
-                const newRGB = [...settings]
-                newRGB[6] = v
-                updateAsset("settings", newRGB)
-            }}
-            value={settings[6]}
-            minValue={0}
-            disabled={!settings[4]}
-            label={translate("SCALE_AO")}
-    />
-</fieldset>
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={linearSamplerScales[0]}
+                label="R"
+                onFinish={v => updateLinearScales(0, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[1]}
+                label="G"
+                onFinish={v => updateLinearScales(1, v)}
+        />
+        <Range
+                minValue="0"
+                value={linearSamplerScales[2]}
+                label="B"
+                onFinish={v => updateLinearScales(2, v)}
+        />
+    </div>
+</Accordion>
 
-<fieldset>
-    <legend>{translate("EMISSION")}</legend>
+
+<Accordion title={translate("EMISSION")}>
     <Checkbox
             label={translate("USE_SAMPLER")}
             checked={settings[5]}
@@ -262,19 +328,26 @@
             selected={uniform.emission}
             handleChange={v => updateAsset("emission", v.registryID)}
     />
-    <ColorPicker
-            submit={({r,g,b}) => {
-                const newRGB = [...rgbSamplerScales]
-                newRGB[6] = r/255
-                newRGB[7]= g/255
-                newRGB[8]= b/255
-
-                updateAsset("rgbSamplerScales", newRGB)
-            }}
-            disabled={!settings[5]}
-            label={translate("SCALE_EMISSION")}
-            value={[rgbSamplerScales[6] * 255, rgbSamplerScales[7] * 255, rgbSamplerScales[8] * 255]}
-    />
+    <div class="inline">
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[6]}
+                label="R"
+                onFinish={v => updateScales(6, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[7]}
+                label="G"
+                onFinish={v => updateScales(7, v)}
+        />
+        <Range
+                minValue="0"
+                value={rgbSamplerScales[8]}
+                label="B"
+                onFinish={v => updateScales(8, v)}
+        />
+    </div>
     <div data-divider="-"></div>
     <ColorPicker
             submit={({r,g,b}) => {
@@ -289,4 +362,12 @@
             value={[fallbackValues[3] * 255, fallbackValues[4] * 255, fallbackValues[5] * 255]}
     />
 
-</fieldset>
+</Accordion>
+
+<style>
+    .inline {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+</style>

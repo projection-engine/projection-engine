@@ -24,9 +24,9 @@
     let maxDepthOffset
 
     $: {
-        const temp = getType(store, type, mergeMaterials), s = searchString.toLowerCase()
+        const temp = getType(store, type, mergeMaterials)
         if (searchString)
-            filtered = temp.filter(e => e.name.toLowerCase().includes(s))
+            filtered = temp.filter(e => e.name.includes(searchString))
         else
             filtered = temp
     }
