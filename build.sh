@@ -1,6 +1,6 @@
-git log --max-count=4 > README.md
+git log --max-count=10 > README.md
 
-yarn
+
 yarn package
 yarn electron-forge package --platform linux
 
