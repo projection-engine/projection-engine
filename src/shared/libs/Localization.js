@@ -73,7 +73,7 @@ export default class Localization {
         INFO: {
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "5.7.0-alpha",
+            VERSION: "5.8.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
@@ -256,13 +256,17 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            DEPTH_THRESHOLD: "Depth threshold",
+            BINARY_SEARCH: "Binary search iterations",
+            POWER: "Power",
+
             USE_SAMPLER: "Use texture",
             SCALE_ALBEDO: "Albedo scale",
             FALLBACK_VALUE: "Fallback value",
 
             NOISE_SCALE: "Noise scale",
             ALBEDO: "Albedo",
-            NORMAL:"Normal" ,
+            NORMAL: "Normal",
             METALLIC: "Metallic",
             EMISSION: "Emission",
             ROUGHNESS: "Roughness",
@@ -283,7 +287,7 @@ export default class Localization {
             KEY: "Key",
 
             MASS: "Mass",
-            COLLISION_TYPE:"Collision type",
+            COLLISION_TYPE: "Collision type",
             CENTER: "Center",
             HEIGHT: "Height",
             DIRECTION: "Direction",
@@ -298,7 +302,7 @@ export default class Localization {
             MATERIAL: "Material",
             CONTRIBUTE_TO_PROBES: "Contribute to probes",
             INDIRECT_LIGHTS: "Indirect lighting",
-            DIFFUSE_PROBE_INFLUENCE:  "Diffuse probe influence",
+            DIFFUSE_PROBE_INFLUENCE: "Diffuse probe influence",
             SPECULAR_PROBE_INFLUENCE: "Specular probe influence",
 
 
@@ -477,7 +481,7 @@ export default class Localization {
     }
     static COMPONENTS = {
         RANGE: {
-          UNDO: "Use original value"
+            UNDO: "Use original value"
         },
         FRAME: {
             ABOUT: "About",

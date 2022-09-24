@@ -82,11 +82,11 @@
             DeferredPass.deferredUniforms.option = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                SSGIPass.lastFrame = DeferredPass.albedoSampler
+                SSGIPass.uniforms.previousFrame = DeferredPass.albedoSampler
                 DeferredPass.deferredUniforms.uSampler = getTexture()
                 DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
-                SSGIPass.lastFrame = DeferredPass.compositeFBO.colors[0]
+                SSGIPass.uniforms.previousFrame = DeferredPass.compositeFBO.colors[0]
                 DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
                 DeferredPass.deferredUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
             }

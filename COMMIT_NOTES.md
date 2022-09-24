@@ -1,7 +1,5 @@
-- SSAO rewritten
-- Fixed bloom breaking if already enabled on start
-- SSGI tweaks 
-- SSR tweaks
-- Simple material form reworked
-  - New scalar controls for all textures 
-- Optimization to Preview component (delay was added when scrolling through items)
+- SSAO parameters
+- SSR and SSGI parameters
+- Pipeline optimization for SSGI, SSR and SSAO
+- New preferences forms for  SSGI, SSR and SSAO
+- SSGI big improvements to stability and quality

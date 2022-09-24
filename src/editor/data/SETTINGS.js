@@ -21,23 +21,15 @@ export default {
     transformationType: TRANSFORMATION_TYPE.GLOBAL,
     bloomStrength: .3,
     bloomThreshold: .85,
+    filmGrainStrength: .01,
 
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
-    filmGrainStrength: .01,
 
-    ssgiQuality: 50,
-    ssgiBrightness: 1,
-    ssgiStepSize: .5,
-    ssr: true,
-    ssgi: true,
-    ssgiNoiseScale: 2.,
-    ssrStepSize: .1,
-    ssrMaxSteps: 50,
 
     resolution: [window.screen.width, window.screen.height],
-    frameRate: 75,
+
     distortion: false,
     chromaticAberration: false,
     preferencesVisibility: false,
@@ -46,16 +38,10 @@ export default {
     backgroundColor: [.2, .2, .2],
     fov: 60 * toRad,
     zNear: .1,
-    zFar: 100000,
+    zFar: 5000,
     pcfSamples: 3.,
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
-    total_strength: 3.5,
-    base: 8,
-    area: 12,
-    falloff: 23,
-    radius: 1,
-    samples: 16,
 
     camera: {
         animated: true,
@@ -70,8 +56,29 @@ export default {
         scaleGizmo: .01
     },
 
+
+    SSGI: {
+        enabled:  true,
+        maxSteps: 50,
+        binarySearchSteps: 5,
+        depthThreshold: 1.2,
+        strength: 1,
+        stepSize:  1
+    },
+    SSR: {
+        enabled: true,
+        maxSteps: 50,
+        binarySearchSteps: 5,
+        depthThreshold: 1.2,
+        stepSize:  1
+    },
+    SSAO: {
+        enabled: true,
+        power: 2,
+        radius: 100
+    },
+
     background: true,
-    // VIEWS
     views: [
         {
             name: "Level",

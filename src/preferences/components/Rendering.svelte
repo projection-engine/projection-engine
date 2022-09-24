@@ -3,13 +3,17 @@
     import Accordion from "../../shared/components/accordion/Accordion.svelte";
     import Checkbox from "../../shared/components/checkbox/Checkbox.svelte";
     import Localization from "../../shared/libs/Localization";
-    import Engine from "../../../public/engine/production/Engine";
 
     export let settings
     export let update
 
     const translate = (key) => Localization.PROJECT.INSPECTOR[key]
 
+    function updateSubObject(objKey, subKey, value) {
+        const old = {...settings[objKey]}
+        old[subKey] = value
+        update(objKey, old)
+    }
 </script>
 
 
@@ -49,110 +53,107 @@
 
 <Accordion title={translate("SSR")}>
     <Checkbox
-            checked={settings.ssr}
-            handleCheck={() => {
-                update("ssr",  !settings.ssr)
-            }}
+            checked={settings.SSR.enabled}
+            handleCheck={() => updateSubObject("SSR","enabled",!settings.SSR.enabled)}
             label={translate("ENABLED")}
     />
-    <Range
-            disabled={!settings.ssr}
-            label={translate("STEPS")}
-            onFinish={v => {
-                update("ssrMaxSteps", v)
 
-            }}
-            incrementPercentage={1}
-            precision={0}
-            minValue={0}
-            maxValue={100}
-            handleChange={v => Engine.params.ssrMaxSteps = v}
-            value={settings.ssrMaxSteps}
-    />
-    <Range
-            disabled={!settings.ssr}
-            label={translate("STEP_SIZE")}
-            onFinish={v => {
-                update("ssrStepSize", v)
-            }}
-            incrementPercentage={.001}
-            precision={4}
-            minValue={.05}
-            maxValue={1}
-            handleChange={v => Engine.params.ssrStepSize = v}
-            value={settings.ssrStepSize}
-    />
+    <div data-inline="-">
+        <Range
+                label={translate("STEPS")}
+                minValue={1}
+                integer={true}
+                value={settings.SSR.maxSteps}
+                onFinish={v => updateSubObject("SSR","maxSteps",v)}
+        />
+        <Range
+                label={translate("STEP_SIZE")}
+                incrementPercentage={.001}
+                precision={4}
+                value={settings.SSR.stepSize}
+                onFinish={v => updateSubObject("SSR","stepSize",v)}
+        />
+
+    </div>
+    <div data-inline="-">
+        <Range
+                label={translate("DEPTH_THRESHOLD")}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={0}
+                value={settings.SSR.depthThreshold}
+                onFinish={v => updateSubObject("SSR","depthThreshold",v)}
+        />
+
+        <Range
+                label={translate("BINARY_SEARCH")}
+                integer={true}
+                minValue={1}
+
+                value={settings.SSR.binarySearchSteps}
+                onFinish={v => updateSubObject("SSR","binarySearchSteps",v)}
+        />
+    </div>
 </Accordion>
 
 
 <Accordion title={translate("SSGI")}>
     <Checkbox
-            checked={settings.ssgi}
-            handleCheck={() =>  {
-                update("ssgi", !settings.ssgi)
-            }}
+            checked={settings.SSGI.enabled}
+            handleCheck={() => updateSubObject("SSGI","enabled",!settings.SSGI.enabled)}
             label={translate("ENABLED")}
     />
+    <div data-inline="-">
+        <Range
 
-    <Range
-            disabled={!settings.ssgi}
-            label={translate("NOISE_SCALE")}
-            onFinish={v => {
-                update("ssgiNoiseScale", v)
-            }}
-            incrementPercentage={.001}
-            precision={4}
-            minValue={0}
-            handleChange={v => {
-                Engine.params.ssgiNoiseScale = v
-            }}
-            value={settings.ssgiNoiseScale}
-    />
+                label={translate("STEPS")}
 
-    <Range
-            disabled={!settings.ssgi}
-            label={translate("STEPS")}
-            onFinish={v => {
-                    update("ssgiQuality", v)
-            }}
-            incrementPercentage={1}
-            precision={0}
-            minValue={0}
-            maxValue={100}
-            handleChange={v => Engine.params.ssgiQuality = v}
-            value={settings.ssgiQuality}
-    />
+                minValue={1}
+                integer={true}
+                value={settings.SSGI.maxSteps}
+                onFinish={v => updateSubObject("SSGI","maxSteps",v)}
+        />
 
-    <Range
-            disabled={!settings.ssgi}
-            label={translate("STRENGTH")}
-            onFinish={v => {
-                update("ssgiBrightness", v)
-            }}
-            incrementPercentage={.001}
-            precision={4}
-            minValue={0}
-            maxValue={10}
-            handleChange={v => {
-                Engine.params.ssgiBrightness = v
-            }}
-            value={settings.ssgiBrightness}
-    />
+        <Range
 
-    <Range
-            disabled={!settings.ssgi}
-            label={translate("STEP_SIZE")}
-            onFinish={v => {
-                update("ssgiStepSize", v)
-            }}
-            incrementPercentage={.001}
-            precision={4}
-            minValue={.05}
-            maxValue={1}
-            handleChange={v => Engine.params.ssgiStepSize = v}
-            value={settings.ssgiStepSize}
-    />
+                label={translate("STRENGTH")}
 
+                incrementPercentage={.01}
+                precision={3}
+                minValue={0}
+
+                value={settings.SSGI.strength}
+                onFinish={v => updateSubObject("SSGI","strength",v)}
+        />
+    </div>
+    <div data-inline="-">
+        <Range
+                label={translate("STEP_SIZE")}
+
+                incrementPercentage={.001}
+                precision={4}
+
+                value={settings.SSGI.stepSize}
+                onFinish={v => updateSubObject("SSGI","stepSize",v)}
+        />
+
+        <Range
+                label={translate("DEPTH_THRESHOLD")}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={0}
+                value={settings.SSGI.depthThreshold}
+                onFinish={v => updateSubObject("SSGI","depthThreshold",v)}
+        />
+
+        <Range
+                label={translate("BINARY_SEARCH")}
+                integer={true}
+                minValue={1}
+                value={settings.SSGI.binarySearchSteps}
+                onFinish={v => updateSubObject("SSGI","binarySearchSteps",v)}
+        />
+    </div>
 </Accordion>
 
 <Accordion title={translate("SHADOWS")}>
@@ -201,96 +202,24 @@
 
 <Accordion title={translate("AO")}>
     <Checkbox
-            checked={settings.ao}
-            handleCheck={() => update("ao", !settings.ao)}
+            checked={settings.SSAO.enabled}
+            handleCheck={() => updateSubObject("SSAO", "enabled", !settings.SSAO.enabled)}
             label={translate("ENABLED")}
     />
-    <div data-inline="-">
-        <Range
-                disabled={!settings.ao}
-                label={translate("STRENGTH")}
-                accentColor={"red"}
-                onFinish={v => {
-                    update("total_strength", v)
-                }}
-                incrementPercentage={.001}
-                precision={3}
-                minValue={0}
-
-                value={settings.total_strength}
-        />
-        <Range
-                disabled={!settings.ao}
-                label={translate("BASE")}
-                accentColor={"green"}
-                onFinish={v => {
-                    update("base", v)
-                }}
-                incrementPercentage={.001}
-                precision={3}
-                minValue={0}
-
-                value={settings.base}
-        />
-    </div>
 
     <div data-inline="-">
         <Range
-                disabled={!settings.ao}
-                label={translate("AREA")}
-                accentColor={"red"}
-                onFinish={v => {
-                    update("area", v)
-                }}
-                incrementPercentage={.001}
-                precision={3}
-                minValue={0}
-
-                value={settings.area}
-        />
-        <Range
-                disabled={!settings.ao}
-                label={translate("FALLOFF")}
-                accentColor={"green"}
-                onFinish={v => {
-                    update("falloff", v)
-                }}
-                incrementPercentage={.001}
-                precision={3}
-                minValue={0}
-
-                value={settings.falloff}
-        />
-    </div>
-
-    <div data-inline="-">
-        <Range
-                disabled={!settings.ao}
-
                 label={translate("RADIUS")}
-                accentColor={"red"}
-                onFinish={v =>{
-                    update("radius", v)
-                }}
-                incrementPercentage={.001}
-                precision={3}
-                minValue={0}
-
-                value={settings.radius}
+                minValue={1}
+                value={settings.SSAO.radius}
+                onFinish={v => updateSubObject("SSAO","radius",v)}
         />
-
         <Range
-                label={translate("SAMPLES")}
-                accentColor={"red"}
-                onFinish={v => {
-                    update("samples", v)
-                }}
-                incrementPercentage={1}
-                precision={0}
-                minValue={1} disabled={true}
-                maxValue={10}
-
-                value={settings.samples}
+                label={translate("POWER")}
+                integer={true}
+                minValue={1}
+                value={settings.SSAO.power}
+                onFinish={v => updateSubObject("SSAO","power",v)}
         />
     </div>
 </Accordion>
