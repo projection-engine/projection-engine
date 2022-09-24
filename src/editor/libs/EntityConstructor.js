@@ -6,6 +6,7 @@ import {vec3} from "gl-matrix";
 import Localization from "../../shared/libs/Localization";
 import {ConversionAPI} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
+import CameraAPI from "../../../public/engine/production/apis/camera/CameraAPI";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {
@@ -16,16 +17,15 @@ const addSprite = (entity, img) => {
 
 export default class EntityConstructor {
     static translateEntity(entity) {
-        const DISTANCE_FROM_CAMERA = 10
         const cosPitch = Math.cos(CameraTracker.pitch)
         const position = []
-        position[0] = DISTANCE_FROM_CAMERA * cosPitch * Math.cos(CameraTracker.yaw)
-        position[1] = DISTANCE_FROM_CAMERA * Math.sin(CameraTracker.pitch)
-        position[2] = DISTANCE_FROM_CAMERA * cosPitch * Math.sin(CameraTracker.yaw)
 
-        const origin = vec3.add([], CameraTracker.centerOn, position)
+        const DISTANCE = (CameraTracker.radius - Math.sign(CameraTracker.radius) * 10)
+        position[0] = DISTANCE * cosPitch * Math.cos(CameraTracker.yaw) + CameraTracker.centerOn[0]
+        position[1] = DISTANCE * Math.sin(CameraTracker.pitch) + CameraTracker.centerOn[1]
+        position[2] = DISTANCE * cosPitch * Math.sin(CameraTracker.yaw) + CameraTracker.centerOn[2]
 
-        vec3.add(entity._translation, entity._translation, origin)
+        vec3.add(entity._translation, entity._translation, position)
         entity.__changedBuffer[0] = 1
     }
 

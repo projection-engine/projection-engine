@@ -39,7 +39,21 @@ export default function viewportContext() {
             onClick: () => {
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++)
-                     EntityConstructor.translateEntity(QueryAPI.getEntityByID(selected[i]))
+                    EntityConstructor.translateEntity(QueryAPI.getEntityByID(selected[i]))
+            }
+        },
+
+        {
+            label: "Center on origin",
+            onClick: () => {
+                const selected = SelectionStore.engineSelected
+                for (let i = 0; i < selected.length; i++) {
+                    const entity = QueryAPI.getEntityByID(selected[i])
+                    entity._translation[0] = 0
+                    entity._translation[1] = 0
+                    entity._translation[2] = 0
+                    entity.__changedBuffer[0] = 1
+                }
             }
         },
         VIEWPORT_HOTKEYS.SNAP_TO_GRID,

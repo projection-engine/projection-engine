@@ -1,5 +1,2 @@
-- SSAO parameters
-- SSR and SSGI parameters
-- Pipeline optimization for SSGI, SSR and SSAO
-- New preferences forms for  SSGI, SSR and SSAO
-- SSGI big improvements to stability and quality
+- Fixed initial position of entity when creating it
+- Added option to center on origin (entity)
