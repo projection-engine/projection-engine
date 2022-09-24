@@ -106,6 +106,7 @@ export default class ContentBrowserAPI {
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
             materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
             simpleMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SIMPLE_MATERIAL)),
+            terrainReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN)),
             promises = []
 
 
@@ -117,6 +118,7 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
         promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
+        promises.push(...mapAsset(terrainReg, FILE_TYPES.TERRAIN))
 
         const loadedPromises = await Promise.all(promises)
         const result = {
@@ -124,7 +126,7 @@ export default class ContentBrowserAPI {
             meshes: [],
             materials: [],
             components: [],
-
+            terrains: [],
             levels: [],
             uiLayouts: [],
             materialInstances: []
@@ -154,8 +156,9 @@ export default class ContentBrowserAPI {
                 case FILE_TYPES.MATERIAL_INSTANCE:
                     result.materialInstances.push(current)
                     break
-
-
+                case FILE_TYPES.TERRAIN:
+                    result.terrains.push(current)
+                    break
                 default:
                     break
             }

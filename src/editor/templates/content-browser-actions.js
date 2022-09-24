@@ -14,11 +14,12 @@ import SIMPLE_MATERIAL_TEMPLATE from "../../../public/engine/static/SIMPLE_MATER
 import COMPONENT_TEMPLATE from "../../../public/engine/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../public/engine/static/templates/UI_TEMPLATE";
 import Localization from "../../shared/libs/Localization";
+import TERRAIN_TEMPLATE from "../../../public/engine/static/templates/TERRAIN_TEMPLATE";
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
 export default function contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
-    console.log(FilesStore.data.materials)
+
     const hotKeys = {
         BACK: {
             label: "Go back",
@@ -185,6 +186,15 @@ export default function contentBrowserActions(navigationHistory, currentDirector
                             await AssetAPI.writeAsset(path, UI_TEMPLATE)
                             FilesStore.refreshFiles().catch()
 
+                        }
+                    },
+                    {
+                        label: translate("NEW_TERRAIN"),
+                        icon: "landscape",
+                        onClick: async () => {
+                            let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + translate("NEW_TERRAIN"), FILE_TYPES.TERRAIN)
+                            await AssetAPI.writeAsset(path, JSON.stringify(TERRAIN_TEMPLATE))
+                            FilesStore.refreshFiles().catch()
                         }
                     },
                 ]

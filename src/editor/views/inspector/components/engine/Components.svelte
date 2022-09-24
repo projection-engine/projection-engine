@@ -4,7 +4,7 @@
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json";
     import FilesStore from "../../../../stores/FilesStore";
     import componentConstructor from "../../../../libs/component-constructor";
-    import loadMaterial from "../../utils/load-material";
+    import loadMaterial from "../../../../libs/loader/utils/load-material";
 
     import Loader from "../../../../libs/loader/Loader";
     import {onDestroy, onMount} from "svelte";

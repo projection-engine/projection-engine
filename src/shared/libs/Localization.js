@@ -85,6 +85,8 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            SHADING_HEIGHT_MAP: "Height map",
+            HEIGHT_MAP_DEF: "Y axis values",
             SHADING_STOCHASTIC: "Stochastic normals",
             STOCHASTIC_DEF: "SSGI normals",
             SHADING_SSGI: "Global illumination",
@@ -256,6 +258,12 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            EDIT_HEIGHT_MAP: "Edit height map",
+            IMPORT_IMAGE: "Import image",
+            DIMENSIONS: "Dimensions",
+            HEIGHT_SCALE: "Height scale",
+            DIMENSION_MULTIPLIER: "Size multiplier",
+
             DEPTH_THRESHOLD: "Depth threshold",
             BINARY_SEARCH: "Binary search iterations",
             POWER: "Power",
@@ -428,6 +436,7 @@ export default class Localization {
         },
 
         FILES: {
+            NEW_TERRAIN: "New terrain",
             DELETING_ITEMS: "Deleting items",
             NEW_SIMPLE_MATERIAL: "New simple material",
             FILE_TYPE: "File type",

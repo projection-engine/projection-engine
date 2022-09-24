@@ -21,6 +21,8 @@ export default function getTypeName(type) {
             return "Material Instance"
         case FILE_TYPES.SIMPLE_MATERIAL:
             return "Simple material"
+        case FILE_TYPES.TERRAIN:
+            return "Terrain"
         default:
             return ""
     }

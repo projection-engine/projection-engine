@@ -1,5 +1,5 @@
-- Release v5.8.1-alpha
-- Material instance creation bug fix
-- Backend bug fix related to open projects cache
-- Fixed copy/paste not working on viewport
-- Optimization to image processor and organizing workers
+- Initializing terrain structure
+- Terrain worker
+- Terrain file type 
+- Terrain editor and item on inspector
+- Terrain loader

@@ -11,7 +11,7 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import Localization from "../../../../../shared/libs/Localization";
-    import loadMaterial from "../../utils/load-material";
+    import loadMaterial from "../../../../libs/loader/utils/load-material";
     import GPU from "../../../../../../public/engine/production/GPU";
     import Loader from "../../../../libs/loader/Loader";
 

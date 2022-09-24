@@ -78,6 +78,9 @@
                 case FILE_TYPES.UI_LAYOUT:
                     icon = "view_quilt"
                     break
+                case FILE_TYPES.TERRAIN:
+                    icon = "landscape"
+                    break
                 default:
                     icon = undefined
                     break

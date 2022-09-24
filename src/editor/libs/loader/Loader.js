@@ -11,11 +11,12 @@ import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
 import {Entity, GPU} from "../../../../public/engine/production";
-import loadMaterial from "../../views/inspector/utils/load-material";
+import loadMaterial from "./utils/load-material";
 import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
+import loadTerrain from "./utils/load-terrain";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -107,10 +108,10 @@ export default class Loader {
             if (res)
                 switch ("." + res.path.split(".").pop()) {
                     case FILE_TYPES.MESH: {
-                        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
+                        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + res.path, "json")
                         const meshData = await Loader.mesh(file, data, asID)
-                        if (!meshData)
-                            continue
+                        if (!meshData
+)                            continue
                         if (meshData.mesh !== undefined)
                             meshes.push(meshData)
                         else
@@ -153,6 +154,12 @@ export default class Loader {
                                 changeValue: data
                             })
                         })
+
+                        break
+                    }
+
+                    case FILE_TYPES.TERRAIN: {
+                        await loadTerrain(res)
 
                         break
                     }

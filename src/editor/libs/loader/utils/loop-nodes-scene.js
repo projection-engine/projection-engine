@@ -5,7 +5,7 @@ import {v4} from "uuid";
 import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../../public/engine/production";
 import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
 import FilesStore from "../../../stores/FilesStore";
-import loadMaterial from "../../../views/inspector/utils/load-material";
+import loadMaterial from "./load-material";
 
 export default async function loopNodesScene(node, parent, index = 0) {
     const children = []

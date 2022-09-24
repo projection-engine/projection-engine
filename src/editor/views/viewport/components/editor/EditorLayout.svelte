@@ -46,7 +46,6 @@
             e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
             document.addEventListener("mousemove", gizmoMouseMove)
         }
-
     }
 
     function onMouseUp(event) {

@@ -18,7 +18,7 @@ import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import SelectionStore from "./SelectionStore";
-import loadMaterial from "../views/inspector/utils/load-material";
+import loadMaterial from "../libs/loader/utils/load-material";
 
 const {ipcRenderer} = window.require("electron")
 
