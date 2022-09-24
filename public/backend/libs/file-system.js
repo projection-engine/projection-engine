@@ -140,7 +140,13 @@ module.exports = function () {
                             resolve(res)
                             break
                         case "json":
-                            resolve(JSON.parse(res.toString()))
+                            try{
+                                resolve(JSON.parse(res.toString()))
+                            }catch (error){
+                                console.error(error)
+                                resolve(null)
+                            }
+
                             break
                         case "base64":
                             resolve(new Buffer(res).toString("base64"))

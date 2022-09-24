@@ -109,7 +109,7 @@
                 path={path}
                 view={view}
 
-                items={store.items}
+                store={store}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}

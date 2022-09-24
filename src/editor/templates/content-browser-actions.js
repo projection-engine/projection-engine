@@ -17,7 +17,8 @@ import Localization from "../../shared/libs/Localization";
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
-export default function contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem) {
+export default function contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
+    console.log(FilesStore.data.materials)
     const hotKeys = {
         BACK: {
             label: "Go back",
@@ -183,13 +184,14 @@ export default function contentBrowserActions(navigationHistory, currentDirector
                             let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
                             await AssetAPI.writeAsset(path, UI_TEMPLATE)
                             FilesStore.refreshFiles().catch()
+
                         }
                     },
                 ]
             },
             {
                 label: "Create material instance",
-                children: FilesStore.data.materials.map(m => getMaterialAsOption(m, currentDirectory))
+                children: materials.map(m => getMaterialAsOption(m, currentDirectory))
             }
         ]
     }

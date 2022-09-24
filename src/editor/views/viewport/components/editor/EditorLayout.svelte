@@ -1,15 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../../data/RENDER_TARGET";
-    import {
-        ConversionAPI,
-        DepthPass,
-        Engine,
-        GPU,
-        InputEventsAPI,
-        PickingAPI,
-        TransformationAPI,
-    } from "../../../../../../public/engine/production";
+    import {ConversionAPI, DepthPass, Engine, GPU, PickingAPI,} from "../../../../../../public/engine/production";
 
     import selectionQueryWorker from "../../utils/selection-query-worker";
     import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
@@ -21,10 +13,7 @@
     import drawIconsToBuffer from "../../utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../../../../public/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
-    import {vec3} from "gl-matrix";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import ScreenSpaceGizmo from "../../../../../../public/engine/editor/libs/ScreenSpaceGizmo";
-    import CameraAPI from "../../../../../../public/engine/production/apis/camera/CameraAPI";
     import viewportContext from "../../../../templates/context-menu/viewport-context";
     import ContextMenuController from "../../../../../shared/libs/ContextMenuController";
     import Localization from "../../../../../shared/libs/Localization";

@@ -1,2 +1,5 @@
-- Fixed initial position of entity when creating it
-- Added option to center on origin (entity)
+- Release v5.8.1-alpha
+- Material instance creation bug fix
+- Backend bug fix related to open projects cache
+- Fixed copy/paste not working on viewport
+- Optimization to image processor and organizing workers

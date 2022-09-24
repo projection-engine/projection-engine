@@ -74,23 +74,31 @@ module.exports = function ProjectWindow(handleClose, data) {
 }
 
 function updateCache(id, add, callback) {
-    const cacheFilePath = getBasePath(os, path) + path.sep + OPEN_PROJECTS
-    fs.readFile(cacheFilePath, (err, buffer) => {
-        let currentFile = []
-        if (!err)
-            currentFile = JSON.parse(buffer.toString())
-        if(!Array.isArray(currentFile))
-            currentFile = []
+    try {
+        const cacheFilePath = getBasePath(os, path) + path.sep + OPEN_PROJECTS
+        fs.readFile(cacheFilePath, (err, buffer) => {
+            let currentFile = []
+            if (!err) {
+                try {
+                    currentFile = JSON.parse(buffer.toString())
+                } catch (error) {
+                    currentFile = []
+                }
+            }
+            if (!Array.isArray(currentFile))
+                currentFile = []
 
-        if (add) {
-            currentFile = currentFile.filter(e => e !== id)
-            currentFile.push(id)
-        }
-        else
-            currentFile = currentFile.filter(e => e !== id)
-        fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {
-            if (callback)
-                callback()
+            if (add) {
+                currentFile = currentFile.filter(e => e !== id)
+                currentFile.push(id)
+            } else
+                currentFile = currentFile.filter(e => e !== id)
+            fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {
+                if (callback)
+                    callback()
+            })
         })
-    })
+    } catch (error) {
+        console.error(error)
+    }
 }

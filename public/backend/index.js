@@ -15,10 +15,12 @@ async function closeProject(id) {
         const cacheFilePath = getBasePath(os, path) + path.sep + OPEN_PROJECTS
         fs.readFile(cacheFilePath, (err, buffer) => {
             let currentFile = []
-            if (!err)
+            try {
                 currentFile = JSON.parse(buffer.toString())
-            else
+            } catch (error) {
                 currentFile = currentFile.filter(e => e !== id)
+            }
+
             fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {
                 openProjects.delete(id)
                 resolve()

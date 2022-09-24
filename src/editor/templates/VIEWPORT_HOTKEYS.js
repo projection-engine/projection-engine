@@ -3,7 +3,6 @@ import EngineStore from "../stores/EngineStore";
 import ViewportActions from "../libs/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GIZMOS from "../data/GIZMOS";
-import {Engine} from "../../../public/engine/production";
 import SelectionStore from "../stores/SelectionStore";
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";

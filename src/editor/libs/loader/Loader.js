@@ -1,6 +1,5 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../shared/libs/files/FilesAPI"
-import {vec4} from "gl-matrix"
 import FILE_TYPES from "../../../static/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
 
@@ -11,7 +10,7 @@ import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
-import {ConversionAPI, Entity, GPU} from "../../../../public/engine/production";
+import {Entity, GPU} from "../../../../public/engine/production";
 import loadMaterial from "../../views/inspector/utils/load-material";
 import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";

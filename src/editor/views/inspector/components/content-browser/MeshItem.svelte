@@ -2,7 +2,7 @@
     import Localization from "../../../../../shared/libs/Localization";
     import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
     import GPU from "../../../../../../public/engine/production/GPU";
-    import PrimitiveProcessor from "../../../../../../public/backend/libs/gltf/instances/PrimitiveProcessor";
+    import PrimitiveProcessor from "../../../../../../public/engine/production/apis/PrimitiveProcessor";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
 
@@ -16,9 +16,9 @@
 
         const data = await FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, "json")
         if (!data) return
-        data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices)
-        data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals)
-
+        data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
+        data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)
+        console.log(data.normals)
         alert.pushAlert(translate("UPDATING_ASSET"), "alert")
         await AssetAPI.updateAsset(item.registryID, JSON.stringify(data))
         if (GPU.meshes.get(item.registryID) != null) {

@@ -4,9 +4,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/disp
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import {vec3} from "gl-matrix";
 import Localization from "../../shared/libs/Localization";
-import {ConversionAPI} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
-import CameraAPI from "../../../public/engine/production/apis/camera/CameraAPI";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {

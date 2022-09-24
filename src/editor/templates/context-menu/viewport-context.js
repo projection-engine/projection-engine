@@ -1,9 +1,6 @@
-import TransformationAPI from "../../../../public/engine/production/apis/math/TransformationAPI";
 import SelectionStore from "../../stores/SelectionStore";
-import {vec3} from "gl-matrix";
 import VIEWPORT_HOTKEYS from "../VIEWPORT_HOTKEYS";
 import EntityConstructor from "../../libs/EntityConstructor";
-import {Engine} from "../../../../public/engine/production";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
 export default function viewportContext() {

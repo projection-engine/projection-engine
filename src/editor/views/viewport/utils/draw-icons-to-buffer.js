@@ -1,5 +1,5 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
-import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
+import CameraAPI from "../../../../../public/engine/production/apis/CameraAPI";
 import GPU from "../../../../../public/engine/production/GPU";
 import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
 import DepthPass from "../../../../../public/engine/production/passes/rendering/DepthPass";

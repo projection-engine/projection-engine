@@ -6,7 +6,8 @@ import {v4 as uuidv4, v4} from "uuid";
 import ROUTES from "../../../static/ROUTES";
 import FilesStore from "../../../editor/stores/FilesStore";
 import TEXTURE_TEMPLATE from "../../../static/TEXTURE_TEMPLATE";
-import {GPU, IMAGE_WORKER_ACTIONS} from "../../../../public/engine/production";
+import {IMAGE_WORKER_ACTIONS} from "../../../../public/engine/production";
+import ImageWorker from "../../../../public/engine/production/workers/image/ImageWorker";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")
@@ -180,7 +181,7 @@ export default class ContentBrowserAPI {
                             if (res) {
                                 const data = JSON.stringify({...TEXTURE_TEMPLATE, base64: res})
                                 await NodeFS.write(newRoot + FILE_TYPES.TEXTURE, data)
-                                const reduced = await GPU.imageWorker(
+                                const reduced = await ImageWorker.request(
                                     IMAGE_WORKER_ACTIONS.RESIZE_IMAGE,
                                     {
                                         image: res,

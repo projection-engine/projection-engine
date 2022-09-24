@@ -9,7 +9,7 @@ export default function getMaterialAsOption(m, currentDirectory){
     return {
         label: m.name,
         icon: "",
-        onClick: async () => {
+        callback: async () => {
             const nodeName = m.name
             const nodeID = m.registryID
             const regFile = await RegistryAPI.readRegistryFile(nodeID)

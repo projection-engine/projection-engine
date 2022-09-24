@@ -22,7 +22,7 @@ export default class ViewportActions {
 
     static focus() {
         const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
-        if(!entity)
+        if (!entity)
             return
 
         CameraTracker.radius = 10
@@ -58,17 +58,19 @@ export default class ViewportActions {
         let block = []
         if (!ViewportActions.toCopy)
             return
+        const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
         for (let i = 0; i < ViewportActions.toCopy.length; i++) {
             const t = ViewportActions.toCopy[i]
             const found = QueryAPI.getEntityByID(t)
             if (found) {
-                const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
-                if (targetParent === found || !targetParent)
+                if (targetParent === found)
                     continue
                 const clone = found.clone()
+                block.push(clone)
+                if (!targetParent)
+                    continue
                 clone.parent = targetParent
                 targetParent.children.push(clone)
-                block.push(clone)
             }
         }
         dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})

@@ -17,11 +17,13 @@
     export let setFileType
     export let searchString
     export let setSearchString
-    export let items
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
     export let internalID
+    export let store
+
+    $: items = store.items
 
     let onDrag = false
     let cardDimensions = {width: 115, height: 115}
@@ -47,7 +49,7 @@
 
     $: {
         if (ref) {
-            const actions = contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v)
+            const actions = contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
             HotKeysController.unbindAction(ref)
             ContextMenuController.destroy(internalID)
             ContextMenuController.mount(

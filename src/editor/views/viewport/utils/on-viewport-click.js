@@ -1,4 +1,3 @@
-import GIZMOS from "../../../data/GIZMOS"
 import drawIconsToBuffer from "./draw-icons-to-buffer"
 import PickingAPI from "../../../../../public/engine/production/apis/utils/PickingAPI";
 import SelectionStore from "../../../stores/SelectionStore";

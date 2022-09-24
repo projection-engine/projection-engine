@@ -2,7 +2,7 @@ import bindGizmo from "./bind-gizmo";
 import Engine from "../../../../../public/engine/production/Engine";
 import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracker";
 import Wrapper from "../../../../../public/engine/editor/services/Wrapper";
-import CameraAPI from "../../../../../public/engine/production/apis/camera/CameraAPI";
+import CameraAPI from "../../../../../public/engine/production/apis/CameraAPI";
 import ShadowMapPass from "../../../../../public/engine/production/passes/rendering/ShadowMapPass";
 import {GizmoSystem} from "../../../../../public/engine/editor";
 
