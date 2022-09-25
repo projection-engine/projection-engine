@@ -7,22 +7,27 @@
     import FilesStore from "../../../../stores/FilesStore";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Localization from "../../../../../shared/libs/Localization";
 
     export let settings
 
-    $: currentTexture = settings.terrainSettings.foliageTexture
+    const translate = key => Localization.PROJECT.VIEWPORT[key]
+
+    $: tS = settings.terrainSettings
+    $: currentTexture = tS.foliageTexture
     let path
     onMount(() => {
         if (currentTexture != null)
-            RegistryAPI.readRegistryFile(currentTexture).then(res => path = FilesStore.ASSETS_PATH + FilesAPI.sep + res?.path)
+            path = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + currentTexture + ".preview"
     })
 
     async function update(key, value) {
         if (key === "foliageTexture") {
             const res = await RegistryAPI.readRegistryFile(value)
-            path = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + currentTexture + ".preview"
+            path = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + value + ".preview"
         }
-        SettingsStore.updateStore({...settings, terrainSettings: {...settings.terrainSettings, [key]: value}})
+        SettingsStore.updateStore({...settings, terrainSettings: {...tS, [key]: value}})
     }
 </script>
 
@@ -39,6 +44,14 @@
             selected={currentTexture}
     />
 </div>
+<fieldset>
+    <legend>{translate("FOLIAGE_DISPLACEMENT")}</legend>
+    <Range label={translate("DENSITY")} value={tS.foliageDensity} minValue={0}
+           onFinish={v => update("foliageDensity", v)}/>
+    <Range label={translate("TOTAL_QUANTITY")} value={tS.foliageQuantity} minValue={0}
+           onFinish={v => update("foliageQuantity", v)}/>
+</fieldset>
+
 
 <style>
 

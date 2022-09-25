@@ -85,6 +85,11 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            FOLIAGE_DISPLACEMENT: "Foliage displacement",
+            DENSITY: "Density",
+            TOTAL_QUANTITY: "Quantity",
+
+
             FOLIAGE_TOOL: "Foliage tool",
             SCULPT_TOOL: "Sculpt tool",
             LOWER: "Lower",
@@ -521,6 +526,7 @@ export default class Localization {
         },
 
         SELECTOR: {
+            TERRAIN: "Terrain",
             CODE: "Code",
             UI: "UI layout",
             IMAGE: "Texture",

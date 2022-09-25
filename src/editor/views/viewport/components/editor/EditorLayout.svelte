@@ -5,7 +5,7 @@
 
     import selectionQueryWorker from "../../utils/selection-query-worker";
     import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
-    import CameraBar from "./CameraBar.svelte";
+    import CameraBar from "../shared/CameraBar.svelte";
 
     import GIZMOS from "../../../../data/GIZMOS";
     import onViewportClick from "../../utils/on-viewport-click";

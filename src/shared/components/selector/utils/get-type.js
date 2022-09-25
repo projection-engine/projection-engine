@@ -15,6 +15,8 @@ export default function getType(store, type, mergeMaterials) {
             return store.scripts
         case "ui":
             return store.uiLayouts
+        case "terrain":
+            return store.terrains
 
         case "code":
             return [...store.uiLayouts, ...store.components]

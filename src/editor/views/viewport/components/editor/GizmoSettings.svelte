@@ -57,7 +57,7 @@
         </button>
     </Dropdown>
     <Dropdown asButton={true}>
-        <button slot="button viewport" class="dropdown">
+        <button slot="button" class="dropdown">
             <Icon styles="font-size: .9rem">straighten</Icon>
             <ToolTip content={translate("MOVEMENT_GRID")}/>
         </button>

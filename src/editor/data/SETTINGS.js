@@ -48,6 +48,8 @@ export default {
         brushOnDecrease: true,
         brushSize: 5,
         brushStrength: 1,
+        foliageDensity: 10,
+        foliageQuantity: 1000
 
     },
 

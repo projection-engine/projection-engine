@@ -27,6 +27,8 @@
     <Icon slot="icon">widgets</Icon>
 {:else if type === "code"}
     <Icon slot="icon">code</Icon>
+{:else if type === "terrain"}
+    <Icon slot="icon">landscape</Icon>
 {/if}
 <style>
     .img {

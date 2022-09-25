@@ -42,7 +42,6 @@
         timeout = setTimeout(async () => {
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
         }, 750)
-
     }
 
 

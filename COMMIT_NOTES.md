@@ -1,4 +1,4 @@
-- Terrain editor tab
-- Reworked depth prepass to support UVs and more data for picking ID
-- Reworkeed PickerAPI
-- Added terrain tools options to viewport
+- Terrain sculpting now working
+- Sculpting gizmo 
+- Improvements to terrain editor view
+- Terrain selection integrated

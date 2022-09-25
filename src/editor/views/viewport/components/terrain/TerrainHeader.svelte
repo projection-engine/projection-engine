@@ -5,6 +5,9 @@
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import Selector from "../../../../../shared/components/selector/Selector.svelte";
+    import ShadingOption from "../shared/ShadingOption.svelte";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 
@@ -30,3 +33,26 @@
     </button>
 </div>
 
+<div class="right-content">
+    <Selector
+            styles="width: clamp(100px, 15vw, 300px)"
+            type="terrain"
+            selected={settings.selectedTerrain}
+            handleChange={v => {
+                SettingsStore.updateStore({...settings,selectedTerrain: v.registryID })
+            }}
+    />
+    <ShadingOption/>
+</div>
+
+<style>
+
+    .right-content {
+        gap: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+</style>
