@@ -1,17 +1,13 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
-
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
-
-    import {onDestroy} from "svelte";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
     import TerrainWorker from "../../../../../../public/engine/production/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
-    import TerrainEditor from "./TerrainEditor.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
 
     export let item
@@ -19,7 +15,6 @@
 
     let store
 
-    let isOnEdit = false
     let timeout
     let temp
     $: temp = {...data}
@@ -27,40 +22,27 @@
 
     const translate = key => Localization.PROJECT.INSPECTOR[key]
 
-    async function updateAsset(key, value, imageChange) {
-        let changed = temp[key] !== value
+    async function updateAsset(key, value) {
+        let changed = key === "imageID" || temp[key] !== value
         if (!changed)
             return
+
         if (key === "imageID") {
-            try {
-                const reg = await RegistryAPI.readRegistryFile(value)
-                const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
-                temp = {...temp, imageID: value, image: file.base64}
-            } catch (error) {
-                console.error(error)
-            }
+            const reg = await RegistryAPI.readRegistryFile(value)
+            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+
+            temp = {...temp, imageID: value, image: file.base64}
         } else
             temp = {...temp, [key]: value}
-        if (imageChange) {
-            const data = await TerrainWorker.generate(temp.image, temp.scale, temp.dimensions)
-            GPU.allocateMesh(item.registryID, data)
 
-            clearTimeout(timeout)
-            timeout = setTimeout(async () => {
-                await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
-            }, 750)
-        } else {
-            alert.pushAlert(translate("UPDATING_ASSET"), "alert")
+
+        const data = await TerrainWorker.generate(temp.image, temp.scale, temp.dimensions)
+        GPU.allocateMesh(item.registryID, data)
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+        }, 750)
 
-            clearTimeout(timeout)
-            timeout = setTimeout(async () => {
-
-                alert.pushAlert("Updating mesh", "warning")
-                const data = await TerrainWorker.generate(temp.image, temp.scale, temp.dimensions)
-                GPU.allocateMesh(item.registryID, data)
-            }, 750)
-        }
     }
 
 
@@ -71,23 +53,22 @@
     <Selector
             type="image"
             selected={temp.imageID}
-            handleChange={v => {
-                updateAsset("imageID", v.registryID)
-            }}
+            handleChange={v => updateAsset("imageID", v.registryID, true)}
     />
 
+    {#if temp.imageID != null}
+        <img alt="current image" src={temp.image}>
+    {/if}
 </fieldset>
 
-<Accordion title={translate("DIMENSIONS")} startOpen={true}>
+<Accordion title={translate("DIMENSIONS")}>
     <Range
             value={temp.scale}
             disabled={isDisabled}
             label={translate("HEIGHT_SCALE")}
             precision={4}
             minValue={.001}
-            onFinish={v => {
-                updateAsset("scale", v)
-            }}
+            onFinish={v => updateAsset("scale", v)}
     />
     <Range
             value={temp.dimensions}
@@ -95,19 +76,6 @@
             label={translate("DIMENSION_MULTIPLIER")}
             precision={4}
             minValue={.001}
-            onFinish={v => {
-                updateAsset("dimensions", v)
-            }}
+            onFinish={v => updateAsset("dimensions", v)}
     />
 </Accordion>
-
-
-{#if !isOnEdit}
-    <button
-            data-focusbutton="-"
-            style="height: 25px"
-            on:click={() => isOnEdit = true}
-    >{translate("EDIT_HEIGHT_MAP")}</button>
-{:else}
-    <TerrainEditor data={temp} id={item.id} update={b64 => updateAsset("image", b64, true)}/>
-{/if}

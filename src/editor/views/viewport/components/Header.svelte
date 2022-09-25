@@ -15,39 +15,45 @@
 </script>
 
 
-
-    <Dropdown hideArrow={true} asButton={true}>
-        <button slot="button" class="title">
-            <Icon styles="font-size: .9rem">
-                {#if viewportTab === VIEWPORT_TABS.EDITOR}
-                    public
-                {:else}
-                    widgets
-                {/if}
-            </Icon>
-            <small data-overflow="-">
-                {#if viewportTab === VIEWPORT_TABS.EDITOR}
-                    {translate("EDITOR")}
-                {:else}
-                    {translate("UI")}
-                {/if}
-            </small>
-        </button>
-
-        <button on:click={() =>setViewportTab(VIEWPORT_TABS.EDITOR)}>
+<Dropdown hideArrow={true} asButton={true}>
+    <button slot="button" class="title">
+        <Icon styles="font-size: .9rem">
             {#if viewportTab === VIEWPORT_TABS.EDITOR}
-                <Icon>check</Icon>
+                public
+            {:else if viewportTab === VIEWPORT_TABS.UI}
+                widgets
+            {:else}
+                terrain
             {/if}
-            {translate("EDITOR")}
-        </button>
-        <button on:click={() =>setViewportTab( VIEWPORT_TABS.UI)}>
-            {#if viewportTab === VIEWPORT_TABS.UI}
-                <Icon>check</Icon>
+        </Icon>
+        <small data-overflow="-">
+            {#if viewportTab === VIEWPORT_TABS.EDITOR}
+                {translate("EDITOR")}
+            {:else if viewportTab === VIEWPORT_TABS.UI}
+                {translate("UI")}
+            {:else}
+                {translate("TERRAIN")}
             {/if}
-            {translate("UI")}
-        </button>
-    </Dropdown>
-    <div data-vertdivider="-" style="height: 15px"></div>
+        </small>
+    </button>
+
+    <button data-highlight={viewportTab === VIEWPORT_TABS.EDITOR ? "-" : ""}
+            on:click={() =>setViewportTab(VIEWPORT_TABS.EDITOR)}>
+        <Icon>public</Icon>
+        {translate("EDITOR")}
+    </button>
+    <button on:click={() =>setViewportTab( VIEWPORT_TABS.UI)}
+            data-highlight={viewportTab === VIEWPORT_TABS.UI ? "-" : ""}>
+        <Icon>widgets</Icon>
+        {translate("UI")}
+    </button>
+    <button on:click={() =>setViewportTab(VIEWPORT_TABS.TERRAIN)}
+            data-highlight={viewportTab === VIEWPORT_TABS.TERRAIN ? "-" : ""}>
+        <Icon>terrain</Icon>
+        {translate("TERRAIN")}
+    </button>
+</Dropdown>
+<div data-vertdivider="-" style="height: 15px"></div>
 
 
 <style>

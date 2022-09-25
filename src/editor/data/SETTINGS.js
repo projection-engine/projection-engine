@@ -3,6 +3,7 @@ import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
+import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
 
 
 const toRad = Math.PI / 180
@@ -42,6 +43,13 @@ export default {
     pcfSamples: 3.,
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
+    terrainTool: TERRAIN_TOOLS.SCULPT,
+    terrainSettings: {
+        brushOnDecrease: true,
+        brushSize: 5,
+        brushStrength: 1,
+
+    },
 
     camera: {
         animated: true,

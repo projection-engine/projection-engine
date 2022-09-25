@@ -19,6 +19,7 @@ import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXT
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import SelectionStore from "./SelectionStore";
 import loadMaterial from "../libs/loader/utils/load-material";
+import TerrainWorker from "../../../public/engine/production/workers/terrain/TerrainWorker";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -118,7 +119,15 @@ export default class EngineStore {
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
             })
 
-        ipcRenderer.on(CHANNELS.MESH + projectID, (ev, data) => GPU.allocateMesh(data.id, data))
+        ipcRenderer.on(CHANNELS.MESH + projectID, (ev, data) => {
+            if(data.image != null){
+                console.log(data)
+                TerrainWorker.generate(data.image, data.scale, data.dimensions).then(res => {
+                    GPU.allocateMesh(data.id, res)
+                })
+            }else
+                GPU.allocateMesh(data.id, data)
+        })
 
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,

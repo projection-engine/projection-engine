@@ -8,6 +8,7 @@
     import Localization from "../../../../../shared/libs/Localization";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
+    import "../../css/styles.css"
 
     export let settings
 
@@ -56,7 +57,7 @@
         </button>
     </Dropdown>
     <Dropdown asButton={true}>
-        <button slot="button" class="dropdown">
+        <button slot="button viewport" class="dropdown">
             <Icon styles="font-size: .9rem">straighten</Icon>
             <ToolTip content={translate("MOVEMENT_GRID")}/>
         </button>
@@ -96,9 +97,9 @@
             />
         </fieldset>
     </Dropdown>
-    <div class="button-group">
+    <div class="button-group viewport">
         <button
-                class="button"
+                class="button viewport"
                 data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
             <Icon styles="font-size: .9rem">highlight_alt</Icon>
@@ -106,21 +107,21 @@
         </button>
 
         <button
-                class="button"
+                class="button viewport"
                 data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
             <Icon styles="font-size: .9rem">open_with</Icon>
             <ToolTip content={translate("T_GIZMO")}/>
         </button>
         <button
-                class="button"
+                class="button viewport"
                 data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
             <Icon styles="font-size: .9rem">360</Icon>
             <ToolTip content={translate("R_GIZMO")}/>
         </button>
         <button
-                class="button"
+                class="button viewport"
                 data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
                 on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
             <Icon styles="font-size: .9rem">open_in_full</Icon>
@@ -137,38 +138,7 @@
         border: none;
     }
 
-    .button-group {
-        display: flex;
-        align-items: center;
-        border-collapse: collapse;
-    }
 
-    .button {
-        height: 22px;
-        min-width: 22px;
-        max-width: 22px;
-        padding: 0;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background: var(--pj-background-tertiary);
-
-        border: var(--pj-border-primary) 1px solid;
-        border-radius: 0;
-    }
-
-
-    .button:first-child {
-        border: var(--pj-border-primary) 1px solid;
-        border-radius: 3px 0 0 3px;
-    }
-
-    .button:last-child {
-        border: var(--pj-border-primary) 1px solid;
-        border-radius: 0 3px 3px 0;
-    }
 
     .wrapper {
         display: flex;

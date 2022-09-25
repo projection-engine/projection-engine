@@ -18,6 +18,8 @@
 
     import FilesStore from "../../stores/FilesStore";
     import VIEWPORT_HOTKEYS from "../../templates/VIEWPORT_HOTKEYS";
+    import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
+    import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
 
     export let isReady = false
     export let updateView
@@ -52,7 +54,7 @@
         if (isReady) {
             if (!engine.executingAnimation) {
                 FilesStore.watchFiles()
-                if (viewTab === VIEWPORT_TABS.EDITOR) {
+                if (viewTab !== VIEWPORT_TABS.UI) {
                     Engine.start()
                     CameraTracker.startTracking()
                     gpu.canvas.style.opacity = "1"
@@ -98,9 +100,15 @@
                         engine={engine}
                         settings={settings}
                 />
-                <UIEditorHeader
+                <UIEditorHeader settings={settings}/>
+            {:else if viewTab === VIEWPORT_TABS.TERRAIN}
+                <Header
+                        setViewportTab={updateView}
+                        viewportTab={viewTab}
+                        engine={engine}
                         settings={settings}
                 />
+                <TerrainHeader settings={settings}/>
             {/if}
         </div>
     {/if}
@@ -116,6 +124,8 @@
                 />
             {:else if viewTab === VIEWPORT_TABS.UI}
                 <UILayout engine={engine} settings={settings}/>
+            {:else if viewTab === VIEWPORT_TABS.TERRAIN}
+                <TerrainLayout engine={engine} settings={settings}/>
             {/if}
         {/if}
     </div>

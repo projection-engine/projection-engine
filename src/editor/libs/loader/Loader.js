@@ -134,7 +134,7 @@ export default class Loader {
                     case FILE_TYPES.SIMPLE_MATERIAL:
                     case FILE_TYPES.MATERIAL_INSTANCE:
                     case FILE_TYPES.MATERIAL: {
-                        const entity = QueryAPI.getEntityByPickerID(PickingAPI.readPixelData(mouseX, mouseY))
+                        const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
                         if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
 
                         await loadMaterial(data, (matID) => {

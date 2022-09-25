@@ -6,7 +6,7 @@
     import InitializeWindow from "./libs/initialize-window";
     import getFrameOptions from "./utils/get-frame-options";
     import Shortcuts from "./components/metrics/Metrics.svelte";
-    import Canvas from "./views/viewport/Canvas.svelte";
+    import Canvas from "./Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../shared/components/view/ViewsContainer.svelte";

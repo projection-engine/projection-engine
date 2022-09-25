@@ -90,13 +90,10 @@
         draggable.onMount({
             targetElement: gpu.canvas,
             onDrop: (data, event) => Loader.load(data, false, event.clientX, event.clientY),
-            onDragOver: () => {
-
-                return `
-                    <span data-icon="-" style="font-size: 70px">add</span>
-                    ${translate("DRAG_DROP")}
-                `
-            }
+            onDragOver: () => `
+                <span data-icon="-" style="font-size: 70px">add</span>
+                ${translate("DRAG_DROP")}
+            `
         })
     })
     onDestroy(() => {
@@ -125,7 +122,7 @@
 </script>
 
 
-<CameraBar translate={translate}/>
+<CameraBar/>
 
 <SelectBox
         targetElementID={RENDER_TARGET}

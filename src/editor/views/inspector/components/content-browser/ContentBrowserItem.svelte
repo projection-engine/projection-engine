@@ -63,11 +63,10 @@
 
 <style>
     .wrapper {
-        display: flex;
-        flex-direction: column;
-
+        display: grid;
+        align-content: flex-start;
         gap: 2px;
-        overflow-y: visible;
+        overflow-y: auto;
         overflow-x: hidden;
         padding: 4px 2px;
         min-height: 100%;

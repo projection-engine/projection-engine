@@ -85,7 +85,22 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
-            SHADING_HEIGHT_MAP: "Height map",
+            FOLIAGE_TOOL: "Foliage tool",
+            SCULPT_TOOL: "Sculpt tool",
+            LOWER: "Lower",
+            RAISE: "Raise",
+            STROKE: "Brush stroke",
+            WIDTH: "Width",
+            STRENGTH: "Strength",
+
+            SCULPT: "Sculpt",
+            PAINT_LAYERS: "Paint Layers",
+            PAINT_FOLIAGE: "Paint Foliage",
+            TERRAIN: "Terrain editor",
+            SHADING_UV: "Texture coordinates",
+            UV_DEF: "UV mapping",
+            SHADING_ID: "Entity ID",
+            ID_DEF: "Numeric entity identification",
             HEIGHT_MAP_DEF: "Y axis values",
             SHADING_STOCHASTIC: "Stochastic normals",
             STOCHASTIC_DEF: "SSGI normals",
@@ -258,6 +273,9 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            BRUSH_SETTINGS: "Brush settings",
+            OPACITY: "Opacity",
+
             EDIT_HEIGHT_MAP: "Edit height map",
             IMPORT_IMAGE: "Import image",
             DIMENSIONS: "Dimensions",

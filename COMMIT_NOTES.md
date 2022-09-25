@@ -1,5 +1,4 @@
-- Initializing terrain structure
-- Terrain worker
-- Terrain file type 
-- Terrain editor and item on inspector
-- Terrain loader
+- Terrain editor tab
+- Reworked depth prepass to support UVs and more data for picking ID
+- Reworkeed PickerAPI
+- Added terrain tools options to viewport

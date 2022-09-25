@@ -1,4 +1,5 @@
 export default {
     EDITOR: "EDITOR",
-    UI: "UI"
+    UI: "UI",
+    TERRAIN: "TERRAIN"
 }

@@ -45,6 +45,10 @@
                 return "SHADING_SSGI"
             case SHADING_MODELS.STOCHASTIC:
                 return "SHADING_STOCHASTIC"
+            case SHADING_MODELS.UV:
+                return "SHADING_UV"
+            case SHADING_MODELS.ID:
+                return "SHADING_ID"
             default:
                 return ""
         }
@@ -74,6 +78,10 @@
                 return SSGIPass.sampler
             case SHADING_MODELS.STOCHASTIC:
                 return SSGIPass.normalSampler
+            case SHADING_MODELS.UV:
+                return DepthPass.UVSampler
+            case SHADING_MODELS.ID:
+                return DepthPass.IDSampler
         }
 
     }
@@ -178,6 +186,11 @@
                 {translate("SHADING_STOCHASTIC")}
                 <small>{translate("STOCHASTIC_DEF")}</small>
             </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.ID ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.ID}>
+                {translate("SHADING_ID")}
+                <small>{translate("ID_DEF")}</small>
+            </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
@@ -189,6 +202,11 @@
                     on:click={() => shadingModel = SHADING_MODELS.SSGI}>
                 {translate("SHADING_SSGI")}
                 <small>{translate("SSGI_DEF")}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.UV}>
+                {translate("SHADING_UV")}
+                <small>{translate("UV_DEF")}</small>
             </button>
         </div>
 

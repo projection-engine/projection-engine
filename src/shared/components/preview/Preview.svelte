@@ -16,7 +16,6 @@
         }
         src = null
         timeout = setTimeout(() => {
-            console.log("FETCHING")
             try {
                 NodeFS.read(path).then(res => {
                     if (!res[0]) {

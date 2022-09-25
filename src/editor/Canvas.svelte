@@ -1,13 +1,13 @@
 <script>
-    import RENDER_TARGET from "../../data/RENDER_TARGET"
+    import RENDER_TARGET from "./data/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import updateRenderer from "./utils/update-renderer";
-    import EngineStore from "../../stores/EngineStore";
-    import GPU from "../../../../public/engine/production/GPU";
-    import SettingsStore from "../../stores/SettingsStore";
-    import SelectionStore from "../../stores/SelectionStore";
-    import AssetAPI from "../../../shared/libs/files/AssetAPI";
-    import initializer from "../../../../public/engine/editor/initializer";
+    import updateRenderer from "./views/viewport/utils/update-renderer";
+    import EngineStore from "./stores/EngineStore";
+    import GPU from "../../public/engine/production/GPU";
+    import SettingsStore from "./stores/SettingsStore";
+    import SelectionStore from "./stores/SelectionStore";
+    import AssetAPI from "../shared/libs/files/AssetAPI";
+    import initializer from "../../public/engine/editor/initializer";
 
     export let onReady
 

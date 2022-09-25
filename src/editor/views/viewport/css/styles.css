@@ -1,0 +1,32 @@
+.button-group.viewport {
+    display: flex;
+    align-items: center;
+    border-collapse: collapse;
+}
+
+.button.viewport {
+    height: 22px;
+    min-width: 22px;
+    max-width: 22px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--pj-background-tertiary);
+
+    border: var(--pj-border-primary) 1px solid;
+    border-radius: 0;
+}
+
+
+.button:first-child.viewport {
+    border: var(--pj-border-primary) 1px solid;
+    border-radius: 3px 0 0 3px;
+}
+
+.button:last-child.viewport {
+    border: var(--pj-border-primary) 1px solid;
+    border-radius: 0 3px 3px 0;
+}

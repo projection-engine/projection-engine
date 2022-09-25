@@ -9,8 +9,9 @@
     import CameraAPI from "../../../../../../public/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../../stores/SettingsStore";
+    import Localization from "../../../../../shared/libs/Localization";
 
-    export let translate
+    const translate = key => Localization.PROJECT.VIEWPORT[key]
     let cameraIsOrtho = false
     let requested = false
 
