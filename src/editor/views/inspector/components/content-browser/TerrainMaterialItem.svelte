@@ -1,3 +1,4 @@
+
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
@@ -11,6 +12,8 @@
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+
 
 
     export let item
@@ -19,31 +22,27 @@
     let temp
     $: temp = {...data}
     const translate = key => Localization.PROJECT.INSPECTOR[key]
-
-    const updateAsset = (key, value) => updateMaterialAsset(key, value, item.registryID, temp, v => temp = v, SIMPLE_MATERIAL_TEMPLATE)
     $: uniform = getUniformObject(temp.uniformData)
+    const updateAsset = (key, value) => updateMaterialAsset(key, value, item.registryID, temp, v => temp = v, SIMPLE_MATERIAL_TEMPLATE)
 
-    $: settings = uniform.settings
-    $: fallbackValues = uniform.fallbackValues
-    $: rgbSamplerScales = uniform.rgbSamplerScales
-    $: linearSamplerScales = uniform.linearSamplerScales ? uniform.linearSamplerScales : SIMPLE_MATERIAL_TEMPLATE.uniformData[2].data
+    $: albedoScales = uniform.albedoScales
+    $: normalScales = uniform.normalScales
+    $: roughnessScales = uniform.roughnessScales
 
-    function updateScales(index, value) {
-        const newRGB = [...rgbSamplerScales]
+    function updateMatrix(index, value, key) {
+        const newRGB = [...uniform[key]]
         newRGB[index] = value
 
-
-        updateAsset("rgbSamplerScales", newRGB)
+        updateAsset(key, newRGB)
     }
+    $: inputsToMap = getTerrainInputs(item)
 
-    function updateLinearScales(index, value) {
-        const newRGB = [...linearSamplerScales]
-        newRGB[index] = value
-
-        updateAsset("linearSamplerScales", newRGB)
-    }
 </script>
 
+<fieldset>
+    <legend>{translate("LAYERS")}</legend>
+    <Checkbox checked=""/>
+</fieldset>
 <Accordion>
     <svelte:fragment slot="header">{translate("ALBEDO")}</svelte:fragment>
     <Checkbox

@@ -1,1 +1,1 @@
-- Small tweaks
+- Fixing simple material form
