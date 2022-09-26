@@ -27,6 +27,8 @@ export default function getComponentIcon(key) {
             return "disabled_visible"
         case COMPONENTS.UI:
             return "widgets"
+        case COMPONENTS.TERRAIN:
+            return "landscape"
         default:
             return "code"
     }

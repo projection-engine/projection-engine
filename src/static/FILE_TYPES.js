@@ -11,4 +11,5 @@ module.exports =  {
     REGISTRY: ".reg",
     SCENE: ".scene",
     PREVIEW: ".preview",
+
 }

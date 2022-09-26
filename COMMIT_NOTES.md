@@ -1,4 +1,1 @@
-- Terrain sculpting now working
-- Sculpting gizmo 
-- Improvements to terrain editor view
-- Terrain selection integrated
+- Small tweaks

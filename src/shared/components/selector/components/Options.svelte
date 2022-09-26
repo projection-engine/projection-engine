@@ -4,7 +4,7 @@
     import Input from "../../input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import FALLBACK_MATERIAL from "../../../../../public/engine/static/FALLBACK_MATERIAL";
+    import FALLBACK_MATERIAL from "../../../../../public/engine/static/materials/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
     import InfiniteScroller from "../../infinite-scroller/InfiniteScroller.svelte";

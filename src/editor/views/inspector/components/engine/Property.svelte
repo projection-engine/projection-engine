@@ -163,6 +163,12 @@
             type="material"
             handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
     />
+{:else if attribute.type === Component.propTypes.TERRAIN}
+    <Selector
+            selected={value}
+            type="terrain"
+            handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
+    />
 {:else if attribute.type === Component.propTypes.MESH}
     <Selector
             handleChange={loadMesh}

@@ -278,6 +278,10 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            TERRAIN_COMPONENT: "Terrain component",
+            TERRAIN: "Terrain",
+
+
             BRUSH_SETTINGS: "Brush settings",
             OPACITY: "Opacity",
 

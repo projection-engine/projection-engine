@@ -14,5 +14,6 @@ export default function getNativeComponents() {
         [COMPONENTS.RIGID_BODY, "Rigid body", getComponentIcon(COMPONENTS.RIGID_BODY)],
         [COMPONENTS.CULLING, "Culling", getComponentIcon(COMPONENTS.CULLING)],
         [COMPONENTS.UI, "UI wrapper", getComponentIcon(COMPONENTS.UI)],
+        [COMPONENTS.TERRAIN, "Terrain", getComponentIcon(COMPONENTS.UI)],
     ]
 }
