@@ -46,6 +46,7 @@
             await Loader.load(src.registryID, true)
         submit(attribute.key, src.registryID, true)
     }
+    $: console.log(attribute)
 </script>
 
 
@@ -155,12 +156,14 @@
     <Selector
             handleChange={setImage}
             type="image"
+
             selected={value}
     />
 {:else if attribute.type === Component.propTypes.MATERIAL}
     <Selector
             selected={value}
             type="material"
+            terrainMaterials={attribute.terrainMaterials}
             handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
     />
 {:else if attribute.type === Component.propTypes.TERRAIN}

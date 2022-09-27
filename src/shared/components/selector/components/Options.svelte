@@ -17,6 +17,8 @@
     export let translate
     export let noDefault
     export let mergeMaterials
+    export let terrainMaterials
+
     let searchString = ""
     let filtered
     let maxDepth = 0
@@ -24,7 +26,8 @@
     let maxDepthOffset
 
     $: {
-        const temp = getType(store, type, mergeMaterials)
+        console.log(terrainMaterials)
+        const temp = getType(store, type, mergeMaterials, terrainMaterials)
         if (searchString)
             filtered = temp.filter(e => e.name.includes(searchString))
         else

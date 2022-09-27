@@ -1,14 +1,16 @@
 
 
-export default function getType(store, type, mergeMaterials) {
+export default function getType(store, type, mergeMaterials, terrainMaterials) {
     switch (type) {
         case "image":
             return store.textures
         case "material":
+            console.log(store.terrainMaterials)
+            if(terrainMaterials)
+                return store.terrainMaterials
             if(mergeMaterials)
-            return [...store.materials,  ...store.materialInstances]
-            else
-                return store.materials
+                return [...store.materials,  ...store.materialInstances]
+            return store.materials
         case "mesh":
             return store.meshes
         case "script":

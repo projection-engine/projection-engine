@@ -4,11 +4,11 @@
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
     import FilesAPI from "../../../shared/libs/files/FilesAPI"
-    import compiler from "./libs/materialCompiler"
+
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import parseFile from "./libs/parse-file";
+    import parseFile from "./utils/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
     import Header from "../../../shared/components/view/components/Header.svelte";
@@ -22,6 +22,7 @@
     import shaderEditorKeys from "../../templates/hotkeys/shader-editor-keys";
     import Selector from "../../../shared/components/selector/Selector.svelte";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
+    import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
 
     export let hidden
     export let switchView
@@ -196,7 +197,7 @@
                 class="button"
                 disabled={!openFile.registryID}
                 on:click={async () => {
-                    const {shader} = await compiler(nodes, links)
+                    const {shader} = await materialCompiler(nodes, links)
                     const newFile = FilesAPI.temp + FilesAPI.sep + openFile.registryID + ".log"
                     await FilesAPI.writeFile(newFile, shader, true)
                     shell.openPath(newFile).catch()

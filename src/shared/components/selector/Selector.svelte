@@ -18,11 +18,13 @@
     export let mergeMaterials = true
     export let styles = ""
     export let disabled
+    export let terrainMaterials
 
     const translate = key => Localization.COMPONENTS.SELECTOR[key]
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
+
 
     let state
     $: {
@@ -35,7 +37,7 @@
             }
         else {
             const rID = selected?.registryID ? selected?.registryID : selected
-            let data = getType(store, type, mergeMaterials).find(e => e.registryID === rID)
+            let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID)
             state = data ? data : {name: translate("EMPTY")}
         }
     }
@@ -62,6 +64,7 @@
         </div>
     </button>
     <Options
+            terrainMaterials={terrainMaterials}
             mergeMaterials={mergeMaterials}
             noDefault={noDefault}
             translate={translate}

@@ -14,10 +14,9 @@ export default async function loadTerrain(reg) {
     const data = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
     GPU.allocateMesh(reg.id, data)
     const entity = new Entity()
-    entity.addComponent(COMPONENTS.MESH)
     entity.addComponent(COMPONENTS.TERRAIN)
 
     entity.components.get(COMPONENTS.TERRAIN).terrainID = reg.id
-    entity.components.get(COMPONENTS.MESH).meshID = reg.id
+
     dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
 }

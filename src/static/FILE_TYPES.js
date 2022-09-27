@@ -6,7 +6,7 @@ module.exports =  {
     MATERIAL: ".material",
     MATERIAL_INSTANCE: ".minstance",
     SIMPLE_MATERIAL: ".smaterial",
-    TERRAIN_MATERIAL: "tmaterial",
+    TERRAIN_MATERIAL: ".tmaterial",
     TERRAIN: ".terrain",
     TEXTURE: ".texture",
     REGISTRY: ".reg",

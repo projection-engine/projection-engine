@@ -187,15 +187,17 @@
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
-        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE}
+        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE || metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
             <div data-shaded-material="-" style="width: 60px; height: 60px"></div>
             {#if metadata.type !== FILE_TYPES.MATERIAL}
                 <div class="file-type">
                     <Icon styles="font-size: 1.3rem">
-                        {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE}
+                        {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE }
                             copy_all
-                        {:else}
+                        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL}
                             fast_forward
+                        {:else if metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
+                            landscape
                         {/if}
                     </Icon>
                 </div>

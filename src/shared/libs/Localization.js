@@ -278,6 +278,10 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            LAYERS_CONTROLLER: "Layer controller",
+            REMOVE_LAYER: "Remove layer",
+            LAYER: "Layer",
+            SCALE: "Scale",
             ADD_LAYER: "Add layer",
             TERRAIN_COMPONENT: "Terrain component",
             TERRAIN: "Terrain",

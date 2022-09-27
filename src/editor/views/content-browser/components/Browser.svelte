@@ -41,8 +41,6 @@
 
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
-
-
     function onDragEnd() {
         onDrag = false
     }

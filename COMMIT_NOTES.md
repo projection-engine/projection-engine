@@ -1,1 +1,3 @@
-- Initializing terrain things
+- Integrating new material time 
+- Integrating TerrainComponent with pipeline
+- Tweaks to inspector layout

@@ -118,6 +118,7 @@ export default function contentBrowserActions(navigationHistory, currentDirector
             hotKeys.RENAME,
             hotKeys.CUT,
             hotKeys.PASTE,
+            hotKeys.DELETE,
             {divider: true},
 
             {
@@ -163,7 +164,7 @@ export default function contentBrowserActions(navigationHistory, currentDirector
                         icon: "texture",
                         onClick: async () => {
                             let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + translate("NEW_TERRAIN_MATERIAL"), FILE_TYPES.TERRAIN_MATERIAL)
-                            AssetAPI.writeAsset(path, JSON.stringify({original: TERRAIN_LAYERED, uniformsData: TERRAIN_MATERIAL_UNIFORMS }))
+                            AssetAPI.writeAsset(path, JSON.stringify({original: TERRAIN_LAYERED, uniformData: TERRAIN_MATERIAL_UNIFORMS }))
                                 .then(() => {
                                     FilesStore.refreshFiles()
                                 })

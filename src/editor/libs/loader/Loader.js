@@ -133,31 +133,31 @@ export default class Loader {
                     }
                     case FILE_TYPES.SIMPLE_MATERIAL:
                     case FILE_TYPES.MATERIAL_INSTANCE:
+                    case FILE_TYPES.TERRAIN_MATERIAL:
                     case FILE_TYPES.MATERIAL: {
                         const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
                         if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
 
                         await loadMaterial(data, (matID) => {
+                            const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
                             ActionHistoryAPI.pushChange({
                                 target: ActionHistoryAPI.targets.entity,
                                 entityID: entity.id,
-                                component: COMPONENTS.MESH,
+                                component: comp,
                                 key: "materialID",
-                                changeValue: entity.components.get(COMPONENTS.MESH).materialID
+                                changeValue: entity.components.get(comp).materialID
                             })
-                            entity.components.get(COMPONENTS.MESH).materialID = matID
+                            entity.components.get(comp).materialID = matID
                             ActionHistoryAPI.pushChange({
                                 target: ActionHistoryAPI.targets.entity,
                                 entityID: entity.id,
-                                component: COMPONENTS.MESH,
+                                component: comp,
                                 key: "materialID",
                                 changeValue: data
                             })
                         })
-
                         break
                     }
-
                     case FILE_TYPES.TERRAIN: {
                         await loadTerrain(res)
 

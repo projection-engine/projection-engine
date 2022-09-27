@@ -12,8 +12,9 @@
     import MeshItem from "./MeshItem.svelte";
     import SimpleMaterialItem from "./SimpleMaterialItem.svelte";
     import TerrainItem from "./TerrainItem.svelte";
+    import TerrainMaterialWrapper from "./TerrainMaterialWrapper.svelte";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.SIMPLE_MATERIAL, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE, FILE_TYPES.TERRAIN]
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.TERRAIN_MATERIAL, FILE_TYPES.SIMPLE_MATERIAL, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE, FILE_TYPES.TERRAIN]
 
     export let item
     let data
@@ -36,7 +37,7 @@
 <div class="wrapper">
 
     <ItemMetadata item={item}/>
-    <div data-divider="-" style="margin-top: 6px; margin-bottom: 6px;"></div>
+    <div data-divider="-" style="margin:0;"></div>
     {#if fileType === FILE_TYPES.TEXTURE}
         <TextureItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.SCENE}
@@ -47,6 +48,8 @@
         <MaterialItem data={data} item={item}/>
     {:else if data != null && fileType === FILE_TYPES.SIMPLE_MATERIAL}
         <SimpleMaterialItem data={data} item={item}/>
+    {:else if data != null && fileType === FILE_TYPES.TERRAIN_MATERIAL}
+        <TerrainMaterialWrapper data={data} item={item}/>
     {:else if data != null && fileType === FILE_TYPES.TERRAIN}
         <TerrainItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.MESH}
@@ -65,7 +68,7 @@
     .wrapper {
         display: grid;
         align-content: flex-start;
-        gap: 2px;
+        gap: 4px;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 4px 2px;

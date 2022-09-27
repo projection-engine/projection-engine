@@ -69,6 +69,7 @@
 
 
     .summary {
+        width: 100%;
         font-size: 0.7rem;
         gap: 4px;
         cursor: pointer;

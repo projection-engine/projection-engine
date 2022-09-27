@@ -107,6 +107,7 @@ export default class ContentBrowserAPI {
             materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
             simpleMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SIMPLE_MATERIAL)),
             terrainReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN)),
+            terrainMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN_MATERIAL)),
             promises = []
 
 
@@ -119,6 +120,8 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
         promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
         promises.push(...mapAsset(terrainReg, FILE_TYPES.TERRAIN))
+        promises.push(...mapAsset(terrainMaterialReg, FILE_TYPES.TERRAIN_MATERIAL))
+
 
         const loadedPromises = await Promise.all(promises)
         const result = {
@@ -129,7 +132,8 @@ export default class ContentBrowserAPI {
             terrains: [],
             levels: [],
             uiLayouts: [],
-            materialInstances: []
+            materialInstances: [],
+            terrainMaterials: []
         }
 
         for (let i = 0; i < loadedPromises.length; i++) {
@@ -158,6 +162,9 @@ export default class ContentBrowserAPI {
                     break
                 case FILE_TYPES.TERRAIN:
                     result.terrains.push(current)
+                    break
+                case FILE_TYPES.TERRAIN_MATERIAL:
+                    result.terrainMaterials.push(current)
                     break
                 default:
                     break
@@ -193,8 +200,8 @@ export default class ContentBrowserAPI {
                                     })
                                 await NodeFS.write(FilesAPI.resolvePath(FilesStore.PREVIEW_PATH + FilesAPI.sep + fileID + FILE_TYPES.PREVIEW), reduced)
                                 await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(FilesStore.ASSETS_PATH + FilesAPI.sep, "") + FILE_TYPES.TEXTURE)
-                            }else
-                            console.error(new Error("Error importing image"))
+                            } else
+                                console.error(new Error("Error importing image"))
                         }
                         break
                     }

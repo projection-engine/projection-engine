@@ -12,5 +12,6 @@ export const contentBrowserStore = writable({
     simpleMaterials: [],
     components: [],
     uiLayouts: [],
-    terrains: []
+    terrains: [],
+    terrainMaterials: []
 });
