@@ -1,5 +1,5 @@
 import BOARD_SIZE from "./data/BOARD_SIZE";
-import compiler from "./libs/compiler";
+import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
 import MaterialController from "../../../../public/engine/production/instances/MaterialController";
 import PreviewSystem from "../../../../public/engine/editor/services/PreviewSystem";
 import AssetAPI from "../../../shared/libs/files/AssetAPI";
@@ -77,7 +77,7 @@ export default class ShaderEditorController {
 
     static async compile(nodes, links, isSave, id) {
         const parsedNodes = nodes.map(ShaderEditorController.#serializeNode)
-        const compiled = await compiler(nodes.filter(n => !n.isComment), links)
+        const compiled = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
         let preview
         if (isSave) {

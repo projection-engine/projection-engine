@@ -10,11 +10,13 @@ import getMaterialAsOption from "./utils/get-material-as-option";
 import resolveFileName from "./utils/resolve-file-name";
 import FILE_TYPES from "../../static/FILE_TYPES";
 import AssetAPI from "../../shared/libs/files/AssetAPI";
-import SIMPLE_MATERIAL_TEMPLATE from "../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
+import SIMPLE_MATERIAL_TEMPLATE from "../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 import COMPONENT_TEMPLATE from "../../../public/engine/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../public/engine/static/templates/UI_TEMPLATE";
 import Localization from "../../shared/libs/Localization";
 import TERRAIN_TEMPLATE from "../../../public/engine/static/templates/TERRAIN_TEMPLATE";
+import TERRAIN_LAYERED from "../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
+import TERRAIN_MATERIAL_UNIFORMS from "../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
@@ -151,6 +153,17 @@ export default function contentBrowserActions(navigationHistory, currentDirector
                         onClick: async () => {
                             let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + translate("NEW_SIMPLE_MATERIAL"), FILE_TYPES.SIMPLE_MATERIAL)
                             AssetAPI.writeAsset(path, JSON.stringify(SIMPLE_MATERIAL_TEMPLATE))
+                                .then(() => {
+                                    FilesStore.refreshFiles()
+                                })
+                        }
+                    },
+                    {
+                        label: translate("NEW_TERRAIN_MATERIAL"),
+                        icon: "texture",
+                        onClick: async () => {
+                            let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + translate("NEW_TERRAIN_MATERIAL"), FILE_TYPES.TERRAIN_MATERIAL)
+                            AssetAPI.writeAsset(path, JSON.stringify({original: TERRAIN_LAYERED, uniformsData: TERRAIN_MATERIAL_UNIFORMS }))
                                 .then(() => {
                                     FilesStore.refreshFiles()
                                 })

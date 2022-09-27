@@ -4,7 +4,7 @@
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
     import FilesAPI from "../../../shared/libs/files/FilesAPI"
-    import compiler from "./libs/compiler"
+    import compiler from "./libs/materialCompiler"
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";

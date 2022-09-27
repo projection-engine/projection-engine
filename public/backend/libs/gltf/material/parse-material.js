@@ -1,5 +1,5 @@
 const loadTexture = require("./load-texture")
-const SIMPLE_MATERIAL_TEMPLATE = require("../../../../engine/static/SIMPLE_MATERIAL_TEMPLATE");
+const SIMPLE_MATERIAL_TEMPLATE = require("../../../../engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS");
 
 module.exports = async function parseMaterial(basePath, data, textures, images, partialPath, projectPath, index) {
     const getTexture = (sampler, name) => loadTexture(

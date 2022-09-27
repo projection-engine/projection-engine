@@ -1,1 +1,1 @@
-- Fixing simple material form
+- Initializing terrain things

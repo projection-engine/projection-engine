@@ -1,10 +1,8 @@
-import compiler from "./compiler"
+import materialCompiler from "../../../../../public/engine/editor/libs/material-compiler/material-compiler"
 import {trimString} from "../../../../../public/engine/production/instances/ShaderController";
 import GPU from "../../../../../public/engine/production/GPU";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
-
-    alert.pushAlert(translate("COMPILING"), "info")
     const {
         shader,
         vertexShader,
@@ -12,7 +10,7 @@ export default async function buildShader(nodes, links, openFile, setStatus, tra
         settings,
         info,
         cubeMapShader
-    } = await compiler(nodes.filter(n => !n.isComment), links)
+    } = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
     if (shader) {
         const currentMaterial = GPU.materials.get(openFile.registryID)

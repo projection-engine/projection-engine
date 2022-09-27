@@ -7,7 +7,7 @@
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import SIMPLE_MATERIAL_TEMPLATE from "../../../../../../public/engine/static/SIMPLE_MATERIAL_TEMPLATE";
+    import SIMPLE_MATERIAL_TEMPLATE from "../../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";

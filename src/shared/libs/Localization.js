@@ -278,6 +278,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            ADD_LAYER: "Add layer",
             TERRAIN_COMPONENT: "Terrain component",
             TERRAIN: "Terrain",
 
@@ -463,6 +464,7 @@ export default class Localization {
         },
 
         FILES: {
+            NEW_TERRAIN_MATERIAL: "New terrain material",
             NEW_TERRAIN: "New terrain",
             DELETING_ITEMS: "Deleting items",
             NEW_SIMPLE_MATERIAL: "New simple material",
