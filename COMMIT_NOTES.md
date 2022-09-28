@@ -1,2 +1,3 @@
-- Initializing sculpting gizmo to work on separate thread
-- Added opacity control to sculpting gizmo
+- Terrain material works
+- Fixing sculpt gizmo scales
+- Fixing terrain not showing outline

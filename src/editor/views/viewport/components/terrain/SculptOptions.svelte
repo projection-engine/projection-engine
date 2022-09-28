@@ -9,6 +9,10 @@
     import SculptingGizmo from "../../../../../../public/engine/editor/libs/terrain/SculptingGizmo";
     import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
+    import Selector from "../../../../../shared/components/selector/Selector.svelte";
+    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import FilesStore from "../../../../stores/FilesStore";
+    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
 
     export let settings
     export let selectedTerrain
@@ -31,7 +35,24 @@
     })
     $: if (api) api.updateSettings(terrainSettings.brushSize, terrainSettings.brushScale, terrainSettings.brushStrength)
     onDestroy(() => api.destroy())
+
+    async function updateImage({registryID}) {
+        const reg = await RegistryAPI.readRegistryFile(registryID)
+        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + reg.path, "json")
+
+        console.log(file)
+        TerrainWorker.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
+            .then(res => GPU.allocateMesh(settings.selectedTerrain, res))
+    }
 </script>
+<fieldset>
+    <legend>{translate("IMPORT")}</legend>
+    <Selector
+            type="image"
+            handleChange={updateImage}
+
+    />
+</fieldset>
 
 <div class="boxes">
     <Checkbox
@@ -68,8 +89,8 @@
             precision={4}
             incrementPercentage={.001}
             label={translate("SCALE")}
-            value={terrainSettings.brushScale}
-            onFinish={v => update("brushScale", v)}
+            value={terrainSettings.brushScale * 100}
+            onFinish={v => update("brushScale", v/100)}
     />
 </fieldset>
 

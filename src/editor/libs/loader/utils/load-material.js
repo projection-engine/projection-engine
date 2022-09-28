@@ -4,7 +4,7 @@ import Localization from "../../../../shared/libs/Localization";
 import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
 import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
 import GPU from "../../../../../public/engine/production/GPU";
-import FILE_TYPES from "../../../../static/FILE_TYPES";
+import FILE_TYPES, {TERRAIN_MATERIAL} from "../../../../static/FILE_TYPES";
 
 const loadFile = async (rs) => {
 
@@ -18,15 +18,16 @@ const loadFile = async (rs) => {
 }
 
 export default async function loadMaterial(ID, submit) {
-    console.log(ID)
     if (ID === FALLBACK_MATERIAL)
         submit(FALLBACK_MATERIAL, "materialID")
+    else if (ID.includes(TERRAIN_MATERIAL))
+        submit(ID, "materialID")
     else
         try {
             const reg = await RegistryAPI.readRegistryFile(ID)
             if (!reg)
                 return
-            const isInstance = reg.path.includes(FILE_TYPES.TERRAIN_MATERIAL) || reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) ||reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
+            const isInstance = reg.path.includes(FILE_TYPES.TERRAIN_MATERIAL) || reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) || reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
             if (!GPU.materials.get(ID)) {
                 alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
                 const file = await loadFile(reg)
@@ -39,8 +40,7 @@ export default async function loadMaterial(ID, submit) {
                         await loadMaterial(file.original, () => null)
                     await GPU.allocateMaterialInstance(file, ID)
 
-                }
-                else {
+                } else {
                     await new Promise(resolve => {
                         GPU.allocateMaterial({
                             onCompiled: () => resolve(),

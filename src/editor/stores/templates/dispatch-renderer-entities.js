@@ -69,7 +69,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 ...SelectionStore.data,
                 TARGET: SelectionStore.TYPES.ENGINE,
                 array: [entity.id],
-                lockedEntity: undefined
+                lockedEntity: entity.id
             })
             EntityAPI.addEntity(payload)
             save()

@@ -17,6 +17,7 @@
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
     import TERRAIN_MATERIAL
         from "../../../../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
+    import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES";
 
 
     export let item
@@ -24,6 +25,8 @@
 
     let material
     $: material = {...data}
+    $: layers = material?.uniformData ? (material.uniformData.length - TERRAIN_MATERIAL_UNIFORMS.length) / 3 : 0
+
     const translate = key => Localization.PROJECT.INSPECTOR[key]
     const updateAsset = (key, v, index) => {
         let value = v
@@ -36,30 +39,38 @@
             value,
             item.registryID,
             material,
-            v => material = v,
-            SIMPLE_MATERIAL_TEMPLATE
+            v => {
+                material = v
+                console.trace("HERE")
+                if (GPU.materials.get(item.registryID) != null) {
+                    GPU.destroyMaterial(item.registryID)
+                    GPU.allocateMaterialInstance(v, item.registryID)
+                    GPU.cleanUpTextures()
+                }
+            },
+            undefined,
+            false
         )
     }
 
-    $: layers = material?.uniformData ? (material.uniformData.length - TERRAIN_MATERIAL_UNIFORMS.length) / 3 : 0
 
     function addLayer() {
         const uniformData = [...material.uniformData]
-
         uniformData.push(
             {
                 key: "albedo" + layers,
-                type: "sampler"
+                type:  DATA_TYPES.TEXTURE
             },
             {
                 key: "normal" + layers,
-                type: "sampler"
+                type:  DATA_TYPES.TEXTURE
             },
             {
                 key: "roughness" + layers,
-                type: "sampler"
+                type:  DATA_TYPES.TEXTURE
             }
         )
+
         const size = (uniformData.length - TERRAIN_MATERIAL_UNIFORMS.length) / 3
 
         material = {

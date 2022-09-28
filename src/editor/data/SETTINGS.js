@@ -50,7 +50,7 @@ export default {
         brushStrength: .5,
         foliageDensity: 10,
         foliageQuantity: 1000,
-        brushScale: .5
+        brushScale: .05
     },
 
     camera: {

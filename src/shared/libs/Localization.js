@@ -85,6 +85,7 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            IMPORT: "Import",
             SCALE: "Scale",
             FOLIAGE_DISPLACEMENT: "Foliage displacement",
             DENSITY: "Density",

@@ -74,13 +74,10 @@ export default class EngineStore {
         }
 
         GPU.meshes.forEach(m => GPU.destroyMesh(m))
-        const materials = Array.from(GPU.materials.entries())
-        for (let i = 0; i < materials.length; i++) {
-            if (materials[i][0] === FALLBACK_MATERIAL)
-                continue
-            materials[i][1].delete()
-            GPU.materials.delete(materials[i][0])
-        }
+        const materials = Array.from(GPU.materials.keys())
+        for (let i = 0; i < materials.length; i++)
+            GPU.destroyMaterial(materials[i][1])
+
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
@@ -113,21 +110,39 @@ export default class EngineStore {
                         const rs = await RegistryAPI.readRegistryFile(uiID)
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path))
                     }
+                    const terrain = entity.components.get(COMPONENTS.TERRAIN)
+
+                    if (terrain) {
+                        const {materialID, terrainID} = terrain
+                        if (GPU.meshes.get(terrainID) == null) {
+                            const rs = await RegistryAPI.readRegistryFile(terrainID)
+                            if (!rs)
+                                continue
+                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+                            if (!file)
+                                continue
+                            const terrainData = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
+                            GPU.allocateMesh(terrainID, terrainData)
+                        }
+                        if(materialID && GPU.materials.get(materialID) == null){
+                            const rs = await RegistryAPI.readRegistryFile(materialID)
+                            if (!rs)
+                                continue
+                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+                            if (!file)
+                                continue
+                            GPU.allocateMaterialInstance(file, materialID).catch()
+                        }
+                    }
 
                     mapped.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
             })
 
-        ipcRenderer.on(CHANNELS.MESH + projectID, (ev, data) => {
-            if(data.image != null){
-                console.log(data)
-                TerrainWorker.generate(data.image, data.scale, data.dimensions).then(res => {
-                    GPU.allocateMesh(data.id, res)
-                })
-            }else
-                GPU.allocateMesh(data.id, data)
-        })
+        ipcRenderer.on(
+            CHANNELS.MESH + projectID,
+            (ev, data) => GPU.allocateMesh(data.id, data))
 
         ipcRenderer.on(
             CHANNELS.MATERIAL + projectID,

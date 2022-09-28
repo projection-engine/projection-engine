@@ -1,15 +1,19 @@
-import SIMPLE_MATERIAL_TEMPLATE from "../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
+import SIMPLE_MATERIAL_TEMPLATE
+    from "../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 import GPU from "../../../../../public/engine/production/GPU";
 import MaterialAPI from "../../../../../public/engine/production/apis/rendering/MaterialAPI";
 import AssetAPI from "../../../../shared/libs/files/AssetAPI";
 import Localization from "../../../../shared/libs/Localization";
+
 const translate = key => Localization.PROJECT.INSPECTOR[key]
 
-export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original) {
+export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {
     let valid = false
     const old = temp.uniformData
-    if (!old.find(u => u.key === key) && original.uniformData.find(u => u.key === key))
-        old.push(original.uniformData.find(u => u.key === key))
+    if(original != null) {
+        if (!old.find(u => u.key === key) && original.uniformData.find(u => u.key === key))
+            old.push(original.uniformData.find(u => u.key === key))
+    }
     const newData = {
         ...temp, uniformData: old.map(u => {
             if (u.key === key && JSON.stringify(value) !== JSON.stringify(u.data)) {
@@ -22,9 +26,8 @@ export default async function updateMaterialAsset(key, value, registryID, temp, 
     setTemp(newData)
     if (!valid)
         return
-
-    if (GPU.materials.get(registryID) != null) {
-        const instance = GPU.materials.get(registryID)
+    const instance = GPU.materials.get(registryID)
+    if (instance != null && doUpdate) {
         await MaterialAPI.updateMaterialUniforms(newData.uniformData, instance)
         alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
         GPU.cleanUpTextures()
