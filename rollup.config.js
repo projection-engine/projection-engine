@@ -78,10 +78,11 @@ export default [
             uglify()
         ]
     },
-    worker("public/engine/production/workers/movement/movement-worker.js", "public/build/movement-worker.js"),
-    worker("public/engine/production/workers/camera/camera-worker.js", "public/build/camera-worker.js"),
-    worker("public/engine/production/workers/terrain/terrain-worker.js", "public/build/terrain-worker.js"),
-    worker("public/engine/production/workers/image/image-worker.js", "public/build/image-worker.js"),
+    worker("public/engine/workers/movement/movement-worker.js", "public/build/movement-worker.js"),
+    worker("public/engine/workers/camera/camera-worker.js", "public/build/camera-worker.js"),
+    worker("public/engine/workers/terrain/terrain-worker.js", "public/build/terrain-worker.js"),
+    worker("public/engine/workers/image/image-worker.js", "public/build/image-worker.js"),
+    worker("public/engine/workers/terrain/sculpting-worker.js", "public/build/sculpting-worker.js"),
     common("home/root", "home"),
     common("editor/root", "editor"),
     common("preferences/root", "preferences")

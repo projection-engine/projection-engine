@@ -47,10 +47,10 @@ export default {
     terrainSettings: {
         brushOnDecrease: true,
         brushSize: 5,
-        brushStrength: 1,
+        brushStrength: .5,
         foliageDensity: 10,
-        foliageQuantity: 1000
-
+        foliageQuantity: 1000,
+        brushScale: .5
     },
 
     camera: {

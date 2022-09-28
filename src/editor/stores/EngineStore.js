@@ -19,7 +19,7 @@ import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXT
 import FALLBACK_MATERIAL from "../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
 import SelectionStore from "./SelectionStore";
 import loadMaterial from "../libs/loader/utils/load-material";
-import TerrainWorker from "../../../public/engine/production/workers/terrain/TerrainWorker";
+import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
 
 const {ipcRenderer} = window.require("electron")
 

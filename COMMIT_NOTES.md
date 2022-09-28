@@ -1,3 +1,2 @@
-- Integrating new material time 
-- Integrating TerrainComponent with pipeline
-- Tweaks to inspector layout
+- Initializing sculpting gizmo to work on separate thread
+- Added opacity control to sculpting gizmo

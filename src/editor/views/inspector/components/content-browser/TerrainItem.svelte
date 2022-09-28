@@ -6,7 +6,7 @@
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
-    import TerrainWorker from "../../../../../../public/engine/production/workers/terrain/TerrainWorker";
+    import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
 

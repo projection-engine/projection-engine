@@ -7,7 +7,7 @@ import ROUTES from "../../../static/ROUTES";
 import FilesStore from "../../../editor/stores/FilesStore";
 import TEXTURE_TEMPLATE from "../../../static/TEXTURE_TEMPLATE";
 import {IMAGE_WORKER_ACTIONS} from "../../../../public/engine/production";
-import ImageWorker from "../../../../public/engine/production/workers/image/ImageWorker";
+import ImageWorker from "../../../../public/engine/workers/image/ImageWorker";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")

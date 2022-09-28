@@ -7,7 +7,7 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import SculptingGizmo from "../../../../../../public/engine/editor/libs/terrain/SculptingGizmo";
-    import TerrainWorker from "../../../../../../public/engine/production/workers/terrain/TerrainWorker";
+    import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
 
     export let settings
@@ -23,29 +23,15 @@
     let api
 
     onMount(() => {
-
-
         api = new SculptingGizmo(selectedTerrain.image)
-
         api.updateMesh = () => {
-            console.log(api.canvas.toDataURL())
             TerrainWorker.generate(api.canvas.toDataURL(), selectedTerrain.scale, selectedTerrain.dimensions)
-                .then(res => {
-                    console.log(res)
-                    GPU.allocateMesh(settings.selectedTerrain, res)
-                })
+                .then(res => GPU.allocateMesh(settings.selectedTerrain, res))
         }
     })
-    $: {
-        if (api) {
-            api.ctx.lineWidth = terrainSettings.brushSize
-            const d = terrainSettings.brushStrength * 255
-            api.ctx.strokeStyle = `rgb(${d}, ${d}, ${d})`
-        }
-    }
+    $: if (api) api.updateSettings(terrainSettings.brushSize, terrainSettings.brushScale, terrainSettings.brushStrength)
     onDestroy(() => api.destroy())
 </script>
-
 
 <div class="boxes">
     <Checkbox
@@ -74,7 +60,17 @@
             incrementPercentage={.001}
             label={translate("STRENGTH")}
             value={terrainSettings.brushStrength}
-            onFinish={v => update("brushStrength", v)}/>
+            onFinish={v => update("brushStrength", v)}
+    />
+    <Range
+            minValue={0}
+            maxValue={1}
+            precision={4}
+            incrementPercentage={.001}
+            label={translate("SCALE")}
+            value={terrainSettings.brushScale}
+            onFinish={v => update("brushScale", v)}
+    />
 </fieldset>
 
 
