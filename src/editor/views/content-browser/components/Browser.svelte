@@ -196,7 +196,6 @@
         overflow: hidden;
 
         display: grid;
-
         gap: 4px;
         padding: 4px 0 4px 4px;
 

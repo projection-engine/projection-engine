@@ -280,6 +280,8 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            HAS_COLLISION: "Has collision",
+
             LAYERS_CONTROLLER: "Layer controller",
             REMOVE_LAYER: "Remove layer",
             LAYER: "Layer",
@@ -287,7 +289,6 @@ export default class Localization {
             ADD_LAYER: "Add layer",
             TERRAIN_COMPONENT: "Terrain component",
             TERRAIN: "Terrain",
-
 
             BRUSH_SETTINGS: "Brush settings",
             OPACITY: "Opacity",
@@ -312,7 +313,6 @@ export default class Localization {
             METALLIC: "Metallic",
             EMISSION: "Emission",
             ROUGHNESS: "Roughness",
-
 
             NO_UNIFORMS: "No dynamic inputs found",
             INERTIA: "Inertia",

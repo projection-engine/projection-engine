@@ -6,7 +6,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/disp
 import EngineStore from "../stores/EngineStore";
 import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
 import UIAPI from "../../../public/engine/production/apis/UIAPI";
-import PhysicsPass from "../../../public/engine/production/passes/math/PhysicsPass";
+import PhysicsPass from "../../../public/engine/production/passes/misc/PhysicsPass";
 
 export default class EntityStateController {
     static #state = []

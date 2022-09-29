@@ -1,1 +1,3 @@
-- Integrating Svelte virtual list
+- Initializing terrain collider
+- Physics API now available to scripts
+- Some tweaks to terrain worker

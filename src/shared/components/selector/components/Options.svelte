@@ -21,50 +21,29 @@
 
     let searchString = ""
     let filtered
-    let maxDepthOffset
+
 
     $: {
         const temp = getType(store, type, mergeMaterials, terrainMaterials)
+        let current
         if (searchString)
-            filtered = temp.filter(e => e.name.includes(searchString))
+            current = temp.filter(e => e.name.includes(searchString))
         else
-            filtered = temp
+            current = temp
+
+        if (!noDefault) {
+            if (type === "material")
+                current.push({name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL})
+            else if(type === "mesh")
+                Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => current.push({name: translate(sm[0]), registryID: sm[1]}))
+        }
+        filtered = current
     }
 
-    $: staticMeshes = Object.entries(STATIC_MESHES.PRODUCTION)
-    $: {
-        if (type === "mesh")
-            maxDepthOffset = staticMeshes.length
-        else if (type === "material")
-            maxDepthOffset = 1
-        else
-            maxDepthOffset = 0
-    }
 </script>
 
 <div class="modal-available-nodes selector">
-    <div class="content-available-nodes selector">
-        {#if !noDefault}
-            {#if type === "material"}
-                <Option
-                        type={type}
-                        setState={setState}
-                        data={{name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}}
-                        handleChange={handleChange}
-                        state={state}
-                />
-            {:else if type === "mesh"}
-                {#each staticMeshes as sm}
-                    <Option
-                            type={type}
-                            setState={setState}
-                            data={{name: translate(sm[0]), registryID: sm[1]}}
-                            handleChange={handleChange}
-                            state={state}
-                    />
-                {/each}
-            {/if}
-        {/if}
+
         {#if filtered.length > 0}
             <VirtualList items={filtered} let:item>
                 <Option
@@ -81,7 +60,7 @@
                 {translate("NOTHING")}
             </div>
         {/if}
-    </div>
+
     <div class="header-available-nodes selector">
         <Input
                 width={"100%"}

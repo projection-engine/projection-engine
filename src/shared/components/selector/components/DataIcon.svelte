@@ -33,7 +33,7 @@
 <style>
     .img {
         object-fit: fill;
-        max-height: 100%;
+        max-height: 30px;
         border-radius: 3px;
     }
 </style>
