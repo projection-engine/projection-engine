@@ -45,6 +45,7 @@
     }
   },
   "dependencies": {
+    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "ammo-electron-build": "https://github.com/projection-engine/ammo.js.git",
     "atob": "^2.1.2",
     "electron-squirrel-startup": "^1.0.0",

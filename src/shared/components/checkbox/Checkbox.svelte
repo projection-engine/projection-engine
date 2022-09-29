@@ -48,6 +48,7 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
+
     }
     .container:hover {
         border: var(--pj-accent-color) 1px solid;

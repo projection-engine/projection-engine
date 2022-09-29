@@ -7,7 +7,7 @@
     import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
-    import InfiniteScroller from "../../infinite-scroller/InfiniteScroller.svelte";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
 
     export let handleChange
     export let type
@@ -21,12 +21,9 @@
 
     let searchString = ""
     let filtered
-    let maxDepth = 0
-    let offset = 0
     let maxDepthOffset
 
     $: {
-        console.log(terrainMaterials)
         const temp = getType(store, type, mergeMaterials, terrainMaterials)
         if (searchString)
             filtered = temp.filter(e => e.name.includes(searchString))
@@ -47,12 +44,6 @@
 
 <div class="modal-available-nodes selector">
     <div class="content-available-nodes selector">
-        <InfiniteScroller
-                branchSize={30}
-                setMaxDepth={v => maxDepth = v}
-                setOffset={v => offset = v}
-                data={filtered}
-        />
         {#if !noDefault}
             {#if type === "material"}
                 <Option
@@ -75,17 +66,15 @@
             {/if}
         {/if}
         {#if filtered.length > 0}
-            {#each filtered as t, i}
-                {#if i < (maxDepth - maxDepthOffset) && filtered[i + offset]}
-                    <Option
-                            type={type}
-                            setState={setState}
-                            data={filtered[i + offset]}
-                            handleChange={handleChange}
-                            state={state}
-                    />
-                {/if}
-            {/each}
+            <VirtualList items={filtered} let:item>
+                <Option
+                        type={type}
+                        setState={setState}
+                        data={item}
+                        handleChange={handleChange}
+                        state={state}
+                />
+            </VirtualList>
         {:else}
             <div class="nothing">
                 <Icon styles="font-size: 2rem">folder</Icon>

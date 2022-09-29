@@ -1,7 +1,6 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import Branch from "./Node.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
@@ -10,6 +9,7 @@
     import ContextMenuController from "../../../../shared/libs/ContextMenuController";
     import Localization from "../../../../shared/libs/Localization";
     import viewportContext from "../../../templates/context-menu/viewport-context";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
 
     export let ID
     export let translate
@@ -25,9 +25,6 @@
 
     let open = new Map()
     let toRender = []
-    let offset = 0
-    let maxDepth = 0
-
     let selected = []
     let lockedEntity
     let surfaceSelected = {}
@@ -67,17 +64,14 @@
             }
         }
     }
-
-
     $: setIsEmpty(toRender.length === 0)
-
     onMount(() => ContextMenuController.mount({
-            icon: "account_tree",
-            label: Localization.PROJECT.HIERARCHY.TITLE
-        },
-        viewportContext(),
-        ID,
-        TRIGGERS)
+                icon: "account_tree",
+                label: Localization.PROJECT.HIERARCHY.TITLE
+            },
+            viewportContext(),
+            ID,
+            TRIGGERS)
     )
 
     onDestroy(() => {
@@ -88,28 +82,21 @@
 </script>
 
 
-<InfiniteScroller
-        setMaxDepth={v => maxDepth = v}
-        setOffset={v => offset = v}
-        data={toRender}
-/>
 {#if toRender.length > 0}
-    {#each toRender as _, i}
-        {#if i < maxDepth && toRender[i + offset]}
-            <Branch
-                    surfaceSelected={surfaceSelected}
-                    nodeRef={toRender[i + offset].node}
-                    depth={toRender[i + offset].depth}
-                    selected={selected}
+    <VirtualList items={toRender} let:item>
+        <Branch
+                surfaceSelected={surfaceSelected}
+                nodeRef={item.node}
+                depth={item.depth}
+                selected={selected}
 
-                    lockedEntity={lockedEntity}
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
-                    internalID={ID}
-                    open={open}
-                    updateOpen={() => open = open}
-            />
-        {/if}
-    {/each}
+                lockedEntity={lockedEntity}
+                setLockedEntity={v => SelectionStore.lockedEntity = v}
+                internalID={ID}
+                open={open}
+                updateOpen={() => open = open}
+        />
+    </VirtualList>
 {:else}
     <div data-empty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

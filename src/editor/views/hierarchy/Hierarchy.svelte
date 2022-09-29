@@ -145,8 +145,6 @@
 
     .wrapper {
         position: relative;
-        display: grid;
-        align-content: flex-start;
         width: 100%;
         overflow: hidden;
 

@@ -8,7 +8,7 @@
     import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import InfiniteScroller from "../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "../../../shared/components/create-portal";
 
     export let hidden = undefined
@@ -21,13 +21,11 @@
     let showLogs = true
     let showErrors = true
     let clearOnPlay = false
-    let offset = 0
-    let maxDepth = 0
+
     let ref
     let engine
     let changed
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const LINE_HEIGHT = 18
     const TYPES = ConsoleAPI.TYPES
     let modal
     let objectOpen
@@ -138,65 +136,56 @@
 </Header>
 
 <div class="wrapper" bind:this={ref} style={hidden ? "display: none" : undefined}>
-    <InfiniteScroller
-            setMaxDepth={v => maxDepth = v}
-            setOffset={v => offset = v}
-            branchSize={LINE_HEIGHT}
-            data={toRender}
-    />
-    {#each toRender as _, i}
-        {#if i < maxDepth && toRender[i + offset]}
-            <div
-                    class="container"
-                    class:error={toRender[i + offset].type === TYPES.ERROR}
-                    class:warn={toRender[i + offset].type === TYPES.WARN}
-                    class:log={toRender[i + offset].type === TYPES.LOG}
-                    style={i + offset === 0 || (i + offset > 0 && toRender[i + offset - 1].blockID !== toRender[i + offset].blockID) ? "border-bottom: var(--pj-border-secondary) 1px solid;" : undefined}
-                    on:click={() => {
-                        if(toRender[i + offset].object)
-                            objectOpen =toRender[i + offset].object
+    <VirtualList items={toRender} let:item>
+        <div
+                class="container"
+                class:error={item.type === TYPES.ERROR}
+                class:warn={item.type === TYPES.WARN}
+                class:log={item.type === TYPES.LOG}
+                on:click={() => {
+                        if(item.object)
+                            objectOpen =item.object
                     }}
-            >
-                {#if !toRender[i + offset].notFirstOnBlock}
-                    {#if toRender[i + offset].type === TYPES.ERROR}
-                        <Icon>
-                            error
-                        </Icon>
-                    {:else if toRender[i + offset].type === TYPES.WARN}
-                        <Icon>
-                            warning
-                        </Icon>
-                    {/if}
-                {/if}
-                {#if toRender[i + offset].object}
-                    <ToolTip content={translate("CLICK_TO_SHOW_OBJECT")}/>
-                {/if}
-                <pre>{toRender[i + offset].message}</pre>
-                <div style="text-align: right; width: 100%">
-                    {#if !toRender[i + offset].notFirstOnBlock}
-                        {toRender[i].src}
-                    {/if}
-                </div>
-            </div>
-        {/if}
-    {/each}
+        >
+
+            {#if item.type === TYPES.ERROR}
+                <Icon>
+                    error
+                </Icon>
+            {:else if item.type === TYPES.WARN}
+                <Icon>
+                    warning
+                </Icon>
+            {/if}
+            {#if item.object}
+                <ToolTip content={translate("CLICK_TO_SHOW_OBJECT")}/>
+            {/if}
+            <pre data-overflow="-">{item.message}</pre>
+            <div style="margin-right: auto; text-align: right;">{item.src}</div>
+        </div>
+    </VirtualList>
 </div>
 <div bind:this={modal} class="container-modal">
     <pre data-pre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
 </div>
 
 <style>
+    pre{
+        width: 100%;
+    }
     .container {
         line-height: 18px;
         height: 18px;
         display: flex;
         gap: 4px;
+        border-bottom: var(--pj-border-primary) 1px solid;
     }
 
     pre {
         line-height: 18px;
         height: 18px;
         margin: 0;
+
     }
 
     .metadata {

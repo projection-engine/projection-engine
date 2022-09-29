@@ -4,10 +4,9 @@
     import Item from "./Item.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
     import contentBrowserActions from "../../../templates/content-browser-actions";
-
+    import VirtualList from '@sveltejs/svelte-virtual-list';
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
-    import InfiniteScroller from "../../../../shared/components/infinite-scroller/InfiniteScroller.svelte";
     import HotKeysController from "../../../../shared/libs/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
@@ -28,8 +27,6 @@
     let onDrag = false
     let cardDimensions = {width: 115, height: 115}
     let ref
-    let maxDepth = 0
-    let offset = 0
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
@@ -41,6 +38,7 @@
 
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
+
     function onDragEnd() {
         onDrag = false
     }
@@ -124,43 +122,33 @@
             selected={selected}
             setSelected={v => SelectionStore.contentBrowserSelected = v}
     />
-    <InfiniteScroller
-            branchSize={cardDimensions.height}
-            setMaxDepth={v => maxDepth = v}
-            setOffset={v => offset = v}
-            data={toRender}
-    />
     {#if toRender.length > 0}
-        {#each toRender as _, i}
-            {#if i < maxDepth && toRender[i + offset]}
-                <div class="line" style={`height: ${cardDimensions.height}px`}>
-                    {#each toRender[i + offset] as child, index}
-                        <Item
-                                setOnDrag={v => onDrag = v}
-                                onDrag={onDrag}
-                                cardDimensions={cardDimensions}
-                                currentDirectory={currentDirectory}
-                                reset={() => {
-                                            SelectionStore.contentBrowserSelected = []
+        <VirtualList items={toRender} let:item>
+            <div class="line" style={`height: ${cardDimensions.height}px`}>
+                {#each item as child, index}
+                    <Item
+                            setOnDrag={v => onDrag = v}
+                            onDrag={onDrag}
+                            cardDimensions={cardDimensions}
+                            currentDirectory={currentDirectory}
+                            reset={() => {
+                                    SelectionStore.contentBrowserSelected = []
                                     setSearchString("")
                                     setFileType(undefined)
                                 }}
-                                type={child.isFolder ? 0 : 1}
-                                data={child}
-                                childrenQuantity={child.children}
+                            type={child.isFolder ? 0 : 1}
+                            data={child}
+                            childrenQuantity={child.children}
 
-                                setCurrentDirectory={setCurrentDirectory}
-                                items={items}
-                                setSelected={e => handleSelection(e, child)}
-                                onRename={currentItem}
-                                submitRename={name => handleRename(child, name, currentDirectory, setCurrentDirectory, () =>currentItem = undefined )}
-                        />
-
-                    {/each}
-
-                </div>
-            {/if}
-        {/each}
+                            setCurrentDirectory={setCurrentDirectory}
+                            items={items}
+                            setSelected={e => handleSelection(e, child)}
+                            onRename={currentItem}
+                            submitRename={name => handleRename(child, name, currentDirectory, setCurrentDirectory, () =>currentItem = undefined )}
+                    />
+                {/each}
+            </div>
+        </VirtualList>
     {:else}
         <div class="empty">
             <Icon styles="font-size: 100px">folder</Icon>
@@ -202,16 +190,17 @@
     }
 
     .content {
-        gap: 4px;
-        padding: 8px;
+
         width: 100%;
         height: 100%;
         overflow: hidden;
+
         display: grid;
 
-        align-content: flex-start;
-        position: relative;
+        gap: 4px;
+        padding: 4px 0 4px 4px;
 
+        position: relative;
         background: var(--pj-background-tertiary);
         border-radius: 3px;
 

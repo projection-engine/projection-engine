@@ -1,3 +1,1 @@
-- Terrain material works
-- Fixing sculpt gizmo scales
-- Fixing terrain not showing outline
+- Integrating Svelte virtual list
