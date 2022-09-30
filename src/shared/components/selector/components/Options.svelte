@@ -34,8 +34,11 @@
         if (!noDefault) {
             if (type === "material")
                 current.push({name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL})
-            else if(type === "mesh")
-                Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => current.push({name: translate(sm[0]), registryID: sm[1]}))
+            else if (type === "mesh")
+                Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => current.push({
+                    name: translate(sm[0]),
+                    registryID: sm[1]
+                }))
         }
         filtered = current
     }
@@ -43,7 +46,7 @@
 </script>
 
 <div class="modal-available-nodes selector">
-
+    <div class="content">
         {#if filtered.length > 0}
             <VirtualList items={filtered} let:item>
                 <Option
@@ -55,12 +58,12 @@
                 />
             </VirtualList>
         {:else}
-            <div class="nothing">
+            <div data-empty="-">
                 <Icon styles="font-size: 2rem">folder</Icon>
                 {translate("NOTHING")}
             </div>
         {/if}
-
+    </div>
     <div class="header-available-nodes selector">
         <Input
                 width={"100%"}
@@ -75,17 +78,8 @@
 
 <style>
 
-    .nothing {
-        user-select: none;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        color: var(--pj-color-secondary);
-        height: 45px;
-        padding: 8px;
-        font-size: 0.7rem;
-        font-weight: 550;
+    .content{
+        position: relative;
+        height: 100%;
     }
-
-
 </style>

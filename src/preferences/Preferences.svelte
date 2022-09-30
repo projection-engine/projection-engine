@@ -45,19 +45,21 @@
 		}}
     />
     <div class="content">
-        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("RENDERING"), translate("POST_PROCESSING"), translate("VIEWPORT")]}/>
+        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("POST_PROCESSING"), translate("RENDERING")]}/>
         {#if settings}
             <ResizableBar type="width"/>
             <div class="form">
                 {#if tab === 0}
-                    <h3>{translate("RENDERING")}</h3>
-                    <Rendering
+                    <h3>{translate("VIEWPORT")}</h3>
+                    <ViewportSettings
+                            translate={translate}
                             settings={settings}
                             update={(key, value) => {
                                 changed = true
                             settings = {...settings, [key]: value}
                         }}
                     />
+
                 {:else if tab === 1}
                     <h3>{translate("POST_PROCESSING")}</h3>
                     <PostProcessing
@@ -68,9 +70,8 @@
                         }}
                     />
                 {:else if tab === 2}
-                    <h3>{translate("VIEWPORT")}</h3>
-                    <ViewportSettings
-                            translate={translate}
+                    <h3>{translate("RENDERING")}</h3>
+                    <Rendering
                             settings={settings}
                             update={(key, value) => {
                                 changed = true

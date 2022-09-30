@@ -4,7 +4,6 @@
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import {onMount} from "svelte";
     import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
-    import FilesStore from "../../../../stores/FilesStore";
     import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Range from "../../../../../shared/components/range/Range.svelte";

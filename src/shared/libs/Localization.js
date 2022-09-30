@@ -35,6 +35,8 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            SHADER_EDITOR: "Shader editor",
+            CONTENT_BROWSER: "Content browser",
             UNDO: "Undo changes",
             BACKGROUND: "Background",
             PREFERENCES: "Preferences",
@@ -161,7 +163,7 @@ export default class Localization {
             CYLINDER: "Cylinder",
             CUBE: "Cube",
             PLANE: "Plane",
-            ICO_SPHERE: "Ico sphere",
+            SPHERE: "Sphere",
 
             MESHES: "Meshes",
             DRAG_DROP: "Drop meshes or scenes",
@@ -215,11 +217,11 @@ export default class Localization {
             MOVEMENT_GRID: "Movement grid",
             TRANSLATION_GRID: "Translation",
             SCALE_GRID: "Scale",
-            ROTATION_GRID: "Rotation",
+            ROTATION_GRID: "Rotation (degrees)",
             SELECTION: "Selection",
-            T_GIZMO: "Translation gizmo",
-            R_GIZMO: "Rotation gizmo",
-            S_GIZMO: "Scale gizmo",
+            T_GIZMO: "TranslationGizmo gizmo",
+            R_GIZMO: "RotationGizmo gizmo",
+            S_GIZMO: "ScalingGizmo gizmo",
             BACKGROUND: "Background",
 
         },
@@ -280,6 +282,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            LOCKED: "Is locked",
             HAS_COLLISION: "Has collision",
 
             LAYERS_CONTROLLER: "Layer controller",

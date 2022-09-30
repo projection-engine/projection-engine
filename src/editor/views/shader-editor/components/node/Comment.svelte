@@ -28,7 +28,7 @@
 
 <g bind:this={ref} transform={`translate(${node.x} ${node.y})`}>
     <foreignObject
-
+            data-id={node.id}
             data-group={node.id}
             id={node.id}
             class="wrapper"

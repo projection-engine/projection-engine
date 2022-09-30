@@ -12,7 +12,7 @@
     }
 
     let searchString = ""
-    let nodes = []
+    let nodes
     $: {
         const s = parseStr(searchString)
         if (!s)
@@ -26,7 +26,7 @@
         {translate("ADD")}
     </button>
     <div class="modal-available-nodes selector">
-        <div class="content-available-nodes selector">
+        <div class="content">
             {#each nodes as d, i}
                 <div
                     class="option-available-nodes selector"
@@ -51,3 +51,14 @@
     </div>
 </Dropdown>
 
+
+<style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 2px;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+</style>

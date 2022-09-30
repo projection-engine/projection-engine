@@ -4,6 +4,7 @@ import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
+import KEYS from "../../../public/engine/static/KEYS";
 
 
 const toRad = Math.PI / 180
@@ -53,6 +54,49 @@ export default {
         brushScale: .05
     },
 
+    viewportHotkeys: {
+        DUPLICATE: [KEYS.ShiftLeft, KEYS.KeyD],
+        SAVE: [KEYS.ControlLeft, KEYS.KeyS],
+        INVERT_SELECTION: [KEYS.ControlLeft, KEYS.KeyI],
+        SELECT_ALL: [KEYS.KeyA],
+        SELECT_NONE: [KEYS.AltLeft, KEYS.KeyA],
+        TRANSLATION_GIZMO: [KEYS.KeyG],
+        SELECT_HIERARCHY: [KEYS.KeyH],
+        SNAP_TO_GRID: [KEYS.ShiftLeft, KEYS.ControlLeft, KEYS.Tab],
+        FOCUS: [KEYS.Home],
+        SCALE_GIZMO: [KEYS.KeyS],
+        ROTATION_GIZMO: [KEYS.KeyR],
+        UNDO: [KEYS.ControlLeft, KEYS.KeyZ],
+        REDO: [KEYS.ControlLeft, KEYS.KeyY],
+        GROUP: [KEYS.ControlLeft, KEYS.KeyP],
+        FIXATE_ACTIVE: [KEYS.ControlLeft, KEYS.KeyF],
+        COPY: [KEYS.ControlLeft, KEYS.KeyC],
+        DELETE: [KEYS.Delete],
+        PASTE: [KEYS.ControlLeft, KEYS.KeyV]
+    },
+    contentBrowserHotkeys: {
+        BACK: [KEYS.AltLeft, KEYS.ArrowLeft],
+        FORWARD: [KEYS.AltLeft, KEYS.ArrowRight],
+        SELECT_ALL: [KEYS.KeyA],
+        SELECT_NONE: [KEYS.AltLeft, KEYS.KeyA],
+        INVERT_SELECTION: [KEYS.ControlLeft, KEYS.KeyI],
+        REFRESH: [KEYS.F5],
+        GO_TO_PARENT: [KEYS.Backspace],
+        RENAME: [KEYS.F2],
+        DELETE: [KEYS.Delete],
+        CUT: [KEYS.ControlLeft, KEYS.KeyX],
+        PASTE: [KEYS.ControlLeft, KEYS.KeyV]
+    },
+    shaderEditorHotkeys: {
+        SELECT_ALL: [KEYS.KeyA],
+        CREATE_GROUP: [KEYS.KeyG],
+        SAVE: [KEYS.ControlLeft, KEYS.KeyS],
+        COPY: [KEYS.ControlLeft, KEYS.KeyC],
+        DELETE: [KEYS.Delete],
+        PASTE: [KEYS.ControlLeft, KEYS.KeyV],
+        FOCUS: [KEYS.Home]
+    },
+
     camera: {
         animated: true,
         movementSpeed: 1,
@@ -61,26 +105,26 @@ export default {
     },
 
     gizmoGrid: {
-        rotationGizmo:  Math.PI/180,
+        rotationGizmo: Math.PI / 180,
         translationGizmo: .01,
         scaleGizmo: .01
     },
 
 
     SSGI: {
-        enabled:  true,
+        enabled: true,
         maxSteps: 50,
         binarySearchSteps: 5,
         depthThreshold: 1.2,
         strength: 1,
-        stepSize:  1
+        stepSize: 1
     },
     SSR: {
         enabled: true,
         maxSteps: 50,
         binarySearchSteps: 5,
         depthThreshold: 1.2,
-        stepSize:  1
+        stepSize: 1
     },
     SSAO: {
         enabled: true,

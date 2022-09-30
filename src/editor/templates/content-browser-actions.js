@@ -2,7 +2,6 @@ import selection from "../views/content-browser/utils/selection";
 import SELECTION_TYPES from "../views/content-browser/templates/SELECTION_TYPES";
 import FilesAPI from "../../shared/libs/files/FilesAPI";
 import handleDelete from "../views/content-browser/utils/handle-delete";
-import KEYS from "../../../public/engine/static/KEYS";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../libs/import-file";
@@ -20,39 +19,39 @@ import TERRAIN_MATERIAL_UNIFORMS from "../../../public/engine/static/templates/T
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
-export default function contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
+export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
     const hotKeys = {
         BACK: {
             label: "Go back",
-            require: [KEYS.AltLeft, KEYS.ArrowLeft],
+            require: settings.contentBrowserHotkeys.BACK,
             callback: () => navigationHistory.undo()
         },
         FORWARD: {
             label: "Go forward",
-            require: [KEYS.AltLeft, KEYS.ArrowRight],
+            require: settings.contentBrowserHotkeys.FORWARD,
             callback: () => navigationHistory.redo()
         },
 
         SELECT_ALL: {
             label: "Select all",
-            require: [KEYS.KeyA],
+            require: settings.contentBrowserHotkeys.SELECT_ALL,
             callback: () => selection(SELECTION_TYPES.ALL, currentDirectory)
         },
         SELECT_NONE: {
             label: "Select none",
-            require: [KEYS.AltLeft, KEYS.KeyA],
+            require: settings.contentBrowserHotkeys.SELECT_NONE,
             callback: () => selection(SELECTION_TYPES.NONE, currentDirectory)
         },
         INVERT_SELECTION: {
             label: "Invert selection",
 
-            require: [KEYS.ControlLeft, KEYS.KeyI],
+            require: settings.contentBrowserHotkeys.INVERT_SELECTION,
             callback: () => selection(SELECTION_TYPES.INVERT, currentDirectory)
         },
         REFRESH: {
             label: "Refresh",
-            require: [KEYS.F5],
+            require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
                 alert.pushAlert(translate("REFRESHING"), "info")
                 FilesStore.refreshFiles().catch()
@@ -60,7 +59,7 @@ export default function contentBrowserActions(navigationHistory, currentDirector
         },
         GO_TO_PARENT: {
             label: "Go to parent",
-            require: [KEYS.Backspace],
+            require: settings.contentBrowserHotkeys.GO_TO_PARENT,
             callback: () => {
                 if (currentDirectory.id !== FilesAPI.sep) {
                     const found = currentDirectory.id
@@ -77,14 +76,14 @@ export default function contentBrowserActions(navigationHistory, currentDirector
         },
         RENAME: {
             label: "Rename",
-            require: [KEYS.F2],
+            require: settings.contentBrowserHotkeys.RENAME,
             callback: () => {
                 setCurrentItem(SelectionStore.contentBrowserSelected[0])
             },
         },
         DELETE: {
             label: translate("DELETE"),
-            require: [KEYS.Delete],
+            require: settings.contentBrowserHotkeys.DELETE,
             callback: () => {
                 const s = [...SelectionStore.contentBrowserSelected]
                 SelectionStore.contentBrowserSelected = []
@@ -93,12 +92,12 @@ export default function contentBrowserActions(navigationHistory, currentDirector
         },
         CUT: {
             label: translate("CUT"),
-            require: [KEYS.ControlLeft, KEYS.KeyX],
+            require: settings.contentBrowserHotkeys.CUT,
             callback: () => FilesStore.toCut = [...SelectionStore.contentBrowserSelected]
         },
         PASTE: {
             label: translate("PASTE"),
-            require: [KEYS.ControlLeft, KEYS.KeyV],
+            require: settings.contentBrowserHotkeys.PASTE,
             callback: () => FilesStore.paste(currentDirectory.id, setCurrentDirectory)
         }
     }

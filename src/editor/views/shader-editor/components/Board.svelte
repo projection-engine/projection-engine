@@ -7,7 +7,6 @@
     import handleDropNode from "../utils/handle-drop-node";
     import handleDropBoard from "../utils/handle-drop-board";
     import BOARD_SIZE from "../data/BOARD_SIZE";
-    import shaderEditorContext from "../../../templates/context-menu/shader-editor-context";
     import {onDestroy, onMount} from "svelte";
     import Node from "./node/Node.svelte";
     import resolveLinks from "../utils/resolve-links";
@@ -17,6 +16,9 @@
     import SelectionStore from "../../../stores/SelectionStore";
     import ContextMenuController from "../../../../shared/libs/ContextMenuController";
     import Localization from "../../../../shared/libs/Localization";
+    import shaderActions from "../../../templates/shader-actions";
+    import HotKeysController from "../../../../shared/libs/HotKeysController";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let links
     export let setLinks
@@ -25,6 +27,7 @@
     export let selected
     export let submitNodeVariable
     export let isOpen
+    export let openFile
 
     const TRIGGERS = [
         "data-node",
@@ -32,11 +35,6 @@
         "data-link",
         "data-group"
     ]
-
-    let ref
-    let internalID = v4()
-    $: resolvedLinks = resolveLinks(links)
-
 
     const handleWheel = (e) => {
         e.preventDefault()
@@ -49,27 +47,60 @@
         ref.style.transform = "scale(" + s + ")"
         ShaderEditorController.scale = s
     }
-
     const mutationObserver = new MutationObserver(e => onMutation(resolvedLinks, ref, e))
 
-    onMount(() => {
-        ContextMenuController.mount(
-            {
-                icon: "texture",
-                label: Localization.PROJECT.SHADER_EDITOR.TITLE
-            },
-            shaderEditorContext(
+    let ref
+    let internalID = v4()
+    $: resolvedLinks = resolveLinks(links)
+    let settings
+    const unsubscribe = SettingsStore.getStore(v => settings = v)
+
+    $: {
+        if (ref) {
+            const {contextMenu, hotkeys} = shaderActions(
+                settings,
+                openFile,
                 nodes,
                 setNodes,
-
-                selected,
                 links,
                 setLinks,
                 ref.parentElement
-            ),
-            internalID,
-            TRIGGERS
-        )
+            )
+            HotKeysController.unbindAction(ref)
+            ContextMenuController.destroy(internalID)
+            ContextMenuController.mount(
+                {icon: "texture", label: Localization.PROJECT.SHADER_EDITOR.TITLE},
+                contextMenu,
+                internalID,
+                TRIGGERS,
+                (trigger, element, event) => {
+                    const el = event.path || []
+                    for (let i = 0; i < el.length; i++) {
+                        const current = el[i]
+                        if(current === document.body)
+                            break
+                        if(!current)
+                            continue
+                        const id = current.getAttribute("data-id")
+                        if (!id)
+                            continue
+                        else {
+                            SelectionStore.shaderEditorSelected = [id]
+                            break
+                        }
+                    }
+
+                }
+            )
+            HotKeysController.bindAction(
+                ref,
+                hotkeys,
+                "texture",
+                Localization.PROJECT.SHADER_EDITOR.TITLE
+            )
+        }
+    }
+    onMount(() => {
         ref.parentElement.scrollTop = BOARD_SIZE / 2
         ref.parentElement.scrollLeft = BOARD_SIZE / 2
         ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
@@ -77,6 +108,8 @@
     })
 
     onDestroy(() => {
+        unsubscribe()
+        HotKeysController.unbindAction(ref)
         ContextMenuController.destroy(internalID)
         if (ref && ref.parentElement)
             ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})

@@ -3,7 +3,7 @@
     import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./components/editor/EditorLayout.svelte";
     import UILayout from "./components/ui/UILayout.svelte";
@@ -17,9 +17,10 @@
     import HotKeysController from "../../../shared/libs/HotKeysController";
 
     import FilesStore from "../../stores/FilesStore";
-    import VIEWPORT_HOTKEYS from "../../templates/VIEWPORT_HOTKEYS";
+
     import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
+    import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
 
     export let isReady = false
     export let updateView
@@ -31,14 +32,18 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     let ref
-    onMount(() => {
-        HotKeysController.bindAction(
-            ref,
-            Object.values(VIEWPORT_HOTKEYS),
-            "public",
-            Localization.PROJECT.VIEWPORT.TITLE
-        )
-    })
+
+    $: {
+        if (ref != null) {
+            HotKeysController.bindAction(
+                ref,
+                Object.values(viewportHotkeys(settings)),
+                "public",
+                Localization.PROJECT.VIEWPORT.TITLE
+            )
+        }
+    }
+
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
         unsubscribeEngine()

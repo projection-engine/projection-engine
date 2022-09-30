@@ -32,7 +32,7 @@
     </button>
     <button on:click={e => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.SPHERE, e)}>
         <Icon>category</Icon>
-        {translate("ICO_SPHERE")}
+        {translate("SPHERE")}
     </button>
     <button on:click={e => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.PLANE, e)}>
         <Icon>category</Icon>

@@ -5,7 +5,6 @@
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
     import SettingsStore from "../../../../stores/SettingsStore";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import ShadingOption from "../shared/ShadingOption.svelte";
 

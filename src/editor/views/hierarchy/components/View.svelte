@@ -1,6 +1,6 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import Branch from "./Node.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
@@ -65,14 +65,17 @@
         }
     }
     $: setIsEmpty(toRender.length === 0)
-    onMount(() => ContextMenuController.mount({
+    $: {
+        if (settings?.viewportHotkeys != null)
+        ContextMenuController.mount({
                 icon: "account_tree",
                 label: Localization.PROJECT.HIERARCHY.TITLE
             },
-            viewportContext(),
+            viewportContext(settings),
             ID,
-            TRIGGERS)
-    )
+            TRIGGERS
+        )
+    }
 
     onDestroy(() => {
         unsubscribeSelection()

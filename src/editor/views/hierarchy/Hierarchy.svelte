@@ -16,7 +16,8 @@
     import {EntityAPI} from "../../../../public/engine/production";
     import HierarchyController from "../../libs/HierarchyController";
     import SelectionStore from "../../stores/SelectionStore";
-    import VIEWPORT_HOTKEYS from "../../templates/VIEWPORT_HOTKEYS";
+    import SettingsStore from "../../stores/SettingsStore";
+    import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
 
 
     export let hidden = undefined
@@ -29,17 +30,23 @@
     let filteredComponent = undefined
     let isEmpty = true
     let ref
-    onMount(() => {
-        HotKeysController.bindAction(
-            ref,
-            Object.values(VIEWPORT_HOTKEYS),
-            "public",
-            Localization.PROJECT.VIEWPORT.TITLE
-        )
-    })
+    let settings
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    $: {
+        if (ref != null) {
+            HotKeysController.bindAction(
+                ref,
+                Object.values(viewportHotkeys(settings)),
+                "public",
+                Localization.PROJECT.VIEWPORT.TITLE
+            )
+        }
+    }
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
+        unsubscribeSettings()
     })
+
     $: nativeComponents = getNativeComponents()
 
     const draggable = dragDrop()

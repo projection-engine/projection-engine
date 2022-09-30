@@ -15,7 +15,7 @@
 </script>
 
 
-<Dropdown hideArrow={true} asButton={true}>
+<Dropdown  asButton={true}>
     <button slot="button" class="title">
         <Icon styles="font-size: .9rem">
             {#if viewportTab === VIEWPORT_TABS.EDITOR}
@@ -26,15 +26,7 @@
                 terrain
             {/if}
         </Icon>
-        <small data-overflow="-">
-            {#if viewportTab === VIEWPORT_TABS.EDITOR}
-                {translate("EDITOR")}
-            {:else if viewportTab === VIEWPORT_TABS.UI}
-                {translate("UI")}
-            {:else}
-                {translate("TERRAIN")}
-            {/if}
-        </small>
+
     </button>
 
     <button data-highlight={viewportTab === VIEWPORT_TABS.EDITOR ? "-" : ""}
@@ -57,9 +49,6 @@
 
 
 <style>
-    small {
-        font-size: .7rem;
-    }
 
     .title {
         display: flex;

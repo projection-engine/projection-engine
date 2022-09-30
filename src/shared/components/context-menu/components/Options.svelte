@@ -15,7 +15,7 @@
     let mounted = false
     $: {
         if (onFocus != null && options && !isSubMenu)
-            onFocus(trigger, selected)
+            onFocus(trigger, selected, event)
         callback()
     }
     onMount(() => callback())

@@ -1,13 +1,11 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
-    import GPU from "../../../../../../public/engine/production/GPU";
-    import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import SIMPLE_MATERIAL_TEMPLATE from "../../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
+    import SIMPLE_MATERIAL_TEMPLATE
+        from "../../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";

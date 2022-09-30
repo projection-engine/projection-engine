@@ -88,7 +88,6 @@
             style={styles}
             class="modal dropdown"
             bind:this={modal}
-
     >
         {#if open}
             <slot/>
@@ -100,6 +99,7 @@
     .wrapper {
         display: flex;
         align-items: center;
+        cursor: pointer;
     }
 
     .button {

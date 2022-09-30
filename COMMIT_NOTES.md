@@ -1,3 +1,8 @@
-- Initializing terrain collider
-- Physics API now available to scripts
-- Some tweaks to terrain worker
+- Views header arrow
+- Color picker label
+- Fixed camera dual axis movement
+- Added pointer lock to camera
+- New hotkeys for shader editor
+- Adding hotkeys to settings
+- Integrating hotkeys from settings with binders
+- Hot keys listing on preferences window

@@ -11,6 +11,7 @@
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
     import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let fileType
     export let setFileType
@@ -22,6 +23,8 @@
     export let internalID
     export let store
 
+
+
     $: items = store.items
 
     let onDrag = false
@@ -30,6 +33,8 @@
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
+    let settings
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     let selected = []
     const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.contentBrowserSelected)
 
@@ -45,7 +50,7 @@
 
     $: {
         if (ref) {
-            const actions = contentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
+            const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
             HotKeysController.unbindAction(ref)
             ContextMenuController.destroy(internalID)
             ContextMenuController.mount(
@@ -86,6 +91,7 @@
     })
 
     onDestroy(() => {
+        unsubscribeSettings()
         HotKeysController.unbindAction(ref)
         ContextMenuController.destroy(internalID)
 
@@ -187,6 +193,7 @@
         max-width: 100%;
         width: fit-content;
         position: relative;
+        margin-bottom: 4px;
     }
 
     .content {

@@ -73,7 +73,7 @@
 
 
     $: {
-        if(!initialized) {
+        if (!initialized) {
             let width
             switch (node.size) {
                 case 0:
@@ -108,6 +108,7 @@
         transform={`translate(${node.x} ${node.y})`}
 >
     <foreignObject
+            data-id={node.id}
             data-node={node.canBeDeleted ? node.id : undefined}
             id={node.id}
             class="wrapper"

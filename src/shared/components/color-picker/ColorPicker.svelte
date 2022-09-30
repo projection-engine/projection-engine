@@ -57,8 +57,8 @@
             style={(disabled ? "cursor: default;" : "") + `min-height: ${height};max-height: ${height}; background: ${!disabled ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)` : "transparent"};`}
             class="dropdown"
     >
-
         {#if label}
+            <div class="label">{label}</div>
             <ToolTip content={label}/>
         {/if}
     </div>
@@ -86,7 +86,19 @@
     .dropdown:hover {
         opacity: .9;
     }
+    .label{
+        backdrop-filter: blur(10px) brightness(65%);
 
+        font-size: .7rem;
+        position: absolute;
+        padding: 0 8px 0 2px;
+        width: fit-content;
+        font-weight: 550;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
 </style>
 
 

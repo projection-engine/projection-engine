@@ -29,7 +29,6 @@
     let mouseDelta = {x: 0, y: 0}
 
 
-
     function gizmoMouseMove(event) {
         if (GizmoSystem.targetGizmo)
             GizmoSystem.targetGizmo.onMouseMove(event)
@@ -73,16 +72,20 @@
 
 
     const draggable = dragDrop(false)
+    $: {
+        if (settings?.viewportHotkeys != null)
+            ContextMenuController.mount(
+                {
+                    icon: "public",
+                    label: Localization.PROJECT.VIEWPORT.TITLE
+                },
+                viewportContext(settings),
+                RENDER_TARGET,
+                ["data-viewport"]
+            )
+    }
     onMount(() => {
-        ContextMenuController.mount(
-            {
-                icon: "public",
-                label: Localization.PROJECT.VIEWPORT.TITLE
-            },
-            viewportContext(),
-            RENDER_TARGET,
-            ["data-viewport"]
-        )
+
         const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)

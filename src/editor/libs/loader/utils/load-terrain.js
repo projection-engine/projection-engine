@@ -2,7 +2,6 @@ import FilesAPI from "../../../../shared/libs/files/FilesAPI";
 import FilesStore from "../../../stores/FilesStore";
 import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
 import {COMPONENTS, Entity, GPU} from "../../../../../public/engine/production";
-import {v4} from "uuid";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 
 export default async function loadTerrain(reg) {

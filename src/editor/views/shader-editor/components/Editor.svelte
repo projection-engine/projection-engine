@@ -12,7 +12,7 @@
     export let setLinks
     export let translate
     export let isOpen
-
+export let openFile
 
     $: fallbackSelected = nodes.find(n => n instanceof Material)
 
@@ -49,6 +49,7 @@
 <Board
         isOpen={isOpen}
         links={links}
+        openFile={openFile}
         setLinks={setLinks}
         nodes={nodes}
         setNodes={setNodes}

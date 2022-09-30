@@ -18,8 +18,6 @@
     import Editor from "./components/Editor.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorController from "./ShaderEditorController";
-    import HotKeysController from "../../../shared/libs/HotKeysController";
-    import shaderEditorKeys from "../../templates/hotkeys/shader-editor-keys";
     import Selector from "../../../shared/components/selector/Selector.svelte";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
     import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
@@ -72,17 +70,8 @@
             wasInitialized = true
         }
     }
-    $: {
-        if (ref)
-            HotKeysController.bindAction(
-                ref,
-                shaderEditorKeys(openFile, nodes, v => nodes = v, links, v => links = v),
-                "texture",
-                Localization.PROJECT.SHADER_EDITOR.TITLE
-            )
-    }
+
     onDestroy(() => {
-        HotKeysController.unbindAction(ref)
         unsubscribe()
         unsubscribeEngine()
     })
@@ -210,6 +199,7 @@
 </Header>
 <div style={hidden ? "display: none": undefined} class="wrapper" bind:this={ref}>
     <Editor
+            openFile={openFile}
             translate={translate}
             isOpen={openFile.registryID !== undefined}
             selected={selected}

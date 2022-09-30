@@ -16,13 +16,14 @@
     class:headerHidden={hidden}
     class:header={!hidden}
 >
-    <Dropdown hideArrow={true} asButton={true} buttonStyles="max-width: 22px">
+    <Dropdown  asButton={true} >
         <button
                 style={"height: " +  (orientation === "vertical" && hidden ? "fit-content" : "25px")}
                 class="title"
                 slot="button"
         >
             <Icon styles="font-size: .9rem">{icon}</Icon>
+
             <ToolTip content={title}/>
         </button>
         <button on:click={() => switchView(undefined)}>
@@ -59,22 +60,22 @@
 </div>
 
 <style>
+
     .button{
         height: 20px;
 
     }
 
     .title {
-        padding: 0 !important;
         display: flex;
         align-items: center;
-        justify-content: center;
-        min-height: 22px;
-        min-width: 22px;
-        max-height: 22px;
-        max-width: 22px;
+        gap: 2px;
+
+        padding: 0 2px;
+
         border: none;
     }
+
 
     .header {
         display: flex;

@@ -37,8 +37,6 @@
     $: percentageFilled = minValue != null && maxValue != null ? getPercentage(currentValue, maxValue) : undefined
     $: incrementData = (incrementPercentage ? incrementPercentage : 0.1)
     const handleMouseMove = (e) => {
-
-
         const multiplier = -e.movementX
         dragged = true
         let increment = integer ? 1 : Math.abs(incrementData * multiplier)
@@ -156,6 +154,7 @@
             on:mousedown={handleMouseDown}
             type="number"
             class="draggable"
+            step="any"
             on:blur={onChange}
     >
     {#if originalValue != null && !disabled && !noOriginal}

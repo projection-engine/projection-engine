@@ -16,7 +16,6 @@ import SettingsStore from "./SettingsStore";
 import Entity from "../../../public/engine/production/instances/Entity";
 import componentConstructor from "../libs/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
-import FALLBACK_MATERIAL from "../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
 import SelectionStore from "./SelectionStore";
 import loadMaterial from "../libs/loader/utils/load-material";
 import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";

@@ -1,10 +1,8 @@
 <script>
-    import ResizableBar from "../../../../../shared/components/resizable/ResizableBar.svelte";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import SculptingGizmo from "../../../../../../public/engine/editor/libs/terrain/SculptingGizmo";
     import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";

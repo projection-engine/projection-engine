@@ -1,5 +1,3 @@
-import SIMPLE_MATERIAL_TEMPLATE
-    from "../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 import GPU from "../../../../../public/engine/production/GPU";
 import MaterialAPI from "../../../../../public/engine/production/apis/rendering/MaterialAPI";
 import AssetAPI from "../../../../shared/libs/files/AssetAPI";

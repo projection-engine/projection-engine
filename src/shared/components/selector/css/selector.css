@@ -12,7 +12,9 @@
     height: clamp(350px, 20vh, 500px);
     width: 100%;
     max-width: unset;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     gap: 4px;
     padding: 4px;

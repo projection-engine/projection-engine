@@ -9,7 +9,7 @@
     export let state
 
     const onClick = e => {
-        e.currentTarget.parentElement.parentElement.parentElement.closeDropdown()
+        e.currentTarget?.parentElement?.parentElement?.parentElement?.closeDropdown?.()
         setState(data)
         if(handleChange)
             handleChange(data, () => setState({name: "Empty"}))

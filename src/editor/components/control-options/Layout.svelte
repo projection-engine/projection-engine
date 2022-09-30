@@ -50,10 +50,9 @@
     }
     const removeView = (i) => {
         const obj = {...settings}
-        if (i === obj.currentView)
-            obj.currentView = 0
-        else
-            obj.currentView--
+        if (i === obj.currentView || i < obj.currentView)
+            obj.currentView = obj.currentView === 0 ? 0 : obj.currentView - 1
+
         obj.views = obj.views.filter((_, index) => i !== index)
         SettingsStore.updateStore(obj)
     }
@@ -73,7 +72,7 @@
                     type="button"
                     value={v.name}
             >
-            <button disabled={settings.currentView === i} on:click={() => removeView(i)}
+            <button disabled={settings.views.length === 1} on:click={() => removeView(i)}
                     class="remove-button">
                 <Icon styles="font-size: .8rem">
                     clear

@@ -1,9 +1,10 @@
 import SelectionStore from "../../stores/SelectionStore";
-import VIEWPORT_HOTKEYS from "../VIEWPORT_HOTKEYS";
+import viewportHotkeys from "../hotkeys/viewport-hotkeys";
 import EntityConstructor from "../../libs/EntityConstructor";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 
-export default function viewportContext() {
+export default function viewportContext(settings) {
+    const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
     return [
         VIEWPORT_HOTKEYS.SAVE,
         {divider: true},
