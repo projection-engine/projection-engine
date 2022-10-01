@@ -9,10 +9,3 @@ cd out/projection-engine-win32-x64/resources/app
 #rm -r src
 #rm -r public/engine
 #rm -r public/backend
-
-cd ../../../projection-engine-linux-x64/resources/app
-#rm -r .idea
-#rm -r src
-#rm -r public/engine
-#rm -r public/backend
-#

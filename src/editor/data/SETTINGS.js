@@ -127,7 +127,7 @@ export default {
         stepSize: 1
     },
     SSAO: {
-        enabled: true,
+        enabled: false,
         power: 2,
         radius: 100
     },

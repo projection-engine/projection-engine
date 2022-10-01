@@ -1,2 +1,3 @@
-- Shortcut settings tab on preferences
-- Configurable hotkeys
+- Version update
+- disabling SSAO by default
+- New release (v6.0.0-alpha)

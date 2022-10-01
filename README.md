@@ -1,101 +1,74 @@
-commit e2eeda03f175c72c99e94c5d8b5d3f65d5e91120
+commit 02782d8396011f96c428a61987e1b0b13df22a2a
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Sat Sep 24 13:18:49 2022 -0300
+Date:   Sat Oct 1 09:31:38 2022 -0300
 
-    - Fixed initial position of entity when creating it
-    - Added option to center on origin (entity)
+    - Shortcut settings tab on preferences
+    - Configurable hotkeys
 
-commit 2019c19dd382c155c4f987e816de0187ce447c5b
+commit a4d522a0586c03b6614ddd5f2e14f7ccac0db3ca
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Sat Sep 24 12:06:37 2022 -0300
+Date:   Fri Sep 30 19:49:02 2022 -0300
 
-    - Fixed initial position of entity when creating it
-    - Added option to center on origin (entity)
+    - Views header arrow
+    - Color picker label
+    - Fixed camera dual axis movement
+    - Added pointer lock to camera
+    - New hotkeys for shader editor
+    - Adding hotkeys to settings
+    - Integrating hotkeys from settings with binders
+    - Hot keys listing on preferences window
 
-commit 8005f390f1e1f81916e4ba70957132ced90aaba9
+commit 827b7800b706120c43910ed48f51b47ecbc1f67d
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Sat Sep 24 11:07:55 2022 -0300
+Date:   Thu Sep 29 16:42:10 2022 -0300
 
-    - SSAO parameters
-    - SSR and SSGI parameters
-    - Pipeline optimization for SSGI, SSR and SSAO
-    - New preferences forms for  SSGI, SSR and SSAO
-    - SSGI big improvements to stability and quality
+    - Initializing terrain collider
+    - Physics API now available to scripts
+    - Some tweaks to terrain worker
 
-commit e76d5e29d0bf5e97afc90afdaa130d0a33cebd28
+commit a17762fcdb83c4b5add0bf060a5992c1a8471bbd
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 18:24:47 2022 -0300
+Date:   Wed Sep 28 22:20:29 2022 -0300
 
-    - SSAO rewritten
-    - Fixed bloom breaking if already enabled on start
-    - SSGI tweaks
-    - SSR tweaks
-    - Simple material form reworked
-      - New scalar controls for all textures
-    - Optimization to Preview component (delay was added when scrolling through items)
+    - Integrating Svelte virtual list
 
-commit 2f631e857a1f4d082db60af8bcb7eea85c19e66c
+commit 18b8d7d713f6a0b073ea3cae5256baa065a9bbe1
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 18:10:44 2022 -0300
+Date:   Wed Sep 28 17:02:58 2022 -0300
 
-    - SSAO rewritten
-    - Fixed bloom breaking if already enabled on start
-    - SSGI tweaks
-    - SSR tweaks
-    - Simple material form reworked
-      - New scalar controls for all textures
-    - Optimization to Preview component (delay was added when scrolling through items)
+    - Terrain material works
+    - Fixing sculpt gizmo scales
+    - Fixing terrain not showing outline
 
-commit 23e9f2ed40b884365efd883fcc281ae815283eb5
+commit c5c29962195c308aeb9151534c8c500c865e716b
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 17:12:38 2022 -0300
+Date:   Wed Sep 28 10:58:36 2022 -0300
 
-    - SSAO rewritten
-    - Fixed bloom breaking if already enabled on start
-    - SSGI tweaks
-    - SSR tweaks
-    - Simple material form reworked
-      - New scalar controls for all textures
-    - Optimization to Preview component (delay was added when scrolling through items)
+    - Initializing sculpting gizmo to work on separate thread
+    - Added opacity control to sculpting gizmo
 
-commit 1095a8275b035abd65d3ddf274436a8660bb7f9e
+commit 16d47d2465011db4fae6bda9d658448e9e26c10a
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 17:12:36 2022 -0300
+Date:   Tue Sep 27 16:54:05 2022 -0300
 
-    - SSAO rewritten
-    - Fixed bloom breaking if already enabled on start
-    - SSGI tweaks
-    - SSR tweaks
-    - Simple material form reworked
-      - New scalar controls for all textures
-    - Optimization to Preview component (delay was added when scrolling through items)
+    - Integrating new material time
+    - Integrating TerrainComponent with pipeline
+    - Tweaks to inspector layout
 
-commit be5ec038af5278c4222342395b77f40b819ac0c7
+commit a66f5ecbdee2d7ecb5ed4a3a390b37fd1bd26049
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 11:31:17 2022 -0300
+Date:   Tue Sep 27 13:20:54 2022 -0300
 
-    - new release
+    - Initializing terrain things
 
-commit 5497eaa73fdf553fce5d8f439c911330a6c3f128
+commit 1a5255dbab7fdfdcd7d12bc4d85804b928a70a98
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Fri Sep 23 11:04:05 2022 -0300
+Date:   Mon Sep 26 16:52:42 2022 -0300
 
-    - Fixes to absoluteTranslation
-    - Changed camera settings
-    - Removing 3D cursor
-    - Added fallback material when dropping mesh/scene
-    - Improvements to screen space coordinates conversion
-    - Option to move selected entities to camera
-    - Implementing QueryAPI across editor
-    - Snap to grid now applies to all selected entities
-    - Fixed snap to grid not working as intended
-    - Added shortcut for grid movement (scale, translation gizmos) by holding ctrl
-    - Version update
+    - Fixing simple material form
 
-commit 007e4ffc1967af88a7be30bc61ea8f0f87f71019
+commit 0a343271cb525df0a526cd647f5b5e2dcd549155
 Author: facobackup <gustavomicaelbarbosa@gmail.com>
-Date:   Thu Sep 22 18:43:42 2022 -0300
+Date:   Mon Sep 26 16:09:09 2022 -0300
 
-    - Reworked content browser context menu
-    - More hotkeys for content browser
-    - Added alert when deleting files
+    - Small tweaks
