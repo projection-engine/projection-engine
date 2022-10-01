@@ -1,8 +1,2 @@
-- Views header arrow
-- Color picker label
-- Fixed camera dual axis movement
-- Added pointer lock to camera
-- New hotkeys for shader editor
-- Adding hotkeys to settings
-- Integrating hotkeys from settings with binders
-- Hot keys listing on preferences window
+- Shortcut settings tab on preferences
+- Configurable hotkeys

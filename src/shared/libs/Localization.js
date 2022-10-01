@@ -35,6 +35,7 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            ORIGINAL: "Original",
             SHADER_EDITOR: "Shader editor",
             CONTENT_BROWSER: "Content browser",
             UNDO: "Undo changes",

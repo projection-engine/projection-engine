@@ -11,6 +11,8 @@
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import ToolTip from "../shared/components/tooltip/ToolTip.svelte";
     import Sidebar from "../shared/components/Sidebar.svelte";
+    import Alert from "../shared/components/alert/Alert.svelte";
+    import Shortcuts from "./components/Shortcuts.svelte";
 
     const {ipcRenderer} = window.require('electron')
     let settings
@@ -37,6 +39,7 @@
 </script>
 
 <div class="wrapper">
+    <Alert/>
     <WindowFrame
             options={[]}
             label={translate("PREFERENCES")}
@@ -45,7 +48,7 @@
 		}}
     />
     <div class="content">
-        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("POST_PROCESSING"), translate("RENDERING")]}/>
+        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("SHORTCUTS"),translate("POST_PROCESSING"), translate("RENDERING")]}/>
         {#if settings}
             <ResizableBar type="width"/>
             <div class="form">
@@ -59,8 +62,18 @@
                             settings = {...settings, [key]: value}
                         }}
                     />
-
                 {:else if tab === 1}
+                        <h3>{translate("SHORTCUTS")}</h3>
+                        <Shortcuts
+                                translate={translate}
+                                settings={settings}
+                                update={(key, value) => {
+                                        changed = true
+                                    settings = {...settings, [key]: value}
+                                }}
+                        />
+
+                {:else if tab === 2}
                     <h3>{translate("POST_PROCESSING")}</h3>
                     <PostProcessing
                             settings={settings}
@@ -69,7 +82,7 @@
                             settings = {...settings, [key]: value}
                         }}
                     />
-                {:else if tab === 2}
+                {:else if tab === 3}
                     <h3>{translate("RENDERING")}</h3>
                     <Rendering
                             settings={settings}
