@@ -1,11 +1,11 @@
-import FilesAPI from "../../shared/libs/files/FilesAPI"
+import FilesAPI from "../../shared/libs/FilesAPI"
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import FilesStore from "../stores/FilesStore";
 import FILE_TYPES from "../../static/FILE_TYPES";
 import Loader from "./loader/Loader";
-import RegistryAPI from "../../shared/libs/files/RegistryAPI";
-import ContentBrowserAPI from "../../shared/libs/files/ContentBrowserAPI";
+import RegistryAPI from "../../shared/libs/RegistryAPI";
+import ContentBrowserAPI from "../../shared/libs/ContentBrowserAPI";
 
 import {GPU} from "../../../public/engine/production";
 import {PreviewSystem} from "../../../public/engine/editor";

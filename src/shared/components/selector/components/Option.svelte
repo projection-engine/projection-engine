@@ -19,6 +19,7 @@
 <button
 
         class="option-available-nodes selector"
+        style="margin-bottom: 4px;"
         data-highlight={state.registryID === data.registryID ? `-` : undefined}
         on:click={onClick}
 >

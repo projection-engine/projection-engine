@@ -2,10 +2,10 @@
     import Localization from "../../../../../shared/libs/Localization";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import AssetAPI from "../../../../../shared/libs/AssetAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";

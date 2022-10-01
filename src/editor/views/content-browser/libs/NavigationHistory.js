@@ -1,5 +1,5 @@
 import UndoRedoAPI from "../../../../shared/libs/UndoRedoAPI";
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
 
 export default class NavigationHistory extends UndoRedoAPI {
     constructor(setCurrentDirectory) {

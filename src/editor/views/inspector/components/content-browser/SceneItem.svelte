@@ -1,8 +1,8 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
 
     export let data
 

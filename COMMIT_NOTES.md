@@ -1,3 +1,1 @@
-- Version update
-- disabling SSAO by default
-- New release (v6.0.0-alpha)
+- Fixing multiple bugs

@@ -4,7 +4,7 @@
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import TEXTURE_FORMATS from "../../../../../../public/engine/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
+    import AssetAPI from "../../../../../shared/libs/AssetAPI";
     import GPU from "../../../../../../public/engine/production/GPU";
     import TEXTURE_FILTERING from "../../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../../public/engine/static/texture/TEXTURE_WRAPPING";

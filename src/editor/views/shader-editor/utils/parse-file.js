@@ -1,5 +1,5 @@
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
-import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
+import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import ShaderEditorController from "../ShaderEditorController";
 
 export default async function parseFile(file, setNodes, setLinks) {

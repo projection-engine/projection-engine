@@ -10,7 +10,7 @@
     import {onMount} from "svelte";
     import ROUTES from "../static/ROUTES";
     import OPEN_PROJECTS from "../static/OPEN_PROJECTS"
-    import FilesAPI from "../shared/libs/files/FilesAPI";
+    import FilesAPI from "../shared/libs/FilesAPI";
 
     const {ipcRenderer} = require('electron')
     let tab = 0

@@ -64,7 +64,8 @@
             }
         }
     }
-    $: setIsEmpty(toRender.length === 0)
+    $: SIZE = toRender.length
+    $: setIsEmpty(SIZE === 0)
     $: {
         if (settings?.viewportHotkeys != null)
         ContextMenuController.mount({
@@ -82,10 +83,11 @@
         unsubscribeEngine()
         ContextMenuController.destroy(ID)
     })
+
 </script>
 
 
-{#if toRender.length > 0}
+{#if SIZE > 0}
     <VirtualList items={toRender} let:item>
         <Branch
                 surfaceSelected={surfaceSelected}

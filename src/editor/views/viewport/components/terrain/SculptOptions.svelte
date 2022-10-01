@@ -8,9 +8,9 @@
     import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import FilesStore from "../../../../stores/FilesStore";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
 
     export let settings
     export let selectedTerrain

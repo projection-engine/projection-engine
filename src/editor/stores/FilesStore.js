@@ -1,10 +1,10 @@
 import {get} from "svelte/store";
 import {contentBrowserStore} from "./templates/content-browser-store";
 import NodeFS, {getCall} from "../../shared/libs/NodeFS";
-import FilesAPI from "../../shared/libs/files/FilesAPI"
+import FilesAPI from "../../shared/libs/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../static/ROUTES";
-import ContentBrowserAPI from "../../shared/libs/files/ContentBrowserAPI";
+import ContentBrowserAPI from "../../shared/libs/ContentBrowserAPI";
 import Localization from "../../shared/libs/Localization";
 import {COMPONENTS, Engine} from "../../../public/engine/production";
 import UIAPI from "../../../public/engine/production/apis/UIAPI";
@@ -12,7 +12,7 @@ import UIAPI from "../../../public/engine/production/apis/UIAPI";
 export default class FilesStore {
     static data = get(contentBrowserStore)
     static initialized = false
-    static toCut = []
+
     static #isWatching = false
 
     static get PREVIEW_PATH() {
@@ -133,14 +133,14 @@ export default class FilesStore {
     }
 
     static paste(target, setCurrentDirectory) {
-        if (FilesStore.toCut.length > 0) {
+        if (FilesStore.data.toCut.length > 0) {
             handleDropFolder(
-                [...FilesStore.toCut],
+                [...FilesStore.data.toCut],
                 target,
                 {id: target},
                 setCurrentDirectory
             )
-            FilesStore.toCut = []
+            FilesStore.data.toCut = []
         }
     }
 }

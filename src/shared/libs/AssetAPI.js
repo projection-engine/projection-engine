@@ -1,8 +1,8 @@
-import NodeFS from "../NodeFS";
+import NodeFS from "./NodeFS";
 import {v4 as uuidv4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
-import FilesStore from "../../../editor/stores/FilesStore";
+import FilesStore from "../../editor/stores/FilesStore";
 
 export default class AssetAPI {
     static async readAsset(id) {

@@ -1,8 +1,7 @@
-git log --max-count=10 > README.md
+git log --max-count=20 > README.md
 
 
 yarn package
-yarn electron-forge package --platform linux
 
 cd out/projection-engine-win32-x64/resources/app
 #rm -r .idea

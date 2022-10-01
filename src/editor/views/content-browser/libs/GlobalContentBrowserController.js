@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
 
 export default class GlobalContentBrowserController{
     static subscribed = new Map()

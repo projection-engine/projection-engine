@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import handleDropFolder from "../utils/handle-drop-folder";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../shared/libs/FilesAPI";
 
     export let setCurrentDirectory
     export let currentDirectory

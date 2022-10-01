@@ -6,7 +6,7 @@
     import GPU from "../../public/engine/production/GPU";
     import SettingsStore from "./stores/SettingsStore";
     import SelectionStore from "./stores/SelectionStore";
-    import AssetAPI from "../shared/libs/files/AssetAPI";
+    import AssetAPI from "../shared/libs/AssetAPI";
     import initializer from "../../public/engine/editor/initializer";
 
     export let onReady

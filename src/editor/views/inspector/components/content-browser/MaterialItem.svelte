@@ -2,7 +2,7 @@
     import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES";
     import Range from "../../../../../shared/components/range/Range.svelte";
 
-    import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
+    import AssetAPI from "../../../../../shared/libs/AssetAPI";
     import GPU from "../../../../../../public/engine/production/GPU";
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
@@ -10,9 +10,9 @@
     import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import FILE_TYPES from "../../../../../static/FILE_TYPES";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
 

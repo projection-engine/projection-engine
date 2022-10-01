@@ -1,11 +1,10 @@
-
-export default function selectionQueryWorker(){
+export default function selectionQueryWorker() {
     const src = ` 
     self.onmessage = ({data: {entities, data}}) => {
 
         const selected = [], ids = []
         for (let i = 0; i < data.length; i += 4) {
-            const ID =  Math.round((data[i + 1] + data[i + 2]) * 255)
+            const ID =  Math.round((data[i] +data[i + 1] + data[i + 2]) * 255)
             if(ID > 0 && !selected.includes(ID)) {
     
                 const found = entities.find(e => {

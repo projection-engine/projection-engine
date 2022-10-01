@@ -1,6 +1,6 @@
 import FilesStore from "../stores/FilesStore";
-import FilesAPI from "../../shared/libs/files/FilesAPI"
-import RegistryAPI from "../../shared/libs/files/RegistryAPI";
+import FilesAPI from "../../shared/libs/FilesAPI"
+import RegistryAPI from "../../shared/libs/RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
 import {EntityAPI} from "../../../public/engine/production";
 

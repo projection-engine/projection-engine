@@ -2,7 +2,7 @@ import BOARD_SIZE from "./data/BOARD_SIZE";
 import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
 import MaterialController from "../../../../public/engine/production/instances/MaterialController";
 import PreviewSystem from "../../../../public/engine/editor/services/PreviewSystem";
-import AssetAPI from "../../../shared/libs/files/AssetAPI";
+import AssetAPI from "../../../shared/libs/AssetAPI";
 import Localization from "../../../shared/libs/Localization";
 import getNewInstance from "./utils/get-new-instance";
 import TextureSample from "./templates/nodes/TextureSample";

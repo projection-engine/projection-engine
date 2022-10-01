@@ -1,13 +1,13 @@
-import NodeFS from "../NodeFS";
+import NodeFS from "./NodeFS";
 import FilesAPI from "./FilesAPI";
-import FILE_TYPES from "../../../static/FILE_TYPES";
+import FILE_TYPES from "../../static/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
 import {v4 as uuidv4, v4} from "uuid";
-import ROUTES from "../../../static/ROUTES";
-import FilesStore from "../../../editor/stores/FilesStore";
-import TEXTURE_TEMPLATE from "../../../static/TEXTURE_TEMPLATE";
-import {IMAGE_WORKER_ACTIONS} from "../../../../public/engine/production";
-import ImageWorker from "../../../../public/engine/workers/image/ImageWorker";
+import ROUTES from "../../static/ROUTES";
+import FilesStore from "../../editor/stores/FilesStore";
+import TEXTURE_TEMPLATE from "../../static/TEXTURE_TEMPLATE";
+import {IMAGE_WORKER_ACTIONS} from "../../../public/engine/production";
+import ImageWorker from "../../../public/engine/workers/image/ImageWorker";
 
 const pathRequire = window.require("path")
 const {ipcRenderer} = window.require("electron")

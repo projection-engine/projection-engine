@@ -88,13 +88,13 @@
     <Input
             hasBorder={true}
             width={"100%"}
-            height="20px"
+            height="22px"
             placeholder={translate("SEARCH")}
             searchString={search}
             setSearchString={v => search = v}
     />
 
-    <Dropdown hideArrow={true}>
+    <Dropdown asButton={true}>
         <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={translate("COMPONENT_FILTER")}/>
@@ -115,6 +115,12 @@
             </button>
         {/each}
     </Dropdown>
+    {#if filteredComponent != null}
+        <button on:click={() => filteredComponent = undefined} class="remove-button">
+            <ToolTip content={translate("REMOVE_FILTER")}/>
+            <Icon styles="font-size: .9rem">close</Icon>
+        </button>
+    {/if}
 </Header>
 
 <div
@@ -165,5 +171,14 @@
                 #252525
         );
         background-size: 100% 46px;
+    }
+    .remove-button{
+        padding: 0;
+        width: 1rem;
+        height: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
     }
 </style>

@@ -227,6 +227,7 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            REMOVE_FILTER: "Remove filter",
             DEACTIVATE: "Activate/Deactivate entity",
             SELECTED_CHILD: "Child entity is selected",
             FOCUS_LOCKED_ENTITY: "Focus on locked entity",

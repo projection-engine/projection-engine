@@ -1,10 +1,10 @@
 import {v4 as uuidv4, v4} from "uuid";
-import NodeFS from "../NodeFS";
+import NodeFS from "./NodeFS";
 import FilesAPI from "./FilesAPI";
-import ROUTES from "../../../static/ROUTES";
-import REG_PATH from "../../../static/REG_PATH"
-import FilesStore from "../../../editor/stores/FilesStore";
-import FILE_TYPES from "../../../static/FILE_TYPES";
+import ROUTES from "../../static/ROUTES";
+import REG_PATH from "../../static/REG_PATH"
+import FilesStore from "../../editor/stores/FilesStore";
+import FILE_TYPES from "../../static/FILE_TYPES";
 
 const {ipcRenderer} = window.require("electron")
 const fs = window.require("fs")

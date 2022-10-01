@@ -1,5 +1,5 @@
 <script>
-    import FilesAPI from "../../../../shared/libs/files/FilesAPI"
+    import FilesAPI from "../../../../shared/libs/FilesAPI"
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import SideBarItem from "./SideBarItem.svelte";

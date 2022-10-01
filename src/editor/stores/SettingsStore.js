@@ -1,6 +1,6 @@
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 import Engine from "../../../public/engine/production/Engine";
-import AssetAPI from "../../shared/libs/files/AssetAPI";
+import AssetAPI from "../../shared/libs/AssetAPI";
 import SETTINGS from "../data/SETTINGS";
 import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
 import GPU from "../../../public/engine/production/GPU";

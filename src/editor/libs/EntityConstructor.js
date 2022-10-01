@@ -81,7 +81,7 @@ export default class EntityConstructor {
         const entity = new Entity(undefined, translate("CAMERA"))
         entity.addComponent(COMPONENTS.CAMERA)
         EntityConstructor.translateEntity(entity)
-        entity.scaling = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
+
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
         if (event)
             event.currentTarget.closeDropdown()

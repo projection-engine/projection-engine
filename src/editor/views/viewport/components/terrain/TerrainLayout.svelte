@@ -6,8 +6,8 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import ResizableBar from "../../../../../shared/components/resizable/ResizableBar.svelte";
     import Localization from "../../../../../shared/libs/Localization";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]

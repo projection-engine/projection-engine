@@ -1,6 +1,6 @@
 import Localization from "../../shared/libs/Localization";
 
-import FilesAPI from "../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../shared/libs/FilesAPI";
 import NodeFS from "../../shared/libs/NodeFS";
 
 

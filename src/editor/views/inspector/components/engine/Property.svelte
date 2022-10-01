@@ -46,7 +46,7 @@
             await Loader.load(src.registryID, true)
         submit(attribute.key, src.registryID, true)
     }
-    $: console.log(attribute)
+
 </script>
 
 

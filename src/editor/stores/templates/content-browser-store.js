@@ -13,5 +13,6 @@ export const contentBrowserStore = writable({
     components: [],
     uiLayouts: [],
     terrains: [],
-    terrainMaterials: []
+    terrainMaterials: [],
+    toCut: []
 });

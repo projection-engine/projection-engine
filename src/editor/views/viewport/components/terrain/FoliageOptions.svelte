@@ -3,8 +3,8 @@
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import {onMount} from "svelte";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import Localization from "../../../../../shared/libs/Localization";

@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../shared/libs/files/FilesAPI"
+import FilesAPI from "../../../../shared/libs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../../shared/libs/Localization";
 

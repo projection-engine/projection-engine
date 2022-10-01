@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
 import FilesStore from "../../../stores/FilesStore";
 import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
 import {COMPONENTS, Entity, GPU} from "../../../../../public/engine/production";

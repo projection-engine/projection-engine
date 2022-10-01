@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import FilesStore from "../../../../stores/FilesStore";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import FILE_TYPES from "../../../../../static/FILE_TYPES";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import TextureItem from "./TextureItem.svelte";

@@ -3,7 +3,7 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
-    import FilesAPI from "../../../shared/libs/files/FilesAPI"
+    import FilesAPI from "../../../shared/libs/FilesAPI"
 
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";

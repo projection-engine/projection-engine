@@ -1,10 +1,10 @@
 import ENGINE from "../data/ENGINE";
 
-import FilesAPI from "../../shared/libs/files/FilesAPI"
+import FilesAPI from "../../shared/libs/FilesAPI"
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 import Engine from "../../../public/engine/production/Engine";
 import FilesStore from "./FilesStore";
-import RegistryAPI from "../../shared/libs/files/RegistryAPI";
+import RegistryAPI from "../../shared/libs/RegistryAPI";
 import DEFAULT_LEVEL from "../../static/DEFAULT_LEVEL"
 import ROUTES from "../../static/ROUTES";
 import CHANNELS from "../../static/CHANNELS";

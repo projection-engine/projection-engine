@@ -1,6 +1,6 @@
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
 import initializeEntity from "./initialize-entity";
-import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
+import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import {v4} from "uuid";
 import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../../public/engine/production";
 import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";

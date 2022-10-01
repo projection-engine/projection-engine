@@ -1,6 +1,6 @@
 import FilesAPI from "./FilesAPI";
-import ERROR_LOG_FILE from "../../../static/ERROR_LOG_FILE";
-import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
+import ERROR_LOG_FILE from "../../static/ERROR_LOG_FILE";
+import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
 
 export default class ErrorLoggerAPI {
     static #timeout
@@ -15,31 +15,36 @@ export default class ErrorLoggerAPI {
             return
         ErrorLoggerAPI.#initialized = true
 
-        FilesAPI.readFile(ErrorLoggerAPI.path).then(o => {
-            const original = o ? o : ""
+        FilesAPI.readFile(ErrorLoggerAPI.path, "json").then(o => {
+            const original = o != null ? o : []
             const old = console.error
+
             console.error = (...messages) => {
                 clearTimeout(ErrorLoggerAPI.#timeout)
                 ErrorLoggerAPI.#timeout = setTimeout(() => {
                     const date = new Date()
                     const parsed = messages.map(m => {
-                        let message, cause
+                        let message, cause, stack = m.stack
                         if (m instanceof Error) {
                             cause = m.cause
                             message = m.message
-                        }
-                        else if (typeof m === "object"){
+                        } else if (typeof m === "object") {
                             cause = "undefined"
                             message = JSON.stringify(m)
-                        }
-                        else {
+                        } else {
                             cause = "undefined"
                             message = m
                         }
-                        return  `DATE_TIME [${date.toDateString()}] MESSAGE [${message}] CAUSE [${cause}]`
+
+                        return {
+                            dateTime: date.toDateString(),
+                            stack,
+                            cause,
+                            message
+                        }
                     })
                     const p = ErrorLoggerAPI.path
-                    FilesAPI.writeFile(p, original + "\n" + parsed.join("\n"), true).catch()
+                    FilesAPI.writeFile(p, JSON.stringify([...original, ...parsed], null, 4), true).catch()
                     parsed.forEach(m => ConsoleAPI.error(m))
 
                 }, 150)

@@ -24,7 +24,6 @@
     export let store
 
 
-
     $: items = store.items
 
     let onDrag = false
@@ -44,9 +43,7 @@
 
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
 
-    function onDragEnd() {
-        onDrag = false
-    }
+    const onDragEnd = () => onDrag = false
 
     $: {
         if (ref) {
@@ -121,6 +118,12 @@
         id={internalID}
         class="content"
         data-wrapper={internalID}
+        on:mousedown={e => {
+            const key = "data-isitem"
+
+            if(e.path.find(element => element.getAttribute?.(key) != null) == null)
+                SelectionStore.contentBrowserSelected = []
+        }}
 >
 
     <SelectBox
@@ -135,6 +138,7 @@
                     <Item
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
+                            toCut={store.toCut}
                             cardDimensions={cardDimensions}
                             currentDirectory={currentDirectory}
                             reset={() => {

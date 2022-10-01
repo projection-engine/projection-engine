@@ -1,8 +1,8 @@
 import FilesStore from "../../../stores/FilesStore";
-import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../../../shared/libs/FilesAPI";
 import Localization from "../../../../shared/libs/Localization";
 import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
-import RegistryAPI from "../../../../shared/libs/files/RegistryAPI";
+import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import GPU from "../../../../../public/engine/production/GPU";
 import FILE_TYPES, {TERRAIN_MATERIAL} from "../../../../static/FILE_TYPES";
 

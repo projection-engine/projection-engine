@@ -1,4 +1,4 @@
-import AssetAPI from "../../../shared/libs/files/AssetAPI";
+import AssetAPI from "../../../shared/libs/AssetAPI";
 
 export default async function resolveFileName(path, ext){
     let n = path + ext

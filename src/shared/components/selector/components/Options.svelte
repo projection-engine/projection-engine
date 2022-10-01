@@ -29,16 +29,18 @@
         if (searchString)
             current = temp.filter(e => e.name.includes(searchString))
         else
-            current = temp
-
+            current = [...temp]
         if (!noDefault) {
             if (type === "material")
                 current.push({name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL})
             else if (type === "mesh")
-                Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => current.push({
-                    name: translate(sm[0]),
-                    registryID: sm[1]
-                }))
+                Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => {
+                    if(translate(sm[0]) != null)
+                        current.push({
+                            name: translate(sm[0]),
+                            registryID: sm[1]
+                        })
+                })
         }
         filtered = current
     }

@@ -1,6 +1,6 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "../../shared/libs/files/FilesAPI";
-import ErrorLoggerAPI from "../../shared/libs/files/ErrorLoggerAPI";
+import FilesAPI from "../../shared/libs/FilesAPI";
+import ErrorLoggerAPI from "../../shared/libs/ErrorLoggerAPI";
 
 
 export default function InitializeWindow() {

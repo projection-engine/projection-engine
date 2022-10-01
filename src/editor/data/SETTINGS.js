@@ -106,8 +106,8 @@ export default {
 
     gizmoGrid: {
         rotationGizmo: Math.PI / 180,
-        translationGizmo: .01,
-        scaleGizmo: .01
+        translationGizmo: 1,
+        scaleGizmo: 1
     },
 
 

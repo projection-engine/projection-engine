@@ -4,7 +4,7 @@
     import FilesStore from "../../../stores/FilesStore";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import FilesAPI from "../../../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../../../shared/libs/FilesAPI";
 
     import Input from "../../../../shared/components/input/Input.svelte";
     import NodeFS from "../../../../shared/libs/NodeFS";

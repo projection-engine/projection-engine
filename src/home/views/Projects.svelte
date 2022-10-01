@@ -7,7 +7,7 @@
     import getBasePath from "../../../public/backend/utils/get-base-path";
     import NodeFS from "../../shared/libs/NodeFS";
     import refreshProjects from "../utils/refresh-projects";
-    import FilesAPI from "../../shared/libs/files/FilesAPI";
+    import FilesAPI from "../../shared/libs/FilesAPI";
     import ProjectRow from "../components/ProjectRow.svelte";
     import {v4} from "uuid";
     import ContextMenuController from "../../shared/libs/ContextMenuController";

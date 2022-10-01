@@ -1,5 +1,5 @@
 <script>
-    import FilesAPI from "../../../../shared/libs/files/FilesAPI"
+    import FilesAPI from "../../../../shared/libs/FilesAPI"
     import handleDropFolder from "../utils/handle-drop-folder"
     import Input from "../../../../shared/components/input/Input.svelte";
     import FILE_TYPES from "../../../../static/FILE_TYPES";
@@ -29,7 +29,9 @@
     export let currentDirectory
     export let setOnDrag
     export let onDrag
+    export let toCut = []
 
+    $: isOnCuttingBoard = toCut.includes(data.id)
     let ref
     let selected
     const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.map)
@@ -140,36 +142,37 @@
         let body
         if (type !== 0)
             body = `
-        <div>
-            <strong>${translate("ITEM_TYPE")}:</strong>
-            <small>${metadata.typeName}</small>
-        </div>
-        <div>
-            <strong>${translate("REGISTRY_ID")}:</strong>
-            <small>${data.registryID}</small>
-        </div>
-`
+                <div>
+                    <strong>${translate("ITEM_TYPE")}:</strong>
+                    <small>${metadata.typeName}</small>
+                </div>
+                <div>
+                    <strong>${translate("REGISTRY_ID")}:</strong>
+                    <small>${data.registryID}</small>
+                </div>
+            `
         else
             body = `
-            <div>
-                <strong>${translate("CHILDREN")}:</strong>
-                <small>${childrenQuantity}</small>
-            </div>
-`
+                <div>
+                    <strong>${translate("CHILDREN")}:</strong>
+                    <small>${childrenQuantity}</small>
+                </div>
+            `
         toolTipContent = `
-         <div style="   display: grid;">
-            <div>
-                <strong>${translate("ITEM_NAME")}: </strong>
-                <small>${currentLabel}</small>
+             <div style="   display: grid;">
+                <div>
+                    <strong>${translate("ITEM_NAME")}: </strong>
+                    <small>${currentLabel}</small>
+                </div>
+                ${body}
             </div>
-            ${body}
-        </div>
         `
     }
-
+    $: if(isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
 </script>
 
 <div
+        data-isitem="-"
         data-id={data.id}
         data-material={isMaterial ? data.id : undefined}
         data-file={type === 0 ? undefined : data.id}
@@ -179,7 +182,7 @@
         bind:this={ref}
         on:click={setSelected}
 
-        style={selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "") +  (FilesStore.toCut.includes(data.id) || isNotDraggable ? "opacity: .5;" : "")}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
 
 >

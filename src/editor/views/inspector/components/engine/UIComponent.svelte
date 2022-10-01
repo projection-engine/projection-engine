@@ -8,8 +8,8 @@
     import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
-    import RegistryAPI from "../../../../../shared/libs/files/RegistryAPI";
-    import FilesAPI from "../../../../../shared/libs/files/FilesAPI";
+    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
+    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import FilesStore from "../../../../stores/FilesStore";
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
     import {Engine} from "../../../../../../public/engine/production";

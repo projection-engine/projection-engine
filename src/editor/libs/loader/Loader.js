@@ -1,11 +1,11 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
-import FilesAPI from "../../../shared/libs/files/FilesAPI"
+import FilesAPI from "../../../shared/libs/FilesAPI"
 import FILE_TYPES from "../../../static/FILE_TYPES";
 import FilesStore from "../../stores/FilesStore";
 
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
-import RegistryAPI from "../../../shared/libs/files/RegistryAPI";
+import RegistryAPI from "../../../shared/libs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../../shared/libs/Localization";

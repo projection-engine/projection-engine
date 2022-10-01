@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import AssetAPI from "../../../../../shared/libs/files/AssetAPI";
+    import AssetAPI from "../../../../../shared/libs/AssetAPI";
     import GPU from "../../../../../../public/engine/production/GPU";
     import updateMaterialAsset from "../../utils/update-material-asset";
     import TerrainMaterialLayer from "./TerrainMaterialLayer.svelte";
@@ -32,7 +32,6 @@
             material,
             v => {
                 material = v
-                console.trace("HERE")
                 if (GPU.materials.get(item.registryID) != null) {
                     GPU.destroyMaterial(item.registryID)
                     GPU.allocateMaterialInstance(v, item.registryID)

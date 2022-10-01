@@ -1,6 +1,6 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import FilesAPI from "../../../libs/files/FilesAPI";
+    import FilesAPI from "../../../libs/FilesAPI";
     import Icon from "../../icon/Icon.svelte";
 
     export let state

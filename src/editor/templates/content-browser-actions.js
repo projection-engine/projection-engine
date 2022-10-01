@@ -1,6 +1,6 @@
 import selection from "../views/content-browser/utils/selection";
 import SELECTION_TYPES from "../views/content-browser/templates/SELECTION_TYPES";
-import FilesAPI from "../../shared/libs/files/FilesAPI";
+import FilesAPI from "../../shared/libs/FilesAPI";
 import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
@@ -8,7 +8,7 @@ import importFile from "../libs/import-file";
 import getMaterialAsOption from "./utils/get-material-as-option";
 import resolveFileName from "./utils/resolve-file-name";
 import FILE_TYPES from "../../static/FILE_TYPES";
-import AssetAPI from "../../shared/libs/files/AssetAPI";
+import AssetAPI from "../../shared/libs/AssetAPI";
 import SIMPLE_MATERIAL_TEMPLATE from "../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 import COMPONENT_TEMPLATE from "../../../public/engine/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../public/engine/static/templates/UI_TEMPLATE";
@@ -93,7 +93,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
         CUT: {
             label: translate("CUT"),
             require: settings.contentBrowserHotkeys.CUT,
-            callback: () => FilesStore.toCut = [...SelectionStore.contentBrowserSelected]
+            callback: () => FilesStore.updateStore({...FilesStore.data, toCut: [...SelectionStore.contentBrowserSelected]})
         },
         PASTE: {
             label: translate("PASTE"),

@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../../../data/RENDER_TARGET";
-    import {ConversionAPI, DepthPass, Engine, GPU, PickingAPI,} from "../../../../../../public/engine/production";
+    import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../../../../public/engine/production";
 
     import selectionQueryWorker from "../../utils/selection-query-worker";
     import SelectBox from "../../../../../shared/components/select-box/SelectBox.svelte";
@@ -109,12 +109,12 @@
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {
             drawIconsToBuffer()
-            const depthFBO = DepthPass.framebuffer
             const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
             const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
 
             try {
-                const data = PickingAPI.readBlock(depthFBO, nStart, nEnd)
+                const data = PickingAPI.readBlock(nStart, nEnd)
+
                 WORKER.postMessage({entities: Engine.entities, data})
                 WORKER.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
             } catch (err) {

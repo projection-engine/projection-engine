@@ -4,7 +4,7 @@
     import Icon from "../../shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import createPortal from "../../shared/components/create-portal";
-    import AssetAPI from "../../shared/libs/files/AssetAPI";
+    import AssetAPI from "../../shared/libs/AssetAPI";
 
     export let setProjectsToShow
     export let projectsToShow
