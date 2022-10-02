@@ -5,6 +5,7 @@ import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
 import KEYS from "../../../public/engine/static/KEYS";
+import ViewportActions from "../libs/ViewportActions";
 
 
 const toRad = Math.PI / 180
@@ -55,6 +56,7 @@ export default {
     },
 
     viewportHotkeys: {
+        HIDE_ACTIVE: [KEYS.AltLeft, KEYS.KeyH],
         DUPLICATE: [KEYS.ShiftLeft, KEYS.KeyD],
         SAVE: [KEYS.ControlLeft, KEYS.KeyS],
         INVERT_SELECTION: [KEYS.ControlLeft, KEYS.KeyI],
@@ -62,7 +64,7 @@ export default {
         SELECT_NONE: [KEYS.AltLeft, KEYS.KeyA],
         TRANSLATION_GIZMO: [KEYS.KeyG],
         SELECT_HIERARCHY: [KEYS.KeyH],
-        SNAP_TO_GRID: [KEYS.ShiftLeft, KEYS.ControlLeft, KEYS.Tab],
+
         FOCUS: [KEYS.Home],
         SCALE_GIZMO: [KEYS.KeyS],
         ROTATION_GIZMO: [KEYS.KeyR],
@@ -72,7 +74,23 @@ export default {
         FIXATE_ACTIVE: [KEYS.ControlLeft, KEYS.KeyF],
         COPY: [KEYS.ControlLeft, KEYS.KeyC],
         DELETE: [KEYS.Delete],
-        PASTE: [KEYS.ControlLeft, KEYS.KeyV]
+        PASTE: [KEYS.ControlLeft, KEYS.KeyV],
+
+
+        SNAP_TO_GRID: [KEYS.ControlLeft, KEYS.KeyG],
+        SNAP_TO_ORIGIN: [KEYS.ControlLeft, KEYS.KeyO],
+        ROUND_TRANSFORMATION: [KEYS.ControlLeft, KEYS.KeyI],
+
+        CYCLE_GIZMOS: [KEYS.Space],
+        SWITCH_TRANSFORMATION: [KEYS.ControlLeft, KEYS.KeyT],
+
+
+        CAMERA_TOP: [KEYS.Digit1],
+        CAMERA_BOTTOM: [KEYS.Digit2],
+        CAMERA_LEFT: [KEYS.Digit3],
+        CAMERA_RIGHT: [KEYS.Digit4],
+        CAMERA_FRONT: [KEYS.Digit5],
+        CAMERA_BACK: [KEYS.Digit6]
     },
     contentBrowserHotkeys: {
         BACK: [KEYS.AltLeft, KEYS.ArrowLeft],
@@ -107,7 +125,8 @@ export default {
     gizmoGrid: {
         rotationGizmo: Math.PI / 180,
         translationGizmo: 1,
-        scaleGizmo: 1
+        scaleGizmo: 1,
+        sensitivity: .001
     },
 
 

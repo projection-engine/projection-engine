@@ -71,8 +71,7 @@
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("translationGizmo", v, true)}
                     value={settings.gizmoGrid.translationGizmo}
-                    handleChange={v => updateGizmoGrid("translationGizmo", v)}
-                    isAngle={false}
+
             />
             <Range
                     variant="embedded"
@@ -82,8 +81,6 @@
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("scaleGizmo", v, true)}
                     value={settings.gizmoGrid.scaleGizmo}
-                    handleChange={v => updateGizmoGrid("scaleGizmo", v)}
-
             />
             <Range
                     variant="embedded"
@@ -93,9 +90,17 @@
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("rotationGizmo", v, true)}
                     value={settings.gizmoGrid.rotationGizmo}
-                    handleChange={v => updateGizmoGrid("rotationGizmo", v)}
             />
         </fieldset>
+        <div data-divider="-"></div>
+        <Range
+                variant="embedded"
+                precision={4}
+                label={translate("SENSITIVITY")}
+                minValue={0}
+                onFinish={v => updateGizmoGrid("sensitivity", v / 100, true)}
+                value={settings.gizmoGrid.sensitivity * 100}
+        />
     </Dropdown>
     <div class="button-group viewport">
         <button

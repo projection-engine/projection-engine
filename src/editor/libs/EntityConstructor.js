@@ -5,6 +5,8 @@ import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXT
 import {vec3} from "gl-matrix";
 import Localization from "../../shared/libs/Localization";
 import {CameraTracker} from "../../../public/engine/editor";
+import EngineStore from "../stores/EngineStore";
+import {v4} from "uuid";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {
@@ -93,5 +95,16 @@ export default class EntityConstructor {
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
         if (event)
             event.currentTarget.closeDropdown()
+    }
+
+    static hideEntity(nodeRef, submit=true) {
+        const loopHierarchy = (entity, newValue) => {
+            for (let i = 0; i < entity.children.length; i++)
+                loopHierarchy(entity.children[i], newValue)
+            entity.active = newValue
+        }
+        loopHierarchy(nodeRef, !nodeRef.active)
+        if(submit)
+            EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }
 }

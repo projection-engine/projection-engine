@@ -1,6 +1,7 @@
 <script>
     import Accordion from "../../shared/components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
+    import SETTINGS from "../../editor/data/SETTINGS";
 
     export let settings
     export let update
@@ -53,7 +54,15 @@
         {/each}
     </div>
 </Accordion>
-
+<button
+        on:click={() => {
+            update("viewportHotkeys", SETTINGS.viewportHotkeys)
+            update("contentBrowserHotkeys", SETTINGS.contentBrowserHotkeys)
+            update("shaderEditorHotkeys", SETTINGS.shaderEditorHotkeys)
+        }}
+>
+    {translate("RESET")}
+</button>
 <style>
     legend {
         font-size: .85rem;

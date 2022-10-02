@@ -9,6 +9,7 @@
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
     import FILE_TYPES from "../../../../static/FILE_TYPES"
+    import getCreationOptions from "../utils/get-creation-options";
 
     export let translate
     export let view
@@ -19,6 +20,7 @@
     export let setSearchString
     export let searchString
 
+    $: options = getCreationOptions(currentDirectory)
 </script>
 
 <div data-vertdivider="-"></div>
@@ -55,6 +57,20 @@
     <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory)}>
         {translate("SELECT_INVERT")}
     </button>
+</Dropdown>
+<Dropdown>
+    <button slot="button" data-viewbutton="-">
+        {translate("CREATE")}
+    </button>
+    {#each options as option}
+        <button on:click={e => {
+            e.currentTarget?.closeDropdown?.()
+            option.onClick()
+        }}>
+            <Icon styles="font-size: .9rem">{option.icon}</Icon>
+            {option.label}
+        </button>
+    {/each}
 </Dropdown>
 <div data-vertdivider="-"></div>
 <Dropdown asButton={true}>

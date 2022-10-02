@@ -69,7 +69,7 @@
         else
             switch (metadata.type) {
                 case FILE_TYPES.COMPONENT:
-                    icon = "extension"
+                    icon = "code"
                     break
                 case FILE_TYPES.SCENE:
                     icon = "inventory_2"

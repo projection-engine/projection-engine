@@ -9,7 +9,7 @@ const windowLifeCycle = require("../utils/window-life-cycle");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 const {screen} = require('electron')
 
-module.exports = function settingsWindow(windowID, parent, settingsData) {
+module.exports = function settingsWindow(windowID, parent, settingsData, onClose) {
     const internalID = v4() + windowID
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
@@ -31,19 +31,21 @@ module.exports = function settingsWindow(windowID, parent, settingsData) {
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH),
 
     });
-
+    window.on("close", () => {
+        onClose()
+    })
 
     windowLifeCycle(
         internalID,
         window,
         () => {
+            onClose()
             window.close()
         },
         () => window.loadFile(Window.settings).catch(err => console.error(err))
     )
 
     ipcMain.on(ROUTES.LOAD_SETTINGS + internalID, async event => {
-
         event.sender.send(ROUTES.LOAD_SETTINGS + internalID, settingsData)
     })
 

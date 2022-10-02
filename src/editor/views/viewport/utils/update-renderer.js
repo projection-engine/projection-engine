@@ -38,6 +38,8 @@ export default function updateRenderer(selected, engine, settings) {
     GizmoSystem.transformationType = settings.transformationType
     ShadowMapPass.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
 
+    if (settings.gizmoGrid.sensitivity != null)
+        GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity
     Engine.updateParams({
         ...settings,
         selected,

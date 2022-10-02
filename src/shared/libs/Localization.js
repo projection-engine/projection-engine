@@ -35,6 +35,7 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            RESET: "Reset",
             ORIGINAL: "Original",
             SHADER_EDITOR: "Shader editor",
             CONTENT_BROWSER: "Content browser",
@@ -76,7 +77,7 @@ export default class Localization {
         INFO: {
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "6.0.0-alpha",
+            VERSION: "6.2.0-alpha",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
@@ -88,6 +89,7 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            SENSITIVITY: "Sensitivity",
             IMPORT: "Import",
             SCALE: "Scale",
             FOLIAGE_DISPLACEMENT: "Foliage displacement",

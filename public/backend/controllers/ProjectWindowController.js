@@ -21,6 +21,7 @@ module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     let firstTime = false
+    let settingsWindowIsOpen = false
     const window = new BrowserWindow({
         width: width * .75,
         height: height * .75,
@@ -54,7 +55,11 @@ module.exports = function ProjectWindow(handleClose, data) {
         event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) + "projects" + path.sep + data.id))
     })
     ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
-        settingsWindow(data.id, window, settingsData)
+        if(settingsWindowIsOpen)
+            return
+
+        settingsWindowIsOpen = true
+        settingsWindow(data.id, window, settingsData, () => settingsWindowIsOpen = false)
     })
 
 

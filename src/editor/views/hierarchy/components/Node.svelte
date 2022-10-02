@@ -6,6 +6,7 @@
     import Localization from "../../../../shared/libs/Localization";
     import EngineStore from "../../../stores/EngineStore";
     import {v4} from "uuid";
+    import EntityConstructor from "../../../libs/EntityConstructor";
 
     export let depth = undefined
     export let nodeRef = undefined
@@ -48,15 +49,7 @@
             updateOpen()
         }
     }
-    const loopHierarchy = (entity, newValue) => {
-        for (let i = 0; i < entity.children.length; i++)
-            loopHierarchy(entity.children[i], newValue)
-        entity.active = newValue
-    }
-    const onHide = () => {
-        loopHierarchy(nodeRef, !nodeRef.active)
-        EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
-    }
+
 
     $: hiddenActiveChildren = surfaceSelected[nodeRef.id]
 </script>
@@ -80,7 +73,7 @@
     {/if}
     <DraggableEntity updateOpen={updateOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
                      lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
-    <button class="button-small hierarchy-branch" on:click={onHide}>
+    <button class="button-small hierarchy-branch" on:click={() => EntityConstructor.hideEntity(nodeRef)}>
         <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
             {#if nodeRef.active}

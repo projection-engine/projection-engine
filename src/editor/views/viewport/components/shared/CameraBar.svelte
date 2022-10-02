@@ -1,6 +1,5 @@
 <script>
 
-    import updateCameraPlacement from "../../utils/update-camera-placement"
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
@@ -10,6 +9,7 @@
     import CameraTracker from "../../../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Localization from "../../../../../shared/libs/Localization";
+    import CAMERA_ROTATIONS from "../../../../../../public/engine/editor/data/CAMERA_ROTATIONS";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     let cameraIsOrtho = false
@@ -62,35 +62,35 @@
                 <div
                         class={"face front"}
                         style="background: hsl(205, 100%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(Math.PI / 2, 0)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)}
                 >
                     Z+
                 </div>
                 <div
                         class={"face back darker"}
                         style="background: hsl(205, 100%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)}
                 >
                     Z-
                 </div>
                 <div
                         class={"face right"}
                         style="background: hsl(0, 100%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(0, 0)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)}
                 >
                     X+
                 </div>
                 <div
                         class={"face left darker"}
                         style="background: hsl(0, 100%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(Math.PI, 0)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)}
                 >
                     X-
                 </div>
                 <div
                         class={"face top darker"}
                         style="background: hsl(120, 88%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(0, Math.PI / 2)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)}
 
                 >
                     Y-
@@ -98,7 +98,7 @@
                 <div
                         class={"face bottom"}
                         style="background: hsl(120, 88%, var(--brightness))"
-                        on:click={() => updateCameraPlacement(0, -Math.PI / 2)}
+                        on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)}
                 >
                     Y+
                 </div>
@@ -112,22 +112,22 @@
             <ToolTip content={translate("CAMERA_POSITION")}/>
         </button>
 
-        <button on:click={() => updateCameraPlacement(0, Math.PI /2)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)}>
             {translate("TOP")}
         </button>
-        <button on:click={() => updateCameraPlacement(0, -Math.PI /2)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)}>
             {translate("BOTTOM")}
         </button>
-        <button on:click={() => updateCameraPlacement(Math.PI, 0)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)}>
             {translate("LEFT")}
         </button>
-        <button on:click={() => updateCameraPlacement(0, 0)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)}>
             {translate("RIGHT")}
         </button>
-        <button on:click={() => updateCameraPlacement(Math.PI/2, 0)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)}>
             {translate("FRONT")}
         </button>
-        <button on:click={() => updateCameraPlacement(Math.PI * 1.5, 0)}>
+        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)}>
             {translate("BACK")}
         </button>
     </Dropdown>

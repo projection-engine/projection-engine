@@ -5,9 +5,16 @@ import GIZMOS from "../../data/GIZMOS";
 import SelectionStore from "../../stores/SelectionStore";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
-import {GizmoSystem} from "../../../../public/engine/editor";
+import {CameraTracker, GizmoSystem} from "../../../../public/engine/editor";
 import selectEntityHierarchy from "../utils/select-entity-hierarchy";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
+import KEYS from "../../../../public/engine/static/KEYS";
+import snap from "../utils/snap";
+import TRANSFORMATION_TYPE from "../../data/TRANSFORMATION_TYPE";
+import EntityConstructor from "../../libs/EntityConstructor";
+import {Engine} from "../../../../public/engine/production";
+import {v4} from "uuid";
+import CAMERA_ROTATIONS from "../../../../public/engine/editor/data/CAMERA_ROTATIONS";
 
 const toRad = Math.PI / 180
 export default function viewportHotkeys(settings) {
@@ -67,45 +74,72 @@ export default function viewportHotkeys(settings) {
                     return
                 const toSelect = [t, ...selectEntityHierarchy(QueryAPI.getEntityByID(t))]
                 SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
-
             },
+
         },
-        SNAP_TO_GRID: {
-            label: "Snap to grid",
-            icon: "grid_4x4",
+        HIDE_ACTIVE: {
+            label: "Hide active",
+            callback: () => {
+                const selected = SelectionStore.engineSelected
+                for (let i = 0; i < selected.length; i++)
+                    EntityConstructor.hideEntity(Engine.entitiesMap.get(selected[i]), false)
+                EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+            },
+            require: settings.viewportHotkeys.HIDE_ACTIVE,
+        },
+        SNAP_TO_ORIGIN: {
+            label: "Snap to origin",
             callback: () => {
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++) {
                     const entity = QueryAPI.getEntityByID(selected[i])
-                    const currentGizmo = SettingsStore.data.gizmo
-
-                    switch (currentGizmo) {
-                        case GIZMOS.TRANSLATION: {
-                            const g = GizmoSystem.translationGizmo.gridSize
-                            entity._translation[0] = Math.round(entity._translation[0] / g) * g
-                            entity._translation[1] = Math.round(entity._translation[1] / g) * g
-                            entity._translation[2] = Math.round(entity._translation[2] / g) * g
-                            break
-                        }
-                        case GIZMOS.SCALE: {
-                            const g = GizmoSystem.scaleGizmo.gridSize
-                            entity._scaling[0] = Math.round(entity._scaling[0] / g) * g
-                            entity._scaling[1] = Math.round(entity._scaling[1] / g) * g
-                            entity._scaling[2] = Math.round(entity._scaling[2] / g) * g
-                            break
-                        }
-                        case GIZMOS.ROTATION: {
-                            const g = GizmoSystem.rotationGizmo.gridSize * toRad
-                            entity._rotationQuat[0] = Math.round(entity._rotationQuat[0] / g) * g
-                            entity._rotationQuat[1] = Math.round(entity._rotationQuat[1] / g) * g
-                            entity._rotationQuat[2] = Math.round(entity._rotationQuat[2] / g) * g
-                            entity._rotationQuat[3] = Math.round(entity._rotationQuat[2] / g) * g
-                            break
-                        }
-                    }
+                    entity._translation[0] = 0
+                    entity._translation[1] = 0
+                    entity._translation[2] = 0
                     entity.__changedBuffer[0] = 1
                 }
             },
+            require: settings.viewportHotkeys.SNAP_TO_ORIGIN,
+        },
+
+        ROUND_TRANSFORMATION: {
+            label: "Round transformation",
+            callback: () => snap(1),
+            require: settings.viewportHotkeys.ROUND_TRANSFORMATION,
+        },
+
+        CYCLE_GIZMOS: {
+            label: "Cycle gizmos",
+            callback: () => {
+                switch (settings.gizmo){
+                    case GIZMOS.TRANSLATION:
+                        SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
+                        break
+                    case GIZMOS.SCALE:
+                        SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
+                        break
+                    case GIZMOS.ROTATION:
+                        SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
+                        break
+                    case GIZMOS.NONE:
+                        SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
+                        break
+                }
+            },
+            require: settings.viewportHotkeys.SWITCH_TRANSFORMATION,
+        },
+        SWITCH_TRANSFORMATION: {
+            label: "Switch transformation",
+            callback: () => {
+                const newT = settings.transformationType === TRANSFORMATION_TYPE.GLOBAL ? TRANSFORMATION_TYPE.RELATIVE : TRANSFORMATION_TYPE.GLOBAL
+                SettingsStore.updateStore({...settings, transformationType: newT})
+            },
+            require: settings.viewportHotkeys.SWITCH_TRANSFORMATION,
+        },
+        SNAP_TO_GRID: {
+            label: "Snap to grid",
+            icon: "grid_4x4",
+            callback: () => snap(),
             require: settings.viewportHotkeys.SNAP_TO_GRID,
         },
         FOCUS: {
@@ -116,10 +150,7 @@ export default function viewportHotkeys(settings) {
         },
         SCALE_GIZMO: {
             require: settings.viewportHotkeys.SCALE_GIZMO,
-            callback: () => {
-                const settings = SettingsStore.data
-                SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
-            }
+            callback: () => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
         },
         ROTATION_GIZMO: {
             require: settings.viewportHotkeys.ROTATION_GIZMO,
@@ -167,6 +198,36 @@ export default function viewportHotkeys(settings) {
             label: "Paste",
             require: settings.viewportHotkeys.PASTE,
             callback: () => ViewportActions.paste()
+        },
+
+
+        CAMERA_TOP: {
+
+            require: settings.viewportHotkeys.CAMERA_TOP,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)
+        },
+        CAMERA_BOTTOM: {
+
+            require: settings.viewportHotkeys.CAMERA_BOTTOM,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)
+        },
+        CAMERA_LEFT: {
+
+            require: settings.viewportHotkeys.CAMERA_LEFT,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)
+        },
+        CAMERA_RIGHT: {
+
+            require: settings.viewportHotkeys.CAMERA_RIGHT,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)
+        },
+        CAMERA_FRONT: {
+            require: settings.viewportHotkeys.CAMERA_FRONT,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)
+        },
+        CAMERA_BACK: {
+            require: settings.viewportHotkeys.CAMERA_BACK,
+            callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)
         }
 
     }

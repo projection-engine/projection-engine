@@ -12,6 +12,7 @@ export default class HotKeysController {
         HotKeysController.#onUpdate = () => onUpdate(HotKeysController.views.get(HotKeysController.activeView))
 
         function handler(event) {
+            // event.preventDefault()
             const h = HotKeysController.holding
 
             if (event.repeat || Engine.environment !== ENVIRONMENT.DEV)
@@ -40,7 +41,10 @@ export default class HotKeysController {
                 for (let i = 0; i < keysToTest; i++) {
                     const currentAction = activeView.actions[i]
                     let valid = true
-                    const required = currentAction.require
+                    const required = currentAction?.require
+
+                    if(!required)
+                        continue
                     let toRemove = 0
                     if (h.get(KEYS.ControlLeft))
                         toRemove++
