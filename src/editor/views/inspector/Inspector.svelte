@@ -14,6 +14,7 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../public/engine/production/instances/Entity";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+    import VIEWS from "../../../shared/components/view/VIEWS";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -86,6 +87,7 @@
     }
 </script>
 <Header
+        currentView={VIEWS.COMPONENT}
         orientation={orientation}
         hidden={hidden}
         switchView={switchView}

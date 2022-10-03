@@ -73,7 +73,7 @@
     />
 {:else if attribute.type === Component.propTypes.ARRAY}
 
-    <div class:inline-vector={attribute.labels.length < 3} class:vector={attribute.labels.length >= 3}>
+    <div class="vector">
         {#each attribute.labels as partial, index}
             <Range
                     noOriginal={true}
@@ -101,21 +101,19 @@
                     value={value[index]}
             />
         {/each}
-        {#if attribute.defaultValue}
-
-            <button
-                    class="reset-button"
-                    on:click={() => {
+    </div>
+    {#if attribute.defaultValue}
+        <button
+                class="reset-button"
+                on:click={() => {
                          for(let i =0; i < attribute.defaultValue.length; i++)
                              value[i] = attribute.defaultValue[i]
                          submit(attribute.key, value, true)
                     }}>
-                <Icon styles="font-size: .9rem">undo</Icon>
-                <ToolTip content={Localization.COMPONENTS.RANGE.UNDO}/>
-            </button>
-        {/if}
-    </div>
-
+            <Icon styles="font-size: .9rem">undo</Icon>
+            {Localization.COMPONENTS.RANGE.UNDO}
+        </button>
+    {/if}
 {:else if attribute.type === Component.propTypes.BOOLEAN}
     <Checkbox
             handleCheck={() => submit(attribute.key, !value, true)}
@@ -185,11 +183,11 @@
 
 
 <style>
-    .inline-vector {
-        display: flex;
+    .vector {
+        display: grid;
         gap: 2px;
+        padding-left: 50%;
         width: 100%;
-        align-items: center;
     }
 
     .dropdown {
@@ -200,20 +198,17 @@
 
     .reset-button {
         border: none;
-        min-width: 17px;
+
         min-height: 17px;
-        max-width: 17px;
+
         max-height: 17px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        gap: 4px;
 
         overflow: hidden;
     }
 
-    .vector {
-        display: grid;
-        gap: 2px;
-        width: 100%;
-    }
+
 </style>

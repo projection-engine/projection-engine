@@ -10,6 +10,7 @@
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "../../../shared/components/create-portal";
+    import VIEWS from "../../../shared/components/view/VIEWS";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -77,6 +78,7 @@
 
 </script>
 <Header
+        currentView={VIEWS.CONSOLE}
         orientation={orientation}
         hidden={hidden}
         switchView={switchView}

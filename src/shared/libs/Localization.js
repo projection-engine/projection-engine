@@ -569,6 +569,10 @@ export default class Localization {
             VALUE: "Value"
         },
         VIEWS: {
+            CLOSE_VIEW: "Close view",
+            SCRIPTING: "Scripting",
+            MISC: "Misc",
+            DATA: "Data",
             CODE_EDITOR: "Code editor",
             CLOSE: "Close",
             HIERARCHY: "Hierarchy",

@@ -18,6 +18,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
+    import VIEWS from "../../../shared/components/view/VIEWS";
 
 
     export let hidden = undefined
@@ -78,6 +79,7 @@
 
 
 <Header
+        currentView={VIEWS.HIERARCHY}
         orientation={orientation}
         hidden={hidden}
         switchView={switchView}

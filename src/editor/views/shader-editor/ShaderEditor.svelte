@@ -22,6 +22,7 @@
     import ViewStateController from "../../../shared/components/view/ViewStateController";
     import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
     import {v4} from "uuid";
+    import VIEWS from "../../../shared/components/view/VIEWS";
 
     export let hidden
     export let switchView
@@ -101,6 +102,7 @@
     }
 </script>
 <Header
+        currentView={VIEWS.BLUEPRINT}
         orientation={orientation}
         hidden={hidden}
         switchView={switchView}

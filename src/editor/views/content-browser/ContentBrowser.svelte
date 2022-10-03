@@ -13,6 +13,7 @@
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
+    import VIEWS from "../../../shared/components/view/VIEWS";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -74,6 +75,7 @@
 </script>
 
 <Header
+        currentView={VIEWS.FILES}
         orientation={orientation}
         hidden={hidden}
         switchView={switchView}
