@@ -51,7 +51,7 @@ export default class Localization {
 
             EDITOR: "Editor",
             SIDE_BAR: "Viewport side-bar",
-            METRICS: "Viewport metrics",
+
             SHORTCUTS: "Shortcuts",
             GRID_VISIBILITY: "Show grid",
             ICON_VISIBILITY: "Show icons",

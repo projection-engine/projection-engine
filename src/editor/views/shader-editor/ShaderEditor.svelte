@@ -21,13 +21,14 @@
     import Selector from "../../../shared/components/selector/Selector.svelte";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
     import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
+    import {v4} from "uuid";
 
     export let hidden
     export let switchView
     export let orientation
     export let viewID
     export let viewIndex
-
+    const internalID = v4()
     const {shell} = window.require("electron")
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
@@ -199,9 +200,10 @@
 </Header>
 <div style={hidden ? "display: none": undefined} class="wrapper" bind:this={ref}>
     <Editor
+            internalID={internalID}
             openFile={openFile}
             translate={translate}
-            isOpen={openFile.registryID !== undefined}
+            isOpen={openFile?.registryID !== undefined}
             selected={selected}
             nodes={nodes}
             setNodes={v => nodes = v}

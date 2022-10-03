@@ -12,16 +12,29 @@
     import BrowserNavigation from "./components/BrowserNavigation.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
+    import ViewStateController from "../../../shared/components/view/ViewStateController";
 
     export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
-
+    export let viewID
+    export let viewIndex
     const internalID = v4()
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
 
     let currentDirectory = {id: FilesAPI.sep}
+    let wasInitialized = false
+    $: {
+        if (wasInitialized)
+            ViewStateController.updateState(viewID, viewIndex, currentDirectory)
+        else {
+            const state = ViewStateController.getState(viewID, viewIndex)
+            if (state != null)
+                currentDirectory = state
+            wasInitialized = true
+        }
+    }
 
     let fileType = undefined
     let searchString = ""

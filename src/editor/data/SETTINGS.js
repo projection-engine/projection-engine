@@ -184,8 +184,5 @@ export default {
         }
     ],
     currentView: 0,
-    INITIALIZED: false,
-    visible: {
-        metrics: true
-    }
+    INITIALIZED: false
 }

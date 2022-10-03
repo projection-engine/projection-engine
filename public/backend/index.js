@@ -8,6 +8,7 @@ const OPEN_PROJECTS = require("../../src/static/OPEN_PROJECTS");
 const fs = require("fs");
 
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
+
 let openProjects = new Map()
 
 async function closeProject(id) {

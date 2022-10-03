@@ -13,6 +13,7 @@
     export let translate
     export let isOpen
 export let openFile
+    export let internalID
 
     $: fallbackSelected = nodes.find(n => n instanceof Material)
 
@@ -54,6 +55,7 @@ export let openFile
         nodes={nodes}
         setNodes={setNodes}
         selected={selected}
+        internalID={internalID}
         submitNodeVariable={submitNodeVariable}
 />
 {#if isOpen}

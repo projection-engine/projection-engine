@@ -7,7 +7,6 @@
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./components/editor/EditorLayout.svelte";
     import UILayout from "./components/ui/UILayout.svelte";
-    import MetricsPass from "../../../../public/engine/production/passes/misc/MetricsPass";
     import SettingsStore from "../../stores/SettingsStore";
     import GizmoToolTip from "./components/editor/GizmoToolTip.svelte";
     import {Engine} from "../../../../public/engine/production";
@@ -52,7 +51,6 @@
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
-    $: if (isReady) MetricsPass.renderTarget = document.getElementById(INFORMATION_CONTAINER.FPS)
     $: if (engine.executingAnimation) updateView(VIEWPORT_TABS.EDITOR)
 
     $: {

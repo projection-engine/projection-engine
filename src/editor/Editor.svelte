@@ -5,7 +5,7 @@
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
     import getFrameOptions from "./utils/get-frame-options";
-    import Shortcuts from "./components/metrics/Metrics.svelte";
+    import Footer from "./components/footer/Footer.svelte";
     import Canvas from "./Canvas.svelte";
     import loadProjectMetadata from "./utils/load-project-metadata";
     import EngineStore from "./stores/EngineStore";
@@ -38,7 +38,6 @@
     let isMetadataLoaded = false
 
     onMount(() => {
-
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
             (event, data) => {
@@ -52,7 +51,6 @@
             engine.meta = m
             isMetadataLoaded = true
         })
-
     })
     let view = FALLBACK
 
@@ -64,7 +62,6 @@
             EngineStore.loadLevel()
         }
     }
-
     const updateView = (key, newView) => {
         const s = {...settings}
         const copy = [...s.views]
@@ -126,7 +123,7 @@
                 resizePosition={"top"}
         />
     </div>
-    <Shortcuts isEngineReady={isMetadataLoaded}/>
+    <Footer isEngineReady={isMetadataLoaded}/>
 </div>
 
 

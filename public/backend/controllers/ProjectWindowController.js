@@ -39,9 +39,7 @@ module.exports = function ProjectWindow(handleClose, data) {
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
 
-    window.on("close", () => {
-        updateCache(data.id, false, () => handleClose())
-    })
+    window.on("close", () => updateCache(data.id, false, () => handleClose()))
     updateCache(data.id, true)
 
     ipcMain.on(ROUTES.LOAD_LEVEL + data.id, async (event, pathToLevel) => {
@@ -72,7 +70,7 @@ module.exports = function ProjectWindow(handleClose, data) {
                 handleClose()
             })
         },
-        () => window.loadFile(Window.project).catch(() => handleClose())
+        () => window.loadFile(Window.project, {}).catch(() => handleClose())
     )
 
     return window

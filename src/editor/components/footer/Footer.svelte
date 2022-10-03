@@ -10,6 +10,8 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
+    import {Engine} from "../../../../public/engine/production";
+    import PASS_KEYS from "../../../../public/engine/static/metrics/PASS_KEYS";
 
     const {shell} = window.require("electron")
     let settings = {}
@@ -27,6 +29,9 @@
                 hasMessage = false
             }, 3500)
         })
+        setInterval(() => {
+            console.dir(Engine.metrics)
+        }, 250)
     })
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
@@ -35,7 +40,6 @@
 <div
         class="wrapper"
         id={SHORTCUTS_ID}
-        style={settings.visible.metrics ? undefined :"display: none"}
 >
 
     {#if activeView != null}

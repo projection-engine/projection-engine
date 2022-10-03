@@ -28,7 +28,7 @@
     export let submitNodeVariable
     export let isOpen
     export let openFile
-
+    export let internalID
     const TRIGGERS = [
         "data-node",
         "data-board",
@@ -50,7 +50,7 @@
     const mutationObserver = new MutationObserver(e => onMutation(resolvedLinks, ref, e))
 
     let ref
-    let internalID = v4()
+
     $: resolvedLinks = resolveLinks(links)
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

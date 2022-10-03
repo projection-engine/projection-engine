@@ -8,20 +8,6 @@
     export let translate
 
 </script>
-
-
-
-<Accordion title={translate("EDITOR")}>
-    <Checkbox
-            checked={settings.visible.metrics}
-            handleCheck={() => {
-            update("visible",  {...settings.visible, metrics: !settings.visible.metrics})
-        }}
-            label={translate("METRICS")}
-    />
-</Accordion>
-
-
 <Accordion title={translate("BACKGROUND")}>
     <Checkbox
             checked={settings.background}

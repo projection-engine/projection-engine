@@ -1,4 +1,1 @@
-- Multiple new hotkeys for viewport
-- New context menu actions for viewport
-- Multiple bug fixes
-- New create option on content browser
+- Removing old metrics pass

@@ -51,22 +51,6 @@ export default function getFrameOptions(settings) {
                     },
                 },
             ]
-        },
-        {
-            label: "Window",
-            options: [
-                {
-                    label: "Metrics",
-                    icon: !settings.visible.metrics ? undefined : "check",
-                    onClick: () => {
-                        settings.visible = {
-                            ...settings.visible,
-                            metrics: !settings.visible.metrics
-                        }
-                        SettingsStore.updateStore(settings)
-                    },
-                }
-            ]
         }
     ]
 }

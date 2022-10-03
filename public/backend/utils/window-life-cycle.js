@@ -1,4 +1,4 @@
-const {ipcMain} = require("electron");
+const {ipcMain, session} = require("electron");
 
 
 module.exports = function windowLifeCycle(id, window, onClose, openWindow) {
