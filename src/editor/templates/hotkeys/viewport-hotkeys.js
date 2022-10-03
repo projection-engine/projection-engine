@@ -15,8 +15,19 @@ import EntityConstructor from "../../libs/EntityConstructor";
 import {Engine} from "../../../../public/engine/production";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../../../public/engine/editor/data/CAMERA_ROTATIONS";
+import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
 
-const toRad = Math.PI / 180
+function focusCamera(current, cameras) {
+    if (current > -1 && cameras[current] != null) {
+        CameraAPI.updateViewTarget(cameras[current])
+        const transformationMatrix = CameraAPI.staticViewMatrix
+        CameraTracker.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${transformationMatrix})`
+    } else
+        CameraTracker.update(false)
+
+    EngineStore.updateStore({...EngineStore.engine, focusedCamera: cameras[current]?.id})
+}
+
 export default function viewportHotkeys(settings) {
 
     return {
@@ -35,6 +46,35 @@ export default function viewportHotkeys(settings) {
             },
             icon: "content_copy",
             require: settings.viewportHotkeys.DUPLICATE,
+        },
+        SWITCH_BETWEEN_CAMERAS: {
+            label: "Switch between cameras",
+            callback: () => {
+                const cameras = Engine.data.cameras
+                let current = cameras.findIndex(v => v.id === EngineStore.engine.focusedCamera)
+                if (cameras.length === 0) {
+                    if (EngineStore.engine.focusedCamera != null)
+                        EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
+                    return
+                }
+                if (current > -1 && cameras.length > 0)
+                    current = 0
+                else current++
+                if (current > cameras.length - 1)
+                    current = -1
+
+                focusCamera(current, cameras)
+            },
+            require: settings.viewportHotkeys.SWITCH_BETWEEN_CAMERAS,
+        },
+        FOCUS_ON_CAMERA: {
+            label: "Focus on camera",
+            callback: () => {
+                const cameras = Engine.data.cameras
+                const current = cameras.findIndex(v => v.id === SelectionStore.mainEntity)
+                focusCamera(current, cameras)
+            },
+            require: settings.viewportHotkeys.FOCUS_ON_CAMERA,
         },
 
         SAVE: {
@@ -111,7 +151,7 @@ export default function viewportHotkeys(settings) {
         CYCLE_GIZMOS: {
             label: "Cycle gizmos",
             callback: () => {
-                switch (settings.gizmo){
+                switch (settings.gizmo) {
                     case GIZMOS.TRANSLATION:
                         SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
                         break

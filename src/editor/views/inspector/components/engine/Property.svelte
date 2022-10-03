@@ -73,7 +73,7 @@
     />
 {:else if attribute.type === Component.propTypes.ARRAY}
 
-    <div class="inline-vector">
+    <div class:inline-vector={attribute.labels.length < 3} class:vector={attribute.labels.length >= 3}>
         {#each attribute.labels as partial, index}
             <Range
                     noOriginal={true}
@@ -90,8 +90,8 @@
                         submit(attribute.key, value)
                     }}
                     onFinish={v => {
-                            value[index] = v
-                            submit(attribute.key, value, true)
+                        value[index] = v
+                        submit(attribute.key, value, true)
                     }}
                     minValue={attribute.min}
                     maxValue={attribute.max}
@@ -101,16 +101,19 @@
                     value={value[index]}
             />
         {/each}
-        <button class="reset-button" on:click={() => {
-                 for(let i =0; i < originalValue.length; i++){
-                     value[i] = originalValue[i]
-                 }
+        {#if attribute.defaultValue}
 
-            submit(attribute.key, value, true)
-        }}>
-            <Icon styles="font-size: .9rem">undo</Icon>
-            <ToolTip content={Localization.COMPONENTS.RANGE.UNDO}/>
-        </button>
+            <button
+                    class="reset-button"
+                    on:click={() => {
+                         for(let i =0; i < attribute.defaultValue.length; i++)
+                             value[i] = attribute.defaultValue[i]
+                         submit(attribute.key, value, true)
+                    }}>
+                <Icon styles="font-size: .9rem">undo</Icon>
+                <ToolTip content={Localization.COMPONENTS.RANGE.UNDO}/>
+            </button>
+        {/if}
     </div>
 
 {:else if attribute.type === Component.propTypes.BOOLEAN}
@@ -206,5 +209,11 @@
         justify-content: center;
 
         overflow: hidden;
+    }
+
+    .vector {
+        display: grid;
+        gap: 2px;
+        width: 100%;
     }
 </style>

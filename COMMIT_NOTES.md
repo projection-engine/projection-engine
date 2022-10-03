@@ -1,1 +1,5 @@
-- Removing old metrics pass
+- Initialziing visual settings store
+- Added hotkeys for camera switching 
+- Added default values to inspector array components
+- Added auto-normalization of _rotationQuat on movement-worker
+- Changed from euler to quaternion on transformation form

@@ -436,7 +436,7 @@ export default class Localization {
             STOP_SIMULATION: "Stop the simulation to change attributes.",
             TRANSLATION: "Translation",
             ROTATION: "Rotation",
-            SCALING: "Scaling",
+            SCALING_LOCAL: "Scaling (local)",
             RECOMPUTE_PROBES: "Probe re-computation needed",
             RESOLUTION: "Resolution",
             AA: "FXAA Anti-aliasing",
@@ -532,7 +532,7 @@ export default class Localization {
     }
     static COMPONENTS = {
         RANGE: {
-            UNDO: "Use original value"
+            UNDO: "Default values"
         },
         FRAME: {
             ABOUT: "About",

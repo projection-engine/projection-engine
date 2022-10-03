@@ -5,6 +5,7 @@ export default {
     executingAnimation: false,
     scripts: [],
     changeID: undefined,
+    focusedCamera: undefined,
 
     currentLevel: undefined
 }

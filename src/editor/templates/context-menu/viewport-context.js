@@ -12,6 +12,7 @@ export default function viewportContext(settings) {
         VIEWPORT_HOTKEYS.SELECT_ALL,
         VIEWPORT_HOTKEYS.INVERT_SELECTION,
         VIEWPORT_HOTKEYS.SELECT_HIERARCHY,
+        VIEWPORT_HOTKEYS.FOCUS_ON_CAMERA,
         {divider: true},
         VIEWPORT_HOTKEYS.COPY,
         VIEWPORT_HOTKEYS.PASTE,
