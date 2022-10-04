@@ -36,7 +36,15 @@ export default class ActionHistoryAPI {
             changeValue: value
         })
     }
-
+    static saveEntity(entityID, component, key, changeValue) {
+        ActionHistoryAPI.pushChange({
+            target: ActionHistoryAPI.targets.entity,
+            changeValue,
+            entityID,
+            component,
+            key
+        })
+    }
     static pushBlockChange(original) {
         ActionHistoryAPI.controller.save({
             target: ActionHistoryAPI.targets.block,

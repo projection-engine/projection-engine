@@ -1,11 +1,4 @@
-import SHADING_MODELS from "../../../public/engine/editor/templates/SHADING_MODELS"
-import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
-import VIEWS from "../../shared/components/view/VIEWS";
-import VIEWPORT_TABS from "./VIEWPORT_TABS";
-import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
-import KEYS from "../../../public/engine/static/KEYS";
-import ViewportActions from "../libs/ViewportActions";
 
 
 const toRad = Math.PI / 180

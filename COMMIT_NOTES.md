@@ -1,4 +1,4 @@
-- Fixed quaternion transformation for TransformationAPI
-- Visual changes to array type on inspector
-- Visual rework of view header dropdown
-- 
+- Initializing structural rework
+- Removing window frame from  editor window
+- Reworked level loading structure
+- Levels now control their own settings/visual settings

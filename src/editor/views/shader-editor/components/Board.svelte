@@ -1,6 +1,5 @@
 <script>
 
-    import {v4} from "uuid";
     import Comment from "./node/Comment.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
     import handleBoardScroll from "../utils/handle-board-scroll";

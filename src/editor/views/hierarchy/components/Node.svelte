@@ -4,8 +4,6 @@
     import DraggableEntity from "./Draggable.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Localization from "../../../../shared/libs/Localization";
-    import EngineStore from "../../../stores/EngineStore";
-    import {v4} from "uuid";
     import EntityConstructor from "../../../libs/EntityConstructor";
 
     export let depth = undefined

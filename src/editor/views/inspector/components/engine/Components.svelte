@@ -18,6 +18,7 @@
         from "../../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
     import UIComponent from "./UIComponent.svelte";
     import SelectionStore from "../../../../stores/SelectionStore";
+    import ActionHistoryAPI from "../../../../libs/ActionHistoryAPI";
 
     export let entity
     const translate = key => Localization.PROJECT.INSPECTOR[key]
@@ -99,7 +100,7 @@
             EntityAPI.packageLights(true)
         }
         if (!savedState) {
-            EngineStore.saveEntity(
+            ActionHistoryAPI.saveEntity(
                 entity.id,
                 componentKey,
                 key,
@@ -110,7 +111,7 @@
         component[key] = value
         if (save) {
             SelectionStore.updateStore()
-            EngineStore.saveEntity(
+            ActionHistoryAPI.saveEntity(
                 entity.id,
                 componentKey,
                 key,
@@ -145,7 +146,7 @@
             submit={(key, value, save) => {
 
                 if(!savedState){
-                    EngineStore.saveEntity(
+                    ActionHistoryAPI.saveEntity(
                         entity.id,
                          index,
                           key,
@@ -155,7 +156,7 @@
                 }
                 script[key] = value
                 if(save)
-                    EngineStore.saveEntity(
+                    ActionHistoryAPI.saveEntity(
                         entity.id,
                          index,
                           key,

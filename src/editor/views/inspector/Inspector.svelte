@@ -1,7 +1,6 @@
 <script>
     import Localization from "../../../shared/libs/Localization";
     import Header from "../../../shared/components/view/components/Header.svelte";
-    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import Components from "./components/engine/Components.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
@@ -15,6 +14,7 @@
     import Entity from "../../../../public/engine/production/instances/Entity";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
     import VIEWS from "../../../shared/components/view/VIEWS";
+    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -67,7 +67,7 @@
 
     const submitTransformationChange = (key, value, save) => {
         if (!savedState) {
-            EngineStore.saveEntity(
+            ActionHistoryAPI.saveEntity(
                 entity.id,
                 undefined,
                 key,
@@ -78,7 +78,7 @@
         entity[key] = value
         entity.__changedBuffer[0] = 1
         if (save)
-            EngineStore.saveEntity(
+            ActionHistoryAPI.saveEntity(
                 entity.id,
                 undefined,
                 key,

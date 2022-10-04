@@ -11,7 +11,6 @@
     import SettingsStore from "../../stores/SettingsStore";
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
     import {Engine} from "../../../../public/engine/production";
-    import PASS_KEYS from "../../../../public/engine/static/metrics/PASS_KEYS";
 
     const {shell} = window.require("electron")
     let settings = {}

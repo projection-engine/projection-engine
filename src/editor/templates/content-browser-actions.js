@@ -6,16 +6,7 @@ import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../libs/import-file";
 import getMaterialAsOption from "./utils/get-material-as-option";
-import resolveFileName from "./utils/resolve-file-name";
-import FILE_TYPES from "../../static/FILE_TYPES";
-import AssetAPI from "../../shared/libs/AssetAPI";
-import SIMPLE_MATERIAL_TEMPLATE from "../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
-import COMPONENT_TEMPLATE from "../../../public/engine/static/templates/COMPONENT_TEMPLATE";
-import UI_TEMPLATE from "../../../public/engine/static/templates/UI_TEMPLATE";
 import Localization from "../../shared/libs/Localization";
-import TERRAIN_TEMPLATE from "../../../public/engine/static/templates/TERRAIN_TEMPLATE";
-import TERRAIN_LAYERED from "../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
-import TERRAIN_MATERIAL_UNIFORMS from "../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 
 const {shell} = window.require("electron")

@@ -4,7 +4,6 @@
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../icon/Icon.svelte";
     import VIEWS from "../VIEWS";
-    import SettingsStore from "../../../../editor/stores/SettingsStore";
 
     export let icon
     export let title

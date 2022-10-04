@@ -1,9 +1,8 @@
-import EngineStore from "../stores/EngineStore";
 import ROUTES from "../../static/ROUTES";
 import importFile from "../libs/import-file";
 import FilesStore from "../stores/FilesStore";
-import SettingsStore from "../stores/SettingsStore";
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
+import LevelController from "../libs/LevelController";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -14,7 +13,7 @@ export default function getFrameOptions(settings) {
         options: [
             {
                 label: "Save",
-                onClick: () => EngineStore.save().catch(),
+                onClick: () => LevelController.save().catch(),
                 shortcut: "Ctrl - S"
             },
             {divider: true},

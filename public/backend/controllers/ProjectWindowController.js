@@ -1,9 +1,8 @@
-const {BrowserWindow, ipcMain, screen} = require("electron")
+const {BrowserWindow, ipcMain, screen, Menu} = require("electron")
 const Window = require("../EntryPointController")
-const FRAME_EVENTS = require("../../../src/static/FRAME_EVENTS")
 const path = require("path");
 const ROUTES = require("../../../src/static/ROUTES");
-const {v4} = require("uuid");
+
 const windowLifeCycle = require("../utils/window-life-cycle");
 const loadMetadata = require("../utils/level-loader/load-metadata");
 
@@ -16,6 +15,8 @@ const cleanUpRegistry = require("../utils/level-loader/clean-up-registry");
 
 const OPEN_PROJECTS = require("../../../src/static/OPEN_PROJECTS");
 const fs = require("fs");
+const WINDOW_FRAME_MENU = require("../../../src/static/WINDOW_FRAME_MENU");
+const WINDOW_ROUTES = require("../../../src/static/WINDOW_ROUTES");
 
 module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
@@ -26,7 +27,7 @@ module.exports = function ProjectWindow(handleClose, data) {
         width: width * .75,
         height: height * .75,
 
-        frame: false,
+darkTheme: true,
         webPreferences: {
             webSecurity: false,
             enableRemoteModule: true,
@@ -35,9 +36,10 @@ module.exports = function ProjectWindow(handleClose, data) {
             nativeWindowOpen: true,
             nodeIntegrationInWorker: true
         },
-        autoHideMenuBar: true,
+
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
+
 
     window.on("close", () => updateCache(data.id, false, () => handleClose()))
     updateCache(data.id, true)
@@ -52,8 +54,9 @@ module.exports = function ProjectWindow(handleClose, data) {
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA + data.id, async event => {
         event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) + "projects" + path.sep + data.id))
     })
+
     ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
-        if(settingsWindowIsOpen)
+        if (settingsWindowIsOpen)
             return
 
         settingsWindowIsOpen = true
@@ -70,7 +73,16 @@ module.exports = function ProjectWindow(handleClose, data) {
                 handleClose()
             })
         },
-        () => window.loadFile(Window.project, {}).catch(() => handleClose())
+        async () => {
+            try {
+                const menu = Menu.buildFromTemplate(WINDOW_FRAME_MENU)
+                await window.loadFile(Window.project, {})
+                Menu.setApplicationMenu(menu)
+            } catch (error) {
+                console.error(error)
+                handleClose()
+            }
+        }
     )
 
     return window

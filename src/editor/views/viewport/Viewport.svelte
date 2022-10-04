@@ -1,6 +1,5 @@
 <script>
     import Header from "./components/Header.svelte";
-    import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
@@ -20,8 +19,10 @@
     import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
     import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
+    import Canvas from "../../Canvas.svelte";
+    import LevelController from "../../libs/LevelController";
 
-    export let isReady = false
+
     export let updateView
     export let viewTab = VIEWPORT_TABS.EDITOR
 
@@ -31,7 +32,7 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     let ref
-
+    $:isReady = engine.isReady
     $: {
         if (ref != null) {
             HotKeysController.bindAction(
@@ -76,8 +77,6 @@
             }
         }
     }
-
-
 </script>
 
 <div class="viewport" bind:this={ref}>
@@ -116,7 +115,10 @@
         </div>
     {/if}
     <div class="wrapper">
-        <slot name="canvas"/>
+        <Canvas
+                isExecuting={engine.executingAnimation}
+                onReady={() => LevelController.loadLevel()}
+        />
         {#if !engine.executingAnimation && isReady}
             {#if viewTab === VIEWPORT_TABS.EDITOR }
                 <EditorLayout

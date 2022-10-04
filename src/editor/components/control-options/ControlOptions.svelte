@@ -10,6 +10,7 @@
 
     import EntityStateController from "../../libs/EntityStateController";
     import {DiffuseProbePass, SpecularProbePass} from "../../../../public/engine/production";
+    import LevelController from "../../libs/LevelController";
 
     let engine
     let store
@@ -24,7 +25,6 @@
 </script>
 
 <div class="container">
-
     <button on:click={() => {
         if(!EngineStore.engine.executingAnimation)
             EntityStateController.startPlayState()
@@ -47,7 +47,9 @@
         {translate("BUILD_PROBES")}
     </button>
     <div data-vertdivider="-" style="height: 15px"></div>
+
     <Layout/>
+
     <div class="level-selector">
         <Dropdown buttonStyles="border-radius: 3px; height: 18px; background: var(--pj-border-primary);">
             <button slot="button" class="dropdown" style="background: transparent">
@@ -61,7 +63,7 @@
                 </div>
                 <ToolTip content={translate("LEVEL")}/>
             </button>
-            <button on:click={() => EngineStore.loadLevel()}>
+            <button on:click={() => LevelController.loadLevel()}>
                 {#if !engine.currentLevel}
                     <Icon>check</Icon>
                 {/if}
@@ -69,7 +71,7 @@
             </button>
             <div data-divider="-"></div>
             {#each store.levels as level}
-                <button on:click={() => EngineStore.loadLevel(level)}>
+                <button on:click={() => LevelController.loadLevel(level)}>
                     {#if engine.currentLevel?.registryID === level.registryID}
                         <Icon>check</Icon>
                     {/if}

@@ -7,12 +7,12 @@
     import Preview from "../../../../shared/components/preview/Preview.svelte";
     import FilesStore from "../../../stores/FilesStore";
     import Localization from "../../../../shared/libs/Localization";
-    import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import getTypeName from "../utils/get-type-name";
     import SelectionStore from "../../../stores/SelectionStore";
+    import LevelController from "../../../libs/LevelController";
 
     const {shell} = window.require("electron")
 
@@ -53,7 +53,7 @@
                 alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
             } else if (fileType === FILE_TYPES.LEVEL) {
                 alert.pushAlert(translate("OPENING_LEVEL") + " (" + currentLabel + ")", "info")
-                EngineStore.loadLevel(data)
+                LevelController.loadLevel(data)
             } else
                 setSelected(data.id)
         } else {

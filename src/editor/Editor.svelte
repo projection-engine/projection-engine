@@ -15,6 +15,7 @@
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
+    import LevelController from "./libs/LevelController";
 
     const FALLBACK = {
         name: "Default",
@@ -33,10 +34,7 @@
         unsubscribeSettings()
         unsubscribeEngine()
     })
-    let isReady = false
-    let isDataLoaded = false
     let isMetadataLoaded = false
-
     onMount(() => {
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
@@ -46,22 +44,12 @@
             }
         )
         InitializeWindow()
-        loadProjectMetadata((m, s) => {
-            SettingsStore.updateStore({...settings, ...s})
-            engine.meta = m
-            isMetadataLoaded = true
+        LevelController.initialize().then(res => {
+            EngineStore.updateStore({...engine, meta: res, isReady: true})
         })
     })
     let view = FALLBACK
-
     $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK
-
-    $: {
-        if (isReady && !isDataLoaded) {
-            isDataLoaded = true
-            EngineStore.loadLevel()
-        }
-    }
     const updateView = (key, newView) => {
         const s = {...settings}
         const copy = [...s.views]
@@ -74,13 +62,6 @@
 
 <div class="wrapper">
     <Alert/>
-
-    <WindowFrame
-            options={frameOptions}
-            label={engine.meta?.name}
-            pageInfo={PAGE}
-            background="var(--pj-background-tertiary)"
-    />
     <ControlOptions/>
     <ContextMenu/>
     <div class="middle">
@@ -95,15 +76,11 @@
                 resizePosition={"left"}
         />
         <div class="content">
-            {#if isMetadataLoaded}
-                <Viewport isReady={isReady} viewTab={view.viewport ? view.viewport : VIEWPORT_TABS.EDITOR} updateView={(viewTab) => updateView("viewport", viewTab)}>
-                    <Canvas
-                            isExecuting={engine.executingAnimation}
-                            slot="canvas"
-                            onReady={() => isReady = true}
-                    />
-                </Viewport>
-            {/if}
+
+            <Viewport
+                    viewTab={view.viewport ? view.viewport : VIEWPORT_TABS.EDITOR}
+                    updateView={(viewTab) => updateView("viewport", viewTab)}
+            />
             <ViewsContainer
                     reducedOpacity={engine.executingAnimation}
                     id="bottom"
@@ -123,7 +100,7 @@
                 resizePosition={"top"}
         />
     </div>
-    <Footer isEngineReady={isMetadataLoaded}/>
+    <Footer/>
 </div>
 
 

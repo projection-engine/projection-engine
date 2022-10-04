@@ -1,9 +1,5 @@
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
-import Engine from "../../../public/engine/production/Engine";
-import AssetAPI from "../../shared/libs/AssetAPI";
 import SETTINGS from "../data/SETTINGS";
-import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
-import GPU from "../../../public/engine/production/GPU";
 import {get, writable} from "svelte/store";
 
 let initialized = false
@@ -33,29 +29,6 @@ export default class SettingsStore {
         SettingsStore.data = value
         settingsStore.set(value)
     }
-
-    static async writeSettings(metaData, settings) {
-        const entities = Engine.entities
-        const old = JSON.parse(metaData.toString())
-        await AssetAPI.updateProject(
-            {
-                ...old,
-                entities: entities.length,
-                meshes: GPU.meshes.size,
-                materials: GPU.materials.size,
-                lastModification: (new Date()).toDateString(),
-                creation: settings.creationDate
-            },
-            {
-                ...settings,
-                cameraPosition: CameraTracker.centerOn,
-                yaw: CameraTracker.yaw,
-                pitch: CameraTracker.pitch,
-                radius: CameraTracker.radius
-            }
-        )
-    }
-
 
 }
 
