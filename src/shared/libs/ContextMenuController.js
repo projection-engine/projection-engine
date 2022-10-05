@@ -1,7 +1,7 @@
 export default class ContextMenuController {
     static data = {targets: {}, focused: undefined}
 
-    static mount(metadata, options, target, triggers, onFocus) {
+    static mount(metadata, options, target, triggers=[], onFocus) {
         ContextMenuController.data.targets[target] = {
             options,
             triggers,

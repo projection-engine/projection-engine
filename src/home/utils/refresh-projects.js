@@ -2,6 +2,7 @@ import Localization from "../../shared/libs/Localization";
 
 import FilesAPI from "../../shared/libs/FilesAPI";
 import NodeFS from "../../shared/libs/NodeFS";
+import SETTINGS from "../../editor/data/SETTINGS";
 
 
 export default async function refreshProjects(path) {
@@ -16,12 +17,13 @@ export default async function refreshProjects(path) {
             const [, stat] = await NodeFS.lstat(filename)
             if (stat && stat.isDirectory) {
                 const [, meta] = await NodeFS.read(filename + "/.meta")
-                const [, settings] = await NodeFS.read(filename + "/.preferences")
+
                 const parts = filename.split(FilesAPI.sep)
+                const metadataJSON  = meta ? JSON.parse(meta) : {settings: SETTINGS}
                 data.push({
                     id: parts.pop(),
-                    meta: meta ? JSON.parse(meta) : undefined,
-                    settings: settings ? JSON.parse(settings) : undefined
+                    meta: {...metadataJSON, settings: undefined},
+                    settings: metadataJSON?.settings
                 })
             }
         }

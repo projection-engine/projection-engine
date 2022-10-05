@@ -31,6 +31,7 @@
 
     const handleContext = (event) => {
         if (startPosition && !locked && ContextMenuController.data.focused) {
+            console.log("HERE")
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
@@ -96,6 +97,7 @@
             const elements = document.elementsFromPoint(event.clientX, event.clientY)
             let focused
             for (let i = 0; i < elements.length; i++) {
+                console.log(elements[i], ContextMenuController.data.targets)
                 if (!ContextMenuController.data.targets[elements[i].id])
                     continue
                 focused = ContextMenuController.data.targets[elements[i].id]

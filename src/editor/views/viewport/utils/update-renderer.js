@@ -5,6 +5,7 @@ import Wrapper from "../../../../../public/engine/editor/services/Wrapper";
 import CameraAPI from "../../../../../public/engine/production/apis/CameraAPI";
 import ShadowMapPass from "../../../../../public/engine/production/passes/rendering/ShadowMapPass";
 import {GizmoSystem} from "../../../../../public/engine/editor";
+import {GPU} from "../../../../../public/engine/production";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -40,6 +41,8 @@ export default function updateRenderer(selected, engine, settings) {
 
     if (settings.gizmoGrid.sensitivity != null)
         GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity
+
+    GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams({
         ...settings,
         selected,

@@ -8,6 +8,7 @@
     import SelectionStore from "./stores/SelectionStore";
     import AssetAPI from "../shared/libs/AssetAPI";
     import initializer from "../../public/engine/editor/initializer";
+    import VisualsStore from "./stores/VisualsStore";
 
     export let onReady
 
@@ -15,13 +16,14 @@
     let done = false
     let engine = {}
     let settings = {}
+    let visuals = {}
     let selected = []
     const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
     onMount(() => {
-
-        GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
+        GPU.initializeContext(canvasRef, visuals.resolution, AssetAPI.readAsset)
             .then(() => {
                 initializer()
                 onReady()
@@ -31,13 +33,14 @@
     })
 
     onDestroy(() => {
+        unsubscribeVisuals()
         unsubscribeSelection()
 
         unsubscribeEngine()
         unsubscribeSettings()
     })
 
-    $: if (done) updateRenderer(selected, engine, settings)
+    $: if (done) updateRenderer(selected, engine, {...settings, ...visuals})
 </script>
 
 
@@ -46,6 +49,4 @@
         bind:this={canvasRef}
         id={RENDER_TARGET}
         style={`width: 100%; height: 100%; background: transparent`}
-        width={settings.resolution[0]}
-        height={settings.resolution[1]}
 ></canvas>

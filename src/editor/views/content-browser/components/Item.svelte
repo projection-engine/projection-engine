@@ -13,8 +13,12 @@
     import getTypeName from "../utils/get-type-name";
     import SelectionStore from "../../../stores/SelectionStore";
     import LevelController from "../../../libs/LevelController";
-
-    const {shell} = window.require("electron")
+    import itemDbclick from "../utils/item-dbclick";
+    import ItemInput from "./ItemInput.svelte";
+    import getIcon from "../utils/get-icon";
+    import getItemDragImage from "../utils/get-item-dragimage";
+    import getItemIcon from "../utils/get-item-icon";
+    import getItemDragData from "../utils/get-item-drag-data";
 
     export let childrenQuantity
     export let reset
@@ -22,7 +26,6 @@
     export let data
 
     export let setSelected
-    export let onRename
     export let submitRename
     export let items
     export let setCurrentDirectory
@@ -30,145 +33,52 @@
     export let setOnDrag
     export let onDrag
     export let toCut = []
+    export let onRename
 
-    $: isOnCuttingBoard = toCut.includes(data.id)
+
     let ref
     let selected
     const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.map)
-    let currentLabel
-    $: currentLabel = data.name
+    const translate = key => Localization.PROJECT.FILES[key]
+    const draggable = dragDrop(true)
 
+    $: isOnRename = onRename === data.id
+    $: isMaterial = metadata.type === FILE_TYPES.MATERIAL
+    $: isNotDraggable = onDrag && type !== 0
+    $: icon = getItemIcon(metadata, childrenQuantity, type)
+    $: isOnCuttingBoard = toCut.includes(data.id)
     $: metadata = {
         path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
         childrenQuantity,
         typeName: getTypeName(data.type)
     }
-    const translate = key => Localization.PROJECT.FILES[key]
-    const onDbClick = () => {
-        if (type === 1) {
-            const fileType = "." + data.type
-            if (fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT) {
-                shell.openPath(FilesStore.ASSETS_PATH + FilesAPI.sep + data.id).catch()
-                alert.pushAlert(translate("OPENING_FILE") + " (" + currentLabel + ")", "info")
-            } else if (fileType === FILE_TYPES.LEVEL) {
-                alert.pushAlert(translate("OPENING_LEVEL") + " (" + currentLabel + ")", "info")
-                LevelController.loadLevel(data)
-            } else
-                setSelected(data.id)
-        } else {
-            reset()
-            setCurrentDirectory(data)
-        }
-    }
-    $: isMaterial = metadata.type === FILE_TYPES.MATERIAL
-    let icon
+
+
     $: {
-        if (type === 0)
-            icon = childrenQuantity === 0 ? "folder_open" : "folder"
-        else
-            switch (metadata.type) {
-                case FILE_TYPES.COMPONENT:
-                    icon = "code"
-                    break
-                case FILE_TYPES.SCENE:
-                    icon = "inventory_2"
-                    break
-                case FILE_TYPES.LEVEL:
-                    icon = "forest"
-                    break
-                case FILE_TYPES.UI_LAYOUT:
-                    icon = "view_quilt"
-                    break
-                case FILE_TYPES.TERRAIN:
-                    icon = "landscape"
-                    break
-                default:
-                    icon = undefined
-                    break
-            }
-    }
-    const getIcon = () => {
-        if (icon)
-            return icon
-        if (type === 0)
-            return childrenQuantity === 0 ? "folder_open" : "folder"
-        if (metadata.type === FILE_TYPES.MESH)
-            return "category"
-        return "texture"
-
-    }
-    const draggable = dragDrop(true)
-    $: isNotDraggable = onDrag && type !== 0
-    $: dragDropData = {
-        dragImage: `
-                <span data-icon="-" style="font-size: 70px">${getIcon()}</span>
-                ${data.name}
-            `,
-        onDragOver: () => type === 0 ? "Link folder" : undefined,
-        onDragStart: () => {
-            setOnDrag(true)
-            const ss = SelectionStore.contentBrowserSelected.map(s => items.find(i => i.id === s))
-            if (ss.length > 0)
-                return JSON.stringify(ss.map(s => s.registryID))
-            return JSON.stringify([type === 1 ? data.registryID : data.id])
-        }
+        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
+        draggable.dragImage = dragDropData.dragImage
+        draggable.onDragOver = dragDropData.onDragOver
+        draggable.onDragStart = dragDropData.onDragStart
+        draggable.disabled = onDrag && type !== 0 || isOnRename
     }
 
+    $: toolTipContent = getItemDragImage(childrenQuantity, data, type, metadata)
+    $: if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
     onMount(() => {
+        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
         draggable.onMount({
             targetElement: ref,
             onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
             ...dragDropData
         })
     })
-    $: {
-        draggable.dragImage = dragDropData.dragImage
-        draggable.onDragOver = dragDropData.onDragOver
-        draggable.onDragStart = dragDropData.onDragStart
-        draggable.disabled = onDrag && type !== 0
-    }
-
 
     onDestroy(() => {
         unsubscribe()
         draggable.onDestroy()
     })
-    $: isOnRename = onRename === data.id
 
-    $: draggable.disabled = isOnRename
-    let toolTipContent
-    $: {
-        let body
-        if (type !== 0)
-            body = `
-                <div>
-                    <strong>${translate("ITEM_TYPE")}:</strong>
-                    <small>${metadata.typeName}</small>
-                </div>
-                <div>
-                    <strong>${translate("REGISTRY_ID")}:</strong>
-                    <small>${data.registryID}</small>
-                </div>
-            `
-        else
-            body = `
-                <div>
-                    <strong>${translate("CHILDREN")}:</strong>
-                    <small>${childrenQuantity}</small>
-                </div>
-            `
-        toolTipContent = `
-             <div style="   display: grid;">
-                <div>
-                    <strong>${translate("ITEM_NAME")}: </strong>
-                    <small>${currentLabel}</small>
-                </div>
-                ${body}
-            </div>
-        `
-    }
-    $: if(isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
 </script>
 
 <div
@@ -176,17 +86,14 @@
         data-id={data.id}
         data-material={isMaterial ? data.id : undefined}
         data-file={type === 0 ? undefined : data.id}
-        data-name={currentLabel}
+        data-name={data.name}
         data-folder={type !== 0 ? undefined : data.id}
-        on:dblclick={onDbClick}
+        on:dblclick={() => itemDbclick(data, setCurrentDirectory, setSelected, reset, type)}
         bind:this={ref}
         on:click={setSelected}
-
         style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
-
 >
-
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
@@ -223,20 +130,7 @@
             {/if}
         {/if}
     </div>
-    {#if isOnRename}
-        <Input
-                hasBorder="true"
-                onEnter={() => submitRename(currentLabel)}
-                onBlur={() => submitRename(currentLabel)}
-                setSearchString={e => currentLabel = e}
-                searchString={currentLabel}
-                noAutoSubmit="true"
-        />
-    {:else }
-        <div data-overflow="-" class="label">
-            {currentLabel}
-        </div>
-    {/if}
+    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
     <ToolTip content={toolTipContent}/>
 </div>
 
@@ -272,14 +166,6 @@
 
     .image {
         max-width: 100%;
-    }
-
-    .label {
-        font-size: 0.75rem;
-        padding: 4px 4px 8px;
-        text-align: center;
-        line-height: 100%;
-        min-height: 20px;
     }
 
     .file {

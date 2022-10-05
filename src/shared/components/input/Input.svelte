@@ -45,24 +45,24 @@
             draggable={false}
             bind:this={input}
             on:input={e => {
-            if(directChange)
-                directChange(e.target.value)
-            changed = true
-            if(!noAutoSubmit)
-                onChange(e.target)
-        }}
+                if(directChange)
+                    directChange(e.target.value)
+                changed = true
+                if(!noAutoSubmit)
+                    onChange(e.target)
+            }}
             on:blur={(e) => {
-            if(onBlur)
-            onBlur(changed, e.currentTarget.value)
-        }}
+                if(onBlur)
+                    onBlur(changed, e.currentTarget.value)
+            }}
             on:keydown={e => {
-            if(e.code === ENTER){
-               setSearchString(e.target.value)
-               if(onEnter)
-                    onEnter(e.target.value)
-                changed = false
-            }
-        }}
+                if(e.code === ENTER){
+                   setSearchString(e.target.value)
+                   if(onEnter)
+                        onEnter(e.target.value)
+                    changed = false
+                }
+            }}
     />
 </div>
 

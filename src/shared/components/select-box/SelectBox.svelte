@@ -7,6 +7,7 @@
     export let setSelected
     export let selected
     export let nodes
+    export let allowAll
     let ref
 
     $: ids = nodes.map(n => n.id)
@@ -54,7 +55,7 @@
     }
 
     function checkFocus(target, event) {
-        let hasDraggable = false
+        let hasDraggable = !allowAll
         event.path.forEach(el => {
             hasDraggable = hasDraggable || el.draggable === true
         })

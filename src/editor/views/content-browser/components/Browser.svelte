@@ -126,7 +126,7 @@
         }}
 >
     <SelectBox
-
+            allowAll={true}
             nodes={toRender.flat()}
             selected={selected}
             setSelected={v => SelectionStore.contentBrowserSelected = v}

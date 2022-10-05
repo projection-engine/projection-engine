@@ -7,6 +7,9 @@ import ActionHistoryAPI from "./ActionHistoryAPI";
 import ViewportActions from "./ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../../static/ROUTES";
+import VisualsStore from "../stores/VisualsStore";
+import SETTINGS from "../data/SETTINGS";
+import VISUAL_SETTINGS from "../data/VISUAL_SETTINGS";
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function InitializeWindow(openAbout) {
@@ -17,6 +20,23 @@ export default function InitializeWindow(openAbout) {
     Math.vec4 = vec4
     Math.vec3 = vec3
     Math.quat = quat
+    ipcRenderer.on(
+        ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
+        (event, data) => {
+            let newSettings = {}, newVisuals = {}
+            Object.entries(data).forEach(([key, value]) => {
+                if (VISUAL_SETTINGS.hasOwnProperty(key))
+                    newVisuals[key] = value
+                else
+                    newSettings[key] = value
+            })
+            if (Object.keys(newSettings).length > 0)
+                SettingsStore.updateStore({...SettingsStore.data, ...newSettings})
+            if (Object.keys(newVisuals).length > 0)
+                VisualsStore.updateStore({...VisualsStore.data, ...newVisuals})
+            alert.pushAlert("Updating preferences", "info")
+        }
+    )
     WINDOW_FRAME_MENU.forEach(e => {
         e.submenu.forEach(s => {
             if (s.id == null)
@@ -48,7 +68,7 @@ export default function InitializeWindow(openAbout) {
                         openAbout()
                         break
                     case "preferences":
-                        const settingsClone = structuredClone(SettingsStore.data)
+                        const settingsClone = structuredClone({...SettingsStore.data, ...VisualsStore.data})
                         ipcRenderer.send(
                             ROUTES.OPEN_SETTINGS + sessionStorage.getItem("electronWindowID"),
                             settingsClone

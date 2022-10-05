@@ -1,11 +1,6 @@
-import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
-
-
-const toRad = Math.PI / 180
 export default {
     gamma: 2.2,
     exposure: 1,
-    transformationType: TRANSFORMATION_TYPE.GLOBAL,
     bloomStrength: .3,
     bloomThreshold: .85,
     filmGrainStrength: .01,
@@ -15,7 +10,7 @@ export default {
     FXAAReduceMul: 1 / 8,
 
 
-    resolution: [window.screen.width, window.screen.height],
+    resolution: [window.outerWidth, window.outerHeight],
 
     distortion: false,
     chromaticAberration: false,
@@ -23,9 +18,7 @@ export default {
     distortionStrength: 1,
     chromaticAberrationStrength: 1,
     backgroundColor: [.2, .2, .2],
-    fov: 60 * toRad,
-    zNear: .1,
-    zFar: 5000,
+
     pcfSamples: 3.,
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
@@ -50,7 +43,5 @@ export default {
         power: 2,
         radius: 100
     },
-
-    currentView: 0,
     INITIALIZED: false
 }

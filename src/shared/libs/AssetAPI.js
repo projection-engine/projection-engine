@@ -33,16 +33,6 @@ export default class AssetAPI {
     }
 
 
-    static async updateProject(meta, settings) {
-        if (meta) await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + ".meta"), JSON.stringify(meta))
-        if (settings) {
-            let sett = {...settings}
-            delete sett.type
-            delete sett.data
-            await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + ".preferences"), JSON.stringify(sett))
-        }
-    }
-
     static async createProject(name) {
 
         const projectID = uuidv4(),

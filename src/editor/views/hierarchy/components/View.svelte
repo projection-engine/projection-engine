@@ -10,18 +10,18 @@
     import Localization from "../../../../shared/libs/Localization";
     import viewportContext from "../../../templates/context-menu/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let ID
     export let translate
     export let searchString
     export let filteredComponent
     export let setIsEmpty
-    const TRIGGERS = ["data-node", "data-self"]
-
     let engine = {}
     let settings = {}
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     let open = new Map()
     let toRender = []
@@ -67,15 +67,16 @@
     $: SIZE = toRender.length
     $: setIsEmpty(SIZE === 0)
     $: {
-        if (settings?.viewportHotkeys != null)
-        ContextMenuController.mount({
-                icon: "account_tree",
-                label: Localization.PROJECT.HIERARCHY.TITLE
-            },
-            viewportContext(settings),
-            ID,
-            TRIGGERS
-        )
+        if (settings?.viewportHotkeys != null) {
+
+            ContextMenuController.mount({
+                    icon: "account_tree",
+                    label: Localization.PROJECT.HIERARCHY.TITLE
+                },
+                viewportContext(settings),
+                ID
+            )
+        }
     }
 
     onDestroy(() => {

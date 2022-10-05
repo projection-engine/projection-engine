@@ -127,6 +127,7 @@
 
     .content {
         display: flex;
+        gap: 2px;
         width: 100%;
         overflow: hidden;
         padding-bottom: 2px;
@@ -140,6 +141,7 @@
     }
 
     fieldset {
+        padding: 0;
         width: 100%;
     }
 </style>

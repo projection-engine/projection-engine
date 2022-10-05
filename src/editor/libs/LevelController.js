@@ -39,6 +39,8 @@ export default class LevelController {
                 let meta = {}
                 if (data?.meta)
                     meta = data.meta.data
+                if (meta.settings != null)
+                    SettingsStore.updateStore({...SETTINGS, ...meta.settings})
                 resolve(meta)
             })
             ipcRenderer.send(IPC)
@@ -46,6 +48,7 @@ export default class LevelController {
     }
 
     static async loadLevel(level = DEFAULT_LEVEL) {
+
         if (LevelController.#loadedLevel === level) {
             alert.pushAlert("Level already loaded")
             return
@@ -86,10 +89,10 @@ export default class LevelController {
             CHANNELS.ENTITIES + projectID,
             async (_, data) => {
 
-                const {entities, settings, visualSettings} = data
-                if (settings != null)
-                    SettingsStore.updateStore({...SETTINGS, ...settings})
-
+                const {entities, visualSettings} = data
+                console.log(data)
+                if(visualSettings)
+                VisualsStore.updateStore({...visualSettings})
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
                     const entity = Entity.parseEntityObject(entities[i])
@@ -161,42 +164,43 @@ export default class LevelController {
     static async save() {
         alert.pushAlert("Saving editor", "info")
         const entities = Engine.entities
-        const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta")
-        if (metaData) {
-            let pathToWrite
-            pathElse:if (!EngineStore.engine.currentLevel)
-                pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
-            else {
-                const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
-                if (!reg) {
-                    alert.pushAlert("Level not found, a new one will be created.", "alert")
-                    pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
-                    break pathElse
-                }
-                pathToWrite = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
-            }
-
-            try {
-                await FilesAPI.writeFile(
-                    pathToWrite,
-                    Entity.serializeComplexObject({
-                        entities: entities.map(e => e.serializable()),
-                        settings: {...SettingsStore.data},
-                        visualSettings: {...VisualsStore.data},
-                    }),
-                    true
-                )
-            } catch (err) {
-                console.error(err)
-                return
-            }
-            alert.pushAlert(
-                "Project saved",
-                "success"
-            )
+        const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta", "json")
+        if (!metaData) {
+            console.error(new Error("Metadata not found"))
             return
         }
-        alert.pushAlert("Error saving project", "error")
+        await FilesAPI.writeFile(FilesAPI.path + FilesAPI.sep + ".meta", {
+            ...metaData,
+            settings: SettingsStore.data
+        }, true)
+        let pathToWrite
+        pathElse:if (!EngineStore.engine.currentLevel)
+            pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
+        else {
+            const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
+            if (!reg) {
+                alert.pushAlert("Level not found, a new one will be created.", "alert")
+                pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
+                break pathElse
+            }
+            pathToWrite = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+        }
+        try {
+            await FilesAPI.writeFile(
+                pathToWrite,
+                Entity.serializeComplexObject({
+                    entities: entities.map(e => e.serializable()),
+                    visualSettings: {...VisualsStore.data},
+                }),
+                true
+            )
+        } catch (err) {
+            console.error(err)
+            return
+        }
+        alert.pushAlert("Project saved", "success")
+
+
     }
 
 }

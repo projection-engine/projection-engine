@@ -9,9 +9,8 @@ export default class EntityNameController {
     static renameEntity(newName, entity) {
         const found = EntityNameController.byName.get(newName)
         let validName = true
-        if (found) {
+        if (found !== entity.id)
             validName = !QueryAPI.getEntityByID(found)
-        }
         if (validName) {
             entity.name = newName
             EntityNameController.byName.set(newName, entity.id)

@@ -35,13 +35,6 @@
     })
 
     onMount(() => {
-        ipcRenderer.on(
-            ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
-            (event, data) => {
-                SettingsStore.updateStore(data)
-                alert.pushAlert("Updating preferences", "info")
-            }
-        )
         InitializeWindow(_ => isAboutOpen = true)
         LevelController.initialize().then(res => {
             EngineStore.updateStore({...engine, meta: res, isReady: true})

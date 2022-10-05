@@ -68,7 +68,8 @@
         <Input
                 width="100%"
                 hasBorder={true}
-                setSearchString={v => EntityNameController.renameEntity(v, entity)}
+                onBlur={(_,v) => EntityNameController.renameEntity(v, entity)}
+                onEnter={v => EntityNameController.renameEntity(v, entity)}
                 searchString={entity.name}
                 placeholder={translate("MY_ENTITY")}
         />

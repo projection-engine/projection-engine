@@ -11,8 +11,9 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
-    import {EntityAPI} from "../../../../../public/engine/production";
+    import {EntityAPI, KEYS} from "../../../../../public/engine/production";
     import HierarchyController from "../../../libs/HierarchyController";
+    import EntityNameController from "../../../libs/EntityNameController";
 
     export let node
     export let lockedEntity
@@ -21,12 +22,15 @@
     export let updateOpen
     export let open
 
+    let isOnEdit = false
     let ref
+    let cacheName
+    $: cacheName = node.name
 
     $: icons = getEngineIcon(node)
     const draggable = dragDrop(true)
+    $: draggable.disabled = isOnEdit
     onMount(() => {
-
         draggable.onMount({
             targetElement: ref,
             onDragStart: () => node,
@@ -62,13 +66,32 @@
     <div
             bind:this={ref}
             class="node"
-            on:click={(e) => updateSelection(node.id, e.ctrlKey)}
+            on:dblclick={() => isOnEdit = true}
+            on:mousedown={(e) => updateSelection(node.id, e.ctrlKey)}
     >
-        <div data-overflow="-">
-            <ToolTip content={node.name}/>
-            {node.name}
-        </div>
+        <input
+                disabled={!isOnEdit}
+                on:change={e => {
+                    console.log("IM HERE")
+                    cacheName = e.value
+                    EntityNameController.renameEntity(cacheName, node)
+                }}
+                on:blur={ev => {
+                    cacheName = ev.currentTarget.value
+                    EntityNameController.renameEntity(cacheName, node)
+                    isOnEdit = false
+                }}
+                on:keydown={e => {
+                    if(e.code === KEYS.Enter){
+                        cacheName = e.target.value
+                        EntityNameController.renameEntity(cacheName, node)
+                        isOnEdit = false
+                    }
+                }}
+                value={cacheName}
+        />
 
+        <ToolTip content={cacheName}/>
         {#each icons as icon}
             <Icon styles="font-size: .9rem">
                 <ToolTip content={icon.label}/>
@@ -110,11 +133,26 @@
 </div>
 
 <style>
+    input{
+        padding: 0 2px;
+        border-radius: 3px;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: .7rem;
+        color: var(--pj-color-primary);
+        backdrop-filter: brightness(50%);
+height: 23px;
+
+    }
+    input:disabled{
+        backdrop-filter: none;
+        color: var(--pj-color-quaternary);
+    }
     .node {
         cursor: pointer;
         width: 100%;
         height: 23px;
-        line-height: 23px;
         color: var(--pj-color-quaternary);
 
         display: flex;

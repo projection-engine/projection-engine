@@ -41,7 +41,7 @@ export default function dragDrop(draggable) {
                     this.onMouseMove(event, draggableElement, DragDropController.dragData)
                 break
             case "dragstart":
-                if(draggableElement.isDisabled){
+                if (draggableElement.isDisabled) {
                     event.preventDefault()
                     return
                 }
@@ -137,8 +137,6 @@ export default function dragDrop(draggable) {
                 draggableElement.addEventListener("dragstart", handler)
                 draggableElement.addEventListener("dragend", handler)
                 draggableElement.addEventListener("drag", handler)
-
-
             }
             draggableElement.addEventListener("dragleave", handler)
         },
@@ -162,8 +160,8 @@ export default function dragDrop(draggable) {
         },
 
         set disabled(data) {
-            if (draggableElement) {
-                draggableElement.isDisabled = data
+            if (draggableElement != null) {
+                draggableElement.isDisabled = !!data
                 draggableElement.draggable = !data
             }
         }
