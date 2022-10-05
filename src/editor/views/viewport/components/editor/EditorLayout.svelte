@@ -67,18 +67,12 @@
             })
     }
 
-
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
-
-
     const draggable = dragDrop(false)
     $: {
         if (settings?.viewportHotkeys != null)
             ContextMenuController.mount(
-                {
-                    icon: "public",
-                    label: Localization.PROJECT.VIEWPORT.TITLE
-                },
+                {icon: "public", label: Localization.PROJECT.VIEWPORT.TITLE},
                 viewportContext(settings),
                 RENDER_TARGET,
                 ["data-viewport"]
@@ -124,9 +118,7 @@
     }
 </script>
 
-
 <CameraBar/>
-
 <SelectBox
         targetElementID={RENDER_TARGET}
         disabled={isSelectBoxDisabled}

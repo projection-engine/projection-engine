@@ -1,4 +1,4 @@
-- Initializing structural rework
-- Removing window frame from  editor window
-- Reworked level loading structure
-- Levels now control their own settings/visual settings
+- New window frame options
+- New footer structure
+- Fixed rotation gizmo bug
+- Removing windowFrame component

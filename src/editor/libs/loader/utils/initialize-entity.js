@@ -18,10 +18,10 @@ export default function initializeEntity(data, meshID, parent, index=0) {
     entity._translation[2] = data.translation[2]
 
 
-    entity._rotationQuat[0] = data.rotationQuaternion[0]
-    entity._rotationQuat[1] = data.rotationQuaternion[1]
-    entity._rotationQuat[2] = data.rotationQuaternion[2]
-    entity._rotationQuat[3] = data.rotationQuaternion[3]
+    entity._rotationQuat[0] = data._rotationQuat[0]
+    entity._rotationQuat[1] = data._rotationQuat[1]
+    entity._rotationQuat[2] = data._rotationQuat[2]
+    entity._rotationQuat[3] = data._rotationQuat[3]
     entity.changed = true
 
     entity.baseTransformationMatrix = data.baseTransformationMatrix

@@ -22,16 +22,16 @@
     import Canvas from "../../Canvas.svelte";
     import LevelController from "../../libs/LevelController";
 
-
     export let updateView
     export let viewTab = VIEWPORT_TABS.EDITOR
-
 
     let engine = {}
     let settings = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
     let ref
+
     $:isReady = engine.isReady
     $: {
         if (ref != null) {
@@ -51,9 +51,7 @@
     })
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
-
     $: if (engine.executingAnimation) updateView(VIEWPORT_TABS.EDITOR)
-
     $: {
         if (isReady) {
             if (!engine.executingAnimation) {

@@ -29,7 +29,7 @@ export default function viewportContext(settings) {
 
                 comp.translation = [0, 0, 0]
                 comp.scaling = [1, 1, 1]
-                comp.rotationQuaternion = [0, 0, 0, 1]
+                comp._rotationQuat = [0, 0, 0, 1]
             }
         },
 

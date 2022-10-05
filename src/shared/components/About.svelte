@@ -1,13 +1,12 @@
 <script>
-    import createPortal from "../create-portal";
+    import createPortal from "./create-portal";
     import {onDestroy, onMount} from "svelte";
-    import logo from '../../../static/logo.png';
+    import logo from '../../static/logo.png';
+    import Localization from "../libs/Localization";
 
 
     export let handleClose
-    export let translate
-
-
+    const translate = (key) => Localization.COMPONENTS.FRAME[key]
     let content
 
     function handler(event) {

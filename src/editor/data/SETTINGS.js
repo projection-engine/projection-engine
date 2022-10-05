@@ -10,6 +10,7 @@ import KEYS from "../../../public/engine/static/KEYS";
 const toRad = Math.PI / 180
 export default {
 
+    hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,
     iconsVisibility: true,

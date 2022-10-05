@@ -18,7 +18,6 @@ module.exports = function HomeWindow(projects) {
     const window = new BrowserWindow({
         minWidth: Math.max(width * .60, 800),
         minHeight: Math.max(height * .60, 600),
-        frame: false,
         webPreferences: {
             webSecurity: false,
             enableRemoteModule: true,

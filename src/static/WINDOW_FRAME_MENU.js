@@ -1,24 +1,33 @@
 export default [
     {
-        label: 'Edit',
+        label: 'Project',
         submenu: [
             {
-                role: 'undo'
+                label: 'Save',
+                id: "save"
+            },
+            {type: "separator"},
+            {
+                label: 'Undo',
+                id: "undo"
             },
             {
-                role: 'redo'
+                label: 'Redo',
+                id: "redo"
+            },
+            {type: 'separator'},
+            {
+                label: 'Copy',
+                id: "copy"
             },
             {
-                type: 'separator'
+                label: 'Paste',
+                id: "paste"
             },
+            {type: 'separator'},
             {
-                role: 'cut'
-            },
-            {
-                role: 'copy'
-            },
-            {
-                role: 'paste'
+                label: 'Preferences',
+                id: "preferences"
             }
         ]
     },
@@ -27,28 +36,12 @@ export default [
         label: 'View',
         submenu: [
             {
-                role: 'reload'
-            },
-            {
-                role: 'toggledevtools'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'resetzoom'
-            },
-            {
-                role: 'zoomin'
-            },
-            {
-                role: 'zoomout'
-            },
-            {
-                type: 'separator'
-            },
-            {
                 role: 'togglefullscreen'
+            },
+            {type: 'separator'},
+            {
+                label: "Toggle footer",
+                id: "footer"
             }
         ]
     },
@@ -61,15 +54,25 @@ export default [
             },
             {
                 role: 'close'
+            },
+            {type: 'separator'},
+            {
+                label: 'Reload project',
+                id:"reload"
             }
         ]
     },
 
     {
-        role: 'help',
+        label: 'Help',
         submenu: [
             {
-                label: 'Learn More'
+                label: 'Learn More',
+                id: "learn-more"
+            },
+            {
+                label: 'About',
+                id: "about"
             }
         ]
     }

@@ -10,7 +10,8 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
-    import {Engine} from "../../../../public/engine/production";
+    import FrameMetadata from "./components/FrameMetadata.svelte";
+    import SceneStats from "./components/SceneStats.svelte";
 
     const {shell} = window.require("electron")
     let settings = {}
@@ -28,9 +29,8 @@
                 hasMessage = false
             }, 3500)
         })
-        setInterval(() => {
-            console.dir(Engine.metrics)
-        }, 250)
+
+
     })
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
@@ -48,13 +48,13 @@
             <ToolTip content={translate("ACTIVE_SHORTCUTS")}/>
         </div>
     {/if}
+    <div data-vertdivider="-"></div>
+    <FrameMetadata/>
 
-
-    <div id={INFORMATION_CONTAINER.CONTAINER} class={"info-container"}>
-        <div id={INFORMATION_CONTAINER.FPS}></div>
-    </div>
 
     <div class="meta-data">
+        <SceneStats/>
+        <div data-vertdivider="-"></div>
         {#if hasMessage}
             <div class="console">
                 <Icon styles="font-size: .9rem; color: darkorange">info</Icon>
@@ -117,9 +117,6 @@
     }
 
     .active-view {
-        height: 20px;
-        background: var(--pj-background-primary);
-        border-radius: 3px;
 
         display: flex;
         align-items: center;

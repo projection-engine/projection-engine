@@ -36,7 +36,6 @@
 
             {/if}
             <ToolTip content={translate("TRANSFORMATION_ORIENTATION")}/>
-
         </button>
 
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "" : "-"}

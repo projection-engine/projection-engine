@@ -13,7 +13,7 @@ module.exports = function (node, parentTransform){
     let transformationMatrix
     if (node.matrix) {
         parsedNode.translation = [0, 0, 0],
-            parsedNode.rotationQuaternion  = [0, 0, 0, 1],
+            parsedNode._rotationQuat  = [0, 0, 0, 1],
             parsedNode.scaling = [1, 1, 1],
             parsedNode.baseTransformationMatrix = Array.from(node.matrix)
         transformationMatrix = node.matrix
@@ -27,14 +27,14 @@ module.exports = function (node, parentTransform){
         if (!scale)
             scale = [1, 1, 1]
         if (!rotation)
-            parsedNode.rotationQuaternion  = [0, 0, 0, 1]
+            parsedNode._rotationQuat  = [0, 0, 0, 1]
         else
-            parsedNode.rotationQuaternion  = quat.normalize([], rotation)
+            parsedNode._rotationQuat  = quat.normalize([], rotation)
 
         parsedNode.scaling = scale
         parsedNode.translation = translation
         parsedNode.pivotPoint = translation
-        transformationMatrix = mat4.fromRotationTranslationScale([], parsedNode.rotationQuaternion , parsedNode.translation, parsedNode.scaling)
+        transformationMatrix = mat4.fromRotationTranslationScale([], parsedNode._rotationQuat , parsedNode.translation, parsedNode.scaling)
     }
 
     if (parentTransform) {
@@ -44,7 +44,7 @@ module.exports = function (node, parentTransform){
             transformationMatrix
         )
         parsedNode.translation = [0, 0, 0]
-        parsedNode.rotationQuaternion  = [0, 0, 0, 1]
+        parsedNode._rotationQuat  = [0, 0, 0, 1]
         parsedNode.scaling = [1, 1, 1]
         parsedNode.baseTransformationMatrix = Array.from(transformationMatrix)
 

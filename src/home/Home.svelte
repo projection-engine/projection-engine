@@ -1,5 +1,4 @@
 <script>
-    import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
     import Localization from "../shared/libs/Localization";
     import Alert from "../shared/components/alert/Alert.svelte";
     import Sidebar from "../shared/components/Sidebar.svelte";
@@ -49,16 +48,7 @@
 
 
 <Alert/>
-<WindowFrame
-        background="var(--pj-background-quaternary)"
-        options={[]}
-        label={translate("TITLE")}
-        pageInfo={{
-        closeEvent: true,
-        minimizeEvent: true,
-        maximizeEvent: true
-    }}
-/>
+
 <ContextMenu/>
 <div class="wrapper">
     <Sidebar tab={tab} setTab={v => tab = v} options={[

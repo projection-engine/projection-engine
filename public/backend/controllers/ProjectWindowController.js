@@ -15,8 +15,8 @@ const cleanUpRegistry = require("../utils/level-loader/clean-up-registry");
 
 const OPEN_PROJECTS = require("../../../src/static/OPEN_PROJECTS");
 const fs = require("fs");
-const WINDOW_FRAME_MENU = require("../../../src/static/WINDOW_FRAME_MENU");
-const WINDOW_ROUTES = require("../../../src/static/WINDOW_ROUTES");
+
+const loadProjectMenus = require("../utils/load-project-menus");
 
 module.exports = function ProjectWindow(handleClose, data) {
     const primaryDisplay = screen.getPrimaryDisplay()
@@ -27,7 +27,7 @@ module.exports = function ProjectWindow(handleClose, data) {
         width: width * .75,
         height: height * .75,
 
-darkTheme: true,
+        darkTheme: true,
         webPreferences: {
             webSecurity: false,
             enableRemoteModule: true,
@@ -68,16 +68,20 @@ darkTheme: true,
         data.id,
         window,
         () => {
-            updateCache(data.id, false, () => {
-                window.close()
-                handleClose()
-            })
+            updateCache(
+                data.id,
+                false,
+                () => {
+                    window.close()
+                    handleClose()
+                }
+            )
         },
         async () => {
             try {
-                const menu = Menu.buildFromTemplate(WINDOW_FRAME_MENU)
+
                 await window.loadFile(Window.project, {})
-                Menu.setApplicationMenu(menu)
+                loadProjectMenus(window)
             } catch (error) {
                 console.error(error)
                 handleClose()

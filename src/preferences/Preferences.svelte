@@ -1,7 +1,6 @@
 <script>
     import {onMount} from "svelte";
     import ROUTES from "../static/ROUTES";
-    import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
     import Localization from "../shared/libs/Localization";
 
     import ResizableBar from "../shared/components/resizable/ResizableBar.svelte";
@@ -40,13 +39,6 @@
 
 <div class="wrapper">
     <Alert/>
-    <WindowFrame
-            options={[]}
-            label={translate("PREFERENCES")}
-            pageInfo={{
-			closeEvent: true
-		}}
-    />
     <div class="content">
         <Sidebar tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("SHORTCUTS"),translate("POST_PROCESSING"), translate("RENDERING")]}/>
         {#if settings}

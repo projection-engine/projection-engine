@@ -1,13 +1,9 @@
 <script>
     import Alert from "../shared/components/alert/Alert.svelte";
-    import WindowFrame from "../shared/components/window-frame/WindowFrame.svelte";
     import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
-    import getFrameOptions from "./utils/get-frame-options";
     import Footer from "./components/footer/Footer.svelte";
-    import Canvas from "./Canvas.svelte";
-    import loadProjectMetadata from "./utils/load-project-metadata";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../shared/components/view/ViewsContainer.svelte";
     import ContextMenu from "../shared/components/context-menu/ContextMenu.svelte";
@@ -16,15 +12,18 @@
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
     import LevelController from "./libs/LevelController";
+    import About from "../shared/components/About.svelte";
 
+    const {ipcRenderer} = window.require("electron")
     const FALLBACK = {
         name: "Default",
         bottom: [],
         left: [],
         right: []
     }
-    const PAGE = {closeEvent: true, minimizeEvent: true, maximizeEvent: true}
-    const {ipcRenderer} = window.require("electron")
+
+    let view = FALLBACK
+    let isAboutOpen
     let engine
     let settings
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -34,7 +33,7 @@
         unsubscribeSettings()
         unsubscribeEngine()
     })
-    let isMetadataLoaded = false
+
     onMount(() => {
         ipcRenderer.on(
             ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
@@ -43,12 +42,13 @@
                 alert.pushAlert("Updating preferences", "info")
             }
         )
-        InitializeWindow()
+        InitializeWindow(_ => isAboutOpen = true)
         LevelController.initialize().then(res => {
             EngineStore.updateStore({...engine, meta: res, isReady: true})
         })
+
     })
-    let view = FALLBACK
+
     $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK
     const updateView = (key, newView) => {
         const s = {...settings}
@@ -57,7 +57,7 @@
         s.views = copy
         SettingsStore.updateStore(s)
     }
-    $: frameOptions = getFrameOptions(settings)
+
 </script>
 
 <div class="wrapper">
@@ -100,7 +100,12 @@
                 resizePosition={"top"}
         />
     </div>
-    <Footer/>
+    {#if !settings.hideFooter}
+        <Footer/>
+    {/if}
+    {#if isAboutOpen}
+        <About handleClose={() => isAboutOpen = false}/>
+    {/if}
 </div>
 
 
