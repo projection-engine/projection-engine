@@ -1,4 +1,3 @@
-- New window frame options
-- New footer structure
-- Fixed rotation gizmo bug
-- Removing windowFrame component
+- Fixed content browser selection box
+- Made hotkey target selectable only via focus
+ 

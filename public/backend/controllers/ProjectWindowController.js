@@ -29,6 +29,7 @@ module.exports = function ProjectWindow(handleClose, data) {
 
         darkTheme: true,
         webPreferences: {
+
             webSecurity: false,
             enableRemoteModule: true,
             nodeIntegration: true,
@@ -40,7 +41,7 @@ module.exports = function ProjectWindow(handleClose, data) {
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
     });
 
-
+    window.openDevTools({mode: "detach"})
     window.on("close", () => updateCache(data.id, false, () => handleClose()))
     updateCache(data.id, true)
 

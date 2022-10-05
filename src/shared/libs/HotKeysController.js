@@ -89,7 +89,8 @@ export default class HotKeysController {
             HotKeysController.unbindAction(element)
         HotKeysController.views.set(element, {actions, icon, label, handler})
 
-        element.addEventListener("mouseenter", handler)
+        element.tabIndex = 0
+        element.addEventListener("focus", handler)
     }
 
     static unbindAction(element) {
@@ -97,7 +98,7 @@ export default class HotKeysController {
         if (!found)
             return
         const {handler} = found
-        element.removeEventListener("mouseenter", handler)
+        element.removeEventListener("focus", handler)
         HotKeysController.views.delete(element)
     }
 }

@@ -16,8 +16,7 @@ module.exports = function settingsWindow(windowID, parent, settingsData, onClose
     const window = new BrowserWindow({
         minWidth: Math.max(width /6, 500),
         minHeight: Math.max(height / 6, 750),
-        frame: false,
-
+ 
         parent,
         webPreferences: {
             webSecurity: false,

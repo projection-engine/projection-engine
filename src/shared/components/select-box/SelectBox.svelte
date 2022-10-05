@@ -53,14 +53,17 @@
             document.removeEventListener("mousemove", handleMouseMove)
     }
 
-    function checkFocus(target) {
-        return (ref.parentElement === target || target.id === targetElementID) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+    function checkFocus(target, event) {
+        let hasDraggable = false
+        event.path.forEach(el => {
+            hasDraggable = hasDraggable || el.draggable === true
+        })
+        return (ref.parentElement === target || target.id === targetElementID || !hasDraggable) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
     }
 
     const handleMouseDown = (event) => {
         const target = event.target
-
-        if (event.button === LEFT_BUTTON && checkFocus(target)) {
+        if (event.button === LEFT_BUTTON && checkFocus(target, event)) {
             if (!event.ctrlKey)
                 setSelected([])
             ref.startingPosition = {x: event.clientX, y: event.clientY}
@@ -79,13 +82,17 @@
                         x2: bBox.x + bBox.width,
                         y2: bBox.y + bBox.height
                     }
-                    let toSelect = []
-                    for (const index in nodes) {
+                    let toSelect = [], elements = Array.from(ref.parentElement.querySelectorAll("[data-id]")).map(e => ({id: e.getAttribute("data-id"), element: e}))
+                    console.log(elements)
+                    for (let index = 0; index < nodes.length; index++) {
                         const node = nodes[index]
-                        const elBox = document.getElementById(node.id)?.getBoundingClientRect()
-                        if (elBox && elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2) {
+                        const elBox = elements.find(e => e.id === node.id)?.element?.getBoundingClientRect?.()
+                        console.log(elements.find(e => e.id === node.id), node)
+                        if(!elBox)
+                            continue
+                        if (elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2)
                             toSelect.push(node.id)
-                        }
+
                     }
                     if (!event.ctrlKey)
                         setSelected(toSelect, start, end)
