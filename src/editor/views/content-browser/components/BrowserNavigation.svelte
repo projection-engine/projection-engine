@@ -9,6 +9,8 @@
     import Input from "../../../../shared/components/input/Input.svelte";
     import NodeFS from "../../../../shared/libs/NodeFS";
     import Localization from "../../../../shared/libs/Localization";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import ITEM_TYPES from "../templates/ITEM_TYPES";
 
     export let bookmarks
     export let currentDirectory
@@ -17,7 +19,8 @@
 
     export let path
     export let navigationHistory
-
+    export let viewType
+    export let setViewType
 
     let loading = false
     $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
@@ -83,7 +86,6 @@
         <Icon styles="font-size: .9rem">star</Icon>
         <ToolTip content={translate("ADD_BOOKMARK")}/>
     </button>
-
     <div data-vertdivider="-"></div>
     <Input
             hasBorder={true}
@@ -97,11 +99,52 @@
                 setCurrentDirectory({id: path })
             }}
     />
-
+    <div class="views">
+        <button
+                data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.ROW)}
+                class="button"
+        >
+            <Icon styles="font-size: .9rem">view_stream</Icon>
+            <ToolTip content={translate("ROW_VIEW")}/>
+        </button>
+        <button
+                data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.CARD)}
+                class="button"
+        >
+            <Icon styles="transform: rotate(180deg)">grid_view</Icon>
+            <ToolTip content={translate("CARD_VIEW")}/>
+        </button>
+        <Dropdown buttonStyles={`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 22px;
+            width: 22px;
+            background: var(--pj-border-primary);
+            border-radius: 3px;
+        `}>
+            <button data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""} on:click={() => setViewType(ITEM_TYPES.CARD)}>
+                {translate("CARD_VIEW")}
+            </button>
+            <button data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""} on:click={() => setViewType(ITEM_TYPES.ROW)}>
+                {translate("ROW_VIEW")}
+            </button>
+        </Dropdown>
+    </div>
 </div>
 
 
 <style>
+    .views {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        padding-right: 2px;
+    }
+
     .wrapper {
         width: 100%;
         display: flex;
@@ -109,12 +152,13 @@
         gap: 2px;
 
     }
-.button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 22px;
-    width: 22px;
-    background: var(--pj-border-primary);
-}
+
+    .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 22px;
+        width: 22px;
+        background: var(--pj-border-primary);
+    }
 </style>

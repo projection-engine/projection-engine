@@ -43,7 +43,7 @@ export default class HotKeysController {
                     let valid = true
                     const required = currentAction?.require
 
-                    if(!required)
+                    if (!required)
                         continue
                     let toRemove = 0
                     if (h.get(KEYS.ControlLeft))
@@ -61,16 +61,13 @@ export default class HotKeysController {
                 if (event.code === KEYS.ControlLeft || event.code === KEYS.ControlRight) {
                     h.delete(KEYS.ControlLeft)
                     h.delete(KEYS.ControlRight)
-                }
-                else if (event.code === KEYS.AltRight || event.code === KEYS.AltLeft) {
+                } else if (event.code === KEYS.AltRight || event.code === KEYS.AltLeft) {
                     h.delete(KEYS.AltRight)
                     h.delete(KEYS.AltLeft)
-                }
-                else if (event.code === KEYS.ShiftLeft || event.code === KEYS.ShiftRight) {
+                } else if (event.code === KEYS.ShiftLeft || event.code === KEYS.ShiftRight) {
                     h.delete(KEYS.ShiftLeft)
                     h.delete(KEYS.ShiftRight)
-                }
-                else
+                } else
                     h.delete(event.code)
             }
         }
@@ -80,6 +77,7 @@ export default class HotKeysController {
     }
 
     static bindAction(element, actions, icon, label) {
+
         const handler = () => {
             HotKeysController.activeView = element
             HotKeysController.holding.clear()
@@ -88,7 +86,8 @@ export default class HotKeysController {
         if (HotKeysController.views.get(element))
             HotKeysController.unbindAction(element)
         HotKeysController.views.set(element, {actions, icon, label, handler})
-
+        if (HotKeysController.views.size === 1)
+            handler()
         element.tabIndex = 0
         element.addEventListener("focus", handler)
     }

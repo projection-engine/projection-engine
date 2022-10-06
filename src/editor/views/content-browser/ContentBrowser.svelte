@@ -14,6 +14,7 @@
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../../shared/components/view/ViewStateController";
     import VIEWS from "../../../shared/components/view/VIEWS";
+    import ITEM_TYPES from "./templates/ITEM_TYPES";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -22,6 +23,7 @@
     export let viewIndex
     const internalID = v4()
     let store = {}
+    let viewType = ITEM_TYPES.CARD
     const unsubscribeStore = FilesStore.getStore(v => store = v)
 
     let currentDirectory = {id: FilesAPI.sep}
@@ -112,6 +114,8 @@
     <div class="browser">
         {#if view.navigation}
             <BrowserNavigation
+                    setViewType={v => viewType = v}
+                    viewType={viewType}
                     bookmarks={store.bookmarks}
                     path={path}
                     currentDirectory={currentDirectory}
@@ -120,6 +124,7 @@
             />
         {/if}
         <Browser
+                viewType={viewType}
                 internalID={internalID}
                 path={path}
                 view={view}

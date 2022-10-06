@@ -1,4 +1,4 @@
-module.exports =  {
+export default {
     MESH: ".mesh",
     LEVEL: ".level",
     UI_LAYOUT: ".ui",

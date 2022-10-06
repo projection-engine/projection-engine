@@ -1,7 +1,3 @@
-- Reworking content-browser item code structure
-- Fixing selection box on shader editor
-- Added input to hierarchy node
-- Fixed EntityNameController 
-- Integrating visual settings with pipeline
-- Fixing settings locked to level
-- Fixed hierarchy context menu not working
+- Reorganizing content browser to support multiple visualization types
+- Added memory tracking to footer
+- Fixed loop material for TERRAIN_MATERIAl instance

@@ -1,7 +1,7 @@
 <script>
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
-    import Item from "./Item.svelte";
+    import Item from "./item/Item.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
     import contentBrowserActions from "../../../templates/content-browser-actions";
     import VirtualList from '@sveltejs/svelte-virtual-list';
@@ -12,7 +12,9 @@
     import Localization from "../../../../shared/libs/Localization";
     import ContextMenuController from "../../../../shared/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
+    import ITEM_TYPES from "../templates/ITEM_TYPES";
 
+    const CARD_SIZE = 115
     export let fileType
     export let setFileType
     export let searchString
@@ -22,29 +24,47 @@
     export let setCurrentDirectory
     export let internalID
     export let store
-
-
-    $: items = store.items
+    export let itemType = ITEM_TYPES.CARD
 
     let onDrag = false
-    let cardDimensions = {width: 115, height: 115}
     let ref
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
     let settings
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    let selectionMap
     let selected = []
-    const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.contentBrowserSelected)
+    let timeout
 
     const translate = key => Localization.PROJECT.FILES[key]
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
 
-
-    $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
-
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const unsubscribe = SelectionStore.getStore(() => {
+        selected = SelectionStore.contentBrowserSelected
+        selectionMap = SelectionStore.map
+    })
     const onDragEnd = () => onDrag = false
+    const handleSelection = (e, child) => {
+        let toSelect = []
+        if (e) {
+            if (e.ctrlKey)
+                toSelect = [...selected, child.id]
+            else
+                toSelect = [child.id]
+        }
+        SelectionStore.contentBrowserSelected = toSelect
+    }
 
+    function resetItem() {
+        SelectionStore.contentBrowserSelected = []
+        setSearchString("")
+        setFileType(undefined)
+    }
+
+    $: lineHeight = CARD_SIZE
+    $: items = store.items
+    $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
     $: {
         if (ref) {
             const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
@@ -72,16 +92,21 @@
             )
         }
     }
+    $: {
+        if(itemType === ITEM_TYPES.CARD && ref)
+            elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
+        else if(itemType !== ITEM_TYPES.CARD)
+            elementsPerRow = 1
+    }
 
-    let timeout
     onMount(() => {
         document.addEventListener("dragend", onDragEnd)
-        elementsPerRow = Math.round(ref.offsetWidth / (cardDimensions.width + 8))
-
         resizeOBS = new ResizeObserver(() => {
+            if (itemType !== ITEM_TYPES.CARD)
+                return
             clearTimeout(timeout)
             setTimeout(() => {
-                if (ref) elementsPerRow = Math.floor(ref.offsetWidth / (cardDimensions.height + 8))
+                if (ref) elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
             }, 250)
         })
         resizeOBS.observe(ref)
@@ -91,26 +116,11 @@
         unsubscribeSettings()
         HotKeysController.unbindAction(ref)
         ContextMenuController.destroy(internalID)
-
-
         document.removeEventListener("dragend", onDragEnd)
         unsubscribe()
         clearTimeout(timeout)
-
         resizeOBS.disconnect()
     })
-
-    const handleSelection = (e, child) => {
-        let toSelect = []
-        if (e) {
-            if (e.ctrlKey)
-                toSelect = [...selected, child.id]
-            else
-                toSelect = [child.id]
-        }
-        SelectionStore.contentBrowserSelected = toSelect
-    }
-
 </script>
 
 <div
@@ -120,7 +130,6 @@
         data-wrapper={internalID}
         on:mousedown={e => {
             const key = "data-isitem"
-
             if(e.path.find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStore.contentBrowserSelected = []
         }}
@@ -132,24 +141,19 @@
             setSelected={v => SelectionStore.contentBrowserSelected = v}
     />
     {#if toRender.length > 0}
-        <VirtualList items={toRender} let:item>
-            <div class="line" style={`height: ${cardDimensions.height}px`}>
+        <VirtualList items={toRender} let:item height={lineHeight + "px"}>
+            <div class="line">
                 {#each item as child, index}
                     <Item
+                            selectionMap={selectionMap}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
                             toCut={store.toCut}
-                            cardDimensions={cardDimensions}
                             currentDirectory={currentDirectory}
-                            reset={() => {
-                                    SelectionStore.contentBrowserSelected = []
-                                    setSearchString("")
-                                    setFileType(undefined)
-                                }}
+                            reset={resetItem}
                             type={child.isFolder ? 0 : 1}
                             data={child}
                             childrenQuantity={child.children}
-
                             setCurrentDirectory={setCurrentDirectory}
                             items={items}
                             setSelected={e => handleSelection(e, child)}
@@ -171,6 +175,7 @@
 </div>
 
 <style>
+
     .empty {
         position: absolute;
         top: 50%;
@@ -187,21 +192,14 @@
         color: var(--pj-color-quaternary);
     }
 
-    .line {
+    .line{
         display: flex;
-        justify-content: flex-start;
-        justify-items: flex-start;
-        gap: 4px;
-
-        overflow: hidden;
-        max-width: 100%;
-        width: fit-content;
-        position: relative;
-        margin-bottom: 4px;
+        gap: 3px;
+        align-items: center;
+        height: 100%;
+        width: 100%;
     }
-
     .content {
-
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -213,7 +211,5 @@
         position: relative;
         background: var(--pj-background-tertiary);
         border-radius: 3px;
-
     }
-
 </style>

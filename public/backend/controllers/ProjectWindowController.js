@@ -29,7 +29,7 @@ module.exports = function ProjectWindow(handleClose, data) {
 
         darkTheme: true,
         webPreferences: {
-
+            enableBlinkFeatures: "PreciseMemoryInfo",
             webSecurity: false,
             enableRemoteModule: true,
             nodeIntegration: true,

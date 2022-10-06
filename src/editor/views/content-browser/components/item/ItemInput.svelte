@@ -1,5 +1,5 @@
 <script>
-    import {KEYS} from "../../../../../public/engine/production";
+    import {KEYS} from "../../../../../../public/engine/production";
 
     export let isOnRename
     export let submitRename

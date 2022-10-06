@@ -1,86 +1,29 @@
 <script>
-    import FilesAPI from "../../../../shared/libs/FilesAPI"
-    import handleDropFolder from "../utils/handle-drop-folder"
-    import Input from "../../../../shared/components/input/Input.svelte";
-    import FILE_TYPES from "../../../../static/FILE_TYPES";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Preview from "../../../../shared/components/preview/Preview.svelte";
-    import FilesStore from "../../../stores/FilesStore";
-    import Localization from "../../../../shared/libs/Localization";
-    import {onDestroy, onMount} from "svelte";
-    import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import getTypeName from "../utils/get-type-name";
-    import SelectionStore from "../../../stores/SelectionStore";
-    import LevelController from "../../../libs/LevelController";
-    import itemDbclick from "../utils/item-dbclick";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
-    import getIcon from "../utils/get-icon";
-    import getItemDragImage from "../utils/get-item-dragimage";
-    import getItemIcon from "../utils/get-item-icon";
-    import getItemDragData from "../utils/get-item-drag-data";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import itemDbclick from "../../utils/item-dbclick";
+    import FILE_TYPES from "../../../../../static/FILE_TYPES";
 
-    export let childrenQuantity
+    export let currentDirectory
+    export let items
+    export let data
+    export let setCurrentDirectory
+    export let setSelected
     export let reset
     export let type
-    export let data
-
-    export let setSelected
+    export let isMaterial
+    export let isOnRename
+    export let selected
+    export let metadata
     export let submitRename
-    export let items
-    export let setCurrentDirectory
-    export let currentDirectory
-    export let setOnDrag
-    export let onDrag
-    export let toCut = []
-    export let onRename
-
-
-    let ref
-    let selected
-    const unsubscribe = SelectionStore.getStore(() => selected = SelectionStore.map)
-    const translate = key => Localization.PROJECT.FILES[key]
-    const draggable = dragDrop(true)
-
-    $: isOnRename = onRename === data.id
-    $: isMaterial = metadata.type === FILE_TYPES.MATERIAL
-    $: isNotDraggable = onDrag && type !== 0
-    $: icon = getItemIcon(metadata, childrenQuantity, type)
-    $: isOnCuttingBoard = toCut.includes(data.id)
-    $: metadata = {
-        path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
-        type: data.type ? "." + data.type : "folder",
-        childrenQuantity,
-        typeName: getTypeName(data.type)
-    }
-
-
-    $: {
-        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
-        draggable.dragImage = dragDropData.dragImage
-        draggable.onDragOver = dragDropData.onDragOver
-        draggable.onDragStart = dragDropData.onDragStart
-        draggable.disabled = onDrag && type !== 0 || isOnRename
-    }
-
-    $: toolTipContent = getItemDragImage(childrenQuantity, data, type, metadata)
-    $: if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
-    onMount(() => {
-        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
-        draggable.onMount({
-            targetElement: ref,
-            onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
-            ...dragDropData
-        })
-    })
-
-    onDestroy(() => {
-        unsubscribe()
-        draggable.onDestroy()
-    })
+    export let icon
+    export let draggable
+    export let isOnCuttingBoard
+    export let isNotDraggable
 
 </script>
-
 <div
         data-isitem="-"
         data-id={data.id}
@@ -89,9 +32,8 @@
         data-name={data.name}
         data-folder={type !== 0 ? undefined : data.id}
         on:dblclick={() => itemDbclick(data, setCurrentDirectory, setSelected, reset, type)}
-        bind:this={ref}
         on:click={setSelected}
-        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
 >
     <div class="icon">
@@ -131,7 +73,7 @@
         {/if}
     </div>
     <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
-    <ToolTip content={toolTipContent}/>
+
 </div>
 
 <style>
