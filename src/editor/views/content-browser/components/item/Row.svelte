@@ -39,12 +39,12 @@
 >
     <div class="icon">
         {#if icon != null}
-            <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
+            <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 1rem; "}>{icon}</Icon>
         {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE || metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
-            <div data-shaded-material="-" style="width: 60px; height: 60px"></div>
+            <div data-shaded-material="-" style="width: 20px; height: 20px"></div>
             {#if metadata.type !== FILE_TYPES.MATERIAL}
                 <div class="file-type">
-                    <Icon styles="font-size: 1.3rem">
+                    <Icon styles="font-size: .8rem">
                         {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE }
                             copy_all
                         {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL}
@@ -58,7 +58,7 @@
         {:else if metadata.type === FILE_TYPES.MESH || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>
-                <Icon slot="icon" styles="font-size: 4rem">
+                <Icon slot="icon" styles="font-size: 1rem">
                     {#if metadata.type === FILE_TYPES.MESH}
                         category
                     {:else}
@@ -66,12 +66,63 @@
                     {/if}
                 </Icon>
             </Preview>
-            {#if metadata.type === FILE_TYPES.TEXTURE}
-                <div class="file-type">
-                    <Icon styles="font-size: 1.3rem">image</Icon>
-                </div>
-            {/if}
         {/if}
     </div>
-    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
+
+    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename} isRow={true}/>
+
+    <small>{data.creationDate}</small>
+    {#if !data.isFolder}
+        <small>{(data.size / 1e+6).toFixed(2)}mb</small>
+    {/if}
 </div>
+
+<style>
+    small{
+        font-size: .65rem;
+    }
+    .image {
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .file {
+        width: 100%;
+        height: 23px;
+        max-height: 23px;
+        overflow: hidden;
+        display: grid;
+        align-items: center;
+        grid-auto-flow: column;
+        grid-template-columns: 30px calc(80% - 30px) 10% 10%;
+        gap: 4px;
+    }
+
+    .file:hover {
+        border-color: transparent;
+        background: var(--pj-background-primary);
+        box-shadow: var(--pj-boxshadow);
+    }
+
+    .icon {
+        position: relative;
+        max-height: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .file-type {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        opacity: .85;
+        border-radius: 3px;
+        backdrop-filter: blur(1px) brightness(95%);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

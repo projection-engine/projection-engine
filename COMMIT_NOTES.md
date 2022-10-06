@@ -1,3 +1,2 @@
-- Reorganizing content browser to support multiple visualization types
-- Added memory tracking to footer
-- Fixed loop material for TERRAIN_MATERIAl instance
+- Row visualization type on content browser
+- Fixed canvas resolution not updating

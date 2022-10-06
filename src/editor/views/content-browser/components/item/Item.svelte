@@ -20,6 +20,8 @@
     import getItemIcon from "../../utils/get-item-icon";
     import getItemDragData from "../../utils/get-item-drag-data";
     import Card from "./Card.svelte";
+    import ITEM_TYPES from "../../templates/ITEM_TYPES";
+    import Row from "./Row.svelte";
 
     export let childrenQuantity
     export let reset
@@ -35,6 +37,7 @@
     export let onDrag
     export let toCut = []
     export let onRename
+    export let viewType
 
     let ref
 
@@ -95,10 +98,15 @@
         setOnDrag,
         selected: selectionMap
     }
+    $: isCard = viewType === ITEM_TYPES.CARD
 </script>
 
-<span bind:this={ref}>
-    <Card {...props}/>
+<span bind:this={ref} style={isCard ? undefined : "width: 100%"}>
+    {#if isCard}
+        <Card {...props}/>
+        {:else}
+        <Row {...props}/>
+    {/if}
     <ToolTip content={toolTipContent}/>
 </span>
 

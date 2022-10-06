@@ -22,6 +22,7 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
+
     onMount(() => {
         GPU.initializeContext(canvasRef, visuals.resolution, AssetAPI.readAsset)
             .then(() => {
@@ -47,6 +48,8 @@
 <canvas
         data-viewport="-"
         bind:this={canvasRef}
+        width={visuals.resolution[0]}
+        height={visuals.resolution[1]}
         id={RENDER_TARGET}
         style={`width: 100%; height: 100%; background: transparent`}
 ></canvas>

@@ -24,7 +24,8 @@
     export let setCurrentDirectory
     export let internalID
     export let store
-    export let itemType = ITEM_TYPES.CARD
+
+    export let viewType
 
     let onDrag = false
     let ref
@@ -62,7 +63,7 @@
         setFileType(undefined)
     }
 
-    $: lineHeight = CARD_SIZE
+    $: lineHeight = viewType === ITEM_TYPES.ROW  ? 23 : CARD_SIZE
     $: items = store.items
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
     $: {
@@ -93,16 +94,16 @@
         }
     }
     $: {
-        if(itemType === ITEM_TYPES.CARD && ref)
+        if (viewType === ITEM_TYPES.CARD && ref)
             elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
-        else if(itemType !== ITEM_TYPES.CARD)
+        else if (viewType !== ITEM_TYPES.CARD)
             elementsPerRow = 1
     }
 
     onMount(() => {
         document.addEventListener("dragend", onDragEnd)
         resizeOBS = new ResizeObserver(() => {
-            if (itemType !== ITEM_TYPES.CARD)
+            if (viewType !== ITEM_TYPES.CARD)
                 return
             clearTimeout(timeout)
             setTimeout(() => {
@@ -126,13 +127,28 @@
 <div
         bind:this={ref}
         id={internalID}
-        class="content"
+
         data-wrapper={internalID}
         on:mousedown={e => {
             const key = "data-isitem"
             if(e.path.find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStore.contentBrowserSelected = []
         }}
+        style={
+        viewType === ITEM_TYPES.ROW ?
+            `
+            background: linear-gradient(
+                to bottom,
+                var(--pj-background-tertiary),
+                var(--pj-background-tertiary) 50%,
+                #252525 50%,
+                #252525
+            );
+            background-size: 100% 46px  !important;
+            padding: 0;
+        ` : ""
+        }
+        class={"content"}
 >
     <SelectBox
             allowAll={true}
@@ -141,10 +157,11 @@
             setSelected={v => SelectionStore.contentBrowserSelected = v}
     />
     {#if toRender.length > 0}
-        <VirtualList items={toRender} let:item height={lineHeight + "px"}>
-            <div class="line">
+        <VirtualList items={toRender} let:item>
+            <div class="line" style={ "height:" + lineHeight + "px"}>
                 {#each item as child, index}
                     <Item
+                            viewType={viewType}
                             selectionMap={selectionMap}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
@@ -192,20 +209,18 @@
         color: var(--pj-color-quaternary);
     }
 
-    .line{
+    .line {
         display: flex;
         gap: 3px;
         align-items: center;
         height: 100%;
         width: 100%;
     }
+
     .content {
         width: 100%;
         height: 100%;
         overflow: hidden;
-
-        display: grid;
-        gap: 4px;
         padding: 4px 0 4px 4px;
 
         position: relative;

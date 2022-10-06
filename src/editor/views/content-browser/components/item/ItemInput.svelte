@@ -4,6 +4,7 @@
     export let isOnRename
     export let submitRename
     export let data
+    export let isRow
 </script>
 
 
@@ -18,6 +19,7 @@
                 submitRename(e.currentTarget.value)
         }}
         value={data.name}
+        style={isRow ? "text-align: left" : undefined}
 />
 
 <style>
