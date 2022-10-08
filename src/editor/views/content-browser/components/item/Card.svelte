@@ -1,9 +1,9 @@
 <script>
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
     import itemDbclick from "../../utils/item-dbclick";
-    import FILE_TYPES from "../../../../../static/FILE_TYPES";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
 
     export let currentDirectory
     export let items

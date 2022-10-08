@@ -1,6 +1,6 @@
 <script>
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import SettingsStore from "../../../../stores/SettingsStore";
     import CameraSettings from "./CameraSettings.svelte";

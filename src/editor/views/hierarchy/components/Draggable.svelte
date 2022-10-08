@@ -3,12 +3,12 @@
     import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
     import EngineStore from "../../../stores/EngineStore";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
     import {EntityAPI, KEYS} from "../../../../../public/engine/production";

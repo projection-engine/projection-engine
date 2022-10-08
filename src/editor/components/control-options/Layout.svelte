@@ -1,6 +1,6 @@
 <script>
     import VIEWS from "../../../shared/components/view/VIEWS";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy} from "svelte";
     import KEYS from "../../data/KEYS";
     import Localization from "../../../shared/libs/Localization";

@@ -1,11 +1,12 @@
 import FilesAPI from "../../../../shared/libs/FilesAPI";
 import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import ShaderEditorController from "../ShaderEditorController";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function parseFile(file, setNodes, setLinks) {
     const res = await RegistryAPI.readRegistryFile(file.registryID)
     if (res) {
-        const file = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "assets" + FilesAPI.sep + res.path, "json")
+        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
 
         if (file && Object.keys(file).length > 0) {
             const newNodes = []

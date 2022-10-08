@@ -1,15 +1,14 @@
 <script>
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../../stores/FilesStore";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import FilesAPI from "../../../../shared/libs/FilesAPI";
 
-    import Input from "../../../../shared/components/input/Input.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
     import Localization from "../../../../shared/libs/Localization";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
 
     export let bookmarks
@@ -49,7 +48,7 @@
             class="button"
 
             on:click={() => {
-                            if(currentDirectory.id === FilesAPI.sep)
+                            if(currentDirectory.id === NodeFS.sep)
                                 return
                             navigationHistory.goToParent(currentDirectory)
                         }}
@@ -95,7 +94,7 @@
             searchString={currentDirectory.id}
             noAutoSubmit={true}
             setSearchString={async (path) => {
-                if (await NodeFS.exists(FilesStore.ASSETS_PATH + path))
+                if (await NodeFS.exists(NodeFS.ASSETS_PATH  + path))
                 setCurrentDirectory({id: path })
             }}
     />

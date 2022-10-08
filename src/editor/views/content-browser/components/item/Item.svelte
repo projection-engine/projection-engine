@@ -1,12 +1,11 @@
 <script>
-    import FilesAPI from "../../../../../shared/libs/FilesAPI"
     import handleDropFolder from "../../utils/handle-drop-folder"
-    import FILE_TYPES from "../../../../../static/FILE_TYPES";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesStore from "../../../../stores/FilesStore";
     import Localization from "../../../../../shared/libs/Localization";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../utils/get-type-name";
     import getItemDragImage from "../../utils/get-item-dragimage";
     import getItemIcon from "../../utils/get-item-icon";
@@ -14,6 +13,8 @@
     import Card from "./Card.svelte";
     import ITEM_TYPES from "../../templates/ITEM_TYPES";
     import Row from "./Row.svelte";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../static/PROJECT_FOLDER_STRUCTURE";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let childrenQuantity
     export let reset
@@ -42,7 +43,7 @@
     $: icon = getItemIcon(metadata, childrenQuantity, type)
     $: isOnCuttingBoard = toCut.includes(data.id)
     $: metadata = {
-        path: FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + data.registryID + FILE_TYPES.PREVIEW,
+        path: NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
         childrenQuantity,
         typeName: getTypeName(data.type)

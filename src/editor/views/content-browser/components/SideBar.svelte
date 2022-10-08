@@ -1,8 +1,8 @@
 <script>
-    import FilesAPI from "../../../../shared/libs/FilesAPI"
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import SideBarItem from "./SideBarItem.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let translate = undefined
     export let bookmarks = undefined
@@ -24,7 +24,7 @@
         <SideBarItem
                 setCurrentDirectory={setCurrentDirectory}
                 currentDirectory={currentDirectory}
-                id={FilesAPI.sep}
+                id={NodeFS.sep}
                 name={"..."}
         />
         {#each assets as b}

@@ -1,5 +1,5 @@
 
-module.exports =  class Accessor{
+export default class Accessor{
     _data
     constructor(data, buffers, bufferViews) {
         let items = 0

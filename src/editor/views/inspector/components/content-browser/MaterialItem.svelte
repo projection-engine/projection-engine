@@ -1,20 +1,19 @@
 <script>
     import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES";
-    import Range from "../../../../../shared/components/range/Range.svelte";
-
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import AssetAPI from "../../../../../shared/libs/AssetAPI";
     import GPU from "../../../../../../public/engine/production/GPU";
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
 
     import MaterialAPI from "../../../../../../public/engine/production/apis/rendering/MaterialAPI";
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import FILE_TYPES from "../../../../../static/FILE_TYPES";
+    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FilesStore from "../../../../stores/FilesStore";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 
     export let data
@@ -36,7 +35,7 @@
         if (!reg)
             alert.pushAlert("Instance no longer valid", "error")
         else {
-            originalMat = await FilesAPI.readFile(FilesStore.ASSETS_PATH + reg.path, "json")
+            originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
             if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
                 temp = {...temp, uniforms: originalMat.response.uniforms, uniformData: originalMat.response.uniformData}
                 await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))

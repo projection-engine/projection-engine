@@ -1,4 +1,4 @@
-module.exports =  {
+export default {
     SEND: "load-editor",
     ENTITIES: "ENTITIES",
     MESH: "mesh",

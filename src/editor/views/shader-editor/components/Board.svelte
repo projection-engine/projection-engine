@@ -13,7 +13,7 @@
     import handleLink from "../utils/handle-link";
     import ShaderEditorController from "../ShaderEditorController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../../shared/libs/Localization";
     import shaderActions from "../../../templates/shader-actions";
     import HotKeysController from "../../../../shared/libs/HotKeysController";

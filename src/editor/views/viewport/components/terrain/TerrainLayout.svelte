@@ -3,12 +3,12 @@
     import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import ResizableBar from "../../../../../shared/components/resizable/ResizableBar.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FilesStore from "../../../../stores/FilesStore";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     export let settings
@@ -19,7 +19,7 @@
             RegistryAPI.readRegistryFile(settings.selectedTerrain).then(reg => {
                 if(!reg)
                     return
-                FilesAPI.readFile(FilesStore.ASSETS_PATH + reg.path, "json")
+                FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
                     .then(file => {
                         if(!file)
                             return

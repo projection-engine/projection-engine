@@ -1,5 +1,4 @@
 <script>
-    import FilesAPI from "../../../shared/libs/FilesAPI"
     import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
     import Localization from "../../../shared/libs/Localization";
@@ -7,7 +6,7 @@
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
-    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
+    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Browser from "./components/Browser.svelte";
     import BrowserNavigation from "./components/BrowserNavigation.svelte";
     import {v4} from "uuid";
@@ -15,6 +14,7 @@
     import ViewStateController from "../../../shared/components/view/ViewStateController";
     import VIEWS from "../../../shared/components/view/VIEWS";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -26,7 +26,7 @@
     let viewType = ITEM_TYPES.CARD
     const unsubscribeStore = FilesStore.getStore(v => store = v)
 
-    let currentDirectory = {id: FilesAPI.sep}
+    let currentDirectory = {id: NodeFS.sep}
     let wasInitialized = false
     $: {
         if (wasInitialized)
@@ -53,7 +53,7 @@
             return p ? [findParent(p), {name: p.name, path: p.id}] : []
         }
         const response = [{
-            path: FilesAPI.sep
+            path: NodeFS.sep
         }, findParent(currentDirectory)].flat(Number.POSITIVE_INFINITY)
         if (currentDirectory.name)
             response.push({

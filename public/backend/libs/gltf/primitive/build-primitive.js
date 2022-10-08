@@ -1,10 +1,8 @@
-const FILE_TYPES = require("../../../../../src/static/FILE_TYPES");
-const getPrimitive = require("./get-primitive");
-const {v4} = require("uuid");
-const PrimitiveProcessor = require("../../../../engine/production/apis/PrimitiveProcessor");
-const parseMaterial = require("../material/parse-material");
-const writeData = require("../../../utils/gltf/write-data");
-const getNormalizedName = require("../../../utils/gltf/get-normalized-name");
+import FILE_TYPES from "shared-resources/FILE_TYPES";
+import PrimitiveProcessor from "../../../../engine/production/apis/PrimitiveProcessor";
+import writeData from "../../../utils/gltf/write-data";
+import {v4} from "uuid";
+
 
 
 function getName(name, partialPath, index) {
@@ -13,7 +11,7 @@ function getName(name, partialPath, index) {
     return partialPath + "-primitive-" + index + FILE_TYPES.MESH
 }
 
-module.exports = async function (attributes) {
+export default async function buildPrimitive(attributes) {
     const {
         data,
         mesh,

@@ -1,10 +1,10 @@
 import fileSystem from "shared-resources/backend/file-system"
+import buildProjectWindow from "./libs/build-project-window";
 
 const {app, BrowserWindow} = require('electron');
 const isDev = require('electron-is-dev');
 const os = require("os");
 const path = require("path");
-const buildProjectWindow = require("./libs/build-project-window");
 
 
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
@@ -27,7 +27,6 @@ async function createEnvironment() {
 
 app.on('ready', () => createEnvironment());
 app.on('window-all-closed', async () => {
-
     if (process.platform !== 'darwin')
         app.quit();
 });

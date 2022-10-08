@@ -2,7 +2,7 @@ import FilesAPI from "../../shared/libs/FilesAPI"
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 import Engine from "../../../public/engine/production/Engine";
 import RegistryAPI from "../../shared/libs/RegistryAPI";
-import DEFAULT_LEVEL from "../../static/DEFAULT_LEVEL"
+
 import ROUTES from "../../static/ROUTES";
 import CHANNELS from "../../static/CHANNELS";
 import GPU from "../../../public/engine/production/GPU";
@@ -14,12 +14,13 @@ import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXT
 import loadMaterial from "../libs/loader/utils/load-material";
 import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
 import EngineStore from "../stores/EngineStore";
-import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import SettingsStore from "../stores/SettingsStore";
 import VisualsStore from "../stores/VisualsStore";
 import SETTINGS from "../data/SETTINGS";
+import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -47,7 +48,7 @@ export default class LevelController {
         ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
     }
 
-    static async loadLevel(level = DEFAULT_LEVEL) {
+    static async loadLevel(level = PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
 
         if (LevelController.#loadedLevel === level) {
             alert.pushAlert("Level already loaded")
@@ -56,8 +57,8 @@ export default class LevelController {
         LevelController.#loadedLevel = level
         const IPC = ROUTES.LOAD_LEVEL
         let pathToLevel
-        if (level === DEFAULT_LEVEL) {
-            pathToLevel = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
+        if (level === PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
+            pathToLevel = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
             EngineStore.engine.currentLevel = undefined
         } else {
             const {registryID} = level
@@ -65,7 +66,7 @@ export default class LevelController {
                 const reg = await RegistryAPI.readRegistryFile(registryID)
                 if (!reg)
                     throw new Error("Error loading level")
-                pathToLevel = FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path
+                pathToLevel = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
                 EngineStore.engine.currentLevel = level
             } catch (err) {
                 console.error(err)
@@ -108,7 +109,7 @@ export default class LevelController {
                     const uiID = entity.components.get(COMPONENTS.UI)?.uiLayoutID
                     if (uiID) {
                         const rs = await RegistryAPI.readRegistryFile(uiID)
-                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path))
+                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))
                     }
                     const terrain = entity.components.get(COMPONENTS.TERRAIN)
 
@@ -118,7 +119,7 @@ export default class LevelController {
                             const rs = await RegistryAPI.readRegistryFile(terrainID)
                             if (!rs)
                                 continue
-                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+                            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
                             if (!file)
                                 continue
                             const terrainData = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
@@ -128,7 +129,7 @@ export default class LevelController {
                             const rs = await RegistryAPI.readRegistryFile(materialID)
                             if (!rs)
                                 continue
-                            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+                            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
                             if (!file)
                                 continue
                             GPU.allocateMaterialInstance(file, materialID).catch()
@@ -163,18 +164,18 @@ export default class LevelController {
     static async save() {
         alert.pushAlert("Saving editor", "info")
         const entities = Engine.entities
-        const metaData = await FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + ".meta", "json")
+        const metaData = await FilesAPI.readFile(NodeFS.path + NodeFS.sep + ".meta", "json")
         if (!metaData) {
             console.error(new Error("Metadata not found"))
             return
         }
-        await FilesAPI.writeFile(FilesAPI.path + FilesAPI.sep + ".meta", {
+        await FilesAPI.writeFile(NodeFS.path + NodeFS.sep + ".meta", {
             ...metaData,
             settings: SettingsStore.data
         }, true)
         let pathToWrite
         pathElse:if (!EngineStore.engine.currentLevel)
-            pathToWrite = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
+            pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
         else {
             const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
             if (!reg) {
@@ -182,7 +183,7 @@ export default class LevelController {
                 pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                 break pathElse
             }
-            pathToWrite = FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+            pathToWrite = FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path)
         }
         try {
             await FilesAPI.writeFile(

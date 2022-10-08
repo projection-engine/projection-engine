@@ -1,9 +1,10 @@
-const Buffer = require("./gltf/instances/Buffer")
-const Accessor = require("./gltf/instances/Accessor")
-const Scene = require("./gltf/instances/Scene")
-const createDirectory = require("../utils/gltf/create-directory")
+import Scene from "./gltf/instances/Scene";
+import Accessor from "./gltf/instances/Accessor";
+import createDirectory from "../utils/gltf/create-directory";
+import Buffer from "./gltf/instances/Buffer";
 
-module.exports = async function glTF(root, fileSRC, projectPath, file, options, filePath) {
+
+export default async function glTF(root, fileSRC, projectPath, file, options, filePath) {
     createDirectory(root)
     const idsToLoad = [], fileSourcePath = filePath.replace(fileSRC, "")
     try {

@@ -1,8 +1,8 @@
 <script>
     import {KEYS} from "../../../public/engine/production";
-    import Icon from "../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SETTINGS from "../../editor/data/SETTINGS";
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../shared/libs/Localization";
 
     export let shortcut = []

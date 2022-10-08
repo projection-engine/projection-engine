@@ -15,18 +15,11 @@ export default class FilesStore {
 
     static #isWatching = false
 
-    static get PREVIEW_PATH() {
-        return FilesAPI.path + FilesAPI.sep + "previews"
-    }
-
-    static get ASSETS_PATH() {
-        return FilesAPI.path + FilesAPI.sep + "assets"
-    }
 
     static getStore(onChange) {
         if (!FilesStore.initialized) {
             FilesStore.initialized = true
-            FilesAPI.readFile(FilesAPI.path + FilesAPI.sep + "bookmarks.meta", "json")
+            FilesAPI.readFile(NodeFS.path + NodeFS.sep + "bookmarks.meta", "json")
                 .then(res => {
                     if (res)
                         FilesStore.updateStore({...FilesStore.data, bookmarks: res})
@@ -40,7 +33,7 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try {
-            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FilesAPI.path}, false)
+            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path}, false)
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         } catch (err) {
@@ -76,12 +69,12 @@ export default class FilesStore {
     }
 
     static async createFolder(currentDirectory) {
-        let path = currentDirectory.id + FilesAPI.sep + Localization.PROJECT.FILES.NEW_FOLDER
-        const existing = await ContentBrowserAPI.foldersFromDirectory(FilesStore.ASSETS_PATH + currentDirectory.id)
+        let path = currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER
+        const existing = await ContentBrowserAPI.foldersFromDirectory(NodeFS.ASSETS_PATH + currentDirectory.id)
         if (existing.length > 0)
             path += " - " + existing.length
 
-        const [e] = await NodeFS.mkdir(FilesStore.ASSETS_PATH + path, {})
+        const [e] = await NodeFS.mkdir(NodeFS.ASSETS_PATH + path, {})
         if (!e)
             await FilesStore.refreshFiles()
 
@@ -98,7 +91,7 @@ export default class FilesStore {
         const prev = FilesStore.data.bookmarks
 
         const n = prev.filter(i => !v.includes(i.path))
-        FilesAPI.writeFile(FilesAPI.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
         FilesStore.updateStore({...FilesStore.data, bookmarks: n})
     }
 
@@ -106,10 +99,10 @@ export default class FilesStore {
         const prev = FilesStore.data.bookmarks
 
         const n = [...prev, {
-            name: id.split(FilesAPI.sep).pop(),
+            name: id.split(NodeFS.sep).pop(),
             path: id
         }]
-        FilesAPI.writeFile(FilesAPI.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
         FilesStore.updateStore({...FilesStore.data, bookmarks: n})
     }
 
@@ -117,7 +110,7 @@ export default class FilesStore {
         const prev = FilesStore.data.bookmarks
 
         const n = prev.filter(i => i.path !== id)
-        FilesAPI.writeFile(FilesAPI.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
         FilesStore.updateStore({...FilesStore.data, bookmarks: n})
     }
 
@@ -125,10 +118,10 @@ export default class FilesStore {
         const prev = FilesStore.data.bookmarks
         const p = prev.filter(i => i.path !== id)
         const n = [...p, {
-            name: newPath.split(FilesAPI.sep).pop(),
+            name: newPath.split(NodeFS.sep).pop(),
             path: newPath
         }]
-        FilesAPI.writeFile(FilesAPI.sep + "bookmarks.meta", JSON.stringify(n)).catch()
+        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
         FilesStore.updateStore({...FilesStore.data, bookmarks: n})
     }
 

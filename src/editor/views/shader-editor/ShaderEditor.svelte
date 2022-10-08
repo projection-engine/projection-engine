@@ -12,9 +12,9 @@
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
     import Header from "../../../shared/components/view/components/Header.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Editor from "./components/Editor.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorController from "./ShaderEditorController";
@@ -23,6 +23,7 @@
     import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
     import {v4} from "uuid";
     import VIEWS from "../../../shared/components/view/VIEWS";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let hidden
     export let switchView
@@ -190,7 +191,7 @@
                 disabled={!openFile.registryID}
                 on:click={async () => {
                     const {shader} = await materialCompiler(nodes, links)
-                    const newFile = FilesAPI.temp + FilesAPI.sep + openFile.registryID + ".log"
+                    const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
                     await FilesAPI.writeFile(newFile, shader, true)
                     shell.openPath(newFile).catch()
                 }}

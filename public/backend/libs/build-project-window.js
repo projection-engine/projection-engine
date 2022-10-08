@@ -1,14 +1,17 @@
-import readFile from "../utils/file-system/read-file";
+
 import frameMenuController from "../utils/frame-menu-controller";
 import buildSettingsWindow from "./build-settings-window";
-import PROJECT_PATH from "../static/PROJECT_PATH";
+
+import readFile from "shared-resources/backend/utils/read-file";
+import levelLoader from "./level-loader";
+import ROUTES from "../../../src/static/ROUTES";
+import contextMenuController from "shared-resources/backend/context-menu-controller";
+import PROJECT_PATH from "shared-resources/PROJECT_PATH";
+import projectEvents from "./project-events";
 
 const {BrowserWindow, ipcMain, screen} = require("electron")
 const path = require("path");
-const ROUTES = require("../../../src/static/ROUTES");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
-const loadLevel = require("./level-loader");
-const contextMenuController = require("../utils/context-menu-controller");
 
 export default async function buildProjectWindow(pathToProject, isDev) {
     try {
@@ -17,7 +20,6 @@ export default async function buildProjectWindow(pathToProject, isDev) {
         const metadata = JSON.parse(strData)
         if (!metadata)
             return false
-        let settingsWindowIsOpen = false
         const primaryDisplay = screen.getPrimaryDisplay()
         const {width, height} = primaryDisplay.workAreaSize
 
@@ -44,19 +46,7 @@ export default async function buildProjectWindow(pathToProject, isDev) {
         if (isDev)
             window.openDevTools({mode: "detach"})
 
-        ipcMain.on(
-            ROUTES.LOAD_LEVEL,
-            (_, pathToLevel) => loadLevel(window.webContents, pathToLevel, pathToProject.replace(".projection", "")))
-        ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, event => event.sender.send(ROUTES.LOAD_PROJECT_METADATA, metadata))
-        ipcMain.on(
-            ROUTES.OPEN_SETTINGS,
-            async (event, settingsData) => {
-                if (settingsWindowIsOpen)
-                    return
-                settingsWindowIsOpen = true
-                buildSettingsWindow(window, settingsData, () => settingsWindowIsOpen = false).catch()
-            }
-        )
+        projectEvents(pathToProject, window,  metadata)
         await window.loadFile(path.join(__dirname, '../index.html'))
         await window.webContents.executeJavaScript(`sessionStorage.setItem("${PROJECT_PATH}", "${pathToProject.replaceAll("\\", "\\\\")}"); `)
 

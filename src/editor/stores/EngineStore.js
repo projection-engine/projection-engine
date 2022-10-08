@@ -1,10 +1,10 @@
 import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../../shared/libs/FilesAPI"
-import FilesStore from "./FilesStore";
 import RegistryAPI from "../../shared/libs/RegistryAPI";
 import GPU from "../../../public/engine/production/GPU";
 import {writable} from "svelte/store";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const engine = writable(ENGINE);
 
@@ -28,7 +28,7 @@ export default class EngineStore {
             return true
         try {
             const rs = await RegistryAPI.readRegistryFile(registryID)
-            const textureData = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+            const textureData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
 
             await GPU.allocateTexture({
                 ...textureData,

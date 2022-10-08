@@ -1,5 +1,5 @@
 <script>
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
@@ -9,8 +9,8 @@
     import {GPU} from "../../../../../../public/engine/production";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
-    import FilesStore from "../../../../stores/FilesStore";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let settings
     export let selectedTerrain
@@ -36,7 +36,7 @@
 
     async function updateImage({registryID}) {
         const reg = await RegistryAPI.readRegistryFile(registryID)
-        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + reg.path, "json")
+        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
 
         console.log(file)
         TerrainWorker.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)

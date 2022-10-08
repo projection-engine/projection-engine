@@ -2,24 +2,24 @@ import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import {v4 as uuidv4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
-import FilesStore from "../../editor/stores/FilesStore";
+import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
 
 export default class AssetAPI {
     static async readAsset(id) {
         const reg = await RegistryAPI.readRegistryFile(id)
         if(reg)
-            return await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+            return await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path)
     }
 
     static async assetExists(path) {
-        return await NodeFS.exists(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + path))
+        return await NodeFS.exists(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path))
     }
 
     static async writeAsset(path, fileData, previewImage, registryID) {
         const fileID = registryID !== undefined ? registryID : uuidv4()
-        await NodeFS.write(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + path), fileData)
+        await NodeFS.write(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path), fileData)
         if (previewImage)
-            await NodeFS.write(FilesAPI.resolvePath(FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + registryID + ".preview"), previewImage)
+            await NodeFS.write(FilesAPI.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + registryID + ".preview"), previewImage)
         await RegistryAPI.createRegistryEntry(fileID, path)
     }
 
@@ -33,19 +33,6 @@ export default class AssetAPI {
     }
 
 
-    static async createProject(name) {
-
-        const projectID = uuidv4(),
-            projectPath = localStorage.getItem("basePath") + "projects" + FilesAPI.sep + projectID
-        if (!(await NodeFS.exists(FilesAPI.resolvePath(localStorage.getItem("basePath") + "projects")))) await NodeFS.mkdir(FilesAPI.resolvePath(localStorage.getItem("basePath") + "projects"))
-        const [err] = await NodeFS.mkdir(projectPath)
-        if (!err) {
-            await NodeFS.write(FilesAPI.resolvePath(projectPath + FilesAPI.sep + ".meta"), JSON.stringify({
-                id: projectID, name: name, creationDate: new Date().toDateString()
-            }))
-        }
-        return projectID
-    }
 
 
 }

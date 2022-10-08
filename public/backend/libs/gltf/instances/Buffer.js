@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const atob = require("atob")
 
-module.exports =  class Buffer {
+export default class Buffer {
     constructor(data, basePath) {
         this.data = data
         this.basePath = basePath

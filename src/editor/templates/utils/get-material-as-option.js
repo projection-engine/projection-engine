@@ -2,8 +2,9 @@ import RegistryAPI from "../../../shared/libs/RegistryAPI";
 import FilesAPI from "../../../shared/libs/FilesAPI";
 import FilesStore from "../../stores/FilesStore";
 import resolveFileName from "./resolve-file-name";
-import FILE_TYPES from "../../../static/FILE_TYPES";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 import AssetAPI from "../../../shared/libs/AssetAPI";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default function getMaterialAsOption(m, currentDirectory){
     return {
@@ -16,12 +17,12 @@ export default function getMaterialAsOption(m, currentDirectory){
                 alert.pushAlert("Material not found", "error")
                 return
             }
-            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + regFile.path, "json")
+            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + regFile.path, "json")
 
             if (!file?.response)
                 alert.pushAlert("Material not compiled", "error")
             else {
-                let path = await resolveFileName(currentDirectory.id + FilesAPI.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + nodeName + "-instance", FILE_TYPES.MATERIAL_INSTANCE)
 
                 await AssetAPI.writeAsset(path, JSON.stringify({
                     original: nodeID,

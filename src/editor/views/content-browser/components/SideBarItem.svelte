@@ -2,14 +2,14 @@
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import handleDropFolder from "../utils/handle-drop-folder";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import FilesAPI from "../../../../shared/libs/FilesAPI";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let setCurrentDirectory
     export let currentDirectory
     export let id
     export let name
-    $: isTopLevel = id === FilesAPI.sep
+    $: isTopLevel = id === NodeFS.sep
     $: isCurrentDir = currentDirectory.id === id
     let ref
 

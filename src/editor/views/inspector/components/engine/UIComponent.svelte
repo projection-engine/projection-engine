@@ -1,18 +1,18 @@
 <script>
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import Input from "../../../../../shared/components/input/Input.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./Styles.svelte";
     import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.json"
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FilesStore from "../../../../stores/FilesStore";
     import UIAPI from "../../../../../../public/engine/production/apis/UIAPI";
     import {Engine} from "../../../../../../public/engine/production";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let entity
     export let submit
@@ -32,7 +32,7 @@
         const ref = await RegistryAPI.readRegistryFile(reg.registryID)
         if (!ref)
             return
-        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + ref.path)
+        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + ref.path)
         if (!file)
             return
         Engine.UILayouts.set(reg.registryID, file)

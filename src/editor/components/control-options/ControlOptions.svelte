@@ -3,10 +3,10 @@
     import {onDestroy} from "svelte";
     import Layout from "./Layout.svelte";
     import Localization from "../../../shared/libs/Localization";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 
     import EntityStateController from "../../libs/EntityStateController";
     import {DiffuseProbePass, SpecularProbePass} from "../../../../public/engine/production";

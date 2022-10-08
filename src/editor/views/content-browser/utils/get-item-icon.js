@@ -1,4 +1,4 @@
-import FILE_TYPES from "../../../../static/FILE_TYPES";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 
 export default function getItemIcon(metadata, childrenQuantity, type) {
     let icon

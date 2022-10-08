@@ -1,10 +1,8 @@
 <script>
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import Localization from "../../../../../shared/libs/Localization";
-    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
-    import FilesStore from "../../../../stores/FilesStore";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
 
@@ -13,7 +11,7 @@
     const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     $: {
-        NodeFS.stat(FilesStore.ASSETS_PATH + FilesAPI.sep + item.id)
+        NodeFS.stat(NodeFS.ASSETS_PATH  + NodeFS.sep + item.id)
             .then(res => {
                 if (res[0])
                     return
@@ -21,9 +19,9 @@
             })
     }
     const showInFolder = () => {
-        const id = item.id.split(FilesAPI.sep)
+        const id = item.id.split(NodeFS.sep)
         id.pop()
-        GlobalContentBrowserController.pushCurrentDirectory(id.join(FilesAPI.sep))
+        GlobalContentBrowserController.pushCurrentDirectory(id.join(NodeFS.sep))
     }
 </script>
 

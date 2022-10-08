@@ -1,6 +1,6 @@
 <script>
     import SHADING_MODELS from "../../../../../../public/engine/editor/templates/SHADING_MODELS"
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPU from "../../../../../../public/engine/production/GPU";
     import DepthPass from "../../../../../../public/engine/production/passes/rendering/DepthPass";

@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {COMPONENTS, Engine, Entity} from "../../../../../../public/engine/production";
     import SelectionStore from "../../../../stores/SelectionStore";
     import GIZMOS from "../../../../data/GIZMOS";

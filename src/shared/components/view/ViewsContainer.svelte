@@ -1,8 +1,8 @@
 <script>
-    import ResizableBar from "../resizable/ResizableBar.svelte";
+    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import View from "./components/View.svelte";
     import VIEWS from "./VIEWS";
-    import ToolTip from "../tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 
     export let resizePosition
     export let topOffset = undefined

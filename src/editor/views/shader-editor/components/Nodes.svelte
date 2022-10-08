@@ -1,8 +1,8 @@
 <script>
     import {allNodes} from "../templates/all-nodes"
-    import Input from "../../../../shared/components/input/Input.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import "../../../../shared/components/selector/css/selector.css"
 
     export let translate

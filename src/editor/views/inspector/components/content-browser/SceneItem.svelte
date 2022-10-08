@@ -1,8 +1,8 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import FilesAPI from "../../../../../shared/libs/FilesAPI";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let data
 
@@ -11,7 +11,7 @@
         if (data) {
             const mapped = data.nodes.map(n => n.primitives).flat()
             Promise.all(mapped.map(r => RegistryAPI.readRegistryFile(r))).then(r => primitives = r.map(rr => ({
-             name: rr.path.split(FilesAPI.sep).pop(),
+             name: rr.path.split(NodeFS.sep).pop(),
              path: rr.path
             })))
         }

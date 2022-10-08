@@ -1,11 +1,12 @@
+import PROJECT_FOLDER_STRUCTURE from "../../../src/static/PROJECT_FOLDER_STRUCTURE";
+
 const fs = require("fs")
 const pathRequire = require("path")
-const ASSETS_PATH = require("../../../../src/static/ASSETS_PATH")
 
-module.exports = async function (p, registryData, projectPath) {
+export default async function parseContentBrowserData(p, registryData, projectPath) {
     if (typeof p !== "string")
         return
-    const assetsPath = projectPath + pathRequire.sep + ASSETS_PATH
+    const assetsPath = projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS
     return new Promise(resolve => {
         fs.lstat(p, (e, stat) => {
             if (!e) {

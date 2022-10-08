@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/am" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/public/engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/shared-resources" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/app/windows/project/libs/engine" vcs="Git" />
   </component>
 </project>

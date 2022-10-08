@@ -1,13 +1,14 @@
 <script>
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import {onMount} from "svelte";
-    import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
-    import FilesAPI from "../../../../../shared/libs/FilesAPI";
     import SettingsStore from "../../../../stores/SettingsStore";
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../../../shared/libs/Localization";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../static/PROJECT_FOLDER_STRUCTURE";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
 
     export let settings
 
@@ -18,14 +19,13 @@
     let path
     onMount(() => {
         if (currentTexture != null)
-            path = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + currentTexture + ".preview"
+            path = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + currentTexture + FILE_TYPES.PREVIEW
     })
 
     async function update(key, value) {
-        if (key === "foliageTexture") {
-            const res = await RegistryAPI.readRegistryFile(value)
-            path = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + value + ".preview"
-        }
+        if (key === "foliageTexture")
+            path = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + value + FILE_TYPES.PREVIEW
+
         SettingsStore.updateStore({...settings, terrainSettings: {...tS, [key]: value}})
     }
 </script>

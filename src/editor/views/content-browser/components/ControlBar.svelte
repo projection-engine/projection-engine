@@ -1,14 +1,14 @@
 <script>
 
     import importFile from "../../../libs/import-file"
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../../shared/components/input/Input.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
 
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
-    import FILE_TYPES from "../../../../static/FILE_TYPES"
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import getCreationOptions from "../utils/get-creation-options";
 
     export let translate

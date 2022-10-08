@@ -4,8 +4,8 @@ import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import {v4} from "uuid";
 import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../../public/engine/production";
 import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
-import FilesStore from "../../../stores/FilesStore";
 import loadMaterial from "./load-material";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function loopNodesScene(node, parent, index = 0) {
     const children = []
@@ -20,7 +20,7 @@ export default async function loopNodesScene(node, parent, index = 0) {
         const primitive = node.primitives[m]
         const reg = await RegistryAPI.readRegistryFile(primitive)
         if (reg) {
-            const meshData = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+            const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")
             if(!meshData)
                 continue
             if (meshData.material != null)

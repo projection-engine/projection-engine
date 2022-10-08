@@ -1,13 +1,13 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../../data/TRANSFORMATION_TYPE"
     import GIZMOS from "../../../../data/GIZMOS"
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../../stores/SettingsStore";
     import GizmoSystem from "../../../../../../public/engine/editor/services/GizmoSystem";
     import Localization from "../../../../../shared/libs/Localization";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import "../../css/styles.css"
 
     export let settings

@@ -1,12 +1,11 @@
 <script>
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     export let layer
     export let update
     export let removeLayer

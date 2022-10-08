@@ -1,13 +1,13 @@
 <script>
     import Localization from "../../../shared/libs/Localization";
     import Header from "../../../shared/components/view/components/Header.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "../../../shared/components/create-portal";
     import VIEWS from "../../../shared/components/view/VIEWS";

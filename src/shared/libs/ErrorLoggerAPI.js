@@ -1,13 +1,16 @@
 import FilesAPI from "./FilesAPI";
-import ERROR_LOG_FILE from "../../static/ERROR_LOG_FILE";
+
 import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
+import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_PATH from "shared-resources/PROJECT_PATH";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default class ErrorLoggerAPI {
     static #timeout
     static #initialized = false
 
     static get path() {
-        return localStorage.getItem("basePath") + FilesAPI.sep + ERROR_LOG_FILE
+        return sessionStorage.getItem(PROJECT_PATH) + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ERROR_FILE
     }
 
     static initialize() {

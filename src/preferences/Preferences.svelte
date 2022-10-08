@@ -2,15 +2,14 @@
     import {onMount} from "svelte";
     import ROUTES from "../static/ROUTES";
     import Localization from "../shared/libs/Localization";
-
-    import ResizableBar from "../shared/components/resizable/ResizableBar.svelte";
+    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
-    import Icon from "../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
-    import ToolTip from "../shared/components/tooltip/ToolTip.svelte";
-    import Sidebar from "../shared/components/Sidebar.svelte";
-    import Alert from "../shared/components/alert/Alert.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Sidebar from "shared-resources/frontend/components/Sidebar.svelte";
+    import Alert from "shared-resources/frontend/components/alert/Alert.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
 
     const {ipcRenderer} = window.require('electron')

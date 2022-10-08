@@ -1,15 +1,15 @@
-import FilesStore from "../../../stores/FilesStore";
 import FilesAPI from "../../../../shared/libs/FilesAPI";
 import Localization from "../../../../shared/libs/Localization";
 import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
 import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import GPU from "../../../../../public/engine/production/GPU";
-import FILE_TYPES from "../../../../static/FILE_TYPES";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 import TERRAIN_MATERIAL from "../../../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const loadFile = async (rs) => {
 
-    const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+    const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + rs.path, "json")
     if (!file)
         alert.pushAlert(
             Localization.PROJECT.INSPECTOR.ERROR_LOADING_FILE,

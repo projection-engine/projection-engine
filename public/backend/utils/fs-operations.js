@@ -1,13 +1,14 @@
-const FILE_TYPES = require("../../../../src/static/FILE_TYPES")
-const readFile = require("./read-file")
-const lstat = require("./read-file")
-const readdir = require("./readdir")
-const REG_PATH = require("../../../../src/static/REG_PATH")
+import PROJECT_FOLDER_STRUCTURE from "../../../src/static/PROJECT_FOLDER_STRUCTURE";
+import readdir from "shared-resources/backend/utils/readdir";
+import lstat from "shared-resources/backend/utils/lstat";
+import readFile from "shared-resources/backend/utils/read-file";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
+
 
 const pathRequire = require("path")
 const fs = require("fs")
 
-async function fromDirectory(startPath, extension) {
+export async function fromDirectory(startPath, extension) {
     if (!fs.existsSync(startPath)) return []
     let res = []
     let files = (await readdir(startPath))[1]
@@ -21,18 +22,18 @@ async function fromDirectory(startPath, extension) {
 }
 
 
-async function readFromRegistry(fileID, projectPath) {
+export async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
-        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + pathRequire.sep + REG_PATH + pathRequire.sep + fileID + FILE_TYPES.REGISTRY)))[1]
+        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + pathRequire.sep + fileID + FILE_TYPES.REGISTRY)))[1]
         if (lookUpTable) {
-            const fileData = (await readFile(projectPath + pathRequire.sep + "assets" +pathRequire.sep +  JSON.parse(lookUpTable).path))[1]
+            const fileData = (await readFile(projectPath + pathRequire.sep + "assets" + pathRequire.sep + JSON.parse(lookUpTable).path))[1]
             if (fileData) resolve(fileData)
             else resolve(null)
         } else resolve(null)
     })
 }
 
-async function readRegistry(pathName) {
+export async function readRegistry(pathName) {
     return new Promise(resolve => {
         fs.readdir(pathName, (e, res) => {
             if (!e) {
@@ -57,5 +58,3 @@ async function readRegistry(pathName) {
         })
     })
 }
-
-module.exports = {readRegistry, fromDirectory, readFromRegistry}

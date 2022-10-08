@@ -1,14 +1,13 @@
 <script>
-
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Input from "../../../../../shared/components/input/Input.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Component from "../../../../../../public/engine/production/components/Component";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import EngineStore from "../../../../stores/EngineStore";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import loadMaterial from "../../../../libs/loader/utils/load-material";
     import GPU from "../../../../../../public/engine/production/GPU";

@@ -2,11 +2,11 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import Branch from "./Node.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import {Engine} from "../../../../../public/engine/production";
     import HierarchyController from "../../../libs/HierarchyController";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../../shared/libs/Localization";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';

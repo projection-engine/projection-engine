@@ -1,8 +1,8 @@
-import FilesStore from "../stores/FilesStore";
 import FilesAPI from "../../shared/libs/FilesAPI"
 import RegistryAPI from "../../shared/libs/RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
 import {EntityAPI} from "../../../public/engine/production";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
 
@@ -21,7 +21,7 @@ export default async function componentConstructor(entity, scriptID, autoUpdate 
         return
     }
 
-    const data = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path)
+    const data = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path)
 
     if (!data) {
         if (found > -1) {

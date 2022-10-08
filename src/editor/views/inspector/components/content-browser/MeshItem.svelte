@@ -4,7 +4,7 @@
     import GPU from "../../../../../../public/engine/production/GPU";
     import PrimitiveProcessor from "../../../../../../public/engine/production/apis/PrimitiveProcessor";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FilesStore from "../../../../stores/FilesStore";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let item
     let wasUpdated = false
@@ -14,7 +14,7 @@
     const updateAsset = async () => {
         wasUpdated  = true
 
-        const data = await FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, "json")
+        const data = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + item.id, "json")
         if (!data) return
         data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
         data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)

@@ -1,5 +1,6 @@
-const {mat4, quat} = require("gl-matrix");
-module.exports = function (node, parentTransform){
+import {mat4, quat} from "gl-matrix";
+
+export default function extractTransformations (node, parentTransform){
 
     let parsedNode = {
         name: node.name,

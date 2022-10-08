@@ -1,6 +1,7 @@
 import FilesAPI from "../../../../shared/libs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../../shared/libs/Localization";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
@@ -15,22 +16,22 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
         for (let j = 0; j < relatedFiles.length; j++) {
             const currentFile = relatedFiles[j]
             await FilesAPI.deleteFile(
-                FilesStore.ASSETS_PATH + FilesAPI.sep + currentFile.id,
+                NodeFS.ASSETS_PATH + NodeFS.sep + currentFile.id,
                 {
                     recursive: true,
                     force: true
                 })
             if (currentDirectory.id === currentFile.id)
-                setCurrentDirectory({id: FilesAPI.sep})
+                setCurrentDirectory({id: NodeFS.sep})
         }
         await FilesAPI.deleteFile(
-            FilesStore.ASSETS_PATH+ FilesAPI.sep + file.id,
+            NodeFS.ASSETS_PATH + NodeFS.sep + file.id,
             {
                 recursive: true,
                 force: true
             })
         if (currentDirectory.id === file.id)
-            setCurrentDirectory({id: FilesAPI.sep})
+            setCurrentDirectory({id: NodeFS.sep})
     }
 
     await FilesStore.refreshFiles()

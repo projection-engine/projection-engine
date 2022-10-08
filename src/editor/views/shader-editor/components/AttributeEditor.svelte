@@ -1,7 +1,6 @@
 <script>
-
-    import Input from "../../../../shared/components/input/Input.svelte";
-    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
+    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Material from "../templates/nodes/Material";
     import Attribute from "./node/Attribute.svelte";
 

@@ -1,11 +1,13 @@
-const getPrimitive = require("../primitive/get-primitive")
-const {v4} = require("uuid")
-const FILE_TYPES = require("../../../../../src/static/FILE_TYPES")
-const parseMaterial = require("../material/parse-material")
-const writeData = require("../../../utils/gltf/write-data");
-const getNormalizedName = require("../../../utils/gltf/get-normalized-name")
-const extractTransformations = require("../primitive/extract-transformations")
-const buildPrimitive = require("../primitive/build-primitive")
+import buildPrimitive from "../primitive/build-primitive";
+import extractTransformations from "../primitive/extract-transformations";
+import getNormalizedName from "../../../utils/gltf/get-normalized-name";
+import getPrimitive from "../primitive/get-primitive";
+import {v4} from "uuid";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
+import parseMaterial from "../material/parse-material";
+import writeData from "../../../utils/gltf/write-data";
+
+
 
 function getChildren(allNodes, node) {
     const children = []
@@ -17,7 +19,7 @@ function getChildren(allNodes, node) {
     return children.filter(c => c !== undefined)
 }
 
-class Node {
+export default class Node {
     data = {}
     children = []
     id = v4().toString()
@@ -96,4 +98,3 @@ class Node {
     }
 }
 
-module.exports = Node

@@ -1,8 +1,8 @@
 <script>
     import "../../css/styles.css"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../../shared/libs/Localization";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
     import SettingsStore from "../../../../stores/SettingsStore";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";

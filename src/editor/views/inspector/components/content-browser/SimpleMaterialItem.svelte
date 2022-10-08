@@ -1,8 +1,8 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import SIMPLE_MATERIAL_TEMPLATE
         from "../../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
@@ -13,7 +13,6 @@
 
     export let item
     export let data
-    let timeout
     let temp
     $: temp = {...data}
     const translate = key => Localization.PROJECT.INSPECTOR[key]

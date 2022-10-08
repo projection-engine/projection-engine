@@ -1,14 +1,14 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
-    import Range from "../../../../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Selector from "../../../../../shared/components/selector/Selector.svelte";
     import AssetAPI from "../../../../../shared/libs/AssetAPI";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FilesStore from "../../../../stores/FilesStore";
     import RegistryAPI from "../../../../../shared/libs/RegistryAPI";
     import TerrainWorker from "../../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../../public/engine/production";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let item
     export let data
@@ -29,7 +29,7 @@
 
         if (key === "imageID") {
             const reg = await RegistryAPI.readRegistryFile(value)
-            const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + reg.path, "json")
+            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path, "json")
 
             temp = {...temp, imageID: value, image: file.base64}
         } else

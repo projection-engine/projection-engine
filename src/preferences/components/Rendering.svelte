@@ -1,5 +1,5 @@
 <script>
-    import Range from "../../shared/components/range/Range.svelte";
+    import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Accordion from "../../shared/components/accordion/Accordion.svelte";
     import Checkbox from "../../shared/components/checkbox/Checkbox.svelte";
     import Localization from "../../shared/libs/Localization";

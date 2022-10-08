@@ -1,25 +1,24 @@
+import FILE_TYPES from "shared-resources/FILE_TYPES";
+import PROJECT_FOLDER_STRUCTURE from "../../../../src/static/PROJECT_FOLDER_STRUCTURE";
 const fs = require("fs")
 const path = require("path")
-const REG_PATH = require("../../../../src/static/REG_PATH")
-const FILE_TYPES = require("../../../../src/static/FILE_TYPES")
-const PREVIEW_PATH = require("../../../../src/static/PREVIEW_PATH")
 
-module.exports = async function writeData(pathName, data, regID, projectPath, preview) {
+export default async function writeData(pathName, data, regID, projectPath, preview) {
     return new Promise(resolve => {
         fs.writeFile(
             pathName,
             typeof data === "string" ? data : JSON.stringify(data),
             () => {
                 fs.writeFile(
-                    projectPath + path.sep + REG_PATH + path.sep + regID + FILE_TYPES.REGISTRY,
+                    projectPath + path.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + path.sep + regID + FILE_TYPES.REGISTRY,
                     JSON.stringify({
-                        path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + "assets") + path.sep, ""),
+                        path: path.resolve(pathName).replace(path.resolve(projectPath + path.sep + PROJECT_FOLDER_STRUCTURE.ASSETS) + path.sep, ""),
                         id: regID
                     }),
                     () => {
                         if (preview)
                             fs.writeFile(
-                                projectPath + path.sep + PREVIEW_PATH + path.sep + regID + FILE_TYPES.PREVIEW,
+                                projectPath + path.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + path.sep + regID + FILE_TYPES.PREVIEW,
                                 preview,
                                 () => resolve()
                             )

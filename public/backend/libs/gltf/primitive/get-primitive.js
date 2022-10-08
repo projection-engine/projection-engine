@@ -1,4 +1,4 @@
-module.exports = function getPrimitive(data) {
+export default function getPrimitive(data) {
     const primitive = {...data}
     primitive.attributes = Object.keys(primitive.attributes)
         .map(name => ({

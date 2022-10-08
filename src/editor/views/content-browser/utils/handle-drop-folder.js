@@ -11,9 +11,9 @@ export default async function handleDropFolder(event, target) {
         for (let i = 0; i < items.length; i++) {
             const textData = items[i]
 
-            if (target !== FilesAPI.sep) {
+            if (target !== NodeFS.sep) {
                 let from = textData
-                if (!from.includes(FilesAPI.sep)) {
+                if (!from.includes(NodeFS.sep)) {
                     const reg = await RegistryAPI.readRegistryFile(from)
                     if (reg) from = reg.path
                     else {
@@ -21,18 +21,18 @@ export default async function handleDropFolder(event, target) {
                         return
                     }
                 }
-                const to = target + FilesAPI.sep + from.split(FilesAPI.sep).pop()
+                const to = target + NodeFS.sep + from.split(NodeFS.sep).pop()
 
                 const toItem = FilesStore.data.items.find(f => f.id === target)
                 const fromItem = FilesStore.data.items.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
                 if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + from), FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + to))
+                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + from), FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + to))
                     await FilesStore.refreshFiles()
                 }
-            } else if (textData.includes(FilesAPI.sep)) {
-                const newPath = FilesStore.ASSETS_PATH + FilesAPI.sep + textData.split(FilesAPI.sep).pop()
+            } else if (textData.includes(NodeFS.sep)) {
+                const newPath = NodeFS.ASSETS_PATH  + NodeFS.sep + textData.split(NodeFS.sep).pop()
                 if (!(await NodeFS.exists(newPath))) {
-                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + textData), FilesAPI.resolvePath(newPath))
+                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + textData), FilesAPI.resolvePath(newPath))
                     await FilesStore.refreshFiles()
                 } else alert.pushAlert("Item already exists.", "error")
             }

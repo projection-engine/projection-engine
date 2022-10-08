@@ -1,8 +1,6 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
 import FilesAPI from "../../../shared/libs/FilesAPI"
-import FILE_TYPES from "../../../static/FILE_TYPES";
-import FilesStore from "../../stores/FilesStore";
-
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../../../shared/libs/RegistryAPI";
@@ -17,6 +15,7 @@ import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -31,7 +30,7 @@ export default class Loader {
                 if (objLoaded.material && !GPU.materials.get(objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
-                        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + rs.path, "json")
+                        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
                         if (file && file.response)
                             material = {
                                 ...file.response,
@@ -58,12 +57,12 @@ export default class Loader {
 
     static async scene(path, onlyReturn) {
         const file = await FilesAPI.readFile(
-            FilesStore.ASSETS_PATH + FilesAPI.sep + path, "json")
+            NodeFS.ASSETS_PATH + NodeFS.sep + path, "json")
         const entities = []
         try {
             if (file) {
                 const folder = new Entity()
-                folder.name = path.split(FilesAPI.sep).pop().replace(FILE_TYPES.SCENE, "")
+                folder.name = path.split(NodeFS.sep).pop().replace(FILE_TYPES.SCENE, "")
 
                 for (let i = 0; i < file.nodes.length; i++) {
                     const data = await loopNodesScene(file.nodes[i], folder, i)
@@ -108,7 +107,7 @@ export default class Loader {
             if (res)
                 switch ("." + res.path.split(".").pop()) {
                     case FILE_TYPES.MESH: {
-                        const file = await FilesAPI.readFile(FilesStore.ASSETS_PATH + FilesAPI.sep + res.path, "json")
+                        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
                         const meshData = await Loader.mesh(file, data, asID)
                         if (!meshData
 )                            continue

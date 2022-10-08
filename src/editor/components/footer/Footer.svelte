@@ -1,12 +1,12 @@
 <script>
     import SHORTCUTS_ID from "../../data/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import HotKeysController from "../../../shared/libs/HotKeysController";
     import Localization from "../../../shared/libs/Localization";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../../shared/libs/ErrorLoggerAPI";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";

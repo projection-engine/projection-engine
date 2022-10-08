@@ -1,7 +1,6 @@
 <script>
-
-    import Icon from "../../icon/Icon.svelte";
-    import Input from "../../input/Input.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Input from "shared-resources/frontend/components/input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
     import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";

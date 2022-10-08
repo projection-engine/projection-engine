@@ -1,9 +1,8 @@
 <script>
     import Localization from "../../../../../shared/libs/Localization";
-    import FilesStore from "../../../../stores/FilesStore";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import FILE_TYPES from "../../../../../static/FILE_TYPES";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";
     import ItemMetadata from "./ItemMetadata.svelte";
@@ -13,6 +12,7 @@
     import SimpleMaterialItem from "./SimpleMaterialItem.svelte";
     import TerrainItem from "./TerrainItem.svelte";
     import TerrainMaterialWrapper from "./TerrainMaterialWrapper.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.SCENE, FILE_TYPES.TERRAIN_MATERIAL, FILE_TYPES.SIMPLE_MATERIAL, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE, FILE_TYPES.TERRAIN]
 
@@ -27,7 +27,7 @@
         data = undefined
         if (fileType !== FILE_TYPES.MESH && fileType !== FILE_TYPES.LEVEL) {
             const fType = VALID.includes(fileType) ? "json" : undefined
-            FilesAPI.readFile(FilesStore.ASSETS_PATH + item.id, fType).then(res => data = res)
+            FilesAPI.readFile(NodeFS.ASSETS_PATH  + item.id, fType).then(res => data = res)
         } else
             data = undefined
     }

@@ -1,5 +1,5 @@
 <script>
-    import ResizableBar from "../resizable/ResizableBar.svelte";
+    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
 
     export let globalStyle = ""
     export let initialTab = -1

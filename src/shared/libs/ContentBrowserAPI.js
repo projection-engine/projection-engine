@@ -1,11 +1,10 @@
 import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesAPI from "./FilesAPI";
-import FILE_TYPES from "../../static/FILE_TYPES";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
-import {v4 as uuidv4, v4} from "uuid";
+import {v4} from "uuid";
 import ROUTES from "../../static/ROUTES";
-import FilesStore from "../../editor/stores/FilesStore";
-import TEXTURE_TEMPLATE from "../../static/TEXTURE_TEMPLATE";
+import TEXTURE_TEMPLATE from "../../../public/engine/static/TEXTURE_TEMPLATE";
 import {IMAGE_WORKER_ACTIONS} from "../../../public/engine/production";
 import ImageWorker from "../../../public/engine/workers/image/ImageWorker";
 
@@ -14,7 +13,7 @@ const {ipcRenderer} = window.require("electron")
 
 function mapAsset(reg, type) {
     return reg.map(i => new Promise(resolve => {
-        const split = i.path.split(FilesAPI.sep)
+        const split = i.path.split(NodeFS)
         resolve({
             type,
             registryID: i.id,
@@ -37,8 +36,8 @@ export default class ContentBrowserAPI {
                 if (!res) return
                 for (let i in res) {
                     const file = res[i]
-                    const oldPath = fromResolved + FilesAPI.sep + `${file}`
-                    const newPath = to + FilesAPI.sep + `${file}`
+                    const oldPath = fromResolved + NodeFS + `${file}`
+                    const newPath = to + NodeFS + `${file}`
                     if ((await NodeFS.lstat(oldPath))[1].isDirectory)
                         await NodeFS.rename(oldPath, newPath)
                     else {
@@ -180,7 +179,7 @@ export default class ContentBrowserAPI {
                 const filePath = filesToLoad[i]
                 const name = filePath.split(pathRequire.sep).pop()
                 const newRoot = targetDir + pathRequire.sep + name.split(".")[0]
-                const fileID = uuidv4()
+                const fileID = v4()
                 const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
                 switch (type) {
                     case "png":
@@ -198,8 +197,8 @@ export default class ContentBrowserAPI {
                                         width: 256,
                                         height: 256
                                     })
-                                await NodeFS.write(FilesAPI.resolvePath(FilesStore.PREVIEW_PATH + FilesAPI.sep + fileID + FILE_TYPES.PREVIEW), reduced)
-                                await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(FilesStore.ASSETS_PATH + FilesAPI.sep, "") + FILE_TYPES.TEXTURE)
+                                await NodeFS.write(FilesAPI.resolvePath(NodeFS.PREVIEW_PATH + NodeFS + fileID + FILE_TYPES.PREVIEW), reduced)
+                                await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(NodeFS.ASSETS_PATH + NodeFS, "") + FILE_TYPES.TEXTURE)
                             } else
                                 console.error(new Error("Error importing image"))
                         }
@@ -215,7 +214,7 @@ export default class ContentBrowserAPI {
                                     filePath: filePath,
                                     newRoot,
                                     options: {},
-                                    projectPath: FilesAPI.path,
+                                    projectPath: NodeFS.path,
                                     listenID,
                                     fileName: filePath.split(pathRequire.sep).pop()
                                 })

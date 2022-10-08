@@ -1,6 +1,7 @@
-const {BrowserWindow, ipcMain} = require("electron")
+import ROUTES from "../../../src/static/ROUTES";
+
+const {BrowserWindow} = require("electron")
 const path = require("path");
-const ROUTES = require("../../../src/static/ROUTES");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 const {screen} = require('electron')
 

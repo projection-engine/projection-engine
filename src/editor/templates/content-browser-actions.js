@@ -7,6 +7,7 @@ import SelectionStore from "../stores/SelectionStore";
 import importFile from "../libs/import-file";
 import Localization from "../../shared/libs/Localization";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const {shell} = window.require("electron")
 const translate = key => Localization.PROJECT.FILES[key]
@@ -52,15 +53,15 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Go to parent",
             require: settings.contentBrowserHotkeys.GO_TO_PARENT,
             callback: () => {
-                if (currentDirectory.id !== FilesAPI.sep) {
+                if (currentDirectory.id !== NodeFS.sep) {
                     const found = currentDirectory.id
                     if (found) {
-                        const split = found.split(FilesAPI.sep)
+                        const split = found.split(NodeFS.sep)
                         split.pop()
                         if (split.length === 1)
-                            setCurrentDirectory({id: FilesAPI.sep})
+                            setCurrentDirectory({id: NodeFS.sep})
                         else
-                            setCurrentDirectory({id: split.join(FilesAPI.sep)})
+                            setCurrentDirectory({id: split.join(NodeFS.sep)})
                     }
                 }
             }
@@ -113,7 +114,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             {
                 label: "Open current directory on explorer",
                 icon: "open_in_new",
-                onClick: () => shell.showItemInFolder(FilesAPI.resolvePath(FilesStore.ASSETS_PATH + FilesAPI.sep + currentDirectory.id))
+                onClick: () => shell.showItemInFolder(FilesAPI.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + currentDirectory.id))
             },
             {divider: true},
 

@@ -1,8 +1,8 @@
 <script>
     import Localization from "../../../libs/Localization";
-    import Dropdown from "../../dropdown/Dropdown.svelte";
-    import ToolTip from "../../tooltip/ToolTip.svelte";
-    import Icon from "../../icon/Icon.svelte";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import VIEWS from "../VIEWS";
 
     export let icon

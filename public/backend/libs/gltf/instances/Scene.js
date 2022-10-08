@@ -1,12 +1,13 @@
-const Node = require("./Node")
-const {v4} = require("uuid")
-const FILE_TYPES = require("../../../../../src/static/FILE_TYPES")
-const createDirectory = require("../../../utils/gltf/create-directory")
-const path = require("path")
-const writeData = require("../../../utils/gltf/write-data");
-const getNormalizedName = require("../../../utils/gltf/get-normalized-name")
+import getNormalizedName from "../../../utils/gltf/get-normalized-name";
+import Node from "./Node"
+import {v4} from "uuid";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
+import createDirectory from "../../../utils/gltf/create-directory";
+import writeData from "../../../utils/gltf/write-data";
 
-module.exports = class Scene {
+const path = require("path")
+
+export default class Scene {
     nodes = []
     scene = {}
 

@@ -1,13 +1,14 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import FilesAPI from "../../../libs/FilesAPI";
-    import Icon from "../../icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let state
     export let type
     let previewPath
     $: {
-        if (state) previewPath = FilesAPI.path + FilesAPI.sep + "previews" + FilesAPI.sep + state.registryID + ".preview"
+        if (state) previewPath = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + state.registryID + ".preview"
     }
 </script>
 

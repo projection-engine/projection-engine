@@ -1,4 +1,4 @@
-import FilesAPI from "../../../../shared/libs/FilesAPI";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default class GlobalContentBrowserController{
     static subscribed = new Map()
@@ -13,7 +13,7 @@ export default class GlobalContentBrowserController{
     static pushCurrentDirectory(dir){
         let path = dir
         if(!path)
-            path = FilesAPI.sep
+            path = NodeFS.sep
         GlobalContentBrowserController.subscribed.forEach(e => e(path))
     }
 }

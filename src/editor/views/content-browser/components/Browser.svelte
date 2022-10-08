@@ -1,5 +1,5 @@
 <script>
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./item/Item.svelte";
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
@@ -10,7 +10,7 @@
     import HotKeysController from "../../../../shared/libs/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../../shared/libs/Localization";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
 

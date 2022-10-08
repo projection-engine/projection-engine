@@ -3,14 +3,14 @@
     import Header from "../../../shared/components/view/components/Header.svelte";
     import {onDestroy} from "svelte";
     import Components from "./components/engine/Components.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import UIElement from "./components/engine/UIComponent.svelte";
     import EntityElement from "./components/engine/EntitySettings.svelte";
     import ComponentLayout from "./components/engine/Layout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../public/engine/production/instances/Entity";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
     import VIEWS from "../../../shared/components/view/VIEWS";

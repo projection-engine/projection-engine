@@ -1,19 +1,18 @@
 <script>
-    import Alert from "../shared/components/alert/Alert.svelte";
+    import Alert from "shared-resources/frontend/components/alert/Alert.svelte";
     import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import InitializeWindow from "./libs/initialize-window";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../shared/components/view/ViewsContainer.svelte";
-    import ContextMenu from "../shared/components/context-menu/ContextMenu.svelte";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
     import LevelController from "./libs/LevelController";
-    import About from "../shared/components/About.svelte";
+    import About from "shared-resources/frontend/components/About.svelte";
+    import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
 
-    const {ipcRenderer} = window.require("electron")
     const FALLBACK = {
         name: "Default",
         bottom: [],
