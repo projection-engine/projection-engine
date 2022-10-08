@@ -1,9 +1,10 @@
 import {v4} from "uuid"
-import NodeFS from "./NodeFS"
+import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesStore from "../../editor/stores/FilesStore";
 import RegistryAPI from "./RegistryAPI";
 import REG_PATH from "../../static/REG_PATH"
 import ROUTES from "../../static/ROUTES";
+import PROJECT_PATH from "shared-resources/PROJECT_PATH"
 
 const pathRequire = window.require("path")
 
@@ -13,11 +14,11 @@ export default class FilesAPI {
     static registry = []
 
     static get path() {
-        return (localStorage.getItem("basePath") + "projects" + FilesAPI.sep + sessionStorage.getItem("electronWindowID"))
+        return sessionStorage.getItem(PROJECT_PATH)
     }
 
     static get temp() {
-        return localStorage.getItem("basePath") + "temp"
+        return sessionStorage.getItem(PROJECT_PATH) + FilesAPI.sep + "temp"
     }
 
     static initializeFolders() {

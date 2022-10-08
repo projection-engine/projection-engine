@@ -1,1 +1,1 @@
-- Cleaning up contextMenu component
+- Starting integration with shared-resources repository

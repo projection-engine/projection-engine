@@ -35,10 +35,7 @@
 
     onMount(() => {
         InitializeWindow(_ => isAboutOpen = true)
-        LevelController.initialize().then(res => {
-            EngineStore.updateStore({...engine, meta: res, isReady: true})
-        })
-
+        LevelController.initialize()
     })
 
     $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK

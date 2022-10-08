@@ -5,7 +5,6 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../libs/import-file";
-import getMaterialAsOption from "./utils/get-material-as-option";
 import Localization from "../../shared/libs/Localization";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 

@@ -1,5 +1,5 @@
 import {v4 as uuidv4, v4} from "uuid";
-import NodeFS from "./NodeFS";
+import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesAPI from "./FilesAPI";
 import ROUTES from "../../static/ROUTES";
 import REG_PATH from "../../static/REG_PATH"

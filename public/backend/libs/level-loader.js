@@ -4,13 +4,11 @@ const CHANNELS = require("../../../src/static/CHANNELS");
 const COMPONENTS = require("../../engine/static/COMPONENTS.json");
 const loadMeshes = require("../utils/level-loader/load-meshes");
 const loadMaterials = require("../utils/level-loader/load-materials");
-const getBasePath = require("../utils/get-base-path");
-const os = require("os");
-const path = require("path");
+
 const DEFAULT = {entities: []}
 
-module.exports = async function(sender, levelPath, projectID) {
-    const projectPath = getBasePath(os, path) + "projects" + path.sep + projectID
+module.exports = async function(sender, levelPath, pathToProject) {
+
     let level
 
     try{
@@ -20,7 +18,7 @@ module.exports = async function(sender, levelPath, projectID) {
         level = DEFAULT
     }
     const entities = level.entities
-    sender.send(CHANNELS.ENTITIES + projectID, level)
+    sender.send(CHANNELS.ENTITIES , level)
     const toLoadData = {
         meshes: new Set(),
         materials: new Set()
@@ -36,16 +34,16 @@ module.exports = async function(sender, levelPath, projectID) {
 
     loadMeshes(
         Array.from(toLoadData.meshes),
-        projectPath,
+        pathToProject,
         (data) => {
-            sender.send(CHANNELS.MESH + projectID, data)
+            sender.send(CHANNELS.MESH , data)
         }
     ).catch()
 
     loadMaterials(
         Array.from(toLoadData.materials),
-        projectPath,
-        (data) => sender.send(CHANNELS.MATERIAL + projectID, data)
+        pathToProject,
+        (data) => sender.send(CHANNELS.MATERIAL, data)
     ).catch()
 
 }

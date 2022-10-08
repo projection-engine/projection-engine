@@ -18,7 +18,7 @@
     let originalSettings
     let tab = 0
     let changed = false
-    const LOAD = ROUTES.LOAD_SETTINGS + sessionStorage.getItem("electronWindowID")
+    const LOAD = ROUTES.LOAD_SETTINGS
     onMount(() => {
         ipcRenderer.once(
             LOAD,
@@ -30,7 +30,7 @@
     })
 
     function apply(clone) {
-        ipcRenderer.send(ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"), clone ? originalSettings : settings)
+        ipcRenderer.send(ROUTES.UPDATE_SETTINGS, clone ? originalSettings : settings)
         changed = false
     }
 

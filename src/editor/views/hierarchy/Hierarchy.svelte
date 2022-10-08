@@ -17,7 +17,7 @@
     import HierarchyController from "../../libs/HierarchyController";
     import SelectionStore from "../../stores/SelectionStore";
     import SettingsStore from "../../stores/SettingsStore";
-    import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
+    import viewportHotkeys from "../../templates/viewport-hotkeys";
     import VIEWS from "../../../shared/components/view/VIEWS";
 
 

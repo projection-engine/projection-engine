@@ -1,6 +1,6 @@
 import {get} from "svelte/store";
 import {contentBrowserStore} from "./templates/content-browser-store";
-import NodeFS, {getCall} from "../../shared/libs/NodeFS";
+import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
 import FilesAPI from "../../shared/libs/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../static/ROUTES";

@@ -3,7 +3,7 @@ import WINDOW_FRAME_MENU from "../../../src/static/WINDOW_FRAME_MENU";
 const {Menu} = require("electron")
 
 
-export default function loadProjectMenus(window) {
+export default function frameMenuController(window) {
     const mapped = WINDOW_FRAME_MENU.map(e => ({
         ...e,
         submenu: e.submenu.map(s => {

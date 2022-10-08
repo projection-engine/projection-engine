@@ -1,7 +1,8 @@
-import SelectionStore from "../../stores/SelectionStore";
-import viewportHotkeys from "../hotkeys/viewport-hotkeys";
-import EntityConstructor from "../../libs/EntityConstructor";
-import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+import SelectionStore from "../stores/SelectionStore";
+import viewportHotkeys from "./viewport-hotkeys";
+import EntityConstructor from "../libs/EntityConstructor";
+import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+import entityCreationOptions from "./entity-creation-options";
 
 export default function viewportContext(settings) {
     const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
@@ -48,7 +49,10 @@ export default function viewportContext(settings) {
         {divider: true},
         VIEWPORT_HOTKEYS.HIDE_ACTIVE,
         VIEWPORT_HOTKEYS.FOCUS,
-        VIEWPORT_HOTKEYS.FIXATE_ACTIVE
-
+        VIEWPORT_HOTKEYS.FIXATE_ACTIVE,
+        {
+            label: "Create",
+            children: entityCreationOptions()
+        }
     ]
 }

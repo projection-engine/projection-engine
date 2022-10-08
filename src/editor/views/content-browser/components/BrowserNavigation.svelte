@@ -7,7 +7,7 @@
     import FilesAPI from "../../../../shared/libs/FilesAPI";
 
     import Input from "../../../../shared/components/input/Input.svelte";
-    import NodeFS from "../../../../shared/libs/NodeFS";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS"
     import Localization from "../../../../shared/libs/Localization";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";

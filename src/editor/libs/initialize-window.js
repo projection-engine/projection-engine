@@ -20,7 +20,7 @@ export default function InitializeWindow(openAbout) {
     Math.vec3 = vec3
     Math.quat = quat
     ipcRenderer.on(
-        ROUTES.UPDATE_SETTINGS + sessionStorage.getItem("electronWindowID"),
+        ROUTES.UPDATE_SETTINGS,
         (event, data) => {
             let newSettings = {}, newVisuals = {}
             Object.entries(data).forEach(([key, value]) => {
@@ -69,7 +69,7 @@ export default function InitializeWindow(openAbout) {
                     case "preferences":
                         const settingsClone = structuredClone({...SettingsStore.data, ...VisualsStore.data})
                         ipcRenderer.send(
-                            ROUTES.OPEN_SETTINGS + sessionStorage.getItem("electronWindowID"),
+                            ROUTES.OPEN_SETTINGS,
                             settingsClone
                         )
                         break

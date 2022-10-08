@@ -29,23 +29,19 @@ export default class EntityConstructor {
         entity.__changedBuffer[0] = 1
     }
 
-    static createEmpty(event) {
+    static createEmpty() {
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: new Entity()})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createMesh(id, event) {
+    static createMesh(id) {
         const entity = new Entity(undefined, translate("MESH_RENDERER"))
         const m = entity.addComponent(COMPONENTS.MESH)
         m.meshID = id
         EntityConstructor.translateEntity(entity)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createProbe(asDiffuse, event) {
+    static createProbe(asDiffuse) {
         const entity = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
         const p = entity.addComponent(COMPONENTS.PROBE)
         p.specularProbe = !asDiffuse
@@ -53,48 +49,39 @@ export default class EntityConstructor {
         EntityConstructor.translateEntity(entity)
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createPointLight(event) {
+    static createPointLight() {
         const entity = new Entity(undefined, translate("POINT_LIGHT"))
         entity.addComponent(COMPONENTS.POINT_LIGHT)
         addSprite(entity, STATIC_TEXTURES.POINT_LIGHT)
         EntityConstructor.translateEntity(entity)
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createDirectionalLight(event) {
+    static createDirectionalLight() {
         const entity = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
         addSprite(entity, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
         entity.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createCamera(event) {
+    static createCamera() {
         const entity = new Entity(undefined, translate("CAMERA"))
         entity.addComponent(COMPONENTS.CAMERA)
         EntityConstructor.translateEntity(entity)
 
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
     }
 
-    static createSprite(event) {
+    static createSprite() {
         const entity = new Entity(undefined, translate("SPRITE_RENDERER"))
         entity.addComponent(COMPONENTS.SPRITE)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-        if (event)
-            event.currentTarget.closeDropdown()
+
     }
 
     static hideEntity(nodeRef, submit=true) {

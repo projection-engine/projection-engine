@@ -8,7 +8,7 @@
     import HierarchyController from "../../../libs/HierarchyController";
     import ContextMenuController from "../../../../shared/libs/ContextMenuController";
     import Localization from "../../../../shared/libs/Localization";
-    import viewportContext from "../../../templates/context-menu/viewport-context";
+    import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
 

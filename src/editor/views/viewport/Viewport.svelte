@@ -18,7 +18,7 @@
 
     import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
-    import viewportHotkeys from "../../templates/hotkeys/viewport-hotkeys";
+    import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Canvas from "../../Canvas.svelte";
     import LevelController from "../../libs/LevelController";
 
@@ -75,6 +75,7 @@
             }
         }
     }
+    $: console.log(viewTab, VIEWPORT_TABS.EDITOR)
 </script>
 
 <div class="viewport" bind:this={ref}>
@@ -118,17 +119,17 @@
                 onReady={() => LevelController.loadLevel()}
         />
         {#if !engine.executingAnimation && isReady}
-            {#if viewTab === VIEWPORT_TABS.EDITOR }
+            {#if viewTab === VIEWPORT_TABS.UI}
+                <UILayout engine={engine} settings={settings}/>
+            {:else if viewTab === VIEWPORT_TABS.TERRAIN}
+                <TerrainLayout engine={engine} settings={settings}/>
+            {:else}
                 <EditorLayout
                         settings={settings}
                         engine={engine}
                         translate={translate}
                         isReady={isReady}
                 />
-            {:else if viewTab === VIEWPORT_TABS.UI}
-                <UILayout engine={engine} settings={settings}/>
-            {:else if viewTab === VIEWPORT_TABS.TERRAIN}
-                <TerrainLayout engine={engine} settings={settings}/>
             {/if}
         {/if}
     </div>

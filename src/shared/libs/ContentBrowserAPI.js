@@ -1,4 +1,4 @@
-import NodeFS from "./NodeFS";
+import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesAPI from "./FilesAPI";
 import FILE_TYPES from "../../static/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";

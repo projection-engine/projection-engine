@@ -51,7 +51,7 @@ export default class ContextMenuController {
 
     static mount(metadata, options, target, triggers = [], onFocus) {
         const listeners = {}
-        ipcRenderer.send(ROUTES.REGISTER_CONTEXT_MENU + sessionStorage.getItem("electronWindowID"), {
+        ipcRenderer.send(ROUTES.REGISTER_CONTEXT_MENU , {
             id: target,
             template: buildOptions(options, target, listeners)
         })
@@ -67,7 +67,7 @@ export default class ContextMenuController {
     }
 
     static destroy(target) {
-        ipcRenderer.send(ROUTES.DESTROY_CONTEXT_MENU + sessionStorage.getItem("electronWindowID"), target)
+        ipcRenderer.send(ROUTES.DESTROY_CONTEXT_MENU, target)
         const old = ContextMenuController.data.targets[target]
         if (!old)
             return

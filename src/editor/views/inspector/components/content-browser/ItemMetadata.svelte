@@ -2,7 +2,7 @@
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import Localization from "../../../../../shared/libs/Localization";
     import FilesAPI from "../../../../../shared/libs/FilesAPI";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS"
     import FilesStore from "../../../../stores/FilesStore";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../../content-browser/utils/get-type-name";

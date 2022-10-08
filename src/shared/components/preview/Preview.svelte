@@ -1,7 +1,5 @@
 <script>
-
-    import NodeFS from "../../libs/NodeFS";
-
+    import NodeFS from "shared-resources/frontend/libs/NodeFS"
     export let drawOnError
     export let path
     let lastPath

@@ -14,7 +14,7 @@
     import GizmoSystem from "../../../../../../public/engine/editor/services/GizmoSystem";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import viewportContext from "../../../../templates/context-menu/viewport-context";
+    import viewportContext from "../../../../templates/viewport-context";
     import ContextMenuController from "../../../../../shared/libs/ContextMenuController";
     import Localization from "../../../../../shared/libs/Localization";
 

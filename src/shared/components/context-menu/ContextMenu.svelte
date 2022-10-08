@@ -60,7 +60,7 @@
                     open = true
                     if(ContextMenuController.data.focused.onFocus)
                         ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
-                    ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU + sessionStorage.getItem("electronWindowID"), ContextMenuController.data.focused.id)
+                    ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
                 }
             }
             startPosition = undefined

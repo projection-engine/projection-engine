@@ -32,19 +32,19 @@ export default class LevelController {
         if (LevelController.#initialized)
             return
         LevelController.#initialized = true
-        const projectID = sessionStorage.getItem("electronWindowID")
-        const IPC = ROUTES.LOAD_PROJECT_METADATA + projectID
-        return new Promise(resolve => {
-            ipcRenderer.on(IPC, (ev, data) => {
+
+        ipcRenderer.once(
+            ROUTES.LOAD_PROJECT_METADATA,
+            (ev, data) => {
+                console.trace(data)
                 let meta = {}
                 if (data?.meta)
                     meta = data.meta.data
                 if (meta.settings != null)
                     SettingsStore.updateStore({...SETTINGS, ...meta.settings})
-                resolve(meta)
+                EngineStore.updateStore({...EngineStore.engine, meta: {...meta, settings: undefined}, isReady: true})
             })
-            ipcRenderer.send(IPC)
-        })
+        ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
     }
 
     static async loadLevel(level = DEFAULT_LEVEL) {
@@ -54,8 +54,7 @@ export default class LevelController {
             return
         }
         LevelController.#loadedLevel = level
-        const projectID = sessionStorage.getItem("electronWindowID")
-        const IPC = ROUTES.LOAD_LEVEL + projectID
+        const IPC = ROUTES.LOAD_LEVEL
         let pathToLevel
         if (level === DEFAULT_LEVEL) {
             pathToLevel = FilesAPI.path + FilesAPI.sep + DEFAULT_LEVEL
@@ -86,13 +85,13 @@ export default class LevelController {
         })
         ActionHistoryAPI.clear()
         ipcRenderer.on(
-            CHANNELS.ENTITIES + projectID,
+            CHANNELS.ENTITIES,
             async (_, data) => {
 
                 const {entities, visualSettings} = data
                 console.log(data)
-                if(visualSettings)
-                VisualsStore.updateStore({...visualSettings})
+                if (visualSettings)
+                    VisualsStore.updateStore({...visualSettings})
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
                     const entity = Entity.parseEntityObject(entities[i])
@@ -142,11 +141,11 @@ export default class LevelController {
             })
 
         ipcRenderer.on(
-            CHANNELS.MESH + projectID,
+            CHANNELS.MESH,
             (ev, data) => GPU.allocateMesh(data.id, data))
 
         ipcRenderer.on(
-            CHANNELS.MATERIAL + projectID,
+            CHANNELS.MATERIAL,
             async (ev, data) => {
                 if (data?.result != null)
                     GPU.allocateMaterial({
