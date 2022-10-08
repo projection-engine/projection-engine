@@ -477,6 +477,8 @@ export default class Localization {
         },
 
         FILES: {
+            ROW_VIEW: "Rows",
+            CARD_VIEW: "Cards",
             NEW_TERRAIN_MATERIAL: "New terrain material",
             NEW_TERRAIN: "New terrain",
             DELETING_ITEMS: "Deleting items",

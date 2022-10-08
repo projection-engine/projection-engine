@@ -121,11 +121,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             {
                 label: "Create",
                 icon: "add",
-                children: getCreationOptions(currentDirectory)
-            },
-            {
-                label: "Create material instance",
-                children: materials.map(m => getMaterialAsOption(m, currentDirectory))
+                children: getCreationOptions(currentDirectory, materials)
             }
         ]
     }

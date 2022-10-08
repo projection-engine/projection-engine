@@ -9,16 +9,38 @@ function buildOptions(options, id, listeners) {
             template.push({type: "separator"})
         else {
             const internalID = option.label.toUpperCase().trim() + id
-            console.log(option.onClick)
-            if(option.onClick) {
-                ipcRenderer.on(internalID, option.onClick)
-                listeners[internalID] = option.onClick
+            const cb = option.onClick || option.callback
+
+            if (cb) {
+                ipcRenderer.on(internalID, cb)
+                listeners[internalID] = cb
+                const temp = {
+                    label: option.label,
+                    id: internalID
+                }
+                if (option.require) {
+                    const mapped = option.require.map(r => {
+                        const lower = r.toLowerCase()
+                        console.log(lower)
+                        if(lower.includes("control"))
+                            return "CmdOrCtrl"
+                        if(lower.includes("alt"))
+                            return "Alt"
+                        if(lower.includes("shift"))
+                            return "Shift"
+
+                        return r.toUpperCase().replace("KEY", "").replace("ARROW", "")
+                    })
+                    temp.accelerator = mapped.join("+")
+                }
+                template.push(temp)
+            } else if (Array.isArray(option.children) && option.children.length > 0)
                 template.push({
                     label: option.label,
                     id: internalID,
-                    submenu: option.children ? buildOptions(option.children, id, listeners) : undefined
+                    submenu: buildOptions(option.children, id, listeners)
                 })
-            }
+
         }
     })
     return template
@@ -50,10 +72,8 @@ export default class ContextMenuController {
         if (!old)
             return
 
-        Object.entries(old.listeners).forEach(([internalID, onClick]) => {
-            console.log(onClick)
-            ipcRenderer.removeListener(internalID, onClick)
-        })
+        Object.entries(old.listeners)
+            .forEach(([internalID, onClick]) => ipcRenderer.removeListener(internalID, onClick))
         delete ContextMenuController.data.targets[target]
     }
 }

@@ -72,21 +72,9 @@
                         })
 
                     open = true
+                    if(ContextMenuController.data.focused.onFocus)
+                        ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
                     ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU + sessionStorage.getItem("electronWindowID"), ContextMenuController.data.focused.id)
-                    // contextProps = {
-                    //     metadata: ContextMenuController.data.focused.metadata,
-                    //     options: ContextMenuController.data.focused.options,
-                    //     onFocus: ContextMenuController.data.focused.onFocus,
-                    //     selected: targetElement,
-                    //     trigger,
-                    //     event,
-                    //     close: () => {
-                    //         open = false
-                    //         contextMenu.style.zIndex = "-1"
-                    //     },
-                    //     callback: () => setPlacementOffset(contextMenu, event),
-                    //     open: true
-                    // }
                 }
             }
             startPosition = undefined

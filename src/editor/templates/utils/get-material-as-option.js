@@ -8,7 +8,6 @@ import AssetAPI from "../../../shared/libs/AssetAPI";
 export default function getMaterialAsOption(m, currentDirectory){
     return {
         label: m.name,
-        icon: "",
         callback: async () => {
             const nodeName = m.name
             const nodeID = m.registryID

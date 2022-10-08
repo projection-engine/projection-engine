@@ -1,8 +1,6 @@
 <script>
     import ToolTip from "../tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import KEYS from "../../../../public/engine/static/KEYS";
-
     import Localization from "../../libs/Localization";
     import Icon from "../icon/Icon.svelte";
     import getPercentage from "./utils/get-percentage";
@@ -60,7 +58,7 @@
     }
 
     const onChange = (e) => {
-        if (e.type === "keydown" && e.code !== KEYS.Enter)
+        if (e.type === "keydown" && e.code !== "Enter")
             return
         else if (e.type === "keydown")
             inputRef.blur()

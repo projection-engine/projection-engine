@@ -4,7 +4,7 @@ import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
-import KEYS from "../../../public/engine/static/KEYS";
+import KEYS from "./KEYS";
 
 
 const toRad = Math.PI / 180

@@ -10,16 +10,18 @@ export default class ToolTipController {
         if (ToolTipController.#initialized)
             return
 
-        document.addEventListener("dragstart", () => {
+        function close() {
             ToolTipController.portal.close()
             if (ToolTipController.closeCurrent)
                 ToolTipController.closeCurrent()
-        })
+        }
+
+        document.addEventListener("dragstart", close)
+        document.addEventListener("contextmenu", close)
         ToolTipController.#initialized = true
         const el = document.createElement("div")
         el.classList.add("tooltip")
         ToolTipController.portal.create(el)
-
         ToolTipController.element = el
     }
 
