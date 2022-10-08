@@ -1,4 +1,1 @@
-- Native context menu working
-- Added hotkeys to context menu
-- Fixed onFocus method on context menu component
-- Added localization for content browser visualization type
+- Cleaning up contextMenu component

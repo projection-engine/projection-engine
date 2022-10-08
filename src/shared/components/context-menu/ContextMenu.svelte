@@ -8,27 +8,13 @@
 
     let startPosition = undefined, locked = false
     let contextMenu
-    let contextProps = {}
+
     let open = false
 
     function checkMouseOffset(startPosition, event) {
         return Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10
     }
 
-    function setPlacementOffset(target, event) {
-        const bBox = target.getBoundingClientRect()
-        if (event.clientX + bBox.width > document.body.offsetWidth)
-            target.style.left = ((event.clientX - 8) - bBox.width / 2) + "px"
-        else
-            target.style.left = (event.clientX - 8) + "px"
-
-        if (event.clientY + bBox.height > document.body.offsetHeight) {
-            target.style.top = (event.clientY + 8) - bBox.height + "px"
-        } else
-            target.style.top = (event.clientY - 8) + "px"
-        target.style.zIndex = "999"
-
-    }
 
     const handleContext = (event) => {
         if (startPosition && !locked && ContextMenuController.data.focused) {
@@ -86,7 +72,6 @@
             const elements = document.elementsFromPoint(event.clientX, event.clientY)
             let focused
             for (let i = 0; i < elements.length; i++) {
-                console.log(elements[i], ContextMenuController.data.targets)
                 if (!ContextMenuController.data.targets[elements[i].id])
                     continue
                 focused = ContextMenuController.data.targets[elements[i].id]
@@ -116,24 +101,3 @@
 </script>
 
 <div style="display: none" bind:this={contextMenu}></div>
-<!--    {#if open}-->
-<!--        <ContextWrapper {...contextProps}/>-->
-<!--    {/if}-->
-
-
-<!--<style>-->
-
-<!--    .wrapper {-->
-<!--        position: absolute;-->
-<!--        z-index: -1;-->
-<!--        background: var(&#45;&#45;pj-background-tertiary);-->
-<!--        border: var(&#45;&#45;pj-border-primary) 1px solid;-->
-<!--        width: 225px;-->
-<!--        max-height: 50vh;-->
-<!--        border-radius: 3px;-->
-<!--        overflow-x: hidden;-->
-<!--        overflow-y: auto;-->
-<!--        box-shadow: var(&#45;&#45;pj-boxshadow);-->
-<!--    }-->
-
-<!--</style>-->
