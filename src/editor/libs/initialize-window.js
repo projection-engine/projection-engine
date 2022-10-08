@@ -8,7 +8,6 @@ import ViewportActions from "./ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../../static/ROUTES";
 import VisualsStore from "../stores/VisualsStore";
-import SETTINGS from "../data/SETTINGS";
 import VISUAL_SETTINGS from "../data/VISUAL_SETTINGS";
 
 const {ipcRenderer, shell} = window.require("electron")

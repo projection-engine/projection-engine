@@ -7,7 +7,6 @@
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../shared/components/view/ViewsContainer.svelte";
     import ContextMenu from "../shared/components/context-menu/ContextMenu.svelte";
-    import ROUTES from "../static/ROUTES";
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";

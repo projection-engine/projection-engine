@@ -11,13 +11,11 @@ export default function loadProjectMenus(window) {
                 return s
             return {
                 ...s,
-                click: () => {
-                    console.log("IM HERE")
-                    window.webContents.send(s.id)
-                }
+                click: () => window.webContents.send(s.id)
             }
         })
     }))
     const menu = Menu.buildFromTemplate(mapped)
     Menu.setApplicationMenu(menu)
+
 }

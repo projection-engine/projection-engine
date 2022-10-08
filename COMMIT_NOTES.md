@@ -1,2 +1,2 @@
-- Row visualization type on content browser
-- Fixed canvas resolution not updating
+- native context menu in the works
+- Ability to select link on shader editor added

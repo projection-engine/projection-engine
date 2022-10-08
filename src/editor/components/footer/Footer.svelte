@@ -4,7 +4,6 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import HotKeysController from "../../../shared/libs/HotKeysController";
     import Localization from "../../../shared/libs/Localization";
-    import INFORMATION_CONTAINER from "../../data/INFORMATION_CONTAINER";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../../shared/libs/ErrorLoggerAPI";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";

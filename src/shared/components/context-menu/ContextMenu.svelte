@@ -1,8 +1,9 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import Options from "./components/Options.svelte";
     import ContextMenuController from "../../libs/ContextMenuController";
+    import ROUTES from "../../../static/ROUTES";
 
+    const {ipcRenderer} = window.require("electron")
     const RIGHT_BUTTON = 2
 
     let startPosition = undefined, locked = false
@@ -31,7 +32,6 @@
 
     const handleContext = (event) => {
         if (startPosition && !locked && ContextMenuController.data.focused) {
-            console.log("HERE")
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
@@ -72,20 +72,21 @@
                         })
 
                     open = true
-                    contextProps = {
-                        metadata: ContextMenuController.data.focused.metadata,
-                        options: ContextMenuController.data.focused.options,
-                        onFocus: ContextMenuController.data.focused.onFocus,
-                        selected: targetElement,
-                        trigger,
-                        event,
-                        close: () => {
-                            open = false
-                            contextMenu.style.zIndex = "-1"
-                        },
-                        callback: () => setPlacementOffset(contextMenu, event),
-                        open: true
-                    }
+                    ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU + sessionStorage.getItem("electronWindowID"), ContextMenuController.data.focused.id)
+                    // contextProps = {
+                    //     metadata: ContextMenuController.data.focused.metadata,
+                    //     options: ContextMenuController.data.focused.options,
+                    //     onFocus: ContextMenuController.data.focused.onFocus,
+                    //     selected: targetElement,
+                    //     trigger,
+                    //     event,
+                    //     close: () => {
+                    //         open = false
+                    //         contextMenu.style.zIndex = "-1"
+                    //     },
+                    //     callback: () => setPlacementOffset(contextMenu, event),
+                    //     open: true
+                    // }
                 }
             }
             startPosition = undefined
@@ -126,28 +127,25 @@
 
 </script>
 
-<div
-        class="wrapper"
-        bind:this={contextMenu}
->
-    {#if open}
-        <Options {...contextProps}/>
-    {/if}
-</div>
+<div style="display: none" bind:this={contextMenu}></div>
+<!--    {#if open}-->
+<!--        <ContextWrapper {...contextProps}/>-->
+<!--    {/if}-->
 
-<style>
 
-    .wrapper {
-        position: absolute;
-        z-index: -1;
-        background: var(--pj-background-tertiary);
-        border: var(--pj-border-primary) 1px solid;
-        width: 225px;
-        max-height: 50vh;
-        border-radius: 3px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        box-shadow: var(--pj-boxshadow);
-    }
+<!--<style>-->
 
-</style>
+<!--    .wrapper {-->
+<!--        position: absolute;-->
+<!--        z-index: -1;-->
+<!--        background: var(&#45;&#45;pj-background-tertiary);-->
+<!--        border: var(&#45;&#45;pj-border-primary) 1px solid;-->
+<!--        width: 225px;-->
+<!--        max-height: 50vh;-->
+<!--        border-radius: 3px;-->
+<!--        overflow-x: hidden;-->
+<!--        overflow-y: auto;-->
+<!--        box-shadow: var(&#45;&#45;pj-boxshadow);-->
+<!--    }-->
+
+<!--</style>-->

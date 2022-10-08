@@ -13,12 +13,12 @@ const settingsWindow = require("./SettingsWindowController");
 const loadLevel = require("../libs/level-loader");
 const cleanUpRegistry = require("../utils/level-loader/clean-up-registry");
 
-const OPEN_PROJECTS = require("../../../src/static/OPEN_PROJECTS");
 const fs = require("fs");
 
 const loadProjectMenus = require("../utils/load-project-menus");
+const ContextMenuController = require("../utils/ContextMenuController");
 
-module.exports = function ProjectWindow(handleClose, data) {
+module.exports = function ProjectWindow(data) {
     const primaryDisplay = screen.getPrimaryDisplay()
     const {width, height} = primaryDisplay.workAreaSize
     let firstTime = false
@@ -42,83 +42,45 @@ module.exports = function ProjectWindow(handleClose, data) {
     });
 
     window.openDevTools({mode: "detach"})
-    window.on("close", () => updateCache(data.id, false, () => handleClose()))
-    updateCache(data.id, true)
 
-    ipcMain.on(ROUTES.LOAD_LEVEL + data.id, async (event, pathToLevel) => {
-        if (!firstTime) {
-            firstTime = true
-            cleanUpRegistry(data.id, event.sender)
-        }
-        loadLevel(event.sender, pathToLevel, data.id).catch(err => console.error(err))
-    })
+    ipcMain.on(
+        ROUTES.LOAD_LEVEL + data.id,
+        async (event, pathToLevel) => {
+            if (!firstTime) {
+                firstTime = true
+                cleanUpRegistry(data.id, event.sender)
+            }
+            loadLevel(event.sender, pathToLevel, data.id).catch(err => console.error(err))
+        })
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA + data.id, async event => {
         event.sender.send(ROUTES.LOAD_PROJECT_METADATA + data.id, await loadMetadata(getBasePath(os, path) + "projects" + path.sep + data.id))
     })
 
-    ipcMain.on(ROUTES.OPEN_SETTINGS + data.id, async (event, settingsData) => {
-        if (settingsWindowIsOpen)
-            return
+    ipcMain.on(
+        ROUTES.OPEN_SETTINGS + data.id,
+        async (event, settingsData) => {
+            if (settingsWindowIsOpen)
+                return
 
-        settingsWindowIsOpen = true
-        settingsWindow(data.id, window, settingsData, () => settingsWindowIsOpen = false)
-    })
-
+            settingsWindowIsOpen = true
+            settingsWindow(data.id, window, settingsData, () => settingsWindowIsOpen = false)
+        }
+    )
 
     windowLifeCycle(
         data.id,
         window,
-        () => {
-            updateCache(
-                data.id,
-                false,
-                () => {
-                    window.close()
-                    handleClose()
-                }
-            )
-        },
+        () => window.close(),
         async () => {
             try {
-
+                const contextMenu = new ContextMenuController(window, data.id)
                 await window.loadFile(Window.project, {})
                 loadProjectMenus(window)
             } catch (error) {
                 console.error(error)
-                handleClose()
             }
         }
     )
 
-    return window
 }
 
-function updateCache(id, add, callback) {
-    try {
-        const cacheFilePath = getBasePath(os, path) + path.sep + OPEN_PROJECTS
-        fs.readFile(cacheFilePath, (err, buffer) => {
-            let currentFile = []
-            if (!err) {
-                try {
-                    currentFile = JSON.parse(buffer.toString())
-                } catch (error) {
-                    currentFile = []
-                }
-            }
-            if (!Array.isArray(currentFile))
-                currentFile = []
-
-            if (add) {
-                currentFile = currentFile.filter(e => e !== id)
-                currentFile.push(id)
-            } else
-                currentFile = currentFile.filter(e => e !== id)
-            fs.writeFile(cacheFilePath, JSON.stringify(currentFile), () => {
-                if (callback)
-                    callback()
-            })
-        })
-    } catch (error) {
-        console.error(error)
-    }
-}

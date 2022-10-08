@@ -52,7 +52,8 @@ export default function shaderActions(settings, openFile, nodes, setNodes, links
                     const current = links[i]
                     const target = current.target.id
                     const source = current.source.id
-                    if (map.get(target) && map.get(source))
+                    const KEY = target + current.target.attribute.key + "-" + source + current.source.attribute.key
+                    if (!SelectionStore.map.get(KEY) && map.get(target) && map.get(source))
                         newLinks.push(current)
                 }
 
@@ -69,7 +70,7 @@ export default function shaderActions(settings, openFile, nodes, setNodes, links
         FOCUS: {
             label: "Focus",
             require: settings.shaderEditorHotkeys.FOCUS,
-            callback: () =>  {
+            callback: () => {
                 const material = document.querySelector(`[data-ismaterial="true"]`)
                 if (!material)
                     return
@@ -86,12 +87,11 @@ export default function shaderActions(settings, openFile, nodes, setNodes, links
     }
     return {
         hotkeys: Object.values(options),
-        contextMenu:  [
+        contextMenu: [
             options.SELECT_ALL,
             options.FOCUS,
             options.DELETE,
             {
-                requiredTrigger: "data-link",
                 label: "Delete link",
                 icon: "delete",
                 onClick: (node) => {

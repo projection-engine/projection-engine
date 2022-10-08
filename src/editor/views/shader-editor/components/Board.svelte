@@ -18,6 +18,7 @@
     import shaderActions from "../../../templates/shader-actions";
     import HotKeysController from "../../../../shared/libs/HotKeysController";
     import SettingsStore from "../../../stores/SettingsStore";
+    import Link from "./Link.svelte";
 
     export let links
     export let setLinks
@@ -76,14 +77,17 @@
                     const el = event.path || []
                     for (let i = 0; i < el.length; i++) {
                         const current = el[i]
-                        if(current === document.body)
+                        if (current === document.body)
                             break
-                        if(!current)
+                        if (!current)
                             continue
                         const id = current.getAttribute("data-id")
-                        if (!id)
-                            continue
-                        else {
+                        const link = current.getAttribute("data-link")
+                        if (link) {
+                            SelectionStore.shaderEditorSelected = [link]
+                            break
+                        }
+                        if (id) {
                             SelectionStore.shaderEditorSelected = [id]
                             break
                         }
@@ -184,14 +188,7 @@
                 {/if}
             {/each}
             {#each resolvedLinks as l}
-                <path
-                        data-link={l.target + "-" + l.source}
-                        fill={"none"}
-                        stroke={"#fff"}
-                        stroke-width={2}
-                        id={l.target + "-" + l.source}
-                        d=""
-                ></path>
+                <Link data={l} selected={selected} setSelected={setSelected}/>
             {/each}
             {#each nodes as node}
                 {#if !node.isComment }

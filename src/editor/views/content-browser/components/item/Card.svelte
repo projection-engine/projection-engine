@@ -2,7 +2,6 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import itemDbclick from "../../utils/item-dbclick";
     import FILE_TYPES from "../../../../../static/FILE_TYPES";
 

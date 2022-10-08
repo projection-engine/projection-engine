@@ -9,7 +9,7 @@ const windowLifeCycle = require("../utils/window-life-cycle");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 const {screen, app} = require('electron')
 
-module.exports = function HomeWindow(projects) {
+module.exports = function HomeWindow() {
     let isClosed = false
     this.id = v4()
 
@@ -29,15 +29,7 @@ module.exports = function HomeWindow(projects) {
         autoHideMenuBar: true,
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH),
     });
-    app.on('browser-window-focus', (event, win) => {
-        if (win === window) {
-            window.webContents.send(ROUTES.HOME_WINDOW_FOCUS + this.id, true)
-        }
-    })
-    app.on('browser-window-blur', (event, win) => {
-        if (win === window)
-            window.webContents.send(ROUTES.HOME_WINDOW_FOCUS + this.id, false)
-    })
+
 
     windowLifeCycle(
         this.id,
@@ -50,24 +42,7 @@ module.exports = function HomeWindow(projects) {
     )
 
     ipcMain.on(ROUTES.OPEN_PROJECT + this.id, (event, data) => {
-        const found = projects.get(data.id)
-        if (!found) {
-            const projectWindow = ProjectWindow(() => {
-                try {
-                    projects.delete(data.id)
-                    if (!window)
-                        return
-                    if (!isClosed)
-                        window.show()
-                    window.webContents.send(ROUTES.WINDOW_CLOSED + this.id)
-                } catch (err) {
-                    console.error(err)
-                }
-
-            }, {...data})
-            projects.set(data.id, projectWindow.id)
-            window.minimize()
-        } else
-            found.window.show()
+        ProjectWindow(  {...data})
+        window.minimize()
     })
 }

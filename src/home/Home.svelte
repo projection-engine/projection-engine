@@ -22,9 +22,6 @@
         ipcRenderer.on(ROUTES.HOME_WINDOW_FOCUS + sessionStorage.getItem("electronWindowID"), (event, data) => {
             isWindowFocused = data
         })
-        ipcRenderer.on(ROUTES.WINDOW_CLOSED + sessionStorage.getItem("electronWindowID"), () => {
-            readOpenProjects()
-        })
     })
 
     async function readOpenProjects() {

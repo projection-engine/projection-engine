@@ -10,7 +10,7 @@
     export let canvas
     let ref
 
-    $: isSelected =  selected.indexOf(node.id) > -1
+    $: isSelected =  selected.includes(node.id)
 
     const handleDragStart = (event) => {
         if (event.button !== 0)

@@ -4,7 +4,7 @@ import Localization from "../../../../shared/libs/Localization";
 import FALLBACK_MATERIAL from "../../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
 import RegistryAPI from "../../../../shared/libs/RegistryAPI";
 import GPU from "../../../../../public/engine/production/GPU";
-import FILE_TYPES  from "../../../../static/FILE_TYPES";
+import FILE_TYPES from "../../../../static/FILE_TYPES";
 import TERRAIN_MATERIAL from "../../../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
 
 const loadFile = async (rs) => {
