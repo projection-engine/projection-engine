@@ -1,1 +1,3 @@
-- Starting integration with shared-resources repository
+- Fixing multiple bugs
+- Ammo JS with engine 
+- New loading screen

@@ -2,7 +2,7 @@
     import Header from "./components/Header.svelte";
     import Localization from "../../../shared/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import EditorLayout from "./components/editor/EditorLayout.svelte";
     import UILayout from "./components/ui/UILayout.svelte";
@@ -19,12 +19,14 @@
     import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import Canvas from "../../Canvas.svelte";
+    import Canvas from "../../components/Canvas.svelte";
     import LevelController from "../../libs/LevelController";
+    import RENDER_TARGET from "../../data/RENDER_TARGET";
 
     export let updateView
     export let viewTab = VIEWPORT_TABS.EDITOR
 
+    let canvasRef
     let engine = {}
     let settings = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -43,6 +45,11 @@
             )
         }
     }
+    onMount(() => {
+        CameraTracker.stopTracking()
+        canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
+        CameraTracker.startTracking()
+    })
 
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
@@ -113,11 +120,8 @@
             {/if}
         </div>
     {/if}
-    <div class="wrapper">
-        <Canvas
-                isExecuting={engine.executingAnimation}
-                onReady={() => LevelController.loadLevel()}
-        />
+    <div class="wrapper" >
+        <div bind:this={canvasRef}></div>
         {#if !engine.executingAnimation && isReady}
             {#if viewTab === VIEWPORT_TABS.UI}
                 <UILayout engine={engine} settings={settings}/>

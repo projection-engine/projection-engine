@@ -10,6 +10,7 @@ import KEYS from "./KEYS";
 const toRad = Math.PI / 180
 export default {
 
+    resolution: [window.screen.width, window.screen.height],
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,

@@ -1,4 +1,4 @@
-import PROJECT_FOLDER_STRUCTURE from "../../../src/static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import readdir from "shared-resources/backend/utils/readdir";
 import lstat from "shared-resources/backend/utils/lstat";
 import readFile from "shared-resources/backend/utils/read-file";

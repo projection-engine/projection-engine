@@ -1,14 +1,14 @@
 <script>
-    import RENDER_TARGET from "./data/RENDER_TARGET"
+    import RENDER_TARGET from "../data/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import updateRenderer from "./views/viewport/utils/update-renderer";
-    import EngineStore from "./stores/EngineStore";
-    import GPU from "../../public/engine/production/GPU";
-    import SettingsStore from "./stores/SettingsStore";
-    import SelectionStore from "./stores/SelectionStore";
-    import AssetAPI from "../shared/libs/AssetAPI";
-    import initializer from "../../public/engine/editor/initializer";
-    import VisualsStore from "./stores/VisualsStore";
+    import updateRenderer from "../views/viewport/utils/update-renderer";
+    import EngineStore from "../stores/EngineStore";
+    import GPU from "../../../public/engine/production/GPU";
+    import SettingsStore from "../stores/SettingsStore";
+    import SelectionStore from "../stores/SelectionStore";
+    import AssetAPI from "../../shared/libs/AssetAPI";
+    import initializer from "../../../public/engine/editor/initializer";
+    import VisualsStore from "../stores/VisualsStore";
 
     export let onReady
 
@@ -24,7 +24,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        GPU.initializeContext(canvasRef, visuals.resolution, AssetAPI.readAsset)
+        GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
             .then(() => {
                 initializer()
                 onReady()
@@ -48,8 +48,8 @@
 <canvas
         data-viewport="-"
         bind:this={canvasRef}
-        width={visuals.resolution[0]}
-        height={visuals.resolution[1]}
+        width={settings.resolution[0]}
+        height={settings.resolution[1]}
         id={RENDER_TARGET}
         style={`width: 100%; height: 100%; background: transparent`}
 ></canvas>

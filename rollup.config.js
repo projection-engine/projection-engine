@@ -6,10 +6,10 @@ import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
 import {uglify} from "rollup-plugin-uglify";
+import copy from "rollup-plugin-copy";
 
 const PRODUCTION = !process.env.ROLLUP_WATCH;
 const common = (inputFile, outputFile) => ({
-
     input: `src/${inputFile}.js`,
     output: {
         strict: false,
@@ -19,6 +19,11 @@ const common = (inputFile, outputFile) => ({
         file: `public/build/${outputFile}.js`,
     },
     plugins: [
+        copy({
+            targets: [
+                { src: 'public/engine/ammo/ammo.wasm.wasm', dest: 'public/build' },
+            ]
+        }),
         svelte({
             compilerOptions: {
                 dev: !PRODUCTION,
@@ -32,7 +37,7 @@ const common = (inputFile, outputFile) => ({
             browser: true,
             dedupe: ['svelte']
         }),
-        commonjs(),
+        commonjs({sourceMap: false }),
         !PRODUCTION && serve(),
         !PRODUCTION && livereload('public'),
         PRODUCTION && uglify(),
@@ -55,7 +60,7 @@ const worker = (fileName, output) => ({
         resolve({
             browser: true
         }),
-        commonjs(),
+        commonjs({sourceMap: false }),
         json(),
         uglify()
     ]
@@ -73,7 +78,7 @@ export default [
             resolve({
                 dedupe: ["electron"]
             }),
-            commonjs({ignore: ["electron"]}),
+            commonjs({ignore: ["electron"], sourceMap: false }),
             json(),
             uglify()
         ]

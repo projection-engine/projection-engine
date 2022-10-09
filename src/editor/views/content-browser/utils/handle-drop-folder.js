@@ -26,13 +26,13 @@ export default async function handleDropFolder(event, target) {
                 const toItem = FilesStore.data.items.find(f => f.id === target)
                 const fromItem = FilesStore.data.items.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
                 if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + from), FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + to))
+                    await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + from), NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + to))
                     await FilesStore.refreshFiles()
                 }
             } else if (textData.includes(NodeFS.sep)) {
                 const newPath = NodeFS.ASSETS_PATH  + NodeFS.sep + textData.split(NodeFS.sep).pop()
                 if (!(await NodeFS.exists(newPath))) {
-                    await ContentBrowserAPI.rename(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + textData), FilesAPI.resolvePath(newPath))
+                    await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + textData), NodeFS.resolvePath(newPath))
                     await FilesStore.refreshFiles()
                 } else alert.pushAlert("Item already exists.", "error")
             }

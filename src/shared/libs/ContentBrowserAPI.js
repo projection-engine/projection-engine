@@ -32,13 +32,13 @@ export default class ContentBrowserAPI {
             const stat = (await NodeFS.lstat(fromResolved))[1]
             if (stat !== undefined && stat.isDirectory) {
                 await NodeFS.mkdir(to)
-                const [, res] = await NodeFS.readdir(fromResolved)
+                const res = await NodeFS.readdir(fromResolved)
                 if (!res) return
-                for (let i in res) {
+                for (let i = 0; i< res.length; i++) {
                     const file = res[i]
                     const oldPath = fromResolved + NodeFS + `${file}`
                     const newPath = to + NodeFS + `${file}`
-                    if ((await NodeFS.lstat(oldPath))[1].isDirectory)
+                    if ((await NodeFS.lstat(oldPath)).isDirectory)
                         await NodeFS.rename(oldPath, newPath)
                     else {
                         await NodeFS.rename(oldPath, newPath)
@@ -197,7 +197,7 @@ export default class ContentBrowserAPI {
                                         width: 256,
                                         height: 256
                                     })
-                                await NodeFS.write(FilesAPI.resolvePath(NodeFS.PREVIEW_PATH + NodeFS + fileID + FILE_TYPES.PREVIEW), reduced)
+                                await NodeFS.write(NodeFS.resolvePath(NodeFS.PREVIEW_PATH + NodeFS + fileID + FILE_TYPES.PREVIEW), reduced)
                                 await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(NodeFS.ASSETS_PATH + NodeFS, "") + FILE_TYPES.TEXTURE)
                             } else
                                 console.error(new Error("Error importing image"))

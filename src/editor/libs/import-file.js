@@ -9,10 +9,11 @@ import ContentBrowserAPI from "../../shared/libs/ContentBrowserAPI";
 
 import {GPU} from "../../../public/engine/production";
 import {PreviewSystem} from "../../../public/engine/editor";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function importFile(currentDirectory) {
+
     const toImport = await ContentBrowserAPI.openDialog()
     if (toImport.length > 0) {
         const result = await ContentBrowserAPI.importFile(NodeFS.ASSETS_PATH  + currentDirectory.id, toImport)

@@ -1,5 +1,7 @@
 import fileSystem from "shared-resources/backend/file-system"
 import buildProjectWindow from "./libs/build-project-window";
+import writeOutput from "./libs/write-output";
+import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 const {app, BrowserWindow} = require('electron');
 const isDev = require('electron-is-dev');
@@ -12,11 +14,14 @@ app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
 async function createEnvironment() {
     fileSystem()
+    writeOutput()
+
     let pathToProject
     if (isDev)
-        pathToProject = os.homedir() + path.sep + "SAMPLE" + path.sep + ".projection"
+        pathToProject = os.homedir() + path.sep + "SAMPLE" + path.sep + PROJECT_FILE_EXTENSION
     else
         pathToProject = process.env.PROJECT_TO_OPEN
+    console.log(isDev, pathToProject)
     if (!pathToProject)
         app.quit()
 

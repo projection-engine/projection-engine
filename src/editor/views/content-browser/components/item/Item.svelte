@@ -13,7 +13,7 @@
     import Card from "./Card.svelte";
     import ITEM_TYPES from "../../templates/ITEM_TYPES";
     import Row from "./Row.svelte";
-    import PROJECT_FOLDER_STRUCTURE from "../../../../../static/PROJECT_FOLDER_STRUCTURE";
+    import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let childrenQuantity

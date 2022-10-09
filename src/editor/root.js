@@ -1,5 +1,5 @@
-import Editor from './Editor.svelte';
+import Main from './Main.svelte';
 
-export default  new Editor({
+export default  new Main({
 	target: document.body
 });

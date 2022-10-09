@@ -10,7 +10,7 @@ export default {
     FXAAReduceMul: 1 / 8,
 
 
-    resolution: [window.outerWidth, window.outerHeight],
+
 
     distortion: false,
     chromaticAberration: false,

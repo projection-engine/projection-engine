@@ -9,8 +9,7 @@
     import ControlOptions from "./components/control-options/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
-    import LevelController from "./libs/LevelController";
-    import About from "shared-resources/frontend/components/About.svelte";
+
     import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
 
     const FALLBACK = {
@@ -21,7 +20,6 @@
     }
 
     let view = FALLBACK
-    let isAboutOpen
     let engine
     let settings
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -32,10 +30,6 @@
         unsubscribeEngine()
     })
 
-    onMount(() => {
-        InitializeWindow(_ => isAboutOpen = true)
-        LevelController.initialize()
-    })
 
     $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK
     const updateView = (key, newView) => {
@@ -90,9 +84,6 @@
     </div>
     {#if !settings.hideFooter}
         <Footer/>
-    {/if}
-    {#if isAboutOpen}
-        <About handleClose={() => isAboutOpen = false}/>
     {/if}
 </div>
 

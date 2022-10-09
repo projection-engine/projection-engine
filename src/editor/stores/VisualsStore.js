@@ -1,7 +1,6 @@
 import {get, writable} from "svelte/store";
 import VISUAL_SETTINGS from "../data/VISUAL_SETTINGS";
 
-let initialized = false
 
 const store = writable(VISUAL_SETTINGS);
 

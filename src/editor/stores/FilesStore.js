@@ -74,9 +74,8 @@ export default class FilesStore {
         if (existing.length > 0)
             path += " - " + existing.length
 
-        const [e] = await NodeFS.mkdir(NodeFS.ASSETS_PATH + path, {})
-        if (!e)
-            await FilesStore.refreshFiles()
+        await NodeFS.mkdir(NodeFS.ASSETS_PATH + path, {})
+        await FilesStore.refreshFiles()
 
         if (FilesStore.#isWatching)
             NodeFS.reWatch()

@@ -28,10 +28,10 @@ export default class Localization {
         }
     }
     static PROJECT = {
+        SAVING: "Saving project",
         CODE_EDITOR: {
             SAVE: "Save",
             TITLE: "Code editor",
-
         },
         CONTROL: {
             LEVEL: "Level",
@@ -45,7 +45,7 @@ export default class Localization {
         INFO: {
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "6.2.0-alpha",
+            VERSION: "1.0.0-beta",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },
@@ -513,7 +513,6 @@ export default class Localization {
             MIT: "MIT License",
             COPYRIGHT: "Copyright (c) 2022 Projection Engine"
         },
-
         SELECTOR: {
             TERRAIN: "Terrain",
             CODE: "Code",

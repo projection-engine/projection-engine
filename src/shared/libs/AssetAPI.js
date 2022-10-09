@@ -2,7 +2,7 @@ import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import {v4 as uuidv4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 
 export default class AssetAPI {
     static async readAsset(id) {
@@ -12,14 +12,14 @@ export default class AssetAPI {
     }
 
     static async assetExists(path) {
-        return await NodeFS.exists(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path))
+        return await NodeFS.exists(NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path))
     }
 
     static async writeAsset(path, fileData, previewImage, registryID) {
         const fileID = registryID !== undefined ? registryID : uuidv4()
-        await NodeFS.write(FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path), fileData)
+        await NodeFS.write(NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path), fileData)
         if (previewImage)
-            await NodeFS.write(FilesAPI.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + registryID + ".preview"), previewImage)
+            await NodeFS.write(NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + registryID + ".preview"), previewImage)
         await RegistryAPI.createRegistryEntry(fileID, path)
     }
 

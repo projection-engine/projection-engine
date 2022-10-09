@@ -39,7 +39,7 @@
 <div class="wrapper">
     <Alert/>
     <div class="content">
-        <Sidebar tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("SHORTCUTS"),translate("POST_PROCESSING"), translate("RENDERING")]}/>
+        <Sidebar version={Localization.PROJECT.INFO.VERSION} tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("SHORTCUTS"),translate("POST_PROCESSING"), translate("RENDERING")]}/>
         {#if settings}
             <ResizableBar type="width"/>
             <div class="form">

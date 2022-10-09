@@ -19,8 +19,11 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/disp
 import SettingsStore from "../stores/SettingsStore";
 import VisualsStore from "../stores/VisualsStore";
 import SETTINGS from "../data/SETTINGS";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
+import Localization from "../../shared/libs/Localization";
+import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -29,27 +32,27 @@ export default class LevelController {
     static #loadedLevel = undefined
     static #initialized = false
 
-    static initialize() {
+    static initialize(cb) {
         if (LevelController.#initialized)
             return
         LevelController.#initialized = true
 
+        console.trace("LOADING")
         ipcRenderer.once(
             ROUTES.LOAD_PROJECT_METADATA,
             (ev, data) => {
-                console.trace(data)
                 let meta = {}
                 if (data?.meta)
                     meta = data.meta.data
                 if (meta.settings != null)
                     SettingsStore.updateStore({...SETTINGS, ...meta.settings})
                 EngineStore.updateStore({...EngineStore.engine, meta: {...meta, settings: undefined}, isReady: true})
+                cb()
             })
         ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
     }
 
     static async loadLevel(level = PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
-
         if (LevelController.#loadedLevel === level) {
             alert.pushAlert("Level already loaded")
             return
@@ -88,9 +91,7 @@ export default class LevelController {
         ipcRenderer.on(
             CHANNELS.ENTITIES,
             async (_, data) => {
-
                 const {entities, visualSettings} = data
-                console.log(data)
                 if (visualSettings)
                     VisualsStore.updateStore({...visualSettings})
                 const mapped = []
@@ -112,7 +113,6 @@ export default class LevelController {
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))
                     }
                     const terrain = entity.components.get(COMPONENTS.TERRAIN)
-
                     if (terrain) {
                         const {materialID, terrainID} = terrain
                         if (GPU.meshes.get(terrainID) == null) {
@@ -162,30 +162,32 @@ export default class LevelController {
     }
 
     static async save() {
-        alert.pushAlert("Saving editor", "info")
-        const entities = Engine.entities
-        const metaData = await FilesAPI.readFile(NodeFS.path + NodeFS.sep + ".meta", "json")
-        if (!metaData) {
-            console.error(new Error("Metadata not found"))
-            return
-        }
-        await FilesAPI.writeFile(NodeFS.path + NodeFS.sep + ".meta", {
-            ...metaData,
-            settings: SettingsStore.data
-        }, true)
-        let pathToWrite
-        pathElse:if (!EngineStore.engine.currentLevel)
-            pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
-        else {
-            const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
-            if (!reg) {
-                alert.pushAlert("Level not found, a new one will be created.", "alert")
-                pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
-                break pathElse
-            }
-            pathToWrite = FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path)
-        }
+        alert.pushAlert(Localization.PROJECT.SAVING, "info")
         try {
+            const entities = Engine.entities
+            const metadata = EngineStore.engine.meta
+            console.log(NodeFS.path + NodeFS.sep + PROJECT_FILE_EXTENSION)
+            await FilesAPI.writeFile(
+                NodeFS.path + NodeFS.sep + PROJECT_FILE_EXTENSION,
+                JSON.stringify({
+                    ...metadata,
+                    settings: SettingsStore.data
+                }), true)
+            let pathToWrite
+            pathElse:if (!EngineStore.engine.currentLevel)
+                pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
+            else {
+                const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
+                if (!reg) {
+                    alert.pushAlert("Level not found, a new one will be created.", "alert")
+                    pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
+                    break pathElse
+                }
+                pathToWrite = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
+            }
+            pathToWrite = NodeFS.resolvePath(pathToWrite)
+            console.log(EngineStore.engine.currentLevel, pathToWrite)
+
             await FilesAPI.writeFile(
                 pathToWrite,
                 Entity.serializeComplexObject({

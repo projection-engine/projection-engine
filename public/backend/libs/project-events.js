@@ -1,5 +1,5 @@
 import glTF from "./glTF";
-import PROJECT_FOLDER_STRUCTURE from "../../../src/static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import directoryStructure from "shared-resources/backend/utils/directory-structure";
 import parseContentBrowserData from "./parse-content-browser-data";
 import {readRegistry} from "../utils/fs-operations";
@@ -7,6 +7,7 @@ import ROUTES from "../../../src/static/ROUTES";
 import levelLoader from "./level-loader";
 import buildSettingsWindow from "./build-settings-window";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
+import frameMenuController from "../utils/frame-menu-controller";
 
 const {ipcMain, dialog} = require("electron")
 const fs = require("fs")
@@ -14,9 +15,14 @@ const pathRequire = require("path")
 
 export default function projectEvents(pathToProject, window, metadata) {
     let settingsWindowIsOpen = false
-    ipcMain.on(
-        ROUTES.LOAD_LEVEL,
-        (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
+    ipcMain.on(ROUTES.LOAD_LEVEL, (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
+    ipcMain.on(ROUTES.OPEN_FULL, () => {
+        setTimeout(() => {
+            frameMenuController(window)
+            window.maximize()
+            window.webContents.send(ROUTES.OPEN_FULL)
+        }, 250)
+    })
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, event => event.sender.send(ROUTES.LOAD_PROJECT_METADATA, metadata))
     ipcMain.on(
         ROUTES.OPEN_SETTINGS,

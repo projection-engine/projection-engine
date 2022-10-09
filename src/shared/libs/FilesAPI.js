@@ -2,7 +2,7 @@ import {v4} from "uuid"
 import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import RegistryAPI from "./RegistryAPI";
 import ROUTES from "../../static/ROUTES";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 
 const pathRequire = window.require("path")
 
@@ -23,10 +23,7 @@ export default class FilesAPI {
     }
 
     static async writeFile(pathName, data, absolute) {
-        const result = await NodeFS.write(FilesAPI.resolvePath(!absolute ? NodeFS.path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
-
-        if (result[0])
-            throw Error(result[0])
+        await NodeFS.write(NodeFS.resolvePath(!absolute ? NodeFS.path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
     }
 
     static async readFile(pathName, type) {
@@ -39,23 +36,21 @@ export default class FilesAPI {
 
 
     static async deleteFile(pathName, options) {
-        const currentPath = FilesAPI.resolvePath(pathName)
+        const currentPath = NodeFS.resolvePath(pathName)
 
         for (let i = 0; i < FilesAPI.registry.length; i++) {
             const r = FilesAPI.registry[i]
-            const rPath = FilesAPI.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + r.path)
+            const rPath = NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + r.path)
             if (rPath.includes(currentPath))
-                await NodeFS.rm(FilesAPI.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + NodeFS.sep + r.id + ".reg"))
+                await NodeFS.rm(NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + NodeFS.sep + r.id + ".reg"))
         }
         await NodeFS.rm(currentPath, options)
 
         const rs = await RegistryAPI.findRegistry(currentPath)
-        if (rs) await NodeFS.rm(FilesAPI.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + NodeFS.sep + rs.id + ".reg"))
+        if (rs) await NodeFS.rm(NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + NodeFS.sep + rs.id + ".reg"))
     }
 
-    static resolvePath(path) {
-        return pathRequire.resolve(path)
-    }
+
 }
 
 

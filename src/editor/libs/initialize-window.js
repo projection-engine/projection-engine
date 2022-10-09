@@ -9,9 +9,12 @@ import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../../static/ROUTES";
 import VisualsStore from "../stores/VisualsStore";
 import VISUAL_SETTINGS from "../data/VISUAL_SETTINGS";
+import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function InitializeWindow(openAbout) {
+
+    NodeFS.initializePaths()
     ErrorLoggerAPI.initialize()
     FilesAPI.initializeFolders()
     Math.mat4 = mat4
@@ -73,9 +76,7 @@ export default function InitializeWindow(openAbout) {
                             settingsClone
                         )
                         break
-                    case "reload":
-                        window.location.reload()
-                        break
+
                 }
             })
         })
