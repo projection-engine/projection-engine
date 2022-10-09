@@ -3,7 +3,7 @@ import ROUTES from "../../../src/static/ROUTES";
 const {BrowserWindow} = require("electron")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
-const {screen} = require('electron')
+const {screen, ipcMain} = require('electron')
 
 export default async function buildSettingsWindow(parent, settingsData, onClose) {
 
@@ -20,22 +20,20 @@ export default async function buildSettingsWindow(parent, settingsData, onClose)
             contextIsolation: false,
             nativeWindowOpen: true,
             nodeIntegrationInWorker: true,
+
         },
-        show: false,
+
         autoHideMenuBar: true,
         icon: path.resolve(__dirname, RELATIVE_LOGO_PATH),
     });
-
-    await window.loadFile(path.join(__dirname, '../preferences-window.html'))
-    window.on("close", onClose)
-    window.webContents.on(ROUTES.LOAD_SETTINGS, async event => {
+    ipcMain.once(ROUTES.LOAD_SETTINGS, event => {
         event.sender.send(ROUTES.LOAD_SETTINGS, settingsData)
     })
-    window.webContents.on(ROUTES.UPDATE_SETTINGS, (event, data) => {
-        parent.send(ROUTES.UPDATE_SETTINGS, data)
-    })
+    window.openDevTools()
+    await window.loadFile(path.join(__dirname, '../preferences-window.html'))
+    window.on("close", onClose)
 
-    window.on("ready-to-show", () => {
-        window.show()
-    })
+
+
+
 }

@@ -23,7 +23,6 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../../shared/libs/Localization";
-import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 
 const {ipcRenderer} = window.require("electron")
 

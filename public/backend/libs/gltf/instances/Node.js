@@ -8,7 +8,6 @@ import parseMaterial from "../material/parse-material";
 import writeData from "../../../utils/gltf/write-data";
 
 
-
 function getChildren(allNodes, node) {
     const children = []
     if (node.children !== undefined && node.children.length > 0) {

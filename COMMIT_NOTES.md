@@ -1,3 +1,2 @@
-- Fixing multiple bugs
-- Ammo JS with engine 
-- New loading screen
+- Fixing preferences window
+- Added more information to loading winodw

@@ -127,7 +127,6 @@
 <div
         bind:this={ref}
         id={internalID}
-
         data-wrapper={internalID}
         on:mousedown={e => {
             const key = "data-isitem"
@@ -135,7 +134,7 @@
                 SelectionStore.contentBrowserSelected = []
         }}
         style={
-        viewType === ITEM_TYPES.ROW ?
+        viewType === ITEM_TYPES.ROW  && toRender.length > 0?
             `
             background: linear-gradient(
                 to bottom,
@@ -181,7 +180,7 @@
             </div>
         </VirtualList>
     {:else}
-        <div class="empty">
+        <div data-empty="-">
             <Icon styles="font-size: 100px">folder</Icon>
             <div style="font-size: .8rem">
                 {translate("EMPTY")}

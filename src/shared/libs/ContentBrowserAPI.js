@@ -29,7 +29,7 @@ export default class ContentBrowserAPI {
         let newRegistry = await RegistryAPI.readRegistry()
 
         try {
-            const stat = (await NodeFS.lstat(fromResolved))[1]
+            const stat = await NodeFS.lstat(fromResolved)
             if (stat !== undefined && stat.isDirectory) {
                 await NodeFS.mkdir(to)
                 const res = await NodeFS.readdir(fromResolved)
@@ -55,22 +55,6 @@ export default class ContentBrowserAPI {
             console.error(error)
         }
     }
-
-
-    // static async fromDirectory(startPath, extension) {
-    //     if (!(await NodeFS.exists(startPath))) return []
-    //     let res = []
-    //     let files = (await NodeFS.readdir(startPath))[1]
-    //     for (let i = 0; i < files.length; i++) {
-    //         const filename = pathRequire.join(startPath, files[i])
-    //         const stat = (await NodeFS.lstat(filename))[1]
-    //         if (stat && stat.isDirectory) {
-    //             res.push(...(await ContentBrowserAPI.fromDirectory(filename, extension)))
-    //         } else if (filename.indexOf(extension) >= 0) res.push(files[i])
-    //     }
-    //     return res
-    // }
-
     static async openDialog() {
         return await new Promise(resolve => {
             const listenID = v4().toString()
@@ -84,10 +68,12 @@ export default class ContentBrowserAPI {
     static async foldersFromDirectory(startPath) {
         if (!(await NodeFS.exists(startPath))) return []
         let res = []
-        let files = (await NodeFS.readdir(startPath))[1]
+
+        let files = await NodeFS.readdir(startPath)
+        console.log(files)
         for (let i = 0; i < files.length; i++) {
             const filename = pathRequire.join(startPath, files[i])
-            const stat = (await NodeFS.lstat(filename))[1]
+            const stat = await NodeFS.lstat(filename)
 
             if (stat.isDirectory) res.push(filename)
         }
@@ -169,6 +155,8 @@ export default class ContentBrowserAPI {
                     break
             }
         }
+
+        console.log(result)
         return result
     }
 

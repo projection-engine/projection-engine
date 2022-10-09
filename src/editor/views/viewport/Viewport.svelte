@@ -19,8 +19,6 @@
     import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import Canvas from "../../components/Canvas.svelte";
-    import LevelController from "../../libs/LevelController";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
 
     export let updateView

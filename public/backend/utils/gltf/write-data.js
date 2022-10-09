@@ -1,5 +1,6 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
+
 const fs = require("fs")
 const path = require("path")
 

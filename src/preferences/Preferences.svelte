@@ -2,7 +2,6 @@
     import {onMount} from "svelte";
     import ROUTES from "../static/ROUTES";
     import Localization from "../shared/libs/Localization";
-    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -17,15 +16,16 @@
     let originalSettings
     let tab = 0
     let changed = false
-    const LOAD = ROUTES.LOAD_SETTINGS
+
     onMount(() => {
-        ipcRenderer.once(
-            LOAD,
+        ipcRenderer.on(
+            ROUTES.LOAD_SETTINGS,
             (_, data) => {
+                console.log(data)
                 settings = data
                 originalSettings = structuredClone(data)
             })
-        ipcRenderer.send(LOAD)
+        ipcRenderer.send(ROUTES.LOAD_SETTINGS)
     })
 
     function apply(clone) {
@@ -34,14 +34,20 @@
     }
 
     const translate = (key) => Localization.SETTINGS.MAIN[key]
+    const OPTIONS = [["desktop_windows", translate("VIEWPORT")], ["keyboard", translate("SHORTCUTS")], ["grain", translate("POST_PROCESSING")], ["high_quality", translate("RENDERING")]]
+
 </script>
 
 <div class="wrapper">
     <Alert/>
     <div class="content">
-        <Sidebar version={Localization.PROJECT.INFO.VERSION} tab={tab} setTab={v => tab = v} options={[translate("VIEWPORT"), translate("SHORTCUTS"),translate("POST_PROCESSING"), translate("RENDERING")]}/>
-        {#if settings}
-            <ResizableBar type="width"/>
+        {#if settings != null}
+            <Sidebar
+                    version={Localization.PROJECT.INFO.VERSION}
+                    tab={tab}
+                    setTab={v => tab = v}
+                    options={OPTIONS}
+            />
             <div class="form">
                 {#if tab === 0}
                     <h3>{translate("VIEWPORT")}</h3>
@@ -54,15 +60,15 @@
                         }}
                     />
                 {:else if tab === 1}
-                        <h3>{translate("SHORTCUTS")}</h3>
-                        <Shortcuts
-                                translate={translate}
-                                settings={settings}
-                                update={(key, value) => {
+                    <h3>{translate("SHORTCUTS")}</h3>
+                    <Shortcuts
+                            translate={translate}
+                            settings={settings}
+                            update={(key, value) => {
                                         changed = true
                                     settings = {...settings, [key]: value}
                                 }}
-                        />
+                    />
 
                 {:else if tab === 2}
                     <h3>{translate("POST_PROCESSING")}</h3>
@@ -103,10 +109,12 @@
 </div>
 
 <style>
-    h3{
+    h3 {
         font-weight: 550;
+        margin-top: 0;
         margin-bottom: 8px
     }
+
     .wrapper {
         width: 100vw;
         height: 100vh;
@@ -135,11 +143,9 @@
     }
 
 
-
-
     .form {
         width: 100%;
-        padding: 4px;
+        padding: 32px;
         display: grid;
         align-content: flex-start;
         gap: 4px;

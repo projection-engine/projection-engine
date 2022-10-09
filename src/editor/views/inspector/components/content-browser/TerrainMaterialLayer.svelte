@@ -6,6 +6,7 @@
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+
     export let layer
     export let update
     export let removeLayer

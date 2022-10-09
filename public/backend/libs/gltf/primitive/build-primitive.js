@@ -4,7 +4,6 @@ import writeData from "../../../utils/gltf/write-data";
 import {v4} from "uuid";
 
 
-
 function getName(name, partialPath, index) {
     if (name)
         return partialPath + name + "-" + index + FILE_TYPES.MESH

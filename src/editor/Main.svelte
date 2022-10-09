@@ -7,21 +7,19 @@
     import About from "shared-resources/frontend/components/About.svelte";
     import logo from "shared-resources/APP_LOGO.png"
     import PROJECT_PATH from "shared-resources/PROJECT_PATH";
-    import {GPU} from "../../public/engine/production";
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./data/RENDER_TARGET";
+    import Localization from "../shared/libs/Localization";
 
     const {ipcRenderer} = window.require("electron")
 
     let isAboutOpen = false
     let initialized = false
-    let fullyLoaded =false
+    let fullyLoaded = false
 
 
     onMount(() => {
-        ipcRenderer.once(ROUTES.OPEN_FULL, () => {
-            fullyLoaded = true
-        })
+        ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
             const d = sessionStorage.getItem(PROJECT_PATH)
             if (d !== null) {
@@ -47,23 +45,40 @@
 {:else}
     <div class="wrapper">
         <img src={logo} alt="logo">
+        <div class="title">
+            <div class="label">{Localization.COMPONENTS.FRAME.TITLE}</div>
+            <small>{Localization.COMPONENTS.FRAME.VERSION}</small>
+        </div>
     </div>
 {/if}
 {#if isAboutOpen}
     <About handleClose={() => isAboutOpen = false}/>
 {/if}
 <style>
+    .label{
+        font-size: 1.1rem;
+        font-weight: 550;
+        text-align: center;
+    }
     .wrapper {
         width: 100vw;
         height: 100vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
         background: var(--pj-background-tertiary);
+
     }
 
     img {
-        max-height: 100%;
+        max-width: 60vw;
+    }
+    .title{
+        display: grid;
+        gap: 4px;
+        justify-content: center;
+        justify-items: center;
     }
 </style>

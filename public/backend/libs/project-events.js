@@ -15,6 +15,9 @@ const pathRequire = require("path")
 
 export default function projectEvents(pathToProject, window, metadata) {
     let settingsWindowIsOpen = false
+    ipcMain.on(
+        ROUTES.UPDATE_SETTINGS,
+        (_, data) => window.webContents.send(ROUTES.UPDATE_SETTINGS, data))
     ipcMain.on(ROUTES.LOAD_LEVEL, (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
     ipcMain.on(ROUTES.OPEN_FULL, () => {
         setTimeout(() => {
@@ -27,6 +30,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(
         ROUTES.OPEN_SETTINGS,
         async (event, settingsData) => {
+            console.log(settingsData)
             if (settingsWindowIsOpen)
                 return
             settingsWindowIsOpen = true

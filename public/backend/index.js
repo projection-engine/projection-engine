@@ -14,14 +14,15 @@ app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
 async function createEnvironment() {
     fileSystem()
-    writeOutput()
+    if (isDev)
+        writeOutput()
 
     let pathToProject
     if (isDev)
         pathToProject = os.homedir() + path.sep + "SAMPLE" + path.sep + PROJECT_FILE_EXTENSION
     else
         pathToProject = process.env.PROJECT_TO_OPEN
-    console.log(isDev, pathToProject)
+
     if (!pathToProject)
         app.quit()
 

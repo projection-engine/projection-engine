@@ -2,6 +2,7 @@
     import Accordion from "../../shared/components/accordion/Accordion.svelte";
     import Checkbox from "../../shared/components/checkbox/Checkbox.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+
     export let settings
     export let update
     export let translate
