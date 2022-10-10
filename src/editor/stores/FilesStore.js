@@ -33,7 +33,8 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try {
-            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path}, false)
+            console.log(NodeFS.path)
+            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path + NodeFS.sep}, false)
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         } catch (err) {
@@ -70,12 +71,12 @@ export default class FilesStore {
 
     static async createFolder(currentDirectory) {
         let path = currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER
+
         const existing = await ContentBrowserAPI.foldersFromDirectory(NodeFS.ASSETS_PATH + currentDirectory.id)
         if (existing.length > 0)
             path += " - " + existing.length
 
-
-        await NodeFS.mkdir(NodeFS.ASSETS_PATH + path.sep + path, {})
+        await NodeFS.mkdir(NodeFS.ASSETS_PATH + path.sep + path)
         await FilesStore.refreshFiles()
 
         if (FilesStore.#isWatching)

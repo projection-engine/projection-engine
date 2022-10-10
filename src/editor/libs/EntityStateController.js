@@ -6,7 +6,6 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/disp
 import EngineStore from "../stores/EngineStore";
 import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
 import UIAPI from "../../../public/engine/production/apis/UIAPI";
-import PhysicsPass from "../../../public/engine/production/passes/misc/PhysicsPass";
 import PhysicsAPI from "../../../public/engine/production/apis/PhysicsAPI";
 
 export default class EntityStateController {
@@ -57,7 +56,7 @@ export default class EntityStateController {
         try {
             for (let i = 0; i < entities.length; i++) {
                 const current = entities[i]
-                PhysicsPass.removeRigidBody(current)
+                PhysicsAPI.removeRigidBody(current)
                 for (let s = 0; s < current.scripts.length; s++)
                     await componentConstructor(current, current.scripts[s]?.id, false)
             }

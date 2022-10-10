@@ -56,7 +56,6 @@
                 toRender = data
             } else {
                 for (let i = 0; i < entities.length; i++) {
-
                     if (testSearch(entities[i]))
                         data.push({node: entities[i], depth: 0})
                 }
@@ -68,7 +67,6 @@
     $: setIsEmpty(SIZE === 0)
     $: {
         if (settings?.viewportHotkeys != null) {
-
             ContextMenuController.mount({
                     icon: "account_tree",
                     label: Localization.PROJECT.HIERARCHY.TITLE
@@ -80,6 +78,7 @@
     }
 
     onDestroy(() => {
+        unsubscribeSettings()
         unsubscribeSelection()
         unsubscribeEngine()
         ContextMenuController.destroy(ID)

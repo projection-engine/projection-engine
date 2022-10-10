@@ -1,6 +1,5 @@
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import readdir from "shared-resources/backend/utils/readdir";
-import lstat from "shared-resources/backend/utils/lstat";
+
 import readFile from "shared-resources/backend/utils/read-file";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 
@@ -8,18 +7,6 @@ import FILE_TYPES from "shared-resources/FILE_TYPES";
 const pathRequire = require("path")
 const fs = require("fs")
 
-export async function fromDirectory(startPath, extension) {
-    if (!fs.existsSync(startPath)) return []
-    let res = []
-    let files = (await readdir(startPath))[1]
-    for (let i = 0; i < files.length; i++) {
-        const filename = pathRequire.join(startPath, files[i])
-        const stat = (await lstat(filename))[1]
-        if (stat.isDirectory) res.push(...(await fromDirectory(filename, extension)))
-        else if (filename.indexOf(extension) >= 0) res.push(files[i])
-    }
-    return res
-}
 
 
 export async function readFromRegistry(fileID, projectPath) {

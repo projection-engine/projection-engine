@@ -1,2 +1,2 @@
-- Fixing preferences window
-- Added more information to loading winodw
+- Updating shared modules
+- Fixing file system bugs

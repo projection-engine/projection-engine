@@ -29,7 +29,7 @@ export default class ContentBrowserAPI {
         let newRegistry = await RegistryAPI.readRegistry()
 
         try {
-            const stat = await NodeFS.lstat(fromResolved)
+            const stat = await NodeFS.stat(fromResolved)
             if (stat !== undefined && stat.isDirectory) {
                 await NodeFS.mkdir(to)
                 const res = await NodeFS.readdir(fromResolved)
@@ -38,7 +38,7 @@ export default class ContentBrowserAPI {
                     const file = res[i]
                     const oldPath = fromResolved + NodeFS + `${file}`
                     const newPath = to + NodeFS + `${file}`
-                    if ((await NodeFS.lstat(oldPath)).isDirectory)
+                    if ((await NodeFS.stat(oldPath)).isDirectory)
                         await NodeFS.rename(oldPath, newPath)
                     else {
                         await NodeFS.rename(oldPath, newPath)
@@ -73,7 +73,7 @@ export default class ContentBrowserAPI {
         console.log(files)
         for (let i = 0; i < files.length; i++) {
             const filename = pathRequire.join(startPath, files[i])
-            const stat = await NodeFS.lstat(filename)
+            const stat = await NodeFS.stat(filename)
 
             if (stat.isDirectory) res.push(filename)
         }

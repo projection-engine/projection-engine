@@ -85,6 +85,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     })
 
     ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, async (event, {pathName, listenID}) => {
+
         const result = []
         const registryData = (await readRegistry(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)).filter(reg => reg)
         const res = await directoryStructure(pathName)
