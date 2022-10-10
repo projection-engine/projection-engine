@@ -15,6 +15,7 @@
     import VIEWS from "../../../shared/components/view/VIEWS";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import SettingsStore from "../../stores/SettingsStore";
 
     export let hidden = undefined
     export let switchView = undefined
@@ -29,12 +30,17 @@
     let currentDirectory = {id: NodeFS.sep}
     let wasInitialized = false
     $: {
-        if (wasInitialized)
+        if (wasInitialized) {
+            localStorage.setItem(viewID + "-" + viewIndex + "-" + SettingsStore.data.currentView, viewType)
             ViewStateController.updateState(viewID, viewIndex, currentDirectory)
-        else {
+        } else {
+            const viewT = localStorage.getItem(viewID + "-" + viewIndex + "-" + SettingsStore.data.currentView)
             const state = ViewStateController.getState(viewID, viewIndex)
             if (state != null)
                 currentDirectory = state
+            console.log(viewT)
+            if (viewT)
+                viewType = parseInt(viewT)
             wasInitialized = true
         }
     }

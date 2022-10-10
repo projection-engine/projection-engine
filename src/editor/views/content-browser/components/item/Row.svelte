@@ -67,9 +67,7 @@
             </Preview>
         {/if}
     </div>
-
     <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename} isRow={true}/>
-
     <small>{data.creationDate}</small>
     {#if !data.isFolder}
         <small>{(data.size / 1e+6).toFixed(2)}mb</small>
@@ -104,6 +102,7 @@
     }
 
     .icon {
+        width: 30px;
         position: relative;
         max-height: 100%;
         overflow: hidden;

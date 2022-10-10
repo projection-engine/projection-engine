@@ -7,10 +7,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-
-    import EntityStateController from "../../libs/EntityStateController";
-    import {DiffuseProbePass, SpecularProbePass} from "../../../../public/engine/production";
     import LevelController from "../../libs/LevelController";
+    import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
 
     let engine
     let store
@@ -25,33 +23,37 @@
 </script>
 
 <div class="container">
-    <button on:click={() => {
-        if(!EngineStore.engine.executingAnimation)
-            EntityStateController.startPlayState()
-        else
-            EntityStateController.stopPlayState()
-    }}>
-        <Icon styles="font-size: .85rem">play_arrow</Icon>
-        {#if engine.executingAnimation}
-            {translate("STOP")}
-        {:else}
-            {translate("PLAY")}
-        {/if}
-    </button>
-    <button on:click={() => {
-        alert.pushAlert(translate("BUILDING_PROBES"), "info")
-        DiffuseProbePass.compile()
-        SpecularProbePass.compile()
-    }}>
-        <Icon styles="font-size: .85rem">refresh</Icon>
-        {translate("BUILD_PROBES")}
+    <button style="padding: 0 8px;" on:click={_ => LevelController.save()}>
+        <Icon styles="font-size: .9rem">save</Icon>
+        {translate("SAVE")}
     </button>
     <div data-vertdivider="-" style="height: 15px"></div>
+    {#each FRAME_OPTIONS as option}
+        <Dropdown hideArrow="true">
+            <button slot="button" style="background: transparent; padding: 0 8px;">
+                {option.label}
+            </button>
+            {#each option.submenu as subOption}
+                {#if subOption.type === "separator"}
+                    <div data-divider="-"></div>
+                {:else}
+                    <button
+                            on:click={e => {
+                                 window.frameOptionsCallback(subOption.id)
+                                 e.currentTarget.closeDropdown?.()
+                            }}
+                            style="padding-left: 30px">
+                        {subOption.label}
+                    </button>
+                {/if}
+            {/each}
+        </Dropdown>
+    {/each}
 
+    <div data-vertdivider="-" style="height: 15px"></div>
     <Layout/>
-
     <div class="level-selector">
-        <Dropdown buttonStyles="border-radius: 3px; height: 18px; background: var(--pj-border-primary);">
+        <Dropdown  asButton={true} buttonStyles="border-radius: 3px; min-height: 18px;max-height: 18px;">
             <button slot="button" class="dropdown" style="background: transparent">
                 <Icon>forest</Icon>
                 <div data-overflow="-">
@@ -65,7 +67,9 @@
             </button>
             <button on:click={() => LevelController.loadLevel()}>
                 {#if !engine.currentLevel}
-                    <Icon>check</Icon>
+                    <Icon styles="font-size: .9rem">check</Icon>
+                {:else}
+                    <div style="width: .9rem"></div>
                 {/if}
                 {translate("DEFAULT_LEVEL")}
             </button>
@@ -73,7 +77,9 @@
             {#each store.levels as level}
                 <button on:click={() => LevelController.loadLevel(level)}>
                     {#if engine.currentLevel?.registryID === level.registryID}
-                        <Icon>check</Icon>
+                        <Icon styles="font-size: .9rem">check</Icon>
+                        {:else}
+                        <div style="width: .9rem"></div>
                     {/if}
                     {level.name}
                 </button>
@@ -103,14 +109,15 @@
     }
 
     .container {
+        margin-bottom: 3px;
         min-height: 25px;
         max-height: 25px;
         width: 100%;
-        background: var(--pj-background-quaternary);
+        background: var(--pj-background-tertiary);
         overflow: hidden;
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 2px;
         padding: 0 2px;
     }
 
@@ -118,7 +125,7 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        color: var(--pj-color-tertiary);
+        color: var(--pj-color-secondary);
 
         border: none;
         background: transparent;

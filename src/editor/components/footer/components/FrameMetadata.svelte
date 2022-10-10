@@ -1,6 +1,12 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import {Engine} from "../../../../../public/engine/production";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import SettingsStore from "../../../stores/SettingsStore";
+    import Localization from "../../../../shared/libs/Localization";
+
+    export let settings
 
     let fr
     let ft
@@ -15,10 +21,8 @@
         }
         requestAnimationFrame(cb)
         const updateMem = () => {
-            console.time("START")
             const data = window.performance.memory.usedJSHeapSize / 1e+6
             mem.textContent = data.toFixed(2) + "mb"
-
         }
 
         updateMem()
@@ -28,13 +32,34 @@
 </script>
 
 
-<small bind:this={fr}></small>
-<div data-vertdivider="-"></div>
-<small bind:this={ft}></small>
-<div data-vertdivider="-"></div>
-<small bind:this={mem}></small>
-
+<Dropdown hideArrow={true}>
+    <div class="section" slot="button">
+        <small bind:this={fr}></small>
+        <div data-vertdivider="-"></div>
+        <small bind:this={ft}></small>
+        <div data-vertdivider="-"></div>
+        <small bind:this={mem}></small>
+    </div>
+    <button on:click={() => SettingsStore.updateStore({...settings, showMetrics: !settings.showMetrics})}>
+        {#if settings.showMetrics}
+            <Icon styles="font-size: .9rem">check</Icon>
+        {:else}
+            <div style="width: .9rem"></div>
+        {/if}
+        {Localization.PROJECT.INFO.TOGGLE_FRAMERATE}
+    </button>
+</Dropdown>
 <style>
+    .section{
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        padding: 0 4px;
+        gap: 2px;
+    }
+    .section:hover{
+        background: var(--pj-background-secondary);
+    }
     small {
         font-size: .675rem;
     }

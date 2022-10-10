@@ -24,11 +24,8 @@ export default class ViewportActions {
         const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
         if (!entity)
             return
-
         CameraTracker.radius = 10
-
         vec3.copy(CameraTracker.centerOn, entity.absoluteTranslation)
-        console.log(CameraTracker.centerOn, entity.absoluteTranslation)
         CameraTracker.update()
     }
 

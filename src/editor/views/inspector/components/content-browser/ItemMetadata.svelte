@@ -13,9 +13,9 @@
     $: {
         NodeFS.stat(NodeFS.ASSETS_PATH  + NodeFS.sep + item.id)
             .then(res => {
-                if (res[0])
+                if(!res)
                     return
-                data = {...res[1], size: res[1].size / (1024 * 1024)}
+                data = {...res, size: res.size / (1024 * 1024)}
             })
     }
     const showInFolder = () => {

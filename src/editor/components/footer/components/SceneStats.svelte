@@ -2,6 +2,8 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import {Engine, GPU} from "../../../../../public/engine/production";
+    import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
+    import STATIC_TEXTURES from "../../../../../public/engine/static/resources/STATIC_TEXTURES";
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)
@@ -20,9 +22,9 @@
         let t = 0
         GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
         triangles = t
-        meshes = GPU.meshes.size
+        meshes = GPU.meshes.size - Object.keys(STATIC_MESHES.EDITOR).length
         materials = GPU.materials.size
-        textures = GPU.textures.size
+        textures = GPU.textures.size - Object.keys(STATIC_TEXTURES).length
     }
     onMount(() => {
         refresh()

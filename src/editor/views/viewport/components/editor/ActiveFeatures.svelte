@@ -10,7 +10,7 @@
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 </script>
 
-<Dropdown styles="width: clamp(250px, 10vw, 550px)">
+<Dropdown styles="width: clamp(250px, 10vw, 550px); background: transparent;">
     <button slot="button" data-viewbutton="-">
         {translate("VIEW")}
     </button>

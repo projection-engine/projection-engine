@@ -7,7 +7,10 @@
     import ViewportActions from "../../../../libs/ViewportActions";
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../../shared/libs/Localization";
-
+    import EngineStore from "../../../../stores/EngineStore";
+    import EntityStateController from "../../../../libs/EntityStateController";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import {DiffuseProbePass, SpecularProbePass} from "../../../../../../public/engine/production";
 
     export let settings
     export let engine
@@ -17,9 +20,33 @@
 
 <div class="left-content">
     <slot name="switch-button"/>
+
+    <button on:click={() => {
+        if(!EngineStore.engine.executingAnimation)
+            EntityStateController.startPlayState()
+        else
+            EntityStateController.stopPlayState()
+    }}>
+        <Icon styles="font-size: .85rem">play_arrow</Icon>
+        {#if engine.executingAnimation}
+            {translate("STOP")}
+        {:else}
+            {translate("PLAY")}
+        {/if}
+    </button>
+    <button on:click={() => {
+        alert.pushAlert(translate("BUILDING_PROBES"), "info")
+        DiffuseProbePass.compile()
+        SpecularProbePass.compile()
+    }}>
+        <Icon styles="font-size: .85rem">refresh</Icon>
+        {translate("BUILD_PROBES")}
+    </button>
+    <div data-vertdivider="-" style="height: 15px"></div>
+
     <ActiveFeatures settings={settings}/>
     <Dropdown>
-        <button slot="button" data-viewbutton="-">
+        <button slot="button" data-viewbutton="-" style="background: transparent;">
             {translate("SELECT")}
         </button>
 
@@ -43,6 +70,19 @@
 </div>
 
 <style>
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+
+        border: none;
+        padding: 0 2px;
+        height: 18px;
+
+        white-space: nowrap;
+    }
 
     .left-content {
         display: flex;

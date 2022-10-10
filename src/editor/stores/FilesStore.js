@@ -71,12 +71,10 @@ export default class FilesStore {
 
     static async createFolder(currentDirectory) {
         let path = currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER
-
         const existing = await ContentBrowserAPI.foldersFromDirectory(NodeFS.ASSETS_PATH + currentDirectory.id)
         if (existing.length > 0)
             path += " - " + existing.length
-
-        await NodeFS.mkdir(NodeFS.ASSETS_PATH + path.sep + path)
+         await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
         await FilesStore.refreshFiles()
 
         if (FilesStore.#isWatching)
@@ -90,7 +88,6 @@ export default class FilesStore {
 
     static removeBlock(v) {
         const prev = FilesStore.data.bookmarks
-
         const n = prev.filter(i => !v.includes(i.path))
         FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
         FilesStore.updateStore({...FilesStore.data, bookmarks: n})

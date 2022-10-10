@@ -7,21 +7,36 @@ import ROUTES from "../../../src/static/ROUTES";
 import levelLoader from "./level-loader";
 import buildSettingsWindow from "./build-settings-window";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
-import frameMenuController from "../utils/frame-menu-controller";
 
-const {ipcMain, dialog} = require("electron")
+
+const {ipcMain, dialog, app} = require("electron")
 const fs = require("fs")
 const pathRequire = require("path")
 
 export default function projectEvents(pathToProject, window, metadata) {
     let settingsWindowIsOpen = false
+    ipcMain.on("reload", () => {
+        dialog.showMessageBox(window, {
+            'type': 'question',
+            'title': 'Reload project',
+            'message': "Are you sure?",
+            'buttons': [
+                'Yes',
+                'No'
+            ]
+        }).then((result) => {
+            if (result.response !== 0)
+                return;
+            app.relaunch()
+            app.exit()
+        })
+    })
     ipcMain.on(
         ROUTES.UPDATE_SETTINGS,
         (_, data) => window.webContents.send(ROUTES.UPDATE_SETTINGS, data))
     ipcMain.on(ROUTES.LOAD_LEVEL, (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
     ipcMain.on(ROUTES.OPEN_FULL, () => {
         setTimeout(() => {
-            frameMenuController(window)
             window.maximize()
             window.webContents.send(ROUTES.OPEN_FULL)
         }, 250)
@@ -87,11 +102,11 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, async (event, {pathName, listenID}) => {
 
         const result = []
-        const registryData = (await readRegistry(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)).filter(reg => reg)
-        const res = await directoryStructure(pathName)
-        for (let i = 0; i < res.length; i++) {
+        const registryData = await readRegistry(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)
+        const assetsToParse = await directoryStructure(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
+        for (let i = 0; i < assetsToParse.length; i++) {
             try {
-                const e = await parseContentBrowserData(res[i], registryData, pathName)
+                const e = await parseContentBrowserData(assetsToParse[i], registryData, pathName)
                 if (e && (e.registryID || e.isFolder))
                     result.push(e)
             } catch (error) {

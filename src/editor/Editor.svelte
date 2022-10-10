@@ -10,6 +10,7 @@
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
 
     import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
+    import FRAME_OPTIONS from "./templates/FRAME_OPTIONS";
 
     const FALLBACK = {
         name: "Default",
@@ -42,6 +43,7 @@
 </script>
 
 <div class="wrapper">
+
     <Alert/>
     <ControlOptions/>
     <ContextMenu/>
@@ -114,6 +116,6 @@
         overflow: hidden;
         display: flex;
 
-        padding: 0 3px 3px;
+        padding-bottom: 3px;
     }
 </style>

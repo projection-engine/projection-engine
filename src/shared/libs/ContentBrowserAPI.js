@@ -70,7 +70,6 @@ export default class ContentBrowserAPI {
         let res = []
 
         let files = await NodeFS.readdir(startPath)
-        console.log(files)
         for (let i = 0; i < files.length; i++) {
             const filename = pathRequire.join(startPath, files[i])
             const stat = await NodeFS.stat(filename)

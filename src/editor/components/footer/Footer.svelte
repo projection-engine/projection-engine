@@ -11,6 +11,7 @@
     import ConsoleAPI from "../../../../public/engine/production/apis/ConsoleAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
+    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     const {shell} = window.require("electron")
     let settings = {}
@@ -33,6 +34,12 @@
     })
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
+    const openLogs = async () => {
+        if (await NodeFS.exists(ErrorLoggerAPI.path))
+            shell.openPath(ErrorLoggerAPI.path)
+        else
+            alert.pushAlert("No logs found")
+    }
 </script>
 
 <div
@@ -47,8 +54,8 @@
             <ToolTip content={translate("ACTIVE_SHORTCUTS")}/>
         </div>
     {/if}
-    <div data-vertdivider="-"></div>
-    <FrameMetadata/>
+    <div data-vertdivider="-" style="margin: 0 2px"></div>
+    <FrameMetadata settings={settings}/>
 
 
     <div class="meta-data">
@@ -71,7 +78,7 @@
                 {/if}
                 {translate("LOGGING_ENABLED")}
             </button>
-            <button on:click={() => shell.openPath(ErrorLoggerAPI.path)}>
+            <button on:click={openLogs}>
                 <Icon>open_in_new</Icon>
                 {translate("SHOW_ERROR_LOGS")}
             </button>
@@ -133,18 +140,6 @@
         color: var(--pj-color-secondary);
         padding: 0 2px;
         font-size: .7rem;
-    }
-
-    .info-container {
-        height: 23px;
-        font-size: .7rem;
-        display: flex;
-        gap: 4px;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 4px;
-        background: var(--pj-background-tertiary);
-        color: var(--pj-color-secondary);
     }
 
     .info-container > * {

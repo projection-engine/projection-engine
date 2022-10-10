@@ -13,6 +13,7 @@
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
+    import RowsHeader from "./RowsHeader.svelte";
 
     const CARD_SIZE = 115
     export let fileType
@@ -36,6 +37,7 @@
     let selectionMap
     let selected = []
     let timeout
+    let toRender = []
 
     const translate = key => Localization.PROJECT.FILES[key]
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
@@ -66,6 +68,7 @@
     $: lineHeight = viewType === ITEM_TYPES.ROW  ? 23 : CARD_SIZE
     $: items = store.items
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
+
     $: {
         if (ref) {
             const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
@@ -156,8 +159,11 @@
             setSelected={v => SelectionStore.contentBrowserSelected = v}
     />
     {#if toRender.length > 0}
+        {#if viewType === ITEM_TYPES.ROW}
+            <RowsHeader items={toRender} updateItems={v => toRender = v}/>
+        {/if}
         <VirtualList items={toRender} let:item>
-            <div class="line" style={ "height:" + lineHeight + "px"}>
+            <div class="line" style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
                             viewType={viewType}
@@ -191,22 +197,6 @@
 </div>
 
 <style>
-
-    .empty {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: grid;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-        width: 100%;
-        height: 100%;
-        font-weight: bold;
-        color: var(--pj-color-quaternary);
-    }
 
     .line {
         display: flex;

@@ -20,6 +20,7 @@
     import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
+    import Metrics from "./components/Metrics.svelte";
 
     export let updateView
     export let viewTab = VIEWPORT_TABS.EDITOR
@@ -84,7 +85,7 @@
 </script>
 
 <div class="viewport" bind:this={ref}>
-    {#if !engine.executingAnimation && engine.viewportInitialized}
+    {#if engine.viewportInitialized}
         <div class="header">
             {#if viewTab === VIEWPORT_TABS.EDITOR}
                 <EditorHeader
@@ -120,6 +121,9 @@
     {/if}
     <div class="wrapper" >
         <div bind:this={canvasRef}></div>
+        {#if settings.showMetrics}
+            <Metrics/>
+        {/if}
         {#if !engine.executingAnimation && isReady}
             {#if viewTab === VIEWPORT_TABS.UI}
                 <UILayout engine={engine} settings={settings}/>

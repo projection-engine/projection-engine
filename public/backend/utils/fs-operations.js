@@ -8,12 +8,11 @@ const pathRequire = require("path")
 const fs = require("fs")
 
 
-
 export async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
         const lookUpTable = (await readFile(pathRequire.resolve(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + pathRequire.sep + fileID + FILE_TYPES.REGISTRY)))[1]
         if (lookUpTable) {
-            const fileData = (await readFile(projectPath + pathRequire.sep + "assets" + pathRequire.sep + JSON.parse(lookUpTable).path))[1]
+            const fileData = (await readFile(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + pathRequire.sep + JSON.parse(lookUpTable).path))[1]
             if (fileData) resolve(fileData)
             else resolve(null)
         } else resolve(null)
@@ -21,27 +20,21 @@ export async function readFromRegistry(fileID, projectPath) {
 }
 
 export async function readRegistry(pathName) {
-    return new Promise(resolve => {
-        fs.readdir(pathName, (e, res) => {
-            if (!e) {
-                Promise.all(res.map(f => {
-                    return new Promise(resolve1 => {
-                        const registryPath = pathName + pathRequire.sep + f
-                        fs.readFile(registryPath, (e, registryFile) => {
-                            if (!e) try {
-                                resolve1({
-                                    ...JSON.parse(registryFile.toString()), registryPath
-                                })
-                            } catch (e) {
-                                resolve1()
-                            } else resolve1()
-                        })
-                    })
-                })).then(registryFiles => {
-                    resolve(registryFiles
-                        .filter(f => f !== undefined))
-                })
-            } else resolve([])
-        })
-    })
+    const response = []
+    try {
+        const res = await fs.promises.readdir(pathName)
+
+        for (let i = 0; i < res.length; i++) {
+            const f = res[i]
+            const registryPath = pathRequire.resolve(pathName + pathRequire.sep + f)
+            try {
+                const file = await fs.promises.readFile(registryPath)
+                response.push({...JSON.parse(file.toString()), registryPath})
+            } catch (err) {
+            }
+        }
+    } catch (err) {
+        console.log(err)
+    }
+    return response
 }

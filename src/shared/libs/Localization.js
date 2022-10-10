@@ -35,14 +35,24 @@ export default class Localization {
         },
         CONTROL: {
             LEVEL: "Level",
-            BUILD_PROBES: "Build probes",
-            BUILDING_PROBES: "Building probes",
             PLAY: "Play",
             STOP: "Stop",
+            BUILD_PROBES: "Build probes",
+            BUILDING_PROBES: "Building probes",
+
             SAVE: "Save",
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
+            LOOP_FRAME_TIME: "Loop",
+            EXECUTION_FRAME_RATE: "Frame-rate",
+            EXECUTION_FRAME_TIME: "Frame-time",
+            MEMORY: "Total memory",
+            RENDERING: "Rendering",
+            SIMULATION: "Simulation",
+            SCRIPTING: "Scripts",
+
+            TOGGLE_FRAMERATE: "Toggle detailed metrics",
             NEW_MESSAGE: "New console message",
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
             VERSION: "1.0.0-beta",
@@ -57,6 +67,13 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            LEVEL: "Level",
+            STOP: "Stop",
+            BUILD_PROBES: "Build probes",
+            BUILDING_PROBES: "Building probes",
+
+            SAVE: "Save",
+            DEFAULT_LEVEL: "Default",
             SENSITIVITY: "Sensitivity",
             IMPORT: "Import",
             SCALE: "Scale",
@@ -445,6 +462,12 @@ export default class Localization {
         },
 
         FILES: {
+
+            NAME: "Name",
+            SIZE: "Size",
+            CREATION: "Creation date",
+
+
             ROW_VIEW: "Rows",
             CARD_VIEW: "Cards",
             NEW_TERRAIN_MATERIAL: "New terrain material",

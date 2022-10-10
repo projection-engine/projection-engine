@@ -17,11 +17,9 @@
         timeout = setTimeout(() => {
             try {
                 NodeFS.read(path).then(res => {
-                    if (!res[0]) {
-                        src = res[1]
-                        error = false
-                    } else
-                        error = true
+                    error = !res
+                    if(res)
+                        src= res
                 })
             } catch (err) {
                 error = true

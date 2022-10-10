@@ -100,7 +100,7 @@
     }
 
     .view[data-highlight="-"] {
-        background: var(--pj-border-primary);
+        background: var(--pj-background-primary);
         color: var(--pj-color-secondary);
     }
 
@@ -141,6 +141,6 @@
     .container {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 2px;
     }
 </style>

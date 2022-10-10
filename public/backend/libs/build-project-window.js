@@ -18,6 +18,7 @@ export default async function buildProjectWindow(pathToProject, isDev) {
             width: 600,
             height: 600,
             darkTheme: true,
+            autoHideMenuBar: true,
             webPreferences: {
                 enableBlinkFeatures: "PreciseMemoryInfo",
                 webSecurity: false,

@@ -1,6 +1,6 @@
 export default [
     {
-        label: 'Project',
+        label: 'File',
         submenu: [
             {
                 label: 'Save',
@@ -28,6 +28,11 @@ export default [
             {
                 label: 'Preferences',
                 id: "preferences"
+            },
+            {type: 'separator'},
+            {
+                label: 'Reload project',
+                id:"reload"
             }
         ]
     },
@@ -36,29 +41,13 @@ export default [
         label: 'View',
         submenu: [
             {
-                role: 'togglefullscreen'
+                label: "Toggle fullscreen",
+                id: "fullscreen"
             },
             {type: 'separator'},
             {
                 label: "Toggle footer",
                 id: "footer"
-            }
-        ]
-    },
-
-    {
-        role: 'window',
-        submenu: [
-            {
-                role: 'minimize'
-            },
-            {
-                role: 'close'
-            },
-            {type: 'separator'},
-            {
-                label: 'Reload project',
-                id:"reload"
             }
         ]
     },

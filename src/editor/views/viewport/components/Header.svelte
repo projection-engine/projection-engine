@@ -15,8 +15,8 @@
 </script>
 
 
-<Dropdown  asButton={true}>
-    <button slot="button" class="title">
+<Dropdown  asButton={true} disabled={engine.executingAnimation}>
+    <button slot="button" class="title" disabled={engine.executingAnimation}>
         <Icon styles="font-size: .9rem">
             {#if viewportTab === VIEWPORT_TABS.EDITOR}
                 public

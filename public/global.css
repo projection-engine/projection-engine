@@ -152,8 +152,8 @@ a {
     text-shadow: 1px 1px rgba(0,0,0,.2);
     font-family: 'Roboto';
     box-sizing: border-box;
-    text-rendering: optimizeSpeed;
-    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 *[data-overflow="-"] {

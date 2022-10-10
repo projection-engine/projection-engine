@@ -11,7 +11,7 @@
 </script>
 
 <Dropdown>
-    <button slot="button" data-viewbutton="-">
+    <button slot="button" data-viewbutton="-" style="background: transparent;">
         {translate("ADD")}
         <ToolTip content={translate("ADD_DETAILS")}/>
     </button>
