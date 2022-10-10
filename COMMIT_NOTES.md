@@ -1,6 +1,1 @@
-- Fixing file system bugs
-- Fixing context menu bugs
-- Added detailed performance metrics
-- Reworked  control header structure
-- Moved simulation controls to viewport
-- Frame options now integrated with control header
+- New release

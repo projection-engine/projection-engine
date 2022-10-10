@@ -4,6 +4,7 @@ const {BrowserWindow} = require("electron")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 const {screen, ipcMain} = require('electron')
+const isDev = require('electron-is-dev');
 
 export default async function buildSettingsWindow(parent, settingsData, onClose) {
 
@@ -29,11 +30,10 @@ export default async function buildSettingsWindow(parent, settingsData, onClose)
     ipcMain.once(ROUTES.LOAD_SETTINGS, event => {
         event.sender.send(ROUTES.LOAD_SETTINGS, settingsData)
     })
-    window.openDevTools()
+    if (isDev)
+        window.openDevTools()
     await window.loadFile(path.join(__dirname, '../preferences-window.html'))
     window.on("close", onClose)
-
-
 
 
 }

@@ -9,7 +9,7 @@ import buildSettingsWindow from "./build-settings-window";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 
-const {ipcMain, dialog, app} = require("electron")
+const {ipcMain, dialog, app, screen} = require("electron")
 const fs = require("fs")
 const pathRequire = require("path")
 
@@ -37,6 +37,9 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.LOAD_LEVEL, (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
     ipcMain.on(ROUTES.OPEN_FULL, () => {
         setTimeout(() => {
+            const primaryDisplay = screen.getPrimaryDisplay()
+            const {width, height} = primaryDisplay.workAreaSize
+            window.setSize(width/2, height/2)
             window.maximize()
             window.webContents.send(ROUTES.OPEN_FULL)
         }, 250)
@@ -45,7 +48,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(
         ROUTES.OPEN_SETTINGS,
         async (event, settingsData) => {
-            console.log(settingsData)
+
             if (settingsWindowIsOpen)
                 return
             settingsWindowIsOpen = true
