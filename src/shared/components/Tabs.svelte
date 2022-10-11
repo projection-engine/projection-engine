@@ -1,27 +1,15 @@
 <script>
-    import VIEWS from "../../../shared/components/view/VIEWS";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import {onDestroy} from "svelte";
-    import KEYS from "../../data/KEYS";
-    import Localization from "../../../shared/libs/Localization";
-    import SettingsStore from "../../stores/SettingsStore";
+    import KEYS from "../../editor/data/KEYS";
 
 
-    let settings = {}
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onDestroy(() => unsubscribeSettings())
+    export let addNewTab
+    export let removeTab
+    export let tabs
+    export let currentTab
+    export let setCurrentView
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
-    const addNewTab = () => {
-        const views = [...settings.views, {
-            name: translate("NEW_TAB") + settings.views.length,
-            bottom: [VIEWS.CONSOLE],
-            right: [VIEWS.HIERARCHY],
-            left: []
-        }]
-        SettingsStore.updateStore({...settings, views})
 
-    }
     const handler = (e, v, i) => {
         switch (e.type) {
             case "keydown": {
@@ -43,24 +31,16 @@
                 e.currentTarget.type = "button"
                 break
             case "click":
-                SettingsStore.updateStore({...settings, currentView: i})
+                setCurrentView(i)
                 break
         }
-
     }
-    const removeView = (i) => {
-        const obj = {...settings}
-        if (i === obj.currentView || i < obj.currentView)
-            obj.currentView = obj.currentView === 0 ? 0 : obj.currentView - 1
 
-        obj.views = obj.views.filter((_, index) => i !== index)
-        SettingsStore.updateStore(obj)
-    }
 </script>
 
 <div class="container">
-    {#each settings.views as v, i}
-        <div data-highlight={i === settings.currentView ? "-" : undefined} class="view">
+    {#each tabs as v, i}
+        <div data-highlight={i === currentTab ? "-" : undefined} class="view">
             <input
                     on:dblclick={e => handler(e, v)}
                     on:input={e => handler(e, v)}
@@ -72,7 +52,7 @@
                     type="button"
                     value={v.name}
             >
-            <button disabled={settings.views.length === 1} on:click={() => removeView(i)}
+            <button disabled={tabs.length === 1} on:click={() => removeTab(i)}
                     class="remove-button">
                 <Icon styles="font-size: .8rem">
                     clear
@@ -80,7 +60,7 @@
             </button>
         </div>
     {/each}
-    {#if settings.views.length < 10}
+    {#if tabs.length < 10}
         <button on:click={addNewTab} class="add-button">
             <Icon styles="font-size: .9rem">
                 add

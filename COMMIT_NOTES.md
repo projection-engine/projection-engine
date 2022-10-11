@@ -1,1 +1,1 @@
-- New release
+- Initializing multi-tab views

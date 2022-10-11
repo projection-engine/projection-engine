@@ -1,7 +1,7 @@
 export default {
-    HIERARCHY: "hierarchy", 
-    COMPONENT: "component", 
-    FILES: "files", 
-    BLUEPRINT: "blueprint",
-    CONSOLE: "console"
+    HIERARCHY: "HIERARCHY",
+    COMPONENT: "INSPECTOR",
+    FILES: "CONTENT_BROWSER",
+    BLUEPRINT: "SHADER_EDITOR",
+    CONSOLE: "CONSOLE"
 }

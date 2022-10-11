@@ -4,8 +4,8 @@
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
-    import ViewsContainer from "../shared/components/view/ViewsContainer.svelte";
-    import ControlOptions from "./components/control-options/ControlOptions.svelte";
+    import ViewsContainer from "../shared/components/view/ComponentViews.svelte";
+    import ControlOptions from "./components/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
 
@@ -48,7 +48,6 @@
     <ControlOptions/>
     <ContextMenu/>
     <div class="middle">
-
         <ViewsContainer
                 id="left"
                 setTabs={(tabs) => updateView("left", tabs)}

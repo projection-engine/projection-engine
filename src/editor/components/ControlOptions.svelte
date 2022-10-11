@@ -1,23 +1,48 @@
 <script>
-    import EngineStore from "../../stores/EngineStore";
+    import EngineStore from "../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import Layout from "./Layout.svelte";
-    import Localization from "../../../shared/libs/Localization";
+    import Localization from "../../shared/libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import FilesStore from "../../stores/FilesStore";
+    import FilesStore from "../stores/FilesStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import LevelController from "../../libs/LevelController";
-    import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
+    import LevelController from "../libs/LevelController";
+    import FRAME_OPTIONS from "../templates/FRAME_OPTIONS";
+    import SettingsStore from "../stores/SettingsStore";
+    import Tabs from "../../shared/components/Tabs.svelte";
+    import VIEWS from "../../shared/components/view/VIEWS";
 
     let engine
     let store
+    let settings
+
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribe()
+        unsubscribeSettings()
     })
+
+    const addNewTab = () => {
+        const views = [...settings.views, {
+            name: translate("NEW_TAB") + settings.views.length,
+            bottom: [[VIEWS.CONSOLE]],
+            right: [[VIEWS.HIERARCHY]],
+            left: []
+        }]
+        SettingsStore.updateStore({...settings, views})
+    }
+
+    const removeTab = (i) => {
+        const obj = {...settings}
+        if (i === obj.currentView || i < obj.currentView)
+            obj.currentView = obj.currentView === 0 ? 0 : obj.currentView - 1
+
+        obj.views = obj.views.filter((_, index) => i !== index)
+        SettingsStore.updateStore(obj)
+    }
 
     const translate = key => Localization.PROJECT.CONTROL[key]
 </script>
@@ -51,9 +76,15 @@
     {/each}
 
     <div data-vertdivider="-" style="height: 15px"></div>
-    <Layout/>
+    <Tabs
+            addNewTab={addNewTab}
+            removeTab={removeTab}
+            tabs={settings.views}
+            currentTab={settings.currentView}
+            setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
+    />
     <div class="level-selector">
-        <Dropdown  asButton={true} buttonStyles="border-radius: 3px; min-height: 18px;max-height: 18px;">
+        <Dropdown asButton={true} buttonStyles="border-radius: 3px; min-height: 18px;max-height: 18px;">
             <button slot="button" class="dropdown" style="background: transparent">
                 <Icon>forest</Icon>
                 <div data-overflow="-">
@@ -78,7 +109,7 @@
                 <button on:click={() => LevelController.loadLevel(level)}>
                     {#if engine.currentLevel?.registryID === level.registryID}
                         <Icon styles="font-size: .9rem">check</Icon>
-                        {:else}
+                    {:else}
                         <div style="width: .9rem"></div>
                     {/if}
                     {level.name}

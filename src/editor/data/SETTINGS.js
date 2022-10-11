@@ -5,6 +5,7 @@ import VIEWS from "../../shared/components/view/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
 import KEYS from "./KEYS";
+import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 
 const toRad = Math.PI / 180
@@ -109,37 +110,7 @@ export default {
     },
 
     background: true,
-    views: [
-        {
-            name: "Level",
-            bottom: [VIEWS.FILES],
-            left: [],
-            viewport: VIEWPORT_TABS.EDITOR,
-            right: [VIEWS.HIERARCHY, VIEWS.COMPONENT]
-        },
-        {
-            name: "Debug",
-            bottom: [VIEWS.CONSOLE],
-            left: [],
-            viewport: VIEWPORT_TABS.EDITOR,
-            right: []
-        },
-        {
-            name: "Shading",
-            bottom: [VIEWS.BLUEPRINT],
-            left: [],
-            viewport: VIEWPORT_TABS.EDITOR,
-            right: [VIEWS.HIERARCHY, VIEWS.COMPONENT]
-        }
-        ,
-        {
-            name: "UI",
-            bottom: [VIEWS.FILES],
-            left: [VIEWS.COMPONENT],
-            viewport: VIEWPORT_TABS.UI,
-            right: [VIEWS.HIERARCHY]
-        }
-    ],
+    views: INITIAL_LAYOUT,
     currentView: 0,
     INITIALIZED: false
 }

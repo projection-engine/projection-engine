@@ -34,7 +34,6 @@
     const {shell} = window.require("electron")
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
-
     let openFile = {}
     let nodes = []
     let links = []

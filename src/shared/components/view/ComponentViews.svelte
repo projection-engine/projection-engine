@@ -3,6 +3,7 @@
     import View from "./components/View.svelte";
     import VIEWS from "./VIEWS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import ViewGroup from "./components/ViewGroup.svelte";
 
     export let resizePosition
     export let topOffset = undefined
@@ -16,13 +17,14 @@
     let hidden = false
     let ref
 
+
     $: orientationName = orientation === "horizontal" ? "height" : "width"
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
 
 </script>
 
 
-{#if resizePosition !== "bottom" && tabs.length > 0 &&  resizePosition !== "left"}
+{#if resizePosition !== "bottom" && tabs.length > 0 && resizePosition !== "left"}
     <ResizableBar
             resetTargets={{previous: true, next: false}}
             resetWhen={[hidden]}
@@ -50,30 +52,44 @@
             opacity: ${reducedOpacity ? ".75" : "1"};
         `}
 >
-    {#each tabs as view, vI}
-        <View
-                hidden={hidden}
-                instance={view}
-                id={id}
-                index={vI}
-                styles={`
-                    ${orientationName}: ${hidden ? "28px" : "inherit"};
-                `}
-                switchView={(newView) => {
+    {#each tabs as views, groupIndex}
+        <ViewGroup
+                views={views}
+                let:view
+                let:index
+                addNewTab={() => {
+                    const clone  = [...tabs]
+                    clone[groupIndex].push(VIEWS.CONSOLE)
+                    setTabs(clone)
+                }}
+                removeTab={indexToRemove => {
+                    const clone  = [...tabs]
+                    clone[groupIndex].splice(indexToRemove, 1)
+                  setTabs(clone)
+                }}
+        >
+            <View
+                    hidden={hidden}
+                    instance={view}
+                    id={id}
+                    index={groupIndex}
+                    styles={`${orientationName}: ${hidden ? "28px" : "inherit"};`}
+                    switchView={(newView) => {
                         if (!newView) {
                             const copy = [...tabs]
-                            copy[vI] = undefined
+                            copy[groupIndex][index] = undefined
 
                             setTabs(copy.filter(e => e))
                         } else if (newView !== view) {
                             const copy = [...tabs]
-                            copy[vI] = newView
+                            copy[groupIndex][index] = newView
                             setTabs(copy)
                         }
                     }}
-                orientation={orientation}
-        />
-        {#if vI < tabs.length - 1 && tabs.length > 1}
+                    orientation={orientation}
+            />
+        </ViewGroup>
+        {#if groupIndex < tabs.length - 1 && tabs.length > 1}
             <ResizableBar
                     type={invOrientation}
                     resetWhen={tabs}
@@ -82,18 +98,15 @@
                         const prevBB = prev.getBoundingClientRect()
                         if (prevBB[invOrientation] < 30) {
                             prev.style[invOrientation] = "100%"
-
                             const copy = [...tabs]
                             copy.shift()
                             setTabs(copy)
-
-
                         }
                         if (nextBB[invOrientation] < 30) {
                             next.style[invOrientation] = "100%"
 
                             const copy = [...tabs]
-                            copy[vI + 1] = undefined
+                            copy[groupIndex + 1] = undefined
                             setTabs(copy.filter(e => e))
                         }
                     }}
@@ -102,7 +115,10 @@
         {/if}
     {/each}
     <button
-            on:click={() => setTabs([...tabs, VIEWS.CONSOLE])}
+            on:click={() => {
+                console.log(tabs)
+                setTabs([...tabs, [VIEWS.FILES]])
+            }}
             style={`
                 left: ${orientation === "vertical" ? tabs.length === 0 ? leftOffset : "10px" : "100%"};
                 top: ${topOffset ? `calc(100% - ${topOffset})` : "100%"};
