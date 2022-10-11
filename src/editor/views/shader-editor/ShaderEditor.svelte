@@ -19,17 +19,17 @@
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorController from "./ShaderEditorController";
     import Selector from "../../../shared/components/selector/Selector.svelte";
-    import ViewStateController from "../../../shared/components/view/ViewStateController";
+    import ViewStateController from "../../../shared/components/view/libs/ViewStateController";
     import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler";
     import {v4} from "uuid";
-    import VIEWS from "../../../shared/components/view/VIEWS";
+    import VIEWS from "../../../shared/components/view/data/VIEWS";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
-    export let hidden
     export let switchView
     export let orientation
     export let viewID
     export let viewIndex
+    export let groupIndex
     const internalID = v4()
     const {shell} = window.require("electron")
     const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
@@ -59,9 +59,9 @@
                 links,
                 status,
             }
-            ViewStateController.updateState(viewID, viewIndex, newState)
+            ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
         } else {
-            const state = ViewStateController.getState(viewID, viewIndex)
+            const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
             if (state != null) {
                 openFile = state.openFile
                 nodes = state.nodes
@@ -104,7 +104,7 @@
 <Header
         currentView={VIEWS.BLUEPRINT}
         orientation={orientation}
-        hidden={hidden}
+
         switchView={switchView}
         title={translate("TITLE")}
         icon={"texture"}
@@ -144,7 +144,7 @@
                 selected={openFile}
         />
 
-        {#if openFile.registryID}
+        {#if openFile?.registryID}
             <Nodes translate={translate}/>
         {/if}
     </div>
@@ -200,7 +200,7 @@
         </button>
     </div>
 </Header>
-<div style={hidden ? "display: none": undefined} class="wrapper" bind:this={ref}>
+<div  class="wrapper" bind:this={ref}>
     <Editor
             internalID={internalID}
             openFile={openFile}

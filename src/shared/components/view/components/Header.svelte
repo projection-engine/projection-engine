@@ -3,12 +3,11 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import VIEWS from "../VIEWS";
+    import VIEWS from "../data/VIEWS";
 
     export let icon
     export let title
     export let orientation
-    export let hidden
     export let switchView
     export let currentView
 
@@ -16,13 +15,10 @@
     const translate = key => Localization.COMPONENTS.VIEWS[key]
 
 </script>
-<div
-        class:headerHidden={hidden}
-        class:header={!hidden}
->
+<div class="header">
     <Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);">
         <button
-                style={"height: " +  (orientation === "vertical" && hidden ? "fit-content" : "25px")}
+                style={"height: " +  (orientation === "vertical" ? "fit-content" : "25px")}
                 class="title"
                 slot="button"
         >
@@ -71,9 +67,7 @@
             </fieldset>
         </div>
     </Dropdown>
-    {#if !hidden}
-        <slot/>
-    {/if}
+    <slot/>
 </div>
 
 <style>
@@ -117,12 +111,6 @@
         overflow-y: hidden;
         overflow-x: auto;
         max-width: 100%;
-    }
-
-    .headerHidden {
-        height: 100%;
-        width: 100%;
-        padding: 2px;
     }
 
     .content {

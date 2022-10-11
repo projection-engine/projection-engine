@@ -4,7 +4,7 @@
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
-    import ViewsContainer from "../shared/components/view/ComponentViews.svelte";
+    import ViewsContainer from "../shared/components/view/Views.svelte";
     import ControlOptions from "./components/ControlOptions.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import VIEWPORT_TABS from "./data/VIEWPORT_TABS";
@@ -58,7 +58,14 @@
                 resizePosition={"left"}
         />
         <div class="content">
-
+            <ViewsContainer
+                    reducedOpacity={engine.executingAnimation}
+                    id="bottom"
+                    setTabs={(tabs) => updateView("top", tabs)}
+                    tabs={view.top}
+                    resizePosition={"bottom"}
+                    orientation={"horizontal"}
+            />
             <Viewport
                     viewTab={view.viewport ? view.viewport : VIEWPORT_TABS.EDITOR}
                     updateView={(viewTab) => updateView("viewport", viewTab)}

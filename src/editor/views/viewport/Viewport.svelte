@@ -21,6 +21,7 @@
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
     import Metrics from "./components/Metrics.svelte";
+    import CreationController from "../../../shared/components/view/components/CreationController.svelte";
 
     export let updateView
     export let viewTab = VIEWPORT_TABS.EDITOR
@@ -138,6 +139,7 @@
                 />
             {/if}
         {/if}
+        <CreationController/>
     </div>
     <GizmoToolTip/>
 </div>

@@ -210,6 +210,8 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
         padding: 4px 0 4px 4px;
 
         position: relative;

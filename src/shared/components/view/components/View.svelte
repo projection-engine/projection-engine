@@ -3,17 +3,17 @@
     import Hierarchy from "../../../../editor/views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../../editor/views/content-browser/ContentBrowser.svelte";
     import ComponentEditor from "../../../../editor/views/inspector/Inspector.svelte";
-    import VIEWS from "../VIEWS";
+    import VIEWS from "../data/VIEWS";
     import ShaderEditor from "../../../../editor/views/shader-editor/ShaderEditor.svelte";
 
     export let styles
     export let extendView
     export let switchView
-    export let hidden
+
     export let instance
     export let id
+    export let groupIndex
     export let index
-
 
     $: component = (() => {
         switch (instance) {
@@ -32,12 +32,12 @@
                 return null
         }
     })();
-
+    $:props = {groupIndex, switchView, extendView, viewID: id, viewIndex: index}
 </script>
 
 {#if component}
     <div class="view" style={styles}>
-        <svelte:component this={component} {...{hidden, switchView, extendView, viewID: id, viewIndex: index}}></svelte:component>
+        <svelte:component this={component} {...props}></svelte:component>
     </div>
 {/if}
 

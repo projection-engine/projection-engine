@@ -11,17 +11,18 @@
     import BrowserNavigation from "./components/BrowserNavigation.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
-    import ViewStateController from "../../../shared/components/view/ViewStateController";
-    import VIEWS from "../../../shared/components/view/VIEWS";
+    import ViewStateController from "../../../shared/components/view/libs/ViewStateController";
+    import VIEWS from "../../../shared/components/view/data/VIEWS";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import SettingsStore from "../../stores/SettingsStore";
 
-    export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
     export let viewID
     export let viewIndex
+    export let groupIndex
+
     const internalID = v4()
     let store = {}
     let viewType = ITEM_TYPES.CARD
@@ -29,16 +30,17 @@
 
     let currentDirectory = {id: NodeFS.sep}
     let wasInitialized = false
+
+    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
     $: {
         if (wasInitialized) {
-            localStorage.setItem(viewID + "-" + viewIndex + "-" + SettingsStore.data.currentView, viewType)
-            ViewStateController.updateState(viewID, viewIndex, currentDirectory)
+            localStorage.setItem(viewTypeCache, viewType)
+            ViewStateController.updateState(viewID, viewIndex, groupIndex, currentDirectory)
         } else {
-            const viewT = localStorage.getItem(viewID + "-" + viewIndex + "-" + SettingsStore.data.currentView)
-            const state = ViewStateController.getState(viewID, viewIndex)
+            const viewT = localStorage.getItem(viewTypeCache)
+            const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
             if (state != null)
                 currentDirectory = state
-            console.log(viewT)
             if (viewT)
                 viewType = parseInt(viewT)
             wasInitialized = true
@@ -85,7 +87,6 @@
 <Header
         currentView={VIEWS.FILES}
         orientation={orientation}
-        hidden={hidden}
         switchView={switchView}
         title={translate("TITLE")}
         icon={"folder"}
@@ -104,7 +105,7 @@
     />
 </Header>
 
-<div class="wrapper" style={hidden ? "display: none" : undefined}>
+<div class="wrapper">
     {#if view.sideBar}
         <SideBar
                 items={store.items}

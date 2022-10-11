@@ -13,10 +13,9 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../public/engine/production/instances/Entity";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
-    import VIEWS from "../../../shared/components/view/VIEWS";
+    import VIEWS from "../../../shared/components/view/data/VIEWS";
     import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 
-    export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
 
@@ -89,7 +88,6 @@
 <Header
         currentView={VIEWS.COMPONENT}
         orientation={orientation}
-        hidden={hidden}
         switchView={switchView}
         title={translate("TITLE")}
         icon={"category"}
@@ -104,7 +102,7 @@
         </div>
     {/if}
 </Header>
-<div class="content" style={hidden ? "display: none" : undefined}>
+<div class="content">
     {#if entity != null}
         {#if entity instanceof Entity}
             <div class="wrapper-content">

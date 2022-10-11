@@ -8,7 +8,7 @@
     export let tabs
     export let currentTab
     export let setCurrentView
-
+export let allowDeletion
 
     const handler = (e, v, i) => {
         switch (e.type) {
@@ -52,7 +52,7 @@
                     type="button"
                     value={v.name}
             >
-            <button disabled={tabs.length === 1} on:click={() => removeTab(i)}
+            <button disabled={tabs.length === 1 && !allowDeletion} on:click={() => removeTab(i)}
                     class="remove-button">
                 <Icon styles="font-size: .8rem">
                     clear

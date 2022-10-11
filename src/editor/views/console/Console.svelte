@@ -10,9 +10,9 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "../../../shared/components/create-portal";
-    import VIEWS from "../../../shared/components/view/VIEWS";
+    import VIEWS from "../../../shared/components/view/data/VIEWS";
 
-    export let hidden = undefined
+
     export let switchView = undefined
     export let orientation = undefined
     const internalID = v4()
@@ -80,7 +80,6 @@
 <Header
         currentView={VIEWS.CONSOLE}
         orientation={orientation}
-        hidden={hidden}
         switchView={switchView}
         title={translate("TITLE")}
         icon={"terminal"}
@@ -137,7 +136,7 @@
     </div>
 </Header>
 
-<div class="wrapper" bind:this={ref} style={hidden ? "display: none" : undefined}>
+<div class="wrapper" bind:this={ref}>
     <VirtualList items={toRender} let:item>
         <div
                 class="container"
@@ -240,6 +239,15 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+
+        background: linear-gradient(
+                to bottom,
+                var(--pj-background-tertiary),
+                var(--pj-background-tertiary) 50%,
+                #252525 50%,
+                #252525
+        );
+        background-size: 100% 46px ;
     }
 
     .container-modal {

@@ -36,15 +36,18 @@ export default class LevelController {
             return
         LevelController.#initialized = true
 
-        console.trace("LOADING")
         ipcRenderer.once(
             ROUTES.LOAD_PROJECT_METADATA,
             (ev, data) => {
                 let meta = {}
                 if (data?.meta)
                     meta = data.meta.data
-                if (meta.settings != null)
-                    SettingsStore.updateStore({...SETTINGS, ...meta.settings})
+                if (meta.settings != null) {
+                    const newSettings = {...SETTINGS, ...meta.settings}
+                    if(newSettings.views[0].top == null)
+                        newSettings.views = SETTINGS
+                    SettingsStore.updateStore(newSettings)
+                }
                 EngineStore.updateStore({...EngineStore.engine, meta: {...meta, settings: undefined}, isReady: true})
                 cb()
             })

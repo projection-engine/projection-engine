@@ -10,7 +10,7 @@
     import FRAME_OPTIONS from "../templates/FRAME_OPTIONS";
     import SettingsStore from "../stores/SettingsStore";
     import Tabs from "../../shared/components/Tabs.svelte";
-    import VIEWS from "../../shared/components/view/VIEWS";
+    import VIEWS from "../../shared/components/view/data/VIEWS";
 
     let engine
     let store

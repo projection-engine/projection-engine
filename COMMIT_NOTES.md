@@ -1,1 +1,1 @@
-- Initializing multi-tab views
+- New views structure

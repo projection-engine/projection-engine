@@ -18,10 +18,9 @@
     import SelectionStore from "../../stores/SelectionStore";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import VIEWS from "../../../shared/components/view/VIEWS";
+    import VIEWS from "../../../shared/components/view/data/VIEWS";
 
 
-    export let hidden = undefined
     export let switchView = undefined
     export let orientation = undefined
     let search = ""
@@ -81,7 +80,6 @@
 <Header
         currentView={VIEWS.HIERARCHY}
         orientation={orientation}
-        hidden={hidden}
         switchView={switchView}
         title={translate("TITLE")}
         icon={"account_tree"}
@@ -128,7 +126,7 @@
 <div
         data-self={"-"}
         class="wrapper"
-        style={hidden ? "display: none" :(isEmpty ? "background: transparent" : undefined)}
+        style={isEmpty ? "background: transparent" : undefined}
         id={ID}
         bind:this={ref}
 >

@@ -561,6 +561,10 @@ export default class Localization {
             VALUE: "Value"
         },
         VIEWS: {
+            CREATE_TOP: "Add top view",
+            CREATE_BOTTOM: "Add bottom view",
+            CREATE_RIGHT: "Add right view",
+            CREATE_LEFT: "Add left view",
             CLOSE_VIEW: "Close view",
             SCRIPTING: "Scripting",
             MISC: "Misc",
