@@ -12,13 +12,9 @@
         zFar: SettingsStore.data.zFar,
         zNear: SettingsStore.data.zNear,
         fov: SettingsStore.data.fov * toDeg,
-        radius: CameraTracker.radius,
-
+        smoothing: SettingsStore.data.camera.smoothing,
         ortho: SettingsStore.data.ortho,
-        animated: SettingsStore.data.camera.animated,
         movementSpeed: SettingsStore.data.camera.movementSpeed,
-        scrollSpeed: SettingsStore.data.camera.scrollSpeed,
-
         turnSpeed: SettingsStore.data.camera.turnSpeed
     }
 
@@ -93,23 +89,7 @@
                 CameraAPI.updateProjection()
             }}
     />
-    <Range
-            variant="embedded"
-            label={translate("ZOOM")}
-            onFinish={(v) => {
-                SettingsStore.updateStore({...SettingsStore.data, radius: v})
 
-                state.radius = v
-                CameraTracker.radius = v
-                CameraTracker.update(true)
-            }}
-            hideValue={true}
-            value={state.radius}
-            handleChange={v => {
-                CameraTracker.radius = v
-                CameraTracker.update(true)
-            }}
-    />
 </fieldset>
 
 <fieldset>
@@ -123,13 +103,7 @@
             value={state.movementSpeed}
             handleChange={v => updateCamera("movementSpeed", v)}
     />
-    <Range
-            variant="embedded"
-            label={translate("SCROLL_SPEED")}
-            onFinish={(v) => updateCamera("scrollSpeed", v, true)}
-            value={state.scrollSpeed}
-            handleChange={v => updateCamera("scrollSpeed", v)}
-    />
+
     <Range
             variant="embedded"
             precision={4}
@@ -139,10 +113,16 @@
             value={state.turnSpeed}
             handleChange={v => updateCamera("turnSpeed", v)}
     />
-    <Checkbox
-            checked={state.animated}
-            handleCheck={() => updateCamera("animated", !state.animated, true)}
-            label={translate("CAM_ANIM")}
+
+    <Range
+            variant="embedded"
+            precision={4}
+            minValue={.0001}
+            incrementPercentage={.001}
+            label={translate("SMOOTHING")}
+            onFinish={(v) => updateCamera("smoothing", v, true)}
+            value={state.smoothing}
+            handleChange={v => updateCamera("smoothing", v)}
     />
 </fieldset>
 

@@ -23,6 +23,8 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../../shared/libs/Localization";
+import {CameraTracker} from "../../../public/engine/editor";
+import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -38,10 +40,8 @@ export default class LevelController {
 
         ipcRenderer.once(
             ROUTES.LOAD_PROJECT_METADATA,
-            (ev, data) => {
-                let meta = {}
-                if (data?.meta)
-                    meta = data.meta.data
+            (ev, meta) => {
+
                 if (meta.settings != null) {
                     const newSettings = {...SETTINGS, ...meta.settings}
                     if(newSettings.views[0].top == null)
@@ -168,12 +168,22 @@ export default class LevelController {
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
-            console.log(NodeFS.path + NodeFS.sep + PROJECT_FILE_EXTENSION)
+
             await FilesAPI.writeFile(
                 NodeFS.path + NodeFS.sep + PROJECT_FILE_EXTENSION,
                 JSON.stringify({
                     ...metadata,
-                    settings: SettingsStore.data
+                    settings: {
+                        ...SettingsStore.data,
+                        camera: {
+                            ...SettingsStore.data.camera,
+                            cameraRotation: [
+                                CameraTracker.xRotation,
+                                CameraTracker.yRotation
+                            ],
+                            cameraTranslation: [...CameraAPI.translationBuffer]
+                        }
+                    }
                 }), true)
             let pathToWrite
             pathElse:if (!EngineStore.engine.currentLevel)

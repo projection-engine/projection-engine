@@ -16,14 +16,15 @@ import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../../public/engine/editor/data/CAMERA_ROTATIONS";
 import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
 import LevelController from "../libs/LevelController";
+import {vec3} from "gl-matrix";
 
 function focusCamera(current, cameras) {
-    if (current > -1 && cameras[current] != null) {
+    if (current > -1 && cameras[current] != null)
         CameraAPI.updateViewTarget(cameras[current])
-        const transformationMatrix = CameraAPI.staticViewMatrix
-        CameraTracker.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${transformationMatrix})`
-    } else
-        CameraTracker.update(false)
+    else{
+        vec3.copy(CameraAPI.translationBuffer, CameraTracker.currentTranslation)
+        CameraTracker.rotationChanged = true
+    }
 
     EngineStore.updateStore({...EngineStore.engine, focusedCamera: cameras[current]?.id})
 }

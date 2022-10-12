@@ -35,17 +35,24 @@ export default {
     },
 
     viewportHotkeys: {
+        FORWARD_MOVEMENT_CAMERA: [KEYS.KeyW],
+        BACKWARD_MOVEMENT_CAMERA: [KEYS.KeyS],
+        LEFT_MOVEMENT_CAMERA: [KEYS.KeyA],
+        RIGHT_MOVEMENT_CAMERA: [KEYS.KeyD],
+        FASTER_MOVEMENT_CAMERA: [KEYS.ShiftLeft],
+
+
         HIDE_ACTIVE: [KEYS.AltLeft, KEYS.KeyH],
         DUPLICATE: [KEYS.ShiftLeft, KEYS.KeyD],
         SAVE: [KEYS.ControlLeft, KEYS.KeyS],
         INVERT_SELECTION: [KEYS.ControlLeft, KEYS.KeyI],
-        SELECT_ALL: [KEYS.KeyA],
+        SELECT_ALL: [KEYS.ControlLeft, KEYS.KeyA],
         SELECT_NONE: [KEYS.AltLeft, KEYS.KeyA],
         TRANSLATION_GIZMO: [KEYS.KeyG],
         SELECT_HIERARCHY: [KEYS.KeyH],
 
         FOCUS: [KEYS.Home],
-        SCALE_GIZMO: [KEYS.KeyS],
+        SCALE_GIZMO: [KEYS.KeyM],
         ROTATION_GIZMO: [KEYS.KeyR],
         UNDO: [KEYS.ControlLeft, KEYS.KeyZ],
         REDO: [KEYS.ControlLeft, KEYS.KeyY],
@@ -96,9 +103,10 @@ export default {
     },
 
     camera: {
-        animated: true,
+        cameraTranslation: [0, 0, 0],
+        cameraRotation: [0, 0, 0, 1],
         movementSpeed: 1,
-        scrollSpeed: 1,
+        smoothing: 1,
         turnSpeed: 1,
     },
 

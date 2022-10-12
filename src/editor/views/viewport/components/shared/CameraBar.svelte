@@ -12,49 +12,20 @@
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     let cameraIsOrtho = false
-    let requested = false
 
     onMount(() => {
         CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO)
-        CameraTracker.update()
     })
-
     let settings = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
-    const onMouseMove = ({currentTarget, movementX, movementY}) => {
-        if (currentTarget.isFocused) {
-            if (!requested) {
-                requested = true
-                currentTarget.requestPointerLock()
-            }
-            if (movementY < 0)
-                CameraTracker.pitch += .01 * Math.abs(movementY)
-            else if (movementY > 0)
-                CameraTracker.pitch -= .01 * Math.abs(movementY)
-
-            if (movementX > 0)
-                CameraTracker.yaw += .01 * Math.abs(movementX)
-            else if (movementX < 0)
-                CameraTracker.yaw -= .01 * Math.abs(movementX)
-
-            CameraTracker.update()
-
-        }
-    }
-    const onMouseUp = ({currentTarget}) => {
-        currentTarget.isFocused = false
-        requested = false
-    }
 </script>
 
 <div class="wrapper">
     <div
             class={"gizmo-wrapper"}
-            on:mousedown={({currentTarget}) => currentTarget.isFocused = true}
-            on:mouseup={onMouseUp}
-            on:mousemove={onMouseMove}
+            on:mousedown={_ => CameraTracker.forceRotationTracking()}
     >
         <div class={"camera-view"}>
             <div class={"cube"} id={CAMERA_GIZMO}>
@@ -105,31 +76,15 @@
         </div>
     </div>
 
-    <Dropdown noBackground={true} hideArrow={true}>
-        <button slot="button" class="option">
-            <Icon>videocam</Icon>
-            <ToolTip content={translate("CAMERA_POSITION")}/>
-        </button>
-
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)}>
-            {translate("TOP")}
-        </button>
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)}>
-            {translate("BOTTOM")}
-        </button>
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)}>
-            {translate("LEFT")}
-        </button>
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)}>
-            {translate("RIGHT")}
-        </button>
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)}>
-            {translate("FRONT")}
-        </button>
-        <button on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)}>
-            {translate("BACK")}
-        </button>
-    </Dropdown>
+    <button
+            on:click={() => {
+                // TODO
+            }}
+            class="option"
+    >
+        <ToolTip content={translate("SWITCH_BETWEEN_CAMERAS")}/>
+        <Icon styles="font-size: 1rem">videocam</Icon>
+    </button>
 
     <button
             on:click={() => {
@@ -149,23 +104,6 @@
             <Icon styles="font-size: 1rem">grid_on</Icon>
         {/if}
     </button>
-
-    <div class="option" on:mousedown={e => CameraTracker.transformCamera(e, 0)}>
-        <ToolTip content={translate("ZOOM")}/>
-        <Icon>zoom_in</Icon>
-    </div>
-    <div
-            class="option"
-            on:mousedown={e => CameraTracker.transformCamera(e,  1)}
-            on:dblclick={() => {
-                CameraTracker.centerOn = [0,0,0]
-                CameraTracker.update()
-            }}>
-        <ToolTip content={translate("MOVE_IN_SCREEN_SPACE")}/>
-
-        <Icon>back_hand</Icon>
-    </div>
-
 </div>
 
 

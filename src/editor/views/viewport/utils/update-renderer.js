@@ -12,13 +12,12 @@ export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
 
     CameraTracker.initialize(settings)
-
-    CameraTracker.animated = settings.camera?.animated
-    CameraTracker.movementSpeed = settings.camera?.movementSpeed * .01
-    CameraTracker.scrollSpeed = settings.camera?.scrollSpeed * .5
+    CameraTracker.movementSpeed = settings.camera?.movementSpeed * .1
     CameraTracker.turnSpeed = settings.camera?.turnSpeed * .01
-
-
+    if(settings.camera?.smoothing != null)
+        CameraAPI.smoothing = settings.camera?.smoothing * .001
+    if(executingAnimation)
+        CameraAPI.smoothing = .001
     if (!settings.executingAnimation) {
         CameraAPI.zNear = settings.zNear
         CameraAPI.zFar = settings.zFar

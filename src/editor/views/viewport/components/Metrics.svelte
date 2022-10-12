@@ -17,6 +17,8 @@
     onMount(() => {
         const m = Engine.metrics
         const cb = () => {
+            if (!fr)
+                return
             fr.textContent = Math.round(m.frameRate) + "FPS"
             ft.textContent = m.frameTime.toFixed(2) + "ms"
             rendering.textContent = m.rendering.toFixed(2) + "ms"

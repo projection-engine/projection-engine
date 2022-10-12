@@ -5,7 +5,8 @@ import SelectionStore from "../stores/SelectionStore";
 import {Engine} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
 import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
-import {vec3} from "gl-matrix";
+
+
 
 export default class ViewportActions {
     static toCopy = []
@@ -24,9 +25,9 @@ export default class ViewportActions {
         const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
         if (!entity)
             return
-        CameraTracker.radius = 10
-        vec3.copy(CameraTracker.centerOn, entity.absoluteTranslation)
-        CameraTracker.update()
+
+        CameraTracker.toApplyTranslation = [10, 0, 0, 1]
+        CameraTracker.forceUpdate = true
     }
 
     static deleteSelected() {

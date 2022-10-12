@@ -1,1 +1,1 @@
-- New views structure
+- New editor camera architecture 

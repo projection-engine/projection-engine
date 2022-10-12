@@ -67,6 +67,8 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            METRICS: "Metrics",
+            SWITCH_BETWEEN_CAMERAS: "Switch between cameras",
             LEVEL: "Level",
             STOP: "Stop",
             BUILD_PROBES: "Build probes",
@@ -188,7 +190,7 @@ export default class Localization {
             GRID: "Grid",
             ICONS: "Icons",
             FPS: "Frames per second",
-            CAM_ANIM: "Camera smoothing",
+            SMOOTHING: "Smoothing",
             ICON_SIZE: "icon size",
             SHADING_LIGHT: "Light only",
             SHADING_UNLIT: "Unlit",

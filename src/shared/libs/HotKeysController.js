@@ -12,10 +12,10 @@ export default class HotKeysController {
         HotKeysController.#onUpdate = () => onUpdate(HotKeysController.views.get(HotKeysController.activeView))
 
         function handler(event) {
-            // event.preventDefault()
+
             const h = HotKeysController.holding
 
-            if (event.repeat || Engine.environment !== ENVIRONMENT.DEV)
+            if (event.repeat || Engine.environment !== ENVIRONMENT.DEV || document.pointerLockElement != null)
                 return
             const activeView = HotKeysController.views.get(HotKeysController.activeView)
             const tagName = document.activeElement?.tagName
