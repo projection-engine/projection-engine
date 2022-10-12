@@ -110,7 +110,7 @@
 
 <style>
     h3 {
-        font-weight: 550;
+        font-weight: 500;
         margin-top: 0;
         margin-bottom: 8px
     }

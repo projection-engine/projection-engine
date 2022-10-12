@@ -17,6 +17,7 @@
     import viewportContext from "../../../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../../../shared/libs/Localization";
+    import GizmoBar from "./GizmoBar.svelte";
 
     let WORKER = selectionQueryWorker()
 
@@ -118,6 +119,7 @@
     }
 </script>
 
+<GizmoBar settings={settings}/>
 <CameraBar/>
 <SelectBox
         targetElementID={RENDER_TARGET}

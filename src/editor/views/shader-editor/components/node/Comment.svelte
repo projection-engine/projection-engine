@@ -81,7 +81,7 @@
         align-items: center;
         justify-content: space-between;
         font-size: .8rem;
-        font-weight: 550;
+        font-weight: 500;
         padding: 4px;
 
         color: var(--pj-color-secondary);

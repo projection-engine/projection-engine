@@ -72,7 +72,6 @@
         <input
                 disabled={!isOnEdit}
                 on:change={e => {
-                    console.log("IM HERE")
                     cacheName = e.value
                     EntityNameController.renameEntity(cacheName, node)
                 }}
@@ -93,7 +92,7 @@
 
         <ToolTip content={cacheName}/>
         {#each icons as icon}
-            <Icon styles="font-size: .9rem">
+            <Icon styles="font-size: .9rem; width: .9rem">
                 <ToolTip content={icon.label}/>
                 {icon.icon}
             </Icon>
@@ -133,7 +132,7 @@
 </div>
 
 <style>
-    input{
+    input {
         padding: 0 2px;
         border-radius: 3px;
         background: none;
@@ -142,13 +141,16 @@
         font-size: .7rem;
         color: var(--pj-color-primary);
         backdrop-filter: brightness(50%);
-height: 23px;
+        height: 23px;
+        width: 100%;
 
     }
-    input:disabled{
+
+    input:disabled {
         backdrop-filter: none;
         color: var(--pj-color-quaternary);
     }
+
     .node {
         cursor: pointer;
         width: 100%;

@@ -9,10 +9,11 @@
     import SettingsStore from "../../../../stores/SettingsStore";
     import Localization from "../../../../../shared/libs/Localization";
     import CAMERA_ROTATIONS from "../../../../../../public/engine/editor/data/CAMERA_ROTATIONS";
+    import ViewportActions from "../../../../libs/ViewportActions";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     let cameraIsOrtho = false
-
+    let ref
     onMount(() => {
         CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO)
     })
@@ -25,7 +26,9 @@
 <div class="wrapper">
     <div
             class={"gizmo-wrapper"}
-            on:mousedown={_ => CameraTracker.forceRotationTracking()}
+            bind:this={ref}
+            on:mousedown={_ => ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})}
+            on:mouseup={_ => ref.removeEventListener("mousemove", CameraTracker.forceRotationTracking)}
     >
         <div class={"camera-view"}>
             <div class={"cube"} id={CAMERA_GIZMO}>
@@ -104,6 +107,17 @@
             <Icon styles="font-size: 1rem">grid_on</Icon>
         {/if}
     </button>
+
+
+    <button
+            on:click={() => ViewportActions.focus()}
+            class="option"
+            style="margin-top: 4px"
+    >
+        <ToolTip content={translate("FOCUS")}/>
+        <Icon styles="font-size: 1rem">my_location</Icon>
+    </button>
+
 </div>
 
 

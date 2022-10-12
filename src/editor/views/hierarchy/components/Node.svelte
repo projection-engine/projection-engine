@@ -69,9 +69,18 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <DraggableEntity updateOpen={updateOpen} open={open} node={nodeRef} hiddenActiveChildren={hiddenActiveChildren}
-                     lockedEntity={lockedEntity} setLockedEntity={setLockedEntity}/>
-    <button class="button-small hierarchy-branch" on:click={() => EntityConstructor.hideEntity(nodeRef)}>
+    <DraggableEntity
+            updateOpen={updateOpen}
+            open={open} node={nodeRef}
+            hiddenActiveChildren={hiddenActiveChildren}
+                     lockedEntity={lockedEntity}
+            setLockedEntity={setLockedEntity}
+    />
+    <button
+            style="margin-left: 4px"
+            class="button-small hierarchy-branch"
+            on:click={() => EntityConstructor.hideEntity(nodeRef)}
+    >
         <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
             {#if nodeRef.active}

@@ -6,6 +6,9 @@ export default function bindGizmo(selected, settings) {
     const entities = Engine.entitiesMap
     GizmoSystem.selectedEntities = selected
         .map(s => entities.get(s))
+
+    GizmoSystem.gizmoType = settings.gizmoSelection
+    GizmoSystem.targetGizmoKey = settings.gizmo
     if (GizmoSystem.selectedEntities.length > 0) {
         switch (settings.gizmo) {
             case GIZMOS.TRANSLATION:
@@ -17,6 +20,7 @@ export default function bindGizmo(selected, settings) {
             case GIZMOS.SCALE:
                 GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
                 break
+
         }
     } else if (GizmoSystem.targetGizmo) {
         GizmoSystem.targetGizmo.tracking = false;

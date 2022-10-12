@@ -80,7 +80,7 @@
     }
 
     b {
-        font-weight: 550;
+        font-weight: 500;
     }
 
     .section {

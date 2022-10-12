@@ -1,1 +1,4 @@
-- New editor camera architecture 
+- Fixed view size bug
+- Fixed grid contrast
+- Fixed camera gizmo buttons
+- Visual rework of gizmo selection 

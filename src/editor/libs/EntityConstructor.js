@@ -2,11 +2,12 @@ import Entity from "../../../public/engine/production/instances/Entity";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
-import {vec3} from "gl-matrix";
+import {vec3, vec4} from "gl-matrix";
 import Localization from "../../shared/libs/Localization";
 import {CameraTracker} from "../../../public/engine/editor";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
+import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {
@@ -17,15 +18,11 @@ const addSprite = (entity, img) => {
 
 export default class EntityConstructor {
     static translateEntity(entity) {
-        const cosPitch = Math.cos(CameraTracker.pitch)
-        const position = []
+        const position = [0,0, -10,1]
+        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
+        vec3.add(entity._translation, CameraAPI.translationBuffer, position)
 
-        const DISTANCE = (CameraTracker.radius - Math.sign(CameraTracker.radius) * 10)
-        position[0] = DISTANCE * cosPitch * Math.cos(CameraTracker.yaw) + CameraTracker.centerOn[0]
-        position[1] = DISTANCE * Math.sin(CameraTracker.pitch) + CameraTracker.centerOn[1]
-        position[2] = DISTANCE * cosPitch * Math.sin(CameraTracker.yaw) + CameraTracker.centerOn[2]
-
-        vec3.add(entity._translation, entity._translation, position)
+        console.log(position)
         entity.__changedBuffer[0] = 1
     }
 
@@ -84,14 +81,14 @@ export default class EntityConstructor {
 
     }
 
-    static hideEntity(nodeRef, submit=true) {
+    static hideEntity(nodeRef, submit = true) {
         const loopHierarchy = (entity, newValue) => {
             for (let i = 0; i < entity.children.length; i++)
                 loopHierarchy(entity.children[i], newValue)
             entity.active = newValue
         }
         loopHierarchy(nodeRef, !nodeRef.active)
-        if(submit)
+        if (submit)
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }
 }

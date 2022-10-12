@@ -90,7 +90,7 @@
         border: none;
         border-radius: 3px;
         font-size: 0.7rem;
-        font-weight: 550;
+        font-weight: 500;
 
         position: relative;
         user-select: none;

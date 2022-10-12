@@ -84,7 +84,7 @@
             setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
     />
     <div class="level-selector">
-        <Dropdown asButton={true} buttonStyles="border-radius: 3px; min-height: 18px;max-height: 18px;">
+        <Dropdown asButton={true} buttonStyles="border-radius: 3px; min-height: 20px;max-height: 20px; background: var(--pj-background-primary)">
             <button slot="button" class="dropdown" style="background: transparent">
                 <Icon>forest</Icon>
                 <div data-overflow="-">

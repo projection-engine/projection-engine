@@ -149,7 +149,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background-color: var(--pj-background-secondary);
+        background-color: var(--pj-background-tertiary);
         border-radius: 5px;
         position: relative;
         display: flex;

@@ -64,7 +64,7 @@
         gap: 6px;
         justify-content: flex-start;
         font-size: .85rem;
-        font-weight: 550;
+        font-weight: 500;
         padding-bottom: 4px;
         width: 100%;
         border-bottom: var(--pj-border-primary) 1px solid;

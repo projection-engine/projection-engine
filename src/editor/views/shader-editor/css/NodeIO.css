@@ -1,7 +1,7 @@
 .attribute.node-io {
     width: 100%;
     font-size: 0.7rem;
-    font-weight: 550;
+    font-weight: 500;
     color: var(--pj-color-secondary);
     display: flex;
     align-items: center;

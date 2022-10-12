@@ -57,7 +57,7 @@
 <style>
     .label{
         font-size: 1.1rem;
-        font-weight: 550;
+        font-weight: 500;
         text-align: center;
     }
     .wrapper {

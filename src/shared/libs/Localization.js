@@ -67,6 +67,9 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            FOCUS: "Focus on active entity",
+            PHYSICS_COLLIDER: "Physics collider",
+            PIVOT: "Pivot point",
             METRICS: "Metrics",
             SWITCH_BETWEEN_CAMERAS: "Switch between cameras",
             LEVEL: "Level",
@@ -157,7 +160,7 @@ export default class Localization {
 
             MESHES: "Meshes",
             DRAG_DROP: "Drop meshes or scenes",
-            PLAY: "Game",
+            PLAY: "Play",
             EDITOR: "Scene Editor",
             UI: "UI Editor",
             EMPTY_ENTITY: "Empty Entity",
@@ -209,9 +212,9 @@ export default class Localization {
             SCALE_GRID: "Scale",
             ROTATION_GRID: "Rotation (degrees)",
             SELECTION: "Selection",
-            T_GIZMO: "TranslationGizmo gizmo",
-            R_GIZMO: "RotationGizmo gizmo",
-            S_GIZMO: "ScalingGizmo gizmo",
+            T_GIZMO: "Translation",
+            R_GIZMO: "Rotation",
+            S_GIZMO: "Scale",
             BACKGROUND: "Background",
 
         },

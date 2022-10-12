@@ -83,7 +83,7 @@
 <style>
     strong {
         font-size: .8rem;
-        font-weight: 550;
+        font-weight: 500;
     }
 
     .wrapper {

@@ -5,6 +5,8 @@ import SelectionStore from "../stores/SelectionStore";
 import {Engine} from "../../../public/engine/production";
 import {CameraTracker} from "../../../public/engine/editor";
 import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+import {vec3, vec4} from "gl-matrix";
+import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
 
 
 
@@ -22,11 +24,18 @@ export default class ViewportActions {
     }
 
     static focus() {
+
         const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
+
         if (!entity)
             return
 
-        CameraTracker.toApplyTranslation = [10, 0, 0, 1]
+        vec3.copy(CameraAPI.translationBuffer, entity._translation)
+
+        const position = [0,0, 10,1]
+        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
+        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, position)
+
         CameraTracker.forceUpdate = true
     }
 

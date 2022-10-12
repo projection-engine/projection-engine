@@ -1,6 +1,6 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../../data/TRANSFORMATION_TYPE"
-    import GIZMOS from "../../../../data/GIZMOS"
+
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../../stores/SettingsStore";
@@ -8,7 +8,7 @@
     import Localization from "../../../../../shared/libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import "../../css/styles.css"
+
 
     export let settings
 
@@ -22,7 +22,7 @@
 
 <div class="wrapper">
     <Dropdown asButton={true}>
-        <button slot="button" class="dropdown">
+        <button slot="button" class="dropdown" style="background: transparent">
             {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
                 <Icon styles="font-size: .9rem">
                     place
@@ -92,46 +92,18 @@
             />
         </fieldset>
         <div data-divider="-"></div>
-        <Range
-                variant="embedded"
-                precision={4}
-                label={translate("SENSITIVITY")}
-                minValue={0}
-                onFinish={v => updateGizmoGrid("sensitivity", v / 100, true)}
-                value={settings.gizmoGrid.sensitivity * 100}
-        />
+        <div style="padding: 4px;">
+            <Range
+                    variant="embedded"
+                    precision={4}
+                    label={translate("SENSITIVITY")}
+                    minValue={0}
+                    onFinish={v => updateGizmoGrid("sensitivity", v / 100, true)}
+                    value={settings.gizmoGrid.sensitivity * 100}
+            />
+        </div>
     </Dropdown>
-    <div class="button-group viewport">
-        <button
-                class="button viewport"
-                data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
-                on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
-            <Icon styles="font-size: .9rem">highlight_alt</Icon>
-            <ToolTip content={translate("SELECTION")}/>
-        </button>
 
-        <button
-                class="button viewport"
-                data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
-                on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
-            <Icon styles="font-size: .9rem">open_with</Icon>
-            <ToolTip content={translate("T_GIZMO")}/>
-        </button>
-        <button
-                class="button viewport"
-                data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
-                on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
-            <Icon styles="font-size: .9rem">360</Icon>
-            <ToolTip content={translate("R_GIZMO")}/>
-        </button>
-        <button
-                class="button viewport"
-                data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
-                on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
-            <Icon styles="font-size: .9rem">open_in_full</Icon>
-            <ToolTip content={translate("S_GIZMO")}/>
-        </button>
-    </div>
 </div>
 
 <style>
@@ -143,11 +115,10 @@
     }
 
 
-
     .wrapper {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
     }
 
     .dropdown-content {

@@ -72,7 +72,7 @@
         border-radius: 3px;
         width: 100%;
         padding: 4px;
-        font-weight: 550;
+        font-weight: 500;
         color: var(--pj-color-tertiary);
     }
 </style>

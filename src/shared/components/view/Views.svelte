@@ -8,6 +8,7 @@
     import switchView from "./utils/switch-view";
     import removeTab from "./utils/remove-tab";
     import addTab from "./utils/add-tab";
+    import {onMount} from "svelte";
 
     export let resizePosition
     export let orientation
@@ -20,18 +21,28 @@
     let ref
 
 
+    $: orientationNameMin = orientation === "horizontal" ? "minHeight" : "minWidth"
     $: orientationName = orientation === "horizontal" ? "height" : "width"
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
 
-    function onResizeStart(){
+    function onResizeStart(isWindowResize){
+        let obj = {}
+        if(!isWindowResize)
+            obj[orientationNameMin] = "unset"
+        else
+            obj[orientationNameMin] = "250px"
+
+        Object.assign(ref.style, obj)
         if (hidden)
             hidden = false
     }
     function onResizeEnd(){
+        // Object.assign(ref.style, {[orientationNameMin]: "unset"})
         const bBox = ref.getBoundingClientRect()
         if (bBox[orientationName] <= 30)
             hidden = true
     }
+
 </script>
 
 
@@ -49,10 +60,9 @@
         class={"wrapper"}
         data-orientation={orientation}
         style={`
-            flex-direction: ${orientation === "horizontal" ? "row" : undefined};
-            ${orientationName}: ${tabs.length > 0 ? "250px" : "0"};
+            flex-direction: ${orientation === "horizontal" ? "row" : "column"};
             ${"max-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "20px" : "unset")};
-            ${"min-" + orientationName}: ${tabs.length === 0 ? "0px" : (hidden ? "20px" : "unset")};
+
             opacity: ${reducedOpacity ? ".75" : "1"};
         `}
 >

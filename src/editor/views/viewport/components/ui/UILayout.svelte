@@ -77,7 +77,7 @@
         background: rgba(0, 149, 255, .5);
 
         font-size: .8rem;
-        font-weight: 550;
+        font-weight: 500;
         z-index: -1;
         display: grid;
         align-content: center;

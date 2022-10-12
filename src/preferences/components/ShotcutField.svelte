@@ -118,7 +118,7 @@
 
     b {
         font-size: .7rem;
-        font-weight: 550;
+        font-weight: 500;
     }
 
     small {

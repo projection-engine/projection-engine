@@ -66,7 +66,7 @@
 <style>
     legend {
         font-size: .85rem;
-        font-weight: 550;
+        font-weight: 500;
     }
 
     fieldset {
