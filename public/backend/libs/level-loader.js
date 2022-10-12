@@ -2,7 +2,7 @@ import readFile from "shared-resources/backend/utils/read-file";
 import loadMeshes from "../utils/level-loader/load-meshes";
 import loadMaterials from "../utils/level-loader/load-materials";
 import COMPONENTS from "../../engine/static/COMPONENTS.json";
-import CHANNELS from "../../../src/static/CHANNELS";
+import CHANNELS from "../../../src/data/CHANNELS";
 
 const fs = require("fs");
 const DEFAULT = {entities: []}

@@ -1,0 +1,135 @@
+<script>
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Preview from "../../../../components/preview/Preview.svelte";
+    import ItemInput from "./ItemInput.svelte";
+    import itemDbclick from "../../utils/item-dbclick";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
+
+    export let currentDirectory
+    export let items
+    export let data
+    export let setCurrentDirectory
+    export let setSelected
+    export let reset
+    export let type
+    export let isMaterial
+    export let isOnRename
+    export let selected
+    export let metadata
+    export let submitRename
+    export let icon
+    export let draggable
+    export let isOnCuttingBoard
+    export let isNotDraggable
+
+</script>
+<div
+        data-isitem="-"
+        data-id={data.id}
+        data-material={isMaterial ? data.id : undefined}
+        data-file={type === 0 ? undefined : data.id}
+        data-name={data.name}
+        data-folder={type !== 0 ? undefined : data.id}
+        on:dblclick={() => itemDbclick(data, setCurrentDirectory, setSelected, reset, type)}
+        on:click={setSelected}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
+        class="file"
+>
+    <div class="icon">
+        {#if icon != null}
+            <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
+        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE || metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
+            <div data-shaded-material="-" style="width: 60px; height: 60px"></div>
+            {#if metadata.type !== FILE_TYPES.MATERIAL}
+                <div class="file-type">
+                    <Icon styles="font-size: 1.3rem">
+                        {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE }
+                            copy_all
+                        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL}
+                            fast_forward
+                        {:else if metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
+                            landscape
+                        {/if}
+                    </Icon>
+                </div>
+            {/if}
+        {:else if metadata.type === FILE_TYPES.MESH || metadata.type === FILE_TYPES.TEXTURE}
+            <Preview path={metadata.path}>
+                <img class="image" slot="image" alt="logo" let:src src={src}>
+                <Icon slot="icon" styles="font-size: 4rem">
+                    {#if metadata.type === FILE_TYPES.MESH}
+                        category
+                    {:else}
+                        image
+                    {/if}
+                </Icon>
+            </Preview>
+            {#if metadata.type === FILE_TYPES.TEXTURE}
+                <div class="file-type">
+                    <Icon styles="font-size: 1.3rem">image</Icon>
+                </div>
+            {/if}
+        {/if}
+    </div>
+    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
+
+</div>
+
+<style>
+    .file-type {
+        width: 25px;
+        height: 25px;
+
+        position: absolute;
+        bottom: 3px;
+        left: 3px;
+        opacity: .85;
+        border-radius: 3px;
+        backdrop-filter: blur(5px) brightness(85%);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon {
+        position: relative;
+        color: var(--pj-color-secondary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 5px;
+    }
+
+    .image {
+        max-width: 100%;
+    }
+
+    .file {
+        position: relative;
+        overflow: hidden;
+        border-radius: 5px;
+        color: var(--pj-color-secondary);
+        gap: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 115px;
+        max-width: 115px;
+        width: 115px;
+        outline: transparent 2px solid;
+        cursor: pointer;
+        flex: 1 1 80px;
+        padding: 4px 4px 0;
+    }
+
+    .file:hover {
+        border-color: transparent;
+        background: var(--pj-background-primary);
+        box-shadow: var(--pj-boxshadow);
+    }
+</style>

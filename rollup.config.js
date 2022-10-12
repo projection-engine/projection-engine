@@ -87,8 +87,7 @@ export default [
     worker("public/engine/workers/camera/camera-worker.js", "public/build/camera-worker.js"),
     worker("public/engine/workers/terrain/terrain-worker.js", "public/build/terrain-worker.js"),
     worker("public/engine/workers/image/image-worker.js", "public/build/image-worker.js"),
-    common("editor/root", "editor"),
-    common("preferences/root", "preferences")
+    common("root", "editor")
 ]
 
 function serve() {

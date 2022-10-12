@@ -3,9 +3,8 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import directoryStructure from "shared-resources/backend/utils/directory-structure";
 import parseContentBrowserData from "./parse-content-browser-data";
 import {readRegistry} from "../utils/fs-operations";
-import ROUTES from "../../../src/static/ROUTES";
+import ROUTES from "../../../src/data/ROUTES";
 import levelLoader from "./level-loader";
-import buildSettingsWindow from "./build-settings-window";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 
@@ -14,7 +13,6 @@ const fs = require("fs")
 const pathRequire = require("path")
 
 export default function projectEvents(pathToProject, window, metadata) {
-    let settingsWindowIsOpen = false
     ipcMain.on("reload", () => {
         dialog.showMessageBox(window, {
             'type': 'question',
@@ -31,9 +29,6 @@ export default function projectEvents(pathToProject, window, metadata) {
             app.exit()
         })
     })
-    ipcMain.on(
-        ROUTES.UPDATE_SETTINGS,
-        (_, data) => window.webContents.send(ROUTES.UPDATE_SETTINGS, data))
     ipcMain.on(ROUTES.LOAD_LEVEL, (_, pathToLevel) => levelLoader(window.webContents, pathToLevel, pathToProject.replace(PROJECT_FILE_EXTENSION, "")))
     ipcMain.on(ROUTES.OPEN_FULL, () => {
         setTimeout(() => {
@@ -45,16 +40,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         }, 250)
     })
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, event => event.sender.send(ROUTES.LOAD_PROJECT_METADATA, metadata))
-    ipcMain.on(
-        ROUTES.OPEN_SETTINGS,
-        async (event, settingsData) => {
 
-            if (settingsWindowIsOpen)
-                return
-            settingsWindowIsOpen = true
-            buildSettingsWindow(window, settingsData, () => settingsWindowIsOpen = false).catch()
-        }
-    )
 
     ipcMain.on(ROUTES.READ_FILE, async (event, {pathName, type, listenID}) => {
         const result = await new Promise(resolve => {

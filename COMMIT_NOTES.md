@@ -1,4 +1,3 @@
-- Fixed view size bug
-- Fixed grid contrast
-- Fixed camera gizmo buttons
-- Visual rework of gizmo selection 
+- Visual adjustments across main layout
+- Fixing some camera bugs
+- Removed content-browser "create" dropdown
