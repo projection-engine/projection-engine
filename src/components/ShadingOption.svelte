@@ -1,16 +1,16 @@
 <script>
-    import SHADING_MODELS from "../../../../../public/engine/editor/templates/SHADING_MODELS"
+    import SHADING_MODELS from "../../public/engine/editor/templates/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
-    import GPU from "../../../../../public/engine/production/GPU";
-    import DepthPass from "../../../../../public/engine/production/passes/rendering/DepthPass";
-    import DeferredPass from "../../../../../public/engine/production/passes/rendering/DeferredPass";
-    import AOPass from "../../../../../public/engine/production/passes/rendering/AOPass";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import Engine from "../../../../../public/engine/production/Engine";
-    import Localization from "../../../../libs/libs/Localization";
-    import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
-    import SSGIPass from "../../../../../public/engine/production/passes/rendering/SSGIPass";
+    import GPU from "../../public/engine/production/GPU";
+    import DepthPass from "../../public/engine/production/passes/rendering/DepthPass";
+    import DeferredPass from "../../public/engine/production/passes/rendering/DeferredPass";
+    import AOPass from "../../public/engine/production/passes/rendering/AOPass";
+    import SettingsStore from "../stores/SettingsStore";
+    import Engine from "../../public/engine/production/Engine";
+    import Localization from "../libs/libs/Localization";
+    import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
+    import SSGIPass from "../../public/engine/production/passes/rendering/SSGIPass";
 
     let shadingModel = SHADING_MODELS.DETAIL
 

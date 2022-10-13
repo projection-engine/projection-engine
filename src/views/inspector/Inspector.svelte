@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../libs/libs/Localization";
-    import Header from "../../components/view/components/Header.svelte";
+    import Header from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import Components from "./components/engine/Components.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -94,7 +94,6 @@
 >
     {#if entity}
         <div class="entity-container">
-            <div data-vertdivider="-"></div>
             <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
 
             <small data-overflow="-" class="target-type">

@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import INFORMATION_CONTAINER from "../../../../data/INFORMATION_CONTAINER";
+    import INFORMATION_CONTAINER from "../../../data/INFORMATION_CONTAINER";
 
     let ref
     let isChanging = false

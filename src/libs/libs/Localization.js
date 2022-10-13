@@ -582,6 +582,11 @@ export default class Localization {
             VALUE: "Value"
         },
         VIEWS: {
+            TERRAIN: "Terrain editor",
+            EDITOR: "Scene Editor",
+
+            UI: "UI editor",
+            PREFERENCES: "Preferences",
             SPLIT_TOP:    "Split top",
             SPLIT_BOTTOM: "Split bottom",
             SPLIT_RIGHT:  "Split right",

@@ -1,12 +1,12 @@
 <script>
-    import "../../css/styles.css"
+    import "../viewport/css/styles.css"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../libs/libs/Localization";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import Selector from "../../../../components/selector/Selector.svelte";
-    import ShadingOption from "../shared/ShadingOption.svelte";
+    import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
+    import SettingsStore from "../../stores/SettingsStore";
+    import Selector from "../../components/selector/Selector.svelte";
+    import ShadingOption from "../../components/ShadingOption.svelte";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 

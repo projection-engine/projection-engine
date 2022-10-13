@@ -8,8 +8,8 @@ export default function updateViewport(engine, isReady, currentView) {
     if (!isReady)
         return
     if (!engine.executingAnimation) {
-        if(currentView === VIEWPORT_TABS.UI)
-            FilesStore.watchFiles()
+
+
         if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
             Engine.start()
             CameraTracker.startTracking()

@@ -1,14 +1,21 @@
 <script>
-    import {onMount} from "svelte";
-    import SelectionStore from "../../../../stores/SelectionStore";
-    import GIZMOS from "../../../../data/GIZMOS";
-    import UIAPI from "../../../../../public/engine/production/apis/UIAPI";
-    import SettingsStore from "../../../../stores/SettingsStore";
+    import {onDestroy, onMount} from "svelte";
+    import SelectionStore from "../../stores/SelectionStore";
+    import GIZMOS from "../../data/GIZMOS";
+    import UIAPI from "../../../public/engine/production/apis/UIAPI";
+    import SettingsStore from "../../stores/SettingsStore";
     import {v4} from "uuid";
-    import QueryAPI from "../../../../../public/engine/production/apis/utils/QueryAPI";
+    import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+    import Header from "./Header.svelte";
+    import EngineStore from "../../stores/EngineStore";
+    import FilesStore from "../../stores/FilesStore";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
 
-    export let engine
-    export let settings
+    let engine = {}
+    let settings = {}
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
     $: isOnSelection = settings.gizmo === GIZMOS.NONE
     let ref
     let tooltip
@@ -63,13 +70,21 @@
     }
 
     onMount(() => {
+        FilesStore.watchFiles()
         UIAPI.buildUI(ref)
         update()
     })
+    onDestroy(() => {
+        unsubscribeSettings()
+        unsubscribeEngine()
+    })
 </script>
 
+<ViewHeader>
+    <Header settings={settings}/>
+</ViewHeader>
 <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
-<div class="wrapper ui" bind:this={ref} ></div>
+<div class="wrapper ui" bind:this={ref}></div>
 
 <style>
     .tooltip {
@@ -89,10 +104,7 @@
     .wrapper.ui {
 
         overflow: hidden;
-        position: absolute;
-        top: 25px;
 
-        left: 0;
         width: 100%;
         height: calc(100% - 25px);
         background: var(--pj-background-tertiary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);

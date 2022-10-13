@@ -1,16 +1,16 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import ShadingOption from "../shared/ShadingOption.svelte";
-    import ActiveFeatures from "./ActiveFeatures.svelte";
-    import AddEntity from "./AddEntity.svelte";
-    import GizmoSettings from "./GizmoSettings.svelte";
-    import ViewportActions from "../../../../libs/ViewportActions";
-    import SelectionStore from "../../../../stores/SelectionStore";
-    import Localization from "../../../../libs/libs/Localization";
-    import EngineStore from "../../../../stores/EngineStore";
-    import EntityStateController from "../../../../libs/EntityStateController";
+    import ShadingOption from "../../components/ShadingOption.svelte";
+    import ActiveFeatures from "./components/ActiveFeatures.svelte";
+    import AddEntity from "./components/AddEntity.svelte";
+    import GizmoSettings from "./components/GizmoSettings.svelte";
+    import ViewportActions from "../../libs/ViewportActions";
+    import SelectionStore from "../../stores/SelectionStore";
+    import Localization from "../../libs/libs/Localization";
+    import EngineStore from "../../stores/EngineStore";
+    import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import {DiffuseProbePass, SpecularProbePass} from "../../../../../public/engine/production";
+    import {DiffuseProbePass, SpecularProbePass} from "../../../public/engine/production";
 
     export let settings
     export let engine
@@ -19,8 +19,6 @@
 </script>
 
 <div class="left-content">
-    <slot name="switch-button"/>
-
     <button on:click={() => {
         if(!EngineStore.engine.executingAnimation)
             EntityStateController.startPlayState()

@@ -1,14 +1,14 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import CAMERA_GIZMO from "../../../../data/CAMERA_GIZMO"
+    import CAMERA_GIZMO from "../data/CAMERA_GIZMO"
     import {onDestroy, onMount} from "svelte";
-    import CameraAPI from "../../../../../public/engine/production/apis/CameraAPI";
-    import CameraTracker from "../../../../../public/engine/editor/libs/CameraTracker";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import Localization from "../../../../libs/libs/Localization";
-    import CAMERA_ROTATIONS from "../../../../../public/engine/editor/data/CAMERA_ROTATIONS";
-    import ViewportActions from "../../../../libs/ViewportActions";
+    import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+    import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
+    import SettingsStore from "../stores/SettingsStore";
+    import Localization from "../libs/libs/Localization";
+    import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
+    import ViewportActions from "../libs/ViewportActions";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     let cameraIsOrtho = false
@@ -132,7 +132,7 @@
         transition: 150ms ease-in;
         position: absolute;
         right: 0;
-        top: 25px;
+        top: 28px;
         z-index: 15;
 
     }

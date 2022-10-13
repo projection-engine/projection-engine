@@ -1,11 +1,11 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Selector from "../../../../components/selector/Selector.svelte";
-    import Preview from "../../../../components/preview/Preview.svelte";
+    import Selector from "../../components/selector/Selector.svelte";
+    import Preview from "../../components/preview/Preview.svelte";
     import {onMount} from "svelte";
-    import SettingsStore from "../../../../stores/SettingsStore";
+    import SettingsStore from "../../stores/SettingsStore";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../libs/libs/Localization";
     import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import FILE_TYPES from "shared-resources/FILE_TYPES";

@@ -1,29 +1,35 @@
 <script>
-    import CameraBar from "../shared/CameraBar.svelte";
-    import TERRAIN_TOOLS from "../../../../data/TERRAIN_TOOLS";
+    import CameraBar from "../../components/CameraBar.svelte";
+    import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
-    import Localization from "../../../../libs/libs/Localization";
-    import RegistryAPI from "../../../../libs/libs/RegistryAPI";
-    import FilesAPI from "../../../../libs/libs/FilesAPI";
+    import Localization from "../../libs/libs/Localization";
+    import RegistryAPI from "../../libs/libs/RegistryAPI";
+    import FilesAPI from "../../libs/libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import Header from "./Header.svelte";
+    import SettingsStore from "../../stores/SettingsStore";
+    import {onDestroy} from "svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
-    export let settings
+
+    let settings = {}
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    onDestroy(() => unsubscribeSettings())
 
     let selectedTerrain
     $: {
         if (settings.selectedTerrain != null) {
             RegistryAPI.readRegistryFile(settings.selectedTerrain).then(reg => {
-                if(!reg)
+                if (!reg)
                     return
-                FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
+                FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
                     .then(file => {
-                        if(!file)
+                        if (!file)
                             return
-                        console.log(file)
                         selectedTerrain = file
                     })
             })
@@ -32,7 +38,9 @@
     let hidden = false
 </script>
 
-
+<ViewHeader>
+    <Header settings={settings}/>
+</ViewHeader>
 {#if !hidden && selectedTerrain != null}
     <div class="wrapper">
         <div class="content">

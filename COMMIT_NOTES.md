@@ -1,3 +1,5 @@
-- Fixed camera tracker not stopping when switching to preferences or UI tabs
-- Visual changes to editor
-- Fixed resizable bar
+- Reworking views structure
+- Viewport view can now render other views 
+- Preferences and UI views can now be rendered outside viewport view
+- Removing selection dropdown from Header component
+- Tab view selection now occurs on tab itself

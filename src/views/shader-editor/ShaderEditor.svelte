@@ -11,7 +11,7 @@
     import parseFile from "./utils/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
-    import Header from "../../components/view/components/Header.svelte";
+    import Header from "../../components/view/components/ViewHeader.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
@@ -110,7 +110,6 @@
         icon={"texture"}
 >
     <div class="options">
-        <div class="divider"></div>
         <button
                 disabled={!openFile?.registryID}
                 class="button"
@@ -130,7 +129,7 @@
             <Icon styles="font-size: .9rem">code</Icon>
             {translate("COMPILE")}
         </button>
-        <div class="divider"></div>
+        <div data-vertdivider="-"></div>
         <Selector
                 styles="max-width: 20vw;"
                 mergeMaterials={false}
@@ -239,10 +238,5 @@
         padding-left: 4px;
     }
 
-    .divider {
-        height: 20px;
-        background: var(--pj-background-tertiary);
-        width: 2px;
 
-    }
 </style>

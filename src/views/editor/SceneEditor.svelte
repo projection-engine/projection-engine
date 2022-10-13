@@ -1,30 +1,37 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../../../data/RENDER_TARGET";
-    import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../../../public/engine/production";
+    import RENDER_TARGET from "../../data/RENDER_TARGET";
+    import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../public/engine/production";
 
-    import selectionQueryWorker from "../../utils/selection-query-worker";
-    import SelectBox from "../../../../components/select-box/SelectBox.svelte";
-    import CameraBar from "../shared/CameraBar.svelte";
+    import selectionQueryWorker from "../viewport/utils/selection-query-worker";
+    import SelectBox from "../../components/select-box/SelectBox.svelte";
+    import CameraBar from "../../components/CameraBar.svelte";
 
-    import GIZMOS from "../../../../data/GIZMOS";
-    import onViewportClick from "../../utils/on-viewport-click";
-    import Loader from "../../../../libs/loader/Loader";
-    import drawIconsToBuffer from "../../utils/draw-icons-to-buffer";
-    import GizmoSystem from "../../../../../public/engine/editor/services/GizmoSystem";
-    import dragDrop from "../../../../components/drag-drop/drag-drop";
-    import SelectionStore from "../../../../stores/SelectionStore";
-    import viewportContext from "../../../../templates/viewport-context";
+    import GIZMOS from "../../data/GIZMOS";
+    import onViewportClick from "../viewport/utils/on-viewport-click";
+    import Loader from "../../libs/loader/Loader";
+    import drawIconsToBuffer from "../viewport/utils/draw-icons-to-buffer";
+    import GizmoSystem from "../../../public/engine/editor/services/GizmoSystem";
+    import dragDrop from "../../components/drag-drop/drag-drop";
+    import SelectionStore from "../../stores/SelectionStore";
+    import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../../../libs/libs/Localization";
-    import GizmoBar from "./GizmoBar.svelte";
+    import Localization from "../../libs/libs/Localization";
+    import GizmoBar from "./components/GizmoBar.svelte";
+    import Header from "./Header.svelte";
+    import EngineStore from "../../stores/EngineStore";
+    import SettingsStore from "../../stores/SettingsStore";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
 
     let WORKER = selectionQueryWorker()
 
 
-    export let settings
-    export let translate
-    export let engine
+    let engine = {}
+    let settings = {}
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
+    const translate = key => Localization.PROJECT.VIEWPORT[key]
 
     const LEFT_BUTTON = 0
     let mouseDelta = {x: 0, y: 0}
@@ -95,6 +102,8 @@
         })
     })
     onDestroy(() => {
+        unsubscribeEngine()
+        unsubscribeSettings()
         ContextMenuController.destroy(RENDER_TARGET)
         draggable.onDestroy()
         const parentElement = gpu.canvas
@@ -119,6 +128,9 @@
     }
 </script>
 
+<ViewHeader>
+    <Header settings={settings} engine={engine}/>
+</ViewHeader>
 <GizmoBar settings={settings}/>
 <CameraBar/>
 <SelectBox
@@ -129,3 +141,4 @@
         selected={[]}
         nodes={[]}
 />
+

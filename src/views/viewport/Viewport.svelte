@@ -1,28 +1,23 @@
 <script>
-    import Header from "./components/Header.svelte";
+
     import Localization from "../../libs/libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
-    import EditorLayout from "./components/editor/EditorLayout.svelte";
-    import UILayout from "./components/ui/UILayout.svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import GizmoToolTip from "./components/editor/GizmoToolTip.svelte";
-    import {CameraTracker} from "../../../public/engine/editor";
-    import EditorHeader from "./components/editor/EditorHeader.svelte";
-    import UIEditorHeader from "./components/ui/UIEditorHeader.svelte";
+    import GizmoToolTip from "../editor/components/GizmoToolTip.svelte";
     import HotKeysController from "../../libs/libs/HotKeysController";
-    import TerrainHeader from "./components/terrain/TerrainHeader.svelte";
-    import TerrainLayout from "./components/terrain/TerrainLayout.svelte";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
     import Metrics from "./components/Metrics.svelte";
     import Tabs from "../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";
     import addNewTab from "./utils/add-new-tab";
-    import getIcon from "./utils/get-icon";
+
     import updateViewport from "./utils/update-viewport";
-    import Preferences from "./components/preferences/Preferences.svelte";
+    import VIEWS from "../../components/view/data/VIEWS";
+    import View from "../../components/view/components/View.svelte";
+    import getViewIcon from "../../components/view/utils/get-view-icon";
 
     export let updateView
     export let viewTab
@@ -36,7 +31,7 @@
 
     let prevLength = 0
     $: {
-        if(prevLength !== viewTab.length) {
+        if (prevLength !== viewTab.length) {
             prevLength = viewTab.length
             currentTab = viewTab.length - 1
         }
@@ -64,80 +59,72 @@
 
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]
     $: updateViewport(engine, isReady, currentView)
-    $: tabs = viewTab.map(v => ({name: translate(v), icon: getIcon(v)}))
+    $: tabs = viewTab.map(v => ({name: Localization.COMPONENTS.VIEWS[v], icon: getViewIcon(v)}))
 
-    function setViewportTab(value) {
+    function setViewportTab(value, index = currentTab) {
         const clone = [...viewTab]
-        clone[currentTab] = value
+        clone[index] = value
         updateView(clone)
+    }
+
+    $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
+        name: Localization.COMPONENTS.VIEWS[value],
+        id: value
+    }))
+
+    $: isCanvasHidden = currentView !== VIEWPORT_TABS.EDITOR && currentView !== VIEWPORT_TABS.TERRAIN
+    $: {
+
+        if (isCanvasHidden && window.gpu) {
+            gpu.canvas.style.zIndex = "-1"
+            gpu.canvas.style.position = "absolute"
+        }
+        else if (window.gpu) {
+            gpu.canvas.style.zIndex = "1"
+            gpu.canvas.style.position = "relative"
+        }
+
     }
 </script>
 
 <div class="viewport" bind:this={ref}>
     <div style="height: 30px">
         <Tabs
+                disabled={engine.executingAnimation}
+                updateView={setViewportTab}
+                templates={viewTemplates}
                 addNewTab={_ => addNewTab(viewTab, updateView)}
                 removeTab={i => removeTab(i, viewTab,  updateView, currentTab, v => currentTab = v)}
                 tabs={tabs}
                 currentTab={currentTab}
-                setCurrentView={v => currentTab = v}
+                setCurrentView={v => {
+                    console.trace(v)
+                    currentTab = v
+                }}
                 allowDeletion={false}
         />
     </div>
     <div class="wrapper">
-        {#if currentView !== VIEWPORT_TABS.PREFERENCES}
-            <div class="header">
-                {#if currentView === VIEWPORT_TABS.EDITOR}
-                    <EditorHeader
-                            settings={settings}
-                            engine={engine}
-                    >
-                        <Header
-                                setViewportTab={setViewportTab}
-                                viewportTab={currentView}
-                                engine={engine}
-                                settings={settings}
-                                slot="switch-button"
-                        />
-                    </EditorHeader>
-                {:else if currentView === VIEWPORT_TABS.UI}
-                    <Header
-                            setViewportTab={setViewportTab}
-                            viewportTab={currentView}
-                            engine={engine}
-                            settings={settings}
-                    />
-                    <UIEditorHeader settings={settings}/>
-                {:else if currentView === VIEWPORT_TABS.TERRAIN}
-                    <Header
-                            setViewportTab={setViewportTab}
-                            viewportTab={currentView}
-                            engine={engine}
-                            settings={settings}
-                    />
-                    <TerrainHeader settings={settings}/>
-                {/if}
-            </div>
-        {/if}
         <div bind:this={canvasRef}></div>
+        {#if isReady}
+            <View
+                    instance={currentView}
+                    id={"VIEWPORT"}
+                    index={currentTab}
+                    groupIndex={0}
+                    styles={
+                    !isCanvasHidden ?
+                    `
+                        position: absolute;
+                        top: 0;
+                        display: flex;
+                        align-items: center;
+                    ` : undefined}
+                    switchView={setViewportTab}
+            />
+        {/if}
         {#if settings.showMetrics}
             <Metrics/>
-        {/if}
-        {#if !engine.executingAnimation && isReady}
-            {#if currentView === VIEWPORT_TABS.UI}
-                <UILayout engine={engine} settings={settings}/>
-            {:else if currentView === VIEWPORT_TABS.TERRAIN}
-                <TerrainLayout engine={engine} settings={settings}/>
-            {:else if currentView === VIEWPORT_TABS.EDITOR}
-                <EditorLayout
-                        settings={settings}
-                        engine={engine}
-                        translate={translate}
-                        isReady={isReady}
-                />
-            {:else if currentView === VIEWPORT_TABS.PREFERENCES}
-                <Preferences/>
-            {/if}
         {/if}
     </div>
     <GizmoToolTip/>
@@ -161,21 +148,4 @@
         overflow: hidden;
         position: relative;
     }
-
-    .header {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        width: 100%;
-        padding: 0 2px;
-        min-height: 25px;
-        max-height: 25px;
-        user-select: none;
-        position: absolute;
-        top: 0;
-        z-index: 100;
-        backdrop-filter: blur(10px) brightness(80%);
-    }
-
-
 </style>

@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../libs/libs/Localization";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import Header from "../../components/view/components/Header.svelte";
+    import Header from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import EngineHierarchyView from "./components/View.svelte";
@@ -84,7 +84,6 @@
         title={translate("TITLE")}
         icon={"account_tree"}
 >
-    <div data-vertdivider="-" style="margin: 0 2px;"></div>
     <Input
             hasBorder={true}
             width={"100%"}

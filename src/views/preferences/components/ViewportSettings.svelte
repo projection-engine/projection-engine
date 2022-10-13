@@ -1,6 +1,6 @@
 <script>
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import Accordion from "../../../components/accordion/Accordion.svelte";
+    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
 

@@ -23,7 +23,6 @@
     $: fileTypes = getFileTypes()
 </script>
 
-<div data-vertdivider="-"></div>
 <Dropdown>
     <button slot="button" data-viewbutton="-">
         {translate("VIEW")}

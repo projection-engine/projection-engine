@@ -25,7 +25,8 @@
 
 
 <button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
-    <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
+
+    <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={translate("SPLIT_LEFT")}/>
 </button>
 <button on:click={_ => setTabs([...tabs.bottom, [VIEWS.CONSOLE]], "bottom")}>
@@ -37,7 +38,7 @@
     <ToolTip content={translate("SPLIT_TOP")}/>
 </button>
 <button on:click={_ => setTabs([...tabs.right, [VIEWS.CONSOLE]], "right")}>
-    <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
+    <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
     <ToolTip content={translate("SPLIT_RIGHT")}/>
 </button>
 

@@ -1,16 +1,12 @@
 <script>
     import {onMount} from "svelte";
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../libs/libs/Localization";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import Sidebar from "shared-resources/frontend/components/Sidebar.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import VisualsStore from "../../../../stores/VisualsStore";
-
+    import SettingsStore from "../../stores/SettingsStore";
+    import VisualsStore from "../../stores/VisualsStore";
 
     let settings
     let visuals
@@ -140,16 +136,15 @@
     }
 
     .wrapper {
-        left: 50%;
-        transform: translateX(-50%);
+        margin: auto;
+        display: flex;
+        justify-items: center;
         padding: 32px 0;
-        position: absolute;
-        top: 0;
         width: clamp(500px, 50vw, 1000px);
         height: 100%;
-        justify-items: center;
+
         overflow: hidden;
-        display: flex;
+
         gap: 5%;
     }
 

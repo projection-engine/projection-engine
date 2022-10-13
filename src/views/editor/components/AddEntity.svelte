@@ -1,9 +1,9 @@
 <script>
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../libs/libs/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import entityCreationOptions from "../../../../templates/entity-creation-options";
+    import entityCreationOptions from "../../../templates/entity-creation-options";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 

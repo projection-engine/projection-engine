@@ -1,12 +1,12 @@
 <script>
 
-    import GIZMOS from "../../../../data/GIZMOS"
+    import GIZMOS from "../../../data/GIZMOS"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import "../../css/styles.css"
-    import Localization from "../../../../libs/libs/Localization";
+    import SettingsStore from "../../../stores/SettingsStore";
+    import "../../viewport/css/styles.css"
+    import Localization from "../../../libs/libs/Localization";
 
     let hidden = false
     export let settings
@@ -99,7 +99,7 @@
             onResizeStart={() => hidden = false}
             type="width"
     />
-    <div style="max-width: 0px"></div>
+    <div style="max-width: 0"></div>
 </div>
 
 <style>
@@ -115,7 +115,8 @@
     .wrapper {
         position: absolute;
         left: 0;
-        top: 25px;
+        z-index: 10;
+        top: 28px;
         padding: 4px;
         display: flex;
         width: fit-content;

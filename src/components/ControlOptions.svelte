@@ -93,6 +93,7 @@
     <CreationController/>
     <div data-vertdivider="-" style="height: 15px"></div>
     <Tabs
+            allowRenaming={true}
             addNewTab={addNewTab}
             removeTab={removeTab}
             tabs={settings.views}

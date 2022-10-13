@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
     import Localization from "../../libs/libs/Localization";
-    import Header from "../../components/view/components/Header.svelte";
+    import Header from "../../components/view/components/ViewHeader.svelte";
     import ControlBar from "./components/ControlBar.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";

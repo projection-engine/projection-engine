@@ -1,11 +1,11 @@
 <script>
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../libs/libs/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import {COMPONENTS, Engine, Entity} from "../../../../../public/engine/production";
-    import SelectionStore from "../../../../stores/SelectionStore";
-    import GIZMOS from "../../../../data/GIZMOS";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/templates/dispatch-renderer-entities";
+    import {COMPONENTS, Engine, Entity} from "../../../public/engine/production";
+    import SelectionStore from "../../stores/SelectionStore";
+    import GIZMOS from "../../data/GIZMOS";
+    import SettingsStore from "../../stores/SettingsStore";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
 
     export let settings
     const translate = (key) => Localization.PROJECT.VIEWPORT[key]

@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../libs/libs/Localization";
-    import Header from "../../components/view/components/Header.svelte";
+    import Header from "../../components/view/components/ViewHeader.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
@@ -84,7 +84,6 @@
         title={translate("TITLE")}
         icon={"terminal"}
 >
-    <div data-vertdivider="-"></div>
     <button on:click={() => ConsoleAPI.clear()} class="button">
         <Icon>
             clear_all

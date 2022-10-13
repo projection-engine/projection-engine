@@ -27,9 +27,11 @@
             </div>
         {/if}
     </div>
-    <div class="content" style={`display: ${open ? (type ? type : "grid") : "none"}`}>
+    {#if open}
+    <div class="content" >
         <slot/>
     </div>
+    {/if}
 </div>
 
 <style>

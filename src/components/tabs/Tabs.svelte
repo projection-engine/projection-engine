@@ -1,6 +1,7 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import KEYS from "../../data/KEYS";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
 
 
     export let addNewTab
@@ -9,6 +10,10 @@
     export let currentTab
     export let setCurrentView
     export let allowDeletion
+    export let allowRenaming
+    export let templates
+    export let updateView
+    export let disabled
 
     const handler = (e, v, i) => {
         switch (e.type) {
@@ -21,7 +26,8 @@
                 break
             }
             case "dblclick": {
-                e.currentTarget.type = "text"
+                if (allowRenaming)
+                    e.currentTarget.type = "text"
                 break
             }
             case "input":
@@ -42,8 +48,23 @@
     {#each tabs as v, i}
         <div data-highlight={i === currentTab ? "-" : undefined} class="view">
             {#if v.icon}
-                <Icon styles="margin-left: 3px; font-size: .85rem; width: .85rem">{v.icon}</Icon>
+                <Dropdown hideArrow={true}>
+                    <button slot="button" class="dropdown-button">
+                        <Icon styles="font-size: .85rem;">{v.icon}</Icon>
+                    </button>
+                    {#each templates as item}
+                        <button on:click={_ => updateView(item.id, i)}>
+                            {#if v.id === item.id}
+                                <Icon>check</Icon>
+                            {:else}
+                                <div style="width: 1.1rem"></div>
+                            {/if}
+                            {item.name}
+                        </button>
+                    {/each}
+                </Dropdown>
             {/if}
+
             <input
                     on:dblclick={e => handler(e, v)}
                     on:input={e => handler(e, v)}
@@ -55,6 +76,7 @@
                     type="button"
                     value={v.name}
             >
+
             <button disabled={tabs.length === 1 && !allowDeletion} on:click={() => removeTab(i)}
                     class="remove-button">
                 <Icon styles="font-size: .8rem">
@@ -63,16 +85,26 @@
             </button>
         </div>
     {/each}
-    {#if tabs.length < 10}
-        <button on:click={addNewTab} class="add-button">
-            <Icon styles="font-size: .9rem">
-                add
-            </Icon>
-        </button>
-    {/if}
+
+    <button on:click={addNewTab} class="add-button">
+        <Icon styles="font-size: .9rem">add</Icon>
+    </button>
+
 </div>
 
 <style>
+    .dropdown-button {
+        min-width: 18px;
+        min-height: 18px;
+        max-width: 18px;
+        max-height: 18px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
     .view {
         color: var(--pj-color-quaternary);
         display: flex;
@@ -82,7 +114,8 @@
         max-height: 30px;
         min-height: 30px;
     }
-    .view:hover{
+
+    .view:hover {
         color: var(--pj-accent-color);
     }
 
@@ -116,10 +149,14 @@
         font-size: .7rem;
         border-radius: 3px;
     }
+    input{
+        padding: 0 4px;
+    }
+
 
     .add-button {
         border: none;
-        width: 23px;
+        width: 30px;
 
         display: flex;
         align-items: center;
