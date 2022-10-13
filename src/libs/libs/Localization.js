@@ -3,6 +3,7 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            RESOLUTION: "Resolution",
             RESET: "Reset",
             ORIGINAL: "Original",
             SHADER_EDITOR: "Shader editor",
@@ -16,6 +17,7 @@ export default class Localization {
             VIEWPORT: "Viewport",
             ENABLED: "Enabled",
             COLOR: "Color",
+
 
             EDITOR: "Editor",
             SIDE_BAR: "Viewport side-bar",

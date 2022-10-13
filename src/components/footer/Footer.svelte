@@ -42,11 +42,7 @@
     }
 </script>
 
-<div
-        class="wrapper"
-        id={SHORTCUTS_ID}
->
-
+<div class="wrapper" id={SHORTCUTS_ID}>
     {#if activeView != null}
         <div class="active-view">
             <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
@@ -131,6 +127,7 @@
     }
 
     .wrapper {
+        border-top: var(--pj-border-primary) 1px solid;
         width: 100%;
         height: 25px;
         background: var(--pj-background-tertiary);

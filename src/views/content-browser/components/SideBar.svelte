@@ -64,6 +64,7 @@
         overflow-y: auto;
         width: 300px;
         padding-left: 3px;
+        padding-right: 3px;
         background: var(--pj-background-secondary);
     }
 

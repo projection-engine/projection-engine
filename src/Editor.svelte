@@ -120,6 +120,5 @@
         overflow: hidden;
         display: flex;
 
-        padding-bottom: 3px;
     }
 </style>

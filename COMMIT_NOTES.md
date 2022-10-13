@@ -1,3 +1,3 @@
-- Visual adjustments across main layout
-- Fixing some camera bugs
-- Removed content-browser "create" dropdown
+- Fixed camera tracker not stopping when switching to preferences or UI tabs
+- Visual changes to editor
+- Fixed resizable bar

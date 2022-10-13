@@ -62,10 +62,10 @@ body {
     --pj-accent-color-light: rgb(0 149 255 / 50%);
     --pj-accent-color-darker: #006cb9;
     --pj-accent-color: #0095ff;
-    --pj-background-primary: #3b3b3b;
-    --pj-background-secondary: #2b2b2b;
+    --pj-background-primary: #383838;
+    --pj-background-secondary: #292929;
     --pj-background-tertiary: #202020;
-    --pj-background-quaternary: #111;
+    --pj-background-quaternary: #181818;
     --pj-background-quaternary-light: rgba(32, 32, 32, 0.95);
     --pj-border-primary: #3f3f3f;
     --pj-border-secondary: #5b5b5b;

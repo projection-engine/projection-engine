@@ -42,7 +42,7 @@
     }
 
     .tabs {
-        height: 23px;
+        height: 30px;
         width: 100%;
     }
 </style>

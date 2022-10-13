@@ -52,7 +52,6 @@ export default function updateRenderer(selected, engine, settings) {
         selected,
         onWrap: executingAnimation ? null : Wrapper,
     })
-    if (!executingAnimation)
-        CameraTracker.startTracking()
+
     bindGizmo(selected, settings)
 }

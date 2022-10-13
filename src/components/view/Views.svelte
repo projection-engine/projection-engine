@@ -45,13 +45,10 @@
 
     $: {
         if(tabs.length === 0 && ref){
-
             const obj = {}
             obj[orientationNameMin] = "unset"
             obj[orientationNameMin.replace("min", "max")] = "0"
-            console.log(obj)
             Object.assign(ref.style, obj)
-            console.log(ref)
         }
     }
 </script>

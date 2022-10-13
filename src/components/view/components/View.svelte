@@ -53,7 +53,7 @@
         flex-direction: column;
         align-items: flex-start;
         align-content: flex-start;
-        background-color: var(--pj-background-tertiary);
+        background-color: var(--pj-background-secondary);
         border-radius: 5px;
     }
 </style>

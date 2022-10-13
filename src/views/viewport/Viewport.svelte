@@ -22,7 +22,7 @@
     import addNewTab from "./utils/add-new-tab";
     import getIcon from "./utils/get-icon";
     import updateViewport from "./utils/update-viewport";
-    import Preferences from "../../components/preferences/Preferences.svelte";
+    import Preferences from "./components/preferences/Preferences.svelte";
 
     export let updateView
     export let viewTab
@@ -54,11 +54,7 @@
             )
         }
     }
-    onMount(() => {
-        CameraTracker.stopTracking()
-        canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
-        CameraTracker.startTracking()
-    })
+    onMount(() => canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild))
 
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
@@ -78,7 +74,7 @@
 </script>
 
 <div class="viewport" bind:this={ref}>
-    <div style="padding: 3px">
+    <div style="height: 30px">
         <Tabs
                 addNewTab={_ => addNewTab(viewTab, updateView)}
                 removeTab={i => removeTab(i, viewTab,  updateView, currentTab, v => currentTab = v)}
@@ -152,7 +148,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background-color: var(--pj-background-tertiary);
+        background: var(--pj-background-secondary);
         border-radius: 5px;
         position: relative;
         display: flex;

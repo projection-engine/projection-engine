@@ -50,20 +50,20 @@
 </script>
 
 <div class="container">
-    <button style="width: 20px;" on:click={_ => LevelController.save()}>
+    <button on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
         <ToolTip content={translate("SAVE")}/>
     </button>
     <div data-vertdivider="-" style="height: 15px"></div>
     <Dropdown hideArrow="true">
-        <button slot="button" style="width: 20px; background: transparent">
+        <button slot="button">
             <Icon>menu</Icon>
             <ToolTip content={translate("OPTIONS")}/>
         </button>
         {#each FRAME_OPTIONS as subOption}
             {#if subOption.type === "separator" && subOption.label}
                 <div data-inline="-" style="padding: 0 4px; margin-top: 4px; gap: 8px">
-                    <small>{subOption.label}</small>
+                    <small style="font-size: .73rem">{subOption.label}</small>
                     <div data-divider="-" style="margin: 0"></div>
                 </div>
             {:else}
@@ -72,18 +72,20 @@
                              window.frameOptionsCallback(subOption.id)
                              e.currentTarget.closeDropdown?.()
                         }}
-                        style="padding-left: 30px">
+                        style="padding-left: 30px; max-width: unset; min-height: unset">
                     {subOption.label}
                 </button>
             {/if}
         {/each}
     </Dropdown>
     <div data-vertdivider="-" style="height: 15px"></div>
-    <button style="width: 20px;" on:click={_ => {
-        const views = [...settings.views]
-        views[settings.currentView].viewport.push(VIEWPORT_TABS.PREFERENCES)
-        SettingsStore.updateStore({...settings, views})
-    }}>
+    <button
+            on:click={_ => {
+                const views = [...settings.views]
+                views[settings.currentView].viewport.push(VIEWPORT_TABS.PREFERENCES)
+                SettingsStore.updateStore({...settings, views})
+            }}
+    >
         <Icon styles="font-size: 1rem">settings</Icon>
         <ToolTip content={translate("SHOW_PREFERENCES")}/>
     </button>
@@ -98,11 +100,8 @@
             setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
     />
     <div class="level-selector">
-        <Dropdown
-                asButton={true}
-                buttonStyles="border-radius: 3px; min-height: 20px;max-height: 20px; background: var(--pj-background-primary)"
-        >
-            <button slot="button" class="dropdown" style="background: transparent">
+        <Dropdown >
+            <button slot="button" class="dropdown">
                 <Icon>forest</Icon>
                 <div data-overflow="-">
                     {#if engine.currentLevel}
@@ -113,7 +112,7 @@
                 </div>
                 <ToolTip content={translate("LEVEL")}/>
             </button>
-            <button on:click={() => LevelController.loadLevel()}>
+            <button on:click={() => LevelController.loadLevel()} style="max-width: unset; min-height: unset">
                 {#if !engine.currentLevel}
                     <Icon styles="font-size: .9rem">check</Icon>
                 {:else}
@@ -123,7 +122,7 @@
             </button>
             <div data-divider="-"></div>
             {#each store.levels as level}
-                <button on:click={() => LevelController.loadLevel(level)}>
+                <button on:click={() => LevelController.loadLevel(level)}  style="max-width: unset; min-height: unset">
                     {#if engine.currentLevel?.registryID === level.registryID}
                         <Icon styles="font-size: .9rem">check</Icon>
                     {:else}
@@ -149,38 +148,37 @@
         align-items: center;
         gap: 4px;
         font-size: 0.7rem;
-        height: 18px;
-        border-radius: 3px;
-        overflow: hidden;
         padding: 0 0 0 4px;
-        border: none;
+        max-width: unset;
     }
 
     .container {
-        margin-bottom: 3px;
-        min-height: 25px;
-        max-height: 25px;
+        border-bottom: var(--pj-border-primary) 1px solid;
+        min-height: 30px;
+        max-height: 30px;
         width: 100%;
         background: var(--pj-background-tertiary);
         overflow: hidden;
         display: flex;
         align-items: center;
-        gap: 2px;
         padding: 0 2px;
     }
 
     button {
         display: flex;
         align-items: center;
+        justify-content: center;
+
         gap: 4px;
         color: var(--pj-color-secondary);
 
         border: none;
         background: transparent;
         padding: 0 2px;
-        height: 20px;
-
-
+        min-height: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        max-width: 30px;
         white-space: nowrap;
     }
 
@@ -190,6 +188,7 @@
 
     button:active {
         background: transparent;
+        color: var(--pj-accent-color);
         opacity: .9;
     }
 </style>

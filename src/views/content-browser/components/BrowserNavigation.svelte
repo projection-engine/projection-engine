@@ -145,6 +145,7 @@
     }
 
     .wrapper {
+        padding-left: 3px;
         width: 100%;
         display: flex;
         align-items: center;

@@ -78,20 +78,26 @@
         display: flex;
         align-items: center;
         overflow: hidden;
-
-        border-radius: 3px;
+        border-top: transparent 2px solid;
+        max-height: 30px;
+        min-height: 30px;
+    }
+    .view:hover{
+        color: var(--pj-accent-color);
     }
 
     .view[data-highlight="-"] {
-        background: var(--pj-background-primary);
-        color: var(--pj-color-secondary);
+        border-top: white 2px solid !important;
+        background: var(--pj-background-secondary);
+        color: var(--pj-color-primary);
     }
 
     .view-input {
-        color: var(--pj-color-secondary);
+        color: var(--pj-color-quaternary);
         background: transparent;
         border: none;
         outline: none;
+
     }
 
     .remove-button {
@@ -106,7 +112,7 @@
     }
 
     input, button {
-        height: 20px;
+        height: 30px;
         font-size: .7rem;
         border-radius: 3px;
     }
@@ -122,6 +128,9 @@
     }
 
     .container {
+        background: var(--pj-background-tertiary);
+        max-height: 30px;
+        min-height: 30px;
         display: flex;
         align-items: center;
         gap: 2px;

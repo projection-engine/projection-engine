@@ -24,20 +24,20 @@
 
 
 
-<button style="width: 20px;" on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
-    <Icon>vertical_split</Icon>
+<button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
+    <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
     <ToolTip content={translate("SPLIT_LEFT")}/>
 </button>
-<button style="width: 20px;" on:click={_ => setTabs([...tabs.bottom, [VIEWS.CONSOLE]], "bottom")}>
-    <Icon>horizontal_split</Icon>
+<button on:click={_ => setTabs([...tabs.bottom, [VIEWS.CONSOLE]], "bottom")}>
+    <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
     <ToolTip content={translate("SPLIT_BOTTOM")}/>
 </button>
-<button style="width: 20px;" on:click={_ => setTabs([...tabs.top, [VIEWS.CONSOLE]], "top")}>
-    <Icon styles=" rotate: 180deg">horizontal_split</Icon>
+<button on:click={_ => setTabs([...tabs.top, [VIEWS.CONSOLE]], "top")}>
+    <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
     <ToolTip content={translate("SPLIT_TOP")}/>
 </button>
-<button style="width: 20px;" on:click={_ => setTabs([...tabs.right, [VIEWS.CONSOLE]], "right")}>
-    <Icon styles="rotate: 180deg">vertical_split</Icon>
+<button on:click={_ => setTabs([...tabs.right, [VIEWS.CONSOLE]], "right")}>
+    <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={translate("SPLIT_RIGHT")}/>
 </button>
 
@@ -47,15 +47,28 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
         gap: 4px;
+        color: var(--pj-color-secondary);
 
         border: none;
         background: transparent;
         padding: 0 2px;
-        height: 20px;
-
-
+        min-height: 30px;
+        max-height: 30px;
+        min-width: 30px;
+        max-width: 30px;
         white-space: nowrap;
+    }
+
+    button:hover {
+        background: var(--pj-border-primary);
+    }
+
+    button:active {
+        background: transparent;
+        color: var(--pj-accent-color);
+        opacity: .9;
     }
 
 </style>

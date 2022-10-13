@@ -65,7 +65,8 @@
     .accordion {
         display: grid;
 
-        background-color: var(--pj-background-secondary);
+        background-color: var(--pj-background-primary);
+
         max-width: 100%;
         user-select: none;
         border-radius: 3px;
