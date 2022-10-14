@@ -65,7 +65,7 @@
         setFileType(undefined)
     }
 
-    $: lineHeight = viewType === ITEM_TYPES.ROW  ? 23 : CARD_SIZE
+    $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
     $: items = store.items
     $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
 
@@ -136,21 +136,8 @@
             if(e.path.find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStore.contentBrowserSelected = []
         }}
-        style={
-        viewType === ITEM_TYPES.ROW  && toRender.length > 0?
-            `
-            background: linear-gradient(
-                to bottom,
-                var(--pj-background-tertiary),
-                var(--pj-background-tertiary) 50%,
-                #252525 50%,
-                #252525
-            );
-            background-size: 100% 46px  !important;
-            padding: 0;
-        ` : ""
-        }
-        class={"content"}
+        style={viewType === ITEM_TYPES.ROW  && toRender.length > 0? "padding: 0;": undefined}
+        class="content"
 >
     <SelectBox
             allowAll={true}
@@ -163,7 +150,8 @@
             <RowsHeader items={toRender} updateItems={v => toRender = v}/>
         {/if}
         <VirtualList items={toRender} let:item>
-            <div class="line" style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
+            <div class="line"
+                 style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
                             viewType={viewType}

@@ -1,2 +1,5 @@
-- Importing assimpJS
-- Minifiing ammojs file
+- Restructuring backend file system
+- Fixing some bugs related to layout
+- Removing gradient background
+- Removing rollup uglify
+- Adding terser

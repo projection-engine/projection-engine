@@ -238,15 +238,6 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-
-        background: linear-gradient(
-                to bottom,
-                var(--pj-background-tertiary),
-                var(--pj-background-tertiary) 50%,
-                #252525 50%,
-                #252525
-        );
-        background-size: 100% 46px ;
     }
 
     .container-modal {

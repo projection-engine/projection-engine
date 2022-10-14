@@ -5,7 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
-import {uglify} from "rollup-plugin-uglify";
+import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 
 const PRODUCTION = !process.env.ROLLUP_WATCH;
@@ -41,7 +41,7 @@ const common = (inputFile, outputFile) => ({
         commonjs({sourceMap: false }),
         !PRODUCTION && serve(),
         !PRODUCTION && livereload('public'),
-        PRODUCTION && uglify(),
+        PRODUCTION && terser(),
         image(),
         json()
     ],
@@ -63,7 +63,7 @@ const worker = (fileName, output) => ({
         }),
         commonjs({sourceMap: false }),
         json(),
-        uglify()
+        PRODUCTION && terser()
     ]
 })
 export default [
@@ -77,11 +77,11 @@ export default [
         },
         plugins: [
             resolve({
-                dedupe: ["electron"]
+                dedupe: ["electron", "sharp"]
             }),
-            commonjs({ignore: ["electron"], sourceMap: false }),
+            commonjs({ignore: ["electron", "sharp"], sourceMap: false }),
             json(),
-            uglify()
+            PRODUCTION && terser()
         ]
     },
     worker("public/engine/workers/movement/movement-worker.js", "public/build/movement-worker.js"),

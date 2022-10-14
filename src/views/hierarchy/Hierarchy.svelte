@@ -162,14 +162,7 @@
 
         height: 100%;
         max-height: 100%;
-        background: linear-gradient(
-                to bottom,
-                var(--pj-background-tertiary),
-                var(--pj-background-tertiary) 50%,
-                #252525 50%,
-                #252525
-        );
-        background-size: 100% 46px;
+
     }
     .remove-button{
         padding: 0;

@@ -1,15 +1,8 @@
 import NodeFS from "shared-resources/frontend/libs/NodeFS"
-import FilesAPI from "./FilesAPI";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import RegistryAPI from "./RegistryAPI";
-import {v4} from "uuid";
-import ROUTES from "../../data/ROUTES";
-import TEXTURE_TEMPLATE from "../../../public/engine/static/TEXTURE_TEMPLATE";
-import {IMAGE_WORKER_ACTIONS} from "../../../public/engine/production";
-import ImageWorker from "../../../public/engine/workers/image/ImageWorker";
 
 const pathRequire = window.require("path")
-const {ipcRenderer} = window.require("electron")
 
 function mapAsset(reg, type) {
     return reg.map(i => new Promise(resolve => {
@@ -27,6 +20,7 @@ export default class ContentBrowserAPI {
     static async rename(from, to) {
         const fromResolved = pathRequire.resolve(from)
         let newRegistry = await RegistryAPI.readRegistry()
+        console.log(newRegistry)
 
         try {
             const stat = await NodeFS.stat(fromResolved)
@@ -54,15 +48,6 @@ export default class ContentBrowserAPI {
         } catch (error) {
             console.error(error)
         }
-    }
-    static async openDialog() {
-        return await new Promise(resolve => {
-            const listenID = v4().toString()
-            ipcRenderer.once(ROUTES.FILE_DIALOG + listenID, (ev, data) => {
-                resolve(data)
-            })
-            ipcRenderer.send(ROUTES.FILE_DIALOG, {listenID})
-        })
     }
 
     static async foldersFromDirectory(startPath) {
@@ -93,7 +78,6 @@ export default class ContentBrowserAPI {
             terrainReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN)),
             terrainMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN_MATERIAL)),
             promises = []
-
 
         promises.push(...mapAsset(textureReg, FILE_TYPES.TEXTURE))
         promises.push(...mapAsset(meshesReg, FILE_TYPES.MESH))
@@ -156,65 +140,6 @@ export default class ContentBrowserAPI {
         }
 
         console.log(result)
-        return result
-    }
-
-    static async importFile(targetDir, filesToLoad) {
-        let result = []
-        try {
-            for (let i = 0; i < filesToLoad.length; i++) {
-                const filePath = filesToLoad[i]
-                const name = filePath.split(pathRequire.sep).pop()
-                const newRoot = targetDir + pathRequire.sep + name.split(".")[0]
-                const fileID = v4()
-                const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
-                switch (type) {
-                    case "png":
-                    case "jpg":
-                    case "jpeg": {
-                        if (!(await NodeFS.exists(newRoot + FILE_TYPES.TEXTURE))) {
-                            const res = `data:image/${type};base64,` + (await FilesAPI.readFile(filePath, "base64"))
-                            if (res) {
-                                const data = JSON.stringify({...TEXTURE_TEMPLATE, base64: res})
-                                await NodeFS.write(newRoot + FILE_TYPES.TEXTURE, data)
-                                const reduced = await ImageWorker.request(
-                                    IMAGE_WORKER_ACTIONS.RESIZE_IMAGE,
-                                    {
-                                        image: res,
-                                        width: 256,
-                                        height: 256
-                                    })
-                                await NodeFS.write(NodeFS.resolvePath(NodeFS.PREVIEW_PATH + NodeFS + fileID + FILE_TYPES.PREVIEW), reduced)
-                                await RegistryAPI.createRegistryEntry(fileID, newRoot.replace(NodeFS.ASSETS_PATH + NodeFS, "") + FILE_TYPES.TEXTURE)
-                            } else
-                                console.error(new Error("Error importing image"))
-                        }
-                        break
-                    }
-                    case "gltf":
-                        result.push({
-                            file: name.split(".")[0],
-                            ids: await new Promise(resolve => {
-                                const listenID = v4().toString()
-                                ipcRenderer.once(ROUTES.IMPORT_GLTF + listenID, (ev, data) => resolve(data))
-                                ipcRenderer.send(ROUTES.IMPORT_GLTF, {
-                                    filePath: filePath,
-                                    newRoot,
-                                    options: {},
-                                    projectPath: NodeFS.path,
-                                    listenID,
-                                    fileName: filePath.split(pathRequire.sep).pop()
-                                })
-                            })
-                        })
-                        break
-                    default:
-                        break
-                }
-            }
-        } catch (error) {
-            console.error(error)
-        }
         return result
     }
 

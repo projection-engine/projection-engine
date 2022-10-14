@@ -2,10 +2,14 @@ import glTF from "./glTF";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import directoryStructure from "shared-resources/backend/utils/directory-structure";
 import parseContentBrowserData from "./parse-content-browser-data";
-import {readRegistry} from "../utils/fs-operations";
 import ROUTES from "../../../src/data/ROUTES";
 import levelLoader from "./level-loader";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
+import readTypedFile from "../utils/read-typed-file";
+import importFiles from "../utils/import-files";
+import ProjectMap from "./ProjectMap";
+import createRegistryEntry from "../utils/create-registry-entry";
+import rm from "shared-resources/backend/utils/rm";
 
 
 const {ipcMain, dialog, app, screen} = require("electron")
@@ -34,7 +38,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         setTimeout(() => {
             const primaryDisplay = screen.getPrimaryDisplay()
             const {width, height} = primaryDisplay.workAreaSize
-            window.setSize(width/2, height/2)
+            window.setSize(width / 2, height / 2)
             window.maximize()
             window.webContents.send(ROUTES.OPEN_FULL)
         }, 250)
@@ -43,55 +47,50 @@ export default function projectEvents(pathToProject, window, metadata) {
 
 
     ipcMain.on(ROUTES.READ_FILE, async (event, {pathName, type, listenID}) => {
-        const result = await new Promise(resolve => {
-            fs.readFile(pathRequire.resolve(pathName), (e, res) => {
-                try {
-                    switch (type) {
-                        case "buffer":
-                            resolve(res)
-                            break
-                        case "json":
-                            try {
-                                resolve(JSON.parse(res.toString()))
-                            } catch (error) {
-                                console.error(error)
-                                resolve(null)
-                            }
-
-                            break
-                        case "base64":
-                            resolve(new Buffer(res).toString("base64"))
-                            break
-                        default:
-                            resolve(res.toString())
-                            break
-                    }
-                } catch (e) {
-                    resolve()
-                }
-            })
-        })
-        event.sender.send(ROUTES.READ_FILE + listenID, result)
+        event.sender.send(ROUTES.READ_FILE + listenID, await readTypedFile(pathName, type))
     })
 
-    ipcMain.on(ROUTES.FILE_DIALOG, (ev, {listenID}) => {
+    ipcMain.on(ROUTES.FILE_DIALOG, async (ev, {listenID, currentDirectory}) => {
         const properties = ["openFile", "multiSelections"]
-        dialog.showOpenDialog({
-            properties, filters: [{name: "Assets", extensions: ["jpg", "png", "jpeg", "gltf", "hdri"]}]
+        const result = await dialog.showOpenDialog({
+            properties, filters: [{name: "Assets", extensions: ["jpg", "png", "jpeg", "gltf", "fbx", "obj", "blend"]}]
         })
-            .then(result => {
-                if (!result.canceled)
-                    ev.sender.send(ROUTES.FILE_DIALOG + listenID, result.filePaths)
-                else
-                    ev.sender.send(ROUTES.FILE_DIALOG + listenID, [])
-            })
-            .catch(err => console.error(err))
+        let filesImported = result.filePaths || [],
+            registryEntries = []
+        if (!result.canceled && result.filePaths.length > 0)
+            await importFiles(result.filePaths, ProjectMap.pathToAssets + pathRequire.sep + currentDirectory, registryEntries)
+
+        ev.sender.send(ROUTES.FILE_DIALOG + listenID, {filesImported, registryEntries})
     })
 
+    ipcMain.on("remove-registry", async (_, data) => {
+        for (let i = 0; i < data.length; i++) {
+            try {
+                await rm(data[i])
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        ProjectMap.registry = ProjectMap.registry.filter(r => !data.includes(r))
+    })
+    ipcMain.on("resolve-name", (event, {ext, path, listenID}) => {
+        let n = path + ext
+        let it = 0
+        while (fs.existsSync(ProjectMap.pathToAssets + pathRequire.sep + n)) {
+            n = path + `-${it}` + ext
+            it++
+        }
+        event.sender.send("resolve-name" + listenID, n)
+    })
+    ipcMain.on("create-registry", async (event, data) => {
+        console.log(data)
+        await createRegistryEntry(data.id, data.path)
+        event.sender.send("create-registry" + data.listenID)
+    })
     ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, async (event, {pathName, listenID}) => {
 
         const result = []
-        const registryData = await readRegistry(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)
+        const registryData = ProjectMap.registry
         const assetsToParse = await directoryStructure(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
         for (let i = 0; i < assetsToParse.length; i++) {
             try {
@@ -104,10 +103,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         }
         event.sender.send(ROUTES.REFRESH_CONTENT_BROWSER + listenID, result)
     })
-    ipcMain.on(ROUTES.READ_REGISTRY, async (event, {pathName, listenID}) => {
-        const result = await readRegistry(pathName)
-        event.sender.send(ROUTES.READ_REGISTRY + listenID, result)
-    })
+    ipcMain.on("read-registry", async (event, {listenID}) => event.sender.send("read-registry" + listenID, ProjectMap.registry))
 
     ipcMain.on(ROUTES.IMPORT_GLTF, async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
         fs.readFile(pathRequire.resolve(filePath), async (e, data) => {

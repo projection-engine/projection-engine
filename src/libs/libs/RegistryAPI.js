@@ -1,7 +1,6 @@
-import {v4 as uuidv4, v4} from "uuid";
-import NodeFS from "shared-resources/frontend/libs/NodeFS"
+import {v4 as uuidv4} from "uuid";
+import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
 import FilesAPI from "./FilesAPI";
-import ROUTES from "../../data/ROUTES";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 
@@ -12,32 +11,23 @@ export default class RegistryAPI {
     static registry = []
 
     static async readRegistry() {
-        const registryPath = NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)
-        const promise = await new Promise(resolve => {
-            const listenID = v4().toString()
-            ipcRenderer.once(ROUTES.READ_REGISTRY + listenID, (ev, data) => {
-                resolve(data)
-            })
-            ipcRenderer.send(ROUTES.READ_REGISTRY, {
-                pathName: registryPath,
-                listenID
-            })
-        })
+        const registry = await getCall("read-registry", {}, false)
 
         const response = {}
-        for(let i = 0; i < promise.length; i++){
-            const current = promise[i]
+        const entriesToRemove = []
+        for (let i = 0; i < registry.length; i++) {
+            const current = registry[i]
             const pathToFind = NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + current.path)
 
-            if(!fs.existsSync(pathToFind))
-                await FilesAPI.deleteFile(current.registryPath)
+            if (!fs.existsSync(pathToFind))
+                entriesToRemove.push(current.registryPath)
             else {
-                // REPEATED REGISTRY ENTRY
-                if(response[current.path])
-                    await FilesAPI.deleteFile(response[current.path].registryPath)
+                if (response[current.path])
+                    entriesToRemove.push(response[current.path].registryPath)
                 response[current.path] = current
             }
         }
+        ipcRenderer.send("remove-registry", entriesToRemove)
         RegistryAPI.registry = Object.values(response)
         return Object.values(response)
     }
@@ -55,12 +45,8 @@ export default class RegistryAPI {
         }))
     }
 
-    static async createRegistryEntry(fID = uuidv4(), path) {
-        const pathRe = NodeFS.resolvePath(NodeFS.ASSETS_PATH)
-        const p = NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + path).replace(pathRe, "")
-        await NodeFS.write(NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + NodeFS.sep + fID + FILE_TYPES.REGISTRY), JSON.stringify({
-            id: fID, path: p
-        }))
+    static async createRegistryEntry(fID = uuidv4(), pathToFile) {
+        await getCall("create-registry", {id: fID, path: pathToFile}, false)
     }
 
     static async readRegistryFile(id) {

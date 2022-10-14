@@ -11,9 +11,6 @@ export default class AssetAPI {
             return await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path)
     }
 
-    static async assetExists(path) {
-        return await NodeFS.exists(NodeFS.resolvePath(NodeFS.ASSETS_PATH  + NodeFS.sep + path))
-    }
 
     static async writeAsset(path, fileData, previewImage, registryID) {
         const fileID = registryID !== undefined ? registryID : uuidv4()

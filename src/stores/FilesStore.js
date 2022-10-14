@@ -8,6 +8,7 @@ import ContentBrowserAPI from "../libs/libs/ContentBrowserAPI";
 import Localization from "../libs/libs/Localization";
 import {COMPONENTS, Engine} from "../../public/engine/production";
 import UIAPI from "../../public/engine/production/apis/UIAPI";
+import resolveFileName from "../templates/utils/resolve-file-name";
 
 export default class FilesStore {
     static data = get(contentBrowserStore)
@@ -70,11 +71,10 @@ export default class FilesStore {
     }
 
     static async createFolder(currentDirectory) {
-        let path = currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER
-        const existing = await ContentBrowserAPI.foldersFromDirectory(NodeFS.ASSETS_PATH + currentDirectory.id)
-        if (existing.length > 0)
-            path += " - " + existing.length
-         await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
+        let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER, "")
+        console.log(path)
+
+        await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
         await FilesStore.refreshFiles()
 
         if (FilesStore.#isWatching)

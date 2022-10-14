@@ -23,7 +23,6 @@ export default function getCreationOptions(currentDirectory, materials) {
     return [
         {
             label: translate("NEW_FOLDER"),
-
             onClick: () => FilesStore.createFolder(currentDirectory).catch()
         },
         {divider: true},
@@ -32,11 +31,10 @@ export default function getCreationOptions(currentDirectory, materials) {
 
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_LEVEL"), FILE_TYPES.LEVEL)
-
                 await AssetAPI.writeAsset(path, JSON.stringify({
                     entities: []
                 }))
-                FilesStore.refreshFiles().catch()
+                await FilesStore.refreshFiles()
             }
         },
         {divider: true},
@@ -56,10 +54,9 @@ export default function getCreationOptions(currentDirectory, materials) {
 
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_SIMPLE_MATERIAL"), FILE_TYPES.SIMPLE_MATERIAL)
-                AssetAPI.writeAsset(path, JSON.stringify(SIMPLE_MATERIAL_TEMPLATE))
-                    .then(() => {
-                        FilesStore.refreshFiles()
-                    })
+                await AssetAPI.writeAsset(path, JSON.stringify(SIMPLE_MATERIAL_TEMPLATE))
+                await FilesStore.refreshFiles()
+
             }
         },
         {
@@ -67,13 +64,13 @@ export default function getCreationOptions(currentDirectory, materials) {
 
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_TERRAIN_MATERIAL"), FILE_TYPES.TERRAIN_MATERIAL)
-                AssetAPI.writeAsset(path, JSON.stringify({
+                await AssetAPI.writeAsset(path, JSON.stringify({
                     original: TERRAIN_LAYERED,
                     uniformData: TERRAIN_MATERIAL_UNIFORMS
                 }))
-                    .then(() => {
-                        FilesStore.refreshFiles()
-                    })
+
+                await FilesStore.refreshFiles()
+
             }
         },
         ...matInstances,
@@ -83,9 +80,9 @@ export default function getCreationOptions(currentDirectory, materials) {
 
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
-
+console.log(path)
                 await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
-                FilesStore.refreshFiles().catch()
+                await FilesStore.refreshFiles()
             }
         },
         {
@@ -94,7 +91,7 @@ export default function getCreationOptions(currentDirectory, materials) {
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
                 await AssetAPI.writeAsset(path, UI_TEMPLATE)
-                FilesStore.refreshFiles().catch()
+                await FilesStore.refreshFiles()
 
             }
         },
@@ -106,7 +103,7 @@ export default function getCreationOptions(currentDirectory, materials) {
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_TERRAIN"), FILE_TYPES.TERRAIN)
                 await AssetAPI.writeAsset(path, JSON.stringify(TERRAIN_TEMPLATE))
-                FilesStore.refreshFiles().catch()
+                await FilesStore.refreshFiles()
             }
         },
     ]

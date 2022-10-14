@@ -2,6 +2,8 @@ import readFile from "shared-resources/backend/utils/read-file";
 import contextMenuController from "shared-resources/backend/context-menu-controller";
 import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 import projectEvents from "./project-events";
+import ProjectMap from "./ProjectMap";
+import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 const {BrowserWindow, ipcMain, screen} = require("electron")
 const path = require("path");
@@ -9,7 +11,7 @@ const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 
 export default async function buildProjectWindow(pathToProject, isDev) {
     try {
-
+        await ProjectMap.initialize(pathToProject.replace(PROJECT_FILE_EXTENSION, ""))
         const strData = (await readFile(pathToProject, {}))[1]
         const metadata = JSON.parse(strData)
         if (!metadata)

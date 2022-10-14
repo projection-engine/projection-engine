@@ -77,8 +77,10 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             require: settings.contentBrowserHotkeys.DELETE,
             callback: () => {
                 const s = [...SelectionStore.contentBrowserSelected]
-                SelectionStore.contentBrowserSelected = []
-                handleDelete(s, currentDirectory, setCurrentDirectory)
+                if(s.length > 0) {
+                    SelectionStore.contentBrowserSelected = []
+                    handleDelete(s, currentDirectory, setCurrentDirectory)
+                }
             }
         },
         CUT: {

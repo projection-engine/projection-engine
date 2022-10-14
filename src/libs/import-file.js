@@ -5,22 +5,20 @@ import FilesStore from "../stores/FilesStore";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import Loader from "./loader/Loader";
 import RegistryAPI from "./libs/RegistryAPI";
-import ContentBrowserAPI from "./libs/ContentBrowserAPI";
 
 import {GPU} from "../../public/engine/production";
 import {PreviewSystem} from "../../public/engine/editor";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS";
+import ROUTES from "../data/ROUTES";
 
 export default async function importFile(currentDirectory) {
-
-    const toImport = await ContentBrowserAPI.openDialog()
-    if (toImport.length > 0) {
-        const result = await ContentBrowserAPI.importFile(NodeFS.ASSETS_PATH  + currentDirectory.id, toImport)
-        if (toImport.filter(e => e.includes("gltf")).length > 0) {
+    const {filesImported, registryEntries} = await getCall(ROUTES.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
+    if(filesImported.length > 0) {
+        if (filesImported.filter(e => e.includes("gltf")).length > 0) {
             let newEntities = []
-            for (let i = 0; i < result.length; i++) {
-                const current = result[i]
+            for (let i = 0; i < registryEntries.length; i++) {
+                const current = registryEntries[i]
                 for (let j = 0; j < current.ids.length; j++) {
                     const res = await RegistryAPI.readRegistryFile(current.ids[j])
                     if (res) {
@@ -40,6 +38,12 @@ export default async function importFile(currentDirectory) {
             dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: newEntities})
         }
         alert.pushAlert("Import successful", "success")
-        FilesStore.refreshFiles().catch()
+        await FilesStore.refreshFiles()
     }
+    else
+        alert.pushAlert("Some error occurred")
+
+
+
+
 }

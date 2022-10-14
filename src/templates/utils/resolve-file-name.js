@@ -1,12 +1,7 @@
-import AssetAPI from "../../libs/libs/AssetAPI";
+import {getCall} from "shared-resources/frontend/libs/NodeFS";
 
 export default async function resolveFileName(path, ext){
-    let n = path + ext
-    let it = 0
-
-    while (await AssetAPI.assetExists(n)) {
-        n = path + `(${it})` + ext
-        it++
-    }
-    return n
+    const result =await getCall("resolve-name", {path, ext}, false)
+    console.trace(result)
+    return result
 }
