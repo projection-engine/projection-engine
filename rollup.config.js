@@ -22,6 +22,7 @@ const common = (inputFile, outputFile) => ({
         copy({
             targets: [
                 { src: 'public/engine/ammo/ammo.wasm.wasm', dest: 'public/build' },
+                { src: 'public/backend/libs/assimp/assimpjs.wasm', dest: 'public/build' }
             ]
         }),
         svelte({

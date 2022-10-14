@@ -1,5 +1,2 @@
-- Reworking views structure
-- Viewport view can now render other views 
-- Preferences and UI views can now be rendered outside viewport view
-- Removing selection dropdown from Header component
-- Tab view selection now occurs on tab itself
+- Importing assimpJS
+- Minifiing ammojs file
