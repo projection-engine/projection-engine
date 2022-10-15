@@ -6,36 +6,124 @@
     import LevelController from "../../libs/LevelController";
     import VIEWS from "../view/data/VIEWS";
     import TabsStore from "../../stores/TabsStore";
+    import {onDestroy, onMount} from "svelte";
+    import {v4} from "uuid";
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+    import Notification from "./Notification.svelte";
+    import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
 
     export let store
     export let settings
     export let engine
     export let translate
+    let notifications = []
+    let hasMessage = false
+    let activeNotifications = true
+    const ID = v4()
+    onMount(() => {
+        let timeout
+        alert.bindListener(ID, () => {
+            notifications = alert.cache
+        })
+        ConsoleAPI.initialize(() => {
+            hasMessage = true
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                hasMessage = false
+            }, 3500)
+        })
+        setInterval(() => console.error("TESTE"), 2000)
+    })
+    onDestroy(() => {
+        alert.removeListener(ID)
+    })
+
+    function openConsole() {
+        const views = [...settings.views]
+        const tab = views[settings.currentView]
+        if (tab.bottom.length > 0)
+            tab.bottom[0].push(VIEWS.CONSOLE)
+        else
+            tab.bottom[0] = [VIEWS.CONSOLE]
+
+        SettingsStore.updateStore({...settings, views})
+        TabsStore.update("bottom", 0, tab.bottom[0].length - 1)
+    }
 </script>
 
 <div class="level-selector">
-    <button on:click={undefined} class="button">
-        <Icon styles="font-size: 1rem">notifications</Icon>
-        <ToolTip content={translate("NOTIFICATIONS")}/>
-    </button>
+    {#if hasMessage}
+        <button class="button console" on:click={openConsole}>
+            <Icon styles="color: red">feedback</Icon>
+            <small>{translate("NEW_MESSAGE")}</small>
+            <ToolTip content={translate("SHOW_ON_CONSOLE")}/>
+        </button>
+        <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+    {/if}
+    <Dropdown hideArrow={true} styles="width: 300px">
+        <button
+                slot="button"
+                class="button"
+        >
+            <Icon styles="font-size: 1rem">notifications</Icon>
+            <ToolTip content={translate("NOTIFICATIONS")}/>
+        </button>
+        <div class="dropdown-container">
+            <div class="dropdown-header">
+                <button class="button button-small" style="gap: 4px" on:click={() => alert.clearCache()}>
+                    <Icon>clear_all</Icon>
+                    {translate("CLEAR")}
+                    <ToolTip content={translate("CLEAR")}/>
+                </button>
+                <button
+                        class="button button-small"
+                        on:click={() => {
+                            alert.toggleAlerts()
+                            activeNotifications = !activeNotifications
+                        }}
+                >
+                    {#if activeNotifications}
+                        <Icon>notifications</Icon>
+                    {:else}
+                        <Icon>notifications_off</Icon>
+                    {/if}
+                    <ToolTip content={translate("TOGGLE_NOTIFICATIONS")}/>
+                </button>
+            </div>
+            {#if notifications.length === 0}
+                <div style="height: 100%; width: 100%; position: relative">
+                    <div data-empty="-">
+                        <Icon styles="font-size: 75px">notifications</Icon>
+                        {translate("EMPTY")}
+                    </div>
+                </div>
+            {:else}
+                <VirtualList items={notifications} let:item>
+                    <Notification item={item}/>
+                </VirtualList>
+            {/if}
+        </div>
+    </Dropdown>
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <button
+
             class="button"
             on:click={_ => {
 
-                const views = [...settings.views]
-                if(views[settings.currentView].viewport[TabsStore.getValue("viewport")] === VIEWS.PREFERENCES)
-                    return
-                const vp = views[settings.currentView].viewport.filter(e => e !== VIEWS.PREFERENCES)
-                vp.push(VIEWS.PREFERENCES)
-                views[settings.currentView].viewport = vp
-                SettingsStore.updateStore({...settings, views})
-                TabsStore.update("viewport", undefined, views[settings.currentView].viewport.length - 1)
-            }}
+                    const views = [...settings.views]
+                    if(views[settings.currentView].viewport[TabsStore.getValue("viewport")] === VIEWS.PREFERENCES)
+                        return
+                    const vp = views[settings.currentView].viewport.filter(e => e !== VIEWS.PREFERENCES)
+                    vp.push(VIEWS.PREFERENCES)
+                    views[settings.currentView].viewport = vp
+                    SettingsStore.updateStore({...settings, views})
+                    TabsStore.update("viewport", undefined, views[settings.currentView].viewport.length - 1)
+                }}
     >
         <Icon styles="font-size: 1rem">settings</Icon>
         <ToolTip content={translate("SHOW_PREFERENCES")}/>
     </button>
+
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <Dropdown styles="height: 25px">
         <button slot="button" class="dropdown">
@@ -72,6 +160,18 @@
 </div>
 
 <style>
+
+    .console {
+        min-width: 22px !important;
+        max-width: unset !important;
+        padding-right: 6px;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-size: .73rem;
+        color: var(--pj-color-quinary);
+    }
+
     .level-selector {
         width: 100%;
         display: flex;
@@ -109,6 +209,29 @@
 
     .button:hover {
         background: var(--pj-border-primary);
+    }
+
+    .dropdown-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 350px;
+        background: var(--pj-background-tertiary);
+    }
+
+    .dropdown-header {
+        background: var(--pj-background-secondary);
+        display: flex;
+        justify-content: space-between;
+        height: 25px;
+        border-bottom: var(--pj-border-primary) 1px solid;
+    }
+
+    .button-small {
+        min-height: 22px !important;
+        max-height: 22px !important;
+        min-width: 22px !important;
+        max-width: unset !important;
     }
 
     .button:active {

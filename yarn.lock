@@ -3289,7 +3289,7 @@ set-blocking@^2.0.0:
 
 "shared-resources@https://github.com/projection-engine/shared-resources.git":
   version "0.0.0"
-  resolved "https://github.com/projection-engine/shared-resources.git#60faaea237af5081f0e439608753b58b810395b1"
+  resolved "https://github.com/projection-engine/shared-resources.git#7a9b2fcbeaa53de8db61c8e78c8751f9149d2782"
 
 sharp@^0.31.1:
   version "0.31.1"
@@ -3595,9 +3595,9 @@ svelte-preprocess@^4.10.7:
     strip-indent "^3.0.0"
 
 svelte@^3.50.1:
-  version "3.51.0"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.51.0.tgz#a1a0afb25dc518217f353dd73ea6471c128ddf84"
-  integrity sha512-PBITYIrsNOuW+Dtds00gSY68raNZQn7i59Dg/fjgf6WwyawPKeBwle692coO7ILZqSO+UJe9899aDn9sMdeOHA==
+  version "3.52.0"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.52.0.tgz#08259eff20904c63882b66a5d409a55e8c6743b8"
+  integrity sha512-FxcnEUOAVfr10vDU5dVgJN19IvqeHQCS1zfe8vayTfis9A2t5Fhx+JDe5uv/C3j//bB1umpLJ6quhgs9xyUbCQ==
 
 tar-fs@^2.0.0, tar-fs@^2.1.1:
   version "2.1.1"

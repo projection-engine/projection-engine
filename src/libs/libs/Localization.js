@@ -36,6 +36,11 @@ export default class Localization {
             TITLE: "Code editor",
         },
         CONTROL: {
+            SHOW_ON_CONSOLE: "Show on console",
+            NEW_MESSAGE: "New console message",
+            CLEAR: "Clear",
+            TOGGLE_NOTIFICATIONS: "Toggle notifications",
+            EMPTY: "Empty",
             NOTIFICATIONS: "Notifications",
             SHOW_PREFERENCES: "Show preferences",
             OPTIONS: "Options",
@@ -58,7 +63,7 @@ export default class Localization {
             SCRIPTING: "Scripts",
 
             TOGGLE_FRAMERATE: "Toggle detailed metrics",
-            NEW_MESSAGE: "New console message",
+
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
             VERSION: "1.0.0-beta",
             LOGGING_ENABLED: "Error logging",

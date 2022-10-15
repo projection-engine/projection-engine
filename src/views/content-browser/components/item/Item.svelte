@@ -92,8 +92,6 @@
         selected: selectionMap
     }
     $: isCard = viewType === ITEM_TYPES.CARD
-
-    $: console.log(data.size)
 </script>
 
 <span bind:this={ref} style={isCard ? undefined : "width: 100%"}>

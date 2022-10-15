@@ -16,22 +16,9 @@
     const {shell} = window.require("electron")
     let settings = {}
     let activeView
-    let hasMessage = false
-
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onMount(() => {
-        let timeout
-        HotKeysController.initializeListener(v => activeView = v)
-        ConsoleAPI.initialize(() => {
-            hasMessage = true
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                hasMessage = false
-            }, 3500)
-        })
 
-
-    })
+    onMount(() => HotKeysController.initializeListener(v => activeView = v))
     onDestroy(() => unsubscribeSettings())
     const translate = key => Localization.PROJECT.INFO[key]
     const openLogs = async () => {
@@ -57,13 +44,6 @@
     <div class="meta-data">
         <SceneStats/>
         <div data-vertdivider="-"></div>
-        {#if hasMessage}
-            <div class="console">
-                <Icon styles="font-size: .9rem; color: darkorange">info</Icon>
-                <div>{translate("NEW_MESSAGE")}</div>
-            </div>
-            <div data-vertdivider="-"></div>
-        {/if}
         <Dropdown hideArrow={true}>
             <button slot="button" class="error-logging">
                 <Icon>bug_report</Icon>
@@ -87,12 +67,6 @@
 </div>
 
 <style>
-    .console {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        color: var(--pj-color-quinary);
-    }
 
     .error-logging {
         border: none;

@@ -1,9 +1,1 @@
-- Integrating AssimpJS into pipeline
-- Fixing mesh import bugs
-- Connecting backend logs with frontend alerts/console
-- Fixed background color on console and hierarchy
-- Changes to content browser layout
-- Fixed content browser file type filter showing undefined
-- Fixed selection box on scene editor
-- Tabs serialization
-- Improvements to tabs structure
+- New notification features
