@@ -111,11 +111,8 @@
                     switchView={setViewportTab}
             />
         {/if}
-        {#if settings.showMetrics}
-            <Metrics/>
-        {/if}
     </div>
-    <GizmoToolTip/>
+
 </div>
 
 <style>

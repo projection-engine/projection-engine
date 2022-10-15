@@ -92,6 +92,7 @@
         position: absolute;
         right: 4px;
         bottom: 4px;
+        z-index: 10;
     }
 
     .section {

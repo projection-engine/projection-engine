@@ -32,7 +32,6 @@
                 hasMessage = false
             }, 3500)
         })
-        setInterval(() => console.error("TESTE"), 2000)
     })
     onDestroy(() => {
         alert.removeListener(ID)
@@ -52,14 +51,16 @@
 </script>
 
 <div class="level-selector">
-    {#if hasMessage}
-        <button class="button console" on:click={openConsole}>
-            <Icon styles="color: red">feedback</Icon>
+
+    <button class="button console" on:click={openConsole}>
+        <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: red" : "color: #999")}>feedback</Icon>
+        {#if hasMessage}
             <small>{translate("NEW_MESSAGE")}</small>
-            <ToolTip content={translate("SHOW_ON_CONSOLE")}/>
-        </button>
-        <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
-    {/if}
+        {/if}
+        <ToolTip content={translate("OPEN_CONSOLE")}/>
+    </button>
+    <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+
     <Dropdown hideArrow={true} styles="width: 300px">
         <button
                 slot="button"

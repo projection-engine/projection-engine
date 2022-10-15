@@ -21,7 +21,6 @@ export default class EntityConstructor {
         vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
         vec3.add(entity._translation, CameraAPI.translationBuffer, position)
 
-        console.log(position)
         entity.__changedBuffer[0] = 1
     }
 

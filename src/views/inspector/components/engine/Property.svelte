@@ -48,9 +48,10 @@
 </script>
 
 
-{#if attribute.type === Component.propTypes.NUMBER}
-    <Range
-            handleChange={v => {
+<div class="wrapper">
+    {#if attribute.type === Component.propTypes.NUMBER}
+        <Range
+                handleChange={v => {
                 if(!firstSubmit){
                     firstSubmit = true
                     submit(attribute.key, v)
@@ -58,20 +59,19 @@
                 }
                 submit(attribute.key, v)
             }}
-            variant="embedded"
-            onFinish={v => submit(attribute.key, v, true)}
-            minValue={attribute.min}
-            maxValue={attribute.max}
-            integer={attribute.increment === 1}
-            incrementPercentage={attribute.increment}
-            label={label}
-            value={value}
-            isAngle={attribute.isAngle}
-            disabled={isDisabled}
-    />
-{:else if attribute.type === Component.propTypes.ARRAY}
+                variant="embedded"
+                onFinish={v => submit(attribute.key, v, true)}
+                minValue={attribute.min}
+                maxValue={attribute.max}
+                integer={attribute.increment === 1}
+                incrementPercentage={attribute.increment}
+                label={label}
+                value={value}
+                isAngle={attribute.isAngle}
+                disabled={isDisabled}
+        />
+    {:else if attribute.type === Component.propTypes.ARRAY}
 
-    <div class="vector">
         {#each attribute.labels as partial, index}
             <Range
                     noOriginal={true}
@@ -99,92 +99,91 @@
                     value={value[index]}
             />
         {/each}
-    </div>
-    {#if attribute.defaultValue}
-        <button
-                class="reset-button"
-                on:click={() => {
+        {#if attribute.defaultValue}
+            <button
+                    class="reset-button"
+                    on:click={() => {
                          for(let i =0; i < attribute.defaultValue.length; i++)
                              value[i] = attribute.defaultValue[i]
                          submit(attribute.key, value, true)
                     }}>
-            <Icon styles="font-size: .9rem">undo</Icon>
-            {Localization.COMPONENTS.RANGE.UNDO}
-        </button>
-    {/if}
-{:else if attribute.type === Component.propTypes.BOOLEAN}
-    <Checkbox
-            handleCheck={() => submit(attribute.key, !value, true)}
-            label={label}
-            checked={value}
-            disabled={isDisabled}
-    />
-{:else if attribute.type === Component.propTypes.OPTIONS}
-    <Dropdown disabled={isDisabled} width="100%">
-        <button slot="button" disabled={isDisabled} class="dropdown">
-            {label}
-        </button>
-        {#each attribute.options as option}
-            <button on:click={() =>  submit(attribute.key, option.value, true)}>
-                {#if translate(option.label)}
-                    {translate(option.label)}
-                {:else}
-                    {option.label}
-                {/if}
+                <Icon styles="font-size: .9rem">undo</Icon>
+                {Localization.COMPONENTS.RANGE.UNDO}
             </button>
-        {/each}
-    </Dropdown>
-{:else if attribute.type === Component.propTypes.STRING}
-    <Input
-            searchString={value}
-            setSearchString={v => submit(attribute.key, v, true)}
-            onEnter={v => submit(attribute.key, v, true)}
-            onBlur={(_,v) => submit(attribute.key, v, true)}
-            placeholder={label}
-            disabled={isDisabled}
-    />
-{:else if attribute.type === Component.propTypes.COLOR}
-    <ColorPicker
-            disabled={isDisabled}
-            submit={({r,g,b}) => submit(attribute.key, [r, g, b], true)}
-            label={label}
-            value={value}
-            size={"small"}
-    />
-{:else if attribute.type === Component.propTypes.IMAGE}
-    <Selector
-            handleChange={setImage}
-            type="image"
+        {/if}
+    {:else if attribute.type === Component.propTypes.BOOLEAN}
+        <Checkbox
+                handleCheck={() => submit(attribute.key, !value, true)}
+                label={label}
+                checked={value}
+                disabled={isDisabled}
+        />
+    {:else if attribute.type === Component.propTypes.OPTIONS}
+        <Dropdown disabled={isDisabled} width="100%">
+            <button slot="button" disabled={isDisabled} class="dropdown">
+                {label}
+            </button>
+            {#each attribute.options as option}
+                <button on:click={() =>  submit(attribute.key, option.value, true)}>
+                    {#if translate(option.label)}
+                        {translate(option.label)}
+                    {:else}
+                        {option.label}
+                    {/if}
+                </button>
+            {/each}
+        </Dropdown>
+    {:else if attribute.type === Component.propTypes.STRING}
+        <Input
+                searchString={value}
+                setSearchString={v => submit(attribute.key, v, true)}
+                onEnter={v => submit(attribute.key, v, true)}
+                onBlur={(_,v) => submit(attribute.key, v, true)}
+                placeholder={label}
+                disabled={isDisabled}
+        />
+    {:else if attribute.type === Component.propTypes.COLOR}
+        <ColorPicker
+                disabled={isDisabled}
+                submit={({r,g,b}) => submit(attribute.key, [r, g, b], true)}
+                label={label}
+                value={value}
+                size={"small"}
+        />
+    {:else if attribute.type === Component.propTypes.IMAGE}
+        <Selector
+                handleChange={setImage}
+                type="image"
 
-            selected={value}
-    />
-{:else if attribute.type === Component.propTypes.MATERIAL}
-    <Selector
-            selected={value}
-            type="material"
-            terrainMaterials={attribute.terrainMaterials}
-            handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
-    />
-{:else if attribute.type === Component.propTypes.TERRAIN}
-    <Selector
-            selected={value}
-            type="terrain"
-            handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
-    />
-{:else if attribute.type === Component.propTypes.MESH}
-    <Selector
-            handleChange={loadMesh}
-            type="mesh"
-            selected={value}
-    />
-{/if}
-
+                selected={value}
+        />
+    {:else if attribute.type === Component.propTypes.MATERIAL}
+        <Selector
+                selected={value}
+                type="material"
+                terrainMaterials={attribute.terrainMaterials}
+                handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
+        />
+    {:else if attribute.type === Component.propTypes.TERRAIN}
+        <Selector
+                selected={value}
+                type="terrain"
+                handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
+        />
+    {:else if attribute.type === Component.propTypes.MESH}
+        <Selector
+                handleChange={loadMesh}
+                type="mesh"
+                selected={value}
+        />
+    {/if}
+</div>
 
 <style>
-    .vector {
+    .wrapper {
         display: grid;
         gap: 2px;
-        padding-left: 50%;
+        padding-left: 35%;
         width: 100%;
     }
 

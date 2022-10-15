@@ -22,6 +22,8 @@
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import GizmoToolTip from "./components/GizmoToolTip.svelte";
+    import Metrics from "../viewport/components/Metrics.svelte";
 
     let WORKER = selectionQueryWorker()
 
@@ -129,6 +131,10 @@
     $: console.log(isSelectBoxDisabled)
 </script>
 
+<GizmoToolTip/>
+{#if settings.showMetrics}
+    <Metrics/>
+{/if}
 <ViewHeader>
     <Header settings={settings} engine={engine}/>
 </ViewHeader>

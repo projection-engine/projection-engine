@@ -74,6 +74,8 @@
             )
             savedState = true
         }
+        if(key === "pivotPoint")
+            entity.__pivotChanged = true
         entity[key] = value
         entity.__changedBuffer[0] = 1
         if (save)

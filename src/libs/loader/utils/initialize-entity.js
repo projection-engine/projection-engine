@@ -28,8 +28,11 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         entity.changed = true
 
         entity.baseTransformationMatrix = Float32Array.from(data.baseTransformationMatrix)
-        if (data.pivotPoint)
-            entity.pivotPoint = data.pivotPoint
+        if (data.pivotPoint) {
+            entity.pivotPoint[0] = data.pivotPoint[0]
+            entity.pivotPoint[1] = data.pivotPoint[1]
+            entity.pivotPoint[2] = data.pivotPoint[2]
+        }
 
         const e = entity.addComponent(COMPONENTS.MESH)
         e.materialID = GPU.materials.get(data.material) != null ? data.material : FALLBACK_MATERIAL

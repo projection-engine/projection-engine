@@ -1,1 +1,4 @@
-- New notification features
+- Pivot point now working
+- Added form for pivot point
+- Added keyboard shortcuts for pivot point translation
+- Added keyboard shortcut for fixed scaling position

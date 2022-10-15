@@ -36,7 +36,7 @@ export default class Localization {
             TITLE: "Code editor",
         },
         CONTROL: {
-            SHOW_ON_CONSOLE: "Show on console",
+            OPEN_CONSOLE: "Open console",
             NEW_MESSAGE: "New console message",
             CLEAR: "Clear",
             TOGGLE_NOTIFICATIONS: "Toggle notifications",
@@ -77,10 +77,12 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            ALT_FOR_FIXED: "Fixed scaling",
+            CTRL_FOR_UNITARY: "Unitary",
+            ALT_FOR_PIVOT: "Pivot point",
             PREFERENCES: "Preferences",
             FOCUS: "Focus on active entity",
-            PHYSICS_COLLIDER: "Physics collider",
-            PIVOT: "Pivot point",
+
             METRICS: "Metrics",
             SWITCH_BETWEEN_CAMERAS: "Switch between cameras",
             LEVEL: "Level",
@@ -287,6 +289,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+
             LOCKED: "Is locked",
             HAS_COLLISION: "Has collision",
 
@@ -354,7 +357,7 @@ export default class Localization {
             INDIRECT_LIGHTS: "Indirect lighting",
             DIFFUSE_PROBE_INFLUENCE: "Diffuse probe influence",
             SPECULAR_PROBE_INFLUENCE: "Specular probe influence",
-
+            PIVOT_POINT: "Pivot point",
 
             PRIMITIVES: "Primitives",
             CONTENT_BROWSER: "Content browser",

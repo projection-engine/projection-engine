@@ -64,31 +64,6 @@
                 <ToolTip content={translate("S_GIZMO")}/>
             </button>
         </div>
-
-        <div class="button-group viewport">
-            <button
-                    class:visible={!hidden}
-                    class="button viewport"
-                    data-highlight={settings.gizmoSelection === GIZMOS.PIVOT ? "-" : undefined}
-                    on:click={() => SettingsStore.updateStore({...settings, gizmoSelection: settings.gizmoSelection === GIZMOS.PIVOT ? undefined: GIZMOS.PIVOT})}>
-                <Icon styles="font-size: 1.15rem; color:#ff5555">place</Icon>
-                {#if !hidden}
-                    {translate("PIVOT")}
-                {/if}
-                <ToolTip content={translate("PIVOT")}/>
-            </button>
-            <button
-                    class:visible={!hidden}
-                    class="button viewport"
-                    data-highlight={settings.gizmoSelection === GIZMOS.PHYSICS_COLLIDER ? "-" : undefined}
-                    on:click={() => SettingsStore.updateStore({...settings, gizmoSelection: settings.gizmoSelection === GIZMOS.PHYSICS_COLLIDER  ? undefined: GIZMOS.PHYSICS_COLLIDER})}>
-                <Icon styles="font-size: 1.15rem; color: #00DC00">compress</Icon>
-                {#if !hidden}
-                    {translate("PHYSICS_COLLIDER")}
-                {/if}
-                <ToolTip content={translate("PHYSICS_COLLIDER")}/>
-            </button>
-        </div>
     </div>
     <ResizableBar
             onResizeEnd={(_, previous) => {

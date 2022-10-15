@@ -1,6 +1,6 @@
 <script>
     import Accordion from "../../../../components/accordion/Accordion.svelte";
-    import ComponentAttribute from "./Property.svelte";
+    import Property from "./Property.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
     import removeComponent from "../../utils/remove-component";
@@ -36,7 +36,7 @@
                 <fieldset>
                     <legend>{translate(propAttr.label) ? translate(propAttr.label) : propAttr.label}</legend>
                     {#each propAttr.children as attribute}
-                        <ComponentAttribute
+                        <Property
                                 component={component}
                                 submit={submit}
                                 translate={translate}
@@ -46,7 +46,7 @@
                 </fieldset>
 
             {:else if propAttr.type !== "group"}
-                <ComponentAttribute
+                <Property
                         component={component}
                         submit={submit}
                         translate={translate}
