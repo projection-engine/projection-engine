@@ -2,6 +2,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import KEYS from "../../data/KEYS";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import {onDestroy, onMount} from "svelte";
 
 
     export let addNewTab
@@ -14,6 +15,8 @@
     export let templates
     export let updateView
     export let disabled
+
+    let ref
 
     const handler = (e, v, i) => {
         switch (e.type) {
@@ -39,12 +42,23 @@
             case "click":
                 setCurrentView(i)
                 break
+            case "wheel":
+                e.preventDefault();
+                if (ref.scrollWidth > ref.offsetWidth)
+                    ref.scrollLeft += e.deltaY;
+                break
         }
     }
+    onMount(() => {
+        ref.addEventListener("wheel", handler);
+    })
+    onDestroy(() => {
+        ref.removeEventListener("wheel", handler);
+    })
 
 </script>
 
-<div class="container">
+<div class="container" bind:this={ref}>
     {#each tabs as v, i}
         <div data-highlight={i === currentTab ? "-" : undefined} class="view">
             {#if v.icon}
@@ -149,7 +163,8 @@
         font-size: .7rem;
         border-radius: 3px;
     }
-    input{
+
+    input {
         padding: 0 4px;
     }
 
@@ -165,11 +180,13 @@
     }
 
     .container {
+        width: 100%;
         background: var(--pj-background-tertiary);
         max-height: 30px;
         min-height: 30px;
         display: flex;
         align-items: center;
+        overflow: hidden;
         gap: 2px;
     }
 </style>

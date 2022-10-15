@@ -25,6 +25,7 @@ import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "./libs/Localization";
 import {CameraTracker} from "../../public/engine/editor";
 import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import TabsStore from "../stores/TabsStore";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -44,8 +45,11 @@ export default class LevelController {
 
                 if (meta.settings != null) {
                     const newSettings = {...SETTINGS, ...meta.settings}
-                    if(newSettings.views[0].top == null)
+                    if (newSettings.views[0].top == null)
                         newSettings.views = SETTINGS
+
+                    if (newSettings.tabsControllerCache)
+                        TabsStore.updateStore(newSettings.tabsControllerCache)
                     SettingsStore.updateStore(newSettings)
                 }
                 EngineStore.updateStore({...EngineStore.engine, meta: {...meta, settings: undefined}, isReady: true})
@@ -182,7 +186,8 @@ export default class LevelController {
                                 CameraTracker.yRotation
                             ],
                             cameraTranslation: [...CameraAPI.translationBuffer]
-                        }
+                        },
+                        tabsControllerCache: TabsStore.data
                     }
                 }), true)
             let pathToWrite

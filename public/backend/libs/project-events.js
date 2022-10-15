@@ -10,6 +10,7 @@ import importFiles from "../utils/import-files";
 import ProjectMap from "./ProjectMap";
 import createRegistryEntry from "../utils/create-registry-entry";
 import rm from "shared-resources/backend/utils/rm";
+import resolveFileName from "../utils/resolve-file-name";
 
 
 const {ipcMain, dialog, app, screen} = require("electron")
@@ -53,7 +54,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.FILE_DIALOG, async (ev, {listenID, currentDirectory}) => {
         const properties = ["openFile", "multiSelections"]
         const result = await dialog.showOpenDialog({
-            properties, filters: [{name: "Assets", extensions: ["jpg", "png", "jpeg", "gltf", "fbx", "obj", "blend"]}]
+            properties, filters: [{name: "Assets", extensions: ["jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]
         })
         let filesImported = result.filePaths || [],
             registryEntries = []
@@ -74,13 +75,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         ProjectMap.registry = ProjectMap.registry.filter(r => !data.includes(r))
     })
     ipcMain.on("resolve-name", (event, {ext, path, listenID}) => {
-        let n = path + ext
-        let it = 0
-        while (fs.existsSync(ProjectMap.pathToAssets + pathRequire.sep + n)) {
-            n = path + `-${it}` + ext
-            it++
-        }
-        event.sender.send("resolve-name" + listenID, n)
+        event.sender.send("resolve-name" + listenID, resolveFileName(path, ext))
     })
     ipcMain.on("create-registry", async (event, data) => {
         console.log(data)
@@ -104,6 +99,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         event.sender.send(ROUTES.REFRESH_CONTENT_BROWSER + listenID, result)
     })
     ipcMain.on("read-registry", async (event, {listenID}) => event.sender.send("read-registry" + listenID, ProjectMap.registry))
+
 
     ipcMain.on(ROUTES.IMPORT_GLTF, async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
         fs.readFile(pathRequire.resolve(filePath), async (e, data) => {

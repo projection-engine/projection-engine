@@ -80,7 +80,7 @@ export default function getCreationOptions(currentDirectory, materials) {
 
             onClick: async () => {
                 let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
-console.log(path)
+
                 await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
                 await FilesStore.refreshFiles()
             }

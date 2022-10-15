@@ -5,6 +5,7 @@ import ProjectMap from "../libs/ProjectMap";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
+import assimpLoader from "./assimp/assimp-loader";
 
 
 const sharp = require("sharp")
@@ -12,7 +13,7 @@ const fs = require("fs")
 const pathRequire = require("path")
 export default async function importFiles(filesToLoad, dir, registryEntries) {
     const targetDir = pathRequire.resolve(dir)
-    let result = []
+    let result = [], meshesToRead = []
     for (let i = 0; i < filesToLoad.length; i++) {
         try {
             const filePath = filesToLoad[i]
@@ -25,7 +26,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
                 case "jpg":
                 case "jpeg": {
                     if (!fs.existsSync(newRoot + FILE_TYPES.TEXTURE)) {
-                        const bufferData =  new Buffer(await readTypedFile(filePath, "buffer"))
+                        const bufferData = new Buffer(await readTypedFile(filePath, "buffer"))
                         const base64 = `data:image/${type};base64,` + bufferData.toString("base64")
                         const data = JSON.stringify({...TEXTURE_TEMPLATE, base64})
                         await fs.promises.writeFile(newRoot + FILE_TYPES.TEXTURE, data)
@@ -37,7 +38,11 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
                     }
                     break
                 }
+                case "dae":
+                case "glb":
+                case "fbx":
                 case "gltf":
+                    meshesToRead.push(filePath)
                     // result.push({
                     //     file: name.split(".")[0],
                     //     ids: await new Promise(resolve => {
@@ -62,6 +67,9 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
             console.error(error)
         }
     }
+    if (meshesToRead.length > 0)
+        await assimpLoader(targetDir, meshesToRead)
+
 
     return result
 }

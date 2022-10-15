@@ -522,9 +522,9 @@
   integrity sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==
 
 "@types/node@*":
-  version "18.8.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.8.5.tgz#6a31f820c1077c3f8ce44f9e203e68a176e8f59e"
-  integrity sha512-Bq7G3AErwe5A/Zki5fdD3O6+0zDChhg671NfPjtIcbtzDNZTv4NPKMRFr7gtYPG7y+B8uTiNK4Ngd9T0FTar6Q==
+  version "18.11.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.0.tgz#f38c7139247a1d619f6cc6f27b072606af7c289d"
+  integrity sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==
 
 "@types/node@^16.11.26":
   version "16.11.65"
@@ -3289,7 +3289,7 @@ set-blocking@^2.0.0:
 
 "shared-resources@https://github.com/projection-engine/shared-resources.git":
   version "0.0.0"
-  resolved "https://github.com/projection-engine/shared-resources.git#93ebab150ecfb975d5cff8247d17600b784dcc9f"
+  resolved "https://github.com/projection-engine/shared-resources.git#60faaea237af5081f0e439608753b58b810395b1"
 
 sharp@^0.31.1:
   version "0.31.1"

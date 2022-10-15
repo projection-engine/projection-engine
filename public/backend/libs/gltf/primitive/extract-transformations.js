@@ -6,7 +6,7 @@ export default function extractTransformations (node, parentTransform){
         name: node.name,
         meshIndex: node.mesh,
         scaling: [1, 1, 1],
-        rotation: [0, 0, 0],
+        _rotationQuat: [0, 0, 0],
         translation: [0, 0, 0],
         children: [],
         baseTransformationMatrix: Array.from(mat4.create())

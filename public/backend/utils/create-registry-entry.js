@@ -8,7 +8,6 @@ export default async function createRegistryEntry(fID, pathToFile) {
     const path = pathToFile.replaceAll(pathRequire.sep + pathRequire.sep, pathRequire.sep)
     try {
         const p = pathRequire.resolve(ProjectMap.pathToRegistry + pathRequire.sep + fID + FILE_TYPES.REGISTRY)
-        console.log(p + "----------------------------------------------------------------")
         ProjectMap.registry.push(
             {
                 id: fID,

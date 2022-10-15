@@ -19,6 +19,7 @@
 
 
     onMount(() => {
+        ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
             const d = sessionStorage.getItem(PROJECT_PATH)
@@ -29,7 +30,6 @@
                     initialized = true
                 })
             }
-
         }, 100)
     })
 </script>

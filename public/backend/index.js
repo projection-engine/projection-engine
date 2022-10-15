@@ -1,6 +1,5 @@
 import fileSystem from "shared-resources/backend/file-system"
 import buildProjectWindow from "./libs/build-project-window";
-import writeOutput from "./libs/write-output";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 const {app, BrowserWindow} = require('electron');
@@ -9,13 +8,10 @@ const os = require("os");
 const path = require("path");
 
 
+app.commandLine.appendSwitch('js-flags', '--max-old-space-size=16384');
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
-
-
 async function createEnvironment() {
     fileSystem()
-    if (isDev)
-        writeOutput()
 
     let pathToProject
     if (isDev)

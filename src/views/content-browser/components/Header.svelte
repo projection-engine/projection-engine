@@ -1,14 +1,11 @@
 <script>
 
     import importFile from "../../../libs/import-file"
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
 
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import selection from "../utils/selection";
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import getFileTypes from "../utils/get-file-types";
 
     export let translate
@@ -17,8 +14,7 @@
     export let setView
     export let fileType
     export let setFileType
-    export let setSearchString
-    export let searchString
+
 
     $: fileTypes = getFileTypes()
 </script>
@@ -58,39 +54,7 @@
     </button>
 </Dropdown>
 
-<div data-vertdivider="-"></div>
-<Dropdown asButton={true}>
-    <button slot="button" data-viewbutton="-">
-        <ToolTip content={translate("FILTER_TYPE")}/>
-        <Icon styles="font-size: .9rem">filter_alt</Icon>
-        {#if fileType}
-            {fileType.toLowerCase().replace("_", " ")}
-        {:else}
-            {translate("FILE_TYPE")}
-        {/if}
-    </button>
-    {#each fileTypes as k, i}
-        <button
-                on:click={() => setFileType(fileType === FILE_TYPES[k[0]] ? undefined : FILE_TYPES[k[0]])}
-                style="text-transform: capitalize"
-        >
-            {#if fileType === FILE_TYPES[k[0]]}
-                <Icon>check</Icon>
-            {:else}
-                <div style="width: 1.1rem"></div>
-            {/if}
-            {k[1]}
-        </button>
-    {/each}
-</Dropdown>
-<Input
-        hasBorder={true}
-        width={"250px"}
-        height="22px"
-        placeholder={translate("SEARCH")}
-        searchString={searchString}
-        setSearchString={setSearchString}
-/>
+
 
 <button
         class="settings-button"

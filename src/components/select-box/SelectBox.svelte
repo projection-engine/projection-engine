@@ -8,6 +8,7 @@
     export let selected
     export let nodes
     export let allowAll
+    export let targetElement
     let ref
 
     $: ids = nodes.map(n => n.id)
@@ -59,7 +60,9 @@
         event.path.forEach(el => {
             hasDraggable = hasDraggable || el.draggable === true
         })
-        return (ref.parentElement === target || target.id === targetElementID || !hasDraggable) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+        if (ref)
+            return (ref.parentElement === target || target.id === targetElementID || !hasDraggable) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+        return false
     }
 
     const handleMouseDown = (event) => {
@@ -83,13 +86,17 @@
                         x2: bBox.x + bBox.width,
                         y2: bBox.y + bBox.height
                     }
-                    let toSelect = [], elements = Array.from(ref.parentElement.querySelectorAll("[data-id]")).map(e => ({id: e.getAttribute("data-id"), element: e}))
+                    let toSelect = [],
+                        elements = Array.from(ref.parentElement.querySelectorAll("[data-id]")).map(e => ({
+                            id: e.getAttribute("data-id"),
+                            element: e
+                        }))
                     console.log(elements)
                     for (let index = 0; index < nodes.length; index++) {
                         const node = nodes[index]
                         const elBox = elements.find(e => e.id === node.id)?.element?.getBoundingClientRect?.()
                         console.log(elements.find(e => e.id === node.id), node)
-                        if(!elBox)
+                        if (!elBox)
                             continue
                         if (elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2)
                             toSelect.push(node.id)
@@ -117,17 +124,20 @@
     }
     $: {
 
-        if (ref) {
+        if (ref || targetElement) {
+            const el = targetElement ? targetElement : ref.parentElement
             if (disabled)
-                ref.parentElement.removeEventListener("mousedown", handleMouseDown)
+                el.removeEventListener("mousedown", handleMouseDown)
             if (!initialized && !disabled) {
                 initialized = true
-                ref.parentElement.addEventListener("mousedown", handleMouseDown)
+                el.addEventListener("mousedown", handleMouseDown)
             }
         }
     }
     onDestroy(() => {
-        ref.parentElement.removeEventListener("mousedown", handleMouseDown)
+        const el = targetElement ? targetElement : ref?.parentElement
+        if(el)
+            el.removeEventListener("mousedown", handleMouseDown)
     })
 </script>
 

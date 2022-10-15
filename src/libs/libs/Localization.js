@@ -36,6 +36,7 @@ export default class Localization {
             TITLE: "Code editor",
         },
         CONTROL: {
+            NOTIFICATIONS: "Notifications",
             SHOW_PREFERENCES: "Show preferences",
             OPTIONS: "Options",
             LEVEL: "Level",

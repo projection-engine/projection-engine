@@ -76,6 +76,8 @@
         <ViewGroup
                 hidden={hidden}
                 views={views}
+                groupIndex={groupIndex}
+                id={id}
                 let:view
                 let:index
                 switchView={(newView, index) => switchView(newView, groupIndex, tabs, index, setTabs)}

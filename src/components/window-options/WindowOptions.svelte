@@ -1,18 +1,19 @@
 <script>
-    import EngineStore from "../stores/EngineStore";
+    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import Localization from "../libs/libs/Localization";
+    import Localization from "../../libs/libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import FilesStore from "../stores/FilesStore";
+    import FilesStore from "../../stores/FilesStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import LevelController from "../libs/LevelController";
-    import FRAME_OPTIONS from "../templates/FRAME_OPTIONS";
-    import SettingsStore from "../stores/SettingsStore";
-    import Tabs from "./tabs/Tabs.svelte";
-    import VIEWS from "./view/data/VIEWS";
+    import LevelController from "../../libs/LevelController";
+    import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
+    import SettingsStore from "../../stores/SettingsStore";
+    import Tabs from "../tabs/Tabs.svelte";
+    import VIEWS from "../view/data/VIEWS";
     import CreationController from "./CreationController.svelte";
-    import VIEWPORT_TABS from "../data/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
+    import OtherSettings from "./OtherSettings.svelte";
 
     let engine
     let store
@@ -54,7 +55,6 @@
         <Icon>save</Icon>
         <ToolTip content={translate("SAVE")}/>
     </button>
-    <div data-vertdivider="-" style="height: 15px"></div>
     <Dropdown hideArrow="true">
         <button slot="button">
             <Icon>menu</Icon>
@@ -78,20 +78,9 @@
             {/if}
         {/each}
     </Dropdown>
-    <div data-vertdivider="-" style="height: 15px"></div>
-    <button
-            on:click={_ => {
-                const views = [...settings.views]
-                views[settings.currentView].viewport.push(VIEWPORT_TABS.PREFERENCES)
-                SettingsStore.updateStore({...settings, views})
-            }}
-    >
-        <Icon styles="font-size: 1rem">settings</Icon>
-        <ToolTip content={translate("SHOW_PREFERENCES")}/>
-    </button>
-    <div data-vertdivider="-" style="height: 15px"></div>
+    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <CreationController/>
-    <div data-vertdivider="-" style="height: 15px"></div>
+    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <Tabs
             allowRenaming={true}
             addNewTab={addNewTab}
@@ -100,58 +89,11 @@
             currentTab={settings.currentView}
             setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
     />
-    <div class="level-selector">
-        <Dropdown >
-            <button slot="button" class="dropdown">
-                <Icon>forest</Icon>
-                <div data-overflow="-">
-                    {#if engine.currentLevel}
-                        {engine.currentLevel.name}
-                    {:else}
-                        {translate("DEFAULT_LEVEL")}
-                    {/if}
-                </div>
-                <ToolTip content={translate("LEVEL")}/>
-            </button>
-            <button on:click={() => LevelController.loadLevel()} style="max-width: unset; min-height: unset">
-                {#if !engine.currentLevel}
-                    <Icon styles="font-size: .9rem">check</Icon>
-                {:else}
-                    <div style="width: .9rem"></div>
-                {/if}
-                {translate("DEFAULT_LEVEL")}
-            </button>
-            <div data-divider="-"></div>
-            {#each store.levels as level}
-                <button on:click={() => LevelController.loadLevel(level)}  style="max-width: unset; min-height: unset">
-                    {#if engine.currentLevel?.registryID === level.registryID}
-                        <Icon styles="font-size: .9rem">check</Icon>
-                    {:else}
-                        <div style="width: .9rem"></div>
-                    {/if}
-                    {level.name}
-                </button>
-            {/each}
-        </Dropdown>
-    </div>
+    <OtherSettings store={store} settings={settings} engine={engine} translate={translate}/>
 </div>
 
 <style>
-    .level-selector {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
 
-    .dropdown {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.7rem;
-        padding: 0 0 0 4px;
-        max-width: unset;
-    }
 
     .container {
         border-bottom: var(--pj-border-primary) 1px solid;

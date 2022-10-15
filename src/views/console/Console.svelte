@@ -161,7 +161,7 @@
                 <ToolTip content={translate("CLICK_TO_SHOW_OBJECT")}/>
             {/if}
             <pre data-overflow="-">{item.message}</pre>
-            <div style="margin-right: auto; text-align: right;">{item.src}</div>
+            <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>
         </div>
     </VirtualList>
 </div>
@@ -212,7 +212,7 @@
     .log {
         padding: 0 4px;
         width: 100%;
-        color: #686d71;
+        color: var(--pj-color-quinary);
 
     }
 

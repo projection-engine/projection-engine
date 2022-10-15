@@ -3,6 +3,9 @@
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../data/VIEWS";
+    import TabsStore from "../../../stores/TabsStore";
+    import {onDestroy} from "svelte";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let groupIndex
     export let views
@@ -10,8 +13,14 @@
     export let removeTab
     export let hidden
     export let switchView
+    export let id
+    export let settings
 
+    let currentView
     let currentTab = 0
+    const unsubscribeSettings = SettingsStore.getStore(v => currentView = v.currentView)
+    const unsubscribeTabs = TabsStore.getStore(_ => currentTab = TabsStore.getValue(id, groupIndex))
+    $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
     $: if (groupIndex != null) currentTab = 0
     $: view = views[currentTab]
 
@@ -23,6 +32,10 @@
         id: value
     }))
 
+    onDestroy(() => {
+        unsubscribeTabs()
+        unsubscribeSettings()
+    })
 
 </script>
 
@@ -33,10 +46,10 @@
                 templates={viewTemplates}
                 allowDeletion={true}
                 addNewTab={addNewTab}
-                removeTab={i => removeTab(i, n => currentTab = n, currentTab)}
+                removeTab={i => removeTab(i, n => TabsStore.update(id, groupIndex, n), currentTab)}
                 tabs={tabs}
                 currentTab={currentTab}
-                setCurrentView={v => currentTab = v}
+                setCurrentView={v => TabsStore.update(id, groupIndex, v)}
         />
     </div>
     <slot view={view} index={currentTab}/>

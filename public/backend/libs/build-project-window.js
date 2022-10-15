@@ -4,6 +4,7 @@ import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 import projectEvents from "./project-events";
 import ProjectMap from "./ProjectMap";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
+import writeOutput from "./write-output";
 
 const {BrowserWindow, ipcMain, screen} = require("electron")
 const path = require("path");
@@ -33,6 +34,7 @@ export default async function buildProjectWindow(pathToProject, isDev) {
             show: false,
             icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
         })
+        writeOutput(window)
         window.setMenu(null)
         window.on("ready-to-show", () => {
             window.show()

@@ -123,7 +123,8 @@
         document.removeEventListener("dragend", onDragEnd)
         unsubscribe()
         clearTimeout(timeout)
-        resizeOBS.disconnect()
+        if(resizeOBS)
+            resizeOBS.disconnect()
     })
 </script>
 

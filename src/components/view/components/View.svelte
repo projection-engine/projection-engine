@@ -8,7 +8,7 @@
     import Preferences from "../../../views/preferences/Preferences.svelte";
     import UILayout from "../../../views/ui/UIEditor.svelte";
     import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
-    import EditorLayout from "../../../views/editor/SceneEditor.svelte";
+    import EditorLayout from "../../../views/scene-editor/SceneEditor.svelte";
     import TerrainLayout from "../../../views/terrain/TerrainEditor.svelte";
 
     export let styles
@@ -68,6 +68,6 @@
         flex-direction: column;
         align-items: flex-start;
         align-content: flex-start;
-        background-color: var(--pj-background-secondary);
+        background-color: var(--pj-background-tertiary);
     }
 </style>

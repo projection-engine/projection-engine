@@ -126,6 +126,7 @@
             }
         }
     }
+    $: console.log(isSelectBoxDisabled)
 </script>
 
 <ViewHeader>
@@ -134,10 +135,11 @@
 <GizmoBar settings={settings}/>
 <CameraBar/>
 <SelectBox
+        targetElement={gpu.canvas}
+        allowAll={true}
         targetElementID={RENDER_TARGET}
         disabled={isSelectBoxDisabled}
         setSelected={setSelectionBox}
-        target={RENDER_TARGET}
         selected={[]}
         nodes={[]}
 />

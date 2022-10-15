@@ -3,12 +3,12 @@
     import FilesStore from "../../stores/FilesStore";
     import Localization from "../../libs/libs/Localization";
     import Header from "../../components/view/components/ViewHeader.svelte";
-    import ControlBar from "./components/ControlBar.svelte";
+    import ControlBar from "./components/Header.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Browser from "./components/Browser.svelte";
-    import BrowserNavigation from "./components/BrowserNavigation.svelte";
+    import BrowserNavigation from "./components/NavigationHeader.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../components/view/libs/ViewStateController";
@@ -92,16 +92,11 @@
         icon={"folder"}
 >
     <ControlBar
-            setFileType={v => fileType = v}
-            fileType={fileType}
+
             currentDirectory={currentDirectory}
             translate={translate}
             view={view}
             setView={v => view = v}
-
-
-            searchString={searchString}
-            setSearchString={v => searchString = v}
     />
 </Header>
 
@@ -121,10 +116,14 @@
     <div class="browser">
         {#if view.navigation}
             <BrowserNavigation
+                    fileType={fileType}
+                    setFileType={v => fileType = v}
                     setViewType={v => viewType = v}
                     viewType={viewType}
                     bookmarks={store.bookmarks}
                     path={path}
+                    searchString={searchString}
+                    setSearchString={v => searchString = v}
                     currentDirectory={currentDirectory}
                     setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                     navigationHistory={navigationHistory}
@@ -158,6 +157,7 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        padding: 0 3px 3px;
         overflow: hidden;
     }
 
