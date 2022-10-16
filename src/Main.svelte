@@ -9,7 +9,9 @@
     import PROJECT_PATH from "shared-resources/PROJECT_PATH";
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./data/RENDER_TARGET";
-    import Localization from "./libs/libs/Localization";
+    import Localization from "./libs/Localization";
+    import {GizmoSystem} from "../public/engine/editor";
+    import ActionHistoryAPI from "./libs/ActionHistoryAPI";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -19,6 +21,7 @@
 
 
     onMount(() => {
+        GizmoSystem.save = ActionHistoryAPI.pushGroupChange
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {

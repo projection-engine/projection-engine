@@ -1,7 +1,7 @@
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import SettingsStore from "../stores/SettingsStore";
-import UndoRedoAPI from "./libs/UndoRedoAPI";
+import UndoRedoAPI from "./UndoRedoAPI";
 import {Engine, EntityAPI} from "../../public/engine/production";
 import HierarchyController from "./HierarchyController";
 import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
@@ -10,7 +10,8 @@ export default class ActionHistoryAPI {
     static targets = {
         settings: "SETTINGS",
         entity: "ENTITY",
-        block: "BLOCK"
+        block: "BLOCK",
+        entities: "ENTITIES"
     }
     static controller = new UndoRedoAPI()
 
@@ -21,11 +22,7 @@ export default class ActionHistoryAPI {
 
     static pushChange({target, entityID, component, key, changeValue}) {
         let value
-        if (changeValue?.buffer != null) {
-            value = []
-            for (let i = 0; i < changeValue.length; i++)
-                value[i] = changeValue[i]
-        } else if (typeof changeValue === "object")
+        if (typeof changeValue === "object")
             value = structuredClone(changeValue)
         else value = changeValue
         ActionHistoryAPI.controller.save({
@@ -36,6 +33,17 @@ export default class ActionHistoryAPI {
             changeValue: value
         })
     }
+
+    static pushGroupChange(entities, changeValue, key, component) {
+        ActionHistoryAPI.controller.save({
+            entities,
+            changeValue,
+            key,
+            component,
+            target: ActionHistoryAPI.targets.entities
+        })
+    }
+
     static saveEntity(entityID, component, key, changeValue) {
         ActionHistoryAPI.pushChange({
             target: ActionHistoryAPI.targets.entity,
@@ -45,6 +53,7 @@ export default class ActionHistoryAPI {
             key
         })
     }
+
     static pushBlockChange(original) {
         ActionHistoryAPI.controller.save({
             target: ActionHistoryAPI.targets.block,
@@ -84,13 +93,39 @@ export default class ActionHistoryAPI {
                     else
                         entity.components.get(currentAction.component)[currentAction.key] = currentAction.changeValue
                 } else {
-                    if (entity[currentAction.key]?.buffer != null) {
+                    const value = entity[currentAction.key]
+                    if (Array.isArray(value)) {
                         for (let i = 0; i < currentAction.changeValue.length; i++)
-                            entity[currentAction.key][i] = currentAction.changeValue[i]
+                            value[i] = currentAction.changeValue[i]
                     } else
                         entity[currentAction.key] = currentAction.changeValue
                     entity.changed = true
                 }
+                EngineStore.updateStore()
+                break
+            }
+            case targets.entities: {
+                const entities = []
+                for (let i = 0; i < currentAction.entities.length; i++) {
+                    const entity = QueryAPI.getEntityByID(currentAction.entities[i])
+                    entities.push(entity)
+                    if (!entity)
+                        continue
+                    if (currentAction.component != null) {
+                        if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
+                            entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue[i]
+                        else
+                            entity.components.get(currentAction.component)[currentAction.key] = currentAction.changeValue[i]
+                    } else {
+                        const value = entity[currentAction.key]
+                        if (Array.isArray(value)) {
+                            for (let j = 0; j < value.length; j++)
+                                value[i] = currentAction.changeValue[i][j]
+                        } else
+                            entity[currentAction.key] = currentAction.changeValue[i]
+                    }
+                }
+                entities.forEach(e => e.changed = true)
                 EngineStore.updateStore()
                 break
             }

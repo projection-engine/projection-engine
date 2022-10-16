@@ -5,7 +5,7 @@ export default function getIcon(icon, metadata, childrenQuantity, type) {
         return icon
     if (type === 0)
         return childrenQuantity === 0 ? "folder_open" : "folder"
-    if (metadata.type === FILE_TYPES.MESH)
+    if (metadata.type === FILE_TYPES.PRIMITIVE)
         return "category"
     return "texture"
 }

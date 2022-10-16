@@ -11,7 +11,7 @@
 
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import EntityAPI from "../../../../../public/engine/production/apis/EntityAPI";
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import PointLightComponent from "../../../../../public/engine/production/components/rendering/PointLightComponent";
     import DirectionalLightComponent
         from "../../../../../public/engine/production/components/rendering/DirectionalLightComponent";

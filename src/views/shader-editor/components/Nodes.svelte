@@ -21,7 +21,7 @@
     }
 </script>
 
-<Dropdown asButton="true">
+<Dropdown>
     <button slot="button" class="button selector">
         {translate("ADD")}
     </button>

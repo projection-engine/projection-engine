@@ -1,11 +1,11 @@
 <script>
 
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import SettingsStore from "../../stores/SettingsStore";
-    import HotKeysController from "../../libs/libs/HotKeysController";
+    import HotKeysController from "../../libs/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
     import Tabs from "../../components/tabs/Tabs.svelte";

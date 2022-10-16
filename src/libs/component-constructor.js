@@ -1,5 +1,5 @@
-import FilesAPI from "./libs/FilesAPI"
-import RegistryAPI from "./libs/RegistryAPI";
+import FilesAPI from "./FilesAPI"
+import RegistryAPI from "./RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
 import {EntityAPI} from "../../public/engine/production";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";

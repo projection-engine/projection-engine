@@ -1,10 +1,10 @@
 <script>
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import AssetAPI from "../../../../libs/libs/AssetAPI";
-    import FilesAPI from "../../../../libs/libs/FilesAPI";
-    import RegistryAPI from "../../../../libs/libs/RegistryAPI";
+    import AssetAPI from "../../../../libs/AssetAPI";
+    import FilesAPI from "../../../../libs/FilesAPI";
+    import RegistryAPI from "../../../../libs/RegistryAPI";
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
     import {GPU} from "../../../../../public/engine/production";
     import Accordion from "../../../../components/accordion/Accordion.svelte";

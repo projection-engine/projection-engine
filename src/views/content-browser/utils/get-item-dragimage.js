@@ -1,4 +1,4 @@
-import Localization from "../../../libs/libs/Localization";
+import Localization from "../../../libs/Localization";
 
 const translate = key => Localization.PROJECT.FILES[key]
 export default function getItemDragImage(childrenQuantity, data, type, metadata) {

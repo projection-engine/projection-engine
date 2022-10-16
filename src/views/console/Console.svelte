@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";

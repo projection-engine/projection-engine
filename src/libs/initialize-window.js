@@ -1,6 +1,6 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "./libs/FilesAPI";
-import ErrorLoggerAPI from "./libs/ErrorLoggerAPI";
+import FilesAPI from "./FilesAPI";
+import ErrorLoggerAPI from "./ErrorLoggerAPI";
 import LevelController from "./LevelController";
 import ActionHistoryAPI from "./ActionHistoryAPI";
 import ViewportActions from "./ViewportActions";

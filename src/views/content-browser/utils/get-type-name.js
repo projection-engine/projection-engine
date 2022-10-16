@@ -2,7 +2,7 @@ import FILE_TYPES from "shared-resources/FILE_TYPES";
 
 export default function getTypeName(type) {
     switch ("." + type) {
-        case FILE_TYPES.MESH:
+        case FILE_TYPES.PRIMITIVE:
             return "Mesh"
         case FILE_TYPES.LEVEL:
             return "Level"
@@ -15,7 +15,7 @@ export default function getTypeName(type) {
         case FILE_TYPES.TEXTURE:
             return "Texture"
 
-        case FILE_TYPES.SCENE:
+        case FILE_TYPES.COLLECTION:
             return "Scene"
         case FILE_TYPES.MATERIAL_INSTANCE:
             return "Material Instance"

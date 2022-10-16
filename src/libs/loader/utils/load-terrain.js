@@ -1,4 +1,4 @@
-import FilesAPI from "../../libs/FilesAPI";
+import FilesAPI from "../../FilesAPI";
 import TerrainWorker from "../../../../public/engine/workers/terrain/TerrainWorker";
 import {COMPONENTS, Entity, GPU} from "../../../../public/engine/production";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";

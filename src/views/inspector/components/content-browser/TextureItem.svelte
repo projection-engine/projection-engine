@@ -1,10 +1,10 @@
 <script>
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import TEXTURE_FORMATS from "../../../../../public/engine/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import AssetAPI from "../../../../libs/libs/AssetAPI";
+    import AssetAPI from "../../../../libs/AssetAPI";
     import GPU from "../../../../../public/engine/production/GPU";
     import TEXTURE_FILTERING from "../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
@@ -75,7 +75,7 @@
 </Accordion>
 
 <Accordion title={translate("TEXTURE_FORMAT")}>
-    <Dropdown asButton="true" buttonStyles={B}>
+    <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
             {data?.internalFormat}
         </button>
@@ -92,7 +92,7 @@
 </Accordion>
 <Accordion title={translate("TEXTURE_FILTERING")}>
 
-    <Dropdown asButton="true" buttonStyles={B}>
+    <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
             {translate(data?.minFilter)}
             <small>
@@ -119,7 +119,7 @@
         </button>
     </Dropdown>
 
-    <Dropdown asButton="true" buttonStyles={B}>
+    <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
 
             {translate(data?.magFilter)}
@@ -138,7 +138,7 @@
 
 <Accordion title={translate("TEXTURE_WRAPPING")}>
     {#each ["wrapS", "wrapT"] as key}
-        <Dropdown asButton="true" buttonStyles={B}>
+        <Dropdown buttonStyles={B}>
             <button slot="button" class="dropdown">
                 {#if data}
                     {translate(data[key])}

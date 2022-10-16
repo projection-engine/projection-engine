@@ -7,7 +7,7 @@
 
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
@@ -19,7 +19,6 @@
     export let fileType
     export let setSearchString
     export let searchString
-    export let path
     export let navigationHistory
     export let viewType
     export let setViewType
@@ -38,45 +37,44 @@
 </script>
 
 <div class="wrapper">
-    <div class="button-group">
-        <button class="button button-on-group" on:click={() => navigationHistory.undo()}>
-            <Icon styles="font-size: .9rem">arrow_back</Icon>
-            <ToolTip content={translate("BACK_DIR")}/>
-        </button>
-        <button
-                class="button button-on-group"
-                on:click={() => navigationHistory.redo()}
-        >
-            <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-            <ToolTip content={translate("FORWARD_DIR")}/>
-        </button>
-        <button
-                class="button button-on-group"
-                on:click={() => {
+    <button class="button" on:click={() => navigationHistory.undo()}>
+        <Icon styles="font-size: .9rem">arrow_back</Icon>
+        <ToolTip content={translate("BACK_DIR")}/>
+    </button>
+    <button
+            class="button"
+            on:click={() => navigationHistory.redo()}
+    >
+        <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
+        <ToolTip content={translate("FORWARD_DIR")}/>
+    </button>
+    <button
+            class="button"
+            on:click={() => {
                             if(currentDirectory.id === NodeFS.sep)
                                 return
                             navigationHistory.goToParent(currentDirectory)
                         }}
-        >
-            <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
-            <ToolTip content={translate("PARENT_DIR")}/>
-        </button>
-        <button
-                disabled="{loading}"
-                class="button button-on-group"
-                on:click={() => {
+    >
+        <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
+        <ToolTip content={translate("PARENT_DIR")}/>
+    </button>
+    <button
+            disabled="{loading}"
+            class="button"
+            on:click={() => {
                     alert.pushAlert(translate("REFRESHING"), "info")
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
-        >
-            <Icon styles="font-size: .9rem">sync</Icon>
-            <ToolTip content={translate("REFRESH")}/>
-        </button>
-        <button class="button button-on-group" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
-            <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-            <ToolTip content={translate("CREATE_FOLDER")}/>
-        </button>
-    </div>
+    >
+        <Icon styles="font-size: .9rem">sync</Icon>
+        <ToolTip content={translate("REFRESH")}/>
+    </button>
+    <button class="button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
+        <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
+        <ToolTip content={translate("CREATE_FOLDER")}/>
+    </button>
+
     <button
             class="button"
             data-highlight={starred ? "-" : undefined}
@@ -110,26 +108,26 @@
             setSearchString={setSearchString}
     />
 
-    <div class="button-group">
-        <button
-                data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
-                on:click={() => setViewType(ITEM_TYPES.ROW)}
-                class="button button-on-group"
-        >
-            <Icon styles="font-size: .9rem">view_stream</Icon>
-            <ToolTip content={translate("ROW_VIEW")}/>
-        </button>
-        <button
-                data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
-                on:click={() => setViewType(ITEM_TYPES.CARD)}
-                class="button button-on-group"
-        >
-            <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-            <ToolTip content={translate("CARD_VIEW")}/>
-        </button>
-        <Dropdown
-                buttonStyles={`
-                  border-radius: 0 3px 3px 0;
+
+    <button
+            data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+            on:click={() => setViewType(ITEM_TYPES.ROW)}
+            class="button"
+    >
+        <Icon styles="font-size: .9rem">view_stream</Icon>
+        <ToolTip content={translate("ROW_VIEW")}/>
+    </button>
+    <button
+            data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+            on:click={() => setViewType(ITEM_TYPES.CARD)}
+            class="button"
+    >
+        <Icon styles="transform: rotate(180deg)">grid_view</Icon>
+        <ToolTip content={translate("CARD_VIEW")}/>
+    </button>
+    <Dropdown
+            buttonStyles={`
+                  border-radius: 3px;
                   display: flex;
                   justify-content: center;
                   align-items: center;
@@ -137,30 +135,27 @@
                   max-width: 22px;
                   min-height: 22px;
                   min-width: 22px;
-                  border: var(--pj-background-secondary) 1px solid;
-                  background: var(--pj-background-primary);
+
                 `}
+    >
+        <button
+                data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.CARD)}
         >
-            <button
-                    data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
-                    on:click={() => setViewType(ITEM_TYPES.CARD)}
-            >
-                {translate("CARD_VIEW")}
-            </button>
-            <button data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
-                    on:click={() => setViewType(ITEM_TYPES.ROW)}>
-                {translate("ROW_VIEW")}
-            </button>
-        </Dropdown>
-    </div>
+            {translate("CARD_VIEW")}
+        </button>
+        <button data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.ROW)}>
+            {translate("ROW_VIEW")}
+        </button>
+    </Dropdown>
     <Dropdown
             buttonStyles={`
-                  max-height: 22px;
-                  min-height: 22px;
-                  border-radius: 3px;
-                  border: var(--pj-background-secondary) 1px solid;
-                  background: ${fileType != null ? "var(--pj-accent-color)" : "var(--pj-background-primary)"};
-                    color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
+              max-height: 22px;
+              min-height: 22px;
+              border-radius: 3px;
+              ${fileType != null ? "background: var(--pj-accent-color);" : ""}
+              color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
             `}
     >
         <button slot="button" style="background: transparent; border: none">
@@ -185,29 +180,12 @@
 
 
 <style>
-    .button-group {
-        display: flex;
-        align-items: center;
-        border-collapse: collapse;
-    }
-
-    .button-on-group {
-        border-radius: 0 !important;
-    }
-
-    .button-on-group:first-child {
-        border-radius: 3px 0 0 3px !important;
-    }
-
-    .button-on-group:last-child {
-        border-radius: 0 3px 3px 0 !important;
-    }
 
     .wrapper {
         width: 100%;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 3px;
 
     }
 
@@ -219,7 +197,7 @@
         max-width: 22px;
         min-height: 22px;
         min-width: 22px;
-        border-color: var(--pj-background-secondary);
-        background: var(--pj-background-primary);
+        border: none;
+
     }
 </style>

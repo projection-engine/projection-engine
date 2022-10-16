@@ -27,7 +27,10 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         entity._rotationQuat[3] = data._rotationQuat[3]
         entity.changed = true
 
-        entity.baseTransformationMatrix = Float32Array.from(data.baseTransformationMatrix)
+        if (entity.baseTransformationMatrix)
+            for (let i = 0; i < entity.baseTransformationMatrix.length; i++)
+                entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
+
         if (data.pivotPoint) {
             entity.pivotPoint[0] = data.pivotPoint[0]
             entity.pivotPoint[1] = data.pivotPoint[1]
@@ -41,6 +44,4 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
     } catch (err) {
         console.error(err)
     }
-
-
 }

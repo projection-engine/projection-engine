@@ -6,7 +6,7 @@
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import ViewportActions from "../../libs/ViewportActions";
     import SelectionStore from "../../stores/SelectionStore";
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"

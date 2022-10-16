@@ -1,16 +1,16 @@
 <script>
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import AssetAPI from "../../../../libs/libs/AssetAPI";
+    import AssetAPI from "../../../../libs/AssetAPI";
     import GPU from "../../../../../public/engine/production/GPU";
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
 
     import MaterialAPI from "../../../../../public/engine/production/apis/rendering/MaterialAPI";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
-    import FilesAPI from "../../../../libs/libs/FilesAPI";
-    import RegistryAPI from "../../../../libs/libs/RegistryAPI";
+    import FilesAPI from "../../../../libs/FilesAPI";
+    import RegistryAPI from "../../../../libs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

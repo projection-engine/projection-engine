@@ -2,7 +2,7 @@
 
     import FilesStore from "../../stores/FilesStore";
     import {onDestroy} from "svelte";
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";

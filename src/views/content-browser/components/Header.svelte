@@ -1,6 +1,5 @@
 <script>
 
-    import importFile from "../../../libs/import-file"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
 
@@ -16,14 +15,12 @@
     export let setFileType
 
     const STYLES = `
-                  border-radius: 0 3px 3px 0;
+                  border-radius: 3px;
                   display: flex;
                   justify-content: center;
                   align-items: center;
                   max-height: 22px;
                   min-height: 22px;
-                  border: var(--pj-background-secondary) 1px solid;
-                  background: var(--pj-background-primary);
                 `
     $: fileTypes = getFileTypes()
 </script>

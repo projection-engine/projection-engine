@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {COMPONENTS, Engine, Entity} from "../../../public/engine/production";
     import SelectionStore from "../../stores/SelectionStore";

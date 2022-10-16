@@ -14,9 +14,9 @@
     import ShaderEditorController from "../ShaderEditorController";
     import SelectionStore from "../../../stores/SelectionStore";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import shaderActions from "../../../templates/shader-actions";
-    import HotKeysController from "../../../libs/libs/HotKeysController";
+    import HotKeysController from "../../../libs/HotKeysController";
     import SettingsStore from "../../../stores/SettingsStore";
     import Link from "./Link.svelte";
 

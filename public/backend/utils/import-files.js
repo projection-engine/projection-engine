@@ -6,6 +6,7 @@ import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import AssimpLoader from "../libs/AssimpLoader";
+import {readRegistry} from "./fs-operations";
 
 const sharp = require("sharp")
 const fs = require("fs")
@@ -42,22 +43,6 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
                 case "fbx":
                 case "gltf":
                     meshesToRead.push(filePath)
-                    // result.push({
-                    //     file: name.split(".")[0],
-                    //     ids: await new Promise(resolve => {
-                    //         const listenID = v4().toString()
-                    //
-                    //         ipcRenderer.once(ROUTES.IMPORT_GLTF + listenID, (ev, data) => resolve(data))
-                    //         ipcRenderer.send(ROUTES.IMPORT_GLTF, {
-                    //             filePath: filePath,
-                    //             newRoot,
-                    //             options: {},
-                    //             projectPath: NodeFS.path,
-                    //             listenID,
-                    //             fileName: filePath.split(pathRequire.sep).pop()
-                    //         })
-                    //     })
-                    // })
                     break
                 default:
                     break
@@ -69,6 +54,6 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
     if (meshesToRead.length > 0)
         await AssimpLoader.loader(targetDir, meshesToRead)
 
-
+    ProjectMap.registry = await readRegistry(ProjectMap.pathToRegistry)
     return result
 }

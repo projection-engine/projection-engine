@@ -5,7 +5,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
 
@@ -21,7 +21,7 @@
 </script>
 
 <div class="wrapper">
-    <Dropdown asButton={true}>
+    <Dropdown>
         <button slot="button" class="dropdown" style="background: transparent">
             {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
                 <Icon styles="font-size: .9rem">
@@ -55,7 +55,7 @@
             {translate("LOCAL")}
         </button>
     </Dropdown>
-    <Dropdown asButton={true}>
+    <Dropdown>
         <button slot="button" class="dropdown">
             <Icon styles="font-size: .9rem">straighten</Icon>
             <ToolTip content={translate("MOVEMENT_GRID")}/>

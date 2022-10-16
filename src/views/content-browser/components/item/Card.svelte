@@ -53,11 +53,11 @@
                     </Icon>
                 </div>
             {/if}
-        {:else if metadata.type === FILE_TYPES.MESH || metadata.type === FILE_TYPES.TEXTURE}
+        {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>
                 <Icon slot="icon" styles="font-size: 4rem">
-                    {#if metadata.type === FILE_TYPES.MESH}
+                    {#if metadata.type === FILE_TYPES.PRIMITIVE}
                         category
                     {:else}
                         image

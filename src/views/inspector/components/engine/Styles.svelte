@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import {KEYS} from "../../../../../public/engine/production";
 
     export let initial

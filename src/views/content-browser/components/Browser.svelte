@@ -7,9 +7,9 @@
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
-    import HotKeysController from "../../../libs/libs/HotKeysController";
+    import HotKeysController from "../../../libs/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";

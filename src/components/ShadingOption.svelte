@@ -8,7 +8,7 @@
     import AOPass from "../../public/engine/production/passes/rendering/AOPass";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/production/Engine";
-    import Localization from "../libs/libs/Localization";
+    import Localization from "../libs/Localization";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
     import SSGIPass from "../../public/engine/production/passes/rendering/SSGIPass";
 
@@ -109,7 +109,7 @@
     })
 </script>
 
-<Dropdown asButton={true} styles="width: clamp(250px, 20vw, 500px);">
+<Dropdown styles="width: clamp(250px, 20vw, 500px);">
     <button class="summary" slot="button">
         <div style="--color-to-apply: white" data-shaded-material="-"></div>
         <div style="white-space: nowrap">{translate(shading)}</div>

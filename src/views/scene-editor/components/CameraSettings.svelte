@@ -1,6 +1,6 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";

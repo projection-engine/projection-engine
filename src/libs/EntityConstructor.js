@@ -3,7 +3,7 @@ import COMPONENTS from "../../public/engine/static/COMPONENTS.json";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
 import {vec3, vec4} from "gl-matrix";
-import Localization from "./libs/Localization";
+import Localization from "./Localization";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../public/engine/production/apis/CameraAPI";
@@ -17,11 +17,11 @@ const addSprite = (entity, img) => {
 
 export default class EntityConstructor {
     static translateEntity(entity) {
-        // const position = [0,0, -10,1]
-        // vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-        // vec3.add(entity._translation, CameraAPI.translationBuffer, position)
-        // vec3.add(entity.pivotPoint, CameraAPI.translationBuffer, position)
-        // entity.__changedBuffer[0] = 1
+        const position = [0, 0, -10, 1]
+        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
+        vec3.add(entity._translation, CameraAPI.translationBuffer, position)
+        vec3.add(entity.pivotPoint, CameraAPI.translationBuffer, position)
+        entity.__changedBuffer[0] = 1
     }
 
     static createEmpty() {

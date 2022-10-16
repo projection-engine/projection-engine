@@ -1,7 +1,7 @@
-import FilesAPI from "./libs/FilesAPI"
+import FilesAPI from "./FilesAPI"
 import ActionHistoryAPI from "./ActionHistoryAPI";
 import Engine from "../../public/engine/production/Engine";
-import RegistryAPI from "./libs/RegistryAPI";
+import RegistryAPI from "./RegistryAPI";
 
 import ROUTES from "../data/ROUTES";
 import CHANNELS from "../data/CHANNELS";
@@ -22,7 +22,7 @@ import SETTINGS from "../data/SETTINGS";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
-import Localization from "./libs/Localization";
+import Localization from "./Localization";
 import {CameraTracker} from "../../public/engine/editor";
 import CameraAPI from "../../public/engine/production/apis/CameraAPI";
 import TabsStore from "../stores/TabsStore";

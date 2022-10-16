@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../data/VIEWS";

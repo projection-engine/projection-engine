@@ -1,4 +1,3 @@
-import glTF from "./glTF";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import directoryStructure from "shared-resources/backend/utils/directory-structure";
 import parseContentBrowserData from "./parse-content-browser-data";
@@ -99,15 +98,4 @@ export default function projectEvents(pathToProject, window, metadata) {
         event.sender.send(ROUTES.REFRESH_CONTENT_BROWSER + listenID, result)
     })
     ipcMain.on("read-registry", async (event, {listenID}) => event.sender.send("read-registry" + listenID, ProjectMap.registry))
-
-
-    ipcMain.on(ROUTES.IMPORT_GLTF, async (event, {filePath, newRoot, options, projectPath, fileName, listenID}) => {
-        fs.readFile(pathRequire.resolve(filePath), async (e, data) => {
-            if (!e) {
-                const file = data.toString()
-                const idsToLoad = await glTF(newRoot, fileName, projectPath, file, options, filePath, listenID)
-                event.sender.send(ROUTES.IMPORT_GLTF + listenID, idsToLoad)
-            } else event.sender.send(ROUTES.IMPORT_GLTF + listenID, [])
-        })
-    })
 }

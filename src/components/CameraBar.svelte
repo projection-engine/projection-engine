@@ -1,11 +1,9 @@
 <script>
 
     import CAMERA_GIZMO from "../data/CAMERA_GIZMO"
-    import {onDestroy, onMount} from "svelte";
-    import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+    import {onMount} from "svelte";
     import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
-    import SettingsStore from "../stores/SettingsStore";
-    import Localization from "../libs/libs/Localization";
+    import Localization from "../libs/Localization";
     import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]

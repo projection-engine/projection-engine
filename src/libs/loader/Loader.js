@@ -1,14 +1,13 @@
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities"
-import FilesAPI from "../libs/FilesAPI"
+import FilesAPI from "../FilesAPI"
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import loopNodesScene from "./utils/loop-nodes-scene";
 import initializeEntity from "./utils/initialize-entity";
-import RegistryAPI from "../libs/RegistryAPI";
+import RegistryAPI from "../RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import Localization from "../libs/Localization";
+import Localization from "../Localization";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
-import {Entity, GPU} from "../../../public/engine/production";
+import {Entity, FALLBACK_MATERIAL, GPU} from "../../../public/engine/production";
 import loadMaterial from "./utils/load-material";
 import PickingAPI from "../../../public/engine/production/apis/utils/PickingAPI";
 import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
@@ -56,34 +55,51 @@ export default class Loader {
     }
 
     static async scene(path, onlyReturn) {
-        const file = await FilesAPI.readFile(
-            NodeFS.ASSETS_PATH + NodeFS.sep + path, "json")
+        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + path, "json")
         const entities = []
         try {
             if (file) {
+                const entitiesMap = {}
                 const folder = new Entity()
-                folder.name = path.split(NodeFS.sep).pop().replace(FILE_TYPES.SCENE, "")
-
-                for (let i = 0; i < file.nodes.length; i++) {
-                    const data = await loopNodesScene(file.nodes[i], folder, i)
-                    entities.push(...data)
+                folder.name = file.name
+                for (let i = 0; i < file.entities.length; i++) {
+                    const currentEntity = file.entities[i]
+                    const primitiveRegistry = await RegistryAPI.readRegistryFile(currentEntity.meshID)
+                    if (primitiveRegistry) {
+                        const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
+                        if (!meshData)
+                            continue
+                        if (meshData.material != null)
+                            await loadMaterial(meshData.material, (data) => meshData.material = data)
+                        else
+                            meshData.material = FALLBACK_MATERIAL
+                        GPU.allocateMesh(primitiveRegistry.id, meshData)
+                    }
+                    const entity = initializeEntity(currentEntity, currentEntity.meshID)
+                    entity.parentCache =currentEntity.parent
+                    entitiesMap[currentEntity.id] = entity
+                    entities.push(entity)
                 }
-                entities.push(folder)
+
                 if (!onlyReturn) {
                     for (let i = 0; i < entities.length; i++) {
                         const entity = entities[i]
+                        const parent = entitiesMap[entity.parentCache]
+                        if(parent != null) {
+                            entity.parent = parent
+                            entity.parentCache = undefined
+                            parent.children.push(entity)
+                        }
                         if (!entity.parent)
                             EntityConstructor.translateEntity(entity)
                         entity.changed = true
                     }
-
                     dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
                 }
             } else
-                alert.pushAlert("Some error occurred", "error")
+                console.error("Collection not found")
         } catch (error) {
             console.error(error)
-            alert.pushAlert("Some error occurred", "error")
         }
 
         return entities
@@ -91,7 +107,6 @@ export default class Loader {
 
     static async load(event, asID, mouseX, mouseY) {
         const items = [], meshes = []
-        console.log(event)
 
         if (asID)
             items.push(event)
@@ -101,7 +116,6 @@ export default class Loader {
             } catch (e) {
                 console.error(e)
             }
-
         for (let i = 0; i < items.length; i++) {
             const data = items[i]
             if (!data)
@@ -109,9 +123,8 @@ export default class Loader {
             const res = await RegistryAPI.readRegistryFile(data)
             if (!res)
                 continue
-            console.log(res)
             switch ("." + res.path.split(".").pop()) {
-                case FILE_TYPES.MESH: {
+                case FILE_TYPES.PRIMITIVE: {
                     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
                     const meshData = await Loader.mesh(file, data, asID)
                     if (!meshData) continue
@@ -121,7 +134,7 @@ export default class Loader {
                         alert.pushAlert("Error importing mesh.", "error")
                     break
                 }
-                case FILE_TYPES.SCENE:
+                case FILE_TYPES.COLLECTION:
                     await Loader.scene(res.path)
                     break
                 case FILE_TYPES.TEXTURE: {

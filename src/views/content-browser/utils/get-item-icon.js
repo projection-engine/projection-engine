@@ -9,7 +9,7 @@ export default function getItemIcon(metadata, childrenQuantity, type) {
             case FILE_TYPES.COMPONENT:
                 icon = "code"
                 break
-            case FILE_TYPES.SCENE:
+            case FILE_TYPES.COLLECTION:
                 icon = "inventory_2"
                 break
             case FILE_TYPES.LEVEL:

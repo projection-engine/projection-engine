@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
@@ -13,11 +13,13 @@
     import VIEWS from "../view/data/VIEWS";
     import CreationController from "./CreationController.svelte";
     import OtherSettings from "./OtherSettings.svelte";
+    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
 
     let engine
     let store
     let settings
 
+    const translate = key => Localization.PROJECT.CONTROL[key]
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
@@ -28,16 +30,21 @@
     })
 
     const addNewTab = () => {
-        const views = [...settings.views, {
-            name: translate("NEW_TAB") + settings.views.length,
-            bottom: [[VIEWS.CONSOLE]],
-            right: [[VIEWS.HIERARCHY]],
-            left: []
-        }]
+        const views = [
+            ...SettingsStore.data.views,
+            {
+                name: translate("NEW_TAB") + SettingsStore.data.views.length,
+                bottom: [[VIEWS.CONSOLE]],
+                right: [[VIEWS.HIERARCHY]],
+                viewport: [VIEWPORT_TABS.EDITOR],
+                left: [],
+                top: []
+            }
+        ]
         SettingsStore.updateStore({...settings, views})
     }
 
-    const removeTab = (i) => {
+    const removeTab = i => {
         const obj = {...settings}
         if (i === obj.currentView || i < obj.currentView)
             obj.currentView = obj.currentView === 0 ? 0 : obj.currentView - 1
@@ -46,7 +53,6 @@
         SettingsStore.updateStore(obj)
     }
 
-    const translate = key => Localization.PROJECT.CONTROL[key]
 </script>
 
 <div class="container">
@@ -79,7 +85,7 @@
     </Dropdown>
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <CreationController/>
-    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
+    <div data-vertdivider="-" style="height: 15px;"></div>
     <Tabs
             allowRenaming={true}
             addNewTab={addNewTab}

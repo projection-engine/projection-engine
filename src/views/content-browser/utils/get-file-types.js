@@ -1,5 +1,5 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import Localization from "../../../libs/libs/Localization";
+import Localization from "../../../libs/Localization";
 
 export default function getFileTypes() {
     const c = {...FILE_TYPES}

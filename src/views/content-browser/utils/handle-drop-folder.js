@@ -1,7 +1,7 @@
 import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesStore from "../../../stores/FilesStore";
-import RegistryAPI from "../../../libs/libs/RegistryAPI";
-import ContentBrowserAPI from "../../../libs/libs/ContentBrowserAPI";
+import RegistryAPI from "../../../libs/RegistryAPI";
+import ContentBrowserAPI from "../../../libs/ContentBrowserAPI";
 
 
 export default async function handleDropFolder(event, target) {

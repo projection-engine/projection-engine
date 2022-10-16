@@ -60,7 +60,11 @@
 
 <div class="container" bind:this={ref}>
     {#each tabs as v, i}
-        <div data-highlight={i === currentTab ? "-" : undefined} class="view">
+        <div
+                data-highlight={i === currentTab ? "-" : undefined}
+                class:view-static={v.icon != null}
+                class:view-dynamic={v.icon == null}
+        >
             {#if v.icon}
                 <Dropdown hideArrow={true}>
                     <button slot="button" class="dropdown-button">
@@ -121,7 +125,7 @@
         padding: 0;
     }
 
-    .view {
+    .view-static {
         color: var(--pj-color-quaternary);
         display: flex;
         align-items: center;
@@ -131,13 +135,33 @@
         min-height: 30px;
     }
 
-    .view:hover {
+    .view-static:hover {
         color: var(--pj-accent-color);
     }
 
-    .view[data-highlight="-"] {
+    .view-static[data-highlight="-"] {
         border-top: white 2px solid !important;
         background: var(--pj-background-quaternary);
+    }
+
+    .view-dynamic {
+        color: var(--pj-color-quaternary);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        max-height: 25px;
+        min-height: 25px;
+        border-radius: 3px;
+
+    }
+
+    .view-dynamic:hover {
+        color: var(--pj-accent-color);
+    }
+
+    .view-dynamic[data-highlight="-"] {
+        background: var(--pj-accent-color);
+        color: white;
     }
 
     .view-input {

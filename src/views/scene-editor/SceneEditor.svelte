@@ -2,8 +2,6 @@
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
     import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../public/engine/production";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 
     import selectionQueryWorker from "../viewport/utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
@@ -18,7 +16,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import GizmoBar from "./components/GizmoBar.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
@@ -26,7 +24,7 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
     import Metrics from "../viewport/components/Metrics.svelte";
-    import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
+    import {CameraTracker} from "../../../public/engine/editor";
 
     const WORKER = selectionQueryWorker()
 
@@ -91,6 +89,8 @@
     const draggable = dragDrop(false)
 
     onMount(() => {
+        Engine.start()
+        CameraTracker.startTracking()
         const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)

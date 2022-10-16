@@ -25,8 +25,7 @@ export default [
         left: [],
         viewport: [VIEWPORT_TABS.EDITOR],
         right: [[VIEWS.HIERARCHY, VIEWS.COMPONENT]]
-    }
-    ,
+    },
     {
         name: "UI",
         top: [],

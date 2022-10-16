@@ -3,13 +3,13 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./Styles.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json"
-    import Localization from "../../../../libs/libs/Localization";
+    import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
-    import RegistryAPI from "../../../../libs/libs/RegistryAPI";
-    import FilesAPI from "../../../../libs/libs/FilesAPI";
+    import RegistryAPI from "../../../../libs/RegistryAPI";
+    import FilesAPI from "../../../../libs/FilesAPI";
     import UIAPI from "../../../../../public/engine/production/apis/UIAPI";
     import {Engine} from "../../../../../public/engine/production";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

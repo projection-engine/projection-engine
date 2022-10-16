@@ -1,11 +1,11 @@
 import {get} from "svelte/store";
 import {contentBrowserStore} from "./templates/content-browser-store";
 import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
-import FilesAPI from "../libs/libs/FilesAPI"
+import FilesAPI from "../libs/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../data/ROUTES";
-import ContentBrowserAPI from "../libs/libs/ContentBrowserAPI";
-import Localization from "../libs/libs/Localization";
+import ContentBrowserAPI from "../libs/ContentBrowserAPI";
+import Localization from "../libs/Localization";
 import {COMPONENTS, Engine} from "../../public/engine/production";
 import UIAPI from "../../public/engine/production/apis/UIAPI";
 import resolveFileName from "../templates/utils/resolve-file-name";
@@ -34,7 +34,6 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try {
-            console.log(NodeFS.path)
             const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path + NodeFS.sep}, false)
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
@@ -72,8 +71,6 @@ export default class FilesStore {
 
     static async createFolder(currentDirectory) {
         let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER, "")
-        console.log(path)
-
         await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
         await FilesStore.refreshFiles()
 

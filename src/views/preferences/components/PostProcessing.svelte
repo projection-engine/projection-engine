@@ -2,7 +2,7 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
 
     export let settings
     export let update

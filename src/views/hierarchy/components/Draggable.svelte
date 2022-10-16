@@ -7,7 +7,7 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../libs/libs/Localization";
+    import Localization from "../../../libs/Localization";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";

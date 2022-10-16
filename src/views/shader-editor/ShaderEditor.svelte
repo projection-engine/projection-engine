@@ -3,9 +3,9 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
-    import FilesAPI from "../../libs/libs/FilesAPI"
+    import FilesAPI from "../../libs/FilesAPI"
 
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import parseFile from "./utils/parse-file";

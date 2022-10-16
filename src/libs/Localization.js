@@ -37,6 +37,7 @@ export default class Localization {
             TITLE: "Code editor",
         },
         CONTROL: {
+            NEW_TAB: "New Tab",
             OPEN_CONSOLE: "Open console",
             NEW_MESSAGE: "New console message",
             CLEAR: "Clear",
@@ -185,7 +186,7 @@ export default class Localization {
             TITLE: "Viewport",
             ACTIVE_ENTITY: "Active Entity",
             DELETE_VIEW: "Delete view",
-            NEW_TAB: "New Tab",
+
             POINT_LIGHT: "Point Light",
             DIRECTIONAL_LIGHT: "Directional Light",
             SPOT_LIGHT: "SpotLight",

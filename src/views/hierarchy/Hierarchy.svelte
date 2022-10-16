@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
@@ -8,7 +8,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeysController from "../../libs/libs/HotKeysController";
+    import HotKeysController from "../../libs/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../components/drag-drop/drag-drop";
     import EngineStore from "../../stores/EngineStore";
@@ -93,7 +93,7 @@
             setSearchString={v => search = v}
     />
 
-    <Dropdown asButton={true}>
+    <Dropdown>
         <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={translate("COMPONENT_FILTER")}/>

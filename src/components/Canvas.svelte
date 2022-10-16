@@ -6,7 +6,7 @@
     import GPU from "../../public/engine/production/GPU";
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
-    import AssetAPI from "../libs/libs/AssetAPI";
+    import AssetAPI from "../libs/AssetAPI";
     import initializer from "../../public/engine/editor/initializer";
     import VisualsStore from "../stores/VisualsStore";
 

@@ -1,3 +1,2 @@
-- Visdual chabges
-- Assimp rework
-- 
+- Fixing some visual bugs
+- Starting structure to support undo/redo of multiple entities

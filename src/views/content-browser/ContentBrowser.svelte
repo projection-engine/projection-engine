@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
-    import Localization from "../../libs/libs/Localization";
+    import Localization from "../../libs/Localization";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import ControlBar from "./components/Header.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
@@ -56,22 +56,6 @@
         navigation: true
     }
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
-
-    $: path = (() => {
-        const findParent = (node) => {
-            const p = store.items.find(n => n.id === node.parent)
-            return p ? [findParent(p), {name: p.name, path: p.id}] : []
-        }
-        const response = [{
-            path: NodeFS.sep
-        }, findParent(currentDirectory)].flat(Number.POSITIVE_INFINITY)
-        if (currentDirectory.name)
-            response.push({
-                name: currentDirectory.name,
-                path: currentDirectory.id
-            })
-        return response
-    })();
     const translate = key => Localization.PROJECT.FILES[key]
 
     onMount(() => {
@@ -108,7 +92,7 @@
                 setViewType={v => viewType = v}
                 viewType={viewType}
                 bookmarks={store.bookmarks}
-                path={path}
+
                 searchString={searchString}
                 setSearchString={v => searchString = v}
                 currentDirectory={currentDirectory}
@@ -141,7 +125,6 @@
         <Browser
                 viewType={viewType}
                 internalID={internalID}
-                path={path}
                 view={view}
 
                 store={store}
