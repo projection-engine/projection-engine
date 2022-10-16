@@ -17,11 +17,11 @@ const addSprite = (entity, img) => {
 
 export default class EntityConstructor {
     static translateEntity(entity) {
-        const position = [0,0, -10,1]
-        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-        vec3.add(entity._translation, CameraAPI.translationBuffer, position)
-
-        entity.__changedBuffer[0] = 1
+        // const position = [0,0, -10,1]
+        // vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
+        // vec3.add(entity._translation, CameraAPI.translationBuffer, position)
+        // vec3.add(entity.pivotPoint, CameraAPI.translationBuffer, position)
+        // entity.__changedBuffer[0] = 1
     }
 
     static createEmpty() {

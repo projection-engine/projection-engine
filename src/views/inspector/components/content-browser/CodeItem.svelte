@@ -12,7 +12,6 @@
     pre {
         border-radius: 3px;
         border: var(--pj-border-primary) 1px solid;
-        background: var(--pj-background-secondary);
     }
 
 </style>

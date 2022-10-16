@@ -127,7 +127,8 @@
             <Icon styles="transform: rotate(180deg)">grid_view</Icon>
             <ToolTip content={translate("CARD_VIEW")}/>
         </button>
-        <Dropdown buttonStyles={`
+        <Dropdown
+                buttonStyles={`
                   border-radius: 0 3px 3px 0;
                   display: flex;
                   justify-content: center;
@@ -138,8 +139,12 @@
                   min-width: 22px;
                   border: var(--pj-background-secondary) 1px solid;
                   background: var(--pj-background-primary);
-                  `}>
-            <button data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""} on:click={() => setViewType(ITEM_TYPES.CARD)}>
+                `}
+        >
+            <button
+                    data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+                    on:click={() => setViewType(ITEM_TYPES.CARD)}
+            >
                 {translate("CARD_VIEW")}
             </button>
             <button data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
@@ -148,14 +153,16 @@
             </button>
         </Dropdown>
     </div>
-    <Dropdown buttonStyles={`
+    <Dropdown
+            buttonStyles={`
                   max-height: 22px;
                   min-height: 22px;
                   border-radius: 3px;
                   border: var(--pj-background-secondary) 1px solid;
                   background: ${fileType != null ? "var(--pj-accent-color)" : "var(--pj-background-primary)"};
                     color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
-                  `}>
+            `}
+    >
         <button slot="button" style="background: transparent; border: none">
             <ToolTip content={translate("FILTER_TYPE")}/>
             <Icon styles="font-size: .9rem">filter_alt</Icon>

@@ -7,6 +7,7 @@
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Browser from "./components/Browser.svelte";
     import BrowserNavigation from "./components/NavigationHeader.svelte";
     import {v4} from "uuid";
@@ -16,6 +17,7 @@
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import SettingsStore from "../../stores/SettingsStore";
+    import importFile from "../../libs/import-file";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -98,6 +100,27 @@
             view={view}
             setView={v => view = v}
     />
+    <div data-vertdivider="-"></div>
+    {#if view.navigation}
+        <BrowserNavigation
+                fileType={fileType}
+                setFileType={v => fileType = v}
+                setViewType={v => viewType = v}
+                viewType={viewType}
+                bookmarks={store.bookmarks}
+                path={path}
+                searchString={searchString}
+                setSearchString={v => searchString = v}
+                currentDirectory={currentDirectory}
+                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+                navigationHistory={navigationHistory}
+        />
+    {/if}
+    <div data-vertdivider="-"></div>
+    <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
+        {translate("IMPORT")}
+        <Icon styles="font-size: .9rem">open_in_new</Icon>
+    </button>
 </Header>
 
 <div class="wrapper">
@@ -114,21 +137,7 @@
     {/if}
 
     <div class="browser">
-        {#if view.navigation}
-            <BrowserNavigation
-                    fileType={fileType}
-                    setFileType={v => fileType = v}
-                    setViewType={v => viewType = v}
-                    viewType={viewType}
-                    bookmarks={store.bookmarks}
-                    path={path}
-                    searchString={searchString}
-                    setSearchString={v => searchString = v}
-                    currentDirectory={currentDirectory}
-                    setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-                    navigationHistory={navigationHistory}
-            />
-        {/if}
+
         <Browser
                 viewType={viewType}
                 internalID={internalID}
@@ -166,7 +175,6 @@
         height: 100%;
         display: flex;
         overflow: hidden;
-        background: var(--pj-background-secondary)
     }
 </style>
 

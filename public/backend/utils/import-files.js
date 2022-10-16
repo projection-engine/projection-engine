@@ -5,8 +5,7 @@ import ProjectMap from "../libs/ProjectMap";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import assimpLoader from "./assimp/assimp-loader";
-
+import AssimpLoader from "../libs/AssimpLoader";
 
 const sharp = require("sharp")
 const fs = require("fs")
@@ -68,7 +67,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
         }
     }
     if (meshesToRead.length > 0)
-        await assimpLoader(targetDir, meshesToRead)
+        await AssimpLoader.loader(targetDir, meshesToRead)
 
 
     return result

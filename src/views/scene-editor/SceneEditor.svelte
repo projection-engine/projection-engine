@@ -2,6 +2,8 @@
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
     import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../public/engine/production";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 
     import selectionQueryWorker from "../viewport/utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
@@ -24,20 +26,30 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
     import Metrics from "../viewport/components/Metrics.svelte";
+    import CameraAPI from "../../../public/engine/production/apis/CameraAPI";
 
-    let WORKER = selectionQueryWorker()
+    const WORKER = selectionQueryWorker()
 
+    let mouseDelta = {x: 0, y: 0}
 
     let engine = {}
     let settings = {}
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-
+    const LEFT_BUTTON = 0
     const translate = key => Localization.PROJECT.VIEWPORT[key]
 
-    const LEFT_BUTTON = 0
-    let mouseDelta = {x: 0, y: 0}
-
+    $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
+    $: {
+        if (settings?.viewportHotkeys != null)
+            ContextMenuController.mount(
+                {icon: "public", label: Localization.PROJECT.VIEWPORT.TITLE},
+                viewportContext(settings),
+                RENDER_TARGET,
+                ["data-viewport"]
+            )
+    }
 
     function gizmoMouseMove(event) {
         if (GizmoSystem.targetGizmo)
@@ -47,9 +59,7 @@
     function onMouseDown(e) {
         if (!Engine.isReady || e.button !== LEFT_BUTTON)
             return
-
         mouseDelta = {x: e.clientX, y: e.clientY}
-
         if (GizmoSystem.targetGizmo) {
             GizmoSystem.targetGizmo.onMouseDown(e)
             e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
@@ -77,32 +87,25 @@
             })
     }
 
-    $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
-    const draggable = dragDrop(false)
-    $: {
-        if (settings?.viewportHotkeys != null)
-            ContextMenuController.mount(
-                {icon: "public", label: Localization.PROJECT.VIEWPORT.TITLE},
-                viewportContext(settings),
-                RENDER_TARGET,
-                ["data-viewport"]
-            )
-    }
-    onMount(() => {
 
+    const draggable = dragDrop(false)
+
+    onMount(() => {
         const parentElement = gpu.canvas
         parentElement.addEventListener("mousedown", onMouseDown)
         parentElement.addEventListener("mouseup", onMouseUp)
-
         draggable.onMount({
             targetElement: gpu.canvas,
-            onDrop: (data, event) => Loader.load(data, false, event.clientX, event.clientY),
+            onDrop: (data, event) => {
+                Loader.load(data, false, event.clientX, event.clientY).catch()
+            },
             onDragOver: () => `
                 <span data-icon="-" style="font-size: 70px">add</span>
                 ${translate("DRAG_DROP")}
             `
         })
     })
+
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribeSettings()
@@ -112,6 +115,7 @@
         parentElement.removeEventListener("mousedown", onMouseDown)
         parentElement.removeEventListener("mouseup", onMouseUp)
     })
+
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {
             drawIconsToBuffer()
@@ -128,7 +132,7 @@
             }
         }
     }
-    $: console.log(isSelectBoxDisabled)
+
 </script>
 
 <GizmoToolTip/>
@@ -138,8 +142,11 @@
 <ViewHeader>
     <Header settings={settings} engine={engine}/>
 </ViewHeader>
-<GizmoBar settings={settings}/>
-<CameraBar/>
+<div class="top-bar">
+    <GizmoBar settings={settings}/>
+    <CameraBar/>
+</div>
+
 <SelectBox
         targetElement={gpu.canvas}
         allowAll={true}
@@ -150,3 +157,19 @@
         nodes={[]}
 />
 
+<style>
+    .top-bar{
+        position: absolute;
+        padding: 2px;
+
+        z-index: 10;
+        top: 28px;
+        width: 100%;
+        left: 0;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+    }
+</style>

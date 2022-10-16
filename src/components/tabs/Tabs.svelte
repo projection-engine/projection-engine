@@ -64,7 +64,7 @@
             {#if v.icon}
                 <Dropdown hideArrow={true}>
                     <button slot="button" class="dropdown-button">
-                        <Icon styles="font-size: .85rem;">{v.icon}</Icon>
+                        <Icon styles={"font-size: .85rem;" + (i === currentTab ? "color: var(--pj-color-primary);" : "")}>{v.icon}</Icon>
                     </button>
                     {#each templates as item}
                         <button on:click={_ => updateView(item.id, i)}>
@@ -86,16 +86,18 @@
                     on:blur={e => handler(e, v)}
                     on:click={e => handler(e, v, i)}
                     class="view-input"
+                    style={i === currentTab ? "color: var(--pj-color-primary);" : undefined}
                     data-view={i}
                     type="button"
                     value={v.name}
             >
 
-            <button disabled={tabs.length === 1 && !allowDeletion} on:click={() => removeTab(i)}
-                    class="remove-button">
-                <Icon styles="font-size: .8rem">
-                    clear
-                </Icon>
+            <button
+                    disabled={tabs.length === 1 && !allowDeletion}
+                    on:click={() => removeTab(i)}
+                    class="remove-button"
+            >
+                <Icon styles="font-size: .8rem">clear</Icon>
             </button>
         </div>
     {/each}
@@ -135,8 +137,7 @@
 
     .view[data-highlight="-"] {
         border-top: white 2px solid !important;
-        background: var(--pj-background-secondary);
-        color: var(--pj-color-primary);
+        background: var(--pj-background-quaternary);
     }
 
     .view-input {
@@ -181,7 +182,7 @@
 
     .container {
         width: 100%;
-        background: var(--pj-background-tertiary);
+
         max-height: 30px;
         min-height: 30px;
         display: flex;

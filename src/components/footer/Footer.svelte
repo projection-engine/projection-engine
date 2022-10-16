@@ -8,7 +8,6 @@
     import ErrorLoggerAPI from "../../libs/libs/ErrorLoggerAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
@@ -104,7 +103,8 @@
         border-top: var(--pj-border-primary) 1px solid;
         width: 100%;
         height: 25px;
-        background: var(--pj-background-tertiary);
+        background: var(--pj-background-quaternary);
+
         display: flex;
         align-items: center;
         gap: 8px;

@@ -5,13 +5,15 @@ import projectEvents from "./project-events";
 import ProjectMap from "./ProjectMap";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import writeOutput from "./write-output";
+import AssimpLoader from "./AssimpLoader";
 
-const {BrowserWindow, ipcMain, screen} = require("electron")
+const {BrowserWindow} = require("electron")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "../APP_LOGO.png"
 
 export default async function buildProjectWindow(pathToProject, isDev) {
     try {
+        await AssimpLoader.initialize()
         await ProjectMap.initialize(pathToProject.replace(PROJECT_FILE_EXTENSION, ""))
         const strData = (await readFile(pathToProject, {}))[1]
         const metadata = JSON.parse(strData)

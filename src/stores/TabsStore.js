@@ -1,6 +1,5 @@
 import {get, writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
-import ActionHistoryAPI from "../libs/ActionHistoryAPI";
 
 
 const store = writable({});

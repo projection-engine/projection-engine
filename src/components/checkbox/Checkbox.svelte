@@ -22,7 +22,7 @@
                 color: white;
                 visibility: ${checked ? "visible" : "hidden"};
                 font-size: 13px;
-                font-weight: bold;
+                font-weight: 500;
                 `}
         >
             done

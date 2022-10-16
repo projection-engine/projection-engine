@@ -12,7 +12,6 @@
     import Tabs from "../tabs/Tabs.svelte";
     import VIEWS from "../view/data/VIEWS";
     import CreationController from "./CreationController.svelte";
-    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import OtherSettings from "./OtherSettings.svelte";
 
     let engine
@@ -100,7 +99,6 @@
         min-height: 30px;
         max-height: 30px;
         width: 100%;
-        background: var(--pj-background-tertiary);
         overflow: hidden;
         display: flex;
         align-items: center;

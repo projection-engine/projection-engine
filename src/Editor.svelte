@@ -95,20 +95,19 @@
 
 <style>
     .wrapper {
+        background: var(--pj-background-secondary);
         width: 100vw;
         height: 100vh;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         position: relative;
-        background-color: var(--pj-background-quaternary);
     }
 
     .content {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background-color: var(--pj-background-quaternary);
         display: flex;
         flex-direction: column;
         user-select: none;

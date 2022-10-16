@@ -68,6 +68,6 @@
         flex-direction: column;
         align-items: flex-start;
         align-content: flex-start;
-        background-color: var(--pj-background-tertiary);
+        background: var(--pj-background-quaternary);
     }
 </style>

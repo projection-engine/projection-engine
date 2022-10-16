@@ -12,28 +12,31 @@
     let visuals
 
     let originalSettings
+    let originalVisuals
     let tab = 0
     let changed = false
-
+    const translate = (key) => Localization.SETTINGS.MAIN[key]
 
     onMount(() => {
         originalSettings = structuredClone(SettingsStore.data)
-        settings = SettingsStore.data
-        visuals = VisualsStore.data
+        originalVisuals = structuredClone(VisualsStore.data)
+        settings = structuredClone(SettingsStore.data)
+        visuals = structuredClone(VisualsStore.data)
     })
 
     function apply(clone) {
         SettingsStore.updateStore(clone ? originalSettings : settings)
+        VisualsStore.updateStore(clone ? originalVisuals : visuals)
         changed = false
+        alert.pushAlert(translate("UPDATING_SETTINGS"), "info")
     }
 
-    const translate = (key) => Localization.SETTINGS.MAIN[key]
+
     const OPTIONS = [translate("VIEWPORT"), translate("SHORTCUTS"), translate("POST_PROCESSING"), translate("RENDERING")]
 
 </script>
 
 <div class="wrapper">
-
     {#if settings != null}
         <div class="sidebar">
             {#each OPTIONS as option, index}
@@ -50,7 +53,7 @@
                     {translate("UNDO")}
                 </button>
                 <button
-                        on:click={() => apply(true)}
+                        on:click={() => apply(false)}
                         class="row"
                         style="height: 18px"
                         data-focusbutton="-"
@@ -58,10 +61,7 @@
                     {translate("APPLY")}
                 </button>
             </div>
-
         </div>
-
-
         <div class="form">
             {#if tab === 0}
                 <h3>{translate("VIEWPORT")}</h3>
@@ -156,4 +156,6 @@
         gap: 4px;
         overflow: auto;
     }
+
+
 </style>

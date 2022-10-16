@@ -107,7 +107,7 @@
 
         width: 100%;
         height: calc(100% - 25px);
-        background: var(--pj-background-tertiary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
+        background: var(--pj-background-quaternary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
         background-size: 20px 20px;
     }
 </style>

@@ -65,7 +65,7 @@
 {/if}
 <div
         bind:this={ref}
-        class={"wrapper"}
+        class="wrapper"
         data-orientation={orientation}
         style={`
             flex-direction: ${orientation === "horizontal" ? "row" : "column"};

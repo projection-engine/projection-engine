@@ -91,6 +91,7 @@ export default class Loader {
 
     static async load(event, asID, mouseX, mouseY) {
         const items = [], meshes = []
+        console.log(event)
 
         if (asID)
             items.push(event)
@@ -103,74 +104,76 @@ export default class Loader {
 
         for (let i = 0; i < items.length; i++) {
             const data = items[i]
+            if (!data)
+                continue
             const res = await RegistryAPI.readRegistryFile(data)
-            if (res)
-                switch ("." + res.path.split(".").pop()) {
-                    case FILE_TYPES.MESH: {
-                        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
-                        const meshData = await Loader.mesh(file, data, asID)
-                        if (!meshData
-)                            continue
-                        if (meshData.mesh !== undefined)
-                            meshes.push(meshData)
-                        else
-                            alert.pushAlert("Error importing mesh.", "error")
-                        break
-                    }
-                    case FILE_TYPES.SCENE:
-                        await Loader.scene(res.path)
-                        break
-                    case FILE_TYPES.TEXTURE: {
-                        const res = await EngineStore.loadTextureFromImageID(data)
-                        if (res) {
-                            const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
-                            const c = sprite.addComponent(COMPONENTS.SPRITE)
-                            c.imageID = data
-                            dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
-                        }
-                        break
-                    }
-                    case FILE_TYPES.SIMPLE_MATERIAL:
-                    case FILE_TYPES.MATERIAL_INSTANCE:
-                    case FILE_TYPES.TERRAIN_MATERIAL:
-                    case FILE_TYPES.MATERIAL: {
-                        const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
-                        if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
-
-                        await loadMaterial(data, (matID) => {
-                            const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
-                            ActionHistoryAPI.pushChange({
-                                target: ActionHistoryAPI.targets.entity,
-                                entityID: entity.id,
-                                component: comp,
-                                key: "materialID",
-                                changeValue: entity.components.get(comp).materialID
-                            })
-                            entity.components.get(comp).materialID = matID
-                            ActionHistoryAPI.pushChange({
-                                target: ActionHistoryAPI.targets.entity,
-                                entityID: entity.id,
-                                component: comp,
-                                key: "materialID",
-                                changeValue: data
-                            })
-                        })
-                        break
-                    }
-                    case FILE_TYPES.TERRAIN: {
-                        await loadTerrain(res)
-
-                        break
-                    }
-                    default:
-                        console.error(new Error("Not valid file type"))
-                        break
+            if (!res)
+                continue
+            console.log(res)
+            switch ("." + res.path.split(".").pop()) {
+                case FILE_TYPES.MESH: {
+                    const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
+                    const meshData = await Loader.mesh(file, data, asID)
+                    if (!meshData) continue
+                    if (meshData.mesh !== undefined)
+                        meshes.push(meshData)
+                    else
+                        alert.pushAlert("Error importing mesh.", "error")
+                    break
                 }
+                case FILE_TYPES.SCENE:
+                    await Loader.scene(res.path)
+                    break
+                case FILE_TYPES.TEXTURE: {
+                    const res = await EngineStore.loadTextureFromImageID(data)
+                    if (res) {
+                        const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
+                        const c = sprite.addComponent(COMPONENTS.SPRITE)
+                        c.imageID = data
+                        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
+                    }
+                    break
+                }
+                case FILE_TYPES.SIMPLE_MATERIAL:
+                case FILE_TYPES.MATERIAL_INSTANCE:
+                case FILE_TYPES.TERRAIN_MATERIAL:
+                case FILE_TYPES.MATERIAL: {
+                    const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
+                    if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
+
+                    await loadMaterial(data, (matID) => {
+                        const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
+                        ActionHistoryAPI.pushChange({
+                            target: ActionHistoryAPI.targets.entity,
+                            entityID: entity.id,
+                            component: comp,
+                            key: "materialID",
+                            changeValue: entity.components.get(comp).materialID
+                        })
+                        entity.components.get(comp).materialID = matID
+                        ActionHistoryAPI.pushChange({
+                            target: ActionHistoryAPI.targets.entity,
+                            entityID: entity.id,
+                            component: comp,
+                            key: "materialID",
+                            changeValue: data
+                        })
+                    })
+                    break
+                }
+                case FILE_TYPES.TERRAIN: {
+                    await loadTerrain(res)
+
+                    break
+                }
+                default:
+                    console.error(new Error("Not valid file type"))
+                    break
+            }
         }
 
+        console.log(meshes)
         if (meshes.length > 0 && !asID) {
-
-
             const toLoad = meshes.map(m => m.entity).filter(m => m != null)
             if (!toLoad.length)
                 return

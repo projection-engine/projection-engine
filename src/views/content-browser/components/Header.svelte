@@ -15,11 +15,20 @@
     export let fileType
     export let setFileType
 
-
+    const STYLES = `
+                  border-radius: 0 3px 3px 0;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  max-height: 22px;
+                  min-height: 22px;
+                  border: var(--pj-background-secondary) 1px solid;
+                  background: var(--pj-background-primary);
+                `
     $: fileTypes = getFileTypes()
 </script>
 
-<Dropdown>
+<Dropdown buttonStyles={STYLES}>
     <button slot="button" data-viewbutton="-">
         {translate("VIEW")}
     </button>
@@ -38,7 +47,7 @@
 
     </button>
 </Dropdown>
-<Dropdown>
+<Dropdown buttonStyles={STYLES}>
     <button slot="button" data-viewbutton="-">
         {translate("SELECT")}
     </button>
@@ -54,34 +63,3 @@
     </button>
 </Dropdown>
 
-
-
-<button
-        class="settings-button"
-        on:click={() => importFile(currentDirectory)}
->
-    <Icon styles="font-size: .9rem">open_in_new</Icon>
-    {translate("IMPORT")}
-</button>
-
-<style>
-    .settings-button {
-        min-height: 22px;
-        max-height: 22px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-
-        padding: 0 6px;
-        border-radius: 3px;
-
-        font-size: 0.7rem;
-        background: var(--pj-background-tertiary);
-        margin-left: auto;
-    }
-
-    .settings-button:disabled {
-        color: #999;
-    }
-
-</style>

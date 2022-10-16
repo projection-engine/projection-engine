@@ -3,6 +3,7 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            UPDATING_SETTINGS: "Updating settings",
             RESOLUTION: "Resolution",
             RESET: "Reset",
             ORIGINAL: "Original",
@@ -289,6 +290,9 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            SAMPLER: "Sampler",
+            SAMPLER_SCALE: "RGB multiplier",
+            UV_SCALE: "UV scale",
 
             LOCKED: "Is locked",
             HAS_COLLISION: "Has collision",

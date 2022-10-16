@@ -35,7 +35,8 @@ export default class DragDropController {
 
         function onDrop(event) {
             event.preventDefault()
-            if (DragDropController.tooltip) {
+            console.log(DragDropController.tooltip, DragDropController.tooltip?.dragDropListeners, DragDropController.dragData)
+            if (DragDropController.tooltip != null) {
                 DragDropController.tooltip.dragDropListeners.onDrop(DragDropController.dragData, event)
                 DragDropController.onLeave()
             }

@@ -5,11 +5,9 @@
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
     import SettingsStore from "../../stores/SettingsStore";
-    import GizmoToolTip from "../scene-editor/components/GizmoToolTip.svelte";
     import HotKeysController from "../../libs/libs/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
-    import Metrics from "./components/Metrics.svelte";
     import Tabs from "../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";
     import addNewTab from "./utils/add-new-tab";
@@ -112,7 +110,6 @@
             />
         {/if}
     </div>
-
 </div>
 
 <style>
@@ -120,7 +117,6 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: var(--pj-background-secondary);
         border-radius: 5px;
         position: relative;
         display: flex;

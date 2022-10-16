@@ -141,11 +141,12 @@ export default function dragDrop(draggable) {
             draggableElement.addEventListener("dragleave", handler)
         },
         onDestroy: () => {
-            draggableElement.removeEventListener("dragstart", handler)
-            draggableElement.removeEventListener("dragend", handler)
-            draggableElement.removeEventListener("drag", handler)
-            draggableElement.removeEventListener("dragleave", handler)
-
+            if(draggableElement) {
+                draggableElement.removeEventListener("dragstart", handler)
+                draggableElement.removeEventListener("dragend", handler)
+                draggableElement.removeEventListener("drag", handler)
+                draggableElement.removeEventListener("dragleave", handler)
+            }
         },
 
         set onDragStart(data) {

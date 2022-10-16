@@ -1,34 +1,15 @@
-.button-group.viewport {
-    display: flex;
-    align-items: center;
-    border-collapse: collapse;
-    flex-direction: column;
-    box-shadow: rgb(0 0 0 / 15%) 2px 4px 5px 2px;
-}
+
 
 .button.viewport {
-    height: 35px;
-
-    width: 100%;
-    padding: 0;
+    height: 25px;
+    padding: 4px 8px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
-    background: var(--pj-background-secondary);
-
+    background: var(--pj-background-tertiary);
     border: var(--pj-border-primary) 1px solid;
     color: var(--pj-color-tertiary);
-    border-radius: 0px;
 }
 
-
-.button:first-child.viewport {
-
-    border-radius: 3px 3px  0 0;
-}
-
-.button:last-child.viewport {
-    border-radius: 0  0 3px 3px;
-}

@@ -218,7 +218,7 @@
         position: relative;
         box-shadow: var(--pj-boxshadow);
         color-rendering: optimizespeed;
-        background: var(--pj-background-tertiary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
+        background: var(--pj-background-quaternary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
         background-size: 20px 20px;
         overflow: hidden;
         transform-origin: center center;

@@ -201,10 +201,8 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        padding: 4px 0 4px 4px;
 
         position: relative;
-        background: var(--pj-background-tertiary);
         border-radius: 3px;
     }
 </style>

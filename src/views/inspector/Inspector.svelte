@@ -148,7 +148,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        padding-right: 2px;
+        padding: 0 3px;
     }
 
     .content {

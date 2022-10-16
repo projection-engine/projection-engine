@@ -67,15 +67,15 @@ body {
     --pj-background-tertiary: #202020;
     --pj-background-quaternary: #181818;
     --pj-background-quaternary-light: rgba(32, 32, 32, 0.95);
-    --pj-border-primary: #3f3f3f;
-    --pj-border-secondary: #5b5b5b;
+    --pj-border-primary: #484848;
+    --pj-border-secondary: #6b6b6b;
     --pj-transparent-border: rgba(63, 63, 63, .5);
-    --pj-color-primary: white;
-    --pj-color-secondary: #f0f0f0;
-    --pj-color-tertiary: #e2e2e2;
-    --pj-color-quaternary: #d7d7d7;
-    --pj-color-quinary: #d0d0d0;
-    --pj-color-senary: #c8c8c8;
+    --pj-color-primary: #f0f0f0;
+    --pj-color-secondary: #e2e2e2;
+    --pj-color-tertiary: #d7d7d7;
+    --pj-color-quaternary: #d0d0d0;
+    --pj-color-quinary: #c8c8c8;
+    --pj-color-senary: #afafaf;
     --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
     --background-input: #545454;
     --background-input-lighter: #565656;
@@ -127,9 +127,8 @@ button:disabled > * {
     padding: 0 8px;
     background: var(--pj-accent-color);
     color: white;
-    font-weight: 550;
     border: none;
-    font-size: .8rem;
+    font-size: .7rem;
 }
 
 *[data-focusbutton="-"]:hover {

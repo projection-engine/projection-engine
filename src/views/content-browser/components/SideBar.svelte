@@ -13,7 +13,7 @@
     $: assets = items.filter(item => item.isFolder && !item.parent)
 </script>
 <div class="wrapper">
-    <Accordion background="var(--pj-background-primary)">
+    <Accordion>
         <div class="summary" slot="header">
             <Icon>
                 inventory_2
@@ -37,7 +37,7 @@
         {/each}
     </Accordion>
 
-    <Accordion background="var(--pj-background-primary)">
+    <Accordion>
         <div class="summary" slot="header">
             <Icon>
                 book
@@ -65,7 +65,7 @@
         width: 300px;
         padding-left: 3px;
         padding-right: 3px;
-        background: var(--pj-background-secondary);
+
     }
 
 
