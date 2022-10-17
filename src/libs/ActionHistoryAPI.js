@@ -1,6 +1,5 @@
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
-import SettingsStore from "../stores/SettingsStore";
 import UndoRedoAPI from "./UndoRedoAPI";
 import {Engine, EntityAPI} from "../../public/engine/production";
 import HierarchyController from "./HierarchyController";
@@ -8,11 +7,16 @@ import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
 
 export default class ActionHistoryAPI {
     static targets = {
-        settings: "SETTINGS",
         entity: "ENTITY",
         block: "BLOCK",
         entities: "ENTITIES"
     }
+    static #cb = () => null
+
+    static initializeListener(cb) {
+        ActionHistoryAPI.#cb = cb
+    }
+
     static controller = new UndoRedoAPI()
 
     static clear() {
@@ -61,14 +65,15 @@ export default class ActionHistoryAPI {
         })
     }
 
-
     static undo() {
+        ActionHistoryAPI.#cb("UNDO")
         const hasToApply = ActionHistoryAPI.controller.undo()
         if (hasToApply)
             ActionHistoryAPI.#apply()
     }
 
     static redo() {
+        ActionHistoryAPI.#cb("REDO")
         const hasToApply = ActionHistoryAPI.controller.redo()
         if (hasToApply)
             ActionHistoryAPI.#apply()
@@ -80,11 +85,6 @@ export default class ActionHistoryAPI {
             return
         const targets = ActionHistoryAPI.targets
         switch (currentAction.target) {
-            case targets.settings: {
-                SettingsStore.data = currentAction.changeValue
-                SettingsStore.updateStore(currentAction.changeValue, true)
-                break
-            }
             case targets.entity: {
                 const entity = QueryAPI.getEntityByID(currentAction.entityID)
                 if (currentAction.component != null) {
@@ -105,26 +105,17 @@ export default class ActionHistoryAPI {
                 break
             }
             case targets.entities: {
-                const entities = []
-                for (let i = 0; i < currentAction.entities.length; i++) {
-                    const entity = QueryAPI.getEntityByID(currentAction.entities[i])
-                    entities.push(entity)
+                const entities = [], toApply = currentAction.entities
+                for (let i = 0; i < toApply.length; i++) {
+                    const entity = QueryAPI.getEntityByID(toApply[i])
                     if (!entity)
                         continue
-                    if (currentAction.component != null) {
-                        if (typeof currentAction.component === "number" && entity.scripts[currentAction.component])
-                            entity.scripts[currentAction.component][currentAction.key] = currentAction.changeValue[i]
-                        else
-                            entity.components.get(currentAction.component)[currentAction.key] = currentAction.changeValue[i]
-                    } else {
-                        const value = entity[currentAction.key]
-                        if (Array.isArray(value)) {
-                            for (let j = 0; j < value.length; j++)
-                                value[i] = currentAction.changeValue[i][j]
-                        } else
-                            entity[currentAction.key] = currentAction.changeValue[i]
-                    }
+                    entities.push(entity)
+                    const value = entity[currentAction.key]
+                    for (let j = 0; j < value.length; j++)
+                        value[i] = currentAction.changeValue[i][j]
                 }
+                console.log(entities)
                 entities.forEach(e => e.changed = true)
                 EngineStore.updateStore()
                 break

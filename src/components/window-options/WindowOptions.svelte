@@ -1,6 +1,6 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import Localization from "../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -14,15 +14,26 @@
     import CreationController from "./CreationController.svelte";
     import OtherSettings from "./OtherSettings.svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
+    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 
     let engine
     let store
     let settings
+    let historyChangeType = null
+    let timeout
 
     const translate = key => Localization.PROJECT.CONTROL[key]
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
+    onMount(() => {
+        ActionHistoryAPI.initializeListener(type => {
+            historyChangeType = type
+            clearTimeout(timeout)
+            timeout = setTimeout(() => historyChangeType = null, 2000)
+        })
+    })
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribe()
@@ -94,7 +105,13 @@
             currentTab={settings.currentView}
             setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
     />
-    <OtherSettings store={store} settings={settings} engine={engine} translate={translate}/>
+    <OtherSettings
+            historyChangeType={historyChangeType}
+            store={store}
+            settings={settings}
+            engine={engine}
+            translate={translate}
+    />
 </div>
 
 <style>

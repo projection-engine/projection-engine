@@ -37,6 +37,9 @@ export default class Localization {
             TITLE: "Code editor",
         },
         CONTROL: {
+            UNDOING: "Undoing",
+            REDOING: "Redoing",
+
             NEW_TAB: "New Tab",
             OPEN_CONSOLE: "Open console",
             NEW_MESSAGE: "New console message",

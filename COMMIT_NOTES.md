@@ -1,2 +1,4 @@
-- Fixing some visual bugs
-- Starting structure to support undo/redo of multiple entities
+- Reworking preferences view
+- Adding focus highlight to view group
+- Adding undo/redo notification
+- Removing settings change from undo/redo cache

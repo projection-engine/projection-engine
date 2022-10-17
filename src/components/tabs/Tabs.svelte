@@ -15,6 +15,7 @@
     export let templates
     export let updateView
     export let disabled
+    export let focused
 
     let ref
 
@@ -62,6 +63,7 @@
     {#each tabs as v, i}
         <div
                 data-highlight={i === currentTab ? "-" : undefined}
+                data-focused={i === currentTab && focused ? "-" : undefined}
                 class:view-static={v.icon != null}
                 class:view-dynamic={v.icon == null}
         >
@@ -140,10 +142,11 @@
     }
 
     .view-static[data-highlight="-"] {
-        border-top: white 2px solid !important;
         background: var(--pj-background-quaternary);
     }
-
+    .view-static[data-focused="-"]{
+        border-top: white 2px solid !important;
+    }
     .view-dynamic {
         color: var(--pj-color-quaternary);
         display: flex;

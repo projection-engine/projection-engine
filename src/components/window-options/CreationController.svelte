@@ -25,7 +25,6 @@
 
 
 <button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
-
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={translate("SPLIT_LEFT")}/>
 </button>

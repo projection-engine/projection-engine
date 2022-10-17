@@ -7,9 +7,17 @@ const store = writable({});
 export default class TabsStore {
     static data = get(store)
 
+    static get focused() {
+        return TabsStore.data.focused
+    }
+    static set focused(data) {
+        TabsStore.updateStore({...TabsStore.data, focused: data})
+    }
+
     static getStore(onChange) {
         return store.subscribe(newValue => onChange(newValue))
     }
+
     static updateStore(value = TabsStore.data) {
         TabsStore.data = value
         store.set(value)
@@ -17,15 +25,14 @@ export default class TabsStore {
 
     static update(direction, group, value) {
         const clone = {...TabsStore.data}
-        if(!clone[SettingsStore.data.currentView])
+        if (!clone[SettingsStore.data.currentView])
             clone[SettingsStore.data.currentView] = {}
         console.trace(group, direction, value)
         if (group !== undefined) {
-            if(!clone[SettingsStore.data.currentView][direction])
+            if (!clone[SettingsStore.data.currentView][direction])
                 clone[SettingsStore.data.currentView][direction] = {}
             clone[SettingsStore.data.currentView][direction][group] = value
-        }
-        else
+        } else
             clone[SettingsStore.data.currentView][direction] = value
 
 

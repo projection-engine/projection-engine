@@ -18,14 +18,19 @@
 
     let currentView
     let currentTab = 0
+    let ref
+    let focused = false
+
     const unsubscribeSettings = SettingsStore.getStore(v => currentView = v.currentView)
-    const unsubscribeTabs = TabsStore.getStore(_ => currentTab = TabsStore.getValue(id, groupIndex))
+    const unsubscribeTabs = TabsStore.getStore(_ => {
+        currentTab = TabsStore.getValue(id, groupIndex)
+        focused = TabsStore.focused === ref
+    })
+    const translate = key => Localization.COMPONENTS.VIEWS[key]
+
     $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
     $: if (groupIndex != null) currentTab = 0
     $: view = views[currentTab]
-
-    const translate = key => Localization.COMPONENTS.VIEWS[key]
-
     $: tabs = views.map(v => ({name: translate(v), icon: getViewIcon(v), id: v}))
     $: viewTemplates = Object.values(VIEWS).map(value => ({
         name: translate(value),
@@ -33,15 +38,16 @@
     }))
 
     onDestroy(() => {
+
         unsubscribeTabs()
         unsubscribeSettings()
     })
-
 </script>
 
-<div class="wrapper">
+<div class="wrapper" bind:this={ref} on:mousedown={_ => TabsStore.focused = ref}>
     <div class="tabs" style={hidden ? "transform: rotate(90deg)" : undefined}>
         <Tabs
+                focused={focused}
                 updateView={switchView}
                 templates={viewTemplates}
                 allowDeletion={true}

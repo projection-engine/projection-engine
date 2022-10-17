@@ -3,13 +3,12 @@ import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
 import {Engine} from "../../../../public/engine/production";
 import {CameraTracker} from "../../../../public/engine/editor";
 
-export default function updateViewport(engine, isReady, currentView) {
+export default function updateViewport(engine, currentView) {
 
-    if (!isReady)
+    console.trace(engine, currentView)
+    if (!engine.isReady)
         return
     if (!engine.executingAnimation) {
-
-
         if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
             Engine.start()
             CameraTracker.startTracking()

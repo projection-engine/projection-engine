@@ -10,151 +10,92 @@
 
     let settings
     let visuals
-
-    let originalSettings
-    let originalVisuals
+    let timeout
     let tab = 0
     let changed = false
+
     const translate = (key) => Localization.SETTINGS.MAIN[key]
 
     onMount(() => {
-        originalSettings = structuredClone(SettingsStore.data)
-        originalVisuals = structuredClone(VisualsStore.data)
         settings = structuredClone(SettingsStore.data)
         visuals = structuredClone(VisualsStore.data)
     })
 
-    function apply(clone) {
-        SettingsStore.updateStore(clone ? originalSettings : settings)
-        VisualsStore.updateStore(clone ? originalVisuals : visuals)
+    function apply() {
+        SettingsStore.updateStore(settings)
+        VisualsStore.updateStore(visuals)
         changed = false
         alert.pushAlert(translate("UPDATING_SETTINGS"), "info")
     }
 
-
-    const OPTIONS = [translate("VIEWPORT"), translate("SHORTCUTS"), translate("POST_PROCESSING"), translate("RENDERING")]
-
+    function update(key, value) {
+        changed = true
+        settings = {...settings, [key]: value}
+        clearTimeout(timeout)
+        timeout = setTimeout(_ => apply(), 250)
+    }
 </script>
 
 <div class="wrapper">
     {#if settings != null}
-        <div class="sidebar">
-            {#each OPTIONS as option, index}
-                <button class="row" on:click={_ => tab = index} style={ tab===index ? "color: var(--pj-accent-color)" : undefined}>
-                    {option}
-                </button>
-            {/each}
-            <div style="margin-top: auto;" class="sidebar">
-                <button
-                        on:click={() => apply(true)}
-                        class="row"
-                        style="color: #ff5555"
-                >
-                    {translate("UNDO")}
-                </button>
-                <button
-                        on:click={() => apply(false)}
-                        class="row"
-                        style="height: 18px"
-                        data-focusbutton="-"
-                >
-                    {translate("APPLY")}
-                </button>
-            </div>
-        </div>
-        <div class="form">
-            {#if tab === 0}
-                <h3>{translate("VIEWPORT")}</h3>
-                <ViewportSettings
-                        translate={translate}
-                        settings={settings}
-                        update={(key, value) => {
-                                changed = true
-                            settings = {...settings, [key]: value}
-                        }}
-                />
-            {:else if tab === 1}
-                <h3>{translate("SHORTCUTS")}</h3>
-                <Shortcuts
-                        translate={translate}
-                        settings={settings}
-                        update={(key, value) => {
-                                        changed = true
-                                    settings = {...settings, [key]: value}
-                                }}
-                />
+        <h3 style="margin: 0">{translate("SHORTCUTS")}</h3>
+        <Shortcuts
+                translate={translate}
+                settings={settings}
+                update={update}
+        />
 
+        <h3>{translate("VIEWPORT")}</h3>
+        <ViewportSettings
+                translate={translate}
+                settings={settings}
+                update={update}
+        />
 
-            {:else if tab === 2}
-                <h3>{translate("POST_PROCESSING")}</h3>
-                <PostProcessing
-                        settings={settings}
-                        update={(key, value) => {
-                                changed = true
-                            settings = {...settings, [key]: value}
-                        }}
-                />
-            {:else if tab === 3 && visuals}
-                <h3>{translate("RENDERING")}</h3>
-                <Rendering
-                        settings={visuals}
-                        update={(key, value) => {
-                                changed = true
-                                visuals = {...visuals, [key]: value}
-                            }}
-                />
-            {/if}
+        <h3>{translate("POST_PROCESSING")}</h3>
+        <PostProcessing
+                settings={visuals}
+                update={update}
+        />
 
-        </div>
+        <h3>{translate("RENDERING")}</h3>
+        <Rendering
+                settings={visuals}
+                update={(key, value) => {
+                    changed = true
+                    visuals = {...visuals, [key]: value}
+                    clearTimeout(timeout)
+                    timeout = setTimeout(_ => apply(), 250)
+                }}
+        />
     {/if}
-
-
 </div>
 
 <style>
 
-    .sidebar {
-        width: 250px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 8px;
-
-    }
-
-    .row {
-        text-align: left;
-        font-size: .7rem;
-        color: var(--pj-color-secondary);
-        border: none;
-    }
-
     h3 {
         font-weight: 500;
-        margin-top: 0;
-        margin-bottom: 8px
+        margin: 32px 0 0;
     }
 
     .wrapper {
-        margin: auto;
-        display: flex;
-        justify-items: center;
-        padding: 32px 0;
-        width: clamp(500px, 50vw, 1000px);
-        height: 100%;
-
-        overflow: hidden;
-
-        gap: 5%;
-    }
-
-
-    .form {
-        width: 100%;
         display: grid;
         align-content: flex-start;
-        gap: 4px;
-        overflow: auto;
+        gap: 6px;
+
+
+        position: relative;
+        margin: auto;
+
+        padding: 32px 0 100px;
+
+        width: 100%;
+        max-width: clamp(500px, 50vw, 1000px);
+        height: 100%;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
     }
 
 

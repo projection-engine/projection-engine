@@ -25,8 +25,12 @@
     let engine = {}
     let settings = {}
     let ref
+    let focused = false
 
-    const unsubscribeTabs = TabsStore.getStore(_ => currentTab = TabsStore.getValue("viewport"))
+    const unsubscribeTabs = TabsStore.getStore(_ => {
+        currentTab = TabsStore.getValue("viewport")
+        focused = ref === TabsStore.focused
+    })
     $: currentTab = TabsStore.getValue("viewport", undefined, settings.currentView)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
@@ -34,11 +38,11 @@
     const setViewportTab = (value, index = currentTab) => {
         const clone = [...viewTab]
         clone[index] = value
+        updateViewport(engine, value)
         updateView(clone)
     }
 
     $: currentView = viewTab[currentTab]
-    $:isReady = engine.isReady
     $: {
         if (ref != null)
             HotKeysController.bindAction(
@@ -49,7 +53,7 @@
             )
     }
 
-    $: updateViewport(engine, isReady, currentView)
+    $: updateViewport(engine, currentView)
     $: tabs = viewTab.map(v => ({name: Localization.COMPONENTS.VIEWS[v], icon: getViewIcon(v)}))
     $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
         name: Localization.COMPONENTS.VIEWS[value],
@@ -67,7 +71,9 @@
 
     }
 
-    onMount(() => canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild))
+    onMount(() => {
+        canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
+    })
     onDestroy(() => {
         unsubscribeTabs()
         HotKeysController.unbindAction(ref)
@@ -76,9 +82,14 @@
     })
 </script>
 
-<div class="viewport" bind:this={ref}>
+<div
+        class="viewport"
+        bind:this={ref}
+        on:mousedown={_ => TabsStore.focused = ref}
+>
     <div style="height: 30px">
         <Tabs
+                focused={focused}
                 disabled={engine.executingAnimation}
                 updateView={setViewportTab}
                 templates={viewTemplates}
@@ -92,7 +103,7 @@
     </div>
     <div class="wrapper">
         <div bind:this={canvasRef}></div>
-        {#if isReady}
+        {#if engine.isReady}
             <View
                     instance={currentView}
                     id={"VIEWPORT"}

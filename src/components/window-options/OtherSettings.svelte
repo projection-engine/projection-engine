@@ -16,6 +16,8 @@
     export let settings
     export let engine
     export let translate
+    export let historyChangeType
+
     let notifications = []
     let hasMessage = false
     let activeNotifications = true
@@ -51,16 +53,33 @@
 </script>
 
 <div class="level-selector">
-
+    {#if historyChangeType != null}
+        <div class="notification">
+            <Icon styles="font-size: 1rem">
+                {#if historyChangeType === "UNDO"}
+                    undo
+                {:else}
+                    redo
+                {/if}
+            </Icon>
+            <div>
+                {#if historyChangeType === "UNDO"}
+                    {translate("UNDOING")}
+                {:else}
+                    {translate("REDOING")}
+                {/if}
+            </div>
+        </div>
+        <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+    {/if}
     <button class="button console" on:click={openConsole}>
-        <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: red" : "color: #999")}>feedback</Icon>
+        <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: darkorange" : "color: #999")}>feedback</Icon>
         {#if hasMessage}
             <small>{translate("NEW_MESSAGE")}</small>
         {/if}
         <ToolTip content={translate("OPEN_CONSOLE")}/>
     </button>
     <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
-
     <Dropdown hideArrow={true} styles="width: 300px">
         <button
                 slot="button"
@@ -239,5 +258,17 @@
         background: transparent;
         color: var(--pj-accent-color);
         opacity: .9;
+    }
+
+    .notification {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-transform: capitalize;
+        padding: 0 8px;
+        font-size: .75rem;
+        color: var(--pj-accent-color);
+        font-weight: 500;
+
     }
 </style>
