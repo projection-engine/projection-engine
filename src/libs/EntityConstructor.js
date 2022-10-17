@@ -7,6 +7,7 @@ import Localization from "./Localization";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import {EntityAPI} from "../../public/engine/production";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {
@@ -86,6 +87,7 @@ export default class EntityConstructor {
             entity.active = newValue
         }
         loopHierarchy(nodeRef, !nodeRef.active)
+        EntityAPI.packageLights(false, false)
         if (submit)
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }

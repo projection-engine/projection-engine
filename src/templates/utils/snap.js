@@ -16,6 +16,9 @@ export default function snap(grid) {
                 entity._translation[0] = Math.round(entity._translation[0] / g) * g
                 entity._translation[1] = Math.round(entity._translation[1] / g) * g
                 entity._translation[2] = Math.round(entity._translation[2] / g) * g
+                entity.pivotPoint[0] = entity._translation[0]
+                entity.pivotPoint[1] = entity._translation[1]
+                entity.pivotPoint[2] = entity._translation[2]
                 break
             }
             case GIZMOS.SCALE: {

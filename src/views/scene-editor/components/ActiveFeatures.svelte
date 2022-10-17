@@ -3,7 +3,6 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../libs/Localization";
     import SettingsStore from "../../../stores/SettingsStore";
-    import CameraSettings from "./CameraSettings.svelte";
 
     export let settings
 
@@ -50,6 +49,5 @@
         {/if}
         {translate("METRICS")}
     </button>
-    <div data-divider="-"></div>
-    <CameraSettings/>
+
 </Dropdown>

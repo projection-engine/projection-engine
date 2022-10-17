@@ -7,6 +7,8 @@
     import Shortcuts from "./components/Shortcuts.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import VisualsStore from "../../stores/VisualsStore";
+    import CameraSettings from "./components/CameraSettings.svelte";
+    import GridSettings from "./components/GridSettings.svelte";
 
     let settings
     let visuals
@@ -45,6 +47,12 @@
                 update={update}
         />
 
+        <h3>{translate("CAMERA")}</h3>
+        <CameraSettings settings={settings}/>
+
+        <h3>{translate("GRID")}</h3>
+        <GridSettings settings={settings}/>
+
         <h3>{translate("VIEWPORT")}</h3>
         <ViewportSettings
                 translate={translate}
@@ -68,6 +76,8 @@
                     timeout = setTimeout(_ => apply(), 250)
                 }}
         />
+
+
     {/if}
 </div>
 
@@ -87,7 +97,7 @@
         position: relative;
         margin: auto;
 
-        padding: 32px 0 100px;
+        padding: 32px 16px 100px;
 
         width: 100%;
         max-width: clamp(500px, 50vw, 1000px);

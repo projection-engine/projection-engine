@@ -8,6 +8,7 @@
     import Localization from "../../../libs/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import GridSystem from "../../../../public/engine/editor/services/GridSystem";
 
 
     export let settings
@@ -70,6 +71,9 @@
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("translationGizmo", v, true)}
                     value={settings.gizmoGrid.translationGizmo}
+                    handleChange={v => {
+                            GridSystem.metadataBuffer[1] = v
+                    }}
 
             />
             <Range

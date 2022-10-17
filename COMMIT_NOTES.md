@@ -1,4 +1,3 @@
-- Reworking preferences view
-- Adding focus highlight to view group
-- Adding undo/redo notification
-- Removing settings change from undo/redo cache
+- Fixing package lights
+- Grid and camera settings on preferences
+- Fixing pivot point translation

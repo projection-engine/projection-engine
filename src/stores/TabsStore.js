@@ -41,14 +41,13 @@ export default class TabsStore {
     }
 
     static getValue(direction, group, currentView = SettingsStore.data.currentView) {
-        console.log(TabsStore.data)
         let value
         if (group !== undefined)
             value = TabsStore.data[currentView]?.[direction]?.[group]
         else
             value = TabsStore.data[currentView]?.[direction]
 
-        console.log(value)
+
 
         return value === undefined ? 0 : value
     }

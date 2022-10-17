@@ -59,7 +59,19 @@ export default function viewportContext(settings) {
                     }
                 },
                 {
-                    label: "To mesh origin",
+                    label: "To absolute translation",
+                    onClick: () => {
+                        const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
+                        if (selected) {
+                            selected.pivotPoint[0] = selected.absoluteTranslation[0]
+                            selected.pivotPoint[1] = selected.absoluteTranslation[1]
+                            selected.pivotPoint[2] = selected.absoluteTranslation[2]
+                            selected.__pivotChanged = true
+                        }
+                    }
+                },
+                {
+                    label: "To translation",
                     onClick: () => {
                         const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
                         if (selected) {

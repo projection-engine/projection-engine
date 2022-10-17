@@ -3,6 +3,9 @@ export default class Localization {
 
     static SETTINGS = {
         MAIN: {
+            CAMERA: "Camera",
+            GRID: "Grid",
+
             UPDATING_SETTINGS: "Updating settings",
             RESOLUTION: "Resolution",
             RESET: "Reset",
@@ -82,6 +85,9 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            ENABLED: "Enabled",
+            SUB_DIVISION: "Subdivision",
+            BRIGHTNESS: "Brightness",
             ALT_FOR_FIXED: "Fixed scaling",
             CTRL_FOR_UNITARY: "Unitary",
             ALT_FOR_PIVOT: "Pivot point",

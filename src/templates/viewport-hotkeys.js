@@ -137,6 +137,10 @@ export default function viewportHotkeys(settings) {
                     entity._translation[0] = 0
                     entity._translation[1] = 0
                     entity._translation[2] = 0
+
+                    entity.pivotPoint[0] = 0
+                    entity.pivotPoint[1] = 0
+                    entity.pivotPoint[2] = 0
                     entity.__changedBuffer[0] = 1
                 }
             },

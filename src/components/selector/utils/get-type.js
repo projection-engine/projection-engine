@@ -5,7 +5,6 @@ export default function getType(store, type, mergeMaterials, terrainMaterials) {
         case "image":
             return store.textures
         case "material":
-            console.log(store.terrainMaterials)
             if(terrainMaterials)
                 return store.terrainMaterials
             if(mergeMaterials)

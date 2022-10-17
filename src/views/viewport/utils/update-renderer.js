@@ -46,6 +46,10 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.buffer[2] = CameraAPI.zFar
     GridSystem.buffer[3] = CameraAPI.zNear
 
+    GridSystem.metadataBuffer[0] = settings.gridOpacity
+    GridSystem.metadataBuffer[1] = settings.gizmoGrid.translationGizmo
+    GridSystem.metadataBuffer[2] = settings.showGridSubdivision ? 1 : 0
+
     GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams({
         ...settings,

@@ -91,11 +91,11 @@
                             id: e.getAttribute("data-id"),
                             element: e
                         }))
-                    console.log(elements)
+
                     for (let index = 0; index < nodes.length; index++) {
                         const node = nodes[index]
                         const elBox = elements.find(e => e.id === node.id)?.element?.getBoundingClientRect?.()
-                        console.log(elements.find(e => e.id === node.id), node)
+
                         if (!elBox)
                             continue
                         if (elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2)
