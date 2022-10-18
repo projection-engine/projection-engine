@@ -7,9 +7,9 @@ import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
 
 export default class ActionHistoryAPI {
     static targets = {
-        entity: "ENTITY",
-        block: "BLOCK",
-        entities: "ENTITIES"
+        entity: 1,
+        block: 2,
+        groupTransformations: 3
     }
     static #cb = () => null
 
@@ -38,13 +38,10 @@ export default class ActionHistoryAPI {
         })
     }
 
-    static pushGroupChange(entities, changeValue, key, component) {
+    static pushGroupChange(changesMap) {
         ActionHistoryAPI.controller.save({
-            entities,
-            changeValue,
-            key,
-            component,
-            target: ActionHistoryAPI.targets.entities
+            changesMap,
+            target: ActionHistoryAPI.targets.groupTransformations
         })
     }
 
@@ -104,20 +101,24 @@ export default class ActionHistoryAPI {
                 EngineStore.updateStore()
                 break
             }
-            case targets.entities: {
-                const entities = [], toApply = currentAction.entities
+            case targets.groupTransformations: {
+                const entities = [], toApply = currentAction.changesMap
+
                 for (let i = 0; i < toApply.length; i++) {
-                    const entity = QueryAPI.getEntityByID(toApply[i])
+                    const change = toApply[i]
+                    const entity = QueryAPI.getEntityByID(change.id)
+
                     if (!entity)
                         continue
                     entities.push(entity)
-                    const value = entity[currentAction.key]
-                    for (let j = 0; j < value.length; j++)
-                        value[i] = currentAction.changeValue[i][j]
+                    const value = entity[change.key]
+                    for (let j = 0; j < change.value.length; j++)
+                        value[j] = change.value[j]
+                    if (change.key === "pivotPoint")
+                        entity.__pivotChanged = true
+
                 }
-                console.log(entities)
                 entities.forEach(e => e.changed = true)
-                EngineStore.updateStore()
                 break
             }
             case targets.block:

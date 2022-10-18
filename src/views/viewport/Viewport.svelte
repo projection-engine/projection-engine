@@ -74,6 +74,7 @@
     onMount(() => {
         canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
     })
+
     onDestroy(() => {
         unsubscribeTabs()
         HotKeysController.unbindAction(ref)

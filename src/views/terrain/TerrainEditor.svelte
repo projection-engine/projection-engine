@@ -1,5 +1,5 @@
 <script>
-    import CameraBar from "../../components/CameraBar.svelte";
+    import CameraBar from "../../components/CameraGizmo.svelte";
     import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";

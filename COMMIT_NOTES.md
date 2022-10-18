@@ -1,3 +1,1 @@
-- Fixing package lights
-- Grid and camera settings on preferences
-- Fixing pivot point translation
+- Fixed action history for group transformations

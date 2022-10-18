@@ -8,9 +8,7 @@
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]
     let ref
-    onMount(() => {
-        CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO)
-    })
+    onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
 </script>
 
 

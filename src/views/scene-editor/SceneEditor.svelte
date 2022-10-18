@@ -5,7 +5,7 @@
 
     import selectionQueryWorker from "../viewport/utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
-    import CameraBar from "../../components/CameraBar.svelte";
+    import CameraGizmo from "../../components/CameraGizmo.svelte";
 
     import GIZMOS from "../../data/GIZMOS";
     import onViewportClick from "../viewport/utils/on-viewport-click";
@@ -17,13 +17,13 @@
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../libs/Localization";
-    import GizmoBar from "./components/GizmoBar.svelte";
+    import GizmoBar from "./components/GeneralSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
-    import Metrics from "../viewport/components/Metrics.svelte";
+    import Metrics from "../../components/Metrics.svelte";
     import {CameraTracker} from "../../../public/engine/editor";
 
     const WORKER = selectionQueryWorker()
@@ -139,12 +139,14 @@
 {#if settings.showMetrics}
     <Metrics/>
 {/if}
+
 <ViewHeader>
     <Header settings={settings} engine={engine}/>
 </ViewHeader>
+
 <div class="top-bar">
     <GizmoBar settings={settings}/>
-    <CameraBar/>
+    <CameraGizmo/>
 </div>
 
 <SelectBox

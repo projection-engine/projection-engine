@@ -1,5 +1,4 @@
 <script>
-
     import GIZMOS from "../../../data/GIZMOS"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -24,11 +23,11 @@
 
 
 <div class="wrapper">
-    <button class="button viewport">
+    <button class="button viewport" disabled>
         <ToolTip content={translate("SWITCH_BETWEEN_CAMERAS")}/>
         <Icon styles="font-size: 1rem">videocam</Icon>
     </button>
-    <button class="button viewport" on:click={toggleProjection}>
+    <button class="button viewport" on:click={toggleProjection} disabled>
         <ToolTip content={translate("SWITCH_PROJECTION")}/>
         {#if !cameraIsOrtho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
@@ -39,7 +38,7 @@
         {/if}
     </button>
 
-    <button class="button viewport" on:click={() => ViewportActions.focus()}>
+    <button class="button viewport" on:click={() => ViewportActions.focus()} style="margin-right: 8px">
         <ToolTip content={translate("FOCUS")}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>

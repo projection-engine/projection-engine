@@ -73,7 +73,7 @@ export default class Localization {
             TOGGLE_FRAMERATE: "Toggle detailed metrics",
 
             ACTIVE_SHORTCUTS: "Hotkeys: Active view",
-            VERSION: "1.0.0-beta",
+            VERSION: "2.0.0-beta",
             LOGGING_ENABLED: "Error logging",
             SHOW_ERROR_LOGS: "Show error logs",
         },

@@ -21,7 +21,6 @@
 
 
     onMount(() => {
-        GizmoSystem.save = ActionHistoryAPI.pushGroupChange
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
