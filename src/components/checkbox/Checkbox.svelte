@@ -12,8 +12,8 @@
             class="container"
             disabled={disabled}
             style={`
-                background: ${checked ? "var(--pj-accent-color)" : undefined};
-                border: ${checked ? "var(--pj-accent-color) 1px solid" : undefined};
+                background: ${checked ? "var(--pj-accent-color)" : ""};
+                border: ${checked ? "var(--pj-accent-color) 1px solid" : ""};
                 opacity: ${disabled ? ".5" : "1"};
             `}
             on:click={() => handleCheck(checked)}>
@@ -22,12 +22,10 @@
                 color: white;
                 visibility: ${checked ? "visible" : "hidden"};
                 font-size: 13px;
-                font-weight: 500;
                 `}
         >
             done
         </Icon>
-
     </button>
     {label}
 </div>
@@ -42,7 +40,6 @@
 
         border-radius: 50%;
         background: transparent;
-        transition: 150ms linear;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -70,10 +67,7 @@
         align-items: center;
         gap: 4px;
         font-size: .7rem;
-        border-radius: 3px;
         width: 100%;
-        padding: 4px;
-        font-weight: 500;
         color: var(--pj-color-tertiary);
     }
 </style>

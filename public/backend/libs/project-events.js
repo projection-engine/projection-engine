@@ -53,7 +53,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.FILE_DIALOG, async (ev, {listenID, currentDirectory}) => {
         const properties = ["openFile", "multiSelections"]
         const result = await dialog.showOpenDialog({
-            properties, filters: [{name: "Assets", extensions: ["jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]
+            properties, filters: [{name: "Assets", extensions: ["bin", "jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]
         })
         let filesImported = result.filePaths || [],
             registryEntries = []

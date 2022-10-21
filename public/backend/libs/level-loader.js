@@ -1,6 +1,6 @@
 import readFile from "shared-resources/backend/utils/read-file";
-import loadMeshes from "../utils/level-loader/load-meshes";
-import loadMaterials from "../utils/level-loader/load-materials";
+import loadLevelMeshes from "../utils/load-level-meshes";
+import loadLevelMaterials from "../utils/load-level-materials";
 import COMPONENTS from "../../engine/static/COMPONENTS.json";
 import CHANNELS from "../../../src/data/CHANNELS";
 
@@ -30,7 +30,7 @@ export default async function levelLoader(sender, levelPath, pathToProject) {
         toLoadData.meshes.add(current.components[COMPONENTS.MESH].meshID)
     }
 
-    await loadMeshes(
+    await loadLevelMeshes(
         Array.from(toLoadData.meshes),
         pathToProject,
         (data) => {
@@ -38,7 +38,7 @@ export default async function levelLoader(sender, levelPath, pathToProject) {
         }
     )
 
-    await loadMaterials(
+    await loadLevelMaterials(
         Array.from(toLoadData.materials),
         pathToProject,
         (data) => sender.send(CHANNELS.MATERIAL, data)

@@ -109,6 +109,7 @@ export default {
         cameraRotation: [0, 0, 0, 1],
         movementSpeed: 1,
         smoothing: 1,
+        rotationSmoothing: 1,
         turnSpeed: 1,
     },
 

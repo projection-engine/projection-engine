@@ -233,17 +233,17 @@ a {
 
 fieldset {
     border: none;
-    border-top: var(--pj-border-primary) 1px solid;
     display: grid;
     gap: 4px;
-    padding: 2px;
+    padding: 4px ;
+    border-radius: 3px;
+    background: var(--pj-background-primary);
 }
 
 legend {
-    font-size: .7rem;
-    font-weight: 500;
-    padding: 0 2px;
-    color: var(--pj-color-tertiary);
+    font-size: .72rem;
+    padding: 2px;
+    color: var(--pj-color-secondary);
 }
 
 strong {

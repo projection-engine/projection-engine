@@ -4,7 +4,7 @@ import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 import projectEvents from "./project-events";
 import ProjectMap from "./ProjectMap";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
-import writeOutput from "./write-output";
+import logToWindow from "./log-to-window";
 import AssimpLoader from "./AssimpLoader";
 
 const {BrowserWindow} = require("electron")
@@ -36,7 +36,7 @@ export default async function buildProjectWindow(pathToProject, isDev) {
             show: false,
             icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
         })
-        writeOutput(window)
+        logToWindow(window)
         window.setMenu(null)
         window.on("ready-to-show", () => {
             window.show()

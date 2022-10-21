@@ -5,24 +5,16 @@ import {CameraTracker} from "../../../../public/engine/editor";
 
 export default function updateViewport(engine, currentView) {
 
-    console.trace(engine, currentView)
+    console.trace(engine.isReady, currentView)
     if (!engine.isReady)
         return
-    if (!engine.executingAnimation) {
-        if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
-            Engine.start()
-            CameraTracker.startTracking()
-            gpu.canvas.style.opacity = "1"
-            return
-        }
+    if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
+        Engine.start()
+        CameraTracker.startTracking()
+        gpu.canvas.style.opacity = "1"
+    } else {
         CameraTracker.stopTracking()
         Engine.stop()
         gpu.canvas.style.opacity = "0"
-        return
     }
-    FilesStore.unwatchFiles()
-    CameraTracker.stopTracking()
-    Engine.start()
-    gpu.canvas.style.opacity = "1"
-    gpu.canvas.style.width = "100%"
 }

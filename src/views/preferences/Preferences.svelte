@@ -48,7 +48,7 @@
         />
 
         <h3>{translate("CAMERA")}</h3>
-        <CameraSettings settings={settings}/>
+        <CameraSettings/>
 
         <h3>{translate("GRID")}</h3>
         <GridSettings settings={settings}/>

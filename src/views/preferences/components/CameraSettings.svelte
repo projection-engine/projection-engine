@@ -4,8 +4,10 @@
     import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
     import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
+    import {onDestroy} from "svelte";
 
-    export let settings
+    let settings
+    const unsubscribe = SettingsStore.getStore(v => settings = v)
     const toDeg = 180 / Math.PI, toRad = Math.PI / 180
 
     let state = {
@@ -13,6 +15,7 @@
         zNear: settings.zNear,
         fov: settings.fov * toDeg,
         smoothing: settings.camera.smoothing,
+        rotationSmoothing: settings.camera.rotationSmoothing,
         ortho: settings.ortho,
         movementSpeed: settings.camera.movementSpeed,
         turnSpeed: settings.camera.turnSpeed
@@ -26,6 +29,7 @@
         }
         CameraTracker[key] = value
     }
+    onDestroy(() => unsubscribe())
 </script>
 
 
@@ -115,15 +119,32 @@
                 handleChange={v => updateCamera("turnSpeed", v)}
         />
 
+    </div>
+</fieldset>
+
+
+<fieldset>
+    <legend>{translate("SMOOTHING")}</legend>
+    <div class="content">
         <Range
                 variant="embedded"
-                precision={4}
+                precision={3}
                 minValue={.0001}
                 incrementPercentage={.001}
-                label={translate("SMOOTHING")}
+                label={translate("TRANSLATION")}
                 onFinish={(v) => updateCamera("smoothing", v, true)}
                 value={state.smoothing}
                 handleChange={v => updateCamera("smoothing", v)}
+        />
+        <Range
+                variant="embedded"
+                precision={3}
+                minValue={.0001}
+                incrementPercentage={.001}
+                label={translate("ROTATION")}
+                onFinish={(v) => updateCamera("rotationSmoothing", v, true)}
+                value={state.rotationSmoothing}
+                handleChange={v => updateCamera("rotationSmoothing", v)}
         />
     </div>
 </fieldset>

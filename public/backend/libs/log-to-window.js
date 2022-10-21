@@ -1,4 +1,4 @@
-export default function writeOutput(window) {
+export default function logToWindow(window) {
     const log = console.log
     const newMethod = (...msg) => {
         log(...msg)

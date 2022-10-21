@@ -1,1 +1,5 @@
-- Fixed action history for group transformations
+- Visual rework for fieldset 
+- Added camera settings to scene editor view
+- Adding camera rotation slerp
+- Fixed parent matrix applying scaling to child
+- Changed movement worker link entities method

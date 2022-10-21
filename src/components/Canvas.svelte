@@ -25,8 +25,8 @@
 
     onMount(() => {
         GPU.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
-            .then(() => {
-                initializer()
+            .then(async () => {
+                await initializer()
                 onReady()
                 done = true
                 EngineStore.updateStore({...engine, viewportInitialized: true})

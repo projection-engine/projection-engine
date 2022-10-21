@@ -5,6 +5,7 @@ import createRegistryEntry from "../utils/create-registry-entry";
 import {v4} from "uuid";
 import ProjectMap from "./ProjectMap";
 import {mat4} from "gl-matrix";
+import SIMPLE_MATERIAL_UNIFORMS from "../../engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 
 
 const path = require("path")
@@ -15,6 +16,7 @@ export default class AssimpLoader {
 
     static async initialize() {
         AssimpLoader.instance = await AssimpJS()
+
     }
 
     static async loader(pathToDir, files) {
@@ -34,6 +36,7 @@ export default class AssimpLoader {
         try {
             const collectionDirectory = file.split(path.sep).pop().split(".").shift()
             const ajs = AssimpLoader.instance
+
             const fileList = new ajs.FileList();
             const buffer = new Uint8Array(bufferData)
             fileList.AddFile(
@@ -50,7 +53,7 @@ export default class AssimpLoader {
                 fs.mkdirSync(dir)
             if (!fs.existsSync(dir + path.sep + collectionDirectory))
                 fs.mkdirSync(dir + path.sep + collectionDirectory)
-
+            console.log(result.GetFile(0))
             const meshes = {}
             const data = JSON.parse(new TextDecoder().decode(result.GetFile(0).GetContent()))
             const collection = {
@@ -77,10 +80,12 @@ export default class AssimpLoader {
 
     static async #createMesh(dir, meshes, index, data, collectionName) {
         const PRIMITIVE_PATH = path.resolve(dir + path.sep + collectionName + path.sep + "primitives")
-
+        const mesh = data[index]
+        if (mesh.materialindex !== undefined)
+            AssimpLoader.#loadMaterial(data, mesh.materialindex)
         const meshID = v4()
         meshes[index] = meshID
-        const mesh = data[index]
+
         const indices = mesh.faces.flat(), uvs = mesh.texturecoords[0]
         const b = PrimitiveProcessor.computeBoundingBox(mesh.vertices)
         const jsonText = JSON.stringify({
@@ -111,13 +116,36 @@ export default class AssimpLoader {
         }
     }
 
-    static #mapChildren(collection, meshes, node,  parent) {
+    static #loadMaterial(data, index) {
+        const material = data.materials[index]
+        if (!material)
+            return
+        const properties = material.properties
+        const materialNameProperty = properties.findIndex(v => v.key.match(/^\?mat/) != null)
+        const mtTemplate = SIMPLE_MATERIAL_UNIFORMS
+
+        for (let i = 0; i < properties.length; i++) {
+            if(i === materialNameProperty)
+                continue
+
+            const current = properties[i]
+            const name = current.key.split(".").pop()
+
+            switch (name){
+                case "diffuse":
+
+            }
+
+        }
+    }
+
+    static #mapChildren(collection, meshes, node, parent) {
         if (!node)
             return;
         const nodeID = v4()
         const {transformation, children, name} = node
 
-        const baseTransformationMatrix = Array.from( mat4.transpose([], transformation))
+        const baseTransformationMatrix = Array.from(mat4.transpose([], transformation))
         if (node.meshes)
             for (let i = 0; i < node.meshes.length; i++) {
                 const meshID = meshes[node.meshes[i]]

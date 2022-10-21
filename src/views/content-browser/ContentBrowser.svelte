@@ -2,14 +2,13 @@
     import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
     import Localization from "../../libs/Localization";
-    import Header from "../../components/view/components/ViewHeader.svelte";
-    import ControlBar from "./components/Header.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Browser from "./components/Browser.svelte";
-    import BrowserNavigation from "./components/NavigationHeader.svelte";
+    import Header from "./components/Header.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../components/view/libs/ViewStateController";
@@ -51,10 +50,6 @@
 
     let fileType = undefined
     let searchString = ""
-    let view = {
-        sideBar: true,
-        navigation: true
-    }
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
     const translate = key => Localization.PROJECT.FILES[key]
 
@@ -70,63 +65,44 @@
 
 </script>
 
-<Header
+<ViewHeader
         currentView={VIEWS.FILES}
         orientation={orientation}
         switchView={switchView}
         title={translate("TITLE")}
         icon={"folder"}
 >
-    <ControlBar
+    <Header
 
+            fileType={fileType}
+            setFileType={v => fileType = v}
+            setViewType={v => viewType = v}
+            viewType={viewType}
+            bookmarks={store.bookmarks}
+
+            searchString={searchString}
+            setSearchString={v => searchString = v}
             currentDirectory={currentDirectory}
-            translate={translate}
-            view={view}
-            setView={v => view = v}
+            setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+            navigationHistory={navigationHistory}
     />
-    <div data-vertdivider="-"></div>
-    {#if view.navigation}
-        <BrowserNavigation
-                fileType={fileType}
-                setFileType={v => fileType = v}
-                setViewType={v => viewType = v}
-                viewType={viewType}
-                bookmarks={store.bookmarks}
 
-                searchString={searchString}
-                setSearchString={v => searchString = v}
-                currentDirectory={currentDirectory}
-                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-                navigationHistory={navigationHistory}
-        />
-    {/if}
-    <div data-vertdivider="-"></div>
-    <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
-        {translate("IMPORT")}
-        <Icon styles="font-size: .9rem">open_in_new</Icon>
-    </button>
-</Header>
+</ViewHeader>
 
 <div class="wrapper">
-    {#if view.sideBar}
-        <SideBar
-                items={store.items}
-                bookmarks={store.bookmarks}
+    <SideBar
+            items={store.items}
+            bookmarks={store.bookmarks}
 
-                currentDirectory={currentDirectory}
-                setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-                translate={translate}
-        />
-        <ResizableBar type={"width"}/>
-    {/if}
-
+            currentDirectory={currentDirectory}
+            setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+            translate={translate}
+    />
+    <ResizableBar type={"width"}/>
     <div class="browser">
-
         <Browser
                 viewType={viewType}
                 internalID={internalID}
-                view={view}
-
                 store={store}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}

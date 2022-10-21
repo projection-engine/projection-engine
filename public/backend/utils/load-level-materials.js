@@ -1,7 +1,7 @@
-import {readFromRegistry} from "../fs-operations";
+import {readFromRegistry} from "./fs-operations";
 
 
-export default async function loadMaterials(toLoad, projectPath, callback) {
+export default async function loadLevelMaterials(toLoad, projectPath, callback) {
     for (let i = 0; i < toLoad.length; i++) {
         const m = toLoad[i]
         const fileData = await readFromRegistry(m, projectPath)

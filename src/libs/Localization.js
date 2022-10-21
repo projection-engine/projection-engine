@@ -85,6 +85,8 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            TRANSLATION: "Translation",
+            ROTATION: "Rotation",
             ENABLED: "Enabled",
             SUB_DIVISION: "Subdivision",
             BRIGHTNESS: "Brightness",

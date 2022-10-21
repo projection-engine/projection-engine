@@ -15,10 +15,18 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.initialize(settings)
     CameraTracker.movementSpeed = settings.camera?.movementSpeed * .1
     CameraTracker.turnSpeed = settings.camera?.turnSpeed * .01
-    if(settings.camera?.smoothing != null)
-        CameraAPI.smoothing = settings.camera?.smoothing * .001
-    if(executingAnimation)
-        CameraAPI.smoothing = .001
+    console.log(settings.camera)
+    if(settings.camera) {
+        if(settings.camera.smoothing != null)
+        CameraAPI.translationSmoothing = settings.camera?.smoothing * .001
+        if(settings.camera.rotationSmoothing != null)
+        CameraAPI.rotationSmoothing = settings.camera?.rotationSmoothing * .001
+    }
+    if(executingAnimation) {
+        CameraAPI.translationSmoothing = .001
+        CameraAPI.rotationSmoothing = .1
+    }
+
     if (!settings.executingAnimation) {
         CameraAPI.zNear = settings.zNear
         CameraAPI.zFar = settings.zFar

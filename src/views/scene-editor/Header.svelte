@@ -11,6 +11,7 @@
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import {DiffuseProbePass, SpecularProbePass} from "../../../public/engine/production";
+    import CameraSettings from "../preferences/components/CameraSettings.svelte";
 
     export let settings
     export let engine
@@ -61,10 +62,19 @@
         </button>
     </Dropdown>
     <AddEntity/>
+
+    <Dropdown styles="width: 250px">
+        <button slot="button" data-viewbutton="-" style="background: transparent;">
+            {translate("CAMERA")}
+        </button>
+        <div style="padding: 8px 4px">
+            <CameraSettings/>
+        </div>
+    </Dropdown>
 </div>
 <GizmoSettings settings={settings}/>
 <div class="right-content">
-    <ShadingOption />
+    <ShadingOption/>
 </div>
 
 <style>
