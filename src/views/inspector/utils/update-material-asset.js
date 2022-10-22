@@ -1,7 +1,8 @@
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 import MaterialAPI from "../../../../public/engine/lib/apis/rendering/MaterialAPI";
 import AssetAPI from "../../../libs/AssetAPI";
 import Localization from "../../../libs/Localization";
+import GPUController from "../../../../public/engine/GPUController";
 
 const translate = key => Localization.PROJECT.INSPECTOR[key]
 
@@ -24,11 +25,11 @@ export default async function updateMaterialAsset(key, value, registryID, temp, 
     setTemp(newData)
     if (!valid)
         return
-    const instance = GPU.materials.get(registryID)
+    const instance = GPUResources.materials.get(registryID)
     if (instance != null && doUpdate) {
         await MaterialAPI.updateMaterialUniforms(newData.uniformData, instance)
         alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
-        GPU.cleanUpTextures()
+        GPUController.cleanUpTextures()
     }
     alert.pushAlert(translate("UPDATING_ASSET"), "alert")
     await AssetAPI.updateAsset(registryID, JSON.stringify(newData))

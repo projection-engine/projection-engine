@@ -2,10 +2,11 @@ import FilesAPI from "../../FilesAPI";
 import Localization from "../../Localization";
 import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
 import RegistryAPI from "../../RegistryAPI";
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import TERRAIN_MATERIAL from "../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import GPUController from "../../../../public/engine/GPUController";
 
 const loadFile = async (rs) => {
 
@@ -29,7 +30,7 @@ export default async function loadMaterial(ID, submit) {
             if (!reg)
                 return
             const isInstance = reg.path.includes(FILE_TYPES.TERRAIN_MATERIAL) || reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) || reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
-            if (!GPU.materials.get(ID)) {
+            if (!GPUResources.materials.get(ID)) {
                 alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
                 const file = await loadFile(reg)
                 if (!file || isInstance && !file.original || !isInstance && !file.response) {
@@ -37,13 +38,13 @@ export default async function loadMaterial(ID, submit) {
                     return
                 }
                 if (isInstance) {
-                    if (!GPU.materials.get(file.original))
+                    if (!GPUResources.materials.get(file.original))
                         await loadMaterial(file.original, () => null)
-                    await GPU.allocateMaterialInstance(file, ID)
+                    await GPUController.allocateMaterialInstance(file, ID)
 
                 } else {
                     await new Promise(resolve => {
-                        GPU.allocateMaterial({
+                        GPUController.allocateMaterial({
                             onCompiled: () => resolve(),
                             settings: file.response.settings,
                             vertex: file.response.vertexShader,

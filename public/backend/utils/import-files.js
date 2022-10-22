@@ -5,7 +5,7 @@ import ProjectMap from "../libs/ProjectMap";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import AssimpLoader from "../libs/AssimpLoader";
+import AssimpLoader from "../libs/assimp/AssimpLoader";
 import {readRegistry} from "./fs-operations";
 
 const sharp = require("sharp")

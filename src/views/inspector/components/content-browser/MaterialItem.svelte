@@ -2,7 +2,7 @@
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
     import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
 
@@ -14,6 +14,7 @@
     import compareObjects from "../../utils/compare-objects";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import GPUController from "../../../../../public/engine/GPUController";
 
 
     export let data
@@ -80,11 +81,11 @@
                 temp = {...temp, uniformData: update}
             }
 
-            if (GPU.materials.get(item.registryID) != null) {
-                const instance = GPU.materials.get(item.registryID)
+            if (GPUResources.materials.get(item.registryID) != null) {
+                const instance = GPUResources.materials.get(item.registryID)
                 await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
                 alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
-                GPU.cleanUpTextures()
+                GPUController.cleanUpTextures()
             }
         }, t ? t : 0)
     }

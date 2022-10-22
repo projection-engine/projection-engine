@@ -5,7 +5,7 @@ import projectEvents from "./project-events";
 import ProjectMap from "./ProjectMap";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import logToWindow from "./log-to-window";
-import AssimpLoader from "./AssimpLoader";
+import AssimpLoader from "./assimp/AssimpLoader";
 
 const {BrowserWindow} = require("electron")
 const path = require("path");

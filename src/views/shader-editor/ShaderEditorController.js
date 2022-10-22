@@ -8,7 +8,7 @@ import getNewInstance from "./utils/get-new-instance";
 import TextureSample from "./templates/nodes/TextureSample";
 import FilesStore from "../../stores/FilesStore";
 import {v4} from "uuid";
-import GPU from "../../../public/engine/GPU";
+import GPUResources from "../../../public/engine/GPUResources";
 
 export default class ShaderEditorController {
     static GRID_SIZE = 20
@@ -82,8 +82,8 @@ export default class ShaderEditorController {
         let preview
         if (isSave) {
             let material
-            if (GPU.materials.get(id)) {
-                material = GPU.materials.get(id)
+            if (GPUResources.materials.get(id)) {
+                material = GPUResources.materials.get(id)
                 await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
             } else
                 await new Promise(resolve => {

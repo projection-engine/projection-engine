@@ -2,7 +2,7 @@
     import SHADING_MODELS from "../../public/engine/editor/shaders/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
-    import GPU from "../../public/engine/GPU";
+    import GPUResources from "../../public/engine/GPUResources";
     import DepthPass from "../../public/engine/lib/passes/rendering/DepthPass";
     import DeferredPass from "../../public/engine/lib/passes/rendering/DeferredPass";
     import AOPass from "../../public/engine/lib/passes/rendering/AOPass";
@@ -92,10 +92,10 @@
             if (shadingModel !== SHADING_MODELS.DETAIL) {
                 SSGIPass.uniforms.previousFrame = DeferredPass.albedoSampler
                 DeferredPass.deferredUniforms.uSampler = getTexture()
-                DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                DeferredPass.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
                 SSGIPass.uniforms.previousFrame = DeferredPass.compositeFBO.colors[0]
-                DeferredPass.deferredShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
+                DeferredPass.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
                 DeferredPass.deferredUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
             }
         }

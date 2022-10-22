@@ -1,10 +1,11 @@
 <script>
     import Localization from "../../../../libs/Localization";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
     import PrimitiveProcessor from "../../../../../public/engine/lib/apis/PrimitiveProcessor";
     import FilesAPI from "../../../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import GPUController from "../../../../../public/engine/GPUController";
 
     export let item
     let wasUpdated = false
@@ -21,10 +22,10 @@
         console.log(data.normals)
         alert.pushAlert(translate("UPDATING_ASSET"), "alert")
         await AssetAPI.updateAsset(item.registryID, JSON.stringify(data))
-        if (GPU.meshes.get(item.registryID) != null) {
+        if (GPUResources.meshes.get(item.registryID) != null) {
             alert.pushAlert(translate("ALLOCATING_MESH"), "alert")
-            GPU.destroyMesh(item.registryID)
-            GPU.allocateMesh(item.registryID, data)
+            GPUController.destroyMesh(item.registryID)
+            GPUController.allocateMesh(item.registryID, data)
         }
 
     }

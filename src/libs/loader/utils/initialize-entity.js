@@ -1,5 +1,5 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
 import Entity from "../../../../public/engine/lib/instances/Entity";
 
@@ -40,7 +40,7 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         }
 
         const e = entity.addComponent(COMPONENTS.MESH)
-        e.materialID = GPU.materials.get(data.material) != null ? data.material : FALLBACK_MATERIAL
+        e.materialID = GPUResources.materials.get(data.material) != null ? data.material : FALLBACK_MATERIAL
         e.meshID = meshID
         return entity
     } catch (err) {

@@ -1,2 +1,2 @@
-- Fixed point light shadows
-- Working on probes 
+- Splitting GPU class
+- bringing back GLTF loader

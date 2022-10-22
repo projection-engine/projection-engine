@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
 import DepthPass from "../../../../public/engine/lib/passes/rendering/DepthPass";
 import Engine from "../../../../public/engine/Engine";
@@ -14,7 +14,7 @@ export default function drawIconsToBuffer() {
         if (!entity.active || !(entity.components.get(COMPONENTS.SPRITE) || entity.components.get(COMPONENTS.CAMERA)))
             continue
         drawIcon(
-            GPU.meshes.get(entity.components.get(COMPONENTS.CAMERA) ? STATIC_MESHES.EDITOR.CAMERA : STATIC_MESHES.PRODUCTION.CUBE),
+            GPUResources.meshes.get(entity.components.get(COMPONENTS.CAMERA) ? STATIC_MESHES.EDITOR.CAMERA : STATIC_MESHES.PRODUCTION.CUBE),
             entity.pickID,
             entity.matrix,
         )

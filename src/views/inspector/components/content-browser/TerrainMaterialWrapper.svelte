@@ -2,12 +2,13 @@
     import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
     import updateMaterialAsset from "../../utils/update-material-asset";
     import TerrainMaterialLayer from "./TerrainMaterialLayer.svelte";
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
     import TERRAIN_MATERIAL from "../../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
+    import GPUController from "../../../../../public/engine/GPUController";
 
 
     export let item
@@ -31,10 +32,10 @@
             material,
             v => {
                 material = v
-                if (GPU.materials.get(item.registryID) != null) {
-                    GPU.destroyMaterial(item.registryID)
-                    GPU.allocateMaterialInstance(v, item.registryID)
-                    GPU.cleanUpTextures()
+                if (GPUResources.materials.get(item.registryID) != null) {
+                    GPUController.destroyMaterial(item.registryID)
+                    GPUController.allocateMaterialInstance(v, item.registryID)
+                    GPUController.cleanUpTextures()
                 }
             },
             undefined,

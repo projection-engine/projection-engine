@@ -2,9 +2,10 @@ import ENGINE from "../data/ENGINE";
 
 import FilesAPI from "../libs/FilesAPI"
 import RegistryAPI from "../libs/RegistryAPI";
-import GPU from "../../public/engine/GPU";
+import GPUResources from "../../public/engine/GPUResources";
 import {writable} from "svelte/store";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import GPUController from "../../public/engine/GPUController";
 
 const engine = writable(ENGINE);
 
@@ -24,13 +25,13 @@ export default class EngineStore {
     }
 
     static async loadTextureFromImageID(registryID) {
-        if (GPU.textures.get(registryID) != null)
+        if (GPUResources.textures.get(registryID) != null)
             return true
         try {
             const rs = await RegistryAPI.readRegistryFile(registryID)
             const textureData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
 
-            await GPU.allocateTexture({
+            await GPUController.allocateTexture({
                 ...textureData,
                 img: textureData.base64,
                 yFlip: textureData.flipY

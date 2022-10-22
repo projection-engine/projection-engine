@@ -11,7 +11,8 @@
     import RegistryAPI from "../../libs/RegistryAPI";
     import FilesAPI from "../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPU from "../../../public/engine/GPU";
+    import GPUResources from "../../../public/engine/GPUResources";
+    import GPUController from "../../../public/engine/GPUController";
 
     export let settings
     export let selectedTerrain
@@ -29,7 +30,7 @@
         api = new SculptingGizmo(selectedTerrain.image)
         api.updateMesh = () => {
             TerrainWorker.generate(api.canvas.toDataURL(), selectedTerrain.scale, selectedTerrain.dimensions)
-                .then(res => GPU.allocateMesh(settings.selectedTerrain, res))
+                .then(res => GPUController.allocateMesh(settings.selectedTerrain, res))
         }
     })
     $: if (api) api.updateSettings(terrainSettings.brushSize, terrainSettings.brushScale, terrainSettings.brushStrength)
@@ -41,7 +42,7 @@
 
         console.log(file)
         TerrainWorker.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
-            .then(res => GPU.allocateMesh(settings.selectedTerrain, res))
+            .then(res => GPUController.allocateMesh(settings.selectedTerrain, res))
     }
 </script>
 <fieldset>

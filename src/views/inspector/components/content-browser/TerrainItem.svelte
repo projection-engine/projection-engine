@@ -8,7 +8,8 @@
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
+    import GPUController from "../../../../../public/engine/GPUController";
 
     export let item
     export let data
@@ -37,7 +38,7 @@
 
 
         const data = await TerrainWorker.generate(temp.image, temp.scale, temp.dimensions)
-        GPU.allocateMesh(item.registryID, data)
+        GPUController.allocateMesh(item.registryID, data)
         clearTimeout(timeout)
         timeout = setTimeout(async () => {
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))

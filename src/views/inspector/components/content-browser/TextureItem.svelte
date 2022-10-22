@@ -5,10 +5,11 @@
     import TEXTURE_FORMATS from "../../../../../public/engine/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
     import TEXTURE_FILTERING from "../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
+    import GPUController from "../../../../../public/engine/GPUController";
 
     const {shell} = window.require("electron")
     const B = "height: 35px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
@@ -56,10 +57,10 @@
         alert.pushAlert(translate("UPDATING_ASSET"), "alert")
         AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
-        if (GPU.textures.get(item.registryID) != null) {
+        if (GPUResources.textures.get(item.registryID) != null) {
             alert.pushAlert(translate("ALLOCATING_TEXTURE"), "alert")
-            GPU.destroyTexture(item.registryID)
-            GPU.allocateTexture({
+            GPUController.destroyTexture(item.registryID)
+            GPUController.allocateTexture({
                 ...temp,
                 img: temp.base64
             }, item.registryID)

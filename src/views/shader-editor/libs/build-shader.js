@@ -1,6 +1,6 @@
 import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler"
 import {trimString} from "../../../../public/engine/lib/instances/Shader";
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
     const {
@@ -13,7 +13,7 @@ export default async function buildShader(nodes, links, openFile, setStatus, tra
     } = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
     if (shader) {
-        const currentMaterial = GPU.materials.get(openFile?.registryID)
+        const currentMaterial = GPUResources.materials.get(openFile?.registryID)
         let promise
         if (!currentMaterial)
             alert.pushAlert(translate("NOT_APPLIED"), "alert")

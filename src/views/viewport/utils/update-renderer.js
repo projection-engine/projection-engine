@@ -6,7 +6,7 @@ import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
 import ShadowMapPass from "../../../../public/engine/lib/passes/rendering/ShadowMapPass";
 import GridSystem from "../../../../public/engine/editor/services/GridSystem";
 import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
-import GPU from "../../../../public/engine/GPU";
+import GPUResources from "../../../../public/engine/GPUResources";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -58,7 +58,7 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.metadataBuffer[1] = settings.gizmoGrid.translationGizmo
     GridSystem.metadataBuffer[2] = settings.showGridSubdivision ? 1 : 0
 
-    GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
+    GPUResources.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams({
         ...settings,
         selected,

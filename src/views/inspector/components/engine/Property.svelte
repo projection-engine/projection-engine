@@ -10,7 +10,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../libs/Localization";
     import loadMaterial from "../../../../libs/loader/utils/load-material";
-    import GPU from "../../../../../public/engine/GPU";
+    import GPUResources from "../../../../../public/engine/GPUResources";
     import Loader from "../../../../libs/loader/Loader";
 
     export let component = undefined
@@ -40,7 +40,7 @@
         }
     }
     const loadMesh = async (src) => {
-        if (!GPU.meshes.get(src.registryID))
+        if (!GPUResources.meshes.get(src.registryID))
             await Loader.load(src.registryID, true)
         submit(attribute.key, src.registryID, true)
     }

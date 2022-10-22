@@ -25,7 +25,7 @@
     import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
     import ConversionAPI from "../../../public/engine/lib/apis/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
-    import GPU from "../../../public/engine/GPU";
+    import GPUResources from "../../../public/engine/GPUResources";
 
     const WORKER = selectionQueryWorker()
 
@@ -120,8 +120,8 @@
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {
             drawIconsToBuffer()
-            const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
-            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
+            const nStart = ConversionAPI.toQuadCoord(startCoords, GPUResources.internalResolution)
+            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPUResources.internalResolution)
 
             try {
                 const data = PickingAPI.readBlock(nStart, nEnd)

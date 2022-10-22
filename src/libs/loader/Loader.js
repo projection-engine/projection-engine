@@ -14,9 +14,10 @@ import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPU from "../../../public/engine/GPU";
+import GPUResources from "../../../public/engine/GPUResources";
 import Entity from "../../../public/engine/lib/instances/Entity";
 import FALLBACK_MATERIAL from "../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
+import GPUController from "../../../public/engine/GPUController";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -25,10 +26,10 @@ export default class Loader {
             existsMesh = false,
             material
         try {
-            mesh = GPU.meshes.get(objLoaded.id)
+            mesh = GPUResources.meshes.get(objLoaded.id)
             if (!mesh) {
-                mesh = GPU.allocateMesh(id, objLoaded)
-                if (objLoaded.material && !GPU.materials.get(objLoaded.material)) {
+                mesh = GPUController.allocateMesh(id, objLoaded)
+                if (objLoaded.material && !GPUResources.materials.get(objLoaded.material)) {
                     const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
                     if (rs) {
                         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
@@ -75,7 +76,7 @@ export default class Loader {
                             await loadMaterial(meshData.material, (data) => meshData.material = data)
                         else
                             meshData.material = FALLBACK_MATERIAL
-                        GPU.allocateMesh(primitiveRegistry.id, meshData)
+                        GPUController.allocateMesh(primitiveRegistry.id, meshData)
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
                     entity.parentCache =currentEntity.parent

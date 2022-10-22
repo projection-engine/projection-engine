@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
-    import GPU from "../../../../public/engine/GPU";
+    import GPUResources from "../../../../public/engine/GPUResources";
     import Engine from "../../../../public/engine/Engine";
 
     let engine
@@ -21,11 +21,11 @@
     }
     function refresh(){
         let t = 0
-        GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
+        GPUResources.meshes.forEach(m => t = t + m.trianglesQuantity)
         triangles = t
-        meshes = GPU.meshes.size - Object.keys(STATIC_MESHES.EDITOR).length
-        materials = GPU.materials.size
-        textures = GPU.textures.size - Object.keys(STATIC_TEXTURES).length
+        meshes = GPUResources.meshes.size - Object.keys(STATIC_MESHES.EDITOR).length
+        materials = GPUResources.materials.size
+        textures = GPUResources.textures.size - Object.keys(STATIC_TEXTURES).length
     }
     onMount(() => {
         refresh()
