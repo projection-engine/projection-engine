@@ -1,4 +1,4 @@
-import pixel from "../data/pixel.png"
+const PIXEL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII="
 
 export default class DragDropController {
     static tooltip
@@ -25,12 +25,11 @@ export default class DragDropController {
                 DragDropController.onLeave()
 
                 DragDropController.tooltip = event.target
-                DragDropController.tooltip.style.opacity = .5
+                DragDropController.tooltip.style.opacity = ".5"
                 DragDropController.tooltip.dragDropListeners.dragOver(event)
             }
             if (DragDropController.tooltip != null)
                 event.preventDefault()
-
         }
 
         function onDrop(event) {
@@ -48,7 +47,7 @@ export default class DragDropController {
         DragDropController.#initialized = true
 
         const el = document.createElement("img")
-        el.src = pixel
+        el.src = PIXEL
 
         DragDropController.dragImage = el
     }

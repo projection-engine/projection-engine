@@ -5,20 +5,17 @@
     import InitializeWindow from "./libs/initialize-window";
     import LevelController from "./libs/LevelController";
     import About from "shared-resources/frontend/components/About.svelte";
-    import logo from "shared-resources/APP_LOGO.png"
+    import logo from "shared-resources/APP_LOGO.js"
     import PROJECT_PATH from "shared-resources/PROJECT_PATH";
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./data/RENDER_TARGET";
     import Localization from "./libs/Localization";
-    import {GizmoSystem} from "../public/engine/editor";
-    import ActionHistoryAPI from "./libs/ActionHistoryAPI";
 
     const {ipcRenderer} = window.require("electron")
 
     let isAboutOpen = false
     let initialized = false
     let fullyLoaded = false
-
 
     onMount(() => {
         ipcRenderer.on("console", (_, data) => console.error(...data))
@@ -34,6 +31,7 @@
             }
         }, 100)
     })
+
 </script>
 
 <div id={RENDER_TARGET + "VIEWPORT"} style="display: none">

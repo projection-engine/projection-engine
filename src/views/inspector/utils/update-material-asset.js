@@ -1,5 +1,5 @@
-import GPU from "../../../../public/engine/production/GPU";
-import MaterialAPI from "../../../../public/engine/production/apis/rendering/MaterialAPI";
+import GPU from "../../../../public/engine/GPU";
+import MaterialAPI from "../../../../public/engine/lib/apis/rendering/MaterialAPI";
 import AssetAPI from "../../../libs/AssetAPI";
 import Localization from "../../../libs/Localization";
 

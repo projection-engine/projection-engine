@@ -85,6 +85,7 @@ export default class Localization {
             ERROR_LOADING: "Error loading data.",
         },
         VIEWPORT: {
+            ENTITY: "Entity",
             TRANSLATION: "Translation",
             ROTATION: "Rotation",
             ENABLED: "Enabled",
@@ -171,9 +172,6 @@ export default class Localization {
             GLOBAL: "Global",
 
             CAMERA_BEHAVIOUR: "Interaction",
-            TURN_SPEED: "Turn speed",
-            MOVEMENT_SPEED: "Movement speed",
-            SCROLL_SPEED: "Scroll speed",
 
             VIEW: "View",
             SPRITE: "Sprite",
@@ -245,6 +243,7 @@ export default class Localization {
 
         },
         HIERARCHY: {
+            SHOW_MAIN_ENTITY: "Show selected",
             REMOVE_FILTER: "Remove filter",
             DEACTIVATE: "Activate/Deactivate entity",
             SELECTED_CHILD: "Child entity is selected",

@@ -1,5 +1,5 @@
 import getComponentIcon from "./get-component-icon";
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 
 export default function getNativeComponents() {
     return [

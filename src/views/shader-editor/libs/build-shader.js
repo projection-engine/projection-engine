@@ -1,6 +1,6 @@
 import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler"
-import {trimString} from "../../../../public/engine/production/instances/ShaderController";
-import GPU from "../../../../public/engine/production/GPU";
+import {trimString} from "../../../../public/engine/lib/instances/ShaderController";
+import GPU from "../../../../public/engine/GPU";
 
 export default async function buildShader(nodes, links, openFile, setStatus, translate){
     const {

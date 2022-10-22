@@ -10,7 +10,7 @@
     import {v4} from "uuid";
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Notification from "./Notification.svelte";
-    import ConsoleAPI from "../../../public/engine/production/apis/ConsoleAPI";
+    import ConsoleAPI from "../../../public/engine/lib/apis/ConsoleAPI";
 
     export let store
     export let settings

@@ -1,7 +1,7 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../libs/Localization";
-    import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
+    import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
     import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
@@ -103,7 +103,7 @@
                 variant="embedded"
                 precision={4}
                 incrementPercentage={.001}
-                label={translate("MOVEMENT_SPEED")}
+                label={translate("TRANSLATION")}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
                 value={state.movementSpeed}
                 handleChange={v => updateCamera("movementSpeed", v)}
@@ -113,7 +113,7 @@
                 variant="embedded"
                 precision={4}
                 incrementPercentage={.001}
-                label={translate("TURN_SPEED")}
+                label={translate("ROTATION")}
                 onFinish={(v) => updateCamera("turnSpeed", v, true)}
                 value={state.turnSpeed}
                 handleChange={v => updateCamera("turnSpeed", v)}

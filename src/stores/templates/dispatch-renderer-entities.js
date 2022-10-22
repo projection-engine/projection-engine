@@ -6,9 +6,11 @@ import EntityNameController from "../../libs/EntityNameController";
 import AXIS from "../../../public/engine/editor/data/AXIS";
 import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
-import {Engine, EntityAPI, getPickerId} from "../../../public/engine/production";
 import HierarchyController from "../../libs/HierarchyController";
-import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
+import getPickerId from "../../../public/engine/utils/get-picker-id";
+import Engine from "../../../public/engine/Engine";
+import EntityAPI from "../../../public/engine/lib/apis/EntityAPI";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -126,14 +128,13 @@ export default function dispatchRendererEntities({type, payload}) {
         if (!entity.parentCache)
             continue
         const parent = QueryAPI.getEntityByID(entity.parentCache)
-
-        if (parent) {
-            entity.parentCache = undefined
-            entity.parent = parent
-            parent.children.push(entity)
-        } else
-            entity.parent = undefined
-
+        if (type === ENTITY_ACTIONS.DISPATCH_BLOCK || type === ENTITY_ACTIONS.PUSH_BLOCK) {
+            if (parent) {
+                entity.parentCache = undefined
+                EntityAPI.linkEntities(entity, parent)
+            } else
+                EntityAPI.linkEntities(entity, undefined)
+        }
     }
     HierarchyController.updateHierarchy()
     EngineStore.updateStore({...EngineStore.engine, changeID})

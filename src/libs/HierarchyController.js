@@ -1,5 +1,5 @@
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
-import {Engine} from "../../public/engine/production";
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
+import Engine from "../../public/engine/Engine";
 
 function findSurface(e, open) {
     const entity = QueryAPI.getEntityByID(e)
@@ -64,5 +64,19 @@ export default class HierarchyController {
             callback(entitiesArray[i], 0)
         }
         HierarchyController.hierarchy = data
+    }
+
+    static openTree(node){
+        if(!node)
+            return  {}
+        const open = {
+            [node.id]: true
+        }
+        let target = node
+        while(target.parent != null){
+            open[target.id] = true
+            target = target.parent
+        }
+        return open
     }
 }

@@ -6,15 +6,17 @@ import RegistryAPI from "../RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../Localization";
-import COMPONENTS from "../../../public/engine/static/COMPONENTS.json";
-import {Entity, FALLBACK_MATERIAL, GPU} from "../../../public/engine/production";
+import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import loadMaterial from "./utils/load-material";
-import PickingAPI from "../../../public/engine/production/apis/utils/PickingAPI";
-import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
+import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import GPU from "../../../public/engine/GPU";
+import Entity from "../../../public/engine/lib/instances/Entity";
+import FALLBACK_MATERIAL from "../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {

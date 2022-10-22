@@ -13,12 +13,13 @@
     import dragDrop from "../../components/drag-drop/drag-drop";
     import EngineStore from "../../stores/EngineStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
-    import {EntityAPI} from "../../../public/engine/production";
     import HierarchyController from "../../libs/HierarchyController";
     import SelectionStore from "../../stores/SelectionStore";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import VIEWS from "../../components/view/data/VIEWS";
+    import Engine from "../../../public/engine/Engine";
+    import EntityAPI from "../../../public/engine/lib/apis/EntityAPI";
 
 
     export let switchView = undefined
@@ -31,6 +32,7 @@
     let isEmpty = true
     let ref
     let settings
+    let openTree = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     $: {
         if (ref != null) {
@@ -84,16 +86,24 @@
         title={translate("TITLE")}
         icon={"account_tree"}
 >
+    <button
+            on:click={() => {
+                openTree = {...openTree, ...HierarchyController.openTree(Engine.entitiesMap.get(SelectionStore.mainEntity))}
+            }}
+            class="button">
+        <ToolTip content={translate("SHOW_MAIN_ENTITY")}/>
+        <Icon styles="font-size: .9rem">center_focus_strong</Icon>
+    </button>
     <Input
             hasBorder={true}
-            width={"100%"}
+            width="50%"
             height="22px"
             placeholder={translate("SEARCH")}
             searchString={search}
             setSearchString={v => search = v}
     />
 
-    <Dropdown>
+    <Dropdown buttonStyles="margin-left: auto">
         <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={translate("COMPONENT_FILTER")}/>
@@ -114,12 +124,7 @@
             </button>
         {/each}
     </Dropdown>
-    {#if filteredComponent != null}
-        <button on:click={() => filteredComponent = undefined} class="remove-button">
-            <ToolTip content={translate("REMOVE_FILTER")}/>
-            <Icon styles="font-size: .9rem">close</Icon>
-        </button>
-    {/if}
+
 </Header>
 
 <div
@@ -130,6 +135,8 @@
         bind:this={ref}
 >
     <EngineHierarchyView
+            openTree={openTree}
+            setOpenTree={v => openTree = v}
             setIsEmpty={v => isEmpty = v}
             searchString={search}
             filteredComponent={filteredComponent}
@@ -164,10 +171,10 @@
         max-height: 100%;
 
     }
-    .remove-button{
+    .button{
         padding: 0;
-        width: 1rem;
-        height: 1rem;
+        width: 20px;
+        height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -1,5 +1,6 @@
-import {Engine, ENVIRONMENT, KEYS,} from "../../public/engine/production";
-
+import KEYS from "../data/KEYS";
+import Engine from "../../public/engine/Engine";
+import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
 
 export default class HotKeysController {
 

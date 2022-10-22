@@ -1,11 +1,11 @@
 import AssimpJS from "./assimp/assimpjs";
-import PrimitiveProcessor from "../../engine/production/apis/PrimitiveProcessor";
+import PrimitiveProcessor from "../../engine/lib/apis/PrimitiveProcessor";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import createRegistryEntry from "../utils/create-registry-entry";
 import {v4} from "uuid";
 import ProjectMap from "./ProjectMap";
 import {mat4} from "gl-matrix";
-import SIMPLE_MATERIAL_UNIFORMS from "../../engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
+import SIMPLE_MATERIAL_UNIFORMS from "../../engine/templates/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
 
 
 const path = require("path")

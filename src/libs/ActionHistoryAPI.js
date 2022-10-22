@@ -1,9 +1,10 @@
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import UndoRedoAPI from "./UndoRedoAPI";
-import {Engine, EntityAPI} from "../../public/engine/production";
 import HierarchyController from "./HierarchyController";
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
+import EntityAPI from "../../public/engine/lib/apis/EntityAPI";
+import Engine from "../../public/engine/Engine";
 
 export default class ActionHistoryAPI {
     static targets = {

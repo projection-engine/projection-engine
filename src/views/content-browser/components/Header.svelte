@@ -15,6 +15,7 @@
     import selection from "../utils/selection";
     import SELECTION_TYPES from "../templates/SELECTION_TYPES";
     import importFile from "../../../libs/import-file";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
 
     export let bookmarks
     export let currentDirectory
@@ -38,48 +39,14 @@
     onDestroy(() => unsubscribeEngine())
     const translate = key => Localization.PROJECT.FILES[key]
 </script>
-<Dropdown
-        buttonStyles={`
-            max-height: 22px;
-            min-height: 22px;
-            border-radius: 3px;
-        `}>
-    <button slot="button" data-viewbutton="-">
-        {translate("SELECT")}
-    </button>
-    <button on:click={() => selection(SELECTION_TYPES.ALL, currentDirectory)}>
-        {translate("SELECT_ALL")}
-    </button>
 
-    <button on:click={() => selection(SELECTION_TYPES.NONE, currentDirectory)}>
-        {translate("SELECT_NONE")}
-    </button>
-    <button on:click={() => selection(SELECTION_TYPES.INVERT, currentDirectory)}>
-        {translate("SELECT_INVERT")}
-    </button>
-</Dropdown>
-
-<div data-vertdivider="-"></div>
-<button
-        data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
-        on:click={() => setViewType(ITEM_TYPES.ROW)}
-        class="button"
+<ViewHeader
+        title={translate("TITLE")}
+        icon={"folder"}
 >
-    <Icon styles="font-size: .9rem">view_stream</Icon>
-    <ToolTip content={translate("ROW_VIEW")}/>
-</button>
-<button
-        data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
-        on:click={() => setViewType(ITEM_TYPES.CARD)}
-        class="button"
->
-    <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-    <ToolTip content={translate("CARD_VIEW")}/>
-</button>
 
-<div data-vertdivider="-"></div>
 
-<div class="wrapper">
+
     <button class="button" on:click={() => navigationHistory.undo()}>
         <Icon styles="font-size: .9rem">arrow_back</Icon>
         <ToolTip content={translate("BACK_DIR")}/>
@@ -94,10 +61,10 @@
     <button
             class="button"
             on:click={() => {
-                            if(currentDirectory.id === NodeFS.sep)
-                                return
-                            navigationHistory.goToParent(currentDirectory)
-                        }}
+            if(currentDirectory.id === NodeFS.sep)
+                return
+            navigationHistory.goToParent(currentDirectory)
+        }}
     >
         <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
         <ToolTip content={translate("PARENT_DIR")}/>
@@ -181,23 +148,30 @@
         {/each}
     </Dropdown>
     <div data-vertdivider="-"></div>
+    <button
+            data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+            on:click={() => setViewType(ITEM_TYPES.ROW)}
+            class="button"
+    >
+        <Icon styles="font-size: .9rem">view_stream</Icon>
+        <ToolTip content={translate("ROW_VIEW")}/>
+    </button>
+    <button
+            data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+            on:click={() => setViewType(ITEM_TYPES.CARD)}
+            class="button"
+    >
+        <Icon styles="transform: rotate(180deg)">grid_view</Icon>
+        <ToolTip content={translate("CARD_VIEW")}/>
+    </button>
+    <div data-vertdivider="-"></div>
     <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
         {translate("IMPORT")}
         <Icon styles="font-size: .9rem">open_in_new</Icon>
     </button>
-</div>
-
+</ViewHeader>
 
 <style>
-
-    .wrapper {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-
-    }
-
     .button {
         background: var(--pj-background-secondary);
         display: flex;
@@ -208,6 +182,5 @@
         min-height: 22px;
         min-width: 22px;
         border: none;
-
     }
 </style>

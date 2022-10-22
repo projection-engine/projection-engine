@@ -1,12 +1,9 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
-    import {ConversionAPI, Engine, GPU, PickingAPI,} from "../../../public/engine/production";
-
     import selectionQueryWorker from "../viewport/utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
     import CameraGizmo from "../../components/CameraGizmo.svelte";
-
     import GIZMOS from "../../data/GIZMOS";
     import onViewportClick from "../viewport/utils/on-viewport-click";
     import Loader from "../../libs/loader/Loader";
@@ -24,7 +21,11 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
     import Metrics from "../../components/Metrics.svelte";
-    import {CameraTracker} from "../../../public/engine/editor";
+    import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
+    import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
+    import ConversionAPI from "../../../public/engine/lib/apis/math/ConversionAPI";
+    import Engine from "../../../public/engine/Engine";
+    import GPU from "../../../public/engine/GPU";
 
     const WORKER = selectionQueryWorker()
 

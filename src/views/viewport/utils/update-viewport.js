@@ -1,11 +1,10 @@
 import FilesStore from "../../../stores/FilesStore";
 import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
-import {Engine} from "../../../../public/engine/production";
-import {CameraTracker} from "../../../../public/engine/editor";
+import Engine from "../../../../public/engine/Engine";
+import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
+
 
 export default function updateViewport(engine, currentView) {
-
-    console.trace(engine.isReady, currentView)
     if (!engine.isReady)
         return
     if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {

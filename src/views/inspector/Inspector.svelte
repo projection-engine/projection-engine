@@ -11,8 +11,8 @@
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import Entity from "../../../public/engine/production/instances/Entity";
-    import QueryAPI from "../../../public/engine/production/apis/utils/QueryAPI";
+    import Entity from "../../../public/engine/lib/instances/Entity";
+    import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
     import VIEWS from "../../components/view/data/VIEWS";
     import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 

@@ -1,5 +1,7 @@
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.json";
-import {Entity, FALLBACK_MATERIAL, GPU} from "../../../../public/engine/production";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
+import GPU from "../../../../public/engine/GPU";
+import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
+import Entity from "../../../../public/engine/lib/instances/Entity";
 
 
 export default function initializeEntity(data, meshID, parent, index = 0) {

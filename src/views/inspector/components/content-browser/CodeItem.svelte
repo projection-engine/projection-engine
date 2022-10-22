@@ -8,10 +8,3 @@
     <legend>{Localization.PROJECT.INSPECTOR.CODE_PREVIEW}</legend>
     <pre data-pre="-">{data}</pre>
 </fieldset>
-<style>
-    pre {
-        border-radius: 3px;
-        border: var(--pj-border-primary) 1px solid;
-    }
-
-</style>

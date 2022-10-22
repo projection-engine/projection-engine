@@ -1,10 +1,10 @@
 import FilesAPI from "../../FilesAPI";
 import Localization from "../../Localization";
-import FALLBACK_MATERIAL from "../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
 import RegistryAPI from "../../RegistryAPI";
-import GPU from "../../../../public/engine/production/GPU";
+import GPU from "../../../../public/engine/GPU";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import TERRAIN_MATERIAL from "../../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
+import TERRAIN_MATERIAL from "../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const loadFile = async (rs) => {

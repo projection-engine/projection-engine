@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../../../stores/EngineStore";
     import ComponentLayout from "./Layout.svelte";
-    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json";
+    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
     import FilesStore from "../../../../stores/FilesStore";
     import componentConstructor from "../../../../libs/component-constructor";
     import loadMaterial from "../../../../libs/loader/utils/load-material";
@@ -10,11 +10,11 @@
     import {onDestroy, onMount} from "svelte";
 
     import dragDrop from "../../../../components/drag-drop/drag-drop";
-    import EntityAPI from "../../../../../public/engine/production/apis/EntityAPI";
+    import EntityAPI from "../../../../../public/engine/lib/apis/EntityAPI";
     import Localization from "../../../../libs/Localization";
-    import PointLightComponent from "../../../../../public/engine/production/components/rendering/PointLightComponent";
+    import PointLightComponent from "../../../../../public/engine/lib/components/rendering/PointLightComponent";
     import DirectionalLightComponent
-        from "../../../../../public/engine/production/components/rendering/DirectionalLightComponent";
+        from "../../../../../public/engine/lib/components/rendering/DirectionalLightComponent";
     import UIComponent from "./UIComponent.svelte";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ActionHistoryAPI from "../../../../libs/ActionHistoryAPI";

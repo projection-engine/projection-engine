@@ -2,7 +2,7 @@
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./Styles.svelte";
-    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.json"
+    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
     import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
@@ -10,9 +10,9 @@
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../libs/RegistryAPI";
     import FilesAPI from "../../../../libs/FilesAPI";
-    import UIAPI from "../../../../../public/engine/production/apis/UIAPI";
-    import {Engine} from "../../../../../public/engine/production";
+    import UIAPI from "../../../../../public/engine/lib/apis/UIAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import Engine from "../../../../../public/engine/Engine";
 
     export let entity
     export let submit

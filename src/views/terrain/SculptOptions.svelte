@@ -6,11 +6,12 @@
     import {onDestroy, onMount} from "svelte";
     import SculptingGizmo from "../../../public/engine/editor/libs/terrain/SculptingGizmo";
     import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
-    import {GPU} from "../../../public/engine/production";
+
     import Selector from "../../components/selector/Selector.svelte";
     import RegistryAPI from "../../libs/RegistryAPI";
     import FilesAPI from "../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import GPU from "../../../public/engine/GPU";
 
     export let settings
     export let selectedTerrain

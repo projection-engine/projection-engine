@@ -8,7 +8,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../libs/component-constructor";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
-    import Engine from "../../../../../public/engine/production/Engine";
+    import Engine from "../../../../../public/engine/Engine";
     import EntityNameController from "../../../../libs/EntityNameController";
     import SelectionStore from "../../../../stores/SelectionStore";
 

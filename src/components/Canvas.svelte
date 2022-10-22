@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "../views/viewport/utils/update-renderer";
     import EngineStore from "../stores/EngineStore";
-    import GPU from "../../public/engine/production/GPU";
+    import GPU from "../../public/engine/GPU";
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
     import AssetAPI from "../libs/AssetAPI";

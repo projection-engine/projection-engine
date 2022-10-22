@@ -1,7 +1,6 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import livereload from 'rollup-plugin-livereload';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
@@ -15,8 +14,7 @@ const common = (inputFile, outputFile) => ({
         strict: false,
         sourcemap: false,
         format: 'iife',
-        name: 'app',
-        file: `public/build/${outputFile}.js`,
+        file: `public/build/${outputFile}.js`
     },
     plugins: [
         copy({
@@ -40,7 +38,6 @@ const common = (inputFile, outputFile) => ({
         }),
         commonjs({sourceMap: false }),
         !PRODUCTION && serve(),
-        !PRODUCTION && livereload('public'),
         PRODUCTION && terser(),
         image(),
         json()
@@ -61,7 +58,7 @@ const worker = (fileName, output) => ({
         resolve({
             browser: true
         }),
-        commonjs({sourceMap: false }),
+        commonjs({sourceMap: false}),
         json(),
         PRODUCTION && terser()
     ]

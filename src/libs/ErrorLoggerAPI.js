@@ -1,6 +1,6 @@
 import FilesAPI from "./FilesAPI";
 
-import ConsoleAPI from "../../public/engine/production/apis/ConsoleAPI";
+import ConsoleAPI from "../../public/engine/lib/apis/ConsoleAPI";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";

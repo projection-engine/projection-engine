@@ -1,5 +1,5 @@
 import EngineStore from "../stores/EngineStore";
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
 import {v4} from "uuid";
 import SelectionStore from "../stores/SelectionStore";
 

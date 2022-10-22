@@ -5,7 +5,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import "../../viewport/css/styles.css"
     import Localization from "../../../libs/Localization";
-    import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
+    import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
     import ViewportActions from "../../../libs/ViewportActions";
 
     let hidden = false

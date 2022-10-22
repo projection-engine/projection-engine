@@ -4,19 +4,20 @@ import SettingsStore from "../stores/SettingsStore";
 import GIZMOS from "../data/GIZMOS";
 import SelectionStore from "../stores/SelectionStore";
 import ActionHistoryAPI from "../libs/ActionHistoryAPI";
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
-import {CameraTracker} from "../../public/engine/editor";
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
+
 import selectEntityHierarchy from "./utils/select-entity-hierarchy";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import snap from "./utils/snap";
 import TRANSFORMATION_TYPE from "../data/TRANSFORMATION_TYPE";
 import EntityConstructor from "../libs/EntityConstructor";
-import {Engine} from "../../public/engine/production";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
-import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
 import LevelController from "../libs/LevelController";
 import {vec3} from "gl-matrix";
+import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
+import Engine from "../../public/engine/Engine";
 
 function focusCamera(current, cameras) {
     if (current > -1 && cameras[current] != null)

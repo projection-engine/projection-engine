@@ -1,13 +1,13 @@
-import Entity from "../../public/engine/production/instances/Entity";
-import COMPONENTS from "../../public/engine/static/COMPONENTS.json";
+import Entity from "../../public/engine/lib/instances/Entity";
+import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
 import {vec3, vec4} from "gl-matrix";
 import Localization from "./Localization";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
-import CameraAPI from "../../public/engine/production/apis/CameraAPI";
-import {EntityAPI} from "../../public/engine/production";
+import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
+import EntityAPI from "../../public/engine/lib/apis/EntityAPI";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 const addSprite = (entity, img) => {

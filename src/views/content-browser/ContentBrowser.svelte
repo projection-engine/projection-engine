@@ -18,8 +18,7 @@
     import SettingsStore from "../../stores/SettingsStore";
     import importFile from "../../libs/import-file";
 
-    export let switchView = undefined
-    export let orientation = undefined
+
     export let viewID
     export let viewIndex
     export let groupIndex
@@ -65,29 +64,21 @@
 
 </script>
 
-<ViewHeader
-        currentView={VIEWS.FILES}
-        orientation={orientation}
-        switchView={switchView}
-        title={translate("TITLE")}
-        icon={"folder"}
->
-    <Header
 
-            fileType={fileType}
-            setFileType={v => fileType = v}
-            setViewType={v => viewType = v}
-            viewType={viewType}
-            bookmarks={store.bookmarks}
+<Header
+        fileType={fileType}
+        setFileType={v => fileType = v}
+        setViewType={v => viewType = v}
+        viewType={viewType}
+        bookmarks={store.bookmarks}
 
-            searchString={searchString}
-            setSearchString={v => searchString = v}
-            currentDirectory={currentDirectory}
-            setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-            navigationHistory={navigationHistory}
-    />
+        searchString={searchString}
+        setSearchString={v => searchString = v}
+        currentDirectory={currentDirectory}
+        setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
+        navigationHistory={navigationHistory}
+/>
 
-</ViewHeader>
 
 <div class="wrapper">
     <SideBar

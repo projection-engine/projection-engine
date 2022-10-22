@@ -1,13 +1,13 @@
 import FilesAPI from "./FilesAPI"
 import ActionHistoryAPI from "./ActionHistoryAPI";
-import Engine from "../../public/engine/production/Engine";
+import Engine from "../../public/engine/Engine";
 import RegistryAPI from "./RegistryAPI";
 
 import ROUTES from "../data/ROUTES";
 import CHANNELS from "../data/CHANNELS";
-import GPU from "../../public/engine/production/GPU";
-import COMPONENTS from "../../public/engine/static/COMPONENTS.json";
-import Entity from "../../public/engine/production/instances/Entity";
+import GPU from "../../public/engine/GPU";
+import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
+import Entity from "../../public/engine/lib/instances/Entity";
 import componentConstructor from "./component-constructor";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
 
@@ -23,9 +23,9 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "./Localization";
-import {CameraTracker} from "../../public/engine/editor";
-import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
 import TabsStore from "../stores/TabsStore";
+import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
 
 const {ipcRenderer} = window.require("electron")
 

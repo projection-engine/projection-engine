@@ -1,7 +1,7 @@
 import drawIconsToBuffer from "./draw-icons-to-buffer"
-import PickingAPI from "../../../../public/engine/production/apis/utils/PickingAPI";
+import PickingAPI from "../../../../public/engine/lib/apis/utils/PickingAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
+import QueryAPI from "../../../../public/engine/lib/apis/utils/QueryAPI";
 
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 

@@ -77,7 +77,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             require: settings.contentBrowserHotkeys.DELETE,
             callback: () => {
                 const s = [...SelectionStore.contentBrowserSelected]
-                if(s.length > 0) {
+                if (s.length > 0) {
                     SelectionStore.contentBrowserSelected = []
                     handleDelete(s, currentDirectory, setCurrentDirectory)
                 }
@@ -86,7 +86,10 @@ export default function contentBrowserActions(settings, navigationHistory, curre
         CUT: {
             label: translate("CUT"),
             require: settings.contentBrowserHotkeys.CUT,
-            callback: () => FilesStore.updateStore({...FilesStore.data, toCut: [...SelectionStore.contentBrowserSelected]})
+            callback: () => FilesStore.updateStore({
+                ...FilesStore.data,
+                toCut: [...SelectionStore.contentBrowserSelected]
+            })
         },
         PASTE: {
             label: translate("PASTE"),
@@ -98,6 +101,10 @@ export default function contentBrowserActions(settings, navigationHistory, curre
     return {
         hotKeys: Object.values(hotKeys),
         contextMenu: [
+            hotKeys.SELECT_ALL,
+            hotKeys.SELECT_NONE,
+            hotKeys.INVERT_SELECTION,
+            {divider: true},
             hotKeys.BACK,
             hotKeys.FORWARD,
             {divider: true},

@@ -4,26 +4,27 @@
     import Branch from "./Node.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
-    import {Engine} from "../../../../public/engine/production";
     import HierarchyController from "../../../libs/HierarchyController";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../libs/Localization";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
+    import Engine from "../../../../public/engine/Engine";
 
     export let ID
     export let translate
     export let searchString
     export let filteredComponent
     export let setIsEmpty
+    export let openTree
+    export let setOpenTree
     let engine = {}
     let settings = {}
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    let open = new Map()
     let toRender = []
     let selected = []
     let lockedEntity
@@ -50,7 +51,7 @@
                 const data = []
                 for (let i = 0; i < hierarchy.length; i++) {
 
-                    if (!hierarchy[i].node.parent || open.get(hierarchy[i].node.parent.id))
+                    if (!hierarchy[i].node.parent || openTree[hierarchy[i].node.parent.id])
                         data.push(hierarchy[i])
                 }
                 toRender = data
@@ -98,8 +99,8 @@
                 lockedEntity={lockedEntity}
                 setLockedEntity={v => SelectionStore.lockedEntity = v}
                 internalID={ID}
-                open={open}
-                updateOpen={() => open = open}
+                open={openTree}
+                updateOpen={() => setOpenTree(openTree)}
         />
     </VirtualList>
 {:else}

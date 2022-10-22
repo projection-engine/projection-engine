@@ -6,7 +6,7 @@
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import SIMPLE_MATERIAL_TEMPLATE, {
         DEFAULT_MATRICES
-    } from "../../../../../public/engine/production/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
+    } from "../../../../../public/engine/templates/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";

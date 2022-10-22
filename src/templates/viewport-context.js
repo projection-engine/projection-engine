@@ -1,16 +1,14 @@
 import SelectionStore from "../stores/SelectionStore";
 import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../libs/EntityConstructor";
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
 
-export default function viewportContext(settings) {
+export default function viewportContext(settings, forDropdown) {
     const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
-    return [
-        VIEWPORT_HOTKEYS.SAVE,
-        {divider: true},
+    const data = [
         VIEWPORT_HOTKEYS.SELECT_NONE,
         VIEWPORT_HOTKEYS.SELECT_ALL,
         VIEWPORT_HOTKEYS.INVERT_SELECTION,
@@ -24,7 +22,9 @@ export default function viewportContext(settings) {
         VIEWPORT_HOTKEYS.GROUP,
         VIEWPORT_HOTKEYS.DUPLICATE,
         {divider: true},
-
+        VIEWPORT_HOTKEYS.HIDE_ACTIVE,
+        VIEWPORT_HOTKEYS.FOCUS,
+        VIEWPORT_HOTKEYS.FIXATE_ACTIVE,
         {
             label: "Pivot point",
             children: [
@@ -134,12 +134,12 @@ export default function viewportContext(settings) {
             ]
         },
         {divider: true},
-        VIEWPORT_HOTKEYS.HIDE_ACTIVE,
-        VIEWPORT_HOTKEYS.FOCUS,
-        VIEWPORT_HOTKEYS.FIXATE_ACTIVE,
         {
             label: "Create",
             children: entityCreationOptions()
         }
     ]
+    if(forDropdown)
+        data.pop()
+    return data
 }

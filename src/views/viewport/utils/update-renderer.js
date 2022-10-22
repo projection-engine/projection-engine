@@ -1,12 +1,12 @@
 import bindGizmo from "./bind-gizmo";
-import Engine from "../../../../public/engine/production/Engine";
+import Engine from "../../../../public/engine/Engine";
 import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
 import Wrapper from "../../../../public/engine/editor/services/Wrapper";
-import CameraAPI from "../../../../public/engine/production/apis/CameraAPI";
-import ShadowMapPass from "../../../../public/engine/production/passes/rendering/ShadowMapPass";
-import {GizmoSystem} from "../../../../public/engine/editor";
-import {GPU} from "../../../../public/engine/production";
+import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
+import ShadowMapPass from "../../../../public/engine/lib/passes/rendering/ShadowMapPass";
 import GridSystem from "../../../../public/engine/editor/services/GridSystem";
+import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
+import GPU from "../../../../public/engine/GPU";
 
 
 export default function updateRenderer(selected, engine, settings) {

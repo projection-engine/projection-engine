@@ -3,7 +3,7 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import FALLBACK_MATERIAL from "../../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
+    import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
     import VirtualList from '@sveltejs/svelte-virtual-list';

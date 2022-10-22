@@ -2,11 +2,12 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/disp
 import EngineStore from "../stores/EngineStore";
 
 import SelectionStore from "../stores/SelectionStore";
-import {Engine} from "../../public/engine/production";
-import {CameraTracker} from "../../public/engine/editor";
-import QueryAPI from "../../public/engine/production/apis/utils/QueryAPI";
+
+import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../public/engine/production/apis/CameraAPI";
+import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
+import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
+import Engine from "../../public/engine/Engine";
 
 
 export default class ViewportActions {

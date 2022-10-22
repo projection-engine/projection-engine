@@ -6,7 +6,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
-    import FALLBACK_MATERIAL from "../../../public/engine/production/materials/simple/FALLBACK_MATERIAL";
+    import FALLBACK_MATERIAL from "../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../public/engine/static/resources/STATIC_MESHES";
     import getType from "./utils/get-type";
 

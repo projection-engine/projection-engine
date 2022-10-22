@@ -1,12 +1,12 @@
-import {Engine, Entity, ENVIRONMENT} from "../../public/engine/production";
-
-
+import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
 import componentConstructor from "./component-constructor";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
 import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
-import UIAPI from "../../public/engine/production/apis/UIAPI";
-import PhysicsAPI from "../../public/engine/production/apis/PhysicsAPI";
+import UIAPI from "../../public/engine/lib/apis/UIAPI";
+import PhysicsAPI from "../../public/engine/lib/apis/PhysicsAPI";
+import Engine from "../../public/engine/Engine";
+import Entity from "../../public/engine/lib/instances/Entity";
 
 export default class EntityStateController {
     static #state = []

@@ -1,5 +1,5 @@
 <script>
-    import {KEYS} from "../../../../../public/engine/production";
+    import KEYS from "../../../../data/KEYS";
 
     export let isOnRename
     export let submitRename
@@ -9,6 +9,7 @@
 
 
 <input
+        data-overflow="-"
         disabled={!isOnRename}
         on:change={e => submitRename(e.currentTarget.value)}
         on:blur={ev => {

@@ -30,15 +30,15 @@
     }
 
     const onExpand = () => {
-        if (!open.get(nodeRef.id)) {
-            open.set(nodeRef.id, true)
+        if (!open[nodeRef.id]) {
+            open[nodeRef.id] = true
             updateOpen()
         } else {
-            open.delete(nodeRef.id)
+            delete open[nodeRef.id]
             const callback = (node) => {
                 node.children.forEach(c => {
-                    if (open.get(c.id)) {
-                        open.delete(c.id)
+                    if (open[c.id]) {
+                        delete open[c.id]
                         callback(c)
                     }
                 })
@@ -50,6 +50,7 @@
 
 
     $: hiddenActiveChildren = surfaceSelected[nodeRef.id]
+    $: isOpen = open[nodeRef.id]
 </script>
 
 <div
@@ -60,7 +61,7 @@
 >
     {#if nodeRef.children.length > 0}
         <button
-                data-open={open.get(nodeRef.id) ? "-" : ""}
+                data-open={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
                 on:click={onExpand}
         >

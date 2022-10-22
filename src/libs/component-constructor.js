@@ -1,8 +1,8 @@
 import FilesAPI from "./FilesAPI"
 import RegistryAPI from "./RegistryAPI";
 import SelectionStore from "../stores/SelectionStore";
-import {EntityAPI} from "../../public/engine/production";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import EntityAPI from "../../public/engine/lib/apis/EntityAPI";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
 

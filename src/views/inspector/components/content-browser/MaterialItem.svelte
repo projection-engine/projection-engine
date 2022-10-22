@@ -2,11 +2,11 @@
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/production/GPU";
+    import GPU from "../../../../../public/engine/GPU";
     import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
 
-    import MaterialAPI from "../../../../../public/engine/production/apis/rendering/MaterialAPI";
+    import MaterialAPI from "../../../../../public/engine/lib/apis/rendering/MaterialAPI";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesAPI from "../../../../libs/FilesAPI";

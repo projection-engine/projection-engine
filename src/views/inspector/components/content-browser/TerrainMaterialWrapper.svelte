@@ -2,11 +2,11 @@
     import Localization from "../../../../libs/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPU from "../../../../../public/engine/production/GPU";
+    import GPU from "../../../../../public/engine/GPU";
     import updateMaterialAsset from "../../utils/update-material-asset";
     import TerrainMaterialLayer from "./TerrainMaterialLayer.svelte";
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
-    import TERRAIN_MATERIAL from "../../../../../public/engine/production/materials/terrain-layered/TERRAIN_MATERIAL";
+    import TERRAIN_MATERIAL from "../../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
 
 

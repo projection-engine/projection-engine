@@ -1,17 +1,17 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ShadingOption from "../../components/ShadingOption.svelte";
-    import ActiveFeatures from "./components/ActiveFeatures.svelte";
-    import AddEntity from "./components/AddEntity.svelte";
+    import ViewOptions from "./components/ViewOptions.svelte";
+    import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
-    import ViewportActions from "../../libs/ViewportActions";
-    import SelectionStore from "../../stores/SelectionStore";
     import Localization from "../../libs/Localization";
     import EngineStore from "../../stores/EngineStore";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import {DiffuseProbePass, SpecularProbePass} from "../../../public/engine/production";
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
+    import ObjectOptions from "./components/ObjectOptions.svelte";
+    import DiffuseProbePass from "../../../public/engine/lib/passes/rendering/DiffuseProbePass";
+    import SpecularProbePass from "../../../public/engine/lib/passes/rendering/SpecularProbePass";
 
     export let settings
     export let engine
@@ -33,6 +33,7 @@
             {translate("PLAY")}
         {/if}
     </button>
+
     <button on:click={() => {
         alert.pushAlert(translate("BUILDING_PROBES"), "info")
         DiffuseProbePass.compile()
@@ -41,28 +42,10 @@
         <Icon styles="font-size: .85rem">refresh</Icon>
         {translate("BUILD_PROBES")}
     </button>
+
     <div data-vertdivider="-" style="height: 15px"></div>
-
-    <ActiveFeatures settings={settings}/>
-    <Dropdown>
-        <button slot="button" data-viewbutton="-" style="background: transparent;">
-            {translate("SELECT")}
-        </button>
-
-        <button on:click={() => ViewportActions.selectAll()}>
-            {translate("ALL")}
-        </button>
-
-        <button on:click={() => ViewportActions.invertSelection()}>
-            {translate("INVERT")}
-        </button>
-
-        <button on:click={() => SelectionStore.engineSelected = []}>
-            {translate("NONE")}
-        </button>
-    </Dropdown>
-    <AddEntity/>
-
+    <ViewOptions settings={settings}/>
+    <AddOptions/>
     <Dropdown styles="width: 250px">
         <button slot="button" data-viewbutton="-" style="background: transparent;">
             {translate("CAMERA")}
@@ -71,6 +54,8 @@
             <CameraSettings/>
         </div>
     </Dropdown>
+
+    <ObjectOptions settings={settings}/>
 </div>
 <GizmoSettings settings={settings}/>
 <div class="right-content">

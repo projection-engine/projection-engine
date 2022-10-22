@@ -1,9 +1,10 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import {Engine, GPU} from "../../../../public/engine/production";
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
+    import GPU from "../../../../public/engine/GPU";
+    import Engine from "../../../../public/engine/Engine";
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)

@@ -1,8 +1,10 @@
 import FilesAPI from "../../FilesAPI";
 import TerrainWorker from "../../../../public/engine/workers/terrain/TerrainWorker";
-import {COMPONENTS, Entity, GPU} from "../../../../public/engine/production";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import GPU from "../../../../public/engine/GPU";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
+import Entity from "../../../../public/engine/lib/instances/Entity";
 
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")

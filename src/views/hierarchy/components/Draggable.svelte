@@ -10,10 +10,11 @@
     import Localization from "../../../libs/Localization";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
-    import QueryAPI from "../../../../public/engine/production/apis/utils/QueryAPI";
-    import {EntityAPI, KEYS} from "../../../../public/engine/production";
+    import QueryAPI from "../../../../public/engine/lib/apis/utils/QueryAPI";
     import HierarchyController from "../../../libs/HierarchyController";
     import EntityNameController from "../../../libs/EntityNameController";
+    import EntityAPI from "../../../../public/engine/lib/apis/EntityAPI";
+    import KEYS from "../../../data/KEYS";
 
     export let node
     export let lockedEntity
@@ -103,28 +104,9 @@
         <div class="children">
             {#each hiddenActiveChildren as entity, i}
                 {#if i < 2}
-                    {#if entity === lockedEntity}
-                        <button
-                                data-locked={"-"}
-                                class="buttonIcon hierarchy-branch"
-                                on:click={() => {
-                                    let current = QueryAPI.getEntityByID(entity)
-                                    while(current){
-                                        open.set(current.id, true)
-                                        current = current?.parent
-                                    }
-                                    SelectionStore.engineSelected = [entity]
-                                    updateOpen()
-                                }}
-                        >
-                            <Icon styles="font-size: .9rem">lock</Icon>
-                            <ToolTip content={Localization.PROJECT.HIERARCHY.FOCUS_LOCKED_ENTITY}/>
-                        </button>
-                    {:else}
-                        <div class="dot">
-                            <ToolTip content={Localization.PROJECT.HIERARCHY.SELECTED_CHILD}/>
-                        </div>
-                    {/if}
+                    <div class="dot">
+                        <ToolTip content={Localization.PROJECT.HIERARCHY.SELECTED_CHILD}/>
+                    </div>
                 {/if}
             {/each}
         </div>

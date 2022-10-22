@@ -6,9 +6,9 @@
     import FilesAPI from "../../../../libs/FilesAPI";
     import RegistryAPI from "../../../../libs/RegistryAPI";
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
-    import {GPU} from "../../../../../public/engine/production";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import GPU from "../../../../../public/engine/GPU";
 
     export let item
     export let data

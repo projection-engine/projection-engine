@@ -1,6 +1,7 @@
 <script>
     import Localization from "../../../../libs/Localization";
-    import {KEYS} from "../../../../../public/engine/production";
+    import KEYS from "../../../../data/KEYS";
+
 
     export let initial
     export let isInput

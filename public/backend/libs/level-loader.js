@@ -1,7 +1,7 @@
 import readFile from "shared-resources/backend/utils/read-file";
 import loadLevelMeshes from "../utils/load-level-meshes";
 import loadLevelMaterials from "../utils/load-level-materials";
-import COMPONENTS from "../../engine/static/COMPONENTS.json";
+import COMPONENTS from "../../engine/static/COMPONENTS.js";
 import CHANNELS from "../../../src/data/CHANNELS";
 
 const fs = require("fs");

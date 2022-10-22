@@ -1,4 +1,4 @@
-import DragDropController from "./libs/DragDropController";
+import DragDropController from "./DragDropController";
 
 
 const STYLES = {
