@@ -2,3 +2,4 @@
 - Using NodeFS for all references before present on FilesAPI
 - Project folder structure object instead of separate exports
 - Using shared-resources
+- Updating 

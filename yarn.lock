@@ -3226,7 +3226,7 @@ set-blocking@^2.0.0:
 
 "shared-resources@https://github.com/projection-engine/shared-resources.git":
   version "0.0.0"
-  resolved "https://github.com/projection-engine/shared-resources.git#cd7a8dd9d4030966f713e145ff22280692cff912"
+  resolved "https://github.com/projection-engine/shared-resources.git#c292305c2f9787be23a848cefaf336d568bfed21"
 
 sharp@^0.31.1:
   version "0.31.1"

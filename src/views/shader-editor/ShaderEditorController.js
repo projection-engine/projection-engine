@@ -1,6 +1,6 @@
 import BOARD_SIZE from "./data/BOARD_SIZE";
 import materialCompiler from "../../../public/engine/editor/libs/material-compiler/material-compiler";
-import MaterialController from "../../../public/engine/lib/instances/MaterialController";
+import Material from "../../../public/engine/lib/instances/Material";
 import PreviewSystem from "../../../public/engine/editor/services/PreviewSystem";
 import AssetAPI from "../../libs/AssetAPI";
 import Localization from "../../libs/Localization";
@@ -87,7 +87,7 @@ export default class ShaderEditorController {
                 await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
             } else
                 await new Promise(resolve => {
-                    material = new MaterialController({
+                    material = new Material({
                         vertex: compiled.vertexShader,
                         fragment: compiled.shader,
                         onCompiled: () => resolve(),

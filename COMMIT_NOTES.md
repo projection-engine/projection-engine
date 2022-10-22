@@ -1,2 +1,2 @@
-- Gizmo bug-fixes
-- Improvements to hierarchical transformation
+- Fixed point light shadows
+- Working on probes 
