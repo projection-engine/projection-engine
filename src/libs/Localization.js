@@ -301,6 +301,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            PCF_SAMPLES: "Filtering samples",
             SAMPLER: "Sampler",
             SAMPLER_SCALE: "RGB multiplier",
             UV_SCALE: "UV scale",

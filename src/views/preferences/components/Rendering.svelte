@@ -165,19 +165,7 @@
                     value={settings.shadowAtlasQuantity}
             />
 
-            <Range
-                    label={translate("SMOOTHING_SAMPLES")}
-                    accentColor={"green"}
-                    onFinish={v => {
-                    update("pcfSamples", v)
-                }}
-                    incrementPercentage={1}
-                    precision={0}
-                    minValue={1}
-                    maxValue={10}
 
-                    value={settings.pcfSamples}
-            />
         </div>
     </div>
 </fieldset>

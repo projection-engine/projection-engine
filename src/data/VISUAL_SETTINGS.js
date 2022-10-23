@@ -19,7 +19,6 @@ export default {
     chromaticAberrationStrength: 1,
     backgroundColor: [.2, .2, .2],
 
-    pcfSamples: 3.,
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
 

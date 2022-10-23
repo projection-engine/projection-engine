@@ -3,7 +3,7 @@ import Engine from "../../../../public/engine/Engine";
 import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
 import Wrapper from "../../../../public/engine/editor/services/Wrapper";
 import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
-import ShadowMapPass from "../../../../public/engine/lib/passes/rendering/ShadowMapPass";
+import DirectionalShadows from "../../../../public/engine/lib/passes/DirectionalShadows";
 import GridSystem from "../../../../public/engine/editor/services/GridSystem";
 import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
 import GPUResources from "../../../../public/engine/GPUResources";
@@ -45,7 +45,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
     }
     GizmoSystem.transformationType = settings.transformationType
-    ShadowMapPass.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
+    DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
 
     if (settings.gizmoGrid.sensitivity != null)
         GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity

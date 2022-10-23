@@ -1,5 +1,6 @@
 import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
 import Engine from "../../public/engine/Engine";
+import SelectionStore from "../stores/SelectionStore";
 
 function findSurface(e, open) {
     const entity = QueryAPI.getEntityByID(e)
@@ -26,30 +27,7 @@ function findSurface(e, open) {
 }
 
 export default class HierarchyController {
-    static surfaceSelected = {}
     static hierarchy = []
-    static updateSurface(lockedEntity, selected) {
-        const surface = {}
-        if (lockedEntity) {
-            const found = findSurface(lockedEntity, open)
-            if (found) {
-                if (!surface[found[0]])
-                    surface[found[0]] = []
-                surface[found[0]].push(found[1])
-            }
-            for (let i = 0; i < selected.length; i++) {
-                if (selected[i] === lockedEntity)
-                    continue
-                const found = findSurface(selected[i], open)
-                if (!found)
-                    continue
-                if (!surface[found[0]])
-                    surface[found[0]] = []
-                surface[found[0]].push(found[1])
-            }
-        }
-        HierarchyController.surfaceSelected = surface
-    }
 
     static updateHierarchy(){
         const data = [], entitiesArray = Array.from(Engine.entitiesMap.values())
@@ -66,7 +44,8 @@ export default class HierarchyController {
         HierarchyController.hierarchy = data
     }
 
-    static openTree(node){
+    static openTree( ){
+        const node = Engine.entitiesMap.get(SelectionStore.mainEntity)
         if(!node)
             return  {}
         const open = {

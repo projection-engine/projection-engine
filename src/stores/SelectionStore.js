@@ -46,7 +46,6 @@ export default class SelectionStore {
             const selected = SelectionStore.engineSelected
             if (!value.lockedEntity)
                 value.lockedEntity = selected[0] ? selected[0] : Engine.entities.find(e => !e.parent)?.id
-            HierarchyController.updateSurface(value.lockedEntity, value.array)
         }
 
         SelectionStore.data = value
@@ -86,6 +85,7 @@ export default class SelectionStore {
     static get mainEntity() {
         const l = SelectionStore.data.lockedEntity
         const m = SelectionStore.engineSelected[0]
+        console.log(m ? m : l)
         return m ? m : l
     }
 

@@ -28,8 +28,6 @@
     let toRender = []
     let selected = []
     let lockedEntity
-    let surfaceSelected = {}
-
     const testSearch = (node) => {
         const s = searchString, f = filteredComponent
         return (s && node.name.includes(s) || !s) &&
@@ -39,7 +37,6 @@
     const unsubscribeSelection = SelectionStore.getStore(() => {
         selected = SelectionStore.engineSelected
         lockedEntity = SelectionStore.lockedEntity
-        surfaceSelected = HierarchyController.surfaceSelected
     })
 
     $: {
@@ -91,7 +88,6 @@
 {#if SIZE > 0}
     <VirtualList items={toRender} let:item>
         <Branch
-                surfaceSelected={surfaceSelected}
                 nodeRef={item.node}
                 depth={item.depth}
                 selected={selected}

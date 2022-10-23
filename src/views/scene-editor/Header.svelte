@@ -10,8 +10,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
-    import DiffuseProbePass from "../../../public/engine/lib/passes/rendering/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/lib/passes/rendering/SpecularProbePass";
+    import DiffuseProbePass from "../../../public/engine/lib/passes/DiffuseProbePass";
+    import SpecularProbePass from "../../../public/engine/lib/passes/SpecularProbePass";
 
     export let settings
     export let engine

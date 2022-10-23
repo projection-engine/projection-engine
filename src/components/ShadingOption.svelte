@@ -3,14 +3,14 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPUResources from "../../public/engine/GPUResources";
-    import DepthPass from "../../public/engine/lib/passes/rendering/DepthPass";
-    import DeferredPass from "../../public/engine/lib/passes/rendering/DeferredPass";
-    import AOPass from "../../public/engine/lib/passes/rendering/AOPass";
+    import DepthPass from "../../public/engine/lib/passes/DepthPass";
+    import DeferredPass from "../../public/engine/lib/passes/DeferredPass";
+    import AOPass from "../../public/engine/lib/passes/AOPass";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/Engine";
     import Localization from "../libs/Localization";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
-    import SSGIPass from "../../public/engine/lib/passes/rendering/SSGIPass";
+    import SSGIPass from "../../public/engine/lib/passes/SSGIPass";
 
     let shadingModel = SHADING_MODELS.DETAIL
 

@@ -19,7 +19,6 @@
     export let node
     export let lockedEntity
     export let setLockedEntity
-    export let hiddenActiveChildren
     export let updateOpen
     export let open
 
@@ -100,17 +99,6 @@
         {/each}
     </div>
 
-    {#if hiddenActiveChildren != null}
-        <div class="children">
-            {#each hiddenActiveChildren as entity, i}
-                {#if i < 2}
-                    <div class="dot">
-                        <ToolTip content={Localization.PROJECT.HIERARCHY.SELECTED_CHILD}/>
-                    </div>
-                {/if}
-            {/each}
-        </div>
-    {/if}
 </div>
 
 <style>

@@ -1,2 +1,1 @@
-- Splitting GPU class
-- bringing back GLTF loader
+Reworking shadow map pipeline

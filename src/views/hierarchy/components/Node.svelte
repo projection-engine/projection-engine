@@ -13,10 +13,9 @@
     export let selected = undefined
     export let lockedEntity = undefined
     export let setLockedEntity = undefined
-    export let surfaceSelected
+
 
     let ref
-    let hiddenActiveChildren
 
     $: {
         if (ref) {
@@ -49,7 +48,6 @@
     }
 
 
-    $: hiddenActiveChildren = surfaceSelected[nodeRef.id]
     $: isOpen = open[nodeRef.id]
 </script>
 
@@ -73,8 +71,7 @@
     <DraggableEntity
             updateOpen={updateOpen}
             open={open} node={nodeRef}
-            hiddenActiveChildren={hiddenActiveChildren}
-                     lockedEntity={lockedEntity}
+            lockedEntity={lockedEntity}
             setLockedEntity={setLockedEntity}
     />
     <button

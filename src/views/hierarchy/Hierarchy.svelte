@@ -88,7 +88,7 @@
 >
     <button
             on:click={() => {
-                openTree = {...openTree, ...HierarchyController.openTree(Engine.entitiesMap.get(SelectionStore.mainEntity))}
+                openTree = {...openTree, ...HierarchyController.openTree()}
             }}
             class="button">
         <ToolTip content={translate("SHOW_MAIN_ENTITY")}/>
