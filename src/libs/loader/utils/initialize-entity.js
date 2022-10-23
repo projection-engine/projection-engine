@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 import GPUResources from "../../../../public/engine/GPUResources";
-import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
 import Entity from "../../../../public/engine/lib/instances/Entity";
 
 

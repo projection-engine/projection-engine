@@ -3,7 +3,7 @@
     import "../css/Branch.css"
     import DraggableEntity from "./Draggable.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import EntityConstructor from "../../../libs/EntityConstructor";
 
     export let depth = undefined

@@ -34,7 +34,7 @@ export async function readRegistry(pathName) {
             }
         }
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
     return response
 }

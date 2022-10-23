@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";

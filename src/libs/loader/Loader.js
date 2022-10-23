@@ -5,7 +5,7 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import Localization from "../Localization";
+import Localization from "../../templates/Localization";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import loadMaterial from "./utils/load-material";
 import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
@@ -16,7 +16,7 @@ import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import GPUResources from "../../../public/engine/GPUResources";
 import Entity from "../../../public/engine/lib/instances/Entity";
-import FALLBACK_MATERIAL from "../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
+import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import GPUController from "../../../public/engine/GPUController";
 
 export default class Loader {
@@ -144,6 +144,7 @@ export default class Loader {
                     const res = await EngineStore.loadTextureFromImageID(data)
                     if (res) {
                         const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
+                        EntityConstructor.translateEntity(sprite)
                         const c = sprite.addComponent(COMPONENTS.SPRITE)
                         c.imageID = data
                         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})

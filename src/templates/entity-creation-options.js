@@ -1,6 +1,6 @@
 import STATIC_MESHES from "../../public/engine/static/resources/STATIC_MESHES";
 import EntityConstructor from "../libs/EntityConstructor";
-import Localization from "../libs/Localization";
+import Localization from "./Localization";
 
 const translate = key => Localization.PROJECT.VIEWPORT[key]
 export default function entityCreationOptions() {

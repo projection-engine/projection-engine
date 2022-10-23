@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../public/engine/editor/shaders/SHADING_MODELS"
+    import SHADING_MODELS from "../../public/engine/editor/data/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPUResources from "../../public/engine/GPUResources";
@@ -8,7 +8,7 @@
     import AOPass from "../../public/engine/lib/passes/AOPass";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/Engine";
-    import Localization from "../libs/Localization";
+    import Localization from "../templates/Localization";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
     import SSGIPass from "../../public/engine/lib/passes/SSGIPass";
 
@@ -109,7 +109,7 @@
     })
 </script>
 
-<Dropdown styles="width: clamp(250px, 20vw, 500px);">
+<Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;">
     <button class="summary" slot="button">
         <div style="--color-to-apply: white" data-shaded-material="-"></div>
         <div style="white-space: nowrap">{translate(shading)}</div>

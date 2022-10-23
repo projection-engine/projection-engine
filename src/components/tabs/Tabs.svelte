@@ -144,9 +144,11 @@
     .view-static[data-highlight="-"] {
         background: var(--pj-background-quaternary);
     }
-    .view-static[data-focused="-"]{
+
+    .view-static[data-focused="-"] {
         border-top: white 2px solid !important;
     }
+
     .view-dynamic {
         color: var(--pj-color-quaternary);
         display: flex;
@@ -218,3 +220,4 @@
         gap: 2px;
     }
 </style>
+

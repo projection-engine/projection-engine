@@ -1,7 +1,7 @@
 <script>
     import Selector from "../../../../components/selector/Selector.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";

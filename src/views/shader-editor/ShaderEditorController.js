@@ -3,7 +3,7 @@ import materialCompiler from "../../../public/engine/editor/libs/material-compil
 import Material from "../../../public/engine/lib/instances/Material";
 import PreviewSystem from "../../../public/engine/editor/services/PreviewSystem";
 import AssetAPI from "../../libs/AssetAPI";
-import Localization from "../../libs/Localization";
+import Localization from "../../templates/Localization";
 import getNewInstance from "./utils/get-new-instance";
 import TextureSample from "./templates/nodes/TextureSample";
 import FilesStore from "../../stores/FilesStore";

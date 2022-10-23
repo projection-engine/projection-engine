@@ -3,7 +3,7 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
 
     import MaterialAPI from "../../../../../public/engine/lib/apis/rendering/MaterialAPI";

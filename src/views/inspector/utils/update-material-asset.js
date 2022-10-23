@@ -1,7 +1,7 @@
 import GPUResources from "../../../../public/engine/GPUResources";
 import MaterialAPI from "../../../../public/engine/lib/apis/rendering/MaterialAPI";
 import AssetAPI from "../../../libs/AssetAPI";
-import Localization from "../../../libs/Localization";
+import Localization from "../../../templates/Localization";
 import GPUController from "../../../../public/engine/GPUController";
 
 const translate = key => Localization.PROJECT.INSPECTOR[key]

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
 
     export let data
 </script>

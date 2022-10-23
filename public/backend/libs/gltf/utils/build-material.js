@@ -1,36 +1,20 @@
+import SIMPLE_MATERIAL_UNIFORMS from "../../../../engine/static/SIMPLE_MATERIAL_UNIFORMS";
 
-import loadTexture from "./load-texture";
-import SIMPLE_MATERIAL_UNIFORMS from "../../../../engine/templates/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
-
-
-export default async function parseMaterial(basePath, data, textures, images, partialPath, projectPath, index) {
-    const getTexture = (sampler, name) => loadTexture(
-        basePath,
-        sampler,
-        textures,
-        images,
-        partialPath,
-        projectPath,
-        name,
-        index
-    )
-    if(!data)
-        return
-
+export default async function buildMaterial(textures, imagesMap, material) {
     const settings = SIMPLE_MATERIAL_UNIFORMS.uniformData[0]
     const rgbSamplerScales = SIMPLE_MATERIAL_UNIFORMS.uniformData[1]
-    const fallbackValues = SIMPLE_MATERIAL_UNIFORMS.uniformData[2]
-    const albedo = SIMPLE_MATERIAL_UNIFORMS.uniformData[3]
-    const normal = SIMPLE_MATERIAL_UNIFORMS.uniformData[4]
-    const roughness = SIMPLE_MATERIAL_UNIFORMS.uniformData[5]
-    const metallic = SIMPLE_MATERIAL_UNIFORMS.uniformData[6]
-    const ao = SIMPLE_MATERIAL_UNIFORMS.uniformData[7]
-    const emission = SIMPLE_MATERIAL_UNIFORMS.uniformData[8]
+    const fallbackValues = SIMPLE_MATERIAL_UNIFORMS.uniformData[3]
+    const albedo = SIMPLE_MATERIAL_UNIFORMS.uniformData[5]
+    const normal = SIMPLE_MATERIAL_UNIFORMS.uniformData[6]
+    const roughness = SIMPLE_MATERIAL_UNIFORMS.uniformData[7]
+    const metallic = SIMPLE_MATERIAL_UNIFORMS.uniformData[8]
+    const ao = SIMPLE_MATERIAL_UNIFORMS.uniformData[9]
+    const emission = SIMPLE_MATERIAL_UNIFORMS.uniformData[10]
     const copy = {...SIMPLE_MATERIAL_UNIFORMS}
 
     try {
 
-        const PBR = data.pbrMetallicRoughness
+        const PBR = material.pbrMetallicRoughness
         const {
             baseColorTexture,
             metallicRoughnessTexture,
@@ -41,20 +25,19 @@ export default async function parseMaterial(basePath, data, textures, images, pa
             metallicFactor,
             roughnessFactor,
             emissiveFactor
-        } = PBR ? {...PBR, ...data} : data
+        } = PBR ? {...PBR, ...material} : material
         if (PBR) {
             if (baseColorTexture) {
                 settings.data[0] = 1
-                albedo.data = await getTexture(baseColorTexture, "albedo")
+                albedo.data = imagesMap[textures[baseColorTexture.index].source]
             }
 
             if (baseColorFactor != null) {
-                if(settings.data[0] === 1) {
+                if (settings.data[0] === 1) {
                     rgbSamplerScales.data[0] = baseColorFactor[0]
                     rgbSamplerScales.data[1] = baseColorFactor[1]
                     rgbSamplerScales.data[2] = baseColorFactor[2]
-                }
-                else {
+                } else {
                     fallbackValues.data[0] = baseColorFactor[0]
                     fallbackValues.data[1] = baseColorFactor[1]
                     fallbackValues.data[2] = baseColorFactor[2]
@@ -63,8 +46,8 @@ export default async function parseMaterial(basePath, data, textures, images, pa
 
 
             if (metallicRoughnessTexture) {
-                settings.data[3] =  1
-                metallic.data = await getTexture(metallicRoughnessTexture, "metallic_roughness")
+                settings.data[3] = 1
+                metallic.data = imagesMap[textures[metallicRoughnessTexture.index].source]
             }
             if (metallicFactor != null) {
                 settings.data[3] = 0
@@ -78,7 +61,7 @@ export default async function parseMaterial(basePath, data, textures, images, pa
         }
         if (emissiveTexture) {
             settings.data[5] = 1
-            emission.data = await getTexture(emissiveTexture, "emission")
+            emission.data = imagesMap[textures[emissiveTexture.index].source]
         }
 
         if (emissiveFactor != null) {
@@ -90,7 +73,7 @@ export default async function parseMaterial(basePath, data, textures, images, pa
 
         if (normalTexture) {
             settings.data[1] = 1
-            normal.data = await getTexture(normalTexture, "normals")
+            normal.data = imagesMap[textures[normalTexture.index].source]
             if (normalTexture.scale != null) {
                 rgbSamplerScales.data[3] = normalTexture.scale
                 rgbSamplerScales.data[4] = normalTexture.scale
@@ -99,7 +82,7 @@ export default async function parseMaterial(basePath, data, textures, images, pa
         }
         if (occlusionTexture) {
             settings.data[6] = 1
-            ao.data = await getTexture(occlusionTexture, "occlusion")
+            ao.data = imagesMap[textures[occlusionTexture.index].source]
         }
 
 

@@ -7,10 +7,8 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../libs/Localization";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
-    import QueryAPI from "../../../../public/engine/lib/apis/utils/QueryAPI";
     import HierarchyController from "../../../libs/HierarchyController";
     import EntityNameController from "../../../libs/EntityNameController";
     import EntityAPI from "../../../../public/engine/lib/apis/EntityAPI";

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
@@ -18,7 +18,6 @@
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import VIEWS from "../../components/view/data/VIEWS";
-    import Engine from "../../../public/engine/Engine";
     import EntityAPI from "../../../public/engine/lib/apis/EntityAPI";
 
 
@@ -110,16 +109,18 @@
         </button>
         {#each nativeComponents as component}
             <button
-                    data-highlight={component[0] === filteredComponent ?  "-" : undefined}
                     on:click={e => {
                         if(filteredComponent=== component[0] )
                             filteredComponent = undefined
                         else filteredComponent = component[0]
-                            e.currentTarget.closeDropdown()
                     }}
-                    class="button"
             >
-                <Icon styles="font-size: .9rem">{component[2]}</Icon>
+                {#if component[0] === filteredComponent}
+                    <Icon>check</Icon>
+                    {:else}
+                    <div style="width: 1.1rem"></div>
+                {/if}
+
                 {component[1]}
             </button>
         {/each}

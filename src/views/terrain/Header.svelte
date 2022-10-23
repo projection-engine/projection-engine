@@ -1,7 +1,7 @@
 <script>
     import "../viewport/css/styles.css"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
     import SettingsStore from "../../stores/SettingsStore";

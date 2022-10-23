@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../public/engine/editor/shaders/SHADING_MODELS"
+import SHADING_MODELS from "../../public/engine/editor/data/SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";

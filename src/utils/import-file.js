@@ -9,7 +9,4 @@ export default async function importFile(currentDirectory) {
         await FilesStore.refreshFiles()
     }
 
-
-
-
 }

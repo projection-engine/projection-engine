@@ -14,7 +14,7 @@
     import ShaderEditorController from "../ShaderEditorController";
     import SelectionStore from "../../../stores/SelectionStore";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import shaderActions from "../../../templates/shader-actions";
     import HotKeysController from "../../../libs/HotKeysController";
     import SettingsStore from "../../../stores/SettingsStore";

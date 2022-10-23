@@ -1,6 +1,6 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -11,7 +11,6 @@
     import RegistryAPI from "../../libs/RegistryAPI";
     import FilesAPI from "../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUResources from "../../../public/engine/GPUResources";
     import GPUController from "../../../public/engine/GPUController";
 
     export let settings

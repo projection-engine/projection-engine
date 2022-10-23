@@ -2,13 +2,13 @@ import FilesStore from "../../../stores/FilesStore";
 import resolveFileName from "../../../templates/utils/resolve-file-name";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import AssetAPI from "../../../libs/AssetAPI";
-import SIMPLE_MATERIAL_TEMPLATE from "../../../../public/engine/templates/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
-import TERRAIN_LAYERED from "../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
+import SIMPLE_MATERIAL_TEMPLATE from "../../../../public/engine/static/SIMPLE_MATERIAL_UNIFORMS";
+import TERRAIN_LAYERED from "../../../../public/engine/static/TERRAIN_MATERIAL";
 import TERRAIN_MATERIAL_UNIFORMS from "../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
 import COMPONENT_TEMPLATE from "../../../../public/engine/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../public/engine/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../public/engine/static/templates/TERRAIN_TEMPLATE";
-import Localization from "../../../libs/Localization";
+import Localization from "../../../templates/Localization";
 import getMaterialAsOption from "../../../templates/utils/get-material-as-option";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

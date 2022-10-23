@@ -6,7 +6,7 @@
     import SelectionStore from "../../../stores/SelectionStore";
     import HierarchyController from "../../../libs/HierarchyController";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";

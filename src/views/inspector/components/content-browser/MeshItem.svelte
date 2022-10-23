@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";
     import PrimitiveProcessor from "../../../../../public/engine/lib/apis/PrimitiveProcessor";

@@ -3,7 +3,7 @@
     import ComponentLayout from "./Layout.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
     import FilesStore from "../../../../stores/FilesStore";
-    import componentConstructor from "../../../../libs/component-constructor";
+    import componentConstructor from "../../../../utils/component-constructor";
     import loadMaterial from "../../../../libs/loader/utils/load-material";
 
     import Loader from "../../../../libs/loader/Loader";
@@ -11,7 +11,7 @@
 
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import EntityAPI from "../../../../../public/engine/lib/apis/EntityAPI";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import PointLightComponent from "../../../../../public/engine/lib/components/rendering/PointLightComponent";
     import DirectionalLightComponent
         from "../../../../../public/engine/lib/components/rendering/DirectionalLightComponent";

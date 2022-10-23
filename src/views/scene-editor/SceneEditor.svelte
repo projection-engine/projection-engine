@@ -13,7 +13,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import GizmoBar from "./components/GeneralSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";

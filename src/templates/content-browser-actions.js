@@ -3,8 +3,8 @@ import SELECTION_TYPES from "../views/content-browser/templates/SELECTION_TYPES"
 import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
-import importFile from "../libs/import-file";
-import Localization from "../libs/Localization";
+import importFile from "../utils/import-file";
+import Localization from "./Localization";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

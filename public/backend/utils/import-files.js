@@ -7,6 +7,7 @@ import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import AssimpLoader from "../libs/assimp/AssimpLoader";
 import {readRegistry} from "./fs-operations";
+import glTF from "../libs/gltf/glTF";
 
 const sharp = require("sharp")
 const fs = require("fs")
@@ -38,10 +39,12 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
                     }
                     break
                 }
+                case "gltf":
+                    await glTF(targetDir, filePath, await readTypedFile(filePath, "json"))
+                    break
                 case "dae":
                 case "glb":
                 case "fbx":
-                case "gltf":
                     meshesToRead.push(filePath)
                     break
                 default:

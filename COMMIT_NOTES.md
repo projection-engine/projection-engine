@@ -1,1 +1,3 @@
-Reworking shadow map pipeline
+- Rewriting GLTF loader
+- Integrating GLTF loader with import-file method
+- Fixed shadow maps not updating when deleting or adding mesh entity

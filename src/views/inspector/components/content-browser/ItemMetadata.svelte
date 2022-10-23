@@ -1,6 +1,6 @@
 <script>
     import Accordion from "../../../../components/accordion/Accordion.svelte";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../../content-browser/utils/get-type-name";

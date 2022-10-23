@@ -29,7 +29,7 @@ function findSurface(e, open) {
 export default class HierarchyController {
     static hierarchy = []
 
-    static updateHierarchy(){
+    static updateHierarchy() {
         const data = [], entitiesArray = Array.from(Engine.entitiesMap.values())
         const callback = (node, depth) => {
             data.push({node, depth})
@@ -44,18 +44,19 @@ export default class HierarchyController {
         HierarchyController.hierarchy = data
     }
 
-    static openTree( ){
+    static openTree() {
         const node = Engine.entitiesMap.get(SelectionStore.mainEntity)
-        if(!node)
-            return  {}
-        const open = {
-            [node.id]: true
-        }
+        if (!node)
+            return {}
+        const open = {}
+
         let target = node
-        while(target.parent != null){
+        while (target.parent != null) {
             open[target.id] = true
             target = target.parent
         }
+
+        open[target.id] = true
         return open
     }
 }

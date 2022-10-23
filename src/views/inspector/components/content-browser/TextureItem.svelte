@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import TEXTURE_FORMATS from "../../../../../public/engine/static/texture/TEXTURE_FORMATS";

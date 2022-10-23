@@ -3,7 +3,7 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./Styles.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";

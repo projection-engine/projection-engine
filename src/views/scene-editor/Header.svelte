@@ -4,7 +4,7 @@
     import ViewOptions from "./components/ViewOptions.svelte";
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import EngineStore from "../../stores/EngineStore";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"

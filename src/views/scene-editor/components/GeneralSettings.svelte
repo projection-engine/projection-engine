@@ -4,7 +4,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import "../../viewport/css/styles.css"
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
     import ViewportActions from "../../../libs/ViewportActions";
 

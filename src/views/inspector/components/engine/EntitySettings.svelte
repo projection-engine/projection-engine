@@ -6,7 +6,7 @@
     import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../../utils/get-native-components";
-    import componentConstructor from "../../../../libs/component-constructor";
+    import componentConstructor from "../../../../utils/component-constructor";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import Engine from "../../../../../public/engine/Engine";
     import EntityNameController from "../../../../libs/EntityNameController";

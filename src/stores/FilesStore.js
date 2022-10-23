@@ -5,7 +5,7 @@ import FilesAPI from "../libs/FilesAPI"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../data/ROUTES";
 import ContentBrowserAPI from "../libs/ContentBrowserAPI";
-import Localization from "../libs/Localization";
+import Localization from "../templates/Localization";
 import UIAPI from "../../public/engine/lib/apis/UIAPI";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import Engine from "../../public/engine/Engine";

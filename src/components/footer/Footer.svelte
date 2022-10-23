@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import HotKeysController from "../../libs/HotKeysController";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../libs/ErrorLoggerAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";

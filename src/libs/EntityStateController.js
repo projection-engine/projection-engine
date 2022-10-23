@@ -1,5 +1,5 @@
 import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
-import componentConstructor from "./component-constructor";
+import componentConstructor from "../utils/component-constructor";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
 import CameraTracker from "../../public/engine/editor/libs/CameraTracker";

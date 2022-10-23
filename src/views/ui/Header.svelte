@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../data/GIZMOS";

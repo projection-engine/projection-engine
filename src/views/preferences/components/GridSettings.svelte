@@ -1,10 +1,7 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../../libs/Localization";
-    import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
-    import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
+    import Localization from "../../../templates/Localization";
     import SettingsStore from "../../../stores/SettingsStore";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import GridSystem from "../../../../public/engine/editor/services/GridSystem";
 

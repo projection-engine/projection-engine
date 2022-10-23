@@ -8,7 +8,7 @@ import CHANNELS from "../data/CHANNELS";
 import GPUResources from "../../public/engine/GPUResources";
 import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
 import Entity from "../../public/engine/lib/instances/Entity";
-import componentConstructor from "./component-constructor";
+import componentConstructor from "../utils/component-constructor";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
 
 import loadMaterial from "./loader/utils/load-material";
@@ -22,7 +22,7 @@ import SETTINGS from "../data/SETTINGS";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
-import Localization from "./Localization";
+import Localization from "../templates/Localization";
 import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
 import TabsStore from "../stores/TabsStore";
 import CameraTracker from "../../public/engine/editor/libs/CameraTracker";

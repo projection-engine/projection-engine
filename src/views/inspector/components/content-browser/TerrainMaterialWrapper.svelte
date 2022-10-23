@@ -1,12 +1,12 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";
     import updateMaterialAsset from "../../utils/update-material-asset";
     import TerrainMaterialLayer from "./TerrainMaterialLayer.svelte";
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
-    import TERRAIN_MATERIAL from "../../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
+    import TERRAIN_MATERIAL from "../../../../../public/engine/static/TERRAIN_MATERIAL";
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import GPUController from "../../../../../public/engine/GPUController";
 

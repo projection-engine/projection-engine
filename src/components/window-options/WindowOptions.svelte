@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";

@@ -1,12 +1,12 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import SIMPLE_MATERIAL_TEMPLATE, {
         DEFAULT_MATRICES
-    } from "../../../../../public/engine/templates/materials/simple/SIMPLE_MATERIAL_UNIFORMS";
+    } from "../../../../../public/engine/static/SIMPLE_MATERIAL_UNIFORMS";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";

@@ -5,7 +5,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import GridSystem from "../../../../public/engine/editor/services/GridSystem";

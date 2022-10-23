@@ -77,7 +77,7 @@ export default function projectEvents(pathToProject, window, metadata) {
         event.sender.send("resolve-name" + listenID, resolveFileName(path, ext))
     })
     ipcMain.on("create-registry", async (event, data) => {
-        console.log(data)
+
         await createRegistryEntry(data.id, data.path)
         event.sender.send("create-registry" + data.listenID)
     })

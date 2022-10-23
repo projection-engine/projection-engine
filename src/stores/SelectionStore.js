@@ -85,7 +85,6 @@ export default class SelectionStore {
     static get mainEntity() {
         const l = SelectionStore.data.lockedEntity
         const m = SelectionStore.engineSelected[0]
-        console.log(m ? m : l)
         return m ? m : l
     }
 
@@ -96,4 +95,5 @@ export default class SelectionStore {
     static set lockedEntity(data) {
         SelectionStore.updateStore({...SelectionStore.data, lockedEntity: data, TARGET: TYPES.ENGINE})
     }
+
 }

@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import FILE_TYPES from "shared-resources/FILE_TYPES";

@@ -83,6 +83,7 @@ export default class Accessor{
             offset = 0
 
         let dv = buffers[bufferId].data
+
         return Array.from({
             length
         }).map((el, i) => {

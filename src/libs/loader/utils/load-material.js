@@ -1,10 +1,10 @@
 import FilesAPI from "../../FilesAPI";
-import Localization from "../../Localization";
-import FALLBACK_MATERIAL from "../../../../public/engine/templates/materials/simple/FALLBACK_MATERIAL";
+import Localization from "../../../templates/Localization";
+import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
 import RegistryAPI from "../../RegistryAPI";
 import GPUResources from "../../../../public/engine/GPUResources";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import TERRAIN_MATERIAL from "../../../../public/engine/templates/materials/terrain-layered/TERRAIN_MATERIAL";
+import TERRAIN_MATERIAL from "../../../../public/engine/static/TERRAIN_MATERIAL";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import GPUController from "../../../../public/engine/GPUController";
 

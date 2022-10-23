@@ -7,14 +7,12 @@
 
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
-    import Localization from "../../../libs/Localization";
+    import Localization from "../../../templates/Localization";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
-    import selection from "../utils/selection";
-    import SELECTION_TYPES from "../templates/SELECTION_TYPES";
-    import importFile from "../../../libs/import-file";
+    import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
 
     export let bookmarks

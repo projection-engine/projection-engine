@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
@@ -8,7 +8,6 @@
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUResources from "../../../../../public/engine/GPUResources";
     import GPUController from "../../../../../public/engine/GPUController";
 
     export let item

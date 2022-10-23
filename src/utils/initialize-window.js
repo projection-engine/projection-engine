@@ -1,9 +1,9 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "./FilesAPI";
-import ErrorLoggerAPI from "./ErrorLoggerAPI";
-import LevelController from "./LevelController";
-import ActionHistoryAPI from "./ActionHistoryAPI";
-import ViewportActions from "./ViewportActions";
+import FilesAPI from "../libs/FilesAPI";
+import ErrorLoggerAPI from "../libs/ErrorLoggerAPI";
+import LevelController from "../libs/LevelController";
+import ActionHistoryAPI from "../libs/ActionHistoryAPI";
+import ViewportActions from "../libs/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../data/ROUTES";
 import VisualsStore from "../stores/VisualsStore";

@@ -3,7 +3,7 @@
     import CAMERA_GIZMO from "../data/CAMERA_GIZMO"
     import {onMount} from "svelte";
     import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
-    import Localization from "../libs/Localization";
+    import Localization from "../templates/Localization";
     import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
 
     const translate = key => Localization.PROJECT.VIEWPORT[key]

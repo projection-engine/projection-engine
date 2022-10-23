@@ -1,4 +1,4 @@
-export default function getPrimitive(data) {
+export default function getPrimitiveIndices(data) {
     const primitive = {...data}
     primitive.attributes = Object.keys(primitive.attributes)
         .map(name => ({

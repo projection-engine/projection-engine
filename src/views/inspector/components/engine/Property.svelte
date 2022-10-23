@@ -8,7 +8,7 @@
     import Selector from "../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../../../libs/Localization";
+    import Localization from "../../../../templates/Localization";
     import loadMaterial from "../../../../libs/loader/utils/load-material";
     import GPUResources from "../../../../../public/engine/GPUResources";
     import Loader from "../../../../libs/loader/Loader";

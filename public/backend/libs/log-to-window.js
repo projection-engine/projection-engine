@@ -1,10 +1,7 @@
 export default function logToWindow(window) {
-    const log = console.log
-    const newMethod = (...msg) => {
+    const log = console.error
+    console.error = (...msg) => {
         log(...msg)
         window.webContents.send("console", msg)
     }
-
-    console.log = newMethod
-    console.error = newMethod
 }

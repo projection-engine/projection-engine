@@ -5,7 +5,7 @@
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
     import FilesAPI from "../../libs/FilesAPI"
 
-    import Localization from "../../libs/Localization";
+    import Localization from "../../templates/Localization";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import parseFile from "./utils/parse-file";
