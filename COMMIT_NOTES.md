@@ -1,3 +1,3 @@
-- Rewriting GLTF loader
-- Integrating GLTF loader with import-file method
-- Fixed shadow maps not updating when deleting or adding mesh entity
+- Adding PCF to point light shadows
+- Reworking point light shadow mapping
+- 

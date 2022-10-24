@@ -56,5 +56,5 @@ export default function buildNode(index, allNodes, sceneMap, nodesMap, primitive
     if (!node.children || primitiveID !== undefined)
         return
     for (let i = 0; i < node.children.length; i++)
-        buildNode(node.children[i], allNodes, sceneMap, nodesMap, primitivesMap, allNodes[node.children[i]], parentID)
+        buildNode(node.children[i], allNodes, sceneMap, nodesMap, primitivesMap, allNodes[node.children[i]], ID)
 }

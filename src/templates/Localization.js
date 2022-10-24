@@ -62,6 +62,10 @@ export default class Localization {
             DEFAULT_LEVEL: "Default",
         },
         INFO: {
+            NATIVE_MESHES: "Some meshes are embedded with editor/engine",
+            NATIVE_MATERIALS: "Some materials are embedded with editor/engine",
+            NATIVE_TEXTURES: "Some textures are embedded with editor/engine",
+
             LOOP_FRAME_TIME: "Loop",
             EXECUTION_FRAME_RATE: "Frame-rate",
             EXECUTION_FRAME_TIME: "Frame-time",
@@ -301,6 +305,10 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            DISTANCE: "Distance",
+            DISTANCE_SQUARED: "Dist. squared",
+            SHADOW_VIEW_PLANES: "Shadow map view planes",
+            BIAS: "Bias",
             PCF_SAMPLES: "Filtering samples",
             SAMPLER: "Sampler",
             SAMPLER_SCALE: "RGB multiplier",
@@ -612,10 +620,10 @@ export default class Localization {
 
             UI: "UI editor",
             PREFERENCES: "Preferences",
-            SPLIT_TOP:    "Split top",
+            SPLIT_TOP: "Split top",
             SPLIT_BOTTOM: "Split bottom",
-            SPLIT_RIGHT:  "Split right",
-            SPLIT_LEFT:   "Split left",
+            SPLIT_RIGHT: "Split right",
+            SPLIT_LEFT: "Split left",
             CLOSE_VIEW: "Close view",
             SCRIPTING: "Scripting",
             MISC: "Misc",

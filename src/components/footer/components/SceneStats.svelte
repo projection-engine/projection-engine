@@ -5,6 +5,8 @@
     import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
     import GPUResources from "../../../../public/engine/GPUResources";
     import Engine from "../../../../public/engine/Engine";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import Localization from "../../../templates/Localization";
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)
@@ -23,9 +25,9 @@
         let t = 0
         GPUResources.meshes.forEach(m => t = t + m.trianglesQuantity)
         triangles = t
-        meshes = GPUResources.meshes.size - Object.keys(STATIC_MESHES.EDITOR).length
+        meshes = GPUResources.meshes.size
         materials = GPUResources.materials.size
-        textures = GPUResources.textures.size - Object.keys(STATIC_TEXTURES).length
+        textures = GPUResources.textures.size
     }
     onMount(() => {
         refresh()
@@ -35,21 +37,22 @@
         unsubscribe()
         clearInterval(interval)
     })
+    const translate = key => Localization.PROJECT.INFO[key]
 </script>
 
 
 <small>Entities {entities}</small>
 <div data-vertdivider="-"></div>
-<small>Meshes {meshes}</small>
+<small>Meshes {meshes}<ToolTip content={translate("NATIVE_MESHES")}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Triangles {triangles}</small>
+<small>Triangles {triangles}<ToolTip content={translate("NATIVE_MESHES")}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Materials {materials}</small>
+<small>Materials {materials}<ToolTip content={translate("NATIVE_MATERIALS")}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Textures {textures}</small>
+<small>Textures {textures}<ToolTip content={translate("NATIVE_TEXTURES")}/></small>
 
 
 <style>
