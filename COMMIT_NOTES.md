@@ -1,3 +1,3 @@
-- Adding PCF to point light shadows
-- Reworking point light shadow mapping
-- 
+- New inspector for entities
+- Fixed material loading
+- Fixed GLTF material creation

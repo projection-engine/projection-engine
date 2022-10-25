@@ -1,16 +1,16 @@
 import SIMPLE_MATERIAL_UNIFORMS from "../../../../engine/static/SIMPLE_MATERIAL_UNIFORMS";
 
 export default async function buildMaterial(textures, imagesMap, material) {
-    const settings = SIMPLE_MATERIAL_UNIFORMS.uniformData[0]
-    const rgbSamplerScales = SIMPLE_MATERIAL_UNIFORMS.uniformData[1]
-    const fallbackValues = SIMPLE_MATERIAL_UNIFORMS.uniformData[3]
-    const albedo = SIMPLE_MATERIAL_UNIFORMS.uniformData[5]
-    const normal = SIMPLE_MATERIAL_UNIFORMS.uniformData[6]
-    const roughness = SIMPLE_MATERIAL_UNIFORMS.uniformData[7]
-    const metallic = SIMPLE_MATERIAL_UNIFORMS.uniformData[8]
-    const ao = SIMPLE_MATERIAL_UNIFORMS.uniformData[9]
-    const emission = SIMPLE_MATERIAL_UNIFORMS.uniformData[10]
     const copy = {...SIMPLE_MATERIAL_UNIFORMS}
+    const settings =         copy.uniformData[0]
+    const rgbSamplerScales = copy.uniformData[1]
+    const fallbackValues =   copy.uniformData[3]
+    const albedo =           copy.uniformData[5]
+    const normal =           copy.uniformData[6]
+    const roughness =        copy.uniformData[7]
+    const metallic =         copy.uniformData[8]
+    const ao =               copy.uniformData[9]
+    const emission =        copy.uniformData[10]
 
     try {
 
@@ -84,17 +84,6 @@ export default async function buildMaterial(textures, imagesMap, material) {
             settings.data[6] = 1
             ao.data = imagesMap[textures[occlusionTexture.index].source]
         }
-
-
-        copy.uniformData[0] = settings
-        copy.uniformData[1] = rgbSamplerScales
-        copy.uniformData[2] = fallbackValues
-        copy.uniformData[3] = albedo
-        copy.uniformData[4] = normal
-        copy.uniformData[5] = roughness
-        copy.uniformData[6] = metallic
-        copy.uniformData[7] = ao
-        copy.uniformData[8] = emission
 
         return copy
     } catch (error) {

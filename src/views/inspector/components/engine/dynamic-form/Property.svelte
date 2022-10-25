@@ -1,17 +1,17 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import Component from "../../../../../public/engine/lib/components/Component";
-    import Selector from "../../../../components/selector/Selector.svelte";
-    import EngineStore from "../../../../stores/EngineStore";
+    import Component from "../../../../../../public/engine/lib/components/Component";
+    import Selector from "../../../../../components/selector/Selector.svelte";
+    import EngineStore from "../../../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../../../templates/Localization";
-    import loadMaterial from "../../../../libs/loader/utils/load-material";
-    import GPUResources from "../../../../../public/engine/GPUResources";
-    import Loader from "../../../../libs/loader/Loader";
+    import Localization from "../../../../../templates/Localization";
+    import loadMaterial from "../../../../../libs/loader/utils/load-material";
+    import GPUResources from "../../../../../../public/engine/GPUResources";
+    import Loader from "../../../../../libs/loader/Loader";
 
     export let component = undefined
     export let submit = undefined

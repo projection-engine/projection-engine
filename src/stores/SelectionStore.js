@@ -6,8 +6,7 @@ import Engine from "../../public/engine/Engine";
 const TYPES = {
     ENGINE: "ENGINE",
     CONTENT_BROWSER: "CONTENT_BROWSER",
-    SHADER_EDITOR: "SHADER_EDITOR",
-    UI: "UI"
+    SHADER_EDITOR: "SHADER_EDITOR"
 }
 const selection = writable({TARGET: TYPES.ENGINE, map: new Map(), array: []});
 export default class SelectionStore {

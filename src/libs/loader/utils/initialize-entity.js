@@ -40,7 +40,7 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         }
 
         const e = entity.addComponent(COMPONENTS.MESH)
-        e.materialID = GPUResources.materials.get(data.material) != null ? data.material : FALLBACK_MATERIAL
+        e.materialID = data.material
         e.meshID = meshID
         return entity
     } catch (err) {

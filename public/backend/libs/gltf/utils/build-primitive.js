@@ -17,7 +17,7 @@ export default async function buildPrimitive(materialsMap, meshName, index, prim
     const tangents = (indices.tangents === -1 || indices.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[indices.indices]?.data, accessors[indices.vertices]?.data, accessors[indices.uvs]?.data, normals, true) : accessors[indices.tangents]?.data
 
     return {
-        materialID: materialsMap[primitive.material],
+        material: materialsMap[primitive.material],
         indices: accessors[indices.indices]?.data,
         vertices: accessors[indices.vertices]?.data,
         tangents: tangents,

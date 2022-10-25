@@ -18,6 +18,7 @@ import GPUResources from "../../../public/engine/GPUResources";
 import Entity from "../../../public/engine/lib/instances/Entity";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import GPUController from "../../../public/engine/GPUController";
+import {v4} from "uuid";
 
 export default class Loader {
     static async mesh(objLoaded, id, asID) {
@@ -28,21 +29,14 @@ export default class Loader {
         try {
             mesh = GPUResources.meshes.get(objLoaded.id)
             if (!mesh) {
+
                 mesh = GPUController.allocateMesh(id, objLoaded)
-                if (objLoaded.material && !GPUResources.materials.get(objLoaded.material)) {
-                    const rs = await RegistryAPI.readRegistryFile(objLoaded.material)
-                    if (rs) {
-                        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
-                        if (file && file.response)
-                            material = {
-                                ...file.response,
-                                id: objLoaded.material
-                            }
-                    }
-                }
+                await loadMaterial(
+                    objLoaded.material,
+                    data => objLoaded.material = data
+                )
             } else
                 existsMesh = true
-
             entity = asID ? null : initializeEntity(objLoaded, mesh.id)
         } catch (e) {
             console.error(e)
@@ -51,18 +45,18 @@ export default class Loader {
 
         return {
             mesh,
-            material,
             entity,
             existsMesh
         }
     }
 
-    static async scene(path, onlyReturn) {
+    static async scene(path) {
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + path, "json")
         const entities = []
+        const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(NodeFS.sep).pop())
+        entities.push(root)
         try {
             if (file) {
-                const entitiesMap = {}
                 const folder = new Entity()
                 folder.name = file.name
                 for (let i = 0; i < file.entities.length; i++) {
@@ -72,40 +66,22 @@ export default class Loader {
                         const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
                         if (!meshData)
                             continue
-                        if (meshData.material != null)
-                            await loadMaterial(meshData.material, (data) => meshData.material = data)
-                        else
-                            meshData.material = FALLBACK_MATERIAL
+                        await loadMaterial(
+                            meshData.material,
+                            data => currentEntity.material = data)
                         GPUController.allocateMesh(primitiveRegistry.id, meshData)
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
-                    entity.parentCache =currentEntity.parent
-                    entitiesMap[currentEntity.id] = entity
+                    entity.parentCache = currentEntity.parent || root.id
+                    EntityConstructor.translateEntity(entity)
                     entities.push(entity)
                 }
-
-                if (!onlyReturn) {
-                    for (let i = 0; i < entities.length; i++) {
-                        const entity = entities[i]
-                        const parent = entitiesMap[entity.parentCache]
-                        if(parent != null) {
-                            entity.parent = parent
-                            entity.parentCache = undefined
-                            parent.children.push(entity)
-                        }
-                        if (!entity.parent)
-                            EntityConstructor.translateEntity(entity)
-                        entity.changed = true
-                    }
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
-                }
+                dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
             } else
                 console.error("Collection not found")
         } catch (error) {
             console.error(error)
         }
-
-        return entities
     }
 
     static async load(event, asID, mouseX, mouseY) {
@@ -158,24 +134,26 @@ export default class Loader {
                     const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
                     if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
 
-                    await loadMaterial(data, (matID) => {
-                        const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
-                        ActionHistoryAPI.pushChange({
-                            target: ActionHistoryAPI.targets.entity,
-                            entityID: entity.id,
-                            component: comp,
-                            key: "materialID",
-                            changeValue: entity.components.get(comp).materialID
+                    await loadMaterial(
+                        data,
+                        (matID) => {
+                            const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
+                            ActionHistoryAPI.pushChange({
+                                target: ActionHistoryAPI.targets.entity,
+                                entityID: entity.id,
+                                component: comp,
+                                key: "materialID",
+                                changeValue: entity.components.get(comp).materialID
+                            })
+                            entity.components.get(comp).materialID = matID
+                            ActionHistoryAPI.pushChange({
+                                target: ActionHistoryAPI.targets.entity,
+                                entityID: entity.id,
+                                component: comp,
+                                key: "materialID",
+                                changeValue: data
+                            })
                         })
-                        entity.components.get(comp).materialID = matID
-                        ActionHistoryAPI.pushChange({
-                            target: ActionHistoryAPI.targets.entity,
-                            entityID: entity.id,
-                            component: comp,
-                            key: "materialID",
-                            changeValue: data
-                        })
-                    })
                     break
                 }
                 case FILE_TYPES.TERRAIN: {
@@ -189,7 +167,6 @@ export default class Loader {
             }
         }
 
-        console.log(meshes)
         if (meshes.length > 0 && !asID) {
             const toLoad = meshes.map(m => m.entity).filter(m => m != null)
             if (!toLoad.length)

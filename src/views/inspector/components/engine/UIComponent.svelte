@@ -1,7 +1,7 @@
 <script>
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import StyleField from "./Styles.svelte";
+    import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
     import Localization from "../../../../templates/Localization";
     import Selector from "../../../../components/selector/Selector.svelte";

@@ -305,6 +305,7 @@ export default class Localization {
             ERROR: "Some error occurred"
         },
         INSPECTOR: {
+            METADATA: "Metadata",
             DISTANCE: "Distance",
             DISTANCE_SQUARED: "Dist. squared",
             SHADOW_VIEW_PLANES: "Shadow map view planes",

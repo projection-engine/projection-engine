@@ -2,11 +2,7 @@
     import Localization from "../../templates/Localization";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
-    import Components from "./components/engine/Components.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import UIElement from "./components/engine/UIComponent.svelte";
-    import EntityElement from "./components/engine/EntitySettings.svelte";
-    import ComponentLayout from "./components/engine/Layout.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
@@ -15,6 +11,8 @@
     import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
     import VIEWS from "../../components/view/data/VIEWS";
     import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
+    import EntityInspector from "./components/engine/EntityInspector.svelte";
+    import AddComponent from "./components/engine/AddComponent.svelte";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -74,7 +72,7 @@
             )
             savedState = true
         }
-        if(key === "pivotPoint")
+        if (key === "pivotPoint")
             entity.__pivotChanged = true
         entity[key] = value
         entity.__changedBuffer[0] = 1
@@ -86,58 +84,40 @@
                 value
             )
     }
+    $: console.trace(entity)
 </script>
-<Header
-        currentView={VIEWS.COMPONENT}
-        orientation={orientation}
-        switchView={switchView}
-        title={translate("TITLE")}
-        icon={"category"}
->
-    {#if entity}
-        <div class="entity-container">
-            <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+{#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}
+    <div data-empty="-">
+        <Icon styles="font-size: 75px">category</Icon>
+        {translate("TITLE")}
+    </div>
+{:else}
 
-            <small data-overflow="-" class="target-type">
-                <ToolTip content={targetType}/>{targetType}</small>
+
+    <Header
+            currentView={VIEWS.COMPONENT}
+            orientation={orientation}
+            switchView={switchView}
+            title={translate("TITLE")}
+            icon={"category"}
+    >
+        <div class="entity-container">
+            {#if entity instanceof Entity}
+                <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+                <AddComponent entity={entity}/>
+            {:else}
+                <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+            {/if}
         </div>
-    {/if}
-</Header>
-<div class="content">
-    {#if entity != null}
+    </Header>
+    <div class="content">
         {#if entity instanceof Entity}
-            <div class="wrapper-content">
-                <EntityElement entity={entity} translate={translate}/>
-                {#if entity instanceof UIElement}
-                    <UIElement
-                            component={entity}
-                            translate={translate}
-                            store={ui}
-                    />
-                {:else}
-                    <ComponentLayout
-                            key="TRANSFORMATION"
-                            translate={translate}
-                            component={entity}
-                            entity={entity}
-                            submit={submitTransformationChange}
-                    />
-                {/if}
-                <Components
-                        translate={translate}
-                        entity={entity}
-                />
-            </div>
+            <EntityInspector entity={entity}/>
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
             <ContentBrowserItem item={entity}/>
         {/if}
-    {:else}
-        <div data-empty="-">
-            <Icon styles="font-size: 75px">category</Icon>
-            {translate("TITLE")}
-        </div>
-    {/if}
-</div>
+    </div>
+{/if}
 
 
 <style>
@@ -162,20 +142,6 @@
         overflow-x: hidden;
     }
 
-
-    .wrapper-content {
-        display: grid;
-        align-content: flex-start;
-        gap: 4px;
-        overflow-y: auto;
-        max-height: 100%;
-        width: 100%;
-        max-width: 100%;
-        padding: 4px 4px 32px;
-        color: var(--pj-color-primary);
-        overflow-x: hidden;
-        height: 100%;
-    }
 
     .target-type {
         background: var(--pj-background-tertiary);

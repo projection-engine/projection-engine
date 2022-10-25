@@ -83,6 +83,8 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                     const ID = v4()
                     const data = file.materials[i]
                     const material = await buildMaterial(file.textures, images, data)
+                    if(!material)
+                        continue
                     const name = "material-" + i
                     const pathToAsset = basePath + path.sep + "materials" + path.sep + name + FILE_TYPES.SIMPLE_MATERIAL
                     await fs.promises.writeFile(pathToAsset, JSON.stringify(material))

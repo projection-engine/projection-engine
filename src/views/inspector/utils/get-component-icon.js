@@ -13,7 +13,7 @@ export default function getComponentIcon(key) {
         case COMPONENTS.PROBE:
             return "lens_blur"
         case "TRANSFORMATION":
-            return "transformation"
+            return "transform"
         case COMPONENTS.SPRITE:
             return "image"
 

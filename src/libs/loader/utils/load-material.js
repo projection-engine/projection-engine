@@ -20,9 +20,11 @@ const loadFile = async (rs) => {
 }
 
 export default async function loadMaterial(ID, submit) {
-    if (ID === FALLBACK_MATERIAL)
+    if (ID === FALLBACK_MATERIAL || !ID)
         submit(FALLBACK_MATERIAL, "materialID")
     else if (ID.includes(TERRAIN_MATERIAL))
+        submit(ID, "materialID")
+    else if(GPUResources.materials.get(ID) != null)
         submit(ID, "materialID")
     else
         try {

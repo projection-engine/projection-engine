@@ -1,35 +1,32 @@
 <script>
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Property from "./Property.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import getComponentIcon from "../../utils/get-component-icon";
-    import removeComponent from "../../utils/remove-component";
+    import getComponentIcon from "../../../utils/get-component-icon";
+    import removeComponent from "../../../utils/remove-component";
+    import Localization from "../../../../../templates/Localization";
 
     export let key
     export let index
     export let component
     export let entity
     export let submit
-    export let translate
 
+
+    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(component.name) ? translate(component.name) : component.name)
 </script>
 
-<Accordion startOpen={ key === "TRANSFORMATION"}>
-    <svelte:fragment slot="header">
-        <div class="icon">
-            <Icon styles="font-size: .9rem; width: 1rem">
-                {getComponentIcon(key, component)}
-            </Icon>
-        </div>
+<fieldset>
+    <legend>
         {title}
         {#if key !== "TRANSFORMATION"}
             <button class="button" on:click={() => removeComponent(entity, index, key)}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}
-    </svelte:fragment>
+    </legend>
     {#if Array.isArray(component.props)}
         {#each component.props as propAttr}
             {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
@@ -55,18 +52,16 @@
             {/if}
         {/each}
     {/if}
-</Accordion>
+</fieldset>
 
 <style>
-
-    .icon {
-        width: 17px;
-        height: 17px;
+    legend{
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        width: 100%;
+        font-weight: 500;
     }
-
     .button {
         border: none;
         margin-left: auto;

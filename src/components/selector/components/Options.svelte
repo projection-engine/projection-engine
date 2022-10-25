@@ -34,7 +34,7 @@
                 current.push({name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL})
             else if (type === "mesh")
                 Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => {
-                    if(translate(sm[0]) != null)
+                    if (translate(sm[0]) != null)
                         current.push({
                             name: translate(sm[0]),
                             registryID: sm[1]
@@ -79,8 +79,11 @@
 
 <style>
 
-    .content{
+    .content {
         position: relative;
         height: 100%;
+        padding: 3px;
+
+        overflow-y: auto;
     }
 </style>
