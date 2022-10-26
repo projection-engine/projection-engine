@@ -4,13 +4,13 @@
     import Debug from "./Debug.svelte";
     import Board from "./Board.svelte";
     import Material from "../templates/nodes/Material";
+    import Localization from "../../../templates/Localization";
 
     export let selected
     export let nodes
     export let setNodes
     export let links
     export let setLinks
-    export let translate
     export let isOpen
 export let openFile
     export let internalID
@@ -32,17 +32,16 @@ export let openFile
     }
     $: tabs = [
         {
-            label: translate("NODE"),
+            label: Localization.NODE,
             component: AttributeEditor,
             props: {
                 selected: selected.length === 0 && fallbackSelected ? fallbackSelected.id : selected[0],
                 nodes,
                 updateNode,
-                submitNodeVariable,
-                translate
+                submitNodeVariable
             }
         },
-        {label: translate("STATUS"), component: Debug}
+        {label: Localization.STATUS, component: Debug}
     ]
 </script>
 

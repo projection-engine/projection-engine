@@ -18,7 +18,6 @@
     $: material = {...data}
     $: layers = material?.uniformData ? (material.uniformData.length - TERRAIN_MATERIAL_UNIFORMS.length) / 3 : 0
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
     const updateAsset = (key, v, index) => {
         let value = v
         if (index != null) {
@@ -67,7 +66,7 @@
             original: TERRAIN_MATERIAL + size,
             uniformData
         }
-        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).then(() => alert.pushAlert(translate("UPDATING_ASSET"), "alert"))
+        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).then(() => alert.pushAlert(Localization.UPDATING_ASSET, "alert"))
     }
 
     function removeLayer(index) {
@@ -79,13 +78,13 @@
             original: TERRAIN_MATERIAL + size,
             uniformData
         }
-        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).then(() => alert.pushAlert(translate("UPDATING_ASSET"), "alert"))
+        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).then(() => alert.pushAlert(Localization.UPDATING_ASSET, "alert"))
     }
 
 </script>
 
 <fieldset>
-    <legend>{translate("LAYERS_CONTROLLER")}</legend>
+    <legend>{Localization.LAYERS_CONTROLLER}</legend>
     <Selector
             selected={material.uniformData[1].data}
             type="image"
@@ -102,4 +101,4 @@
                 update={updateAsset}/>
     {/each}
 {/if}
-<button data-focusbutton="-" disabled={layers === 3} on:click={addLayer}>{translate("ADD_LAYER")}</button>
+<button data-focusbutton="-" disabled={layers === 3} on:click={addLayer}>{Localization.ADD_LAYER}</button>

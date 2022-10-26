@@ -4,12 +4,11 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import "../../../components/selector/css/selector.css"
+    import Localization from "../../../templates/Localization";
 
-    export let translate
 
-    const parseStr = (str) => {
-        return str.toLowerCase().replace(/\s/g, "")
-    }
+    const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")
+
 
     let searchString = ""
     let nodes
@@ -23,7 +22,7 @@
 
 <Dropdown>
     <button slot="button" class="button selector">
-        {translate("ADD")}
+        {Localization.ADD}
     </button>
     <div class="modal-available-nodes selector">
         <div class="content">
@@ -43,7 +42,7 @@
                 width={"100%"}
                 searchString={searchString}
                 setSearchString={v => searchString  = v}
-                placeholder={translate("SEARCH")}
+                placeholder={Localization.SEARCH}
             >
                 <Icon slot="icon">search</Icon>
             </Input>

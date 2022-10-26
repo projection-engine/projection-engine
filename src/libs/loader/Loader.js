@@ -16,7 +16,6 @@ import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import GPUResources from "../../../public/engine/GPUResources";
 import Entity from "../../../public/engine/lib/instances/Entity";
-import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import GPUController from "../../../public/engine/GPUController";
 import {v4} from "uuid";
 
@@ -119,7 +118,7 @@ export default class Loader {
                 case FILE_TYPES.TEXTURE: {
                     const res = await EngineStore.loadTextureFromImageID(data)
                     if (res) {
-                        const sprite = new Entity(undefined, Localization.PROJECT.VIEWPORT.SPRITE_RENDERER)
+                        const sprite = new Entity(undefined, Localization.SPRITE_RENDERER)
                         EntityConstructor.translateEntity(sprite)
                         const c = sprite.addComponent(COMPONENTS.SPRITE)
                         c.imageID = data

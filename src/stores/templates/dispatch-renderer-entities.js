@@ -128,13 +128,11 @@ export default function dispatchRendererEntities({type, payload}) {
         if (!entity.parentCache)
             continue
         const parent = QueryAPI.getEntityByID(entity.parentCache)
-        if (type === ENTITY_ACTIONS.DISPATCH_BLOCK || type === ENTITY_ACTIONS.PUSH_BLOCK) {
             if (parent) {
                 entity.parentCache = undefined
                 EntityAPI.linkEntities(entity, parent)
-            } else
-                EntityAPI.linkEntities(entity, undefined)
-        }
+            }
+
     }
     HierarchyController.updateHierarchy()
     EngineStore.updateStore({...EngineStore.engine, changeID})

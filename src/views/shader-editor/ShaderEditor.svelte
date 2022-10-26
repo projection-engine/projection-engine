@@ -32,7 +32,6 @@
     export let groupIndex
     const internalID = v4()
     const {shell} = window.require("electron")
-    const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
 
     let openFile = {}
     let nodes = []
@@ -106,7 +105,7 @@
         orientation={orientation}
 
         switchView={switchView}
-        title={translate("TITLE")}
+        title={Localization.SHADER_EDITOR}
         icon={"texture"}
 >
     <div class="options">
@@ -114,20 +113,20 @@
                 disabled={!openFile?.registryID}
                 class="button"
                 on:click={() => {
-                    buildShader(nodes, links, openFile, v => status = v, translate).then(() => {
+                    buildShader(nodes, links, openFile, v => status = v).then(() => {
                         ShaderEditorController.save(openFile, nodes, links).catch(err => console.error(err))
                     })
                 }}>
             <Icon styles="font-size: .9rem">save</Icon>
-            {translate("SAVE")}
+            {Localization.SAVE}
         </button>
         <button
                 disabled={!openFile?.registryID}
                 class="button"
-                on:click={() => buildShader(nodes, links, openFile, v => status = v, translate).catch()}
+                on:click={() => buildShader(nodes, links, openFile, v => status = v).catch()}
         >
             <Icon styles="font-size: .9rem">code</Icon>
-            {translate("COMPILE")}
+            {Localization.COMPILE}
         </button>
         <div data-vertdivider="-"></div>
         <Selector
@@ -144,25 +143,25 @@
         />
 
         {#if openFile?.registryID}
-            <Nodes translate={translate}/>
+            <Nodes/>
         {/if}
     </div>
     <div class="options" style="justify-content: flex-end">
         <Dropdown>
             <button class="button" slot="button">
-                {translate("SELECT")}
+                {Localization.SELECT}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
-                {translate("ALL")}
+                {Localization.ALL}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
-                {translate("NONE")}
+                {Localization.NONE}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
-                {translate("INVERT")}
+                {Localization.INVERT}
             </button>
         </Dropdown>
 
@@ -182,7 +181,7 @@
                 }}
         >
             <Icon styles="font-size: .9rem">grid_4x4</Icon>
-            <ToolTip content={translate("GRID")}/>
+            <ToolTip content={Localization.TOGGLE_GRID}/>
         </button>
         <button
                 class="button"
@@ -195,7 +194,7 @@
                 }}
         >
             <Icon styles="font-size: .9rem">code</Icon>
-            <ToolTip content={translate("SOURCE")}/>
+            <ToolTip content={Localization.SOURCE}/>
         </button>
     </div>
 </Header>
@@ -203,7 +202,6 @@
     <Editor
             internalID={internalID}
             openFile={openFile}
-            translate={translate}
             isOpen={openFile?.registryID !== undefined}
             selected={selected}
             nodes={nodes}

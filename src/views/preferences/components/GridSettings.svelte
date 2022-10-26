@@ -6,10 +6,6 @@
     import GridSystem from "../../../../public/engine/editor/services/GridSystem";
 
     export let settings
-
-
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
-
 </script>
 
 
@@ -18,17 +14,17 @@
         <Checkbox
                 checked={settings.gridVisibility}
                 handleCheck={() => SettingsStore.updateStore({...settings, gridVisibility: !settings.gridVisibility })}
-                label={translate("ENABLED")}
+                label={Localization.ENABLED}
         />
         <Checkbox
                 checked={settings.showGridSubdivision}
                 handleCheck={() => SettingsStore.updateStore({...settings, showGridSubdivision: !settings.showGridSubdivision })}
-                label={translate("SUB_DIVISION")}
+                label={Localization.SUB_DIVISION}
         />
         <Range
                 minLabelWidth={"30px"}
                 minValue={.001}
-                label={translate("BRIGHTNESS")}
+                label={Localization.BRIGHTNESS}
                 variant="embedded"
                 incrementPercentage={1}
                 onFinish={(v) => {

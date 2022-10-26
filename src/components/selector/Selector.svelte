@@ -20,7 +20,7 @@
     export let disabled
     export let terrainMaterials
 
-    const translate = key => Localization.COMPONENTS.SELECTOR[key]
+
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
@@ -29,16 +29,16 @@
     let state
     $: {
         if (selected === FALLBACK_MATERIAL)
-            state = {name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL}
+            state = {name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL}
         else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
             state = {
-                name: translate(Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)),
+                name: Localization[Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)],
                 registryID: selected
             }
         else {
             const rID = selected?.registryID ? selected?.registryID : selected
             let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID)
-            state = data ? data : {name: translate("EMPTY")}
+            state = data ? data : {name: Localization.EMPTY}
         }
     }
 </script>
@@ -59,7 +59,7 @@
                 {state.name}
             </div>
             <small>
-                {translate(type.toUpperCase())}
+                {Localization[type.toUpperCase()]}
             </small>
         </div>
     </button>
@@ -67,7 +67,6 @@
             terrainMaterials={terrainMaterials}
             mergeMaterials={mergeMaterials}
             noDefault={noDefault}
-            translate={translate}
             handleChange={handleChange}
             type={type}
 

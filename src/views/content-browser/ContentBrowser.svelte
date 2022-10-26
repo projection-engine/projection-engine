@@ -46,7 +46,6 @@
     let fileType = undefined
     let searchString = ""
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
-    const translate = key => Localization.PROJECT.FILES[key]
 
     onMount(() => {
         GlobalContentBrowserController.subscribe(internalID, newDir => {
@@ -83,7 +82,7 @@
 
             currentDirectory={currentDirectory}
             setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-            translate={translate}
+
     />
     <ResizableBar type={"width"}/>
     <div class="browser">
@@ -94,7 +93,6 @@
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}
-                translate={translate}
                 setSearchString={v => searchString = v}
                 fileType={fileType}
 

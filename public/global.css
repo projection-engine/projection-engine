@@ -239,7 +239,10 @@ fieldset {
     border-radius: 3px;
     background: var(--pj-background-primary);
 }
-
+fieldset > fieldset{
+    border-radius: 0px;
+    border-top: var(--pj-border-secondary) 1px solid;
+}
 legend {
     font-size: .72rem;
     padding: 2px;

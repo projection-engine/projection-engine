@@ -1,8 +1,6 @@
 <script>
-    import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import Property from "./Property.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import getComponentIcon from "../../../utils/get-component-icon";
     import removeComponent from "../../../utils/remove-component";
     import Localization from "../../../../../templates/Localization";
 
@@ -12,10 +10,7 @@
     export let entity
     export let submit
 
-
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
-
-    $: title = key === "TRANSFORMATION" ? translate("TRANSFORMATION") : (translate(component.name) ? translate(component.name) : component.name)
+    $: title = key === "TRANSFORMATION" ? Localization.TRANSFORMATION : (Localization[component.name] || component.name)
 </script>
 
 <fieldset>
@@ -31,12 +26,11 @@
         {#each component.props as propAttr}
             {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
                 <fieldset>
-                    <legend>{translate(propAttr.label) ? translate(propAttr.label) : propAttr.label}</legend>
+                    <legend>{Localization[propAttr.label]||propAttr.label}</legend>
                     {#each propAttr.children as attribute}
                         <Property
                                 component={component}
                                 submit={submit}
-                                translate={translate}
                                 attribute={attribute}
                         />
                     {/each}
@@ -46,7 +40,6 @@
                 <Property
                         component={component}
                         submit={submit}
-                        translate={translate}
                         attribute={propAttr}
                 />
             {/if}

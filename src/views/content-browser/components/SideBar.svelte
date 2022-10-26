@@ -3,8 +3,8 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import SideBarItem from "./SideBarItem.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import Localization from "../../../templates/Localization";
 
-    export let translate = undefined
     export let bookmarks = undefined
     export let setCurrentDirectory = undefined
     export let items = undefined
@@ -18,7 +18,7 @@
             <Icon>
                 inventory_2
             </Icon>
-            {translate("ASSETS")}
+            {Localization.ASSETS}
         </div>
 
         <SideBarItem
@@ -42,7 +42,7 @@
             <Icon>
                 book
             </Icon>
-            {translate("BOOKMARKS")}
+            {Localization.BOOKMARKS}
         </div>
 
         {#each bookmarks as b, i}

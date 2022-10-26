@@ -12,7 +12,6 @@
 
     export let settings
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
 
     $: tS = settings.terrainSettings
     $: currentTexture = tS.foliageTexture
@@ -44,10 +43,10 @@
     />
 </div>
 <fieldset>
-    <legend>{translate("FOLIAGE_DISPLACEMENT")}</legend>
-    <Range label={translate("DENSITY")} value={tS.foliageDensity} minValue={0}
+    <legend>{Localization.FOLIAGE_DISPLACEMENT}</legend>
+    <Range label={Localization.DENSITY} value={tS.foliageDensity} minValue={0}
            onFinish={v => update("foliageDensity", v)}/>
-    <Range label={translate("TOTAL_QUANTITY")} value={tS.foliageQuantity} minValue={0}
+    <Range label={Localization.TOTAL_QUANTITY} value={tS.foliageQuantity} minValue={0}
            onFinish={v => update("foliageQuantity", v)}/>
 </fieldset>
 

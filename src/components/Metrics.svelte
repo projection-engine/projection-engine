@@ -12,8 +12,6 @@
     let scripting
     let singleLoop
     let simulation
-    const translate = key => Localization.PROJECT.INFO[key]
-
     onMount(() => {
         const m = Engine.metrics
         const cb = () => {
@@ -49,32 +47,32 @@
     <ResizableBar type="width"/>
     <div class="content">
         <div class="section">
-            <small>{translate("LOOP_FRAME_TIME")}</small>
+            <small>{Localization.LOOP_FRAME_TIME}</small>
             <strong bind:this={singleLoop}></strong>
         </div>
         <div class="section">
-            <small>{translate("EXECUTION_FRAME_RATE")}</small>
+            <small>{Localization.EXECUTION_FRAME_RATE }</small>
             <strong bind:this={fr}></strong>
         </div>
         <div class="section">
-            <small>{translate("EXECUTION_FRAME_TIME")}</small>
+            <small>{Localization.EXECUTION_FRAME_TIME}</small>
             <strong bind:this={ft}></strong>
         </div>
         <div class="section">
-            <small>{translate("MEMORY")}</small>
+            <small>{Localization.MEMORY}</small>
             <strong bind:this={mem}></strong>
         </div>
         <div data-divider="-"></div>
         <div class="section">
-            <small>{translate("RENDERING")}</small>
+            <small>{Localization.RENDERING}</small>
             <strong bind:this={rendering}></strong>
         </div>
         <div class="section">
-            <small>{translate("SIMULATION")}</small>
+            <small>{Localization.SIMULATION}</small>
             <strong bind:this={simulation}></strong>
         </div>
         <div class="section">
-            <small>{translate("SCRIPTING")}</small>
+            <small>{Localization.SCRIPTS}</small>
             <strong bind:this={scripting}></strong>
         </div>
     </div>

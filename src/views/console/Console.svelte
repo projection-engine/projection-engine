@@ -53,8 +53,6 @@
         document.removeEventListener("mousedown", handler)
     })
 
-    const translate = key => Localization.PROJECT.CONSOLE[key]
-
     $: if (engine.executingAnimation && clearOnPlay) ConsoleAPI.clear()
     $: {
         if (changed) {
@@ -81,14 +79,14 @@
         currentView={VIEWS.CONSOLE}
         orientation={orientation}
         switchView={switchView}
-        title={translate("TITLE")}
+        title={Localization.CONSOLE}
         icon={"terminal"}
 >
     <button on:click={() => ConsoleAPI.clear()} class="button">
         <Icon>
             clear_all
         </Icon>
-        {translate("CLEAR")}
+        {Localization.CLEAR}
     </button>
     <div data-vertdivider="-"></div>
     <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
@@ -97,13 +95,13 @@
                 check
             </Icon>
         {/if}
-        {translate("TOGGLE_CLEAR_ON_PLAY")}
+        {Localization.TOGGLE_CLEAR_ON_PLAY}
     </button>
     <div class="metadata">
         <Dropdown>
             <button slot="button" style="border: none">
-                {translate("VIEW")}
-                <ToolTip content={translate("VIEW")}/>
+                {Localization.VIEW}
+                <ToolTip content={Localization.VIEW}/>
             </button>
 
             <button on:click={() => showErrors = !showErrors}>
@@ -112,7 +110,7 @@
                         check
                     </Icon>
                 {/if}
-                {translate("ERRORS")}
+                {Localization.ERRORS}
 
             </button>
             <button on:click={() => showWarnings = !showWarnings}>
@@ -121,7 +119,7 @@
                         check
                     </Icon>
                 {/if}
-                {translate("WARNINGS")}
+                {Localization.WARNINGS}
             </button>
             <button on:click={() => showLogs = !showLogs}>
                 {#if showLogs}
@@ -129,7 +127,7 @@
                         check
                     </Icon>
                 {/if}
-                {translate("LOGS")}
+                {Localization.LOGS}
             </button>
         </Dropdown>
     </div>
@@ -158,7 +156,7 @@
                 </Icon>
             {/if}
             {#if item.object}
-                <ToolTip content={translate("CLICK_TO_SHOW_OBJECT")}/>
+                <ToolTip content={Localization.CLICK_TO_SHOW_OBJECT}/>
             {/if}
             <pre data-overflow="-">{item.message}</pre>
             <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>

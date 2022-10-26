@@ -81,7 +81,7 @@
                     <div data-vertdivider="-" style="margin: 0"></div>
                     <button on:click={() => currentShortcut = [...original]}>
                         <Icon styles="font-size: .9rem">close</Icon>
-                        <ToolTip content={Localization.SETTINGS.MAIN.ORIGINAL}/>
+                        <ToolTip content={Localization.ORIGINAL}/>
                     </button>
                 {/if}
             {/if}

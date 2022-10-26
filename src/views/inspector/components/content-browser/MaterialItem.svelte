@@ -20,7 +20,6 @@
     export let data
     export let item
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     let temp
     $: temp = data ? {...data} : undefined
@@ -60,7 +59,7 @@
                     return {...u, data: value}
                 return u
             })
-            alert.pushAlert(translate("UPDATING_ASSET"), "alert")
+            alert.pushAlert(Localization.UPDATING_ASSET, "alert")
             if (!isInstance) {
                 temp = {
                     ...temp,
@@ -84,7 +83,7 @@
             if (GPUResources.materials.get(item.registryID) != null) {
                 const instance = GPUResources.materials.get(item.registryID)
                 await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
-                alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
+                alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
                 GPUController.cleanUpTextures()
             }
         }, t ? t : 0)
@@ -127,7 +126,7 @@
     <div class="empty-wrapper">
         <div data-empty="-" style="position: relative">
             <Icon styles="font-size: 75px">texture</Icon>
-            {translate("NO_UNIFORMS")}
+            {Localization.NO_UNIFORMS}
         </div>
     </div>
 {/if}

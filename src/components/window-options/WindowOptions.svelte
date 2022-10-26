@@ -22,7 +22,6 @@
     let historyChangeType = null
     let timeout
 
-    const translate = key => Localization.PROJECT.CONTROL[key]
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
@@ -44,7 +43,7 @@
         const views = [
             ...SettingsStore.data.views,
             {
-                name: translate("NEW_TAB") + SettingsStore.data.views.length,
+                name: Localization.NEW_TAB + SettingsStore.data.views.length,
                 bottom: [[VIEWS.CONSOLE]],
                 right: [[VIEWS.HIERARCHY]],
                 viewport: [VIEWPORT_TABS.EDITOR],
@@ -69,12 +68,12 @@
 <div class="container">
     <button on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
-        <ToolTip content={translate("SAVE")}/>
+        <ToolTip content={Localization.SAVE}/>
     </button>
     <Dropdown hideArrow="true">
         <button slot="button">
             <Icon>menu</Icon>
-            <ToolTip content={translate("OPTIONS")}/>
+            <ToolTip content={Localization.OPTIONS}/>
         </button>
         {#each FRAME_OPTIONS as subOption}
             {#if subOption.type === "separator" && subOption.label}
@@ -110,7 +109,6 @@
             store={store}
             settings={settings}
             engine={engine}
-            translate={translate}
     />
 </div>
 

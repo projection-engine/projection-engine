@@ -37,13 +37,12 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const LEFT_BUTTON = 0
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
     $: {
         if (settings?.viewportHotkeys != null)
             ContextMenuController.mount(
-                {icon: "public", label: Localization.PROJECT.VIEWPORT.TITLE},
+                {icon: "public", label: Localization.VIEWPORT},
                 viewportContext(settings),
                 RENDER_TARGET,
                 ["data-viewport"]
@@ -102,7 +101,7 @@
             },
             onDragOver: () => `
                 <span data-icon="-" style="font-size: 70px">add</span>
-                ${translate("DRAG_DROP")}
+                ${Localization.DRAG_DROP}
             `
         })
     })

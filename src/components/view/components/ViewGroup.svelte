@@ -26,14 +26,14 @@
         currentTab = TabsStore.getValue(id, groupIndex)
         focused = TabsStore.focused === ref
     })
-    const translate = key => Localization.COMPONENTS.VIEWS[key]
+
 
     $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
     $: if (groupIndex != null) currentTab = 0
     $: view = views[currentTab]
-    $: tabs = views.map(v => ({name: translate(v), icon: getViewIcon(v), id: v}))
+    $: tabs = views.map(v => ({name: Localization[v], icon: getViewIcon(v), id: v}))
     $: viewTemplates = Object.values(VIEWS).map(value => ({
-        name: translate(value),
+        name: Localization[value],
         id: value
     }))
 

@@ -19,26 +19,25 @@
         SettingsStore.updateStore({...settings, views: clone})
     }
 
-    const translate = key => Localization.COMPONENTS.VIEWS[key]
 </script>
 
 
 
 <button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
-    <ToolTip content={translate("SPLIT_LEFT")}/>
+    <ToolTip content={Localization.SPLIT_LEFT}/>
 </button>
 <button on:click={_ => setTabs([...tabs.bottom, [VIEWS.CONSOLE]], "bottom")}>
     <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
-    <ToolTip content={translate("SPLIT_BOTTOM")}/>
+    <ToolTip content={Localization.SPLIT_BOTTOM}/>
 </button>
 <button on:click={_ => setTabs([...tabs.top, [VIEWS.CONSOLE]], "top")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
-    <ToolTip content={translate("SPLIT_TOP")}/>
+    <ToolTip content={Localization.SPLIT_TOP}/>
 </button>
 <button on:click={_ => setTabs([...tabs.right, [VIEWS.CONSOLE]], "right")}>
     <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
-    <ToolTip content={translate("SPLIT_RIGHT")}/>
+    <ToolTip content={Localization.SPLIT_RIGHT}/>
 </button>
 
 <style>

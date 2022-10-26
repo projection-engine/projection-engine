@@ -19,10 +19,10 @@
 
     onMount(() => HotKeysController.initializeListener(v => activeView = v))
     onDestroy(() => unsubscribeSettings())
-    const translate = key => Localization.PROJECT.INFO[key]
+
     const openLogs = async () => {
         if (await NodeFS.exists(ErrorLoggerAPI.path))
-            shell.openPath(ErrorLoggerAPI.path)
+            shell.openPath(ErrorLoggerAPI.path).catch()
         else
             alert.pushAlert("No logs found")
     }
@@ -33,7 +33,7 @@
         <div class="active-view">
             <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
             <div>{activeView.label}</div>
-            <ToolTip content={translate("ACTIVE_SHORTCUTS")}/>
+            <ToolTip content={Localization.ACTIVE_SHORTCUTS}/>
         </div>
     {/if}
     <div data-vertdivider="-" style="margin: 0 2px"></div>
@@ -51,16 +51,16 @@
                 {#if settings.loggingEnabled}
                     <Icon>check</Icon>
                 {/if}
-                {translate("LOGGING_ENABLED")}
+                {Localization.LOGGING_ENABLED}
             </button>
             <button on:click={openLogs}>
                 <Icon>open_in_new</Icon>
-                {translate("SHOW_ERROR_LOGS")}
+                {Localization.SHOW_ERROR_LOGS}
             </button>
         </Dropdown>
         <div data-vertdivider="-"></div>
         <div class="version" on:click={() => shell.openExternal("https://github.com/projection-engine")}>
-            {translate("VERSION")}
+            {Localization.VERSION}
         </div>
     </div>
 </div>

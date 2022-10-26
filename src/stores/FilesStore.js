@@ -71,7 +71,7 @@ export default class FilesStore {
     }
 
     static async createFolder(currentDirectory) {
-        let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.PROJECT.FILES.NEW_FOLDER, "")
+        let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_FOLDER, "")
         await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
         await FilesStore.refreshFiles()
 

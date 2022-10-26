@@ -21,7 +21,6 @@
         turnSpeed: settings.camera.turnSpeed
     }
 
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
     const updateCamera = (key, value, full) => {
         if (full) {
             SettingsStore.updateStore({...settings, camera: {...settings.camera, [key]: value}})
@@ -34,11 +33,11 @@
 
 
 <fieldset>
-    <legend>{translate("VIEW")}</legend>
+    <legend>{Localization.VIEW}</legend>
     <div class="content">
         <Range
                 minLabelWidth={"30px"}
-                label={translate("FAR")}
+                label={Localization.FAR}
                 variant="embedded"
                 incrementPercentage={1}
                 onFinish={(v) => {
@@ -57,7 +56,7 @@
         <Range
                 minLabelWidth={"30px"}
                 variant="embedded"
-                label={translate("NEAR")}
+                label={Localization.NEAR}
                 onFinish={(v) => {
                SettingsStore.updateStore({...settings, zNear: v})
 
@@ -75,7 +74,7 @@
         <Range
                 variant="embedded"
                 minLabelWidth={"30px"}
-                label={translate("FOV")}
+                label={Localization.FOV}
                 minValue={10}
                 maxValue={150}
                 disabled={state.ortho}
@@ -97,13 +96,13 @@
 </fieldset>
 
 <fieldset>
-    <legend>{translate("CAMERA_BEHAVIOUR")}</legend>
+    <legend>{Localization.CAMERA_BEHAVIOUR}</legend>
     <div class="content">
         <Range
                 variant="embedded"
                 precision={4}
                 incrementPercentage={.001}
-                label={translate("TRANSLATION")}
+                label={Localization.TRANSLATION}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
                 value={state.movementSpeed}
                 handleChange={v => updateCamera("movementSpeed", v)}
@@ -113,7 +112,7 @@
                 variant="embedded"
                 precision={4}
                 incrementPercentage={.001}
-                label={translate("ROTATION")}
+                label={Localization.ROTATION}
                 onFinish={(v) => updateCamera("turnSpeed", v, true)}
                 value={state.turnSpeed}
                 handleChange={v => updateCamera("turnSpeed", v)}
@@ -124,14 +123,14 @@
 
 
 <fieldset>
-    <legend>{translate("SMOOTHING")}</legend>
+    <legend>{Localization.SMOOTHING}</legend>
     <div class="content">
         <Range
                 variant="embedded"
                 precision={3}
                 minValue={.0001}
                 incrementPercentage={.001}
-                label={translate("TRANSLATION")}
+                label={Localization.TRANSLATION}
                 onFinish={(v) => updateCamera("smoothing", v, true)}
                 value={state.smoothing}
                 handleChange={v => updateCamera("smoothing", v)}
@@ -141,7 +140,7 @@
                 precision={3}
                 minValue={.0001}
                 incrementPercentage={.001}
-                label={translate("ROTATION")}
+                label={Localization.ROTATION}
                 onFinish={(v) => updateCamera("rotationSmoothing", v, true)}
                 value={state.rotationSmoothing}
                 handleChange={v => updateCamera("rotationSmoothing", v)}

@@ -169,7 +169,7 @@ export default class LevelController {
     }
 
     static async save() {
-        alert.pushAlert(Localization.PROJECT.SAVING, "info")
+        alert.pushAlert(Localization.SAVING, "info")
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta

@@ -39,7 +39,6 @@
     let timeout
     let toRender = []
 
-    const translate = key => Localization.PROJECT.FILES[key]
     const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
 
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
@@ -77,7 +76,7 @@
             ContextMenuController.mount(
                 {
                     icon: "folder",
-                    label: translate("TITLE")
+                    label: Localization.CONTENT_BROWSER
                 },
                 actions.contextMenu,
                 internalID,
@@ -92,7 +91,7 @@
                 ref,
                 actions.hotKeys,
                 "folder",
-                translate("TITLE")
+                Localization.CONTENT_BROWSER
             )
         }
     }
@@ -178,7 +177,7 @@
         <div data-empty="-">
             <Icon styles="font-size: 100px">folder</Icon>
             <div style="font-size: .8rem">
-                {translate("EMPTY")}
+                {Localization.EMPTY}
             </div>
         </div>
     {/if}

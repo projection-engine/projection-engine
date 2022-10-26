@@ -1,3 +1,3 @@
-- New inspector for entities
-- Fixed material loading
-- Fixed GLTF material creation
+- Reworking localization structure
+- Reworking drag/drop component
+- Fixing hierarchy drag/drop

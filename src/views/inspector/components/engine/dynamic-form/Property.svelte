@@ -15,10 +15,9 @@
 
     export let component = undefined
     export let submit = undefined
-    export let translate = undefined
     export let attribute = undefined
 
-    $: label = translate(attribute.label) ? translate(attribute.label) : attribute.label
+    $: label = Localization[attribute.label] ? Localization[attribute.label] : attribute.label
     $: value = component[attribute.key]
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
@@ -108,7 +107,7 @@
                          submit(attribute.key, value, true)
                     }}>
                 <Icon styles="font-size: .9rem">undo</Icon>
-                {Localization.COMPONENTS.RANGE.UNDO}
+                {Localization.UNDO}
             </button>
         {/if}
     {:else if attribute.type === Component.propTypes.BOOLEAN}
@@ -125,11 +124,7 @@
             </button>
             {#each attribute.options as option}
                 <button on:click={() =>  submit(attribute.key, option.value, true)}>
-                    {#if translate(option.label)}
-                        {translate(option.label)}
-                    {:else}
-                        {option.label}
-                    {/if}
+                    {Localization[option.label] || option.label}
                 </button>
             {/each}
         </Dropdown>

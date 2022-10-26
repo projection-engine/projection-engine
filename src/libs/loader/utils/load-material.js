@@ -13,7 +13,7 @@ const loadFile = async (rs) => {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + rs.path, "json")
     if (!file)
         alert.pushAlert(
-            Localization.PROJECT.INSPECTOR.ERROR_LOADING_FILE,
+            Localization.ERROR_LOADING_FILE,
             "error"
         )
     return file
@@ -33,7 +33,7 @@ export default async function loadMaterial(ID, submit) {
                 return
             const isInstance = reg.path.includes(FILE_TYPES.TERRAIN_MATERIAL) || reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) || reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
             if (!GPUResources.materials.get(ID)) {
-                alert.pushAlert(Localization.PROJECT.INSPECTOR.LOADING_MATERIAL, "alert")
+                alert.pushAlert(Localization.LOADING_MATERIAL, "alert")
                 const file = await loadFile(reg)
                 if (!file || isInstance && !file.original || !isInstance && !file.response) {
                     alert.pushAlert("Please, check if material was compiled correctly")

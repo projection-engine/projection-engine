@@ -36,7 +36,6 @@
         updateItems(sortData(items, sort === SORTS[1]))
     }
 
-    const translate = key => Localization.PROJECT.FILES[key]
 </script>
 <div class="wrapper">
     <small
@@ -47,7 +46,7 @@
                 changeSort()
             }}
     >
-        {translate("NAME")}
+        {Localization.NAME}
         {#if sortKey === SORTS_KEYS[0]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                     arrow_drop_down
@@ -62,7 +61,7 @@
                 changeSort()
             }}
     >
-        {translate("CREATION")}
+        {Localization.CREATION}
         {#if sortKey === SORTS_KEYS[1]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                 arrow_drop_down
@@ -76,7 +75,7 @@
                 changeSort()
             }}
     >
-        {translate("SIZE")}
+        {Localization.SIZE}
         {#if sortKey === SORTS_KEYS[2]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                 arrow_drop_down

@@ -13,7 +13,6 @@
 
     export let settings
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
     const updateGizmoGrid = (key, value, submit) => {
         GizmoSystem[key].gridSize = value
         if (submit)
@@ -28,15 +27,15 @@
                 <Icon styles="font-size: .9rem">
                     place
                 </Icon>
-                {translate("LOCAL")}
+                {Localization.LOCAL}
             {:else}
                 <Icon styles="font-size: .9rem">
                     language
                 </Icon>
-                {translate("GLOBAL")}
+                {Localization.GLOBAL}
 
             {/if}
-            <ToolTip content={translate("TRANSFORMATION_ORIENTATION")}/>
+            <ToolTip content={Localization.TRANSFORMATION_ORIENTATION}/>
         </button>
 
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "" : "-"}
@@ -45,7 +44,7 @@
                     GizmoSystem.transformationType = TRANSFORMATION_TYPE.GLOBAL
                 }}>
             <Icon>language</Icon>
-            {translate("GLOBAL")}
+            {Localization.GLOBAL}
         </button>
         <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "-" : ""}
                 on:click={() => {
@@ -53,19 +52,19 @@
                     GizmoSystem.transformationType = TRANSFORMATION_TYPE.RELATIVE
                 }}>
             <Icon>place</Icon>
-            {translate("LOCAL")}
+            {Localization.LOCAL}
         </button>
     </Dropdown>
     <Dropdown>
         <button slot="button" class="dropdown">
             <Icon styles="font-size: .9rem">straighten</Icon>
-            <ToolTip content={translate("MOVEMENT_GRID")}/>
+            <ToolTip content={Localization.MOVEMENT_GRID}/>
         </button>
         <fieldset class="dropdown-content">
-            <legend>{translate("MOVEMENT_GRID")}</legend>
+            <legend>{Localization.MOVEMENT_GRID}</legend>
             <Range
                     variant="embedded"
-                    label={translate("TRANSLATION_GRID")}
+                    label={Localization.TRANSLATION_GRID}
                     precision="3"
                     maxValue={10}
                     minValue={0.001}
@@ -78,7 +77,7 @@
             />
             <Range
                     variant="embedded"
-                    label={translate("SCALE_GRID")}
+                    label={Localization.SCALE_GRID}
                     precision="3"
                     maxValue={10}
                     minValue={0.001}
@@ -88,7 +87,7 @@
             <Range
                     variant="embedded"
                     precision="3"
-                    label={translate("ROTATION_GRID")}
+                    label={Localization.ROTATION_GRID}
                     maxValue={360}
                     minValue={0.001}
                     onFinish={v => updateGizmoGrid("rotationGizmo", v, true)}
@@ -100,7 +99,7 @@
             <Range
                     variant="embedded"
                     precision={4}
-                    label={translate("SENSITIVITY")}
+                    label={Localization.SENSITIVITY}
                     minValue={0}
                     onFinish={v => updateGizmoGrid("sensitivity", v / 100, true)}
                     value={settings.gizmoGrid.sensitivity * 100}

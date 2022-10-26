@@ -11,21 +11,17 @@
     import HotKeysController from "../../libs/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../components/drag-drop/drag-drop";
-    import EngineStore from "../../stores/EngineStore";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
     import HierarchyController from "../../libs/HierarchyController";
-    import SelectionStore from "../../stores/SelectionStore";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import VIEWS from "../../components/view/data/VIEWS";
-    import EntityAPI from "../../../public/engine/lib/apis/EntityAPI";
-
+    import Engine from "../../../public/engine/Engine";
+    import handleDrop from "./utils/handle-drop";
 
     export let switchView = undefined
     export let orientation = undefined
     let search = ""
     const ID = v4()
-    const translate = key => Localization.PROJECT.HIERARCHY[key]
 
     let filteredComponent = undefined
     let isEmpty = true
@@ -39,7 +35,7 @@
                 ref,
                 Object.values(viewportHotkeys(settings)),
                 "public",
-                Localization.PROJECT.VIEWPORT.TITLE
+                Localization.VIEWPORT
             )
         }
     }
@@ -55,20 +51,12 @@
         draggable.onMount({
             targetElement: ref,
             onDrop: (entityDragged, event) => {
+                const node = event.path.find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
+                let dropTarget
+                if (node)
+                    dropTarget = Engine.entitiesMap.get(node)
+                handleDrop(event, entityDragged, dropTarget)
 
-                if (event.ctrlKey) {
-                    EntityAPI.linkEntities(entityDragged, undefined)
-                    SelectionStore.engineSelected = [entityDragged.id]
-                    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
-                    HierarchyController.updateHierarchy()
-                } else if (event.shiftKey) {
-                    const clone = entityDragged.clone()
-
-                    clone.parentCache = undefined
-                    clone.parent = undefined
-
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
-                }
             },
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
@@ -82,7 +70,7 @@
         currentView={VIEWS.HIERARCHY}
         orientation={orientation}
         switchView={switchView}
-        title={translate("TITLE")}
+        title={Localization.HIERARCHY}
         icon={"account_tree"}
 >
     <button
@@ -90,14 +78,14 @@
                 openTree = {...openTree, ...HierarchyController.openTree()}
             }}
             class="button">
-        <ToolTip content={translate("SHOW_MAIN_ENTITY")}/>
+        <ToolTip content={Localization.SHOW_MAIN_ENTITY}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
     </button>
     <Input
             hasBorder={true}
             width="50%"
             height="22px"
-            placeholder={translate("SEARCH")}
+            placeholder={Localization.SEARCH}
             searchString={search}
             setSearchString={v => search = v}
     />
@@ -105,7 +93,7 @@
     <Dropdown buttonStyles="margin-left: auto">
         <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
-            <ToolTip content={translate("COMPONENT_FILTER")}/>
+            <ToolTip content={Localization.COMPONENT_FILTER}/>
         </button>
         {#each nativeComponents as component}
             <button
@@ -117,7 +105,7 @@
             >
                 {#if component[0] === filteredComponent}
                     <Icon>check</Icon>
-                    {:else}
+                {:else}
                     <div style="width: 1.1rem"></div>
                 {/if}
 
@@ -141,7 +129,7 @@
             setIsEmpty={v => isEmpty = v}
             searchString={search}
             filteredComponent={filteredComponent}
-            translate={translate}
+
             ID={ID}
     />
 </div>
@@ -172,7 +160,8 @@
         max-height: 100%;
 
     }
-    .button{
+
+    .button {
         padding: 0;
         width: 20px;
         height: 20px;

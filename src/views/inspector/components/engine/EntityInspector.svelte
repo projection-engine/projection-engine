@@ -55,7 +55,7 @@
         draggable.onMount({
             targetElement: ref,
             onDrop: d => handleComponentDrop(entity, d),
-            onDragOver: () => Localization.PROJECT.INSPECTOR.ADD_DRAG_DROP
+            onDragOver: () => Localization.ADD_DRAG_DROP
         })
     })
     onDestroy(() => draggable.onDestroy())

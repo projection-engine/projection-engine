@@ -9,7 +9,7 @@ import {v4} from "uuid";
 import CameraAPI from "../../public/engine/lib/apis/CameraAPI";
 import EntityAPI from "../../public/engine/lib/apis/EntityAPI";
 
-const translate = key => Localization.PROJECT.VIEWPORT[key]
+
 const addSprite = (entity, img) => {
     const e = entity.addComponent(COMPONENTS.SPRITE)
     e.imageID = img
@@ -30,7 +30,7 @@ export default class EntityConstructor {
     }
 
     static createMesh(id) {
-        const entity = new Entity(undefined, translate("MESH_RENDERER"))
+        const entity = new Entity(undefined, Localization.MESH_RENDERER)
         const m = entity.addComponent(COMPONENTS.MESH)
         m.meshID = id
         EntityConstructor.translateEntity(entity)
@@ -48,7 +48,7 @@ export default class EntityConstructor {
     }
 
     static createPointLight() {
-        const entity = new Entity(undefined, translate("POINT_LIGHT"))
+        const entity = new Entity(undefined, Localization.POINT_LIGHT)
         entity.addComponent(COMPONENTS.POINT_LIGHT)
         addSprite(entity, STATIC_TEXTURES.POINT_LIGHT)
         EntityConstructor.translateEntity(entity)
@@ -57,7 +57,7 @@ export default class EntityConstructor {
     }
 
     static createDirectionalLight() {
-        const entity = new Entity(undefined, translate("DIRECTIONAL_LIGHT"))
+        const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
         addSprite(entity, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
         entity.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
@@ -66,7 +66,7 @@ export default class EntityConstructor {
     }
 
     static createCamera() {
-        const entity = new Entity(undefined, translate("CAMERA"))
+        const entity = new Entity(undefined, Localization.CAMERA)
         entity.addComponent(COMPONENTS.CAMERA)
         EntityConstructor.translateEntity(entity)
 
@@ -74,7 +74,7 @@ export default class EntityConstructor {
     }
 
     static createSprite() {
-        const entity = new Entity(undefined, translate("SPRITE_RENDERER"))
+        const entity = new Entity(undefined, Localization.SPRITE_RENDERER)
         entity.addComponent(COMPONENTS.SPRITE)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
 

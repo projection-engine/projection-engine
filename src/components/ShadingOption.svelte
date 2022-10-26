@@ -14,7 +14,6 @@
 
     let shadingModel = SHADING_MODELS.DETAIL
 
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
     $: shading = (() => {
         switch (shadingModel) {
@@ -103,8 +102,8 @@
 
     onMount(() => {
         setTimeout(() => {
-            if(SettingsStore.data.shadingModel != null)
-            shadingModel = SettingsStore.data.shadingModel
+            if (SettingsStore.data.shadingModel != null)
+                shadingModel = SettingsStore.data.shadingModel
         }, 500)
     })
 </script>
@@ -112,101 +111,101 @@
 <Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;">
     <button class="summary" slot="button">
         <div style="--color-to-apply: white" data-shaded-material="-"></div>
-        <div style="white-space: nowrap">{translate(shading)}</div>
+        <div style="white-space: nowrap">{Localization[shading]}</div>
     </button>
     <fieldset class="content">
-        <legend>{translate("G_BUFFER")}</legend>
+        <legend>{Localization.G_BUFFER}</legend>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.DETAIL ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.DETAIL}>
-                {translate("SHADING_DETAIL")}
-                <small>{translate("DETAIL_DEF")}</small>
+                {Localization.SHADING_DETAIL}
+                <small>{Localization.DETAIL_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ALBEDO ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.ALBEDO}>
-                {translate("SHADING_UNLIT")}
-                <small>{translate("UNLIT_DEF")}</small>
+                {Localization.SHADING_UNLIT}
+                <small>{Localization.UNLIT_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ROUGHNESS ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.ROUGHNESS}>
 
-                {translate("SHADING_ROUGHNESS")}
-                <small>{translate("ROUGHNESS_DEF")}</small>
+                {Localization.SHADING_ROUGHNESS}
+                <small>{Localization.ROUGHNESS_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.METALLIC ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.METALLIC}>
 
-                {translate("SHADING_METALLIC")}
-                <small>{translate("METALLIC_DEF")}</small>
+                {Localization.SHADING_METALLIC}
+                <small>{Localization.METALLIC_DEF}</small>
             </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.POSITION}>
 
-                {translate("SHADING_POSITION")}
-                <small>{translate("POSITION_DEF")}</small>
+                {Localization.SHADING_POSITION}
+                <small>{Localization.POSITION_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.G_AO ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.G_AO}>
-                {translate("SHADING_AO")}
-                <small>{translate("G_AO_DEF")}</small>
+                {Localization.SHADING_AO}
+                <small>{Localization.G_AO_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.NORMAL ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.NORMAL}>
 
-                {translate("SHADING_NORMAL")}
-                <small>{translate("NORMAL_DEF")}</small>
+                {Localization.SHADING_NORMAL}
+                <small>{Localization.NORMAL_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.AMBIENT ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.AMBIENT}>
 
-                {translate("SHADING_AMBIENT")}
-                <small>{translate("AMBIENT_DEF")}</small>
+                {Localization.SHADING_AMBIENT}
+                <small>{Localization.AMBIENT_DEF}</small>
             </button>
 
         </div>
     </fieldset>
     <fieldset class="content">
-        <legend>{translate("SCENE")}</legend>
+        <legend>{Localization.SCENE}</legend>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.REC_NORMALS ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.REC_NORMALS}>
-                {translate("RECONSTRUCTED_NORMALS")}
-                <small>{translate("RECONSTRUCTED_NORMALS_DEF")}</small>
+                {Localization.RECONSTRUCTED_NORMALS}
+                <small>{Localization.RECONSTRUCTED_NORMALS_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.DEPTH}>
 
-                {translate("SHADING_DEPTH")}
-                <small>{translate("DEPTH_DEF")}</small>
+                {Localization.SHADING_DEPTH}
+                <small>{Localization.DEPTH_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.STOCHASTIC ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.STOCHASTIC}>
-                {translate("SHADING_STOCHASTIC")}
-                <small>{translate("STOCHASTIC_DEF")}</small>
+                {Localization.SHADING_STOCHASTIC}
+                <small>{Localization.STOCHASTIC_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ID ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.ID}>
-                {translate("SHADING_ID")}
-                <small>{translate("ID_DEF")}</small>
+                {Localization.SHADING_ID}
+                <small>{Localization.ID_DEF}</small>
             </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.AO}>
-                {translate("SHADING_AO")}
-                <small>{translate("AO_DEF")}</small>
+                {Localization.SHADING_AO}
+                <small>{Localization.AO_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.SSGI ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.SSGI}>
-                {translate("SHADING_SSGI")}
-                <small>{translate("SSGI_DEF")}</small>
+                {Localization.SHADING_SSGI}
+                <small>{Localization.SSGI_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.UV}>
-                {translate("SHADING_UV")}
-                <small>{translate("UV_DEF")}</small>
+                {Localization.SHADING_UV}
+                <small>{Localization.UV_DEF}</small>
             </button>
         </div>
 
@@ -214,11 +213,12 @@
 </Dropdown>
 
 <style>
-    button{
+    button {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .content {
         display: flex;
         width: 100%;

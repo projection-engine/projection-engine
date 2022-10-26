@@ -46,7 +46,7 @@
         {:else}
             <div style="width: .9rem"></div>
         {/if}
-        {Localization.PROJECT.INFO.TOGGLE_FRAMERATE}
+        {Localization.TOGGLE_FRAMERATE}
     </button>
 </Dropdown>
 <style>

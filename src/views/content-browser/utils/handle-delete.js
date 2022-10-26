@@ -6,7 +6,7 @@ import NodeFS from "shared-resources/frontend/libs/NodeFS";
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
     FilesStore.removeBlock(itemsToDelete)
-    alert.pushAlert(Localization.PROJECT.FILES.DELETING_ITEMS, "info")
+    alert.pushAlert(Localization.DELETING_ITEMS, "info")
     for (let i = 0; i < itemsToDelete.length; i++) {
         const currentItem = itemsToDelete[i]
         const file = FilesStore.data.items.find(e => e.id === currentItem)
@@ -35,5 +35,5 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
     }
 
     await FilesStore.refreshFiles()
-    alert.pushAlert(Localization.PROJECT.FILES.SUCCESSFUL_DELETE, "success")
+    alert.pushAlert(Localization.SUCCESSFUL_DELETE, "success")
 }

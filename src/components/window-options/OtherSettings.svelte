@@ -11,11 +11,11 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Notification from "./Notification.svelte";
     import ConsoleAPI from "../../../public/engine/lib/apis/ConsoleAPI";
+    import Localization from "../../templates/Localization";
 
     export let store
     export let settings
     export let engine
-    export let translate
     export let historyChangeType
 
     let notifications = []
@@ -64,9 +64,9 @@
             </Icon>
             <div>
                 {#if historyChangeType === "UNDO"}
-                    {translate("UNDOING")}
+                    {Localization.UNDOING}
                 {:else}
-                    {translate("REDOING")}
+                    {Localization.REDOING}
                 {/if}
             </div>
         </div>
@@ -75,9 +75,9 @@
     <button class="button console" on:click={openConsole}>
         <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: darkorange" : "color: #999")}>feedback</Icon>
         {#if hasMessage}
-            <small>{translate("NEW_MESSAGE")}</small>
+            <small>{Localization.NEW_MESSAGE}</small>
         {/if}
-        <ToolTip content={translate("OPEN_CONSOLE")}/>
+        <ToolTip content={Localization.OPEN_CONSOLE}/>
     </button>
     <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
     <Dropdown hideArrow={true} styles="width: 300px">
@@ -86,14 +86,14 @@
                 class="button"
         >
             <Icon styles="font-size: 1rem">notifications</Icon>
-            <ToolTip content={translate("NOTIFICATIONS")}/>
+            <ToolTip content={Localization.NOTIFICATIONS}/>
         </button>
         <div class="dropdown-container">
             <div class="dropdown-header">
                 <button class="button button-small" style="gap: 4px" on:click={() => alert.clearCache()}>
                     <Icon>clear_all</Icon>
-                    {translate("CLEAR")}
-                    <ToolTip content={translate("CLEAR")}/>
+                    {Localization.CLEAR}
+                    <ToolTip content={Localization.CLEAR}/>
                 </button>
                 <button
                         class="button button-small"
@@ -107,14 +107,14 @@
                     {:else}
                         <Icon>notifications_off</Icon>
                     {/if}
-                    <ToolTip content={translate("TOGGLE_NOTIFICATIONS")}/>
+                    <ToolTip content={Localization.TOGGLE_NOTIFICATIONS}/>
                 </button>
             </div>
             {#if notifications.length === 0}
                 <div style="height: 100%; width: 100%; position: relative">
                     <div data-empty="-">
                         <Icon styles="font-size: 75px">notifications</Icon>
-                        {translate("EMPTY")}
+                        {Localization.EMPTY}
                     </div>
                 </div>
             {:else}
@@ -141,7 +141,7 @@
                 }}
     >
         <Icon styles="font-size: 1rem">settings</Icon>
-        <ToolTip content={translate("SHOW_PREFERENCES")}/>
+        <ToolTip content={Localization.SHOW_PREFERENCES}/>
     </button>
 
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
@@ -152,10 +152,10 @@
                 {#if engine.currentLevel}
                     {engine.currentLevel.name}
                 {:else}
-                    {translate("DEFAULT_LEVEL")}
+                    {Localization.DEFAULT_LEVEL}
                 {/if}
             </div>
-            <ToolTip content={translate("LEVEL")}/>
+            <ToolTip content={Localization.LEVEL}/>
         </button>
         <button on:click={() => LevelController.loadLevel()} style="max-width: unset; min-height: unset">
             {#if !engine.currentLevel}
@@ -163,7 +163,7 @@
             {:else}
                 <div style="width: .9rem"></div>
             {/if}
-            {translate("DEFAULT_LEVEL")}
+            {Localization.DEFAULT_LEVEL}
         </button>
         <div data-divider="-"></div>
         {#each store.levels as level}

@@ -12,7 +12,6 @@ import Localization from "../../../templates/Localization";
 import getMaterialAsOption from "../../../templates/utils/get-material-as-option";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
-const translate = key => Localization.PROJECT.FILES[key]
 export default function getCreationOptions(currentDirectory, materials) {
     const matInstances = []
     if (materials)
@@ -22,15 +21,15 @@ export default function getCreationOptions(currentDirectory, materials) {
         })
     return [
         {
-            label: translate("NEW_FOLDER"),
+            label: Localization.NEW_FOLDER,
             onClick: () => FilesStore.createFolder(currentDirectory).catch()
         },
         {divider: true},
         {
-            label: translate("NEW_LEVEL"),
+            label: Localization.NEW_LEVEL,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_LEVEL"), FILE_TYPES.LEVEL)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_LEVEL, FILE_TYPES.LEVEL)
                 await AssetAPI.writeAsset(path, JSON.stringify({
                     entities: []
                 }))
@@ -39,10 +38,10 @@ export default function getCreationOptions(currentDirectory, materials) {
         },
         {divider: true},
         {
-            label: translate("NEW_MATERIAL"),
+            label: Localization.NEW_MATERIAL,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_MATERIAL"), FILE_TYPES.MATERIAL)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_MATERIAL, FILE_TYPES.MATERIAL)
                 AssetAPI.writeAsset(path, JSON.stringify({}))
                     .then(() => {
                         FilesStore.refreshFiles()
@@ -50,20 +49,20 @@ export default function getCreationOptions(currentDirectory, materials) {
             }
         },
         {
-            label: translate("NEW_SIMPLE_MATERIAL"),
+            label: Localization.NEW_SIMPLE_MATERIAL,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_SIMPLE_MATERIAL"), FILE_TYPES.SIMPLE_MATERIAL)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_SIMPLE_MATERIAL, FILE_TYPES.SIMPLE_MATERIAL)
                 await AssetAPI.writeAsset(path, JSON.stringify(SIMPLE_MATERIAL_TEMPLATE))
                 await FilesStore.refreshFiles()
 
             }
         },
         {
-            label: translate("NEW_TERRAIN_MATERIAL"),
+            label: Localization.NEW_TERRAIN_MATERIAL,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_TERRAIN_MATERIAL"), FILE_TYPES.TERRAIN_MATERIAL)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_TERRAIN_MATERIAL, FILE_TYPES.TERRAIN_MATERIAL)
                 await AssetAPI.writeAsset(path, JSON.stringify({
                     original: TERRAIN_LAYERED,
                     uniformData: TERRAIN_MATERIAL_UNIFORMS
@@ -76,20 +75,20 @@ export default function getCreationOptions(currentDirectory, materials) {
         ...matInstances,
         {divider: true},
         {
-            label: translate("NEW_COMPONENT"),
+            label: Localization.NEW_COMPONENT,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_COMPONENT"), FILE_TYPES.COMPONENT)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_COMPONENT, FILE_TYPES.COMPONENT)
 
                 await AssetAPI.writeAsset(path, COMPONENT_TEMPLATE)
                 await FilesStore.refreshFiles()
             }
         },
         {
-            label: translate("NEW_UI_LAYOUT"),
+            label: Localization.NEW_UI_LAYOUT,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_UI_LAYOUT"), FILE_TYPES.UI_LAYOUT)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_UI_LAYOUT, FILE_TYPES.UI_LAYOUT)
                 await AssetAPI.writeAsset(path, UI_TEMPLATE)
                 await FilesStore.refreshFiles()
 
@@ -98,10 +97,10 @@ export default function getCreationOptions(currentDirectory, materials) {
         {divider: true},
 
         {
-            label: translate("NEW_TERRAIN"),
+            label: Localization.NEW_TERRAIN,
 
             onClick: async () => {
-                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + translate("NEW_TERRAIN"), FILE_TYPES.TERRAIN)
+                let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_TERRAIN, FILE_TYPES.TERRAIN)
                 await AssetAPI.writeAsset(path, JSON.stringify(TERRAIN_TEMPLATE))
                 await FilesStore.refreshFiles()
             }

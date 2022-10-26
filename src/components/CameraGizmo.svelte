@@ -6,7 +6,6 @@
     import Localization from "../templates/Localization";
     import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
     let ref
     onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
 </script>

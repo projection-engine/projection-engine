@@ -15,7 +15,6 @@
 
     export let settings
     export let engine
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
 
 </script>
 
@@ -28,19 +27,19 @@
     }}>
         <Icon styles="font-size: .85rem">play_arrow</Icon>
         {#if engine.executingAnimation}
-            {translate("STOP")}
+            {Localization.STOP}
         {:else}
-            {translate("PLAY")}
+            {Localization.PLAY}
         {/if}
     </button>
 
     <button on:click={() => {
-        alert.pushAlert(translate("BUILDING_PROBES"), "info")
+        alert.pushAlert(Localization.BUILDING_PROBES, "info")
         DiffuseProbePass.compile()
         SpecularProbePass.compile()
     }}>
         <Icon styles="font-size: .85rem">refresh</Icon>
-        {translate("BUILD_PROBES")}
+        {Localization.BUILD_PROBES}
     </button>
 
     <div data-vertdivider="-" style="height: 15px"></div>
@@ -48,7 +47,7 @@
     <AddOptions/>
     <Dropdown styles="width: 250px">
         <button slot="button" data-viewbutton="-" style="background: transparent;">
-            {translate("CAMERA")}
+            {Localization.CAMERA}
         </button>
         <div style="padding: 8px 4px">
             <CameraSettings/>

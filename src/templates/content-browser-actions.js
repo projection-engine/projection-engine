@@ -9,7 +9,6 @@ import getCreationOptions from "../views/content-browser/utils/get-creation-opti
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const {shell} = window.require("electron")
-const translate = key => Localization.PROJECT.FILES[key]
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
     const hotKeys = {
@@ -44,7 +43,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Refresh",
             require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
-                alert.pushAlert(translate("REFRESHING"), "info")
+                alert.pushAlert(Localization.REFRESHING, "info")
                 FilesStore.refreshFiles().catch()
             }
         },
@@ -73,7 +72,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             },
         },
         DELETE: {
-            label: translate("DELETE"),
+            label: Localization.DELETE,
             require: settings.contentBrowserHotkeys.DELETE,
             callback: () => {
                 const s = [...SelectionStore.contentBrowserSelected]
@@ -84,7 +83,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             }
         },
         CUT: {
-            label: translate("CUT"),
+            label: Localization.CUT,
             require: settings.contentBrowserHotkeys.CUT,
             callback: () => FilesStore.updateStore({
                 ...FilesStore.data,
@@ -92,7 +91,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             })
         },
         PASTE: {
-            label: translate("PASTE"),
+            label: Localization.PASTE,
             require: settings.contentBrowserHotkeys.PASTE,
             callback: () => FilesStore.paste(currentDirectory.id, setCurrentDirectory)
         }
@@ -109,7 +108,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             hotKeys.FORWARD,
             {divider: true},
             {
-                label: translate("IMPORT"),
+                label: Localization.IMPORT,
                 onClick: () => importFile(currentDirectory)
             },
             hotKeys.REFRESH,

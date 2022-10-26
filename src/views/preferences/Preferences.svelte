@@ -16,7 +16,6 @@
     let tab = 0
     let changed = false
 
-    const translate = (key) => Localization.SETTINGS.MAIN[key]
 
     onMount(() => {
         settings = structuredClone(SettingsStore.data)
@@ -27,7 +26,7 @@
         SettingsStore.updateStore(settings)
         VisualsStore.updateStore(visuals)
         changed = false
-        alert.pushAlert(translate("UPDATING_SETTINGS"), "info")
+        alert.pushAlert(Localization.UPDATING_SETTINGS, "info")
     }
 
     function update(key, value) {
@@ -40,33 +39,31 @@
 
 <div class="wrapper">
     {#if settings != null}
-        <h3 style="margin: 0">{translate("SHORTCUTS")}</h3>
+        <h3 style="margin: 0">{Localization.SHORTCUTS}</h3>
         <Shortcuts
-                translate={translate}
                 settings={settings}
                 update={update}
         />
 
-        <h3>{translate("CAMERA")}</h3>
+        <h3>{Localization.CAMERA}</h3>
         <CameraSettings/>
 
-        <h3>{translate("GRID")}</h3>
+        <h3>{Localization.GRID}</h3>
         <GridSettings settings={settings}/>
 
-        <h3>{translate("VIEWPORT")}</h3>
+        <h3>{Localization.VIEWPORT}</h3>
         <ViewportSettings
-                translate={translate}
                 settings={settings}
                 update={update}
         />
 
-        <h3>{translate("POST_PROCESSING")}</h3>
+        <h3>{Localization.POST_PROCESSING}</h3>
         <PostProcessing
                 settings={visuals}
                 update={update}
         />
 
-        <h3>{translate("RENDERING")}</h3>
+        <h3>{Localization.RENDERING}</h3>
         <Rendering
                 settings={visuals}
                 update={(key, value) => {

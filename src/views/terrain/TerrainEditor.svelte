@@ -14,8 +14,6 @@
     import {onDestroy} from "svelte";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
-
     let settings = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
@@ -47,13 +45,13 @@
             {#if settings.terrainTool === TERRAIN_TOOLS.SCULPT}
                 <div class="header">
                     <Icon styles="font-size: 1.2rem">carpenter</Icon>
-                    {translate("SCULPT_TOOL")}
+                    {Localization.SCULPT_TOOL}
                 </div>
                 <SculptOptions settings={settings} selectedTerrain={selectedTerrain}/>
             {:else if settings.terrainTool === TERRAIN_TOOLS.FOLIAGE}
                 <div class="header">
                     <Icon styles="font-size: 1.2rem">grass</Icon>
-                    {translate("FOLIAGE_TOOL")}
+                    {Localization.FOLIAGE_TOOL}
                 </div>
                 <FoliageOptions settings={settings}/>
             {/if}

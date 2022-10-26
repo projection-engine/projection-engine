@@ -19,7 +19,6 @@
     let data
     let type
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
     $: fileType = "." + item.type
 
     $: {
@@ -56,7 +55,7 @@
         <div class="empty-wrapper">
             <div data-empty="-" style="position: relative">
                 <Icon styles="font-size: 75px">category</Icon>
-                {translate("TITLE")}
+                {Localization.CONTENT_BROWSER}
             </div>
         </div>
     {/if}

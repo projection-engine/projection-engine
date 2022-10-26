@@ -79,7 +79,7 @@
             class="button-small hierarchy-branch"
             on:click={() => EntityConstructor.hideEntity(nodeRef)}
     >
-        <ToolTip content={Localization.PROJECT.HIERARCHY.DEACTIVATE}/>
+        <ToolTip content={Localization.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
             {#if nodeRef.active}
                 visibility

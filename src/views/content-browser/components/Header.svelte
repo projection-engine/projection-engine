@@ -35,11 +35,10 @@
     let engine = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     onDestroy(() => unsubscribeEngine())
-    const translate = key => Localization.PROJECT.FILES[key]
 </script>
 
 <ViewHeader
-        title={translate("TITLE")}
+        title={Localization.CONTENT_BROWSER}
         icon={"folder"}
 >
 
@@ -47,14 +46,14 @@
 
     <button class="button" on:click={() => navigationHistory.undo()}>
         <Icon styles="font-size: .9rem">arrow_back</Icon>
-        <ToolTip content={translate("BACK_DIR")}/>
+        <ToolTip content={Localization.BACK_DIR}/>
     </button>
     <button
             class="button"
             on:click={() => navigationHistory.redo()}
     >
         <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-        <ToolTip content={translate("FORWARD_DIR")}/>
+        <ToolTip content={Localization.FORWARD_DIR}/>
     </button>
     <button
             class="button"
@@ -65,22 +64,22 @@
         }}
     >
         <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
-        <ToolTip content={translate("PARENT_DIR")}/>
+        <ToolTip content={Localization.PARENT_DIR}/>
     </button>
     <button
             disabled="{loading}"
             class="button"
             on:click={() => {
-                    alert.pushAlert(translate("REFRESHING"), "info")
+                    alert.pushAlert(Localization.REFRESHING, "info")
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
     >
         <Icon styles="font-size: .9rem">sync</Icon>
-        <ToolTip content={translate("REFRESH")}/>
+        <ToolTip content={Localization.REFRESH}/>
     </button>
     <button class="button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
         <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-        <ToolTip content={translate("CREATE_FOLDER")}/>
+        <ToolTip content={Localization.CREATE_FOLDER}/>
     </button>
 
     <button
@@ -94,14 +93,14 @@
                     }}
     >
         <Icon styles="font-size: .9rem">star</Icon>
-        <ToolTip content={translate("ADD_BOOKMARK")}/>
+        <ToolTip content={Localization.ADD_BOOKMARK}/>
     </button>
     <div data-vertdivider="-"></div>
     <Input
             hasBorder={true}
             width="50%"
             height="22px"
-            placeholder={translate("SEARCH")}
+            placeholder={Localization.SEARCH}
             searchString={currentDirectory.id}
             noAutoSubmit={true}
             setSearchString={async (path) => {
@@ -113,7 +112,7 @@
             width="50%"
             hasBorder={true}
             height="22px"
-            placeholder={translate("SEARCH")}
+            placeholder={Localization.SEARCH}
             searchString={searchString}
             setSearchString={setSearchString}
     />
@@ -128,7 +127,7 @@
             `}
     >
         <button slot="button" style="background: transparent; border: none">
-            <ToolTip content={translate("FILTER_TYPE")}/>
+            <ToolTip content={Localization.FILTER_TYPE}/>
             <Icon styles="font-size: .9rem">filter_alt</Icon>
         </button>
         {#each fileTypes as k, i}
@@ -152,7 +151,7 @@
             class="button"
     >
         <Icon styles="font-size: .9rem">view_stream</Icon>
-        <ToolTip content={translate("ROW_VIEW")}/>
+        <ToolTip content={Localization.ROW_VIEW}/>
     </button>
     <button
             data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
@@ -160,11 +159,11 @@
             class="button"
     >
         <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-        <ToolTip content={translate("CARD_VIEW")}/>
+        <ToolTip content={Localization.CARD_VIEW}/>
     </button>
     <div data-vertdivider="-"></div>
     <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
-        {translate("IMPORT")}
+        {Localization.IMPORT}
         <Icon styles="font-size: .9rem">open_in_new</Icon>
     </button>
 </ViewHeader>

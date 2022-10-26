@@ -1,5 +1,4 @@
 import {get, writable} from "svelte/store";
-import HierarchyController from "../libs/HierarchyController";
 import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
 import Engine from "../../public/engine/Engine";
 

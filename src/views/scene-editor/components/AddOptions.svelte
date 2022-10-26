@@ -5,15 +5,13 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import entityCreationOptions from "../../../templates/entity-creation-options";
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
-
     const options = entityCreationOptions()
 </script>
 
 <Dropdown>
     <button slot="button" data-viewbutton="-" style="background: transparent;">
-        {translate("ADD")}
-        <ToolTip content={translate("ADD_DETAILS")}/>
+        {Localization.ADD}
+        <ToolTip content={Localization.ADD_DETAILS}/>
     </button>
 
     {#each options as option}

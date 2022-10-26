@@ -102,8 +102,6 @@ export default class ShaderEditorController {
 
     static async save(openFile, nodes, links) {
 
-        const translate = key => Localization.PROJECT.SHADER_EDITOR[key]
-
         const {compiled, preview, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
 
         AssetAPI.updateAsset(
@@ -115,7 +113,7 @@ export default class ShaderEditorController {
                 type: compiled.variant
             }),
             preview
-        ).then(() => alert.pushAlert(translate("SAVED"), "success",))
-            .catch(() => alert.pushAlert(translate("ERROR"), "error"))
+        ).then(() => alert.pushAlert(Localization.SAVED, "success",))
+            .catch(() => alert.pushAlert(Localization.ERROR, "error"))
     }
 }

@@ -5,6 +5,6 @@
 </script>
 
 <fieldset>
-    <legend>{Localization.PROJECT.INSPECTOR.CODE_PREVIEW}</legend>
+    <legend>{Localization.CODE_PREVIEW}</legend>
     <pre data-pre="-">{data}</pre>
 </fieldset>

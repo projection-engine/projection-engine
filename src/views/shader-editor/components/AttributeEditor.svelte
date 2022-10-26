@@ -3,12 +3,12 @@
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Material from "../templates/nodes/Material";
     import Attribute from "./node/Attribute.svelte";
+    import Localization from "../../../templates/Localization";
 
     export let selected
     export let nodes
     export let updateNode
     export let submitNodeVariable
-    export let translate
     let selectedNode
     $: {
         const index = nodes.findIndex(n => (selected ? n.id === selected : n instanceof Material))
@@ -17,14 +17,14 @@
 </script>
 
 {#if selectedNode}
-    <div class="contentWrapper">
+    <div class="content-wrapper">
         <div class="wrapper">
             <Input
                     searchString={selectedNode.name}
                     width={"100%"}
                     height={"30px"}
                     setSearchString={ev => updateNode("name", ev, selectedNode)}
-                    placeholder={translate("NAME")}
+                    placeholder={Localization.NAME}
             />
             {#each selectedNode.inputs as attr, i}
                 {#if !attr.accept}
@@ -37,7 +37,7 @@
                 {/if}
             {/each}
             {#if selectedNode.isComment}
-                <div>{translate("COLOR")}</div>
+                <div>{Localization.COLOR}</div>
                 <ColorPicker
                         submit={({r,g,b}) => {
                         updateNode("color", [r, g, b, .5], selectedNode)
@@ -51,7 +51,7 @@
 {/if}
 
 <style>
-    .contentWrapper {
+    .content-wrapper {
         background: var(--pj-background-tertiary);
         overflow-y: auto;
         border-bottom-left-radius: 5px;

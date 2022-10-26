@@ -34,7 +34,7 @@
     $: currentTab = TabsStore.getValue("viewport", undefined, settings.currentView)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
+
     const setViewportTab = (value, index = currentTab) => {
         const clone = [...viewTab]
         clone[index] = value
@@ -49,14 +49,14 @@
                 ref,
                 Object.values(viewportHotkeys(settings)),
                 "public",
-                Localization.PROJECT.VIEWPORT.TITLE
+                Localization.VIEWPORT
             )
     }
 
     $: updateViewport(engine, currentView)
-    $: tabs = viewTab.map(v => ({name: Localization.COMPONENTS.VIEWS[v], icon: getViewIcon(v)}))
+    $: tabs = viewTab.map(v => ({name: Localization[v], icon: getViewIcon(v)}))
     $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
-        name: Localization.COMPONENTS.VIEWS[value],
+        name: Localization[value],
         id: value
     }))
     $: isCanvasHidden = currentView !== VIEWPORT_TABS.EDITOR && currentView !== VIEWPORT_TABS.TERRAIN

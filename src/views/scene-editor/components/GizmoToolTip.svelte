@@ -33,12 +33,12 @@
 <div class="wrapper">
     {#if isChanging}
         {#if isValidScaling}
-            <div class="row">ALT - {Localization.PROJECT.VIEWPORT.ALT_FOR_FIXED}</div>
+            <div class="row">ALT - {Localization.ALT_FOR_FIXED}</div>
         {/if}
         {#if isValidPivot}
-            <div class="row">ALT - {Localization.PROJECT.VIEWPORT.ALT_FOR_PIVOT}</div>
+            <div class="row">ALT - {Localization.ALT_FOR_PIVOT}</div>
         {/if}
-        <div class="row">CTRL - {Localization.PROJECT.VIEWPORT.CTRL_FOR_UNITARY}</div>
+        <div class="row">CTRL - {Localization.CTRL_FOR_UNITARY}</div>
     {/if}
     <div
             id={INFORMATION_CONTAINER.TRANSFORMATION}

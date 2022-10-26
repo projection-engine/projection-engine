@@ -1,8 +1,9 @@
 import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler"
 import {trimString} from "../../../../public/engine/lib/instances/Shader";
 import GPUResources from "../../../../public/engine/GPUResources";
+import Localization from "../../../templates/Localization";
 
-export default async function buildShader(nodes, links, openFile, setStatus, translate){
+export default async function buildShader(nodes, links, openFile, setStatus){
     const {
         shader,
         vertexShader,
@@ -16,7 +17,7 @@ export default async function buildShader(nodes, links, openFile, setStatus, tra
         const currentMaterial = GPUResources.materials.get(openFile?.registryID)
         let promise
         if (!currentMaterial)
-            alert.pushAlert(translate("NOT_APPLIED"), "alert")
+            alert.pushAlert(Localization.NOT_APPLIED, "alert")
         else
             promise = new Promise(resolve => {
                 currentMaterial.shader = [shader, vertexShader, uniformData, (shaderMessage) => resolve(shaderMessage), settings]

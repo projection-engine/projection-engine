@@ -3,6 +3,6 @@ import Localization from "../../../templates/Localization";
 
 export default function getFileTypes() {
     const c = {...FILE_TYPES}
-    return Object.keys(c).map(m => [m, Localization.PROJECT.FILES[m]]).filter(e => e[1] != null)
+    return Object.keys(c).map(m => [m, Localization[m]]).filter(e => e[1] != null)
 
 }

@@ -6,7 +6,6 @@
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Entity from "../../../public/engine/lib/instances/Entity";
     import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
     import VIEWS from "../../components/view/data/VIEWS";
@@ -16,9 +15,6 @@
 
     export let switchView = undefined
     export let orientation = undefined
-
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
-
 
     let ui = {}
     let parent
@@ -38,14 +34,14 @@
             switch (v.TARGET) {
                 case T.CONTENT_BROWSER:
                     targetInstance = FilesStore.data.items.find(i => i.id === v.array[0])
-                    targetType = translate("CONTENT_BROWSER")
+                    targetType = Localization.CONTENT_BROWSER
                     break
                 case T.SHADER_EDITOR:
                     // TODO
                     break
                 case T.ENGINE:
                     targetInstance = QueryAPI.getEntityByID(v.array[0])
-                    targetType = translate("ENGINE")
+                    targetType = Localization.ENGINE
                     break
                 default:
                     targetInstance = undefined
@@ -55,7 +51,7 @@
 
         if (!targetInstance && v.lockedEntity != null) {
             targetInstance = QueryAPI.getEntityByID(v.lockedEntity)
-            targetType = translate("ENGINE")
+            targetType = Localization.ENGINE
         }
         entity = targetInstance
 
@@ -89,7 +85,7 @@
 {#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}
     <div data-empty="-">
         <Icon styles="font-size: 75px">category</Icon>
-        {translate("TITLE")}
+        {Localization.INSPECTOR}
     </div>
 {:else}
 
@@ -98,7 +94,7 @@
             currentView={VIEWS.COMPONENT}
             orientation={orientation}
             switchView={switchView}
-            title={translate("TITLE")}
+            title={Localization.INSPECTOR}
             icon={"category"}
     >
         <div class="entity-container">

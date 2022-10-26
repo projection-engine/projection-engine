@@ -34,7 +34,6 @@
 
     let ref
 
-    const translate = key => Localization.PROJECT.FILES[key]
     const draggable = dragDrop(true)
 
     $: isOnRename = onRename === data.id

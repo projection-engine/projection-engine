@@ -69,7 +69,7 @@
             HotKeysController.unbindAction(ref)
             ContextMenuController.destroy(internalID)
             ContextMenuController.mount(
-                {icon: "texture", label: Localization.PROJECT.SHADER_EDITOR.TITLE},
+                {icon: "texture", label: Localization.SHADER_EDITOR},
                 contextMenu,
                 internalID,
                 TRIGGERS,
@@ -99,7 +99,7 @@
                 ref,
                 hotkeys,
                 "texture",
-                Localization.PROJECT.SHADER_EDITOR.TITLE
+                Localization.SHADER_EDITOR
             )
         }
     }

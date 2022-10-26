@@ -12,7 +12,6 @@
     let cameraIsOrtho = false
     export let settings
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
     const toggleProjection = () => {
         const negated = !CameraAPI.isOrthographic
         CameraAPI.isOrthographic = negated
@@ -24,11 +23,11 @@
 
 <div class="wrapper">
     <button class="button viewport" disabled>
-        <ToolTip content={translate("SWITCH_BETWEEN_CAMERAS")}/>
+        <ToolTip content={Localization.SWITCH_BETWEEN_CAMERAS}/>
         <Icon styles="font-size: 1rem">videocam</Icon>
     </button>
     <button class="button viewport" on:click={toggleProjection} disabled>
-        <ToolTip content={translate("SWITCH_PROJECTION")}/>
+        <ToolTip content={Localization.SWITCH_PROJECTION}/>
         {#if !cameraIsOrtho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
                 <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
@@ -39,7 +38,7 @@
     </button>
 
     <button class="button viewport" on:click={() => ViewportActions.focus()} style="margin-right: 8px">
-        <ToolTip content={translate("FOCUS")}/>
+        <ToolTip content={Localization.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
     <button
@@ -49,9 +48,9 @@
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
         <Icon styles="font-size: 1.15rem; color: #FFC757">highlight_alt</Icon>
         {#if !hidden}
-            {translate("SELECTION")}
+            {Localization.SELECTION}
         {/if}
-        <ToolTip content={translate("SELECTION")}/>
+        <ToolTip content={Localization.SELECTION}/>
     </button>
     <button
             class:visible={!hidden}
@@ -60,9 +59,9 @@
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
         <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">open_with</Icon>
         {#if !hidden}
-            {translate("T_GIZMO")}
+            {Localization.T_GIZMO}
         {/if}
-        <ToolTip content={translate("T_GIZMO")}/>
+        <ToolTip content={Localization.T_GIZMO}/>
     </button>
     <button
             class:visible={!hidden}
@@ -71,9 +70,9 @@
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
         <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">360</Icon>
         {#if !hidden}
-            {translate("R_GIZMO")}
+            {Localization.R_GIZMO}
         {/if}
-        <ToolTip content={translate("R_GIZMO")}/>
+        <ToolTip content={Localization.R_GIZMO}/>
     </button>
     <button
             class:visible={!hidden}
@@ -82,9 +81,9 @@
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
         <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
         {#if !hidden}
-            {translate("S_GIZMO")}
+            {Localization.S_GIZMO}
         {/if}
-        <ToolTip content={translate("S_GIZMO")}/>
+        <ToolTip content={Localization.S_GIZMO}/>
     </button>
 </div>
 

@@ -7,7 +7,6 @@
     import SIMPLE_MATERIAL_TEMPLATE, {
         DEFAULT_MATRICES
     } from "../../../../../public/engine/static/SIMPLE_MATERIAL_UNIFORMS";
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";
 
@@ -16,7 +15,6 @@
     export let data
     let temp
     $: temp = {...data}
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     const updateAsset = (key, value) => updateMaterialAsset(key, value, item.registryID, temp, v => temp = v, SIMPLE_MATERIAL_TEMPLATE)
     $: uniform = getUniformObject(temp.uniformData)
@@ -50,13 +48,13 @@
     }
 </script>
 
-<Accordion startOpen={true}>
-    <svelte:fragment slot="header">{translate("ALBEDO")}</svelte:fragment>
+<fieldset>
+    <legend>{Localization.ALBEDO}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[0] !== 0}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -74,7 +72,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("SAMPLER_SCALE")}</legend>
+        <legend>{Localization.SAMPLER_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     minValue="0"
@@ -98,7 +96,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[0]}
@@ -122,19 +120,19 @@
                 updateAsset("fallbackValues", newRGB)
             }}
             disabled={settings[0]}
-            label={translate("FALLBACK_VALUE")}
+            label={Localization.FALLBACK_VALUE}
             value={[fallbackValues[0] * 255, fallbackValues[1] * 255, fallbackValues[2] * 255]}
     />
 
-</Accordion>
+</fieldset>
 
-<Accordion>
-    <svelte:fragment slot="header">{translate("NORMAL")}</svelte:fragment>
+<fieldset>
+    <legend>{Localization.NORMAL}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[1]}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -152,7 +150,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("SAMPLER_SCALE")}</legend>
+        <legend>{Localization.SAMPLER_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     minValue="0"
@@ -176,7 +174,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[2]}
@@ -190,15 +188,15 @@
             />
         </div>
     </fieldset>
-</Accordion>
+</fieldset>
 
-<Accordion>
-    <svelte:fragment slot="header">{translate("ROUGHNESS")}</svelte:fragment>
+<fieldset>
+    <legend>{Localization.ROUGHNESS}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[2]}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -238,7 +236,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[4]}
@@ -264,17 +262,18 @@
             maxValue={1}
             minValue={0}
             disabled={settings[2]}
-            label={translate("FALLBACK_VALUE")}
+            label={Localization.FALLBACK_VALUE}
     />
 
-</Accordion>
+</fieldset>
 
-<Accordion title={translate("METALLIC")}>
+<fieldset>
+    <legend>{Localization.METALLIC}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[3]}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -314,7 +313,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[4]}
@@ -340,18 +339,19 @@
             maxValue={1}
             minValue={0}
             disabled={settings[3]}
-            label={translate("FALLBACK_VALUE")}
+            label={Localization.FALLBACK_VALUE}
     />
 
-</Accordion>
+</fieldset>
 
 
-<Accordion title={translate("AO")}>
+<fieldset>
+    <legend>{Localization.AO}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[4]}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -391,7 +391,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[6]}
@@ -406,15 +406,16 @@
         </div>
     </fieldset>
 
-</Accordion>
+</fieldset>
 
 
-<Accordion title={translate("EMISSION")}>
+<fieldset>
+    <legend>{Localization.EMISSION}</legend>
     <fieldset>
-        <legend>{translate("SAMPLER")}</legend>
+        <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
             <Checkbox
-                    label={translate("USE_SAMPLER")}
+                    label={Localization.USE_SAMPLER}
                     checked={settings[5]}
                     handleCheck={() => {
                 const copy = [...settings]
@@ -432,7 +433,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("SAMPLER_SCALE")}</legend>
+        <legend>{Localization.SAMPLER_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     minValue="0"
@@ -457,7 +458,7 @@
 
 
     <fieldset>
-        <legend>{translate("UV_SCALE")}</legend>
+        <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
                     value={uvScales[8]}
@@ -482,11 +483,11 @@
                 updateAsset("fallbackValues", newRGB)
             }}
             disabled={settings[5]}
-            label={translate("FALLBACK_VALUE")}
+            label={Localization.FALLBACK_VALUE}
             value={[fallbackValues[3] * 255, fallbackValues[4] * 255, fallbackValues[5] * 255]}
     />
 
-</Accordion>
+</fieldset>
 
 <style>
     fieldset {

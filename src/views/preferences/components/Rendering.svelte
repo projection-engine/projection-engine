@@ -6,8 +6,6 @@
     export let settings
     export let update
 
-    const translate = (key) => Localization.PROJECT.INSPECTOR[key]
-
     function updateSubObject(objKey, subKey, value) {
         const old = {...settings[objKey]}
         old[subKey] = value
@@ -21,28 +19,28 @@
         handleCheck={() => {
                update("fxaa", !settings.fxaa)
         }}
-        label={translate("AA")}
+        label={Localization.AA}
 />
 
 <fieldset>
-    <legend>{translate("SSR")}</legend>
+    <legend>{Localization.SSR}</legend>
     <div class="content">
         <Checkbox
                 checked={settings.SSR.enabled}
                 handleCheck={() => updateSubObject("SSR","enabled",!settings.SSR.enabled)}
-                label={translate("ENABLED")}
+                label={Localization.ENABLED}
         />
 
         <div data-inline="-">
             <Range
-                    label={translate("STEPS")}
+                    label={Localization.STEPS}
                     minValue={1}
                     integer={true}
                     value={settings.SSR.maxSteps}
                     onFinish={v => updateSubObject("SSR","maxSteps",v)}
             />
             <Range
-                    label={translate("STEP_SIZE")}
+                    label={Localization.STEP_SIZE}
                     incrementPercentage={.001}
                     precision={4}
                     value={settings.SSR.stepSize}
@@ -52,7 +50,7 @@
         </div>
         <div data-inline="-">
             <Range
-                    label={translate("DEPTH_THRESHOLD")}
+                    label={Localization.DEPTH_THRESHOLD}
                     incrementPercentage={.001}
                     precision={4}
                     minValue={0}
@@ -61,7 +59,7 @@
             />
 
             <Range
-                    label={translate("BINARY_SEARCH")}
+                    label={Localization.BINARY_SEARCH}
                     integer={true}
                     minValue={1}
 
@@ -74,17 +72,17 @@
 
 
 <fieldset>
-    <legend>{translate("SSGI")}</legend>
+    <legend>{Localization.SSGI}</legend>
     <div class="content">
         <Checkbox
                 checked={settings.SSGI.enabled}
                 handleCheck={() => updateSubObject("SSGI","enabled",!settings.SSGI.enabled)}
-                label={translate("ENABLED")}
+                label={Localization.ENABLED}
         />
         <div data-inline="-">
             <Range
 
-                    label={translate("STEPS")}
+                    label={Localization.STEPS}
 
                     minValue={1}
                     integer={true}
@@ -94,7 +92,7 @@
 
             <Range
 
-                    label={translate("STRENGTH")}
+                    label={Localization.STRENGTH}
 
                     incrementPercentage={.01}
                     precision={3}
@@ -106,7 +104,7 @@
         </div>
         <div data-inline="-">
             <Range
-                    label={translate("STEP_SIZE")}
+                    label={Localization.STEP_SIZE}
 
                     incrementPercentage={.001}
                     precision={4}
@@ -116,7 +114,7 @@
             />
 
             <Range
-                    label={translate("DEPTH_THRESHOLD")}
+                    label={Localization.DEPTH_THRESHOLD}
                     incrementPercentage={.001}
                     precision={4}
                     minValue={0}
@@ -125,7 +123,7 @@
             />
 
             <Range
-                    label={translate("BINARY_SEARCH")}
+                    label={Localization.BINARY_SEARCH}
                     integer={true}
                     minValue={1}
                     value={settings.SSGI.binarySearchSteps}
@@ -136,11 +134,11 @@
 </fieldset>
 
 <fieldset>
-    <legend>{translate("SHADOWS")}</legend>
+    <legend>{Localization.SHADOWS}</legend>
     <div class="content">
 
         <Range
-                label={translate("RESOLUTION")}
+                label={Localization.RESOLUTION}
                 accentColor={"red"}
                 onFinish={v => {
                 update("shadowMapResolution", v)
@@ -153,7 +151,7 @@
         />
         <div data-inline="-">
             <Range
-                    label={translate("LIGHTS")}
+                    label={Localization.LIGHTS}
                     accentColor={"red"}
                     onFinish={v => {
                     update("shadowAtlasQuantity", v)
@@ -171,23 +169,23 @@
 </fieldset>
 
 <fieldset>
-    <legend>{translate("AO")}</legend>
+    <legend>{Localization.AO}</legend>
     <div class="content">
         <Checkbox
                 checked={settings.SSAO.enabled}
                 handleCheck={() => updateSubObject("SSAO", "enabled", !settings.SSAO.enabled)}
-                label={translate("ENABLED")}
+                label={Localization.ENABLED}
         />
 
         <div data-inline="-">
             <Range
-                    label={translate("RADIUS")}
+                    label={Localization.RADIUS}
                     minValue={1}
                     value={settings.SSAO.radius}
                     onFinish={v => updateSubObject("SSAO","radius",v)}
             />
             <Range
-                    label={translate("POWER")}
+                    label={Localization.POWER}
                     integer={true}
                     minValue={1}
                     value={settings.SSAO.power}

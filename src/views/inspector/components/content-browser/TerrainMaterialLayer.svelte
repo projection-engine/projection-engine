@@ -18,22 +18,21 @@
     }
     $: scales = uniforms[0].data
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 </script>
 
 <Accordion>
     <svelte:fragment slot="header">
         <div class="title">
-            <div>{translate("LAYER") + " " + layer}</div>
+            <div>{Localization.LAYER + " " + layer}</div>
             <button on:click={removeLayer}>
                 <Icon styles="font-size: .9rem">delete_forever</Icon>
-                <ToolTip content={translate("REMOVE_LAYER")}/>
+                <ToolTip content={Localization.REMOVE_LAYER}/>
             </button>
         </div>
     </svelte:fragment>
 
     <fieldset>
-        <legend>{translate("ALBEDO")}</legend>
+        <legend>{Localization.ALBEDO}</legend>
         <Selector
                 selected={data[0].data}
                 type="image"
@@ -41,14 +40,14 @@
         />
         <Range
                 value={scales[layer]}
-                label={translate("SCALE")}
+                label={Localization.SCALE}
                 minValue={0}
                 onFinish={v => update("multipliers", v, layer)}
         />
     </fieldset>
 
     <fieldset>
-        <legend>{translate("NORMAL")}</legend>
+        <legend>{Localization.NORMAL}</legend>
         <Selector
                 selected={data[1].data}
                 type="image"
@@ -56,14 +55,14 @@
         />
         <Range
                 value={scales[layer+ 1]}
-                label={translate("SCALE")}
+                label={Localization.SCALE}
                 minValue={0}
                 onFinish={v => update("multipliers", v, layer+1)}
         />
     </fieldset>
 
     <fieldset>
-        <legend>{translate("ROUGHNESS")}</legend>
+        <legend>{Localization.ROUGHNESS}</legend>
         <Selector
                 selected={data[2].data}
                 type="image"
@@ -71,7 +70,7 @@
         />
         <Range
                 value={scales[layer+ 2] }
-                label={translate("SCALE")}
+                label={Localization.SCALE}
                 minValue={0}
                 onFinish={v => update("multipliers", v, layer+2)}
         />

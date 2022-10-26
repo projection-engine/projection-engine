@@ -7,13 +7,13 @@
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
     import VirtualList from '@sveltejs/svelte-virtual-list';
+    import Localization from "../../../templates/Localization";
 
     export let handleChange
     export let type
     export let setState
     export let state
     export let store
-    export let translate
     export let noDefault
     export let mergeMaterials
     export let terrainMaterials
@@ -31,12 +31,12 @@
             current = [...temp]
         if (!noDefault) {
             if (type === "material")
-                current.push({name: translate("DEFAULT_MATERIAL"), registryID: FALLBACK_MATERIAL})
+                current.push({name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL})
             else if (type === "mesh")
                 Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => {
-                    if (translate(sm[0]) != null)
+                    if (Localization[sm[0]] != null)
                         current.push({
-                            name: translate(sm[0]),
+                            name: Localization[sm[0]],
                             registryID: sm[1]
                         })
                 })
@@ -61,7 +61,7 @@
         {:else}
             <div data-empty="-">
                 <Icon styles="font-size: 2rem">folder</Icon>
-                {translate("NOTHING")}
+                {Localization.NOTHING}
             </div>
         {/if}
     </div>
@@ -70,7 +70,7 @@
                 width={"100%"}
                 searchString={searchString}
                 setSearchString={v => searchString  = v}
-                placeholder={translate("SEARCH")}
+                placeholder={Localization.SEARCH}
         >
             <Icon slot="icon">search</Icon>
         </Input>

@@ -1,5 +1,4 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
-import getComponentIcon from "./get-component-icon";
 
 export default function getComponentLabel(component){
     switch (component){

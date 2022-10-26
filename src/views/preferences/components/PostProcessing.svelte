@@ -6,7 +6,6 @@
     export let settings
     export let update
 
-    const translate = (key) => Localization.PROJECT.INSPECTOR[key]
 </script>
 
 <fieldset>

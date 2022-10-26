@@ -21,7 +21,6 @@
     $: styles = component.wrapperStyles
     $: hasStyles = styles.length > 0
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     function update(key, value) {
         submit(key, value)
@@ -48,13 +47,13 @@
                 {getComponentIcon(COMPONENTS.UI, component)}
             </Icon>
         </div>
-        {translate("UI_COMPONENT")}
+        {Localization.UI_COMPONENT}
         <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </svelte:fragment>
     <fieldset>
-        <legend>{translate("IMPORT_LAYOUT")}</legend>
+        <legend>{Localization.IMPORT_LAYOUT}</legend>
         <Selector
                 selected={component.uiLayoutID}
                 type="ui"
@@ -62,10 +61,10 @@
         />
     </fieldset>
     <fieldset>
-        <legend>{translate("ANCHOR_ELEMENT_ID")}</legend>
+        <legend>{Localization.ANCHOR_ELEMENT_ID}</legend>
         <Input
                 searchString={component.anchorElement}
-                placeholder={translate("ELEMENT_ID")}
+                placeholder={Localization.ELEMENT_ID}
                 onBlur={(_, v) => update("anchorElement", v)}
                 onEnter={v => update("anchorElement", v)}
                 setSearchString={v =>  update("anchorElement", v)}
@@ -73,7 +72,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{translate("WRAPPER_STYLES")}</legend>
+        <legend>{Localization.WRAPPER_STYLES}</legend>
         <StyleField
                 component={component}
                 isInput={true}

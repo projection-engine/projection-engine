@@ -16,7 +16,6 @@
     export let settings
     export let selectedTerrain
 
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
     $: terrainSettings = settings.terrainSettings
 
     function update(key, value) {
@@ -45,7 +44,7 @@
     }
 </script>
 <fieldset>
-    <legend>{translate("IMPORT")}</legend>
+    <legend>{Localization.IMPORT}</legend>
     <Selector
             type="image"
             handleChange={updateImage}
@@ -55,21 +54,21 @@
 
 <div class="boxes">
     <Checkbox
-            label={translate("LOWER")}
+            label={Localization.LOWER}
             checked={terrainSettings.brushOnDecrease}
             handleCheck={() => update("brushOnDecrease", true)}/>
     <Checkbox
-            label={translate("RAISE")}
+            label={Localization.RAISE}
             checked={!terrainSettings.brushOnDecrease}
             handleCheck={() => update("brushOnDecrease", false)}/>
 </div>
 <fieldset>
-    <legend>{translate("STROKE")}</legend>
+    <legend>{Localization.STROKE}</legend>
     <Range
             minValue={0}
             precision={4}
             incrementPercentage={.001}
-            label={translate("WIDTH")}
+            label={Localization.WIDTH}
             value={terrainSettings.brushSize}
             onFinish={v => update("brushSize", v)}
     />
@@ -78,7 +77,7 @@
             maxValue={1}
             precision={4}
             incrementPercentage={.001}
-            label={translate("STRENGTH")}
+            label={Localization.STRENGTH}
             value={terrainSettings.brushStrength}
             onFinish={v => update("brushStrength", v)}
     />
@@ -87,7 +86,7 @@
             maxValue={1}
             precision={4}
             incrementPercentage={.001}
-            label={translate("SCALE")}
+            label={Localization.SCALE}
             value={terrainSettings.brushScale * 100}
             onFinish={v => update("brushScale", v/100)}
     />

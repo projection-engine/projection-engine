@@ -20,8 +20,6 @@
     $: temp = {...data}
     $: isDisabled = !temp.imageID
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
-
     async function updateAsset(key, value) {
         let changed = key === "imageID" || temp[key] !== value
         if (!changed)
@@ -48,7 +46,7 @@
 </script>
 
 <fieldset>
-    <legend>{translate("IMPORT_IMAGE")}</legend>
+    <legend>{Localization.IMPORT_IMAGE}</legend>
     <Selector
             type="image"
             selected={temp.imageID}
@@ -60,11 +58,11 @@
     {/if}
 </fieldset>
 
-<Accordion title={translate("DIMENSIONS")}>
+<Accordion title={Localization.DIMENSIONS}>
     <Range
             value={temp.scale}
             disabled={isDisabled}
-            label={translate("HEIGHT_SCALE")}
+            label={Localization.HEIGHT_SCALE}
             precision={4}
             minValue={.001}
             onFinish={v => updateAsset("scale", v)}
@@ -72,7 +70,7 @@
     <Range
             value={temp.dimensions}
             disabled={isDisabled}
-            label={translate("DIMENSION_MULTIPLIER")}
+            label={Localization.DIMENSION_MULTIPLIER}
             precision={4}
             minValue={.001}
             onFinish={v => updateAsset("dimensions", v)}

@@ -1,54 +1,43 @@
-const PIXEL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII="
+import STYLES from "./STYLES";
 
 export default class DragDropController {
-    static tooltip
+    static dropTarget
     static dragData
     static onDragTarget
-    static dragImage
-
+    static dataTransfer
     static #initialized = false
+    static alertModal
+
     static onLeave() {
-        if (!DragDropController.tooltip)
+        if (!DragDropController.dropTarget)
             return
-        DragDropController.tooltip.dragDropListeners.removeOverlay()
-        DragDropController.tooltip.style.opacity = 1
-        DragDropController.tooltip = undefined
+
+        DragDropController.alertModal.innerHTML = ""
+        DragDropController.alertModal.style.zIndex = "-1"
+        DragDropController.dropTarget.style.opacity = "1"
+        DragDropController.dropTarget = undefined
+    }
+
+    static createElement(html) {
+        const element = document.createElement("div")
+        element.innerHTML = html
+        Object.assign(element.style, STYLES)
+        return element
     }
 
     static initialize() {
         if (DragDropController.#initialized)
             return
+        DragDropController.alertModal = DragDropController.createElement("")
+        DragDropController.alertModal.style.background = "var(--pj-border-primary)"
+        DragDropController.alertModal.style.right = "4px"
+        DragDropController.alertModal.style.top = "4px"
+        DragDropController.alertModal.style.zIndex = "-1"
+        document.body.appendChild(DragDropController.alertModal)
 
-        function onHover(event) {
-            if (DragDropController.tooltip !== event.target && event.target.dragDropListeners != null && !event.target.isDisabled) {
-                event.preventDefault()
-                DragDropController.onLeave()
-
-                DragDropController.tooltip = event.target
-                DragDropController.tooltip.style.opacity = ".5"
-                DragDropController.tooltip.dragDropListeners.dragOver(event)
-            }
-            if (DragDropController.tooltip != null)
-                event.preventDefault()
-        }
-
-        function onDrop(event) {
-            event.preventDefault()
-
-            if (DragDropController.tooltip != null) {
-                DragDropController.tooltip.dragDropListeners.onDrop(DragDropController.dragData, event)
-                DragDropController.onLeave()
-            }
-        }
-
-        document.addEventListener("drop", onDrop)
-        document.addEventListener("dragover", onHover)
 
         DragDropController.#initialized = true
 
-        const el = document.createElement("img")
-        el.src = PIXEL
 
-        DragDropController.dragImage = el
     }
 }

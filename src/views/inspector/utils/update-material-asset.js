@@ -4,8 +4,6 @@ import AssetAPI from "../../../libs/AssetAPI";
 import Localization from "../../../templates/Localization";
 import GPUController from "../../../../public/engine/GPUController";
 
-const translate = key => Localization.PROJECT.INSPECTOR[key]
-
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {
     let valid = false
     const old = temp.uniformData
@@ -28,10 +26,10 @@ export default async function updateMaterialAsset(key, value, registryID, temp, 
     const instance = GPUResources.materials.get(registryID)
     if (instance != null && doUpdate) {
         await MaterialAPI.updateMaterialUniforms(newData.uniformData, instance)
-        alert.pushAlert(translate("MATERIAL_UPDATED"), "success")
+        alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
         GPUController.cleanUpTextures()
     }
-    alert.pushAlert(translate("UPDATING_ASSET"), "alert")
+    alert.pushAlert(Localization.UPDATING_ASSET, "alert")
     await AssetAPI.updateAsset(registryID, JSON.stringify(newData))
 
 }

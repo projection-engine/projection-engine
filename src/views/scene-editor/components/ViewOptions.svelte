@@ -5,13 +5,11 @@
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
-
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
 </script>
 
 <Dropdown styles="width: clamp(250px, 10vw, 550px);">
     <button slot="button" data-viewbutton="-" style="background: transparent">
-        {translate("VIEW")}
+        {Localization.VIEW}
     </button>
 
     <button on:click={() => SettingsStore.updateStore({...settings, gridVisibility: !settings.gridVisibility})}>
@@ -20,7 +18,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {translate("GRID")}
+        {Localization.GRID}
     </button>
 
     <button on:click={() => SettingsStore.updateStore({...settings, iconsVisibility: !settings.iconsVisibility})}>
@@ -29,7 +27,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {translate("ICONS")}
+        {Localization.ICONS}
     </button>
 
     <button on:click={() => SettingsStore.updateStore({...settings, background: !settings.background})}>
@@ -38,7 +36,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {translate("BACKGROUND")}
+        {Localization.BACKGROUND}
     </button>
 
     <button on:click={() => SettingsStore.updateStore({...settings, showMetrics: !settings.showMetrics})}>
@@ -47,7 +45,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {translate("METRICS")}
+        {Localization.METRICS}
     </button>
 
 </Dropdown>

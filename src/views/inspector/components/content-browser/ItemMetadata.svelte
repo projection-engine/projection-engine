@@ -8,12 +8,12 @@
 
     export let item
     let data
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
+
 
     $: {
-        NodeFS.stat(NodeFS.ASSETS_PATH  + NodeFS.sep + item.id)
+        NodeFS.stat(NodeFS.ASSETS_PATH + NodeFS.sep + item.id)
             .then(res => {
-                if(!res)
+                if (!res)
                     return
                 data = {...res, size: res.size / (1024 * 1024)}
             })
@@ -25,41 +25,41 @@
     }
 </script>
 
-<Accordion title={translate("MORE_INFO")}>
+<Accordion title={Localization.MORE_INFO}>
     {#if !item.isFolder && data}
         <div class="section">
             <ToolTip content="{data.size.toFixed(4)} MB"/>
-            <b>{translate("FILE_SIZE")}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
+            <b>{Localization.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
         </div>
 
         <div class="section">
             <ToolTip content={item.type}/>
-            <b>{translate("FILE_EXTENSION")}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
+            <b>{Localization.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
         </div>
         <div class="section">
             <ToolTip content={item.registryID}/>
-            <b>{translate("REGISTRY_ID")}: </b><small data-overflow="-">{item.registryID}</small>
+            <b>{Localization.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
         </div>
     {:else}
         <div class="section">
             <ToolTip content={item.children}/>
-            <b>{translate("CHILDREN")}: </b><small data-overflow="-">{item.children}</small>
+            <b>{Localization.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
         </div>
     {/if}
     <div class="section">
         <ToolTip content={item.creationDate}/>
-        <b>{translate("CREATION_DATE")}: </b><small data-overflow="-">{item.creationDate}</small>
+        <b>{Localization.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
     </div>
     <div class="section">
         <ToolTip content={item.id}/>
-        <b>{translate("ASSETS_PATH")}: </b>
+        <b>{Localization.ASSETS_PATH}: </b>
         <small
                 data-overflow="-"
                 class="link"
                 on:click={showInFolder}
         >
             {item.id}
-            <ToolTip content={translate("SHOW_ON_CB")}/>
+            <ToolTip content={Localization.SHOW_ON_CB}/>
         </small>
     </div>
 

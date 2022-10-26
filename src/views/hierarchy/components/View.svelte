@@ -13,7 +13,6 @@
     import Engine from "../../../../public/engine/Engine";
 
     export let ID
-    export let translate
     export let searchString
     export let filteredComponent
     export let setIsEmpty
@@ -67,7 +66,7 @@
         if (settings?.viewportHotkeys != null) {
             ContextMenuController.mount({
                     icon: "account_tree",
-                    label: Localization.PROJECT.HIERARCHY.TITLE
+                    label: Localization.HIERARCHY
                 },
                 viewportContext(settings),
                 ID
@@ -102,6 +101,6 @@
 {:else}
     <div data-empty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>
-        {translate("TITLE")}
+        {Localization.HIERARCHY}
     </div>
 {/if}

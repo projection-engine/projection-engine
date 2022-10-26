@@ -10,9 +10,6 @@
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";
 
     export let settings
-    const translate = (key) => Localization.PROJECT.VIEWPORT[key]
-
-
 
     function selectAll() {
         const m = [], size = Engine.entities.length
@@ -40,10 +37,10 @@
 <div class="left-content">
     <button on:click={addUiElement}>
         <Icon styles="font-size: .9rem">add</Icon>
-        {translate("ADD_ELEMENT")}
+        {Localization.ADD_ELEMENT}
     </button>
     <button on:click={selectAll}>
-        {translate("SELECT_ALL")}
+        {Localization.SELECT_ALL}
     </button>
 </div>
 
@@ -52,7 +49,7 @@
         <Icon>
             highlight_alt
         </Icon>
-        {translate("PICKER")}
+        {Localization.PICKER}
     </button>
 </div>
 

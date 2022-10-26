@@ -7,9 +7,6 @@
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../components/selector/Selector.svelte";
     import ShadingOption from "../../components/ShadingOption.svelte";
-
-    const translate = key => Localization.PROJECT.VIEWPORT[key]
-
     export let settings
 
 </script>
@@ -18,17 +15,17 @@
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.SCULPT})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.SCULPT ? "-" : ""}>
         <Icon styles="font-size: .9rem">carpenter</Icon>
-        <ToolTip content={translate("SCULPT")}/>
+        <ToolTip content={Localization.SCULPT}/>
     </button>
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.PAINT})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.PAINT ? "-" : ""}>
         <Icon styles="font-size: .9rem">brush</Icon>
-        <ToolTip content={translate("PAINT_LAYERS")}/>
+        <ToolTip content={Localization.PAINT_LAYERS}/>
     </button>
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.FOLIAGE})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.FOLIAGE ? "-" : ""}>
         <Icon styles="font-size: .9rem">grass</Icon>
-        <ToolTip content={translate("PAINT_FOLIAGE")}/>
+        <ToolTip content={Localization.PAINT_FOLIAGE}/>
     </button>
 </div>
 

@@ -1,8 +1,6 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
-    import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
     import GPUResources from "../../../../public/engine/GPUResources";
     import Engine from "../../../../public/engine/Engine";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
@@ -37,22 +35,21 @@
         unsubscribe()
         clearInterval(interval)
     })
-    const translate = key => Localization.PROJECT.INFO[key]
 </script>
 
 
 <small>Entities {entities}</small>
 <div data-vertdivider="-"></div>
-<small>Meshes {meshes}<ToolTip content={translate("NATIVE_MESHES")}/></small>
+<small>Meshes {meshes}<ToolTip content={Localization.NATIVE_MESHES}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Triangles {triangles}<ToolTip content={translate("NATIVE_MESHES")}/></small>
+<small>Triangles {triangles}<ToolTip content={Localization.NATIVE_MESHES}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Materials {materials}<ToolTip content={translate("NATIVE_MATERIALS")}/></small>
+<small>Materials {materials}<ToolTip content={Localization.NATIVE_MATERIALS}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Textures {textures}<ToolTip content={translate("NATIVE_TEXTURES")}/></small>
+<small>Textures {textures}<ToolTip content={Localization.NATIVE_TEXTURES}/></small>
 
 
 <style>

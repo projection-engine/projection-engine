@@ -2,14 +2,14 @@
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import Localization from "../../../templates/Localization";
 
     export let settings
     export let update
-    export let translate
 
 </script>
 <fieldset>
-    <legend>{translate("RESOLUTION")}</legend>
+    <legend>{Localization.RESOLUTION}</legend>
     <div class="content">
         <Range
                 label={"X"}
@@ -40,17 +40,17 @@
 
 
 <fieldset>
-    <legend>{translate("BACKGROUND")}</legend>
+    <legend>{Localization.BACKGROUND}</legend>
     <div class="content">
         <Checkbox
                 checked={settings.background}
                 handleCheck={() => {
                 update("background",  !settings.background)
             }}
-                label={translate("ENABLED")}
+                label={Localization.ENABLED}
         />
         <ColorPicker
-                label={translate("COLOR")}
+                label={Localization.COLOR}
                 value={settings.backgroundColor.map(c => c*255)}
                 submit={(color) => {
             update("backgroundColor", Object.values(color).map(c => c/255))
@@ -61,30 +61,31 @@
 
 
 <fieldset>
-    <legend>{translate("VIEWPORT")}</legend>
+    <legend>{Localization.VIEWPORT}</legend>
     <div class="content">
         <Checkbox
                 checked={settings.gridVisibility}
                 handleCheck={() => {
             update("gridVisibility",  !settings.gridVisibility)
         }}
-                label={translate("GRID_VISIBILITY")}
+                label={Localization.GRID_VISIBILITY}
         />
         <Checkbox
                 checked={settings.iconsVisibility}
                 handleCheck={() => {
             update("iconsVisibility",  !settings.iconsVisibility)
         }}
-                label={translate("ICON_VISIBILITY")}
+                label={Localization.ICON_VISIBILITY}
         />
     </div>
 </fieldset>
 
 <style>
-    legend{
+    legend {
         font-size: .8rem;
     }
-    .content{
+
+    .content {
         padding-left: 25%;
         display: grid;
         gap: 4px;

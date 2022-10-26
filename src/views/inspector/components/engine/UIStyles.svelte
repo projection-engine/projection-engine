@@ -21,7 +21,7 @@
         }
     }
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
+
     const save = () => {
         if(!changed)
             return
@@ -60,7 +60,7 @@
 <div class="wrapper" bind:this={ref}>
     <input
             on:input={() => changed = true}
-            placeholder={translate("KEY")}
+            placeholder={Localization.KEY}
             on:blur={e => apply(e.currentTarget.value, true)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)
@@ -71,7 +71,7 @@
     :
     <input
             on:input={() => changed = true}
-            placeholder={translate("VALUE")}
+            placeholder={Localization.VALUE}
             on:blur={e => apply(e.currentTarget.value)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)

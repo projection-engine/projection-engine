@@ -8,10 +8,10 @@
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../templates/Localization";
+
     const nativeComponents = getNativeComponents()
 
     export let entity
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
@@ -25,8 +25,8 @@
             class="add-button"
     >
         <Icon>add</Icon>
-        {translate("ADD_COMPONENT")}
-        <ToolTip content={translate("ADD_COMPONENT")}/>
+        {Localization.ADD_COMPONENT}
+        <ToolTip content={Localization.ADD_COMPONENT}/>
     </button>
 
     {#each nativeComponents as [key,  label, icon]}

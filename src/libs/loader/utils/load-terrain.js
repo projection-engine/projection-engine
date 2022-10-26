@@ -2,7 +2,6 @@ import FilesAPI from "../../FilesAPI";
 import TerrainWorker from "../../../../public/engine/workers/terrain/TerrainWorker";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPUResources from "../../../../public/engine/GPUResources";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import Entity from "../../../../public/engine/lib/instances/Entity";
 import GPUController from "../../../../public/engine/GPUController";

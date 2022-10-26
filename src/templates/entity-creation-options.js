@@ -2,68 +2,67 @@ import STATIC_MESHES from "../../public/engine/static/resources/STATIC_MESHES";
 import EntityConstructor from "../libs/EntityConstructor";
 import Localization from "./Localization";
 
-const translate = key => Localization.PROJECT.VIEWPORT[key]
 export default function entityCreationOptions() {
     return [
         {
             icon: "category",
-            label: translate("EMPTY_ENTITY"),
+            label: Localization.EMPTY_ENTITY,
             onClick: EntityConstructor.createEmpty
         },
-        {divider: true, label: translate("MESHES")},
+        {divider: true, label: Localization.MESHES},
         {
             icon: "category",
-            label: translate("CUBE"),
+            label: Localization.CUBE,
             onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.CUBE)
         },
         {
             icon: "category",
-            label: translate("SPHERE"),
+            label: Localization.SPHERE,
             onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.SPHERE)
         },
         {
             icon: "category",
-            label: translate("PLANE"),
+            label: Localization.PLANE,
             onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.PLANE)
         },
         {
             icon: "category",
-            label: translate("CYLINDER"),
+            label: Localization.CYLINDER,
             onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.CYLINDER)
         },
-        {divider: true, label: translate("LIGHTS")},
+        {divider: true, label: Localization.LIGHTS},
         {
             icon: "lightbulb",
-            label: translate("POINT_LIGHT"),
+            label: Localization.POINT_LIGHT,
             onClick: EntityConstructor.createPointLight
         },
         {
             icon: "light_mode",
-            label: translate("DIRECTIONAL_LIGHT"),
+            label: Localization.DIRECTIONAL_LIGHT,
             onClick: EntityConstructor.createDirectionalLight
         },
-        {divider: true, label: translate("AMBIENT")},
+        {divider: true, label: Localization.AMBIENT},
 
         {
             icon: "lens_blur",
-            label: translate("SPECULAR_PROBE"),
+            label: Localization.SPECULAR_PROBE,
             onClick: () => EntityConstructor.createProbe(false)
         },
         {
             icon: "lens_blur",
-            label: translate("DIFFUSE_PROBE"),
+            label: Localization.DIFFUSE_PROBE,
             onClick: () => EntityConstructor.createProbe(true)
         },
-        {divider: true, label: translate("UTILS")},
+        {divider: true, label: Localization.UTILS},
         {
             icon: "videocam",
-            label: translate("CAMERA"),
+            label: Localization.CAMERA,
             onClick: EntityConstructor.createCamera
         },
 
         {
             icon: "image",
-            label: translate("SPRITE"),
+            label: Localization.SPRITE,
             onClick: EntityConstructor.createSprite
         }
     ]

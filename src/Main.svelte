@@ -46,8 +46,8 @@
     <div class="wrapper">
         <img src={logo} alt="logo">
         <div class="title">
-            <div class="label">{Localization.COMPONENTS.FRAME.TITLE}</div>
-            <small>{Localization.COMPONENTS.FRAME.VERSION}</small>
+            <div class="label">{Localization.PROJECTION_ENGINE}</div>
+            <small>{Localization.VERSION}</small>
         </div>
     </div>
 {/if}

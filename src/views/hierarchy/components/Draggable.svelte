@@ -1,18 +1,13 @@
 <script>
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
-    import {v4} from "uuid";
-    import EngineStore from "../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
-    import SelectionStore from "../../../stores/SelectionStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
-    import HierarchyController from "../../../libs/HierarchyController";
     import EntityNameController from "../../../libs/EntityNameController";
-    import EntityAPI from "../../../../public/engine/lib/apis/EntityAPI";
     import KEYS from "../../../data/KEYS";
+    import handleDrop from "../utils/handle-drop";
 
     export let node
     export let lockedEntity
@@ -32,19 +27,7 @@
         draggable.onMount({
             targetElement: ref,
             onDragStart: () => node,
-            onDrop: (entityDragged, event) => {
-                if (event.ctrlKey) {
-                    EntityAPI.linkEntities(entityDragged, node)
-                    SelectionStore.engineSelected = [entityDragged.id]
-                    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
-                    HierarchyController.updateHierarchy()
-                } else if (event.shiftKey) {
-                    const clone = entityDragged.clone()
-                    clone.parent = node
-                    node.children.push(clone)
-                    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
-                }
-            },
+            onDrop: (entityDragged, event) => handleDrop(event, entityDragged, node),
             dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">view_in_ar</span> ${node.name}</div>`,
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
@@ -52,7 +35,7 @@
     onDestroy(() => draggable.onDestroy())
 </script>
 
-<div class="info hierarchy-branch">
+<div class="info hierarchy-branch" data-node={node.id}>
     <button
             data-locked={lockedEntity === node.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"

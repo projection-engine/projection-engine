@@ -16,7 +16,6 @@
     export let item
     export let data
 
-    const translate = key => Localization.PROJECT.INSPECTOR[key]
 
     const updateAsset = async (key, value, d=data) => {
         let temp = {...d}
@@ -43,9 +42,9 @@
                         posX = temp.flipX ? width * -1 : 0, // Set x position to -100% if flip horizontal
                         posY = temp.flipY ? height * -1 : 0; // Set y position to -100% if flip vertical
 
-                    ctx.save(); // Save the current state
-                    ctx.scale(scaleH, scaleV); // Set scale to flip the image
-                    ctx.drawImage(img, posX, posY, width, height); // draw the image
+                    ctx.save();
+                    ctx.scale(scaleH, scaleV);
+                    ctx.drawImage(img, posX, posY, width, height);
                     ctx.restore();
 
                     temp.base64 = canvas.toDataURL()
@@ -54,11 +53,11 @@
             })
 
         }
-        alert.pushAlert(translate("UPDATING_ASSET"), "alert")
+        alert.pushAlert(Localization.UPDATING_ASSET, "alert")
         AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
         if (GPUResources.textures.get(item.registryID) != null) {
-            alert.pushAlert(translate("ALLOCATING_TEXTURE"), "alert")
+            alert.pushAlert(Localization.ALLOCATING_TEXTURE, "alert")
             GPUController.destroyTexture(item.registryID)
             GPUController.allocateTexture({
                 ...temp,
@@ -68,14 +67,14 @@
         data = temp
     }
 </script>
-<Accordion title={translate("FLIP_TEXTURE")}>
-    <Checkbox label={translate("FLIP_Y")} checked={data?.flipY}
+<Accordion title={Localization.FLIP_TEXTURE}>
+    <Checkbox label={Localization.FLIP_Y} checked={data?.flipY}
               handleCheck={ async () => await updateAsset("flipY", !data.flipY, data)}/>
-    <Checkbox label={translate("FLIP_X")} checked={data?.flipX}
+    <Checkbox label={Localization.FLIP_X} checked={data?.flipX}
               handleCheck={async() => await updateAsset("flipX", !data.flipX, data)}/>
 </Accordion>
 
-<Accordion title={translate("TEXTURE_FORMAT")}>
+<Accordion title={Localization.TEXTURE_FORMAT}>
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
             {data?.internalFormat}
@@ -91,74 +90,74 @@
         </button>
     </Dropdown>
 </Accordion>
-<Accordion title={translate("TEXTURE_FILTERING")}>
+<Accordion title={Localization.TEXTURE_FILTERING}>
 
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
-            {translate(data?.minFilter)}
+            {Localization[data?.minFilter]}
             <small>
-                {translate("TEXTURE_MIN_FILTER")}
+                {Localization.TEXTURE_MIN_FILTER}
             </small>
         </button>
         <button on:click={() => updateAsset("minFilter",  TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_LINEAR)}>
-            {translate("NEAREST_MIPMAP_LINEAR")}
+            {Localization.NEAREST_MIPMAP_LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_NEAREST)}>
-            {translate("LINEAR_MIPMAP_NEAREST")}
+            {Localization.LINEAR_MIPMAP_NEAREST}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_LINEAR)}>
-            {translate("LINEAR_MIPMAP_LINEAR")}
+            {Localization.LINEAR_MIPMAP_LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_NEAREST)}>
-            {translate("NEAREST_MIPMAP_NEAREST")}
+            {Localization.NEAREST_MIPMAP_NEAREST}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR)}>
-            {translate("LINEAR")}
+            {Localization.LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST)}>
-            {translate("NEAREST")}
+            {Localization.NEAREST}
         </button>
     </Dropdown>
 
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
 
-            {translate(data?.magFilter)}
+            {Localization[data?.magFilter]}
             <small>
-                {translate("TEXTURE_MAG_FILTER")}
+                {Localization.TEXTURE_MAG_FILTER}
             </small>
         </button>
         <button on:click={() => updateAsset("magFilter",  TEXTURE_FILTERING.MAG.NEAREST)}>
-            {translate("NEAREST")}
+            {Localization.NEAREST}
         </button>
         <button on:click={() => updateAsset("magFilter", TEXTURE_FILTERING.MAG.LINEAR)}>
-            {translate("LINEAR")}
+            {Localization.LINEAR}
         </button>
     </Dropdown>
 </Accordion>
 
-<Accordion title={translate("TEXTURE_WRAPPING")}>
+<Accordion title={Localization.TEXTURE_WRAPPING}>
     {#each ["wrapS", "wrapT"] as key}
         <Dropdown buttonStyles={B}>
             <button slot="button" class="dropdown">
                 {#if data}
-                    {translate(data[key])}
+                    {Localization[data[key]]}
                 {/if}
                 <small>
-                    {translate(key)}
+                    {Localization[key]}
                 </small>
             </button>
             <button on:click={() => updateAsset(key,  TEXTURE_WRAPPING.MIRRORED_REPEAT)}>
-                {translate("MIRRORED_REPEAT")}
+                {Localization.MIRRORED_REPEAT}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.REPEAT)}>
-                {translate("REPEAT")}
+                {Localization.REPEAT}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_EDGE)}>
-                {translate("CLAMP_TO_EDGE")}
+                {Localization.CLAMP_TO_EDGE}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_BORDER)}>
-                {translate("CLAMP_TO_BORDER")}
+                {Localization.CLAMP_TO_BORDER}
             </button>
         </Dropdown>
     {/each}
@@ -167,7 +166,7 @@
 <div class="link"
      on:click={() => shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
     <Icon>help</Icon>
-    {translate("OPENGL_DOCS")}
+    {Localization.OPENGL_DOCS}
 </div>
 
 <style>
