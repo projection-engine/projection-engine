@@ -1,5 +1,1 @@
-- Changing README.md
-- Shadow probes and light probes
-- Adding rollup-plugin-string for GLSL shaders
-- Organizing shaders
-- Refactoring engine code
+- README
