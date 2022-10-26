@@ -3,7 +3,7 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import SideBarItem from "./SideBarItem.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let bookmarks = undefined
     export let setCurrentDirectory = undefined

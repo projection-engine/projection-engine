@@ -8,7 +8,7 @@ import TERRAIN_MATERIAL_UNIFORMS from "../../../../public/engine/static/template
 import COMPONENT_TEMPLATE from "../../../../public/engine/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../public/engine/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../public/engine/static/templates/TERRAIN_TEMPLATE";
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 import getMaterialAsOption from "../../../templates/utils/get-material-as-option";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

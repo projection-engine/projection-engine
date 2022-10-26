@@ -1,12 +1,13 @@
 <script>
     import "../viewport/css/styles.css"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../components/selector/Selector.svelte";
     import ShadingOption from "../../components/ShadingOption.svelte";
+
     export let settings
 
 </script>

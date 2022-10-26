@@ -7,7 +7,7 @@
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let handleChange
     export let type

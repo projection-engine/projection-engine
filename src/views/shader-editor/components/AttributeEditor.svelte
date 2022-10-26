@@ -3,7 +3,7 @@
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Material from "../templates/nodes/Material";
     import Attribute from "./node/Attribute.svelte";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let selected
     export let nodes

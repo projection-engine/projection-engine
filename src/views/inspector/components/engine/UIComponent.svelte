@@ -3,14 +3,14 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../libs/RegistryAPI";
     import FilesAPI from "../../../../libs/FilesAPI";
-    import UIAPI from "../../../../../public/engine/lib/apis/UIAPI";
+    import UIAPI from "../../../../../public/engine/api/UIAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import Engine from "../../../../../public/engine/Engine";
 

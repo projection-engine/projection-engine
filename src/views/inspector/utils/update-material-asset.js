@@ -1,7 +1,7 @@
 import GPUResources from "../../../../public/engine/GPUResources";
-import MaterialAPI from "../../../../public/engine/lib/apis/rendering/MaterialAPI";
+import MaterialAPI from "../../../../public/engine/api/rendering/MaterialAPI";
 import AssetAPI from "../../../libs/AssetAPI";
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 import GPUController from "../../../../public/engine/GPUController";
 
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {

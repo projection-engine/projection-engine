@@ -7,7 +7,7 @@
 
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS"
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";

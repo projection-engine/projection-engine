@@ -3,7 +3,7 @@ import TerrainWorker from "../../../../public/engine/workers/terrain/TerrainWork
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/templates/dispatch-renderer-entities";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
-import Entity from "../../../../public/engine/lib/instances/Entity";
+import Entity from "../../../../public/engine/instances/Entity";
 import GPUController from "../../../../public/engine/GPUController";
 
 export default async function loadTerrain(reg) {

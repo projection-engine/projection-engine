@@ -6,7 +6,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";

@@ -1,3 +1,5 @@
-- Reworking localization structure
-- Reworking drag/drop component
-- Fixing hierarchy drag/drop
+- Changing README.md
+- Shadow probes and light probes
+- Adding rollup-plugin-string for GLSL shaders
+- Organizing shaders
+- Refactoring engine code

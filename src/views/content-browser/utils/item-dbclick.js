@@ -1,7 +1,7 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import LevelController from "../../../libs/LevelController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 
 const {shell} = window.require("electron")
 

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onMount} from "svelte";
 

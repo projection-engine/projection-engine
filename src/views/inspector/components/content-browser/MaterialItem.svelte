@@ -3,10 +3,10 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
 
-    import MaterialAPI from "../../../../../public/engine/lib/apis/rendering/MaterialAPI";
+    import MaterialAPI from "../../../../../public/engine/api/rendering/MaterialAPI";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesAPI from "../../../../libs/FilesAPI";

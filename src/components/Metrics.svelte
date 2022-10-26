@@ -1,7 +1,7 @@
 <script>
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte"
     import {onDestroy, onMount} from "svelte";
-    import Localization from "../templates/Localization";
+    import Localization from "../templates/LOCALIZATION_EN";
     import Engine from "../../public/engine/Engine";
 
     let fr

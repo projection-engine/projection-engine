@@ -1,4 +1,4 @@
-import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
+import QueryAPI from "../../public/engine/api/utils/QueryAPI";
 import Engine from "../../public/engine/Engine";
 import SelectionStore from "../stores/SelectionStore";
 

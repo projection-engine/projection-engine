@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../libs/FilesAPI";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";

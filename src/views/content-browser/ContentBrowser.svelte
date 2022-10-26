@@ -1,7 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import FilesStore from "../../stores/FilesStore";
-    import Localization from "../../templates/Localization";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";

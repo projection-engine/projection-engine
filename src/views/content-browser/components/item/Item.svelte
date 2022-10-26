@@ -2,7 +2,6 @@
     import handleDropFolder from "../../utils/handle-drop-folder"
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesStore from "../../../../stores/FilesStore";
-    import Localization from "../../../../templates/Localization";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";

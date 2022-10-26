@@ -9,7 +9,7 @@
     import PROJECT_PATH from "shared-resources/PROJECT_PATH";
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./data/RENDER_TARGET";
-    import Localization from "./templates/Localization";
+    import Localization from "./templates/LOCALIZATION_EN";
 
     const {ipcRenderer} = window.require("electron")
 

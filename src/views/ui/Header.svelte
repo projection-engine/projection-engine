@@ -1,11 +1,11 @@
 <script>
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../data/GIZMOS";
     import SettingsStore from "../../stores/SettingsStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
-    import Entity from "../../../public/engine/lib/instances/Entity";
+    import Entity from "../../../public/engine/instances/Entity";
     import Engine from "../../../public/engine/Engine";
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";
 

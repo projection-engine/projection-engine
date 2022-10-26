@@ -1,13 +1,13 @@
 <script>
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import Entity from "../../../public/engine/lib/instances/Entity";
-    import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
+    import Entity from "../../../public/engine/instances/Entity";
+    import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
     import VIEWS from "../../components/view/data/VIEWS";
     import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";

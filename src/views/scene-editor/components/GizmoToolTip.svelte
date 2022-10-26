@@ -4,7 +4,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import GIZMOS from "../../../data/GIZMOS";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     let ref
     let isChanging = false

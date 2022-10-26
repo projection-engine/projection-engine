@@ -4,7 +4,7 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../utils/import-file";
-import Localization from "./Localization";
+import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

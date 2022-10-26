@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";

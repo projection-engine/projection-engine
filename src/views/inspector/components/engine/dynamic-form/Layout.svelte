@@ -2,7 +2,7 @@
     import Property from "./Property.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../../utils/remove-component";
-    import Localization from "../../../../../templates/Localization";
+    import Localization from "../../../../../templates/LOCALIZATION_EN";
 
     export let key
     export let index
@@ -14,7 +14,7 @@
 </script>
 
 <fieldset>
-    <legend>
+    <legend class="legend">
         {title}
         {#if key !== "TRANSFORMATION"}
             <button class="button" on:click={() => removeComponent(entity, index, key)}>
@@ -48,7 +48,7 @@
 </fieldset>
 
 <style>
-    legend{
+    .legend{
         display: flex;
         align-items: center;
         justify-content: space-between;

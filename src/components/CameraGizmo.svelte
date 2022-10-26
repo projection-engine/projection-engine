@@ -2,9 +2,8 @@
 
     import CAMERA_GIZMO from "../data/CAMERA_GIZMO"
     import {onMount} from "svelte";
-    import CameraTracker from "../../public/engine/editor/libs/CameraTracker";
-    import Localization from "../templates/Localization";
-    import CAMERA_ROTATIONS from "../../public/engine/editor/data/CAMERA_ROTATIONS";
+    import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
+    import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";
 
     let ref
     onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))

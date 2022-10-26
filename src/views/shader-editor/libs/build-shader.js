@@ -1,7 +1,7 @@
-import materialCompiler from "../../../../public/engine/editor/libs/material-compiler/material-compiler"
-import {trimString} from "../../../../public/engine/lib/instances/Shader";
+import materialCompiler from "../../../../public/engine/editor-environment/libs/material-compiler/material-compiler"
+import {trimString} from "../../../../public/engine/instances/Shader";
 import GPUResources from "../../../../public/engine/GPUResources";
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 
 export default async function buildShader(nodes, links, openFile, setStatus){
     const {

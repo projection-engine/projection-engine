@@ -1,11 +1,11 @@
 import bindGizmo from "./bind-gizmo";
 import Engine from "../../../../public/engine/Engine";
-import CameraTracker from "../../../../public/engine/editor/libs/CameraTracker";
-import Wrapper from "../../../../public/engine/editor/services/Wrapper";
-import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
-import DirectionalShadows from "../../../../public/engine/lib/passes/DirectionalShadows";
-import GridSystem from "../../../../public/engine/editor/services/GridSystem";
-import GizmoSystem from "../../../../public/engine/editor/services/GizmoSystem";
+import CameraTracker from "../../../../public/engine/editor-environment/libs/CameraTracker";
+import Wrapper from "../../../../public/engine/editor-environment/services/Wrapper";
+import CameraAPI from "../../../../public/engine/api/CameraAPI";
+import DirectionalShadows from "../../../../public/engine/runtime/occlusion/DirectionalShadows";
+import GridSystem from "../../../../public/engine/editor-environment/services/GridSystem";
+import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 import GPUResources from "../../../../public/engine/GPUResources";
 
 

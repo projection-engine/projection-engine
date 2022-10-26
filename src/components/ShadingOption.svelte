@@ -1,16 +1,16 @@
 <script>
-    import SHADING_MODELS from "../../public/engine/editor/data/SHADING_MODELS"
+    import SHADING_MODELS from "../../public/engine/editor-environment/data/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPUResources from "../../public/engine/GPUResources";
-    import DepthPass from "../../public/engine/lib/passes/DepthPass";
-    import DeferredPass from "../../public/engine/lib/passes/DeferredPass";
-    import AOPass from "../../public/engine/lib/passes/AOPass";
+    import DepthPass from "../../public/engine/runtime/renderers/DepthPass";
+    import DeferredRenderer from "../../public/engine/runtime/renderers/DeferredRenderer";
+    import AmbientOcclusion from "../../public/engine/runtime/occlusion/AmbientOcclusion";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/Engine";
-    import Localization from "../templates/Localization";
+    import Localization from "../templates/LOCALIZATION_EN";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
-    import SSGIPass from "../../public/engine/lib/passes/SSGIPass";
+    import SSGIPass from "../../public/engine/runtime/SSGIPass";
 
     let shadingModel = SHADING_MODELS.DETAIL
 
@@ -58,21 +58,21 @@
             case SHADING_MODELS.DEPTH:
                 return DepthPass.depthSampler
             case SHADING_MODELS.AO:
-                return AOPass.filteredSampler
+                return AmbientOcclusion.filteredSampler
             case SHADING_MODELS.NORMAL:
-                return DeferredPass.normalSampler
+                return DeferredRenderer.normalSampler
             case SHADING_MODELS.ALBEDO:
-                return DeferredPass.albedoSampler
+                return DeferredRenderer.albedoSampler
             case SHADING_MODELS.REC_NORMALS:
                 return DepthPass.normalSampler
             case SHADING_MODELS.POSITION:
-                return DeferredPass.positionSampler
+                return DeferredRenderer.positionSampler
             case SHADING_MODELS.G_AO:
             case SHADING_MODELS.ROUGHNESS:
             case SHADING_MODELS.METALLIC:
-                return DeferredPass.behaviourSampler
+                return DeferredRenderer.behaviourSampler
             case SHADING_MODELS.AMBIENT:
-                return DeferredPass.ambientSampler
+                return DeferredRenderer.ambientSampler
             case SHADING_MODELS.SSGI:
                 return SSGIPass.sampler
             case SHADING_MODELS.STOCHASTIC:
@@ -85,17 +85,17 @@
 
     }
     $: {
-        if (Engine.isReady && DeferredPass.ready) {
-            DeferredPass.deferredUniforms.option = shadingModel
+        if (Engine.isReady && DeferredRenderer.ready) {
+            DeferredRenderer.deferredUniforms.option = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                SSGIPass.uniforms.previousFrame = DeferredPass.albedoSampler
-                DeferredPass.deferredUniforms.uSampler = getTexture()
-                DeferredPass.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                SSGIPass.uniforms.previousFrame = DeferredRenderer.albedoSampler
+                DeferredRenderer.deferredUniforms.uSampler = getTexture()
+                DeferredRenderer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
-                SSGIPass.uniforms.previousFrame = DeferredPass.compositeFBO.colors[0]
-                DeferredPass.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
-                DeferredPass.deferredUniforms.uSampler = DeferredPass.compositeFBO.colors[0]
+                SSGIPass.uniforms.previousFrame = DeferredRenderer.compositeFBO.colors[0]
+                DeferredRenderer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
+                DeferredRenderer.deferredUniforms.uSampler = DeferredRenderer.compositeFBO.colors[0]
             }
         }
     }

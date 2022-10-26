@@ -1,5 +1,5 @@
 import AssimpJS from "./assimpjs";
-import PrimitiveProcessor from "../../../engine/lib/apis/PrimitiveProcessor";
+import PrimitiveProcessor from "../../../engine/api/PrimitiveProcessor";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";
 import {v4} from "uuid";

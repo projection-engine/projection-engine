@@ -8,12 +8,12 @@
     import onViewportClick from "../viewport/utils/on-viewport-click";
     import Loader from "../../libs/loader/Loader";
     import drawIconsToBuffer from "../viewport/utils/draw-icons-to-buffer";
-    import GizmoSystem from "../../../public/engine/editor/services/GizmoSystem";
+    import GizmoSystem from "../../../public/engine/editor-environment/services/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import GizmoBar from "./components/GeneralSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
@@ -21,9 +21,9 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
     import Metrics from "../../components/Metrics.svelte";
-    import CameraTracker from "../../../public/engine/editor/libs/CameraTracker";
-    import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
-    import ConversionAPI from "../../../public/engine/lib/apis/math/ConversionAPI";
+    import CameraTracker from "../../../public/engine/editor-environment/libs/CameraTracker";
+    import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
+    import ConversionAPI from "../../../public/engine/api/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
     import GPUResources from "../../../public/engine/GPUResources";
 

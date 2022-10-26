@@ -7,7 +7,7 @@
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
     import AssetAPI from "../libs/AssetAPI";
-    import initializer from "../../public/engine/editor/initializer";
+    import initializer from "../../public/engine/editor-environment/initializer";
     import VisualsStore from "../stores/VisualsStore";
 
     export let onReady

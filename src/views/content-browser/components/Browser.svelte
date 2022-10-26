@@ -9,7 +9,7 @@
     import getFilesToRender from "../utils/get-files-to-render";
     import HotKeysController from "../../../libs/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";

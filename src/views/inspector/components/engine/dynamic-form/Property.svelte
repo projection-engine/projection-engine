@@ -4,11 +4,11 @@
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import Component from "../../../../../../public/engine/lib/components/Component";
+    import Component from "../../../../../../public/engine/templates/components/Component";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../../../../templates/Localization";
+    import Localization from "../../../../../templates/LOCALIZATION_EN";
     import loadMaterial from "../../../../../libs/loader/utils/load-material";
     import GPUResources from "../../../../../../public/engine/GPUResources";
     import Loader from "../../../../../libs/loader/Loader";

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";

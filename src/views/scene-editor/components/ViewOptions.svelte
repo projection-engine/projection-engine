@@ -1,7 +1,7 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings

@@ -4,14 +4,14 @@
     import ViewOptions from "./components/ViewOptions.svelte";
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
-    import DiffuseProbePass from "../../../public/engine/lib/passes/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/lib/passes/SpecularProbePass";
+    import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
+    import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
 
     export let settings
     export let engine

@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import QueryAPI from "../../public/engine/lib/apis/utils/QueryAPI";
+import QueryAPI from "../../public/engine/api/utils/QueryAPI";
 import Engine from "../../public/engine/Engine";
 
 const TYPES = {

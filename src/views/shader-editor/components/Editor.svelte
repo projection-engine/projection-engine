@@ -4,7 +4,7 @@
     import Debug from "./Debug.svelte";
     import Board from "./Board.svelte";
     import Material from "../templates/nodes/Material";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let selected
     export let nodes

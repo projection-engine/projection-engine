@@ -1,6 +1,6 @@
 <script>
 
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";

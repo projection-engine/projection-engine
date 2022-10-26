@@ -4,8 +4,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import "../../viewport/css/styles.css"
-    import Localization from "../../../templates/Localization";
-    import CameraAPI from "../../../../public/engine/lib/apis/CameraAPI";
+    import Localization from "../../../templates/LOCALIZATION_EN";
+    import CameraAPI from "../../../../public/engine/api/CameraAPI";
     import ViewportActions from "../../../libs/ViewportActions";
 
     let hidden = false

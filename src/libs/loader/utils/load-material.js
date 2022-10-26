@@ -1,5 +1,5 @@
 import FilesAPI from "../../FilesAPI";
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
 import RegistryAPI from "../../RegistryAPI";
 import GPUResources from "../../../../public/engine/GPUResources";

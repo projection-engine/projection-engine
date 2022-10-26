@@ -3,7 +3,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../public/engine/Engine";
     import EntityNameController from "../../../../libs/EntityNameController";
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
 
     const nativeComponents = getNativeComponents()
     export let entity

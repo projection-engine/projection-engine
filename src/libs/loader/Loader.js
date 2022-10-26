@@ -5,17 +5,17 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import Localization from "../../templates/Localization";
+import Localization from "../../templates/LOCALIZATION_EN";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import loadMaterial from "./utils/load-material";
-import PickingAPI from "../../../public/engine/lib/apis/utils/PickingAPI";
-import QueryAPI from "../../../public/engine/lib/apis/utils/QueryAPI";
+import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
+import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import GPUResources from "../../../public/engine/GPUResources";
-import Entity from "../../../public/engine/lib/instances/Entity";
+import Entity from "../../../public/engine/instances/Entity";
 import GPUController from "../../../public/engine/GPUController";
 import {v4} from "uuid";
 

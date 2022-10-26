@@ -2,7 +2,7 @@
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../../data/SETTINGS";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let settings
     export let update

@@ -5,7 +5,7 @@
 
     import SettingsStore from "../../stores/SettingsStore";
     import {onDestroy} from "svelte";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

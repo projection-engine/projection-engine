@@ -4,7 +4,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import "../../../components/selector/css/selector.css"
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
 
     const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")

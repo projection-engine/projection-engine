@@ -5,7 +5,7 @@
     import FoliageOptions from "./FoliageOptions.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import RegistryAPI from "../../libs/RegistryAPI";
     import FilesAPI from "../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

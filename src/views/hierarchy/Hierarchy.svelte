@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"

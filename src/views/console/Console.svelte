@@ -1,9 +1,9 @@
 <script>
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import Header from "../../components/view/components/ViewHeader.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../../public/engine/lib/apis/ConsoleAPI";
+    import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";

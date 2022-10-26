@@ -6,6 +6,7 @@ import css from "rollup-plugin-css-only";
 import json from "@rollup/plugin-json";
 import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
+import {string} from "rollup-plugin-string";
 
 const PRODUCTION = !process.env.ROLLUP_WATCH;
 const common = (inputFile, outputFile) => ({
@@ -19,7 +20,7 @@ const common = (inputFile, outputFile) => ({
     plugins: [
         copy({
             targets: [
-                { src: 'public/engine/ammo/ammo.wasm.wasm', dest: 'public/build' },
+                { src: 'public/engine/lib/ammo.wasm.wasm', dest: 'public/build' },
                 { src: 'public/backend/libs/assimp/assimpjs.wasm', dest: 'public/build' }
             ]
         }),
@@ -40,7 +41,10 @@ const common = (inputFile, outputFile) => ({
         !PRODUCTION && serve(),
         PRODUCTION && terser(),
         image(),
-        json()
+        json(),
+        string({
+            include: ["**/*.glsl", "**/*.frag","**/*.vert"]
+        })
     ],
     watch: {
         clearScreen: false

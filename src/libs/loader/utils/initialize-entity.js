@@ -1,5 +1,5 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
-import Entity from "../../../../public/engine/lib/instances/Entity";
+import Entity from "../../../../public/engine/instances/Entity";
 
 
 export default function initializeEntity(data, meshID, parent, index = 0) {

@@ -1,8 +1,8 @@
 <script>
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
     import AssetAPI from "../../../../libs/AssetAPI";
     import GPUResources from "../../../../../public/engine/GPUResources";
-    import PrimitiveProcessor from "../../../../../public/engine/lib/apis/PrimitiveProcessor";
+    import PrimitiveProcessor from "../../../../../public/engine/api/PrimitiveProcessor";
     import FilesAPI from "../../../../libs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import GPUController from "../../../../../public/engine/GPUController";

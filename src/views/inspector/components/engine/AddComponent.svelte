@@ -7,7 +7,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import Localization from "../../../../templates/Localization";
+    import Localization from "../../../../templates/LOCALIZATION_EN";
 
     const nativeComponents = getNativeComponents()
 

@@ -1,6 +1,7 @@
-import DirectionalLightComponent from "../../../../public/engine/lib/components/rendering/DirectionalLightComponent";
-import PointLightComponent from "../../../../public/engine/lib/components/rendering/PointLightComponent";
-import EntityAPI from "../../../../public/engine/lib/apis/EntityAPI";
+import DirectionalLightComponent
+    from "../../../../public/engine/templates/components/rendering/DirectionalLightComponent";
+import PointLightComponent from "../../../../public/engine/templates/components/rendering/PointLightComponent";
+import EntityAPI from "../../../../public/engine/api/EntityAPI";
 import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 

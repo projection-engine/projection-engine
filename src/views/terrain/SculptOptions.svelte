@@ -1,10 +1,10 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import Localization from "../../templates/Localization";
+    import Localization from "../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
-    import SculptingGizmo from "../../../public/engine/editor/libs/terrain/SculptingGizmo";
+    import SculptingGizmo from "../../../public/engine/editor-environment/libs/terrain/SculptingGizmo";
     import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
 
     import Selector from "../../components/selector/Selector.svelte";

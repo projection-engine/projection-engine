@@ -1,4 +1,4 @@
-import Localization from "../../../templates/Localization";
+import Localization from "../../../templates/LOCALIZATION_EN";
 
 export default function getItemDragImage(childrenQuantity, data, type, metadata) {
     let body

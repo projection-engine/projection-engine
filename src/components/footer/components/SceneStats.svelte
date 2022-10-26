@@ -4,7 +4,7 @@
     import GPUResources from "../../../../public/engine/GPUResources";
     import Engine from "../../../../public/engine/Engine";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)

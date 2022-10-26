@@ -1,7 +1,7 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import Localization from "../../../templates/Localization";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     export let settings
     export let update
