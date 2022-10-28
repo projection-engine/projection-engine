@@ -9,7 +9,7 @@
 
 <fieldset>
     <legend>{"Lens distortion"}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.distortion}
                 handleCheck={() => {
@@ -34,7 +34,7 @@
 
 <fieldset>
     <legend>{"Chromatic aberration"}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.chromaticAberration}
                 handleCheck={() => update("chromaticAberration", !settings.chromaticAberration)}
@@ -57,7 +57,7 @@
 
 <fieldset>
     <legend>{"Film grain"}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.filmGrain}
                 handleCheck={() => update("filmGrain",  !settings.filmGrain)}
@@ -79,7 +79,7 @@
 
 <fieldset>
     <legend>{"Bloom"}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
 
                 checked={settings.bloom}
@@ -116,7 +116,7 @@
 
 <fieldset>
     <legend>{"Color correction"}</legend>
-    <div class="content">
+    <div data-form="-">
         <Range
                 label={"Gamma"}
 
@@ -145,14 +145,3 @@
     </div>
 </fieldset>
 
-<style>
-    legend {
-        font-size: .8rem;
-    }
-
-    .content {
-        padding-left: 25%;
-        display: grid;
-        gap: 4px;
-    }
-</style>

@@ -2,7 +2,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Preview from "../../../../components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
-    import itemDbclick from "../../utils/item-dbclick";
+    import openItem from "../../utils/open-item";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
 
     export let currentDirectory
@@ -31,7 +31,7 @@
         data-file={type === 0 ? undefined : data.id}
         data-name={data.name}
         data-folder={type !== 0 ? undefined : data.id}
-        on:dblclick={() => itemDbclick(data, setCurrentDirectory, setSelected, reset, type)}
+        on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
         style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
         class="file"

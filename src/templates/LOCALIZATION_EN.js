@@ -1,7 +1,7 @@
 export default {
 
     GRID: "Grid",
-
+    CREATING_ENTITY: "Creating entity",
     UPDATING_SETTINGS: "Updating settings",
     RESET: "Reset",
     ORIGINAL: "Original",
@@ -143,7 +143,7 @@ export default {
     LOCAL: "Local",
     GLOBAL: "Global",
 
-    CAMERA_BEHAVIOUR: "Interaction",
+    MOVEMENT_SPEED: "Movement speed",
 
     SPRITE: "Sprite",
     SPRITE_RENDERER: "New sprite renderer",
@@ -467,13 +467,12 @@ export default {
     NEW_MATERIAL_INSTANCE: "New Material Instance",
 
     ASSETS: "Assets",
-    BOOKMARKS: "Bookmarks",
+
     OPTIONS: "Options",
     BACK_DIR: "Action: Go back",
     FORWARD_DIR: "Action: Go forward",
     PARENT_DIR: "Action: Go to parent",
     CREATE_FOLDER: "Create folder",
-    ADD_BOOKMARK: "Add folder to bookmarks",
     FILTER_TYPE: "Filter by file type",
 
 

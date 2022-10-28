@@ -1,59 +1,29 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Accordion from "../../../components/accordion/Accordion.svelte";
     import SideBarItem from "./SideBarItem.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import Localization from "../../../templates/LOCALIZATION_EN";
 
-    export let bookmarks = undefined
     export let setCurrentDirectory = undefined
     export let items = undefined
     export let currentDirectory = undefined
 
     $: assets = items.filter(item => item.isFolder && !item.parent)
 </script>
-<div class="wrapper">
-    <Accordion>
-        <div class="summary" slot="header">
-            <Icon>
-                inventory_2
-            </Icon>
-            {Localization.ASSETS}
-        </div>
 
+<div class="wrapper">
+    <SideBarItem
+            setCurrentDirectory={setCurrentDirectory}
+            currentDirectory={currentDirectory}
+            id={NodeFS.sep}
+            name={"..."}
+    />
+    {#each assets as b}
         <SideBarItem
                 setCurrentDirectory={setCurrentDirectory}
                 currentDirectory={currentDirectory}
-                id={NodeFS.sep}
-                name={"..."}
+                id={b.id}
+                name={b.name}
         />
-        {#each assets as b}
-            <SideBarItem
-                    setCurrentDirectory={setCurrentDirectory}
-                    currentDirectory={currentDirectory}
-                    id={b.id}
-                    name={b.name}
-            />
-        {/each}
-    </Accordion>
-
-    <Accordion>
-        <div class="summary" slot="header">
-            <Icon>
-                book
-            </Icon>
-            {Localization.BOOKMARKS}
-        </div>
-
-        {#each bookmarks as b, i}
-            <SideBarItem
-                    setCurrentDirectory={setCurrentDirectory}
-                    currentDirectory={currentDirectory}
-                    id={b.path}
-                    name={b.name ? b.name : "..."}
-            />
-        {/each}
-    </Accordion>
+    {/each}
 </div>
 
 <style>
@@ -67,16 +37,4 @@
         padding-right: 3px;
 
     }
-
-
-    .summary {
-        width: 100%;
-        font-size: 0.7rem;
-        gap: 4px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-    }
-
 </style>

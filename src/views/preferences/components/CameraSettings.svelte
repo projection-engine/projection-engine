@@ -34,7 +34,7 @@
 
 <fieldset>
     <legend>{Localization.VIEW}</legend>
-    <div class="content">
+    <div data-form="-">
         <Range
                 minLabelWidth={"30px"}
                 label={Localization.FAR}
@@ -96,8 +96,8 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.CAMERA_BEHAVIOUR}</legend>
-    <div class="content">
+    <legend>{Localization.MOVEMENT_SPEED}</legend>
+    <div data-form="-">
         <Range
                 variant="embedded"
                 precision={4}
@@ -124,7 +124,7 @@
 
 <fieldset>
     <legend>{Localization.SMOOTHING}</legend>
-    <div class="content">
+    <div data-form="-">
         <Range
                 variant="embedded"
                 precision={3}
@@ -149,14 +149,3 @@
 </fieldset>
 
 
-<style>
-    legend {
-        font-size: .8rem;
-    }
-
-    .content {
-        padding-left: 25%;
-        display: grid;
-        gap: 4px;
-    }
-</style>

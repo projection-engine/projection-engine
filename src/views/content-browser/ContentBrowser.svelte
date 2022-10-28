@@ -64,7 +64,6 @@
         setFileType={v => fileType = v}
         setViewType={v => viewType = v}
         viewType={viewType}
-        bookmarks={store.bookmarks}
 
         searchString={searchString}
         setSearchString={v => searchString = v}
@@ -77,7 +76,6 @@
 <div class="wrapper">
     <SideBar
             items={store.items}
-            bookmarks={store.bookmarks}
 
             currentDirectory={currentDirectory}
             setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}

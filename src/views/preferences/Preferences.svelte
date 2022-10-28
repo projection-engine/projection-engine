@@ -86,8 +86,9 @@
     }
 
     .wrapper {
-        display: grid;
-        align-content: flex-start;
+        display: flex;
+        justify-content: flex-start;
+        flex-flow: column;
         gap: 6px;
 
 

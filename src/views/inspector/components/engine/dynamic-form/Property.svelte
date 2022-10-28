@@ -47,7 +47,7 @@
 </script>
 
 
-<div class="wrapper">
+<div data-form="-">
     {#if attribute.type === Component.propTypes.NUMBER}
         <Range
                 handleChange={v => {
@@ -175,12 +175,6 @@
 </div>
 
 <style>
-    .wrapper {
-        display: grid;
-        gap: 2px;
-        padding-left: 35%;
-        width: 100%;
-    }
 
     .dropdown {
         height: 25px;

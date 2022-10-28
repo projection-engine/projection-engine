@@ -64,63 +64,64 @@
         if (components[tabIndex] == null && scripts[tabIndex - 1] == null && tabIndex > 0)
             tabIndex = -2
     }
+    $: scriptIndex = tabIndex - components.length
 </script>
 
-<div class="wrapper" bind:this={ref}>
-    <div class="tabs">
-        {#each buttons as button}
-            {#if button.isFirstScript}
-                <div data-divider="-"></div>
-            {/if}
-            <button
-                    class:highlight={tabIndex === button.index}
-                    class="tab-button"
-                    on:click={_ => {
+{#if entity != null}
+    <div class="wrapper" bind:this={ref}>
+        <div class="tabs">
+            {#each buttons as button}
+                {#if button.isFirstScript}
+                    <div data-divider="-"></div>
+                {/if}
+                <button
+                        class:highlight={tabIndex === button.index}
+                        class="tab-button"
+                        on:click={_ => {
                         console.log(button)
                         tabIndex = button.index
                     }}
-            >
-                <Icon styles="font-size: .9rem">{button.icon}</Icon>
-                <ToolTip content={button.label}/>
-            </button>
-        {/each}
-    </div>
-    <div class="content">
-        {#if tabIndex === -2}
-            <Metadata entity={entity}/>
-        {:else if tabIndex === -1}
-            <Layout
-                    key="TRANSFORMATION"
-                    component={entity}
-                    entity={entity}
-                    submit={submitTransformationChange}
-            />
-        {:else if tabIndex < components.length}
-            {#if components[tabIndex][0] === COMPONENTS.UI}
-                <UIComponent
+                >
+                    <Icon styles="font-size: .9rem">{button.icon}</Icon>
+                    <ToolTip content={button.label}/>
+                </button>
+            {/each}
+        </div>
+        <div class="content">
+            {#if tabIndex === -2}
+                <Metadata entity={entity}/>
+            {:else if tabIndex === -1}
+                <Layout
+                        key="TRANSFORMATION"
+                        component={entity}
                         entity={entity}
-                        submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, components[tabIndex])}
+                        submit={submitTransformationChange}
                 />
-            {:else}
+            {:else if tabIndex < components.length}
+                {#if components[tabIndex][0] === COMPONENTS.UI}
+                    <UIComponent
+                            entity={entity}
+                            submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, components[tabIndex])}
+                    />
+                {:else if components[tabIndex][1] != null}
+                    <Layout
+                            entity={entity}
+                            key={components[tabIndex][0]}
+                            component={components[tabIndex][1]}
+                            submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
+                    />
+                {/if}
+            {:else if entity.scripts[scriptIndex] != null}
                 <Layout
                         entity={entity}
-                        key={components[tabIndex][0]}
-                        component={components[tabIndex][1]}
-                        submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
+                        index={scriptIndex}
+                        component={entity.scripts[scriptIndex]}
+                        submit={(k, v, s) => updateEntityScript(savedState, v => savedState = v, entity, scriptIndex, k, v, s)}
                 />
             {/if}
-        {:else}
-
-            <Layout
-                    entity={entity}
-                    index={tabIndex - components.length}
-                    component={entity.scripts[tabIndex - components.length]}
-                    submit={(k, v, s) => updateEntityScript(savedState, v => savedState = v, entity, tabIndex - components.length, k, v, s)}
-            />
-        {/if}
+        </div>
     </div>
-</div>
-
+{/if}
 <style>
 
     .wrapper {

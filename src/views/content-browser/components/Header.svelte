@@ -15,7 +15,6 @@
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
 
-    export let bookmarks
     export let currentDirectory
     export let setCurrentDirectory
     export let fileType
@@ -29,8 +28,6 @@
 
     $: fileTypes = getFileTypes()
     let loading = false
-    $: starred = bookmarks.find(b => b.path === currentDirectory.id) !== undefined
-
 
     let engine = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -41,131 +38,103 @@
         title={Localization.CONTENT_BROWSER}
         icon={"folder"}
 >
-
-
-
-    <button class="button" on:click={() => navigationHistory.undo()}>
-        <Icon styles="font-size: .9rem">arrow_back</Icon>
-        <ToolTip content={Localization.BACK_DIR}/>
-    </button>
-    <button
-            class="button"
-            on:click={() => navigationHistory.redo()}
-    >
-        <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-        <ToolTip content={Localization.FORWARD_DIR}/>
-    </button>
-    <button
-            class="button"
-            on:click={() => {
+    <div data-inline="-" style="width: 100%">
+        <button class="button" on:click={() => navigationHistory.undo()}>
+            <Icon styles="font-size: .9rem">arrow_back</Icon>
+            <ToolTip content={Localization.BACK_DIR}/>
+        </button>
+        <button class="button" on:click={() => navigationHistory.redo()}>
+            <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
+            <ToolTip content={Localization.FORWARD_DIR}/>
+        </button>
+        <button
+                class="button"
+                on:click={() => {
             if(currentDirectory.id === NodeFS.sep)
                 return
             navigationHistory.goToParent(currentDirectory)
         }}
-    >
-        <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
-        <ToolTip content={Localization.PARENT_DIR}/>
-    </button>
-    <button
-            disabled="{loading}"
-            class="button"
-            on:click={() => {
+        >
+            <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
+            <ToolTip content={Localization.PARENT_DIR}/>
+        </button>
+        <button
+                disabled="{loading}"
+                class="button"
+                on:click={() => {
                     alert.pushAlert(Localization.REFRESHING, "info")
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
-    >
-        <Icon styles="font-size: .9rem">sync</Icon>
-        <ToolTip content={Localization.REFRESH}/>
-    </button>
-    <button class="button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
-        <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-        <ToolTip content={Localization.CREATE_FOLDER}/>
-    </button>
+        >
+            <Icon styles="font-size: .9rem">sync</Icon>
+            <ToolTip content={Localization.REFRESH}/>
+        </button>
+        <button class="button" on:click={() => FilesStore.createFolder(currentDirectory).catch()}>
+            <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
+            <ToolTip content={Localization.CREATE_FOLDER}/>
+        </button>
+        <div data-vertdivider="-"></div>
 
-    <button
-            class="button"
-            data-highlight={starred ? "-" : undefined}
-            on:click={() => {
-                        if (starred)
-                            FilesStore.removeBookmark(currentDirectory.id)
-                        else
-                            FilesStore.addBookmark(currentDirectory.id)
-                    }}
-    >
-        <Icon styles="font-size: .9rem">star</Icon>
-        <ToolTip content={Localization.ADD_BOOKMARK}/>
-    </button>
-    <div data-vertdivider="-"></div>
-    <Input
-            hasBorder={true}
-            width="50%"
-            height="22px"
-            placeholder={Localization.SEARCH}
-            searchString={currentDirectory.id}
-            noAutoSubmit={true}
-            setSearchString={async (path) => {
-                if (await NodeFS.exists(NodeFS.ASSETS_PATH  + path))
-                setCurrentDirectory({id: path })
-            }}
-    />
-    <Input
-            width="50%"
-            hasBorder={true}
-            height="22px"
-            placeholder={Localization.SEARCH}
-            searchString={searchString}
-            setSearchString={setSearchString}
-    />
-
-    <Dropdown
-            buttonStyles={`
+        <Input
+                width="50%"
+                hasBorder={true}
+                height="22px"
+                placeholder={Localization.SEARCH}
+                searchString={searchString}
+                setSearchString={setSearchString}
+        />
+        <Dropdown
+                buttonStyles={`
               max-height: 22px;
               min-height: 22px;
               border-radius: 3px;
               ${fileType != null ? "background: var(--pj-accent-color);" : "background: var(--pj-background-secondary);"}
               color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
             `}
-    >
-        <button slot="button" style="background: transparent; border: none">
-            <ToolTip content={Localization.FILTER_TYPE}/>
-            <Icon styles="font-size: .9rem">filter_alt</Icon>
-        </button>
-        {#each fileTypes as k, i}
-            <button
-                    on:click={() => setFileType(fileType === FILE_TYPES[k[0]] ? undefined : FILE_TYPES[k[0]])}
-                    style="text-transform: capitalize"
-            >
-                {#if fileType === FILE_TYPES[k[0]]}
-                    <Icon>check</Icon>
-                {:else}
-                    <div style="width: 1.1rem"></div>
-                {/if}
-                {k[1]}
+        >
+            <button slot="button" style="background: transparent; border: none">
+                <ToolTip content={Localization.FILTER_TYPE}/>
+                <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
-        {/each}
-    </Dropdown>
-    <div data-vertdivider="-"></div>
-    <button
-            data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
-            on:click={() => setViewType(ITEM_TYPES.ROW)}
-            class="button"
-    >
-        <Icon styles="font-size: .9rem">view_stream</Icon>
-        <ToolTip content={Localization.ROW_VIEW}/>
-    </button>
-    <button
-            data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
-            on:click={() => setViewType(ITEM_TYPES.CARD)}
-            class="button"
-    >
-        <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-        <ToolTip content={Localization.CARD_VIEW}/>
-    </button>
-    <div data-vertdivider="-"></div>
-    <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
-        {Localization.IMPORT}
-        <Icon styles="font-size: .9rem">open_in_new</Icon>
-    </button>
+            {#each fileTypes as k, i}
+                <button
+                        on:click={() => setFileType(fileType === FILE_TYPES[k[0]] ? undefined : FILE_TYPES[k[0]])}
+                        style="text-transform: capitalize"
+                >
+                    {#if fileType === FILE_TYPES[k[0]]}
+                        <Icon>check</Icon>
+                    {:else}
+                        <div style="width: 1.1rem"></div>
+                    {/if}
+                    {k[1]}
+                </button>
+            {/each}
+        </Dropdown>
+    </div>
+    <div data-inline="-" style="width: 100%; justify-content: flex-end">
+
+        <button
+                data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.ROW)}
+                class="button"
+        >
+            <Icon styles="font-size: .9rem">view_stream</Icon>
+            <ToolTip content={Localization.ROW_VIEW}/>
+        </button>
+        <button
+                data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+                on:click={() => setViewType(ITEM_TYPES.CARD)}
+                class="button"
+        >
+            <Icon styles="transform: rotate(180deg)">grid_view</Icon>
+            <ToolTip content={Localization.CARD_VIEW}/>
+        </button>
+        <div data-vertdivider="-"></div>
+        <button on:click={() => importFile(currentDirectory)} data-focusbutton="-" style="max-height: 22px">
+            {Localization.IMPORT}
+            <Icon styles="font-size: .9rem">open_in_new</Icon>
+        </button>
+    </div>
 </ViewHeader>
 
 <style>

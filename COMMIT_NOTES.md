@@ -1,4 +1,6 @@
-- Fixing UV scale of simple material
-- Fixing point light attenuation
-- Adding baseNormal sampler to GBuffer
-- Organizing glsl methods 
+- Reworking primitive loader
+- Fixing inspector bug (entity change)
+- Added double click action to collection/primitive and texture items
+- Removed bookmarks
+- Removed path input on content browser
+- Visual change to content browser header and sidebar

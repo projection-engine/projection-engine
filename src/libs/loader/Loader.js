@@ -18,35 +18,24 @@ import GPUResources from "../../../public/engine/GPUResources";
 import Entity from "../../../public/engine/instances/Entity";
 import GPUController from "../../../public/engine/GPUController";
 import {v4} from "uuid";
+import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 
 export default class Loader {
-    static async mesh(objLoaded, id, asID) {
-        let mesh,
-            entity,
-            existsMesh = false,
-            material
+    static async mesh(objLoaded, id) {
+        let materialID
+        if (GPUResources.meshes.get(objLoaded.id))
+            return
         try {
-            mesh = GPUResources.meshes.get(objLoaded.id)
-            if (!mesh) {
-
-                mesh = GPUController.allocateMesh(id, objLoaded)
-                await loadMaterial(
-                    objLoaded.material,
-                    data => objLoaded.material = data
-                )
-            } else
-                existsMesh = true
-            entity = asID ? null : initializeEntity(objLoaded, mesh.id)
+            GPUController.allocateMesh(id, objLoaded)
+            await loadMaterial(
+                objLoaded.material,
+                data => materialID = data
+            )
         } catch (e) {
             console.error(e)
             alert.pushAlert("Some error occurred", "error")
         }
-
-        return {
-            mesh,
-            entity,
-            existsMesh
-        }
+        return materialID
     }
 
     static async scene(path) {
@@ -84,7 +73,7 @@ export default class Loader {
     }
 
     static async load(event, asID, mouseX, mouseY) {
-        const items = [], meshes = []
+        const items = [], entitiesToPush = []
 
         if (asID)
             items.push(event)
@@ -103,13 +92,16 @@ export default class Loader {
                 continue
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.PRIMITIVE: {
+
                     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
-                    const meshData = await Loader.mesh(file, data, asID)
-                    if (!meshData) continue
-                    if (meshData.mesh !== undefined)
-                        meshes.push(meshData)
-                    else
-                        alert.pushAlert("Error importing mesh.", "error")
+                    const materialID = await Loader.mesh(file, data, asID)
+                    const entity = new Entity(undefined, "New primitive")
+                    const instance = entity.addComponent(COMPONENTS.MESH)
+                    instance.materialID = materialID || FALLBACK_MATERIAL
+                    instance.meshID = data
+                    EntityConstructor.translateEntity(entity)
+                    entitiesToPush.push(entity)
+
                     break
                 }
                 case FILE_TYPES.COLLECTION:
@@ -166,16 +158,9 @@ export default class Loader {
             }
         }
 
-        if (meshes.length > 0 && !asID) {
-            const toLoad = meshes.map(m => m.entity).filter(m => m != null)
-            if (!toLoad.length)
-                return
-            for (let i = 0; i < toLoad.length; i++) {
-                const entity = toLoad[i]
-                EntityConstructor.translateEntity(entity)
-            }
-            dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toLoad})
-            alert.pushAlert(`Meshes loaded (${toLoad.length})`, "success")
+        if (entitiesToPush.length > 0) {
+            dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entitiesToPush})
+            alert.pushAlert(`Entities created`, "success")
         }
     }
 

@@ -125,7 +125,7 @@
             try {
                 const data = PickingAPI.readBlock(nStart, nEnd)
 
-                WORKER.postMessage({entities: Engine.entities, data})
+                WORKER.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data})
                 WORKER.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
             } catch (err) {
                 console.error(err, startCoords, nStart)
@@ -160,7 +160,7 @@
 />
 
 <style>
-    .top-bar{
+    .top-bar {
         position: absolute;
         padding: 2px;
 

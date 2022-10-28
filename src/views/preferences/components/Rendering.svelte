@@ -24,7 +24,7 @@
 
 <fieldset>
     <legend>{Localization.SSR}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.SSR.enabled}
                 handleCheck={() => updateSubObject("SSR","enabled",!settings.SSR.enabled)}
@@ -73,7 +73,7 @@
 
 <fieldset>
     <legend>{Localization.SSGI}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.SSGI.enabled}
                 handleCheck={() => updateSubObject("SSGI","enabled",!settings.SSGI.enabled)}
@@ -135,7 +135,7 @@
 
 <fieldset>
     <legend>{Localization.SHADOWS}</legend>
-    <div class="content">
+    <div data-form="-">
 
         <Range
                 label={Localization.RESOLUTION}
@@ -170,7 +170,7 @@
 
 <fieldset>
     <legend>{Localization.AO}</legend>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.SSAO.enabled}
                 handleCheck={() => updateSubObject("SSAO", "enabled", !settings.SSAO.enabled)}
@@ -195,15 +195,3 @@
     </div>
 </fieldset>
 
-
-<style>
-    legend {
-        font-size: .8rem;
-    }
-
-    .content {
-        padding-left: 25%;
-        display: grid;
-        gap: 4px;
-    }
-</style>

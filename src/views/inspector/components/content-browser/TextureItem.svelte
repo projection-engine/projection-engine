@@ -8,16 +8,16 @@
     import GPUResources from "../../../../../public/engine/GPUResources";
     import TEXTURE_FILTERING from "../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
+
     import GPUController from "../../../../../public/engine/GPUController";
 
     const {shell} = window.require("electron")
-    const B = "height: 35px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
+    const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
     export let item
     export let data
 
 
-    const updateAsset = async (key, value, d=data) => {
+    const updateAsset = async (key, value, d = data) => {
         let temp = {...d}
         if (key === "format")
             temp = {...temp, ...value}
@@ -67,14 +67,16 @@
         data = temp
     }
 </script>
-<Accordion title={Localization.FLIP_TEXTURE}>
+
+<fieldset>
+    <legend>{Localization.FLIP_TEXTURE}</legend>
     <Checkbox label={Localization.FLIP_Y} checked={data?.flipY}
               handleCheck={ async () => await updateAsset("flipY", !data.flipY, data)}/>
     <Checkbox label={Localization.FLIP_X} checked={data?.flipX}
               handleCheck={async() => await updateAsset("flipX", !data.flipX, data)}/>
-</Accordion>
-
-<Accordion title={Localization.TEXTURE_FORMAT}>
+</fieldset>
+<fieldset>
+    <legend>{Localization.TEXTURE_FORMAT}</legend>
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
             {data?.internalFormat}
@@ -89,8 +91,9 @@
             SRGB8_ALPHA8
         </button>
     </Dropdown>
-</Accordion>
-<Accordion title={Localization.TEXTURE_FILTERING}>
+</fieldset>
+<fieldset>
+    <legend>{Localization.TEXTURE_FILTERING}</legend>
 
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
@@ -134,9 +137,10 @@
             {Localization.LINEAR}
         </button>
     </Dropdown>
-</Accordion>
+</fieldset>
 
-<Accordion title={Localization.TEXTURE_WRAPPING}>
+<fieldset>
+    <legend>{Localization.TEXTURE_WRAPPING}</legend>
     {#each ["wrapS", "wrapT"] as key}
         <Dropdown buttonStyles={B}>
             <button slot="button" class="dropdown">
@@ -161,7 +165,7 @@
             </button>
         </Dropdown>
     {/each}
-</Accordion>
+</fieldset>
 
 <div class="link"
      on:click={() => shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>

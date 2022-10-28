@@ -88,8 +88,6 @@
         {Localization.INSPECTOR}
     </div>
 {:else}
-
-
     <Header
             currentView={VIEWS.COMPONENT}
             orientation={orientation}

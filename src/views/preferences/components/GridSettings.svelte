@@ -10,7 +10,7 @@
 
 
 <fieldset>
-    <div class="content">
+    <div data-form="-">
         <Checkbox
                 checked={settings.gridVisibility}
                 handleCheck={() => SettingsStore.updateStore({...settings, gridVisibility: !settings.gridVisibility })}
@@ -40,14 +40,3 @@
 </fieldset>
 
 
-
-<style>
-    legend{
-        font-size: .8rem;
-    }
-    .content{
-        padding-left: 25%;
-        display: grid;
-        gap: 4px;
-    }
-</style>

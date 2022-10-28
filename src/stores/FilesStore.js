@@ -21,11 +21,7 @@ export default class FilesStore {
     static getStore(onChange) {
         if (!FilesStore.initialized) {
             FilesStore.initialized = true
-            FilesAPI.readFile(NodeFS.path + NodeFS.sep + "bookmarks.meta", "json")
-                .then(res => {
-                    if (res)
-                        FilesStore.updateStore({...FilesStore.data, bookmarks: res})
-                })
+
             FilesStore.refreshFiles().catch()
         }
         return contentBrowserStore.subscribe(newValue => {
@@ -84,42 +80,6 @@ export default class FilesStore {
         contentBrowserStore.set({...value})
     }
 
-    static removeBlock(v) {
-        const prev = FilesStore.data.bookmarks
-        const n = prev.filter(i => !v.includes(i.path))
-        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
-        FilesStore.updateStore({...FilesStore.data, bookmarks: n})
-    }
-
-    static addBookmark(id) {
-        const prev = FilesStore.data.bookmarks
-
-        const n = [...prev, {
-            name: id.split(NodeFS.sep).pop(),
-            path: id
-        }]
-        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
-        FilesStore.updateStore({...FilesStore.data, bookmarks: n})
-    }
-
-    static removeBookmark(id) {
-        const prev = FilesStore.data.bookmarks
-
-        const n = prev.filter(i => i.path !== id)
-        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
-        FilesStore.updateStore({...FilesStore.data, bookmarks: n})
-    }
-
-    static renameBookmark(id, newPath) {
-        const prev = FilesStore.data.bookmarks
-        const p = prev.filter(i => i.path !== id)
-        const n = [...p, {
-            name: newPath.split(NodeFS.sep).pop(),
-            path: newPath
-        }]
-        FilesAPI.writeFile(NodeFS.sep + "bookmarks.meta", JSON.stringify(n)).catch()
-        FilesStore.updateStore({...FilesStore.data, bookmarks: n})
-    }
 
     static paste(target, setCurrentDirectory) {
         if (FilesStore.data.toCut.length > 0) {
