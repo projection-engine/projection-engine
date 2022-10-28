@@ -500,8 +500,6 @@ export default {
     HUE: "Hue",
     SATURATION: "Saturation",
 
-    TERRAIN: "Terrain editor",
-
     PREFERENCES: "Preferences",
     SPLIT_TOP: "Split top",
     SPLIT_BOTTOM: "Split bottom",
@@ -514,7 +512,9 @@ export default {
     CLOSE: "Close",
     HIERARCHY: "Hierarchy",
     INSPECTOR: "Inspector",
-    CONSOLE: "Console"
+    CONSOLE: "Console",
+    IMAGE: "Texture",
+    TERRAIN: "terrain",
 
 
 }

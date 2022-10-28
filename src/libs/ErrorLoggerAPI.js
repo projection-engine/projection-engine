@@ -52,7 +52,7 @@ export default class ErrorLoggerAPI {
 
                 }, 150)
                 const primary = messages[0]
-                if (primary instanceof Error)
+                if (primary instanceof Error && alert.pushAlert != null)
                     alert.pushAlert(primary.message, "error")
                 old(...messages)
             }

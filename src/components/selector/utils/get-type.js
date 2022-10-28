@@ -12,8 +12,7 @@ export default function getType(store, type, mergeMaterials, terrainMaterials) {
             return store.materials
         case "mesh":
             return store.meshes
-        case "script":
-            return store.scripts
+
         case "ui":
             return store.uiLayouts
         case "terrain":

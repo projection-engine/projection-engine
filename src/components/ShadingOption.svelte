@@ -64,7 +64,7 @@
             case SHADING_MODELS.ALBEDO:
                 return GBuffer.albedoSampler
             case SHADING_MODELS.REC_NORMALS:
-                return GBuffer.genericNormalSampler
+                return GBuffer.baseNormalSampler
             case SHADING_MODELS.POSITION:
                 return GBuffer.positionSampler
             case SHADING_MODELS.G_AO:

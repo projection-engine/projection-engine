@@ -1,4 +1,4 @@
-- Entity API optimization
-- Reworking depth pass to integrate with gBuffer
-- Removing DepthPass 
-- Reworking materials pipeline
+- Fixing UV scale of simple material
+- Fixing point light attenuation
+- Adding baseNormal sampler to GBuffer
+- Organizing glsl methods 

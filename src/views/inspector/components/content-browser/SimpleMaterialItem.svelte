@@ -22,7 +22,7 @@
     $: settings = uniform.settings
     $: fallbackValues = uniform.fallbackValues
     $: rgbSamplerScales = uniform.rgbSamplerScales
-    $: linearSamplerScales = uniform.linearSamplerScales ? uniform.linearSamplerScales : SIMPLE_MATERIAL_TEMPLATE.uniformData[2].data
+    $: linearSamplerScales = uniform.linearSamplerScales
     $: uvScales = uniform.uvScales || DEFAULT_MATRICES[DEFAULT_MATRICES.length - 1]
 
     function updateScales(index, value) {
@@ -241,12 +241,12 @@
             <Range
                     value={uvScales[4]}
                     label="U"
-                    onFinish={v => updateUVScales(2, v)}
+                    onFinish={v => updateUVScales(4, v)}
             />
             <Range
                     value={uvScales[5]}
                     label="V"
-                    onFinish={v => updateUVScales(3, v)}
+                    onFinish={v => updateUVScales(5, v)}
             />
         </div>
     </fieldset>
@@ -316,14 +316,14 @@
         <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
-                    value={uvScales[4]}
+                    value={uvScales[6]}
                     label="U"
-                    onFinish={v => updateUVScales(4, v)}
+                    onFinish={v => updateUVScales(6, v)}
             />
             <Range
-                    value={uvScales[5]}
+                    value={uvScales[7]}
                     label="V"
-                    onFinish={v => updateUVScales(5, v)}
+                    onFinish={v => updateUVScales(7, v)}
             />
         </div>
     </fieldset>
@@ -394,14 +394,14 @@
         <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
-                    value={uvScales[6]}
+                    value={uvScales[8]}
                     label="U"
-                    onFinish={v => updateUVScales(6, v)}
+                    onFinish={v => updateUVScales(8, v)}
             />
             <Range
-                    value={uvScales[7]}
+                    value={uvScales[9]}
                     label="V"
-                    onFinish={v => updateUVScales(7, v)}
+                    onFinish={v => updateUVScales(9, v)}
             />
         </div>
     </fieldset>
@@ -461,14 +461,14 @@
         <legend>{Localization.UV_SCALE}</legend>
         <div class="content-wrapper">
             <Range
-                    value={uvScales[8]}
+                    value={uvScales[10]}
                     label="U"
-                    onFinish={v => updateUVScales(8, v)}
+                    onFinish={v => updateUVScales(10, v)}
             />
             <Range
-                    value={uvScales[9]}
+                    value={uvScales[11]}
                     label="V"
-                    onFinish={v => updateUVScales(9, v)}
+                    onFinish={v => updateUVScales(11, v)}
             />
         </div>
     </fieldset>
