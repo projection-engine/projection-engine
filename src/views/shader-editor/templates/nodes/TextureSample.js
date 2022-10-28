@@ -87,7 +87,7 @@ export default class TextureSample extends Node {
     getFunctionCall({uv}, index, outputs) {
         const samplerName = this.name + "_" + index + "_S"
         let response = [
-            `vec4 ${samplerName} = texture(${this.uniformName}, ${uv !== undefined ? uv.name : "texCoord"});`
+            `vec4 ${samplerName} = texture(${this.uniformName}, ${uv !== undefined ? uv.name : "texCoords"});`
         ]
         outputs.forEach(o => {
             if (o !== "sampler") {

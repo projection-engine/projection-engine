@@ -8,7 +8,7 @@ export default class TextureCoords extends Node {
 
     constructor() {
         super([], [
-            {label: "Coordinates", key: "texCoord", type: DATA_TYPES.VEC2}
+            {label: "Coordinates", key: "texCoords", type: DATA_TYPES.VEC2}
         ])
 
         this.name = "TextureCoords"
@@ -19,7 +19,7 @@ export default class TextureCoords extends Node {
         return NODE_TYPES.STATIC
     }
     getFunctionCall() {
-        this.texCoord = "texCoord"
+        this.texCoords = "texCoords"
         return ""
     }
 }

@@ -29,7 +29,7 @@ export default class ParallaxOcclusionMapping extends Node {
 
             {
                 label: "Texture Coords",
-                key: "texCoord",
+                key: "texCoords",
                 accept: [DATA_TYPES.VEC2]
             },
             {
@@ -55,11 +55,11 @@ export default class ParallaxOcclusionMapping extends Node {
 
     getFunctionInstance() {
         return `
-                vec2 parallaxMapping (vec2 texCoord, vec3 viewDir, sampler2D heightMap, float heightScale, float layers){
+                vec2 parallaxMapping (vec2 texCoords, vec3 viewDir, sampler2D heightMap, float heightScale, float layers){
                    float layer_depth = 1.0 / layers;
                    float currentLayerDepth = 0.0;
                    vec2 delta_uv = viewDir.xy * heightScale / (viewDir.z * layers);
-                   vec2 cur_uv = texCoord;
+                   vec2 cur_uv = texCoords;
                 
                    float depth_from_tex = 1.-texture(heightMap, cur_uv).r;
                 
@@ -88,9 +88,9 @@ export default class ParallaxOcclusionMapping extends Node {
 
      
 
-    getFunctionCall({heightMap, viewDirection, texCoord}, index) {
+    getFunctionCall({heightMap, viewDirection, texCoords}, index) {
         this.UVs = "UVs" + index
-        return `vec2 ${this.UVs} = parallaxMapping( ${texCoord.name},  ${viewDirection.name},  ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
+        return `vec2 ${this.UVs} = parallaxMapping( ${texCoords.name},  ${viewDirection.name},  ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
     }
 
 }

@@ -3,8 +3,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPUResources from "../../public/engine/GPUResources";
-    import DepthPass from "../../public/engine/runtime/renderers/DepthPass";
-    import DeferredRenderer from "../../public/engine/runtime/renderers/DeferredRenderer";
+    import GBuffer from "../../public/engine/runtime/renderers/GBuffer";
     import AmbientOcclusion from "../../public/engine/runtime/occlusion/AmbientOcclusion";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/Engine";
@@ -55,47 +54,47 @@
 
     const getTexture = () => {
         switch (shadingModel) {
+            case SHADING_MODELS.UV:
             case SHADING_MODELS.DEPTH:
-                return DepthPass.depthSampler
+                return GBuffer.depthUVSampler
             case SHADING_MODELS.AO:
                 return AmbientOcclusion.filteredSampler
             case SHADING_MODELS.NORMAL:
-                return DeferredRenderer.normalSampler
+                return GBuffer.normalSampler
             case SHADING_MODELS.ALBEDO:
-                return DeferredRenderer.albedoSampler
+                return GBuffer.albedoSampler
             case SHADING_MODELS.REC_NORMALS:
-                return DepthPass.normalSampler
+                return GBuffer.genericNormalSampler
             case SHADING_MODELS.POSITION:
-                return DeferredRenderer.positionSampler
+                return GBuffer.positionSampler
             case SHADING_MODELS.G_AO:
             case SHADING_MODELS.ROUGHNESS:
             case SHADING_MODELS.METALLIC:
-                return DeferredRenderer.behaviourSampler
+                return GBuffer.behaviourSampler
             case SHADING_MODELS.AMBIENT:
-                return DeferredRenderer.ambientSampler
+                return GBuffer.ambientSampler
             case SHADING_MODELS.SSGI:
                 return SSGIPass.sampler
             case SHADING_MODELS.STOCHASTIC:
                 return SSGIPass.normalSampler
-            case SHADING_MODELS.UV:
-                return DepthPass.UVSampler
+
             case SHADING_MODELS.ID:
-                return DepthPass.IDSampler
+                return GBuffer.IDSampler
         }
 
     }
     $: {
-        if (Engine.isReady && DeferredRenderer.ready) {
-            DeferredRenderer.deferredUniforms.option = shadingModel
+        if (Engine.isReady && GBuffer.ready) {
+            GBuffer.deferredUniforms.option = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                SSGIPass.uniforms.previousFrame = DeferredRenderer.albedoSampler
-                DeferredRenderer.deferredUniforms.uSampler = getTexture()
-                DeferredRenderer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                SSGIPass.uniforms.previousFrame = GBuffer.albedoSampler
+                GBuffer.deferredUniforms.uSampler = getTexture()
+                GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
-                SSGIPass.uniforms.previousFrame = DeferredRenderer.compositeFBO.colors[0]
-                DeferredRenderer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
-                DeferredRenderer.deferredUniforms.uSampler = DeferredRenderer.compositeFBO.colors[0]
+                SSGIPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
+                GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
+                GBuffer.deferredUniforms.uSampler = GBuffer.compositeFBO.colors[0]
             }
         }
     }

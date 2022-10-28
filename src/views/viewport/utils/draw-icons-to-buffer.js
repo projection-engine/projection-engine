@@ -2,12 +2,12 @@ import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 import CameraAPI from "../../../../public/engine/api/CameraAPI";
 import GPUResources from "../../../../public/engine/GPUResources";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
-import DepthPass from "../../../../public/engine/runtime/renderers/DepthPass";
 import Engine from "../../../../public/engine/Engine";
+import GBuffer from "../../../../public/engine/runtime/renderers/GBuffer";
 
 export default function drawIconsToBuffer() {
     const entities = Engine.entities
-    const FBO = DepthPass.framebuffer
+    const FBO = GBuffer.gBuffer
     FBO.startMapping(undefined, undefined, false)
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
@@ -24,12 +24,11 @@ export default function drawIconsToBuffer() {
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {
-
-    DepthPass.shader.bindForUse({
+    GBuffer.forwardDepthShader.bindForUse({
         meshID,
+        viewMatrix: CameraAPI.viewMatrix,
+        transformMatrix ,
         projectionMatrix: CameraAPI.projectionMatrix,
-        transformMatrix,
-        viewMatrix: CameraAPI.viewMatrix
     })
     mesh.draw()
 }

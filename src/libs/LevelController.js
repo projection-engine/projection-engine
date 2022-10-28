@@ -7,7 +7,6 @@ import ROUTES from "../data/ROUTES";
 import CHANNELS from "../data/CHANNELS";
 import GPUResources from "../../public/engine/GPUResources";
 import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
-import Entity from "../../public/engine/instances/Entity";
 import componentConstructor from "../utils/component-constructor";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
 
@@ -27,6 +26,8 @@ import CameraAPI from "../../public/engine/api/CameraAPI";
 import TabsStore from "../stores/TabsStore";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
 import GPUController from "../../public/engine/GPUController";
+import serializeStructure from "../../public/engine/utils/serialize-structure";
+import EntityAPI from "../../public/engine/api/EntityAPI";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -103,7 +104,7 @@ export default class LevelController {
                     VisualsStore.updateStore({...visualSettings})
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
-                    const entity = Entity.parseEntityObject(entities[i])
+                    const entity = EntityAPI.parseEntityObject(entities[i])
                     for (let i = 0; i < entity.scripts.length; i++)
                         await componentConstructor(entity, entity.scripts[i].id, false)
                     const imgID = entity.components.get(COMPONENTS.SPRITE)?.imageID
@@ -208,7 +209,7 @@ export default class LevelController {
 
             await FilesAPI.writeFile(
                 pathToWrite,
-                Entity.serializeComplexObject({
+                serializeStructure({
                     entities: entities.map(e => e.serializable()),
                     visualSettings: {...VisualsStore.data},
                 }),

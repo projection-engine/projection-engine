@@ -6,7 +6,8 @@ import CameraTracker from "../../public/engine/editor-environment/libs/CameraTra
 import UIAPI from "../../public/engine/api/UIAPI";
 import PhysicsAPI from "../../public/engine/api/PhysicsAPI";
 import Engine from "../../public/engine/Engine";
-import Entity from "../../public/engine/instances/Entity";
+import serializeStructure from "../../public/engine/utils/serialize-structure";
+import EntityAPI from "../../public/engine/api/EntityAPI";
 
 export default class EntityStateController {
     static #state = []
@@ -20,7 +21,7 @@ export default class EntityStateController {
         Engine.environment = ENVIRONMENT.EXECUTION
         alert.pushAlert("Saving state", "alert")
 
-        EntityStateController.#state = Engine.entities.map(e => Entity.serializeComplexObject(e.serializable()))
+        EntityStateController.#state = Engine.entities.map(e => serializeStructure(e.serializable()))
 
         const engine = EngineStore.engine
         const entities = Engine.entities
@@ -34,7 +35,6 @@ export default class EntityStateController {
             }
         } catch (err) {
             console.error(err)
-            alert.pushAlert("Some error occurred", "error")
         }
 
         UIAPI.buildUI()
@@ -62,12 +62,11 @@ export default class EntityStateController {
             }
         } catch (err) {
             console.error(err)
-            alert.pushAlert("Some error occurred", "error")
         }
 
 
         for (let i = 0; i < EntityStateController.#state.length; i++) {
-            const entity = Entity.parseEntityObject(JSON.parse(EntityStateController.#state[i]))
+            const entity = EntityAPI.parseEntityObject(JSON.parse(EntityStateController.#state[i]))
             for (let i = 0; i < entity.scripts.length; i++)
                 await componentConstructor(entity, entity.scripts[i].id, false)
             mapped.push(entity)
