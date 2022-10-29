@@ -5,9 +5,11 @@
     import VisualsStore from "../../../stores/VisualsStore";
 
     export let visualSettings
+
     function update(key, value) {
         VisualsStore.updateStore({...visualSettings, [key]: value})
     }
+
     function updateSubObject(objKey, subKey, value) {
         const old = {...visualSettings[objKey]}
         old[subKey] = value
@@ -15,14 +17,32 @@
     }
 </script>
 
-
-<Checkbox
-        checked={visualSettings.fxaa}
-        handleCheck={() => {
+<fieldset>
+    <legend>{Localization.ANTI_ALIASING}</legend>
+    <Checkbox
+            checked={visualSettings.fxaa}
+            handleCheck={() => {
                update("fxaa", !visualSettings.fxaa)
         }}
-        label={Localization.AA}
-/>
+            label={Localization.FXAA}
+    />
+</fieldset>
+<fieldset>
+    <legend>{Localization.PHYSICS}</legend>
+    <Range
+            label={Localization.PHYSICS_SIMULATION_STEP}
+            minValue={.0001}
+            value={visualSettings.physicsSimulationStep * 1000}
+            onFinish={v => update("physicsSimulationStep", v/1000)}
+    />
+    <Range
+            label={Localization.PHYSICS_SUB_STEPS}
+            integer={true}
+            minValue={1}
+            value={visualSettings.physicsSubSteps}
+            onFinish={v => update("physicsSubSteps", v)}
+    />
+</fieldset>
 
 <fieldset>
     <legend>{Localization.SSR}</legend>

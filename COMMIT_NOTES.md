@@ -1,2 +1,2 @@
-- Fixing file rename
-- Fixing SSAO
+- Some bugfixes
+- Camera component tweaks

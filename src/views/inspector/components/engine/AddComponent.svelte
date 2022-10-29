@@ -23,6 +23,7 @@
     <button
             slot="button"
             class="add-button"
+            data-overflow="-"
     >
         <Icon>add</Icon>
         {Localization.ADD_COMPONENT}
@@ -35,7 +36,8 @@
                     entity.addComponent(key)
                     SelectionStore.updateStore()
                     e.target.closeDropdown()
-                }}>
+                }}
+        >
             <Icon>{icon}</Icon>
             {label}
         </button>

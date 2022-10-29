@@ -7,27 +7,23 @@ import DirectionalShadows from "../../../../public/engine/runtime/occlusion/Dire
 import GridSystem from "../../../../public/engine/editor-environment/services/GridSystem";
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 import GPUResources from "../../../../public/engine/GPUResources";
+import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
 
 
 export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
-
     CameraTracker.initialize(settings)
-    CameraTracker.movementSpeed = settings.camera?.movementSpeed * .1
-    CameraTracker.turnSpeed = settings.camera?.turnSpeed * .01
-    console.log(settings.camera)
-    if(settings.camera) {
-        if(settings.camera.smoothing != null)
-        CameraAPI.translationSmoothing = settings.camera?.smoothing * .001
-        if(settings.camera.rotationSmoothing != null)
-        CameraAPI.rotationSmoothing = settings.camera?.rotationSmoothing * .001
-    }
-    if(executingAnimation) {
-        CameraAPI.translationSmoothing = .001
-        CameraAPI.rotationSmoothing = .1
-    }
 
-    if (!settings.executingAnimation) {
+    if (Engine.environment === ENVIRONMENT.DEV) {
+        if(settings.camera) {
+            CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
+            CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
+            if(settings.camera.smoothing != null)
+                CameraAPI.translationSmoothing = settings.camera?.smoothing * .001
+            if(settings.camera.rotationSmoothing != null)
+                CameraAPI.rotationSmoothing = settings.camera?.rotationSmoothing * .001
+        }
+
         CameraAPI.zNear = settings.zNear
         CameraAPI.zFar = settings.zFar
         CameraAPI.fov = settings.fov
@@ -63,7 +59,7 @@ export default function updateRenderer(selected, engine, settings) {
         ...settings,
         selected,
         onWrap: executingAnimation ? null : Wrapper,
-    })
+    }, settings.physicsSimulationStep, settings.physicsSubSteps)
 
     bindGizmo(selected, settings)
 }

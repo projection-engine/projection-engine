@@ -21,7 +21,8 @@ export default {
     SAVING: "Saving project",
 
     SAVE: "Save",
-
+    DYNAMIC: "Dynamic",
+    ASPECT_RATIO: "Aspect Ratio",
     UNDOING: "Undoing",
     REDOING: "Redoing",
 
@@ -386,7 +387,13 @@ export default {
     SCALING_LOCAL: "Scaling (local)",
     RECOMPUTE_PROBES: "Probe re-computation needed",
     RESOLUTION: "Resolution",
-    AA: "FXAA Anti-aliasing",
+    FXAA: "FXAA",
+    PHYSICS: "Physics",
+    ANTI_ALIASING: "Anti-aliasing",
+
+    PHYSICS_SUB_STEPS: "Simulation sub-steps",
+    PHYSICS_SIMULATION_STEP: "Simulation step interval",
+
     SSR: "Screen space reflections",
     AO: "Ambient occlusion",
     STEP_SIZE: "Step size",

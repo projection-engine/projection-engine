@@ -51,13 +51,13 @@
     {#if attribute.type === Component.propTypes.NUMBER}
         <Range
                 handleChange={v => {
-                if(!firstSubmit){
-                    firstSubmit = true
+                    if(!firstSubmit){
+                        firstSubmit = true
+                        submit(attribute.key, v)
+                        return
+                    }
                     submit(attribute.key, v)
-                    return
-                }
-                submit(attribute.key, v)
-            }}
+                }}
                 variant="embedded"
                 onFinish={v => submit(attribute.key, v, true)}
                 minValue={attribute.min}
@@ -68,6 +68,7 @@
                 value={value}
                 isAngle={attribute.isAngle}
                 disabled={isDisabled}
+                precision={attribute.precision}
         />
     {:else if attribute.type === Component.propTypes.ARRAY}
 
@@ -90,6 +91,7 @@
                         value[index] = v
                         submit(attribute.key, value, true)
                     }}
+                    precision={attribute.precision}
                     minValue={attribute.min}
                     maxValue={attribute.max}
 

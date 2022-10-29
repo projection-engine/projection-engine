@@ -10,8 +10,8 @@ export default {
     FXAAReduceMul: 1 / 8,
 
 
-
-
+    physicsSubSteps: 10,
+    physicsSimulationStep: 0.01666666,
     distortion: false,
     chromaticAberration: false,
     preferencesVisibility: false,

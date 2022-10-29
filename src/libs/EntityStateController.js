@@ -73,8 +73,6 @@ export default class EntityStateController {
         }
         EntityStateController.#state = []
         dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
-        const engine = EngineStore.engine
-        EngineStore.updateStore({...engine, executingAnimation: false})
 
         UIAPI.destroyUI()
         if( UIAPI.uiMountingPoint?.parentNode) {
@@ -83,6 +81,8 @@ export default class EntityStateController {
         }
 
         CameraTracker.startTracking()
+        EngineStore.updateStore({...EngineStore.engine, executingAnimation: false})
+
     }
 
 }
