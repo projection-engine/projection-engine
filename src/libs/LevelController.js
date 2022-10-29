@@ -46,15 +46,22 @@ export default class LevelController {
             (ev, meta) => {
 
                 if (meta.settings != null) {
+                    console.log(meta)
                     const newSettings = {...SETTINGS, ...meta.settings}
                     if (newSettings.views[0].top == null)
                         newSettings.views = SETTINGS
-
-                    if (newSettings.tabsControllerCache)
-                        TabsStore.updateStore(newSettings.tabsControllerCache)
+                    newSettings.visualSettings = undefined
+                    if (meta.layout)
+                        TabsStore.updateStore(meta.layout)
                     SettingsStore.updateStore(newSettings)
+                    if (meta.visualSettings)
+                        VisualsStore.updateStore({...meta.visualSettings})
                 }
-                EngineStore.updateStore({...EngineStore.engine, meta: {...meta, settings: undefined}, isReady: true})
+                EngineStore.updateStore({
+                    ...EngineStore.engine,
+                    meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
+                    isReady: true
+                })
                 cb()
             })
         ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
@@ -99,9 +106,8 @@ export default class LevelController {
         ipcRenderer.on(
             CHANNELS.ENTITIES,
             async (_, data) => {
-                const {entities, visualSettings} = data
-                if (visualSettings)
-                    VisualsStore.updateStore({...visualSettings})
+                const {entities} = data
+
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
                     const entity = EntityAPI.parseEntityObject(entities[i])
@@ -189,9 +195,11 @@ export default class LevelController {
                             ],
                             cameraTranslation: [...CameraAPI.translationBuffer]
                         },
-                        tabsControllerCache: TabsStore.data
-                    }
+                    },
+                    layout: TabsStore.data,
+                    visualSettings: VisualsStore.data,
                 }), true)
+
             let pathToWrite
             pathElse:if (!EngineStore.engine.currentLevel)
                 pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
@@ -205,13 +213,10 @@ export default class LevelController {
                 pathToWrite = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
             }
             pathToWrite = NodeFS.resolvePath(pathToWrite)
-            console.log(EngineStore.engine.currentLevel, pathToWrite)
-
             await FilesAPI.writeFile(
                 pathToWrite,
                 serializeStructure({
-                    entities: entities.map(e => e.serializable()),
-                    visualSettings: {...VisualsStore.data},
+                    entities: entities.map(e => e.serializable())
                 }),
                 true
             )

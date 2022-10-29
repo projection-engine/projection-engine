@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
@@ -12,70 +12,37 @@
 
     let settings
     let visuals
+
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
+
     let timeout
     let tab = 0
-    let changed = false
 
-
-    onMount(() => {
-        settings = structuredClone(SettingsStore.data)
-        visuals = structuredClone(VisualsStore.data)
+    onDestroy(() => {
+        unsubscribeSettings()
+        unsubscribeVisuals()
     })
-
-    function apply() {
-        SettingsStore.updateStore(settings)
-        VisualsStore.updateStore(visuals)
-        changed = false
-        alert.pushAlert(Localization.UPDATING_SETTINGS, "info")
-    }
-
-    function update(key, value) {
-        changed = true
-        settings = {...settings, [key]: value}
-        clearTimeout(timeout)
-        timeout = setTimeout(_ => apply(), 250)
-    }
 </script>
 
 <div class="wrapper">
-    {#if settings != null}
-        <h3 style="margin: 0">{Localization.SHORTCUTS}</h3>
-        <Shortcuts
-                settings={settings}
-                update={update}
-        />
+    <h3 style="margin: 0">{Localization.SHORTCUTS}</h3>
+    <Shortcuts settings={settings}/>
 
-        <h3>{Localization.CAMERA}</h3>
-        <CameraSettings/>
+    <h3>{Localization.CAMERA}</h3>
+    <CameraSettings/>
 
-        <h3>{Localization.GRID}</h3>
-        <GridSettings settings={settings}/>
+    <h3>{Localization.GRID}</h3>
+    <GridSettings settings={settings}/>
 
-        <h3>{Localization.VIEWPORT}</h3>
-        <ViewportSettings
-                settings={settings}
-                update={update}
-        />
+    <h3>{Localization.VIEWPORT}</h3>
+    <ViewportSettings settings={settings}/>
 
-        <h3>{Localization.POST_PROCESSING}</h3>
-        <PostProcessing
-                settings={visuals}
-                update={update}
-        />
+    <h3>{Localization.POST_PROCESSING}</h3>
+    <PostProcessing visualSettings={visuals}/>
 
-        <h3>{Localization.RENDERING}</h3>
-        <Rendering
-                settings={visuals}
-                update={(key, value) => {
-                    changed = true
-                    visuals = {...visuals, [key]: value}
-                    clearTimeout(timeout)
-                    timeout = setTimeout(_ => apply(), 250)
-                }}
-        />
-
-
-    {/if}
+    <h3>{Localization.RENDERING}</h3>
+    <Rendering visualSettings={visuals}/>
 </div>
 
 <style>

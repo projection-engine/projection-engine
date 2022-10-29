@@ -1,6 +1,16 @@
-- Reworking primitive loader
-- Fixing inspector bug (entity change)
-- Added double click action to collection/primitive and texture items
-- Removed bookmarks
-- Removed path input on content browser
-- Visual change to content browser header and sidebar
+- Optimizing Shader class
+- Organizing glsl shaders
+- SSGI reworked again
+  - Much more stable with camera movement
+  - Better reflection capture from surrounding materials
+  - Faster
+- Stochastic normal are now in world space
+- Fxing some bugs related to bookmarks removal
+- Shading option for global illumination now shows raw light capture instead of blurred version
+- Fixing selection box
+  - Optimizing loop for faster queries 
+- Fixing preferences layout
+- Fixed tab serialization
+- Fixed visual settings serialization
+- Fixed post processing settings on preferences
+- Removed alert from preferences

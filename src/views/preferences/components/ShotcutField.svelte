@@ -5,13 +5,16 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import KEYS from "../../../data/KEYS";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let shortcut = []
     export let key
     export let wrapperKey
-    export let update
     export let all
 
+    function update(key, value) {
+        SettingsStore.updateStore({...SettingsStore.data, [key]: value})
+    }
     let currentShortcut
     $: currentShortcut = [...shortcut]
     let text = ""

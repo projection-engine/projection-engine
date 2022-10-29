@@ -24,15 +24,15 @@ export default {
 
     SSGI: {
         enabled: true,
-        maxSteps: 50,
+        maxSteps: 8,
         binarySearchSteps: 5,
         depthThreshold: 1.2,
-        strength: 1,
-        stepSize: 1
+        strength: .26,
+        stepSize: .7
     },
     SSR: {
         enabled: true,
-        maxSteps: 50,
+        maxSteps: 8,
         binarySearchSteps: 5,
         depthThreshold: 1.2,
         stepSize: 1

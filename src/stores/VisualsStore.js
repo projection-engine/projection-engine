@@ -11,8 +11,8 @@ export default class VisualsStore {
         return store.subscribe(newValue => onChange(newValue))
     }
 
-    static updateStore(value = store.data) {
-        store.data = value
+    static updateStore(value = VisualsStore.data) {
+        VisualsStore.data = value
         store.set(value)
     }
 }

@@ -21,23 +21,7 @@ export default function InitializeWindow(openAbout) {
     Math.vec4 = vec4
     Math.vec3 = vec3
     Math.quat = quat
-    ipcRenderer.on(
-        ROUTES.UPDATE_SETTINGS,
-        (event, data) => {
-            let newSettings = {}, newVisuals = {}
-            Object.entries(data).forEach(([key, value]) => {
-                if (VISUAL_SETTINGS.hasOwnProperty(key))
-                    newVisuals[key] = value
-                else
-                    newSettings[key] = value
-            })
-            if (Object.keys(newSettings).length > 0)
-                SettingsStore.updateStore({...SettingsStore.data, ...newSettings})
-            if (Object.keys(newVisuals).length > 0)
-                VisualsStore.updateStore({...VisualsStore.data, ...newVisuals})
-            alert.pushAlert("Updating preferences", "info")
-        }
-    )
+
 
     window.frameOptionsCallback = (id) => {
         switch (id) {

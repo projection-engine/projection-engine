@@ -16,7 +16,6 @@ export default async function handleRename(item, newName, currentDirectory, setC
                     }
                 })
             FilesStore.refreshFiles().catch()
-            FilesStore.renameBookmark(item.id, newNamePath)
         } else {
             const nameToApply = newName + "." + item.type
             if (newName !== item.name) {

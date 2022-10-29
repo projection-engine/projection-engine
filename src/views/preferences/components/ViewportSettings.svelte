@@ -3,9 +3,12 @@
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
-    export let update
+    function update(key, value) {
+        SettingsStore.updateStore({...settings, [key]: value})
+    }
 
 </script>
 <fieldset>

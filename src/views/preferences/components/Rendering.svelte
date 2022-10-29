@@ -2,12 +2,14 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import VisualsStore from "../../../stores/VisualsStore";
 
-    export let settings
-    export let update
-
+    export let visualSettings
+    function update(key, value) {
+        VisualsStore.updateStore({...visualSettings, [key]: value})
+    }
     function updateSubObject(objKey, subKey, value) {
-        const old = {...settings[objKey]}
+        const old = {...visualSettings[objKey]}
         old[subKey] = value
         update(objKey, old)
     }
@@ -15,9 +17,9 @@
 
 
 <Checkbox
-        checked={settings.fxaa}
+        checked={visualSettings.fxaa}
         handleCheck={() => {
-               update("fxaa", !settings.fxaa)
+               update("fxaa", !visualSettings.fxaa)
         }}
         label={Localization.AA}
 />
@@ -26,8 +28,8 @@
     <legend>{Localization.SSR}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.SSR.enabled}
-                handleCheck={() => updateSubObject("SSR","enabled",!settings.SSR.enabled)}
+                checked={visualSettings.SSR.enabled}
+                handleCheck={() => updateSubObject("SSR","enabled",!visualSettings.SSR.enabled)}
                 label={Localization.ENABLED}
         />
 
@@ -36,14 +38,14 @@
                     label={Localization.STEPS}
                     minValue={1}
                     integer={true}
-                    value={settings.SSR.maxSteps}
+                    value={visualSettings.SSR.maxSteps}
                     onFinish={v => updateSubObject("SSR","maxSteps",v)}
             />
             <Range
                     label={Localization.STEP_SIZE}
                     incrementPercentage={.001}
                     precision={4}
-                    value={settings.SSR.stepSize}
+                    value={visualSettings.SSR.stepSize}
                     onFinish={v => updateSubObject("SSR","stepSize",v)}
             />
 
@@ -54,7 +56,7 @@
                     incrementPercentage={.001}
                     precision={4}
                     minValue={0}
-                    value={settings.SSR.depthThreshold}
+                    value={visualSettings.SSR.depthThreshold}
                     onFinish={v => updateSubObject("SSR","depthThreshold",v)}
             />
 
@@ -63,7 +65,7 @@
                     integer={true}
                     minValue={1}
 
-                    value={settings.SSR.binarySearchSteps}
+                    value={visualSettings.SSR.binarySearchSteps}
                     onFinish={v => updateSubObject("SSR","binarySearchSteps",v)}
             />
         </div>
@@ -75,8 +77,8 @@
     <legend>{Localization.SSGI}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.SSGI.enabled}
-                handleCheck={() => updateSubObject("SSGI","enabled",!settings.SSGI.enabled)}
+                checked={visualSettings.SSGI.enabled}
+                handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
                 label={Localization.ENABLED}
         />
         <div data-inline="-">
@@ -86,7 +88,7 @@
 
                     minValue={1}
                     integer={true}
-                    value={settings.SSGI.maxSteps}
+                    value={visualSettings.SSGI.maxSteps}
                     onFinish={v => updateSubObject("SSGI","maxSteps",v)}
             />
 
@@ -98,7 +100,7 @@
                     precision={3}
                     minValue={0}
 
-                    value={settings.SSGI.strength}
+                    value={visualSettings.SSGI.strength}
                     onFinish={v => updateSubObject("SSGI","strength",v)}
             />
         </div>
@@ -109,7 +111,7 @@
                     incrementPercentage={.001}
                     precision={4}
 
-                    value={settings.SSGI.stepSize}
+                    value={visualSettings.SSGI.stepSize}
                     onFinish={v => updateSubObject("SSGI","stepSize",v)}
             />
 
@@ -118,7 +120,7 @@
                     incrementPercentage={.001}
                     precision={4}
                     minValue={0}
-                    value={settings.SSGI.depthThreshold}
+                    value={visualSettings.SSGI.depthThreshold}
                     onFinish={v => updateSubObject("SSGI","depthThreshold",v)}
             />
 
@@ -126,7 +128,7 @@
                     label={Localization.BINARY_SEARCH}
                     integer={true}
                     minValue={1}
-                    value={settings.SSGI.binarySearchSteps}
+                    value={visualSettings.SSGI.binarySearchSteps}
                     onFinish={v => updateSubObject("SSGI","binarySearchSteps",v)}
             />
         </div>
@@ -147,7 +149,7 @@
                 precision={0}
                 minValue={1}
 
-                value={settings.shadowMapResolution}
+                value={visualSettings.shadowMapResolution}
         />
         <div data-inline="-">
             <Range
@@ -160,7 +162,7 @@
                     precision={0}
                     minValue={1}
 
-                    value={settings.shadowAtlasQuantity}
+                    value={visualSettings.shadowAtlasQuantity}
             />
 
 
@@ -172,8 +174,8 @@
     <legend>{Localization.AO}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.SSAO.enabled}
-                handleCheck={() => updateSubObject("SSAO", "enabled", !settings.SSAO.enabled)}
+                checked={visualSettings.SSAO.enabled}
+                handleCheck={() => updateSubObject("SSAO", "enabled", !visualSettings.SSAO.enabled)}
                 label={Localization.ENABLED}
         />
 
@@ -181,14 +183,14 @@
             <Range
                     label={Localization.RADIUS}
                     minValue={1}
-                    value={settings.SSAO.radius}
+                    value={visualSettings.SSAO.radius}
                     onFinish={v => updateSubObject("SSAO","radius",v)}
             />
             <Range
                     label={Localization.POWER}
                     integer={true}
                     minValue={1}
-                    value={settings.SSAO.power}
+                    value={visualSettings.SSAO.power}
                     onFinish={v => updateSubObject("SSAO","power",v)}
             />
         </div>

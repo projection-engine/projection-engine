@@ -3,9 +3,12 @@
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../../data/SETTINGS";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
-    export let update
+    function update(key, value){
+        SettingsStore.updateStore({...settings, [key]: value})
+    }
 
     function updateHotKey(key, objectKey, newValue) {
         const newData = {...settings[key], [objectKey]: newValue}

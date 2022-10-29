@@ -5,7 +5,7 @@ import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
-    FilesStore.removeBlock(itemsToDelete)
+
     alert.pushAlert(Localization.DELETING_ITEMS, "info")
     for (let i = 0; i < itemsToDelete.length; i++) {
         const currentItem = itemsToDelete[i]

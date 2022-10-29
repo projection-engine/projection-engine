@@ -1,33 +1,35 @@
 <script>
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
+    import VisualsStore from "../../../stores/VisualsStore";
 
-    export let settings
-    export let update
-
+    export let visualSettings
+    function update(key, value) {
+        VisualsStore.updateStore({...visualSettings, [key]: value})
+    }
 </script>
 
 <fieldset>
     <legend>{"Lens distortion"}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.distortion}
+                checked={visualSettings.distortion}
                 handleCheck={() => {
-                    update("distortion",  !settings.distortion)
+                    update("distortion",  !visualSettings.distortion)
 
         }}
                 label={"Enabled"}
         />
         <Range
                 label={"Strength"}
-                disabled={!settings.distortion}
+                disabled={!visualSettings.distortion}
                 onFinish={v => {
             update("distortionStrength",  v)
         }}
                 incrementPercentage={.01}
                 precision={3}
 
-                value={settings.distortionStrength} maxValue={10} minValue={0}
+                value={visualSettings.distortionStrength} maxValue={10} minValue={0}
         />
     </div>
 </fieldset>
@@ -36,19 +38,19 @@
     <legend>{"Chromatic aberration"}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.chromaticAberration}
-                handleCheck={() => update("chromaticAberration", !settings.chromaticAberration)}
+                checked={visualSettings.chromaticAberration}
+                handleCheck={() => update("chromaticAberration", !visualSettings.chromaticAberration)}
                 label={"Enabled"}
         />
         <Range
                 label={"Strength"}
-                disabled={!settings.chromaticAberration}
+                disabled={!visualSettings.chromaticAberration}
                 onFinish={v => {
             update("chromaticAberrationStrength",  v)
         }}
                 incrementPercentage={.01}
                 precision={3}
-                value={settings.chromaticAberrationStrength}
+                value={visualSettings.chromaticAberrationStrength}
                 maxValue={10}
                 minValue={0}
         />
@@ -59,20 +61,19 @@
     <legend>{"Film grain"}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.filmGrain}
-                handleCheck={() => update("filmGrain",  !settings.filmGrain)}
+                checked={visualSettings.filmGrain}
+                handleCheck={() => update("filmGrain",  !visualSettings.filmGrain)}
                 label={"Enabled"}
         />
 
         <Range
                 label={"Strength"}
-                disabled={!settings.filmGrain}
-                onFinish={v => {
-            update("filmGrainStrength",  v)
-        }}
-                incrementPercentage={.001}
-                precision={3}
-                value={settings.filmGrainStrength} maxValue={10} minValue={0}
+                disabled={!visualSettings.filmGrain}
+                onFinish={v => update("filmGrainStrength",  v)}
+                incrementPercentage={.0001}
+                precision={4}
+
+                value={visualSettings.filmGrainStrength} maxValue={1} minValue={0}
         />
     </div>
 </fieldset>
@@ -82,32 +83,28 @@
     <div data-form="-">
         <Checkbox
 
-                checked={settings.bloom}
-                handleCheck={() => update("bloom",  !settings.bloom)}
+                checked={visualSettings.bloom}
+                handleCheck={() => update("bloom",  !visualSettings.bloom)}
                 label={"Enabled"}
         />
 
         <Range
                 label={"Strength"}
 
-                disabled={!settings.bloom}
-                onFinish={v => {
-            update("bloomStrength",  v)
-        }}
+                disabled={!visualSettings.bloom}
+                onFinish={v => update("bloomStrength",  v)}
                 incrementPercentage={.001}
                 precision={3}
-                value={settings.bloomStrength} maxValue={10} minValue={0}/>
+                value={visualSettings.bloomStrength} maxValue={10} minValue={0}/>
 
         <Range
                 label={"Threshold"}
 
-                disabled={!settings.bloom}
+                disabled={!visualSettings.bloom}
                 incrementPercentage={.001}
                 precision={3}
-                onFinish={v => {
-            update("bloomThreshold",  v)
-        }}
-                value={settings.bloomThreshold}
+                onFinish={v => update("bloomThreshold",  v)}
+                value={visualSettings.bloomThreshold}
 
                 maxValue={1} minValue={0}
         />
@@ -124,10 +121,8 @@
                 precision={3}
                 minValue={.1}
                 maxValue={10}
-                onFinish={v => {
-                    update("gamma",  v)
-                }}
-                value={settings.gamma}
+                onFinish={v => update("gamma",  v)}
+                value={visualSettings.gamma}
         />
 
         <Range
@@ -137,10 +132,8 @@
                 incrementPercentage={.001}
                 precision={3}
                 maxValue={10}
-                onFinish={v => {
-            update("exposure",  v)
-        }}
-                value={settings.exposure}
+                onFinish={v => update("exposure",  v)}
+                value={visualSettings.exposure}
         />
     </div>
 </fieldset>

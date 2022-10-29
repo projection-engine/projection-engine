@@ -25,8 +25,6 @@ export default class AssetAPI {
         const res = await RegistryAPI.readRegistryFile(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)
-        else
-            throw Error("Not found")
     }
 
 
