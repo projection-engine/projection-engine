@@ -7,7 +7,6 @@ import ViewportActions from "../libs/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../data/ROUTES";
 import VisualsStore from "../stores/VisualsStore";
-import VISUAL_SETTINGS from "../data/VISUAL_SETTINGS";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 const {ipcRenderer, shell} = window.require("electron")

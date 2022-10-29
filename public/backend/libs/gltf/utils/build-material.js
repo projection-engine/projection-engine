@@ -2,15 +2,16 @@ import SIMPLE_MATERIAL_UNIFORMS from "../../../../engine/static/SIMPLE_MATERIAL_
 
 export default async function buildMaterial(textures, imagesMap, material) {
     const copy = {...SIMPLE_MATERIAL_UNIFORMS}
-    const settings =         copy.uniformData[0]
+    const settings = copy.uniformData[0]
     const rgbSamplerScales = copy.uniformData[1]
-    const fallbackValues =   copy.uniformData[3]
-    const albedo =           copy.uniformData[5]
-    const normal =           copy.uniformData[6]
-    const roughness =        copy.uniformData[7]
-    const metallic =         copy.uniformData[8]
-    const ao =               copy.uniformData[9]
-    const emission =        copy.uniformData[10]
+    const fallbackValues = copy.uniformData[3]
+    const linearSamplerScales = copy.uniformData[2]
+    const albedo = copy.uniformData[5]
+    const normal = copy.uniformData[6]
+    const roughness = copy.uniformData[7]
+    const metallic = copy.uniformData[8]
+    const ao = copy.uniformData[9]
+    const emission = copy.uniformData[10]
 
     try {
 
@@ -47,7 +48,16 @@ export default async function buildMaterial(textures, imagesMap, material) {
 
             if (metallicRoughnessTexture) {
                 settings.data[3] = 1
-                metallic.data = imagesMap[textures[metallicRoughnessTexture.index].source]
+                settings.data[2] = 1
+                roughness.data = metallic.data = imagesMap[textures[metallicRoughnessTexture.index].source]
+                // R channel for metallic
+                linearSamplerScales[4] = 0
+                linearSamplerScales[5] = 0
+
+                // G channel for roughness
+                linearSamplerScales[6] = 0
+                linearSamplerScales[8] = 0
+
             }
             if (metallicFactor != null) {
                 settings.data[3] = 0
@@ -64,12 +74,12 @@ export default async function buildMaterial(textures, imagesMap, material) {
             emission.data = imagesMap[textures[emissiveTexture.index].source]
         }
 
-        if (emissiveFactor != null) {
-            settings.data[5] = 0
-            fallbackValues.data[3] = emissiveFactor[0]
-            fallbackValues.data[4] = emissiveFactor[1]
-            fallbackValues.data[5] = emissiveFactor[2]
-        }
+        // if (emissiveFactor != null) {
+        //     settings.data[5] = 0
+        //     fallbackValues.data[3] = emissiveFactor[0]
+        //     fallbackValues.data[4] = emissiveFactor[1]
+        //     fallbackValues.data[5] = emissiveFactor[2]
+        // }
 
         if (normalTexture) {
             settings.data[1] = 1
@@ -82,7 +92,13 @@ export default async function buildMaterial(textures, imagesMap, material) {
         }
         if (occlusionTexture) {
             settings.data[6] = 1
+
             ao.data = imagesMap[textures[occlusionTexture.index].source]
+            if(roughness.data === ao.data){
+                // B channel for ambient occlusion
+                linearSamplerScales[0] = 0
+                linearSamplerScales[1] = 0
+            }
         }
 
         return copy

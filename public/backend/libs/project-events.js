@@ -53,7 +53,8 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.FILE_DIALOG, async (ev, {listenID, currentDirectory}) => {
         const properties = ["openFile", "multiSelections"]
         const result = await dialog.showOpenDialog({
-            properties, filters: [{name: "Assets", extensions: ["bin", "jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]
+            properties,
+            filters: [{name: "Assets", extensions: ["bin", "jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]
         })
         let filesImported = result.filePaths || [],
             registryEntries = []
@@ -63,19 +64,14 @@ export default function projectEvents(pathToProject, window, metadata) {
         ev.sender.send(ROUTES.FILE_DIALOG + listenID, {filesImported, registryEntries})
     })
 
-    ipcMain.on("remove-registry", async (_, data) => {
-        for (let i = 0; i < data.length; i++) {
-            try {
-                await rm(data[i])
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        ProjectMap.registry = ProjectMap.registry.filter(r => !data.includes(r))
-    })
     ipcMain.on("resolve-name", (event, {ext, path, listenID}) => {
         event.sender.send("resolve-name" + listenID, resolveFileName(path, ext))
     })
+    ipcMain.on("update-registry", async (event, {id, data}) => {
+        ProjectMap.registry[id] = data
+        await fs.promises.writeFile(ProjectMap.pathToRegistry, JSON.stringify(ProjectMap.registry))
+    })
+
     ipcMain.on("create-registry", async (event, data) => {
 
         await createRegistryEntry(data.id, data.path)
@@ -84,7 +80,7 @@ export default function projectEvents(pathToProject, window, metadata) {
     ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, async (event, {pathName, listenID}) => {
 
         const result = []
-        const registryData = ProjectMap.registry
+        const registryData = Object.values(ProjectMap.registry)
         const assetsToParse = await directoryStructure(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
         for (let i = 0; i < assetsToParse.length; i++) {
             try {

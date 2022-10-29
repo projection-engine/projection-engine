@@ -1,35 +1,51 @@
 <script>
     import SideBarItem from "./SideBarItem.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
+    import FilesHierarchyStore from "../../../stores/FilesHierarchyStore";
+    import {onDestroy} from "svelte";
 
     export let setCurrentDirectory = undefined
-    export let items = undefined
     export let currentDirectory = undefined
-
-    $: assets = items.filter(item => item.isFolder && !item.parent)
+    let assets = []
+    let open = {}
+    const unsubscribe = FilesHierarchyStore.getStore(v => {
+        assets = v.items
+        open = v.open
+    })
+    onDestroy(() => unsubscribe())
 </script>
 
 <div class="wrapper">
-    <SideBarItem
-            setCurrentDirectory={setCurrentDirectory}
-            currentDirectory={currentDirectory}
-            id={NodeFS.sep}
-            name={"..."}
-    />
-    {#each assets as b}
+    <VirtualList items={assets} let:item>
         <SideBarItem
+                triggerOpen={_ => {
+                    let open = FilesHierarchyStore.data.open
+                    const inv = !open[item.item.id]
+                    if(item.item.id === NodeFS.sep && !inv)
+                        open = {}
+                    else if(!inv){
+                        for(let i =0; i < item.children.length; i++)
+                            delete open[item.children[i]]
+                    }
+                    open[item.item.id] = inv
+                    FilesHierarchyStore.data.open = open
+                    FilesHierarchyStore.update()
+                }}
+                open={open}
+                childQuantity={item.childQuantity}
+                depth={item.depth}
                 setCurrentDirectory={setCurrentDirectory}
                 currentDirectory={currentDirectory}
-                id={b.id}
-                name={b.name}
+                id={item.item.id}
+                name={item.item.name}
         />
-    {/each}
+    </VirtualList>
 </div>
 
 <style>
     .wrapper {
         display: grid;
-        align-content: flex-start;
         gap: 2px;
         overflow-y: auto;
         width: 300px;

@@ -49,7 +49,7 @@ export default class Loader {
                 folder.name = file.name
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
-                    const primitiveRegistry = await RegistryAPI.readRegistryFile(currentEntity.meshID)
+                    const primitiveRegistry = RegistryAPI.getRegistryEntry(currentEntity.meshID)
                     if (primitiveRegistry) {
                         const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
                         if (!meshData)
@@ -87,7 +87,7 @@ export default class Loader {
             const data = items[i]
             if (!data)
                 continue
-            const res = await RegistryAPI.readRegistryFile(data)
+            const res = RegistryAPI.getRegistryEntry(data)
             if (!res)
                 continue
             switch ("." + res.path.split(".").pop()) {

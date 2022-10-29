@@ -16,6 +16,7 @@ export default class ShaderEditorController {
     static grid = ShaderEditorController.GRID_SIZE
     static copied = new Map()
     static connectionOnDrag
+    static toOpenFile
 
     static parseNode(node) {
         if (!node)

@@ -3,13 +3,15 @@
     import {onDestroy, onMount} from "svelte";
     import handleDropFolder from "../utils/handle-drop-folder";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
+    export let depth
     export let setCurrentDirectory
     export let currentDirectory
     export let id
     export let name
-    $: isTopLevel = id === NodeFS.sep
+    export let open
+    export let triggerOpen
+    export let childQuantity
     $: isCurrentDir = currentDirectory.id === id
     let ref
 
@@ -23,28 +25,41 @@
         })
     })
 
+    $: isOpen = open[id]
     onDestroy(() => draggable.onDestroy())
 </script>
 
 
-<button
+<div
+        data-selected={isCurrentDir ? "-" : undefined}
         bind:this={ref}
-        data-highlight={isCurrentDir && !isTopLevel ? "-" : undefined}
-        class="folder"
-        on:click={() => setCurrentDirectory({id})}
+        class="wrapper hierarchy-branch"
+        style={`padding-left: ${depth * 18}px;`}
 >
-    <Icon styles={isTopLevel ? "" : "color: var(--folder-color)"}>
-        {#if isTopLevel }
-            arrow_upward
-        {:else}
-            folder
-        {/if}
-    </Icon>
-    {name}
-</button>
-
+    {#if childQuantity > 0}
+        <button
+                data-open={isOpen ? "-" : ""}
+                class="button-small hierarchy-branch"
+                on:click={triggerOpen}
+        >
+            <Icon>arrow_drop_down</Icon>
+        </button>
+    {:else}
+        <div class="button-small hierarchy-branch"></div>
+    {/if}
+    <button
+            bind:this={ref}
+            class="folder"
+            on:click={() => setCurrentDirectory({id})}
+    >
+        <Icon styles={"color: var(--folder-color)"}>folder</Icon>
+        {name}
+    </button>
+</div>
 <style>
     .folder {
+        background: none;
+        width: 100%;
         border: none;
         height: 20px;
         font-size: 0.7rem;

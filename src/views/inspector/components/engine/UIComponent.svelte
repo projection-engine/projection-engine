@@ -28,7 +28,7 @@
     }
 
     async function loadUILayout(reg) {
-        const ref = await RegistryAPI.readRegistryFile(reg.registryID)
+        const ref = RegistryAPI.getRegistryEntry(reg.registryID)
         if (!ref)
             return
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + ref.path)

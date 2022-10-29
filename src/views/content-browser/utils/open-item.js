@@ -3,11 +3,16 @@ import LevelController from "../../../libs/LevelController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import Localization from "../../../templates/LOCALIZATION_EN";
 import Loader from "../../../libs/loader/Loader";
+import openBottomView from "../../../utils/open-bottom-view";
+import VIEWS from "../../../components/view/data/VIEWS";
+import ShaderEditorController from "../../shader-editor/ShaderEditorController";
 
 const {shell} = window.require("electron")
 
 
 export default function openItem(data, setCurrentDirectory, setSelected, reset, type) {
+    if(!data)
+        return
     if (type === 1) {
         const fileType = "." + data.type
         switch (fileType) {
@@ -26,6 +31,10 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case FILE_TYPES.LEVEL:
                 alert.pushAlert(Localization.OPENING_LEVEL + " (" + data.name + ")", "info")
                 LevelController.loadLevel(data).catch()
+                break
+            case FILE_TYPES.MATERIAL:
+                openBottomView(VIEWS.BLUEPRINT)
+                ShaderEditorController.toOpenFile = data
                 break
             default:
                 setSelected(data.id)

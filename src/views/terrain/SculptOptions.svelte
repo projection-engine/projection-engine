@@ -35,7 +35,7 @@
     onDestroy(() => api.destroy())
 
     async function updateImage({registryID}) {
-        const reg = await RegistryAPI.readRegistryFile(registryID)
+        const reg = RegistryAPI.getRegistryEntry(registryID)
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
 
         console.log(file)

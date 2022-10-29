@@ -75,8 +75,6 @@
 
 <div class="wrapper">
     <SideBar
-            items={store.items}
-
             currentDirectory={currentDirectory}
             setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
 

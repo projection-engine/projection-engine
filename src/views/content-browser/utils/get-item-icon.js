@@ -1,9 +1,9 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 
-export default function getItemIcon(metadata, childrenQuantity, type) {
+export default function getItemIcon(metadata, childQuantity, type) {
     let icon
     if (type === 0)
-        icon = childrenQuantity === 0 ? "folder_open" : "folder"
+        icon = childQuantity === 0 ? "folder_open" : "folder"
     else
         switch (metadata.type) {
             case FILE_TYPES.COMPONENT:

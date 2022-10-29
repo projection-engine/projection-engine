@@ -74,7 +74,7 @@
             case SHADING_MODELS.AMBIENT:
                 return GBuffer.ambientSampler
             case SHADING_MODELS.SSGI:
-                return SSGIPass.FBO.colors[0]
+                return SSGIPass.sampler
             case SHADING_MODELS.STOCHASTIC:
                 return SSGIPass.normalSampler
 

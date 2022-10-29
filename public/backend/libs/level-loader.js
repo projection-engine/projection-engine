@@ -24,6 +24,7 @@ export default async function levelLoader(sender, levelPath, pathToProject) {
     for (let i = 0; i < entities.length; i++) {
         const current = entities[i]
 
+        console.error(current)
         if (!current.components || !current.components[COMPONENTS.MESH])
             continue
         toLoadData.materials.add(current.components[COMPONENTS.MESH].materialID)

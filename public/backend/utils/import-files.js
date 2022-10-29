@@ -57,6 +57,5 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
     if (meshesToRead.length > 0)
         await AssimpLoader.loader(targetDir, meshesToRead)
 
-    ProjectMap.registry = await readRegistry(ProjectMap.pathToRegistry)
     return result
 }

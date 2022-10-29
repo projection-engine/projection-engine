@@ -21,16 +21,14 @@
     let selectedTerrain
     $: {
         if (settings.selectedTerrain != null) {
-            RegistryAPI.readRegistryFile(settings.selectedTerrain).then(reg => {
-                if (!reg)
-                    return
+            const reg = RegistryAPI.getRegistryEntry(settings.selectedTerrain)
+            if (reg != null)
                 FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
                     .then(file => {
                         if (!file)
                             return
                         selectedTerrain = file
                     })
-            })
         }
     }
     let hidden = false

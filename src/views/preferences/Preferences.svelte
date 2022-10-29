@@ -1,5 +1,5 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";

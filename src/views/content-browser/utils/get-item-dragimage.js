@@ -1,6 +1,6 @@
 import Localization from "../../../templates/LOCALIZATION_EN";
 
-export default function getItemDragImage(childrenQuantity, data, type, metadata) {
+export default function getItemDragImage(childQuantity, data, type, metadata) {
     let body
     if (type !== 0)
         body = `
@@ -17,7 +17,7 @@ export default function getItemDragImage(childrenQuantity, data, type, metadata)
         body = `
                 <div>
                     <strong>${Localization.CHILDREN}:</strong>
-                    <small>${childrenQuantity}</small>
+                    <small>${childQuantity}</small>
                 </div>
             `
     return `

@@ -12,7 +12,7 @@ export default function getMaterialAsOption(m, currentDirectory){
         callback: async () => {
             const nodeName = m.name
             const nodeID = m.registryID
-            const regFile = await RegistryAPI.readRegistryFile(nodeID)
+            const regFile = RegistryAPI.getRegistryEntry(nodeID)
             if (!regFile) {
                 alert.pushAlert("Material not found", "error")
                 return

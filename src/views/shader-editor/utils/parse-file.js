@@ -4,7 +4,7 @@ import ShaderEditorController from "../ShaderEditorController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function parseFile(file, setNodes, setLinks) {
-    const res = await RegistryAPI.readRegistryFile(file.registryID)
+    const res = RegistryAPI.getRegistryEntry(file.registryID)
     if (res) {
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
 

@@ -2,6 +2,7 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 
 import readFile from "shared-resources/backend/utils/read-file";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
+import ProjectMap from "../libs/ProjectMap";
 
 
 const pathRequire = require("path")
@@ -10,9 +11,9 @@ const fs = require("fs")
 
 export async function readFromRegistry(fileID, projectPath) {
     return new Promise(async resolve => {
-        const lookUpTable = (await readFile(pathRequire.resolve(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY + pathRequire.sep + fileID + FILE_TYPES.REGISTRY)))[1]
-        if (lookUpTable) {
-            const fileData = (await readFile(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + pathRequire.sep + JSON.parse(lookUpTable).path))[1]
+        const reg = ProjectMap.registry[fileID]
+        if (reg) {
+            const fileData = (await readFile(projectPath + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + pathRequire.sep + reg.path))[1]
             if (fileData) resolve(fileData)
             else resolve(null)
         } else resolve(null)

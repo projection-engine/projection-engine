@@ -28,7 +28,7 @@ export default class EngineStore {
         if (GPUResources.textures.get(registryID) != null)
             return true
         try {
-            const rs = await RegistryAPI.readRegistryFile(registryID)
+            const rs = RegistryAPI.getRegistryEntry(registryID)
             const textureData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
 
             await GPUController.allocateTexture({

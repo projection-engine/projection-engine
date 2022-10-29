@@ -6,7 +6,7 @@ const pathRequire = window.require("path")
 
 function mapAsset(reg, type) {
     return reg.map(i => new Promise(resolve => {
-        const split = i.path.split(NodeFS)
+        const split = i.path.split(NodeFS.sep)
         resolve({
             type,
             registryID: i.id,
@@ -19,9 +19,7 @@ export default class ContentBrowserAPI {
 
     static async rename(from, to) {
         const fromResolved = pathRequire.resolve(from)
-        let newRegistry = await RegistryAPI.readRegistry()
-        console.log(newRegistry)
-
+        await RegistryAPI.readRegistry()
         try {
             const stat = await NodeFS.stat(fromResolved)
             if (stat !== undefined && stat.isDirectory) {
@@ -30,19 +28,19 @@ export default class ContentBrowserAPI {
                 if (!res) return
                 for (let i = 0; i< res.length; i++) {
                     const file = res[i]
-                    const oldPath = fromResolved + NodeFS + `${file}`
-                    const newPath = to + NodeFS + `${file}`
+                    const oldPath = fromResolved + NodeFS.sep + `${file}`
+                    const newPath = to + NodeFS.sep + `${file}`
                     if ((await NodeFS.stat(oldPath)).isDirectory)
                         await NodeFS.rename(oldPath, newPath)
                     else {
                         await NodeFS.rename(oldPath, newPath)
-                        await RegistryAPI.updateRegistry(oldPath, newPath, newRegistry)
+                        await RegistryAPI.updateRegistry(oldPath, newPath)
                     }
                 }
                 await NodeFS.rm(fromResolved, {recursive: true, force: true})
             } else if (stat !== undefined) {
                 await NodeFS.rename(fromResolved, to)
-                await RegistryAPI.updateRegistry(from, to, newRegistry)
+                await RegistryAPI.updateRegistry(from, to)
             }
 
         } catch (error) {

@@ -68,6 +68,7 @@ export default class LevelController {
     }
 
     static async loadLevel(level = PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
+        await RegistryAPI.readRegistry()
         if (LevelController.#loadedLevel === level) {
             alert.pushAlert("Level already loaded")
             return
@@ -81,7 +82,7 @@ export default class LevelController {
         } else {
             const {registryID} = level
             try {
-                const reg = await RegistryAPI.readRegistryFile(registryID)
+                const reg = RegistryAPI.getRegistryEntry(registryID)
                 if (!reg)
                     throw new Error("Error loading level")
                 pathToLevel = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
@@ -123,14 +124,14 @@ export default class LevelController {
 
                     const uiID = entity.components.get(COMPONENTS.UI)?.uiLayoutID
                     if (uiID) {
-                        const rs = await RegistryAPI.readRegistryFile(uiID)
+                        const rs = RegistryAPI.getRegistryEntry(uiID)
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))
                     }
                     const terrain = entity.components.get(COMPONENTS.TERRAIN)
                     if (terrain) {
                         const {materialID, terrainID} = terrain
                         if (GPUResources.meshes.get(terrainID) == null) {
-                            const rs = await RegistryAPI.readRegistryFile(terrainID)
+                            const rs = RegistryAPI.getRegistryEntry(terrainID)
                             if (!rs)
                                 continue
                             const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
@@ -140,7 +141,7 @@ export default class LevelController {
                             GPUController.allocateMesh(terrainID, terrainData)
                         }
                         if (materialID && GPUResources.materials.get(materialID) == null) {
-                            const rs = await RegistryAPI.readRegistryFile(materialID)
+                            const rs = RegistryAPI.getRegistryEntry(materialID)
                             if (!rs)
                                 continue
                             const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
@@ -157,7 +158,10 @@ export default class LevelController {
 
         ipcRenderer.on(
             CHANNELS.MESH,
-            (ev, data) => GPUController.allocateMesh(data.id, data))
+            (ev, data) => {
+                console.log(data)
+                GPUController.allocateMesh(data.id, data)
+            })
 
         ipcRenderer.on(
             CHANNELS.MATERIAL,
@@ -204,7 +208,7 @@ export default class LevelController {
             pathElse:if (!EngineStore.engine.currentLevel)
                 pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
             else {
-                const reg = await RegistryAPI.readRegistryFile(EngineStore.engine.currentLevel.registryID)
+                const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
                     alert.pushAlert("Level not found, a new one will be created.", "alert")
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"

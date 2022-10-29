@@ -26,7 +26,7 @@
             return
 
         if (key === "imageID") {
-            const reg = await RegistryAPI.readRegistryFile(value)
+            const reg = RegistryAPI.getRegistryEntry(value)
             const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path, "json")
 
             temp = {...temp, imageID: value, image: file.base64}

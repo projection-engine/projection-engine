@@ -56,13 +56,16 @@
                 openFile,
                 nodes,
                 links,
-                status,
             }
             ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
         } else {
             const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
+            openFile = ShaderEditorController.toOpenFile || state?.openFile || {}
+
+            needsInitialization = openFile?.registryID != null
+
+            ShaderEditorController.toOpenFile = undefined
             if (state != null) {
-                openFile = state.openFile
                 nodes = state.nodes
                 links = state.links
                 status = state.status

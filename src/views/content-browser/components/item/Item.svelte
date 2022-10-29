@@ -15,7 +15,7 @@
     import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
-    export let childrenQuantity
+    export let childQuantity
     export let reset
     export let type
     export let data
@@ -38,27 +38,27 @@
     $: isOnRename = onRename === data.id
     $: isMaterial = metadata.type === FILE_TYPES.MATERIAL
     $: isNotDraggable = onDrag && type !== 0
-    $: icon = getItemIcon(metadata, childrenQuantity, type)
+    $: icon = getItemIcon(metadata, childQuantity, type)
     $: isOnCuttingBoard = toCut.includes(data.id)
     $: metadata = {
         path: NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
-        childrenQuantity,
+        childQuantity,
         typeName: getTypeName(data.type)
     }
 
     $: {
-        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
+        const dragDropData = getItemDragData(icon, childQuantity, data, items, setOnDrag, type, metadata)
         draggable.dragImage = dragDropData.dragImage
         draggable.onDragOver = dragDropData.onDragOver
         draggable.onDragStart = dragDropData.onDragStart
         draggable.disabled = onDrag && type !== 0 || isOnRename
     }
 
-    $: toolTipContent = getItemDragImage(childrenQuantity, data, type, metadata)
+    $: toolTipContent = getItemDragImage(childQuantity, data, type, metadata)
     $: if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
     onMount(() => {
-        const dragDropData = getItemDragData(icon, childrenQuantity, data, items, setOnDrag, type, metadata)
+        const dragDropData = getItemDragData(icon, childQuantity, data, items, setOnDrag, type, metadata)
         draggable.onMount({
             targetElement: ref,
             onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
@@ -83,7 +83,7 @@
         toolTipContent,
         draggable,
         icon,
-        childrenQuantity,
+        childQuantity,
         currentDirectory,
         items,
         setOnDrag,

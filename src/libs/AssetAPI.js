@@ -6,7 +6,7 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 
 export default class AssetAPI {
     static async readAsset(id) {
-        const reg = await RegistryAPI.readRegistryFile(id)
+        const reg = RegistryAPI.getRegistryEntry(id)
         if(reg)
             return await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path)
     }
@@ -22,7 +22,7 @@ export default class AssetAPI {
 
 
     static async updateAsset(registryID, fileData, previewImage) {
-        const res = await RegistryAPI.readRegistryFile(registryID)
+        const res = RegistryAPI.getRegistryEntry(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)
     }

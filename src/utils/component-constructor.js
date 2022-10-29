@@ -7,7 +7,7 @@ import EntityAPI from "../../public/engine/api/EntityAPI";
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
 
     const found = entity.scripts.findIndex(s => s.id === scriptID)
-    const reg = await RegistryAPI.readRegistryFile(scriptID)
+    const reg = RegistryAPI.getRegistryEntry(scriptID)
 
     if (!reg) {
 

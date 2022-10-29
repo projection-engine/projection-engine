@@ -12,6 +12,7 @@
     import Notification from "./Notification.svelte";
     import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
     import Localization from "../../templates/LOCALIZATION_EN";
+    import openBottomView from "../../utils/open-bottom-view";
 
     export let store
     export let settings
@@ -39,17 +40,7 @@
         alert.removeListener(ID)
     })
 
-    function openConsole() {
-        const views = [...settings.views]
-        const tab = views[settings.currentView]
-        if (tab.bottom.length > 0)
-            tab.bottom[0].push(VIEWS.CONSOLE)
-        else
-            tab.bottom[0] = [VIEWS.CONSOLE]
 
-        SettingsStore.updateStore({...settings, views})
-        TabsStore.update("bottom", 0, tab.bottom[0].length - 1)
-    }
 </script>
 
 <div class="level-selector">
@@ -72,7 +63,7 @@
         </div>
         <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
     {/if}
-    <button class="button console" on:click={openConsole}>
+    <button class="button console" on:click={_ => openBottomView(VIEWS.CONSOLE)}>
         <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: darkorange" : "color: #999")}>feedback</Icon>
         {#if hasMessage}
             <small>{Localization.NEW_MESSAGE}</small>

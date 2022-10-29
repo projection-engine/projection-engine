@@ -10,6 +10,7 @@ import UIAPI from "../../public/engine/api/UIAPI";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import Engine from "../../public/engine/Engine";
 import COMPONENTS from "../../public/engine/static/COMPONENTS";
+import FilesHierarchyStore from "./FilesHierarchyStore";
 
 export default class FilesStore {
     static data = get(contentBrowserStore)
@@ -21,8 +22,12 @@ export default class FilesStore {
     static getStore(onChange) {
         if (!FilesStore.initialized) {
             FilesStore.initialized = true
-
+            contentBrowserStore.subscribe(data => {
+                FilesHierarchyStore.update(data.items)
+                console.log(data)
+            })
             FilesStore.refreshFiles().catch()
+
         }
         return contentBrowserStore.subscribe(newValue => {
             onChange(newValue)
@@ -37,7 +42,6 @@ export default class FilesStore {
         } catch (err) {
             console.error(err)
         }
-
     }
 
     static unwatchFiles() {

@@ -163,7 +163,7 @@
                             reset={resetItem}
                             type={child.isFolder ? 0 : 1}
                             data={child}
-                            childrenQuantity={child.children}
+                            childQuantity={child.children}
                             setCurrentDirectory={setCurrentDirectory}
                             items={items}
                             setSelected={e => handleSelection(e, child)}

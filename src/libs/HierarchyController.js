@@ -1,30 +1,6 @@
-import QueryAPI from "../../public/engine/api/utils/QueryAPI";
 import Engine from "../../public/engine/Engine";
 import SelectionStore from "../stores/SelectionStore";
 
-function findSurface(e, open) {
-    const entity = QueryAPI.getEntityByID(e)
-    if (!entity)
-        return
-    let surface
-    if (entity.parent) {
-        surface = []
-        let current = entity.parent
-        while (current) {
-            const breakTime = !open[current?.id] && open[current?.parent?.id]
-
-            if (!current.parent || breakTime) {
-
-                surface[0] = current.id
-                surface[1] = e
-                break
-            }
-
-            current = current?.parent
-        }
-    }
-    return surface
-}
 
 export default class HierarchyController {
     static hierarchy = []

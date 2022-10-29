@@ -1,16 +1,4 @@
-- Optimizing Shader class
-- Organizing glsl shaders
-- SSGI reworked again
-  - Much more stable with camera movement
-  - Better reflection capture from surrounding materials
-  - Faster
-- Stochastic normal are now in world space
-- Fxing some bugs related to bookmarks removal
-- Shading option for global illumination now shows raw light capture instead of blurred version
-- Fixing selection box
-  - Optimizing loop for faster queries 
-- Fixing preferences layout
-- Fixed tab serialization
-- Fixed visual settings serialization
-- Fixed post processing settings on preferences
-- Removed alert from preferences
+- Reworking registry system
+- Fixing drag/drop of files and folders
+- Added hierarchy tree to content browser
+- Added double click action to material file

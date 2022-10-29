@@ -30,7 +30,7 @@
         if (wasUpdated)
             return
         wasUpdated = true
-        const reg = await RegistryAPI.readRegistryFile(ID)
+        const reg = RegistryAPI.getRegistryEntry(ID)
 
         if (!reg)
             alert.pushAlert("Instance no longer valid", "error")
