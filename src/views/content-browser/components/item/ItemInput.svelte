@@ -11,7 +11,6 @@
 <input
         data-overflow="-"
         disabled={!isOnRename}
-        on:change={e => submitRename(e.currentTarget.value)}
         on:blur={ev => {
             submitRename(ev.currentTarget.value)
         }}

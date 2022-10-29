@@ -1,4 +1,2 @@
-- Reworking registry system
-- Fixing drag/drop of files and folders
-- Added hierarchy tree to content browser
-- Added double click action to material file
+- Fixing file rename
+- Fixing SSAO

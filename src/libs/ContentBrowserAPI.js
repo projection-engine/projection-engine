@@ -18,6 +18,7 @@ function mapAsset(reg, type) {
 export default class ContentBrowserAPI {
 
     static async rename(from, to) {
+        console.trace(from, to)
         const fromResolved = pathRequire.resolve(from)
         await RegistryAPI.readRegistry()
         try {
