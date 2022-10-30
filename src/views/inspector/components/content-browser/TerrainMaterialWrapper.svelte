@@ -78,7 +78,7 @@
             original: TERRAIN_MATERIAL + size,
             uniformData
         }
-        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).then(() => alert.pushAlert(Localization.UPDATING_ASSET, "alert"))
+        AssetAPI.updateAsset(item.registryID, JSON.stringify(material)).catch()
     }
 
 </script>

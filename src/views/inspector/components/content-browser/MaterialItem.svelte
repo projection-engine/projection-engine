@@ -59,7 +59,7 @@
                     return {...u, data: value}
                 return u
             })
-            alert.pushAlert(Localization.UPDATING_ASSET, "alert")
+
             if (!isInstance) {
                 temp = {
                     ...temp,

@@ -53,42 +53,40 @@
                 label={Localization.ENABLED}
         />
 
-        <div data-inline="-">
-            <Range
-                    label={Localization.STEPS}
-                    minValue={1}
-                    integer={true}
-                    value={visualSettings.SSR.maxSteps}
-                    onFinish={v => updateSubObject("SSR","maxSteps",v)}
-            />
-            <Range
-                    label={Localization.STEP_SIZE}
-                    incrementPercentage={.001}
-                    precision={4}
-                    value={visualSettings.SSR.stepSize}
-                    onFinish={v => updateSubObject("SSR","stepSize",v)}
-            />
+        <Range
+                label={Localization.STEPS}
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSR.maxSteps}
+                onFinish={v => updateSubObject("SSR","maxSteps",v)}
+        />
+        <Range
+                label={Localization.STEP_SIZE}
+                incrementPercentage={.001}
+                precision={4}
+                value={visualSettings.SSR.stepSize}
+                onFinish={v => updateSubObject("SSR","stepSize",v)}
+        />
 
-        </div>
-        <div data-inline="-">
-            <Range
-                    label={Localization.DEPTH_THRESHOLD}
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={0}
-                    value={visualSettings.SSR.depthThreshold}
-                    onFinish={v => updateSubObject("SSR","depthThreshold",v)}
-            />
+        <Range
+                label={Localization.FALLOFF}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={0}
+                value={visualSettings.SSR.falloff}
+                onFinish={v => updateSubObject("SSR","falloff",v)}
+        />
 
-            <Range
-                    label={Localization.BINARY_SEARCH}
-                    integer={true}
-                    minValue={1}
+        <Range
+                label={Localization.MIN_RAY_STEP}
+                integer={true}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.001}
+                value={visualSettings.SSR.minRayStep}
+                onFinish={v => updateSubObject("SSR","minRayStep",v)}
+        />
 
-                    value={visualSettings.SSR.binarySearchSteps}
-                    onFinish={v => updateSubObject("SSR","binarySearchSteps",v)}
-            />
-        </div>
     </div>
 </fieldset>
 
@@ -101,57 +99,37 @@
                 handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
                 label={Localization.ENABLED}
         />
-        <div data-inline="-">
-            <Range
+        <Range
 
-                    label={Localization.STEPS}
+                label={Localization.STEPS}
 
-                    minValue={1}
-                    integer={true}
-                    value={visualSettings.SSGI.maxSteps}
-                    onFinish={v => updateSubObject("SSGI","maxSteps",v)}
-            />
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSGI.maxSteps}
+                onFinish={v => updateSubObject("SSGI","maxSteps",v)}
+        />
 
-            <Range
+        <Range
 
-                    label={Localization.STRENGTH}
+                label={Localization.STRENGTH}
 
-                    incrementPercentage={.01}
-                    precision={3}
-                    minValue={0}
+                incrementPercentage={.01}
+                precision={3}
+                minValue={0}
 
-                    value={visualSettings.SSGI.strength}
-                    onFinish={v => updateSubObject("SSGI","strength",v)}
-            />
-        </div>
-        <div data-inline="-">
-            <Range
-                    label={Localization.STEP_SIZE}
+                value={visualSettings.SSGI.strength}
+                onFinish={v => updateSubObject("SSGI","strength",v)}
+        />
 
-                    incrementPercentage={.001}
-                    precision={4}
+        <Range
+                label={Localization.STEP_SIZE}
 
-                    value={visualSettings.SSGI.stepSize}
-                    onFinish={v => updateSubObject("SSGI","stepSize",v)}
-            />
+                incrementPercentage={.001}
+                precision={4}
 
-            <Range
-                    label={Localization.DEPTH_THRESHOLD}
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={0}
-                    value={visualSettings.SSGI.depthThreshold}
-                    onFinish={v => updateSubObject("SSGI","depthThreshold",v)}
-            />
-
-            <Range
-                    label={Localization.BINARY_SEARCH}
-                    integer={true}
-                    minValue={1}
-                    value={visualSettings.SSGI.binarySearchSteps}
-                    onFinish={v => updateSubObject("SSGI","binarySearchSteps",v)}
-            />
-        </div>
+                value={visualSettings.SSGI.stepSize}
+                onFinish={v => updateSubObject("SSGI","stepSize",v)}
+        />
     </div>
 </fieldset>
 

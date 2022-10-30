@@ -53,11 +53,9 @@
             })
 
         }
-        alert.pushAlert(Localization.UPDATING_ASSET, "alert")
         AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
         if (GPUResources.textures.get(item.registryID) != null) {
-            alert.pushAlert(Localization.ALLOCATING_TEXTURE, "alert")
             GPUController.destroyTexture(item.registryID)
             GPUController.allocateTexture({
                 ...temp,

@@ -18,14 +18,13 @@
         data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
         data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)
 
-        alert.pushAlert(Localization.UPDATING_ASSET, "alert")
+
         await AssetAPI.updateAsset(item.registryID, JSON.stringify(data))
         if (GPUResources.meshes.get(item.registryID) != null) {
-            alert.pushAlert(Localization.ALLOCATING_MESH, "alert")
             GPUController.destroyMesh(item.registryID)
             GPUController.allocateMesh(item.registryID, data)
         }
-
+        alert.pushAlert(Localization.UPDATING_ASSET, "alert")
     }
 </script>
 

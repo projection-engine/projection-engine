@@ -1,4 +1,3 @@
-- SSAO Fixed
-- Simple material parallax occlusion mapping
-- FIxed gltf material roughness/metallic/occlusion channels
-- Temporary fix to TBN matrix
+- SSR + SSGI pass
+- Reworked rendering forms
+- Optimizations

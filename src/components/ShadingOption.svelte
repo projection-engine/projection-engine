@@ -9,7 +9,8 @@
     import Engine from "../../public/engine/Engine";
     import Localization from "../templates/LOCALIZATION_EN";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
-    import SSGIPass from "../../public/engine/runtime/SSGIPass";
+    import GlobalIlluminationPass from "../../public/engine/runtime/GlobalIlluminationPass";
+
 
     let shadingModel = SHADING_MODELS.DETAIL
 
@@ -27,8 +28,8 @@
             case SHADING_MODELS.G_AO:
             case SHADING_MODELS.AO:
                 return "SHADING_AO"
-            case SHADING_MODELS.REC_NORMALS:
-                return "RECONSTRUCTED_NORMALS"
+            case SHADING_MODELS.SSR:
+                return "SHADING_SSR"
             case SHADING_MODELS.POSITION:
                 return "SHADING_POSITION"
             case SHADING_MODELS.DETAIL:
@@ -63,8 +64,8 @@
                 return GBuffer.normalSampler
             case SHADING_MODELS.ALBEDO:
                 return GBuffer.albedoSampler
-            case SHADING_MODELS.REC_NORMALS:
-                return GBuffer.baseNormalSampler
+            case SHADING_MODELS.SSR:
+                return GlobalIlluminationPass.SSRSampler
             case SHADING_MODELS.POSITION:
                 return GBuffer.positionSampler
             case SHADING_MODELS.G_AO:
@@ -74,10 +75,9 @@
             case SHADING_MODELS.AMBIENT:
                 return GBuffer.ambientSampler
             case SHADING_MODELS.SSGI:
-                return SSGIPass.sampler
+                return GlobalIlluminationPass.SSGISampler
             case SHADING_MODELS.STOCHASTIC:
-                return SSGIPass.normalSampler
-
+                return GlobalIlluminationPass.normalSampler
             case SHADING_MODELS.ID:
                 return GBuffer.IDSampler
         }
@@ -88,11 +88,11 @@
             GBuffer.deferredUniforms.option = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                SSGIPass.uniforms.previousFrame = GBuffer.albedoSampler
+                GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
                 GBuffer.deferredUniforms.uSampler = getTexture()
                 GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
-                SSGIPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
+                GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
                 GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
                 GBuffer.deferredUniforms.uSampler = GBuffer.compositeFBO.colors[0]
             }
@@ -168,10 +168,10 @@
     <fieldset class="content">
         <legend>{Localization.SCENE}</legend>
         <div class="column">
-            <button data-highlight={shadingModel === SHADING_MODELS.REC_NORMALS ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.REC_NORMALS}>
-                {Localization.RECONSTRUCTED_NORMALS}
-                <small>{Localization.RECONSTRUCTED_NORMALS_DEF}</small>
+            <button data-highlight={shadingModel === SHADING_MODELS.SSR ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.SSR}>
+                {Localization.SHADING_SSR}
+                <small>{Localization.SSR}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.DEPTH}>

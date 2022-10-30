@@ -26,10 +26,10 @@ export default async function updateMaterialAsset(key, value, registryID, temp, 
     const instance = GPUResources.materials.get(registryID)
     if (instance != null && doUpdate) {
         await MaterialAPI.updateMaterialUniforms(newData.uniformData, instance)
-        alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
+
         GPUController.cleanUpTextures()
     }
-    alert.pushAlert(Localization.UPDATING_ASSET, "alert")
+
     await AssetAPI.updateAsset(registryID, JSON.stringify(newData))
 
 }

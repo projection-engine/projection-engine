@@ -10,7 +10,7 @@ export default {
     APPLY: "Apply",
     POST_PROCESSING: "Post processing",
     VIEWPORT: "Viewport",
-
+    MIN_RAY_STEP: "Minimum ray step",
 
     SIDE_BAR: "Viewport side-bar",
 
@@ -107,6 +107,7 @@ export default {
     SHADING_STOCHASTIC: "Stochastic normals",
     STOCHASTIC_DEF: "SSGI normals",
     SHADING_SSGI: "Global illumination",
+    SHADING_SSR: "Reflections",
     SSGI_DEF: "SSGI",
     SHADING_POSITION: "Position",
     POSITION_DEF: "Fragment position",
@@ -123,8 +124,7 @@ export default {
     G_AO_DEF: "Material AO",
     G_BUFFER: "G-Buffer",
     SCENE: "Scene",
-    RECONSTRUCTED_NORMALS: "Reconstructed normals",
-    RECONSTRUCTED_NORMALS_DEF: "Depth reconstruction",
+    RECONSTRUCTED_NORMALS: "Screen",
     DETAIL_DEF: "PBR shading",
     LIGHT_DEF: "Light details",
     UNLIT_DEF: "Material albedo",

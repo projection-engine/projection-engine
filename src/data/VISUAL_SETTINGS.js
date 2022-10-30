@@ -25,8 +25,6 @@ export default {
     SSGI: {
         enabled: true,
         maxSteps: 8,
-        binarySearchSteps: 5,
-        depthThreshold: 1.2,
         strength: .26,
         stepSize: .7
     },
@@ -34,8 +32,9 @@ export default {
         enabled: true,
         maxSteps: 8,
         binarySearchSteps: 5,
-        depthThreshold: 1.2,
-        stepSize: 1
+        stepSize: .7,
+        falloff: 3,
+        minRayStep: .1
     },
     SSAO: {
         bias: .025,
