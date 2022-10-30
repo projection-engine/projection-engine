@@ -51,12 +51,12 @@ export default async function buildMaterial(textures, imagesMap, material) {
                 settings.data[2] = 1
                 roughness.data = metallic.data = imagesMap[textures[metallicRoughnessTexture.index].source]
                 // R channel for metallic
-                linearSamplerScales[4] = 0
-                linearSamplerScales[5] = 0
+                linearSamplerScales.data[4] = 0
+                linearSamplerScales.data[5] = 0
 
                 // G channel for roughness
-                linearSamplerScales[6] = 0
-                linearSamplerScales[8] = 0
+                linearSamplerScales.data[6] = 0
+                linearSamplerScales.data[8] = 0
 
             }
             if (metallicFactor != null) {
@@ -96,8 +96,8 @@ export default async function buildMaterial(textures, imagesMap, material) {
             ao.data = imagesMap[textures[occlusionTexture.index].source]
             if(roughness.data === ao.data){
                 // B channel for ambient occlusion
-                linearSamplerScales[0] = 0
-                linearSamplerScales[1] = 0
+                linearSamplerScales.data[0] = 0
+                linearSamplerScales.data[1] = 0
             }
         }
 

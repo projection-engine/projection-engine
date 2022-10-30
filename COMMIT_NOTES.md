@@ -1,2 +1,4 @@
-- Some bugfixes
-- Camera component tweaks
+- SSAO Fixed
+- Simple material parallax occlusion mapping
+- FIxed gltf material roughness/metallic/occlusion channels
+- Temporary fix to TBN matrix

@@ -251,6 +251,9 @@ export default {
     LAYERS_CONTROLLER: "Layer controller",
     REMOVE_LAYER: "Remove layer",
     LAYER: "Layer",
+    LAYERS: "Layers",
+    PARALLAX_OCCLUSION_MAPPING: "Parallax occlusion mapping",
+    DISCARD_OFF_PIXELS: "Discard off pixels",
     ADD_LAYER: "Add layer",
     TERRAIN_COMPONENT: "Terrain component",
 

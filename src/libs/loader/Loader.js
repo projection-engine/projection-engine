@@ -22,6 +22,8 @@ import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
+        if(!objLoaded)
+            return
         let materialID
         if (GPUResources.meshes.get(objLoaded.id))
             return
@@ -92,6 +94,7 @@ export default class Loader {
                 continue
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.PRIMITIVE: {
+                    console.log(NodeFS.ASSETS_PATH + NodeFS.sep + res.path)
 
                     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
                     const materialID = await Loader.mesh(file, data, asID)

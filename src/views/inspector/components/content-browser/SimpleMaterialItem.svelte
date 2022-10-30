@@ -50,6 +50,7 @@
 
 <fieldset>
     <legend>{Localization.ALBEDO}</legend>
+
     <fieldset>
         <legend>{Localization.SAMPLER}</legend>
         <div class="content-wrapper">
@@ -346,6 +347,61 @@
 
 
 <fieldset>
+    <legend>{Localization.PARALLAX_OCCLUSION_MAPPING}</legend>
+    <fieldset>
+        <legend>{Localization.SAMPLER}</legend>
+        <div class="content-wrapper">
+            <Selector
+                    disabled={!settings[6]}
+                    type="image"
+                    selected={uniform.heightMap}
+                    handleChange={v => updateAsset("heightMap", v.registryID)}
+            />
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="content-wrapper">
+            <Range
+                    minValue={0}
+                    value={settings[6]}
+                    precision={3}
+                    increment={.001}
+                    label={Localization.HEIGHT_SCALE}
+                    onFinish={v =>  {
+                       const copy = [...settings]
+                        copy[6] = v
+                        updateAsset("settings", copy)
+                    }}
+            />
+            <Range
+                    minValue={1}
+                    maxValue={32}
+                    value={settings[7]}
+                    label={Localization.LAYERS}
+                    integer={true}
+                    onFinish={v =>  {
+                       const copy = [...settings]
+                        settings[7] = v
+                        updateAsset("settings", copy)
+                    }}
+            />
+            <Checkbox
+                    label={Localization.DISCARD_OFF_PIXELS}
+                    checked={settings[8]}
+                    handleCheck={() => {
+                        const copy = [...settings]
+                        copy[8] = copy[8] === 0 ? 1 : 0
+                        updateAsset("settings", copy)
+                    }}
+            />
+        </div>
+    </fieldset>
+
+
+</fieldset>
+
+
+<fieldset>
     <legend>{Localization.AO}</legend>
     <fieldset>
         <legend>{Localization.SAMPLER}</legend>
@@ -354,10 +410,10 @@
                     label={Localization.USE_SAMPLER}
                     checked={settings[4]}
                     handleCheck={() => {
-                const copy = [...settings]
-                copy[4] = copy[4] === 0 ? 1 : 0
-                updateAsset("settings", copy)
-            }}
+                        const copy = [...settings]
+                        copy[4] = copy[4] === 0 ? 1 : 0
+                        updateAsset("settings", copy)
+                    }}
             />
             <Selector
                     disabled={!settings[4]}

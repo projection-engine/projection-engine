@@ -8,7 +8,8 @@ export default function updateViewport(engine, currentView) {
         return
     if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
         Engine.start()
-        CameraTracker.startTracking()
+        if (Engine.isDev)
+            CameraTracker.startTracking()
         gpu.canvas.style.opacity = "1"
     } else {
         CameraTracker.stopTracking()

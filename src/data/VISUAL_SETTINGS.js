@@ -38,9 +38,10 @@ export default {
         stepSize: 1
     },
     SSAO: {
+        bias: .025,
         enabled: false,
-        power: 2,
-        radius: 100
+        power: 1,
+        radius: .5
     },
     INITIALIZED: false
 }
