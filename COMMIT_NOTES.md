@@ -1,3 +1,2 @@
-- SSR + SSGI pass
-- Reworked rendering forms
-- Optimizations
+- Organizing deferred renderer
+- Initiating simple material cube map shader
