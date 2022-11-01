@@ -64,6 +64,7 @@
                 label={Localization.STEP_SIZE}
                 incrementPercentage={.001}
                 precision={4}
+                minValue={.00001}
                 value={visualSettings.SSR.stepSize}
                 onFinish={v => updateSubObject("SSR","stepSize",v)}
         />
@@ -79,10 +80,10 @@
 
         <Range
                 label={Localization.MIN_RAY_STEP}
-                integer={true}
+
                 incrementPercentage={.001}
                 precision={4}
-                minValue={.001}
+                minValue={.00001}
                 value={visualSettings.SSR.minRayStep}
                 onFinish={v => updateSubObject("SSR","minRayStep",v)}
         />
@@ -126,7 +127,7 @@
 
                 incrementPercentage={.001}
                 precision={4}
-
+                minValue={.00001}
                 value={visualSettings.SSGI.stepSize}
                 onFinish={v => updateSubObject("SSGI","stepSize",v)}
         />

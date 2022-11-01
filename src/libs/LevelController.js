@@ -193,11 +193,9 @@ export default class LevelController {
                         ...SettingsStore.data,
                         camera: {
                             ...SettingsStore.data.camera,
-                            cameraRotation: [
-                                CameraTracker.xRotation,
-                                CameraTracker.yRotation
-                            ],
-                            cameraTranslation: [...CameraAPI.translationBuffer]
+                            serialization: CameraAPI.serializeState(),
+                            xRotation: CameraTracker.xRotation,
+                            yRotation: CameraTracker.yRotation,
                         },
                     },
                     layout: TabsStore.data,

@@ -39,6 +39,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.bloomThreshold = settings.bloomThreshold
         CameraAPI.metadata.gamma = settings.gamma
         CameraAPI.metadata.exposure = settings.exposure
+        CameraAPI.metadata.fxaa = settings.fxaa
     }
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)

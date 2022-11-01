@@ -1,2 +1,5 @@
-- Organizing deferred renderer
-- Initiating simple material cube map shader
+- Fixing camera serialization bugs
+- Added scroll movement
+- Fixed normal mapping when parallax is disabled
+- Organizing shaders 
+- Removing BRDF from deferred pass
