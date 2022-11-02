@@ -71,7 +71,7 @@
             value={temp.dimensions}
             disabled={isDisabled}
             label={Localization.DIMENSION_MULTIPLIER}
-            precision={4}
+
             minValue={.001}
             onFinish={v => updateAsset("dimensions", v)}
     />

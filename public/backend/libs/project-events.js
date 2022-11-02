@@ -8,7 +8,6 @@ import readTypedFile from "../utils/read-typed-file";
 import importFiles from "../utils/import-files";
 import ProjectMap from "./ProjectMap";
 import createRegistryEntry from "../utils/create-registry-entry";
-import rm from "shared-resources/backend/utils/rm";
 import resolveFileName from "../utils/resolve-file-name";
 
 

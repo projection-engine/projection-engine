@@ -21,7 +21,6 @@
                 update("resolution", [v, settings.resolution[1]])
             }}
                 incrementPercentage={1}
-                precision={0}
                 handleChange={() => null}
                 value={settings.resolution[0]}
                 minValue={1}
@@ -33,7 +32,6 @@
                 update("resolution", [settings.resolution[0], v])
             }}
                 incrementPercentage={1}
-                precision={0}
                 handleChange={() => null}
                 value={settings.resolution[1]}
                 minValue={1}

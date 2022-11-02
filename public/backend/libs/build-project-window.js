@@ -1,4 +1,3 @@
-import readFile from "shared-resources/backend/utils/read-file";
 import contextMenuController from "shared-resources/backend/context-menu-controller";
 import PROJECT_PATH from "shared-resources/PROJECT_PATH";
 import projectEvents from "./project-events";
@@ -7,7 +6,6 @@ import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import logToWindow from "./log-to-window";
 import AssimpLoader from "./assimp/AssimpLoader";
 import readTypedFile from "../utils/read-typed-file";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
 
 const {BrowserWindow} = require("electron")
 const path = require("path");

@@ -182,25 +182,18 @@
             <Range
                     label={Localization.RADIUS}
                     minValue={0}
-                    precision={4}
-                    increment={.001}
                     value={visualSettings.SSAO.radius}
                     onFinish={v => updateSubObject("SSAO","radius",v)}
             />
             <Range
                     label={Localization.POWER}
                     minValue={0}
-                    precision={4}
-                    increment={.001}
                     value={visualSettings.SSAO.power}
                     onFinish={v => updateSubObject("SSAO","power",v)}
             />
         </div>
         <Range
                 label={Localization.BIAS}
-
-                precision={4}
-                increment={.001}
                 value={visualSettings.SSAO.bias}
                 onFinish={v => updateSubObject("SSAO","bias",v)}
         />

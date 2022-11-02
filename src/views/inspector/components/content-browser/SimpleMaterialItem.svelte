@@ -364,8 +364,6 @@
             <Range
                     minValue={0}
                     value={settings[6]}
-                    precision={3}
-                    increment={.001}
                     label={Localization.HEIGHT_SCALE}
                     onFinish={v =>  {
                        const copy = [...settings]

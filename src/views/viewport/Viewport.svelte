@@ -16,7 +16,6 @@
     import View from "../../components/view/components/View.svelte";
     import getViewIcon from "../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
-    import GBuffer from "../../../public/engine/runtime/renderers/GBuffer";
 
     export let updateView
     export let viewTab

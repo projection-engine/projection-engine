@@ -1,5 +1,4 @@
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import {readRegistry} from "../utils/fs-operations";
 import readTypedFile from "../utils/read-typed-file";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 

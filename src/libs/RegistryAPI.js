@@ -2,7 +2,6 @@ import {v4 as uuidv4} from "uuid";
 import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import FilesStore from "../stores/FilesStore";
 
 const {ipcRenderer} = window.require("electron")
 export default class RegistryAPI {

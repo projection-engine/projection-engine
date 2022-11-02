@@ -7,7 +7,7 @@ import Localization from "../templates/LOCALIZATION_EN";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../public/engine/api/CameraAPI";
-import EntityAPI from "../../public/engine/api/EntityAPI";
+import LightsAPI from "../../public/engine/api/LightsAPI";
 
 
 const addSprite = (entity, img) => {
@@ -87,7 +87,7 @@ export default class EntityConstructor {
             entity.active = newValue
         }
         loopHierarchy(nodeRef, !nodeRef.active)
-        EntityAPI.packageLights(false, false)
+        LightsAPI.packageLights(false, false)
         if (submit)
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }

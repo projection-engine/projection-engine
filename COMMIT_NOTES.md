@@ -1,5 +1,8 @@
-- Fixing camera serialization bugs
-- Added scroll movement
-- Fixed normal mapping when parallax is disabled
-- Organizing shaders 
-- Removing BRDF from deferred pass
+- UBO for direcitonal lights
+- UBO for point lights
+- SSAO UBO for samples and settings
+- UBO for cameras
+- Updating range input
+- Added bias to directional light shadows
+- Fixed ppackage lights computing POV matrix even when light doesnt have shadows
+- LightsAPI

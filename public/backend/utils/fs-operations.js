@@ -1,7 +1,6 @@
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 
 import readFile from "shared-resources/backend/utils/read-file";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
 import ProjectMap from "../libs/ProjectMap";
 
 
