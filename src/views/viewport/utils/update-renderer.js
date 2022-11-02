@@ -8,6 +8,8 @@ import GridSystem from "../../../../public/engine/editor-environment/services/Gr
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 import GPUResources from "../../../../public/engine/GPUResources";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
+import MotionBlur from "../../../../public/engine/runtime/post-processing/MotionBlur";
+import FrameComposition from "../../../../public/engine/runtime/post-processing/FrameComposition";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -40,6 +42,8 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.gamma = settings.gamma
         CameraAPI.metadata.exposure = settings.exposure
         CameraAPI.metadata.fxaa = settings.fxaa
+
+       CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
     }
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)

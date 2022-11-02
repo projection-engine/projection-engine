@@ -38,8 +38,6 @@
                 return "SHADING_ROUGHNESS"
             case SHADING_MODELS.METALLIC:
                 return "SHADING_METALLIC"
-            case SHADING_MODELS.AMBIENT:
-                return "SHADING_AMBIENT"
             case SHADING_MODELS.SSGI:
                 return "SHADING_SSGI"
             case SHADING_MODELS.STOCHASTIC:
@@ -48,6 +46,8 @@
                 return "SHADING_UV"
             case SHADING_MODELS.ID:
                 return "SHADING_ID"
+            case SHADING_MODELS.VELOCITY:
+                return "SHADING_VELOCITY"
             default:
                 return ""
         }
@@ -72,14 +72,14 @@
             case SHADING_MODELS.ROUGHNESS:
             case SHADING_MODELS.METALLIC:
                 return GBuffer.behaviourSampler
-            case SHADING_MODELS.AMBIENT:
-                return GBuffer.ambientSampler
             case SHADING_MODELS.SSGI:
                 return GlobalIlluminationPass.SSGISampler
             case SHADING_MODELS.STOCHASTIC:
                 return GlobalIlluminationPass.normalSampler
             case SHADING_MODELS.ID:
                 return GBuffer.IDSampler
+            case SHADING_MODELS.VELOCITY:
+                return  GBuffer.velocityMapSampler
         }
 
     }
@@ -156,13 +156,6 @@
                 {Localization.SHADING_NORMAL}
                 <small>{Localization.NORMAL_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.AMBIENT ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.AMBIENT}>
-
-                {Localization.SHADING_AMBIENT}
-                <small>{Localization.AMBIENT_DEF}</small>
-            </button>
-
         </div>
     </fieldset>
     <fieldset class="content">
@@ -205,6 +198,11 @@
                     on:click={() => shadingModel = SHADING_MODELS.UV}>
                 {Localization.SHADING_UV}
                 <small>{Localization.UV_DEF}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.VELOCITY ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.VELOCITY}>
+                {Localization.SHADING_VELOCITY}
+                <small>{Localization.VELOCITY_DEF}</small>
             </button>
         </div>
 

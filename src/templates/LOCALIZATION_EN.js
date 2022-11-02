@@ -1,5 +1,6 @@
 export default {
-
+    VELOCITY_DEF: "Per-object velocity",
+    SHADING_VELOCITY: "Velocity",
     GRID: "Grid",
     CREATING_ENTITY: "Creating entity",
     UPDATING_SETTINGS: "Updating settings",
@@ -8,18 +9,19 @@ export default {
     SHADER_EDITOR: "Shader editor",
     UNDO: "Undo changes",
     APPLY: "Apply",
+    EDITOR_POST_PROCESSING: "Editor post-processing",
     POST_PROCESSING: "Post processing",
     VIEWPORT: "Viewport",
     MIN_RAY_STEP: "Minimum ray step",
 
     SIDE_BAR: "Viewport side-bar",
-
+    MOTION_BLUR: "Motion blur",
     SHORTCUTS: "Shortcuts",
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
     CAMERA_ANIMATION: "Camera smoothing",
     SAVING: "Saving project",
-
+    MOTION_BLUR_SCALE: "Motion blur scale",
     SAVE: "Save",
     DYNAMIC: "Dynamic",
     ASPECT_RATIO: "Aspect Ratio",

@@ -8,14 +8,17 @@ import PhysicsAPI from "../../public/engine/api/PhysicsAPI";
 import Engine from "../../public/engine/Engine";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
 import EntityAPI from "../../public/engine/api/EntityAPI";
+import CameraAPI from "../../public/engine/api/CameraAPI";
 
 export default class EntityStateController {
     static #state = []
     static #isPlaying = false
+    static cameraSerialization
 
     static async startPlayState() {
         if (EntityStateController.#isPlaying)
             return
+        EntityStateController.cameraSerialization = CameraAPI.serializeState()
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
         Engine.environment = ENVIRONMENT.EXECUTION
@@ -82,7 +85,7 @@ export default class EntityStateController {
 
         CameraTracker.startTracking()
         EngineStore.updateStore({...EngineStore.engine, executingAnimation: false})
-
+        CameraAPI.restoreState(EntityStateController.cameraSerialization)
     }
 
 }

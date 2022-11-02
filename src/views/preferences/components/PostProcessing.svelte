@@ -4,10 +4,20 @@
     import VisualsStore from "../../../stores/VisualsStore";
 
     export let visualSettings
+
     function update(key, value) {
         VisualsStore.updateStore({...visualSettings, [key]: value})
     }
 </script>
+<fieldset>
+    <legend>{"Motion blur"}</legend>
+    <Checkbox
+            checked={visualSettings.motionBlurEnabled}
+            handleCheck={() => update("motionBlurEnabled",  !visualSettings.motionBlurEnabled)}
+            label={"Enabled"}
+    />
+
+</fieldset>
 
 <fieldset>
     <legend>{"Lens distortion"}</legend>

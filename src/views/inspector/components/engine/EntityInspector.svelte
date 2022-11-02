@@ -11,7 +11,7 @@
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
     import updateEntityComponent from "../../utils/update-entity-component";
-    import updateEntityScript from "../../utils/update-entity-script";
+
     import getEntityTabs from "../../utils/get-entity-tabs";
 
     export let entity
@@ -116,7 +116,7 @@
                         entity={entity}
                         index={scriptIndex}
                         component={entity.scripts[scriptIndex]}
-                        submit={(k, v, s) => updateEntityScript(savedState, v => savedState = v, entity, scriptIndex, k, v, s)}
+                        submit={(k, v) => entity.scripts[scriptIndex][k] = v}
                 />
             {/if}
         </div>

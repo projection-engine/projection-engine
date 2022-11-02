@@ -51,15 +51,18 @@
     {#if attribute.type === Component.propTypes.NUMBER}
         <Range
                 handleChange={v => {
+
                     if(!firstSubmit){
                         firstSubmit = true
                         submit(attribute.key, v)
                         return
                     }
-                    submit(attribute.key, v)
                 }}
                 variant="embedded"
-                onFinish={v => submit(attribute.key, v, true)}
+                onFinish={v => {
+                    console.trace("UPDATING")
+                    submit(attribute.key, v, true)
+                }}
                 minValue={attribute.min}
                 maxValue={attribute.max}
                 integer={attribute.increment === 1}

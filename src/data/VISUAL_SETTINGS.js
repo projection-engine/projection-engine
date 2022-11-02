@@ -4,7 +4,7 @@ export default {
     bloomStrength: .3,
     bloomThreshold: .85,
     filmGrainStrength: .01,
-
+    mbVelocityScale: 1,
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
@@ -36,6 +36,7 @@ export default {
         falloff: 3,
         minRayStep: .1
     },
+    motionBlurEnabled: true,
     SSAO: {
         bias: .025,
         enabled: false,

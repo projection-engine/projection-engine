@@ -26,6 +26,9 @@
     import ConversionAPI from "../../../public/engine/api/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
     import GPUResources from "../../../public/engine/GPUResources";
+    import EntityStateController from "../../libs/EntityStateController";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
 
     const WORKER = selectionQueryWorker()
 
@@ -132,34 +135,59 @@
             }
         }
     }
-
+    $: isOnPlay = engine.executingAnimation
 </script>
 
-<GizmoToolTip/>
-{#if settings.showMetrics}
-    <Metrics/>
+{#if !isOnPlay}
+    <GizmoToolTip/>
+    {#if settings.showMetrics}
+        <Metrics/>
+    {/if}
+
+    <ViewHeader>
+        <Header settings={settings} engine={engine}/>
+    </ViewHeader>
+    <SelectBox
+            targetElement={gpu.canvas}
+            allowAll={true}
+            targetElementID={RENDER_TARGET}
+            disabled={isSelectBoxDisabled}
+            setSelected={setSelectionBox}
+            selected={[]}
+            nodes={[]}
+    />
+    <div class="top-bar">
+        <GizmoBar settings={settings}/>
+        <CameraGizmo/>
+    </div>
+{:else}
+    <button
+            class="stop-button"
+            on:click={() => EntityStateController.stopPlayState()}
+    >
+        <Icon styles="font-size: .85rem">pause</Icon>
+        <ToolTip content={Localization.STOP}/>
+    </button>
 {/if}
 
-<ViewHeader>
-    <Header settings={settings} engine={engine}/>
-</ViewHeader>
 
-<div class="top-bar">
-    <GizmoBar settings={settings}/>
-    <CameraGizmo/>
-</div>
 
-<SelectBox
-        targetElement={gpu.canvas}
-        allowAll={true}
-        targetElementID={RENDER_TARGET}
-        disabled={isSelectBoxDisabled}
-        setSelected={setSelectionBox}
-        selected={[]}
-        nodes={[]}
-/>
 
 <style>
+    .stop-button {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        height: 35px;
+        width: 35px;
+        background: var(--pj-background-primary);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+
     .top-bar {
         position: absolute;
         padding: 2px;

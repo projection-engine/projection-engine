@@ -38,7 +38,7 @@
     <h3>{Localization.VIEWPORT}</h3>
     <ViewportSettings settings={settings}/>
 
-    <h3>{Localization.POST_PROCESSING}</h3>
+    <h3>{Localization.EDITOR_POST_PROCESSING}</h3>
     <PostProcessing visualSettings={visuals}/>
 
     <h3>{Localization.RENDERING}</h3>

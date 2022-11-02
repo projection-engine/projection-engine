@@ -19,18 +19,9 @@
 </script>
 
 <div class="left-content">
-    <button on:click={() => {
-        if(!EngineStore.engine.executingAnimation)
-            EntityStateController.startPlayState()
-        else
-            EntityStateController.stopPlayState()
-    }}>
+    <button on:click={() => EntityStateController.startPlayState()}>
         <Icon styles="font-size: .85rem">play_arrow</Icon>
-        {#if engine.executingAnimation}
-            {Localization.STOP}
-        {:else}
-            {Localization.PLAY}
-        {/if}
+        {Localization.PLAY}
     </button>
 
     <button on:click={() => {

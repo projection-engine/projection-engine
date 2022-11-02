@@ -1,8 +1,13 @@
-- UBO for direcitonal lights
-- UBO for point lights
-- SSAO UBO for samples and settings
-- UBO for cameras
-- Updating range input
-- Added bias to directional light shadows
-- Fixed ppackage lights computing POV matrix even when light doesnt have shadows
-- LightsAPI
+- Adding viewProjection matrix to shaders and worker
+- Adding previousViewProjection to cameraAPI
+- Adding previousModelMatrix to entity
+- Moving probe sampling to deferred shader
+- Removing gAmbient sampler
+- Adding gVelocity map
+- Adding deferred shader UBO
+- Fixing bugs related to scripts
+- Adding try catch to script execution
+- Added camera serialization when switching play state
+- Removed editor layout from scene editor when playing
+- Added motion blur scale and toggle settings
+- Fixed script param update not working

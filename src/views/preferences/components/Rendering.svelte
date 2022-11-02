@@ -28,6 +28,15 @@
     />
 </fieldset>
 <fieldset>
+    <legend>{Localization.MOTION_BLUR_SCALE}</legend>
+    <Range
+            label={Localization.SCALE}
+            minValue={.0001}
+            value={visualSettings.mbVelocityScale}
+            onFinish={v => update("mbVelocityScale", v)}
+    />
+</fieldset>
+<fieldset>
     <legend>{Localization.PHYSICS}</legend>
     <Range
             label={Localization.PHYSICS_SIMULATION_STEP}
