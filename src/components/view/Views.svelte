@@ -56,7 +56,6 @@
 
 {#if resizePosition !== "bottom" && tabs.length > 0 && resizePosition !== "left"}
     <ResizableBar
-        resetTargets={{previous: true, next: false}}
         resetWhen={[hidden]}
         type={orientationName}
         onResizeStart={onResizeStart}
@@ -107,7 +106,6 @@
 </div>
 {#if resizePosition !== "top" && (orientation === "vertical" && tabs.length > 1 || orientation === "horizontal" && tabs.length > 0) || resizePosition === "left" && tabs.length > 0}
     <ResizableBar
-            resetTargets={{previous: true, next: false}}
             resetWhen={[hidden]}
             type={orientationName}
             onResizeStart={onResizeStart}

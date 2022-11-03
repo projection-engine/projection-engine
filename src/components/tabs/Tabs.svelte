@@ -130,6 +130,7 @@
     .view-static {
         color: var(--pj-color-quaternary);
         display: flex;
+        padding-left: 2px;
         align-items: center;
         overflow: hidden;
         border-top: transparent 2px solid;
@@ -154,8 +155,8 @@
         display: flex;
         align-items: center;
         overflow: hidden;
-        max-height: 25px;
-        min-height: 25px;
+        max-height: 22px;
+        min-height: 22px;
         border-radius: 3px;
 
     }

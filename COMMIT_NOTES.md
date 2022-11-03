@@ -1,1 +1,3 @@
-- Updating license and README
+- Adding tabs to preferences
+- Updating shared-resources
+- Visual layout fixes

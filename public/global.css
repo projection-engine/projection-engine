@@ -236,18 +236,28 @@ fieldset {
     border: none;
     display: grid;
     gap: 4px;
-    padding: 4px ;
+    padding: 4px;
     border-radius: 3px;
-    background: var(--pj-background-primary);
+    background: var(--pj-background-secondary);
+    color: var(--pj-color-tertiary);
 }
-fieldset > fieldset{
-    border-radius: 0px;
-    border-top: var(--pj-border-secondary) 1px solid;
+
+fieldset > fieldset {
+    border-radius: 0;
+    border-top: var(--pj-border-primary) 1px solid;
 }
-legend {
-    font-size: .72rem;
+
+fieldset > legend {
+    font-weight: 500;
+    font-size: .8rem;
+
     padding: 2px;
     color: var(--pj-color-secondary);
+}
+
+fieldset > fieldset > legend {
+    font-weight: normal !important;
+    font-size: .72rem !important;
 }
 
 strong {
@@ -320,7 +330,8 @@ pre[data-pre="-"] {
         opacity: 1;
     }
 }
-*[data-form="-"]{
+
+*[data-form="-"] {
     overflow-x: hidden;
     padding-left: 25%;
     display: flex;

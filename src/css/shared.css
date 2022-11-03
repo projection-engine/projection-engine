@@ -1,0 +1,29 @@
+.tab-button.shared {
+    width: 100%;
+    min-width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+.tab-button[data-highlight="-"]{
+    background: var(--pj-background-primary) !important;
+    color: var(--pj-accent-color) !important;
+}
+
+.tabs.shared {
+    height: 100%;
+
+    display: grid;
+    align-content: flex-start;
+    justify-content: center;
+    gap: 2px;
+
+    overflow-x: hidden;
+    min-width: 25px;
+    width: 25px;
+    overflow-y: auto;
+
+
+}

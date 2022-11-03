@@ -492,7 +492,7 @@ export default {
     EXIT: "Exit",
     PROJECTION_ENGINE: "Projection Engine",
     FOOTER: "This program comes with absolutely no warranty.",
-    MIT: "MIT License",
+    MIT: "Under GPL Version 3 license.",
     COPYRIGHT: "Copyright (c) 2022 Projection Engine",
 
     CODE: "Code",

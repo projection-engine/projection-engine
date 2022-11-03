@@ -135,15 +135,4 @@
         overflow-y: auto;
         overflow-x: hidden;
     }
-
-
-    .target-type {
-        background: var(--pj-background-tertiary);
-        padding: 4px;
-
-        border-radius: 3px;
-        text-align: right;
-        font-size: .65rem;
-        color: var(--pj-color-quaternary);
-    }
 </style>
