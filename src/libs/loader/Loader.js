@@ -55,7 +55,9 @@ export default class Loader {
                         const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
                         if (!meshData)
                             continue
-                        currentEntity.material = await FileSystemAPI.loadMaterial(meshData.material)
+                        const result =  await FileSystemAPI.loadMaterial(meshData.material)
+                        if(result)
+                            currentEntity.material = meshData.material
 
                         GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
                     }

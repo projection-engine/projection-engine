@@ -1,6 +1,7 @@
-- Fixed deferred shader fragment discard method
-- Fixed SSGI, SSR and stochastic normals precision by discarding off-pixels
-- Added UBO to frame composition
-- Optimizations to frame composition pass
-- Fixed shading methods
-- Fixed camera update not synced with framerate 
+- Fixed BRDF sampler
+- Added BRDF to screen space reflections
+- Added roughness contribution (fresnel schlick) to light sampling methods
+- Fixed filesystem registry not removing deleted files
+- Fixed emission by changing albedo sampler to float value
+- Fixed roughness input for simple material
+- Improved SSR and SSGI color precision
