@@ -5,53 +5,50 @@
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import EngineStore from "../../stores/EngineStore";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
     import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
+    import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
 
     export let settings
     export let engine
 
+
 </script>
 
-<div class="left-content">
-    <button on:click={() => EntityStateController.startPlayState()}>
-        <Icon styles="font-size: .85rem">play_arrow</Icon>
-        {Localization.PLAY}
-    </button>
 
-    <button on:click={() => {
-        alert.pushAlert(Localization.BUILDING_PROBES, "info")
-        DiffuseProbePass.compile()
-        SpecularProbePass.compile()
-    }}>
-        <Icon styles="font-size: .85rem">refresh</Icon>
-        {Localization.BUILD_PROBES}
-    </button>
-
-    <div data-vertdivider="-" style="height: 15px"></div>
-    <ViewOptions settings={settings}/>
-    <AddOptions/>
-    <Dropdown styles="width: 250px">
-        <button slot="button" data-viewbutton="-" style="background: transparent;">
-            {Localization.CAMERA}
+<ViewHeader>
+    <div class="left-content">
+        <button on:click={() => EntityStateController.startPlayState()}>
+            <Icon styles="font-size: .85rem">play_arrow</Icon>
+            {Localization.PLAY}
         </button>
-        <div style="padding: 8px 4px">
-            <CameraSettings/>
-        </div>
-    </Dropdown>
 
-    <ObjectOptions settings={settings}/>
-</div>
-<GizmoSettings settings={settings}/>
-<div class="right-content">
-    <ShadingOption/>
-</div>
 
+        <div data-vertdivider="-" style="height: 15px"></div>
+        <ViewOptions settings={settings}/>
+        <AddOptions/>
+        <Dropdown styles="width: 250px">
+            <button slot="button" data-viewbutton="-" style="background: transparent;">
+                {Localization.CAMERA}
+            </button>
+            <div style="padding: 8px 4px">
+                <CameraSettings/>
+            </div>
+        </Dropdown>
+
+        <ObjectOptions settings={settings}/>
+    </div>
+    <GizmoSettings settings={settings}/>
+    <div class="right-content">
+        <ShadingOption/>
+    </div>
+</ViewHeader>
 <style>
 
     button {

@@ -2,7 +2,6 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
 
-    export let type = ""
     export let title
     export let background
     export let startOpen

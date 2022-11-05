@@ -5,11 +5,11 @@
     import TEXTURE_FORMATS from "../../../../../public/engine/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../libs/AssetAPI";
-    import GPUResources from "../../../../../public/engine/GPUResources";
+    import GPU from "../../../../../public/engine/GPU";
     import TEXTURE_FILTERING from "../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
 
-    import GPUController from "../../../../../public/engine/GPUController";
+    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
 
     const {shell} = window.require("electron")
     const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
@@ -55,9 +55,9 @@
         }
         AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
-        if (GPUResources.textures.get(item.registryID) != null) {
-            GPUController.destroyTexture(item.registryID)
-            GPUController.allocateTexture({
+        if (GPU.textures.get(item.registryID) != null) {
+            GPUAPI.destroyTexture(item.registryID)
+            GPUAPI.allocateTexture({
                 ...temp,
                 img: temp.base64
             }, item.registryID)

@@ -7,8 +7,9 @@ import importFile from "../utils/import-file";
 import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import RegistryAPI from "../libs/RegistryAPI";
 
-const {shell} = window.require("electron")
+const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
     const hotKeys = {
@@ -100,6 +101,17 @@ export default function contentBrowserActions(settings, navigationHistory, curre
     return {
         hotKeys: Object.values(hotKeys),
         contextMenu: [
+            {
+                label: Localization.COPY_ID,
+                onClick: () => {
+                    const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
+                    if(ID){
+                        alert.pushAlert(Localization.COPIED, "success")
+                        clipboard.writeText(ID)
+                    }
+                }
+            },
+            {divider: true},
             hotKeys.SELECT_ALL,
             hotKeys.SELECT_NONE,
             hotKeys.INVERT_SELECTION,

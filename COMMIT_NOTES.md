@@ -1,3 +1,8 @@
-- Adding tabs to preferences
-- Updating shared-resources
-- Visual layout fixes
+- Fixed bugs related to UI editor
+- Added new file types
+- Enhanced FileSystemAPI with new methods
+- Improvements to script execution
+- Added option to copy file ID on context menu
+- Fixed UI component form
+- Fixed viewport bug where engine stopped when other tab changed to UI editor
+- Added UI update to refresh button 

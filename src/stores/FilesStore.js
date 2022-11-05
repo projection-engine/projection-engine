@@ -44,31 +44,7 @@ export default class FilesStore {
         }
     }
 
-    static unwatchFiles() {
-        if (!FilesStore.#isWatching)
-            return
-        NodeFS.unwatch()
-        FilesStore.#isWatching = false
-    }
 
-    static watchFiles() {
-        if (FilesStore.#isWatching)
-            return
-        FilesStore.#isWatching = true
-        NodeFS.watch(async (ev, data) => {
-            const found = FilesStore.data.items.find(i => !i.isFolder && data.includes(i.id))
-            if (found && Engine.UILayouts.get(found.registryID) != null) {
-                const entity = Engine.entities.find(e => e.components.get(COMPONENTS.UI)?.uiLayoutID === found.registryID)
-                if (!entity) {
-                    Engine.UILayouts.delete(found.registryID)
-                    return
-                }
-                Engine.UILayouts.set(found.registryID, await FilesAPI.readFile(data))
-                UIAPI.updateUIEntity(entity)
-                alert.pushAlert("Updating entity UI", "info")
-            }
-        })
-    }
 
     static async createFolder(currentDirectory) {
         let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_FOLDER, "")

@@ -5,7 +5,7 @@ import RegistryAPI from "./RegistryAPI";
 
 import ROUTES from "../data/ROUTES";
 import CHANNELS from "../data/CHANNELS";
-import GPUResources from "../../public/engine/GPUResources";
+import GPU from "../../public/engine/GPU";
 import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
 import componentConstructor from "../utils/component-constructor";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
@@ -25,7 +25,7 @@ import Localization from "../templates/LOCALIZATION_EN";
 import CameraAPI from "../../public/engine/api/CameraAPI";
 import TabsStore from "../stores/TabsStore";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
-import GPUController from "../../public/engine/GPUController";
+import GPUAPI from "../../public/engine/api/GPUAPI";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
 import EntityAPI from "../../public/engine/api/EntityAPI";
 
@@ -92,10 +92,10 @@ export default class LevelController {
             }
         }
 
-        GPUResources.meshes.forEach(m => GPUController.destroyMesh(m))
-        const materials = Array.from(GPUResources.materials.keys())
+        GPU.meshes.forEach(m => GPUAPI.destroyMesh(m))
+        const materials = Array.from(GPU.materials.keys())
         for (let i = 0; i < materials.length; i++)
-            GPUController.destroyMaterial(materials[i][1])
+            GPUAPI.destroyMaterial(materials[i][1])
 
         SelectionStore.updateStore({
             ...SelectionStore.data,
@@ -116,7 +116,7 @@ export default class LevelController {
                         await componentConstructor(entity, entity.scripts[i].id, false)
                     const imgID = entity.components.get(COMPONENTS.SPRITE)?.imageID
                     checkTexture: if (imgID) {
-                        const textures = GPUResources.textures
+                        const textures = GPU.textures
                         if (textures.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
                             break checkTexture
                         await EngineStore.loadTextureFromImageID(imgID)
@@ -130,7 +130,7 @@ export default class LevelController {
                     const terrain = entity.components.get(COMPONENTS.TERRAIN)
                     if (terrain) {
                         const {materialID, terrainID} = terrain
-                        if (GPUResources.meshes.get(terrainID) == null) {
+                        if (GPU.meshes.get(terrainID) == null) {
                             const rs = RegistryAPI.getRegistryEntry(terrainID)
                             if (!rs)
                                 continue
@@ -138,16 +138,16 @@ export default class LevelController {
                             if (!file)
                                 continue
                             const terrainData = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
-                            GPUController.allocateMesh(terrainID, terrainData)
+                            GPUAPI.allocateMesh(terrainID, terrainData)
                         }
-                        if (materialID && GPUResources.materials.get(materialID) == null) {
+                        if (materialID && GPU.materials.get(materialID) == null) {
                             const rs = RegistryAPI.getRegistryEntry(materialID)
                             if (!rs)
                                 continue
                             const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
                             if (!file)
                                 continue
-                            GPUController.allocateMaterialInstance(file, materialID).catch()
+                            GPUAPI.allocateMaterialInstance(file, materialID).catch()
                         }
                     }
 
@@ -160,14 +160,14 @@ export default class LevelController {
             CHANNELS.MESH,
             (ev, data) => {
                 console.log(data)
-                GPUController.allocateMesh(data.id, data)
+                GPUAPI.allocateMesh(data.id, data)
             })
 
         ipcRenderer.on(
             CHANNELS.MATERIAL,
             async (ev, data) => {
                 if (data?.result != null)
-                    GPUController.allocateMaterial({
+                    GPUAPI.allocateMaterial({
                         ...data.result,
                         fragment: data.result.shader,
                         vertex: data.result.vertexShader

@@ -32,6 +32,15 @@ export default class RegistryAPI {
         await getCall("create-registry", {id: fID, path: pathToFile}, false)
     }
 
+    static getByPath(path) {
+        const obj = Object.values(RegistryAPI.registry)
+        for (let i = 0; i < obj.length; i++) {
+            const c = obj[i]
+            if (c.path === path)
+                return c.id
+        }
+    }
+
     static getRegistryEntry(id) {
         return RegistryAPI.registry[id]
     }

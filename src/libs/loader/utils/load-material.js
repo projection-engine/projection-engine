@@ -2,11 +2,11 @@ import FilesAPI from "../../FilesAPI";
 import Localization from "../../../templates/LOCALIZATION_EN";
 import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
 import RegistryAPI from "../../RegistryAPI";
-import GPUResources from "../../../../public/engine/GPUResources";
+import GPU from "../../../../public/engine/GPU";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import TERRAIN_MATERIAL from "../../../../public/engine/static/TERRAIN_MATERIAL";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPUController from "../../../../public/engine/GPUController";
+import GPUAPI from "../../../../public/engine/api/GPUAPI";
 
 const loadFile = async (rs) => {
 
@@ -24,7 +24,7 @@ export default async function loadMaterial(ID, submit) {
         submit(FALLBACK_MATERIAL, "materialID")
     else if (ID.includes(TERRAIN_MATERIAL))
         submit(ID, "materialID")
-    else if(GPUResources.materials.get(ID) != null)
+    else if(GPU.materials.get(ID) != null)
         submit(ID, "materialID")
     else
         try {
@@ -32,7 +32,7 @@ export default async function loadMaterial(ID, submit) {
             if (!reg)
                 return
             const isInstance = reg.path.includes(FILE_TYPES.TERRAIN_MATERIAL) || reg.path.includes(FILE_TYPES.MATERIAL_INSTANCE) || reg.path.includes(FILE_TYPES.SIMPLE_MATERIAL)
-            if (!GPUResources.materials.get(ID)) {
+            if (!GPU.materials.get(ID)) {
                 alert.pushAlert(Localization.LOADING_MATERIAL, "alert")
                 const file = await loadFile(reg)
                 if (!file || isInstance && !file.original || !isInstance && !file.response) {
@@ -40,13 +40,13 @@ export default async function loadMaterial(ID, submit) {
                     return
                 }
                 if (isInstance) {
-                    if (!GPUResources.materials.get(file.original))
+                    if (!GPU.materials.get(file.original))
                         await loadMaterial(file.original, () => null)
-                    await GPUController.allocateMaterialInstance(file, ID)
+                    await GPUAPI.allocateMaterialInstance(file, ID)
 
                 } else {
                     await new Promise(resolve => {
-                        GPUController.allocateMaterial({
+                        GPUAPI.allocateMaterial({
                             onCompiled: () => resolve(),
                             settings: file.response.settings,
                             vertex: file.response.vertexShader,

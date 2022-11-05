@@ -21,6 +21,12 @@ export default function getItemIcon(metadata, childQuantity, type) {
             case FILE_TYPES.TERRAIN:
                 icon = "landscape"
                 break
+            case ".js":
+                icon = "javascript"
+                break
+            case ".json":
+                icon = "data_object"
+                break
             default:
                 icon = undefined
                 break

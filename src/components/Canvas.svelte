@@ -3,12 +3,13 @@
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "../views/viewport/utils/update-renderer";
     import EngineStore from "../stores/EngineStore";
-    import GPUResources from "../../public/engine/GPUResources";
+    import GPU from "../../public/engine/GPU";
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
     import AssetAPI from "../libs/AssetAPI";
     import initializer from "../../public/engine/editor-environment/initializer";
     import VisualsStore from "../stores/VisualsStore";
+    import Engine from "../../public/engine/Engine";
 
     export let onReady
 
@@ -24,7 +25,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        GPUResources.initializeContext(canvasRef, settings.resolution, AssetAPI.readAsset)
+        Engine.initialize(canvasRef, settings.resolution[0], settings.resolution[1], AssetAPI.readAsset, AssetAPI.readMetadata)
             .then(async () => {
                 await initializer()
                 onReady()

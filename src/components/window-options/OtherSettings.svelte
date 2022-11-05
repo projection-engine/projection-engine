@@ -13,6 +13,14 @@
     import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
     import Localization from "../../templates/LOCALIZATION_EN";
     import openBottomView from "../../utils/open-bottom-view";
+    import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
+    import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
+    import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
+    import Engine from "../../../public/engine/Engine";
+    import COMPONENTS from "../../../public/engine/static/COMPONENTS";
+    import FilesAPI from "../../libs/FilesAPI";
+    import UIAPI from "../../../public/engine/api/UIAPI";
+    import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
 
     export let store
     export let settings
@@ -36,14 +44,31 @@
             }, 3500)
         })
     })
-    onDestroy(() => {
-        alert.removeListener(ID)
-    })
+    onDestroy(() => alert.removeListener(ID))
 
+    async function updateStructure() {
+        alert.pushAlert(Localization.UPDATING_STRUCTURE, "info")
+        DiffuseProbePass.compile()
+        SpecularProbePass.compile()
+        await ScriptsAPI.updateAllScripts()
+        await UIAPI.updateAllElements()
+
+        alert.pushAlert(Localization.DONE, "success")
+
+    }
 
 </script>
 
 <div class="level-selector">
+    <button
+            class="button" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
+            disabled={engine.executingAnimation}
+    >
+        <Icon styles="font-size: 1rem">refresh</Icon>
+        {Localization.REFRESH_STRUCTURE}
+        <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
+    </button>
+    <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
     {#if historyChangeType != null}
         <div class="notification">
             <Icon styles="font-size: 1rem">
@@ -63,10 +88,10 @@
         </div>
         <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
     {/if}
-    <button class="button console" on:click={_ => openBottomView(VIEWS.CONSOLE)}>
+    <button class="button" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={_ => openBottomView(VIEWS.CONSOLE)}>
         <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: darkorange" : "color: #999")}>feedback</Icon>
         {#if hasMessage}
-            <small>{Localization.NEW_MESSAGE}</small>
+            <small>{Localization.NEW_CONSOLE_MESSAGE}</small>
         {/if}
         <ToolTip content={Localization.OPEN_CONSOLE}/>
     </button>
@@ -117,10 +142,8 @@
     </Dropdown>
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <button
-
             class="button"
             on:click={_ => {
-
                     const views = [...settings.views]
                     if(views[settings.currentView].viewport[TabsStore.getValue("viewport")] === VIEWS.PREFERENCES)
                         return
@@ -137,7 +160,7 @@
 
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <Dropdown styles="height: 25px">
-        <button slot="button" class="dropdown">
+        <button slot="button" class="dropdown" disabled={engine.executingAnimation}>
             <Icon>forest</Icon>
             <div data-overflow="-">
                 {#if engine.currentLevel}

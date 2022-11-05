@@ -14,9 +14,9 @@ import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPUResources from "../../../public/engine/GPUResources";
+import GPU from "../../../public/engine/GPU";
 import Entity from "../../../public/engine/instances/Entity";
-import GPUController from "../../../public/engine/GPUController";
+import GPUAPI from "../../../public/engine/api/GPUAPI";
 import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 
@@ -25,10 +25,10 @@ export default class Loader {
         if(!objLoaded)
             return
         let materialID
-        if (GPUResources.meshes.get(objLoaded.id))
+        if (GPU.meshes.get(objLoaded.id))
             return
         try {
-            GPUController.allocateMesh(id, objLoaded)
+            GPUAPI.allocateMesh(id, objLoaded)
             await loadMaterial(
                 objLoaded.material,
                 data => materialID = data
@@ -59,7 +59,7 @@ export default class Loader {
                         await loadMaterial(
                             meshData.material,
                             data => currentEntity.material = data)
-                        GPUController.allocateMesh(primitiveRegistry.id, meshData)
+                        GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
                     entity.parentCache = currentEntity.parent || root.id
@@ -94,8 +94,6 @@ export default class Loader {
                 continue
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.PRIMITIVE: {
-                    console.log(NodeFS.ASSETS_PATH + NodeFS.sep + res.path)
-
                     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
                     const materialID = await Loader.mesh(file, data, asID)
                     const entity = new Entity(undefined, "New primitive")

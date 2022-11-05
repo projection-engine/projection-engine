@@ -1,7 +1,7 @@
-import GPUResources from "../../../../public/engine/GPUResources";
+import GPU from "../../../../public/engine/GPU";
 import MaterialAPI from "../../../../public/engine/api/rendering/MaterialAPI";
 import AssetAPI from "../../../libs/AssetAPI";
-import GPUController from "../../../../public/engine/GPUController";
+import GPUAPI from "../../../../public/engine/api/GPUAPI";
 
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {
     let valid = false
@@ -22,11 +22,11 @@ export default async function updateMaterialAsset(key, value, registryID, temp, 
     setTemp(newData)
     if (!valid)
         return
-    const instance = GPUResources.materials.get(registryID)
+    const instance = GPU.materials.get(registryID)
     if (instance != null && doUpdate) {
         await MaterialAPI.updateMaterialUniforms(newData.uniformData, instance)
 
-        GPUController.cleanUpTextures()
+        GPUAPI.cleanUpTextures()
     }
 
     await AssetAPI.updateAsset(registryID, JSON.stringify(newData))

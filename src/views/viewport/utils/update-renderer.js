@@ -6,7 +6,7 @@ import CameraAPI from "../../../../public/engine/api/CameraAPI";
 import DirectionalShadows from "../../../../public/engine/runtime/occlusion/DirectionalShadows";
 import GridSystem from "../../../../public/engine/editor-environment/services/GridSystem";
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
-import GPUResources from "../../../../public/engine/GPUResources";
+import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
 import MotionBlur from "../../../../public/engine/runtime/post-processing/MotionBlur";
 import FrameComposition from "../../../../public/engine/runtime/post-processing/FrameComposition";
@@ -59,7 +59,7 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.metadataBuffer[1] = settings.gizmoGrid.translationGizmo
     GridSystem.metadataBuffer[2] = settings.showGridSubdivision ? 1 : 0
 
-    GPUResources.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
+    GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams({
         ...settings,
         selected,

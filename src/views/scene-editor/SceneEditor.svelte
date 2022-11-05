@@ -18,14 +18,14 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+
     import GizmoToolTip from "./components/GizmoToolTip.svelte";
     import Metrics from "../../components/Metrics.svelte";
     import CameraTracker from "../../../public/engine/editor-environment/libs/CameraTracker";
     import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
     import ConversionAPI from "../../../public/engine/api/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
-    import GPUResources from "../../../public/engine/GPUResources";
+    import GPU from "../../../public/engine/GPU";
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
@@ -122,8 +122,8 @@
     const setSelectionBox = (_, startCoords, endCoords) => {
         if (startCoords && endCoords) {
             drawIconsToBuffer()
-            const nStart = ConversionAPI.toQuadCoord(startCoords, GPUResources.internalResolution)
-            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPUResources.internalResolution)
+            const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
+            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
 
             try {
                 const data = PickingAPI.readBlock(nStart, nEnd)
@@ -144,9 +144,8 @@
         <Metrics/>
     {/if}
 
-    <ViewHeader>
-        <Header settings={settings} engine={engine}/>
-    </ViewHeader>
+    <Header settings={settings} engine={engine}/>
+
     <SelectBox
             targetElement={gpu.canvas}
             allowAll={true}
@@ -169,8 +168,6 @@
         <ToolTip content={Localization.STOP}/>
     </button>
 {/if}
-
-
 
 
 <style>

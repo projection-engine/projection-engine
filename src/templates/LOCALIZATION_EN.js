@@ -14,6 +14,7 @@ export default {
     VIEWPORT: "Viewport",
     MIN_RAY_STEP: "Minimum ray step",
 
+    UI_ALREADY_OPEN: "UI already open on other view",
     SIDE_BAR: "Viewport side-bar",
     MOTION_BLUR: "Motion blur",
     SHORTCUTS: "Shortcuts",
@@ -25,12 +26,15 @@ export default {
     SAVE: "Save",
     DYNAMIC: "Dynamic",
     ASPECT_RATIO: "Aspect Ratio",
+    COPY_ID: "Copy ID",
     UNDOING: "Undoing",
     REDOING: "Redoing",
-
-    NEW_TAB: "New Tab",
+    REFRESH_SCRIPTS_AND_PROBES: "Reloads scripts and UI components and rebuild light probes",
+    DONE: "Done",
+    TAB: "New Tab",
+    COPIED: "Copied",
     OPEN_CONSOLE: "Open console",
-    NEW_MESSAGE: "New console message",
+    NEW_CONSOLE_MESSAGE: "New console message",
     CLEAR: "Clear",
     TOGGLE_NOTIFICATIONS: "Toggle notifications",
     EMPTY: "Empty",
@@ -38,8 +42,9 @@ export default {
     SHOW_PREFERENCES: "Show preferences",
     LEVEL: "Level",
     PLAY: "Play",
-    BUILD_PROBES: "Build probes",
-    BUILDING_PROBES: "Building probes",
+    REFRESH_STRUCTURE: "Refresh structure",
+
+    UPDATING_STRUCTURE: "Updating structure",
 
     DEFAULT_LEVEL: "Default",
 
@@ -211,7 +216,7 @@ export default {
     COMPONENT_FILTER: "Filter by component",
     HIERARCHY_SOURCE: "Change hierarchy view",
     ENGINE: "Engine",
-    NEW_FOLDER: "New Folder",
+    FOLDER: "New Folder",
 
     CLICK_TO_SHOW_OBJECT: "Click to show object",
     VIEW: "View",
@@ -445,16 +450,15 @@ export default {
 
     ROW_VIEW: "Rows",
     CARD_VIEW: "Cards",
-    NEW_TERRAIN_MATERIAL: "New terrain material",
-    NEW_TERRAIN: "New terrain",
+
+
     DELETING_ITEMS: "Deleting items",
-    NEW_SIMPLE_MATERIAL: "New simple material",
+
     FILE_TYPE: "File type",
     ITEM_NAME: "Name",
     ITEM_TYPE: "Type",
     REGISTRY_ID: "Registry",
-    NEW_UI_LAYOUT: "New UI Layout",
-    NEW_LEVEL: "New Level",
+
     SUCCESSFUL_DELETE: "Items deleted",
     CREATE: "Create",
     OPENING_LEVEL: "Opening level",
@@ -474,9 +478,8 @@ export default {
     REFRESHING: "Refreshing content-browser",
     GO_TO_PARENT: "Go to parent",
 
-    NEW_COMPONENT: "New Component",
-    NEW_MATERIAL: "New Material",
-    NEW_MATERIAL_INSTANCE: "New Material Instance",
+    JAVASCRIPT_PACKAGE: "Javascript package",
+    JSON_OBJECT: "JSON object",
 
     ASSETS: "Assets",
 

@@ -73,7 +73,11 @@
                         <Icon styles={"font-size: .85rem;" + (i === currentTab ? "color: var(--pj-color-primary);" : "")}>{v.icon}</Icon>
                     </button>
                     {#each templates as item}
-                        <button on:click={_ => updateView(item.id, i)}>
+                        <button on:click={e => {
+                            if(e.target.closeDropdown)
+                                e.target.closeDropdown()
+                            updateView(item.id, i)
+                        }}>
                             {#if v.id === item.id}
                                 <Icon>check</Icon>
                             {:else}

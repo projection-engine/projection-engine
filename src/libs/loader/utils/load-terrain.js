@@ -4,7 +4,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/template
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import Entity from "../../../../public/engine/instances/Entity";
-import GPUController from "../../../../public/engine/GPUController";
+import GPUAPI from "../../../../public/engine/api/GPUAPI";
 
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")
@@ -13,7 +13,7 @@ export default async function loadTerrain(reg) {
         return
     }
     const data = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
-    GPUController.allocateMesh(reg.id, data)
+    GPUAPI.allocateMesh(reg.id, data)
     const entity = new Entity()
     entity.addComponent(COMPONENTS.TERRAIN)
 

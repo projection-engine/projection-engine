@@ -23,6 +23,10 @@ export default function getTypeName(type) {
             return "Simple material"
         case FILE_TYPES.TERRAIN:
             return "Terrain"
+        case ".js":
+            return "Javascript package"
+        case ".json":
+            return "JSON object"
         default:
             return ""
     }

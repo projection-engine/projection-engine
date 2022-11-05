@@ -40,18 +40,13 @@
 
 </script>
 
-<Accordion>
-    <svelte:fragment slot="header">
-        <div class="icon">
-            <Icon styles="font-size: .9rem; width: 1rem">
-                {getComponentIcon(COMPONENTS.UI, component)}
-            </Icon>
-        </div>
+<fieldset>
+    <legend class="legend">
         {Localization.UI_COMPONENT}
         <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
-    </svelte:fragment>
+    </legend>
     <fieldset>
         <legend>{Localization.IMPORT_LAYOUT}</legend>
         <Selector
@@ -108,16 +103,15 @@
             />
         {/each}
     </fieldset>
-</Accordion>
+</fieldset>
 
 <style>
-
-    .icon {
-        width: 17px;
-        height: 17px;
+    .legend{
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        width: 100%;
+        font-weight: 500;
     }
 
     .button {

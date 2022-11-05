@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import GPUResources from "../../../../public/engine/GPUResources";
+    import GPU from "../../../../public/engine/GPU";
     import Engine from "../../../../public/engine/Engine";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import Localization from "../../../templates/LOCALIZATION_EN";
@@ -21,11 +21,11 @@
     }
     function refresh(){
         let t = 0
-        GPUResources.meshes.forEach(m => t = t + m.trianglesQuantity)
+        GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
         triangles = t
-        meshes = GPUResources.meshes.size
-        materials = GPUResources.materials.size
-        textures = GPUResources.textures.size
+        meshes = GPU.meshes.size
+        materials = GPU.materials.size
+        textures = GPU.textures.size
     }
     onMount(() => {
         refresh()

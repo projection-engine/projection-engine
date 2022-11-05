@@ -25,47 +25,54 @@
     }
 </script>
 
-<Accordion title={Localization.MORE_INFO}>
-    {#if !item.isFolder && data}
-        <div class="section">
-            <ToolTip content="{data.size.toFixed(4)} MB"/>
-            <b>{Localization.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
-        </div>
+<Accordion title={Localization.MORE_INFO} type="">
+   <div class="wrapper">
+       {#if !item.isFolder && data}
+           <div class="section">
+               <ToolTip content="{data.size.toFixed(4)} MB"/>
+               <b>{Localization.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
+           </div>
 
-        <div class="section">
-            <ToolTip content={item.type}/>
-            <b>{Localization.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
-        </div>
-        <div class="section">
-            <ToolTip content={item.registryID}/>
-            <b>{Localization.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
-        </div>
-    {:else}
-        <div class="section">
-            <ToolTip content={item.children}/>
-            <b>{Localization.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
-        </div>
-    {/if}
-    <div class="section">
-        <ToolTip content={item.creationDate}/>
-        <b>{Localization.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
-    </div>
-    <div class="section">
-        <ToolTip content={item.id}/>
-        <b>{Localization.ASSETS_PATH}: </b>
-        <small
-                data-overflow="-"
-                class="link"
-                on:click={showInFolder}
-        >
-            {item.id}
-            <ToolTip content={Localization.SHOW_ON_CB}/>
-        </small>
-    </div>
+           <div class="section">
+               <ToolTip content={item.type}/>
+               <b>{Localization.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
+           </div>
+           <div class="section">
+               <ToolTip content={item.registryID}/>
+               <b>{Localization.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
+           </div>
+       {:else}
+           <div class="section">
+               <ToolTip content={item.children}/>
+               <b>{Localization.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
+           </div>
+       {/if}
+       <div class="section">
+           <ToolTip content={item.creationDate}/>
+           <b>{Localization.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
+       </div>
+       <div class="section">
+           <ToolTip content={item.id}/>
+           <b>{Localization.ASSETS_PATH}: </b>
+           <small
+                   data-overflow="-"
+                   class="link"
+                   on:click={showInFolder}
+           >
+               {item.id}
+               <ToolTip content={Localization.SHOW_ON_CB}/>
+           </small>
+       </div>
+   </div>
 
 </Accordion>
 
 <style>
+    .wrapper{
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
     .link {
         cursor: pointer;
     }

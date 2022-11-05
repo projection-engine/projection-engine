@@ -8,8 +8,9 @@
     import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
-    import FilesStore from "../../stores/FilesStore";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
     let engine = {}
     let settings = {}
@@ -20,6 +21,7 @@
     let ref
     let tooltip
     const INTERNAL_ID = v4()
+    let isAlreadyOpen = false
 
     const handler = e => {
         if (!isOnSelection)
@@ -40,11 +42,13 @@
             case "mouseenter":
                 const bBox = e.target.getBoundingClientRect()
                 const iframeBBox = ref.firstChild.getBoundingClientRect()
+
                 tooltip.style.width = bBox.width + "px"
                 tooltip.style.height = bBox.height + "px"
                 tooltip.style.top = (bBox.top + iframeBBox.top) + "px"
                 tooltip.style.left = (bBox.left + iframeBBox.left) + "px"
                 tooltip.style.zIndex = "500"
+                tooltip.style.opacity = "1"
                 tooltip.addEventListener("mouseleave", handler, {once: true})
                 tooltip.addEventListener("click", handler, {once: true})
                 const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-engineentityid"))
@@ -70,11 +74,25 @@
     }
 
     onMount(() => {
-        FilesStore.watchFiles()
+        if (UIAPI.iframeParent) {
+            isAlreadyOpen = true
+            const interval = setInterval(() => {
+                console.log(interval)
+                if(!UIAPI.iframeParent){
+                    UIAPI.buildUI(ref)
+                    update()
+                    clearInterval(interval)
+                    isAlreadyOpen = false
+                }
+            }, 500)
+            return
+        }
         UIAPI.buildUI(ref)
         update()
     })
     onDestroy(() => {
+        if (UIAPI.iframeParent === ref)
+            UIAPI.destroyUI()
         unsubscribeSettings()
         unsubscribeEngine()
     })
@@ -83,8 +101,13 @@
 <ViewHeader>
     <Header settings={settings}/>
 </ViewHeader>
-<div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
-<div class="wrapper ui" bind:this={ref}></div>
+
+<div class="wrapper ui" bind:this={ref} style={`opacity: ${isAlreadyOpen ? ".5" : "1"}`}>
+    {#if isAlreadyOpen}
+        <ToolTip content={LOCALIZATION_EN.UI_ALREADY_OPEN}/>
+    {/if}
+    <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
+</div>
 
 <style>
     .tooltip {

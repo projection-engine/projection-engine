@@ -18,6 +18,8 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
         switch (fileType) {
             case FILE_TYPES.UI_LAYOUT:
             case FILE_TYPES.COMPONENT:
+            case ".js":
+            case ".json":
                 shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
                 alert.pushAlert(Localization.OPENING_FILE + " (" + data.name + ")", "info")
                 break

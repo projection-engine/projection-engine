@@ -2,7 +2,7 @@
     import SHADING_MODELS from "../../public/engine/editor-environment/data/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
-    import GPUResources from "../../public/engine/GPUResources";
+    import GPU from "../../public/engine/GPU";
     import GBuffer from "../../public/engine/runtime/renderers/GBuffer";
     import AmbientOcclusion from "../../public/engine/runtime/occlusion/AmbientOcclusion";
     import SettingsStore from "../stores/SettingsStore";
@@ -90,10 +90,10 @@
             if (shadingModel !== SHADING_MODELS.DETAIL) {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
                 GBuffer.deferredUniforms.uSampler = getTexture()
-                GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                GBuffer.deferredShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
-                GBuffer.deferredShader = GPUResources.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
+                GBuffer.deferredShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
                 GBuffer.deferredUniforms.uSampler = GBuffer.compositeFBO.colors[0]
             }
         }
