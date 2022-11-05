@@ -78,7 +78,6 @@ export default {
         CAMERA_LEFT: [KEYS.Digit3],
         CAMERA_RIGHT: [KEYS.Digit4],
         CAMERA_FRONT: [KEYS.Digit5],
-        SWITCH_BETWEEN_CAMERAS: [KEYS.Digit9],
         FOCUS_ON_CAMERA: [KEYS.Digit0]
     },
     contentBrowserHotkeys: {

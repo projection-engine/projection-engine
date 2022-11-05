@@ -74,22 +74,16 @@
     }
 
     onMount(() => {
-        if (UIAPI.iframeParent) {
-            isAlreadyOpen = true
-            const interval = setInterval(() => {
-                console.log(interval)
-                if(!UIAPI.iframeParent){
-                    UIAPI.buildUI(ref)
-                    update()
-                    clearInterval(interval)
-                    isAlreadyOpen = false
-                }
-            }, 500)
+        if (UIAPI.iframeParent)
             return
-        }
         UIAPI.buildUI(ref)
         update()
     })
+    function focusOnView(){
+        UIAPI.buildUI(ref)
+        update()
+        isAlreadyOpen = false
+    }
     onDestroy(() => {
         if (UIAPI.iframeParent === ref)
             UIAPI.destroyUI()
@@ -99,7 +93,7 @@
 </script>
 
 <ViewHeader>
-    <Header settings={settings}/>
+    <Header engine={engine} settings={settings} isAlreadyOpen={isAlreadyOpen}/>
 </ViewHeader>
 
 <div class="wrapper ui" bind:this={ref} style={`opacity: ${isAlreadyOpen ? ".5" : "1"}`}>

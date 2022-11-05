@@ -16,11 +16,7 @@
     import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
     import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
     import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
-    import Engine from "../../../public/engine/Engine";
-    import COMPONENTS from "../../../public/engine/static/COMPONENTS";
-    import FilesAPI from "../../libs/FilesAPI";
     import UIAPI from "../../../public/engine/api/UIAPI";
-    import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
 
     export let store
     export let settings

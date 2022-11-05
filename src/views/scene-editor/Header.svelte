@@ -10,10 +10,6 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
-    import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
-    import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
 
     export let settings
     export let engine
@@ -28,8 +24,6 @@
             <Icon styles="font-size: .85rem">play_arrow</Icon>
             {Localization.PLAY}
         </button>
-
-
         <div data-vertdivider="-" style="height: 15px"></div>
         <ViewOptions settings={settings}/>
         <AddOptions/>
@@ -49,6 +43,7 @@
         <ShadingOption/>
     </div>
 </ViewHeader>
+
 <style>
 
     button {

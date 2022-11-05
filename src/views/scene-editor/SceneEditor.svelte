@@ -14,7 +14,7 @@
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import GizmoBar from "./components/GeneralSettings.svelte";
+    import GeneralSettings from "./components/GeneralSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
@@ -156,7 +156,7 @@
             nodes={[]}
     />
     <div class="top-bar">
-        <GizmoBar settings={settings}/>
+        <GeneralSettings engine={engine} settings={settings}/>
         <CameraGizmo/>
     </div>
 {:else}

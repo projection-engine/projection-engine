@@ -14,7 +14,6 @@
     export let setTabs
     export let id
 
-    let hidden = false
     let ref
 
 
@@ -34,14 +33,8 @@
         }
 
         Object.assign(ref.style, obj)
-        if (hidden)
-            hidden = false
     }
-    function onResizeEnd(){
-        const bBox = ref.getBoundingClientRect()
-        if (bBox[orientationName] <= 30)
-            hidden = true
-    }
+
 
     $: {
         if(tabs.length === 0 && ref){
@@ -56,10 +49,8 @@
 
 {#if resizePosition !== "bottom" && tabs.length > 0 && resizePosition !== "left"}
     <ResizableBar
-        resetWhen={[hidden]}
         type={orientationName}
         onResizeStart={onResizeStart}
-        onResizeEnd={onResizeEnd}
     />
 {/if}
 <div
@@ -69,11 +60,13 @@
         style={`
             flex-direction: ${orientation === "horizontal" ? "row" : "column"};
             opacity: ${reducedOpacity ? ".75" : "1"};
+            ${orientation}: 250px;
+            ${"min-" + orientation}: 35px;
         `}
 >
     {#each tabs as views, groupIndex}
         <ViewGroup
-                hidden={hidden}
+
                 views={views}
                 groupIndex={groupIndex}
                 id={id}
@@ -83,7 +76,6 @@
                 addNewTab={_ => addTab(tabs, setTabs, groupIndex)}
                 removeTab={(i, cb, currentTab) => removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
         >
-            {#if !hidden}
                 <View
                         instance={view}
                         id={id}
@@ -92,7 +84,6 @@
                         switchView={newView => switchView(newView, groupIndex, tabs, index, setTabs )}
 
                 />
-            {/if}
         </ViewGroup>
         {#if groupIndex < tabs.length - 1 && tabs.length > 1}
             <ResizableBar
@@ -106,10 +97,8 @@
 </div>
 {#if resizePosition !== "top" && (orientation === "vertical" && tabs.length > 1 || orientation === "horizontal" && tabs.length > 0) || resizePosition === "left" && tabs.length > 0}
     <ResizableBar
-            resetWhen={[hidden]}
             type={orientationName}
             onResizeStart={onResizeStart}
-            onResizeEnd={onResizeEnd}
     />
 {/if}
 

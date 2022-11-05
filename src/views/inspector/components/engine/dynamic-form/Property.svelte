@@ -9,7 +9,6 @@
     import EngineStore from "../../../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
-    import loadMaterial from "../../../../../libs/loader/utils/load-material";
     import GPU from "../../../../../../public/engine/GPU";
     import Loader from "../../../../../libs/loader/Loader";
 
@@ -59,10 +58,7 @@
                     }
                 }}
                 variant="embedded"
-                onFinish={v => {
-                    console.trace("UPDATING")
-                    submit(attribute.key, v, true)
-                }}
+                onFinish={v => submit(attribute.key, v, true)}
                 minValue={attribute.min}
                 maxValue={attribute.max}
                 integer={attribute.increment === 1}
@@ -162,13 +158,17 @@
                 selected={value}
                 type="material"
                 terrainMaterials={attribute.terrainMaterials}
-                handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
+                handleChange={src => {
+                    console.trace(src)
+                    submit(attribute.key, src?.registryID, true)
+                }}
+
         />
     {:else if attribute.type === Component.propTypes.TERRAIN}
         <Selector
                 selected={value}
                 type="terrain"
-                handleChange={async src => loadMaterial(src?.registryID, (key) => submit(attribute.key, key, true))}
+                handleChange={(src) => submit(attribute.key, src?.registryID, true)}
         />
     {:else if attribute.type === Component.propTypes.MESH}
         <Selector

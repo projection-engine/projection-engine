@@ -8,8 +8,11 @@
     import Entity from "../../../public/engine/instances/Entity";
     import Engine from "../../../public/engine/Engine";
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";
+    import UIAPI from "../../../public/engine/api/UIAPI";
 
+    export let isAlreadyOpen
     export let settings
+    export let engine
 
     function selectAll() {
         const m = [], size = Engine.entities.length
@@ -20,39 +23,54 @@
         }
         SelectionStore.engineSelected = m
     }
+
     $: isOnSelection = settings.gizmo === GIZMOS.NONE
-    function toggleSelection(){
-        if(isOnSelection)
+
+    function toggleSelection() {
+        if (isOnSelection)
             SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
         else
             SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
     }
+
     function addUiElement() {
         const e = new Entity(undefined, "UI-Node")
         e.addComponent(COMPONENTS.UI)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
     }
+
+    function focusOnView() {
+        UIAPI.buildUI(ref)
+        update()
+        isAlreadyOpen = false
+    }
 </script>
 
-<div class="left-content">
-    <button on:click={addUiElement}>
-        <Icon styles="font-size: .9rem">add</Icon>
-        {Localization.ADD_ELEMENT}
+{#if isAlreadyOpen && !engine.executingAnimation}
+    <button on:click={focusOnView}>
+        <Icon styles="font-size: .9rem">place</Icon>
+        {Localization.FOCUS_ON_THIS_VIEW}
     </button>
-    <button on:click={selectAll}>
-        {Localization.SELECT_ALL}
-    </button>
-</div>
+{:else if !isAlreadyOpen}
+    <div class="left-content">
+        <button on:click={addUiElement}>
+            <Icon styles="font-size: .9rem">add</Icon>
+            {Localization.ADD_ELEMENT}
+        </button>
+        <button on:click={selectAll}>
+            {Localization.SELECT_ALL}
+        </button>
+    </div>
 
-<div class="right-content">
-    <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleSelection}>
-        <Icon>
-            highlight_alt
-        </Icon>
-        {Localization.PICKER}
-    </button>
-</div>
-
+    <div class="right-content">
+        <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleSelection}>
+            <Icon>
+                highlight_alt
+            </Icon>
+            {Localization.PICKER}
+        </button>
+    </div>
+{/if}
 <style>
 
     .left-content {
@@ -70,6 +88,7 @@
         justify-content: flex-end;
         width: 100%;
     }
+
     button {
         display: flex;
         gap: 4px;

@@ -13,22 +13,12 @@ import TRANSFORMATION_TYPE from "../data/TRANSFORMATION_TYPE";
 import EntityConstructor from "../libs/EntityConstructor";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";
-import CameraAPI from "../../public/engine/api/CameraAPI";
 import LevelController from "../libs/LevelController";
-import {vec3} from "gl-matrix";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
 import Engine from "../../public/engine/Engine";
+import LOCALIZATION_EN from "./LOCALIZATION_EN";
+import focusOnCamera from "../utils/focus-on-camera";
 
-function focusCamera(current, cameras) {
-    if (current > -1 && cameras[current] != null)
-        CameraAPI.updateViewTarget(cameras[current])
-    else{
-        vec3.copy(CameraAPI.translationBuffer, CameraTracker.currentTranslation)
-        CameraTracker.rotationChanged = true
-    }
-
-    EngineStore.updateStore({...EngineStore.engine, focusedCamera: cameras[current]?.id})
-}
 
 export default function viewportHotkeys(settings) {
 
@@ -49,33 +39,10 @@ export default function viewportHotkeys(settings) {
             icon: "content_copy",
             require: settings.viewportHotkeys.DUPLICATE,
         },
-        SWITCH_BETWEEN_CAMERAS: {
-            label: "Switch between cameras",
-            callback: () => {
-                const cameras = Engine.data.cameras
-                let current = cameras.findIndex(v => v.id === EngineStore.engine.focusedCamera)
-                if (cameras.length === 0) {
-                    if (EngineStore.engine.focusedCamera != null)
-                        EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
-                    return
-                }
-                if (current > -1 && cameras.length > 0)
-                    current = 0
-                else current++
-                if (current > cameras.length - 1)
-                    current = -1
 
-                focusCamera(current, cameras)
-            },
-            require: settings.viewportHotkeys.SWITCH_BETWEEN_CAMERAS,
-        },
         FOCUS_ON_CAMERA: {
-            label: "Focus on camera",
-            callback: () => {
-                const cameras = Engine.data.cameras
-                const current = cameras.findIndex(v => v.id === SelectionStore.mainEntity)
-                focusCamera(current, cameras)
-            },
+            label: LOCALIZATION_EN.FOCUS_ON_CAMERA,
+            callback: focusOnCamera,
             require: settings.viewportHotkeys.FOCUS_ON_CAMERA,
         },
 

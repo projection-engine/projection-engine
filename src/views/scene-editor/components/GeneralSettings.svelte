@@ -7,10 +7,17 @@
     import Localization from "../../../templates/LOCALIZATION_EN";
     import CameraAPI from "../../../../public/engine/api/CameraAPI";
     import ViewportActions from "../../../libs/ViewportActions";
+    import focusOnCamera from "../../../utils/focus-on-camera";
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import Engine from "../../../../public/engine/Engine";
+    import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
+
+    export let engine
+    export let settings
 
     let hidden = false
     let cameraIsOrtho = false
-    export let settings
+
 
     const toggleProjection = () => {
         const negated = !CameraAPI.isOrthographic
@@ -18,14 +25,36 @@
         CameraAPI.updateProjection()
         cameraIsOrtho = negated
     }
+    $: cameras = engine.changeID ? Engine.entities.filter(entity => entity.components.get(COMPONENTS.CAMERA) != null) : []
 </script>
 
 
 <div class="wrapper">
-    <button class="button viewport" disabled>
-        <ToolTip content={Localization.SWITCH_BETWEEN_CAMERAS}/>
-        <Icon styles="font-size: 1rem">videocam</Icon>
-    </button>
+    <Dropdown buttonStyles={"border-radius: 3px; border: var(--pj-border-primary) 1px solid;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
+        <button
+                slot="button"
+                style="border: none; background: transparent"
+                class="button viewport"
+                data-highlight={engine.focusedCamera ? "-" : undefined}
+        >
+            <ToolTip content={Localization.FOCUS_ON_CAMERA}/>
+            <Icon styles="font-size: 1rem">videocam</Icon>
+        </button>
+        {#each cameras as camera}
+            <button
+                    style="border: none"
+                    class="button viewport"
+                    on:click={_ => focusOnCamera(camera)}
+            >
+                {#if engine.focusedCamera === camera.id}
+                    <Icon>check</Icon>
+                {:else}
+                    <div style="width: 1.1rem"></div>
+                {/if}
+                {camera.name}
+            </button>
+        {/each}
+    </Dropdown>
     <button class="button viewport" on:click={toggleProjection} disabled>
         <ToolTip content={Localization.SWITCH_PROJECTION}/>
         {#if !cameraIsOrtho}

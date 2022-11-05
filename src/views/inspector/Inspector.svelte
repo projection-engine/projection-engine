@@ -80,7 +80,6 @@
                 value
             )
     }
-    $: console.trace(entity)
 </script>
 {#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}
     <div data-empty="-">

@@ -21,7 +21,6 @@ export default class RegistryAPI {
             const regResolved = NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path).replace(NodeFS.ASSETS_PATH, "")
             return regResolved === fromResolved
         })
-        console.trace(registryFound, toResolved, fromResolved)
         if (registryFound) {
             registryFound.path = toResolved
             ipcRenderer.send("update-registry", {id: registryFound.id, data: registryFound})

@@ -11,7 +11,6 @@
     export let views
     export let addNewTab
     export let removeTab
-    export let hidden
     export let switchView
     export let id
     export let settings
@@ -45,7 +44,7 @@
 </script>
 
 <div class="wrapper" bind:this={ref} on:mousedown={_ => TabsStore.focused = ref}>
-    <div class="tabs" style={hidden ? "transform: rotate(90deg)" : undefined}>
+    <div class="tabs" >
         <Tabs
                 focused={focused}
                 updateView={switchView}

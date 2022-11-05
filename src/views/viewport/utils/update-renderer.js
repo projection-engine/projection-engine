@@ -8,15 +8,13 @@ import GridSystem from "../../../../public/engine/editor-environment/services/Gr
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
-import MotionBlur from "../../../../public/engine/runtime/post-processing/MotionBlur";
-import FrameComposition from "../../../../public/engine/runtime/post-processing/FrameComposition";
 
 
 export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
     CameraTracker.initialize(settings)
 
-    if (Engine.environment === ENVIRONMENT.DEV) {
+    if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
         if(settings.camera) {
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01

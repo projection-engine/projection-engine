@@ -373,13 +373,13 @@
             />
             <Range
                     minValue={1}
-                    maxValue={32}
+                    maxValue={64}
                     value={settings[7]}
                     label={Localization.LAYERS}
                     integer={true}
                     onFinish={v =>  {
                        const copy = [...settings]
-                        settings[7] = v
+                        copy[7] = v
                         updateAsset("settings", copy)
                     }}
             />

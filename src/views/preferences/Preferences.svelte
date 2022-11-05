@@ -81,7 +81,7 @@
     .wrapper {
         display: flex;
         align-items: flex-start;
-        gap: 6px;
+        gap: 3px;
 
 
         position: relative;

@@ -2,7 +2,6 @@ import FilesStore from "../../../stores/FilesStore";
 import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import Loader from "../../../libs/loader/Loader";
-import loadMaterial from "../../../libs/loader/utils/load-material";
 import EngineStore from "../../../stores/EngineStore";
 
 export default async function handleComponentDrop(entity, data) {
@@ -38,11 +37,10 @@ export default async function handleComponentDrop(entity, data) {
                 await Loader.load(id, true)
                 entity.components.get(COMPONENTS.MESH).meshID = id
                 break
-            case "MATERIAL":
-                await loadMaterial(id, (value, key) => {
-                    entity.components.get(COMPONENTS.MESH)[key] = value
-                })
+            case "MATERIAL": {
+                entity.components.get(COMPONENTS.MESH).materialID = id
                 break
+            }
             case "IMAGE": {
                 const res = await EngineStore.loadTextureFromImageID(id)
                 if (res)

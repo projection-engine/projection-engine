@@ -4,7 +4,7 @@ import CameraTracker from "../../../../public/engine/editor-environment/libs/Cam
 
 
 export default function updateViewport(engine, currentView) {
-    if (!engine.isReady)
+    if (!engine.isReady || engine.focusedCamera)
         return
     if (currentView === VIEWPORT_TABS.EDITOR || currentView === VIEWPORT_TABS.TERRAIN) {
         Engine.start()

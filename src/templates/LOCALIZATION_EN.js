@@ -13,7 +13,7 @@ export default {
     POST_PROCESSING: "Post processing",
     VIEWPORT: "Viewport",
     MIN_RAY_STEP: "Minimum ray step",
-
+    SOME_ERROR_OCCURRED: "Some error occurred",
     UI_ALREADY_OPEN: "UI already open on other view",
     SIDE_BAR: "Viewport side-bar",
     MOTION_BLUR: "Motion blur",
@@ -33,6 +33,8 @@ export default {
     DONE: "Done",
     TAB: "New Tab",
     COPIED: "Copied",
+    FOCUS_ON_THIS_VIEW: "Focus on this view",
+    FOCUS_ON_CAMERA: "Focus on Camera",
     OPEN_CONSOLE: "Open console",
     NEW_CONSOLE_MESSAGE: "New console message",
     CLEAR: "Clear",
@@ -83,7 +85,6 @@ export default {
     FOCUS: "Focus on active entity",
 
     METRICS: "Metrics",
-    SWITCH_BETWEEN_CAMERAS: "Switch between cameras",
     STOP: "Stop",
 
     SENSITIVITY: "Sensitivity",

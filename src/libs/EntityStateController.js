@@ -1,5 +1,4 @@
 import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
-import componentConstructor from "../utils/component-constructor";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
@@ -14,20 +13,19 @@ import ScriptsAPI from "../../public/engine/api/ScriptsAPI";
 export default class EntityStateController {
     static #state = []
     static #isPlaying = false
-    static #cameraSerialization
+    static cameraSerialization
 
     static async startPlayState() {
         if (EntityStateController.#isPlaying)
             return
-
         alert.pushAlert("Saving state", "alert")
-        EntityStateController.#cameraSerialization = CameraAPI.serializeState()
+        EntityStateController.cameraSerialization = CameraAPI.serializeState()
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
 
         EntityStateController.#state = Engine.entities.map(e => serializeStructure(e.serializable()))
         await Engine.startSimulation()
-        EngineStore.updateStore({...EngineStore.engine, executingAnimation: true})
+        EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined, executingAnimation: true})
     }
 
     static async stopPlayState() {
@@ -65,7 +63,7 @@ export default class EntityStateController {
 
         CameraTracker.startTracking()
         EngineStore.updateStore({...EngineStore.engine, executingAnimation: false})
-        CameraAPI.restoreState(EntityStateController.#cameraSerialization)
+        CameraAPI.restoreState(EntityStateController.cameraSerialization)
     }
 
 }

@@ -35,6 +35,13 @@
             value={visualSettings.mbVelocityScale}
             onFinish={v => update("mbVelocityScale", v)}
     />
+    <Range
+            label={Localization.SAMPLES}
+            minValue={1}
+            integer="true"
+            value={visualSettings.mbSamples}
+            onFinish={v => update("mbSamples", v)}
+    />
 </fieldset>
 <fieldset>
     <legend>{Localization.PHYSICS}</legend>

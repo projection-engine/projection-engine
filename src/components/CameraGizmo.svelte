@@ -4,6 +4,7 @@
     import {onMount} from "svelte";
     import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
     import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";
+    import focusOnCamera from "../utils/focus-on-camera";
 
     let ref
     onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
@@ -13,7 +14,10 @@
 <div
         class={"gizmo-wrapper"}
         bind:this={ref}
-        on:mousedown={_ => ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})}
+        on:mousedown={_ => {
+            focusOnCamera()
+            ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})
+        }}
         on:mouseup={_ => ref.removeEventListener("mousemove", CameraTracker.forceRotationTracking)}
 >
     <div class={"camera-view"}>

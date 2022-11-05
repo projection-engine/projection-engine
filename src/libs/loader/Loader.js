@@ -6,8 +6,8 @@ import RegistryAPI from "../RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
-import loadMaterial from "./utils/load-material";
 import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
 import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
@@ -19,23 +19,22 @@ import Entity from "../../../public/engine/instances/Entity";
 import GPUAPI from "../../../public/engine/api/GPUAPI";
 import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
+import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
 
 export default class Loader {
     static async mesh(objLoaded, id) {
-        if(!objLoaded)
+        if (!objLoaded)
             return
         let materialID
         if (GPU.meshes.get(objLoaded.id))
             return
         try {
             GPUAPI.allocateMesh(id, objLoaded)
-            await loadMaterial(
-                objLoaded.material,
-                data => materialID = data
-            )
+            const result = await FileSystemAPI.loadMaterial(objLoaded.material)
+            if (result)
+                materialID = objLoaded.material
         } catch (e) {
             console.error(e)
-            alert.pushAlert("Some error occurred", "error")
         }
         return materialID
     }
@@ -56,9 +55,8 @@ export default class Loader {
                         const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
                         if (!meshData)
                             continue
-                        await loadMaterial(
-                            meshData.material,
-                            data => currentEntity.material = data)
+                        currentEntity.material = await FileSystemAPI.loadMaterial(meshData.material)
+
                         GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
@@ -125,27 +123,26 @@ export default class Loader {
                 case FILE_TYPES.MATERIAL: {
                     const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
                     if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
-
-                    await loadMaterial(
-                        data,
-                        (matID) => {
-                            const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
-                            ActionHistoryAPI.pushChange({
-                                target: ActionHistoryAPI.targets.entity,
-                                entityID: entity.id,
-                                component: comp,
-                                key: "materialID",
-                                changeValue: entity.components.get(comp).materialID
-                            })
-                            entity.components.get(comp).materialID = matID
-                            ActionHistoryAPI.pushChange({
-                                target: ActionHistoryAPI.targets.entity,
-                                entityID: entity.id,
-                                component: comp,
-                                key: "materialID",
-                                changeValue: data
-                            })
+                    const result = await FileSystemAPI.loadMaterial(data)
+                    if (result) {
+                        const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
+                        ActionHistoryAPI.pushChange({
+                            target: ActionHistoryAPI.targets.entity,
+                            entityID: entity.id,
+                            component: comp,
+                            key: "materialID",
+                            changeValue: entity.components.get(comp).materialID
                         })
+                        entity.components.get(comp).materialID = data
+                        ActionHistoryAPI.pushChange({
+                            target: ActionHistoryAPI.targets.entity,
+                            entityID: entity.id,
+                            component: comp,
+                            key: "materialID",
+                            changeValue: data
+                        })
+                    } else
+                        alert.pushAlert(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
                 case FILE_TYPES.TERRAIN: {

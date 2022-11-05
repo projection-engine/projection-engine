@@ -9,8 +9,6 @@ import GPU from "../../public/engine/GPU";
 import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
 import componentConstructor from "../utils/component-constructor";
 import STATIC_TEXTURES from "../../public/engine/static/resources/STATIC_TEXTURES";
-
-import loadMaterial from "./loader/utils/load-material";
 import TerrainWorker from "../../public/engine/workers/terrain/TerrainWorker";
 import EngineStore from "../stores/EngineStore";
 import SelectionStore from "../stores/SelectionStore";
@@ -22,12 +20,15 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
 import CameraAPI from "../../public/engine/api/CameraAPI";
 import TabsStore from "../stores/TabsStore";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
 import GPUAPI from "../../public/engine/api/GPUAPI";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
 import EntityAPI from "../../public/engine/api/EntityAPI";
+import FileSystemAPI from "../../public/engine/api/FileSystemAPI";
+import MeshComponent from "../../public/engine/templates/components/MeshComponent";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -46,7 +47,6 @@ export default class LevelController {
             (ev, meta) => {
 
                 if (meta.settings != null) {
-                    console.log(meta)
                     const newSettings = {...SETTINGS, ...meta.settings}
                     if (newSettings.views[0].top == null)
                         newSettings.views = SETTINGS
@@ -150,30 +150,48 @@ export default class LevelController {
                             GPUAPI.allocateMaterialInstance(file, materialID).catch()
                         }
                     }
-
                     mapped.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
             })
 
+        function updateAssetReference(id, key){
+            const toBind = Engine.entities
+            console.log(toBind)
+            for(let i =0; i < toBind.length; i++){
+                const comp = toBind.components.get(COMPONENTS.MESH)
+                console.log(comp)
+                if(comp && comp.__mapSource.index === undefined && comp[key] === id)
+                MeshComponent.updateMap(comp)
+            }
+        }
         ipcRenderer.on(
             CHANNELS.MESH,
             (ev, data) => {
-                console.log(data)
                 GPUAPI.allocateMesh(data.id, data)
+                if(data)
+                    updateAssetReference(data.id, "meshID")
             })
 
         ipcRenderer.on(
             CHANNELS.MATERIAL,
             async (ev, data) => {
-                if (data?.result != null)
+                if (data?.result != null) {
                     GPUAPI.allocateMaterial({
                         ...data.result,
                         fragment: data.result.shader,
                         vertex: data.result.vertexShader
                     }, data.id)
-                else if (data != null)
-                    await loadMaterial(data.id, () => null)
+                    updateAssetReference(data.id, "materialID")
+                }
+                else if (data != null) {
+                    const res = await FileSystemAPI.loadMaterial(data.id)
+                    console.trace(res)
+                    if (!res)
+                        alert.pushAlert(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data.id})`)
+                    else
+                        updateAssetReference(data.id, "materialID")
+                }
             })
 
         ipcRenderer.send(IPC, pathToLevel)

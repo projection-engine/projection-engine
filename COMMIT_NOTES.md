@@ -1,8 +1,6 @@
-- Fixed bugs related to UI editor
-- Added new file types
-- Enhanced FileSystemAPI with new methods
-- Improvements to script execution
-- Added option to copy file ID on context menu
-- Fixed UI component form
-- Fixed viewport bug where engine stopped when other tab changed to UI editor
-- Added UI update to refresh button 
+- Added material loader to FileSystemAPI
+- Material execution pipeline optimization
+- Fixed simple material layers input
+- Added ability to switch between cameras
+- Added motion blur samples
+- Bug fixes

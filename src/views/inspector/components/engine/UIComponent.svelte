@@ -1,11 +1,9 @@
 <script>
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import getComponentIcon from "../../utils/get-component-icon";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../libs/RegistryAPI";

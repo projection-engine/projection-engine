@@ -21,7 +21,7 @@ export default {
 
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
-
+    mbSamples: 50,
     SSGI: {
         enabled: true,
         maxSteps: 8,

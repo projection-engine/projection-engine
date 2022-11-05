@@ -27,7 +27,7 @@ export default class TabsStore {
         const clone = {...TabsStore.data}
         if (!clone[SettingsStore.data.currentView])
             clone[SettingsStore.data.currentView] = {}
-        console.trace(group, direction, value)
+
         if (group !== undefined) {
             if (!clone[SettingsStore.data.currentView][direction])
                 clone[SettingsStore.data.currentView][direction] = {}
