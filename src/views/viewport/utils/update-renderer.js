@@ -8,6 +8,7 @@ import GridSystem from "../../../../public/engine/editor-environment/services/Gr
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
+import SHADING_MODELS from "../../../../public/engine/editor-environment/data/SHADING_MODELS";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -15,12 +16,12 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.initialize(settings)
 
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
-        if(settings.camera) {
+        if (settings.camera) {
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
-            if(settings.camera.smoothing != null)
+            if (settings.camera.smoothing != null)
                 CameraAPI.translationSmoothing = settings.camera?.smoothing * .001
-            if(settings.camera.rotationSmoothing != null)
+            if (settings.camera.rotationSmoothing != null)
                 CameraAPI.rotationSmoothing = settings.camera?.rotationSmoothing * .001
         }
 
@@ -41,7 +42,8 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
         CameraAPI.metadata.fxaa = settings.fxaa
 
-       CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
+        if (settings.shadingModel === SHADING_MODELS.DETAIL)
+            CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
     }
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)

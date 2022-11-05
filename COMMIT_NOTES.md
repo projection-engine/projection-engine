@@ -1,6 +1,3 @@
-- Added material loader to FileSystemAPI
-- Material execution pipeline optimization
-- Fixed simple material layers input
-- Added ability to switch between cameras
-- Added motion blur samples
-- Bug fixes
+- Shader optimizations 
+- Base normal for deferred meshes is now the same as the gNormal
+- Reworked debug shader visualization

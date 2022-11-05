@@ -10,6 +10,9 @@
     import Localization from "../templates/LOCALIZATION_EN";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
     import GlobalIlluminationPass from "../../public/engine/runtime/GlobalIlluminationPass";
+    import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";
+    import CameraAPI from "../../public/engine/api/CameraAPI";
+    import VisualsStore from "../stores/VisualsStore";
 
 
     let shadingModel = SHADING_MODELS.DETAIL
@@ -85,16 +88,16 @@
     }
     $: {
         if (Engine.isReady && GBuffer.ready) {
-            GBuffer.deferredUniforms.option = shadingModel
+            FrameComposition.debugFlag = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
-                GBuffer.deferredUniforms.uSampler = getTexture()
-                GBuffer.deferredShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                FrameComposition.workerTexture = getTexture()
+                FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             } else {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
-                GBuffer.deferredShader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.DEFERRED)
-                GBuffer.deferredUniforms.uSampler = GBuffer.compositeFBO.colors[0]
+                FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
+                CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
             }
         }
     }
