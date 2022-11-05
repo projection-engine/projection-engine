@@ -1,3 +1,6 @@
-- Shader optimizations 
-- Base normal for deferred meshes is now the same as the gNormal
-- Reworked debug shader visualization
+- Fixed deferred shader fragment discard method
+- Fixed SSGI, SSR and stochastic normals precision by discarding off-pixels
+- Added UBO to frame composition
+- Optimizations to frame composition pass
+- Fixed shading methods
+- Fixed camera update not synced with framerate 

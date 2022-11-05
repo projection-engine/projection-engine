@@ -94,9 +94,12 @@
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
                 FrameComposition.workerTexture = getTexture()
                 FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+                console.log(FrameComposition.shader, GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED))
+                FrameComposition.updateShader()
             } else {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
                 FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
+                FrameComposition.updateShader()
                 CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
             }
         }

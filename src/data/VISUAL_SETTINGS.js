@@ -5,6 +5,8 @@ export default {
     bloomThreshold: .85,
     filmGrainStrength: .01,
     mbVelocityScale: 1,
+
+    fxaa: false,
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
