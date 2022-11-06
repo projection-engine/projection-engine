@@ -38,8 +38,6 @@
     {/if}
     <div data-vertdivider="-" style="margin: 0 2px"></div>
     <FrameMetadata settings={settings}/>
-
-
     <div class="meta-data">
         <SceneStats/>
         <div data-vertdivider="-"></div>

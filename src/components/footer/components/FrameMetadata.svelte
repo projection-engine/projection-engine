@@ -31,35 +31,27 @@
     onDestroy(() => clearInterval(interval))
 </script>
 
+<div class="section">
+    <small bind:this={fr}></small>
+    <div data-vertdivider="-"></div>
+    <small bind:this={ft}></small>
+    <div data-vertdivider="-"></div>
+    <small bind:this={mem}></small>
+</div>
 
-<Dropdown hideArrow={true}>
-    <div class="section" slot="button">
-        <small bind:this={fr}></small>
-        <div data-vertdivider="-"></div>
-        <small bind:this={ft}></small>
-        <div data-vertdivider="-"></div>
-        <small bind:this={mem}></small>
-    </div>
-    <button on:click={() => SettingsStore.updateStore({...settings, showMetrics: !settings.showMetrics})}>
-        {#if settings.showMetrics}
-            <Icon styles="font-size: .9rem">check</Icon>
-        {:else}
-            <div style="width: .9rem"></div>
-        {/if}
-        {Localization.TOGGLE_FRAMERATE}
-    </button>
-</Dropdown>
 <style>
-    .section{
+    .section {
         border-radius: 3px;
         display: flex;
         align-items: center;
         padding: 0 4px;
         gap: 2px;
     }
-    .section:hover{
+
+    .section:hover {
         background: var(--pj-background-secondary);
     }
+
     small {
         font-size: .675rem;
     }

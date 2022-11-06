@@ -1,2 +1,2 @@
-- Optimization to lens post-processing pipeline with UBO and new shader structure
-- removed buffers from postprocessingEffects class
+- Reworked gizmo tooltip
+- Removed metrics panel form viewport

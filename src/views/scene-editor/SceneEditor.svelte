@@ -19,8 +19,7 @@
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
 
-    import GizmoToolTip from "./components/GizmoToolTip.svelte";
-    import Metrics from "../../components/Metrics.svelte";
+    import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../../public/engine/editor-environment/libs/CameraTracker";
     import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
     import ConversionAPI from "../../../public/engine/api/math/ConversionAPI";
@@ -62,17 +61,14 @@
             return
         mouseDelta = {x: e.clientX, y: e.clientY}
         if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseDown(e)
             e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
             document.addEventListener("mousemove", gizmoMouseMove)
         }
     }
 
     function onMouseUp(event) {
-        if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseUp()
+        if (GizmoSystem.targetGizmo)
             document.removeEventListener("mousemove", gizmoMouseMove)
-        }
         if (!Engine.isReady)
             return
         onViewportClick(
@@ -139,11 +135,7 @@
 </script>
 
 {#if !isOnPlay}
-    <GizmoToolTip/>
-    {#if settings.showMetrics}
-        <Metrics/>
-    {/if}
-
+    <EntityInformation settings={settings} engine={engine}/>
     <Header settings={settings} engine={engine}/>
 
     <SelectBox
