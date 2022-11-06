@@ -13,6 +13,7 @@
     import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";
     import CameraAPI from "../../public/engine/api/CameraAPI";
     import VisualsStore from "../stores/VisualsStore";
+    import DirectionalShadows from "../../public/engine/runtime/occlusion/DirectionalShadows";
 
 
     let shadingModel = SHADING_MODELS.DETAIL
@@ -62,7 +63,7 @@
             case SHADING_MODELS.DEPTH:
                 return GBuffer.depthUVSampler
             case SHADING_MODELS.AO:
-                return AmbientOcclusion.filteredSampler
+                return DirectionalShadows.sampler
             case SHADING_MODELS.NORMAL:
                 return GBuffer.normalSampler
             case SHADING_MODELS.ALBEDO:
@@ -94,7 +95,6 @@
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
                 FrameComposition.workerTexture = getTexture()
                 FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
-                console.log(FrameComposition.shader, GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED))
                 FrameComposition.updateShader()
             } else {
                 GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]

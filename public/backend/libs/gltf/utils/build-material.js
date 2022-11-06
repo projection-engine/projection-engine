@@ -1,6 +1,7 @@
 import SIMPLE_MATERIAL_UNIFORMS from "../../../../engine/static/SIMPLE_MATERIAL_UNIFORMS";
+import TEXTURE_FORMATS from "../../../../engine/static/texture/TEXTURE_FORMATS";
 
-export default async function buildMaterial(textures, imagesMap, material) {
+export default async function buildMaterial(textures, imagesMap, material, textureMap) {
     const copy = {...SIMPLE_MATERIAL_UNIFORMS}
     const settings = copy.uniformData[0]
     const rgbSamplerScales = copy.uniformData[1]
@@ -31,6 +32,12 @@ export default async function buildMaterial(textures, imagesMap, material) {
             if (baseColorTexture) {
                 settings.data[0] = 1
                 albedo.data = imagesMap[textures[baseColorTexture.index].source]
+
+                if (textureMap[albedo.data] != null) {
+                    textureMap[albedo.data].internalFormat = TEXTURE_FORMATS.SRGBA.internalFormat
+                    textureMap[albedo.data].format = TEXTURE_FORMATS.SRGBA.format
+                    textureMap[albedo.data].type = TEXTURE_FORMATS.SRGBA.type
+                }
             }
 
             if (baseColorFactor != null) {
@@ -94,7 +101,7 @@ export default async function buildMaterial(textures, imagesMap, material) {
             settings.data[6] = 1
 
             ao.data = imagesMap[textures[occlusionTexture.index].source]
-            if(roughness.data === ao.data){
+            if (roughness.data === ao.data) {
                 // B channel for ambient occlusion
                 linearSamplerScales.data[0] = 0
                 linearSamplerScales.data[1] = 0

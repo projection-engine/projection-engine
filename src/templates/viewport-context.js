@@ -107,8 +107,13 @@ export default function viewportContext(settings, forDropdown) {
                     label: "To pivot",
                     onClick: () => {
                         const selected = SelectionStore.engineSelected
-                        for (let i = 0; i < selected.length; i++)
-                            EntityConstructor.translateEntity(QueryAPI.getEntityByID(selected[i]))
+                        for (let i = 0; i < selected.length; i++) {
+                            const entity = QueryAPI.getEntityByID(selected[i])
+                            entity._translation[0] = entity.pivotPoint[0]
+                            entity._translation[1] = entity.pivotPoint[1]
+                            entity._translation[2] = entity.pivotPoint[2]
+                            entity.__changedBuffer[0] = 1
+                        }
                     }
                 },
                 {

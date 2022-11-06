@@ -1,7 +1,5 @@
-- Fixed BRDF sampler
-- Added BRDF to screen space reflections
-- Added roughness contribution (fresnel schlick) to light sampling methods
-- Fixed filesystem registry not removing deleted files
-- Fixed emission by changing albedo sampler to float value
-- Fixed roughness input for simple material
-- Improved SSR and SSGI color precision
+- GLTF material loader now sets albedo samplers to SRGBA8 automatically
+- Fixed camera worker never stopping view matrix update
+- Fixed shadow map regeneration
+- Fixed directional light sampling error related to UBO params
+- Grouped shadow sampling and light sampling into one function 

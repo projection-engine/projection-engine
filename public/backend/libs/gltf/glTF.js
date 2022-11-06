@@ -60,17 +60,13 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             accessors.push(new Accessor(data, buffers, file.bufferViews))
         }
 
+        const textureMap = {}
         if (file.images)
             for (let i = 0; i < file.images.length; i++) {
                 try {
                     const ID = v4()
                     const data = file.images[i]
-                    const texture = await buildImage(resourceRoot, data, ID)
-                    const name = "texture-" + i
-                    const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FILE_TYPES.TEXTURE
-
-                    await fs.promises.writeFile(pathToAsset, texture)
-                    await createRegistryEntry(ID, pathToAsset.replace(ProjectMap.pathToAssets, ""))
+                    textureMap[ID] = await buildImage(resourceRoot, data, ID)
                     images[i] = ID
                 } catch (err) {
                     console.error(err)
@@ -82,7 +78,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                 try {
                     const ID = v4()
                     const data = file.materials[i]
-                    const material = await buildMaterial(file.textures, images, data)
+                    const material = await buildMaterial(file.textures, images, data, textureMap)
                     if(!material)
                         continue
                     const name = "material-" + i
@@ -94,6 +90,17 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                     console.error(err)
                 }
             }
+
+        const toUpdateTextures = Object.entries(textureMap)
+        console.trace(toUpdateTextures)
+        for(let i =0; i < toUpdateTextures.length; i++){
+            const [ID, texture] = toUpdateTextures[i]
+            const name = "texture-" + i
+            const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FILE_TYPES.TEXTURE
+
+            await fs.promises.writeFile(pathToAsset, JSON.stringify(texture))
+            await createRegistryEntry(ID, pathToAsset.replace(ProjectMap.pathToAssets, ""))
+        }
 
         for (let i = 0; i < file.meshes.length; i++) {
             const data = file.meshes[i]

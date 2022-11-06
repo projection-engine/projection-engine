@@ -17,8 +17,8 @@ export default async function buildImage(resourceRoot, image, fileID) {
     const bufferPreview = await sharp(Buffer.from(base64.split(";base64,").pop(), "base64")).resize(256, 256).png().toBuffer()
     await fs.promises.writeFile(pathToPreview, `data:image/png;base64,` + bufferPreview.toString("base64"))
 
-    return JSON.stringify({
+    return {
         ...TEXTURE_TEMPLATE,
         base64
-    })
+    }
 }

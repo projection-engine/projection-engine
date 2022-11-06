@@ -9,8 +9,6 @@
     import EngineStore from "../../../../../stores/EngineStore";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
-    import GPU from "../../../../../../public/engine/GPU";
-    import Loader from "../../../../../libs/loader/Loader";
 
     export let component = undefined
     export let submit = undefined
@@ -37,11 +35,7 @@
             originalValue = temp
         }
     }
-    const loadMesh = async (src) => {
-        if (!GPU.meshes.get(src.registryID))
-            await Loader.load(src.registryID, true)
-        submit(attribute.key, src.registryID, true)
-    }
+
 
 </script>
 
@@ -50,11 +44,9 @@
     {#if attribute.type === Component.propTypes.NUMBER}
         <Range
                 handleChange={v => {
-
                     if(!firstSubmit){
                         firstSubmit = true
                         submit(attribute.key, v)
-                        return
                     }
                 }}
                 variant="embedded"
@@ -172,7 +164,7 @@
         />
     {:else if attribute.type === Component.propTypes.MESH}
         <Selector
-                handleChange={loadMesh}
+                handleChange={src => submit(attribute.key, src?.registryID, true)}
                 type="mesh"
                 selected={value}
         />
