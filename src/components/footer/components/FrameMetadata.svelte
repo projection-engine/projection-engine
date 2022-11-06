@@ -1,9 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import SettingsStore from "../../../stores/SettingsStore";
-    import Localization from "../../../templates/LOCALIZATION_EN";
     import Engine from "../../../../public/engine/Engine";
 
     export let settings

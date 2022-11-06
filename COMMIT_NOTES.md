@@ -1,2 +1,1 @@
-- Reworked gizmo tooltip
-- Removed metrics panel form viewport
+- Optimizing imports

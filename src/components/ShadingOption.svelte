@@ -13,7 +13,6 @@
     import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";
     import CameraAPI from "../../public/engine/api/CameraAPI";
     import VisualsStore from "../stores/VisualsStore";
-    import DirectionalShadows from "../../public/engine/runtime/occlusion/DirectionalShadows";
 
     let shadingModel = SHADING_MODELS.DETAIL
 

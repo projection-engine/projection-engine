@@ -1,5 +1,5 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import GIZMOS from "../../../data/GIZMOS";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../templates/LOCALIZATION_EN";

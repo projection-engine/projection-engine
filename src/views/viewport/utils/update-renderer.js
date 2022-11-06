@@ -9,7 +9,6 @@ import GizmoSystem from "../../../../public/engine/editor-environment/services/G
 import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
 import SHADING_MODELS from "../../../../public/engine/editor-environment/data/SHADING_MODELS";
-import FrameComposition from "../../../../public/engine/runtime/post-processing/FrameComposition";
 
 
 export default function updateRenderer(selected, engine, settings) {
