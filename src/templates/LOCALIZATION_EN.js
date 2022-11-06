@@ -36,6 +36,7 @@ export default {
     REFRESH_SCRIPTS_AND_PROBES: "Reloads scripts and UI components and rebuild light probes",
     DONE: "Done",
     TAB: "New Tab",
+    NO_CUSTOM_COMPONENTS_LINKED: "No custom components linked",
     COPIED: "Copied",
     FOCUS_ON_THIS_VIEW: "Focus on this view",
     FOCUS_ON_CAMERA: "Focus on Camera",

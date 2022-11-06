@@ -47,45 +47,51 @@
 
 <fieldset>
     <legend>{Localization.ANTI_ALIASING}</legend>
-    <Checkbox
-            checked={visualSettings.fxaa}
-            handleCheck={() => {
+    <div data-form="-">
+        <Checkbox
+                checked={visualSettings.fxaa}
+                handleCheck={() => {
                update("fxaa", !visualSettings.fxaa)
         }}
-            label={Localization.FXAA}
-    />
+                label={Localization.FXAA}
+        />
+    </div>
 </fieldset>
 <fieldset>
     <legend>{Localization.MOTION_BLUR_SCALE}</legend>
-    <Range
-            label={Localization.SCALE}
-            minValue={.0001}
-            value={visualSettings.mbVelocityScale}
-            onFinish={v => update("mbVelocityScale", v)}
-    />
-    <Range
-            label={Localization.SAMPLES}
-            minValue={1}
-            integer="true"
-            value={visualSettings.mbSamples}
-            onFinish={v => update("mbSamples", v)}
-    />
+    <div data-form="-">
+        <Range
+                label={Localization.SCALE}
+                minValue={.0001}
+                value={visualSettings.mbVelocityScale}
+                onFinish={v => update("mbVelocityScale", v)}
+        />
+        <Range
+                label={Localization.SAMPLES}
+                minValue={1}
+                integer="true"
+                value={visualSettings.mbSamples}
+                onFinish={v => update("mbSamples", v)}
+        />
+    </div>
 </fieldset>
 <fieldset>
     <legend>{Localization.PHYSICS}</legend>
-    <Range
-            label={Localization.PHYSICS_SIMULATION_STEP}
-            minValue={.0001}
-            value={visualSettings.physicsSimulationStep * 1000}
-            onFinish={v => update("physicsSimulationStep", v/1000)}
-    />
-    <Range
-            label={Localization.PHYSICS_SUB_STEPS}
-            integer={true}
-            minValue={1}
-            value={visualSettings.physicsSubSteps}
-            onFinish={v => update("physicsSubSteps", v)}
-    />
+    <div data-form="-">
+        <Range
+                label={Localization.PHYSICS_SIMULATION_STEP}
+                minValue={.0001}
+                value={visualSettings.physicsSimulationStep * 1000}
+                onFinish={v => update("physicsSimulationStep", v/1000)}
+        />
+        <Range
+                label={Localization.PHYSICS_SUB_STEPS}
+                integer={true}
+                minValue={1}
+                value={visualSettings.physicsSubSteps}
+                onFinish={v => update("physicsSubSteps", v)}
+        />
+    </div>
 </fieldset>
 
 <fieldset>

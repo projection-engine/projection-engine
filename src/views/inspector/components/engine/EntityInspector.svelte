@@ -61,31 +61,49 @@
     onDestroy(() => draggable.onDestroy())
 
     $: {
-        if (components[tabIndex] == null && scripts[tabIndex - 1] == null && tabIndex > 0)
+        if (components[tabIndex] == null && tabIndex > 0)
             tabIndex = -2
+        console.trace(scripts)
     }
-    $: scriptIndex = tabIndex - components.length
+
 </script>
 
 {#if entity != null}
     <div class="wrapper" bind:this={ref}>
         <div class="tabs shared">
             {#each buttons as button}
-                {#if button.isFirstScript}
+                {#if button.divider}
                     <div data-divider="-"></div>
+                {:else}
+                    <button
+                            data-highlight={tabIndex === button.index ? "-" : undefined}
+                            class="tab-button shared"
+                            on:click={_ => tabIndex = button.index}
+                    >
+                        <Icon styles="font-size: .9rem">{button.icon}</Icon>
+                        <ToolTip content={button.label}/>
+                    </button>
                 {/if}
-                <button
-                        data-highlight={tabIndex === button.index ? "-" : undefined}
-                        class="tab-button shared"
-                        on:click={_ => tabIndex = button.index}
-                >
-                    <Icon styles="font-size: .9rem">{button.icon}</Icon>
-                    <ToolTip content={button.label}/>
-                </button>
             {/each}
         </div>
         <div class="content">
-            {#if tabIndex === -2}
+            {#if tabIndex === -3}
+                {#if scripts.length > 0}
+                    {#each scripts as script, scriptIndex}
+                        <Layout
+                                entity={entity}
+                                index={scriptIndex}
+                                component={scripts[scriptIndex]}
+                                submit={(k, v) => scripts[scriptIndex][k] = v}
+                        />
+                    {/each}
+                {:else}
+                    <div data-empty="-">
+                        <Icon styles="font-size: 75px">code</Icon>
+                        {Localization.NO_CUSTOM_COMPONENTS_LINKED}
+                    </div>
+                {/if}
+            {:else if tabIndex === -2}
                 <Metadata entity={entity}/>
             {:else if tabIndex === -1}
                 <Layout
@@ -108,13 +126,7 @@
                             submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
                     />
                 {/if}
-            {:else if entity.scripts[scriptIndex] != null}
-                <Layout
-                        entity={entity}
-                        index={scriptIndex}
-                        component={entity.scripts[scriptIndex]}
-                        submit={(k, v) => entity.scripts[scriptIndex][k] = v}
-                />
+
             {/if}
         </div>
     </div>

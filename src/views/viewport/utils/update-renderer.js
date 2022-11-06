@@ -36,7 +36,7 @@ export default function updateRenderer(selected, engine, settings) {
 
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
- s
+
     }
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)

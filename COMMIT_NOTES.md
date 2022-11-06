@@ -1,4 +1,2 @@
-- Adding vignette effect and options
-- Fixing material/mesh loading
-- Optimizing FileSystemAPI to only load data when entity is linked to query
-- Removed editor post processing
+- Optimization to lens post-processing pipeline with UBO and new shader structure
+- removed buffers from postprocessingEffects class
