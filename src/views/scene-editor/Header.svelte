@@ -10,6 +10,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
+    import SpawnSettings from "./components/SpawnSettings.svelte";
 
     export let settings
     export let engine
@@ -37,6 +38,7 @@
         </Dropdown>
 
         <ObjectOptions settings={settings}/>
+        <SpawnSettings settings={settings}/>
     </div>
     <GizmoSettings settings={settings}/>
     <div class="right-content">

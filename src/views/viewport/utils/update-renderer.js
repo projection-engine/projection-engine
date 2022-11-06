@@ -30,23 +30,13 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.zFar = settings.zFar
         CameraAPI.fov = settings.fov
 
-        CameraAPI.metadata.distortion = settings.distortion
-        CameraAPI.metadata.distortionStrength = settings.distortionStrength
-        CameraAPI.metadata.chromaticAberration = settings.chromaticAberration
-        CameraAPI.metadata.chromaticAberrationStrength = settings.chromaticAberrationStrength
-        CameraAPI.metadata.filmGrain = settings.filmGrain
-        CameraAPI.metadata.filmGrainStrength = settings.filmGrainStrength
-        CameraAPI.metadata.bloom = settings.bloom
-        CameraAPI.metadata.bloomStrength = settings.bloomStrength
-        CameraAPI.metadata.bloomThreshold = settings.bloomThreshold
         CameraAPI.metadata.gamma = settings.gamma
         CameraAPI.metadata.exposure = settings.exposure
         CameraAPI.metadata.fxaa = settings.fxaa
 
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
-
-        console.log(FrameComposition.shader)
+ s
     }
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)

@@ -155,45 +155,6 @@ export default class LevelController {
                 dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
             })
 
-        function updateAssetReference(id, key){
-            const toBind = Engine.entities
-            console.log(toBind)
-            for(let i =0; i < toBind.length; i++){
-                const comp = toBind.components.get(COMPONENTS.MESH)
-                console.log(comp)
-                if(comp && comp.__mapSource.index === undefined && comp[key] === id)
-                MeshComponent.updateMap(comp)
-            }
-        }
-        ipcRenderer.on(
-            CHANNELS.MESH,
-            (ev, data) => {
-                GPUAPI.allocateMesh(data.id, data)
-                if(data)
-                    updateAssetReference(data.id, "meshID")
-            })
-
-        ipcRenderer.on(
-            CHANNELS.MATERIAL,
-            async (ev, data) => {
-                if (data?.result != null) {
-                    GPUAPI.allocateMaterial({
-                        ...data.result,
-                        fragment: data.result.shader,
-                        vertex: data.result.vertexShader
-                    }, data.id)
-                    updateAssetReference(data.id, "materialID")
-                }
-                else if (data != null) {
-                    const res = await FileSystemAPI.loadMaterial(data.id)
-                    console.trace(res)
-                    if (!res)
-                        alert.pushAlert(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data.id})`)
-                    else
-                        updateAssetReference(data.id, "materialID")
-                }
-            })
-
         ipcRenderer.send(IPC, pathToLevel)
     }
 

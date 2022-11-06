@@ -8,6 +8,7 @@ import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../public/engine/api/CameraAPI";
 import LightsAPI from "../../public/engine/api/LightsAPI";
+import SettingsStore from "../stores/SettingsStore";
 
 
 const addSprite = (entity, img) => {
@@ -17,11 +18,18 @@ const addSprite = (entity, img) => {
 }
 
 export default class EntityConstructor {
-    static translateEntity(entity) {
-        const position = [0, 0, -10, 1]
-        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-        vec3.add(entity._translation, CameraAPI.translationBuffer, position)
-        vec3.add(entity.pivotPoint, CameraAPI.translationBuffer, position)
+    static translateEntity(entity, rotation= CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
+        if (SettingsStore.data.spawnOnOrigin) {
+            vec3.copy(entity._translation, [0, 0, 0])
+            vec3.copy(entity.pivotPoint, [0, 0, 0])
+            entity.__changedBuffer[0] = 1
+            return
+        }
+
+        const position = [0, 0, -(SettingsStore.data.spawnDistanceFromCamera || 10), 1]
+        vec4.transformQuat(position, position, rotation)
+        vec3.add(entity._translation, translation, position)
+        vec3.add(entity.pivotPoint, translation, position)
         entity.__changedBuffer[0] = 1
     }
 

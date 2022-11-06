@@ -18,6 +18,34 @@
 </script>
 
 <fieldset>
+    <legend>{Localization.EDITOR_COLOR_CORRECTION}</legend>
+    <div data-form="-">
+        <Range
+                label={Localization.GAMMA}
+
+                incrementPercentage={.001}
+                precision={3}
+                minValue={.1}
+                maxValue={10}
+                onFinish={v => update("gamma",  v)}
+                value={visualSettings.gamma}
+        />
+
+        <Range
+                label={Localization.EXPOSURE}
+
+                minValue={.1}
+                incrementPercentage={.001}
+                precision={3}
+                maxValue={10}
+                onFinish={v => update("exposure",  v)}
+                value={visualSettings.exposure}
+        />
+    </div>
+</fieldset>
+
+
+<fieldset>
     <legend>{Localization.ANTI_ALIASING}</legend>
     <Checkbox
             checked={visualSettings.fxaa}

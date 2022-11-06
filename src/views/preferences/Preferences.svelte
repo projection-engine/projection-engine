@@ -1,7 +1,6 @@
 <script>
     import {onDestroy} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import PostProcessing from "./components/PostProcessing.svelte";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
@@ -68,11 +67,7 @@
             <legend>{Localization.GRID}</legend>
             <GridSettings settings={settings}/>
         </fieldset>
-    {:else if tab === 5}
-        <fieldset>
-            <legend>{Localization.EDITOR_POST_PROCESSING}</legend>
-            <PostProcessing visualSettings={visuals}/>
-        </fieldset>
+
     {/if}
 </div>
 

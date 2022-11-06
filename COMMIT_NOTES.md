@@ -1,5 +1,4 @@
-- GLTF material loader now sets albedo samplers to SRGBA8 automatically
-- Fixed camera worker never stopping view matrix update
-- Fixed shadow map regeneration
-- Fixed directional light sampling error related to UBO params
-- Grouped shadow sampling and light sampling into one function 
+- Adding vignette effect and options
+- Fixing material/mesh loading
+- Optimizing FileSystemAPI to only load data when entity is linked to query
+- Removed editor post processing

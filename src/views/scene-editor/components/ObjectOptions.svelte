@@ -9,7 +9,7 @@
 
 <Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto">
     <button slot="button" data-viewbutton="-" style="background: transparent;">
-        {Localization.ENTITY}
+        {Localization.OBJECT}
     </button>
     {#each mappedOptions as option}
         {#if option.divider}

@@ -18,7 +18,7 @@ export default {
     showGridSubdivision: true,
     gridOpacity: 1,
     gridVisibility: true,
-
+    spawnDistanceFromCamera: 10,
     shadingModel: SHADING_MODELS.DETAIL,
     gizmo: GIZMOS.TRANSLATION,
     transformationType: TRANSFORMATION_TYPE.GLOBAL,

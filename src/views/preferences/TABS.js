@@ -21,8 +21,4 @@ export default [
         icon: "grid_4x4",
         label: LOCALIZATION_EN.GRID
     },
-    {
-        icon: "filter",
-        label: LOCALIZATION_EN.EDITOR_POST_PROCESSING
-    },
 ]

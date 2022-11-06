@@ -15,9 +15,7 @@
     import VisualsStore from "../stores/VisualsStore";
     import DirectionalShadows from "../../public/engine/runtime/occlusion/DirectionalShadows";
 
-
     let shadingModel = SHADING_MODELS.DETAIL
-
 
     $: shading = (() => {
         switch (shadingModel) {
@@ -63,7 +61,7 @@
             case SHADING_MODELS.DEPTH:
                 return GBuffer.depthUVSampler
             case SHADING_MODELS.AO:
-                return DirectionalShadows.sampler
+                return AmbientOcclusion.filteredSampler
             case SHADING_MODELS.NORMAL:
                 return GBuffer.normalSampler
             case SHADING_MODELS.ALBEDO:

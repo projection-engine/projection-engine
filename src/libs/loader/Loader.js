@@ -20,7 +20,11 @@ import GPUAPI from "../../../public/engine/api/GPUAPI";
 import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
+import {vec3, vec4} from "gl-matrix";
+import CameraAPI from "../../../public/engine/api/CameraAPI";
 
+let translationCache = vec3.create()
+let rotationCache = vec4.create()
 export default class Loader {
     static async mesh(objLoaded, id) {
         if (!objLoaded)
@@ -44,6 +48,8 @@ export default class Loader {
         const entities = []
         const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(NodeFS.sep).pop())
         entities.push(root)
+        vec3.copy(translationCache, CameraAPI.translationBuffer)
+        vec4.copy(rotationCache, CameraAPI.rotationBuffer)
         try {
             if (file) {
                 const folder = new Entity()
@@ -55,15 +61,15 @@ export default class Loader {
                         const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
                         if (!meshData)
                             continue
-                        const result =  await FileSystemAPI.loadMaterial(meshData.material)
-                        if(result)
+                        const result = await FileSystemAPI.loadMaterial(meshData.material)
+                        if (result)
                             currentEntity.material = meshData.material
 
                         GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
                     entity.parentCache = currentEntity.parent || root.id
-                    EntityConstructor.translateEntity(entity)
+                    EntityConstructor.translateEntity(entity, rotationCache, translationCache)
                     entities.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
