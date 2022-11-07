@@ -84,7 +84,7 @@
             case SHADING_MODELS.ID:
                 return GBuffer.IDSampler
             case SHADING_MODELS.VELOCITY:
-                return  GBuffer.velocityMapSampler
+                return GBuffer.velocityMapSampler
         }
 
     }
@@ -144,6 +144,12 @@
                 {Localization.SHADING_METALLIC}
                 <small>{Localization.METALLIC_DEF}</small>
             </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.DEPTH}>
+
+                {Localization.SHADING_DEPTH}
+                <small>{Localization.DEPTH_DEF}</small>
+            </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
@@ -163,6 +169,16 @@
                 {Localization.SHADING_NORMAL}
                 <small>{Localization.NORMAL_DEF}</small>
             </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.VELOCITY ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.VELOCITY}>
+                {Localization.SHADING_VELOCITY}
+                <small>{Localization.VELOCITY_DEF}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.UV}>
+                {Localization.SHADING_UV}
+                <small>{Localization.UV_DEF}</small>
+            </button>
         </div>
     </fieldset>
     <fieldset class="content">
@@ -173,12 +189,7 @@
                 {Localization.SHADING_SSR}
                 <small>{Localization.SSR}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.DEPTH}>
 
-                {Localization.SHADING_DEPTH}
-                <small>{Localization.DEPTH_DEF}</small>
-            </button>
             <button data-highlight={shadingModel === SHADING_MODELS.STOCHASTIC ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.STOCHASTIC}>
                 {Localization.SHADING_STOCHASTIC}
@@ -206,16 +217,8 @@
                 {Localization.SHADING_SSGI}
                 <small>{Localization.SSGI_UNFILTERED_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.UV}>
-                {Localization.SHADING_UV}
-                <small>{Localization.UV_DEF}</small>
-            </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.VELOCITY ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.VELOCITY}>
-                {Localization.SHADING_VELOCITY}
-                <small>{Localization.VELOCITY_DEF}</small>
-            </button>
+
+
         </div>
 
     </fieldset>

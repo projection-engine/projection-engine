@@ -1,4 +1,1 @@
-- Improving SSGI stability
-- CameraAPI.updateViewTarget now locks to entity
-- Reworked blur pipeline
-- Added gaussian blur to pipeline
+- Working on SSGI
