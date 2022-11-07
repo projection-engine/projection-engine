@@ -61,6 +61,7 @@ export default class EntityStateController {
         dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
         await ScriptsAPI.updateAllScripts()
 
+        CameraAPI.trackingEntity = undefined
         CameraTracker.startTracking()
         EngineStore.updateStore({...EngineStore.engine, executingAnimation: false})
         CameraAPI.restoreState(EntityStateController.cameraSerialization)

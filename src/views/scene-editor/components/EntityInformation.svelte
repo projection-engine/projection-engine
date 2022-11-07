@@ -28,6 +28,10 @@
                 let initialized = false
                 currentInterval = setInterval(() => {
                     console.log("ON INTERVAL")
+                    if(!translationRef || !rotationRef || !scaleRef) {
+                        clearInterval(currentInterval)
+                        return
+                    }
                     if (mainEntity && (mainEntity.__changedBuffer[1] || !initialized)) {
                         initialized = true
                         translationRef.textContent = `X ${mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`

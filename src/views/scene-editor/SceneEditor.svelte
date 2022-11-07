@@ -61,14 +61,17 @@
             return
         mouseDelta = {x: e.clientX, y: e.clientY}
         if (GizmoSystem.targetGizmo) {
+            GizmoSystem.targetGizmo.onMouseDown(e)
             e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
             document.addEventListener("mousemove", gizmoMouseMove)
         }
     }
 
     function onMouseUp(event) {
-        if (GizmoSystem.targetGizmo)
+        if (GizmoSystem.targetGizmo) {
+            GizmoSystem.targetGizmo.onMouseUp()
             document.removeEventListener("mousemove", gizmoMouseMove)
+        }
         if (!Engine.isReady)
             return
         onViewportClick(

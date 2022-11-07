@@ -41,6 +41,8 @@
                 return "SHADING_METALLIC"
             case SHADING_MODELS.SSGI:
                 return "SHADING_SSGI"
+            case SHADING_MODELS.SSGI_UNFILTERED:
+                return "SHADING_SSGI"
             case SHADING_MODELS.STOCHASTIC:
                 return "SHADING_STOCHASTIC"
             case SHADING_MODELS.UV:
@@ -75,6 +77,8 @@
                 return GBuffer.behaviourSampler
             case SHADING_MODELS.SSGI:
                 return GlobalIlluminationPass.SSGISampler
+            case SHADING_MODELS.SSGI_UNFILTERED:
+                return GlobalIlluminationPass.unfilteredSSGISampler
             case SHADING_MODELS.STOCHASTIC:
                 return GlobalIlluminationPass.normalSampler
             case SHADING_MODELS.ID:
@@ -89,12 +93,12 @@
             FrameComposition.debugFlag = shadingModel
             SettingsStore.updateStore({...SettingsStore.data, shadingModel})
             if (shadingModel !== SHADING_MODELS.DETAIL) {
-                GlobalIlluminationPass.uniforms.previousFrame = GBuffer.albedoSampler
+                Engine.previousFrameSampler = GBuffer.albedoSampler
                 FrameComposition.workerTexture = getTexture()
                 FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
                 FrameComposition.updateShader()
             } else {
-                GlobalIlluminationPass.uniforms.previousFrame = GBuffer.compositeFBO.colors[0]
+                Engine.previousFrameSampler = GBuffer.compositeFBO.colors[0]
                 FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
                 FrameComposition.updateShader()
                 CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
@@ -196,6 +200,11 @@
                     on:click={() => shadingModel = SHADING_MODELS.SSGI}>
                 {Localization.SHADING_SSGI}
                 <small>{Localization.SSGI_DEF}</small>
+            </button>
+            <button data-highlight={shadingModel === SHADING_MODELS.SSGI_UNFILTERED ? "-" : ""}
+                    on:click={() => shadingModel = SHADING_MODELS.SSGI_UNFILTERED}>
+                {Localization.SHADING_SSGI}
+                <small>{Localization.SSGI_UNFILTERED_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
                     on:click={() => shadingModel = SHADING_MODELS.UV}>

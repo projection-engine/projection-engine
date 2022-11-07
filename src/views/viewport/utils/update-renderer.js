@@ -16,6 +16,7 @@ export default function updateRenderer(selected, engine, settings) {
     CameraTracker.initialize(settings)
 
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
+        CameraAPI.trackingEntity = undefined
         if (settings.camera) {
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01

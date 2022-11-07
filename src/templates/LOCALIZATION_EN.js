@@ -121,7 +121,8 @@ export default {
     STOCHASTIC_DEF: "SSGI normals",
     SHADING_SSGI: "Global illumination",
     SHADING_SSR: "Reflections",
-    SSGI_DEF: "SSGI",
+    SSGI_DEF: "Screen-space global illumination",
+    SSGI_UNFILTERED_DEF: "Unfiltered global illumination",
     SHADING_POSITION: "Position",
     POSITION_DEF: "Fragment position",
 
