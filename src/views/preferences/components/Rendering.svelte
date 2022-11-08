@@ -182,6 +182,23 @@
                 onFinish={v => updateSubObject("SSGI","stepSize",v)}
         />
     </div>
+    <div data-form="-">
+        <Range
+                label={Localization.GAMMA}
+                minValue={.1}
+                maxValue={10}
+                onFinish={v => updateSubObject("SSGI","gamma",  v)}
+                value={visualSettings.SSGI.gamma}
+        />
+
+        <Range
+                label={Localization.EXPOSURE}
+                minValue={.1}
+                maxValue={10}
+                onFinish={v => updateSubObject("SSGI","exposure",  v)}
+                value={visualSettings.SSGI.exposure}
+        />
+    </div>
 </fieldset>
 
 <fieldset>

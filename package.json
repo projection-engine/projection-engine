@@ -7,7 +7,6 @@
     "package": "yarn svelte-build && electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
     "svelte-start": "sirv public"
@@ -15,21 +14,6 @@
   "keywords": [],
   "author": "facobackup",
   "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "--asar": false
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "crawler"
-          }
-        }
-      ]
-    }
-  },
   "dependencies": {
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "atob": "^2.1.2",

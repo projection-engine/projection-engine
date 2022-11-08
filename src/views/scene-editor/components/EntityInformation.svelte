@@ -28,15 +28,30 @@
                 let initialized = false
                 currentInterval = setInterval(() => {
                     console.log("ON INTERVAL")
-                    if(!translationRef || !rotationRef || !scaleRef) {
+                    if (!translationRef || !rotationRef || !scaleRef) {
                         clearInterval(currentInterval)
                         return
                     }
                     if (mainEntity && (mainEntity.__changedBuffer[1] || !initialized)) {
+
+                        if (settings.gizmo === GIZMOS.TRANSLATION) {
+                            translationRef.textContent = `X ${mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
+                            translationRef.parentElement.style.display = "flex"
+                        } else
+                            translationRef.parentElement.style.display = "none"
+                        if (settings.gizmo === GIZMOS.ROTATION) {
+                            rotationRef.textContent = `X ${mainEntity._rotationQuat[1].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
+                            rotationRef.parentElement.style.display = "flex"
+                        } else
+                            rotationRef.parentElement.style.display = "none"
+
+                        if (settings.gizmo === GIZMOS.SCALE) {
+                            scaleRef.textContent = `X ${mainEntity._scaling[1].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
+                            scaleRef.parentElement.style.display = "flex"
+                        } else
+                            scaleRef.parentElement.style.display = "none"
+
                         initialized = true
-                        translationRef.textContent = `X ${mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
-                        rotationRef.textContent = `X ${mainEntity._rotationQuat[1].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
-                        scaleRef.textContent = `X ${mainEntity._scaling[1].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
                     }
                 }, 250)
             }
@@ -50,17 +65,17 @@
     <div class="left-content">
         <div data-inline="-">
             <strong>{Localization.TRANSLATION}</strong>
-            <div bind:this={translationRef}></div>
+            <small bind:this={translationRef}></small>
         </div>
-        <div data-vertdivider="-"></div>
+
         <div data-inline="-">
             <strong>{Localization.SCALE}</strong>
-            <div bind:this={scaleRef}></div>
+            <small bind:this={scaleRef}></small>
         </div>
-        <div data-vertdivider="-"></div>
+
         <div data-inline="-">
             <strong>{Localization.ROTATION}</strong>
-            <div bind:this={rotationRef}></div>
+            <small bind:this={rotationRef}></small>
         </div>
     </div>
     <div class="right-content">
@@ -75,6 +90,10 @@
 </div>
 
 <style>
+    small{
+    color: var(--pj-color-quaternary);
+        font-size: .7rem;
+    }
     .wrapper {
         position: absolute;
         bottom: 0;
@@ -93,6 +112,7 @@
         width: 100%;
         font-size: .7rem;
         display: flex;
+        gap: 4px;
         align-items: center;
         justify-content: flex-start;
     }

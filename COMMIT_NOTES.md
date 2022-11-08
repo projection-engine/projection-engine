@@ -1,1 +1,7 @@
-- Working on SSGI
+- Added gamma and exposure settings for SSGI
+- Rewritten pipeline for SSGI:
+- Moved from dual pass box blur and 4 level down-sampling + bilinear up-sampling to 2 level down-sampling + single-pass Gaussian blur. This results in more stable GI data while reducing CPU overhead by a mile.
+- Added screen edge factor to SSGI generation to prevent color bleed/pollution when a strong color is at the screen edge.
+- Added gamma and exposure controls (ACES was used before to prevent infinite feedback loop)
+- Optimization to execution, now SSGI + SSR shader will not execute when the two of them are disabled
+- Added clear method to FBO
