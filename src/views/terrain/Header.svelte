@@ -8,6 +8,7 @@
     import Selector from "../../components/selector/Selector.svelte";
     import ShadingOption from "../../components/ShadingOption.svelte";
 
+    export let engine
     export let settings
 
 </script>
@@ -39,7 +40,7 @@
                 SettingsStore.updateStore({...settings,selectedTerrain: v.registryID })
             }}
     />
-    <ShadingOption/>
+    <ShadingOption engine={engine} settings={settings}/>
 </div>
 
 <style>

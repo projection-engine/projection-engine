@@ -159,7 +159,13 @@
                 value={visualSettings.SSGI.maxSteps}
                 onFinish={v => updateSubObject("SSGI","maxSteps",v)}
         />
-
+        <Range
+                label={Localization.BLUR_SAMPLES}
+                minValue={0}
+                integer={true}
+                value={visualSettings.SSGI.blurSamples}
+                onFinish={v => updateSubObject("SSGI","blurSamples",v)}
+        />
         <Range
 
                 label={Localization.STRENGTH}
@@ -204,7 +210,6 @@
 <fieldset>
     <legend>{Localization.SHADOWS}</legend>
     <div data-form="-">
-
         <Range
                 label={Localization.RESOLUTION}
                 accentColor={"red"}

@@ -27,7 +27,6 @@
             if (mainEntity) {
                 let initialized = false
                 currentInterval = setInterval(() => {
-                    console.log("ON INTERVAL")
                     if (!translationRef || !rotationRef || !scaleRef) {
                         clearInterval(currentInterval)
                         return

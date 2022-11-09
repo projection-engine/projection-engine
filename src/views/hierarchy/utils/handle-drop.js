@@ -14,7 +14,6 @@ export default function handleDrop(event, entityDragged, node) {
     } else if (event.shiftKey) {
         const clone = entityDragged.clone()
         clone.parent = undefined
-        console.log(node)
         clone.parentCache = node?.id
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: clone})
     }

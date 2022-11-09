@@ -19,6 +19,7 @@ export default {
     shadowMapResolution: 4096,
     mbSamples: 50,
     SSGI: {
+        blurSamples: 3,
         enabled: true,
         maxSteps: 8,
         gamma: 2.2,

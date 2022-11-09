@@ -42,7 +42,7 @@
     </div>
     <GizmoSettings settings={settings}/>
     <div class="right-content">
-        <ShadingOption/>
+        <ShadingOption engine={engine} settings={settings}/>
     </div>
 </ViewHeader>
 

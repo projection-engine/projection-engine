@@ -20,7 +20,6 @@ export default class FilesStore {
             FilesStore.initialized = true
             contentBrowserStore.subscribe(data => {
                 FilesHierarchyStore.update(data.items)
-                console.log(data)
             })
             FilesStore.refreshFiles().catch()
 

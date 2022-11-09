@@ -63,7 +63,6 @@
     $: {
         if (components[tabIndex] == null && tabIndex > 0)
             tabIndex = -2
-        console.trace(scripts)
     }
 
 </script>

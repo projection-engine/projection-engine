@@ -4,113 +4,39 @@
     import {onMount} from "svelte";
     import GPU from "../../public/engine/GPU";
     import GBuffer from "../../public/engine/runtime/renderers/GBuffer";
-    import AmbientOcclusion from "../../public/engine/runtime/occlusion/AmbientOcclusion";
     import SettingsStore from "../stores/SettingsStore";
     import Engine from "../../public/engine/Engine";
     import Localization from "../templates/LOCALIZATION_EN";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
-    import GlobalIlluminationPass from "../../public/engine/runtime/GlobalIlluminationPass";
     import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";
     import CameraAPI from "../../public/engine/api/CameraAPI";
     import VisualsStore from "../stores/VisualsStore";
+    import getLabel from "./shading-option/utils/get-label";
+    import getTexture from "./shading-option/utils/get-texture";
 
-    let shadingModel = SHADING_MODELS.DETAIL
+    export let engine
+    export let settings
+    $: shadingModel = settings.shadingModel
+    $: shading = getLabel(settings.shadingModel)
 
-    $: shading = (() => {
-        switch (shadingModel) {
-            case SHADING_MODELS.LIGHT_ONLY:
-                return "SHADING_LIGHT"
-            case SHADING_MODELS.ALBEDO:
-                return "SHADING_UNLIT"
-            case SHADING_MODELS.NORMAL:
-                return "SHADING_NORMAL"
-            case SHADING_MODELS.DEPTH:
-                return "SHADING_DEPTH"
-            case SHADING_MODELS.G_AO:
-            case SHADING_MODELS.AO:
-                return "SHADING_AO"
-            case SHADING_MODELS.SSR:
-                return "SHADING_SSR"
-            case SHADING_MODELS.POSITION:
-                return "SHADING_POSITION"
-            case SHADING_MODELS.DETAIL:
-                return "SHADING_DETAIL"
-            case SHADING_MODELS.ROUGHNESS:
-                return "SHADING_ROUGHNESS"
-            case SHADING_MODELS.METALLIC:
-                return "SHADING_METALLIC"
-            case SHADING_MODELS.SSGI:
-                return "SHADING_SSGI"
-            case SHADING_MODELS.SSGI_UNFILTERED:
-                return "SHADING_SSGI"
-            case SHADING_MODELS.STOCHASTIC:
-                return "SHADING_STOCHASTIC"
-            case SHADING_MODELS.UV:
-                return "SHADING_UV"
-            case SHADING_MODELS.ID:
-                return "SHADING_ID"
-            case SHADING_MODELS.VELOCITY:
-                return "SHADING_VELOCITY"
-            default:
-                return ""
-        }
-    })();
 
-    const getTexture = () => {
-        switch (shadingModel) {
-            case SHADING_MODELS.UV:
-            case SHADING_MODELS.DEPTH:
-                return GBuffer.depthUVSampler
-            case SHADING_MODELS.AO:
-                return AmbientOcclusion.filteredSampler
-            case SHADING_MODELS.NORMAL:
-                return GBuffer.normalSampler
-            case SHADING_MODELS.ALBEDO:
-                return GBuffer.albedoSampler
-            case SHADING_MODELS.SSR:
-                return GlobalIlluminationPass.SSRSampler
-            case SHADING_MODELS.POSITION:
-                return GBuffer.positionSampler
-            case SHADING_MODELS.G_AO:
-            case SHADING_MODELS.ROUGHNESS:
-            case SHADING_MODELS.METALLIC:
-                return GBuffer.behaviourSampler
-            case SHADING_MODELS.SSGI:
-                return GlobalIlluminationPass.SSGISampler
-            case SHADING_MODELS.SSGI_UNFILTERED:
-                return GlobalIlluminationPass.unfilteredSSGISampler
-            case SHADING_MODELS.STOCHASTIC:
-                return GlobalIlluminationPass.normalSampler
-            case SHADING_MODELS.ID:
-                return GBuffer.IDSampler
-            case SHADING_MODELS.VELOCITY:
-                return GBuffer.velocityMapSampler
-        }
-
-    }
     $: {
-        if (Engine.isReady && GBuffer.ready) {
-            FrameComposition.debugFlag = shadingModel
-            SettingsStore.updateStore({...SettingsStore.data, shadingModel})
-            if (shadingModel !== SHADING_MODELS.DETAIL) {
-                Engine.previousFrameSampler = GBuffer.albedoSampler
-                FrameComposition.workerTexture = getTexture()
-                FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
-                FrameComposition.updateShader()
-            } else {
-                Engine.previousFrameSampler = GBuffer.compositeFBO.colors[0]
-                FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
-                FrameComposition.updateShader()
-                CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
-            }
+        FrameComposition.debugFlag = shadingModel
+        if (shadingModel !== SHADING_MODELS.DETAIL) {
+            Engine.previousFrameSampler = GBuffer.albedoSampler
+            FrameComposition.workerTexture = getTexture(shadingModel)
+            FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
+            FrameComposition.updateShader()
+        } else {
+            Engine.previousFrameSampler = Engine.currentFrameFBO.colors[0]
+            FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
+            FrameComposition.updateShader()
+            CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
         }
     }
 
     onMount(() => {
-        setTimeout(() => {
-            if (SettingsStore.data.shadingModel != null)
-                shadingModel = SettingsStore.data.shadingModel
-        }, 500)
+        console.trace(shadingModel)
     })
 </script>
 
@@ -123,29 +49,29 @@
         <legend>{Localization.G_BUFFER}</legend>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.DETAIL ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.DETAIL}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DETAIL})}>
                 {Localization.SHADING_DETAIL}
                 <small>{Localization.DETAIL_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ALBEDO ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.ALBEDO}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.ALBEDO})}>
                 {Localization.SHADING_UNLIT}
                 <small>{Localization.UNLIT_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ROUGHNESS ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.ROUGHNESS}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.ROUGHNESS})}>
 
                 {Localization.SHADING_ROUGHNESS}
                 <small>{Localization.ROUGHNESS_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.METALLIC ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.METALLIC}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.METALLIC})}>
 
                 {Localization.SHADING_METALLIC}
                 <small>{Localization.METALLIC_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.DEPTH}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
 
                 {Localization.SHADING_DEPTH}
                 <small>{Localization.DEPTH_DEF}</small>
@@ -153,29 +79,29 @@
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.POSITION}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.POSITION})}>
 
                 {Localization.SHADING_POSITION}
                 <small>{Localization.POSITION_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.G_AO ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.G_AO}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.G_AO})}>
                 {Localization.SHADING_AO}
                 <small>{Localization.G_AO_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.NORMAL ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.NORMAL}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.NORMAL})}>
 
                 {Localization.SHADING_NORMAL}
                 <small>{Localization.NORMAL_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.VELOCITY ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.VELOCITY}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.VELOCITY})}>
                 {Localization.SHADING_VELOCITY}
                 <small>{Localization.VELOCITY_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.UV}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.UV})}>
                 {Localization.SHADING_UV}
                 <small>{Localization.UV_DEF}</small>
             </button>
@@ -185,35 +111,35 @@
         <legend>{Localization.SCENE}</legend>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.SSR ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.SSR}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSR})}>
                 {Localization.SHADING_SSR}
                 <small>{Localization.SSR}</small>
             </button>
 
             <button data-highlight={shadingModel === SHADING_MODELS.STOCHASTIC ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.STOCHASTIC}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.STOCHASTIC})}>
                 {Localization.SHADING_STOCHASTIC}
                 <small>{Localization.STOCHASTIC_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.ID ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.ID}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.ID})}>
                 {Localization.SHADING_ID}
                 <small>{Localization.ID_DEF}</small>
             </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.AO}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.AO})}>
                 {Localization.SHADING_AO}
                 <small>{Localization.AO_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.SSGI ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.SSGI}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSGI})}>
                 {Localization.SHADING_SSGI}
                 <small>{Localization.SSGI_DEF}</small>
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.SSGI_UNFILTERED ? "-" : ""}
-                    on:click={() => shadingModel = SHADING_MODELS.SSGI_UNFILTERED}>
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSGI_UNFILTERED})}>
                 {Localization.SHADING_SSGI}
                 <small>{Localization.SSGI_UNFILTERED_DEF}</small>
             </button>
@@ -229,6 +155,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        background: var(--pj-background-primary);
     }
 
     .content {
@@ -257,6 +184,7 @@
 
 
     .summary {
+        background: transparent;
         display: flex;
         gap: 4px;
         align-items: center;

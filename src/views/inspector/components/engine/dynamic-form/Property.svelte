@@ -151,7 +151,6 @@
                 type="material"
                 terrainMaterials={attribute.terrainMaterials}
                 handleChange={src => {
-                    console.trace(src)
                     submit(attribute.key, src?.registryID, true)
                 }}
 

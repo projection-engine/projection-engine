@@ -13,10 +13,16 @@
     import SettingsStore from "../../stores/SettingsStore";
     import {onDestroy} from "svelte";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import EngineStore from "../../stores/EngineStore";
 
     let settings = {}
+    let engine = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onDestroy(() => unsubscribeSettings())
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    onDestroy(() => {
+        unsubscribeSettings()
+        unsubscribeEngine()
+    })
 
     let selectedTerrain
     $: {
@@ -35,7 +41,7 @@
 </script>
 
 <ViewHeader>
-    <Header settings={settings}/>
+    <Header settings={settings} engine={engine}/>
 </ViewHeader>
 {#if !hidden && selectedTerrain != null}
     <div class="wrapper">

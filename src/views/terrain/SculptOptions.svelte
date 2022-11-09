@@ -38,7 +38,6 @@
         const reg = RegistryAPI.getRegistryEntry(registryID)
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
 
-        console.log(file)
         TerrainWorker.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
             .then(res => GPUAPI.allocateMesh(settings.selectedTerrain, res))
     }

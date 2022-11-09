@@ -92,7 +92,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             }
 
         const toUpdateTextures = Object.entries(textureMap)
-        console.trace(toUpdateTextures)
+
         for(let i =0; i < toUpdateTextures.length; i++){
             const [ID, texture] = toUpdateTextures[i]
             const name = "texture-" + i

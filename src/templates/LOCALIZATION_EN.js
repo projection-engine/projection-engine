@@ -30,6 +30,7 @@ export default {
     DYNAMIC: "Dynamic",
     ASPECT_RATIO: "Aspect Ratio",
     VIGNETTE: "Vignette effect",
+    BLUR_SAMPLES: "Blur samples",
     COPY_ID: "Copy ID",
     UNDOING: "Undoing",
     REDOING: "Redoing",
