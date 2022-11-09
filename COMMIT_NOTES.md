@@ -1,10 +1,4 @@
-- Added blur samples option for SSGI
-- Fixed shading model settings
-- Fixed SSGI FBO resolutions (previously first buffer was 1/3 of the res, now the two of them are 1/5)
-- Fixed AO not applying to indirect light
-- Fixed projection matrix not updating
-- Removed baseFBO from GlobalIlluminationPass due to it not being necessary
-- Removed compositeFBO from GBuffer due to it not being necessary
-- Changed GlobalIlluminationPass execution inside the pipeline
-- Forward shaded materials and sprites now contribute to SSGI and SSR
-- Working on bloom
+- New Gaussian blur shader  
+- Improvements to SSGI
+- Reworked bloom
+- New bloom settings
