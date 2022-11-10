@@ -17,6 +17,7 @@
     import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
     import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
     import UIAPI from "../../../public/engine/api/UIAPI";
+    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 
     export let store
     export let settings
@@ -28,16 +29,9 @@
     let activeNotifications = true
     const ID = v4()
     onMount(() => {
-        let timeout
         alert.bindListener(ID, () => {
             notifications = alert.cache
-        })
-        ConsoleAPI.initialize(() => {
-            hasMessage = true
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                hasMessage = false
-            }, 3500)
+            hasMessage = notifications.length > 0
         })
     })
     onDestroy(() => alert.removeListener(ID))
@@ -57,6 +51,21 @@
 
 <div class="level-selector">
     <button
+            class="button" on:click={ActionHistoryAPI.undo}
+            disabled={engine.executingAnimation}
+    >
+        <Icon styles="font-size: 1rem">undo</Icon>
+        <ToolTip content={Localization.UNDO}/>
+    </button>
+    <button
+            class="button" on:click={ActionHistoryAPI.redo}
+            disabled={engine.executingAnimation}
+    >
+        <Icon styles="font-size: 1rem">redo</Icon>
+        <ToolTip content={Localization.REDO}/>
+    </button>
+    <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+    <button
             class="button" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
             disabled={engine.executingAnimation}
     >
@@ -65,48 +74,29 @@
         <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
     </button>
     <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
-    {#if historyChangeType != null}
-        <div class="notification">
-            <Icon styles="font-size: 1rem">
-                {#if historyChangeType === "UNDO"}
-                    undo
-                {:else}
-                    redo
-                {/if}
-            </Icon>
-            <div>
-                {#if historyChangeType === "UNDO"}
-                    {Localization.UNDOING}
-                {:else}
-                    {Localization.REDOING}
-                {/if}
-            </div>
-        </div>
-        <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
-    {/if}
-    <button class="button" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={_ => openBottomView(VIEWS.CONSOLE)}>
-        <Icon styles={"font-size: 1rem; " + (hasMessage ? "color: darkorange" : "color: #999")}>feedback</Icon>
-        {#if hasMessage}
-            <small>{Localization.NEW_CONSOLE_MESSAGE}</small>
-        {/if}
-        <ToolTip content={Localization.OPEN_CONSOLE}/>
-    </button>
-    <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
-    <Dropdown hideArrow={true} styles="width: 300px">
-        <button
-                slot="button"
-                class="button"
-        >
+    <Dropdown hideArrow={true} styles="width: 300px" onOpen={_ => hasMessage = false}>
+        <button slot="button" class="button">
+            {#if hasMessage}
+                <small class="dot"></small>
+            {/if}
             <Icon styles="font-size: 1rem">notifications</Icon>
             <ToolTip content={Localization.NOTIFICATIONS}/>
         </button>
         <div class="dropdown-container">
             <div class="dropdown-header">
-                <button class="button button-small" style="gap: 4px" on:click={() => alert.clearCache()}>
-                    <Icon>clear_all</Icon>
-                    {Localization.CLEAR}
-                    <ToolTip content={Localization.CLEAR}/>
-                </button>
+                <div data-inline="-">
+                    <button class="button button-small" style="gap: 4px" on:click={() => alert.clearCache()}>
+                        <Icon>clear_all</Icon>
+                        {Localization.CLEAR}
+                        <ToolTip content={Localization.CLEAR}/>
+                    </button>
+                    <div data-vertdivider="-" style="margin: 0"></div>
+                    <button class="button button-small" on:click={_ => openBottomView(VIEWS.CONSOLE)}>
+                        <Icon styles="font-size: 1rem;">terminal</Icon>
+                        {Localization.OPEN_CONSOLE}
+                        <ToolTip content={Localization.OPEN_CONSOLE}/>
+                    </button>
+                </div>
                 <button
                         class="button button-small"
                         on:click={() => {
@@ -155,8 +145,9 @@
     </button>
 
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
-    <Dropdown styles="height: 25px">
-        <button slot="button" class="dropdown" disabled={engine.executingAnimation}>
+    <Dropdown styles="height: 30px">
+        <button slot="button" class="button" style="max-width: unset; background: transparent"
+                disabled={engine.executingAnimation}>
             <Icon>forest</Icon>
             <div data-overflow="-">
                 {#if engine.currentLevel}
@@ -191,17 +182,6 @@
 
 <style>
 
-    .console {
-        min-width: 22px !important;
-        max-width: unset !important;
-        padding-right: 6px;
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        font-size: .73rem;
-        color: var(--pj-color-quinary);
-    }
-
     .level-selector {
         width: 100%;
         display: flex;
@@ -209,17 +189,9 @@
         justify-content: flex-end;
     }
 
-    .dropdown {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.7rem;
-        padding: 0 0 0 4px;
-        max-width: unset;
-        border: none;
-    }
 
     .button {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -280,5 +252,16 @@
         color: var(--pj-accent-color);
         font-weight: 500;
 
+    }
+
+    .dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: red;
+        top: 4px;
+        right: 4px;
+        z-index: 100;
     }
 </style>

@@ -8,6 +8,8 @@
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../templates/LOCALIZATION_EN";
+    import ActionHistoryAPI from "../../../../libs/ActionHistoryAPI";
+    import ACTION_HISTORY_TARGETS from "../../../../data/ACTION_HISTORY_TARGETS";
 
     const nativeComponents = getNativeComponents()
 
@@ -33,9 +35,13 @@
     {#each nativeComponents as [key,  label, icon]}
         <button
                 on:click={(e) =>{
+                    ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     entity.addComponent(key)
+                    ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+
                     SelectionStore.updateStore()
                     e.target.closeDropdown()
+
                 }}
         >
             <Icon>{icon}</Icon>

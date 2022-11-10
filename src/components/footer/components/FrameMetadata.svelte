@@ -44,9 +44,6 @@
         gap: 2px;
     }
 
-    .section:hover {
-        background: var(--pj-background-secondary);
-    }
 
     small {
         font-size: .675rem;

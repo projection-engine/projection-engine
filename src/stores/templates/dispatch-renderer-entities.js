@@ -19,6 +19,7 @@ export const ENTITY_ACTIONS = {
     DISPATCH_BLOCK: "DISPATCH_BLOCK",
     PUSH_BLOCK: "PUSH_BLOCK",
     REMOVE_BLOCK: "REMOVE_BLOCK",
+    REPLACE_BLOCK: "REPLACE_BLOCK",
     LINK_MULTIPLE: "LINK_MULTIPLE"
 }
 
@@ -42,9 +43,10 @@ export default function dispatchRendererEntities({type, payload}) {
     let changeID = v4()
 
     function save() {
-        ActionHistoryAPI.pushBlockChange(Array.from(Engine.entitiesMap.values()))
+        ActionHistoryAPI.save(Array.from(Engine.entitiesMap.values()))
     }
 
+    const replacedMap = {}
     switch (type) {
         case ENTITY_ACTIONS.REMOVE:
             save()
@@ -65,7 +67,6 @@ export default function dispatchRendererEntities({type, payload}) {
         case ENTITY_ACTIONS.ADD: {
             save()
             const entity = payload
-
             EntityNameController.renameEntity(entity.name, entity)
             SelectionStore.updateStore({
                 ...SelectionStore.data,
@@ -116,6 +117,17 @@ export default function dispatchRendererEntities({type, payload}) {
                 SelectionStore.lockedEntity = block[0]?.id
             break
         }
+        case ENTITY_ACTIONS.REPLACE_BLOCK:
+            for (let i = 0; i < payload.toRemove.length; i++)
+                deleteEntity(QueryAPI.getEntityByID(payload.toRemove[i]), true)
+            for (let i = 0; i < payload.toAdd.length; i++) {
+                const e = payload.toAdd[i]
+                EntityAPI.addEntity(e)
+                replacedMap[e.id] = e
+                EntityNameController.renameEntity(e.name, e)
+            }
+
+            break
         default:
             return
     }
@@ -125,14 +137,15 @@ export default function dispatchRendererEntities({type, payload}) {
     for (let i = 0; i < arr.length; i++) {
         const entity = arr[i]
         entity.pickID = getPickerId(i + AXIS.ZY + 1)
-        if (!entity.parentCache)
+        if (!entity.parentCache && !replacedMap[entity.parent?.id])
             continue
+        if (replacedMap[entity.parent?.id] != null)
+            entity.parentCache = entity.parent.id
         const parent = QueryAPI.getEntityByID(entity.parentCache)
-            if (parent) {
-                entity.parentCache = undefined
-                EntityAPI.linkEntities(entity, parent)
-            }
-
+        if (parent) {
+            entity.parentCache = undefined
+            EntityAPI.linkEntities(entity, parent)
+        }
     }
     HierarchyController.updateHierarchy()
     EngineStore.updateStore({...EngineStore.engine, changeID})

@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
@@ -14,7 +14,6 @@
     import CreationController from "./CreationController.svelte";
     import OtherSettings from "./OtherSettings.svelte";
     import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
-    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
 
     let engine
     let store
@@ -26,13 +25,6 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    onMount(() => {
-        ActionHistoryAPI.initializeListener(type => {
-            historyChangeType = type
-            clearTimeout(timeout)
-            timeout = setTimeout(() => historyChangeType = null, 2000)
-        })
-    })
     onDestroy(() => {
         unsubscribeEngine()
         unsubscribe()
@@ -43,7 +35,7 @@
         const views = [
             ...SettingsStore.data.views,
             {
-                name: Localization.NEW_TAB + SettingsStore.data.views.length,
+                name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
                 bottom: [[VIEWS.CONSOLE]],
                 right: [[VIEWS.HIERARCHY]],
                 viewport: [VIEWPORT_TABS.EDITOR],
@@ -68,12 +60,12 @@
 <div class="container">
     <button on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
-        <ToolTip content={Localization.SAVE}/>
+        <ToolTip content={LOCALIZATION_EN.SAVE}/>
     </button>
     <Dropdown hideArrow="true">
         <button slot="button">
             <Icon>menu</Icon>
-            <ToolTip content={Localization.OPTIONS}/>
+            <ToolTip content={LOCALIZATION_EN.OPTIONS}/>
         </button>
         {#each FRAME_OPTIONS as subOption}
             {#if subOption.type === "separator" && subOption.label}

@@ -1,4 +1,3 @@
-- New Gaussian blur shader  
-- Improvements to SSGI
-- Reworked bloom
-- New bloom settings
+- Reworking undo/redo pipeline
+- Updating shared-resources
+- Changing window options

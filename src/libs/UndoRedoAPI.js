@@ -26,7 +26,7 @@ export default class UndoRedoAPI {
     }
 
     undo() {
-        let hasToApply = false
+        const previousIndex = this.index
         if (this.dirtyState) {
             this.history.push(this.dirtyState)
             if (this.history.length > MAX_DEPTH)
@@ -39,20 +39,20 @@ export default class UndoRedoAPI {
         if (this.index > 0) {
             this.index--
             this.clamp()
-            hasToApply = true
         }
-        return hasToApply
+        if (previousIndex !== this.index)
+            return this.history[this.index]
     }
 
 
     redo() {
-        let hasToApply = false
+        const previousIndex = this.index
         if (this.index < this.history.length - 1) {
-            hasToApply = true
             this.index++
             this.clamp()
         }
-        return hasToApply
+        if (previousIndex !== this.index)
+            return this.history[this.index]
     }
 
 }

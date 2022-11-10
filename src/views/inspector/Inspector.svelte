@@ -12,6 +12,7 @@
     import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
+    import ACTION_HISTORY_TARGETS from "../../data/ACTION_HISTORY_TARGETS";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -60,12 +61,7 @@
 
     const submitTransformationChange = (key, value, save) => {
         if (!savedState) {
-            ActionHistoryAPI.saveEntity(
-                entity.id,
-                undefined,
-                key,
-                value
-            )
+            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
             savedState = true
         }
         if (key === "pivotPoint")
@@ -73,12 +69,7 @@
         entity[key] = value
         entity.__changedBuffer[0] = 1
         if (save)
-            ActionHistoryAPI.saveEntity(
-                entity.id,
-                undefined,
-                key,
-                value
-            )
+            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
     }
 </script>
 {#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}

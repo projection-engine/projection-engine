@@ -6,6 +6,7 @@ import LightsAPI from "../../../../public/engine/api/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../public/engine/api/CameraAPI";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
+import ACTION_HISTORY_TARGETS from "../../../data/ACTION_HISTORY_TARGETS";
 
 export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
     if (currentComponentValue[1] instanceof DirectionalLightComponent || currentComponentValue[1] instanceof PointLightComponent) {
@@ -13,12 +14,7 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         LightsAPI.packageLights(true)
     }
     if (!savedState) {
-        ActionHistoryAPI.saveEntity(
-            entity.id,
-            currentComponentValue[0],
-            key,
-            value
-        )
+        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
         setSaved(true)
     }
 
@@ -27,11 +23,6 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         CameraAPI.updateViewTarget(entity)
     if (save) {
         SelectionStore.updateStore()
-        ActionHistoryAPI.saveEntity(
-            entity.id,
-            currentComponentValue[0],
-            key,
-            value
-        )
+        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
     }
 }

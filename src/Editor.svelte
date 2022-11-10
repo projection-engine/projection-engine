@@ -41,7 +41,6 @@
 </script>
 
 <div class="wrapper">
-
     <Alert/>
     <ControlOptions/>
     <ContextMenu/>

@@ -33,6 +33,8 @@ export default function viewportContext(settings, forDropdown) {
                     label: "To screen",
                     onClick: () => {
                         const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
+                        if(!selected)
+                            return
                         if (selected) {
                             const position = [0, 0, -10, 1]
                             vec4.transformQuat(position, position, CameraAPI.rotationBuffer)

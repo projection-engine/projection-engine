@@ -8,6 +8,8 @@
     import EntityNameController from "../../../libs/EntityNameController";
     import KEYS from "../../../data/KEYS";
     import handleDrop from "../utils/handle-drop";
+    import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
+    import ACTION_HISTORY_TARGETS from "../../../data/ACTION_HISTORY_TARGETS";
 
     export let node
     export let lockedEntity
@@ -33,6 +35,11 @@
         })
     })
     onDestroy(() => draggable.onDestroy())
+    function rename(){
+        ActionHistoryAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+        EntityNameController.renameEntity(cacheName, node)
+        ActionHistoryAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+    }
 </script>
 
 <div class="info hierarchy-branch" data-node={node.id}>
@@ -54,17 +61,17 @@
                 disabled={!isOnEdit}
                 on:change={e => {
                     cacheName = e.value
-                    EntityNameController.renameEntity(cacheName, node)
+                    rename()
                 }}
                 on:blur={ev => {
                     cacheName = ev.currentTarget.value
-                    EntityNameController.renameEntity(cacheName, node)
+                    rename()
                     isOnEdit = false
                 }}
                 on:keydown={e => {
                     if(e.code === KEYS.Enter){
                         cacheName = e.target.value
-                        EntityNameController.renameEntity(cacheName, node)
+                        rename()
                         isOnEdit = false
                     }
                 }}

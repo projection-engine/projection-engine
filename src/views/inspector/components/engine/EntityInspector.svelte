@@ -13,6 +13,7 @@
     import updateEntityComponent from "../../utils/update-entity-component";
     import "../../../../css/shared.css"
     import getEntityTabs from "../../utils/get-entity-tabs";
+    import ACTION_HISTORY_TARGETS from "../../../../data/ACTION_HISTORY_TARGETS";
 
     export let entity
 
@@ -29,12 +30,7 @@
     $: buttons = getEntityTabs(components, scripts)
     const submitTransformationChange = (key, value, save) => {
         if (!savedState) {
-            ActionHistoryAPI.saveEntity(
-                entity.id,
-                undefined,
-                key,
-                value
-            )
+            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
             savedState = true
         }
         if (key === "pivotPoint")
@@ -42,12 +38,7 @@
         entity[key] = value
         entity.__changedBuffer[0] = 1
         if (save)
-            ActionHistoryAPI.saveEntity(
-                entity.id,
-                undefined,
-                key,
-                value
-            )
+            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
     }
 
     const draggable = dragDrop(false)

@@ -22,6 +22,7 @@ import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
 import {vec3, vec4} from "gl-matrix";
 import CameraAPI from "../../../public/engine/api/CameraAPI";
+import ACTION_HISTORY_TARGETS from "../../data/ACTION_HISTORY_TARGETS";
 
 let translationCache = vec3.create()
 let rotationCache = vec4.create()
@@ -134,21 +135,9 @@ export default class Loader {
                     const result = await FileSystemAPI.loadMaterial(data)
                     if (result) {
                         const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
-                        ActionHistoryAPI.pushChange({
-                            target: ActionHistoryAPI.targets.entity,
-                            entityID: entity.id,
-                            component: comp,
-                            key: "materialID",
-                            changeValue: entity.components.get(comp).materialID
-                        })
+                        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                         entity.components.get(comp).materialID = data
-                        ActionHistoryAPI.pushChange({
-                            target: ActionHistoryAPI.targets.entity,
-                            entityID: entity.id,
-                            component: comp,
-                            key: "materialID",
-                            changeValue: data
-                        })
+                        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     } else
                         alert.pushAlert(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
