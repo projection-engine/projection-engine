@@ -5,7 +5,7 @@
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
@@ -19,32 +19,31 @@
 </script>
 
 
-<ViewHeader>
-    <div class="left-content">
-        <button on:click={() => EntityStateController.startPlayState()}>
-            <Icon styles="font-size: .85rem">play_arrow</Icon>
-            {Localization.PLAY}
+<div class="left-content">
+    <button on:click={() => EntityStateController.startPlayState()}>
+        <Icon styles="font-size: .85rem">play_arrow</Icon>
+        {Localization.PLAY}
+    </button>
+    <div data-vertdivider="-" style="height: 15px"></div>
+    <ViewOptions settings={settings}/>
+    <AddOptions/>
+    <Dropdown styles="width: 250px">
+        <button slot="button" data-viewbutton="-" style="background: transparent;">
+            {Localization.CAMERA}
         </button>
-        <div data-vertdivider="-" style="height: 15px"></div>
-        <ViewOptions settings={settings}/>
-        <AddOptions/>
-        <Dropdown styles="width: 250px">
-            <button slot="button" data-viewbutton="-" style="background: transparent;">
-                {Localization.CAMERA}
-            </button>
-            <div style="padding: 8px 4px">
-                <CameraSettings/>
-            </div>
-        </Dropdown>
+        <div style="padding: 8px 4px">
+            <CameraSettings/>
+        </div>
+    </Dropdown>
 
-        <ObjectOptions settings={settings}/>
-        <SpawnSettings settings={settings}/>
-    </div>
-    <GizmoSettings settings={settings}/>
-    <div class="right-content">
-        <ShadingOption engine={engine} settings={settings}/>
-    </div>
-</ViewHeader>
+    <ObjectOptions settings={settings}/>
+    <SpawnSettings settings={settings}/>
+</div>
+<GizmoSettings settings={settings}/>
+<div class="right-content">
+    <ShadingOption engine={engine} settings={settings}/>
+</div>
+
 
 <style>
 

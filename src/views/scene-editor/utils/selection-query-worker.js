@@ -1,4 +1,6 @@
 export default function selectionQueryWorker() {
+    if (window.selectionWorker != null)
+        return
     const src = ` 
     self.onmessage = ({data: {entities, data}}) => {
         const map = {}
@@ -20,5 +22,6 @@ export default function selectionQueryWorker() {
     `
     const workerBlob = new Blob([src], {type: "application/javascript"});
     const workerUrl = URL.createObjectURL(workerBlob);
-    return new Worker(workerUrl);
+    window.selectionWorker = new Worker(workerUrl);
+
 }

@@ -7,26 +7,22 @@
 
     export let settings
     export let engine
-
+    export let selectedSize
+    export let mainEntity
     let translationRef
     let rotationRef
     let scaleRef
 
-    let selectedSize = -1
-    let mainEntity
+
     let currentInterval
-    const unsubscribeSelection = SelectionStore.getStore(_ => {
-        selectedSize = SelectionStore.engineSelected.length
-        mainEntity = Engine.entitiesMap.get(SelectionStore.engineSelected[0])
-    })
-    onDestroy(() => unsubscribeSelection())
+
 
     $: {
         clearInterval(currentInterval)
         if (translationRef && rotationRef && scaleRef) {
-            if (mainEntity) {
                 let initialized = false
                 currentInterval = setInterval(() => {
+                    console.log("ON INTERVAL")
                     if (!translationRef || !rotationRef || !scaleRef) {
                         clearInterval(currentInterval)
                         return
@@ -53,58 +49,45 @@
                         initialized = true
                     }
                 }, 250)
-            }
         }
     }
+    onDestroy(() => clearInterval(currentInterval))
     $: isValidPivot = settings.gizmo === GIZMOS.TRANSLATION && selectedSize === 1
     $: isValidScaling = settings.gizmo === GIZMOS.SCALE
 </script>
 
-<div class="wrapper" style={!mainEntity ? "display: none" : undefined}>
-    <div class="left-content">
-        <div data-inline="-">
-            <strong>{Localization.TRANSLATION}</strong>
-            <small bind:this={translationRef}></small>
-        </div>
 
-        <div data-inline="-">
-            <strong>{Localization.SCALE}</strong>
-            <small bind:this={scaleRef}></small>
-        </div>
-
-        <div data-inline="-">
-            <strong>{Localization.ROTATION}</strong>
-            <small bind:this={rotationRef}></small>
-        </div>
+<div class="left-content">
+    <div data-inline="-">
+        <strong>{Localization.TRANSLATION}</strong>
+        <small bind:this={translationRef}></small>
     </div>
-    <div class="right-content">
-        {#if isValidScaling}
-            <div class="row">ALT - {Localization.ALT_FOR_FIXED}</div>
-        {/if}
-        {#if isValidPivot}
-            <div class="row">ALT - {Localization.ALT_FOR_PIVOT}</div>
-        {/if}
-        <div class="row">CTRL - {Localization.CTRL_FOR_UNITARY}</div>
+
+    <div data-inline="-">
+        <strong>{Localization.SCALE}</strong>
+        <small bind:this={scaleRef}></small>
+    </div>
+
+    <div data-inline="-">
+        <strong>{Localization.ROTATION}</strong>
+        <small bind:this={rotationRef}></small>
     </div>
 </div>
+<div class="right-content">
+    {#if isValidScaling}
+        <div class="row">ALT - {Localization.ALT_FOR_FIXED}</div>
+    {/if}
+    {#if isValidPivot}
+        <div class="row">ALT - {Localization.ALT_FOR_PIVOT}</div>
+    {/if}
+    <div class="row">CTRL - {Localization.CTRL_FOR_UNITARY}</div>
+</div>
+
 
 <style>
-    small{
-    color: var(--pj-color-quaternary);
+    small {
+        color: var(--pj-color-quaternary);
         font-size: .7rem;
-    }
-    .wrapper {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-
-        display: flex;
-        align-items: center;
-
-        background: rgba(41, 41, 41, .5);
-        width: 100%;
-        height: 25px;
-        z-index: 10;
     }
 
     .left-content {

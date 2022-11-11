@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../data/RENDER_TARGET";
-    import selectionQueryWorker from "../viewport/utils/selection-query-worker";
+    import selectionQueryWorker from "./utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
     import CameraGizmo from "../../components/CameraGizmo.svelte";
     import GIZMOS from "../../data/GIZMOS";
@@ -18,7 +18,7 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
-
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../../public/engine/editor-environment/libs/CameraTracker";
     import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
@@ -28,17 +28,24 @@
     import EntityStateController from "../../libs/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
+    import getUnderSelectionBox from "./utils/get-under-selection-box";
 
-    const WORKER = selectionQueryWorker()
 
-    let mouseDelta = {x: 0, y: 0}
-
+    let selectedSize = -1
+    let mainEntity
+    let isOnGizmo = false
     let engine = {}
     let settings = {}
+    let interval
 
+    const draggable = dragDrop(false)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const LEFT_BUTTON = 0
+    const unsubscribeSelection = SelectionStore.getStore(_ => {
+        selectedSize = SelectionStore.engineSelected.length
+        mainEntity = Engine.entitiesMap.get(SelectionStore.engineSelected[0])
+    })
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
     $: {
@@ -51,51 +58,13 @@
             )
     }
 
-    function gizmoMouseMove(event) {
-        if (GizmoSystem.targetGizmo)
-            GizmoSystem.targetGizmo.onMouseMove(event)
-    }
-
-    function onMouseDown(e) {
-        if (!Engine.isReady || e.button !== LEFT_BUTTON)
-            return
-        mouseDelta = {x: e.clientX, y: e.clientY}
-        if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseDown(e)
-            e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
-            document.addEventListener("mousemove", gizmoMouseMove)
-        }
-    }
-
-    function onMouseUp(event) {
-        if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseUp()
-            document.removeEventListener("mousemove", gizmoMouseMove)
-        }
-        if (!Engine.isReady)
-            return
-        onViewportClick(
-            event,
-            mouseDelta,
-            settings,
-            (data) => {
-                if (GizmoSystem.wasOnGizmo) {
-                    GizmoSystem.wasOnGizmo = false
-                    return
-                }
-                SelectionStore.engineSelected = data
-            })
-    }
-
-
-    const draggable = dragDrop(false)
-
     onMount(() => {
+        GizmoSystem.onStart = () => isOnGizmo = true
+        GizmoSystem.onStop = () => isOnGizmo = false
+
         Engine.start()
         CameraTracker.startTracking()
-        const parentElement = gpu.canvas
-        parentElement.addEventListener("mousedown", onMouseDown)
-        parentElement.addEventListener("mouseup", onMouseUp)
+        ViewportInteractionHandler.initialize()
         draggable.onMount({
             targetElement: gpu.canvas,
             onDrop: (data, event) => {
@@ -109,44 +78,32 @@
     })
 
     onDestroy(() => {
+        GizmoSystem.onStop = GizmoSystem.onStart = undefined
+
         unsubscribeEngine()
         unsubscribeSettings()
         ContextMenuController.destroy(RENDER_TARGET)
         draggable.onDestroy()
-        const parentElement = gpu.canvas
-        parentElement.removeEventListener("mousedown", onMouseDown)
-        parentElement.removeEventListener("mouseup", onMouseUp)
+        unsubscribeSelection()
+        ViewportInteractionHandler.destroy()
     })
 
-    const setSelectionBox = (_, startCoords, endCoords) => {
-        if (startCoords && endCoords) {
-            drawIconsToBuffer()
-            const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
-            const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
-
-            try {
-                const data = PickingAPI.readBlock(nStart, nEnd)
-
-                WORKER.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data})
-                WORKER.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
-            } catch (err) {
-                console.error(err, startCoords, nStart)
-            }
-        }
-    }
-    $: isOnPlay = engine.executingAnimation
 </script>
 
-{#if !isOnPlay}
-    <EntityInformation settings={settings} engine={engine}/>
-    <Header settings={settings} engine={engine}/>
-
+{#if !engine.executingAnimation}
+    <ViewHeader>
+        {#if isOnGizmo}
+            <EntityInformation mainEntity={mainEntity} selectedSize={selectedSize} settings={settings} engine={engine}/>
+        {:else}
+            <Header settings={settings} engine={engine}/>
+        {/if}
+    </ViewHeader>
     <SelectBox
             targetElement={gpu.canvas}
             allowAll={true}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
-            setSelected={setSelectionBox}
+            setSelected={getUnderSelectionBox}
             selected={[]}
             nodes={[]}
     />
@@ -155,10 +112,7 @@
         <CameraGizmo/>
     </div>
 {:else}
-    <button
-            class="stop-button"
-            on:click={() => EntityStateController.stopPlayState()}
-    >
+    <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
         <ToolTip content={Localization.STOP}/>
     </button>

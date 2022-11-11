@@ -6,6 +6,7 @@ import Engine from "../../public/engine/Engine";
 import ACTION_HISTORY_TARGETS from "../data/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
+import serializeStructure from "../../public/engine/utils/serialize-structure";
 
 export default class ActionHistoryAPI {
     static engineCache = new UndoRedoAPI()
@@ -19,7 +20,7 @@ export default class ActionHistoryAPI {
         switch (target) {
             case ACTION_HISTORY_TARGETS.ENGINE:
                 ActionHistoryAPI.engineCache.save({
-                    value: Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()],
+                    value: serializeStructure(Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]),
                     target
                 })
                 break
@@ -29,6 +30,7 @@ export default class ActionHistoryAPI {
     }
 
     static undo() {
+        console.log(ActionHistoryAPI.engineCache.history )
         const action = ActionHistoryAPI.engineCache.undo()
         if (action) {
             alert.pushAlert(LOCALIZATION_EN.UNDOING_CHANGES, "info")
@@ -47,7 +49,7 @@ export default class ActionHistoryAPI {
     static #apply(currentAction) {
         switch (currentAction.target) {
             case ACTION_HISTORY_TARGETS.ENGINE: {
-                const value = currentAction.value
+                const value = JSON.parse(currentAction.value)
                 const toRemove = []
                 const toAdd = []
 

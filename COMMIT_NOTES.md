@@ -1,3 +1,5 @@
-- Reworking undo/redo pipeline
-- Updating shared-resources
-- Changing window options
+- Fixing UNDO/REDO not serializing array buffers
+- Changed gizmo metadata from viewport bottom to top
+- Added high quality BRDF generation
+- Quad drawing method globally accessible 
+- Organizing SceneEditor component
