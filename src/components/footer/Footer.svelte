@@ -1,5 +1,4 @@
 <script>
-    import SHORTCUTS_ID from "../../data/SHORTCUTS_ID"
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import HotKeysController from "../../libs/HotKeysController";
@@ -11,13 +10,10 @@
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-
     const {shell} = window.require("electron")
-    let settings = {}
-    let activeView
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    onMount(() => HotKeysController.initializeListener(v => activeView = v))
+    let settings = {}
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
 
     const openLogs = async () => {
@@ -28,15 +24,7 @@
     }
 </script>
 
-<div class="wrapper" id={SHORTCUTS_ID}>
-    {#if activeView != null}
-        <div class="active-view">
-            <Icon styles="font-size: 1rem">{activeView.icon}</Icon>
-            <div>{activeView.label}</div>
-            <ToolTip content={Localization.ACTIVE_SHORTCUTS}/>
-        </div>
-    {/if}
-    <div data-vertdivider="-" style="margin: 0 2px"></div>
+<div class="wrapper">
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
         <SceneStats/>

@@ -10,6 +10,7 @@
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./data/RENDER_TARGET";
     import Localization from "./templates/LOCALIZATION_EN";
+    import HotKeysController from "./libs/HotKeysController";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -30,6 +31,7 @@
                 })
             }
         }, 100)
+        HotKeysController.initializeListener()
     })
 
 </script>

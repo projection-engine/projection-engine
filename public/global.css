@@ -76,7 +76,7 @@ body {
     --pj-color-quaternary: #d0d0d0;
     --pj-color-quinary: #c8c8c8;
     --pj-color-senary: #afafaf;
-    --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
+    --pj-boxshadow: rgb(0 0 0 / 20%) 2px 4px 10px 6px;
     --background-input: #545454;
     --background-input-lighter: #565656;
     color: var(--pj-color-secondary);

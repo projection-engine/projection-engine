@@ -7,6 +7,7 @@ export default class DragDropController {
     static dataTransfer
     static #initialized = false
     static alertModal
+    static changedElements = []
 
     static onLeave() {
         if (!DragDropController.dropTarget)
@@ -16,6 +17,13 @@ export default class DragDropController {
         DragDropController.alertModal.style.zIndex = "-1"
         DragDropController.dropTarget.style.opacity = "1"
         DragDropController.dropTarget = undefined
+
+        for(let i = 0; i < DragDropController.changedElements.length; i++){
+            const c = DragDropController.changedElements[i]
+            if(c){
+                c.style.opacity = "1"
+            }
+        }
     }
 
     static createElement(html) {
@@ -29,8 +37,9 @@ export default class DragDropController {
         if (DragDropController.#initialized)
             return
         DragDropController.alertModal = DragDropController.createElement("")
-        DragDropController.alertModal.style.background = "var(--pj-border-primary)"
-        DragDropController.alertModal.style.right = "4px"
+        DragDropController.alertModal.style.background = "var(--pj-accent-color)"
+        DragDropController.alertModal.style.left = "50%"
+        DragDropController.alertModal.style.transform = "translateX(-50%)"
         DragDropController.alertModal.style.top = "4px"
         DragDropController.alertModal.style.zIndex = "-1"
         document.body.appendChild(DragDropController.alertModal)

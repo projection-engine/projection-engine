@@ -9,10 +9,11 @@
     let interval
     let mem
     onMount(() => {
-        const m = Engine.metrics
+
         const cb = () => {
-            fr.textContent = Math.round(m.frameRate) + "FPS"
-            ft.textContent = m.frameTime.toFixed(2) + "ms"
+            const el = Engine.elapsed
+            fr.textContent = Math.round(1000/el) + "FPS"
+            ft.textContent = el.toFixed(2) + "ms"
             requestAnimationFrame(cb)
         }
         requestAnimationFrame(cb)

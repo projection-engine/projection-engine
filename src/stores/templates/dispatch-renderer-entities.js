@@ -11,6 +11,7 @@ import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
 import getPickerId from "../../../public/engine/utils/get-picker-id";
 import Engine from "../../../public/engine/Engine";
 import EntityAPI from "../../../public/engine/api/EntityAPI";
+import ACTION_HISTORY_TARGETS from "../../data/ACTION_HISTORY_TARGETS";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -43,7 +44,7 @@ export default function dispatchRendererEntities({type, payload}) {
     let changeID = v4()
 
     function save() {
-        ActionHistoryAPI.save(Array.from(Engine.entitiesMap.values()))
+        ActionHistoryAPI.save(Engine.entities, ACTION_HISTORY_TARGETS.ENGINE)
     }
 
     const replacedMap = {}
@@ -112,7 +113,6 @@ export default function dispatchRendererEntities({type, payload}) {
                     lockedEntity: undefined
                 })
                 save()
-
             } else
                 SelectionStore.lockedEntity = block[0]?.id
             break

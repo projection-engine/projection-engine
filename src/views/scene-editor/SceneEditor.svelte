@@ -87,7 +87,7 @@
         unsubscribeSelection()
         ViewportInteractionHandler.destroy()
     })
-
+    $: focusedCamera = engine.focusedCamera ? Engine.entitiesMap.get(engine.focusedCamera) : null
 </script>
 
 {#if !engine.executingAnimation}
@@ -111,6 +111,12 @@
         <GeneralSettings engine={engine} settings={settings}/>
         <CameraGizmo/>
     </div>
+    {#if focusedCamera}
+        <div class="focused-camera" data-inline="-">
+            <Icon styles="font-size: .85rem">videocam</Icon>
+            {focusedCamera.name}
+        </div>
+    {/if}
 {:else}
     <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
@@ -119,7 +125,23 @@
 {/if}
 
 
+
+
 <style>
+    .focused-camera {
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+        border-radius: 25px;
+        height: 25px;
+        background: var(--pj-accent-color);
+        color: white;
+        gap: 6px;
+        padding: 8px;
+        font-size: .7rem;
+        z-index: 999;
+        box-shadow: var(--pj-boxshadow);
+    }
     .stop-button {
         position: absolute;
         top: 4px;

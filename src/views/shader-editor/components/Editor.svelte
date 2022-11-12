@@ -15,7 +15,7 @@
 export let openFile
     export let internalID
 
-    $: fallbackSelected = nodes.find(n => n instanceof Material)
+    $: fallbackSelected = nodes ? nodes.find(n => n instanceof Material) : undefined
 
     const submitNodeVariable = (value, attr, node) => {
 

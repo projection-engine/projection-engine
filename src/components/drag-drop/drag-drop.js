@@ -1,8 +1,13 @@
 import DragDropController from "./DragDropController";
 
 export default function dragDrop(draggable) {
-    let dragImageElement, noTargetTransformation, onDragStartEvent, onDragOverEvent,
-        draggableElement, onDragEndEvent
+    let dragImageElement,
+        noTargetTransformation,
+        onDragStartEvent,
+        onDragOverEvent,
+        draggableElement,
+        onDragEndEvent,
+        getDragImage
 
 
     const handler = (event) => {
@@ -27,6 +32,8 @@ export default function dragDrop(draggable) {
                     dragImageElement.style.right = "100%"
                     if (!dragImageElement.parentElement)
                         document.body.appendChild(dragImageElement);
+                    if(getDragImage)
+                        dragImageElement.innerHTML = getDragImage()
                     event.dataTransfer.setDragImage(dragImageElement, 0, 0)
                 }
                 DragDropController.dragData = onDragStartEvent(event)
@@ -46,12 +53,12 @@ export default function dragDrop(draggable) {
             case "dragover":
                 event.preventDefault()
                 DragDropController.dropTarget = draggableElement
+                DragDropController.changedElements.push(draggableElement)
                 draggableElement.style.opacity = ".5"
                 draggableElement.dragDropListeners.dragOver(event)
                 break
             case "drop":
                 event.preventDefault()
-                draggableElement.style.opacity = "1"
                 if (!DragDropController.dropTarget)
                     return;
 
@@ -77,7 +84,9 @@ export default function dragDrop(draggable) {
             DragDropController.initialize()
             draggableElement = targetElement
             noTargetTransformation = noTransformation
-            dragImageElement = DragDropController.createElement(dragImage ? dragImage : "")
+            if(typeof dragImage === "function")
+                getDragImage = dragImage
+            dragImageElement = DragDropController.createElement(getDragImage ? getDragImage() : dragImage)
 
             onDragOverEvent = onDragOver
             onDragEndEvent = onDragEnd

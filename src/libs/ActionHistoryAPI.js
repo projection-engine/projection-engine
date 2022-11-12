@@ -7,6 +7,7 @@ import ACTION_HISTORY_TARGETS from "../data/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
+import EntityNameController from "./EntityNameController";
 
 export default class ActionHistoryAPI {
     static engineCache = new UndoRedoAPI()
@@ -20,6 +21,7 @@ export default class ActionHistoryAPI {
         switch (target) {
             case ACTION_HISTORY_TARGETS.ENGINE:
                 ActionHistoryAPI.engineCache.save({
+                    nameCache: new Map(EntityNameController.byName),
                     value: serializeStructure(Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]),
                     target
                 })
@@ -30,7 +32,7 @@ export default class ActionHistoryAPI {
     }
 
     static undo() {
-        console.log(ActionHistoryAPI.engineCache.history )
+        console.log(ActionHistoryAPI.engineCache.history)
         const action = ActionHistoryAPI.engineCache.undo()
         if (action) {
             alert.pushAlert(LOCALIZATION_EN.UNDOING_CHANGES, "info")
@@ -50,9 +52,10 @@ export default class ActionHistoryAPI {
         switch (currentAction.target) {
             case ACTION_HISTORY_TARGETS.ENGINE: {
                 const value = JSON.parse(currentAction.value)
+                const nameCache = currentAction.nameCache
                 const toRemove = []
                 const toAdd = []
-
+                EntityNameController.byName = nameCache
                 for (let i = 0; i < value.length; i++) {
                     toAdd.push(EntityAPI.parseEntityObject(value[i]))
                     toRemove.push(value[i].id)

@@ -34,6 +34,7 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
         CameraAPI.metadata.fxaa = settings.fxaa
 
+
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
 

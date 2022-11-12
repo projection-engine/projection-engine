@@ -10,6 +10,8 @@
     import handleDrop from "../utils/handle-drop";
     import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
     import ACTION_HISTORY_TARGETS from "../../../data/ACTION_HISTORY_TARGETS";
+    import SelectionStore from "../../../stores/SelectionStore";
+    import Engine from "../../../../public/engine/Engine";
 
     export let node
     export let lockedEntity
@@ -25,12 +27,16 @@
     $: icons = getEngineIcon(node)
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
+
+    function getDragTarget(){
+        return SelectionStore.engineSelected.length > 0 ? SelectionStore.engineSelected.map(e => Engine.entitiesMap.get(e)) : node
+    }
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
-            onDragStart: () => node,
+            onDragStart: () => getDragTarget(),
             onDrop: (entityDragged, event) => handleDrop(event, entityDragged, node),
-            dragImage: `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">view_in_ar</span> ${node.name}</div>`,
+            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : node.name}</div>`,
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
@@ -55,7 +61,7 @@
             bind:this={ref}
             class="node"
             on:dblclick={() => isOnEdit = true}
-            on:mousedown={(e) => updateSelection(node.id, e.ctrlKey)}
+            on:click={(e) => updateSelection(node.id, e.ctrlKey)}
     >
         <input
                 disabled={!isOnEdit}

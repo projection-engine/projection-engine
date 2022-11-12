@@ -7,15 +7,11 @@ export default class HotKeysController {
     static activeView
     static views = new Map()
     static holding = new Map()
-    static #onUpdate = () => null
 
-    static initializeListener(onUpdate) {
-        HotKeysController.#onUpdate = () => onUpdate(HotKeysController.views.get(HotKeysController.activeView))
 
+    static initializeListener() {
         function handler(event) {
-
             const h = HotKeysController.holding
-
             if (event.repeat || Engine.environment !== ENVIRONMENT.DEV || document.pointerLockElement != null)
                 return
             const activeView = HotKeysController.views.get(HotKeysController.activeView)
@@ -82,7 +78,6 @@ export default class HotKeysController {
         const handler = () => {
             HotKeysController.activeView = element
             HotKeysController.holding.clear()
-            HotKeysController.#onUpdate()
         }
         if (HotKeysController.views.get(element))
             HotKeysController.unbindAction(element)

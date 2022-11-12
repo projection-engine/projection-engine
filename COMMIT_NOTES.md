@@ -1,5 +1,9 @@
-- Fixing UNDO/REDO not serializing array buffers
-- Changed gizmo metadata from viewport bottom to top
-- Added high quality BRDF generation
-- Quad drawing method globally accessible 
-- Organizing SceneEditor component
+- Fixing camera post-processing bugs
+- Tweaks to SSGI
+- Added tooltip for focused camera to viewport
+- Focused camera will not render icon now
+- Structuring benchmark mode
+- FIxed grid not rendering when skybox is active
+- Re-enabled  performance metrics
+- Reworked drag/drop tooltip visuals
+- Added multi-drag to hierarchy
