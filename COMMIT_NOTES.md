@@ -1,2 +1,2 @@
-- BenchmarkAPI tweaks
-- Metrics view
+- New camera UBO integrated with other shaders
+- Organizing camera worker UBO mapping
