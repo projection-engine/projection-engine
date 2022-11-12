@@ -2,7 +2,7 @@
     import Localization from "../../../templates/LOCALIZATION_EN";
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
-    import VIEWS from "../data/VIEWS";
+    import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../stores/TabsStore";
     import {onDestroy} from "svelte";
     import SettingsStore from "../../../stores/SettingsStore";
@@ -35,7 +35,7 @@
         name: Localization[value],
         id: value
     }))
-
+    $: console.log(viewTemplates)
     onDestroy(() => {
 
         unsubscribeTabs()

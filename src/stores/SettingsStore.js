@@ -1,4 +1,4 @@
-import SETTINGS from "../data/SETTINGS";
+import SETTINGS from "../static/SETTINGS";
 import {get, writable} from "svelte/store";
 
 const settingsStore = writable(SETTINGS);

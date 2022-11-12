@@ -6,14 +6,14 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import LevelController from "../../libs/LevelController";
+    import LevelController from "../../lib/LevelController";
     import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
     import SettingsStore from "../../stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
-    import VIEWS from "../view/data/VIEWS";
+    import VIEWS from "../view/static/VIEWS";
     import CreationController from "./CreationController.svelte";
     import OtherSettings from "./OtherSettings.svelte";
-    import VIEWPORT_TABS from "../../data/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS";
 
     let engine
     let store

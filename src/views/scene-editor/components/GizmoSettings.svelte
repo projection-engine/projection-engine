@@ -1,5 +1,5 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../data/TRANSFORMATION_TYPE"
+    import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
 
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";

@@ -1,12 +1,12 @@
 import DirectionalLightComponent from "../../../../public/engine/templates/components/DirectionalLightComponent";
 import PointLightComponent from "../../../../public/engine/templates/components/PointLightComponent";
-import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
+import ActionHistoryAPI from "../../../lib/ActionHistoryAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import LightsAPI from "../../../../public/engine/api/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../public/engine/api/CameraAPI";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
-import ACTION_HISTORY_TARGETS from "../../../data/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
 
 export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
     if (currentComponentValue[1] instanceof DirectionalLightComponent || currentComponentValue[1] instanceof PointLightComponent) {

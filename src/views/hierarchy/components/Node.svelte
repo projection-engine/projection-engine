@@ -4,7 +4,7 @@
     import DraggableEntity from "./Draggable.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import EntityConstructor from "../../../libs/EntityConstructor";
+    import EntityConstructor from "../../../lib/EntityConstructor";
 
     export let depth = undefined
     export let nodeRef = undefined

@@ -1,11 +1,11 @@
 <script>
-    import RENDER_TARGET from "../data/RENDER_TARGET"
+    import RENDER_TARGET from "../static/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "../views/viewport/utils/update-renderer";
     import EngineStore from "../stores/EngineStore";
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
-    import AssetAPI from "../libs/AssetAPI";
+    import AssetAPI from "../lib/AssetAPI";
     import initializer from "../../public/engine/editor-environment/initializer";
     import VisualsStore from "../stores/VisualsStore";
     import Engine from "../../public/engine/Engine";

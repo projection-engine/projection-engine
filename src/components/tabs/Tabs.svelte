@@ -1,6 +1,6 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import KEYS from "../../data/KEYS";
+    import KEYS from "../../static/KEYS";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
     import {onDestroy, onMount} from "svelte";
 

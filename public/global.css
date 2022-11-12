@@ -234,8 +234,7 @@ a {
 fieldset {
     width: 100%;
     border: none;
-    display: grid;
-    gap: 4px;
+    display: grid;    gap: 4px;
     padding: 4px;
     border-radius: 3px;
     background: var(--pj-background-secondary);
@@ -346,4 +345,36 @@ pre[data-pre="-"] {
     width: 13px;
     height: 13px;
     border-radius: 50%;
+}
+
+
+
+.tab-button.shared {
+    width: 100%;
+    min-width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+.tab-button[data-highlight="-"]{
+    background: var(--pj-background-primary) !important;
+    color: var(--pj-accent-color) !important;
+}
+
+.tabs.shared {
+    height: 100%;
+
+    display: grid;
+    align-content: flex-start;
+    justify-content: center;
+    gap: 2px;
+
+    overflow-x: hidden;
+    min-width: 25px;
+    width: 25px;
+    overflow-y: auto;
+
+
 }

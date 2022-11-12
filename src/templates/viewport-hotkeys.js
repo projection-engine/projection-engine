@@ -1,19 +1,19 @@
 import EngineStore from "../stores/EngineStore";
-import ViewportActions from "../libs/ViewportActions";
+import ViewportActions from "../lib/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import GIZMOS from "../data/GIZMOS";
+import GIZMOS from "../static/GIZMOS";
 import SelectionStore from "../stores/SelectionStore";
-import ActionHistoryAPI from "../libs/ActionHistoryAPI";
+import ActionHistoryAPI from "../lib/ActionHistoryAPI";
 import QueryAPI from "../../public/engine/api/utils/QueryAPI";
 
 import selectEntityHierarchy from "./utils/select-entity-hierarchy";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import snap from "./utils/snap";
-import TRANSFORMATION_TYPE from "../data/TRANSFORMATION_TYPE";
-import EntityConstructor from "../libs/EntityConstructor";
+import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE";
+import EntityConstructor from "../lib/EntityConstructor";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";
-import LevelController from "../libs/LevelController";
+import LevelController from "../lib/LevelController";
 import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
 import Engine from "../../public/engine/Engine";
 import LOCALIZATION_EN from "./LOCALIZATION_EN";

@@ -1,5 +1,5 @@
-import VIEWS from "../data/VIEWS";
-import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
+import VIEWS from "../static/VIEWS";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 
 export default function getViewIcon(view) {
     switch (view) {
@@ -21,5 +21,7 @@ export default function getViewIcon(view) {
             return "settings"
         case VIEWS.UI:
             return "widgets"
+        case VIEWS.METRICS:
+            return "bar_chart"
     }
 }

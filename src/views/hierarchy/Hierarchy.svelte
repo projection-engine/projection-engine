@@ -8,13 +8,13 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeysController from "../../libs/HotKeysController";
+    import HotKeysController from "../../lib/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../components/drag-drop/drag-drop";
-    import HierarchyController from "../../libs/HierarchyController";
+    import HierarchyController from "../../lib/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import VIEWS from "../../components/view/data/VIEWS";
+    import VIEWS from "../../components/view/static/VIEWS";
     import Engine from "../../../public/engine/Engine";
     import handleDrop from "./utils/handle-drop";
 

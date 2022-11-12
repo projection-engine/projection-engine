@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Header from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
@@ -10,7 +10,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "shared-resources/frontend/components/create-portal";
-    import VIEWS from "../../components/view/data/VIEWS";
+    import VIEWS from "../../components/view/static/VIEWS";
 
 
     export let switchView = undefined
@@ -75,63 +75,59 @@
     $: objectOpen != null ? portal.open() : portal.close()
 
 </script>
-<Header
-        currentView={VIEWS.CONSOLE}
-        orientation={orientation}
-        switchView={switchView}
-        title={Localization.CONSOLE}
-        icon={"terminal"}
->
-    <button on:click={() => ConsoleAPI.clear()} class="button">
-        <Icon>
-            clear_all
-        </Icon>
-        {Localization.CLEAR}
-    </button>
-    <div data-vertdivider="-"></div>
-    <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
-        {#if clearOnPlay}
+<ViewHeader>
+    <div data-inline="-" style="width: 100%; border-bottom: var(--pj-border-primary) 1px solid; height: 100%">
+        <button on:click={() => ConsoleAPI.clear()} class="button">
             <Icon>
-                check
+                clear_all
             </Icon>
-        {/if}
-        {Localization.TOGGLE_CLEAR_ON_PLAY}
-    </button>
-    <div class="metadata">
-        <Dropdown>
-            <button slot="button" style="border: none">
-                {Localization.VIEW}
-                <ToolTip content={Localization.VIEW}/>
-            </button>
+            {Localization.CLEAR}
+        </button>
+        <div data-vertdivider="-"></div>
+        <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
+            {#if clearOnPlay}
+                <Icon>
+                    check
+                </Icon>
+            {/if}
+            {Localization.TOGGLE_CLEAR_ON_PLAY}
+        </button>
+        <div class="metadata">
+            <Dropdown>
+                <button slot="button" style="border: none">
+                    {Localization.VIEW}
+                    <ToolTip content={Localization.VIEW}/>
+                </button>
 
-            <button on:click={() => showErrors = !showErrors}>
-                {#if showErrors}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.ERRORS}
+                <button on:click={() => showErrors = !showErrors}>
+                    {#if showErrors}
+                        <Icon>
+                            check
+                        </Icon>
+                    {/if}
+                    {Localization.ERRORS}
 
-            </button>
-            <button on:click={() => showWarnings = !showWarnings}>
-                {#if showWarnings}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.WARNINGS}
-            </button>
-            <button on:click={() => showLogs = !showLogs}>
-                {#if showLogs}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.LOGS}
-            </button>
-        </Dropdown>
+                </button>
+                <button on:click={() => showWarnings = !showWarnings}>
+                    {#if showWarnings}
+                        <Icon>
+                            check
+                        </Icon>
+                    {/if}
+                    {Localization.WARNINGS}
+                </button>
+                <button on:click={() => showLogs = !showLogs}>
+                    {#if showLogs}
+                        <Icon>
+                            check
+                        </Icon>
+                    {/if}
+                    {Localization.LOGS}
+                </button>
+            </Dropdown>
+        </div>
     </div>
-</Header>
+</ViewHeader>
 
 <div class="wrapper" bind:this={ref}>
     <VirtualList items={toRender} let:item>

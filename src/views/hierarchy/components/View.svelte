@@ -4,7 +4,7 @@
     import Branch from "./Node.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
-    import HierarchyController from "../../../libs/HierarchyController";
+    import HierarchyController from "../../../lib/HierarchyController";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";

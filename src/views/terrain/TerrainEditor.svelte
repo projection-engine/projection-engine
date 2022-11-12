@@ -1,13 +1,13 @@
 <script>
     import CameraBar from "../../components/CameraGizmo.svelte";
-    import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import RegistryAPI from "../../libs/RegistryAPI";
-    import FilesAPI from "../../libs/FilesAPI";
+    import RegistryAPI from "../../lib/RegistryAPI";
+    import FilesAPI from "../../lib/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import Header from "./Header.svelte";
     import SettingsStore from "../../stores/SettingsStore";

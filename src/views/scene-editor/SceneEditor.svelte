@@ -1,12 +1,12 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../data/RENDER_TARGET";
+    import RENDER_TARGET from "../../static/RENDER_TARGET";
     import selectionQueryWorker from "./utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
     import CameraGizmo from "../../components/CameraGizmo.svelte";
-    import GIZMOS from "../../data/GIZMOS";
+    import GIZMOS from "../../static/GIZMOS";
     import onViewportClick from "../viewport/utils/on-viewport-click";
-    import Loader from "../../libs/loader/Loader";
+    import Loader from "../../lib/loader/Loader";
     import drawIconsToBuffer from "../viewport/utils/draw-icons-to-buffer";
     import GizmoSystem from "../../../public/engine/editor-environment/services/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";
@@ -25,7 +25,7 @@
     import ConversionAPI from "../../../public/engine/api/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
     import GPU from "../../../public/engine/GPU";
-    import EntityStateController from "../../libs/EntityStateController";
+    import EntityStateController from "../../lib/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";

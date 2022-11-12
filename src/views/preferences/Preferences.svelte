@@ -11,7 +11,6 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import TABS from "./TABS";
-    import "../../css/shared.css"
 
     let settings
     let visuals

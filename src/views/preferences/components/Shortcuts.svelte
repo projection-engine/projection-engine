@@ -1,7 +1,7 @@
 <script>
     import Accordion from "../../../components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
-    import SETTINGS from "../../../data/SETTINGS";
+    import SETTINGS from "../../../static/SETTINGS";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
 

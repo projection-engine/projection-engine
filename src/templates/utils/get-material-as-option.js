@@ -1,9 +1,9 @@
-import RegistryAPI from "../../libs/RegistryAPI";
-import FilesAPI from "../../libs/FilesAPI";
+import RegistryAPI from "../../lib/RegistryAPI";
+import FilesAPI from "../../lib/FilesAPI";
 import FilesStore from "../../stores/FilesStore";
 import resolveFileName from "./resolve-file-name";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import AssetAPI from "../../libs/AssetAPI";
+import AssetAPI from "../../lib/AssetAPI";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default function getMaterialAsOption(m, currentDirectory){

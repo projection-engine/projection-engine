@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import KEYS from "../../../../data/KEYS";
+    import KEYS from "../../../../static/KEYS";
 
 
     export let initial

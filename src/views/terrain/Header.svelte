@@ -3,7 +3,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import TERRAIN_TOOLS from "../../data/TERRAIN_TOOLS";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../components/selector/Selector.svelte";
     import ShadingOption from "../../components/ShadingOption.svelte";

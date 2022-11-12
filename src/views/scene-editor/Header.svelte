@@ -6,7 +6,7 @@
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
 
-    import EntityStateController from "../../libs/EntityStateController";
+    import EntityStateController from "../../lib/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";

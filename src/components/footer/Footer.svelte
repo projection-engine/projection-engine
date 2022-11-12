@@ -1,10 +1,10 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import HotKeysController from "../../libs/HotKeysController";
+    import HotKeysController from "../../lib/HotKeysController";
     import Localization from "../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import ErrorLoggerAPI from "../../libs/ErrorLoggerAPI";
+    import ErrorLoggerAPI from "../../lib/ErrorLoggerAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import FrameMetadata from "./components/FrameMetadata.svelte";

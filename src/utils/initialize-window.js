@@ -1,11 +1,11 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "../libs/FilesAPI";
-import ErrorLoggerAPI from "../libs/ErrorLoggerAPI";
-import LevelController from "../libs/LevelController";
-import ActionHistoryAPI from "../libs/ActionHistoryAPI";
-import ViewportActions from "../libs/ViewportActions";
+import FilesAPI from "../lib/FilesAPI";
+import ErrorLoggerAPI from "../lib/ErrorLoggerAPI";
+import LevelController from "../lib/LevelController";
+import ActionHistoryAPI from "../lib/ActionHistoryAPI";
+import ViewportActions from "../lib/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import ROUTES from "../data/ROUTES";
+import ROUTES from "../static/ROUTES";
 import VisualsStore from "../stores/VisualsStore";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

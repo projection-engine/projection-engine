@@ -8,11 +8,11 @@
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
     import Entity from "../../../public/engine/instances/Entity";
     import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
-    import VIEWS from "../../components/view/data/VIEWS";
-    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
+    import VIEWS from "../../components/view/static/VIEWS";
+    import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
-    import ACTION_HISTORY_TARGETS from "../../data/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
     export let switchView = undefined
     export let orientation = undefined

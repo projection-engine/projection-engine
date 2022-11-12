@@ -1,4 +1,4 @@
-import VIEWS from "../data/VIEWS"
+import VIEWS from "../static/VIEWS"
 
 export default function addTab(tabs, setTabs, groupIndex) {
     const clone  = [...tabs]

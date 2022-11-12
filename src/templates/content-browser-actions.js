@@ -7,7 +7,7 @@ import importFile from "../utils/import-file";
 import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import RegistryAPI from "../libs/RegistryAPI";
+import RegistryAPI from "../lib/RegistryAPI";
 
 const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {

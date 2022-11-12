@@ -1,4 +1,4 @@
-import GIZMOS from "../../../data/GIZMOS";
+import GIZMOS from "../../../static/GIZMOS";
 import Engine from "../../../../public/engine/Engine";
 import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
 

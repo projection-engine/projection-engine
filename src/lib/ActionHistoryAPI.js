@@ -3,7 +3,7 @@ import {v4} from "uuid";
 import UndoRedoAPI from "./UndoRedoAPI";
 import EntityAPI from "../../public/engine/api/EntityAPI";
 import Engine from "../../public/engine/Engine";
-import ACTION_HISTORY_TARGETS from "../data/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
 import serializeStructure from "../../public/engine/utils/serialize-structure";

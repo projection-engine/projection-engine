@@ -1,16 +1,16 @@
 <script>
     import {onMount} from "svelte";
-    import ROUTES from "./data/ROUTES";
+    import ROUTES from "./static/ROUTES";
     import Editor from "./Editor.svelte";
     import InitializeWindow from "./utils/initialize-window";
-    import LevelController from "./libs/LevelController";
+    import LevelController from "./lib/LevelController";
     import About from "shared-resources/frontend/components/About.svelte";
     import logo from "shared-resources/APP_LOGO.js"
     import PROJECT_PATH from "shared-resources/PROJECT_PATH";
     import Canvas from "./components/Canvas.svelte";
-    import RENDER_TARGET from "./data/RENDER_TARGET";
+    import RENDER_TARGET from "./static/RENDER_TARGET";
     import Localization from "./templates/LOCALIZATION_EN";
-    import HotKeysController from "./libs/HotKeysController";
+    import HotKeysController from "./lib/HotKeysController";
 
     const {ipcRenderer} = window.require("electron")
 

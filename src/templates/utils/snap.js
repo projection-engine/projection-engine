@@ -1,7 +1,7 @@
 import SelectionStore from "../../stores/SelectionStore";
 import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
 import SettingsStore from "../../stores/SettingsStore";
-import GIZMOS from "../../data/GIZMOS";
+import GIZMOS from "../../static/GIZMOS";
 import GizmoSystem from "../../../public/engine/editor-environment/services/GizmoSystem";
 
 export default function snap(grid) {

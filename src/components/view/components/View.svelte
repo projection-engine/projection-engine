@@ -3,13 +3,14 @@
     import Hierarchy from "../../../views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../views/content-browser/ContentBrowser.svelte";
     import ComponentEditor from "../../../views/inspector/Inspector.svelte";
-    import VIEWS from "../data/VIEWS";
+    import VIEWS from "../static/VIEWS";
     import ShaderEditor from "../../../views/shader-editor/ShaderEditor.svelte";
     import Preferences from "../../../views/preferences/Preferences.svelte";
     import UILayout from "../../../views/ui/UIEditor.svelte";
-    import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
     import EditorLayout from "../../../views/scene-editor/SceneEditor.svelte";
     import TerrainLayout from "../../../views/terrain/TerrainEditor.svelte";
+    import Metrics from "../../../views/metrics/Metrics.svelte";
 
     export let styles
     export let extendView
@@ -41,6 +42,8 @@
                 return TerrainLayout
             case VIEWPORT_TABS.EDITOR:
                 return EditorLayout
+            case VIEWS.METRICS:
+                return Metrics
             default:
                 return null
         }

@@ -1,12 +1,12 @@
 <script>
-    import GIZMOS from "../../../data/GIZMOS"
+    import GIZMOS from "../../../static/GIZMOS"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import "../../viewport/css/styles.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import CameraAPI from "../../../../public/engine/api/CameraAPI";
-    import ViewportActions from "../../../libs/ViewportActions";
+    import ViewportActions from "../../../lib/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
     import Engine from "../../../../public/engine/Engine";

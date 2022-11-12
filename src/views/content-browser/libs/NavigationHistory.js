@@ -1,4 +1,4 @@
-import UndoRedoAPI from "../../../libs/UndoRedoAPI";
+import UndoRedoAPI from "../../../lib/UndoRedoAPI";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default class NavigationHistory extends UndoRedoAPI {

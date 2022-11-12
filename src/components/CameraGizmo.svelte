@@ -1,6 +1,6 @@
 <script>
 
-    import CAMERA_GIZMO from "../data/CAMERA_GIZMO"
+    import CAMERA_GIZMO from "../static/CAMERA_GIZMO"
     import {onMount} from "svelte";
     import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
     import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";

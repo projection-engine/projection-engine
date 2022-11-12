@@ -1,5 +1,5 @@
 <script>
-    import VIEWS from "../view/data/VIEWS";
+    import VIEWS from "../view/static/VIEWS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
 

@@ -8,8 +8,8 @@
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import ActionHistoryAPI from "../../../../libs/ActionHistoryAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../data/ACTION_HISTORY_TARGETS";
+    import ActionHistoryAPI from "../../../../lib/ActionHistoryAPI";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
 
     const nativeComponents = getNativeComponents()
 

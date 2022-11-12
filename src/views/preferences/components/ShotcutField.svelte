@@ -1,10 +1,10 @@
 <script>
 
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import SETTINGS from "../../../data/SETTINGS";
+    import SETTINGS from "../../../static/SETTINGS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import KEYS from "../../../data/KEYS";
+    import KEYS from "../../../static/KEYS";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let shortcut = []

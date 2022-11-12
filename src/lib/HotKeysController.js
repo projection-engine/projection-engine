@@ -1,4 +1,4 @@
-import KEYS from "../data/KEYS";
+import KEYS from "../static/KEYS";
 import Engine from "../../public/engine/Engine";
 import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
 

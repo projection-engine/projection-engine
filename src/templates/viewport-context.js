@@ -1,6 +1,6 @@
 import SelectionStore from "../stores/SelectionStore";
 import viewportHotkeys from "./viewport-hotkeys";
-import EntityConstructor from "../libs/EntityConstructor";
+import EntityConstructor from "../lib/EntityConstructor";
 import QueryAPI from "../../public/engine/api/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
 import {vec3, vec4} from "gl-matrix";

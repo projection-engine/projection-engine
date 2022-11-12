@@ -1,6 +1,6 @@
 <script>
     import {onDestroy} from "svelte";
-    import GIZMOS from "../../../data/GIZMOS";
+    import GIZMOS from "../../../static/GIZMOS";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import Engine from "../../../../public/engine/Engine";

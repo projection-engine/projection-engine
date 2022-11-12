@@ -1,6 +1,6 @@
 import GPU from "../../../../public/engine/GPU";
 import MaterialAPI from "../../../../public/engine/api/rendering/MaterialAPI";
-import AssetAPI from "../../../libs/AssetAPI";
+import AssetAPI from "../../../lib/AssetAPI";
 import GPUAPI from "../../../../public/engine/api/GPUAPI";
 
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {

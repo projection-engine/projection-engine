@@ -1,7 +1,7 @@
 import FilesStore from "../../../stores/FilesStore";
 import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
-import Loader from "../../../libs/loader/Loader";
+import Loader from "../../../lib/loader/Loader";
 import EngineStore from "../../../stores/EngineStore";
 
 export default async function handleComponentDrop(entity, data) {

@@ -5,11 +5,11 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
-    import EntityNameController from "../../../libs/EntityNameController";
-    import KEYS from "../../../data/KEYS";
+    import EntityNameController from "../../../lib/EntityNameController";
+    import KEYS from "../../../static/KEYS";
     import handleDrop from "../utils/handle-drop";
-    import ActionHistoryAPI from "../../../libs/ActionHistoryAPI";
-    import ACTION_HISTORY_TARGETS from "../../../data/ACTION_HISTORY_TARGETS";
+    import ActionHistoryAPI from "../../../lib/ActionHistoryAPI";
+    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../public/engine/Engine";
 

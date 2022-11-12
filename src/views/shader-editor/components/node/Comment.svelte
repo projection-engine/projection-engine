@@ -1,5 +1,5 @@
 <script>
-    import KEYS from "../../../../data/KEYS";
+    import KEYS from "../../../../static/KEYS";
     import dragNode from "../../utils/drag-node";
     import SelectionStore from "../../../../stores/SelectionStore";
 

@@ -1,7 +1,7 @@
 <script>
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
-    import ActionHistoryAPI from "../../../../libs/ActionHistoryAPI";
+    import ActionHistoryAPI from "../../../../lib/ActionHistoryAPI";
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
@@ -11,9 +11,9 @@
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
     import updateEntityComponent from "../../utils/update-entity-component";
-    import "../../../../css/shared.css"
+
     import getEntityTabs from "../../utils/get-entity-tabs";
-    import ACTION_HISTORY_TARGETS from "../../../../data/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
 
     export let entity
 

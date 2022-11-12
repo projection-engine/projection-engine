@@ -1,6 +1,6 @@
 import readFile from "shared-resources/backend/utils/read-file";
 import COMPONENTS from "../../engine/static/COMPONENTS.js";
-import CHANNELS from "../../../src/data/CHANNELS";
+import CHANNELS from "../../../src/static/CHANNELS";
 
 const fs = require("fs");
 const DEFAULT = {entities: []}

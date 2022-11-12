@@ -1,4 +1,4 @@
-import VIEWPORT_TABS from "../../../data/VIEWPORT_TABS";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 import Engine from "../../../../public/engine/Engine";
 import CameraTracker from "../../../../public/engine/editor-environment/libs/CameraTracker";
 

@@ -2,16 +2,16 @@ import {v4} from "uuid"
 import EngineStore from "../EngineStore";
 import removeHierarchy from "../utils/remove-hierarchy";
 
-import EntityNameController from "../../libs/EntityNameController";
+import EntityNameController from "../../lib/EntityNameController";
 import AXIS from "../../../public/engine/editor-environment/data/AXIS";
-import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
+import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
-import HierarchyController from "../../libs/HierarchyController";
+import HierarchyController from "../../lib/HierarchyController";
 import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
 import getPickerId from "../../../public/engine/utils/get-picker-id";
 import Engine from "../../../public/engine/Engine";
 import EntityAPI from "../../../public/engine/api/EntityAPI";
-import ACTION_HISTORY_TARGETS from "../../data/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",

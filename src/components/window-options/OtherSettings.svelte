@@ -3,8 +3,8 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import LevelController from "../../libs/LevelController";
-    import VIEWS from "../view/data/VIEWS";
+    import LevelController from "../../lib/LevelController";
+    import VIEWS from "../view/static/VIEWS";
     import TabsStore from "../../stores/TabsStore";
     import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
@@ -17,7 +17,7 @@
     import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
     import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
     import UIAPI from "../../../public/engine/api/UIAPI";
-    import ActionHistoryAPI from "../../libs/ActionHistoryAPI";
+    import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
 
     export let store
     export let settings

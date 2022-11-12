@@ -8,8 +8,8 @@
     import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
 
     import Selector from "../../components/selector/Selector.svelte";
-    import RegistryAPI from "../../libs/RegistryAPI";
-    import FilesAPI from "../../libs/FilesAPI";
+    import RegistryAPI from "../../lib/RegistryAPI";
+    import FilesAPI from "../../lib/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import GPUAPI from "../../../public/engine/api/GPUAPI";
 

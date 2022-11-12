@@ -1,10 +1,10 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import LevelController from "../../../libs/LevelController";
+import LevelController from "../../../lib/LevelController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import Loader from "../../../libs/loader/Loader";
+import Loader from "../../../lib/loader/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
-import VIEWS from "../../../components/view/data/VIEWS";
+import VIEWS from "../../../components/view/static/VIEWS";
 import ShaderEditorController from "../../shader-editor/ShaderEditorController";
 
 const {shell} = window.require("electron")

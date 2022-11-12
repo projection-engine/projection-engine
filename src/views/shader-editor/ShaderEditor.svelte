@@ -3,7 +3,7 @@
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
     import SELECTION_TYPES from "./data/SELECT_ACTIONS"
-    import FilesAPI from "../../libs/FilesAPI"
+    import FilesAPI from "../../lib/FilesAPI"
 
     import Localization from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
@@ -22,7 +22,7 @@
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "../../../public/engine/editor-environment/libs/material-compiler/material-compiler";
     import {v4} from "uuid";
-    import VIEWS from "../../components/view/data/VIEWS";
+    import VIEWS from "../../components/view/static/VIEWS";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
     export let switchView
