@@ -3,7 +3,7 @@
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import GridSystem from "../../../../public/engine/editor-environment/services/GridSystem";
+    import GridSystem from "../../../../public/engine/editor-environment/runtime/GridSystem";
 
     export let settings
 

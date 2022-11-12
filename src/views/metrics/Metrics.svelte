@@ -4,8 +4,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
-    import BenchmarkAPI from "../../../public/engine/api/BenchmarkAPI";
+    import ConsoleAPI from "../../../public/engine/lib/utils/ConsoleAPI";
+    import BenchmarkAPI from "../../../public/engine/lib/utils/BenchmarkAPI";
     import Engine from "../../../public/engine/Engine";
     import Range from "shared-resources/frontend/components/range/Range.svelte"
     import {v4} from "uuid";

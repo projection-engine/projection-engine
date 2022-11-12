@@ -1,7 +1,7 @@
 import GPU from "../../../../public/engine/GPU";
-import MaterialAPI from "../../../../public/engine/api/rendering/MaterialAPI";
+import MaterialAPI from "../../../../public/engine/lib/rendering/MaterialAPI";
 import AssetAPI from "../../../lib/AssetAPI";
-import GPUAPI from "../../../../public/engine/api/GPUAPI";
+import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {
     let valid = false

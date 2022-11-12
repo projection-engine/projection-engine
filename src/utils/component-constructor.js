@@ -1,5 +1,5 @@
 import SelectionStore from "../stores/SelectionStore";
-import ScriptsAPI from "../../public/engine/api/ScriptsAPI";
+import ScriptsAPI from "../../public/engine/lib/rendering/ScriptsAPI";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     await ScriptsAPI.linkScript(entity, scriptID)

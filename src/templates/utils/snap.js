@@ -1,8 +1,8 @@
 import SelectionStore from "../../stores/SelectionStore";
-import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
+import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import GIZMOS from "../../static/GIZMOS";
-import GizmoSystem from "../../../public/engine/editor-environment/services/GizmoSystem";
+import GizmoSystem from "../../../public/engine/editor-environment/runtime/GizmoSystem";
 
 export default function snap(grid) {
     const selected = SelectionStore.engineSelected

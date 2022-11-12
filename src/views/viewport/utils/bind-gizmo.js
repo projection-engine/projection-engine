@@ -1,15 +1,12 @@
 import GIZMOS from "../../../static/GIZMOS";
 import Engine from "../../../../public/engine/Engine";
-import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
+import GizmoSystem from "../../../../public/engine/editor-environment/runtime/GizmoSystem";
+import Wrapper from "../../../../public/engine/editor-environment/Wrapper";
 
 export default function bindGizmo(selected, settings) {
-    const entities = Engine.entitiesMap
-    GizmoSystem.selectedEntities = selected
-        .map(s => entities.get(s))
-
     GizmoSystem.gizmoType = settings.gizmoSelection
     GizmoSystem.targetGizmoKey = settings.gizmo
-    if (GizmoSystem.selectedEntities.length > 0) {
+    if (Wrapper.selected.length > 0) {
         switch (settings.gizmo) {
             case GIZMOS.TRANSLATION:
                 GizmoSystem.targetGizmo = GizmoSystem.translationGizmo

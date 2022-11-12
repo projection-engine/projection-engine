@@ -1,4 +1,4 @@
-import EntityAPI from "../../../../public/engine/api/EntityAPI";
+import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import EngineStore from "../../../stores/EngineStore";
 import {v4} from "uuid";

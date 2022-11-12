@@ -2,8 +2,8 @@
 
     import CAMERA_GIZMO from "../static/CAMERA_GIZMO"
     import {onMount} from "svelte";
-    import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
-    import CAMERA_ROTATIONS from "../../public/engine/editor-environment/data/CAMERA_ROTATIONS";
+    import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
+    import CAMERA_ROTATIONS from "../../public/engine/editor-environment/static/CAMERA_ROTATIONS";
     import focusOnCamera from "../utils/focus-on-camera";
 
     let ref

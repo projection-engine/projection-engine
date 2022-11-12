@@ -10,13 +10,13 @@
     import {v4} from "uuid";
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Notification from "./Notification.svelte";
-    import ConsoleAPI from "../../../public/engine/api/ConsoleAPI";
+    import ConsoleAPI from "../../../public/engine/lib/utils/ConsoleAPI";
     import Localization from "../../templates/LOCALIZATION_EN";
     import openBottomView from "../../utils/open-bottom-view";
-    import DiffuseProbePass from "../../../public/engine/runtime/renderers/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/runtime/renderers/SpecularProbePass";
-    import ScriptsAPI from "../../../public/engine/api/ScriptsAPI";
-    import UIAPI from "../../../public/engine/api/UIAPI";
+    import DiffuseProbePass from "../../../public/engine/runtime/rendering/DiffuseProbePass";
+    import SpecularProbePass from "../../../public/engine/runtime/rendering/SpecularProbePass";
+    import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
+    import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
     import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
 
     export let store

@@ -1,6 +1,6 @@
 import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 import Engine from "../../../../public/engine/Engine";
-import CameraTracker from "../../../../public/engine/editor-environment/libs/CameraTracker";
+import CameraTracker from "../../../../public/engine/editor-environment/lib/CameraTracker";
 
 
 export default function updateViewport(engine, currentView) {

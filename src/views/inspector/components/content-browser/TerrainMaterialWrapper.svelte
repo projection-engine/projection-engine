@@ -8,7 +8,7 @@
     import TERRAIN_MATERIAL_UNIFORMS from "../../../../../public/engine/static/templates/TERRAIN_MATERIAL_UNIFORMS";
     import TERRAIN_MATERIAL from "../../../../../public/engine/static/TERRAIN_MATERIAL";
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
-    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
+    import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
 
 
     export let item

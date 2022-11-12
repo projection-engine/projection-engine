@@ -8,7 +8,7 @@
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/RegistryAPI";
     import FilesAPI from "../../../../lib/FilesAPI";
-    import UIAPI from "../../../../../public/engine/api/UIAPI";
+    import UIAPI from "../../../../../public/engine/lib/rendering/UIAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import Engine from "../../../../../public/engine/Engine";
 

@@ -20,7 +20,7 @@
     import ShaderEditorController from "./ShaderEditorController";
     import Selector from "../../components/selector/Selector.svelte";
     import ViewStateController from "../../components/view/libs/ViewStateController";
-    import materialCompiler from "../../../public/engine/editor-environment/libs/material-compiler/material-compiler";
+    import materialCompiler from "../../../public/engine/editor-environment/lib/material-compiler/material-compiler";
     import {v4} from "uuid";
     import VIEWS from "../../components/view/static/VIEWS";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

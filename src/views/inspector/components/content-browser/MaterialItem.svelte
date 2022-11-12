@@ -6,7 +6,7 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
 
-    import MaterialAPI from "../../../../../public/engine/api/rendering/MaterialAPI";
+    import MaterialAPI from "../../../../../public/engine/lib/rendering/MaterialAPI";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesAPI from "../../../../lib/FilesAPI";
@@ -14,7 +14,7 @@
     import compareObjects from "../../utils/compare-objects";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
+    import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
 
 
     export let data

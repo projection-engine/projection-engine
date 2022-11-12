@@ -8,20 +8,20 @@ import EngineStore from "../../stores/EngineStore";
 import Localization from "../../templates/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
-import PickingAPI from "../../../public/engine/api/utils/PickingAPI";
-import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
+import PickingAPI from "../../../public/engine/lib/utils/PickingAPI";
+import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
 import ActionHistoryAPI from "../ActionHistoryAPI";
 import EntityConstructor from "../EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import GPU from "../../../public/engine/GPU";
 import Entity from "../../../public/engine/instances/Entity";
-import GPUAPI from "../../../public/engine/api/GPUAPI";
+import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
-import FileSystemAPI from "../../../public/engine/api/FileSystemAPI";
+import FileSystemAPI from "../../../public/engine/lib/utils/FileSystemAPI";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../../public/engine/api/CameraAPI";
+import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 let translationCache = vec3.create()

@@ -2,9 +2,9 @@ import DirectionalLightComponent from "../../../../public/engine/templates/compo
 import PointLightComponent from "../../../../public/engine/templates/components/PointLightComponent";
 import ActionHistoryAPI from "../../../lib/ActionHistoryAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import LightsAPI from "../../../../public/engine/api/LightsAPI";
+import LightsAPI from "../../../../public/engine/lib/rendering/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
-import CameraAPI from "../../../../public/engine/api/CameraAPI";
+import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
 

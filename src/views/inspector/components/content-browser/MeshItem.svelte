@@ -2,10 +2,10 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/AssetAPI";
     import GPU from "../../../../../public/engine/GPU";
-    import PrimitiveProcessor from "../../../../../public/engine/api/PrimitiveProcessor";
+    import PrimitiveProcessor from "../../../../../public/engine/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
+    import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
 
     export let item
     let wasUpdated = false

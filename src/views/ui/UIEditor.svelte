@@ -2,10 +2,10 @@
     import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../static/GIZMOS";
-    import UIAPI from "../../../public/engine/api/UIAPI";
+    import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import {v4} from "uuid";
-    import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
+    import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"

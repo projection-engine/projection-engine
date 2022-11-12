@@ -20,12 +20,12 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../templates/LOCALIZATION_EN";
-import CameraAPI from "../../public/engine/api/CameraAPI";
+import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
 import TabsStore from "../stores/TabsStore";
-import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
-import GPUAPI from "../../public/engine/api/GPUAPI";
+import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
+import GPUAPI from "../../public/engine/lib/rendering/GPUAPI";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
-import EntityAPI from "../../public/engine/api/EntityAPI";
+import EntityAPI from "../../public/engine/lib/utils/EntityAPI";
 
 const {ipcRenderer} = window.require("electron")
 

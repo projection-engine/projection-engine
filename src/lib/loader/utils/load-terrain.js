@@ -4,7 +4,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/template
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
 import Entity from "../../../../public/engine/instances/Entity";
-import GPUAPI from "../../../../public/engine/api/GPUAPI";
+import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")

@@ -1,19 +1,21 @@
 import bindGizmo from "./bind-gizmo";
 import Engine from "../../../../public/engine/Engine";
-import CameraTracker from "../../../../public/engine/editor-environment/libs/CameraTracker";
-import Wrapper from "../../../../public/engine/editor-environment/services/Wrapper";
-import CameraAPI from "../../../../public/engine/api/CameraAPI";
+import CameraTracker from "../../../../public/engine/editor-environment/lib/CameraTracker";
+import Wrapper from "../../../../public/engine/editor-environment/Wrapper";
+import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import DirectionalShadows from "../../../../public/engine/runtime/occlusion/DirectionalShadows";
-import GridSystem from "../../../../public/engine/editor-environment/services/GridSystem";
-import GizmoSystem from "../../../../public/engine/editor-environment/services/GizmoSystem";
+import GridSystem from "../../../../public/engine/editor-environment/runtime/GridSystem";
+import GizmoSystem from "../../../../public/engine/editor-environment/runtime/GizmoSystem";
 import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
-import SHADING_MODELS from "../../../../public/engine/editor-environment/data/SHADING_MODELS";
+import SHADING_MODELS from "../../../../public/engine/editor-environment/static/SHADING_MODELS";
+import Loop from "../../../../public/engine/Loop";
 
 
 export default function updateRenderer(selected, engine, settings) {
     const {executingAnimation} = engine
     CameraTracker.initialize(settings)
+    Wrapper.updateSelectionData(selected)
 
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
         CameraAPI.trackingEntity = undefined
@@ -34,11 +36,14 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
         CameraAPI.metadata.fxaa = settings.fxaa
 
-
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
-
     }
+    if (Engine.environment === ENVIRONMENT.DEV )
+        Loop.linkToExecutionPipeline(Wrapper.beforeDrawing, Wrapper.duringDrawing, Wrapper.afterDrawing)
+    else
+        Loop.linkToExecutionPipeline()
+
     GizmoSystem.transformationType = settings.transformationType
     DirectionalShadows.allocateBuffers(settings.shadowAtlasQuantity, settings.shadowMapResolution)
 
@@ -54,11 +59,7 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.metadataBuffer[2] = settings.showGridSubdivision ? 1 : 0
 
     GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
-    Engine.updateParams({
-        ...settings,
-        selected,
-        onWrap: executingAnimation ? null : Wrapper,
-    }, settings.physicsSimulationStep, settings.physicsSubSteps)
+    Engine.updateParams(settings, settings.physicsSimulationStep, settings.physicsSubSteps)
 
     bindGizmo(selected, settings)
 }

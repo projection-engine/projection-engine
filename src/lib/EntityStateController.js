@@ -1,14 +1,14 @@
 import ENVIRONMENT from "../../public/engine/static/ENVIRONMENT";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
 import EngineStore from "../stores/EngineStore";
-import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
-import UIAPI from "../../public/engine/api/UIAPI";
-import PhysicsAPI from "../../public/engine/api/PhysicsAPI";
+import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
+import UIAPI from "../../public/engine/lib/rendering/UIAPI";
+import PhysicsAPI from "../../public/engine/lib/rendering/PhysicsAPI";
 import Engine from "../../public/engine/Engine";
 import serializeStructure from "../../public/engine/utils/serialize-structure";
-import EntityAPI from "../../public/engine/api/EntityAPI";
-import CameraAPI from "../../public/engine/api/CameraAPI";
-import ScriptsAPI from "../../public/engine/api/ScriptsAPI";
+import EntityAPI from "../../public/engine/lib/utils/EntityAPI";
+import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
+import ScriptsAPI from "../../public/engine/lib/rendering/ScriptsAPI";
 
 export default class EntityStateController {
     static #state = []

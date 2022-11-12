@@ -8,7 +8,7 @@
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
+    import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
 
     export let item
     export let data

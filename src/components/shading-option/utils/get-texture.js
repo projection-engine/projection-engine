@@ -1,7 +1,7 @@
-import SHADING_MODELS from "../../../../public/engine/editor-environment/data/SHADING_MODELS";
-import GBuffer from "../../../../public/engine/runtime/renderers/GBuffer";
+import SHADING_MODELS from "../../../../public/engine/editor-environment/static/SHADING_MODELS";
+import GBuffer from "../../../../public/engine/runtime/rendering/GBuffer";
 import AmbientOcclusion from "../../../../public/engine/runtime/occlusion/AmbientOcclusion";
-import GlobalIlluminationPass from "../../../../public/engine/runtime/GlobalIlluminationPass";
+import GlobalIlluminationPass from "../../../../public/engine/runtime/rendering/GlobalIlluminationPass";
 
 export default function getTexture(shadingModel) {
 

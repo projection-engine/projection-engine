@@ -9,7 +9,7 @@
     import TEXTURE_FILTERING from "../../../../../public/engine/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../public/engine/static/texture/TEXTURE_WRAPPING";
 
-    import GPUAPI from "../../../../../public/engine/api/GPUAPI";
+    import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
 
     const {shell} = window.require("electron")
     const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"

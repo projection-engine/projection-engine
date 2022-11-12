@@ -5,7 +5,7 @@ import RegistryAPI from "../lib/RegistryAPI";
 import GPU from "../../public/engine/GPU";
 import {writable} from "svelte/store";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPUAPI from "../../public/engine/api/GPUAPI";
+import GPUAPI from "../../public/engine/lib/rendering/GPUAPI";
 
 const engine = writable(ENGINE);
 

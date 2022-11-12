@@ -1,7 +1,7 @@
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
 import UndoRedoAPI from "./UndoRedoAPI";
-import EntityAPI from "../../public/engine/api/EntityAPI";
+import EntityAPI from "../../public/engine/lib/utils/EntityAPI";
 import Engine from "../../public/engine/Engine";
 import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";

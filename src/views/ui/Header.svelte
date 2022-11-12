@@ -8,7 +8,7 @@
     import Entity from "../../../public/engine/instances/Entity";
     import Engine from "../../../public/engine/Engine";
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";
-    import UIAPI from "../../../public/engine/api/UIAPI";
+    import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
 
     export let isAlreadyOpen
     export let settings

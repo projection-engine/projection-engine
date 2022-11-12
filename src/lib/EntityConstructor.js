@@ -6,8 +6,8 @@ import {vec3, vec4} from "gl-matrix";
 import Localization from "../templates/LOCALIZATION_EN";
 import EngineStore from "../stores/EngineStore";
 import {v4} from "uuid";
-import CameraAPI from "../../public/engine/api/CameraAPI";
-import LightsAPI from "../../public/engine/api/LightsAPI";
+import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
+import LightsAPI from "../../public/engine/lib/rendering/LightsAPI";
 import SettingsStore from "../stores/SettingsStore";
 
 

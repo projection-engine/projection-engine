@@ -3,10 +3,10 @@ import EngineStore from "../stores/EngineStore";
 
 import SelectionStore from "../stores/SelectionStore";
 
-import QueryAPI from "../../public/engine/api/utils/QueryAPI";
+import QueryAPI from "../../public/engine/lib/utils/QueryAPI";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../public/engine/api/CameraAPI";
-import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
+import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
+import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
 import Engine from "../../public/engine/Engine";
 
 

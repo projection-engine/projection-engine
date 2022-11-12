@@ -2,8 +2,8 @@ import EngineStore from "../stores/EngineStore";
 import Engine from "../../public/engine/Engine";
 import SelectionStore from "../stores/SelectionStore";
 import EntityStateController from "../lib/EntityStateController";
-import CameraAPI from "../../public/engine/api/CameraAPI";
-import CameraTracker from "../../public/engine/editor-environment/libs/CameraTracker";
+import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
+import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
 import COMPONENTS from "../../public/engine/static/COMPONENTS";
 import Entity from "../../public/engine/instances/Entity";
 

@@ -3,14 +3,14 @@ import EngineStore from "../EngineStore";
 import removeHierarchy from "../utils/remove-hierarchy";
 
 import EntityNameController from "../../lib/EntityNameController";
-import AXIS from "../../../public/engine/editor-environment/data/AXIS";
+import AXIS from "../../../public/engine/editor-environment/static/AXIS";
 import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
 import SelectionStore from "../SelectionStore";
 import HierarchyController from "../../lib/HierarchyController";
-import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
+import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
 import getPickerId from "../../../public/engine/utils/get-picker-id";
 import Engine from "../../../public/engine/Engine";
-import EntityAPI from "../../../public/engine/api/EntityAPI";
+import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 export const ENTITY_ACTIONS = {

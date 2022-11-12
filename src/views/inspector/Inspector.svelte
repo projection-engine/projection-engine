@@ -7,7 +7,7 @@
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
     import Entity from "../../../public/engine/instances/Entity";
-    import QueryAPI from "../../../public/engine/api/utils/QueryAPI";
+    import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
     import VIEWS from "../../components/view/static/VIEWS";
     import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";

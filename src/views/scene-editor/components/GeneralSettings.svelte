@@ -5,7 +5,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import "../../viewport/css/styles.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import CameraAPI from "../../../../public/engine/api/CameraAPI";
+    import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
     import ViewportActions from "../../../lib/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
