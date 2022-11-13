@@ -23,12 +23,10 @@
     $: {
         FrameComposition.debugFlag = shadingModel
         if (shadingModel !== SHADING_MODELS.DETAIL) {
-            // Engine.previousFrameSampler = GBuffer.albedoSampler
             FrameComposition.workerTexture = getTexture(shadingModel)
             FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
             FrameComposition.updateShader()
         } else {
-            // Engine.previousFrameSampler = Engine.currentFrameFBO.colors[0]
             FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
             FrameComposition.updateShader()
             CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)

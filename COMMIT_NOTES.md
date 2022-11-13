@@ -1,8 +1,2 @@
-- Added scale control to sprite when locked to screen size
-- Fixed screen space GI and reflections having a 1 frame delay relative to camera movement
-- Integrated SSGI and SSR with camera UBO
-- Reworking selected entities data access from editor-side of the engine
-- Camera icons will now respect depth test instead of drawing on top of everything
-- Changed SSGI preview mode to show actual SSGI from scene instead of albedo only based
-- Organizing rendering pipeline injection with new Loop static methods
-- Fixed SSGI stability issues related to ray jitter
+- Fixing SSGI shader
+- Fixed stochastic normals not using actual invViewMatrix
