@@ -8,7 +8,7 @@ export default class GizmoAPI {
     static tooltip
 
     static translateMatrix(entity, keepMatrix) {
-        if (!GizmoSystem.translation)
+        if (!GizmoSystem.mainEntity)
             return
         const matrix = keepMatrix ? entity.matrix : mat4.copy([], entity.matrix)
         GizmoAPI.applyTransformation(matrix, entity._rotationQuat, entity._translation, entity._scaling)

@@ -3,7 +3,6 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
-    import "../../viewport/css/styles.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
     import ViewportActions from "../../../lib/utils/ViewportActions";
@@ -30,10 +29,10 @@
 
 
 <div class="wrapper">
-    <Dropdown buttonStyles={"border-radius: 3px; border: var(--pj-border-primary) 1px solid;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
+    <Dropdown buttonStyles={"border-radius: 25px; height: 25px;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
         <button
                 slot="button"
-                style="border: none; background: transparent"
+                style="background: transparent"
                 class="button viewport"
                 data-highlight={engine.focusedCamera ? "-" : undefined}
         >

@@ -26,6 +26,7 @@ import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 let translationCache = vec3.create()
 let rotationCache = vec4.create()
+
 export default class Loader {
     static async mesh(objLoaded, id) {
         if (!objLoaded)
@@ -53,22 +54,27 @@ export default class Loader {
         vec4.copy(rotationCache, CameraAPI.rotationBuffer)
         try {
             if (file) {
-                const folder = new Entity()
-                folder.name = file.name
+                // file.entities.forEach(v => {
+                //     v.id
+                // })
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
-                    const primitiveRegistry = RegistryAPI.getRegistryEntry(currentEntity.meshID)
-                    if (primitiveRegistry) {
-                        const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
-                        if (!meshData)
-                            continue
-                        const result = await FileSystemAPI.loadMaterial(meshData.material)
-                        if (result)
-                            currentEntity.material = meshData.material
+                    if(currentEntity.meshID) {
+                        const primitiveRegistry = RegistryAPI.getRegistryEntry(currentEntity.meshID)
+                        if (primitiveRegistry) {
+                            const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
+                            if (!meshData)
+                                continue
+                            const result = await FileSystemAPI.loadMaterial(meshData.material)
+                            if (result)
+                                currentEntity.material = meshData.material
 
-                        GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
+                            GPUAPI.allocateMesh(primitiveRegistry.id, meshData)
+                        }
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
+                    entity.id = currentEntity.id
+                    console.log(currentEntity.id)
                     entity.parentCache = currentEntity.parent || root.id
                     EntityConstructor.translateEntity(entity, rotationCache, translationCache)
                     entities.push(entity)

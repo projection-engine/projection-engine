@@ -150,7 +150,10 @@ export default function dispatchRendererEntities({type, payload}) {
             continue
         if (replacedMap[entity.parent?.id] != null)
             entity.parentCache = entity.parent.id
+
+
         const parent = QueryAPI.getEntityByID(entity.parentCache)
+        console.log(entity.parentCache, parent)
         if (parent) {
             entity.parentCache = undefined
             EntityAPI.linkEntities(entity, parent)

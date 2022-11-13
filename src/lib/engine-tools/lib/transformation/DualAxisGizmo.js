@@ -42,7 +42,7 @@ export default class DualAxisGizmo {
 
 
     static drawGizmo() {
-        if (!GizmoSystem.transformationMatrix)
+        if (!GizmoSystem.mainEntity)
             return
         gpu.disable(gpu.CULL_FACE)
         const clicked = GizmoSystem.clickedAxis
@@ -78,7 +78,7 @@ export default class DualAxisGizmo {
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
             isDualAxis: true,
-            translation: GizmoSystem.translation,
+            translation: GizmoSystem.mainEntity.pivotPoint,
             axis: isSurface ? undefined : axis,
             selectedAxis: GizmoSystem.clickedAxis,
             uID,

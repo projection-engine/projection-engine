@@ -89,7 +89,7 @@ export default class GizmoSystem {
     static drawToDepthSampler(mesh, transforms) {
         const FBO = GBuffer.gBuffer
         const data = {
-            translation: GizmoSystem.translation,
+            translation: GizmoSystem.mainEntity.pivotPoint,
             cameraIsOrthographic: CameraAPI.isOrthographic
         }
         gpu.disable(gpu.CULL_FACE)
@@ -106,7 +106,7 @@ export default class GizmoSystem {
 
         GizmoSystem.toBufferShader.bindForUse({
             ...data,
-            transformMatrix: GizmoSystem.transformationMatrix,
+            transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
             uID: getPickerId(1)
         })
         GizmoSystem.screenSpaceMesh.draw()
@@ -124,26 +124,17 @@ export default class GizmoSystem {
         if (!main) {
             GizmoSystem.targetGizmo = undefined
             GizmoSystem.mainEntity = undefined
-            GizmoSystem.transformationMatrix = undefined
-            GizmoSystem.translation = undefined
-        } else if (TransformationPass.hasUpdatedItem || GizmoSystem.mainEntity !== main) {
+
+        } else if (GizmoSystem.mainEntity !== main && GizmoSystem.targetGizmo) {
 
             main.__pivotChanged = true
             GizmoSystem.mainEntity = main
-            GizmoSystem.updatePivot(main)
             GizmoSystem.targetGizmo.transformGizmo()
             GizmoSystem.targetRotation = main._rotationQuat
-            GizmoSystem.transformationMatrix = GizmoAPI.translateMatrix(EMPTY_COMPONENT)
         }
     }
 
-    static updatePivot(m) {
-        if (m.parent) {
-            vec3.add(VEC_CACHE, m.pivotPoint, m.parent._translation)
-            GizmoSystem.translation = VEC_CACHE
-        } else
-            GizmoSystem.translation = m.pivotPoint
-    }
+
 
     static execute() {
         const selected = Wrapper.selected
@@ -151,19 +142,16 @@ export default class GizmoSystem {
 
         if (valid)
             GizmoSystem.#findMainEntity(selected[0])
-        if (valid && GizmoSystem.translation != null) {
+        if (valid && GizmoSystem.mainEntity != null) {
             const m = GizmoSystem.mainEntity
-            if (m.__changedBuffer[1] === 1 || m.__pivotChange) {
+            if (m.__changedBuffer[1] === 1 || m.__pivotChanged) {
+                IconsSystem.getMatrix(m)
                 GizmoSystem.targetGizmo.transformGizmo()
-                console.log("UPDATING GIZMO")
+                m.__pivotChanged = false
             }
             const t = GizmoSystem.targetGizmo
             GizmoSystem.#findMainEntity(selected[0])
             if (t) {
-                if (m.__pivotChanged) {
-                    GizmoSystem.updatePivot(m)
-                    IconsSystem.getMatrix(m)
-                }
                 t.drawGizmo()
                 ScreenSpaceGizmo.drawGizmo()
             }
@@ -192,8 +180,6 @@ export default class GizmoSystem {
         } else if (GizmoSystem.targetGizmo || !selected[0]) {
             GizmoSystem.targetGizmo = undefined
             GizmoSystem.mainEntity = undefined
-            GizmoSystem.transformationMatrix = undefined
-            GizmoSystem.translation = undefined
             GizmoSystem.hasStarted = false
         }
     }

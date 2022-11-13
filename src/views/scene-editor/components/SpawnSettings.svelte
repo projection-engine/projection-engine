@@ -17,6 +17,7 @@
         <Range
                 label={LOCALIZATION_EN.DISTANCE}
                 minValue={.001}
+                value={settings.spawnDistanceFromCamera}
                 onFinish={v => SettingsStore.updateStore({...settings, spawnDistanceFromCamera: v})}
         />
         <div data-divider="-"></div>

@@ -16,7 +16,7 @@ export default class ScreenSpaceGizmo {
         const x = event.movementX * cameraDistance * 1000
         const y = event.movementY * cameraDistance * 1000
         const ssP = ConversionAPI.toWorldCoordinates(x, y).slice(0, 3)
-        vec3.scale(ssP, ssP, 1/cameraDistance**2)
+        vec3.scale(ssP, ssP, 1 / cameraDistance ** 2)
         ScreenSpaceGizmo.mapToAxis(ssP)
 
         return ssP
@@ -55,8 +55,8 @@ export default class ScreenSpaceGizmo {
     }
 
     static drawGizmo() {
-        if (!GizmoSystem.transformationMatrix || GizmoSystem.clickedAxis >= 0)
+        if (!GizmoSystem.mainEntity || GizmoSystem.clickedAxis >= 0)
             return
-        GizmoAPI.drawGizmo(GizmoSystem.screenSpaceMesh, GizmoSystem.transformationMatrix, AXIS.SCREEN_SPACE, PICK_ID_SS_GIZMO, GizmoSystem.translation, GizmoSystem.clickedAxis)
+        GizmoAPI.drawGizmo(GizmoSystem.screenSpaceMesh, GizmoSystem.mainEntity.__cacheCenterMatrix, AXIS.SCREEN_SPACE, PICK_ID_SS_GIZMO, GizmoSystem.mainEntity.pivotPoint, GizmoSystem.clickedAxis)
     }
 }

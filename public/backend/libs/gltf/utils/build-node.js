@@ -3,12 +3,14 @@ import {v4} from "uuid";
 
 const IDENTITY = Array.from(mat4.create())
 export default function buildNode(index, allNodes, sceneMap, nodesMap, primitivesMap, node, parentID, primitiveID) {
-
+    if (!node.children && node.mesh === undefined) {
+        console.error("IGNORING", node)
+        return;
+    }
     if (!primitiveID && node.mesh !== undefined) {
         const meshes = primitivesMap[node.mesh]
         for (let i = 0; i < meshes.length; i++)
             buildNode(undefined, allNodes, sceneMap, nodesMap, primitivesMap, node, parentID, meshes[i])
-
     }
 
     if (index !== undefined && nodesMap[index])
@@ -17,6 +19,7 @@ export default function buildNode(index, allNodes, sceneMap, nodesMap, primitive
         nodesMap[index] = true
 
     const ID = v4()
+
     const parsedNode = {
         id: ID,
         parent: parentID,
@@ -28,12 +31,9 @@ export default function buildNode(index, allNodes, sceneMap, nodesMap, primitive
         baseTransformationMatrix: IDENTITY
     }
 
-    if (node.matrix) {
-        parsedNode.translation = [0, 0, 0],
-            parsedNode._rotationQuat = [0, 0, 0, 1],
-            parsedNode.scaling = [1, 1, 1],
-            parsedNode.baseTransformationMatrix = Array.from(node.matrix)
-    } else {
+    if (node.matrix)
+        parsedNode.baseTransformationMatrix = Array.from(node.matrix)
+    else {
         let translation = node.translation,
             rotation = node.rotation,
             scale = node.scale
@@ -42,14 +42,17 @@ export default function buildNode(index, allNodes, sceneMap, nodesMap, primitive
             translation = [0, 0, 0]
         if (!scale)
             scale = [1, 1, 1]
+
         if (!rotation)
             parsedNode._rotationQuat = [0, 0, 0, 1]
         else
-            parsedNode._rotationQuat = quat.normalize([], rotation)
+            parsedNode._rotationQuat = Array.from(quat.normalize([], rotation))
+
 
         parsedNode.scaling = scale
         parsedNode.translation = translation
         parsedNode.pivotPoint = translation
+
     }
 
     sceneMap.entities.push(parsedNode)

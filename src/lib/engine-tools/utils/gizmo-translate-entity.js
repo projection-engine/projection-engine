@@ -39,8 +39,7 @@ export default function gizmoTranslateEntity(event){
             target.pivotPoint[0] = Math.round(target.pivotPoint[0] / g) * g
             target.pivotPoint[1] = Math.round(target.pivotPoint[1] / g) * g
             target.pivotPoint[2] = Math.round(target.pivotPoint[2] / g) * g
-            if(i === 0 && target.parent != null)
-                target.__pivotChanged = true
+
             target.__changedBuffer[0] = 1
         }
         TranslationGizmo.cache = [0, 0, 0]

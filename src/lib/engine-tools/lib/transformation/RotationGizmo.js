@@ -172,7 +172,7 @@ export default class RotationGizmo {
         RotationGizmo.shader.bindForUse({
             transformMatrix,
             axis,
-            translation: GizmoSystem.translation,
+            translation: GizmoSystem.mainEntity.pivotPoint,
             uID: [...id, 1],
             selectedAxis: GizmoSystem.clickedAxis,
             circleSampler: this.texture.texture,

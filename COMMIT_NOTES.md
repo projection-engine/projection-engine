@@ -1,6 +1,6 @@
-- Fixed entity information not updating
-- Reworked gizmo positioning structure
-- Moving editor related things from engine to editor repo
-- Fixed gizmo grid not updating when starting project
-- Added resolution control to SSAO and GI framebuffers
-- Re-added first blur buffer to SSGI pass
+- Fixing new transformation form for group transformations
+- Fixing gizmo transformation
+- Optimizing gizmo system structure
+- Fixing pivot point transformation 
+- Removed entities that don't have meshes or children from gltf import
+- Fixed scene import not linking entities to hierarchy

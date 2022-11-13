@@ -22,13 +22,15 @@ export default class Inheritance {
             GizmoSystem.hasStarted = true
             UndoRedoAPI.save(Wrapper.selected)
         }
+
     }
 
     onMouseDown(event) {
         this.x = event.clientX
         this.y = event.clientY
-
+        GizmoSystem.targetGizmo.transformGizmo()
         this.#testClick()
+
     }
 
 
@@ -41,6 +43,7 @@ export default class Inheritance {
         GizmoSystem.hasStarted = false
         document.exitPointerLock()
         GizmoSystem.clickedAxis = -1
+        GizmoSystem.targetGizmo.transformGizmo()
     }
 
 
@@ -87,10 +90,6 @@ export default class Inheritance {
 
         gpu.disable(gpu.CULL_FACE)
         DualAxisGizmo.drawGizmo()
-
-        if (this.updateTransformationRealtime)
-            GizmoSystem.transformationMatrix = GizmoAPI.translateMatrix(GizmoSystem.EMPTY_COMPONENT)
-
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.X || !this.tracking)
             GizmoAPI.drawGizmo(this.xyz, this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Y || !this.tracking)

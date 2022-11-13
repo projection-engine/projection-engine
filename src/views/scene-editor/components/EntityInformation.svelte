@@ -31,19 +31,20 @@
                         return
                     }
                     if (mainEntity) {
+
                         if (GizmoSystem.targetGizmo instanceof TranslationGizmo) {
-                            translationRef.textContent = `X ${GizmoSystem.mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
+                            translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
                             translationRef.parentElement.style.display = "flex"
                         } else
                             translationRef.parentElement.style.display = "none"
                         if (GizmoSystem.targetGizmo instanceof RotationGizmo) {
-                            rotationRef.textContent = `X ${mainEntity._rotationQuat[1].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
+                            rotationRef.textContent = `X ${mainEntity._rotationQuat[0].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
                             rotationRef.parentElement.style.display = "flex"
                         } else
                             rotationRef.parentElement.style.display = "none"
 
                         if (GizmoSystem.targetGizmo instanceof ScalingGizmo) {
-                            scaleRef.textContent = `X ${mainEntity._scaling[1].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
+                            scaleRef.textContent = `X ${mainEntity._scaling[0].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
                             scaleRef.parentElement.style.display = "flex"
                         } else
                             scaleRef.parentElement.style.display = "none"

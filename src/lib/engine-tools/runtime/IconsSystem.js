@@ -13,6 +13,7 @@ import CollisionVisualizationSystem from "./CollisionVisualizationSystem";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import TransformationAPI from "../../../../public/engine/lib/math/TransformationAPI";
 import Wrapper from "../Wrapper";
+import GizmoSystem from "./GizmoSystem";
 
 const SCALE = (new Array(3)).fill(.25)
 const EMPTY_MATRIX = mat4.create()
@@ -52,13 +53,11 @@ export default class IconsSystem {
 
     static getMatrix(entity) {
 
-        if (entity.changesApplied || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
-            entity.__pivotChanged = false
+        if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
+            if(!GizmoSystem.mainEntity)
+                entity.__pivotChanged = false
             const m = !entity.__cacheCenterMatrix ? mat4.clone(EMPTY_MATRIX) : entity.__cacheCenterMatrix
-
-            m[12] = entity.pivotPoint[0]
-            m[13] = entity.pivotPoint[1]
-            m[14] = entity.pivotPoint[2]
+            mat4.fromRotationTranslationScale(m, entity._rotationQuat, entity.pivotPoint, [.25, .25, .25])
             const translation = entity.parent?._translation
             if (translation) {
                 m[12] += translation[0]

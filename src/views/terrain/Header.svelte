@@ -1,5 +1,4 @@
 <script>
-    import "../viewport/css/styles.css"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
