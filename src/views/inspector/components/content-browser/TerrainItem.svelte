@@ -2,9 +2,9 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import AssetAPI from "../../../../lib/AssetAPI";
-    import FilesAPI from "../../../../lib/FilesAPI";
-    import RegistryAPI from "../../../../lib/RegistryAPI";
+    import AssetAPI from "../../../../lib/fs/AssetAPI";
+    import FilesAPI from "../../../../lib/fs/FilesAPI";
+    import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

@@ -2,7 +2,7 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-    import CameraTracker from "../../../../public/engine/editor-environment/lib/CameraTracker";
+    import CameraTracker from "../../../lib/engine-tools/lib/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
 

@@ -1,7 +1,7 @@
-import UndoRedoAPI from "../../../lib/UndoRedoAPI";
+import UndoRedo from "../../../lib/utils/UndoRedo";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
-export default class NavigationHistory extends UndoRedoAPI {
+export default class NavigationHistory extends UndoRedo {
     constructor(setCurrentDirectory) {
         super()
         this.setCurrentDirectory = setCurrentDirectory

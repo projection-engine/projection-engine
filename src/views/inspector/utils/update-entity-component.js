@@ -1,6 +1,6 @@
 import DirectionalLightComponent from "../../../../public/engine/templates/components/DirectionalLightComponent";
 import PointLightComponent from "../../../../public/engine/templates/components/PointLightComponent";
-import ActionHistoryAPI from "../../../lib/ActionHistoryAPI";
+import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import LightsAPI from "../../../../public/engine/lib/rendering/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
@@ -14,7 +14,7 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         LightsAPI.packageLights(true)
     }
     if (!savedState) {
-        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
         setSaved(true)
     }
 
@@ -23,6 +23,6 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         CameraAPI.updateViewTarget(entity)
     if (save) {
         SelectionStore.updateStore()
-        ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
     }
 }

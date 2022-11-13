@@ -2,7 +2,7 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../public/engine/Engine";
-    import EntityNameController from "../../../../lib/EntityNameController";
+    import EntityNameController from "../../../../lib/controllers/EntityNameController";
     import Localization from "../../../../templates/LOCALIZATION_EN";
 
     const nativeComponents = getNativeComponents()

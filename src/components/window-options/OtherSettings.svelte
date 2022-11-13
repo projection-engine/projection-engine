@@ -3,7 +3,7 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import LevelController from "../../lib/LevelController";
+    import LevelController from "../../lib/utils/LevelController";
     import VIEWS from "../view/static/VIEWS";
     import TabsStore from "../../stores/TabsStore";
     import {onDestroy, onMount} from "svelte";
@@ -17,7 +17,7 @@
     import SpecularProbePass from "../../../public/engine/runtime/rendering/SpecularProbePass";
     import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
     import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
-    import ActionHistoryAPI from "../../lib/ActionHistoryAPI";
+    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
 
     export let store
     export let settings
@@ -51,14 +51,14 @@
 
 <div class="level-selector">
     <button
-            class="button" on:click={ActionHistoryAPI.undo}
+            class="button" on:click={UndoRedoAPI.undo}
             disabled={engine.executingAnimation}
     >
         <Icon styles="font-size: 1rem">undo</Icon>
         <ToolTip content={Localization.UNDO}/>
     </button>
     <button
-            class="button" on:click={ActionHistoryAPI.redo}
+            class="button" on:click={UndoRedoAPI.redo}
             disabled={engine.executingAnimation}
     >
         <Icon styles="font-size: 1rem">redo</Icon>

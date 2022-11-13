@@ -1,22 +1,26 @@
 import bindGizmo from "./bind-gizmo";
 import Engine from "../../../../public/engine/Engine";
-import CameraTracker from "../../../../public/engine/editor-environment/lib/CameraTracker";
-import Wrapper from "../../../../public/engine/editor-environment/Wrapper";
+import CameraTracker from "../../../lib/engine-tools/lib/CameraTracker";
+import Wrapper from "../../../lib/engine-tools/Wrapper";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import DirectionalShadows from "../../../../public/engine/runtime/occlusion/DirectionalShadows";
-import GridSystem from "../../../../public/engine/editor-environment/runtime/GridSystem";
-import GizmoSystem from "../../../../public/engine/editor-environment/runtime/GizmoSystem";
+import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
+import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
 import GPU from "../../../../public/engine/GPU";
 import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
-import SHADING_MODELS from "../../../../public/engine/editor-environment/static/SHADING_MODELS";
+import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
 import Loop from "../../../../public/engine/Loop";
+import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
+import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
+import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
 
 
 export default function updateRenderer(selected, engine, settings) {
-    const {executingAnimation} = engine
     CameraTracker.initialize(settings)
     Wrapper.updateSelectionData(selected)
-
+    RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
+    TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
+    ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
         CameraAPI.trackingEntity = undefined
         if (settings.camera) {
@@ -39,7 +43,7 @@ export default function updateRenderer(selected, engine, settings) {
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
     }
-    if (Engine.environment === ENVIRONMENT.DEV )
+    if (Engine.environment === ENVIRONMENT.DEV)
         Loop.linkToExecutionPipeline(Wrapper.beforeDrawing, Wrapper.duringDrawing, Wrapper.afterDrawing)
     else
         Loop.linkToExecutionPipeline()

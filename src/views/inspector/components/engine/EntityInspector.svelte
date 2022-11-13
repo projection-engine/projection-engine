@@ -1,7 +1,7 @@
 <script>
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
-    import ActionHistoryAPI from "../../../../lib/ActionHistoryAPI";
+    import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
@@ -14,12 +14,13 @@
 
     import getEntityTabs from "../../utils/get-entity-tabs";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
+    import TransformationForm from "./TransformationForm.svelte";
 
     export let entity
 
     let ref
     let savedState
-    let tabIndex = -2
+    let tabIndex = -1
 
     let components
     let scripts
@@ -28,18 +29,6 @@
         scripts = entity.scripts
     }
     $: buttons = getEntityTabs(components, scripts)
-    const submitTransformationChange = (key, value, save) => {
-        if (!savedState) {
-            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-            savedState = true
-        }
-        if (key === "pivotPoint")
-            entity.__pivotChanged = true
-        entity[key] = value
-        entity.__changedBuffer[0] = 1
-        if (save)
-            ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-    }
 
     const draggable = dragDrop(false)
     onMount(() => {
@@ -53,7 +42,7 @@
 
     $: {
         if (components[tabIndex] == null && tabIndex > 0)
-            tabIndex = -2
+            tabIndex = -1
     }
 
 </script>
@@ -96,12 +85,7 @@
             {:else if tabIndex === -2}
                 <Metadata entity={entity}/>
             {:else if tabIndex === -1}
-                <Layout
-                        key="TRANSFORMATION"
-                        component={entity}
-                        entity={entity}
-                        submit={submitTransformationChange}
-                />
+                <TransformationForm/>
             {:else if tabIndex < components.length}
                 {#if components[tabIndex][0] === COMPONENTS.UI}
                     <UIComponent

@@ -1,6 +1,6 @@
 import NodeFS from "shared-resources/frontend/libs/NodeFS"
 import FilesStore from "../../../stores/FilesStore";
-import ContentBrowserAPI from "../../../lib/ContentBrowserAPI";
+import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 
 export default async function handleRename(item, newName, currentDirectory, setCurrentDirectory, setCurrentItem) {
     if(newName !== item.name) {

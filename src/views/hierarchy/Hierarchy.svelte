@@ -8,10 +8,10 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeysController from "../../lib/HotKeysController";
+    import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../components/drag-drop/drag-drop";
-    import HierarchyController from "../../lib/HierarchyController";
+    import HierarchyController from "../../lib/controllers/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import VIEWS from "../../components/view/static/VIEWS";

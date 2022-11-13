@@ -18,8 +18,10 @@ export default {
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
     mbSamples: 50,
+
+    GIResolutionScale: 1,
     SSGI: {
-        blurSamples: 8,
+        blurSamples: 5,
         enabled: true,
         maxSteps: 8,
         gamma: 2.2,
@@ -37,6 +39,9 @@ export default {
     },
 
     SSAO: {
+        resolutionScale: .5,
+        blurSamples: 2,
+        maxSamples: 64,
         bias: .025,
         enabled: false,
         power: 1,

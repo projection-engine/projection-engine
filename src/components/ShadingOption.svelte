@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../public/engine/editor-environment/static/SHADING_MODELS"
+    import SHADING_MODELS from "../lib/engine-tools/static/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPU from "../../public/engine/GPU";

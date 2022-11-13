@@ -1,9 +1,9 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "../lib/FilesAPI";
-import ErrorLoggerAPI from "../lib/ErrorLoggerAPI";
-import LevelController from "../lib/LevelController";
-import ActionHistoryAPI from "../lib/ActionHistoryAPI";
-import ViewportActions from "../lib/ViewportActions";
+import FilesAPI from "../lib/fs/FilesAPI";
+import ErrorLoggerAPI from "../lib/fs/ErrorLoggerAPI";
+import LevelController from "../lib/utils/LevelController";
+import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
+import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import ROUTES from "../static/ROUTES";
 import VisualsStore from "../stores/VisualsStore";
@@ -28,10 +28,10 @@ export default function InitializeWindow(openAbout) {
                 LevelController.save().catch()
                 break
             case "undo":
-                ActionHistoryAPI.undo()
+                UndoRedoAPI.undo()
                 break
             case "redo":
-                ActionHistoryAPI.redo()
+                UndoRedoAPI.redo()
                 break
             case "copy":
                 ViewportActions.copy()

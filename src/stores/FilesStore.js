@@ -1,12 +1,27 @@
-import {get} from "svelte/store";
-import {contentBrowserStore} from "./templates/content-browser-store";
+import {get, writable} from "svelte/store";
 import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../static/ROUTES";
-import ContentBrowserAPI from "../lib/ContentBrowserAPI";
+import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
+const contentBrowserStore = writable({
+    isLoading: true,
+    items: [],
+    textures: [],
+    meshes: [],
+    levels: [],
+    materials: [],
+    materialInstances: [],
+    simpleMaterials: [],
+    components: [],
+    uiLayouts: [],
+    terrains: [],
+    terrainMaterials: [],
+    toCut: [],
+    collections: []
+});
 
 export default class FilesStore {
     static data = get(contentBrowserStore)

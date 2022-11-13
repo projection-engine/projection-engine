@@ -1,4 +1,4 @@
-import FilesAPI from "../../../lib/FilesAPI"
+import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../templates/LOCALIZATION_EN";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";

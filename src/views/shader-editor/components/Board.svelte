@@ -16,7 +16,7 @@
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import shaderActions from "../../../templates/shader-actions";
-    import HotKeysController from "../../../lib/HotKeysController";
+    import HotKeysController from "../../../lib/utils/HotKeysController";
     import SettingsStore from "../../../stores/SettingsStore";
     import Link from "./Link.svelte";
 

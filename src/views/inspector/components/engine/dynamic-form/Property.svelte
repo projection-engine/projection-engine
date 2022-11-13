@@ -49,7 +49,6 @@
                         submit(attribute.key, v)
                     }
                 }}
-                variant="embedded"
                 onFinish={v => submit(attribute.key, v, true)}
                 minValue={attribute.min}
                 maxValue={attribute.max}
@@ -62,7 +61,6 @@
                 precision={attribute.precision}
         />
     {:else if attribute.type === Component.propTypes.ARRAY}
-
         {#each attribute.labels as partial, index}
             <Range
                     noOriginal={true}
@@ -87,7 +85,6 @@
                     maxValue={attribute.max}
 
                     label={partial}
-                    variant="embedded"
                     value={value[index]}
             />
         {/each}

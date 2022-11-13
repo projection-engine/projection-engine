@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../../public/engine/editor-environment/static/SHADING_MODELS";
+import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
 import GBuffer from "../../../../public/engine/runtime/rendering/GBuffer";
 import AmbientOcclusion from "../../../../public/engine/runtime/occlusion/AmbientOcclusion";
 import GlobalIlluminationPass from "../../../../public/engine/runtime/rendering/GlobalIlluminationPass";

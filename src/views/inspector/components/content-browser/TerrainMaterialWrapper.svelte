@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import AssetAPI from "../../../../lib/AssetAPI";
+    import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../public/engine/GPU";
     import updateMaterialAsset from "../../utils/update-material-asset";
     import TerrainMaterialLayer from "./TerrainMaterialLayer.svelte";

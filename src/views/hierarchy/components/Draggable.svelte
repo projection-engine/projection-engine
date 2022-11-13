@@ -5,10 +5,10 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
-    import EntityNameController from "../../../lib/EntityNameController";
+    import EntityNameController from "../../../lib/controllers/EntityNameController";
     import KEYS from "../../../static/KEYS";
     import handleDrop from "../utils/handle-drop";
-    import ActionHistoryAPI from "../../../lib/ActionHistoryAPI";
+    import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../public/engine/Engine";
@@ -42,9 +42,9 @@
     })
     onDestroy(() => draggable.onDestroy())
     function rename(){
-        ActionHistoryAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+        UndoRedoAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
         EntityNameController.renameEntity(cacheName, node)
-        ActionHistoryAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+        UndoRedoAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
     }
 </script>
 

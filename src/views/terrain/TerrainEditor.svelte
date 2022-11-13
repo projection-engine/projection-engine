@@ -6,8 +6,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import RegistryAPI from "../../lib/RegistryAPI";
-    import FilesAPI from "../../lib/FilesAPI";
+    import RegistryAPI from "../../lib/fs/RegistryAPI";
+    import FilesAPI from "../../lib/fs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import Header from "./Header.svelte";
     import SettingsStore from "../../stores/SettingsStore";

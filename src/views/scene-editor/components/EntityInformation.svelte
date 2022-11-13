@@ -4,6 +4,10 @@
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import Engine from "../../../../public/engine/Engine";
+    import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
+    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
+    import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
+    import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
 
     export let settings
     export let engine
@@ -20,33 +24,29 @@
     $: {
         clearInterval(currentInterval)
         if (translationRef && rotationRef && scaleRef) {
-                let initialized = false
                 currentInterval = setInterval(() => {
                     console.log("ON INTERVAL")
                     if (!translationRef || !rotationRef || !scaleRef) {
                         clearInterval(currentInterval)
                         return
                     }
-                    if (mainEntity && (mainEntity.__changedBuffer[1] || !initialized)) {
-
-                        if (settings.gizmo === GIZMOS.TRANSLATION) {
-                            translationRef.textContent = `X ${mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
+                    if (mainEntity) {
+                        if (GizmoSystem.targetGizmo instanceof TranslationGizmo) {
+                            translationRef.textContent = `X ${GizmoSystem.mainEntity._translation[1].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
                             translationRef.parentElement.style.display = "flex"
                         } else
                             translationRef.parentElement.style.display = "none"
-                        if (settings.gizmo === GIZMOS.ROTATION) {
+                        if (GizmoSystem.targetGizmo instanceof RotationGizmo) {
                             rotationRef.textContent = `X ${mainEntity._rotationQuat[1].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
                             rotationRef.parentElement.style.display = "flex"
                         } else
                             rotationRef.parentElement.style.display = "none"
 
-                        if (settings.gizmo === GIZMOS.SCALE) {
+                        if (GizmoSystem.targetGizmo instanceof ScalingGizmo) {
                             scaleRef.textContent = `X ${mainEntity._scaling[1].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
                             scaleRef.parentElement.style.display = "flex"
                         } else
                             scaleRef.parentElement.style.display = "none"
-
-                        initialized = true
                     }
                 }, 250)
         }

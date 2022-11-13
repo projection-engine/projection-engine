@@ -10,23 +10,21 @@
     export let entity
     export let submit
 
-    $: title = key === "TRANSFORMATION" ? Localization.TRANSFORMATION : (Localization[component.name] || component.name)
+    $: title = Localization[component.name] || component.name
 </script>
 
 <fieldset>
     <legend class="legend">
         {title}
-        {#if key !== "TRANSFORMATION"}
-            <button class="button" on:click={() => removeComponent(entity, index, key)}>
-                <Icon>delete_forever</Icon>
-            </button>
-        {/if}
+        <button class="button" on:click={() => removeComponent(entity, index, key)}>
+            <Icon>delete_forever</Icon>
+        </button>
     </legend>
     {#if Array.isArray(component.props)}
         {#each component.props as propAttr}
             {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
                 <fieldset>
-                    <legend>{Localization[propAttr.label]||propAttr.label}</legend>
+                    <legend>{Localization[propAttr.label] || propAttr.label}</legend>
                     {#each propAttr.children as attribute}
                         <Property
                                 component={component}
@@ -48,13 +46,14 @@
 </fieldset>
 
 <style>
-    .legend{
+    .legend {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
         font-weight: 500;
     }
+
     .button {
         border: none;
         margin-left: auto;

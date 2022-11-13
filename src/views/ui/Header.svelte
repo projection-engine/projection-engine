@@ -4,7 +4,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../static/GIZMOS";
     import SettingsStore from "../../stores/SettingsStore";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/templates/dispatch-renderer-entities";
+    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
     import Entity from "../../../public/engine/instances/Entity";
     import Engine from "../../../public/engine/Engine";
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";

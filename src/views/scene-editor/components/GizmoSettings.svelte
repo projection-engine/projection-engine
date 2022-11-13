@@ -4,17 +4,31 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
-    import GizmoSystem from "../../../../public/engine/editor-environment/runtime/GizmoSystem";
+    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import GridSystem from "../../../../public/engine/editor-environment/runtime/GridSystem";
+    import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
+    import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
+    import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
+    import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
 
 
     export let settings
 
     const updateGizmoGrid = (key, value, submit) => {
-        GizmoSystem[key].gridSize = value
+        switch (key){
+            case key === "scalingGizmo":
+                ScalingGizmo.gridSize = value
+                break
+            case key === "translationGizmo":
+                TranslationGizmo.gridSize = value
+                break
+            case key === "rotationGizmo":
+                RotationGizmo.gridSize = value
+                break
+        }
+        GizmoSystem[key]
         if (submit)
             SettingsStore.updateStore({...settings, gizmoGrid: {...settings.gizmoGrid, [key]: value}})
     }

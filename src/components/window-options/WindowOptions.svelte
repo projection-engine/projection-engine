@@ -6,7 +6,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import LevelController from "../../lib/LevelController";
+    import LevelController from "../../lib/utils/LevelController";
     import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
     import SettingsStore from "../../stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";

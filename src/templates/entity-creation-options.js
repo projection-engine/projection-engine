@@ -1,5 +1,5 @@
 import STATIC_MESHES from "../../public/engine/static/resources/STATIC_MESHES";
-import EntityConstructor from "../lib/EntityConstructor";
+import EntityConstructor from "../lib/controllers/EntityConstructor";
 import Localization from "./LOCALIZATION_EN";
 
 export default function entityCreationOptions() {

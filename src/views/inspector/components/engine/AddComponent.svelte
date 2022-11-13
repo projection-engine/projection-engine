@@ -8,7 +8,7 @@
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import ActionHistoryAPI from "../../../../lib/ActionHistoryAPI";
+    import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
 
     const nativeComponents = getNativeComponents()
@@ -35,9 +35,9 @@
     {#each nativeComponents as [key,  label, icon]}
         <button
                 on:click={(e) =>{
-                    ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                    UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     entity.addComponent(key)
-                    ActionHistoryAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                    UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
 
                     SelectionStore.updateStore()
                     e.target.closeDropdown()

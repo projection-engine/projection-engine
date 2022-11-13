@@ -1,7 +1,7 @@
 import ENGINE from "../static/ENGINE";
 
-import FilesAPI from "../lib/FilesAPI"
-import RegistryAPI from "../lib/RegistryAPI";
+import FilesAPI from "../lib/fs/FilesAPI"
+import RegistryAPI from "../lib/fs/RegistryAPI";
 import GPU from "../../public/engine/GPU";
 import {writable} from "svelte/store";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";

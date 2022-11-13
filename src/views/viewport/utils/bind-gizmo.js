@@ -1,7 +1,7 @@
 import GIZMOS from "../../../static/GIZMOS";
 import Engine from "../../../../public/engine/Engine";
-import GizmoSystem from "../../../../public/engine/editor-environment/runtime/GizmoSystem";
-import Wrapper from "../../../../public/engine/editor-environment/Wrapper";
+import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
+import Wrapper from "../../../lib/engine-tools/Wrapper";
 
 export default function bindGizmo(selected, settings) {
     GizmoSystem.gizmoType = settings.gizmoSelection

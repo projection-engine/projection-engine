@@ -1,2 +1,6 @@
-- Fixing SSGI shader
-- Fixed stochastic normals not using actual invViewMatrix
+- Fixed entity information not updating
+- Reworked gizmo positioning structure
+- Moving editor related things from engine to editor repo
+- Fixed gizmo grid not updating when starting project
+- Added resolution control to SSAO and GI framebuffers
+- Re-added first blur buffer to SSGI pass

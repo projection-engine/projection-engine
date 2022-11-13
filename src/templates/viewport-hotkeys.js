@@ -1,20 +1,20 @@
 import EngineStore from "../stores/EngineStore";
-import ViewportActions from "../lib/ViewportActions";
+import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
 import SelectionStore from "../stores/SelectionStore";
-import ActionHistoryAPI from "../lib/ActionHistoryAPI";
+import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import QueryAPI from "../../public/engine/lib/utils/QueryAPI";
 
 import selectEntityHierarchy from "./utils/select-entity-hierarchy";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/templates/dispatch-renderer-entities";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/dispatch-renderer-entities";
 import snap from "./utils/snap";
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE";
-import EntityConstructor from "../lib/EntityConstructor";
+import EntityConstructor from "../lib/controllers/EntityConstructor";
 import {v4} from "uuid";
-import CAMERA_ROTATIONS from "../../public/engine/editor-environment/static/CAMERA_ROTATIONS";
-import LevelController from "../lib/LevelController";
-import CameraTracker from "../../public/engine/editor-environment/lib/CameraTracker";
+import CAMERA_ROTATIONS from "../lib/engine-tools/static/CAMERA_ROTATIONS";
+import LevelController from "../lib/utils/LevelController";
+import CameraTracker from "../lib/engine-tools/lib/CameraTracker";
 import Engine from "../../public/engine/Engine";
 import LOCALIZATION_EN from "./LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
@@ -174,11 +174,11 @@ export default function viewportHotkeys(settings) {
         },
         UNDO: {
             require: settings.viewportHotkeys.UNDO,
-            callback: () => ActionHistoryAPI.undo()
+            callback: () => UndoRedoAPI.undo()
         },
         REDO: {
             require: settings.viewportHotkeys.REDO,
-            callback: () => ActionHistoryAPI.redo()
+            callback: () => UndoRedoAPI.redo()
         },
         GROUP: {
             label: "Group selected",

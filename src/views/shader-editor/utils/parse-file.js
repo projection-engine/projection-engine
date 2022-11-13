@@ -1,5 +1,5 @@
-import FilesAPI from "../../../lib/FilesAPI";
-import RegistryAPI from "../../../lib/RegistryAPI";
+import FilesAPI from "../../../lib/fs/FilesAPI";
+import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ShaderEditorController from "../ShaderEditorController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

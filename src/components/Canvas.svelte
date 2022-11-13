@@ -5,8 +5,8 @@
     import EngineStore from "../stores/EngineStore";
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
-    import AssetAPI from "../lib/AssetAPI";
-    import initializer from "../../public/engine/editor-environment/initializer";
+    import AssetAPI from "../lib/fs/AssetAPI";
+    import initializer from "../lib/engine-tools/initializer";
     import VisualsStore from "../stores/VisualsStore";
     import Engine from "../../public/engine/Engine";
 
@@ -24,7 +24,15 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        Engine.initialize(canvasRef, settings.resolution[0], settings.resolution[1], AssetAPI.readAsset, AssetAPI.readMetadata)
+        console.log(settings.resolution[1])
+        Engine.initialize(
+            canvasRef,
+            {w: settings.resolution[0], h: settings.resolution[1]},
+            {w: visuals.SSAO.resolutionScale * settings.resolution[0], h: visuals.SSAO.resolutionScale * settings.resolution[1]},
+            {w: visuals.SSGI.resolutionScale * settings.resolution[0], h: visuals.SSGI.resolutionScale * settings.resolution[1]},
+            AssetAPI.readAsset,
+            AssetAPI.readMetadata
+        )
             .then(async () => {
                 await initializer()
                 onReady()

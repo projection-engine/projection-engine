@@ -6,8 +6,8 @@
     import Selector from "../../../../components/selector/Selector.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
-    import RegistryAPI from "../../../../lib/RegistryAPI";
-    import FilesAPI from "../../../../lib/FilesAPI";
+    import RegistryAPI from "../../../../lib/fs/RegistryAPI";
+    import FilesAPI from "../../../../lib/fs/FilesAPI";
     import UIAPI from "../../../../../public/engine/lib/rendering/UIAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import Engine from "../../../../../public/engine/Engine";
