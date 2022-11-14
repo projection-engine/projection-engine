@@ -3,20 +3,22 @@ import GPU from "../../../../public/engine/GPU";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
 
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
-import SelectionStore from "../../../stores/SelectionStore";
 import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
 import SpritePass from "../../../../public/engine/runtime/rendering/SpritePass";
-import QueryAPI from "../../../../public/engine/lib/utils/QueryAPI";
-import {mat4} from "gl-matrix";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
-import CollisionVisualizationSystem from "./CollisionVisualizationSystem";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import TransformationAPI from "../../../../public/engine/lib/math/TransformationAPI";
 import Wrapper from "../Wrapper";
-import GizmoSystem from "./GizmoSystem";
+import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 
-const SCALE = (new Array(3)).fill(.25)
-const EMPTY_MATRIX = mat4.create()
+const attr = {
+    translation: [0, 0, 0],
+    sameSize: false,
+    highlight: false,
+    scale: [.25, .25, .25],
+    attributes: [1, 1]
+}
+
 const CAMERA_SCALE = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
 export default class IconsSystem {
     static cameraMesh
@@ -51,31 +53,9 @@ export default class IconsSystem {
         })
     }
 
-    static getMatrix(entity) {
-
-        if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
-            if(!GizmoSystem.mainEntity)
-                entity.__pivotChanged = false
-            const m = !entity.__cacheCenterMatrix ? mat4.clone(EMPTY_MATRIX) : entity.__cacheCenterMatrix
-            mat4.fromRotationTranslationScale(m, entity._rotationQuat, entity.pivotPoint, [.25, .25, .25])
-            const translation = entity.parent?._translation
-            if (translation) {
-                m[12] += translation[0]
-                m[13] += translation[1]
-                m[14] += translation[2]
-            }
-
-            entity.__cacheCenterMatrix = m
-        }
-    }
-
     static execute(selected) {
         const cameras = Engine.data.cameras
-        const attr = {
-            translation: [0, 0, 0],
-            sameSize: false,
-            highlight: false
-        }
+
 
         for (let i = 0; i < cameras.length; i++) {
             const current = cameras[i]
@@ -94,20 +74,17 @@ export default class IconsSystem {
 
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         const size = selected.length
-        if (size > 0) {
-            attr.attributes = [1, 1]
-            for (let i = 0; i < size; i++) {
-                const current = selected[i]
-                if (!current)
-                    continue
-                attr.scale = SCALE
-                IconsSystem.getMatrix(current)
-                attr.transformationMatrix = current.__cacheCenterMatrix
-                attr.iconSampler = i === 0 ? IconsSystem.textureYellow : IconsSystem.textureOrange
+        for (let i = 0; i < size; i++) {
+            const current = selected[i]
+            if (!current)
+                continue
 
-                SpritePass.shader.bindForUse(attr)
-                drawQuad()
-            }
+            getPivotPointMatrix(current)
+            attr.transformationMatrix = current.__cacheCenterMatrix
+            attr.iconSampler = i === 0 ? IconsSystem.textureYellow : IconsSystem.textureOrange
+
+            SpritePass.shader.bindForUse(attr)
+            drawQuad()
         }
     }
 

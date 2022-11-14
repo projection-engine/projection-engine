@@ -9,10 +9,8 @@
     import Entity from "../../../public/engine/instances/Entity";
     import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
     import VIEWS from "../../components/view/static/VIEWS";
-    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
-    import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -58,19 +56,6 @@
 
     })
     onDestroy(() => unsubscribeSelection())
-
-    const submitTransformationChange = (key, value, save) => {
-        if (!savedState) {
-            UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-            savedState = true
-        }
-        if (key === "pivotPoint")
-            entity.__pivotChanged = true
-        entity[key] = value
-        entity.__changedBuffer[0] = 1
-        if (save)
-            UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-    }
 </script>
 {#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}
     <div data-empty="-">

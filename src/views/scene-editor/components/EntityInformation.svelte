@@ -1,9 +1,7 @@
 <script>
     import {onDestroy} from "svelte";
     import GIZMOS from "../../../static/GIZMOS";
-    import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import Engine from "../../../../public/engine/Engine";
     import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
     import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
     import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";

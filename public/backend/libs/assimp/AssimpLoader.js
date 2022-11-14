@@ -93,11 +93,7 @@ export default class AssimpLoader {
             uvs,
             maxBoundingBox: b[1] ? b[1] : [0, 0, 0],
             minBoundingBox: b[0] ? b[0] : [0, 0, 0],
-            name: mesh.name,
-            _rotationQuat: [0, 0, 0, 1],
-            translation: [0, 0, 0],
-            scaling: [1, 1, 1],
-            pivotPoint: [0, 0, 0]
+            name: mesh.name
         })
         try {
             if (!fs.existsSync(PRIMITIVE_PATH))
@@ -152,10 +148,6 @@ export default class AssimpLoader {
                     id: nodeID,
                     meshID,
                     baseTransformationMatrix,
-                    _rotationQuat: [0, 0, 0, 1],
-                    translation: [0, 0, 0],
-                    scaling: [1, 1, 1],
-                    pivotPoint: [...mat4.getTranslation([], baseTransformationMatrix)],
                     name: name + "-" + i,
                     parent
                 })
@@ -164,10 +156,7 @@ export default class AssimpLoader {
             collection.push({
                 id: nodeID,
                 baseTransformationMatrix,
-                _rotationQuat: [0, 0, 0, 1],
-                translation: [0, 0, 0],
-                scaling: [1, 1, 1],
-                pivotPoint: [...mat4.getTranslation([], baseTransformationMatrix)],
+
                 name,
                 parent
             })

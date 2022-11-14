@@ -1,13 +1,10 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import selectionQueryWorker from "./utils/selection-query-worker";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
     import CameraGizmo from "../../components/CameraGizmo.svelte";
     import GIZMOS from "../../static/GIZMOS";
-    import onViewportClick from "../viewport/utils/on-viewport-click";
     import Loader from "../../lib/parsers/Loader";
-    import drawIconsToBuffer from "../viewport/utils/draw-icons-to-buffer";
     import GizmoSystem from "../../lib/engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
@@ -21,10 +18,7 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../lib/engine-tools/lib/CameraTracker";
-    import PickingAPI from "../../../public/engine/lib/utils/PickingAPI";
-    import ConversionAPI from "../../../public/engine/lib/math/ConversionAPI";
     import Engine from "../../../public/engine/Engine";
-    import GPU from "../../../public/engine/GPU";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"

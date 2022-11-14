@@ -6,6 +6,7 @@ import GizmoAPI from "./GizmoAPI";
 import PickingAPI from "../../../../public/engine/lib/utils/PickingAPI";
 import UndoRedoAPI from "../../utils/UndoRedoAPI";
 import Wrapper from "../Wrapper";
+import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
 
 export default class Inheritance {
     tracking = false
@@ -51,7 +52,7 @@ export default class Inheritance {
         if (!GizmoSystem.mainEntity)
             return
         this.transformGizmo()
-        GizmoSystem.drawToDepthSampler(this.xyz, [
+        drawGizmoToDepth(this.xyz, [
             this.xGizmo.matrix,
             this.yGizmo.matrix,
             this.zGizmo.matrix,

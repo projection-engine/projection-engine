@@ -3,8 +3,6 @@ import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import QueryAPI from "../../public/engine/lib/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
-import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
 
 export default function viewportContext(settings, forDropdown) {
     const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
@@ -28,26 +26,6 @@ export default function viewportContext(settings, forDropdown) {
         {
             label: "Pivot point",
             children: [
-
-                {
-                    label: "To screen",
-                    onClick: () => {
-                        const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
-                        if(!selected)
-                            return
-                        if (selected) {
-                            const position = [0, 0, -10, 1]
-                            vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-                            vec3.add(selected.pivotPoint, CameraAPI.translationBuffer, position)
-
-                            selected.__pivotChanged = true
-                        }
-
-
-                        for (let i = 0; i < selected.length; i++)
-                            EntityConstructor.translateEntity(QueryAPI.getEntityByID(selected[i]))
-                    }
-                },
                 {
                     label: "To origin",
                     onClick: () => {
@@ -59,44 +37,7 @@ export default function viewportContext(settings, forDropdown) {
                             selected.__pivotChanged = true
                         }
                     }
-                },
-                {
-                    label: "To absolute translation",
-                    onClick: () => {
-                        const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
-                        if (selected) {
-                            selected.pivotPoint[0] = selected.absoluteTranslation[0]
-                            selected.pivotPoint[1] = selected.absoluteTranslation[1]
-                            selected.pivotPoint[2] = selected.absoluteTranslation[2]
-                            selected.__pivotChanged = true
-                        }
-                    }
-                },
-                {
-                    label: "To translation",
-                    onClick: () => {
-                        const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
-                        if (selected) {
-                            selected.pivotPoint[0] = selected._translation[0]
-                            selected.pivotPoint[1] = selected._translation[1]
-                            selected.pivotPoint[2] = selected._translation[2]
-                            selected.__pivotChanged = true
-                        }
-                    }
-                },
-                {
-                    label: "To secondary selection",
-                    onClick: () => {
-                        const primary = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
-                        const secondary = QueryAPI.getEntityByID(SelectionStore.engineSelected[1])
-                        if (primary && secondary) {
-                            primary.pivotPoint[0] = secondary._translation[0]
-                            primary.pivotPoint[1] = secondary._translation[1]
-                            primary.pivotPoint[2] = secondary._translation[2]
-                            primary.__pivotChanged = true
-                        }
-                    }
-                },
+                }
             ]
         },
         {
@@ -106,20 +47,7 @@ export default function viewportContext(settings, forDropdown) {
                 VIEWPORT_HOTKEYS.SNAP_TO_ORIGIN,
                 VIEWPORT_HOTKEYS.SNAP_TO_GRID,
                 {
-                    label: "To pivot",
-                    onClick: () => {
-                        const selected = SelectionStore.engineSelected
-                        for (let i = 0; i < selected.length; i++) {
-                            const entity = QueryAPI.getEntityByID(selected[i])
-                            entity._translation[0] = entity.pivotPoint[0]
-                            entity._translation[1] = entity.pivotPoint[1]
-                            entity._translation[2] = entity.pivotPoint[2]
-                            entity.__changedBuffer[0] = 1
-                        }
-                    }
-                },
-                {
-                    label: "To screen",
+                    label: "Translate to screen",
                     onClick: () => {
                         const selected = SelectionStore.engineSelected
                         for (let i = 0; i < selected.length; i++)
@@ -135,6 +63,7 @@ export default function viewportContext(settings, forDropdown) {
                         comp.translation = [0, 0, 0]
                         comp.scaling = [1, 1, 1]
                         comp._rotationQuat = [0, 0, 0, 1]
+                        comp.__pivotChanged = true
                     }
                 },
 

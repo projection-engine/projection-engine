@@ -7,15 +7,10 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
         return;
     const parsedNode = {
         id: v4(),
-
         children: node.children,
         mesh: node.mesh,
         index,
-
         name: node.name,
-        scaling: [1, 1, 1],
-        _rotationQuat: [0, 0, 0, 1],
-        translation: [0, 0, 0],
         baseTransformationMatrix: []
     }
 
@@ -24,7 +19,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
     else
         mat4.fromRotationTranslationScale(
             parsedNode.baseTransformationMatrix,
-            [0, 0, 0, 1] || quat.normalize([], node.rotation),
+            quat.normalize([], node.rotation) || [0, 0, 0, 1],
             node.translation || [0, 0, 0],
             node.scale || [1, 1, 1]
         )

@@ -5,7 +5,6 @@ import mapGizmoMesh from "../../utils/map-gizmo-mesh";
 import getPickerId from "../../../../../public/engine/utils/get-picker-id";
 import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
 import GPU from "../../../../../public/engine/GPU";
-import GizmoAPI from "../GizmoAPI";
 
 export const XZ_ID = getPickerId(AXIS.XZ), XY_ID = getPickerId(AXIS.XY), ZY_ID = getPickerId(AXIS.ZY)
 export default class DualAxisGizmo {

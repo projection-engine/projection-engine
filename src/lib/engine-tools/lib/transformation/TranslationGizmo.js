@@ -1,10 +1,6 @@
-import {vec3, vec4} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../../../static/TRANSFORMATION_TYPE"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import GizmoSystem from "../../runtime/GizmoSystem";
-import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
 import Inheritance from "../Inheritance";
-import Wrapper from "../../Wrapper";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
 
 export default class TranslationGizmo extends Inheritance {

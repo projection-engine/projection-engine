@@ -57,6 +57,6 @@ export default class ScreenSpaceGizmo {
     static drawGizmo() {
         if (!GizmoSystem.mainEntity || GizmoSystem.clickedAxis >= 0)
             return
-        GizmoAPI.drawGizmo(GizmoSystem.screenSpaceMesh, GizmoSystem.mainEntity.__cacheCenterMatrix, AXIS.SCREEN_SPACE, PICK_ID_SS_GIZMO, GizmoSystem.mainEntity.pivotPoint, GizmoSystem.clickedAxis)
+        GizmoAPI.drawGizmo(GizmoSystem.screenSpaceMesh, GizmoSystem.mainEntity.__cacheCenterMatrix, AXIS.SCREEN_SPACE, PICK_ID_SS_GIZMO, GizmoSystem.mainEntity.__pivotOffset, GizmoSystem.clickedAxis)
     }
 }

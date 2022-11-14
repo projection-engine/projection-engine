@@ -23,21 +23,23 @@ export default class GizmoAPI {
             mat4.fromRotationTranslationScaleOrigin(
                 matrix,
                 quat.multiply([], isRelative ? GizmoSystem.targetRotation : m.parent._rotationQuat, q),
-                vec3.add([], GizmoSystem.mainEntity.pivotPoint, t),
+                vec3.add([], m.__pivotOffset, t),
                 s,
                 t
             )
         else {
-            matrix[12] += GizmoSystem.mainEntity.pivotPoint[0]
-            matrix[13] += GizmoSystem.mainEntity.pivotPoint[1]
-            matrix[14] += GizmoSystem.mainEntity.pivotPoint[2]
+            console.log(GizmoSystem.mainEntity.__pivotOffset)
+            matrix[12] += m.__pivotOffset[0]
+            matrix[13] += m.__pivotOffset[1]
+            matrix[14] += m.__pivotOffset[2]
         }
     }
 
     static drawGizmo(mesh, transformMatrix, axis, uID) {
+        console.log(GizmoSystem.mainEntity.__pivotOffset)
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
-            translation: GizmoSystem.mainEntity.pivotPoint,
+            translation: GizmoSystem.mainEntity.__pivotOffset,
             axis,
             selectedAxis: GizmoSystem.clickedAxis,
             uID,

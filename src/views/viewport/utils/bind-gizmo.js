@@ -1,5 +1,4 @@
 import GIZMOS from "../../../static/GIZMOS";
-import Engine from "../../../../public/engine/Engine";
 import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
 import Wrapper from "../../../lib/engine-tools/Wrapper";
 

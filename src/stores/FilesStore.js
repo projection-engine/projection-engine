@@ -6,6 +6,7 @@ import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
+
 const contentBrowserStore = writable({
     isLoading: true,
     items: [],

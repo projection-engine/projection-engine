@@ -1,8 +1,6 @@
 import EngineStore from "../../stores/EngineStore";
-import {v4} from "uuid";
 import UndoRedo from "./UndoRedo";
 import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
-import Engine from "../../../public/engine/Engine";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
@@ -32,7 +30,6 @@ export default class UndoRedoAPI {
     }
 
     static undo() {
-        console.log(UndoRedoAPI.engineCache.history)
         const action = UndoRedoAPI.engineCache.undo()
         if (action) {
             alert.pushAlert(LOCALIZATION_EN.UNDOING_CHANGES, "info")

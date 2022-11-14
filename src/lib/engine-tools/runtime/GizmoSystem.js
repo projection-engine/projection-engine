@@ -2,23 +2,17 @@ import TranslationGizmo from "../lib/transformation/TranslationGizmo"
 import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
 import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
-import getPickerId from "../../../../public/engine/utils/get-picker-id"
-import GizmoAPI from "../lib/GizmoAPI";
 import Movable from "../../../../public/engine/instances/Movable";
 import TransformationAPI from "../../../../public/engine/lib/math/TransformationAPI";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
-import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GPU from "../../../../public/engine/GPU";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
-import TransformationPass from "../../../../public/engine/runtime/misc/TransformationPass";
 import AXIS from "../static/AXIS";
 import LineAPI from "../../../../public/engine/lib/rendering/LineAPI";
 import {mat4, vec3} from "gl-matrix";
-import IconsSystem from "./IconsSystem";
-import GBuffer from "../../../../public/engine/runtime/rendering/GBuffer";
-import Wrapper from "../Wrapper";
+import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
+import findGizmoTarget from "../utils/find-gizmo-target";
 
 const VEC_CACHE = vec3.create()
 const M = mat4.create()
@@ -86,71 +80,16 @@ export default class GizmoSystem {
         GizmoSystem.rotationGizmo = new RotationGizmo()
     }
 
-    static drawToDepthSampler(mesh, transforms) {
-        const FBO = GBuffer.gBuffer
-        const data = {
-            translation: GizmoSystem.mainEntity.pivotPoint,
-            cameraIsOrthographic: CameraAPI.isOrthographic
-        }
-        gpu.disable(gpu.CULL_FACE)
-        FBO.startMapping()
-
-        for (let i = 0; i < transforms.length; i++) {
-            GizmoSystem.toBufferShader.bindForUse({
-                ...data,
-                transformMatrix: transforms[i],
-                uID: getPickerId(i + 2),
-            })
-            mesh.draw()
-        }
-
-        GizmoSystem.toBufferShader.bindForUse({
-            ...data,
-            transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
-            uID: getPickerId(1)
-        })
-        GizmoSystem.screenSpaceMesh.draw()
-
-        DualAxisGizmo.drawToBuffer(data)
-        FBO.stopMapping()
-
-        gpu.enable(gpu.CULL_FACE)
-    }
-
-    static #findMainEntity(main) {
-        if (main && main === GizmoSystem.mainEntity)
-            return
-
-        if (!main) {
-            GizmoSystem.targetGizmo = undefined
-            GizmoSystem.mainEntity = undefined
-
-        } else if (GizmoSystem.mainEntity !== main && GizmoSystem.targetGizmo) {
-
-            main.__pivotChanged = true
-            GizmoSystem.mainEntity = main
-            GizmoSystem.targetGizmo.transformGizmo()
-            GizmoSystem.targetRotation = main._rotationQuat
-        }
-    }
 
 
 
     static execute() {
-        const selected = Wrapper.selected
-        const valid = selected.length > 0
+        const m = GizmoSystem.mainEntity
 
-        if (valid)
-            GizmoSystem.#findMainEntity(selected[0])
-        if (valid && GizmoSystem.mainEntity != null) {
-            const m = GizmoSystem.mainEntity
-            if (m.__changedBuffer[1] === 1 || m.__pivotChanged) {
-                IconsSystem.getMatrix(m)
-                GizmoSystem.targetGizmo.transformGizmo()
-                m.__pivotChanged = false
-            }
+        findGizmoTarget()
+        if (m != null) {
+            getPivotPointMatrix(m)
             const t = GizmoSystem.targetGizmo
-            GizmoSystem.#findMainEntity(selected[0])
             if (t) {
                 t.drawGizmo()
                 ScreenSpaceGizmo.drawGizmo()
@@ -177,8 +116,7 @@ export default class GizmoSystem {
                 }
             }
 
-        } else if (GizmoSystem.targetGizmo || !selected[0]) {
-            GizmoSystem.targetGizmo = undefined
+        } else {
             GizmoSystem.mainEntity = undefined
             GizmoSystem.hasStarted = false
         }

@@ -35,7 +35,6 @@
         name: Localization[value],
         id: value
     }))
-    $: console.log(viewTemplates)
     onDestroy(() => {
 
         unsubscribeTabs()

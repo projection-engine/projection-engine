@@ -10,7 +10,6 @@
     import {v4} from "uuid";
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Notification from "./Notification.svelte";
-    import ConsoleAPI from "../../../public/engine/lib/utils/ConsoleAPI";
     import Localization from "../../templates/LOCALIZATION_EN";
     import openBottomView from "../../utils/open-bottom-view";
     import DiffuseProbePass from "../../../public/engine/runtime/rendering/DiffuseProbePass";

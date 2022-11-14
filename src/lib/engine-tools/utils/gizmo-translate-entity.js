@@ -24,8 +24,14 @@ export default function gizmoTranslateEntity(event){
             if (target.lockedTranslation)
                 continue
 
-            vec3.add(target.pivotPoint, target.pivotPoint, TranslationGizmo.cache)
+
             if (SIZE === 1 && event.altKey) {
+                vec3.add(target.pivotPoint, target.pivotPoint, TranslationGizmo.cache)
+
+                target.pivotPoint[0] = Math.round(target.pivotPoint[0] / g) * g
+                target.pivotPoint[1] = Math.round(target.pivotPoint[1] / g) * g
+                target.pivotPoint[2] = Math.round(target.pivotPoint[2] / g) * g
+
                 target.__pivotChanged = true
                 continue
             }
@@ -36,9 +42,6 @@ export default function gizmoTranslateEntity(event){
             target._translation[1] = Math.round(target._translation[1] / g) * g
             target._translation[2] = Math.round(target._translation[2] / g) * g
 
-            target.pivotPoint[0] = Math.round(target.pivotPoint[0] / g) * g
-            target.pivotPoint[1] = Math.round(target.pivotPoint[1] / g) * g
-            target.pivotPoint[2] = Math.round(target.pivotPoint[2] / g) * g
 
             target.__changedBuffer[0] = 1
         }

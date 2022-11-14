@@ -21,7 +21,6 @@ export default class EntityConstructor {
     static translateEntity(entity, rotation= CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
         if (SettingsStore.data.spawnOnOrigin) {
             vec3.copy(entity._translation, [0, 0, 0])
-            vec3.copy(entity.pivotPoint, [0, 0, 0])
             entity.__changedBuffer[0] = 1
             return
         }
@@ -29,7 +28,6 @@ export default class EntityConstructor {
         const position = [0, 0, -(SettingsStore.data.spawnDistanceFromCamera || 10), 1]
         vec4.transformQuat(position, position, rotation)
         vec3.add(entity._translation, translation, position)
-        vec3.add(entity.pivotPoint, translation, position)
         entity.__changedBuffer[0] = 1
     }
 

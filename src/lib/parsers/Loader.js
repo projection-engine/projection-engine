@@ -21,7 +21,6 @@ import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import FileSystemAPI from "../../../public/engine/lib/utils/FileSystemAPI";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 let translationCache = vec3.create()
@@ -70,7 +69,6 @@ export default class Loader {
                     }
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
                     entity.id = currentEntity.id
-                    console.log(currentEntity.id)
                     entity.parentCache = currentEntity.parent || root.id
 
                     entities.push(entity)

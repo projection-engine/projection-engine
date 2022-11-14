@@ -1,15 +1,14 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import HotKeysController from "../../lib/utils/HotKeysController";
     import Localization from "../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+
     const {shell} = window.require("electron")
 
     let settings = {}

@@ -2,8 +2,6 @@ import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MES
 import GPU from "../../../../public/engine/GPU";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../../../public/engine/static/COLLISION_TYPES";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import Engine from "../../../../public/engine/Engine";
 import {mat4, vec3} from "gl-matrix";
 
 const EMPTY_MATRIX = mat4.create()

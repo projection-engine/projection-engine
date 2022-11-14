@@ -3,9 +3,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import {onMount} from "svelte";
     import GPU from "../../public/engine/GPU";
-    import GBuffer from "../../public/engine/runtime/rendering/GBuffer";
     import SettingsStore from "../stores/SettingsStore";
-    import Engine from "../../public/engine/Engine";
     import Localization from "../templates/LOCALIZATION_EN";
     import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
     import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";

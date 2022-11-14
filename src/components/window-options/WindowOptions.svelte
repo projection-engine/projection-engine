@@ -1,6 +1,6 @@
 <script>
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";

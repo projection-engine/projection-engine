@@ -3,6 +3,7 @@ import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
 import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
+import getPivotPointTranslation from "./get-pivot-point-translation";
 
 export default function gizmoRotateEntity(vec, screenSpace) {
     const targets = Wrapper.selected, SIZE = targets.length
@@ -28,8 +29,10 @@ export default function gizmoRotateEntity(vec, screenSpace) {
             quat.copy(target._rotationQuat, quatA)
             continue
         }
-        const translated = vec3.sub([], target._translation, target.pivotPoint)
-        vec3.add(target._translation, vec3.transformQuat([], translated, quatA), target.pivotPoint)
+        if(!target.__pivotOffset)
+            getPivotPointTranslation(target)
+        const translated = vec3.sub([], target._translation, target.__pivotOffset)
+        vec3.add(target._translation, vec3.transformQuat([], translated, quatA), target.__pivotOffset)
 
         if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1)
             quat.multiply(target._rotationQuat, quatA, target._rotationQuat)

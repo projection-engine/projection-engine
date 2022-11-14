@@ -24,7 +24,6 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        console.log(settings.resolution[1])
         Engine.initialize(
             canvasRef,
             {w: settings.resolution[0], h: settings.resolution[1]},

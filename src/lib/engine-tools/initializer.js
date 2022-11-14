@@ -21,7 +21,6 @@ import GizmoSystem from "./runtime/GizmoSystem";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
 import DEBUGGlsl from "./shaders/DEBUG.glsl";
-import UndoRedoAPI from "../utils/UndoRedoAPI";
 import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";

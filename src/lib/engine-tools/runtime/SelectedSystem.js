@@ -1,8 +1,6 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js"
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import GPU from "../../../../public/engine/GPU";
 import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-import QueryAPI from "../../../../public/engine/lib/utils/QueryAPI";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 

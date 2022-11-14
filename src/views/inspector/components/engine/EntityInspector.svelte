@@ -1,7 +1,6 @@
 <script>
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
-    import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import {onDestroy, onMount} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
@@ -13,7 +12,6 @@
     import updateEntityComponent from "../../utils/update-entity-component";
 
     import getEntityTabs from "../../utils/get-entity-tabs";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
     import TransformationForm from "./TransformationForm.svelte";
 
     export let entity

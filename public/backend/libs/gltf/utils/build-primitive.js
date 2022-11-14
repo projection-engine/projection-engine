@@ -26,11 +26,7 @@ export default async function buildPrimitive(materialsMap, meshName, index, prim
         maxBoundingBox: max,
         minBoundingBox: min,
         name: meshName + "-" + index,
-        baseTransformationMatrix: IDENTITY,
-        _rotationQuat: [0, 0, 0, 1],
-        translation: [0, 0, 0],
-        scaling: [1, 1, 1],
-        pivotPoint: [0, 0, 0]
+        baseTransformationMatrix: IDENTITY
     }
 
 }

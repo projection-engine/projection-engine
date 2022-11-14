@@ -11,6 +11,7 @@ import STATIC_TEXTURES from "../../../../../public/engine/static/resources/STATI
 import Wrapper from "../../Wrapper";
 import UndoRedoAPI from "../../../utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";
+import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
 
 const toRad = Math.PI / 180
 
@@ -92,7 +93,7 @@ export default class RotationGizmo {
     #testClick() {
         if (!GizmoSystem.mainEntity)
             return
-        GizmoSystem.drawToDepthSampler(GizmoSystem.rotationGizmoMesh, [
+        drawGizmoToDepth(GizmoSystem.rotationGizmoMesh, [
             this.xGizmo.matrix,
             this.yGizmo.matrix,
             this.zGizmo.matrix,
@@ -124,9 +125,9 @@ export default class RotationGizmo {
                 break
         }
 
-        matrix[12] += GizmoSystem.mainEntity.pivotPoint[0]
-        matrix[13] += GizmoSystem.mainEntity.pivotPoint[1]
-        matrix[14] += GizmoSystem.mainEntity.pivotPoint[2]
+        matrix[12] += GizmoSystem.mainEntity.__pivotOffset[0]
+        matrix[13] += GizmoSystem.mainEntity.__pivotOffset[1]
+        matrix[14] += GizmoSystem.mainEntity.__pivotOffset[2]
 
         if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
             switch (axis) {
@@ -143,7 +144,7 @@ export default class RotationGizmo {
                     break
             }
         } else if (axis !== undefined)
-            return mat4.fromRotationTranslationScale(matrix, quat.multiply([], GizmoSystem.targetRotation, entity._rotationQuat), GizmoSystem.mainEntity.pivotPoint, entity.scaling)
+            return mat4.fromRotationTranslationScale(matrix, quat.multiply([], GizmoSystem.targetRotation, entity._rotationQuat), GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
 
         return matrix
     }
@@ -172,7 +173,7 @@ export default class RotationGizmo {
         RotationGizmo.shader.bindForUse({
             transformMatrix,
             axis,
-            translation: GizmoSystem.mainEntity.pivotPoint,
+            translation: GizmoSystem.mainEntity.__pivotOffset,
             uID: [...id, 1],
             selectedAxis: GizmoSystem.clickedAxis,
             circleSampler: this.texture.texture,

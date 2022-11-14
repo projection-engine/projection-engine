@@ -7,7 +7,6 @@
     import {onDestroy} from "svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import gizmoRotateEntity from "../../../../lib/engine-tools/utils/gizmo-rotate-entity";
     import {quat} from "gl-matrix";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
@@ -104,9 +103,7 @@
         if (!hasStarted) {
             hasStarted = true
             UndoRedoAPI.save(targets, ACTION_HISTORY_TARGETS.ENGINE)
-        }
-        if (isTranslation)
-            transformPivot(axis, value)
+        } 
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
             if (!isTranslation) {

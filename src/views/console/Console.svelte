@@ -10,7 +10,6 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "shared-resources/frontend/components/create-portal";
-    import VIEWS from "../../components/view/static/VIEWS";
 
 
     export let switchView = undefined

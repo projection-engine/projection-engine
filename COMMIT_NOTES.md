@@ -1,5 +1,3 @@
-- Fixed error logger bug (stack error)
-- Reworking glTF node mapping structure
-- Reworked hierarchical transformation structure
-- Removed normal matrix from movement-worker, shaders and entity
-- Fixing entity spawning in hierarchy
+- Reworking pivot point
+- Optimizing gizmo system
+- Removing transformations from gltf and assimp imports
