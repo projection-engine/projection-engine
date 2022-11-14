@@ -1,7 +1,6 @@
 import BOARD_SIZE from "./data/BOARD_SIZE";
 import materialCompiler from "../../lib/engine-tools/lib/material-compiler/material-compiler";
 import Material from "../../../public/engine/instances/Material";
-import PreviewSystem from "../../lib/engine-tools/runtime/PreviewSystem";
 import AssetAPI from "../../lib/fs/AssetAPI";
 import Localization from "../../templates/LOCALIZATION_EN";
 import getNewInstance from "./utils/get-new-instance";
@@ -80,7 +79,7 @@ export default class ShaderEditorController {
         const parsedNodes = nodes.map(ShaderEditorController.#serializeNode)
         const compiled = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
-        let preview
+
         if (isSave) {
             let material
             if (GPU.materials.get(id)) {
@@ -95,26 +94,26 @@ export default class ShaderEditorController {
                         settings: compiled.settings
                     })
                 })
-            preview = PreviewSystem.execute(material)
         }
 
-        return {compiled, preview, parsedNodes}
+        return {compiled, parsedNodes}
     }
 
     static async save(openFile, nodes, links) {
-
-        const {compiled, preview, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
-
-        AssetAPI.updateAsset(
-            openFile?.registryID,
-            JSON.stringify({
-                nodes: parsedNodes,
-                links: links,
-                response: compiled,
-                type: compiled.variant
-            }),
-            preview
-        ).then(() => alert.pushAlert(Localization.SAVED, "success",))
-            .catch(() => alert.pushAlert(Localization.ERROR, "error"))
+        try {
+            const {compiled, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
+            await AssetAPI.updateAsset(
+                openFile?.registryID,
+                JSON.stringify({
+                    nodes: parsedNodes,
+                    links: links,
+                    response: compiled,
+                    type: compiled.variant
+                })
+            )
+            alert.pushAlert(Localization.SAVED, "success")
+        } catch (err) {
+            console.error(err)
+        }
     }
 }

@@ -8,6 +8,8 @@ import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import {v4} from "uuid";
+import DataController from "./instances/DataController";
+import linkNodeToStructure from "./utils/link-node-to-structure";
 
 /**
  * Execution order:
@@ -15,6 +17,7 @@ import {v4} from "uuid";
  */
 const fs = require("fs"), path = require("path")
 export default async function glTF(targetDirectory, pathToFile, file) {
+
     let resourceRoot = pathToFile.split(path.sep)
     resourceRoot.pop()
     resourceRoot = resourceRoot.join(path.sep)
@@ -47,6 +50,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
     }
 
     try {
+        DataController.reset()
         for (let i = 0; i < file.buffers.length; i++) {
             const data = file.buffers[i]
 
@@ -79,7 +83,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                     const ID = v4()
                     const data = file.materials[i]
                     const material = await buildMaterial(file.textures, images, data, textureMap)
-                    if(!material)
+                    if (!material)
                         continue
                     const name = "material-" + i
                     const pathToAsset = basePath + path.sep + "materials" + path.sep + name + FILE_TYPES.SIMPLE_MATERIAL
@@ -93,7 +97,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
         const toUpdateTextures = Object.entries(textureMap)
 
-        for(let i =0; i < toUpdateTextures.length; i++){
+        for (let i = 0; i < toUpdateTextures.length; i++) {
             const [ID, texture] = toUpdateTextures[i]
             const name = "texture-" + i
             const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FILE_TYPES.TEXTURE
@@ -117,19 +121,26 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             }
         }
 
-
         for (let i = 0; i < file.nodes.length; i++) {
             try {
                 const data = file.nodes[i]
-                buildNode(i, file.nodes, scene, nodes, primitives, data)
+                buildNode(i, data, scene, primitives)
             } catch (err) {
                 console.error(err)
             }
         }
+        scene.entities.forEach(e => {
+            linkNodeToStructure(e)
+            delete e.index
+            delete e.mesh
+            delete e.children
+        })
+
         const pathToAsset = basePath + path.sep + scene.name + FILE_TYPES.COLLECTION
         await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
         await createRegistryEntry(v4(), pathToAsset.replace(ProjectMap.pathToAssets, ""))
     } catch (error) {
         console.error(error)
     }
+    DataController.reset()
 }

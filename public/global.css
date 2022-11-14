@@ -380,7 +380,7 @@ pre[data-pre="-"] {
 }
 .button.viewport {
     height: 25px;
-    padding: 4px 8px;
+    padding: 4px 10px;
     border-radius: 25px;
 
     display: flex;

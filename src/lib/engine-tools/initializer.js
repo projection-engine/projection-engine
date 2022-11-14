@@ -16,7 +16,6 @@ import ENVIRONMENT from "../../../public/engine/static/ENVIRONMENT";
 import GridSystem from "./runtime/GridSystem";
 import IconsSystem from "./runtime/IconsSystem";
 import SelectedSystem from "./runtime/SelectedSystem";
-import PreviewSystem from "./runtime/PreviewSystem";
 import BackgroundSystem from "./runtime/BackgroundSystem";
 import GizmoSystem from "./runtime/GizmoSystem";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
@@ -62,7 +61,6 @@ export default async function initializer() {
     GridSystem.initialize()
     IconsSystem.initialize()
     SelectedSystem.initialize()
-    PreviewSystem.initialize()
     GizmoSystem.initialize()
 
 }

@@ -8,8 +8,7 @@ precision highp float;
 in vec4 previousScreenPosition;
 in vec4 currentScreenPosition;
  
-in vec3 normalVec;
-in mat4 normalMatrix;
+in vec3 normalVec; 
 in mat3 toTangentSpace;
 in vec3 viewDirection;
 in vec2 texCoords;

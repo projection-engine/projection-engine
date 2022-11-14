@@ -27,15 +27,12 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         entity._rotationQuat[3] = data._rotationQuat[3]
         entity.changed = true
 
-        if (entity.baseTransformationMatrix)
-            for (let i = 0; i < entity.baseTransformationMatrix.length; i++)
-                entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
+        for (let i = 0; i < 16; i++)
+            entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
 
-        if (data.pivotPoint) {
-            entity.pivotPoint[0] = data.pivotPoint[0]
-            entity.pivotPoint[1] = data.pivotPoint[1]
-            entity.pivotPoint[2] = data.pivotPoint[2]
-        }
+        entity.pivotPoint[0] = entity.baseTransformationMatrix[12]
+        entity.pivotPoint[1] = entity.baseTransformationMatrix[13]
+        entity.pivotPoint[2] = entity.baseTransformationMatrix[14]
 
         const e = entity.addComponent(COMPONENTS.MESH)
         e.materialID = data.material

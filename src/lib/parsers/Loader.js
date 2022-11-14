@@ -50,13 +50,9 @@ export default class Loader {
         const entities = []
         const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(NodeFS.sep).pop())
         entities.push(root)
-        vec3.copy(translationCache, CameraAPI.translationBuffer)
-        vec4.copy(rotationCache, CameraAPI.rotationBuffer)
+        EntityConstructor.translateEntity(root)
         try {
             if (file) {
-                // file.entities.forEach(v => {
-                //     v.id
-                // })
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
                     if(currentEntity.meshID) {
@@ -76,7 +72,7 @@ export default class Loader {
                     entity.id = currentEntity.id
                     console.log(currentEntity.id)
                     entity.parentCache = currentEntity.parent || root.id
-                    EntityConstructor.translateEntity(entity, rotationCache, translationCache)
+
                     entities.push(entity)
                 }
                 dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})

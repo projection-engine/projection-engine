@@ -1,6 +1,5 @@
-- Fixing new transformation form for group transformations
-- Fixing gizmo transformation
-- Optimizing gizmo system structure
-- Fixing pivot point transformation 
-- Removed entities that don't have meshes or children from gltf import
-- Fixed scene import not linking entities to hierarchy
+- Fixed error logger bug (stack error)
+- Reworking glTF node mapping structure
+- Reworked hierarchical transformation structure
+- Removed normal matrix from movement-worker, shaders and entity
+- Fixing entity spawning in hierarchy

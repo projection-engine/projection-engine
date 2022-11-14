@@ -15,8 +15,7 @@ uniform vec3 cameraPosition;
 uniform mat4 pointLightData[MAX_POINT_LIGHTS];
 uniform int lightQuantity;
 
-in vec3 normalVec;
-in mat4 normalMatrix; 
+in vec3 normalVec; 
 in vec3 viewDirection;  
 uniform float elapsedTime;
 uniform int shadingModel; 

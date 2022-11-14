@@ -1,63 +1,54 @@
 import {mat4, quat} from "gl-matrix";
 import {v4} from "uuid";
+import DataController from "../instances/DataController";
 
-const IDENTITY = Array.from(mat4.create())
-export default function buildNode(index, allNodes, sceneMap, nodesMap, primitivesMap, node, parentID, primitiveID) {
-    if (!node.children && node.mesh === undefined) {
-        console.error("IGNORING", node)
+export default function buildNode(index, node, sceneMap, primitivesMap) {
+    if (!node.children && node.mesh === undefined)
         return;
-    }
-    if (!primitiveID && node.mesh !== undefined) {
-        const meshes = primitivesMap[node.mesh]
-        for (let i = 0; i < meshes.length; i++)
-            buildNode(undefined, allNodes, sceneMap, nodesMap, primitivesMap, node, parentID, meshes[i])
-    }
-
-    if (index !== undefined && nodesMap[index])
-        return;
-    else if (index !== undefined)
-        nodesMap[index] = true
-
-    const ID = v4()
-
     const parsedNode = {
-        id: ID,
-        parent: parentID,
-        meshID: primitiveID,
+        id: v4(),
+
+        children: node.children,
+        mesh: node.mesh,
+        index,
+
         name: node.name,
         scaling: [1, 1, 1],
-        _rotationQuat: [0, 0, 0],
+        _rotationQuat: [0, 0, 0, 1],
         translation: [0, 0, 0],
-        baseTransformationMatrix: IDENTITY
+        baseTransformationMatrix: []
     }
 
     if (node.matrix)
-        parsedNode.baseTransformationMatrix = Array.from(node.matrix)
-    else {
-        let translation = node.translation,
-            rotation = node.rotation,
-            scale = node.scale
-
-        if (!translation)
-            translation = [0, 0, 0]
-        if (!scale)
-            scale = [1, 1, 1]
-
-        if (!rotation)
-            parsedNode._rotationQuat = [0, 0, 0, 1]
-        else
-            parsedNode._rotationQuat = Array.from(quat.normalize([], rotation))
-
-
-        parsedNode.scaling = scale
-        parsedNode.translation = translation
-        parsedNode.pivotPoint = translation
-
-    }
+        parsedNode.baseTransformationMatrix = node.matrix
+    else
+        mat4.fromRotationTranslationScale(
+            parsedNode.baseTransformationMatrix,
+            [0, 0, 0, 1] || quat.normalize([], node.rotation),
+            node.translation || [0, 0, 0],
+            node.scale || [1, 1, 1]
+        )
+    parsedNode.baseTransformationMatrix = Array.from(parsedNode.baseTransformationMatrix)
 
     sceneMap.entities.push(parsedNode)
-    if (!node.children || primitiveID !== undefined)
-        return
-    for (let i = 0; i < node.children.length; i++)
-        buildNode(node.children[i], allNodes, sceneMap, nodesMap, primitivesMap, allNodes[node.children[i]], ID)
+    !DataController.glTFHierarchyNodes.get(parsedNode.index) && DataController.glTFHierarchyNodes.set(parsedNode.index, [])
+    const m = DataController.glTFHierarchyNodes.get(parsedNode.index)
+    m.push(parsedNode)
+    if (parsedNode.mesh !== undefined) {
+        const primitives = primitivesMap[parsedNode.mesh]
+        for (let i = 0; i < primitives.length; i++) {
+            const primitiveID = primitives[i]
+            if (!primitiveID)
+                continue
+            if (i > 1) {
+                const clone = {...parsedNode}
+                clone.id = v4()
+                clone.meshID = primitiveID
+                sceneMap.entities.push(clone)
+                m.push(clone)
+            } else
+                parsedNode.meshID = primitiveID
+
+        }
+    }
 }

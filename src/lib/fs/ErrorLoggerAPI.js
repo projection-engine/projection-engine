@@ -27,6 +27,8 @@ export default class ErrorLoggerAPI {
                 ErrorLoggerAPI.#timeout = setTimeout(() => {
                     const date = new Date()
                     const parsed = messages.map(m => {
+                        if(!m)
+                            return
                         let message, cause, stack = m.stack
                         if (m instanceof Error) {
                             cause = m.cause

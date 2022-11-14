@@ -13,7 +13,7 @@ export default function getItemDragData(icon, childQuantity, data, items, setOnD
             setOnDrag(true)
             const ss = SelectionStore.contentBrowserSelected.map(s => items.find(i => i.id === s))
             if (ss.length > 0)
-                return JSON.stringify(ss.map(s => s.registryID))
+                return JSON.stringify(ss.map(s => s?.registryID))
             return JSON.stringify([type === 1 ? data.registryID : data.id])
         }
     }
