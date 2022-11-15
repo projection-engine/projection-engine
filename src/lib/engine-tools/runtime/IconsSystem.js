@@ -64,10 +64,7 @@ export default class IconsSystem {
             if (!current.active)
                 continue
             attr.highlight = Wrapper.selectionMap.get(current.id) != null
-            if (current.__changedBuffer[1] === 1 || !current.cacheIconMatrix)
-                current.cacheIconMatrix = TransformationAPI.mat4.fromRotationTranslationScale([], current._rotationQuat, current._translation, CAMERA_SCALE)
-
-            attr.transformMatrix = current.cacheIconMatrix
+            attr.transformMatrix = current.__cacheCenterMatrix
             IconsSystem.shader.bindForUse(attr)
             IconsSystem.cameraMesh.draw()
         }

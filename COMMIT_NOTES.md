@@ -1,3 +1,1 @@
-- Fixed lens post-processing doing bloom computation even when not used
-- Tweaked static FBOs
-- Added static pipeline to simple material
+- Fixed camera icon rendering position
