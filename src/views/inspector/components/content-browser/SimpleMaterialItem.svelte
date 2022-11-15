@@ -9,7 +9,8 @@
     } from "../../../../../public/engine/static/SIMPLE_MATERIAL_UNIFORMS";
     import getUniformObject from "../../utils/get-uniform-object";
     import updateMaterialAsset from "../../utils/update-material-asset";
-
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
 
     export let item
     export let data
@@ -47,7 +48,68 @@
         updateAsset("uvScales", newRGB)
     }
 </script>
-
+<fieldset>
+    <legend>{Localization.SETTINGS}</legend>
+    <Checkbox
+            checked={temp.noDepthTest}
+            handleCheck={_ => {
+                temp.noDepthTest = !temp.noDepthTest
+                updateAsset()
+            }}
+            label={Localization.NO_DEPTH_TEST}
+    />
+    <Dropdown buttonStyles="background: var(--background-input); border-radius: 3px">
+        <button slot="button" data-inline="-" style="justify-content: space-between; border: none; width: 100%;">
+            <strong>{Localization.CULL_FACE}</strong>
+            <small>
+                {#if !temp.cullFace}
+                    {Localization.NONE}
+                {:else}
+                    {Localization[temp.cullFace]}
+                {/if}
+            </small>
+        </button>
+        <button
+                on:click={_ => {
+                    temp.cullFace = "BACK"
+                    updateAsset()
+                }}
+        >
+            {#if temp.cullFace === "BACK"}
+                <Icon>check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {Localization.BACK}
+        </button>
+        <button
+                on:click={_ => {
+                    temp.cullFace = "FRONT"
+                    updateAsset()
+                }}
+        >
+            {#if temp.cullFace === "FRONT"}
+                <Icon>check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {Localization.FRONT}
+        </button>
+        <button
+                on:click={_ => {
+                    temp.cullFace = undefined
+                    updateAsset()
+                }}
+        >
+            {#if !temp.cullFace }
+                <Icon>check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {Localization.NONE}
+        </button>
+    </Dropdown>
+</fieldset>
 <fieldset>
     <legend>{Localization.ALBEDO}</legend>
 

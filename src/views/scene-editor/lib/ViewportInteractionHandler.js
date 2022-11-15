@@ -22,27 +22,21 @@ export default class ViewportInteractionHandler {
         parentElement.removeEventListener("mouseup", ViewportInteractionHandler.onMouseUp)
     }
 
-    static gizmoMouseMove(event) {
-        if (GizmoSystem.targetGizmo)
-            GizmoSystem.targetGizmo.onMouseMove(event)
-    }
 
     static onMouseDown(e) {
         if (!Engine.isReady || e.button !== LEFT_BUTTON)
             return
         ViewportInteractionHandler.mouseDelta = {x: e.clientX, y: e.clientY}
-        if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseDown(e)
-            e.currentTarget.targetGizmo = GizmoSystem.targetGizmo
-            document.addEventListener("mousemove", ViewportInteractionHandler.gizmoMouseMove)
-        }
+
+        GizmoSystem.targetGizmo.onMouseDown(e)
+        document.addEventListener("mousemove", GizmoSystem.targetGizmo.onMouseMove)
+
     }
 
     static onMouseUp(event) {
-        if (GizmoSystem.targetGizmo) {
-            GizmoSystem.targetGizmo.onMouseUp()
-            document.removeEventListener("mousemove", ViewportInteractionHandler.gizmoMouseMove)
-        }
+        GizmoSystem.targetGizmo.onMouseUp()
+        document.removeEventListener("mousemove", GizmoSystem.targetGizmo.onMouseMove)
+
         if (!Engine.isReady)
             return
         onViewportClick(

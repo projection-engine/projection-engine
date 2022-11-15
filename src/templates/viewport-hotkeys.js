@@ -91,7 +91,7 @@ export default function viewportHotkeys(settings) {
             callback: () => {
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++)
-                    EntityConstructor.hideEntity(Engine.entitiesMap.get(selected[i]), false)
+                    EntityConstructor.toggleEntityVisibility(Engine.entitiesMap.get(selected[i]), false)
                 EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
             },
             require: settings.viewportHotkeys.HIDE_ACTIVE,

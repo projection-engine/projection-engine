@@ -77,7 +77,7 @@ export default class DualAxisGizmo {
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
             isDualAxis: true,
-            translation: GizmoSystem.mainEntity.pivotPoint,
+            translation: GizmoSystem.mainEntity.__pivotOffset,
             axis: isSurface ? undefined : axis,
             selectedAxis: GizmoSystem.clickedAxis,
             uID,

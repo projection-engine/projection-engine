@@ -4,8 +4,9 @@ import AssetAPI from "../../../lib/fs/AssetAPI";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 export default async function updateMaterialAsset(key, value, registryID, temp, setTemp, original, doUpdate=true) {
-    let valid = false
+    let valid = key === undefined
     const old = temp.uniformData
+
     if(original != null) {
         if (!old.find(u => u.key === key) && original.uniformData.find(u => u.key === key))
             old.push(original.uniformData.find(u => u.key === key))

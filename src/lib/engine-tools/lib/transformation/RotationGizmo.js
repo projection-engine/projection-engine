@@ -18,9 +18,8 @@ const toRad = Math.PI / 180
 export default class RotationGizmo {
     tracking = false
     static currentRotation = [0, 0, 0]
-    currentRotation = [0, 0, 0]
     static gridSize = toRad
-    currentIncrement = 0
+    static currentIncrement = 0
     static shader
 
     constructor() {
@@ -38,7 +37,7 @@ export default class RotationGizmo {
         this.x = event.clientX
         this.y = event.clientY
 
-        this.currentIncrement = 0
+        RotationGizmo.currentIncrement = 0
         this.#testClick()
     }
 
@@ -64,11 +63,11 @@ export default class RotationGizmo {
         }
 
         const g = event.ctrlKey ? toRad : RotationGizmo.gridSize * toRad
-        this.currentIncrement += event.movementX * GizmoSystem.sensitivity
-        const mappedValue = Math.round(this.currentIncrement / g) * g
+        RotationGizmo.currentIncrement += event.movementX * GizmoSystem.sensitivity
+        const mappedValue = Math.round(RotationGizmo.currentIncrement / g) * g
 
         if (Math.abs(mappedValue) > 0)
-            this.currentIncrement = 0
+            RotationGizmo.currentIncrement = 0
 
         switch (GizmoSystem.clickedAxis) {
             case AXIS.X:
@@ -112,6 +111,7 @@ export default class RotationGizmo {
     }
 
     #rotateGizmo(axis, entity) {
+        const m = GizmoSystem.mainEntity
         const matrix = entity.matrix
         switch (axis) {
             case "x":
@@ -125,9 +125,9 @@ export default class RotationGizmo {
                 break
         }
 
-        matrix[12] += GizmoSystem.mainEntity.__pivotOffset[0]
-        matrix[13] += GizmoSystem.mainEntity.__pivotOffset[1]
-        matrix[14] += GizmoSystem.mainEntity.__pivotOffset[2]
+        matrix[12] += m.__pivotOffset[0]
+        matrix[13] += m.__pivotOffset[1]
+        matrix[14] += m.__pivotOffset[2]
 
         if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
             switch (axis) {
@@ -150,6 +150,8 @@ export default class RotationGizmo {
     }
 
     transformGizmo() {
+        if(!GizmoSystem.mainEntity)
+            return
         this.#rotateGizmo("x", this.xGizmo)
         this.#rotateGizmo("y", this.yGizmo)
         this.#rotateGizmo("z", this.zGizmo)

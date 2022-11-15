@@ -14,13 +14,14 @@
         if(handleChange)
             handleChange(data, () => setState({name: "Empty"}))
     }
+    $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id === data.id
 </script>
 
 <button
 
         class="option-available-nodes selector"
         style="margin-bottom: 4px;"
-        data-highlight={state.registryID === data.registryID ? `-` : undefined}
+        data-highlight={isSelected ? `-` : undefined}
         on:click={onClick}
 >
     <DataIcon state={data} type={type}/>

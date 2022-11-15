@@ -77,7 +77,7 @@
     <button
             style="margin-left: 4px"
             class="button-small hierarchy-branch"
-            on:click={() => EntityConstructor.hideEntity(nodeRef)}
+            on:click={() => EntityConstructor.toggleEntityVisibility(nodeRef)}
     >
         <ToolTip content={Localization.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">

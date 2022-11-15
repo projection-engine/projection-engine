@@ -12,9 +12,7 @@ import AXIS from "../static/AXIS";
 import LineAPI from "../../../../public/engine/lib/rendering/LineAPI";
 import {mat4, vec3} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
-import findGizmoTarget from "../utils/find-gizmo-target";
 
-const VEC_CACHE = vec3.create()
 const M = mat4.create()
 const EMPTY_COMPONENT = new Movable()
 export default class GizmoSystem {
@@ -60,9 +58,11 @@ export default class GizmoSystem {
     static save
 
     static initialize() {
+
         GizmoSystem.screenSpaceMesh = GPU.meshes.get(STATIC_MESHES.PRODUCTION.SPHERE)
         GizmoSystem.dualAxisGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO)
         GizmoSystem.translationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO)
+
         GizmoSystem.rotationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.ROTATION_GIZMO)
         GizmoSystem.scaleGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.SCALE_GIZMO)
 
@@ -78,15 +78,12 @@ export default class GizmoSystem {
         GizmoSystem.translationGizmo = new TranslationGizmo()
         GizmoSystem.scaleGizmo = new ScalingGizmo()
         GizmoSystem.rotationGizmo = new RotationGizmo()
+        GizmoSystem.targetGizmo = GizmoSystem.translationGizmo
     }
-
-
 
 
     static execute() {
         const m = GizmoSystem.mainEntity
-
-        findGizmoTarget()
         if (m != null) {
             getPivotPointMatrix(m)
             const t = GizmoSystem.targetGizmo
@@ -116,10 +113,8 @@ export default class GizmoSystem {
                 }
             }
 
-        } else {
-            GizmoSystem.mainEntity = undefined
+        } else
             GizmoSystem.hasStarted = false
-        }
     }
 
 

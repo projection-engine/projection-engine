@@ -20,7 +20,7 @@ export default function gizmoRotateEntity(vec, screenSpace) {
         quat.rotateY(quatA, quatA, vec[1])
     if (vec[2] !== 0)
         quat.rotateZ(quatA, quatA, vec[2])
-
+    const inv = quat.invert([], quatA)
     for (let i = 0; i < SIZE; i++) {
         const target = targets[i]
         if (target.lockedRotation)
@@ -29,15 +29,11 @@ export default function gizmoRotateEntity(vec, screenSpace) {
             quat.copy(target._rotationQuat, quatA)
             continue
         }
-        if(!target.__pivotOffset)
-            getPivotPointTranslation(target)
-        const translated = vec3.sub([], target._translation, target.__pivotOffset)
-        vec3.add(target._translation, vec3.transformQuat([], translated, quatA), target.__pivotOffset)
 
         if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1)
             quat.multiply(target._rotationQuat, quatA, target._rotationQuat)
         else
             quat.multiply(target._rotationQuat, target._rotationQuat, quatA)
-        target.changed = true
+        target.__changedBuffer[0] = 1
     }
 }

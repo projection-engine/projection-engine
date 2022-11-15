@@ -1,3 +1,4 @@
+- AO fixed
+- Organizing gizmo system
 - Reworking pivot point
-- Optimizing gizmo system
-- Removing transformations from gltf and assimp imports
+- Adding cull face and depth test control to materials

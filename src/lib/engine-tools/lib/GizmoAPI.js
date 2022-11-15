@@ -28,7 +28,7 @@ export default class GizmoAPI {
                 t
             )
         else {
-            console.log(GizmoSystem.mainEntity.__pivotOffset)
+
             matrix[12] += m.__pivotOffset[0]
             matrix[13] += m.__pivotOffset[1]
             matrix[14] += m.__pivotOffset[2]
@@ -36,7 +36,6 @@ export default class GizmoAPI {
     }
 
     static drawGizmo(mesh, transformMatrix, axis, uID) {
-        console.log(GizmoSystem.mainEntity.__pivotOffset)
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
             translation: GizmoSystem.mainEntity.__pivotOffset,

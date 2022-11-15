@@ -86,7 +86,7 @@ export default class EntityConstructor {
 
     }
 
-    static hideEntity(nodeRef, submit = true) {
+    static toggleEntityVisibility(nodeRef, submit = true) {
         const loopHierarchy = (entity, newValue) => {
             for (let i = 0; i < entity.children.length; i++)
                 loopHierarchy(entity.children[i], newValue)

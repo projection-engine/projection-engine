@@ -1,4 +1,5 @@
 export default {
+    SETTINGS: "Settings",
     VELOCITY_DEF: "Per-object velocity",
     SHADING_VELOCITY: "Velocity",
     GRID: "Grid",
@@ -25,12 +26,15 @@ export default {
     EDITOR_COLOR_CORRECTION: "Editor color correction",
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
+    CULL_FACE: "Cull face",
     CAMERA_ANIMATION: "Camera smoothing",
     SAVING: "Saving project",
+    NO_DEPTH_TEST: "No depth test",
     MOTION_BLUR_SCALE: "Motion blur scale",
     SAVE: "Save",
     CENTER_POINT: "Center point",
     DYNAMIC: "Dynamic",
+    RELATIONS: "Relations",
     ASPECT_RATIO: "Aspect Ratio",
     VIGNETTE: "Vignette effect",
     BLUR_SAMPLES: "Blur samples",
@@ -39,6 +43,7 @@ export default {
     REDOING_CHANGES: "Redoing changes",
     TOGGLE_RECORD: "Toggle record",
     REDO :"Redo",
+    VISIBILITY: "Visibility",
     RESOLUTION_SCALE: "Resolution scale",
     CLICK_THE_RECORD_BUTTON_TO_RECORD: "Click the record button to start a new recording",
     REFRESH_SCRIPTS_AND_PROBES: "Reloads scripts and UI components and rebuild light probes",
@@ -61,6 +66,7 @@ export default {
     LEVEL: "Level",
     PLAY: "Play",
     REFRESH_STRUCTURE: "Refresh structure",
+    PARENT: "Parent",
 
     UPDATING_STRUCTURE: "Updating structure",
 
@@ -180,6 +186,7 @@ export default {
     LAYOUT: "Layout",
     ADD_DETAILS: "Add entity",
     ACTIVE_ENTITY: "Active Entity",
+    ACTIVE: "Active",
     DELETE_VIEW: "Delete view",
 
     SPOT_LIGHT: "SpotLight",

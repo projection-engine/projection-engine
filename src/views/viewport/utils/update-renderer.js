@@ -1,4 +1,4 @@
-import bindGizmo from "./bind-gizmo";
+
 import Engine from "../../../../public/engine/Engine";
 import CameraTracker from "../../../lib/engine-tools/lib/CameraTracker";
 import Wrapper from "../../../lib/engine-tools/Wrapper";
@@ -13,6 +13,7 @@ import Loop from "../../../../public/engine/Loop";
 import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
 import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
+import GIZMOS from "../../../static/GIZMOS";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -65,5 +66,15 @@ export default function updateRenderer(selected, engine, settings) {
     GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams(settings, settings.physicsSimulationStep, settings.physicsSubSteps)
 
-    bindGizmo(selected, settings)
+    switch (settings.gizmo) {
+        case GIZMOS.TRANSLATION:
+            GizmoSystem.targetGizmo = GizmoSystem.translationGizmo
+            break
+        case GIZMOS.ROTATION:
+            GizmoSystem.targetGizmo = GizmoSystem.rotationGizmo
+            break
+        case GIZMOS.SCALE:
+            GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
+            break
+    }
 }

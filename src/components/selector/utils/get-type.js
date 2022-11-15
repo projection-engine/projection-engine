@@ -1,3 +1,4 @@
+import Engine from "../../../../public/engine/Engine";
 
 
 export default function getType(store, type, mergeMaterials, terrainMaterials) {
@@ -20,6 +21,8 @@ export default function getType(store, type, mergeMaterials, terrainMaterials) {
 
         case "code":
             return [...store.uiLayouts, ...store.components]
+        case "parent":
+            return Engine.entities
         default:
             return []
     }

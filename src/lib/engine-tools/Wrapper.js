@@ -6,22 +6,38 @@ import BackgroundSystem from "./runtime/BackgroundSystem"
 import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
+import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
 
 let selected = []
 export default class Wrapper {
     static selected = selected
     static selectionMap = new Map()
+
     static updateSelectionData(data) {
         Wrapper.selectionMap.clear()
         selected = []
         Wrapper.selected = selected
         data.forEach(d => {
-            const c= Engine.entitiesMap.get(d)
-            if(c) {
+            const c = Engine.entitiesMap.get(d)
+            if (c) {
                 selected.push(c)
                 Wrapper.selectionMap.set(d, true)
             }
         })
+
+        const main = Wrapper.selected[0]
+        if(main) {
+            console.log("HERE")
+            getPivotPointMatrix(main)
+            main.__pivotChanged = true
+            GizmoSystem.mainEntity = main
+            GizmoSystem.targetGizmo.transformGizmo()
+            GizmoSystem.targetRotation = main._rotationQuat
+        }else {
+            GizmoSystem.targetRotation = undefined
+            GizmoSystem.mainEntity = undefined
+            GizmoSystem.hasStarted = false
+        }
     }
 
     static beforeDrawing() {
