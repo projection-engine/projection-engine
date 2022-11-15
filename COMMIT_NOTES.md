@@ -1,4 +1,3 @@
-- AO fixed
-- Organizing gizmo system
-- Reworking pivot point
-- Adding cull face and depth test control to materials
+- Fixed lens post-processing doing bloom computation even when not used
+- Tweaked static FBOs
+- Added static pipeline to simple material
