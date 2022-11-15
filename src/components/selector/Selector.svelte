@@ -32,7 +32,7 @@
     $: {
         if (type === "parent") {
             state = selected ? selected : {name: Localization.EMPTY}
-        } else {
+        } else if(selected) {
             if (selected === FALLBACK_MATERIAL)
                 state = {name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL}
             else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
@@ -48,9 +48,9 @@
                 else
                     state = {name: Localization.EMPTY}
             }
-        }
+        }else
+            state = {name: Localization.EMPTY}
     }
-    $: console.log(state, selected)
 </script>
 
 <div data-inline="-" class="wrapper" style={styles}>

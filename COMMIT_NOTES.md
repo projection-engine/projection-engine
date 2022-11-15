@@ -1,3 +1,1 @@
-- Fixing multiple bugs related to inspector
-- Reworked layout for inspector and preferences
-- Fixed selector showing selected element even when nothing really is selected
+- Fixing selector not cleaning state
