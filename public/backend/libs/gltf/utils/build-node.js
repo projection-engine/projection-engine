@@ -19,7 +19,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
     else
         mat4.fromRotationTranslationScale(
             parsedNode.baseTransformationMatrix,
-            quat.normalize([], node.rotation) || [0, 0, 0, 1],
+            quat.normalize([], node.rotation || [0, 0, 0, 1]),
             node.translation || [0, 0, 0],
             node.scale || [1, 1, 1]
         )

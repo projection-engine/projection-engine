@@ -1,1 +1,1 @@
-- Fixing selector not cleaning state
+- Fixing gltf importer breaking when no rotation information is found
