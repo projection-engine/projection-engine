@@ -14,7 +14,7 @@
         if(handleChange)
             handleChange(data, () => setState({name: "Empty"}))
     }
-    $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id === data.id
+    $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id !== undefined && state.id === data.id
 </script>
 
 <button
@@ -25,8 +25,6 @@
         on:click={onClick}
 >
     <DataIcon state={data} type={type}/>
-    <div data-overflow="-">
-        {data.name}
-    </div>
+    <div data-overflow="-">{data.name}</div>
     <ToolTip content={data.name}/>
 </button>

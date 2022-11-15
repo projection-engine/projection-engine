@@ -24,7 +24,9 @@ export default class SelectedSystem {
         const length = selected.length
         if (length === 0)
             return
+
         SelectedSystem.frameBuffer.startMapping()
+        gpu.disable(gpu.CULL_FACE)
         for (let m = 0; m < length; m++) {
             const current = selected[m]
             if (!current || !current.active)
@@ -43,6 +45,7 @@ export default class SelectedSystem {
             })
             mesh.draw()
         }
+        gpu.enable(gpu.CULL_FACE)
         SelectedSystem.frameBuffer.stopMapping()
 
     }

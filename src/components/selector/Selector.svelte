@@ -9,6 +9,8 @@
     import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../public/engine/static/resources/STATIC_MESHES";
     import getType from "./utils/get-type";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import getIcon from "./utils/get-icon";
 
 
     export let type
@@ -28,67 +30,97 @@
 
     let state
     $: {
-        if (selected === FALLBACK_MATERIAL)
-            state = {name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL}
-        else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
-            state = {
-                name: Localization[Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)],
-                registryID: selected
+        if (type === "parent") {
+            state = selected ? selected : {name: Localization.EMPTY}
+        } else {
+            if (selected === FALLBACK_MATERIAL)
+                state = {name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL}
+            else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
+                state = {
+                    name: Localization[Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)],
+                    registryID: selected
+                }
+            else {
+                const rID = selected?.registryID ? selected?.registryID : selected
+                let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
+                if (data?.registryID !== undefined)
+                    state = data
+                else
+                    state = {name: Localization.EMPTY}
             }
-        else {
-            const rID = selected?.registryID ? selected?.registryID : selected
-            let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID)
-            state = data ? data : {name: Localization.EMPTY}
         }
     }
+    $: console.log(state, selected)
 </script>
 
-<Dropdown
-        disabled={disabled}
-        asButton={true}
-        styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
-        buttonStyles={"max-width: 100%; overflow: hidden; width: 100%;" + styles}>
-    <button
-            disabled={disabled}
-            slot="button"
-            style={`width: 100%; border: none;` + styles}
-    >
-        <ToolTip content={state.name}/>
-        <div class="wrapper">
-            <div data-overflow="-" style="text-align: left">
-                {state.name}
-            </div>
-            <small>
-                {Localization[type.toUpperCase()]}
-            </small>
-        </div>
-    </button>
-    <Options
-            terrainMaterials={terrainMaterials}
-            mergeMaterials={mergeMaterials}
-            noDefault={noDefault}
-            handleChange={handleChange}
-            type={type}
+<div data-inline="-" class="wrapper" style={styles}>
 
-            selected={selected}
-            setState={v => state = v}
-            state={state}
-            store={store}
-    />
-</Dropdown>
+    <Dropdown
+            disabled={disabled}
+            hideArrow={true}
+            styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
+            buttonStyles="width: 100%; overflow: hidden"
+    >
+        <button
+                disabled={disabled}
+                slot="button"
+                data-inline="-"
+                style="height: 18px; border: none; padding: 0 4px; width: 100%"
+        >
+            <div class="icon" data-inline="-">
+                <Icon styles="font-size: 1rem">{getIcon(type)}</Icon>
+                <Icon styles="font-size: 1rem">arrow_drop_down</Icon>
+            </div>
+            <div data-vertdivider="-" style="margin: 0"></div>
+            <ToolTip content={state.name}/>
+            <small data-overflow="-" style="text-align: left">{state.name}</small>
+        </button>
+        <Options
+                terrainMaterials={terrainMaterials}
+                mergeMaterials={mergeMaterials}
+                noDefault={noDefault}
+                handleChange={handleChange}
+                type={type}
+
+                selected={selected}
+                setState={v => state = v}
+                state={state}
+                store={store}
+        />
+    </Dropdown>
+    <div data-vertdivider="-" style="margin: 0"></div>
+    <button class="remove-button" on:click={_ => handleChange(null)}>
+        <Icon styles="font-size: .9rem">clear</Icon>
+        <ToolTip content={Localization.CLEAR}/>
+    </button>
+</div>
 
 
 <style>
-
-    .wrapper {
-        max-width: 100%;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 4px;
-        height: 100%;
+    .icon {
+        width: 28px;
+        height: 18px;
+        gap: 0;
     }
 
+    .wrapper {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        height: 18px;
+        background: var(--pj-background-primary);
+        border-radius: 3px;
+        gap: 0;
+    }
+
+    .remove-button {
+        border: none;
+
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>

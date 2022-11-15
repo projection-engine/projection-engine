@@ -41,36 +41,52 @@
             </button>
         {/each}
     </div>
-    {#if tab === 0}
-        <fieldset>
-            <legend>{Localization.VIEWPORT}</legend>
-            <ViewportSettings settings={settings}/>
-        </fieldset>
-    {:else if tab === 1}
-        <fieldset>
-            <legend>{Localization.RENDERING}</legend>
-            <Rendering visualSettings={visuals}/>
-        </fieldset>
-    {:else if tab === 2}
-        <fieldset>
-            <legend>{Localization.SHORTCUTS}</legend>
-            <Shortcuts settings={settings}/>
-        </fieldset>
-    {:else if tab === 3}
-        <fieldset>
-            <legend>{Localization.CAMERA}</legend>
-            <CameraSettings/>
-        </fieldset>
-    {:else if tab === 4}
-        <fieldset>
-            <legend>{Localization.GRID}</legend>
-            <GridSettings settings={settings}/>
-        </fieldset>
+  <div class="content">
+      {#if tab === 0}
+          <strong>{Localization.VIEWPORT}</strong>
+          <ViewportSettings settings={settings}/>
+      {:else if tab === 1}
 
-    {/if}
+          <strong>{Localization.RENDERING}</strong>
+          <Rendering visualSettings={visuals}/>
+
+      {:else if tab === 2}
+
+          <strong>{Localization.SHORTCUTS}</strong>
+          <Shortcuts settings={settings}/>
+
+      {:else if tab === 3}
+
+          <strong>{Localization.CAMERA}</strong>
+          <CameraSettings/>
+
+      {:else if tab === 4}
+
+          <strong>{Localization.GRID}</strong>
+          <GridSettings settings={settings}/>
+      {/if}
+  </div>
 </div>
 
 <style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 6px;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: 50%;
+    }
+    strong {
+        font-weight: 500;
+        padding: 4px 8px;
+        font-size: .9rem;
+        text-align: left;
+        width: 100%;
+    }
 
     .wrapper {
         display: flex;
@@ -81,7 +97,7 @@
         position: relative;
         margin: auto;
 
-        padding: 3px 3px 100px;
+        padding: 3px;
         width: 100%;
         max-width: clamp(500px, 50vw, 1000px);
         height: 100%;
