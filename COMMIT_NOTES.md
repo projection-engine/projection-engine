@@ -1,1 +1,1 @@
-- Fixing gltf importer breaking when no rotation information is found
+- Working on adapting [svelte-color-picker](https://github.com/efeskucuk/svelte-color-picker) into structure
