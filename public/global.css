@@ -393,3 +393,55 @@ pre[data-pre="-"] {
     box-shadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
 }
 
+
+.button.frame {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+    color: var(--pj-color-secondary);
+
+    border: none;
+    background: transparent;
+    padding: 0 2px;
+    min-height: 30px;
+    max-height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    white-space: nowrap;
+}
+
+.button.frame:hover {
+    background: var(--pj-border-primary);
+}
+
+.button.frame:active {
+    background: transparent;
+    color: var(--pj-accent-color);
+    opacity: .9;
+}
+
+
+.dropdown-container.frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 350px;
+    background: var(--pj-background-tertiary);
+}
+
+.dropdown-header.frame {
+    background: var(--pj-background-secondary);
+    display: flex;
+    justify-content: space-between;
+    height: 25px;
+    border-bottom: var(--pj-border-primary) 1px solid;
+}
+.button-small.frame {
+    min-height: 22px !important;
+    max-height: 22px !important;
+    min-width: 22px !important;
+    max-width: unset !important;
+}

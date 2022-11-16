@@ -21,7 +21,7 @@
 </script>
 
 
-<Dropdown hideArrow={true} buttonStyles="border-radius: 3px; background: var(--pj-background-secondary);">
+<Dropdown hideArrow={true} buttonStyles="border-radius: 3px; background: var(--pj-background-secondary); margin-left: auto">
     <button
             slot="button"
             class="add-button"

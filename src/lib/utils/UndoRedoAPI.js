@@ -8,45 +8,71 @@ import serializeStructure from "../../../public/engine/utils/serialize-structure
 import EntityNameController from "../controllers/EntityNameController";
 
 export default class UndoRedoAPI {
-    static engineCache = new UndoRedo()
+    static #cache = new UndoRedo()
+    static onChange
 
     static clear() {
-        UndoRedoAPI.engineCache.index = 0
-        UndoRedoAPI.engineCache.history = [null]
+        UndoRedoAPI.#cache.index = 0
+        UndoRedoAPI.#cache.history = [null]
+        if (typeof UndoRedoAPI.onChange === "function")
+            UndoRedoAPI.onChange([], 0)
     }
 
     static save(value, target = ACTION_HISTORY_TARGETS.ENGINE) {
         switch (target) {
-            case ACTION_HISTORY_TARGETS.ENGINE:
-                UndoRedoAPI.engineCache.save({
+            case ACTION_HISTORY_TARGETS.ENGINE: {
+                const data = Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]
+                UndoRedoAPI.#cache.save({
                     nameCache: new Map(EntityNameController.byName),
-                    value: serializeStructure(Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]),
+                    value: serializeStructure(data),
+                    changed: data.length,
                     target,
-                    time: Date.now()
+                    time: (new Date()).toLocaleTimeString()
                 })
                 break
+            }
             default:
                 break
         }
+        if (typeof UndoRedoAPI.onChange === "function")
+            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({...e, index: i})), UndoRedoAPI.#cache.index)
+    }
+
+    static applyIndex(i) {
+        const actualIndex = () => UndoRedoAPI.#cache.index
+        let lastChange
+        if (i < actualIndex())
+            while (i < actualIndex()) {
+                lastChange = UndoRedoAPI.#cache.undo()
+            }
+        else if (i > actualIndex())
+            while (i > actualIndex()) {
+                lastChange = UndoRedoAPI.#cache.redo()
+            }
+        if (lastChange)
+            UndoRedoAPI.#apply(lastChange)
     }
 
     static undo() {
-        const action = UndoRedoAPI.engineCache.undo()
+        const action = UndoRedoAPI.#cache.undo()
         if (action) {
             alert.pushAlert(LOCALIZATION_EN.UNDOING_CHANGES, "info")
             UndoRedoAPI.#apply(action)
         }
+
     }
 
     static redo() {
-        const action = UndoRedoAPI.engineCache.redo()
+        const action = UndoRedoAPI.#cache.redo()
         if (action) {
             alert.pushAlert(LOCALIZATION_EN.REDOING_CHANGES, "info")
             UndoRedoAPI.#apply(action)
         }
+
     }
 
     static #apply(currentAction) {
+        UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({...e, index: i})), UndoRedoAPI.#cache.index)
         switch (currentAction.target) {
             case ACTION_HISTORY_TARGETS.ENGINE: {
                 const value = JSON.parse(currentAction.value)
