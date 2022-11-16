@@ -103,7 +103,7 @@ export default class ShaderEditorController {
         try {
             const {compiled, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
             await AssetAPI.updateAsset(
-                openFile?.registryID,
+                openFile.registryID,
                 JSON.stringify({
                     nodes: parsedNodes,
                     links: links,

@@ -23,6 +23,7 @@
         overflow-y: hidden;
         overflow-x: auto;
         max-width: 100%;
+        border-bottom: var(--pj-border-primary) 1px solid;
     }
 
     fieldset {

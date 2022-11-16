@@ -16,9 +16,7 @@ layout (location = 0) in vec3 position;
 #define HALF 5000.
 #define FULL 1000000.
  
-uniform CameraMetadata{
-    mat4 viewProjection; 
-};
+//import(cameraUBO)
 
 uniform mat4 transformMatrix; 
 uniform vec3 axis; 
@@ -76,11 +74,8 @@ export const sameSizeVertex = `#version 300 es
 ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position;
 
-uniform CameraMetadata{
-    mat4 viewProjection; 
-    mat4 previousViewProjection;
-    vec4 placement;
-};
+
+//import(cameraUBO)
 
 uniform mat4 transformMatrix;  
 uniform vec3 translation;
@@ -96,11 +91,8 @@ export const vertex = `#version 300 es
 ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position; 
 
-uniform CameraMetadata{
-    mat4 viewProjection; 
-    mat4 previousViewProjection;
-    vec4 placement;
-};
+//import(cameraUBO)
+
 uniform mat4 transformMatrix; 
 uniform vec3 translation;
 uniform bool cameraIsOrthographic;
@@ -177,11 +169,8 @@ ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 uvs;
  
-uniform CameraMetadata{
-    mat4 viewProjection;
-    mat4 previousViewProjection;
-    vec4 placement;
-};
+
+//import(cameraUBO)
 
 uniform mat4 transformMatrix; 
 uniform vec3 translation;
@@ -297,11 +286,8 @@ export const cameraVertex = `#version 300 es
 
 layout (location = 0) in vec3 position;
 #define SIZE .15
-uniform CameraMetadata{
-    mat4 viewProjection; 
-    mat4 previousViewProjection;
-    vec4 placement;
-};
+
+//import(cameraUBO)
 
 uniform vec3 translation; 
 uniform bool sameSize;

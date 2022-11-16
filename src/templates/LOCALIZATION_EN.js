@@ -27,6 +27,7 @@ export default {
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
     CULL_FACE: "Cull face",
+    NO_MATERIAL_SELECTED: "No material selected",
     CAMERA_ANIMATION: "Camera smoothing",
     SAVING: "Saving project",
     NO_DEPTH_TEST: "No depth test",

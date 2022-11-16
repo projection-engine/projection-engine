@@ -24,10 +24,12 @@
     --direction: -10px;
 }
 
-.attribute.node-io[data-dtype="input"] > *:not(span):last-child{
-    max-height: 25px;
-    min-height: 25px;
-}
+/*.attribute.node-io[data-dtype="input"] > *:not(span):last-child{*/
+/*    max-height: 25px;*/
+/*    min-height: 25px;*/
+/*}*/
+
+
 .connection.node-io {
     width: 12px;
     height: 12px;

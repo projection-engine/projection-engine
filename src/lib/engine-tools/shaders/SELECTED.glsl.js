@@ -2,9 +2,8 @@ export const vertex = `#version 300 es
 
 layout (location = 0) in vec3 position; 
 
-uniform CameraMetadata{
-    mat4 viewProjection; 
-};
+
+//import(cameraUBO)
 
 uniform mat4 transformMatrix;
 

@@ -1,1 +1,8 @@
-- Working on adapting [svelte-color-picker](https://github.com/efeskucuk/svelte-color-picker) into structure
+- gPosition is now in view space
+- removed camera descrete UBO
+- CameraMetadata as a import
+- CameraMetadata now contains most of the camera information
+- Added viewSpacePosition as output from template vertex shader
+- Visual changes to views
+- Added "No material selected" state to shader editor
+- Tweaks to selector visuals

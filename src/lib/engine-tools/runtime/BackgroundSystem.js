@@ -19,7 +19,7 @@ export default class BackgroundSystem {
         gpu.depthMask(false)
         GPU.cubeBuffer.enable()
         BackgroundSystem.shader.bindForUse({
-            projectionMatrix: CameraAPI.skyboxProjectionMatrix,
+            skyboxProjectionMatrix: CameraAPI.skyboxProjectionMatrix,
             viewMatrix: CameraAPI.viewMatrix,
             gamma: gamma,
             color: backgroundColor,

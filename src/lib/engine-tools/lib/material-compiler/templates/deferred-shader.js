@@ -41,7 +41,7 @@ void main(){
     gBaseNormal = vec4(normalVec, 1.);
     gMeshID = vec4(meshID, 1.);
     gDepth = vec4(gl_FragCoord.z, texCoords, 1.);
-    gPosition = worldSpacePosition;
+    gPosition = viewSpacePosition;
     ${body}
   
 }

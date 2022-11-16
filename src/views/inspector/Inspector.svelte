@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Header from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
@@ -63,22 +63,14 @@
         {Localization.INSPECTOR}
     </div>
 {:else}
-    <Header
-            currentView={VIEWS.COMPONENT}
-            orientation={orientation}
-            switchView={switchView}
-            title={Localization.INSPECTOR}
-            icon={"category"}
-    >
-        <div class="entity-container">
-            {#if entity instanceof Entity}
-                <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
-                <AddComponent entity={entity}/>
-            {:else}
-                <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
-            {/if}
-        </div>
-    </Header>
+    <ViewHeader>
+        {#if entity instanceof Entity}
+            <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+            <AddComponent entity={entity}/>
+        {:else}
+            <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+        {/if}
+    </ViewHeader>
     <div class="content">
         {#if entity instanceof Entity}
             <EntityInspector entity={entity}/>
@@ -90,15 +82,6 @@
 
 
 <style>
-    .entity-container {
-        overflow: hidden;
-        display: flex;
-        gap: 2px;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0 3px;
-    }
 
     .content {
         position: relative;

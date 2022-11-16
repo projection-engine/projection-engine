@@ -14,7 +14,7 @@ export default async function buildShader(nodes, links, openFile, setStatus){
     } = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
     if (shader) {
-        const currentMaterial = GPU.materials.get(openFile?.registryID)
+        const currentMaterial = GPU.materials.get(openFile.registryID)
         let promise
         if (!currentMaterial)
             alert.pushAlert(Localization.NOT_APPLIED, "alert")

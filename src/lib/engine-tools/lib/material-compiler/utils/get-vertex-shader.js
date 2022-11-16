@@ -1,9 +1,9 @@
 import MATERIAL_RENDERING_TYPES from "../../../../../../public/engine/static/MATERIAL_RENDERING_TYPES";
-import {vertexSkybox} from "../templates/skybox-shader";
-import TEMPLATE_VERTEX_SHADER from "../../../../../../public/engine/shaders/TEMPLATE_VERTEX_SHADER.vert";
+ import {vertex} from "../../../../../../public/engine/shaders/SKYBOX.glsl";
+import TEMPLATE_VERTEX_SHADER from "../../../../../../public/engine/shaders/DEFAULT_MATERIAL.vert";
 
 export default function getVertexShader(type) {
     if(type === MATERIAL_RENDERING_TYPES.SKYBOX)
-        return vertexSkybox
+        return vertex
     return TEMPLATE_VERTEX_SHADER
 }

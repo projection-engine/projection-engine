@@ -40,8 +40,8 @@
                 <div>{Localization.COLOR}</div>
                 <ColorPicker
                         submit={({r,g,b}) => {
-                        updateNode("color", [r, g, b, .5], selectedNode)
-                    }}
+                            updateNode("color", [r, g, b, .5], selectedNode)
+                        }}
                         value={selectedNode.color}
                         size={"small"}
                 />

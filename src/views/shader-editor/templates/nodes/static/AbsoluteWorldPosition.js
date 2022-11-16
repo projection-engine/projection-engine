@@ -7,7 +7,7 @@ export default class AbsoluteWorldPosition extends Node {
 
     constructor() {
         super([], [
-            {label: "Coordinates", key: "worldSpacePosition", type: DATA_TYPES.VEC4}
+            {label: "Coordinates", key: "worldSpacePosition", type: DATA_TYPES.VEC3}
         ])
 
         this.name = "AbsoluteWorldPosition"

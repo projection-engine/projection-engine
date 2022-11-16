@@ -8,6 +8,9 @@ void main() {
 const fragment = `#version 300 es
 precision mediump float;
 #define THRESHOLD .0001
+
+//import(cameraUBO)
+
 in vec2 texCoords;
 uniform sampler2D uSampler;
 uniform int debugFlag;
@@ -24,21 +27,24 @@ void main(){
     vec4 samplerData = texture(uSampler, texCoords);
     vec3 color = samplerData.rgb; 
     
-    if(debugFlag == 2){
-        if(samplerData.r <= THRESHOLD)    
-            discard;        
-        color = vec3(linearize(color.r));
-    }
+    if(debugFlag == 2) 
+        color = vec3(color.r);
     else if (debugFlag == 9)
         color = vec3(color.b);
     else if (debugFlag == 10)
         color = vec3(color.g);
-    else if (debugFlag == 11 || debugFlag == 3)
+    else if (debugFlag == 3)
+        color = vec3(color.r);
+    else if (debugFlag == 11)
         color = vec3(color.r);
     else if(debugFlag == 16)
         color = vec3(color.gb, 0.);
     else if (debugFlag == 19)
         color = vec3(color.rg, 0.);
+    else if (debugFlag == 13){
+        if (samplerData.a < 1.) discard;
+        color = vec3(invViewMatrix * samplerData );
+    }
 
     fragColor = vec4(color, 1.);
 }

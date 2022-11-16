@@ -21,7 +21,8 @@ export default class UndoRedoAPI {
                 UndoRedoAPI.engineCache.save({
                     nameCache: new Map(EntityNameController.byName),
                     value: serializeStructure(Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]),
-                    target
+                    target,
+                    time: Date.now()
                 })
                 break
             default:

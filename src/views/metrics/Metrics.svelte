@@ -28,16 +28,16 @@
         const cache = []
         const sampleCountInterval = BenchmarkAPI.contexts.get(BENCHMARK_KEYS.ALL)[1].reduce((partialSum, a) => partialSum + a, 0)
         Array.from(BenchmarkAPI.contexts.entries()).forEach(context => {
-            if(context[0] === BENCHMARK_KEYS.ALL)
+            if (context[0] === BENCHMARK_KEYS.ALL)
                 return
             const elapsed = context[1][1].reduce((partialSum, a) => partialSum + a, 0)
             cache.push({
                 label: context[0],
                 elapsed: elapsed.toFixed(3),
-                percentage: (elapsed > 0 ? (elapsed/sampleCountInterval) * 100: 0)
+                percentage: (elapsed > 0 ? (elapsed / sampleCountInterval) * 100 : 0)
             })
         })
-        toShow = cache.sort((a,b) => b.percentage - a.percentage)
+        toShow = cache.sort((a, b) => b.percentage - a.percentage)
     }
 
     function toggleSampling() {
@@ -59,41 +59,40 @@
     }
 </script>
 <ViewHeader>
-    <div data-inline="-" style="width: 100%; border-bottom: var(--pj-border-primary) 1px solid; height: 100%">
-        <div data-inline="-" style=" width: 100%">
-            <button
-                    on:click={toggleSampling}
-                    class="button"
-            >
-                <Icon styles={isRecording ? "color: #ff5555" : "color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
-                <ToolTip content={LOCALIZATION_EN.TOGGLE_RECORD}/>
-            </button>
-            <button
-                    on:click={() => {
+
+    <div data-inline="-" style=" width: 100%">
+        <button
+                on:click={toggleSampling}
+                class="button"
+        >
+            <Icon styles={isRecording ? "color: #ff5555" : "color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
+            <ToolTip content={LOCALIZATION_EN.TOGGLE_RECORD}/>
+        </button>
+        <button
+                on:click={() => {
                 BenchmarkAPI.contexts.forEach(c => {
                     c[0] = 0
                     c[1].forEach((_, i) => c[1][i] = 0)
                 })
                 toShow = []
             }} class="button"
-            >
-                <Icon styles="color: var(--pj-color-quaternary)">refresh</Icon>
-                <small>{LOCALIZATION_EN.RESET}</small>
-                <ToolTip content={LOCALIZATION_EN.RESET}/>
-            </button>
-        </div>
-        <div data-inline="-" style="justify-content: flex-end; width: clamp(100px, 30%, 250px)">
-            <Range
-                    integer="true"
-                    label={LOCALIZATION_EN.SAMPLES}
-                    value={samples}
-                    minValue={100}
-                    onFinish={v => {
+        >
+            <Icon styles="color: var(--pj-color-quaternary)">refresh</Icon>
+            <small>{LOCALIZATION_EN.RESET}</small>
+            <ToolTip content={LOCALIZATION_EN.RESET}/>
+        </button>
+    </div>
+    <div data-inline="-" style="justify-content: flex-end; width: clamp(100px, 30%, 250px)">
+        <Range
+                integer="true"
+                label={LOCALIZATION_EN.SAMPLES}
+                value={samples}
+                minValue={100}
+                onFinish={v => {
                       BenchmarkAPI.maxSamples = v
                       samples = v
                 }}
-            />
-        </div>
+        />
     </div>
 </ViewHeader>
 
@@ -120,19 +119,22 @@
         <div class="loading-wrapper">
             <div data-inline="-">
                 <small>{LOCALIZATION_EN.CLICK_THE_RECORD_BUTTON_TO_RECORD}</small>
-                <Icon styles={"color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>.
+                <Icon styles={"color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
+                .
             </div>
         </div>
     {/if}
 </div>
 
 <style>
-    strong{
+    strong {
         font-size: .8rem;
     }
-    small{
+
+    small {
         font-size: .7rem;
     }
+
     .sample-wrapper {
         height: 25px;
         width: 100%;
@@ -198,7 +200,8 @@
         justify-content: space-between;
         height: 100%;
     }
-    .sample:hover{
+
+    .sample:hover {
         background: var(--pj-border-primary);
     }
 </style>

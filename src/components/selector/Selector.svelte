@@ -115,7 +115,7 @@
 
     .remove-button {
         border: none;
-
+        --pj-accent-color: #ff5555;
         width: 18px;
         height: 18px;
         padding: 0;

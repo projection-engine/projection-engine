@@ -11,7 +11,7 @@
     import parseFile from "./utils/parse-file";
     import Material from "./templates/nodes/Material";
     import BOARD_SIZE from "./data/BOARD_SIZE";
-    import Header from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
@@ -25,15 +25,16 @@
     import VIEWS from "../../components/view/static/VIEWS";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
+    const {shell} = window.require("electron")
+
     export let switchView
     export let orientation
     export let viewID
     export let viewIndex
     export let groupIndex
     const internalID = v4()
-    const {shell} = window.require("electron")
 
-    let openFile = {}
+    let openFile
     let nodes = []
     let links = []
     let status
@@ -60,10 +61,8 @@
             ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
         } else {
             const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
-            openFile = ShaderEditorController.toOpenFile || state?.openFile || {}
-
+            openFile = ShaderEditorController.toOpenFile || state?.openFile
             needsInitialization = openFile?.registryID != null
-
             ShaderEditorController.toOpenFile = undefined
             if (state != null) {
                 nodes = state.nodes
@@ -81,7 +80,7 @@
     })
 
     $: {
-        if(needsInitialization) {
+        if (needsInitialization) {
             status = {}
             SelectionStore.shaderEditorSelected = []
             parseFile(
@@ -102,8 +101,9 @@
             needsInitialization = false
         }
     }
+    $: invalidFile = !openFile
 </script>
-<Header
+<ViewHeader
         currentView={VIEWS.BLUEPRINT}
         orientation={orientation}
 
@@ -113,7 +113,7 @@
 >
     <div class="options">
         <button
-                disabled={!openFile?.registryID}
+                disabled={invalidFile}
                 class="button"
                 on:click={() => {
                     buildShader(nodes, links, openFile, v => status = v).then(() => {
@@ -124,7 +124,7 @@
             {Localization.SAVE}
         </button>
         <button
-                disabled={!openFile?.registryID}
+                disabled={invalidFile}
                 class="button"
                 on:click={() => buildShader(nodes, links, openFile, v => status = v).catch()}
         >
@@ -145,7 +145,7 @@
                 selected={openFile}
         />
 
-        {#if openFile?.registryID}
+        {#if !invalidFile}
             <Nodes/>
         {/if}
     </div>
@@ -186,32 +186,40 @@
             <Icon styles="font-size: .9rem">grid_4x4</Icon>
             <ToolTip content={Localization.TOGGLE_GRID}/>
         </button>
-        <button
-                class="button"
-                disabled={!openFile.registryID}
-                on:click={async () => {
-                    const {shader} = await materialCompiler(nodes, links)
-                    const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
-                    await FilesAPI.writeFile(newFile, shader, true)
-                    shell.openPath(newFile).catch()
-                }}
-        >
-            <Icon styles="font-size: .9rem">code</Icon>
-            <ToolTip content={Localization.SOURCE}/>
-        </button>
+        {#if !invalidFile}
+            <button
+                    class="button"
+                    on:click={async () => {
+                        const {shader} = await materialCompiler(nodes, links)
+                        const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
+                        await FilesAPI.writeFile(newFile, shader, true)
+                        shell.openPath(newFile).catch()
+                    }}
+            >
+                <Icon styles="font-size: .9rem">code</Icon>
+                <ToolTip content={Localization.SOURCE}/>
+            </button>
+        {/if}
     </div>
-</Header>
-<div  class="wrapper" bind:this={ref}>
-    <Editor
-            internalID={internalID}
-            openFile={openFile}
-            isOpen={openFile?.registryID !== undefined}
-            selected={selected}
-            nodes={nodes}
-            setNodes={v => nodes = v}
-            links={links}
-            setLinks={v => links = v}
-    />
+</ViewHeader>
+<div class="wrapper" bind:this={ref}>
+    {#if !invalidFile}
+        <Editor
+                internalID={internalID}
+                openFile={openFile}
+                isOpen={openFile.registryID !== undefined}
+                selected={selected}
+                nodes={nodes}
+                setNodes={v => nodes = v}
+                links={links}
+                setLinks={v => links = v}
+        />
+    {:else}
+        <div data-empty="-">
+            <Icon styles="font-size: 75px">texture</Icon>
+            {Localization.NO_MATERIAL_SELECTED}
+        </div>
+    {/if}
 </div>
 
 <style>

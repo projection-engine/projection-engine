@@ -105,10 +105,8 @@
     <Selector
             disabled={attribute.disabled}
             type={"image"}
-            size={"small"}
             handleChange={(src) => handleChange(src, attribute)}
             selected={value}
-            autoClose={true}
     />
 
 {:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}

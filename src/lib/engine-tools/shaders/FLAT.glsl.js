@@ -1,4 +1,4 @@
-import TEMPLATE_VERTEX from "../../../../public/engine/shaders/TEMPLATE_VERTEX_SHADER.vert"
+import TEMPLATE_VERTEX from "../../../../public/engine/shaders/DEFAULT_MATERIAL.vert"
 
 export const vertex = TEMPLATE_VERTEX
 

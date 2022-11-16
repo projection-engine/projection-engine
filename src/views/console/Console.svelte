@@ -75,57 +75,57 @@
 
 </script>
 <ViewHeader>
-    <div data-inline="-" style="width: 100%; border-bottom: var(--pj-border-primary) 1px solid; height: 100%">
-        <button on:click={() => ConsoleAPI.clear()} class="button">
+
+    <button on:click={() => ConsoleAPI.clear()} class="button">
+        <Icon>
+            clear_all
+        </Icon>
+        {Localization.CLEAR}
+    </button>
+    <div data-vertdivider="-"></div>
+    <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
+        {#if clearOnPlay}
             <Icon>
-                clear_all
+                check
             </Icon>
-            {Localization.CLEAR}
-        </button>
-        <div data-vertdivider="-"></div>
-        <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
-            {#if clearOnPlay}
-                <Icon>
-                    check
-                </Icon>
-            {/if}
-            {Localization.TOGGLE_CLEAR_ON_PLAY}
-        </button>
-        <div class="metadata">
-            <Dropdown>
-                <button slot="button" style="border: none">
-                    {Localization.VIEW}
-                    <ToolTip content={Localization.VIEW}/>
-                </button>
+        {/if}
+        {Localization.TOGGLE_CLEAR_ON_PLAY}
+    </button>
+    <div class="metadata">
+        <Dropdown>
+            <button slot="button" style="border: none">
+                {Localization.VIEW}
+                <ToolTip content={Localization.VIEW}/>
+            </button>
 
-                <button on:click={() => showErrors = !showErrors}>
-                    {#if showErrors}
-                        <Icon>
-                            check
-                        </Icon>
-                    {/if}
-                    {Localization.ERRORS}
+            <button on:click={() => showErrors = !showErrors}>
+                {#if showErrors}
+                    <Icon>
+                        check
+                    </Icon>
+                {/if}
+                {Localization.ERRORS}
 
-                </button>
-                <button on:click={() => showWarnings = !showWarnings}>
-                    {#if showWarnings}
-                        <Icon>
-                            check
-                        </Icon>
-                    {/if}
-                    {Localization.WARNINGS}
-                </button>
-                <button on:click={() => showLogs = !showLogs}>
-                    {#if showLogs}
-                        <Icon>
-                            check
-                        </Icon>
-                    {/if}
-                    {Localization.LOGS}
-                </button>
-            </Dropdown>
-        </div>
+            </button>
+            <button on:click={() => showWarnings = !showWarnings}>
+                {#if showWarnings}
+                    <Icon>
+                        check
+                    </Icon>
+                {/if}
+                {Localization.WARNINGS}
+            </button>
+            <button on:click={() => showLogs = !showLogs}>
+                {#if showLogs}
+                    <Icon>
+                        check
+                    </Icon>
+                {/if}
+                {Localization.LOGS}
+            </button>
+        </Dropdown>
     </div>
+
 </ViewHeader>
 
 <div class="wrapper" bind:this={ref}>
@@ -163,9 +163,10 @@
 </div>
 
 <style>
-    pre{
+    pre {
         width: 100%;
     }
+
     .container {
         line-height: 18px;
         height: 18px;
