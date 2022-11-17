@@ -15,22 +15,22 @@
         {#if option.divider}
             <div data-divider="-"></div>
         {:else if !option.children}
-            <button on:click={option.onClick || option.callback}>
-                <div style="width: 1.1rem"></div>
+            <button on:click={option.onClick || option.callback} style="padding-left: 25px;">
                 {option.label}
-
             </button>
         {:else if option.children}
-            <div class="group">
-                <div style="white-space: nowrap; padding-left: 4px">{option.label}</div>
+            <div class="group dropdown-list">
+                <strong style="white-space: nowrap; padding-left: 4px">{option.label}</strong>
                 <div data-divider="-"></div>
             </div>
             {#each option.children as option}
                 {#if option.divider}
                     <div data-divider="-"></div>
                 {:else if !option.children}
-                    <button on:click={option.onClick || option.callback}>
-                        <div style="width: 1.1rem"></div>
+                    <button
+                            on:click={option.onClick || option.callback}
+                            style="padding-left: 25px;"
+                    >
                         {option.label}
                     </button>
                 {/if}
@@ -38,12 +38,3 @@
         {/if}
     {/each}
 </Dropdown>
-
-<style>
-    .group {
-        display: flex;
-        align-items: center;
-        font-size: .7rem;
-        gap: 4px
-    }
-</style>

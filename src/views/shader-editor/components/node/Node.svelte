@@ -5,15 +5,17 @@
     import NodeOutput from "./NodeOutput.svelte";
     import Material from "../../templates/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import ShaderEditorController from "../../ShaderEditorController";
+    import ShaderEditorTools from "../../ShaderEditorTools";
+    import SEContextController from "../../SEContextController";
 
     export let links
     export let node
     export let handleLink
     export let selected
     export let setSelected
-    export let submitNodeVariable
     export let internalID
+
+
     let ref
 
     $: isSelected = selected.indexOf(node.id) > -1
@@ -42,7 +44,7 @@
             target = document.getElementById(node.id + "-path")
             canvas = document.getElementById(internalID)
         }
-        const scale = ShaderEditorController.scale
+        const scale = ShaderEditorTools.scale
         const bBox = draggableElement.getBoundingClientRect()
         let parentBBox = canvas.getBoundingClientRect()
         const bounding = {
@@ -131,7 +133,6 @@
                             attribute={a}
                             node={node}
                             inputLinks={inputLinks}
-                            submitNodeVariable={submitNodeVariable}
                     />
                 {/each}
             </div>

@@ -30,7 +30,6 @@
     <foreignObject
             data-id={node.id}
             data-group={node.id}
-            id={node.id}
             class="wrapper"
             style={("background:" + node.color ? `rgba(${rgb}, .5);` : "rgba(150, 150, 150, .5);") + `outline-color: ${isSelected ? "yellow" : "unset"}`}
             width="{node.width}"
@@ -42,9 +41,9 @@
                     on:change={v => nameCache = v.target.value}
                     class="input"
                     on:blur={() => {
-                submitName(nameCache)
-                onEdit = false
-            }}
+                        submitName(nameCache)
+                        onEdit = false
+                    }}
                     on:keydown={(e) => {
                 if (e.key === KEYS.Enter) {
                     submitName(nameCache)

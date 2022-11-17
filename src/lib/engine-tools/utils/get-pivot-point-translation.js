@@ -1,4 +1,4 @@
-import {vec3, vec4} from "gl-matrix";
+import {vec3} from "gl-matrix";
 
 export default function getPivotPointTranslation(entity) {
     const p = entity.pivotPoint

@@ -16,8 +16,8 @@
 
     {#each options as option}
         {#if option.divider}
-            <div class={"divider-wrapper"}>
-                {option.label}
+            <div class="group dropdown-list">
+                <strong style="white-space: nowrap; padding-left: 4px">{option.label}</strong>
                 <div data-divider="-"></div>
             </div>
         {:else}
@@ -26,6 +26,7 @@
                         option.onClick()
                         e.currentTarget.closeDropdown?.()
                     }}
+                    style="padding-left: 25px;"
             >
                 <Icon>{option.icon}</Icon>
                 {option.label}
@@ -34,16 +35,3 @@
     {/each}
 </Dropdown>
 
-
-<style>
-    .divider-wrapper {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        color: var(--pj-color-primary);
-        gap: 8px;
-        font-size: 0.7rem !important;
-        padding: 2px 6px 0;
-        overflow: hidden;
-    }
-</style>

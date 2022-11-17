@@ -1,4 +1,4 @@
-import ShaderEditorController from "../ShaderEditorController";
+import ShaderEditorTools from "../ShaderEditorTools";
 import SelectionStore from "../../../stores/SelectionStore";
 
 function listenTo(event, target, parent) {
@@ -24,8 +24,8 @@ function listenTo(event, target, parent) {
             target.setAttribute("transform", `translate(${current.x} ${current.y})`)
         },
         ev => {
-            current.x = Math.round(((ev.clientX + bounding.x) / ShaderEditorController.scale) / ShaderEditorController.grid) * ShaderEditorController.grid
-            current.y = Math.round(((ev.clientY + bounding.y) / ShaderEditorController.scale) / ShaderEditorController.grid) * ShaderEditorController.grid
+            current.x = Math.round(((ev.clientX + bounding.x) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid
+            current.y = Math.round(((ev.clientY + bounding.y) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid
 
             target.setAttribute("transform", `translate(${current.x} ${current.y})`)
         }

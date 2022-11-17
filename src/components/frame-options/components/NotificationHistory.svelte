@@ -1,22 +1,14 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import SettingsStore from "../../stores/SettingsStore";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import LevelController from "../../lib/utils/LevelController";
-    import VIEWS from "../view/static/VIEWS";
-    import TabsStore from "../../stores/TabsStore";
+    import VIEWS from "../../view/static/VIEWS";
     import {onDestroy, onMount} from "svelte";
     import {v4} from "uuid";
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Notification from "./NotificationItem.svelte";
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import openBottomView from "../../utils/open-bottom-view";
-    import DiffuseProbePass from "../../../public/engine/runtime/rendering/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/runtime/rendering/SpecularProbePass";
-    import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
-    import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
-    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import Localization from "../../../templates/LOCALIZATION_EN";
+    import openBottomView from "../../../utils/open-bottom-view";
 
     export let engine
 

@@ -445,3 +445,9 @@ pre[data-pre="-"] {
     min-width: 22px !important;
     max-width: unset !important;
 }
+.group.dropdown-list {
+    display: flex;
+    align-items: center;
+    font-size: .7rem;
+    gap: 4px
+}

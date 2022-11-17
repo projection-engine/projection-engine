@@ -3,7 +3,6 @@ import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
 import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
-import getPivotPointTranslation from "./get-pivot-point-translation";
 
 export default function gizmoRotateEntity(vec, screenSpace) {
     const targets = Wrapper.selected, SIZE = targets.length

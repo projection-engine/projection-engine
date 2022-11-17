@@ -9,10 +9,11 @@ import FilesStore from "../../stores/FilesStore";
 import {v4} from "uuid";
 import GPU from "../../../public/engine/GPU";
 
-export default class ShaderEditorController {
+export default class ShaderEditorTools {
+
     static GRID_SIZE = 20
     static scale = 1
-    static grid = ShaderEditorController.GRID_SIZE
+    static grid = ShaderEditorTools.GRID_SIZE
     static copied = new Map()
     static connectionOnDrag
     static toOpenFile
@@ -42,15 +43,15 @@ export default class ShaderEditorController {
     }
 
     static copy(nodes) {
-        ShaderEditorController.copied.clear()
+        ShaderEditorTools.copied.clear()
         for (let i = 0; i < nodes.length; i++)
-            ShaderEditorController.copied.set(nodes[i].id, ShaderEditorController.#serializeNode(nodes[i]))
+            ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
     }
 
     static paste(updateNodes) {
         const newNodes = []
-        ShaderEditorController.copied.forEach(d => {
-            newNodes.push(ShaderEditorController.parseNode({...d, id: v4()}))
+        ShaderEditorTools.copied.forEach(d => {
+            newNodes.push(ShaderEditorTools.parseNode({...d, id: v4()}))
         })
         updateNodes(newNodes)
     }
@@ -76,7 +77,7 @@ export default class ShaderEditorController {
     }
 
     static async compile(nodes, links, isSave, id) {
-        const parsedNodes = nodes.map(ShaderEditorController.#serializeNode)
+        const parsedNodes = nodes.map(ShaderEditorTools.#serializeNode)
         const compiled = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
 
@@ -101,7 +102,7 @@ export default class ShaderEditorController {
 
     static async save(openFile, nodes, links) {
         try {
-            const {compiled, parsedNodes} = await ShaderEditorController.compile(nodes, links, true)
+            const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links, true)
             await AssetAPI.updateAsset(
                 openFile.registryID,
                 JSON.stringify({

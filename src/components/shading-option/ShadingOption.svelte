@@ -1,22 +1,20 @@
 <script>
-    import SHADING_MODELS from "../lib/engine-tools/static/SHADING_MODELS"
+    import SHADING_MODELS from "../../lib/engine-tools/static/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import {onMount} from "svelte";
-    import GPU from "../../public/engine/GPU";
-    import SettingsStore from "../stores/SettingsStore";
-    import Localization from "../templates/LOCALIZATION_EN";
-    import STATIC_SHADERS from "../../public/engine/static/resources/STATIC_SHADERS";
-    import FrameComposition from "../../public/engine/runtime/post-processing/FrameComposition";
-    import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
-    import VisualsStore from "../stores/VisualsStore";
-    import getLabel from "./shading-option/utils/get-label";
-    import getTexture from "./shading-option/utils/get-texture";
+    import GPU from "../../../public/engine/GPU";
+    import SettingsStore from "../../stores/SettingsStore";
+    import Localization from "../../templates/LOCALIZATION_EN";
+    import STATIC_SHADERS from "../../../public/engine/static/resources/STATIC_SHADERS";
+    import FrameComposition from "../../../public/engine/runtime/post-processing/FrameComposition";
+    import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
+    import VisualsStore from "../../stores/VisualsStore";
+    import getLabel from "./utils/get-label";
+    import getTexture from "./utils/get-texture";
 
     export let engine
     export let settings
     $: shadingModel = settings.shadingModel
     $: shading = getLabel(settings.shadingModel)
-
 
     $: {
         FrameComposition.debugFlag = shadingModel
@@ -30,10 +28,6 @@
             CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
         }
     }
-
-    onMount(() => {
-        console.trace(shadingModel)
-    })
 </script>
 
 <Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;">

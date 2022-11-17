@@ -5,7 +5,7 @@ import Localization from "../../../templates/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
-import ShaderEditorController from "../../shader-editor/ShaderEditorController";
+import ShaderEditorTools from "../../shader-editor/ShaderEditorTools";
 
 const {shell} = window.require("electron")
 
@@ -36,7 +36,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 break
             case FILE_TYPES.MATERIAL:
                 openBottomView(VIEWS.BLUEPRINT)
-                ShaderEditorController.toOpenFile = data
+                ShaderEditorTools.toOpenFile = data
                 break
             default:
                 setSelected(data.id)

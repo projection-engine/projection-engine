@@ -8,9 +8,9 @@
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
     import Entity from "../../../public/engine/instances/Entity";
     import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
-    import VIEWS from "../../components/view/static/VIEWS";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
+    import ShaderEditorNode from "./components/shader-editor/ShaderEditorNode.svelte";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -75,7 +75,9 @@
         {#if entity instanceof Entity}
             <EntityInspector entity={entity}/>
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
-            <ContentBrowserItem item={entity}/>
+            <ContentBrowserItem item={entity}/>]
+        {:else if target === SelectionStore.TYPES.SHADER_EDITOR}
+            <ShaderEditorNode node={entity}/>
         {/if}
     </div>
 {/if}

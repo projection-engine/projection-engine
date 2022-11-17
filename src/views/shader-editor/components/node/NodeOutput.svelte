@@ -1,7 +1,7 @@
 <script>
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import "../../css/NodeIO.css"
-    import ShaderEditorController from "../../ShaderEditorController";
+    import ShaderEditorTools from "../../ShaderEditorTools";
 
     export let handleLinkDrag
     export let data
@@ -23,9 +23,9 @@
     $:  disabled = (data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0))
     const endDrag = e => {
         e.preventDefault()
-        if(ShaderEditorController.connectionOnDrag)
-            document.getElementById(ShaderEditorController.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
-        ShaderEditorController.connectionOnDrag  = undefined
+        if(ShaderEditorTools.connectionOnDrag)
+            document.getElementById(ShaderEditorTools.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
+        ShaderEditorTools.connectionOnDrag  = undefined
     }
 </script>
 <div
@@ -44,7 +44,7 @@
             draggable={!disabled ? "true" : undefined}
             on:dragstart={e => {
                 const nType = data.type === DATA_TYPES.UNDEFINED ? (inputLinks.length === 1 ? inputLinks[0]?.sourceType : getPredominant(inputLinks)) : undefined
-                ShaderEditorController.connectionOnDrag = {
+                ShaderEditorTools.connectionOnDrag = {
                     ...data,
                     type:data.type === DATA_TYPES.UNDEFINED  ?  nType : data.type,
                     nodeID: node.id

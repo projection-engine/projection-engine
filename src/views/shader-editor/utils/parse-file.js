@@ -1,6 +1,6 @@
 import FilesAPI from "../../../lib/fs/FilesAPI";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
-import ShaderEditorController from "../ShaderEditorController";
+import ShaderEditorTools from "../ShaderEditorTools";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
 export default async function parseFile(file, setNodes, setLinks) {
@@ -12,10 +12,12 @@ export default async function parseFile(file, setNodes, setLinks) {
             const newNodes = []
             for (let i = 0; i < file.nodes.length; i++) {
                 const node = file.nodes[i]
-                newNodes.push(ShaderEditorController.parseNode(node))
+                node.CONTEXT_ID = file.registryID
+                newNodes.push(ShaderEditorTools.parseNode(node))
             }
             setNodes(newNodes)
-            setLinks(file.links)
+
+            setLinks(file.links.map(l => ({...l, CONTEXT_ID: file.registryID})))
         } else
             setNodes([])
 

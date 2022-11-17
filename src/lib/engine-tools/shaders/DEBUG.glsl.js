@@ -28,7 +28,7 @@ void main(){
     vec3 color = samplerData.rgb; 
     
     if(debugFlag == 2) 
-        color = vec3(color.r);
+        color = vec3(linearize(color.r));
     else if (debugFlag == 9)
         color = vec3(color.b);
     else if (debugFlag == 10)

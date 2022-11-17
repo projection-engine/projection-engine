@@ -5,7 +5,7 @@
     import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../components/selector/Selector.svelte";
-    import ShadingOption from "../../components/ShadingOption.svelte";
+    import ShadingOption from "../../components/shading-option/ShadingOption.svelte";
 
     export let engine
     export let settings

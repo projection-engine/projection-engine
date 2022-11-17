@@ -24,6 +24,7 @@ export default {
     SHORTCUTS: "Shortcuts",
     RECORDING_SAMPLES: "Recording samples",
     EDITOR_COLOR_CORRECTION: "Editor color correction",
+    FILE_ALREADY_OPEN: "File already open",
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
     CULL_FACE: "Cull face",

@@ -1,48 +1,39 @@
 <script>
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
-    import Material from "../templates/nodes/Material";
     import Attribute from "./node/Attribute.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import SEContextController from "../SEContextController";
 
-    export let selected
-    export let nodes
-    export let updateNode
-    export let submitNodeVariable
-    let selectedNode
-    $: {
-        const index = nodes.findIndex(n => (selected ? n.id === selected : n instanceof Material))
-        selectedNode = nodes[index]
-    }
+    export let node
+
 </script>
 
-{#if selectedNode}
+{#if node}
     <div class="content-wrapper">
         <div class="wrapper">
             <Input
-                    searchString={selectedNode.name}
+                    searchString={node.name}
                     width={"100%"}
-                    height={"30px"}
-                    setSearchString={ev => updateNode("name", ev, selectedNode)}
+                    height="30px"
+                    setSearchString={ev => SEContextController.updateNode("name", ev, node)}
                     placeholder={Localization.NAME}
             />
-            {#each selectedNode.inputs as attr, i}
+            {#each node.inputs as attr, i}
                 {#if !attr.accept}
                     <Attribute
                             attribute={attr}
-                            node={selectedNode}
-                            handleChange={(value, attribute) => submitNodeVariable(value, attribute, selectedNode)}
+                            node={node}
+                            handleChange={(value, attribute) => SEContextController.submitNodeVariable(value, attribute, node)}
                             returnDefault={false}
                     />
                 {/if}
             {/each}
-            {#if selectedNode.isComment}
+            {#if node.isComment}
                 <div>{Localization.COLOR}</div>
                 <ColorPicker
-                        submit={({r,g,b}) => {
-                            updateNode("color", [r, g, b, .5], selectedNode)
-                        }}
-                        value={selectedNode.color}
+                        submit={({r,g,b}) => SEContextController.updateNode("color", [r, g, b, .5], node)}
+                        value={node.color}
                         size={"small"}
                 />
             {/if}

@@ -111,6 +111,7 @@
         background: var(--pj-background-primary);
         border-radius: 3px;
         gap: 0;
+        border: var(--pj-border-primary) 1px solid;
     }
 
     .remove-button {

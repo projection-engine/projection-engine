@@ -4,7 +4,6 @@
     import Engine from "../../../../../public/engine/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";

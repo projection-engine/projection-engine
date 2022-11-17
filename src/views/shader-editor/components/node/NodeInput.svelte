@@ -3,24 +3,24 @@
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES"
     import Attribute from "./Attribute.svelte";
     import "../../css/NodeIO.css"
-    import ShaderEditorController from "../../ShaderEditorController";
+    import ShaderEditorTools from "../../ShaderEditorTools";
+    import SEContextController from "../../SEContextController";
 
     export let handleLink
     export let attribute
     export let inputLinks
-
     export let node
-    export let submitNodeVariable
+
     $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key) : undefined
     const onDrop = e => {
         if (!attribute.accept)
             return
         e.preventDefault()
-        if (ShaderEditorController.connectionOnDrag) {
-            document.getElementById(ShaderEditorController.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
+        if (ShaderEditorTools.connectionOnDrag) {
+            document.getElementById(ShaderEditorTools.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
             if (!attribute.disabled)
-                linkNodes(ShaderEditorController.connectionOnDrag, attribute, node, handleLink)
-            ShaderEditorController.connectionOnDrag = undefined
+                linkNodes(ShaderEditorTools.connectionOnDrag, attribute, node, handleLink)
+            ShaderEditorTools.connectionOnDrag = undefined
         }
     }
 </script>
@@ -51,7 +51,7 @@
         <Attribute
                 attribute={attribute}
                 node={node}
-                handleChange={(...attrData) => submitNodeVariable(...attrData, node)}
+                handleChange={(...attrData) => SEContextController.submitNodeVariable(...attrData, node)}
                 returnDefault={true}
         />
 

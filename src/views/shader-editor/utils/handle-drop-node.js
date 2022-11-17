@@ -1,4 +1,4 @@
-import ShaderEditorController from "../ShaderEditorController";
+import ShaderEditorTools from "../ShaderEditorTools";
 
 export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {
@@ -16,8 +16,8 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
                 x: mousePlacement.x,
                 y: mousePlacement.y
             }
-            n.x = (current.x - 100) / ShaderEditorController.scale
-            n.y = (current.y - 25) / ShaderEditorController.scale
+            n.x = (current.x - 100) / ShaderEditorTools.scale
+            n.y = (current.y - 25) / ShaderEditorTools.scale
             return n
         } else
             alert.pushAlert("Cannot add two apis of " + n.name, "error")

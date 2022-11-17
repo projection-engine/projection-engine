@@ -10,7 +10,7 @@ import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MES
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 import AXIS from "../static/AXIS";
 import LineAPI from "../../../../public/engine/lib/rendering/LineAPI";
-import {mat4, vec3} from "gl-matrix";
+import {mat4} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 
 const M = mat4.create()

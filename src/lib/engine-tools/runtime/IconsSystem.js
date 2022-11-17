@@ -7,7 +7,6 @@ import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_T
 import SpritePass from "../../../../public/engine/runtime/rendering/SpritePass";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import TransformationAPI from "../../../../public/engine/lib/math/TransformationAPI";
 import Wrapper from "../Wrapper";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 

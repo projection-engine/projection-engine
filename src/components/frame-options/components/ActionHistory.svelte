@@ -1,11 +1,11 @@
 <script>
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
     import {onMount} from "svelte";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
-    import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
     import VirtualList from "@sveltejs/svelte-virtual-list"
 
     export let engine
@@ -33,6 +33,7 @@
     <Icon styles="font-size: 1rem">redo</Icon>
     <ToolTip content={LOCALIZATION_EN.REDO}/>
 </button>
+<div data-vertdivider="-" style="height: 15px; margin: 0"></div>
 <Dropdown hideArrow={true} styles="width: 300px">
     <button slot="button" class="button frame">
         <Icon styles="font-size: 1rem">history</Icon>
@@ -58,7 +59,7 @@
             </div>
         {:else}
             <VirtualList items={history} let:item>
-                <button data-inline="-" data-highlight={currentIndex === item.index ? "-" : undefined} class="button" on:click={() => UndoRedoAPI.applyIndex(item.index + 1)}>
+                <button data-inline="-" data-highlight={currentIndex === item.index - 1 ? "-" : undefined} class="button" on:click={() => UndoRedoAPI.applyIndex(item.index)}>
                     <div class="action-data">
                         <strong>
                             {#if item.target === ACTION_HISTORY_TARGETS.ENGINE}

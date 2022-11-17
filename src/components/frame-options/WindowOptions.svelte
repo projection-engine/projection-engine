@@ -11,8 +11,8 @@
     import SettingsStore from "../../stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
     import VIEWS from "../view/static/VIEWS";
-    import CreationController from "./CreationController.svelte";
-    import OtherSettings from "./OtherSettings.svelte";
+    import CreationController from "./components/CreationController.svelte";
+    import OtherSettings from "./GlobalOptions.svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS";
 
     let engine
@@ -68,18 +68,14 @@
             <ToolTip content={LOCALIZATION_EN.OPTIONS}/>
         </button>
         {#each FRAME_OPTIONS as subOption}
-            {#if subOption.type === "separator" && subOption.label}
-                <div data-inline="-" style="padding: 0 4px; margin-top: 4px; gap: 8px">
-                    <small style="font-size: .73rem">{subOption.label}</small>
-                    <div data-divider="-" style="margin: 0"></div>
-                </div>
-            {:else}
+            {#if subOption.type !== "separator" }
                 <button
                         on:click={e => {
                              window.frameOptionsCallback(subOption.id)
                              e.currentTarget.closeDropdown?.()
                         }}
-                        style="padding-left: 30px; max-width: unset; min-height: unset">
+                        style="padding-left: 25px; max-width: unset; min-height: unset"
+                >
                     {subOption.label}
                 </button>
             {/if}

@@ -16,7 +16,6 @@
 
     let ref
 
-
     $: orientationNameMin = orientation === "horizontal" ? "minHeight" : "minWidth"
     $: orientationName = orientation === "horizontal" ? "height" : "width"
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
@@ -34,7 +33,6 @@
 
         Object.assign(ref.style, obj)
     }
-
 
     $: {
         if(tabs.length === 0 && ref){

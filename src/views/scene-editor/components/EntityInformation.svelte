@@ -2,10 +2,6 @@
     import {onDestroy} from "svelte";
     import GIZMOS from "../../../static/GIZMOS";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
-    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
-    import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
-    import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
 
     export let settings
     export let engine
@@ -14,8 +10,6 @@
     let translationRef
     let rotationRef
     let scaleRef
-
-
     let currentInterval
 
 
@@ -29,7 +23,6 @@
                         return
                     }
                     if (mainEntity) {
-
                         if (settings.gizmo === GIZMOS.TRANSLATION) {
                             translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
                             translationRef.parentElement.style.display = "flex"

@@ -1,2 +1,2 @@
-- Organizing frame options
-- Action history dropdown
+- Reworking shader editor view structure
+- Visual tweaks 

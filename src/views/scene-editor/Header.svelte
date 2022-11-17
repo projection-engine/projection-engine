@@ -1,6 +1,6 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import ShadingOption from "../../components/ShadingOption.svelte";
+    import ShadingOption from "../../components/shading-option/ShadingOption.svelte";
     import ViewOptions from "./components/ViewOptions.svelte";
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";

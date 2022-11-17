@@ -1,5 +1,3 @@
-import Engine from "../../../../public/engine/Engine";
-
 export default function getIcon(type){
     switch (type) {
         case "image":

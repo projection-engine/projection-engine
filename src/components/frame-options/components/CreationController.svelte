@@ -1,11 +1,11 @@
 <script>
-    import VIEWS from "../view/static/VIEWS";
+    import VIEWS from "../../view/static/VIEWS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
 
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../templates/LOCALIZATION_EN";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)
@@ -20,8 +20,6 @@
     }
 
 </script>
-
-
 
 <button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>

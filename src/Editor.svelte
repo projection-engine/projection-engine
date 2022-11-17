@@ -5,10 +5,11 @@
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "./components/view/Views.svelte";
-    import ControlOptions from "./components/window-options/WindowOptions.svelte";
+
     import SettingsStore from "./stores/SettingsStore";
 
     import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
+    import WindowOptions from "./components/frame-options/WindowOptions.svelte";
 
     const FALLBACK = {
         name: "Default",
@@ -42,7 +43,7 @@
 
 <div class="wrapper">
     <Alert/>
-    <ControlOptions/>
+    <WindowOptions/>
     <ContextMenu/>
     <div class="middle">
         <ViewsContainer
