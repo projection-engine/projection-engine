@@ -17,7 +17,8 @@ export default function getTexture(shadingModel) {
             return GBuffer.albedoSampler
         case SHADING_MODELS.SSR:
             return GlobalIlluminationPass.SSRSampler
-
+        case SHADING_MODELS.RANDOM:
+            return GBuffer.IDSampler
         case SHADING_MODELS.POSITION:
             return GBuffer.positionSampler
         case SHADING_MODELS.G_AO:

@@ -13,6 +13,7 @@ import LineAPI from "../../../../public/engine/lib/rendering/LineAPI";
 import {mat4} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 
+const X = [1, 0, 0], Y = [0, 1, 0], Z = [0, 0, 1]
 const M = mat4.create()
 const EMPTY_COMPONENT = new Movable()
 export default class GizmoSystem {
@@ -56,6 +57,7 @@ export default class GizmoSystem {
     static transformationType = TRANSFORMATION_TYPE.GLOBAL
     static activeGizmoMatrix = M
     static save
+    static updateGizmoToolTip = () => null
 
     static initialize() {
 
@@ -91,26 +93,25 @@ export default class GizmoSystem {
                 t.drawGizmo()
                 ScreenSpaceGizmo.drawGizmo()
             }
-            if (t instanceof TranslationGizmo) {
-                const c = GizmoSystem.clickedAxis
-                const o = {transformMatrix: GizmoSystem.activeGizmoMatrix}
-                if (c === AXIS.X) {
-                    o.axis = [1, 0, 0]
-                    GizmoSystem.lineShader.bindForUse(o)
-                    LineAPI.draw(o.axis)
-                }
 
-                if (c === AXIS.Y) {
-                    o.axis = [0, 1, 0]
-                    GizmoSystem.lineShader.bindForUse(o)
-                    LineAPI.draw(o.axis)
-                }
+            const c = GizmoSystem.clickedAxis
+            const o = {transformMatrix: GizmoSystem.activeGizmoMatrix}
+            if (c === AXIS.X ||  c === AXIS.XZ ||  c === AXIS.XY) {
+                o.axis = X
+                GizmoSystem.lineShader.bindForUse(o)
+                LineAPI.draw(o.axis)
+            }
 
-                if (c === AXIS.Z) {
-                    o.axis = [0, 0, 1]
-                    GizmoSystem.lineShader.bindForUse(o)
-                    LineAPI.draw(o.axis)
-                }
+            if (c === AXIS.Y || c === AXIS.ZY || c === AXIS.XY) {
+                o.axis = Y
+                GizmoSystem.lineShader.bindForUse(o)
+                LineAPI.draw(o.axis)
+            }
+
+            if (c === AXIS.Z || c === AXIS.ZY || c === AXIS.XZ) {
+                o.axis = Z
+                GizmoSystem.lineShader.bindForUse(o)
+                LineAPI.draw(o.axis)
             }
 
         } else

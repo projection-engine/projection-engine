@@ -23,7 +23,7 @@
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
-    import onMutation from "./utils/on-mutation";
+    import HeaderOptions from "./components/HeaderOptions.svelte";
 
     const {shell} = window.require("electron")
 
@@ -34,6 +34,7 @@
     let openFile
     let nodes = []
     let links = []
+    let dragWillStart
     let status
     let ref
 
@@ -60,16 +61,12 @@
                 }
                 SEContextController.registerContext(
                     openFile.registryID,
-                    v => {
-                        nodes = v
-                        onMutation(openFile.registryID)
-                    },
-                    v => {
-                        links = v
-                        onMutation(openFile.registryID)
-                    },
+                    v => nodes = v,
+                    v => links = v,
                     () => nodes,
-                    () => links)
+                    () => links,
+                    v => dragWillStart =  v
+                )
                 isReady = true
             },
             v => links = v
@@ -99,6 +96,7 @@
             const newFile = ShaderEditorTools.toOpenFile || state?.openFile
             if (!newFile)
                 SEContextController.deleteContext(openFile?.registryID)
+            console.log(newFile)
             initializeFromFile(newFile)
             if (newFile?.registryID)
                 initializeStructure()
@@ -118,93 +116,26 @@
 </script>
 
 <ViewHeader>
-    <div data-inline="-" style="width: 100%">
-        <button
-                disabled={invalidFile}
-                class="button"
-                on:click={() => {
-                    buildShader(nodes, links, openFile, v => status = v).then(() => {
-                        ShaderEditorTools.save(openFile, nodes, links).catch(err => console.error(err))
-                    })
-                }}>
-            <Icon styles="font-size: .9rem">save</Icon>
-            {LOCALIZATION_EN.SAVE}
-        </button>
-        <button
-                disabled={invalidFile}
-                class="button"
-                on:click={() => buildShader(nodes, links, openFile, v => status = v).catch()}
-        >
-            <Icon styles="font-size: .9rem">code</Icon>
-            {LOCALIZATION_EN.COMPILE}
-        </button>
-        <div data-vertdivider="-"></div>
-        <Selector
-                styles="max-width: 20vw;"
-                mergeMaterials={false}
-                size="small"
-                type="material"
-                noDefault="true"
-                handleChange={initializeFromFile}
-                selected={openFile}
+    <small style={dragWillStart && !invalidFile ? undefined : "display: none"} id={openFile?.registryID + "-T"}></small>
+    {#if !dragWillStart || invalidFile}
+        <HeaderOptions
+                save={() => {
+                buildShader(nodes, links, openFile, v => status = v).then(() => {
+                    ShaderEditorTools.save(openFile, nodes, links).catch(err => console.error(err))
+                })
+            }}
+                openFile={openFile}
+                compile={() => buildShader(nodes, links, openFile, v => status = v).catch()}
+                initializeFromFile={initializeFromFile}
+                nodes={nodes}
+                openSourceCode={async () => {
+                const {shader} = await materialCompiler(nodes, links)
+                const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
+                await FilesAPI.writeFile(newFile, shader, true)
+                shell.openPath(newFile).catch()
+            }}
         />
-
-        {#if !invalidFile}
-            <Nodes/>
-        {/if}
-    </div>
-
-    <div data-inline="-" style="width: 100%; justify-content: flex-end">
-        <Dropdown>
-            <button class="button" slot="button">
-                {LOCALIZATION_EN.SELECT}
-            </button>
-
-            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
-                {LOCALIZATION_EN.ALL}
-            </button>
-
-            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
-                {LOCALIZATION_EN.NONE}
-            </button>
-
-            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
-                {LOCALIZATION_EN.INVERT}
-            </button>
-        </Dropdown>
-        <button
-                class="button"
-                data-highlight="-"
-                on:click={e => {
-                    if (ShaderEditorTools.grid === ShaderEditorTools.GRID_SIZE) {
-                        ShaderEditorTools.grid = 1
-                        e.currentTarget.setAttribute("data-highlight", "")
-
-                    } else {
-                        ShaderEditorTools.grid = ShaderEditorTools.GRID_SIZE
-                        e.currentTarget.setAttribute("data-highlight", "-")
-
-                    }
-                }}
-        >
-            <Icon styles="font-size: .9rem">grid_4x4</Icon>
-            <ToolTip content={LOCALIZATION_EN.TOGGLE_GRID}/>
-        </button>
-        {#if !invalidFile}
-            <button
-                    class="button"
-                    on:click={async () => {
-                        const {shader} = await materialCompiler(nodes, links)
-                        const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
-                        await FilesAPI.writeFile(newFile, shader, true)
-                        shell.openPath(newFile).catch()
-                    }}
-            >
-                <Icon styles="font-size: .9rem">code</Icon>
-                <ToolTip content={LOCALIZATION_EN.SOURCE}/>
-            </button>
-        {/if}
-    </div>
+    {/if}
 </ViewHeader>
 <div class="wrapper" bind:this={ref}>
     {#if !invalidFile}
@@ -227,20 +158,13 @@
 </div>
 
 <style>
+    small{
+        font-size: .7rem;
+    }
     .wrapper {
         display: flex;
         height: 100%;
         width: 100%;
         overflow: hidden;
     }
-
-    .button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        height: 23px;
-        border: none;
-    }
-
-
 </style>

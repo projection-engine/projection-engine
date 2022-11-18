@@ -1,5 +1,8 @@
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import SelectionStore from "../../../stores/SelectionStore";
+import BOARD_SIZE from "../static/BOARD_SIZE";
+import SEContextController from "../libs/SEContextController";
+
 
 function listenTo(event, target, parent) {
     const nodeBbox = target.getBoundingClientRect(),
@@ -9,8 +12,9 @@ function listenTo(event, target, parent) {
             y: parent.scrollTop - parentBBox.top + nodeBbox.y - event.clientY
         },
         current = {}
-    return [
-        () => {
+    return {
+        current,
+        onMouseUp: () => {
             if (current.x === undefined)
                 return
             if ((nodeBbox.top - parentBBox.top) < 0)
@@ -23,34 +27,71 @@ function listenTo(event, target, parent) {
                 current.x = parentBBox.width - nodeBbox.width
             target.setAttribute("transform", `translate(${current.x} ${current.y})`)
         },
-        ev => {
+        onMouseMove: ev => {
             current.x = Math.round(((ev.clientX + bounding.x) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid
             current.y = Math.round(((ev.clientY + bounding.y) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid
 
             target.setAttribute("transform", `translate(${current.x} ${current.y})`)
         }
-    ]
+    }
 }
 
-export default function dragNode(event, parent) {
-try{
-    let targets = SelectionStore.shaderEditorSelected.map(v => document.getElementById(v.id || v.identifier).parentElement)
-    const callbacks = targets.map(t => listenTo(event, t, parent))
+export default function dragNode(event, parent, contextID) {
+    let tooltip, ctx
+    ctx = SEContextController.getContext(contextID)
 
-    const handleMouseMove = (ev) => {
-        for (let i = 0; i < callbacks.length; i++)
-            callbacks[i][1](ev)
-    }
+    if (ctx)
+        ctx.dragStateUpdate(true)
+    tooltip = document.getElementById(contextID + "-T")
+    try {
+        const targets = SelectionStore.shaderEditorSelected.map(v => {
+            const t = document.getElementById(v.id).parentElement
+            return {element: t, callback: listenTo(event, t, parent)}
+        })
 
-    const handleMouseUp = () => {
-        for (let i = 0; i < callbacks.length; i++)
-            callbacks[i][0]()
-        document.removeEventListener("mousemove", handleMouseMove)
+        const handleMouseMove = (ev) => {
+            for (let i = 0; i < targets.length; i++) {
+                const target = targets[i]
+                try {
+                    target.callback.onMouseMove(ev)
+                    if (i === 0) {
+                        if (tooltip)
+                            tooltip.textContent = "X: " + (target.callback.current.x - BOARD_SIZE/2) + " | Y: " + (target.callback.current.y - BOARD_SIZE/2)
+                    }
+                    const links = target.element.linksToUpdate
+
+                    if (links) {
+                        for (let j = 0; j < links.length; j++)
+                            links[j].updatePath()
+                    }
+                } catch (err) {
+                    console.warn(err)
+                }
+            }
+        }
+
+        const handleMouseUp = () => {
+            if (ctx)
+                ctx.dragStateUpdate(false)
+            for (let i = 0; i < targets.length; i++) {
+                const target = targets[i]
+                try {
+                    target.callback.onMouseUp()
+                    const links = target.element.linksToUpdate
+                    if (links) {
+                        for (let j = 0; j < links.length; j++)
+                            links[j].updatePath()
+                    }
+                } catch (err) {
+                    console.warn(err)
+                }
+            }
+            document.removeEventListener("mousemove", handleMouseMove)
+        }
+        document.addEventListener("mousemove", handleMouseMove)
+        document.addEventListener("mouseup", handleMouseUp, {once: true})
+    } catch (err) {
+        console.warn(err)
     }
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseup", handleMouseUp, {once: true})
-}catch (err){
-    console.warn(err)
-}
 }
 

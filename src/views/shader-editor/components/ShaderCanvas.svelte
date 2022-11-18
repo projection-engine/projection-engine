@@ -8,16 +8,13 @@
     import BOARD_SIZE from "../static/BOARD_SIZE";
     import {onDestroy, onMount} from "svelte";
     import Node from "./node/Node.svelte";
-    import onMutation from "../utils/on-mutation";
-    import handleLink from "../utils/handle-link";
-    import ShaderEditorTools from "../libs/ShaderEditorTools";
     import SelectionStore from "../../../stores/SelectionStore";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
-    import Localization from "../../../templates/LOCALIZATION_EN";
-    import shaderActions from "../../../templates/shader-actions";
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import Link from "./Link.svelte";
     import SEContextController from "../libs/SEContextController";
+    import handleWheelZoom from "../utils/handle-wheel-zoom";
+    import initializeCanvas from "../utils/initialize-canvas";
 
     const EMPTY_MAP = new Map()
     export let openFile
@@ -25,28 +22,13 @@
     let ctx
     let links = []
     let nodes = []
-    let selected = []
-
-    let timeout
     let ref
-    let mutationObserver
     let selectionMap
+
     const unsubscribe = SelectionStore.getStore(() => {
-        selected = SelectionStore.shaderEditorSelected
         selectionMap = SelectionStore.data.TARGET === SelectionStore.TYPES.SHADER_EDITOR ? SelectionStore.map : EMPTY_MAP
     })
 
-    const handleWheel = (e) => {
-        e.preventDefault()
-        let s = ShaderEditorTools.scale
-        if (e.wheelDelta > 0 && s < 3)
-            s += s * .1
-        else if (e.wheelDelta < 0 && s >= .5)
-            s -= s * .1
-
-        ref.style.transform = "scale(" + s + ")"
-        ShaderEditorTools.scale = s
-    }
 
     function updateData() {
         nodes = ctx.getNodes()
@@ -54,66 +36,24 @@
     }
 
     onMount(() => {
-        console.trace("ON MOUNT", openFile.registryID)
         ctx = SEContextController.getContext(openFile.registryID)
-        SEContextController.initializeCallback(openFile.registryID, updateData)
-        updateData()
-
-        const {contextMenu, hotkeys} = shaderActions(openFile)
-        HotKeysController.unbindAction(ref)
-        ContextMenuController.destroy(openFile.registryID)
-        ContextMenuController.mount(
-            {icon: "texture", label: Localization.SHADER_EDITOR},
-            contextMenu,
-            openFile.registryID,
-            [],
-            (trigger, element, event) => {
-                const el = event.path || []
-                for (let i = 0; i < el.length; i++) {
-                    const current = el[i]
-                    if (current === document.body)
-                        break
-                    if (!current)
-                        continue
-                    const id = current.getAttribute("data-id")
-                    const link = current.getAttribute("data-link")
-                    if (link) {
-                        SelectionStore.shaderEditorSelected = [links.find(l => l.identifier === id)]
-                        break
-                    }
-                    if (id) {
-                        SelectionStore.shaderEditorSelected = [nodes.find(n => n.id === id)]
-                        break
-                    }
-                }
-
+        initializeCanvas(
+            openFile,
+            ref,
+            ctx,
+            (n, l) => {
+                nodes = n;
+                links = l;
             }
         )
-        HotKeysController.bindAction(
-            ref,
-            hotkeys,
-            "texture",
-            Localization.SHADER_EDITOR
-        )
-
-        ref.parentElement.scrollTop = BOARD_SIZE / 2
-        ref.parentElement.scrollLeft = BOARD_SIZE / 2
-        ref.parentElement.addEventListener("wheel", handleWheel, {passive: false})
-
-        mutationObserver = new MutationObserver(e => onMutation(openFile.registryID, e))
-        mutationObserver.observe(ref, {subtree: true, childList: true, attributes: true})
-
-        timeout = setTimeout(() => onMutation(openFile.registryID), 250)
     })
 
 
     onDestroy(() => {
         unsubscribe()
-        clearTimeout(timeout)
         HotKeysController.unbindAction(ref)
         ContextMenuController.destroy(openFile.registryID)
-        ref.parentElement.removeEventListener("wheel", handleWheel, {passive: false})
-        mutationObserver.disconnect()
+        ref.parentElement.removeEventListener("wheel", handleWheelZoom)
     })
 
 
@@ -129,7 +69,6 @@
     <SelectBox
             returnRefs={true}
             nodes={nodes}
-            selected={selected}
             targetElementID={openFile.registryID}
             setSelected={v => SelectionStore.shaderEditorSelected = v}
     />

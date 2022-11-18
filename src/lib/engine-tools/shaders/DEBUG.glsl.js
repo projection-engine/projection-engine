@@ -21,13 +21,15 @@ float linearize(float depth){
     float far = 1000.;
     return (2. * near ) / (far + near - depth*(far -near)) ;
 }
-
+float rand(vec2 co){
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
 void main(){
   
     vec4 samplerData = texture(uSampler, texCoords);
     vec3 color = samplerData.rgb; 
     
-    if(debugFlag == 2) 
+    if(debugFlag == 2)
         color = vec3(linearize(color.r));
     else if (debugFlag == 9)
         color = vec3(color.b);
@@ -44,6 +46,15 @@ void main(){
     else if (debugFlag == 13){
         if (samplerData.a < 1.) discard;
         color = vec3(invViewMatrix * samplerData );
+    }
+    else if(debugFlag == 21){
+        float r = rand(vec2(length(color)));
+        float g = rand(vec2(length(color) + r));
+        color = vec3(
+            r,
+            g,
+            rand(vec2(length(color) + g))
+        );
     }
 
     fragColor = vec4(color, 1.);

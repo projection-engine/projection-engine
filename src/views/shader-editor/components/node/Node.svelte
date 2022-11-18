@@ -7,13 +7,13 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
     import SEContextController from "../../libs/SEContextController";
+    import {onMount} from "svelte";
 
     export let links
     export let node
     export let selectionMap
     export let setSelected
     export let internalID
-
 
     let ref
 
@@ -69,9 +69,20 @@
             return
         if (!SelectionStore.map.get(node.id))
             setSelected(node, event.ctrlKey)
-        dragNode(event, ref.parentElement)
-    }
+        ref.linksToUpdate = [...inputLinks, ...outputLinks]
 
+        dragNode(event, ref.parentElement, node.CONTEXT_ID)
+    }
+    $: {
+        if (ref) {
+            const links = [...inputLinks, ...outputLinks]
+            ref.linksToUpdate = links
+            for (let i = 0; i < links.length; i++) {
+                console.log(links[i])
+                links[i].updatePath()
+            }
+        }
+    }
 
     $: {
         if (!initialized) {
@@ -100,6 +111,7 @@
         }
     }
     $: isMat = node instanceof Material
+
 </script>
 
 

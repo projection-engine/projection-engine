@@ -15,9 +15,11 @@ export default {
     POSITION: 13,
     SSGI: 14,
     STOCHASTIC: 15,
-SSGI_UNFILTERED: 20,
+
     UV: 16,
     ID: 17,
     SSR: 18,
-    VELOCITY: 19
+    VELOCITY: 19,
+    SSGI_UNFILTERED: 20,
+    RANDOM: 21
 }

@@ -97,6 +97,7 @@
             </button>
         </div>
     </fieldset>
+
     <fieldset class="content">
         <legend>{Localization.SCENE}</legend>
         <div class="column">
@@ -116,6 +117,13 @@
                 {Localization.SHADING_ID}
                 <small>{Localization.ID_DEF}</small>
             </button>
+            <button
+                    data-highlight={shadingModel === SHADING_MODELS.RANDOM ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.RANDOM})}>
+                {Localization.SHADING_RANDOM}
+                <small>{Localization.SHADING_RANDOM_DEF}</small>
+            </button>
+
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
@@ -169,7 +177,6 @@
         display: grid;
         justify-content: flex-start;
         justify-items: flex-start;
-        background: var(--pj-background-secondary);
     }
 
 

@@ -1,1 +1,8 @@
-- Reworking shader editor links
+- Reworked entityInformation component to update with entity instead at a fixed interval
+- Shader editor links now update only when target or source elements move instead of fixed interval and on mutation of canvas
+  - Removed onMutation update
+  - Cached element references for link instead of querying it every update
+- Gizmo system will now render axis line for every gizmo instead of only for translation
+  - Lines will be rendered for every axis active instead of only single axis transformation
+- New random color visualization for every entity
+- Adding node position visualization on shader editor

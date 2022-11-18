@@ -5,7 +5,7 @@
     export let targetElementID
     export let disabled
     export let setSelected
-    export let selected
+    export let selected = []
     export let nodes
     export let allowAll
     export let targetElement

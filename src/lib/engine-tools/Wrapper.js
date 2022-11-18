@@ -8,10 +8,12 @@ import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
 
+
 let selected = []
 export default class Wrapper {
     static selected = selected
     static selectionMap = new Map()
+
 
     static updateSelectionData(data) {
         Wrapper.selectionMap.clear()

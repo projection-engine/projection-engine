@@ -11,8 +11,10 @@ export default function getPivotPointMatrix(entity) {
         mat4.fromRotationTranslationScale(m, entity._rotationQuat, entity.__pivotOffset, [.25, .25, .25])
         entity.__cacheCenterMatrix = m
 
-
-        GizmoSystem.targetGizmo.transformGizmo()
+        if(GizmoSystem.mainEntity) {
+            GizmoSystem.targetGizmo.transformGizmo()
+            GizmoSystem.updateGizmoToolTip()
+        }
         entity.__pivotChanged = false
     }
 }

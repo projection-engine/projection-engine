@@ -60,6 +60,7 @@ export default class RotationGizmo {
         if (!GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = true
             UndoRedoAPI.save(Wrapper.selected)
+            GizmoSystem.updateGizmoToolTip()
         }
 
         const g = event.ctrlKey ? toRad : RotationGizmo.gridSize * toRad
@@ -108,6 +109,7 @@ export default class RotationGizmo {
             this.tracking = true
             gpu.canvas.requestPointerLock()
         }
+
     }
 
     #rotateGizmo(axis, entity) {

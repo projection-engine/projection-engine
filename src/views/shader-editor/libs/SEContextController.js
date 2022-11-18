@@ -2,7 +2,7 @@
 export default class SEContextController {
     static #contexts = new Map()
 
-    static registerContext(contextID, updateNodes, updateLinks, getNodes, getLinks) {
+    static registerContext(contextID, updateNodes, updateLinks, getNodes, getLinks, dragStateUpdate) {
         SEContextController.#contexts.set(
             contextID,
             {
@@ -10,6 +10,7 @@ export default class SEContextController {
                 updateNodes,
                 getNodes,
                 getLinks,
+                dragStateUpdate
             }
         )
     }
@@ -21,10 +22,12 @@ export default class SEContextController {
         const oldUpdateLinks = ctx.updateLinks
         const oldUpdateNodes = ctx.updateNodes
         ctx.updateLinks = (v) => {
+            console.trace(v)
             oldUpdateLinks(v)
             cb()
         }
         ctx.updateNodes = (v) => {
+            console.trace(v)
             oldUpdateNodes(v)
             cb()
         }
@@ -47,7 +50,7 @@ export default class SEContextController {
         const input = node.inputs.find(i => i.key === attr.key)
         if (input.onChange)
             input.onChange(value)
-        ctx.updateNodes(ctx.getNodes)
+        ctx.updateNodes(ctx.getNodes())
     }
 
     static updateNode(key, value, node) {
@@ -55,6 +58,6 @@ export default class SEContextController {
         if (!ctx)
             return
         node[key] = value
-        ctx.updateNodes(ctx.getNodes)
+        ctx.updateNodes(ctx.getNodes())
     }
 }

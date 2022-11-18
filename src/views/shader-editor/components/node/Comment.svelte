@@ -17,7 +17,7 @@
             return
         if (!SelectionStore.map.get(node.id))
             setSelected(node, event.ctrlKey)
-        dragNode(event, ref.parentElement)
+        dragNode(event, ref.parentElement, node.CONTEXT_ID)
     }
 
     let onEdit = false

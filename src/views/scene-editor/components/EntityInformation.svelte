@@ -1,7 +1,8 @@
 <script>
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import GIZMOS from "../../../static/GIZMOS";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
 
     export let settings
     export let engine
@@ -10,57 +11,42 @@
     let translationRef
     let rotationRef
     let scaleRef
-    let currentInterval
 
-
-    $: {
-        clearInterval(currentInterval)
-        if (translationRef && rotationRef && scaleRef) {
-                currentInterval = setInterval(() => {
-                    console.log("ON INTERVAL")
-                    if (!translationRef || !rotationRef || !scaleRef) {
-                        clearInterval(currentInterval)
-                        return
-                    }
-                    if (mainEntity) {
-                        if (settings.gizmo === GIZMOS.TRANSLATION) {
-                            translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
-                            translationRef.parentElement.style.display = "flex"
-                        } else
-                            translationRef.parentElement.style.display = "none"
-                        if (settings.gizmo === GIZMOS.ROTATION) {
-                            rotationRef.textContent = `X ${mainEntity._rotationQuat[0].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
-                            rotationRef.parentElement.style.display = "flex"
-                        } else
-                            rotationRef.parentElement.style.display = "none"
-
-                        if (settings.gizmo === GIZMOS.SCALE) {
-                            scaleRef.textContent = `X ${mainEntity._scaling[0].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
-                            scaleRef.parentElement.style.display = "flex"
-                        } else
-                            scaleRef.parentElement.style.display = "none"
-                    }
-                }, 250)
-        }
+    function update(mainEntity){
+        if (!mainEntity)
+            return
+        if (settings.gizmo === GIZMOS.TRANSLATION)
+            translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
+        if (settings.gizmo === GIZMOS.ROTATION)
+            rotationRef.textContent = `X ${mainEntity._rotationQuat[0].toFixed(2)} | Y ${mainEntity._rotationQuat[1].toFixed(2)} | Z ${mainEntity._rotationQuat[2].toFixed(2)} | W ${mainEntity._rotationQuat[3].toFixed(2)}`
+        if (settings.gizmo === GIZMOS.SCALE)
+            scaleRef.textContent = `X ${mainEntity._scaling[0].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
     }
-    onDestroy(() => clearInterval(currentInterval))
+    onMount(() => {
+        GizmoSystem.updateGizmoToolTip = () => update(GizmoSystem.mainEntity)
+    })
+    $: {
+        if(mainEntity && translationRef && rotationRef && scaleRef)
+            update(mainEntity)
+    }
+    onDestroy(() => GizmoSystem.updateGizmoToolTip = () => null)
     $: isValidPivot = settings.gizmo === GIZMOS.TRANSLATION && selectedSize === 1
     $: isValidScaling = settings.gizmo === GIZMOS.SCALE
 </script>
 
 
 <div class="left-content">
-    <div data-inline="-">
+    <div data-inline="-" style={settings.gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
         <strong>{Localization.TRANSLATION}</strong>
         <small bind:this={translationRef}></small>
     </div>
 
-    <div data-inline="-">
+    <div data-inline="-" style={settings.gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
         <strong>{Localization.SCALE}</strong>
         <small bind:this={scaleRef}></small>
     </div>
 
-    <div data-inline="-">
+    <div data-inline="-" style={settings.gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
         <strong>{Localization.ROTATION}</strong>
         <small bind:this={rotationRef}></small>
     </div>

@@ -22,8 +22,8 @@ export default class Inheritance {
         if (!GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = true
             UndoRedoAPI.save(Wrapper.selected)
+            GizmoSystem.updateGizmoToolTip()
         }
-
     }
 
     onMouseDown(event) {

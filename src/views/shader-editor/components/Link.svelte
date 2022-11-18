@@ -1,9 +1,12 @@
 <script>
+    import {onMount} from "svelte";
+
     export let data
     export let setSelected
     export let selectionMap
 
     $: isSelected = selectionMap.get(data.identifier) != null
+    onMount(() => data.updatePath())
 </script>
 <path
         style="cursor: pointer"

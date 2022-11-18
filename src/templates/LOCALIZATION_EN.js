@@ -34,6 +34,8 @@ export default {
     NO_DEPTH_TEST: "No depth test",
     MOTION_BLUR_SCALE: "Motion blur scale",
     SAVE: "Save",
+    SHADING_RANDOM: "Random color",
+    SHADING_RANDOM_DEF: "Random color based on instance index",
     CENTER_POINT: "Center point",
     DYNAMIC: "Dynamic",
     RELATIONS: "Relations",
