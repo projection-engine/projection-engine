@@ -1,4 +1,4 @@
-import Comment from "../templates/nodes/Comment"
+import Comment from "../libs/nodes/Comment"
 import SelectionStore from "../../../stores/SelectionStore";
 
 export default function addComment(nodes, setNodes) {

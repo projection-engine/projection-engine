@@ -26,26 +26,13 @@ export default async function materialCompiler(n, links) {
             }).filter(i => i)
         )
 
-        const cubeMapShader = await compileFragmentShader(
-            n,
-            links,
-            MATERIAL_RENDERING_TYPES.FORWARD,
-            [
-                "al",
-                "normal",
-                "ao",
-                "roughness",
-                "metallic",
-                "opacity",
-                "emission",
-                "worldOffset"
-            ], false)
+
         return {
             info: [
                 {key: "samplers", label: "Texture samplers", data: samplers.length},
                 {key: "uniforms", label: "Uniform quantity", data: uniformNodes.length}
             ],
-            cubeMapShader,
+            // cubeMapShader,
             shader: code,
             vertexShader: getVertexShader(startPoint.shadingType),
             uniforms,

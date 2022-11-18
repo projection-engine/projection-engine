@@ -36,8 +36,13 @@ export default class SelectionStore {
             value = {...v}
         if (value.array !== SelectionStore.array) {
             value.map.clear()
-            for (let i = 0; i < value.array.length; i++)
-                value.map.set(value.array[i], true)
+            for (let i = 0; i < value.array.length; i++) {
+                const temp = value.array[i]
+                if (typeof temp === "object")
+                    value.map.set(temp.id || temp.identifier, temp)
+                else
+                    value.map.set(temp, true)
+            }
         }
 
         if (SelectionStore.TARGET === TYPES.ENGINE) {

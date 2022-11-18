@@ -34,7 +34,7 @@ export default async function compileFragmentShader(n, links, shadingType, disca
 
 
     let body = []
-    resolveRelationship(startPoint, [], links.filter(l => l.target.id !== startPoint.id || l.target.id === startPoint.id && !discardedLinks.includes(l.target.key)), nodes, body, false)
+    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id && !discardedLinks.includes(l.targetRef.key)), nodes, body, false)
     return {
         code: `
             ${codeString.static}

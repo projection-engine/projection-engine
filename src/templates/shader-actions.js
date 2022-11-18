@@ -1,8 +1,8 @@
-import ShaderEditorTools from "../views/shader-editor/ShaderEditorTools";
+import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools";
 import SelectionStore from "../stores/SelectionStore";
 import addComment from "../views/shader-editor/utils/add-comment";
-import Material from "../views/shader-editor/templates/nodes/Material";
-import SEContextController from "../views/shader-editor/SEContextController";
+import Material from "../views/shader-editor/libs/nodes/Material";
+import SEContextController from "../views/shader-editor/libs/SEContextController";
 import SettingsStore from "../stores/SettingsStore";
 
 export default function shaderActions(openFile) {
@@ -55,10 +55,9 @@ export default function shaderActions(openFile) {
                 }
                 for (let i = 0; i < links.length; i++) {
                     const current = links[i]
-                    const target = current.target.id
-                    const source = current.source.id
-                    const KEY = target + current.target.attribute.key + "-" + source + current.source.attribute.key
-                    if (!SelectionStore.map.get(KEY) && map.get(target) && map.get(source))
+                    const target = current.targetRef.id
+                    const source = current.sourceRef.id
+                    if (!SelectionStore.map.get(current.identifier) && map.get(target) && map.get(source))
                         newLinks.push(current)
                 }
 
@@ -101,17 +100,10 @@ export default function shaderActions(openFile) {
                 label: "Delete link",
                 icon: "delete",
                 onClick: (node) => {
+                    if (!node)
+                        return
                     const toTest = node.getAttribute("data-link")
-                    context.updateLinks(context.getLinks().filter(l => {
-                        if (!l?.target?.attribute || !l?.source?.attribute)
-                            return false
-                        const test = {
-                            t: l.target.id + l.target.attribute.key,
-                            s: l.source.id + l.source.attribute.key,
-                        }
-
-                        return (test.t + "-" + test.s) !== toTest
-                    }))
+                    context.updateLinks(context.getLinks().filter(l => l.identifier !== toTest))
                 }
             }
         ]

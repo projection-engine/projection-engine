@@ -1,4 +1,4 @@
-import {allNodes} from "../templates/all-nodes";
+import {ALL_NODES} from "../static/ALL_NODES";
 
 export default function handleDropBoard(data) {
     const find = (current) => {
@@ -8,5 +8,5 @@ export default function handleDropBoard(data) {
         return n
     }
 
-    return find(allNodes)
+    return find(ALL_NODES)
 }

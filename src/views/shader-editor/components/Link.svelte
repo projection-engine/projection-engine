@@ -1,18 +1,17 @@
 <script>
     export let data
     export let setSelected
-    export let selected
+    export let selectionMap
 
-    $: identifier = data.target + "-" + data.source
-    $: isSelected = selected.includes(identifier)
+    $: isSelected = selectionMap.get(data.identifier) != null
 </script>
 <path
         style="cursor: pointer"
-        on:click={e => setSelected(identifier, e.ctrlKey)}
-        data-link={identifier}
+        on:click={e => setSelected(data, e.ctrlKey)}
+        data-link={data.identifier}
         fill={"none"}
         stroke={isSelected ? "yellow" : "white"}
         stroke-width={4}
-        id={identifier}
+        id={data.identifier}
         d=""
 ></path>

@@ -9,9 +9,9 @@
     export let nodes
     export let allowAll
     export let targetElement
+    export let returnRefs
     let ref
 
-    $: ids = nodes.map(n => n.id)
 
     const handleMouseMove = (event) => {
         if (!document.pointerLockElement) {
@@ -99,7 +99,7 @@
                         if (!elBox)
                             continue
                         if (elBox.x > currentBox.x1 && elBox.y > currentBox.y1 && elBox.x < currentBox.x2 && elBox.y < currentBox.y2)
-                            toSelect.push(node.id)
+                            toSelect.push(returnRefs ? node : node.id)
 
                     }
                     if (!event.ctrlKey)

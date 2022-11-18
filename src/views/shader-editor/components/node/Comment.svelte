@@ -5,19 +5,19 @@
 
     export let submitName
     export let node
-    export let selected
+    export let selectionMap
     export let setSelected
     export let canvas
     let ref
 
-    $: isSelected =  selected.includes(node.id)
+    $: isSelected =  selectionMap.get(node.id) != null
 
     const handleDragStart = (event) => {
         if (event.button !== 0)
             return
         if (!SelectionStore.map.get(node.id))
-            setSelected(node.id, event.ctrlKey)
-        dragNode(event, ref.parentNode)
+            setSelected(node, event.ctrlKey)
+        dragNode(event, ref.parentElement)
     }
 
     let onEdit = false

@@ -106,7 +106,6 @@
 <style>
 
     .wrapper {
-        border-top: var(--pj-border-primary) 1px solid;
         display: flex;
         overflow: hidden;
         height: 100%;

@@ -1,4 +1,4 @@
-import ShaderEditorTools from "../ShaderEditorTools";
+import ShaderEditorTools from "../libs/ShaderEditorTools";
 
 export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {

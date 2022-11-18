@@ -1,5 +1,5 @@
 import getBezierCurve from "./get-bezier-curve";
-import ShaderEditorTools from "../ShaderEditorTools";
+import ShaderEditorTools from "../libs/ShaderEditorTools";
 
 export default function updateLinks(mappedLinks, ref) {
     const scale = ShaderEditorTools.scale

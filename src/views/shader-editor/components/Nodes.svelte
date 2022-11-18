@@ -1,22 +1,18 @@
 <script>
-    import {allNodes} from "../templates/all-nodes"
+    import {ALL_NODES} from "../static/ALL_NODES"
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import "../../../components/selector/css/selector.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
-
-
     const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")
-
-
     let searchString = ""
     let nodes
     $: {
         const s = parseStr(searchString)
         if (!s)
-            nodes = allNodes
-        nodes = allNodes.filter(i => parseStr(i.label).includes(s))
+            nodes = ALL_NODES
+        nodes = ALL_NODES.filter(i => parseStr(i.label).includes(s))
     }
 </script>
 

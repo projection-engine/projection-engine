@@ -3,22 +3,21 @@
     import dragNode from "../../utils/drag-node";
     import NodeInput from "./NodeInput.svelte";
     import NodeOutput from "./NodeOutput.svelte";
-    import Material from "../../templates/nodes/Material";
+    import Material from "../../libs/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import ShaderEditorTools from "../../ShaderEditorTools";
-    import SEContextController from "../../SEContextController";
+    import ShaderEditorTools from "../../libs/ShaderEditorTools";
+    import SEContextController from "../../libs/SEContextController";
 
     export let links
     export let node
-    export let handleLink
-    export let selected
+    export let selectionMap
     export let setSelected
     export let internalID
 
 
     let ref
 
-    $: isSelected = selected.indexOf(node.id) > -1
+    $: isSelected = selectionMap.get(node.id) != null
 
     let outputLinks
     let inputLinks
@@ -26,9 +25,9 @@
         const out = [], inp = []
         for (let i = 0; i < links.length; i++) {
             const current = links[i]
-            if (current.source && current.source.includes(node.id))
+            if (current.source.includes(node.id))
                 out.push(current)
-            if (current.target && current.target.includes(node.id))
+            if (current.target.includes(node.id))
                 inp.push(current)
         }
 
@@ -69,8 +68,8 @@
         if (event.button !== 0)
             return
         if (!SelectionStore.map.get(node.id))
-            setSelected(node.id, event.ctrlKey)
-        dragNode(event, document.getElementById(internalID))
+            setSelected(node, event.ctrlKey)
+        dragNode(event, ref.parentElement)
     }
 
 
@@ -123,13 +122,12 @@
         >
             {node.name}
         </div>
-        <div class="content" on:click={event => setSelected(node.id, event.ctrlKey)}>
+        <div class="content" on:click={event => setSelected(node, event.ctrlKey)}>
             <div
                     class="column"
                     style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
                 {#each node.inputs as a, i}
                     <NodeInput
-                            handleLink={handleLink}
                             attribute={a}
                             node={node}
                             inputLinks={inputLinks}

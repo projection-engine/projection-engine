@@ -1,7 +1,7 @@
 <script>
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
     import "../../css/NodeIO.css"
-    import ShaderEditorTools from "../../ShaderEditorTools";
+    import ShaderEditorTools from "../../libs/ShaderEditorTools";
 
     export let handleLinkDrag
     export let data
@@ -29,7 +29,7 @@
     }
 </script>
 <div
-        data-link={link ? (link.target + "-" + link.source) : null}
+        data-link={link?.identifier}
         class="attribute node-io" bind:this={wrapperRef}
         data-dtype={"output"}
         data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}

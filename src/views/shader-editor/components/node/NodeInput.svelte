@@ -3,10 +3,9 @@
     import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES"
     import Attribute from "./Attribute.svelte";
     import "../../css/NodeIO.css"
-    import ShaderEditorTools from "../../ShaderEditorTools";
-    import SEContextController from "../../SEContextController";
+    import ShaderEditorTools from "../../libs/ShaderEditorTools";
+    import SEContextController from "../../libs/SEContextController";
 
-    export let handleLink
     export let attribute
     export let inputLinks
     export let node
@@ -16,16 +15,17 @@
         if (!attribute.accept)
             return
         e.preventDefault()
-        if (ShaderEditorTools.connectionOnDrag) {
+        if (ShaderEditorTools.connectionOnDrag !== undefined) {
             document.getElementById(ShaderEditorTools.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
+            console.log(attribute)
             if (!attribute.disabled)
-                linkNodes(ShaderEditorTools.connectionOnDrag, attribute, node, handleLink)
+                linkNodes(attribute, node)
             ShaderEditorTools.connectionOnDrag = undefined
         }
     }
 </script>
 <div
-        data-link={link ? (link.target + "-" + link.source) : null}
+        data-link={link?.identifier}
         class="attribute node-io"
 
         data-dtype={"input"}

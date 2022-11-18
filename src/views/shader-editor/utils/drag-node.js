@@ -1,4 +1,4 @@
-import ShaderEditorTools from "../ShaderEditorTools";
+import ShaderEditorTools from "../libs/ShaderEditorTools";
 import SelectionStore from "../../../stores/SelectionStore";
 
 function listenTo(event, target, parent) {
@@ -33,7 +33,8 @@ function listenTo(event, target, parent) {
 }
 
 export default function dragNode(event, parent) {
-    let targets = SelectionStore.shaderEditorSelected.map(v => document.getElementById(v)?.parentElement)
+try{
+    let targets = SelectionStore.shaderEditorSelected.map(v => document.getElementById(v.id || v.identifier).parentElement)
     const callbacks = targets.map(t => listenTo(event, t, parent))
 
     const handleMouseMove = (ev) => {
@@ -48,5 +49,8 @@ export default function dragNode(event, parent) {
     }
     document.addEventListener("mousemove", handleMouseMove)
     document.addEventListener("mouseup", handleMouseUp, {once: true})
+}catch (err){
+    console.warn(err)
+}
 }
 

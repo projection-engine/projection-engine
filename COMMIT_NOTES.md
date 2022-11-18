@@ -1,2 +1,1 @@
-- Reworking shader editor view structure
-- Visual tweaks 
+- Reworking shader editor links

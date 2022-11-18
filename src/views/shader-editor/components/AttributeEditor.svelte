@@ -3,7 +3,7 @@
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
     import Attribute from "./node/Attribute.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import SEContextController from "../SEContextController";
+    import SEContextController from "../libs/SEContextController";
 
     export let node
 

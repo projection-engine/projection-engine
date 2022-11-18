@@ -1,28 +1,29 @@
 <script>
-    import buildShader from "./libs/build-shader"
+    import buildShader from "./utils/build-shader"
     import Nodes from "./components/Nodes.svelte"
     import selection from "./utils/selection"
-    import SELECTION_TYPES from "./data/SELECT_ACTIONS"
+    import SELECTION_TYPES from "./static/SELECT_ACTIONS"
     import FilesAPI from "../../lib/fs/FilesAPI"
 
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import parseFile from "./utils/parse-file";
-    import Material from "./templates/nodes/Material";
-    import BOARD_SIZE from "./data/BOARD_SIZE";
+    import Material from "./libs/nodes/Material";
+    import BOARD_SIZE from "./static/BOARD_SIZE";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import ShaderEditorTools from "./ShaderEditorTools";
+    import ShaderEditorTools from "./libs/ShaderEditorTools";
     import Selector from "../../components/selector/Selector.svelte";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "../../lib/engine-tools/lib/material-compiler/material-compiler";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import SEContextController from "./SEContextController";
-    import Board from "./components/Board.svelte";
+    import SEContextController from "./libs/SEContextController";
+    import ShaderCanvas from "./components/ShaderCanvas.svelte";
+    import onMutation from "./utils/on-mutation";
 
     const {shell} = window.require("electron")
 
@@ -35,16 +36,11 @@
     let links = []
     let status
     let ref
-    let selected = []
-    let selectedEntity
+
     let engine
     let wasInitialized = false
     let isReady = false
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribe = SelectionStore.getStore(() => {
-        selected = SelectionStore.shaderEditorSelected
-        selectedEntity = SelectionStore.selectedEntity
-    })
 
     function initializeStructure() {
         SEContextController.deleteContext(openFile?.registryID)
@@ -62,7 +58,18 @@
                     newMat.y = newMat.y + BOARD_SIZE / 2
                     nodes = [...d, newMat]
                 }
-                SEContextController.registerContext(openFile.registryID, v => nodes = v, v => links = v, () => nodes, () => links)
+                SEContextController.registerContext(
+                    openFile.registryID,
+                    v => {
+                        nodes = v
+                        onMutation(openFile.registryID)
+                    },
+                    v => {
+                        links = v
+                        onMutation(openFile.registryID)
+                    },
+                    () => nodes,
+                    () => links)
                 isReady = true
             },
             v => links = v
@@ -73,9 +80,8 @@
         if (!v) {
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
-        }
-        else if (SEContextController.getContext(v.registryID))
-            alert.pushAlert(Localization.FILE_ALREADY_OPEN)
+        } else if (SEContextController.getContext(v.registryID))
+            alert.pushAlert(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
             isReady = false
             openFile = v
@@ -86,11 +92,7 @@
     $: invalidFile = !openFile
     $: {
         if (wasInitialized) {
-            const newState = {
-                openFile,
-                nodes,
-                links,
-            }
+            const newState = {openFile, nodes, links}
             ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
         } else {
             const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
@@ -109,15 +111,10 @@
             wasInitialized = true
         }
     }
-
-
     onDestroy(() => {
-        unsubscribe()
         unsubscribeEngine()
         SEContextController.deleteContext(openFile?.registryID)
     })
-
-
 </script>
 
 <ViewHeader>
@@ -131,7 +128,7 @@
                     })
                 }}>
             <Icon styles="font-size: .9rem">save</Icon>
-            {Localization.SAVE}
+            {LOCALIZATION_EN.SAVE}
         </button>
         <button
                 disabled={invalidFile}
@@ -139,7 +136,7 @@
                 on:click={() => buildShader(nodes, links, openFile, v => status = v).catch()}
         >
             <Icon styles="font-size: .9rem">code</Icon>
-            {Localization.COMPILE}
+            {LOCALIZATION_EN.COMPILE}
         </button>
         <div data-vertdivider="-"></div>
         <Selector
@@ -160,19 +157,19 @@
     <div data-inline="-" style="width: 100%; justify-content: flex-end">
         <Dropdown>
             <button class="button" slot="button">
-                {Localization.SELECT}
+                {LOCALIZATION_EN.SELECT}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
-                {Localization.ALL}
+                {LOCALIZATION_EN.ALL}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
-                {Localization.NONE}
+                {LOCALIZATION_EN.NONE}
             </button>
 
             <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
-                {Localization.INVERT}
+                {LOCALIZATION_EN.INVERT}
             </button>
         </Dropdown>
         <button
@@ -191,7 +188,7 @@
                 }}
         >
             <Icon styles="font-size: .9rem">grid_4x4</Icon>
-            <ToolTip content={Localization.TOGGLE_GRID}/>
+            <ToolTip content={LOCALIZATION_EN.TOGGLE_GRID}/>
         </button>
         {#if !invalidFile}
             <button
@@ -204,7 +201,7 @@
                     }}
             >
                 <Icon styles="font-size: .9rem">code</Icon>
-                <ToolTip content={Localization.SOURCE}/>
+                <ToolTip content={LOCALIZATION_EN.SOURCE}/>
             </button>
         {/if}
     </div>
@@ -213,21 +210,18 @@
     {#if !invalidFile}
         {#if isReady}
             {#key openFile}
-                <Board
-                        openFile={openFile}
-                        selected={selected}
-                />
+                <ShaderCanvas openFile={openFile}/>
             {/key}
         {:else}
             <div data-empty="-">
                 <Icon styles="font-size: 75px">texture</Icon>
-                {Localization.LOADING_MATERIAL}
+                {LOCALIZATION_EN.LOADING_MATERIAL}
             </div>
         {/if}
     {:else}
         <div data-empty="-">
             <Icon styles="font-size: 75px">texture</Icon>
-            {Localization.NO_MATERIAL_SELECTED}
+            {LOCALIZATION_EN.NO_MATERIAL_SELECTED}
         </div>
     {/if}
 </div>

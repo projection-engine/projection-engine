@@ -11,6 +11,8 @@
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
     import ShaderEditorNode from "./components/shader-editor/ShaderEditorNode.svelte";
+    import SEContextController from "../shader-editor/libs/SEContextController";
+    import ShaderNode from "../shader-editor/libs/ShaderNode";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -36,7 +38,11 @@
                     targetType = Localization.CONTENT_BROWSER
                     break
                 case T.SHADER_EDITOR:
-                    // TODO
+                    console.log(v.array[0])
+                    if (v.array[0] instanceof ShaderNode) {
+                        targetInstance = v.array[0]
+                        targetType = Localization.SHADER_EDITOR
+                    }
                     break
                 case T.ENGINE:
                     targetInstance = QueryAPI.getEntityByID(v.array[0])
@@ -57,7 +63,7 @@
     })
     onDestroy(() => unsubscribeSelection())
 </script>
-{#if entity == null || entity != null && target !== SelectionStore.TYPES.CONTENT_BROWSER && target !== SelectionStore.TYPES.ENGINE}
+{#if entity == null}
     <div data-empty="-">
         <Icon styles="font-size: 75px">category</Icon>
         {Localization.INSPECTOR}
@@ -75,7 +81,8 @@
         {#if entity instanceof Entity}
             <EntityInspector entity={entity}/>
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
-            <ContentBrowserItem item={entity}/>]
+            <ContentBrowserItem item={entity}/>
+            ]
         {:else if target === SelectionStore.TYPES.SHADER_EDITOR}
             <ShaderEditorNode node={entity}/>
         {/if}

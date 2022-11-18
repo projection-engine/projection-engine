@@ -1,14 +1,14 @@
-export default function handleLink(src, target,  links, setLinks) {
-    let c = [...links]
-    const existing = c.filter(c => c.target.id === target.id && c.target.attribute.key === target.attribute.key)
-    c = c.filter(cc => !existing.find(e => e === cc))
-    if (!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired)) {
+import ShaderLink from "../libs/ShaderLink";
+import SEContextController from "../libs/SEContextController";
 
-        c.push({
-            source: src,
-            target: target
-        })
-    } else
-        alert.pushAlert("Missing inspector on entity", "error")
-    setLinks(c)
+export default function handleLink(src, target, CONTEXT_ID) {
+    const ctx = SEContextController.getContext(CONTEXT_ID)
+    let newLinks = [...ctx.getLinks()]
+    const existing = newLinks.filter(newLinks => newLinks.targetRef.id === target.id && newLinks.targetRef.attribute.key === target.attribute.key)
+    newLinks = newLinks.filter(cc => !existing.find(e => e === cc))
+    console.trace(!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired))
+    if (!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired))
+        newLinks.push(new ShaderLink(target, src, CONTEXT_ID))
+
+    ctx.updateLinks(newLinks)
 }

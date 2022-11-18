@@ -5,7 +5,7 @@ import Localization from "../../../templates/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
-import ShaderEditorTools from "../../shader-editor/ShaderEditorTools";
+import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 
 const {shell} = window.require("electron")
 

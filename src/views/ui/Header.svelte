@@ -34,7 +34,7 @@
     }
 
     function addUiElement() {
-        const e = new Entity(undefined, "UI-Node")
+        const e = new Entity(undefined, "UI-ShaderNode")
         e.addComponent(COMPONENTS.UI)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
     }
