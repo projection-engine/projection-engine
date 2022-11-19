@@ -96,7 +96,7 @@
             const newFile = ShaderEditorTools.toOpenFile || state?.openFile
             if (!newFile)
                 SEContextController.deleteContext(openFile?.registryID)
-            console.log(newFile)
+            console.trace(newFile)
             initializeFromFile(newFile)
             if (newFile?.registryID)
                 initializeStructure()

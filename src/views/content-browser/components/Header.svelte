@@ -85,12 +85,12 @@
         />
         <Dropdown
                 buttonStyles={`
-              max-height: 22px;
-              min-height: 22px;
-              border-radius: 3px;
-              ${fileType != null ? "background: var(--pj-accent-color);" : "background: var(--pj-background-secondary);"}
-              color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
-            `}
+                      max-height: 22px;
+                      min-height: 22px;
+                      border-radius: 3px;
+                      ${fileType != null ? "background: var(--pj-accent-color);" : "background: var(--pj-background-secondary);"}
+                      color: ${fileType != null ? "white" : "var(--pj-color-secondary)"};
+               `}
         >
             <button slot="button" style="background: transparent; border: none">
                 <ToolTip content={Localization.FILTER_TYPE}/>
