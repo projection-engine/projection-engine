@@ -1,5 +1,2 @@
-- Reworked SSGI pipeline
-  - Bilateral filtering added to final sampler
-  - Better stability at lower blur sample counts
-  - Reduced considerably color leakage due to bilateral filter
-  - Solid application for meshID buffer texture
+- Readme update
+- Fixed GlobalIlluminationPass referencing wrong variable
