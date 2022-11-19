@@ -31,24 +31,46 @@ export default class UndoRedoAPI {
                 })
                 break
             }
+            case ACTION_HISTORY_TARGETS.SHADER_EDITOR:
+                UndoRedoAPI.#cache.save({
+                    value,
+                    changed: value.changed || 1,
+                    target,
+                    time: (new Date()).toLocaleTimeString()
+                })
+                console.trace(UndoRedoAPI.#cache.history)
+                break
             default:
                 break
         }
         if (typeof UndoRedoAPI.onChange === "function")
-            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({...e, index: i})), UndoRedoAPI.#cache.index)
+            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
+                ...e,
+                index: i
+            })), UndoRedoAPI.#cache.index)
+    }
+
+    static clearShaderEditorStates() {
+        UndoRedoAPI.#cache.history = UndoRedoAPI.#cache.history.filter(h => !h || h.target !== ACTION_HISTORY_TARGETS.SHADER_EDITOR)
+        UndoRedoAPI.#cache.index = Math.max(UndoRedoAPI.#cache.history.length - 1, 0)
+
+        if (typeof UndoRedoAPI.onChange === "function")
+            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history, UndoRedoAPI.#cache.index)
     }
 
     static applyIndex(i) {
+        if(i <= 0 || i > UndoRedoAPI.#cache.history.length -1)
+            return
+
         const actualIndex = () => UndoRedoAPI.#cache.index
         let lastChange
+
         if (i < actualIndex())
-            while (i < actualIndex()) {
+            while (i !== actualIndex())
                 lastChange = UndoRedoAPI.#cache.undo()
-            }
         else if (i > actualIndex())
-            while (i > actualIndex()) {
+            while (i !== actualIndex())
                 lastChange = UndoRedoAPI.#cache.redo()
-            }
         if (lastChange)
             UndoRedoAPI.#apply(lastChange)
     }
@@ -72,7 +94,10 @@ export default class UndoRedoAPI {
     }
 
     static #apply(currentAction) {
-        UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({...e, index: i})), UndoRedoAPI.#cache.index)
+        UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
+            ...e,
+            index: i
+        })), UndoRedoAPI.#cache.index)
         switch (currentAction.target) {
             case ACTION_HISTORY_TARGETS.ENGINE: {
                 const value = JSON.parse(currentAction.value)
@@ -88,6 +113,9 @@ export default class UndoRedoAPI {
                 EngineStore.updateStore()
                 break
             }
+            case ACTION_HISTORY_TARGETS.SHADER_EDITOR:
+                currentAction.value?.callback?.()
+                break
             default:
                 break
         }

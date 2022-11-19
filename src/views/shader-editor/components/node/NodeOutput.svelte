@@ -8,6 +8,8 @@
     export let outputLinks
     export let inputLinks
     export let node
+    export let isHidden
+
     let wrapperRef
     $: link = outputLinks.find(o => o.sourceKey === data.key)
 
@@ -23,23 +25,27 @@
     $:  disabled = (data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0))
     const endDrag = e => {
         e.preventDefault()
-        if(ShaderEditorTools.connectionOnDrag)
+        if (ShaderEditorTools.connectionOnDrag)
             document.getElementById(ShaderEditorTools.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
-        ShaderEditorTools.connectionOnDrag  = undefined
+        ShaderEditorTools.connectionOnDrag = undefined
     }
 </script>
 <div
         data-link={link?.identifier}
-        class="attribute node-io" bind:this={wrapperRef}
+        class="attribute node-io"
+        bind:this={wrapperRef}
+        data-ishidden={isHidden ? "-" : undefined}
         data-dtype={"output"}
         data-disabled={`${data.disabled || data.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
         style="justify-content: flex-end">
-    <div
-            data-overflow="-"
-            style={`color: ${data.disabled ? "#999" : data.color};`}
-    >
-        {data.label}
-    </div>
+    {#if !isHidden}
+        <div
+                data-overflow="-"
+                style={`color: ${data.disabled ? "#999" : data.color};`}
+        >
+            {data.label}
+        </div>
+    {/if}
     <span
             draggable={!disabled ? "true" : undefined}
             on:dragstart={e => {

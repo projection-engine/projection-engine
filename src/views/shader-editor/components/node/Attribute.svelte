@@ -6,6 +6,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+    import getDropdownHeaderStyles from "../../../../utils/get-dropdown-header-styles";
 
     export let attribute
     export let node
@@ -35,6 +36,7 @@
 
     $: value = node[attribute.key]
     const label = attribute.label, type = attribute.type
+    $: possibleSelection= attribute.options ? attribute.options.find(v => v.data === value) : undefined
 </script>
 
 {#if type === DATA_TYPES.INT || type === DATA_TYPES.FLOAT}
@@ -111,14 +113,16 @@
 
 {:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}
 
-    <Dropdown>
-        <button slot="button" class="dropdown">
-            {label}
+    <Dropdown buttonStyles={getDropdownHeaderStyles() + "width: 100%;"}>
+        <button slot="button" data-view-header-dropdown="-">
+            {possibleSelection ? possibleSelection.label : label}
         </button>
         {#each attribute.options as o, i}
-            <button on:click={() => handleChange(o.data, attribute)}>
+            <button on:click={() => handleChange(o.data, attribute)} data-inline="-">
                 {#if o.data === value}
                     <Icon>check</Icon>
+                    {:else}
+                    <div style="width: 1.2rem"></div>
                 {/if}
                 {o.label}
             </button>
@@ -146,12 +150,4 @@
     }
 
 
-    .dropdown {
-        border: none;
-        height: 30px;
-        padding: 2px 8px !important;
-        font-size: .7rem;
-
-        white-space: nowrap;
-    }
 </style>

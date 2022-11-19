@@ -18,6 +18,8 @@
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
+    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
     const {shell} = window.require("electron")
 
@@ -59,7 +61,7 @@
                     v => links = v,
                     () => nodes,
                     () => links,
-                    v => dragWillStart =  v
+                    v => dragWillStart = v
                 )
                 isReady = true
             },
@@ -69,11 +71,13 @@
 
     function initializeFromFile(v) {
         if (!v) {
+            UndoRedoAPI.clearShaderEditorStates()
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
             alert.pushAlert(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
+            UndoRedoAPI.clearShaderEditorStates()
             isReady = false
             openFile = v
             initializeStructure()
@@ -105,6 +109,7 @@
     }
     onDestroy(() => {
         unsubscribeEngine()
+        UndoRedoAPI.clearShaderEditorStates()
         SEContextController.deleteContext(openFile?.registryID)
     })
 </script>
@@ -114,10 +119,10 @@
     {#if !dragWillStart || invalidFile}
         <HeaderOptions
                 save={() => {
-                buildShader(nodes, links, openFile, v => status = v).then(() => {
-                    ShaderEditorTools.save(openFile, nodes, links).catch(err => console.error(err))
-                })
-            }}
+                    buildShader(nodes, links, openFile, v => status = v).then(() => {
+                        ShaderEditorTools.save(openFile, nodes, links).catch(err => console.error(err))
+                    })
+                }}
                 openFile={openFile}
                 compile={() => buildShader(nodes, links, openFile, v => status = v).catch()}
                 initializeFromFile={initializeFromFile}
@@ -152,9 +157,10 @@
 </div>
 
 <style>
-    small{
+    small {
         font-size: .7rem;
     }
+
     .wrapper {
         display: flex;
         height: 100%;

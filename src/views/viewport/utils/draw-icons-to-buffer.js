@@ -26,9 +26,8 @@ export default function drawIconsToBuffer() {
 function drawIcon(mesh, meshID, transformMatrix) {
     GBuffer.forwardDepthShader.bindForUse({
         meshID,
-        viewMatrix: CameraAPI.viewMatrix,
-        transformMatrix ,
-        projectionMatrix: CameraAPI.projectionMatrix,
+        transformMatrix,
+        previousModelMatrix: transformMatrix
     })
     mesh.draw()
 }

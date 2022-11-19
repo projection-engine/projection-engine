@@ -1,3 +1,5 @@
+import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
+import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
 
 export default class SEContextController {
     static #contexts = new Map()
@@ -22,12 +24,10 @@ export default class SEContextController {
         const oldUpdateLinks = ctx.updateLinks
         const oldUpdateNodes = ctx.updateNodes
         ctx.updateLinks = (v) => {
-            console.trace(v)
             oldUpdateLinks(v)
             cb()
         }
         ctx.updateNodes = (v) => {
-            console.trace(v)
             oldUpdateNodes(v)
             cb()
         }
@@ -46,7 +46,27 @@ export default class SEContextController {
         const ctx = SEContextController.#contexts.get(node.CONTEXT_ID)
         if (!ctx)
             return
+        UndoRedoAPI.save({
+                value: node[attr.key],
+                changed: 1,
+                callback() {
+                    node[attr.key] = this.value
+                    ctx.updateNodes(ctx.getNodes())
+                }
+            },
+            ACTION_HISTORY_TARGETS.SHADER_EDITOR
+        )
         node[attr.key] = value
+        UndoRedoAPI.save({
+                value,
+                changed: 1,
+                callback() {
+                    node[attr.key] = this.value
+                    ctx.updateNodes(ctx.getNodes())
+                }
+            },
+            ACTION_HISTORY_TARGETS.SHADER_EDITOR
+        )
         const input = node.inputs.find(i => i.key === attr.key)
         if (input.onChange)
             input.onChange(value)
@@ -57,7 +77,59 @@ export default class SEContextController {
         const ctx = SEContextController.#contexts.get(node.CONTEXT_ID)
         if (!ctx)
             return
+
+        UndoRedoAPI.save({
+                value: node[key],
+                changed: 1,
+                callback() {
+                    node[key] = this.value
+                    ctx.updateNodes(ctx.getNodes())
+                }
+            },
+            ACTION_HISTORY_TARGETS.SHADER_EDITOR
+        )
         node[key] = value
+        UndoRedoAPI.save({
+                value,
+                changed: 1,
+                callback() {
+                    node[key] = this.value
+                    ctx.updateNodes(ctx.getNodes())
+                }
+            },
+            ACTION_HISTORY_TARGETS.SHADER_EDITOR
+        )
         ctx.updateNodes(ctx.getNodes())
+
+    }
+
+    static saveNodesPositions(ctxID, nodesAffected) {
+        const ctx = SEContextController.#contexts.get(ctxID)
+        if (!ctx)
+            return
+        UndoRedoAPI.save({
+                cache: nodesAffected.map(n => ({...n, current: {...n.current}})),
+                changed: nodesAffected.length,
+                callback() {
+                    const nodeMap = {}
+                    ctx.getNodes().forEach(n => {
+                        nodeMap[n.id] = n
+                    })
+                    for (let i = 0; i < this.cache.length; i++) {
+                        const node = this.cache[i]
+                        if (nodeMap[node.id] == null)
+                            continue
+                        node.target.setAttribute("transform", `translate(${node.current.x} ${node.current.y})`)
+                        const links = node.target.linksToUpdate
+                        if (!links)
+                            continue
+                        for (let j = 0; j < links.length; j++)
+                            links[j].updatePath()
+                    }
+                }
+            },
+            ACTION_HISTORY_TARGETS.SHADER_EDITOR
+        )
+
     }
 }

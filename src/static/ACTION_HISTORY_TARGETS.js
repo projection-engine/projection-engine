@@ -1,3 +1,4 @@
 export default {
-    ENGINE:"ENGINE"
+    ENGINE:"ENGINE",
+    SHADER_EDITOR: "SHADER_EDITOR"
 }

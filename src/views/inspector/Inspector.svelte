@@ -10,12 +10,14 @@
     import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
-    import ShaderEditorNode from "./components/shader-editor/ShaderEditorNode.svelte";
     import ShaderNode from "../shader-editor/libs/ShaderNode";
+    import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
+    import {v4} from "uuid";
 
     export let switchView = undefined
     export let orientation = undefined
 
+    const internalID = v4()
     let ui = {}
     let parent
     let savedState = false
@@ -37,7 +39,6 @@
                     targetType = Localization.CONTENT_BROWSER
                     break
                 case T.SHADER_EDITOR:
-                    console.log(v.array[0])
                     if (v.array[0] instanceof ShaderNode) {
                         targetInstance = v.array[0]
                         targetType = Localization.SHADER_EDITOR
@@ -58,7 +59,6 @@
             targetType = Localization.ENGINE
         }
         entity = targetInstance
-
     })
     onDestroy(() => unsubscribeSelection())
 </script>
@@ -73,7 +73,7 @@
             <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
             <AddComponent entity={entity}/>
         {:else}
-            <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+            <small data-overflow="-" style="font-size: .7rem" id={entity.id+ "-inspector-label-" + internalID}>{entity.name}</small>
         {/if}
     </ViewHeader>
     <div class="content">
@@ -83,7 +83,7 @@
             <ContentBrowserItem item={entity}/>
             ]
         {:else if target === SelectionStore.TYPES.SHADER_EDITOR}
-            <ShaderEditorNode node={entity}/>
+            <AttributeEditor node={entity} internalID={internalID}/>
         {/if}
     </div>
 {/if}

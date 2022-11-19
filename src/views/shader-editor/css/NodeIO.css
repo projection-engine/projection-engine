@@ -23,6 +23,11 @@
     cursor: default;
     --direction: -10px;
 }
+.attribute.node-io[data-ishidden="-"] {
+    position: absolute;
+    top: 0;
+
+}
 
 /*.attribute.node-io[data-dtype="input"] > *:not(span):last-child{*/
 /*    max-height: 25px;*/

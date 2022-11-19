@@ -13,10 +13,12 @@
     let history = []
     onMount(() => {
         UndoRedoAPI.onChange = (v, i) => {
-            history = v
+            history = v.filter(e => e != null)
             currentIndex = i
         }
     })
+
+
 </script>
 
 <button
@@ -27,7 +29,8 @@
     <ToolTip content={LOCALIZATION_EN.UNDO}/>
 </button>
 <button
-        class="button frame" on:click={UndoRedoAPI.redo}
+        class="button frame"
+        on:click={UndoRedoAPI.redo}
         disabled={engine.executingAnimation}
 >
     <Icon styles="font-size: 1rem">redo</Icon>
@@ -43,10 +46,9 @@
         <div class="dropdown-header frame">
             <button
                     class="button frame button-small frame"
-                    style="gap: 4px"
+                    style="max-width: 22px;gap: 4px"
                     on:click={() => UndoRedoAPI.clear()}>
                 <Icon>clear_all</Icon>
-                {LOCALIZATION_EN.CLEAR}
                 <ToolTip content={LOCALIZATION_EN.CLEAR}/>
             </button>
         </div>
@@ -59,13 +61,14 @@
             </div>
         {:else}
             <VirtualList items={history} let:item>
-                <button data-inline="-" data-highlight={currentIndex === item.index - 1 ? "-" : undefined} class="button" on:click={() => UndoRedoAPI.applyIndex(item.index)}>
+                <button
+                        data-inline="-"
+                        data-highlight={currentIndex === item.index + 1? "-" : undefined}
+                        class="button"
+                        on:click={() => UndoRedoAPI.applyIndex(item.index + 1)}
+                >
                     <div class="action-data">
-                        <strong>
-                            {#if item.target === ACTION_HISTORY_TARGETS.ENGINE}
-                                {LOCALIZATION_EN.ENGINE}
-                            {/if}
-                        </strong>
+                        <strong>{LOCALIZATION_EN[item.target]}</strong>
                         <small>{item.time}</small>
                     </div>
                     <small>{item.changed} {LOCALIZATION_EN.CHANGED}</small>
@@ -78,16 +81,17 @@
 </Dropdown>
 
 <style>
-.action-data{
-    display: grid;
-    justify-items: flex-start;
-    justify-content: flex-start;
-    align-content: space-between;
-    width: 100%;
-}
-.button{
-    border: none;
-    width: 100%;
-    border-bottom: var(--pj-border-primary) 1px solid;
-}
+    .action-data {
+        display: grid;
+        justify-items: flex-start;
+        justify-content: flex-start;
+        align-content: space-between;
+        width: 100%;
+    }
+
+    .button {
+        border: none;
+        width: 100%;
+        border-bottom: var(--pj-border-primary) 1px solid;
+    }
 </style>

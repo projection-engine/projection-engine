@@ -4,16 +4,21 @@ import BOARD_SIZE from "../static/BOARD_SIZE";
 import SEContextController from "../libs/SEContextController";
 
 
-function listenTo(event, target, parent) {
+function listenTo(event, target, parent, id) {
     const nodeBbox = target.getBoundingClientRect(),
         parentBBox = parent.getBoundingClientRect(),
         bounding = {
             x: parent.scrollLeft - parentBBox.left + nodeBbox.x - event.clientX,
             y: parent.scrollTop - parentBBox.top + nodeBbox.y - event.clientY
         },
-        current = {}
+        current = {
+            x: Math.round(((event.clientX + bounding.x) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid,
+            y: Math.round(((event.clientY + bounding.y) / ShaderEditorTools.scale) / ShaderEditorTools.grid) * ShaderEditorTools.grid
+        }
     return {
+        id,
         current,
+        target,
         onMouseUp: () => {
             if (current.x === undefined)
                 return
@@ -37,33 +42,46 @@ function listenTo(event, target, parent) {
 }
 
 export default function dragNode(event, parent, contextID) {
-    let tooltip, ctx
+    let tooltip, ctx, initialized
     ctx = SEContextController.getContext(contextID)
 
-    if (ctx)
-        ctx.dragStateUpdate(true)
+    let timeout = setTimeout(() => {
+        if (ctx)
+            ctx.dragStateUpdate(true)
+        initialized = true
+    }, 250)
     tooltip = document.getElementById(contextID + "-T")
     try {
+        const toSerialize = []
         const targets = SelectionStore.shaderEditorSelected.map(v => {
             const t = document.getElementById(v.id).parentElement
-            return {element: t, callback: listenTo(event, t, parent)}
+            const callback = listenTo(event, t, parent, v.id)
+            toSerialize.push({
+                ...callback,
+                onMouseUp: undefined,
+                onMouseMove: undefined
+            })
+            return {element: t, callback}
         })
 
+        SEContextController.saveNodesPositions(contextID, toSerialize)
         const handleMouseMove = (ev) => {
+            if (!initialized) {
+                if (ctx)
+                    ctx.dragStateUpdate(true)
+            }
             for (let i = 0; i < targets.length; i++) {
                 const target = targets[i]
                 try {
                     target.callback.onMouseMove(ev)
-                    if (i === 0) {
-                        if (tooltip)
-                            tooltip.textContent = "X: " + (target.callback.current.x - BOARD_SIZE/2) + " | Y: " + (target.callback.current.y - BOARD_SIZE/2)
-                    }
+                    if (i === 0 && tooltip)
+                        tooltip.textContent = "X: " + (target.callback.current.x - BOARD_SIZE / 2) + " | Y: " + (target.callback.current.y - BOARD_SIZE / 2)
                     const links = target.element.linksToUpdate
+                    if (!links)
+                        continue
+                    for (let j = 0; j < links.length; j++)
+                        links[j].updatePath()
 
-                    if (links) {
-                        for (let j = 0; j < links.length; j++)
-                            links[j].updatePath()
-                    }
                 } catch (err) {
                     console.warn(err)
                 }
@@ -71,6 +89,7 @@ export default function dragNode(event, parent, contextID) {
         }
 
         const handleMouseUp = () => {
+            clearTimeout(timeout)
             if (ctx)
                 ctx.dragStateUpdate(false)
             for (let i = 0; i < targets.length; i++) {
@@ -86,6 +105,7 @@ export default function dragNode(event, parent, contextID) {
                     console.warn(err)
                 }
             }
+            SEContextController.saveNodesPositions(contextID, toSerialize)
             document.removeEventListener("mousemove", handleMouseMove)
         }
         document.addEventListener("mousemove", handleMouseMove)

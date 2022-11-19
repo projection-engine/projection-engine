@@ -1,5 +1,3 @@
-- New visual pattern for view headers
-- Fixed material compilation
-- Added populate g-buffer method
-- Removed UV/Depth buffer
-- Fixed only-depth shader
+- Fixed action history dropdown crashing editor tue to wrong index being sent to UndoRedoAPI
+- Undo/redo for node movement
+- Undo/redo for node attribute and direct property change (name/color)

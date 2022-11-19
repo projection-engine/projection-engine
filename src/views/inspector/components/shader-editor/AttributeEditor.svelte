@@ -1,45 +1,58 @@
 <script>
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
-    import Attribute from "./node/Attribute.svelte";
-    import Localization from "../../../templates/LOCALIZATION_EN";
-    import SEContextController from "../libs/SEContextController";
+    import Attribute from "../../../shader-editor/components/node/Attribute.svelte";
+    import SEContextController from "../../../shader-editor/libs/SEContextController";
+    import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
 
     export let node
+    export let internalID
 
 </script>
 
-{#if node}
-    <div class="content-wrapper">
-        <div class="wrapper">
+
+<div class="content-wrapper">
+    <div class="wrapper">
+        <fieldset>
+            <legend>{LOCALIZATION_EN.NAME}</legend>
             <Input
                     searchString={node.name}
                     width={"100%"}
                     height="30px"
-                    setSearchString={ev => SEContextController.updateNode("name", ev, node)}
-                    placeholder={Localization.NAME}
+                    setSearchString={ev => {
+                        const ref = document.getElementById(node.id + "-inspector-label-" + internalID)
+                        ref.textContent = ev
+                        SEContextController.updateNode("name", ev, node)
+                    }}
+                    placeholder={LOCALIZATION_EN.NAME}
             />
-            {#each node.inputs as attr, i}
-                {#if !attr.accept}
+        </fieldset>
+        {#if node.isComment}
+            <fieldset>
+                <legend>{LOCALIZATION_EN.COLOR}</legend>
+                <ColorPicker
+                        submit={({r,g,b}) => SEContextController.updateNode("color", [r, g, b, .5], node)}
+                        value={node.color}
+                        size={"small"}
+                />
+            </fieldset>
+        {/if}
+        {#each node.inputs as attr, i}
+            {#if !attr.accept}
+                <fieldset>
+                    <legend>{attr.label}</legend>
                     <Attribute
                             attribute={attr}
                             node={node}
                             handleChange={(value, attribute) => SEContextController.submitNodeVariable(value, attribute, node)}
                             returnDefault={false}
                     />
-                {/if}
-            {/each}
-            {#if node.isComment}
-                <div>{Localization.COLOR}</div>
-                <ColorPicker
-                        submit={({r,g,b}) => SEContextController.updateNode("color", [r, g, b, .5], node)}
-                        value={node.color}
-                        size={"small"}
-                />
+                </fieldset>
             {/if}
-        </div>
+        {/each}
+
     </div>
-{/if}
+</div>
 
 <style>
     .content-wrapper {

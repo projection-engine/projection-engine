@@ -9,6 +9,8 @@
     export let attribute
     export let inputLinks
     export let node
+    export let isHidden
+
 
     $: link = attribute.accept ? inputLinks.find(o => o.targetKey === attribute.key) : undefined
     const onDrop = e => {
@@ -27,10 +29,9 @@
 <div
         data-link={link?.identifier}
         class="attribute node-io"
-
+        data-ishidden={isHidden ? "-" : undefined}
         data-dtype={"input"}
         data-disabled={`${attribute.disabled || attribute.type === DATA_TYPES.UNDEFINED && (inputLinks.length === 0 && node.inputs.length > 0)}`}
-        style={attribute.accept ? "transform: translateX(var(--direction))" : undefined}
 >
 
     {#if attribute.accept}
@@ -45,15 +46,17 @@
 
         ></span>
     {/if}
-    {#if link}
-        {attribute.label}
-    {:else}
-        <Attribute
-                attribute={attribute}
-                node={node}
-                handleChange={(...attrData) => SEContextController.submitNodeVariable(...attrData, node)}
-                returnDefault={true}
-        />
+    {#if !isHidden}
+        {#if link}
+            {attribute.label}
+        {:else}
+            <Attribute
+                    attribute={attribute}
+                    node={node}
+                    handleChange={(...attrData) => SEContextController.submitNodeVariable(...attrData, node)}
+                    returnDefault={true}
+            />
 
+        {/if}
     {/if}
 </div>

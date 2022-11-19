@@ -6,6 +6,7 @@
     import Material from "../../libs/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
+    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
 
     export let links
     export let node
@@ -14,7 +15,7 @@
     export let internalID
 
     let ref
-
+    let isHidden = false
     $: isSelected = selectionMap.get(node.id) != null
 
     let outputLinks
@@ -72,18 +73,18 @@
         dragNode(event, ref.parentElement, node.CONTEXT_ID)
     }
     $: {
-        if (ref) {
+        if (ref && (isHidden || !isHidden)) { // trigger in all state changes
             const links = [...inputLinks, ...outputLinks]
             ref.linksToUpdate = links
-            for (let i = 0; i < links.length; i++) {
-                console.log(links[i])
-                links[i].updatePath()
-            }
+            setTimeout(() => {
+                for (let i = 0; i < links.length; i++)
+                    links[i].updatePath()
+            }, 150)
         }
     }
 
     $: {
-        if (!initialized) {
+        if (ref) {
             let width
             switch (node.size) {
                 case 0:
@@ -97,15 +98,11 @@
                     break
             }
 
-            if (ref) {
-                initialized = true
-                ref.firstChild.setAttribute("height", "0")
-                setTimeout(() => {
-                    const h = ref.firstChild.scrollHeight + 4
-                    ref.firstChild.setAttribute("height", `${h >= 35 ? h : 55}`)
-                    ref.firstChild.setAttribute("width", `${width}`)
-                }, 0)
-            }
+            initialized = true
+            const m = Math.max(node.output.length, node.inputs.length)
+            const height = m * 28 + 30
+            ref.firstChild.setAttribute("height", `${isHidden ? 30 : height}`)
+            ref.firstChild.setAttribute("width", `${width}`)
         }
     }
     $: isMat = node instanceof Material
@@ -127,17 +124,28 @@
     >
         <div
                 class="label"
+                data-inline="-"
                 id={node.id + "-node"}
                 on:mousedown={handleDragStart}
+                style="justify-content: space-between"
+                class:hidden-wrapper={isHidden}
         >
             {node.name}
+            <button on:click={() => isHidden = !isHidden} data-view-header-button="-">
+                <Icon styles={`transform: ${isHidden ? "none" : "rotate(-90deg)"}; font-size: 1rem`}>expand_more</Icon>
+            </button>
         </div>
-        <div class="content" on:click={event => setSelected(node, event.ctrlKey)}>
+        <div
+                class="content"
+                class:hidden-content={isHidden}
+             on:click={event => setSelected(node, event.ctrlKey)}
+        >
             <div
-                    class="column"
-                    style={node.output.length > 0  ? `max-width: 75%; width: 75%;` : "width: 100%"}>
+                    class:hidden={isHidden}
+                    style={node.output.length > 0  ? `max-width: 75%; width: 75%; overflow-x: hidden;` : "width: calc(100% - 4px)"}>
                 {#each node.inputs as a, i}
                     <NodeInput
+                            isHidden={isHidden}
                             attribute={a}
                             node={node}
                             inputLinks={inputLinks}
@@ -146,12 +154,11 @@
             </div>
             {#if node.output.length > 0}
                 <div
-                        class="column"
-                        style="justify-content: flex-end; max-width:75%"
-                >
+                        class:hidden={isHidden}
+                        style="justify-content: flex-end; max-width:75%;">
                     {#each node.output as a, i}
                         <NodeOutput
-
+                                isHidden={isHidden}
                                 data={a}
                                 node={node}
                                 handleLinkDrag={handleLinkDrag}
@@ -175,6 +182,27 @@
 
 
 <style>
+    .hidden-content{
+        position: absolute;
+        top: 0;
+        background: transparent !important;
+        z-index: -1;
+        width: 100%;
+        height: 100% !important;
+    }
+    .hidden {
+        position: absolute;
+        top: 0;
+        width: 100% !important;
+        overflow: hidden;
+        max-width: unset !important;
+        visibility: hidden;
+    }
+
+    .hidden-wrapper {
+        padding: 0 27px;
+    }
+
     .wrapper {
         overflow: visible;
         box-shadow: var(--pj-boxshadow);
@@ -191,7 +219,8 @@
 
     .label {
         cursor: grab;
-        height: 30px;
+        max-height: 30px;
+        min-height: 30px;
         display: flex;
         border-radius: 3px 3px 0 0;
         align-items: center;
@@ -206,6 +235,7 @@
     }
 
     .content {
+
         display: flex;
         height: calc(100% - 30px);
         overflow: visible;
