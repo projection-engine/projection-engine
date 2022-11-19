@@ -29,7 +29,6 @@ export default class Wrapper {
 
         const main = Wrapper.selected[0]
         if(main) {
-            console.log("HERE")
             getPivotPointMatrix(main)
             main.__pivotChanged = true
             GizmoSystem.mainEntity = main

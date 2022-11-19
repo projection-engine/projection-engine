@@ -59,11 +59,10 @@
     }
 </script>
 <ViewHeader>
-
     <div data-inline="-" style=" width: 100%">
         <button
                 on:click={toggleSampling}
-                class="button"
+                data-view-header-button="-"
         >
             <Icon styles={isRecording ? "color: #ff5555" : "color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
             <ToolTip content={LOCALIZATION_EN.TOGGLE_RECORD}/>
@@ -75,10 +74,10 @@
                     c[1].forEach((_, i) => c[1][i] = 0)
                 })
                 toShow = []
-            }} class="button"
+            }}
+            data-view-header-button="-"
         >
             <Icon styles="color: var(--pj-color-quaternary)">refresh</Icon>
-            <small>{LOCALIZATION_EN.RESET}</small>
             <ToolTip content={LOCALIZATION_EN.RESET}/>
         </button>
     </div>

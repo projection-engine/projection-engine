@@ -11,7 +11,6 @@
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
     import ShaderEditorNode from "./components/shader-editor/ShaderEditorNode.svelte";
-    import SEContextController from "../shader-editor/libs/SEContextController";
     import ShaderNode from "../shader-editor/libs/ShaderNode";
 
     export let switchView = undefined

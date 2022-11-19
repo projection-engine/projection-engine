@@ -1,11 +1,11 @@
-const vertex = `#version 300 es
+const vertex = `
 layout (location = 0) in vec3 position;
 out vec2 texCoords; 
 void main() {
     texCoords = position.xy * 0.5 + 0.5;
     gl_Position = vec4(position, 1);
 }`
-const fragment = `#version 300 es
+const fragment = `
 precision mediump float;
 #define THRESHOLD .0001
 
@@ -29,8 +29,10 @@ void main(){
     vec4 samplerData = texture(uSampler, texCoords);
     vec3 color = samplerData.rgb; 
     
-    if(debugFlag == 2)
-        color = vec3(linearize(color.r) * 2.);
+    if(debugFlag == 2){
+        vec4 pos =  invViewMatrix * samplerData;
+        color = vec3(linearize(pos.z/pos.w) * 2.);
+    }
     else if (debugFlag == 9)
         color = vec3(color.b);
     else if (debugFlag == 10)

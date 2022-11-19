@@ -7,8 +7,7 @@ export default function getTexture(shadingModel) {
 
     switch (shadingModel) {
         case SHADING_MODELS.DEPTH:
-        case SHADING_MODELS.UV:
-            return GBuffer.depthUVSampler
+            return GBuffer.positionSampler
         case SHADING_MODELS.AO:
             return AmbientOcclusion.filteredSampler
         case SHADING_MODELS.NORMAL:

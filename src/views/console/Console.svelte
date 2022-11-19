@@ -10,6 +10,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "shared-resources/frontend/components/create-portal";
+    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
 
 
     export let switchView = undefined
@@ -76,14 +77,13 @@
 </script>
 <ViewHeader>
 
-    <button on:click={() => ConsoleAPI.clear()} class="button">
+    <button on:click={() => ConsoleAPI.clear()} data-view-header-button="-">
         <Icon>
             clear_all
         </Icon>
-        {Localization.CLEAR}
+        <ToolTip content={Localization.CLEAR}/>
     </button>
-    <div data-vertdivider="-"></div>
-    <button on:click={() => clearOnPlay = !clearOnPlay} class="button">
+    <button on:click={() => clearOnPlay = !clearOnPlay} data-view-header-button="-" style="max-width: unset">
         {#if clearOnPlay}
             <Icon>
                 check
@@ -92,8 +92,8 @@
         {Localization.TOGGLE_CLEAR_ON_PLAY}
     </button>
     <div class="metadata">
-        <Dropdown>
-            <button slot="button" style="border: none">
+        <Dropdown buttonStyles={getDropdownHeaderStyles()}>
+            <button slot="button" data-view-header-dropdown="-">
                 {Localization.VIEW}
                 <ToolTip content={Localization.VIEW}/>
             </button>
@@ -125,10 +125,10 @@
             </button>
         </Dropdown>
     </div>
-
 </ViewHeader>
 
 <div class="wrapper" bind:this={ref}>
+    {#if toRender.length > 0}
     <VirtualList items={toRender} let:item>
         <div
                 class="container"
@@ -157,6 +157,14 @@
             <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>
         </div>
     </VirtualList>
+        {:else}
+        <div class="empty-wrapper">
+            <div data-empty="-" style="position: relative">
+                <Icon styles="font-size: 75px">terminal</Icon>
+                {Localization.CONSOLE}
+            </div>
+        </div>
+    {/if}
 </div>
 <div bind:this={modal} class="container-modal">
     <pre data-pre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>

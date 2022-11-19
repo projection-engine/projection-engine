@@ -15,8 +15,8 @@ export default function getViewIcon(view) {
             return "account_tree"
         case VIEWPORT_TABS.EDITOR:
             return "public"
-        case VIEWPORT_TABS.TERRAIN:
-            return "terrain"
+        // case VIEWPORT_TABS.TERRAIN:
+        //     return "terrain"
         case VIEWS.PREFERENCES:
             return "settings"
         case VIEWS.UI:

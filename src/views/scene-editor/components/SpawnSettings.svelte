@@ -4,13 +4,14 @@
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
     export let settings
 
 </script>
 
-<Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto">
-    <button slot="button" data-viewbutton="-" style="background: transparent;">
+<Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto"  buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
         {LOCALIZATION_EN.SPAWNING}
     </button>
     <div class="group">

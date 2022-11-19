@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../templates/LOCALIZATION_EN";
     import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import Header from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import EngineHierarchyView from "./components/View.svelte";
@@ -14,9 +14,9 @@
     import HierarchyController from "../../lib/controllers/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import VIEWS from "../../components/view/static/VIEWS";
     import Engine from "../../../public/engine/Engine";
     import handleDrop from "./utils/handle-drop";
+    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -66,18 +66,13 @@
 </script>
 
 
-<Header
-        currentView={VIEWS.HIERARCHY}
-        orientation={orientation}
-        switchView={switchView}
-        title={Localization.HIERARCHY}
-        icon={"account_tree"}
->
+<ViewHeader>
     <button
             on:click={() => {
                 openTree = {...openTree, ...HierarchyController.openTree()}
             }}
-            class="button">
+            data-view-header-button="-"
+    >
         <ToolTip content={Localization.SHOW_MAIN_ENTITY}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
     </button>
@@ -90,8 +85,8 @@
             setSearchString={v => search = v}
     />
 
-    <Dropdown buttonStyles="margin-left: auto">
-        <button slot="button" data-highlight={filteredComponent != null ? "-" : undefined} class="dropdown">
+    <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
+        <button slot="button" data-view-header-dropdown="-">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={Localization.COMPONENT_FILTER}/>
         </button>
@@ -114,7 +109,7 @@
         {/each}
     </Dropdown>
 
-</Header>
+</ViewHeader>
 
 <div
         data-self={"-"}

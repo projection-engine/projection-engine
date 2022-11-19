@@ -65,7 +65,7 @@
                 disabled={disabled}
                 slot="button"
                 data-inline="-"
-                style="height: 18px; border: none; padding: 0 4px; width: 100%"
+                style="height: 22px; border: none; padding: 0 2px; width: 100%"
         >
             <div class="icon" data-inline="-">
                 <Icon styles="font-size: 1rem">{getIcon(type)}</Icon>
@@ -90,7 +90,7 @@
     </Dropdown>
     <div data-vertdivider="-" style="margin: 0"></div>
     <button class="remove-button" on:click={_ => handleChange(null)}>
-        <Icon styles="font-size: .9rem">clear</Icon>
+        <Icon styles="font-size: 1rem">clear</Icon>
         <ToolTip content={Localization.CLEAR}/>
     </button>
 </div>
@@ -99,7 +99,7 @@
 <style>
     .icon {
         width: 28px;
-        height: 18px;
+        height: 22px;
         gap: 0;
     }
 
@@ -107,8 +107,8 @@
         width: 100%;
         position: relative;
         overflow: hidden;
-        height: 18px;
-        background: var(--pj-background-primary);
+        height: 22px;
+        background: var(--pj-background-secondary);
         border-radius: 3px;
         gap: 0;
         border: var(--pj-border-primary) 1px solid;
@@ -117,8 +117,8 @@
     .remove-button {
         border: none;
         --pj-accent-color: #ff5555;
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
         padding: 0;
         display: flex;
         align-items: center;

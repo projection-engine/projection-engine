@@ -9,6 +9,8 @@
     import Engine from "../../../public/engine/Engine";
     import COMPONENTS from "../../../public/engine/static/COMPONENTS";
     import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 
     export let isAlreadyOpen
     export let settings
@@ -46,31 +48,33 @@
     }
 </script>
 
-{#if isAlreadyOpen && !engine.executingAnimation}
-    <button on:click={focusOnView}>
-        <Icon styles="font-size: .9rem">place</Icon>
-        {Localization.FOCUS_ON_THIS_VIEW}
-    </button>
-{:else if !isAlreadyOpen}
-    <div class="left-content">
-        <button on:click={addUiElement}>
-            <Icon styles="font-size: .9rem">add</Icon>
-            {Localization.ADD_ELEMENT}
+<ViewHeader>
+    {#if isAlreadyOpen && !engine.executingAnimation}
+        <button on:click={focusOnView} data-view-header-button="-" style="max-width: unset">
+            <Icon styles="font-size: .9rem">place</Icon>
+            {Localization.FOCUS_ON_THIS_VIEW}
         </button>
-        <button on:click={selectAll}>
-            {Localization.SELECT_ALL}
-        </button>
-    </div>
+    {:else if !isAlreadyOpen}
+        <div class="left-content">
+            <button on:click={addUiElement} data-view-header-button="-" style="max-width: unset">
+                <Icon styles="font-size: .9rem">add</Icon>
+                {Localization.ADD_ELEMENT}
+            </button>
+            <button on:click={selectAll} data-view-header-button="-" style="max-width: unset">
+                {Localization.SELECT_ALL}
+            </button>
+        </div>
 
-    <div class="right-content">
-        <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleSelection}>
-            <Icon>
-                highlight_alt
-            </Icon>
-            {Localization.PICKER}
-        </button>
-    </div>
-{/if}
+        <div class="right-content">
+            <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleSelection} data-view-header-button="-">
+                <Icon>
+                    highlight_alt
+                </Icon>
+                <ToolTip content={Localization.PICKER}/>
+            </button>
+        </div>
+    {/if}
+</ViewHeader>
 <style>
 
     .left-content {

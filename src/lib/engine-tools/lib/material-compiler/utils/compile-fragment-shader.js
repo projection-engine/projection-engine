@@ -22,19 +22,20 @@ export default async function compileFragmentShader(n, links, shadingType, disca
     codeString.functions = toJoin.join("\n")
     toJoin = []
     typesInstantiated = {}
-    await Promise.all(nodes.map((n, i) => new Promise(async resolve => {
+    for(let i =0; i < nodes.length; i++){
+        const n = nodes[i]
         if (typeof n.getInputInstance === "function" && !typesInstantiated[n.id]) {
             const res = await n.getInputInstance(i, uniforms, uniformData)
             toJoin.push(res)
-            resolve()
             typesInstantiated[n.id] = true
-        } else resolve()
-    })))
+        }
+    }
     codeString.inputs = toJoin.join("\n")
 
 
     let body = []
-    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id && !discardedLinks.includes(l.targetRef.key)), nodes, body, false)
+    console.log(links)
+    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id && !discardedLinks.includes(l.targetRef.attribute.key)), nodes, body, false)
     return {
         code: `
             ${codeString.static}

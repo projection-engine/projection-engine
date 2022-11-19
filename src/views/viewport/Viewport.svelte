@@ -54,11 +54,11 @@
 
     $: updateViewport(engine, viewTab[currentTab])
     $: tabs = viewTab.map(v => ({name: Localization[v], icon: getViewIcon(v)}))
-    $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
+    $: viewTemplates = [...Object.values(VIEWS), VIEWPORT_TABS.EDITOR].map(value => ({
         name: Localization[value],
         id: value
     }))
-    $: isCanvasHidden = viewTab[currentTab] !== VIEWPORT_TABS.EDITOR && viewTab[currentTab] !== VIEWPORT_TABS.TERRAIN
+    $: isCanvasHidden = viewTab[currentTab] !== VIEWPORT_TABS.EDITOR //&& viewTab[currentTab] !== VIEWPORT_TABS.TERRAIN
     $: {
         if (isCanvasHidden && window.gpu) {
             gpu.canvas.style.zIndex = "-1"

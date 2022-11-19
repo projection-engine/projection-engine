@@ -234,7 +234,8 @@ a {
 fieldset {
     width: 100%;
     border: none;
-    display: grid;    gap: 4px;
+    display: grid;
+    gap: 4px;
     padding: 4px;
     border-radius: 3px;
     background: var(--pj-background-secondary);
@@ -348,7 +349,6 @@ pre[data-pre="-"] {
 }
 
 
-
 .tab-button.shared {
     width: 100%;
     min-width: 25px;
@@ -358,7 +358,8 @@ pre[data-pre="-"] {
     justify-content: center;
     border: none;
 }
-.tab-button[data-highlight="-"]{
+
+.tab-button[data-highlight="-"] {
     background: var(--pj-background-primary) !important;
     color: var(--pj-accent-color) !important;
 }
@@ -378,6 +379,7 @@ pre[data-pre="-"] {
 
 
 }
+
 .button.viewport {
     height: 25px;
     padding: 4px 10px;
@@ -392,7 +394,9 @@ pre[data-pre="-"] {
     color: var(--pj-color-tertiary);
     box-shadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
 }
-
+.button.viewport:disabled{
+    box-shadow: none;
+}
 
 .button.frame {
     position: relative;
@@ -439,15 +443,45 @@ pre[data-pre="-"] {
     height: 25px;
     border-bottom: var(--pj-border-primary) 1px solid;
 }
+
 .button-small.frame {
     min-height: 22px !important;
     max-height: 22px !important;
     min-width: 22px !important;
     max-width: unset !important;
 }
+
 .group.dropdown-list {
     display: flex;
     align-items: center;
     font-size: .7rem;
     gap: 4px
+}
+
+*[data-view-header-button="-"] {
+    background: var(--pj-background-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    max-height: 22px;
+    max-width: 22px;
+    min-height: 22px;
+    min-width: 22px;
+    border: none;
+    white-space: nowrap;
+}
+
+*[data-view-header-dropdown="-"] {
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    gap: 4px;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    max-height: 22px;
+    min-height: 22px;
+    min-width: 22px;
+
 }

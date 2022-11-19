@@ -10,6 +10,7 @@
 
     import ShaderEditorTools from "./../libs/ShaderEditorTools";
     import Selector from "../../../components/selector/Selector.svelte";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
     export let save
     export let openFile
@@ -17,20 +18,22 @@
     export let initializeFromFile
     export let nodes
     export let openSourceCode
-
+    $: activeGrid = ShaderEditorTools.grid = ShaderEditorTools.GRID_SIZE
 </script>
 
 <div data-inline="-" style="width: 100%">
     <button
             disabled={!openFile}
-            class="button"
+            data-view-header-button="-"
+            style="max-width: unset"
             on:click={save}>
         <Icon styles="font-size: .9rem">save</Icon>
         {LOCALIZATION_EN.SAVE}
     </button>
     <button
             disabled={!openFile}
-            class="button"
+            data-view-header-button="-"
+            style="max-width: unset"
             on:click={compile}
     >
         <Icon styles="font-size: .9rem">code</Icon>
@@ -49,30 +52,31 @@
 
     {#if openFile}
         <Nodes/>
+        <Dropdown buttonStyles={getDropdownHeaderStyles()}>
+            <button slot="button" data-view-header-dropdown="-">
+                {LOCALIZATION_EN.SELECT}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
+                {LOCALIZATION_EN.ALL}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
+                {LOCALIZATION_EN.NONE}
+            </button>
+
+            <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
+                {LOCALIZATION_EN.INVERT}
+            </button>
+        </Dropdown>
     {/if}
 </div>
 
 <div data-inline="-" style="width: 100%; justify-content: flex-end">
-    <Dropdown>
-        <button class="button" slot="button">
-            {LOCALIZATION_EN.SELECT}
-        </button>
-
-        <button on:click={ () => selection(SELECTION_TYPES.ALL, nodes )}>
-            {LOCALIZATION_EN.ALL}
-        </button>
-
-        <button on:click={ () => selection(SELECTION_TYPES.NONE, nodes )}>
-            {LOCALIZATION_EN.NONE}
-        </button>
-
-        <button on:click={ () => selection(SELECTION_TYPES.INVERT, nodes )}>
-            {LOCALIZATION_EN.INVERT}
-        </button>
-    </Dropdown>
     <button
-            class="button"
-            data-highlight="-"
+            data-view-header-button="-"
+            style="max-width: unset"
+            data-highlight={activeGrid ? "-" : undefined}
             on:click={e => {
                 if (ShaderEditorTools.grid === ShaderEditorTools.GRID_SIZE) {
                     ShaderEditorTools.grid = 1
@@ -90,7 +94,7 @@
     </button>
     {#if openFile}
         <button
-                class="button"
+                data-view-header-button="-"
                 on:click={openSourceCode}
         >
             <Icon styles="font-size: .9rem">code</Icon>

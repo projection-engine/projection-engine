@@ -2,7 +2,7 @@ import AXIS from "../static/AXIS";
 
 
 export const lineFragment = `
-#version 300 es
+
 precision lowp float;
 out vec4 finalColor;
 void main() {
@@ -10,7 +10,7 @@ void main() {
 }
 `
 
-export const lineVertex = `#version 300 es
+export const lineVertex = `
 layout (location = 0) in vec3 position; 
  
 #define HALF 5000.
@@ -70,7 +70,7 @@ for ( int x = 0; x < 4; x++ )
             sc[x][y] = 0.;
 
 `
-export const sameSizeVertex = `#version 300 es
+export const sameSizeVertex = `
 ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position;
 
@@ -87,7 +87,7 @@ void main(){
     gl_Position =  viewProjection * tt * sc * vec4(position,1.0);
 }
 `
-export const vertex = `#version 300 es
+export const vertex = `
 ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position; 
 
@@ -122,7 +122,7 @@ void main(){
 }
 `
 
-export const fragment = `#version 300 es
+export const fragment = `
 precision highp float;
 
 in vec4 worldSpacePosition;
@@ -164,7 +164,7 @@ void main(){
     fragColor = vec4(color, 1.);
 }
 `
-export const vertexRot = `#version 300 es
+export const vertexRot = `
 ${SIZE_DEFINITION}
 layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 uvs;
@@ -210,7 +210,7 @@ void main(){
 }
 `
 
-export const fragmentRot = `#version 300 es
+export const fragmentRot = `
 precision highp float;
 
 // IN
@@ -252,7 +252,7 @@ void main(){
 `
 
 
-export const pickFragment = `#version 300 es
+export const pickFragment = `
 precision highp float;
 
 uniform vec3 uID;
@@ -261,10 +261,9 @@ layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedo;
 layout (location = 3) out vec4 gBehaviour;
-layout (location = 4) out vec4 gDepth;
-layout (location = 5) out vec4 gMeshID; 
-layout (location = 6) out vec4 gNormalBase; 
-layout (location = 7) out vec4 gVelocity;
+layout (location = 4) out vec4 gMeshID;
+layout (location = 5) out vec4 gBaseNormal;
+layout (location = 6) out vec4 gVelocity;
 
 void main(){
     gVelocity = vec4(0.);
@@ -273,16 +272,15 @@ void main(){
     gAlbedo = vec4(0.);
     gBehaviour = vec4(0.); 
  
-    gNormalBase = vec4(0.);
-    gMeshID = vec4(uID, 1.);
-    gDepth = vec4(0.);
+    gBaseNormal = vec4(0.);
+    gMeshID = vec4(uID, 1.); 
 }
 
 
 `
 
 
-export const cameraVertex = `#version 300 es
+export const cameraVertex = `
 
 layout (location = 0) in vec3 position;
 #define SIZE .15
@@ -316,7 +314,7 @@ void main(){
 }
 `
 
-export const cameraFragment = `#version 300 es
+export const cameraFragment = `
 precision highp float;
 
  

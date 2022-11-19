@@ -1,5 +1,4 @@
 import NODE_TYPES from "./templates/NODE_TYPES"
-import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES";
 import cloneClass from "../../../../../public/engine/utils/clone-class";
 import compileFragmentShader from "./utils/compile-fragment-shader";
 import getVertexShader from "./utils/get-vertex-shader";
@@ -25,7 +24,6 @@ export default async function materialCompiler(n, links) {
                 return undefined
             }).filter(i => i)
         )
-
 
         return {
             info: [

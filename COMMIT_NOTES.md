@@ -1,2 +1,5 @@
-- Readme update
-- Fixed GlobalIlluminationPass referencing wrong variable
+- New visual pattern for view headers
+- Fixed material compilation
+- Added populate g-buffer method
+- Removed UV/Depth buffer
+- Fixed only-depth shader

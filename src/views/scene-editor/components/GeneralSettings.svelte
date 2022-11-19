@@ -74,7 +74,7 @@
             class="button viewport"
             data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
-        <Icon styles="font-size: 1.15rem; color: #FFC757">highlight_alt</Icon>
+        <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
         {#if !hidden}
             {Localization.SELECTION}
         {/if}
@@ -85,7 +85,7 @@
             class="button viewport"
             data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
-        <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">open_with</Icon>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
         {#if !hidden}
             {Localization.T_GIZMO}
         {/if}
@@ -96,7 +96,7 @@
             class="button viewport"
             data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
-        <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">360</Icon>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
         {#if !hidden}
             {Localization.R_GIZMO}
         {/if}
@@ -107,7 +107,7 @@
             class="button viewport"
             data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
-        <Icon styles="font-size: 1.15rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
         {#if !hidden}
             {Localization.S_GIZMO}
         {/if}

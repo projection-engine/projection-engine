@@ -4,12 +4,13 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import entityCreationOptions from "../../../templates/entity-creation-options";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
     const options = entityCreationOptions()
 </script>
 
-<Dropdown>
-    <button slot="button" data-viewbutton="-" style="background: transparent;">
+<Dropdown buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
         {Localization.ADD}
         <ToolTip content={Localization.ADD_DETAILS}/>
     </button>

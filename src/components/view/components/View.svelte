@@ -9,7 +9,6 @@
     import UILayout from "../../../views/ui/UIEditor.svelte";
     import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
     import EditorLayout from "../../../views/scene-editor/SceneEditor.svelte";
-    import TerrainLayout from "../../../views/terrain/TerrainEditor.svelte";
     import Metrics from "../../../views/metrics/Metrics.svelte";
 
     export let styles
@@ -38,8 +37,8 @@
                 return Preferences
             case VIEWS.UI:
                 return UILayout
-            case VIEWPORT_TABS.TERRAIN:
-                return TerrainLayout
+            // case VIEWPORT_TABS.TERRAIN:
+            //     return TerrainLayout
             case VIEWPORT_TABS.EDITOR:
                 return EditorLayout
             case VIEWS.METRICS:

@@ -1,4 +1,4 @@
-export const vertex = `#version 300 es
+export const vertex = `
 layout (location = 0) in vec3 position;
 
 //import(cameraUBO)
@@ -16,7 +16,7 @@ void main(){
     gl_Position = skyboxProjectionMatrix * m * vec4(position, 1.0);
 }
 `
-export const fragment = `#version 300 es
+export const fragment = `
 precision mediump float;
 
 in vec3 uv;
@@ -29,7 +29,7 @@ void main(void){
 }
 `
 
-export const debug = `#version 300 es
+export const debug = `
 precision mediump float;
 
 in vec3 uv;

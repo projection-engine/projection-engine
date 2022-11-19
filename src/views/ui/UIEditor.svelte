@@ -9,7 +9,6 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
     let engine = {}
@@ -92,9 +91,8 @@
     })
 </script>
 
-<ViewHeader>
     <Header engine={engine} settings={settings} isAlreadyOpen={isAlreadyOpen}/>
-</ViewHeader>
+
 
 <div class="wrapper ui" bind:this={ref} style={`opacity: ${isAlreadyOpen ? ".5" : "1"}`}>
     {#if isAlreadyOpen}

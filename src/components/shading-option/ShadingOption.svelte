@@ -10,6 +10,7 @@
     import VisualsStore from "../../stores/VisualsStore";
     import getLabel from "./utils/get-label";
     import getTexture from "./utils/get-texture";
+    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
 
     export let engine
     export let settings
@@ -30,8 +31,8 @@
     }
 </script>
 
-<Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;">
-    <button class="summary" slot="button">
+<Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;" buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
         <div style="--color-to-apply: white" data-shaded-material="-"></div>
         <div style="white-space: nowrap">{Localization[shading]}</div>
     </button>
@@ -60,12 +61,7 @@
                 {Localization.SHADING_METALLIC}
                 <small>{Localization.METALLIC_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
 
-                {Localization.SHADING_DEPTH}
-                <small>{Localization.DEPTH_DEF}</small>
-            </button>
         </div>
         <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
@@ -81,7 +77,6 @@
             </button>
             <button data-highlight={shadingModel === SHADING_MODELS.NORMAL ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.NORMAL})}>
-
                 {Localization.SHADING_NORMAL}
                 <small>{Localization.NORMAL_DEF}</small>
             </button>
@@ -90,32 +85,23 @@
                 {Localization.SHADING_VELOCITY}
                 <small>{Localization.VELOCITY_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.UV ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.UV})}>
-                {Localization.SHADING_UV}
-                <small>{Localization.UV_DEF}</small>
-            </button>
+
         </div>
     </fieldset>
 
     <fieldset class="content">
         <legend>{Localization.SCENE}</legend>
         <div class="column">
+            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
+
+                {Localization.SHADING_DEPTH}
+                <small>{Localization.DEPTH_DEF}</small>
+            </button>
             <button data-highlight={shadingModel === SHADING_MODELS.SSR ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSR})}>
                 {Localization.SHADING_SSR}
                 <small>{Localization.SSR}</small>
-            </button>
-
-            <button data-highlight={shadingModel === SHADING_MODELS.STOCHASTIC ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.STOCHASTIC})}>
-                {Localization.SHADING_STOCHASTIC}
-                <small>{Localization.STOCHASTIC_DEF}</small>
-            </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.ID ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.ID})}>
-                {Localization.SHADING_ID}
-                <small>{Localization.ID_DEF}</small>
             </button>
             <button
                     data-highlight={shadingModel === SHADING_MODELS.RANDOM ? "-" : ""}
@@ -136,13 +122,6 @@
                 {Localization.SHADING_SSGI}
                 <small>{Localization.SSGI_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.SSGI_UNFILTERED ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSGI_UNFILTERED})}>
-                {Localization.SHADING_SSGI}
-                <small>{Localization.SSGI_UNFILTERED_DEF}</small>
-            </button>
-
-
         </div>
 
     </fieldset>
@@ -162,6 +141,7 @@
         overflow: hidden;
         gap: 3px;
         padding: 3px;
+        background: transparent;
     }
 
     .column {
@@ -180,14 +160,4 @@
     }
 
 
-    .summary {
-        background: transparent;
-        display: flex;
-        gap: 4px;
-        align-items: center;
-        padding: 0 4px;
-        font-size: 0.7rem !important;
-
-        border: none;
-    }
 </style>

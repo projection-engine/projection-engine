@@ -5,6 +5,8 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import "../../../components/selector/css/selector.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+
     const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")
     let searchString = ""
     let nodes
@@ -16,8 +18,9 @@
     }
 </script>
 
-<Dropdown>
-    <button slot="button" class="button selector">
+<Dropdown buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
+        <Icon style="font-size: 1rem">add</Icon>
         {Localization.ADD}
     </button>
     <div class="modal-available-nodes selector">

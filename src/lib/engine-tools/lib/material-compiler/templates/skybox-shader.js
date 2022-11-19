@@ -1,5 +1,5 @@
 export default {
-    static: `#version 300 es
+    static: `
     
 precision highp float;
 // IN

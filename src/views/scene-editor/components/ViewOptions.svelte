@@ -3,12 +3,13 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
     export let settings
 </script>
 
-<Dropdown styles="width: clamp(250px, 10vw, 550px);">
-    <button slot="button" data-viewbutton="-" style="background: transparent">
+<Dropdown styles="width: clamp(250px, 10vw, 550px);"  buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
         {Localization.VIEW}
     </button>
 

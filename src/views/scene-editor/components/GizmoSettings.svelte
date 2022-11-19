@@ -12,6 +12,7 @@
     import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
 
     export let settings
@@ -35,8 +36,8 @@
 </script>
 
 <div class="wrapper">
-    <Dropdown>
-        <button slot="button" class="dropdown" style="background: transparent">
+    <Dropdown buttonStyles={getDropdownHeaderStyles()}>
+        <button slot="button" data-view-header-dropdown="-">
             {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
                 <Icon styles="font-size: .9rem">
                     place
@@ -69,8 +70,8 @@
             {Localization.LOCAL}
         </button>
     </Dropdown>
-    <Dropdown>
-        <button slot="button" class="dropdown">
+    <Dropdown buttonStyles={getDropdownHeaderStyles()}>
+        <button slot="button" data-view-header-dropdown="-">
             <Icon styles="font-size: .9rem">straighten</Icon>
             <ToolTip content={Localization.MOVEMENT_GRID}/>
         </button>
@@ -124,14 +125,6 @@
 </div>
 
 <style>
-    .dropdown {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        border: none;
-    }
-
-
     .wrapper {
         display: flex;
         align-items: center;

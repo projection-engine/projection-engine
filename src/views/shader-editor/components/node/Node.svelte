@@ -6,8 +6,6 @@
     import Material from "../../libs/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
-    import SEContextController from "../../libs/SEContextController";
-    import {onMount} from "svelte";
 
     export let links
     export let node

@@ -1,4 +1,4 @@
-export const vertex = `#version 300 es
+export const vertex = `
 
 layout (location = 0) in vec3 position;
 
@@ -28,7 +28,7 @@ void main(){
 }
 `
 
-export const fragment = `#version 300 es
+export const fragment = `
 precision mediump float;
  
 in vec3 nearPoint;

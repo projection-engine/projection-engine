@@ -2,13 +2,14 @@
     import viewportContext from "../../../templates/viewport-context";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 
     export let settings
     $: mappedOptions = viewportContext(settings, true)
 </script>
 
-<Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto">
-    <button slot="button" data-viewbutton="-" style="background: transparent;">
+<Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto" buttonStyles={getDropdownHeaderStyles()}>
+    <button slot="button" data-view-header-dropdown="-">
         {Localization.OBJECT}
     </button>
     {#each mappedOptions as option}

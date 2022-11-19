@@ -1,4 +1,4 @@
-export const vertex = `#version 300 es
+export const vertex = `
 
 layout (location = 0) in vec3 position; 
 
@@ -12,7 +12,7 @@ void main(){
 }
 `
 
-export const fragment = `#version 300 es
+export const fragment = `
 precision mediump float;
 uniform int meshIndex;
 out vec4 fragColor;
@@ -25,7 +25,7 @@ void main(){
 }
 `
 
-export const vertexSilhouette = `#version 300 es
+export const vertexSilhouette = `
 layout (location = 0) in vec3 position;
 out vec2 texCoords;
  
@@ -35,7 +35,7 @@ void main() {
 }`
 
 // THANKS https://stackoverflow.com/questions/53897949/opengl-object-outline
-export const fragmentSilhouette = `#version 300 es
+export const fragmentSilhouette = `
 precision mediump float;
 uniform sampler2D silhouette;
 

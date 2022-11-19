@@ -5,12 +5,13 @@
     import AddOptions from "./components/AddOptions.svelte";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
+    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
 
     export let settings
     export let engine
@@ -20,15 +21,18 @@
 
 
 <div class="left-content">
-    <button on:click={() => EntityStateController.startPlayState()}>
-        <Icon styles="font-size: .85rem">play_arrow</Icon>
-        {Localization.PLAY}
+    <button
+            on:click={() => EntityStateController.startPlayState()}
+            data-view-header-button="-"
+    >
+        <Icon styles="font-size: 1rem">play_arrow</Icon>
+        <ToolTip content={Localization.PLAY}/>
     </button>
-    <div data-vertdivider="-" style="height: 15px"></div>
+    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <ViewOptions settings={settings}/>
     <AddOptions/>
-    <Dropdown styles="width: 250px">
-        <button slot="button" data-viewbutton="-" style="background: transparent;">
+    <Dropdown styles="width: 250px" buttonStyles={getDropdownHeaderStyles()}>
+        <button slot="button" data-view-header-dropdown="-">
             {Localization.CAMERA}
         </button>
         <div style="padding: 8px 4px">
@@ -46,27 +50,12 @@
 
 
 <style>
-
-    button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-
-        border: none;
-        padding: 0 2px;
-        height: 18px;
-
-        white-space: nowrap;
-    }
-
     .left-content {
         display: flex;
         align-items: center;
         gap: 4px;
         justify-content: flex-start;
         width: 100%;
-
     }
 
     .right-content {

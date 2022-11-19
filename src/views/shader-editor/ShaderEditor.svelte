@@ -1,8 +1,5 @@
 <script>
     import buildShader from "./utils/build-shader"
-    import Nodes from "./components/Nodes.svelte"
-    import selection from "./utils/selection"
-    import SELECTION_TYPES from "./static/SELECT_ACTIONS"
     import FilesAPI from "../../lib/fs/FilesAPI"
 
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
@@ -12,12 +9,9 @@
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
-    import Selector from "../../components/selector/Selector.svelte";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "../../lib/engine-tools/lib/material-compiler/material-compiler";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
