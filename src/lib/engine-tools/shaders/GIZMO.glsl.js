@@ -256,24 +256,18 @@ export const pickFragment = `
 precision highp float;
 
 uniform vec3 uID;
-
-layout (location = 0) out vec4 gPosition;
-layout (location = 1) out vec4 gNormal;
-layout (location = 2) out vec4 gAlbedo;
-layout (location = 3) out vec4 gBehaviour;
-layout (location = 4) out vec4 gMeshID;
-layout (location = 5) out vec4 gBaseNormal;
-layout (location = 6) out vec4 gVelocity;
+layout (location = 0) out vec4 v_position;
+layout (location = 1) out vec4 v_normal;
+layout (location = 2) out vec4 v_entityID;
+layout (location = 3) out vec4 v_uv;
+layout (location = 4) out vec4 v_materialID;
 
 void main(){
-    gVelocity = vec4(0.);
-    gPosition = vec4(0.);
-    gNormal = vec4(0.);
-    gAlbedo = vec4(0.);
-    gBehaviour = vec4(0.); 
- 
-    gBaseNormal = vec4(0.);
-    gMeshID = vec4(uID, 1.); 
+    v_position = vec4(0.);
+    v_normal = vec4(0.);
+    v_entityID = vec4(uID, 1.);
+    v_uv = vec4(0.);
+    v_materialID = vec4(0.);
 }
 
 

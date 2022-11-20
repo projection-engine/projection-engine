@@ -1,1 +1,6 @@
-- Initializing branch for deferred materials
+- Visibility buffer pass
+- Reworked GBuffer
+- Integration of visibility buffer with other systems
+- Reworked selection outline shader
+- Tweaks to buffer view system
+- Re-enabled UV picking

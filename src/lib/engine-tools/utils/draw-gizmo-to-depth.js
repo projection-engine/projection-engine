@@ -3,9 +3,10 @@ import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import getPickerId from "../../../../public/engine/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
+import VisibilityBuffer from "../../../../public/engine/runtime/rendering/VisibilityBuffer";
 
 export default function drawGizmoToDepth(mesh, transforms){
-    const FBO = GBuffer.gBuffer
+    const FBO = VisibilityBuffer.buffer
     const data = {
         translation: GizmoSystem.mainEntity.__pivotOffset,
         cameraIsOrthographic: CameraAPI.isOrthographic

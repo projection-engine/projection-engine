@@ -32,9 +32,8 @@
 </script>
 
 <div class="buffer" style={`width: ${350/widthScale}px`}>
-    <strong style="width: 100%">{LOCALIZATION_EN[buffer.framebufferKey] || LOCALIZATION_EN.UNKNOWN}
-        - {buffer.isDepthSampler ? LOCALIZATION_EN.DEPTH_SAMPLER : buffer.index}</strong>
     <div class="buffer-metadata">
+        <strong>{LOCALIZATION_EN[buffer.framebufferKey] || LOCALIZATION_EN.UNKNOWN}- {buffer.isDepthSampler ? LOCALIZATION_EN.DEPTH_SAMPLER : buffer.label || buffer.index}</strong>
         {#if buffer.isDepthSampler}
             <strong>{LOCALIZATION_EN.TEXTURE_FORMAT} - {LOCALIZATION_EN.DEPTH_SAMPLER}</strong>
             <strong>{LOCALIZATION_EN.RESOLUTION} - {buffer.width}x{buffer.height}</strong>

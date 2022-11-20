@@ -15,7 +15,7 @@ export default class BufferVisualization {
 
     static initialize() {
         BufferVisualization.buffers = buffers
-        shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
+        shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_SCREEN)
         uniforms = shader.uniformMap
         FBOs = Array.from(GPU.frameBuffers.entries())
         FBOs.forEach(([key, framebuffer]) => {
@@ -48,7 +48,7 @@ export default class BufferVisualization {
     }
 
     static execute() {
-
+        // gpu.disable(gpu.DEPTH_TEST)
         gpu.enable(gpu.SCISSOR_TEST)
         shader.bind()
 
@@ -73,5 +73,6 @@ export default class BufferVisualization {
 
         gpu.disable(gpu.SCISSOR_TEST)
         gpu.viewport(0, 0, GPU.internalResolution.w, GPU.internalResolution.h)
+        // gpu.enable(gpu.DEPTH_TEST)
     }
 }

@@ -4,20 +4,18 @@ import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STAT
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 
+let shader, uniforms, fbo
 export default class SelectedSystem {
     static shaderSilhouette
     static shader
-    static frameBuffer
+
     static silhouetteSampler
 
     static initialize() {
-
-        SelectedSystem.frameBuffer = GPUAPI.allocateFramebuffer(STATIC_FRAMEBUFFERS.EDITOR.OUTLINE).texture({
-            precision: gpu.R16F,
-            format: gpu.RED,
-            type: gpu.FLOAT
-        })
-        SelectedSystem.silhouetteSampler = SelectedSystem.frameBuffer.colors[0]
+        fbo = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER)
+        SelectedSystem.silhouetteSampler = fbo.colors[0]
+        shader = SelectedSystem.shader
+        uniforms = shader.uniformMap
     }
 
     static drawToBuffer(selected) {
@@ -25,28 +23,23 @@ export default class SelectedSystem {
         if (length === 0)
             return
 
-        SelectedSystem.frameBuffer.startMapping()
+        fbo.startMapping()
         gpu.disable(gpu.CULL_FACE)
+        shader.bind()
         for (let m = 0; m < length; m++) {
             const current = selected[m]
             if (!current || !current.active)
                 continue
-            const components = current.components
-
-            const mMeshID = components.get(COMPONENTS.MESH)?.meshID
-            const tTerrainID = components.get(COMPONENTS.TERRAIN)?.terrainID
-
-            const mesh = GPU.meshes.get(mMeshID || tTerrainID)
+            const mesh = GPU.meshes.get(current.components.get(COMPONENTS.MESH)?.meshID)
             if (!mesh)
                 continue
-            SelectedSystem.shader.bindForUse({
-                meshIndex: m,
-                transformMatrix: current.matrix,
-            })
+
+            gpu.uniform3fv(uniforms.meshID, current.pickID)
+            gpu.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
             mesh.draw()
         }
         gpu.enable(gpu.CULL_FACE)
-        SelectedSystem.frameBuffer.stopMapping()
+        fbo.stopMapping()
 
     }
 

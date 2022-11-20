@@ -62,9 +62,23 @@ void main(){
     fragColor = vec4(color, 1.);
 }
 `
+const quadFrag = `
+    precision lowp float;
+    in vec2 texCoords;
+    uniform sampler2D image;
+    out vec4 fragColor;
 
+    void main(){
+        vec4 color = texture(image, texCoords);
+        if(color.a < 1.) 
+            fragColor = vec4(vec3(.35), 1.);
+        else
+            fragColor = vec4(color.rgb, 1.);
+    }
+`
 
 export default {
     fragment,
-    vertex
+    vertex,
+    quadFrag
 }

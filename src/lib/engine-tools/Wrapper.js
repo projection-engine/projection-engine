@@ -53,14 +53,12 @@ export default class Wrapper {
     }
 
     static afterDrawing() {
-        gpu.enable(gpu.BLEND)
-        gpu.blendFunc(gpu.SRC_ALPHA, gpu.ONE_MINUS_SRC_ALPHA)
-        SelectedSystem.drawSilhouette(selected)
+
         if (Engine.params.iconsVisibility) {
             IconsSystem.execute(selected)
             CollisionVisualizationSystem.execute(selected)
         }
-
+        SelectedSystem.drawSilhouette(selected)
         GizmoSystem.execute()
 
         if(Engine.params.visibleBuffers)

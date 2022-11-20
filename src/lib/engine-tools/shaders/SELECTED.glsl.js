@@ -14,14 +14,11 @@ void main(){
 
 export const fragment = `
 precision mediump float;
-uniform int meshIndex;
+uniform vec3 meshID;
 out vec4 fragColor;
 
-void main(){ 
-    if(meshIndex == 0)
-        fragColor = vec4(1.);
-    else
-        fragColor = vec4(vec3(.5), 1.);
+void main(){  
+    fragColor = vec4(meshID, 1.);
 }
 `
 
@@ -41,33 +38,18 @@ uniform sampler2D silhouette;
 
 in vec2 texCoords;
 out vec4 fragColor;
-
+ 
 void main()
 {
-    float initialColor = texture(silhouette, texCoords).x; 
-    if (initialColor > 0.)
-    {
-        vec2 size = 3. / vec2(textureSize(silhouette, 0));
-        for (int i = -1; i <= +1; i++)
-        {
-            for (int j = -1; j <= +1; j++)
-            {
-                if (i == 0 && j == 0){
-                    continue;
-                }
-                
-                vec2 offset = vec2(i, j) * size;
-                float currentColor = texture(silhouette, texCoords + offset).x;
-                if (currentColor == 0. || initialColor == .5 && currentColor != initialColor) {
-                    if(initialColor != .5)
-                        fragColor = vec4(1., .27, 0., 1.);
-                    else
-                        fragColor = vec4(1.,  .5, 0., 1.);
-                    return;
-                }
-            }
-        }
-    }
-    discard;
+    vec2 size = 2./vec2(textureSize(silhouette, 0));
+    vec3 center = texture(silhouette, texCoords).rgb;
+    vec3 left = texture(silhouette, texCoords + vec2(-1., 0.) * size).rgb;
+    vec3 right = texture(silhouette, texCoords + vec2(1., 0.) * size).rgb;
+    vec3 top = texture(silhouette, texCoords + vec2(0., -1.) * size).rgb;
+    vec3 bottom = texture(silhouette, texCoords + vec2(0., 1.) * size).rgb;
+    if(left != center || right != center || top != center || bottom != center )
+        fragColor = vec4(1., .35, 0., 1.);    
+    else
+        discard;
 }
 `

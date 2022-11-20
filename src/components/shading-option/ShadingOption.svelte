@@ -80,12 +80,6 @@
                 {Localization.SHADING_NORMAL}
                 <small>{Localization.NORMAL_DEF}</small>
             </button>
-            <button data-highlight={shadingModel === SHADING_MODELS.VELOCITY ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.VELOCITY})}>
-                {Localization.SHADING_VELOCITY}
-                <small>{Localization.VELOCITY_DEF}</small>
-            </button>
-
         </div>
     </fieldset>
 
