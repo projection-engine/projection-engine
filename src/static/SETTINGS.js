@@ -14,7 +14,7 @@ export default {
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,
     iconsVisibility: true,
-
+    visibleBuffers: false,
     showGridSubdivision: true,
     gridOpacity: 1,
     gridVisibility: true,

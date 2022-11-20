@@ -10,6 +10,7 @@ import getPickerId from "../../public/engine/utils/get-picker-id";
 import Engine from "../../public/engine/Engine";
 import EntityAPI from "../../public/engine/lib/utils/EntityAPI";
 import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
+import getPivotPointMatrix from "../lib/engine-tools/utils/get-pivot-point-matrix";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -84,6 +85,7 @@ export default function dispatchRendererEntities({type, payload}) {
                 array: [entity.id],
                 lockedEntity: entity.id
             })
+            getPivotPointMatrix(entity)
             EntityAPI.addEntity(payload)
             save()
             break
@@ -112,6 +114,7 @@ export default function dispatchRendererEntities({type, payload}) {
                     const e = block[i]
                     selected.push(e.id)
                     EntityAPI.addEntity(e)
+                    getPivotPointMatrix(e)
                     EntityNameController.renameEntity(e.name, e)
                 }
             if (type !== ENTITY_ACTIONS.DISPATCH_BLOCK) {

@@ -27,6 +27,7 @@ import RotationGizmo from "./lib/transformation/RotationGizmo";
 import * as SKYBOX from "./shaders/SKYBOX.glsl";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
+import BufferVisualization from "./runtime/BufferVisualization";
 
 export default async function initializer() {
 
@@ -36,6 +37,7 @@ export default async function initializer() {
     GPUAPI.allocateTexture(probeIcon, STATIC_TEXTURES.PROBE).catch()
     GPUAPI.allocateTexture(circle, STATIC_TEXTURES.ROTATION_GIZMO).catch()
 
+    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_SCREEN, gizmoShaderCode.lineVertex, gizmoShaderCode.lineFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, gizmoShaderCode.lineVertex, gizmoShaderCode.lineFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, gizmoShaderCode.sameSizeVertex, gizmoShaderCode.pickFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.UNSHADED, gizmoShaderCode.cameraVertex, gizmoShaderCode.cameraFragment)
@@ -61,5 +63,5 @@ export default async function initializer() {
     IconsSystem.initialize()
     SelectedSystem.initialize()
     GizmoSystem.initialize()
-
+    BufferVisualization.initialize()
 }

@@ -7,6 +7,10 @@ import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
+import GPU from "../../../public/engine/GPU";
+import STATIC_SHADERS from "../../../public/engine/static/resources/STATIC_SHADERS";
+import GBuffer from "../../../public/engine/runtime/rendering/GBuffer";
+import BufferVisualization from "./runtime/BufferVisualization";
 
 
 let selected = []
@@ -28,13 +32,13 @@ export default class Wrapper {
         })
 
         const main = Wrapper.selected[0]
-        if(main) {
+        if (main) {
             getPivotPointMatrix(main)
             main.__pivotChanged = true
             GizmoSystem.mainEntity = main
             GizmoSystem.targetGizmo.transformGizmo()
             GizmoSystem.targetRotation = main._rotationQuat
-        }else {
+        } else {
             GizmoSystem.targetRotation = undefined
             GizmoSystem.mainEntity = undefined
             GizmoSystem.hasStarted = false
@@ -61,5 +65,8 @@ export default class Wrapper {
         }
 
         GizmoSystem.execute()
+
+        if(Engine.params.visibleBuffers)
+            BufferVisualization.execute()
     }
 }

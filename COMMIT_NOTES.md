@@ -1,1 +1,2 @@
-- Fixing memory allocation bug when loading textures
+- Buffer visualization system
+- Readme tweaks

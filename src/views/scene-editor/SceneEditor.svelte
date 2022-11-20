@@ -24,6 +24,7 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
+    import BufferVisualization from "./components/BufferVisualization.svelte";
 
 
     let selectedSize = -1
@@ -111,6 +112,8 @@
             {focusedCamera.name}
         </div>
     {/if}
+
+    <BufferVisualization settings={settings}/>
 {:else}
     <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
