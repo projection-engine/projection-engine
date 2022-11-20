@@ -158,12 +158,12 @@
         </div>
     </VirtualList>
         {:else}
-        <div class="empty-wrapper">
+
             <div data-empty="-" style="position: relative">
                 <Icon styles="font-size: 75px">terminal</Icon>
                 {Localization.CONSOLE}
             </div>
-        </div>
+
     {/if}
 </div>
 <div bind:this={modal} class="container-modal">

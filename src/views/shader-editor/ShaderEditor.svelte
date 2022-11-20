@@ -20,6 +20,8 @@
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
+    import RegistryAPI from "../../lib/fs/RegistryAPI";
+    import FILE_TYPES from "shared-resources/FILE_TYPES";
 
     const {shell} = window.require("electron")
 
@@ -33,6 +35,7 @@
     let dragWillStart
     let status
     let ref
+    let isWorldMaterial
 
     let engine
     let wasInitialized = false
@@ -43,6 +46,7 @@
         SEContextController.deleteContext(openFile?.registryID)
         status = {}
         SelectionStore.shaderEditorSelected = []
+
         parseFile(
             openFile,
             (d) => {
@@ -76,7 +80,11 @@
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
             alert.pushAlert(LOCALIZATION_EN.FILE_ALREADY_OPEN)
+
         else {
+            // const reg = RegistryAPI.getRegistryEntry(v.registryID)
+            // isWorldMaterial = reg.path.includes(FILE_TYPES.LEVEL)
+
             UndoRedoAPI.clearShaderEditorStates()
             isReady = false
             openFile = v
@@ -84,7 +92,7 @@
         }
     }
 
-    $: invalidFile = !openFile
+
     $: {
         if (wasInitialized) {
             const newState = {openFile, nodes, links}
@@ -94,10 +102,8 @@
             const newFile = ShaderEditorTools.toOpenFile || state?.openFile
             if (!newFile)
                 SEContextController.deleteContext(openFile?.registryID)
-            console.trace(newFile)
+
             initializeFromFile(newFile)
-            if (newFile?.registryID)
-                initializeStructure()
             ShaderEditorTools.toOpenFile = undefined
             if (state != null) {
                 nodes = state.nodes
@@ -115,8 +121,8 @@
 </script>
 
 <ViewHeader>
-    <small style={dragWillStart && !invalidFile ? undefined : "display: none"} id={openFile?.registryID + "-T"}></small>
-    {#if !dragWillStart || invalidFile}
+    <small style={dragWillStart && !openFile?.registryID ? undefined : "display: none"} id={openFile?.registryID + "-T"}></small>
+    {#if !dragWillStart || !openFile?.registryID}
         <HeaderOptions
                 save={() => {
                     buildShader(nodes, links, openFile, v => status = v).then(() => {
@@ -128,16 +134,16 @@
                 initializeFromFile={initializeFromFile}
                 nodes={nodes}
                 openSourceCode={async () => {
-                const {shader} = await materialCompiler(nodes, links)
-                const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
-                await FilesAPI.writeFile(newFile, shader, true)
-                shell.openPath(newFile).catch()
-            }}
+                    const {shader} = await materialCompiler(nodes, links)
+                    const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
+                    await FilesAPI.writeFile(newFile, shader, true)
+                    shell.openPath(newFile).catch()
+                }}
         />
     {/if}
 </ViewHeader>
 <div class="wrapper" bind:this={ref}>
-    {#if !invalidFile}
+    {#if openFile?.registryID}
         {#if isReady}
             {#key openFile}
                 <ShaderCanvas openFile={openFile}/>

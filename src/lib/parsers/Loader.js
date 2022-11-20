@@ -23,8 +23,6 @@ import FileSystemAPI from "../../../public/engine/lib/utils/FileSystemAPI";
 import {vec3, vec4} from "gl-matrix";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
-let translationCache = vec3.create()
-let rotationCache = vec4.create()
 
 export default class Loader {
     static async mesh(objLoaded, id) {

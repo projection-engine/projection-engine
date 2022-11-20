@@ -1,3 +1,1 @@
-- Fixed action history dropdown crashing editor tue to wrong index being sent to UndoRedoAPI
-- Undo/redo for node movement
-- Undo/redo for node attribute and direct property change (name/color)
+- Fixing memory allocation bug when loading textures

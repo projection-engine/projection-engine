@@ -8,6 +8,8 @@ import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
 import GPU from "../../../../public/engine/GPU";
+import RegistryAPI from "../../../lib/fs/RegistryAPI";
+import FILE_TYPES from "shared-resources/FILE_TYPES";
 
 export default class ShaderEditorTools {
 
@@ -102,16 +104,22 @@ export default class ShaderEditorTools {
 
     static async save(openFile, nodes, links) {
         try {
+            const reg = RegistryAPI.getRegistryEntry(openFile.registryID)
+            const isLevel = reg.path.includes(FILE_TYPES.LEVEL)
             const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links, true)
-            await AssetAPI.updateAsset(
-                openFile.registryID,
-                JSON.stringify({
-                    nodes: parsedNodes,
-                    links,
-                    response: compiled,
-                    type: compiled.variant
-                })
-            )
+            const materialData = {
+                nodes: parsedNodes,
+                links,
+                response: compiled,
+                type: compiled.variant
+            }
+            if (isLevel) {
+
+            } else
+                await AssetAPI.updateAsset(
+                    openFile.registryID,
+                    JSON.stringify(materialData)
+                )
             alert.pushAlert(Localization.SAVED, "success")
         } catch (err) {
             console.error(err)
