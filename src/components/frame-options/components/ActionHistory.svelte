@@ -5,7 +5,6 @@
     import {onMount} from "svelte";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
-    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
     import VirtualList from "@sveltejs/svelte-virtual-list"
 
     export let engine

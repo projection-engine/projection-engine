@@ -19,9 +19,6 @@
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
-    import RegistryAPI from "../../lib/fs/RegistryAPI";
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
 
     const {shell} = window.require("electron")
 

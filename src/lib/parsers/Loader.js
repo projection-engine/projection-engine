@@ -20,7 +20,6 @@ import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import FileSystemAPI from "../../../public/engine/lib/utils/FileSystemAPI";
-import {vec3, vec4} from "gl-matrix";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 

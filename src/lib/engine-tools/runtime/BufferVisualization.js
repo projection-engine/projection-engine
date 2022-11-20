@@ -1,6 +1,5 @@
 import GPU from "../../../../public/engine/GPU";
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
-import GBuffer from "../../../../public/engine/runtime/rendering/GBuffer";
 import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 import ConversionAPI from "../../../../public/engine/lib/math/ConversionAPI";
 

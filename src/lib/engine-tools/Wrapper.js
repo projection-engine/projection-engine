@@ -7,9 +7,6 @@ import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
-import GPU from "../../../public/engine/GPU";
-import STATIC_SHADERS from "../../../public/engine/static/resources/STATIC_SHADERS";
-import GBuffer from "../../../public/engine/runtime/rendering/GBuffer";
 import BufferVisualization from "./runtime/BufferVisualization";
 
 

@@ -5,7 +5,6 @@
     import BufferVisualization from "../../../lib/engine-tools/runtime/BufferVisualization";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte"
     import ConversionAPI from "../../../../public/engine/lib/math/ConversionAPI";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import BufferItem from "./BufferItem.svelte";
 
     let ref
