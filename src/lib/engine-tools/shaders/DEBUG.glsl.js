@@ -27,6 +27,8 @@ float rand(vec2 co){
 void main(){
   
     vec4 samplerData = texture(uSampler, texCoords);
+    if(samplerData.a < 1.)
+        discard;
     vec3 color = samplerData.rgb; 
     
     if(debugFlag == 2){

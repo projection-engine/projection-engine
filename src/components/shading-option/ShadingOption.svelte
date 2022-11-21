@@ -11,6 +11,8 @@
     import getLabel from "./utils/get-label";
     import getTexture from "./utils/get-texture";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
+    import DebugPass from "../../lib/engine-tools/runtime/DebugPass";
+    import GBuffer from "../../../public/engine/runtime/rendering/GBuffer";
 
     export let engine
     export let settings
@@ -19,19 +21,19 @@
 
     $: {
         FrameComposition.debugFlag = shadingModel
+        if (!GBuffer.__cacheCallback)
+            GBuffer.__cacheCallback = GBuffer.drawToBuffer
         if (shadingModel !== SHADING_MODELS.DETAIL) {
-            FrameComposition.workerTexture = getTexture(shadingModel)
-            FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED)
-            FrameComposition.updateShader()
-        } else {
-            FrameComposition.shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.FRAME_COMPOSITION)
-            FrameComposition.updateShader()
-            CameraAPI.updateMotionBlurState(VisualsStore.data.motionBlurEnabled)
-        }
+            DebugPass.sampler = getTexture(shadingModel)
+            DebugPass.flag = shadingModel
+            GBuffer.drawToBuffer = DebugPass.execute
+        } else
+            GBuffer.drawToBuffer = GBuffer.__cacheCallback
     }
 </script>
 
-<Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;" buttonStyles={getDropdownHeaderStyles()}>
+<Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;"
+          buttonStyles={getDropdownHeaderStyles()}>
     <button slot="button" data-view-header-dropdown="-">
         <div style="--color-to-apply: white" data-shaded-material="-"></div>
         <div style="white-space: nowrap">{Localization[shading]}</div>

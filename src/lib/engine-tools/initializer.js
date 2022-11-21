@@ -28,6 +28,7 @@ import * as SKYBOX from "./shaders/SKYBOX.glsl";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
 import BufferVisualization from "./runtime/BufferVisualization";
+import DebugPass from "./runtime/DebugPass";
 
 export default async function initializer() {
 
@@ -65,4 +66,5 @@ export default async function initializer() {
     SelectedSystem.initialize()
     GizmoSystem.initialize()
     BufferVisualization.initialize()
+    DebugPass.initialize()
 }
