@@ -1,7 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import BufferVisualization from "../../../lib/engine-tools/runtime/BufferVisualization";
     import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte"
     import ConversionAPI from "../../../../public/engine/lib/math/ConversionAPI";
@@ -46,15 +44,8 @@
             left: ${8/widthScale}px;
         `}
 >
-    <button
-            class="button viewport"
-            style="width: fit-content; max-height: 25px; min-height: 25px"
-            data-highlight={settings.visibleBuffers ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, visibleBuffers: !settings.visibleBuffers})}
-    >
-        {!settings.visibleBuffers ? LOCALIZATION_EN.SHOW_BUFFERS : LOCALIZATION_EN.HIDE_BUFFERS}
-    </button>
     {#if settings.visibleBuffers}
+        <div style="max-height: 0px"></div>
         <ResizableBar type="height"/>
     {/if}
     <div

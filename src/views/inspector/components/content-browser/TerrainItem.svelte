@@ -5,7 +5,7 @@
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
-    import TerrainWorker from "../../../../../public/engine/workers/terrain/TerrainWorker";
+    import TerrainGenerator from "../../../../../public/engine/lib/math/TerrainGenerator";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
@@ -34,7 +34,7 @@
             temp = {...temp, [key]: value}
 
 
-        const data = await TerrainWorker.generate(temp.image, temp.scale, temp.dimensions)
+        const data = await TerrainGenerator.generate(temp.image, temp.scale, temp.dimensions)
         GPUAPI.allocateMesh(item.registryID, data)
         clearTimeout(timeout)
         timeout = setTimeout(async () => {

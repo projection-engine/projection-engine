@@ -9,7 +9,7 @@ import GPU from "../../../public/engine/GPU";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
-import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
+import TerrainGenerator from "../../../public/engine/lib/math/TerrainGenerator";
 import EngineStore from "../../stores/EngineStore";
 import SelectionStore from "../../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
@@ -134,7 +134,7 @@ export default class LevelController {
                             const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
                             if (!file)
                                 continue
-                            const terrainData = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
+                            const terrainData = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)
                             GPUAPI.allocateMesh(terrainID, terrainData)
                         }
                         if (materialID && GPU.materials.get(materialID) == null) {

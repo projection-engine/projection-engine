@@ -60,7 +60,9 @@ void main(){
             rand(vec2(length(color) + g))
         );
     }
-
+   else if (debugFlag == 22){ 
+        color = vec3(color.b);
+    }
     fragColor = vec4(color, 1.);
 }
 `

@@ -85,10 +85,12 @@ export default [
             PRODUCTION && terser()
         ]
     },
-    worker("public/engine/workers/movement/movement-worker.js", "public/build/movement-worker.js"),
-    worker("public/engine/workers/camera/camera-worker.js", "public/build/camera-worker.js"),
-    worker("public/engine/workers/terrain/terrain-worker.js", "public/build/terrain-worker.js"),
-    worker("public/engine/workers/image/image-worker.js", "public/build/image-worker.js"),
+    worker("public/engine/workers/movement-worker.js", "public/build/movement-worker.js"),
+    worker("public/engine/workers/camera-worker.js", "public/build/camera-worker.js"),
+    worker("public/engine/workers/terrain-worker.js", "public/build/terrain-worker.js"),
+    worker("public/engine/workers/image-worker.js", "public/build/image-worker.js"),
+    worker("public/engine/workers/instancing-worker.js", "public/build/instancing-worker.js"),
+    worker("public/engine/workers/culling-worker.js", "public/build/culling-worker.js"),
     common("root", "editor")
 ]
 

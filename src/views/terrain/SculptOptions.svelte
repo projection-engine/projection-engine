@@ -5,7 +5,7 @@
     import Checkbox from "../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
     import SculptingGizmo from "../../lib/engine-tools/lib/terrain/SculptingGizmo";
-    import TerrainWorker from "../../../public/engine/workers/terrain/TerrainWorker";
+    import TerrainGenerator from "../../../public/engine/lib/math/TerrainGenerator";
 
     import Selector from "../../components/selector/Selector.svelte";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
@@ -27,7 +27,7 @@
     onMount(() => {
         api = new SculptingGizmo(selectedTerrain.image)
         api.updateMesh = () => {
-            TerrainWorker.generate(api.canvas.toDataURL(), selectedTerrain.scale, selectedTerrain.dimensions)
+            TerrainGenerator.generate(api.canvas.toDataURL(), selectedTerrain.scale, selectedTerrain.dimensions)
                 .then(res => GPUAPI.allocateMesh(settings.selectedTerrain, res))
         }
     })
@@ -38,7 +38,7 @@
         const reg = RegistryAPI.getRegistryEntry(registryID)
         const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
 
-        TerrainWorker.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
+        TerrainGenerator.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
             .then(res => GPUAPI.allocateMesh(settings.selectedTerrain, res))
     }
 </script>

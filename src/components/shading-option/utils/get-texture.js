@@ -29,8 +29,9 @@ export default function getTexture(shadingModel) {
             return GlobalIlluminationPass.SSGISampler
         case SHADING_MODELS.SSGI_UNFILTERED:
             return GlobalIlluminationPass.unfilteredSSGISampler
-        case SHADING_MODELS.STOCHASTIC:
-            return GlobalIlluminationPass.normalSampler
+
+        case SHADING_MODELS.MATERIALS:
+            return VisibilityBuffer.uvSampler
     }
 
 }

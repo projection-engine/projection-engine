@@ -1,4 +1,3 @@
-import GBuffer from "../../../../public/engine/runtime/rendering/GBuffer";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import getPickerId from "../../../../public/engine/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";

@@ -1,7 +1,6 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js"
 import GPU from "../../../../public/engine/GPU";
 import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 
 let shader, uniforms, fbo

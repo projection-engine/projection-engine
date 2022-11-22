@@ -1,5 +1,4 @@
-- Added list cache for material rendering
-- Changed skybox pass to be more efficient
-- Debug view will now draw as replacement for detailed rendering instead of on top
-- Enabled depth copy between visibility and current frame FBOs
-- Disabled specular and diffuse probe generation pass
+- Reworking material rendering pipeline
+- Clening up materialAPI
+- Initializing instancing and culling workers
+- Added material ID visualization to shading models

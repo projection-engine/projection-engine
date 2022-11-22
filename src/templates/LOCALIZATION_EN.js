@@ -37,6 +37,8 @@ export default {
     FILE_ALREADY_OPEN: "File already open",
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
+    MATERIALS: "Materials",
+    MATERIALS_TO_DRAW: "Materials to draw",
     CULL_FACE: "Cull face",
     NO_MATERIAL_SELECTED: "No material selected",
     CAMERA_ANIMATION: "Camera smoothing",

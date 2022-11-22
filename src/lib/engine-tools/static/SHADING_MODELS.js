@@ -21,5 +21,6 @@ export default {
     SSR: 18,
     VELOCITY: 19,
     SSGI_UNFILTERED: 20,
-    RANDOM: 21
+    RANDOM: 21,
+    MATERIALS: 22
 }

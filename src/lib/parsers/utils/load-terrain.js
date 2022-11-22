@@ -1,5 +1,5 @@
 import FilesAPI from "../../fs/FilesAPI";
-import TerrainWorker from "../../../../public/engine/workers/terrain/TerrainWorker";
+import TerrainGenerator from "../../../../public/engine/lib/math/TerrainGenerator";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
@@ -12,7 +12,7 @@ export default async function loadTerrain(reg) {
         alert.pushAlert("No height-map present", "error")
         return
     }
-    const data = await TerrainWorker.generate(file.image, file.scale, file.dimensions)
+    const data = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)
     GPUAPI.allocateMesh(reg.id, data)
     const entity = new Entity()
     entity.addComponent(COMPONENTS.TERRAIN)

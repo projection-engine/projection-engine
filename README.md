@@ -69,6 +69,17 @@ You can follow the project development via the following boards:
 - [Editor](https://github.com/projection-engine/editor)
 - [HUB](https://github.com/projection-engine/hub)
 
+## What is currently under development
+1. **(Semi) Deferred materials**:
+    > Allows users to define more custom materials without destroying performance due to high quantity of draw calls and data binding.
+2. **Virtualized geometry instancing**:
+    > Without user input the engine will optimize draw calls of same mesh by automatically adding/removing entities from instancing buffers
+3. **Geometry frustum culling**:
+    > The first step into draw call reduction is by culling geometry outside the camera frustum. The first implementation will be done in the CPU with a more generic testing
+4. **Material culling**:
+    > With the new material system it will now be possible to prevent material execution if such will not contribute to final image
+
+
 ## Download
 
 [**Projection Engine HUB**](https://github.com/projection-engine/hub/releases/tag/APP-WINDOWS) - Manage projects and
