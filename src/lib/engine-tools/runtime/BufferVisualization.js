@@ -15,7 +15,7 @@ export default class BufferVisualization {
 
     static initialize() {
         BufferVisualization.buffers = buffers
-        shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_SCREEN)
+        shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
         uniforms = shader.uniformMap
         FBOs = Array.from(GPU.frameBuffers.entries())
         FBOs.forEach(([key, framebuffer]) => {
@@ -51,6 +51,9 @@ export default class BufferVisualization {
         // gpu.disable(gpu.DEPTH_TEST)
         gpu.enable(gpu.SCISSOR_TEST)
         shader.bind()
+        gpu.scissor(0, 0, gpu.canvas.width, height + 8)
+        gpu.viewport(0, 0, gpu.canvas.width, height + 8)
+        gpu.clear(gpu.COLOR_BUFFER_BIT)
 
         gpu.activeTexture(gpu.TEXTURE0)
         gpu.uniform1i(uniforms.image, 0)
@@ -62,7 +65,6 @@ export default class BufferVisualization {
             const translationOffset = (i + 1) * 8 + 350 * i
             if (!current || translationOffset > threshold)
                 continue
-
 
             gpu.scissor(translationOffset, 8, 350, height)
             gpu.viewport(translationOffset, 8, 350, height)

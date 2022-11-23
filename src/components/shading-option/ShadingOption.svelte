@@ -26,6 +26,7 @@
         } else
             GBuffer.drawToBuffer = GBuffer.__cacheCallback
     }
+
 </script>
 
 <Dropdown styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;"
@@ -84,12 +85,7 @@
     <fieldset class="content">
         <legend>{LOCALIZATION_EN.SCENE}</legend>
         <div class="column">
-            <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
-                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
 
-                {LOCALIZATION_EN.SHADING_DEPTH}
-                <small>{LOCALIZATION_EN.DEPTH_DEF}</small>
-            </button>
             <button data-highlight={shadingModel === SHADING_MODELS.SSR ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSR})}>
                 {LOCALIZATION_EN.SHADING_SSR}
@@ -101,14 +97,15 @@
                 {LOCALIZATION_EN.SHADING_RANDOM}
                 <small>{LOCALIZATION_EN.SHADING_RANDOM_DEF}</small>
             </button>
-
-        </div>
-        <div class="column">
             <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.AO})}>
                 {LOCALIZATION_EN.SHADING_AO}
                 <small>{LOCALIZATION_EN.AO_DEF}</small>
             </button>
+
+        </div>
+        <div class="column">
+
             <button data-highlight={shadingModel === SHADING_MODELS.SSGI ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSGI})}>
                 {LOCALIZATION_EN.SHADING_SSGI}

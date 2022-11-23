@@ -9,6 +9,12 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte"
     import {v4} from "uuid";
     import BENCHMARK_KEYS from "../../../public/engine/static/BENCHMARK_KEYS";
+    import ViewStateController from "../../components/view/libs/ViewStateController";
+    import SettingsStore from "../../stores/SettingsStore";
+
+    export let viewID
+    export let viewIndex
+    export let groupIndex
 
     let isRecording = false
     let samples = 0
@@ -16,6 +22,7 @@
     let interval
     let toShow = []
     const loadingBarID = v4()
+    let wasInitialized
 
     onMount(() => {
         samples = BenchmarkAPI.maxSamples
@@ -37,13 +44,21 @@
                 percentage: (elapsed > 0 ? (elapsed / sampleCountInterval) * 100 : 0)
             })
         })
+        console.log(cache)
         toShow = cache.sort((a, b) => b.percentage - a.percentage)
     }
 
-    function toggleSampling() {
+    function toggleSampling(isFirst) {
+        if(isFirst)
+        BenchmarkAPI.contexts.forEach(c => {
+            c[0] = 0
+            c[1].forEach((_, i) => c[1][i] = 0)
+        })
+
         clearInterval(interval)
         isRecording = Engine.benchmarkMode = isSampling = !isRecording
         if (isRecording) {
+
             let el = document.getElementById(loadingBarID)
             interval = setInterval(() => {
                 if (!el) {
@@ -57,11 +72,23 @@
             }
         }
     }
+
+    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
+    $: {
+        if (wasInitialized) {
+            ViewStateController.updateState(viewID, viewIndex, groupIndex, toShow)
+        } else {
+            const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
+            if (state != null)
+                toShow = state
+            wasInitialized = true
+        }
+    }
 </script>
 <ViewHeader>
     <div data-inline="-" style=" width: 100%">
         <button
-                on:click={toggleSampling}
+                on:click={() => toggleSampling(true)}
                 data-view-header-button="-"
         >
             <Icon styles={isRecording ? "color: #ff5555" : "color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
@@ -69,13 +96,14 @@
         </button>
         <button
                 on:click={() => {
-                BenchmarkAPI.contexts.forEach(c => {
-                    c[0] = 0
-                    c[1].forEach((_, i) => c[1][i] = 0)
-                })
-                toShow = []
-            }}
-            data-view-header-button="-"
+                    BenchmarkAPI.contexts.forEach(c => {
+                        c[0] = 0
+                        c[1].forEach((_, i) => c[1][i] = 0)
+                    })
+                    toShow = []
+                    isRecording = Engine.benchmarkMode = isSampling = false
+                }}
+                data-view-header-button="-"
         >
             <Icon styles="color: var(--pj-color-quaternary)">refresh</Icon>
             <ToolTip content={LOCALIZATION_EN.RESET}/>

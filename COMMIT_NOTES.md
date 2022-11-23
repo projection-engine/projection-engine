@@ -1,4 +1,5 @@
-- Reworking material rendering pipeline
-- Clening up materialAPI
-- Initializing instancing and culling workers
-- Added material ID visualization to shading models
+- Tweaking layout of scene editor
+- Organizing framebuffer bind/unbind methods
+- Added "random colors" for material visualization
+- Fixed metrics view labels
+- Re-enabled metrics

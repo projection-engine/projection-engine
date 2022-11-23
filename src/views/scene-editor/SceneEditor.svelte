@@ -104,19 +104,8 @@
             nodes={[]}
     />
     <div class="top-bar">
-        <div data-inline="-" style="align-items: flex-start">
-            <CameraGizmo/>
-            <GeneralSettings engine={engine} settings={settings}/>
-        </div>
-        <button
-                class="button viewport"
-                style="width: fit-content; max-height: 25px; min-height: 25px"
-                data-highlight={settings.visibleBuffers ? "-" : undefined}
-                on:click={() => SettingsStore.updateStore({...settings, visibleBuffers: !settings.visibleBuffers})}
-        >
-            <Icon styles="font-size: .85rem">{settings.visibleBuffers ? "visibility" : "visibility_off"}</Icon>
-            {!settings.visibleBuffers ? LOCALIZATION_EN.SHOW_BUFFERS : LOCALIZATION_EN.HIDE_BUFFERS}
-        </button>
+        <GeneralSettings engine={engine} settings={settings}/>
+        <CameraGizmo/>
     </div>
     {#if focusedCamera}
         <div class="focused-camera" data-inline="-">

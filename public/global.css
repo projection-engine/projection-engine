@@ -382,19 +382,20 @@ pre[data-pre="-"] {
 
 .button.viewport {
     height: 25px;
-    padding: 4px 10px;
+    padding: 0 4px;
     border-radius: 25px;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
+    gap: 4px;
     background: var(--pj-background-tertiary);
     border: none;
     color: var(--pj-color-tertiary);
     box-shadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
 }
-.button.viewport:disabled{
+
+.button.viewport:disabled {
     box-shadow: none;
 }
 

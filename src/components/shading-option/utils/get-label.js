@@ -35,8 +35,8 @@ export default function getLabel(shadingModel){
             return "SHADING_UV"
         case SHADING_MODELS.ID:
             return "SHADING_ID"
-        case SHADING_MODELS.VELOCITY:
-            return "SHADING_VELOCITY"
+        case SHADING_MODELS.MATERIALS:
+            return "MATERIALS"
         default:
             return ""
     }

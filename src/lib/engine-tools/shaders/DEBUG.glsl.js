@@ -24,6 +24,17 @@ float linearize(float depth){
 float rand(vec2 co){
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 }
+
+vec3 randomColor(float seed){
+    float r = rand(vec2(seed));
+    float g = rand(vec2(seed + r));
+    return vec3(
+        r,
+        g,
+        rand(vec2(seed + g))
+    );
+}
+
 void main(){
   
     vec4 samplerData = texture(uSampler, texCoords);
@@ -52,37 +63,17 @@ void main(){
         color = vec3(invViewMatrix * samplerData );
     }
     else if(debugFlag == 21){
-        float r = rand(vec2(length(color)));
-        float g = rand(vec2(length(color) + r));
-        color = vec3(
-            r,
-            g,
-            rand(vec2(length(color) + g))
-        );
+        color = randomColor(length(color));
     }
-   else if (debugFlag == 22){ 
-        color = vec3(color.b);
+    else if (debugFlag == 22){ 
+        color = randomColor(color.b * 255.);
     }
     fragColor = vec4(color, 1.);
 }
 `
-const quadFrag = `
-    precision lowp float;
-    in vec2 texCoords;
-    uniform sampler2D image;
-    out vec4 fragColor;
 
-    void main(){
-        vec4 color = texture(image, texCoords);
-        if(color.a < 1.) 
-            fragColor = vec4(vec3(.35), 1.);
-        else
-            fragColor = vec4(color.rgb, 1.);
-    }
-`
 
 export default {
     fragment,
-    vertex,
-    quadFrag
+    vertex
 }

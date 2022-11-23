@@ -12,7 +12,7 @@
 
 
 <div
-        class={"gizmo-wrapper"}
+        class="gizmo-wrapper"
         bind:this={ref}
         on:mousedown={_ => {
             focusOnCamera()
@@ -20,38 +20,41 @@
         }}
         on:mouseup={_ => ref.removeEventListener("mousemove", CameraTracker.forceRotationTracking)}
 >
-    <div class={"camera-view"}>
-        <div class={"cube"} id={CAMERA_GIZMO}>
+    <div class="camera-view">
+        <div
+                class="cube"
+                id={CAMERA_GIZMO}
+        >
             <div
-                    class={"face front"}
+                    class="face front"
                     style="background: hsl(205, 100%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)}
             >
                 Z+
             </div>
             <div
-                    class={"face back darker"}
+                    class="face back darker"
                     style="background: hsl(205, 100%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)}
             >
                 Z-
             </div>
             <div
-                    class={"face right"}
+                    class="face right"
                     style="background: hsl(0, 100%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)}
             >
                 X+
             </div>
             <div
-                    class={"face left darker"}
+                    class="face left darker"
                     style="background: hsl(0, 100%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)}
             >
                 X-
             </div>
             <div
-                    class={"face top darker"}
+                    class="face top darker"
                     style="background: hsl(120, 88%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)}
 
@@ -59,7 +62,7 @@
                 Y-
             </div>
             <div
-                    class={"face bottom"}
+                    class="face bottom"
                     style="background: hsl(120, 88%, var(--brightness))"
                     on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)}
             >
@@ -72,9 +75,8 @@
 
 <style>
     .gizmo-wrapper {
-        --cube-size: 25px;
-
-
+        position: absolute;
+        right: 0;
         overflow: hidden;
         border-radius: 50%;
         padding: 4px;
@@ -82,13 +84,6 @@
         backdrop-filter: blur(10px);
         opacity: .85;
         border: var(--pj-transparent-border) 1px solid;
-
-        --wrapper-size: calc((var(--cube-size) + 5px) * 2);
-        min-width: var(--wrapper-size);
-        min-height: var(--wrapper-size);
-        max-width: var(--wrapper-size);
-        max-height: var(--wrapper-size);
-        margin-right: 8px;
     }
 
     .gizmo-wrapper:hover {
@@ -103,7 +98,7 @@
     }
 
     .camera-view {
-
+        --cube-size: 25px;
 
         width: calc(var(--cube-size) * 2);
         height: calc(var(--cube-size) * 2);

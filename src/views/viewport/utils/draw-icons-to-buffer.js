@@ -8,7 +8,7 @@ import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SH
 export default function drawIconsToBuffer() {
     const entities = Engine.entities
     const FBO = GBuffer.gBuffer
-    FBO.startMapping(undefined, undefined, false)
+    FBO.use()
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
         if (!entity.active || !(entity.components.get(COMPONENTS.SPRITE) || entity.components.get(COMPONENTS.CAMERA)))
@@ -20,7 +20,7 @@ export default function drawIconsToBuffer() {
         )
     }
 
-    FBO.stopMapping(false)
+    FBO.stopMapping()
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {

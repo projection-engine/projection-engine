@@ -39,7 +39,6 @@ export default async function initializer() {
     GPUAPI.allocateTexture(circle, STATIC_TEXTURES.ROTATION_GIZMO).catch()
 
 
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_SCREEN, DEBUGGlsl.vertex, DEBUGGlsl.quadFrag)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, gizmoShaderCode.lineVertex, gizmoShaderCode.lineFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, gizmoShaderCode.sameSizeVertex, gizmoShaderCode.pickFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.UNSHADED, gizmoShaderCode.cameraVertex, gizmoShaderCode.cameraFragment)
