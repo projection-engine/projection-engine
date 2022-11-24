@@ -2,7 +2,6 @@ import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
 
 import AmbientOcclusion from "../../../../public/engine/runtime/occlusion/AmbientOcclusion";
 import GlobalIlluminationPass from "../../../../public/engine/runtime/rendering/GlobalIlluminationPass";
-import VisibilityBuffer from "../../../../public/engine/runtime/rendering/VisibilityBuffer";
 
 export default function getTexture(shadingModel) {
 

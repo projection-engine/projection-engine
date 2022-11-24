@@ -5,9 +5,7 @@
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import FrameComposition from "../../../public/engine/runtime/post-processing/FrameComposition";
     import getLabel from "./utils/get-label";
-    import getTexture from "./utils/get-texture";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
-    import DebugPass from "../../lib/engine-tools/runtime/DebugPass";
 
     export let engine
     export let settings

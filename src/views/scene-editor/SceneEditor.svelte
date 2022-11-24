@@ -11,7 +11,6 @@
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import GeneralSettings from "./components/GeneralSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";

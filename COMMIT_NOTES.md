@@ -1,1 +1,2 @@
-- Fixing picking and box selection
+- Pure depth only SSAO implementation
+- Depth reconstruction utility functions
