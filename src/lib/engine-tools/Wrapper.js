@@ -55,14 +55,14 @@ export default class Wrapper {
     static afterDrawing() {
 
         if (Engine.params.iconsVisibility) {
-            IconsSystem.execute(selected)
+            IconsSystem.drawIcons(selected)
             CollisionVisualizationSystem.execute(selected)
         }
         SelectedSystem.drawSilhouette(selected)
 
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
-
+        IconsSystem.drawPoints(selected)
         if(Engine.params.visibleBuffers)
             BufferVisualization.execute()
     }

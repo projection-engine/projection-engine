@@ -27,8 +27,6 @@
         Engine.initialize(
             canvasRef,
             {w: settings.resolution[0], h: settings.resolution[1]},
-            {w: visuals.SSAO.resolutionScale * settings.resolution[0], h: visuals.SSAO.resolutionScale * settings.resolution[1]},
-            {w: visuals.SSGI.resolutionScale * settings.resolution[0], h: visuals.SSGI.resolutionScale * settings.resolution[1]},
             AssetAPI.readAsset,
             AssetAPI.readMetadata
         )

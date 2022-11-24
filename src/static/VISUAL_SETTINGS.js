@@ -19,7 +19,6 @@ export default {
     shadowMapResolution: 4096,
     mbSamples: 50,
 
-    GIResolutionScale: 1,
     SSGI: {
         blurSamples: 5,
         enabled: true,
@@ -39,7 +38,7 @@ export default {
     },
 
     SSAO: {
-        resolutionScale: .5,
+
         blurSamples: 2,
         maxSamples: 64,
         bias: .025,

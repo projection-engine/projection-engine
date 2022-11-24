@@ -52,7 +52,7 @@ export default class IconsSystem {
         })
     }
 
-    static execute(selected) {
+    static drawIcons(selected) {
         const cameras = Engine.data.cameras
 
 
@@ -68,6 +68,9 @@ export default class IconsSystem {
             IconsSystem.cameraMesh.draw()
         }
 
+
+    }
+    static drawPoints(selected){
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         const size = selected.length
         for (let i = 0; i < size; i++) {

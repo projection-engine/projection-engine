@@ -95,130 +95,121 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.INDIRECT_LIGHT}</legend>
-    <Range
-            label={Localization.RESOLUTION_SCALE}
-            minValue={.001}
-            maxValue={1}
-            value={visualSettings.GIResolutionScale}
-            onFinish={v => update("GIResolutionScale",v)}
-    />
-    <fieldset>
-        <legend>{Localization.SSR}</legend>
+    <legend>{Localization.SSR}</legend>
 
-        <div data-form="-">
-            <Checkbox
-                    checked={visualSettings.SSR.enabled}
-                    handleCheck={() => updateSubObject("SSR","enabled",!visualSettings.SSR.enabled)}
-                    label={Localization.ENABLED}
-            />
+    <div data-form="-">
+        <Checkbox
+                checked={visualSettings.SSR.enabled}
+                handleCheck={() => updateSubObject("SSR","enabled",!visualSettings.SSR.enabled)}
+                label={Localization.ENABLED}
+        />
 
-            <Range
-                    label={Localization.STEPS}
-                    minValue={1}
-                    integer={true}
-                    value={visualSettings.SSR.maxSteps}
-                    onFinish={v => updateSubObject("SSR","maxSteps",v)}
-            />
-            <Range
-                    label={Localization.STEP_SIZE}
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={.00001}
-                    value={visualSettings.SSR.stepSize}
-                    onFinish={v => updateSubObject("SSR","stepSize",v)}
-            />
+        <Range
+                label={Localization.STEPS}
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSR.maxSteps}
+                onFinish={v => updateSubObject("SSR","maxSteps",v)}
+        />
+        <Range
+                label={Localization.STEP_SIZE}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.00001}
+                value={visualSettings.SSR.stepSize}
+                onFinish={v => updateSubObject("SSR","stepSize",v)}
+        />
 
-            <Range
-                    label={Localization.FALLOFF}
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={0}
-                    value={visualSettings.SSR.falloff}
-                    onFinish={v => updateSubObject("SSR","falloff",v)}
-            />
+        <Range
+                label={Localization.FALLOFF}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={0}
+                value={visualSettings.SSR.falloff}
+                onFinish={v => updateSubObject("SSR","falloff",v)}
+        />
 
-            <Range
-                    label={Localization.MIN_RAY_STEP}
+        <Range
+                label={Localization.MIN_RAY_STEP}
 
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={.00001}
-                    value={visualSettings.SSR.minRayStep}
-                    onFinish={v => updateSubObject("SSR","minRayStep",v)}
-            />
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.00001}
+                value={visualSettings.SSR.minRayStep}
+                onFinish={v => updateSubObject("SSR","minRayStep",v)}
+        />
 
-        </div>
-    </fieldset>
-
-
-    <fieldset>
-        <legend>{Localization.SSGI}</legend>
-        <div data-form="-">
-            <Checkbox
-                    checked={visualSettings.SSGI.enabled}
-                    handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
-                    label={Localization.ENABLED}
-            />
-            <Range
-
-                    label={Localization.STEPS}
-
-                    minValue={1}
-                    integer={true}
-                    value={visualSettings.SSGI.maxSteps}
-                    onFinish={v => updateSubObject("SSGI","maxSteps",v)}
-            />
-            <Range
-                    label={Localization.BLUR_SAMPLES}
-                    minValue={1}
-                    integer={true}
-                    value={visualSettings.SSGI.blurSamples}
-                    onFinish={v => updateSubObject("SSGI","blurSamples",v)}
-            />
-
-
-            <Range
-
-                    label={Localization.STRENGTH}
-
-                    incrementPercentage={.01}
-                    precision={3}
-                    minValue={0}
-
-                    value={visualSettings.SSGI.strength}
-                    onFinish={v => updateSubObject("SSGI","strength",v)}
-            />
-
-            <Range
-                    label={Localization.STEP_SIZE}
-
-                    incrementPercentage={.001}
-                    precision={4}
-                    minValue={.00001}
-                    value={visualSettings.SSGI.stepSize}
-                    onFinish={v => updateSubObject("SSGI","stepSize",v)}
-            />
-        </div>
-        <div data-form="-">
-            <Range
-                    label={Localization.GAMMA}
-                    minValue={.1}
-                    maxValue={10}
-                    onFinish={v => updateSubObject("SSGI","gamma",  v)}
-                    value={visualSettings.SSGI.gamma}
-            />
-
-            <Range
-                    label={Localization.EXPOSURE}
-                    minValue={.1}
-                    maxValue={10}
-                    onFinish={v => updateSubObject("SSGI","exposure",  v)}
-                    value={visualSettings.SSGI.exposure}
-            />
-        </div>
-    </fieldset>
+    </div>
 </fieldset>
+
+
+<fieldset>
+    <legend>{Localization.SSGI}</legend>
+    <div data-form="-">
+        <Checkbox
+                checked={visualSettings.SSGI.enabled}
+                handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
+                label={Localization.ENABLED}
+        />
+        <Range
+
+                label={Localization.STEPS}
+
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSGI.maxSteps}
+                onFinish={v => updateSubObject("SSGI","maxSteps",v)}
+        />
+        <Range
+                label={Localization.BLUR_SAMPLES}
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSGI.blurSamples}
+                onFinish={v => updateSubObject("SSGI","blurSamples",v)}
+        />
+
+
+        <Range
+
+                label={Localization.STRENGTH}
+
+                incrementPercentage={.01}
+                precision={3}
+                minValue={0}
+
+                value={visualSettings.SSGI.strength}
+                onFinish={v => updateSubObject("SSGI","strength",v)}
+        />
+
+        <Range
+                label={Localization.STEP_SIZE}
+
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.00001}
+                value={visualSettings.SSGI.stepSize}
+                onFinish={v => updateSubObject("SSGI","stepSize",v)}
+        />
+    </div>
+    <div data-form="-">
+        <Range
+                label={Localization.GAMMA}
+                minValue={.1}
+                maxValue={10}
+                onFinish={v => updateSubObject("SSGI","gamma",  v)}
+                value={visualSettings.SSGI.gamma}
+        />
+
+        <Range
+                label={Localization.EXPOSURE}
+                minValue={.1}
+                maxValue={10}
+                onFinish={v => updateSubObject("SSGI","exposure",  v)}
+                value={visualSettings.SSGI.exposure}
+        />
+    </div>
+</fieldset>
+
 <fieldset>
     <legend>{Localization.SHADOWS}</legend>
     <div data-form="-">
@@ -261,13 +252,7 @@
                 handleCheck={() => updateSubObject("SSAO", "enabled", !visualSettings.SSAO.enabled)}
                 label={Localization.ENABLED}
         />
-        <Range
-                label={Localization.RESOLUTION_SCALE}
-                minValue={.001}
-                maxValue={1}
-                value={visualSettings.SSAO.resolutionScale}
-                onFinish={v => updateSubObject("SSAO","resolutionScale",v)}
-        />
+
         <Range
                 label={Localization.BLUR_SAMPLES}
                 minValue={1}

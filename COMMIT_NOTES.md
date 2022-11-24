@@ -1,5 +1,5 @@
-- Tweaking layout of scene editor
-- Organizing framebuffer bind/unbind methods
-- Added "random colors" for material visualization
-- Fixed metrics view labels
-- Re-enabled metrics
+- Combined stochastic normal computation with SSGI pipeline
+- Removed dependencies from noise sampler from SSGI shader
+- Added invProjectionMatrix to camera UBO
+- Fixed icon dots rendering below gizmos
+- Initializing structure optimization for future move to forward shaded structure
