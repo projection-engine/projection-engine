@@ -255,22 +255,16 @@ void main(){
 export const pickFragment = `
 precision highp float;
 
-uniform vec3 uID;
-layout (location = 0) out vec4 v_position;
-layout (location = 1) out vec4 v_normal;
-layout (location = 2) out vec4 v_entityID;
-layout (location = 3) out vec4 v_uv;
-layout (location = 4) out vec4 v_materialID;
+uniform vec3 uID; 
+
+ 
+layout (location = 0) out vec4 v_depth_entityid;
+layout (location = 1) out vec4 v_velocity;
 
 void main(){
-    v_position = vec4(0.);
-    v_normal = vec4(0.);
-    v_entityID = vec4(uID, 1.);
-    v_uv = vec4(0.);
-    v_materialID = vec4(0.);
+    v_depth_entityid = vec4(0., uID.rg, 1.);
+    v_velocity = vec4(0.);
 }
-
-
 `
 
 

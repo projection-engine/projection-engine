@@ -15,7 +15,7 @@ export default function getUnderSelectionBox(_, startCoords, endCoords) {
 
         try {
             const data = PickingAPI.readBlock(nStart, nEnd)
-            selectionWorker.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data})
+            selectionWorker.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data}, [data.buffer])
             selectionWorker.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
         } catch (err) {
             console.error(err, startCoords, nStart)
