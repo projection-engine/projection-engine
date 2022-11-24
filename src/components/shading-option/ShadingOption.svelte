@@ -8,7 +8,6 @@
     import getTexture from "./utils/get-texture";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
     import DebugPass from "../../lib/engine-tools/runtime/DebugPass";
-    import GBuffer from "../../../public/engine/runtime/rendering/GBuffer";
 
     export let engine
     export let settings
@@ -17,14 +16,14 @@
 
     $: {
         FrameComposition.debugFlag = shadingModel
-        if (!GBuffer.__cacheCallback)
-            GBuffer.__cacheCallback = GBuffer.drawToBuffer
-        if (shadingModel !== SHADING_MODELS.DETAIL) {
-            DebugPass.sampler = getTexture(shadingModel)
-            DebugPass.flag = shadingModel
-            GBuffer.drawToBuffer = DebugPass.execute
-        } else
-            GBuffer.drawToBuffer = GBuffer.__cacheCallback
+        // if (!GBuffer.__cacheCallback)
+        //     GBuffer.__cacheCallback = GBuffer.drawToBuffer
+        // if (shadingModel !== SHADING_MODELS.DETAIL) {
+        //     DebugPass.sampler = getTexture(shadingModel)
+        //     DebugPass.flag = shadingModel
+        //     GBuffer.drawToBuffer = DebugPass.execute
+        // } else
+        //     GBuffer.drawToBuffer = GBuffer.__cacheCallback
     }
 
 </script>
