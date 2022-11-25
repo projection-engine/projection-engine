@@ -13,7 +13,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
     import ViewStateController from "../../components/view/libs/ViewStateController";
-    import materialCompiler from "../../lib/engine-tools/lib/material-compiler/material-compiler";
+    import materialCompiler from "./libs/material-compiler/material-compiler";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";

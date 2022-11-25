@@ -90,9 +90,6 @@ export default class LevelController {
         }
 
         GPU.meshes.forEach(m => GPUAPI.destroyMesh(m))
-        const materials = Array.from(GPU.materials.keys())
-        for (let i = 0; i < materials.length; i++)
-            GPUAPI.destroyMaterial(materials[i][1])
 
         SelectionStore.updateStore({
             ...SelectionStore.data,
@@ -123,29 +120,6 @@ export default class LevelController {
                     if (uiID) {
                         const rs = RegistryAPI.getRegistryEntry(uiID)
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))
-                    }
-                    const terrain = entity.components.get(COMPONENTS.TERRAIN)
-                    if (terrain) {
-                        const {materialID, terrainID} = terrain
-                        if (GPU.meshes.get(terrainID) == null) {
-                            const rs = RegistryAPI.getRegistryEntry(terrainID)
-                            if (!rs)
-                                continue
-                            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
-                            if (!file)
-                                continue
-                            const terrainData = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)
-                            GPUAPI.allocateMesh(terrainID, terrainData)
-                        }
-                        if (materialID && GPU.materials.get(materialID) == null) {
-                            const rs = RegistryAPI.getRegistryEntry(materialID)
-                            if (!rs)
-                                continue
-                            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path, "json")
-                            if (!file)
-                                continue
-                            GPUAPI.allocateMaterialInstance(file, materialID).catch()
-                        }
                     }
                     mapped.push(entity)
                 }

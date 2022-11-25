@@ -31,11 +31,8 @@
             material,
             v => {
                 material = v
-                if (GPU.materials.get(item.registryID) != null) {
-                    GPUAPI.destroyMaterial(item.registryID)
-                    GPUAPI.allocateMaterialInstance(v, item.registryID)
+                if (GPU.materials.get(item.registryID) != null)
                     GPUAPI.cleanUpTextures()
-                }
             },
             undefined,
             false

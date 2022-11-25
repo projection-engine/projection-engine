@@ -26,7 +26,5 @@ export default class ShaderNode {
         return typesInverted[min]
     }
 
-    getFunctionInstance() {
-        return ""
-    }
+
 }

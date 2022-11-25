@@ -1,4 +1,4 @@
-import materialCompiler from "../../../lib/engine-tools/lib/material-compiler/material-compiler"
+import materialCompiler from "../libs/material-compiler/material-compiler"
 import {trimString} from "../../../../public/engine/instances/Shader";
 import GPU from "../../../../public/engine/GPU";
 import Localization from "../../../templates/LOCALIZATION_EN";

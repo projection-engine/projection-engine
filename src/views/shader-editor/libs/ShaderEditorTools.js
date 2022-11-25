@@ -1,5 +1,5 @@
 import BOARD_SIZE from "../static/BOARD_SIZE";
-import materialCompiler from "../../../lib/engine-tools/lib/material-compiler/material-compiler";
+import materialCompiler from "./material-compiler/material-compiler";
 import Material from "../../../../public/engine/instances/Material";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import Localization from "../../../templates/LOCALIZATION_EN";

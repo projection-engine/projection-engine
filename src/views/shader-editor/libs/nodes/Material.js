@@ -1,6 +1,6 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES"
-import NODE_TYPES from "../../../../lib/engine-tools/lib/material-compiler/templates/NODE_TYPES"
+import NODE_TYPES from "../material-compiler/templates/NODE_TYPES"
 import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float";
 
@@ -18,7 +18,7 @@ function arrayToGlsl(a) {
 }
 
 export default class Material extends ShaderNode {
-    ambientInfluence = true
+    alphaTested = true
     shadingType = MATERIAL_RENDERING_TYPES.DEFERRED
     rsmAlbedo
 
@@ -30,12 +30,13 @@ export default class Material extends ShaderNode {
     blend = true
     blendFuncSource = "ONE_MINUS_SRC_COLOR"
     blendFuncTarget = "ONE_MINUS_DST_ALPHA"
-
+    refraction = 0
     roughness = 1
     metallic = 0
     opacity = 1
     emission = [0, 0, 0]
     al = [0, 0, 0]
+    flatShading = false
 
     constructor() {
         const allTypes = [DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2, DATA_TYPES.FLOAT, DATA_TYPES.INT]
@@ -56,65 +57,14 @@ export default class Material extends ShaderNode {
                 max: 1,
                 min: 0
             },
-            {label: "Refraction", key: "refraction", accept: allTypes, disabled: true},
+            {label: "Refraction", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT},
 
-            {label: "Probe influence", key: "ambientInfluence", type: DATA_TYPES.CHECKBOX},
 
+            {label: "Is alpha tested", key: "alphaTested", type: DATA_TYPES.CHECKBOX},
             {label: "Face culling", key: "faceCulling", type: DATA_TYPES.CHECKBOX},
             {label: "Depth test", key: "depthTest", type: DATA_TYPES.CHECKBOX},
-            {label: "Blend", key: "blend", type: DATA_TYPES.CHECKBOX},
-
-            {
-                label: "Rendering type",
-                key: "shadingType",
-                type: DATA_TYPES.OPTIONS,
-                options: [
-                    {label: "Forward lit", data: MATERIAL_RENDERING_TYPES.FORWARD},
-                    {label: "Deferred lit", data: MATERIAL_RENDERING_TYPES.DEFERRED},
-                    {label: "Unlit", data: MATERIAL_RENDERING_TYPES.UNLIT},
-                    {label: "Skybox", data: MATERIAL_RENDERING_TYPES.SKYBOX},
-                ]
-            }
+            {label: "Flat shading", key: "flatShading", type: DATA_TYPES.CHECKBOX},
         ], [])
-        this.inputs.find(i => i.key === "shadingType").onChange = (v) => {
-            switch (v) {
-                case MATERIAL_RENDERING_TYPES.FORWARD:
-                    enableAll(this)
-                    this.inputs.find(i => i.key === "refraction").disabled = false
-                    this.inputs.find(i => i.key === "opacity").disabled = false
-                    this.inputs.find(i => i.key === "roughness").disabled = false
-                    this.inputs.find(i => i.key === "metallic").disabled = false
-                    this.inputs.find(i => i.key === "normal").disabled = false
-                    break
-                case MATERIAL_RENDERING_TYPES.DEFERRED:
-                    enableAll(this)
-                    this.inputs.find(i => i.key === "refraction").disabled = true
-                    this.inputs.find(i => i.key === "opacity").disabled = true
-
-                    this.inputs.find(i => i.key === "roughness").disabled = false
-                    this.inputs.find(i => i.key === "metallic").disabled = false
-                    this.inputs.find(i => i.key === "normal").disabled = false
-                    break
-                case MATERIAL_RENDERING_TYPES.SKYBOX:
-                    this.inputs = this.inputs.map(i => {
-                        if (i.accept === allTypes || i.type === DATA_TYPES.CHECKBOX)
-                            i.disabled = i.key !== "al";
-                        return i
-                    })
-                    break
-                default:
-                    this.inputs = this.inputs.map(i => {
-                        if (i.accept === allTypes)
-                            i.disabled = i.key !== "al";
-
-                        if (i.key === "ambientInfluence")
-                            i.disabled = true
-                        return i
-                    })
-                    this.ambientInfluence = false
-                    break
-            }
-        }
 
         this.name = "Material"
     }
@@ -159,7 +109,10 @@ export default class Material extends ShaderNode {
                             type: DATA_TYPES.VEC3
                         },
                         normal,
-                        ao,
+                        ao = {
+                            name: checkGlslFloat(1),
+                            type: DATA_TYPES.FLOAT
+                        },
                         roughness = {
                             name: checkGlslFloat(this.roughness),
                             type: DATA_TYPES.FLOAT
@@ -172,23 +125,27 @@ export default class Material extends ShaderNode {
                             name: checkGlslFloat(this.opacity),
                             type: DATA_TYPES.FLOAT
                         },
-                        refraction,
+                        refraction = {
+                            name: checkGlslFloat(this.refraction),
+                            type: DATA_TYPES.FLOAT
+                        },
                         emission = {
                             name: arrayToGlsl(this.emission),
                             type: DATA_TYPES.VEC3
-                        },
-                        // worldOffset
+                        }
                     }) {
 
-        if (this.shadingType === MATERIAL_RENDERING_TYPES.SKYBOX)
-            return `vec4 gAlbedo = vec4(${al ? this.getData(al) : "vec3(.5, .5, .5)"}, 1.);`
         return `
-                ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? "vec4" : ""} gAlbedo = vec4(${al ? this.getData(al) : "vec3(.5, .5, .5)"}, 1.) + vec4(${emission ? this.getData(emission) : "vec3(.0)"}, 0.);
-                ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? "vec4" : ""} gNormal = ${normal ? `vec4(normalize(toTangentSpace * ((${this.getData(normal)} * 2.0)- 1.0)), 1.)` : "vec4(normalVec, 1.)"};
-                ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? "vec4" : ""} gBehaviour =  vec4(${ao ? this.getDataBehaviour(ao) : "1."},${roughness !== undefined ? this.getDataBehaviour(roughness) : "1."},${roughness !== undefined ? this.getDataBehaviour(metallic) : "0."}, 1.);
-                ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? `float opacity = ${roughness !== undefined ? this.getDataBehaviour(opacity) : "1."};` : ""}
-                ${this.shadingType !== MATERIAL_RENDERING_TYPES.DEFERRED ? `float refraction = ${refraction ? this.getDataBehaviour(refraction) : "0."};` : ""}
-            `
+            naturalAO = ${this.getDataBehaviour(ao)};
+            roughness = ${this.getDataBehaviour(roughness)};
+            metallic = ${this.getDataBehaviour(metallic)};
+            refractionIndex = ${this.getDataBehaviour(refraction)};
+            alpha = ${this.getDataBehaviour(opacity)};
+            albedo = ${this.getData(al)};
+            N = ${normal ? `vec4(normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0)), 1.)` : "vec4(normalVec, 1.)"};
+            emission = ${this.getData(emission)};
+            flatShading = ${this.flatShading};
+        `
     }
 }
 

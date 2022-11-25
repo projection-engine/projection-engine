@@ -1,6 +1,6 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES"
-import NODE_TYPES from "../../../../../lib/engine-tools/lib/material-compiler/templates/NODE_TYPES"
+import NODE_TYPES from "../../material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
@@ -46,7 +46,7 @@ export default class Float extends ShaderNode {
             return `uniform float ${this.uniformName};`
         } else {
             this.uniformName = `FLOAT_VAR${index}`
-            return `#define ${this.uniformName} ${checkGlslFloat(this.v)}`
+            return `const float ${this.uniformName}  = ${checkGlslFloat(this.v)};`
         }
     }
 

@@ -1,6 +1,6 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES"
-import NODE_TYPES from "../../../../../lib/engine-tools/lib/material-compiler/templates/NODE_TYPES"
+import NODE_TYPES from "../../material-compiler/templates/NODE_TYPES"
 
 
 export default class Saturation extends ShaderNode {
@@ -20,15 +20,6 @@ export default class Saturation extends ShaderNode {
         return NODE_TYPES.FUNCTION
     }
 
-    getFunctionInstance() {
-        return `
-            vec3 saturation(vec3 rgb, float adjustment)
-            { 
-                vec3 intensity = vec3(dot(rgb, vec3(0.2125, 0.7154, 0.0721)));
-                return mix(intensity, rgb, adjustment);
-            }
-        `
-    }
 
     getFunctionCall({a, x={name: this.x}}, index) {
         this.saturationRes = "saturationRes" + index

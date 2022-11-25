@@ -1,6 +1,6 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES"
-import NODE_TYPES from "../../../../../lib/engine-tools/lib/material-compiler/templates/NODE_TYPES"
+import NODE_TYPES from "../../material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
@@ -36,7 +36,6 @@ export default class Vec3 extends ShaderNode {
     async getInputInstance(index, uniforms, uniformData) {
 
         if (this.uniform) {
-
             this.uniformName = `VEC3_VAR${index}`
             uniformData.push({
                 label: this.name,
@@ -49,11 +48,10 @@ export default class Vec3 extends ShaderNode {
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3
             })
-
             return `uniform float ${this.uniformName};`
         } else {
             this.uniformName = `VEC3_VAR${index}`
-            return `#define ${this.uniformName} vec3(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])}, ${checkGlslFloat(this.v[2])})`
+            return `const vec3 ${this.uniformName} = vec3(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])}, ${checkGlslFloat(this.v[2])});`
         }
     }
 

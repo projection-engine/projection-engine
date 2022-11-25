@@ -1,6 +1,6 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES"
-import NODE_TYPES from "../../../../lib/engine-tools/lib/material-compiler/templates/NODE_TYPES"
+import NODE_TYPES from "../material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float"
 
 
@@ -46,7 +46,7 @@ export default class RGB extends ShaderNode {
             return `uniform vec3 ${this.uniformName};`
         } else {
             this.uniformName = `COLOR_RGB${index}`
-            return `#define ${this.uniformName} vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2] )})`
+            return `const vec3 ${this.uniformName}  = vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2] )});`
         }
     }
 
