@@ -7,7 +7,7 @@ export default class CameraCoords extends ShaderNode {
 
     constructor() {
         super([], [
-            {label: "Coordinates", key: "cameraVec", type: DATA_TYPES.VEC3}
+            {label: "Coordinates", key: "placement", type: DATA_TYPES.VEC3}
         ])
 
         this.name = "CameraCoords"
@@ -18,7 +18,7 @@ export default class CameraCoords extends ShaderNode {
         return NODE_TYPES.STATIC
     }
     getFunctionCall() {
-        this.cameraVec = "cameraVec"
+        this.placement = "placement"
         return ""
     }
 }

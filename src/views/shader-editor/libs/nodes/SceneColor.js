@@ -23,7 +23,7 @@ export default class SceneColor extends ShaderNode {
 
     getFunctionCall({uv}, index, outputs) {
         let response = [
-            `vec4 samplerSceneColor = texture(sceneColor, ${uv !== undefined ? uv.name : "texCoords"});`
+            `vec4 samplerSceneColor = texture(previous_frame, ${uv !== undefined ? uv.name : "texCoords"});`
         ]
 
         outputs.forEach(o => {

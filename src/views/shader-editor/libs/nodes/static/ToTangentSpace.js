@@ -7,7 +7,7 @@ export default class ToTangentSpace extends ShaderNode {
 
     constructor() {
         super([], [
-            {label: "Matrix", key: "toTangentSpace", type: DATA_TYPES.MAT3}
+            {label: "Matrix", key: "TBN", type: DATA_TYPES.MAT3}
         ])
 
         this.name = "ToTangentSpace"
@@ -19,7 +19,8 @@ export default class ToTangentSpace extends ShaderNode {
     }
 
     getFunctionCall() {
-        this.toTangentSpace = "toTangentSpace"
+        // TODO - GENERATE TBN IF NOT EXISTENT
+        this.TBN = "TBN"
         return ""
     }
 }

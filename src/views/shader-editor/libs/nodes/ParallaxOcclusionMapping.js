@@ -53,44 +53,8 @@ export default class ParallaxOcclusionMapping extends ShaderNode {
         return NODE_TYPES.FUNCTION
     }
 
-    getFunctionInstance() {
-        return `
-                vec2 parallaxMapping (vec2 texCoords, vec3 viewDir, sampler2D heightMap, float heightScale, float layers){
-                   float layer_depth = 1.0 / layers;
-                   float currentLayerDepth = 0.0;
-                   vec2 delta_uv = viewDir.xy * heightScale / (viewDir.z * layers);
-                   vec2 cur_uv = texCoords;
-                
-                   float depth_from_tex = 1.-texture(heightMap, cur_uv).r;
-                
-                   for (int i = 0; i < 32; i++) {
-                       currentLayerDepth += layer_depth;
-                       cur_uv -= delta_uv;
-                       depth_from_tex = 1.-texture(heightMap, cur_uv).r;
-                       if (depth_from_tex < currentLayerDepth) 
-                           break;
-                   }
-                   vec2 prev_uv = cur_uv + delta_uv;
-                   float next = depth_from_tex - currentLayerDepth;
-                   float prev = texture(heightMap, prev_uv).r - currentLayerDepth
-                                + layer_depth;
-                   float weight = next / (next - prev);
-                   vec2 UVs = mix(cur_uv, prev_uv, weight);
-                   ${this.discard ? `
-                   if (UVs.x > 1.0 || UVs.y > 1.0 || UVs.x < 0.0 || UVs.y < 0.0)
-                       discard;
-                   ` : ""}
-                   
-                   return UVs;
-                }
-        `
-    }
-
-     
-
     getFunctionCall({heightMap, viewDirection, texCoords}, index) {
         this.UVs = "UVs" + index
-        return `vec2 ${this.UVs} = parallaxMapping( ${texCoords.name},  ${viewDirection.name},  ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
+        return `vec2 ${this.UVs} = parallaxOcclusionMapping(${texCoords.name},  ${viewDirection.name},  ${this.discard ? "true" : "false"}, ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
     }
-
 }

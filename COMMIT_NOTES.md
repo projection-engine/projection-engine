@@ -1,2 +1,1 @@
-- Pure depth only SSAO implementation
-- Depth reconstruction utility functions
+- Starting organization of material compiler 

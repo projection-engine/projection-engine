@@ -39,7 +39,6 @@ import Normalize from "../libs/nodes/math/Normalize"
 import Reflect from "../libs/nodes/math/Reflect"
 import Refract from "../libs/nodes/math/Refract"
 import Tan from "../libs/nodes/math/Tan"
-import EmbeddedTextureSample from "../libs/nodes/EmbeddedTextureSample"
 import Comment from "../libs/nodes/Comment"
 
 export default function getNewInstance(name) {
@@ -129,8 +128,6 @@ export default function getNewInstance(name) {
         return new Pow()
     case MakeVector.name:
         return new MakeVector()
-    case EmbeddedTextureSample.name:
-        return new TextureSample()
     case Comment.name:
         return new Comment()
     default:
