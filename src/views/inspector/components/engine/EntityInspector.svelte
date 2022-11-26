@@ -14,6 +14,7 @@
     import getEntityTabs from "../../utils/get-entity-tabs";
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
+    import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
 
     export let entity
 
@@ -98,8 +99,23 @@
                             component={components[tabIndex][1]}
                             submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
                     />
-                    {#if components[tabIndex][0] === COMPONENTS.MESH && components[tabIndex][1].materialID}
-                        <MaterialUniforms uniforms={components[tabIndex][1].materialID} update={() => {}}/>
+                    {#if components[tabIndex][0] === COMPONENTS.MESH && components[tabIndex][1].materialUniforms}
+                        <fieldset>
+                            <legend>{Localization.MATERIAL_VALUES}</legend>
+                            <Checkbox
+                                    label={Localization.OVERRIDE_PROPERTIES}
+                                    handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !components[tabIndex][1].overrideMaterialUniforms, true, components[tabIndex])}
+                                    checked={components[tabIndex][1].overrideMaterialUniforms}
+                            />
+                            {#if components[tabIndex][1].overrideMaterialUniforms}
+                                <MaterialUniforms
+                                        uniforms={components[tabIndex][1].materialUniforms}
+                                        update={() => {
+
+                                        }}
+                                />
+                            {/if}
+                        </fieldset>
                     {/if}
                 {/if}
 

@@ -74,7 +74,7 @@ export default class TextureSample extends ShaderNode {
                         label: this.name,
                         key: this.uniformName,
                         data: res.id,
-                        type: DATA_TYPES.TEXTURE,
+                        type: DATA_TYPES.TEXTURE
                     })
                 }
             } catch (error) {

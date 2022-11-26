@@ -34,7 +34,8 @@ export default class RGB extends ShaderNode {
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3,
                 data: v,
-                isColor: true
+                isColor: true,
+                internalKey: "rgb"
             })
             uniforms.push({
                 label: this.name,

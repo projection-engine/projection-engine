@@ -39,7 +39,8 @@ export default class Vec2 extends ShaderNode {
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC2,
-                data: this.v
+                data: this.v,
+                internalKey: "v"
             })
             uniforms.push({
                 label: this.name,

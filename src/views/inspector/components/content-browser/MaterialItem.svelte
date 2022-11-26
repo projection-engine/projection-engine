@@ -51,7 +51,7 @@
     const updateAsset = (index, value, t) => {
         clearTimeout(timeout)
         timeout = setTimeout(async () => {
-            const update = uniforms.map((u, i) => {
+            const update = temp.response.uniformsData.map((u, i) => {
                 if (i === index)
                     return {...u, data: value}
                 return u
@@ -61,19 +61,18 @@
                 response: {
                     ...temp.response,
                     uniformsData: update
-                }
+                },
+                // nodes: temp.nodes.map(n => {
+                //     const target =temp.response.uniformsData[index]
+                //     if(n.uniformName === target?.key && target?.internalKey)
+                //         n[target.internalKey]  = target.data
+                //     return n
+                // })
             }
-            await AssetAPI.updateAsset(item.registryID, JSON.stringify({
-                ...temp,
-                response: {
-                    ...temp.response,
-                    uniformsData: update
-                }
-            }))
-
-            if (GPU.materials.get(item.registryID) != null) {
-                const instance = GPU.materials.get(item.registryID)
-                await MaterialAPI.updateMaterialUniforms(temp.response.uniformsData, instance)
+            await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+            const instance = GPU.materials.get(item.registryID)
+            if (instance) {
+                await instance.updateUniformGroup(temp.response.uniformsData)
                 alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
                 GPUAPI.cleanUpTextures()
             }
@@ -94,10 +93,6 @@
 {/if}
 
 <style>
-    small {
-        font-size: .7rem;
-
-    }
 
     .empty-wrapper {
         position: relative;
