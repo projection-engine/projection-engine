@@ -15,6 +15,7 @@
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
+    import Accordion from "../../../../components/accordion/Accordion.svelte";
 
     export let entity
 
@@ -69,12 +70,14 @@
             {#if tabIndex === -3}
                 {#if scripts.length > 0}
                     {#each scripts as script, scriptIndex}
-                        <Layout
-                                entity={entity}
-                                index={scriptIndex}
-                                component={scripts[scriptIndex]}
-                                submit={(k, v) => scripts[scriptIndex][k] = v}
-                        />
+                        <fieldset>
+                            <Layout
+                                    entity={entity}
+                                    index={scriptIndex}
+                                    component={scripts[scriptIndex]}
+                                    submit={(k, v) => scripts[scriptIndex][k] = v}
+                            />
+                        </fieldset>
                     {/each}
                 {:else}
                     <div data-empty="-">
@@ -142,7 +145,6 @@
         align-items: flex-start;
         overflow-y: auto;
         overflow-x: hidden;
-        justify-items: center;
 
         align-content: flex-start;
         gap: 4px;

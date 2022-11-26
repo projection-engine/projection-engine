@@ -41,17 +41,10 @@ export default function entityCreationOptions() {
             label: Localization.DIRECTIONAL_LIGHT,
             onClick: EntityConstructor.createDirectionalLight
         },
-        {divider: true, label: Localization.AMBIENT},
-
         {
             icon: "lens_blur",
-            label: Localization.SPECULAR_PROBE,
-            onClick: () => EntityConstructor.createProbe(false)
-        },
-        {
-            icon: "lens_blur",
-            label: Localization.DIFFUSE_PROBE,
-            onClick: () => EntityConstructor.createProbe(true)
+            label: Localization.SKYLIGHT,
+            onClick: () => EntityConstructor.createProbe()
         },
         {divider: true, label: Localization.UTILS},
         {

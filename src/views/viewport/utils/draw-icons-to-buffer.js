@@ -20,8 +20,7 @@ export default function drawIconsToBuffer() {
             entity.matrix,
         )
     }
-
-    FBO.stopMapping()
+    FBO.stop()
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {

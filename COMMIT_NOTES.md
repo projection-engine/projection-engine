@@ -1,2 +1,4 @@
-- Fixed new folder label as undefined
-- Material uniforms integrated with mesh component inspector
+- Fixed inspector layout for script and some components
+- Removed DiffuseProbePass and SpecularProbePass
+- Changed probe component to skylight component
+- Added skylight udpate method to engine

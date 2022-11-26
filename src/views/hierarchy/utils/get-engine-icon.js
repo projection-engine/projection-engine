@@ -1,4 +1,5 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
+import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
 export default function getEngineIcon(nodeRef) {
     let icons = []
@@ -13,10 +14,10 @@ export default function getEngineIcon(nodeRef) {
                 icon: "light_mode",
                 label: "Directional light"
             })
-        if (nodeRef.components.get(COMPONENTS.PROBE))
+        if (nodeRef.components.get(COMPONENTS.SKYLIGHT))
             icons.push({
                 icon: "lens_blur",
-                label: "Probe"
+                label: LOCALIZATION_EN.SKYLIGHT
             })
         if (nodeRef.components.get(COMPONENTS.MESH))
 

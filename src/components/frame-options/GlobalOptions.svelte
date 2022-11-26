@@ -2,8 +2,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import DiffuseProbePass from "../../../public/engine/runtime/rendering/DiffuseProbePass";
-    import SpecularProbePass from "../../../public/engine/runtime/rendering/SpecularProbePass";
+
     import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
     import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
     import AlertHistory from "./components/NotificationHistory.svelte";
@@ -17,8 +16,7 @@
 
     async function updateStructure() {
         alert.pushAlert(Localization.UPDATING_STRUCTURE, "info")
-        DiffuseProbePass.compile()
-        SpecularProbePass.compile()
+
         await ScriptsAPI.updateAllScripts()
         await UIAPI.updateAllElements()
 

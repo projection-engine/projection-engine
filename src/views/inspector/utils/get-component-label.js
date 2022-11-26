@@ -1,4 +1,5 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
+import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
 export default function getComponentLabel(component){
     switch (component){
@@ -12,8 +13,8 @@ export default function getComponentLabel(component){
             return "Directional Light"
         case COMPONENTS.SPRITE:
             return "Sprite"
-        case COMPONENTS.PROBE:
-            return "Probe"
+        case COMPONENTS.SKYLIGHT:
+            return LOCALIZATION_EN.SKYLIGHT
         case COMPONENTS.PHYSICS_COLLIDER:
             return "Physics collider"
         case COMPONENTS.RIGID_BODY:

@@ -28,6 +28,7 @@ export default {
     DEPTH_SAMPLER: "Depth sampler",
     AO_SRC: "Unfiltered SSAO",
     SSGI_NORMALS: "Stochastic normals",
+    SKYLIGHT: "Skylight",
     BLUR_BLOOM: "Blur color filter",
     GI: "Global illumination",
     ERROR_DURING_COMPILATION: "Error during compilation",

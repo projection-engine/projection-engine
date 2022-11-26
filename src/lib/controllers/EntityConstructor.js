@@ -9,6 +9,7 @@ import {v4} from "uuid";
 import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import LightsAPI from "../../../public/engine/lib/rendering/LightsAPI";
 import SettingsStore from "../../stores/SettingsStore";
+import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
 
 const addSprite = (entity, img) => {
@@ -43,10 +44,10 @@ export default class EntityConstructor {
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
-    static createProbe(asDiffuse) {
-        const entity = new Entity(undefined, asDiffuse ? "Diffuse probe" : "Specular probe")
-        const p = entity.addComponent(COMPONENTS.PROBE)
-        p.specularProbe = !asDiffuse
+    static createProbe() {
+        const entity = new Entity(undefined, LOCALIZATION_EN.SKYLIGHT)
+        entity.addComponent(COMPONENTS.SKYLIGHT)
+
         addSprite(entity, STATIC_TEXTURES.PROBE)
         EntityConstructor.translateEntity(entity)
 
